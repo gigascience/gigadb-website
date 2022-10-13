@@ -55,7 +55,7 @@ Policy: IAMUsersManagePasswordAndKeys
 ```
 
 ### User policy
-This policy is attached to each user, which allows user to access bucket `gigadb-cngb-backup` only, and developer is not allowed to delete bucket `gigadb-cngb-backup`. 
+This policy is attached to each user, which allows user to only access bucket `gigadb-cngb-backup` only, and developer is not allowed to delete bucket `gigadb-cngb-backup`. 
 
 Policy Name: AllowS3ReadWrite
 ```
