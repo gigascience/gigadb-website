@@ -1,0 +1,5 @@
+# untrack because generated from template
+.rclone.conf
+
+# untrack log files
+logs/*

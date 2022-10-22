@@ -1,0 +1,8 @@
+[wasabi]
+type = s3
+provider = Wasabi
+env_auth = true
+access_key_id =
+secret_access_key =
+region =
+endpoint = s3.ap-northeast-1.wasabisys.com
