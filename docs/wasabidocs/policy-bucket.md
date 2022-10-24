@@ -74,15 +74,20 @@ Policy Name: AllowS3ReadWrite
         "s3:DeleteObject"
       ],
       "Resource": [
-        "arn:aws:s3:::gigadb-cngb-backup",
-        "arn:aws:s3:::gigadb-cngb-backup/*"
+        "arn:aws:s3:::test-gigadb-datasets",
+        "arn:aws:s3:::test-gigadb-datasets/*",
+        "arn:aws:s3:::gigadb-datasets",
+        "arn:aws:s3:::gigadb-datasets/*"
       ]
     },
     {
       "Sid": "NotAllowDevelopersToDeleteGigaDbCngbBackUpBucket",
       "Effect": "Deny",
       "Action": "s3:DeleteBucket",
-      "Resource": "arn:aws:s3:::gigadb-cngb-backup"
+      "Resource": [
+        "arn:aws:s3:::test-gigadb-datasets",
+        "arn:aws:s3:::gigadb-datasets"
+      ]
     }
   ]
 }
