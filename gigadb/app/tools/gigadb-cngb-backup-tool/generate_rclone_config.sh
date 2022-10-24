@@ -7,8 +7,8 @@ set -e
 set -x
 
 if ! [ -f  ./.rclone.conf ];then
-  read -p "To create rclone config, enter your wasabi access_key_id: " key
-  read -p "To create rclone config, enter your wasabi secret_access_key: " secret
+  read -sp "To create rclone config, enter your wasabi access_key_id: " key
+  read -sp "To create rclone config, enter your wasabi secret_access_key: " secret
   read -p "To create rclone config, enter your wasabi region: " region
   cp config-source/rclone.config.template .rclone.conf
   sed -i'.bak' "s/access_key_id =/access_key_id = $key/" .rclone.conf
