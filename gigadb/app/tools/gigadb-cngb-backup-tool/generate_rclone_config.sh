@@ -6,6 +6,13 @@ set -e
 # print command being run
 set -x
 
+if ! [ -f  ./.env ];then
+  read -sp "Enter your gitter api token: " gitter_token
+  cp config-source/env-sample .env
+  sed -i'.bak' "s/GITTER_API_TOKEN=/GITTER_API_TOKEN=$gitter_token/" .env
+  rm .env.bak
+fi
+
 if ! [ -f  ./.rclone.conf ];then
   read -sp "To create rclone config, enter your wasabi access_key_id: " key
   read -sp "To create rclone config, enter your wasabi secret_access_key: " secret
