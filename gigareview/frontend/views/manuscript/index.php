@@ -32,9 +32,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'manuscript_number',
             'article_title',
             'publication_date',
-            //'editorial_status',
-            //'editorial_status_date',
-            //'editors_note:ntext',
+            'editorial_status',
+            'editorial_status_date',
+            'editors_note:ntext',
             //'created_at',
             //'updated_at',
             [
