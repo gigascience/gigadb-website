@@ -22,6 +22,8 @@ services:
 
   api:
     build: backend
+    expose:
+      - "9000"
     volumes:
       # Re-use local composer cache via host-volume
       - ~/.composer-docker/cache:/root/.composer/cache:delegated
