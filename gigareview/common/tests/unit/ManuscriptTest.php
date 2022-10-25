@@ -99,4 +99,32 @@ class ManuscriptTest extends \Codeception\Test\Unit
 
         }, $sampleCsvReportData, $manuscriptInstances);
     }
+
+    /**
+     * Checks validation of editorial_status_date attribute value
+     */
+    public function testCreateInstanceFromReportWithInvalidDateFormat()
+    {
+        $sampleCsvReportData = [
+            [
+                'manuscript_number' => 'GIGA-D-22-00054',
+                'article_title' => 'A machine learning framework for discovery and enrichment of metagenomics metadata from open access publications',
+                # Dates in Manuscript objects need to be in MM/dd/yyyy format
+                # which is used in EM manuscript reports. The editorial_status_date
+                # below is therefore wrong
+                'editorial_status_date' => '13/6/2022',
+                'editorial_status' => 'Final Decision Accept'
+            ]
+        ];
+
+        $manuscriptInstances = Manuscript::createInstancesFromEmReport($sampleCsvReportData);
+        foreach ($manuscriptInstances as $instance) {
+            # Validate attributes in manuscript object
+            $this->assertFalse($instance->validate(), 'Manuscript object should fail validation');
+            # Confirm there is a problem with editorial_status_date attribute
+            $first_errors = $instance->getFirstErrors();
+            $this->assertArrayHasKey('editorial_status_date', $first_errors, "No editorial_status_date error found!");
+            $this->assertStringContainsString('Editorial Status Date is invalid', $first_errors['editorial_status_date']);
+        }
+    }
 }
