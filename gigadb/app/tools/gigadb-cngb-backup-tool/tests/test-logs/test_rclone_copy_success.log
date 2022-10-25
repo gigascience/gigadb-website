@@ -1,0 +1,16 @@
+2022/10/24 22:00:34 DEBUG : rclone: Version "v1.59.2" starting with parameters ["rclone" "--config=.rclone.conf" "copy" "--checksum" "--log-level" "DEBUG" "--s3-no-check-bucket" "tests/tortoise/GigaDBUpload-v16_GIGA-D-22-00112-tortoise-102253-2.xls" "wasabi:test-gigadb-datasets/test-ken-20221010"]
+2022/10/24 22:00:34 DEBUG : Creating backend with remote "tests/tortoise/GigaDBUpload-v16_GIGA-D-22-00112-tortoise-102253-2.xls"
+2022/10/24 22:00:34 DEBUG : Using config file from "/Volumes/kencho/gigadb-website/gigadb/app/tools/gigadb-cngb-backup-tool/.rclone.conf"
+2022/10/24 22:00:34 DEBUG : fs cache: adding new entry for parent of "tests/tortoise/GigaDBUpload-v16_GIGA-D-22-00112-tortoise-102253-2.xls", "/Volumes/kencho/gigadb-website/gigadb/app/tools/gigadb-cngb-backup-tool/tests/tortoise"
+2022/10/24 22:00:34 DEBUG : Creating backend with remote "wasabi:test-gigadb-datasets/test-ken-20221010"
+2022/10/24 22:00:34 DEBUG : wasabi: detected overridden config - adding "{Dn7qA}" suffix to name
+2022/10/24 22:00:36 DEBUG : fs cache: renaming cache item "wasabi:test-gigadb-datasets/test-ken-20221010" to be canonical "wasabi{Dn7qA}:test-gigadb-datasets/test-ken-20221010"
+2022/10/24 22:00:38 DEBUG : GigaDBUpload-v16_GIGA-D-22-00112-tortoise-102253-2.xls: Need to transfer - File not found at Destination
+2022/10/24 22:00:40 DEBUG : GigaDBUpload-v16_GIGA-D-22-00112-tortoise-102253-2.xls: md5 = e3da92a7fb0720f11046899774f26b2d OK
+2022/10/24 22:00:40 INFO  : GigaDBUpload-v16_GIGA-D-22-00112-tortoise-102253-2.xls: Copied (new)
+2022/10/24 22:00:40 INFO  :
+Transferred:      350.500 KiB / 350.500 KiB, 100%, 174.402 KiB/s, ETA 0s
+Transferred:            1 / 1, 100%
+Elapsed time:         5.9s
+
+2022/10/24 22:00:40 DEBUG : 7 go routines active

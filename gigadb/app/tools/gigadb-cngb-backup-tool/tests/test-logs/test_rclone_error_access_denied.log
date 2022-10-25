@@ -1,0 +1,28 @@
+2022/10/24 21:56:32 DEBUG : rclone: Version "v1.59.2" starting with parameters ["rclone" "--config=.rclone.conf" "copy" "--checksum" "--log-level" "DEBUG" "tests/tortoise/GigaDBUpload-v16_GIGA-D-22-00112-tortoise-102253-2.xls" "wasabi:test-gigadb-datasets/test-ken-20221010"]
+2022/10/24 21:56:32 DEBUG : Creating backend with remote "tests/tortoise/GigaDBUpload-v16_GIGA-D-22-00112-tortoise-102253-2.xls"
+2022/10/24 21:56:32 DEBUG : Using config file from "/Volumes/kencho/gigadb-website/gigadb/app/tools/gigadb-cngb-backup-tool/.rclone.conf"
+2022/10/24 21:56:32 DEBUG : fs cache: adding new entry for parent of "tests/tortoise/GigaDBUpload-v16_GIGA-D-22-00112-tortoise-102253-2.xls", "/Volumes/kencho/gigadb-website/gigadb/app/tools/gigadb-cngb-backup-tool/tests/tortoise"
+2022/10/24 21:56:32 DEBUG : Creating backend with remote "wasabi:test-gigadb-datasets/test-ken-20221010"
+2022/10/24 21:56:34 DEBUG : GigaDBUpload-v16_GIGA-D-22-00112-tortoise-102253-2.xls: Need to transfer - File not found at Destination
+2022/10/24 21:56:34 ERROR : GigaDBUpload-v16_GIGA-D-22-00112-tortoise-102253-2.xls: Failed to copy: AccessDenied: User: arn:aws:iam::100000166496:user/Ken is not authorized to perform: s3:CreateBucket on resource: arn:aws:s3:::test-gigadb-datasets
+        status code: 403, request id: 1D3A6435B0DA0A4A, host id: 77ZQFB19YWOSC4EYfOpSD/gg6SVL4fhk8BBiQYGtbicvoSeESo4AMGvAPtu60ySq7iN7UFpPdazp
+2022/10/24 21:56:34 ERROR : Attempt 1/3 failed with 1 errors and: AccessDenied: User: arn:aws:iam::100000166496:user/Ken is not authorized to perform: s3:CreateBucket on resource: arn:aws:s3:::test-gigadb-datasets
+        status code: 403, request id: 1D3A6435B0DA0A4A, host id: 77ZQFB19YWOSC4EYfOpSD/gg6SVL4fhk8BBiQYGtbicvoSeESo4AMGvAPtu60ySq7iN7UFpPdazp
+2022/10/24 21:56:34 DEBUG : GigaDBUpload-v16_GIGA-D-22-00112-tortoise-102253-2.xls: Need to transfer - File not found at Destination
+2022/10/24 21:56:34 ERROR : GigaDBUpload-v16_GIGA-D-22-00112-tortoise-102253-2.xls: Failed to copy: AccessDenied: User: arn:aws:iam::100000166496:user/Ken is not authorized to perform: s3:CreateBucket on resource: arn:aws:s3:::test-gigadb-datasets
+        status code: 403, request id: 42B52714B139EA66, host id: fGy9OPxCnTidArFIhfLmMWNAxSw1hoaLcn9ZhX4U/VlwIVhg0ae2MkipzmZSoJu/9hIcxfEMhA6h
+2022/10/24 21:56:34 ERROR : Attempt 2/3 failed with 1 errors and: AccessDenied: User: arn:aws:iam::100000166496:user/Ken is not authorized to perform: s3:CreateBucket on resource: arn:aws:s3:::test-gigadb-datasets
+        status code: 403, request id: 42B52714B139EA66, host id: fGy9OPxCnTidArFIhfLmMWNAxSw1hoaLcn9ZhX4U/VlwIVhg0ae2MkipzmZSoJu/9hIcxfEMhA6h
+2022/10/24 21:56:34 DEBUG : GigaDBUpload-v16_GIGA-D-22-00112-tortoise-102253-2.xls: Need to transfer - File not found at Destination
+2022/10/24 21:56:35 ERROR : GigaDBUpload-v16_GIGA-D-22-00112-tortoise-102253-2.xls: Failed to copy: AccessDenied: User: arn:aws:iam::100000166496:user/Ken is not authorized to perform: s3:CreateBucket on resource: arn:aws:s3:::test-gigadb-datasets
+        status code: 403, request id: 2F49D00C4C40BE02, host id: mwDxK+JpuSdPs2uGEjCWRE5cN1jqzWoWgsiQ2R1ClzijYXP1x1mMikTLvB500uLsDksSBKaFCZZO
+2022/10/24 21:56:35 ERROR : Attempt 3/3 failed with 1 errors and: AccessDenied: User: arn:aws:iam::100000166496:user/Ken is not authorized to perform: s3:CreateBucket on resource: arn:aws:s3:::test-gigadb-datasets
+        status code: 403, request id: 2F49D00C4C40BE02, host id: mwDxK+JpuSdPs2uGEjCWRE5cN1jqzWoWgsiQ2R1ClzijYXP1x1mMikTLvB500uLsDksSBKaFCZZO
+2022/10/24 21:56:35 INFO  :
+Transferred:              0 B / 0 B, -, 0 B/s, ETA -
+Errors:                 1 (retrying may help)
+Elapsed time:         2.7s
+
+2022/10/24 21:56:35 DEBUG : 5 go routines active
+2022/10/24 21:56:35 Failed to copy: AccessDenied: User: arn:aws:iam::100000166496:user/Ken is not authorized to perform: s3:CreateBucket on resource: arn:aws:s3:::test-gigadb-datasets
+        status code: 403, request id: 2F49D00C4C40BE02, host id: mwDxK+JpuSdPs2uGEjCWRE5cN1jqzWoWgsiQ2R1ClzijYXP1x1mMikTLvB500uLsDksSBKaFCZZO
