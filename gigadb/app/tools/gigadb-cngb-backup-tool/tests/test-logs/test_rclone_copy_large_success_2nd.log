@@ -1,0 +1,23 @@
+2022/10/26 12:03:42 DEBUG : rclone: Version "v1.59.2" starting with parameters ["rclone" "--config=.rclone.conf" "copy" "--checksum" "--log-level" "DEBUG" "--log-file=tests/test-logs/test_rclone_copy_large_success_2nd.log" "s3genomics:1000genomes/data/NA12878/alignment/" "gigaKen:test-transfer-interruption/NA12878"]
+2022/10/26 12:03:42 DEBUG : Creating backend with remote "s3genomics:1000genomes/data/NA12878/alignment/"
+2022/10/26 12:03:42 DEBUG : Using config file from "/Volumes/kencho/gigadb-website/gigadb/app/tools/gigadb-cngb-backup-tool/.rclone.conf"
+2022/10/26 12:03:42 DEBUG : fs cache: renaming cache item "s3genomics:1000genomes/data/NA12878/alignment/" to be canonical "s3genomics:1000genomes/data/NA12878/alignment"
+2022/10/26 12:03:42 DEBUG : Creating backend with remote "gigaKen:test-transfer-interruption/NA12878"
+2022/10/26 12:03:44 DEBUG : S3 bucket test-transfer-interruption path NA12878: Waiting for checks to finish
+2022/10/26 12:03:44 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.bam.bas: md5 = f51294f9c5b2c53d338fd8d6a44f0e9f OK
+2022/10/26 12:03:44 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.bam.bas: Size and md5 of src and dst objects identical
+2022/10/26 12:03:44 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.bam.bas: Unchanged skipping
+2022/10/26 12:03:44 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram.crai: md5 = 77d60d85931312645c6e9d770a612dac OK
+2022/10/26 12:03:44 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram.crai: Size and md5 of src and dst objects identical
+2022/10/26 12:03:44 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram.crai: Unchanged skipping
+2022/10/26 12:03:44 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: Dst hash empty - aborting Src hash check
+2022/10/26 12:03:44 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: Size of src and dst objects identical
+2022/10/26 12:03:44 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: Unchanged skipping
+2022/10/26 12:03:44 DEBUG : S3 bucket test-transfer-interruption path NA12878: Waiting for transfers to finish
+2022/10/26 12:03:44 INFO  : There was nothing to transfer
+2022/10/26 12:03:44 INFO  : 
+Transferred:   	          0 B / 0 B, -, 0 B/s, ETA -
+Checks:                 3 / 3, 100%
+Elapsed time:         1.3s
+
+2022/10/26 12:03:44 DEBUG : 6 go routines active
