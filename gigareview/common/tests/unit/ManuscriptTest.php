@@ -101,30 +101,43 @@ class ManuscriptTest extends \Codeception\Test\Unit
     }
 
     /**
-     * Checks validation of editorial_status_date attribute value
+     * Checks validation of editorial status dates
      */
-    public function testCreateInstanceFromReportWithInvalidDateFormat()
+    public function testEditorialStatusDateValidation()
     {
         $sampleCsvReportData = [
             [
-                'manuscript_number' => 'GIGA-D-22-00054',
-                'article_title' => 'A machine learning framework for discovery and enrichment of metagenomics metadata from open access publications',
-                # Dates in Manuscript objects need to be in MM/dd/yyyy format
-                # which is used in EM manuscript reports. The editorial_status_date
-                # below is therefore wrong
+                'manuscript_number' => 'GIGA-D-22-00001',
+                'article_title' => 'Factum per Litteras',
+                # Since dates in Manuscript objects need to be in MM/dd/yyyy
+                # format, this editorial_status_date is not valid
                 'editorial_status_date' => '13/6/2022',
+                'editorial_status' => 'Final Decision Accept'
+            ],
+            [
+                'manuscript_number' => 'GIGA-D-22-00002',
+                'article_title' => 'Pedes in Terra ad Sidera Visus',
+                # Valid editorial_status_date
+                'editorial_status_date' => '05/16/2022',
                 'editorial_status' => 'Final Decision Accept'
             ]
         ];
 
         $manuscriptInstances = Manuscript::createInstancesFromEmReport($sampleCsvReportData);
+
         foreach ($manuscriptInstances as $instance) {
-            # Validate attributes in manuscript object
-            $this->assertFalse($instance->validate(), 'Manuscript object should fail validation');
-            # Confirm there is a problem with editorial_status_date attribute
-            $first_errors = $instance->getFirstErrors();
-            $this->assertArrayHasKey('editorial_status_date', $first_errors, "No editorial_status_date error found!");
-            $this->assertStringContainsString('Editorial Status Date is invalid', $first_errors['editorial_status_date']);
+            if($instance->validate()) {
+                # Confirm second manuscript is ok
+                $this->assertStringContainsString("Pedes in Terra ad Sidera Visus", $instance->article_title);
+            }
+            else {
+                # Confirm problem with first manuscript object
+                $this->assertStringContainsString("Factum per Litteras", $instance->article_title);
+                # Confirm problem is with editorial_status_date attribute
+                $first_errors = $instance->getFirstErrors();
+                $this->assertArrayHasKey('editorial_status_date', $first_errors, "No editorial_status_date error found!");
+                $this->assertStringContainsString('Editorial Status Date is invalid', $first_errors['editorial_status_date']);
+            }
         }
     }
 }
