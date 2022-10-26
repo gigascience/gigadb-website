@@ -87,8 +87,15 @@ class EMReportJob extends \yii\base\BaseObject implements \yii\queue\JobInterfac
     {
         $storeStatus = 0;
         foreach ($manuscripts as $manuscript) {
-            if ($manuscript->save()) {
-                $storeStatus = 1;
+            # Check all manuscript attribute values are valid before saving
+            if ($manuscript->validate()) {
+                if ($manuscript->save()) {
+                    $storeStatus = 1;
+                }
+            }
+            else {
+                echo "Error: Manuscript $manuscript->manuscript_number failed validation\n";
+                var_dump($manuscript->errors);
             }
         }
         return $storeStatus;
