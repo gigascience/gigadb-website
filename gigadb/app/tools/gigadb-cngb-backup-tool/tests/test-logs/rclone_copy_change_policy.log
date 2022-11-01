@@ -1,0 +1,410 @@
+2022/11/01 08:28:15 DEBUG : rclone: Version "v1.60.0" starting with parameters ["rclone" "--config=.rclone.conf" "copy" "--checksum" "--log-level" "DEBUG" "--log-file=logs/rclone_copy_change_policy.log" "s3genomics:1000genomes/data/NA12878/alignment/" "wasabi:test-gigadb-datasets/test-ken-20221010/folder_to_delete" "--dry-run"]
+2022/11/01 08:28:15 DEBUG : Creating backend with remote "s3genomics:1000genomes/data/NA12878/alignment/"
+2022/11/01 08:28:15 DEBUG : Using config file from "/gigadb-cngb-backup-tool/.rclone.conf"
+2022/11/01 08:28:15 DEBUG : fs cache: renaming cache item "s3genomics:1000genomes/data/NA12878/alignment/" to be canonical "s3genomics:1000genomes/data/NA12878/alignment"
+2022/11/01 08:28:15 DEBUG : Creating backend with remote "wasabi:test-gigadb-datasets/test-ken-20221010/folder_to_delete"
+2022/11/01 08:28:17 NOTICE: NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.bam.bas: Skipped copy as --dry-run is set (size 621)
+2022/11/01 08:28:17 NOTICE: NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: Skipped copy as --dry-run is set (size 17.051Gi)
+2022/11/01 08:28:17 NOTICE: NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram.crai: Skipped copy as --dry-run is set (size 382.800Ki)
+2022/11/01 08:28:17 DEBUG : S3 bucket test-gigadb-datasets path test-ken-20221010/folder_to_delete: Waiting for checks to finish
+2022/11/01 08:28:17 DEBUG : S3 bucket test-gigadb-datasets path test-ken-20221010/folder_to_delete: Waiting for transfers to finish
+2022/11/01 08:28:17 NOTICE: 
+Transferred:   	   17.051 GiB / 17.051 GiB, 100%, 0 B/s, ETA -
+Transferred:            3 / 3, 100%
+Elapsed time:         2.9s
+
+2022/11/01 08:28:17 DEBUG : 8 go routines active
+2022/11/01 08:32:32 DEBUG : rclone: Version "v1.60.0" starting with parameters ["rclone" "--config=.rclone.conf" "copy" "--checksum" "--log-level" "DEBUG" "--log-file=logs/rclone_copy_change_policy.log" "s3genomics:1000genomes/data/NA12878/alignment/NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.bam.bas" "wasabi:test-gigadb-datasets/test-ken-20221010/folder_to_delete"]
+2022/11/01 08:32:32 DEBUG : Creating backend with remote "s3genomics:1000genomes/data/NA12878/alignment/NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.bam.bas"
+2022/11/01 08:32:32 DEBUG : Using config file from "/gigadb-cngb-backup-tool/.rclone.conf"
+2022/11/01 08:32:34 DEBUG : fs cache: adding new entry for parent of "s3genomics:1000genomes/data/NA12878/alignment/NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.bam.bas", "s3genomics:1000genomes/data/NA12878/alignment"
+2022/11/01 08:32:34 DEBUG : Creating backend with remote "wasabi:test-gigadb-datasets/test-ken-20221010/folder_to_delete"
+2022/11/01 08:32:36 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.bam.bas: Need to transfer - File not found at Destination
+2022/11/01 08:32:36 ERROR : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.bam.bas: Failed to copy: AccessDenied: User: arn:aws:iam::100000166496:user/Ken is not authorized to perform: s3:CreateBucket on resource: arn:aws:s3:::test-gigadb-datasets
+	status code: 403, request id: 26FC4F9BD54FE4D3, host id: QahELSKOnxi12s3T/Pnri4lU98BOFna3RH6t/rBlU4HmJCb50jxxLLPartna+alRBf/cnI4oeDZ3
+2022/11/01 08:32:36 ERROR : Attempt 1/3 failed with 1 errors and: AccessDenied: User: arn:aws:iam::100000166496:user/Ken is not authorized to perform: s3:CreateBucket on resource: arn:aws:s3:::test-gigadb-datasets
+	status code: 403, request id: 26FC4F9BD54FE4D3, host id: QahELSKOnxi12s3T/Pnri4lU98BOFna3RH6t/rBlU4HmJCb50jxxLLPartna+alRBf/cnI4oeDZ3
+2022/11/01 08:32:38 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.bam.bas: Need to transfer - File not found at Destination
+2022/11/01 08:32:38 ERROR : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.bam.bas: Failed to copy: AccessDenied: User: arn:aws:iam::100000166496:user/Ken is not authorized to perform: s3:CreateBucket on resource: arn:aws:s3:::test-gigadb-datasets
+	status code: 403, request id: 8630D31B3A603D4C, host id: JKUzw19EjdX0cMHULX36FOM3IJrI19ceWtvWPNkl9kUV+aWbTW+9AuJLiVPUVJAuD94RJQsmXRnf
+2022/11/01 08:32:38 ERROR : Attempt 2/3 failed with 1 errors and: AccessDenied: User: arn:aws:iam::100000166496:user/Ken is not authorized to perform: s3:CreateBucket on resource: arn:aws:s3:::test-gigadb-datasets
+	status code: 403, request id: 8630D31B3A603D4C, host id: JKUzw19EjdX0cMHULX36FOM3IJrI19ceWtvWPNkl9kUV+aWbTW+9AuJLiVPUVJAuD94RJQsmXRnf
+2022/11/01 08:32:39 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.bam.bas: Need to transfer - File not found at Destination
+2022/11/01 08:32:39 ERROR : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.bam.bas: Failed to copy: AccessDenied: User: arn:aws:iam::100000166496:user/Ken is not authorized to perform: s3:CreateBucket on resource: arn:aws:s3:::test-gigadb-datasets
+	status code: 403, request id: D49B783EAF6501A5, host id: b9kcye30ll1thYj39w6dHBKPUrL/jmF4wgCZGhYGl04Lz3RBn2xcCtFlbz5DThEWpqG8/qF2L+HR
+2022/11/01 08:32:39 ERROR : Attempt 3/3 failed with 1 errors and: AccessDenied: User: arn:aws:iam::100000166496:user/Ken is not authorized to perform: s3:CreateBucket on resource: arn:aws:s3:::test-gigadb-datasets
+	status code: 403, request id: D49B783EAF6501A5, host id: b9kcye30ll1thYj39w6dHBKPUrL/jmF4wgCZGhYGl04Lz3RBn2xcCtFlbz5DThEWpqG8/qF2L+HR
+2022/11/01 08:32:39 INFO  : 
+Transferred:   	          0 B / 0 B, -, 0 B/s, ETA -
+Errors:                 1 (retrying may help)
+Elapsed time:         7.1s
+
+2022/11/01 08:32:39 DEBUG : 4 go routines active
+2022/11/01 08:32:39 Failed to copy: AccessDenied: User: arn:aws:iam::100000166496:user/Ken is not authorized to perform: s3:CreateBucket on resource: arn:aws:s3:::test-gigadb-datasets
+	status code: 403, request id: D49B783EAF6501A5, host id: b9kcye30ll1thYj39w6dHBKPUrL/jmF4wgCZGhYGl04Lz3RBn2xcCtFlbz5DThEWpqG8/qF2L+HR
+2022/11/01 08:35:33 DEBUG : rclone: Version "v1.60.0" starting with parameters ["rclone" "--config=.rclone.conf" "copy" "--checksum" "--log-level" "DEBUG" "--s3-no-check-bucket" "--log-file=logs/rclone_copy_change_policy.log" "s3genomics:1000genomes/data/NA12878/alignment/NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.bam.bas" "wasabi:test-gigadb-datasets/test-ken-20221010/folder_to_delete"]
+2022/11/01 08:35:33 DEBUG : Creating backend with remote "s3genomics:1000genomes/data/NA12878/alignment/NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.bam.bas"
+2022/11/01 08:35:33 DEBUG : Using config file from "/gigadb-cngb-backup-tool/.rclone.conf"
+2022/11/01 08:35:33 DEBUG : s3genomics: detected overridden config - adding "{Dn7qA}" suffix to name
+2022/11/01 08:35:34 DEBUG : fs cache: adding new entry for parent of "s3genomics:1000genomes/data/NA12878/alignment/NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.bam.bas", "s3genomics{Dn7qA}:1000genomes/data/NA12878/alignment"
+2022/11/01 08:35:34 DEBUG : Creating backend with remote "wasabi:test-gigadb-datasets/test-ken-20221010/folder_to_delete"
+2022/11/01 08:35:34 DEBUG : wasabi: detected overridden config - adding "{Dn7qA}" suffix to name
+2022/11/01 08:35:36 DEBUG : fs cache: renaming cache item "wasabi:test-gigadb-datasets/test-ken-20221010/folder_to_delete" to be canonical "wasabi{Dn7qA}:test-gigadb-datasets/test-ken-20221010/folder_to_delete"
+2022/11/01 08:35:37 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.bam.bas: Need to transfer - File not found at Destination
+2022/11/01 08:35:37 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.bam.bas: md5 = f51294f9c5b2c53d338fd8d6a44f0e9f OK
+2022/11/01 08:35:37 INFO  : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.bam.bas: Copied (new)
+2022/11/01 08:35:37 INFO  : 
+Transferred:   	        621 B / 621 B, 100%, 0 B/s, ETA -
+Transferred:            1 / 1, 100%
+Elapsed time:         4.4s
+
+2022/11/01 08:35:37 DEBUG : 7 go routines active
+2022/11/01 08:36:41 DEBUG : rclone: Version "v1.60.0" starting with parameters ["rclone" "--config=.rclone.conf" "copy" "--checksum" "--log-level" "DEBUG" "--s3-no-check-bucket" "--log-file=logs/rclone_copy_change_policy.log" "s3genomics:1000genomes/data/NA12878/alignment/NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.bam.bas" "wasabi:test-gigadb-datasets/test-ken-20221010/folder_to_delete"]
+2022/11/01 08:36:41 DEBUG : Creating backend with remote "s3genomics:1000genomes/data/NA12878/alignment/NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.bam.bas"
+2022/11/01 08:36:41 DEBUG : Using config file from "/gigadb-cngb-backup-tool/.rclone.conf"
+2022/11/01 08:36:41 DEBUG : s3genomics: detected overridden config - adding "{Dn7qA}" suffix to name
+2022/11/01 08:36:42 DEBUG : fs cache: adding new entry for parent of "s3genomics:1000genomes/data/NA12878/alignment/NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.bam.bas", "s3genomics{Dn7qA}:1000genomes/data/NA12878/alignment"
+2022/11/01 08:36:42 DEBUG : Creating backend with remote "wasabi:test-gigadb-datasets/test-ken-20221010/folder_to_delete"
+2022/11/01 08:36:42 DEBUG : wasabi: detected overridden config - adding "{Dn7qA}" suffix to name
+2022/11/01 08:36:42 DEBUG : fs cache: renaming cache item "wasabi:test-gigadb-datasets/test-ken-20221010/folder_to_delete" to be canonical "wasabi{Dn7qA}:test-gigadb-datasets/test-ken-20221010/folder_to_delete"
+2022/11/01 08:36:42 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.bam.bas: md5 = f51294f9c5b2c53d338fd8d6a44f0e9f OK
+2022/11/01 08:36:42 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.bam.bas: Size and md5 of src and dst objects identical
+2022/11/01 08:36:42 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.bam.bas: Unchanged skipping
+2022/11/01 08:36:42 INFO  : 
+Transferred:   	          0 B / 0 B, -, 0 B/s, ETA -
+Checks:                 1 / 1, 100%
+Elapsed time:         1.9s
+
+2022/11/01 08:36:42 DEBUG : 6 go routines active
+2022/11/01 08:41:03 DEBUG : rclone: Version "v1.60.0" starting with parameters ["rclone" "--config=.rclone.conf" "copy" "--checksum" "--log-level" "DEBUG" "--s3-no-check-bucket" "--log-file=logs/rclone_copy_change_policy.log" "s3genomics:1000genomes/data/NA12878/alignment/NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.bam.bas" "wasabi:test-gigadb-datasets/test-ken-20221010/folder_to_delete"]
+2022/11/01 08:41:03 DEBUG : Creating backend with remote "s3genomics:1000genomes/data/NA12878/alignment/NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.bam.bas"
+2022/11/01 08:41:03 DEBUG : Using config file from "/gigadb-cngb-backup-tool/.rclone.conf"
+2022/11/01 08:41:03 DEBUG : s3genomics: detected overridden config - adding "{Dn7qA}" suffix to name
+2022/11/01 08:41:05 DEBUG : fs cache: adding new entry for parent of "s3genomics:1000genomes/data/NA12878/alignment/NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.bam.bas", "s3genomics{Dn7qA}:1000genomes/data/NA12878/alignment"
+2022/11/01 08:41:05 DEBUG : Creating backend with remote "wasabi:test-gigadb-datasets/test-ken-20221010/folder_to_delete"
+2022/11/01 08:41:05 DEBUG : wasabi: detected overridden config - adding "{Dn7qA}" suffix to name
+2022/11/01 08:41:07 DEBUG : fs cache: renaming cache item "wasabi:test-gigadb-datasets/test-ken-20221010/folder_to_delete" to be canonical "wasabi{Dn7qA}:test-gigadb-datasets/test-ken-20221010/folder_to_delete"
+2022/11/01 08:41:07 ERROR : Attempt 1/3 failed with 1 errors and: Forbidden: Forbidden
+	status code: 403, request id: 4E98882EAC493BEA, host id: 8fqRnR9W27mw/T0UQ+o0OQl3fredFmgiZSCsxKAKq19AAsh5gGaBm4EzAxw4tuu5JlCkN1OILGf+
+2022/11/01 08:41:07 ERROR : Attempt 2/3 failed with 1 errors and: Forbidden: Forbidden
+	status code: 403, request id: 6D32C8C58CA0DA05, host id: cYakTXKKi0I7qQT903TVyfFYEfRRdWdWfsx27zbkD3cMnL6156pvMlchauMF0cYysDnMqRCC+dHg
+2022/11/01 08:41:08 ERROR : Attempt 3/3 failed with 1 errors and: Forbidden: Forbidden
+	status code: 403, request id: B7EC9AB2AEF5DC62, host id: C/FwJtX+MtWrHI0a9BeNaehJSUfbsvGKG4cqfo542R6clYlAqPDP4quO7i55+JZ0pcUM0ugmQszD
+2022/11/01 08:41:08 INFO  : 
+Transferred:   	          0 B / 0 B, -, 0 B/s, ETA -
+Errors:                 1 (retrying may help)
+Elapsed time:         4.4s
+
+2022/11/01 08:41:08 DEBUG : 6 go routines active
+2022/11/01 08:41:08 Failed to copy: Forbidden: Forbidden
+	status code: 403, request id: B7EC9AB2AEF5DC62, host id: C/FwJtX+MtWrHI0a9BeNaehJSUfbsvGKG4cqfo542R6clYlAqPDP4quO7i55+JZ0pcUM0ugmQszD
+2022/11/01 08:44:22 DEBUG : rclone: Version "v1.60.0" starting with parameters ["rclone" "--config=.rclone.conf" "copy" "--checksum" "--log-level" "DEBUG" "--s3-no-check-bucket" "--log-file=logs/rclone_copy_change_policy.log" "s3genomics:1000genomes/data/NA12878/alignment/NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.bam.bas" "wasabi:test-gigadb-datasets/test-ken-20221010/folder_to_delete"]
+2022/11/01 08:44:22 DEBUG : Creating backend with remote "s3genomics:1000genomes/data/NA12878/alignment/NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.bam.bas"
+2022/11/01 08:44:22 DEBUG : Using config file from "/gigadb-cngb-backup-tool/.rclone.conf"
+2022/11/01 08:44:22 DEBUG : s3genomics: detected overridden config - adding "{Dn7qA}" suffix to name
+2022/11/01 08:44:23 DEBUG : fs cache: adding new entry for parent of "s3genomics:1000genomes/data/NA12878/alignment/NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.bam.bas", "s3genomics{Dn7qA}:1000genomes/data/NA12878/alignment"
+2022/11/01 08:44:23 DEBUG : Creating backend with remote "wasabi:test-gigadb-datasets/test-ken-20221010/folder_to_delete"
+2022/11/01 08:44:23 DEBUG : wasabi: detected overridden config - adding "{Dn7qA}" suffix to name
+2022/11/01 08:44:25 DEBUG : fs cache: renaming cache item "wasabi:test-gigadb-datasets/test-ken-20221010/folder_to_delete" to be canonical "wasabi{Dn7qA}:test-gigadb-datasets/test-ken-20221010/folder_to_delete"
+2022/11/01 08:44:25 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.bam.bas: md5 = f51294f9c5b2c53d338fd8d6a44f0e9f OK
+2022/11/01 08:44:25 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.bam.bas: Size and md5 of src and dst objects identical
+2022/11/01 08:44:25 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.bam.bas: Unchanged skipping
+2022/11/01 08:44:25 INFO  : 
+Transferred:   	          0 B / 0 B, -, 0 B/s, ETA -
+Checks:                 1 / 1, 100%
+Elapsed time:         3.6s
+
+2022/11/01 08:44:25 DEBUG : 6 go routines active
+2022/11/01 08:46:51 DEBUG : rclone: Version "v1.60.0" starting with parameters ["rclone" "--config=.rclone.conf" "copy" "--checksum" "--log-level" "DEBUG" "--s3-no-check-bucket" "--log-file=logs/rclone_copy_change_policy.log" "s3genomics:1000genomes/data/NA12878/alignment/" "wasabi:test-gigadb-datasets/test-ken-20221010/folder_to_delete" "--dry-run"]
+2022/11/01 08:46:51 DEBUG : Creating backend with remote "s3genomics:1000genomes/data/NA12878/alignment/"
+2022/11/01 08:46:51 DEBUG : Using config file from "/gigadb-cngb-backup-tool/.rclone.conf"
+2022/11/01 08:46:51 DEBUG : s3genomics: detected overridden config - adding "{Dn7qA}" suffix to name
+2022/11/01 08:46:51 DEBUG : fs cache: renaming cache item "s3genomics:1000genomes/data/NA12878/alignment/" to be canonical "s3genomics{Dn7qA}:1000genomes/data/NA12878/alignment"
+2022/11/01 08:46:51 DEBUG : Creating backend with remote "wasabi:test-gigadb-datasets/test-ken-20221010/folder_to_delete"
+2022/11/01 08:46:51 DEBUG : wasabi: detected overridden config - adding "{Dn7qA}" suffix to name
+2022/11/01 08:46:53 DEBUG : fs cache: renaming cache item "wasabi:test-gigadb-datasets/test-ken-20221010/folder_to_delete" to be canonical "wasabi{Dn7qA}:test-gigadb-datasets/test-ken-20221010/folder_to_delete"
+2022/11/01 08:46:55 NOTICE: NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: Skipped copy as --dry-run is set (size 17.051Gi)
+2022/11/01 08:46:55 NOTICE: NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram.crai: Skipped copy as --dry-run is set (size 382.800Ki)
+2022/11/01 08:46:55 DEBUG : S3 bucket test-gigadb-datasets path test-ken-20221010/folder_to_delete: Waiting for checks to finish
+2022/11/01 08:46:55 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.bam.bas: md5 = f51294f9c5b2c53d338fd8d6a44f0e9f OK
+2022/11/01 08:46:55 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.bam.bas: Size and md5 of src and dst objects identical
+2022/11/01 08:46:55 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.bam.bas: Unchanged skipping
+2022/11/01 08:46:55 DEBUG : S3 bucket test-gigadb-datasets path test-ken-20221010/folder_to_delete: Waiting for transfers to finish
+2022/11/01 08:46:55 NOTICE: 
+Transferred:   	   17.051 GiB / 17.051 GiB, 100%, 0 B/s, ETA -
+Checks:                 1 / 1, 100%
+Transferred:            2 / 2, 100%
+Elapsed time:         3.1s
+
+2022/11/01 08:46:55 DEBUG : 8 go routines active
+2022/11/01 08:47:41 DEBUG : rclone: Version "v1.60.0" starting with parameters ["rclone" "--config=.rclone.conf" "copy" "--checksum" "--log-level" "DEBUG" "--s3-no-check-bucket" "--log-file=logs/rclone_copy_change_policy.log" "s3genomics:1000genomes/data/NA12878/alignment/" "wasabi:test-gigadb-datasets/test-ken-20221010/folder_to_delete"]
+2022/11/01 08:47:41 DEBUG : Creating backend with remote "s3genomics:1000genomes/data/NA12878/alignment/"
+2022/11/01 08:47:41 DEBUG : Using config file from "/gigadb-cngb-backup-tool/.rclone.conf"
+2022/11/01 08:47:41 DEBUG : s3genomics: detected overridden config - adding "{Dn7qA}" suffix to name
+2022/11/01 08:47:41 DEBUG : fs cache: renaming cache item "s3genomics:1000genomes/data/NA12878/alignment/" to be canonical "s3genomics{Dn7qA}:1000genomes/data/NA12878/alignment"
+2022/11/01 08:47:41 DEBUG : Creating backend with remote "wasabi:test-gigadb-datasets/test-ken-20221010/folder_to_delete"
+2022/11/01 08:47:41 DEBUG : wasabi: detected overridden config - adding "{Dn7qA}" suffix to name
+2022/11/01 08:47:41 DEBUG : fs cache: renaming cache item "wasabi:test-gigadb-datasets/test-ken-20221010/folder_to_delete" to be canonical "wasabi{Dn7qA}:test-gigadb-datasets/test-ken-20221010/folder_to_delete"
+2022/11/01 08:47:42 DEBUG : S3 bucket test-gigadb-datasets path test-ken-20221010/folder_to_delete: Waiting for checks to finish
+2022/11/01 08:47:42 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.bam.bas: md5 = f51294f9c5b2c53d338fd8d6a44f0e9f OK
+2022/11/01 08:47:42 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.bam.bas: Size and md5 of src and dst objects identical
+2022/11/01 08:47:42 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.bam.bas: Unchanged skipping
+2022/11/01 08:47:42 DEBUG : S3 bucket test-gigadb-datasets path test-ken-20221010/folder_to_delete: Waiting for transfers to finish
+2022/11/01 08:47:45 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram.crai: md5 = 77d60d85931312645c6e9d770a612dac OK
+2022/11/01 08:47:45 INFO  : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram.crai: Copied (new)
+2022/11/01 08:47:46 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 1 size 5Mi offset 0/17.051Gi
+2022/11/01 08:47:47 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 2 size 5Mi offset 5Mi/17.051Gi
+2022/11/01 08:47:48 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 3 size 5Mi offset 10Mi/17.051Gi
+2022/11/01 08:47:49 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 4 size 5Mi offset 15Mi/17.051Gi
+2022/11/01 08:47:50 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 5 size 5Mi offset 20Mi/17.051Gi
+2022/11/01 08:47:52 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 6 size 5Mi offset 25Mi/17.051Gi
+2022/11/01 08:47:53 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 7 size 5Mi offset 30Mi/17.051Gi
+2022/11/01 08:47:55 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 8 size 5Mi offset 35Mi/17.051Gi
+2022/11/01 08:47:56 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 9 size 5Mi offset 40Mi/17.051Gi
+2022/11/01 08:47:57 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 10 size 5Mi offset 45Mi/17.051Gi
+2022/11/01 08:47:59 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 11 size 5Mi offset 50Mi/17.051Gi
+2022/11/01 08:48:00 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 12 size 5Mi offset 55Mi/17.051Gi
+2022/11/01 08:48:01 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 13 size 5Mi offset 60Mi/17.051Gi
+2022/11/01 08:48:02 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 14 size 5Mi offset 65Mi/17.051Gi
+2022/11/01 08:48:04 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 15 size 5Mi offset 70Mi/17.051Gi
+2022/11/01 08:48:05 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 16 size 5Mi offset 75Mi/17.051Gi
+2022/11/01 08:48:06 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 17 size 5Mi offset 80Mi/17.051Gi
+2022/11/01 08:48:06 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 18 size 5Mi offset 85Mi/17.051Gi
+2022/11/01 08:48:07 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 19 size 5Mi offset 90Mi/17.051Gi
+2022/11/01 08:48:08 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 20 size 5Mi offset 95Mi/17.051Gi
+2022/11/01 08:48:09 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 21 size 5Mi offset 100Mi/17.051Gi
+2022/11/01 08:48:09 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 22 size 5Mi offset 105Mi/17.051Gi
+2022/11/01 08:48:10 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 23 size 5Mi offset 110Mi/17.051Gi
+2022/11/01 08:48:10 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 24 size 5Mi offset 115Mi/17.051Gi
+2022/11/01 08:48:11 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 25 size 5Mi offset 120Mi/17.051Gi
+2022/11/01 08:48:12 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 26 size 5Mi offset 125Mi/17.051Gi
+2022/11/01 08:48:12 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 27 size 5Mi offset 130Mi/17.051Gi
+2022/11/01 08:48:13 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 28 size 5Mi offset 135Mi/17.051Gi
+2022/11/01 08:48:13 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 29 size 5Mi offset 140Mi/17.051Gi
+2022/11/01 08:48:14 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 30 size 5Mi offset 145Mi/17.051Gi
+2022/11/01 08:48:14 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 31 size 5Mi offset 150Mi/17.051Gi
+2022/11/01 08:48:15 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 32 size 5Mi offset 155Mi/17.051Gi
+2022/11/01 08:48:15 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 33 size 5Mi offset 160Mi/17.051Gi
+2022/11/01 08:48:16 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 34 size 5Mi offset 165Mi/17.051Gi
+2022/11/01 08:48:17 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 35 size 5Mi offset 170Mi/17.051Gi
+2022/11/01 08:48:17 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 36 size 5Mi offset 175Mi/17.051Gi
+2022/11/01 08:48:18 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 37 size 5Mi offset 180Mi/17.051Gi
+2022/11/01 08:48:19 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 38 size 5Mi offset 185Mi/17.051Gi
+2022/11/01 08:48:20 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 39 size 5Mi offset 190Mi/17.051Gi
+2022/11/01 08:48:21 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 40 size 5Mi offset 195Mi/17.051Gi
+2022/11/01 08:48:21 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 41 size 5Mi offset 200Mi/17.051Gi
+2022/11/01 08:48:22 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 42 size 5Mi offset 205Mi/17.051Gi
+2022/11/01 08:48:23 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 43 size 5Mi offset 210Mi/17.051Gi
+2022/11/01 08:48:24 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 44 size 5Mi offset 215Mi/17.051Gi
+2022/11/01 08:48:24 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 45 size 5Mi offset 220Mi/17.051Gi
+2022/11/01 08:48:25 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 46 size 5Mi offset 225Mi/17.051Gi
+2022/11/01 08:48:26 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 47 size 5Mi offset 230Mi/17.051Gi
+2022/11/01 08:48:26 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 48 size 5Mi offset 235Mi/17.051Gi
+2022/11/01 08:48:27 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 49 size 5Mi offset 240Mi/17.051Gi
+2022/11/01 08:48:28 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 50 size 5Mi offset 245Mi/17.051Gi
+2022/11/01 08:48:29 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 51 size 5Mi offset 250Mi/17.051Gi
+2022/11/01 08:48:29 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 52 size 5Mi offset 255Mi/17.051Gi
+2022/11/01 08:48:30 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 53 size 5Mi offset 260Mi/17.051Gi
+2022/11/01 08:48:31 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 54 size 5Mi offset 265Mi/17.051Gi
+2022/11/01 08:48:31 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 55 size 5Mi offset 270Mi/17.051Gi
+2022/11/01 08:48:32 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 56 size 5Mi offset 275Mi/17.051Gi
+2022/11/01 08:48:33 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 57 size 5Mi offset 280Mi/17.051Gi
+2022/11/01 08:48:33 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 58 size 5Mi offset 285Mi/17.051Gi
+2022/11/01 08:48:34 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 59 size 5Mi offset 290Mi/17.051Gi
+2022/11/01 08:48:35 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 60 size 5Mi offset 295Mi/17.051Gi
+2022/11/01 08:48:36 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 61 size 5Mi offset 300Mi/17.051Gi
+2022/11/01 08:48:37 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 62 size 5Mi offset 305Mi/17.051Gi
+2022/11/01 08:48:38 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 63 size 5Mi offset 310Mi/17.051Gi
+2022/11/01 08:48:39 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 64 size 5Mi offset 315Mi/17.051Gi
+2022/11/01 08:48:39 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 65 size 5Mi offset 320Mi/17.051Gi
+2022/11/01 08:48:40 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 66 size 5Mi offset 325Mi/17.051Gi
+2022/11/01 08:48:41 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 67 size 5Mi offset 330Mi/17.051Gi
+2022/11/01 08:48:41 INFO  : 
+Transferred:   	  339.370 MiB / 17.051 GiB, 2%, 6.499 MiB/s, ETA 43m54s
+Checks:                 1 / 1, 100%
+Transferred:            1 / 2, 50%
+Elapsed time:       1m0.3s
+Transferring:
+ * NA12878.alt_bwamem_GRC….CEU.low_coverage.cram:  1% /17.051Gi, 6.490Mi/s, 43m57s
+
+2022/11/01 08:48:41 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 68 size 5Mi offset 335Mi/17.051Gi
+2022/11/01 08:48:42 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 69 size 5Mi offset 340Mi/17.051Gi
+2022/11/01 08:48:43 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 70 size 5Mi offset 345Mi/17.051Gi
+2022/11/01 08:48:43 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 71 size 5Mi offset 350Mi/17.051Gi
+2022/11/01 08:48:44 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 72 size 5Mi offset 355Mi/17.051Gi
+2022/11/01 08:48:45 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 73 size 5Mi offset 360Mi/17.051Gi
+2022/11/01 08:48:45 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 74 size 5Mi offset 365Mi/17.051Gi
+2022/11/01 08:48:46 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 75 size 5Mi offset 370Mi/17.051Gi
+2022/11/01 08:48:46 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 76 size 5Mi offset 375Mi/17.051Gi
+2022/11/01 08:48:47 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 77 size 5Mi offset 380Mi/17.051Gi
+2022/11/01 08:48:47 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 78 size 5Mi offset 385Mi/17.051Gi
+2022/11/01 08:48:48 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 79 size 5Mi offset 390Mi/17.051Gi
+2022/11/01 08:48:48 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 80 size 5Mi offset 395Mi/17.051Gi
+2022/11/01 08:48:49 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 81 size 5Mi offset 400Mi/17.051Gi
+2022/11/01 08:48:50 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 82 size 5Mi offset 405Mi/17.051Gi
+2022/11/01 08:48:50 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 83 size 5Mi offset 410Mi/17.051Gi
+2022/11/01 08:48:51 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 84 size 5Mi offset 415Mi/17.051Gi
+2022/11/01 08:48:51 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 85 size 5Mi offset 420Mi/17.051Gi
+2022/11/01 08:48:52 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 86 size 5Mi offset 425Mi/17.051Gi
+2022/11/01 08:48:52 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 87 size 5Mi offset 430Mi/17.051Gi
+2022/11/01 08:48:53 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 88 size 5Mi offset 435Mi/17.051Gi
+2022/11/01 08:48:54 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 89 size 5Mi offset 440Mi/17.051Gi
+2022/11/01 08:48:54 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 90 size 5Mi offset 445Mi/17.051Gi
+2022/11/01 08:48:55 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 91 size 5Mi offset 450Mi/17.051Gi
+2022/11/01 08:48:55 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 92 size 5Mi offset 455Mi/17.051Gi
+2022/11/01 08:48:56 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 93 size 5Mi offset 460Mi/17.051Gi
+2022/11/01 08:48:56 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 94 size 5Mi offset 465Mi/17.051Gi
+2022/11/01 08:48:57 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 95 size 5Mi offset 470Mi/17.051Gi
+2022/11/01 08:48:58 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 96 size 5Mi offset 475Mi/17.051Gi
+2022/11/01 08:48:58 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 97 size 5Mi offset 480Mi/17.051Gi
+2022/11/01 08:48:59 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 98 size 5Mi offset 485Mi/17.051Gi
+2022/11/01 08:48:59 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 99 size 5Mi offset 490Mi/17.051Gi
+2022/11/01 08:49:00 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 100 size 5Mi offset 495Mi/17.051Gi
+2022/11/01 08:49:00 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 101 size 5Mi offset 500Mi/17.051Gi
+2022/11/01 08:49:01 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 102 size 5Mi offset 505Mi/17.051Gi
+2022/11/01 08:49:02 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 103 size 5Mi offset 510Mi/17.051Gi
+2022/11/01 08:49:02 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 104 size 5Mi offset 515Mi/17.051Gi
+2022/11/01 08:49:03 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 105 size 5Mi offset 520Mi/17.051Gi
+2022/11/01 08:49:04 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 106 size 5Mi offset 525Mi/17.051Gi
+2022/11/01 08:49:04 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 107 size 5Mi offset 530Mi/17.051Gi
+2022/11/01 08:49:05 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 108 size 5Mi offset 535Mi/17.051Gi
+2022/11/01 08:49:06 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 109 size 5Mi offset 540Mi/17.051Gi
+2022/11/01 08:49:06 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 110 size 5Mi offset 545Mi/17.051Gi
+2022/11/01 08:49:07 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 111 size 5Mi offset 550Mi/17.051Gi
+2022/11/01 08:49:08 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 112 size 5Mi offset 555Mi/17.051Gi
+2022/11/01 08:49:08 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 113 size 5Mi offset 560Mi/17.051Gi
+2022/11/01 08:49:09 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 114 size 5Mi offset 565Mi/17.051Gi
+2022/11/01 08:49:09 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 115 size 5Mi offset 570Mi/17.051Gi
+2022/11/01 08:49:10 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 116 size 5Mi offset 575Mi/17.051Gi
+2022/11/01 08:49:11 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 117 size 5Mi offset 580Mi/17.051Gi
+2022/11/01 08:49:12 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 118 size 5Mi offset 585Mi/17.051Gi
+2022/11/01 08:49:13 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 119 size 5Mi offset 590Mi/17.051Gi
+2022/11/01 08:49:13 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 120 size 5Mi offset 595Mi/17.051Gi
+2022/11/01 08:49:14 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 121 size 5Mi offset 600Mi/17.051Gi
+2022/11/01 08:49:15 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 122 size 5Mi offset 605Mi/17.051Gi
+2022/11/01 08:49:15 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 123 size 5Mi offset 610Mi/17.051Gi
+2022/11/01 08:49:16 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 124 size 5Mi offset 615Mi/17.051Gi
+2022/11/01 08:49:17 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 125 size 5Mi offset 620Mi/17.051Gi
+2022/11/01 08:49:17 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 126 size 5Mi offset 625Mi/17.051Gi
+2022/11/01 08:49:18 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 127 size 5Mi offset 630Mi/17.051Gi
+2022/11/01 08:49:18 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 128 size 5Mi offset 635Mi/17.051Gi
+2022/11/01 08:49:19 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 129 size 5Mi offset 640Mi/17.051Gi
+2022/11/01 08:49:20 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 130 size 5Mi offset 645Mi/17.051Gi
+2022/11/01 08:49:20 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 131 size 5Mi offset 650Mi/17.051Gi
+2022/11/01 08:49:21 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 132 size 5Mi offset 655Mi/17.051Gi
+2022/11/01 08:49:22 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 133 size 5Mi offset 660Mi/17.051Gi
+2022/11/01 08:49:22 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 134 size 5Mi offset 665Mi/17.051Gi
+2022/11/01 08:49:23 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 135 size 5Mi offset 670Mi/17.051Gi
+2022/11/01 08:49:24 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 136 size 5Mi offset 675Mi/17.051Gi
+2022/11/01 08:49:24 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 137 size 5Mi offset 680Mi/17.051Gi
+2022/11/01 08:49:25 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 138 size 5Mi offset 685Mi/17.051Gi
+2022/11/01 08:49:25 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 139 size 5Mi offset 690Mi/17.051Gi
+2022/11/01 08:49:26 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 140 size 5Mi offset 695Mi/17.051Gi
+2022/11/01 08:49:27 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 141 size 5Mi offset 700Mi/17.051Gi
+2022/11/01 08:49:27 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 142 size 5Mi offset 705Mi/17.051Gi
+2022/11/01 08:49:28 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 143 size 5Mi offset 710Mi/17.051Gi
+2022/11/01 08:49:28 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 144 size 5Mi offset 715Mi/17.051Gi
+2022/11/01 08:49:29 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 145 size 5Mi offset 720Mi/17.051Gi
+2022/11/01 08:49:29 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 146 size 5Mi offset 725Mi/17.051Gi
+2022/11/01 08:49:30 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 147 size 5Mi offset 730Mi/17.051Gi
+2022/11/01 08:49:30 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 148 size 5Mi offset 735Mi/17.051Gi
+2022/11/01 08:49:31 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 149 size 5Mi offset 740Mi/17.051Gi
+2022/11/01 08:49:31 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 150 size 5Mi offset 745Mi/17.051Gi
+2022/11/01 08:49:32 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 151 size 5Mi offset 750Mi/17.051Gi
+2022/11/01 08:49:32 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 152 size 5Mi offset 755Mi/17.051Gi
+2022/11/01 08:49:32 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 153 size 5Mi offset 760Mi/17.051Gi
+2022/11/01 08:49:33 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 154 size 5Mi offset 765Mi/17.051Gi
+2022/11/01 08:49:33 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 155 size 5Mi offset 770Mi/17.051Gi
+2022/11/01 08:49:34 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 156 size 5Mi offset 775Mi/17.051Gi
+2022/11/01 08:49:34 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 157 size 5Mi offset 780Mi/17.051Gi
+2022/11/01 08:49:35 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 158 size 5Mi offset 785Mi/17.051Gi
+2022/11/01 08:49:35 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 159 size 5Mi offset 790Mi/17.051Gi
+2022/11/01 08:49:36 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 160 size 5Mi offset 795Mi/17.051Gi
+2022/11/01 08:49:36 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 161 size 5Mi offset 800Mi/17.051Gi
+2022/11/01 08:49:37 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 162 size 5Mi offset 805Mi/17.051Gi
+2022/11/01 08:49:37 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 163 size 5Mi offset 810Mi/17.051Gi
+2022/11/01 08:49:38 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 164 size 5Mi offset 815Mi/17.051Gi
+2022/11/01 08:49:39 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 165 size 5Mi offset 820Mi/17.051Gi
+2022/11/01 08:49:39 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 166 size 5Mi offset 825Mi/17.051Gi
+2022/11/01 08:49:40 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 167 size 5Mi offset 830Mi/17.051Gi
+2022/11/01 08:49:41 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 168 size 5Mi offset 835Mi/17.051Gi
+2022/11/01 08:49:41 INFO  : 
+Transferred:   	  844.370 MiB / 17.051 GiB, 5%, 8.653 MiB/s, ETA 32m
+Checks:                 1 / 1, 100%
+Transferred:            1 / 2, 50%
+Elapsed time:       2m0.3s
+Transferring:
+ * NA12878.alt_bwamem_GRC….CEU.low_coverage.cram:  4% /17.051Gi, 8.693Mi/s, 31m51s
+
+2022/11/01 08:49:41 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 169 size 5Mi offset 840Mi/17.051Gi
+2022/11/01 08:49:42 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 170 size 5Mi offset 845Mi/17.051Gi
+2022/11/01 08:49:43 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 171 size 5Mi offset 850Mi/17.051Gi
+2022/11/01 08:49:44 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 172 size 5Mi offset 855Mi/17.051Gi
+2022/11/01 08:49:45 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 173 size 5Mi offset 860Mi/17.051Gi
+2022/11/01 08:49:46 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 174 size 5Mi offset 865Mi/17.051Gi
+2022/11/01 08:49:47 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 175 size 5Mi offset 870Mi/17.051Gi
+2022/11/01 08:49:48 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 176 size 5Mi offset 875Mi/17.051Gi
+2022/11/01 08:49:49 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 177 size 5Mi offset 880Mi/17.051Gi
+2022/11/01 08:49:50 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 178 size 5Mi offset 885Mi/17.051Gi
+2022/11/01 08:49:51 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 179 size 5Mi offset 890Mi/17.051Gi
+2022/11/01 08:49:52 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 180 size 5Mi offset 895Mi/17.051Gi
+2022/11/01 08:49:53 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 181 size 5Mi offset 900Mi/17.051Gi
+2022/11/01 08:49:55 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 182 size 5Mi offset 905Mi/17.051Gi
+2022/11/01 08:49:57 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 183 size 5Mi offset 910Mi/17.051Gi
+2022/11/01 08:50:00 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 184 size 5Mi offset 915Mi/17.051Gi
+2022/11/01 08:50:03 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 185 size 5Mi offset 920Mi/17.051Gi
+2022/11/01 08:50:05 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 186 size 5Mi offset 925Mi/17.051Gi
+2022/11/01 08:50:08 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 187 size 5Mi offset 930Mi/17.051Gi
+2022/11/01 08:50:08 DEBUG : pacer: low level retry 1/2 (error AccessDenied: Access Denied
+	status code: 403, request id: E35C1BB30D4F2E06, host id: k/DgLdJsLCCv3z+e9vi3gWp3KmZi0VTTcX2+x/6o5atEOVEOmFixCque4XTvH5+BlR/TV6wMZ87A)
+2022/11/01 08:50:08 DEBUG : pacer: Rate limited, increasing sleep to 10ms
+2022/11/01 08:50:09 DEBUG : pacer: Reducing sleep to 0s
+2022/11/01 08:50:09 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 188 size 5Mi offset 935Mi/17.051Gi
+2022/11/01 08:50:09 DEBUG : pacer: low level retry 1/2 (error AccessDenied: Access Denied
+	status code: 403, request id: EA312D7147DD7CAB, host id: MfszPeRF+bJ/A82LazVGE4Jb6lFnNsHoxR8rsvvlJlZaEaBv9L3f04c6RKh2nW9gii7womBGGcf/)
+2022/11/01 08:50:09 DEBUG : pacer: Rate limited, increasing sleep to 10ms
+2022/11/01 08:50:10 DEBUG : pacer: low level retry 2/2 (error AccessDenied: Access Denied
+	status code: 403, request id: BA29A55FC5D8E48D, host id: Uz+x5z5zT1sUTm8IZWquhGFoNPksjebTfpmLb5PGvO5kuqc4UhjYg7aUWF6K+8brOx9fjc0G9odO)
+2022/11/01 08:50:10 DEBUG : pacer: Rate limited, increasing sleep to 20ms
+2022/11/01 08:50:11 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: multipart upload starting chunk 189 size 5Mi offset 940Mi/17.051Gi
+2022/11/01 08:50:11 DEBUG : pacer: low level retry 1/2 (error RequestCanceled: request context canceled
+caused by: context canceled)
+2022/11/01 08:50:11 DEBUG : pacer: Rate limited, increasing sleep to 40ms
+2022/11/01 08:50:11 DEBUG : pacer: low level retry 2/2 (error RequestCanceled: request context canceled
+caused by: context canceled)
+2022/11/01 08:50:11 DEBUG : pacer: Rate limited, increasing sleep to 80ms
+2022/11/01 08:50:11 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: Cancelling multipart upload
+2022/11/01 08:50:11 DEBUG : pacer: Reducing sleep to 60ms
+2022/11/01 08:50:11 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: Failed to cancel multipart upload: AccessDenied: Access Denied
+	status code: 403, request id: 8804E1189ADC22C4, host id: +MEZrgMrvqiTuagHTvfox4ixsF1X3gbe2CwdzX8uwLF3K47ej+HF1sU3722YenWBb5F97BGntCh+
+2022/11/01 08:50:11 DEBUG : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: Received error: multipart upload failed to upload part: AccessDenied: Access Denied
+	status code: 403, request id: BA29A55FC5D8E48D, host id: Uz+x5z5zT1sUTm8IZWquhGFoNPksjebTfpmLb5PGvO5kuqc4UhjYg7aUWF6K+8brOx9fjc0G9odO - low level retry 1/10
+2022/11/01 08:50:12 DEBUG : pacer: Reducing sleep to 45ms
+2022/11/01 08:50:12 ERROR : NA12878.alt_bwamem_GRCh38DH.20150718.CEU.low_coverage.cram: Failed to copy: multipart upload failed to initialise: AccessDenied: Access Denied
+	status code: 403, request id: 383B2471DA125958, host id: WBWpovSc7UwWzMSssfv36e+iDiqntjF8rONoPTuKFGV2Q2eGh1UfmbMN7CbLdLJvLpC4bj1OQ54P
+2022/11/01 08:50:12 ERROR : Attempt 1/3 failed with 1 errors and: multipart upload failed to initialise: AccessDenied: Access Denied
+	status code: 403, request id: 383B2471DA125958, host id: WBWpovSc7UwWzMSssfv36e+iDiqntjF8rONoPTuKFGV2Q2eGh1UfmbMN7CbLdLJvLpC4bj1OQ54P
+2022/11/01 08:50:12 DEBUG : pacer: Reducing sleep to 33.75ms
+2022/11/01 08:50:13 ERROR : S3 bucket test-gigadb-datasets path test-ken-20221010/folder_to_delete: error reading destination root directory: AccessDenied: Access Denied
+	status code: 403, request id: 6A0B18C4735BDA9C, host id: IlWmNv9aLImqV8U3jwm6/bU3E7HVaet2FbtLIeVqaRtq5+D5fRqFGwAiS3eKbSon/oTizkaU/pPz
+2022/11/01 08:50:13 DEBUG : S3 bucket test-gigadb-datasets path test-ken-20221010/folder_to_delete: Waiting for checks to finish
+2022/11/01 08:50:13 DEBUG : S3 bucket test-gigadb-datasets path test-ken-20221010/folder_to_delete: Waiting for transfers to finish
+2022/11/01 08:50:13 ERROR : Attempt 2/3 failed with 1 errors and: AccessDenied: Access Denied
+	status code: 403, request id: 6A0B18C4735BDA9C, host id: IlWmNv9aLImqV8U3jwm6/bU3E7HVaet2FbtLIeVqaRtq5+D5fRqFGwAiS3eKbSon/oTizkaU/pPz
+2022/11/01 08:50:13 DEBUG : pacer: Reducing sleep to 25.3125ms
+2022/11/01 08:50:14 ERROR : S3 bucket test-gigadb-datasets path test-ken-20221010/folder_to_delete: error reading destination root directory: AccessDenied: Access Denied
+	status code: 403, request id: CDDF35888ED2FD36, host id: gQCex4fXxRAKepBNktEwWdrl5RqNjTOvEbi23qDIztJ0MA0zC3rWyUGQJf/TzrAzjXLuW6WVMzhg
+2022/11/01 08:50:14 DEBUG : S3 bucket test-gigadb-datasets path test-ken-20221010/folder_to_delete: Waiting for checks to finish
+2022/11/01 08:50:14 DEBUG : S3 bucket test-gigadb-datasets path test-ken-20221010/folder_to_delete: Waiting for transfers to finish
+2022/11/01 08:50:14 ERROR : Attempt 3/3 failed with 1 errors and: AccessDenied: Access Denied
+	status code: 403, request id: CDDF35888ED2FD36, host id: gQCex4fXxRAKepBNktEwWdrl5RqNjTOvEbi23qDIztJ0MA0zC3rWyUGQJf/TzrAzjXLuW6WVMzhg
+2022/11/01 08:50:14 INFO  : 
+Transferred:   	  945.374 MiB / 945.374 MiB, 100%, 3.197 MiB/s, ETA 0s
+Errors:                 1 (retrying may help)
+Checks:                 1 / 1, 100%
+Transferred:            1 / 1, 100%
+Elapsed time:      2m32.7s
+
+2022/11/01 08:50:14 DEBUG : 9 go routines active
+2022/11/01 08:50:14 Failed to copy: AccessDenied: Access Denied
+	status code: 403, request id: CDDF35888ED2FD36, host id: gQCex4fXxRAKepBNktEwWdrl5RqNjTOvEbi23qDIztJ0MA0zC3rWyUGQJf/TzrAzjXLuW6WVMzhg
