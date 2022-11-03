@@ -117,6 +117,15 @@ gigadb   17932 17931  0 14:02 ?        00:00:00 /usr/bin/tail -n 0 -F logs/test-
 gigadb   22050 21964  0 14:20 pts/2    00:00:00 grep --color=auto swatch
 ```
 
+## Different rclone scenarios with its log output
+1. `test_rclone_copy_success.log` contains the logs of successful transfer.
+2. `test_rclone_error_access_denied.log` contains the logs of  simulating `User: is not authorized to perform: s3:CreateBucket`, but can be overridden by `"--s3-no-check-bucket"`.
+3. `test_rclone_copy_large_success.log` and `test_rclone_copy_large_success_2nd.log` contain logs of transferring large file and re-transferring the same large file, the re-transfer process finished very fast since `Size of src and dst objects identical`.
+4. `test_rclone_copy_large_interrupt_fail.log` contains the logs of manually stop the rclone process by `crtl C`.
+5.  `test_rclone_copy_interrupt_network.log` contains the logs of turning off the internet connection during transfer process.
+6. `test_rclone_copy_large_change_file_name.log` contains the logs of changing the source file name during transfer process, the process would keep going on.
+7. `rclone_copy_change_policy.log` contains the logs of changing the bucket policy during transfer process, the process would stop because `AccessDenied: Access Denied` .
 
-## Notes
+
+### Notes
 1. `swatchdog` is now official name for `swatch` according to [here](https://sourceforge.net/projects/swatch/).
