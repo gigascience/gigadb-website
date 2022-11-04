@@ -1,0 +1,9 @@
+version: '3.7'
+
+services:
+
+  rclone:
+    image: rclone/rclone:1.60
+    volumes:
+      - ./:/app
+
