@@ -14,7 +14,7 @@ mkdir -p $LOGDIR
 touch $LOGFILE
 
 # Include proxy settings to perform data transfer
-source "$PROJECT_HOME/proxy_settings.sh" || exit 1
+#source "$PROJECT_HOME/proxy_settings.sh" || exit 1
 
 # Parse command line parameters
 starting_doi=""
