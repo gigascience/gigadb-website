@@ -2,8 +2,15 @@ version: '3.7'
 
 services:
 
-  rclone:
-    image: rclone/rclone:1.60
-    volumes:
-      - ./:/app
+#  rclone:
+#    image: rclone/rclone:1.60
+#    volumes:
+#      - ./:/app
 
+  rclone:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      # Mount source-code for development
+      - ./:/app
