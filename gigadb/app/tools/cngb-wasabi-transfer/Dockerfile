@@ -5,6 +5,7 @@ ARG ARCH=amd64
 
 RUN apk update \
     && apk add \
+        bash \
         openssl \
         ca-certificates \
         fuse \
