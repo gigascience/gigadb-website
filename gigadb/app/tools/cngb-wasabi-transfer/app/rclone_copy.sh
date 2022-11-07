@@ -41,10 +41,18 @@ while [[ $# -gt 0 ]]; do
 done
 
 # Variables for creating directory paths
-DATASETS_PATH="/data/gigadb/pub/10.5524/"
+DATASETS_PATH="/cngbdb/giga/gigadb/pub/10.5524/"
 
-echo "$starting_doi"
-echo "$ending_doi"
+echo "Starting DOI is: $starting_doi"
+echo "Ending DOI is: $ending_doi"
+
+# Check batch size between DOIs
+batch_size="$(($ending_doi-$starting_doi))"
+if [ "$batch_size" -gt 100 ];
+then
+    echo "Batch size is more that 100 - please reduce size of batch!"
+    exit
+fi
 
 # Determine which DOI directory range to use
 dir_range=""
@@ -67,27 +75,28 @@ do
   
     # Create directory paths
     source_path="${DATASETS_PATH}${dir_range}/${current_doi}"
-    destination_path="/gigadb_datasets/${dir_range}/${current_doi}"
+    destination_path="wasabi:/gigadb-datasets/dev/pub/10.5524/${dir_range}/${current_doi}"
     
     # Check directory for current DOI exists
     if [ -d "$source_path" ]; then
-      echo "$source_path exists"
-      
-      # Perform data transfer to Wasabi
-      #    rclone copy $source_path $destination_path \
-      #        --log-file=$LOGFILE \
-      #        --log-level INFO \
-      #        --stats-log-level DEBUG >> $LOGFILE;
-      #    
-      #    # Check exit code for rclone command
-      #    if [ $? -eq 0 ] 
-      #    then 
-      #      echo "Successfully executed rclone copy" 
-      #    else 
-      #      echo "Problem with copying files to Wasabi by rclone: " >&2 
-      #    fi
+        #echo "$source_path exists"
+
+        # Perform data transfer to Wasabi
+        rclone copy "$source_path" "$destination_path" \
+            --create-empty-src-dirs \
+            --log-file="$LOGFILE" \
+            --log-level INFO \
+            --stats-log-level DEBUG >> "$LOGFILE"
+
+        # Check exit code for rclone command
+        if [ $? -eq 0 ] 
+        then 
+          echo "Successfully copied files for DOI: $current_doi" 
+        else 
+          echo "Problem with copying files to Wasabi by rclone: " >&2 
+        fi
     fi
-    
+
     # Increment current DOI
     ((current_doi=current_doi+1))
 done

@@ -15,4 +15,4 @@ services:
       # Mount source-code for development
       - ./config:/root/.config/rclone
       - ./app:/app
-      - ./app/tests/data/gigadb-datasets:/data/gigadb/pub/10.5524
+      - ./app/tests/data/cngbdb:/cngbdb
