@@ -13,4 +13,5 @@ services:
       dockerfile: Dockerfile
     volumes:
       # Mount source-code for development
-      - ./:/app
+      - ./config:/root/.config/rclone
+      - ./app:/app
