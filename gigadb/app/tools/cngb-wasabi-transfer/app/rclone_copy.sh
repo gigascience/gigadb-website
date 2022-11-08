@@ -16,10 +16,7 @@ touch $LOGFILE
 # Include proxy settings to perform data transfer
 #source "$APP_HOME/proxy_settings.sh" || exit 1
 
-# Parse command line parameters
-#starting_doi=""
-#ending_doi=""
-
+# Parse DOIs command line parameters
 while [[ $# -gt 0 ]]; do
     case "$1" in
     --starting-doi)
@@ -50,7 +47,7 @@ echo "Ending DOI is: $ending_doi"
 batch_size="$(($ending_doi-$starting_doi))"
 if [ "$batch_size" -gt 100 ];
 then
-    echo "Batch size is more that 100 - please reduce size of batch!"
+    echo "Batch size is more that 100 - please reduce size of batch to copy!"
     exit
 fi
 
@@ -71,15 +68,15 @@ fi
 current_doi="$starting_doi"
 while [ "$current_doi" -lt "$ending_doi" ] || [ "$current_doi" -eq "$ending_doi" ]
 do
-#    echo "Current DOI: $current_doi"
+    echo "Current DOI: $current_doi"
   
     # Create directory paths
     source_path="${DATASETS_PATH}${dir_range}/${current_doi}"
-    destination_path="wasabi:/gigadb-datasets/dev/pub/10.5524/${dir_range}/${current_doi}"
+    destination_path="wasabi:gigadb-datasets/dev/pub/10.5524/${dir_range}/${current_doi}"
     
     # Check directory for current DOI exists
     if [ -d "$source_path" ]; then
-        #echo "$source_path exists"
+        echo "$source_path exists"
 
         # Perform data transfer to Wasabi
         rclone copy "$source_path" "$destination_path" \
@@ -91,7 +88,7 @@ do
         # Check exit code for rclone command
         if [ $? -eq 0 ] 
         then 
-          echo "Successfully copied files for DOI: $current_doi" 
+          echo "Successfully copied files to Wasabi for DOI: $current_doi" 
         else 
           echo "Problem with copying files to Wasabi by rclone: " >&2 
         fi
