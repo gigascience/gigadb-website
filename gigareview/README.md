@@ -141,3 +141,25 @@ Create Feature file for BDD (Gherkin) style acceptance tests:
 ```
 $ docker-compose run --rm console ./vendor/codeception/codeception/codecept -c console/codeception.yml generate:feature acceptance FetchReports
 ```
+
+## Use local FTP server provided by Docker container
+
+There is a Docker service called `sftp_test` defined in `docker-compose.yml`
+which can provide a local SFTP server containing EM reports which can be 
+customised for development work. To use the `sftp_test` service, replace the 
+`sftp` configuration in `gigareview/common/config/params-local.php` with the 
+following:
+```
+'sftp' => [
+    "host" => "sftp_test",
+    "username" => "testuser",
+    "password" => "testpass",
+    "baseDirectory" => "editorialmanager",
+],
+```
+
+Now, execute `./up.sh` to start the GigaReview application. Running
+`docker-compose run --rm console ./yii fetch-reports/fetch` will now retrieve
+EM reports from the `sftp_test` SFTP server instead of the production SFTP
+server. The fetched EM reports are those which are found in the 
+`gigareview/console/tests/_data` directory.
