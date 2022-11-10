@@ -1,11 +1,45 @@
 # Wasabi permissions policy for bucket
 
 
+### General policy
+The policy `IAMUsersManagePasswordAndKeys` is attached to the group `Developers` and `Systems`, which allows all developers and systems user to manage their own password and access keys in the Wasabi console.
+
+Policy: IAMUsersManagePasswordAndKeys
+```
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AllowManageOwnPasswords",
+      "Effect": "Allow",
+      "Action": [
+        "iam:ChangePassword",
+        "iam:GetUser"
+      ],
+      "Resource": "arn:aws:iam::*:user/${aws:username}"
+    },
+    {
+      "Sid": "AllowManageOwnAccessKeys",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateAccessKey",
+        "iam:DeleteAccessKey",
+        "iam:ListAccessKeys",
+        "iam:UpdateAccessKey"
+      ],
+      "Resource": "arn:aws:iam::*:user/${aws:username}"
+    }
+  ]
+}
+```
+
 ### Group `Developers` policy
 
-The policy `AllowDevelopersToSeeBucketListInTheConsole` is attached to the group `Developers`, which allows all developers to list every bucket in the Wasabi console. 
+The policy `AllowDevelopersToSeeBucketListInTheConsole` is attached to the group `Developers`, which allows all developers to list every bucket in the Wasabi console.
+It also allows developers to access all buckets, but is not allowed to delete buckets `gigadb-datasets` and `test-gigadb-datasets`.
 
-Policy: AllowDevelopersToSeeBucketListInTheConsole
+
+Policy: AllowDevelopersToListGetPutInGigadbDatasetsBucket
 ```
 {
   "Version": "2012-10-17",
@@ -18,6 +52,33 @@ Policy: AllowDevelopersToSeeBucketListInTheConsole
         "s3:GetBucketVersioning"
       ],
       "Resource": "arn:aws:s3:::*"
+    },
+    {
+      "Sid": "AllowAccessToGigaDbDatasetsBucket",
+      "Effect": "Allow",
+      "Action": [
+        "s3:ListBucket",
+        "s3:GetObject",
+        "s3:PutObject",
+        "s3:GetObjectAcl",
+        "s3:PutObjectAcl",
+        "s3:DeleteObject"
+      ],
+      "Resource": [
+        "arn:aws:s3:::test-gigadb-datasets",
+        "arn:aws:s3:::test-gigadb-datasets/*",
+        "arn:aws:s3:::gigadb-datasets",
+        "arn:aws:s3:::gigadb-datasets/*"
+      ]
+    },
+    {
+      "Sid": "NotAllowDevelopersToDeleteGigaDbDatasetsCBucket",
+      "Effect": "Deny",
+      "Action": "s3:DeleteBucket",
+      "Resource": [
+        "arn:aws:s3:::test-gigadb-datasets",
+        "arn:aws:s3:::gigadb-datasets"
+      ]
     }
   ]
 }
@@ -86,78 +147,6 @@ Policy:AllowSystemUsersToListAndPutStagingAndLiveGigadbDatasetsBucket
       "Resource": [
         "arn:aws:s3:::gigadb-datasets/staging",
 		"arn:aws:s3:::gigadb-datasets/live"
-      ]
-    }
-  ]
-}
-```
-
-### General policy
-The policy `IAMUsersManagePasswordAndKeys` is attached to the group `Developers` and `Systems`, which allows all developers and system user to manage their own password and access keys in the Wasabi console.
-
-Policy: IAMUsersManagePasswordAndKeys
-```
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "AllowManageOwnPasswords",
-      "Effect": "Allow",
-      "Action": [
-        "iam:ChangePassword",
-        "iam:GetUser"
-      ],
-      "Resource": "arn:aws:iam::*:user/${aws:username}"
-    },
-    {
-      "Sid": "AllowManageOwnAccessKeys",
-      "Effect": "Allow",
-      "Action": [
-        "iam:CreateAccessKey",
-        "iam:DeleteAccessKey",
-        "iam:ListAccessKeys",
-        "iam:UpdateAccessKey"
-      ],
-      "Resource": "arn:aws:iam::*:user/${aws:username}"
-    }
-  ]
-}
-```
-
-
-### User policy
-This policy is attached to Developers, which allows developers to access all buckets, but is not allowed to delete buckets `gigadb-datasets` and `test-gigadb-datasets`. 
-
-Policy Name: AllowS3ReadWrite
-```
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "AllowAccessToGigaDbDatasetsBucket",
-      "Effect": "Allow",
-      "Action": [
-        "s3:ListBucket",
-        "s3:GetObject",
-        "s3:PutObject",
-        "s3:GetObjectAcl",
-        "s3:PutObjectAcl",
-        "s3:DeleteObject"
-      ],
-      "Resource": [
-        "arn:aws:s3:::test-gigadb-datasets",
-        "arn:aws:s3:::test-gigadb-datasets/*",
-        "arn:aws:s3:::gigadb-datasets",
-        "arn:aws:s3:::gigadb-datasets/*"
-      ]
-    },
-    {
-      "Sid": "NotAllowDevelopersToDeleteGigaDbDatasetsCBucket",
-      "Effect": "Deny",
-      "Action": "s3:DeleteBucket",
-      "Resource": [
-        "arn:aws:s3:::test-gigadb-datasets",
-        "arn:aws:s3:::gigadb-datasets"
       ]
     }
   ]
