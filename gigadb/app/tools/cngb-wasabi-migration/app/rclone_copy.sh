@@ -13,19 +13,23 @@ LOGFILE="$LOGDIR/transfer_$(date +'%Y%m%d_%H%M%S').log"
 mkdir -p $LOGDIR
 touch $LOGFILE
 
-# Include proxy settings to perform data transfer
-#source "$APP_HOME/proxy_settings.sh" || exit 1
+# Source proxy settings to perform data transfer if 
+# script is running on CNGB Tencent backup server
+host_name=hostname
+if [ "$host_name" == "cngb-gigadb-bak" ];
+then
+    source "$APP_HOME/proxy_settings.sh" || exit 1
+    echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Sourced proxy settings on CNGB backup server" >> "$LOGFILE"
+fi
 
 # Parse DOIs command line parameters
 while [[ $# -gt 0 ]]; do
     case "$1" in
     --starting-doi)
-            has_starting_doi=true
             starting_doi=$2
             shift
             ;;
     --ending-doi)
-            has_ending_doi=true
             ending_doi=$2
             shift
             ;;
@@ -48,7 +52,7 @@ echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Ending DOI is: $ending_doi" >> "$LOGF
 batch_size="$(($ending_doi-$starting_doi))"
 if [ "$batch_size" -gt 100 ];
 then
-    echo "Batch size is more that 100 - please reduce size of batch to copy!"
+    echo "Batch size is more that 100 - please reduce size of batch to copy!" >> "$LOGFILE"
     exit
 fi
 

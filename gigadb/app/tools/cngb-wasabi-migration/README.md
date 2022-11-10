@@ -19,4 +19,6 @@ $ docker-compose run --rm rclone /app/rclone_copy.sh --starting-doi 102100 --end
 # Delete directories during dev work
 $ docker-compose run --rm rclone /app/rclone_reset.sh
 
+# Running batch copy script on CNGB server
+$ docker-compose run --rm -e HOST_HOSTNAME=`cngb-gigadb-bak` rclone /app/rclone_copy.sh --starting-doi 100002 --ending-doi 100304
 ```
