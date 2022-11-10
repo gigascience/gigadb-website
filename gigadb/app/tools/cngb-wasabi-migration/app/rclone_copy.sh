@@ -40,8 +40,9 @@ done
 # Variables for creating directory paths
 DATASETS_PATH="/cngbdb/giga/gigadb/pub/10.5524/"
 
-echo "Starting DOI is: $starting_doi"
-echo "Ending DOI is: $ending_doi"
+echo "$(date +'%Y/%m/%d %H:%M:%S') DEBUG  : Starting new batch copy process to Wasabi" >> "$LOGFILE"
+echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Starting DOI is: $starting_doi" >> "$LOGFILE"
+echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Ending DOI is: $ending_doi" >> "$LOGFILE"
 
 # Check batch size between DOIs
 batch_size="$(($ending_doi-$starting_doi))"
@@ -68,7 +69,7 @@ fi
 current_doi="$starting_doi"
 while [ "$current_doi" -lt "$ending_doi" ] || [ "$current_doi" -eq "$ending_doi" ]
 do
-    echo "Current DOI: $current_doi"
+    echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Assessing DOI: $current_doi" >> "$LOGFILE"
   
     # Create directory paths
     source_path="${DATASETS_PATH}${dir_range}/${current_doi}"
@@ -76,7 +77,8 @@ do
     
     # Check directory for current DOI exists
     if [ -d "$source_path" ]; then
-        echo "$source_path exists"
+        echo "$(date +'%Y/%m/%d %H:%M:%S') DEBUG  : Directory: $source_path exists" >> "$LOGFILE"
+        echo "$(date +'%Y/%m/%d %H:%M:%S') DEBUG  : Attempting to copy dataset ${current_doi} to Wasabi..."  >> "$LOGFILE"
 
         # Perform data transfer to Wasabi
         rclone copy "$source_path" "$destination_path" \
@@ -88,14 +90,17 @@ do
         # Check exit code for rclone command
         if [ $? -eq 0 ] 
         then 
-          echo "Successfully copied files to Wasabi for DOI: $current_doi" 
+          echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Successfully copied files to Wasabi for DOI: $current_doi" >> "$LOGFILE"
         else 
-          echo "Problem with copying files to Wasabi by rclone: " >&2 
+          echo "$(date +'%Y/%m/%d %H:%M:%S') ERROR  : Problem with copying files to Wasabi by rclone: " >&2 >> "$LOGFILE"
         fi
     fi
 
     # Increment current DOI
     ((current_doi=current_doi+1))
 done
+
+echo "$(date +'%Y/%m/%d %H:%M:%S') DEBUG  : Finished batch copy process to Wasabi" >> "$LOGFILE"
+
 
 

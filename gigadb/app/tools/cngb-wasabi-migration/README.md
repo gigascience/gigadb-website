@@ -16,4 +16,7 @@ $ docker-compose run --rm rclone /app/rclone_copy.sh --starting-doi 101200 --end
 
 $ docker-compose run --rm rclone /app/rclone_copy.sh --starting-doi 102100 --ending-doi 102990
 
+# Delete directories during dev work
+$ docker-compose run --rm rclone /app/rclone_reset.sh
+
 ```
