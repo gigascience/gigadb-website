@@ -41,6 +41,12 @@ while [[ $# -gt 0 ]]; do
     shift
 done
 
+# Exit if no command line parameters have been provided
+if [ $# -eq 0 ]; then
+    echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : No arguments provided - exiting..."
+    exit 1
+fi
+
 # Variables for creating directory paths
 DATASETS_PATH="/cngbdb/giga/gigadb/pub/10.5524/"
 
@@ -94,9 +100,9 @@ do
         # Check exit code for rclone command
         if [ $? -eq 0 ] 
         then 
-          echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Successfully copied files to Wasabi for DOI: $current_doi" >> "$LOGFILE"
+            echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Successfully copied files to Wasabi for DOI: $current_doi" >> "$LOGFILE"
         else 
-          echo "$(date +'%Y/%m/%d %H:%M:%S') ERROR  : Problem with copying files to Wasabi by rclone: " >&2 >> "$LOGFILE"
+            echo "$(date +'%Y/%m/%d %H:%M:%S') ERROR  : Problem with copying files to Wasabi by rclone: " >&2 >> "$LOGFILE"
         fi
     fi
 
