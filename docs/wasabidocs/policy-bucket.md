@@ -23,7 +23,77 @@ Policy: AllowDevelopersToSeeBucketListInTheConsole
 }
 ```
 
-The policy `IAMUsersManagePasswordAndKeys` is  attached to the group `Developers`, which allows all developers to manage their own password and access keys in the Wasabi console.
+### Group `Systems` policy
+
+The policy `AllowSystemUsersToListAndPutStagingAndLiveGigadbDatasetsBucket` is attached to the group `Systems`, which only allows `Systems` to list and put `gigadb-datasets/staging` and `gigadb-datasets/staging` bucket in the Wasabi console.
+
+
+Policy:AllowSystemUsersToListAndPutStagingAndLiveGigadbDatasetsBucket
+```
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AllowSystemsUserToSeeBucketListInTheConsole",
+      "Action": ["s3:ListAllMyBuckets", "s3:GetBucketLocation"],
+      "Effect": "Allow",
+      "Resource": ["arn:aws:s3:::*"]
+    },
+    {
+        "Sid": "AllowSystemsUserToListGigadbDatasetBucketStagingFolder",
+        "Action": ["s3:ListBucket"],
+        "Effect": "Allow",
+        "Resource": ["arn:aws:s3:::gigadb-datasets"],
+        "Condition": {"StringEquals": {"s3:prefix": ["", "staging/"],"s3:delimiter":["/"]}}
+    },
+    {
+        "Sid": "AllowSystemsUserToListGigadbDatasetBucketLiveFolder",
+        "Action": ["s3:ListBucket"],
+        "Effect": "Allow",
+        "Resource": ["arn:aws:s3:::gigadb-datasets"],
+        "Condition": {"StringEquals": {"s3:prefix": ["","live/"],"s3:delimiter":["/"]}}
+    },
+    {
+         "Sid": "AllowSystemsUserToListgStagingFolder",
+         "Action": ["s3:ListBucket"],
+         "Effect": "Allow",
+         "Resource": ["arn:aws:s3:::gigadb-datasets"],
+         "Condition":{"StringLike":{"s3:prefix":["gigadb-datasets/staging/*"]}}
+    },
+    {
+         "Sid": "AllowSystemsUserToListLiveFolder",
+         "Action": ["s3:ListBucket"],
+         "Effect": "Allow",
+         "Resource": ["arn:aws:s3:::gigadb-datasets"],
+         "Condition":{"StringLike":{"s3:prefix":["gigadb-datasets/live/*"]}}
+    },
+    {
+	  "Sid": "AllowSystemUsersToPutIntoStagingAndLiveFolders",
+      "Effect": "Allow",
+      "Action": [
+				"s3:PutObject",
+				"s3:PutObjectAcl"
+			],
+      "Resource": [
+        "arn:aws:s3:::gigadb-datasets/staging/*",
+		"arn:aws:s3:::gigadb-datasets/live/*"
+      ]
+    },
+	{
+      "Sid": "NotAllowSystemUsersToDeleteStagingAndLiveGigadbDatasetsBucket",
+      "Effect": "Deny",
+      "Action": "s3:DeleteBucket",
+      "Resource": [
+        "arn:aws:s3:::gigadb-datasets/staging",
+		"arn:aws:s3:::gigadb-datasets/live"
+      ]
+    }
+  ]
+}
+```
+
+### General policy
+The policy `IAMUsersManagePasswordAndKeys` is attached to the group `Developers` and `Systems`, which allows all developers and system user to manage their own password and access keys in the Wasabi console.
 
 Policy: IAMUsersManagePasswordAndKeys
 ```
@@ -54,8 +124,9 @@ Policy: IAMUsersManagePasswordAndKeys
 }
 ```
 
+
 ### User policy
-This policy is attached to each user, which allows user to only access bucket `gigadb-cngb-backup` only, and developer is not allowed to delete bucket `gigadb-cngb-backup`. 
+This policy is attached to Developers, which allows developers to access all buckets, but is not allowed to delete buckets `gigadb-datasets` and `test-gigadb-datasets`. 
 
 Policy Name: AllowS3ReadWrite
 ```
@@ -63,7 +134,7 @@ Policy Name: AllowS3ReadWrite
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Sid": "AllowAccessToGigaDbCngbBackUpBucket",
+      "Sid": "AllowAccessToGigaDbDatasetsBucket",
       "Effect": "Allow",
       "Action": [
         "s3:ListBucket",
@@ -81,7 +152,7 @@ Policy Name: AllowS3ReadWrite
       ]
     },
     {
-      "Sid": "NotAllowDevelopersToDeleteGigaDbCngbBackUpBucket",
+      "Sid": "NotAllowDevelopersToDeleteGigaDbDatasetsCBucket",
       "Effect": "Deny",
       "Action": "s3:DeleteBucket",
       "Resource": [
