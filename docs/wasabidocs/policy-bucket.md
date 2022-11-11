@@ -61,23 +61,34 @@ Policy: AllowDevelopersToListGetPutInGigadbDatasetsBucket
         "s3:GetObject",
         "s3:PutObject",
         "s3:GetObjectAcl",
-        "s3:PutObjectAcl",
-        "s3:DeleteObject"
+        "s3:PutObjectAcl"
       ],
       "Resource": [
-        "arn:aws:s3:::test-gigadb-datasets",
-        "arn:aws:s3:::test-gigadb-datasets/*",
         "arn:aws:s3:::gigadb-datasets",
         "arn:aws:s3:::gigadb-datasets/*"
       ]
     },
+	{
+	  "Sid": "AllowAllS3ActionInTestGigaDbDatasetsBucket",
+      "Effect": "Allow",
+      "Action": [
+        "s3:*"
+      ],
+      "Resource": [
+        "arn:aws:s3:::test-gigadb-datasets",
+        "arn:aws:s3:::test-gigadb-datasets/*"
+      ]
+	},
     {
       "Sid": "NotAllowDevelopersToDeleteGigaDbDatasetsCBucket",
       "Effect": "Deny",
-      "Action": "s3:DeleteBucket",
+      "Action": ["s3:DeleteBucket","s3:DeleteObject"],
       "Resource": [
         "arn:aws:s3:::test-gigadb-datasets",
-        "arn:aws:s3:::gigadb-datasets"
+        "arn:aws:s3:::gigadb-datasets/staging",
+        "arn:aws:s3:::gigadb-datasets/staging/*",
+        "arn:aws:s3:::gigadb-datasets/live",
+        "arn:aws:s3:::gigadb-datasets/live/*"
       ]
     }
   ]
