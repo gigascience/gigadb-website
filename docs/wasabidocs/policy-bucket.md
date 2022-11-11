@@ -108,74 +108,57 @@ Policy:AllowSystemUsersToListAndPutStagingAndLiveGigadbDatasetsBucket
     {
       "Sid": "AllowSystemsUserToSeeBucketListInTheConsole",
       "Effect": "Allow",
-      "Action": ["s3:ListAllMyBuckets", "s3:GetBucketLocation"],
-      "Resource": ["arn:aws:s3:::*"]
+      "Action": [
+        "s3:ListAllMyBuckets",
+        "s3:GetBucketLocation"
+      ],
+      "Resource": "arn:aws:s3:::*"
     },
     {
-        "Sid": "AllowSystemsUserToListGigadbDatasetBucketStagingFolder",
-        "Effect": "Allow",
-        "Action": [
-            "s3:ListBucket"
-         ],
-        "Resource": ["arn:aws:s3:::gigadb-datasets"],
-        "Condition": {"StringEquals": {"s3:prefix": ["", "staging/"],"s3:delimiter":["/"]}}
+      "Sid": "AllowSystemsUserToListGigabbDatasetsBucket",
+      "Effect": "Allow",
+      "Action": "s3:ListBucket",
+      "Resource": [
+        "arn:aws:s3:::gigadb-datasets",
+        "arn:aws:s3:::gigadb-datasets/*"
+      ]
     },
     {
-        "Sid": "AllowSystemsUserToListGigadbDatasetBucketLiveFolder",
-        "Effect": "Allow",
-        "Action": [
-            "s3:ListBucket"
-         ],
-        "Resource": ["arn:aws:s3:::gigadb-datasets"],
-        "Condition": {"StringEquals": {"s3:prefix": ["","live/"],"s3:delimiter":["/"]}}
-    },
-    {
-         "Sid": "AllowSystemsUserToListgStagingFolder",
-         "Action": ["s3:ListBucket"],
-         "Effect": "Allow",
-         "Resource": ["arn:aws:s3:::gigadb-datasets"],
-         "Condition":{"StringLike":{"s3:prefix":["staging/*"]}}
-    },
-    {
-         "Sid": "AllowSystemsUserToListLiveFolder",
-         "Action": ["s3:ListBucket"],
-         "Effect": "Allow",
-         "Resource": ["arn:aws:s3:::gigadb-datasets"],
-         "Condition":{"StringLike":{"s3:prefix":["live/*"]}}
-    },
-    {
-         "Sid": "AllowSystemsUserToListAndPutStagingFolder",
-         "Effect": "Allow",
-         "Action": [
-            "s3:ListBucket",
-            "s3:PutObject",
-			"s3:PutObjectAcl"
-         ],
-         "Resource": [
-            "arn:aws:s3:::gigadb-datasets/staging",
-            "arn:aws:s3:::gigadb-datasets/staging/*"
-         ]
-    },
-    {
-         "Sid": "AllowSystemsUserToListAndPutLiveFolder",
-         "Effect": "Allow",
-         "Action": [
-            "s3:ListBucket",
-            "s3:PutObject",
-			"s3:PutObjectAcl"
-         ],
-         "Resource": [
-            "arn:aws:s3:::gigadb-datasets/live",
-            "arn:aws:s3:::gigadb-datasets/live/*"
-         ]
-    },
-	{
-      "Sid": "NotAllowSystemUsersToDeleteStagingAndLiveGigadbDatasetsBucket",
-      "Effect": "Deny",
-      "Action": "s3:DeleteBucket",
+      "Sid": "AllowSystemsUserToListAndPutGigadbDatasetBucketStagingFolder",
+      "Effect": "Allow",
+      "Action": [
+        "s3:ListBucket",
+        "s3:PutObject",
+        "s3:PutObjectAcl"
+      ],
       "Resource": [
         "arn:aws:s3:::gigadb-datasets/staging",
-		"arn:aws:s3:::gigadb-datasets/live"
+        "arn:aws:s3:::gigadb-datasets/staging/*"
+      ]
+    },
+    {
+      "Sid": "AllowSystemsUserToListAndPutGigadbDatasetBucketLiveFolder",
+      "Effect": "Allow",
+      "Action": [
+        "s3:ListBucket",
+        "s3:PutObject",
+        "s3:PutObjectAcl"
+      ],
+      "Resource": [
+        "arn:aws:s3:::gigadb-datasets/live",
+        "arn:aws:s3:::gigadb-datasets/live/*"
+      ]
+    },
+    {
+      "Sid": "NotAllowSystemUsersToDeleteGigadbDatasetsBucketAndObject",
+      "Effect": "Deny",
+      "Action": [
+        "s3:DeleteBucket",
+        "s3:DeleteObject"
+      ],
+      "Resource": [
+        "arn:aws:s3:::gigadb-datasets",
+        "arn:aws:s3:::gigadb-datasets/*"
       ]
     }
   ]
