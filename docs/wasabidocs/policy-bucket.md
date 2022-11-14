@@ -115,7 +115,7 @@ Policy:AllowSystemUsersToListAndPutStagingAndLiveGigadbDatasetsBucket
       "Resource": "arn:aws:s3:::*"
     },
     {
-      "Sid": "AllowSystemsUserToListGigabbDatasetsBucket",
+      "Sid": "AllowSystemsUserToListGigadbDatasetsBucket",
       "Effect": "Allow",
       "Action": "s3:ListBucket",
       "Resource": [
@@ -127,6 +127,8 @@ Policy:AllowSystemUsersToListAndPutStagingAndLiveGigadbDatasetsBucket
       "Sid": "AllowSystemsUserToListAndPutGigadbDatasetBucketStagingFolder",
       "Effect": "Allow",
       "Action": [
+        "s3:GetObject",
+        "s3:GetObjectVersion",
         "s3:ListBucket",
         "s3:PutObject",
         "s3:PutObjectAcl"
@@ -140,6 +142,8 @@ Policy:AllowSystemUsersToListAndPutStagingAndLiveGigadbDatasetsBucket
       "Sid": "AllowSystemsUserToListAndPutGigadbDatasetBucketLiveFolder",
       "Effect": "Allow",
       "Action": [
+        "s3:GetObject",
+        "s3:GetObjectVersion",
         "s3:ListBucket",
         "s3:PutObject",
         "s3:PutObjectAcl"
