@@ -1,6 +1,6 @@
 # CNGB Wasabi migration tool
 
-## Usage
+## Test Usage
 
 The `docker-compose run` command can be used to create an `rclone` container, 
 execute a command in its shell and discard it afterwards. N.B. `-rm` causes 
@@ -46,6 +46,26 @@ If you look at the log file for the above command then you will see an error:
 2022/11/14 05:06:14 ERROR  : Batch size is more that 100 - please reduce size of batch to copy!
 ```
 
+You might see other error messages if there are other types of problems 
+encountered in the batch copy process:
+```
+2022/11/08 03:51:28 ERROR : CR.kegg.gz: Failed to copy: Forbidden: Forbidden
+	status code: 403, request id: 995175177AB4CB74, host id: 9fAA3voAuShWb+iFGMlGuH1xfLTF6gVyOz+/ru8VKkf/JZFvOFl+pBmRZHtMiaFppWlHFHFKA3Au
+2022/11/08 03:51:28 ERROR : Attempt 1/3 failed with 2 errors and: Forbidden: Forbidden
+	status code: 403, request id: 995175177AB4CB74, host id: 9fAA3voAuShWb+iFGMlGuH1xfLTF6gVyOz+/ru8VKkf/JZFvOFl+pBmRZHtMiaFppWlHFHFKA3Au
+2022/11/08 03:51:28 NOTICE: CR.kegg.gz: Failed to read metadata: Forbidden: Forbidden
+	status code: 403, request id: BD49F9DE452837D3, host id: wKdDU2SUMOCqbQ7NtZJpkN+WfCKIAO7AsGBVYc6SbeaauUfDa0KaZ9KZ0i7vZUZs4DRu9ruScskQ
+2022/11/08 03:51:28 ERROR : CR.kegg.gz: Failed to set modification time: Forbidden: Forbidden
+	status code: 403, request id: 739C8682DB01F4BF, host id: hLRhJE+0x1+coHm/NPs6gYtilvnIQHG+GnmcAeKMuiiKwPhLe/J3TcHHaUT86U7eocqtQKU+Zr67
+2022/11/08 03:51:28 INFO  : There was nothing to transfer
+2022/11/08 03:51:28 ERROR : Attempt 2/3 failed with 2 errors and: Forbidden: Forbidden
+	status code: 403, request id: 33B69D72246B9D3C, host id: F177yh/sVvSJDNo+gDFDCe8w+bgsYqUc9bGF4GtmBE3mp0yHk+mJJ8aul245snEbfypetO5yPHIW
+2022/11/08 03:51:29 ERROR : Attempt 3/3 failed with 2 errors and: Forbidden: Forbidden
+	status code: 403, request id: 4FD236673B39B110, host id: iAbakIt14agdiNaRUxKsezfAO8b2Eh6ESeXLqdqZaWsXfNV8iUlTPXnAuGbBih3Fe71/HA3tgnyU
+2022/11/08 03:51:29 Failed to copy with 2 errors: last error was: Forbidden: Forbidden
+	status code: 403, request id: 4FD236673B39B110, host id: iAbakIt14agdiNaRUxKsezfAO8b2Eh6ESeXLqdqZaWsXfNV8iUlTPXnAuGbBih3Fe71/HA3tgnyU
+```
+
 ## Running rclone commands in a bash shell
 
 It's also possible to start a Bash session by running the `rclone` container.
@@ -63,12 +83,16 @@ bash-5.1# rclone ls wasabi:
     39975 gigadb-datasets/dev/pub/10.5524/100001_101000/100002/CR.kegg.gz
 ```
 
-
-
-
-# Delete directories during dev work
+Datasets that have been uploaded to the `dev` directory in the `gigadb-datasets`
+bucket can be quickly deleted using `rclone_reset.sh`:
+```
 $ docker-compose run --rm rclone /app/rclone_reset.sh
+```
 
-# Running batch copy script on CNGB server
-$ docker-compose run --rm -e HOST_HOSTNAME=`cngb-gigadb-bak` rclone /app/rclone_copy.sh --starting-doi 100002 --ending-doi 100304
+## Production usage
+
+To run the batch copy script on CNGB server, we need to pass the hostname of
+the server to the script:
+```
+$ docker-compose run --rm -e HOST_NAME=`cngb-gigadb-bak` rclone /app/rclone_copy.sh --starting-doi 100002 --ending-doi 100020
 ```
