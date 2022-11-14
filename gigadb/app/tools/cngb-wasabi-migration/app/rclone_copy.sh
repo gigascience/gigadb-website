@@ -9,7 +9,7 @@ APP_HOME=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 # Setup logging
 LOGDIR="$APP_HOME/logs"
-LOGFILE="$LOGDIR/transfer_$(date +'%Y%m%d_%H%M%S').log"
+LOGFILE="$LOGDIR/migration_$(date +'%Y%m%d_%H%M%S').log"
 mkdir -p $LOGDIR
 touch $LOGFILE
 
@@ -19,7 +19,7 @@ host_name=hostname
 if [ "$host_name" == "cngb-gigadb-bak" ];
 then
     source "$APP_HOME/proxy_settings.sh" || exit 1
-    echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Sourced proxy settings on CNGB backup server" >> "$LOGFILE"
+    echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Sourced proxy settings for CNGB backup server" >> "$LOGFILE"
 fi
 
 # Parse DOIs command line parameters
@@ -42,15 +42,15 @@ while [[ $# -gt 0 ]]; do
 done
 
 # Exit if no command line parameters have been provided
-if [ $# -eq 0 ]; then
-    echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : No arguments provided - exiting..."
-    exit 1
-fi
+#if [ $# -eq 0 ]; then
+#    echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : No arguments provided - exiting..."
+#    exit 1
+#fi
 
 # Variables for creating directory paths
 DATASETS_PATH="/cngbdb/giga/gigadb/pub/10.5524/"
 
-echo "$(date +'%Y/%m/%d %H:%M:%S') DEBUG  : Starting new batch copy process to Wasabi" >> "$LOGFILE"
+echo "$(date +'%Y/%m/%d %H:%M:%S') DEBUG  : Begin new batch migration to Wasabi" >> "$LOGFILE"
 echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Starting DOI is: $starting_doi" >> "$LOGFILE"
 echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Ending DOI is: $ending_doi" >> "$LOGFILE"
 
@@ -58,7 +58,7 @@ echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Ending DOI is: $ending_doi" >> "$LOGF
 batch_size="$(($ending_doi-$starting_doi))"
 if [ "$batch_size" -gt 100 ];
 then
-    echo "Batch size is more that 100 - please reduce size of batch to copy!" >> "$LOGFILE"
+    echo "$(date +'%Y/%m/%d %H:%M:%S') ERROR  : Batch size is more that 100 - please reduce size of batch to copy!" >> "$LOGFILE"
     exit
 fi
 
@@ -110,7 +110,7 @@ do
     ((current_doi=current_doi+1))
 done
 
-echo "$(date +'%Y/%m/%d %H:%M:%S') DEBUG  : Finished batch copy process to Wasabi" >> "$LOGFILE"
+echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Finished batch copy process to Wasabi" >> "$LOGFILE"
 
 
 
