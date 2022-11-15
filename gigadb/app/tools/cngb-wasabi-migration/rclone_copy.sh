@@ -5,10 +5,10 @@ set -e
 
 # Allow all scripts to base include, log, etc. paths off the
 # directory where backup script is located
-APP_HOME=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+APP_SOURCE=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 # Setup logging
-LOGDIR="$APP_HOME/logs"
+LOGDIR="$APP_SOURCE/logs"
 LOGFILE="$LOGDIR/migration_$(date +'%Y%m%d_%H%M%S').log"
 mkdir -p $LOGDIR
 touch $LOGFILE
@@ -18,8 +18,14 @@ touch $LOGFILE
 host_name=hostname
 if [ "$host_name" == "cngb-gigadb-bak" ];
 then
-    source "$APP_HOME/proxy_settings.sh" || exit 1
+    source "$APP_SOURCE/proxy_settings.sh" || exit 1
     echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Sourced proxy settings for CNGB backup server" >> "$LOGFILE"
+fi
+
+# Exit if no command line parameters provided
+if [ $# -eq 0 ]; then
+    echo "No arguments provided - exiting..."
+    exit 1
 fi
 
 # Parse DOIs command line parameters
@@ -40,12 +46,6 @@ while [[ $# -gt 0 ]]; do
     esac
     shift
 done
-
-# Exit if no command line parameters have been provided
-#if [ $# -eq 0 ]; then
-#    echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : No arguments provided - exiting..."
-#    exit 1
-#fi
 
 # Variables for creating directory paths
 DATASETS_PATH="/cngbdb/giga/gigadb/pub/10.5524/"
