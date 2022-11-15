@@ -6,6 +6,12 @@ services:
 #    image: rclone/rclone:1.60
 #    volumes:
 #      - ./:/app
+  
+  config:
+    image: rija/docker-alpine-shell-tools:1.0.1
+    volumes:
+      - ./:/app
+    command: /app/generate_config.sh
 
   rclone:
     build:
@@ -14,5 +20,5 @@ services:
     volumes:
       # Mount source-code for development
       - ./config:/root/.config/rclone
-      - ./app:/app
-      - ./app/tests/data/cngbdb:/cngbdb
+      - .:/app
+      - ./tests/data/cngbdb:/cngbdb
