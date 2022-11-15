@@ -1,5 +1,40 @@
 # CNGB Wasabi migration tool
 
+This migration tool involves using [rclone](https://rclone.org) to copy dataset 
+files from the backup server to a Wasabi bucket.
+
+## Prerequisites
+
+In your GitLab project, two new secret variables need to be created:
+
+| Variable | Options | Environment | Value |
+| -------- | ------- | ----------- | ----- |
+| WASABI_ACCESS_KEY_ID | Masked | All | Wasabi access key |
+| WASABI_SECRET_ACCESS_KEY | Masked | All | Wasabi secret key |
+
+The values of these variables are your Wasabi subuser credentials which you use 
+to access Wasabi buckets.
+
+## Configuration
+
+Make a copy of the `env.example` file called `.env`:
+```
+$ cp env.example .env
+```
+
+In the new `.env` file, uncomment and provide a value for the 
+`GITLAB_PRIVATE_TOKEN` variable.
+
+Also provide the name of GitLab project fork in the `REPO_NAME` variable.
+
+You can create the configuration file for rclone by executing:
+```
+$ docker-compose run --rm config
+```
+
+Check if the configuration process has worked by looking for the
+`config/rclone.conf` file.
+
 ## Test Usage
 
 The `docker-compose run` command can be used to create an `rclone` container, 
