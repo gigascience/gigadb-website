@@ -2,11 +2,6 @@ version: '3.7'
 
 services:
 
-#  rclone:
-#    image: rclone/rclone:1.60
-#    volumes:
-#      - ./:/app
-  
   config:
     image: rija/docker-alpine-shell-tools:1.0.1
     volumes:
