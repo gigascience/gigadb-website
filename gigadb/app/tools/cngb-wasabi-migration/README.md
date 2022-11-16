@@ -124,7 +124,8 @@ $ docker-compose run --rm rclone /app/rclone_reset.sh
 ## Production usage
 
 To run the batch copy script on CNGB server, we need to pass the hostname of
-the server to the script:
+the server to the script. The hostname is provided by passing the value returned
+by the `hostname` command which can be called using backticks:
 ```
-$ docker-compose run --rm -e HOST_NAME=`cngb-gigadb-bak` rclone /app/rclone_copy.sh --starting-doi 100002 --ending-doi 100020
+$ docker-compose run --rm -e HOST_HOSTNAME=`hostname` rclone /app/rclone_copy.sh --starting-doi 100002 --ending-doi 100020
 ```

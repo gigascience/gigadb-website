@@ -13,13 +13,12 @@ LOGFILE="$LOGDIR/migration_$(date +'%Y%m%d_%H%M%S').log"
 mkdir -p $LOGDIR
 touch $LOGFILE
 
-# Source proxy settings to perform data transfer if 
-# script is running on CNGB Tencent backup server
-host_name=hostname
-if [ "$host_name" == "cngb-gigadb-bak" ];
+# Source proxy settings to perform data transfer if script is running on CNGB 
+# Tencent backup server as determined by its expected hostname
+if [ "$HOST_HOSTNAME" == "cngb-gigadb-bak" ];
 then
     source "$APP_SOURCE/proxy_settings.sh" || exit 1
-    echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Sourced proxy settings for CNGB backup server" >> "$LOGFILE"
+    echo "$(date +'%Y/%m/%d %H:%M:%S') DEBUG  : Sourced proxy settings for CNGB backup server" >> "$LOGFILE"
 fi
 
 # Exit if no command line parameters provided
