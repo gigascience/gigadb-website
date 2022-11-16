@@ -1,7 +1,6 @@
 Feature:
   As a developer
-  I want to validate
-  the access policies to Wasabi
+  I want to validate the access policies to Wasabi
   So that unaccounted for usage cannot happen
 
 
