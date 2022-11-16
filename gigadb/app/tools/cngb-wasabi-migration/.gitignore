@@ -1,1 +1,5 @@
-rclone.conf
+config
+logs
+
+.env
+.secrets
