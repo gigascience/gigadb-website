@@ -82,7 +82,7 @@ If you look at the log file for the above command then you will see an error:
 ```
 
 You might see other error messages if there are other types of problems 
-encountered in the batch copy process:
+encountered by rclone in the batch copy process. For example:
 ```
 2022/11/08 03:51:28 ERROR : CR.kegg.gz: Failed to copy: Forbidden: Forbidden
 	status code: 403, request id: 995175177AB4CB74, host id: 9fAA3voAuShWb+iFGMlGuH1xfLTF6gVyOz+/ru8VKkf/JZFvOFl+pBmRZHtMiaFppWlHFHFKA3Au
@@ -108,10 +108,7 @@ You can then execute `rclone` commands in the shell:
 ```
 $ docker-compose run --rm rclone bash
 bash-5.1#
-```
 
-We can then run a command to test rclone connection:
-```
 # List objects in root source path in Wasabi bucket
 bash-5.1# rclone ls wasabi:
     25964 gigadb-datasets/dev/dermatology.data

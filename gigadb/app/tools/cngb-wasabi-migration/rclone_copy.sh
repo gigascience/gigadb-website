@@ -87,8 +87,8 @@ do
     
     # Check directory for current DOI exists
     if [ -d "$source_path" ]; then
-        echo "$(date +'%Y/%m/%d %H:%M:%S') DEBUG  : Directory: $source_path exists" >> "$LOGFILE"
-        echo "$(date +'%Y/%m/%d %H:%M:%S') DEBUG  : Attempting to copy dataset ${current_doi} to Wasabi..."  >> "$LOGFILE"
+        echo "$(date +'%Y/%m/%d %H:%M:%S') DEBUG  : Found directory $source_path" >> "$LOGFILE"
+        echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Attempting to copy dataset ${current_doi} to Wasabi..."  >> "$LOGFILE"
 
         # Perform data transfer to Wasabi
         rclone copy "$source_path" "$destination_path" \
