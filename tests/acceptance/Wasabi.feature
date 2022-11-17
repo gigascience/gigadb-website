@@ -3,14 +3,11 @@ Feature:
   I want to validate the access policies to Wasabi
   So that unaccounted for usage cannot happen
 
-  @wip
+  @ok @wasabi @storage
   Scenario: Group Developers can see list of buckets in console
     Given I configure rclone with a Developer account
     When I run the command to list buckets
-    Then I should see buckets:
-    | bucket name |
-    | gigadb-datasets |
-    | test-gigadb-datasets |
+    Then I should see the list of buckets
 
   Scenario: Group Developers cannot manage IAM Users and keys
 

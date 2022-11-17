@@ -1,7 +1,7 @@
 FROM codeception/codeception:5.0.4
 
 RUN apt-get update -yq \
-    && apt-get install -y postgresql-client-13 \
+    && apt-get install -y postgresql-client-13 rclone \
     && apt-get clean
 
 COPY configuration/codeception/composer.json /codecept/composer.json

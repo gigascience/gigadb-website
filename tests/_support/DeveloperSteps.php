@@ -12,6 +12,9 @@ class DeveloperSteps extends \Codeception\Actor
     protected $I;
     protected $module;
 
+    /** @const int represents the value of status code returned by successful CLI command */
+    const EXIT_CODE_OK = 0 ;
+
     /** @const url of cnhk-infra variables  */
     const MISC_VARIABLES_URL = "https://gitlab.com/api/v4/projects/gigascience%2Fcnhk-infra/variables";
 
@@ -22,6 +25,11 @@ class DeveloperSteps extends \Codeception\Actor
 
     /**
      * @Given I configure rclone with a Developer account
+     *
+     *  - first retrieve the test access keys and secret keys from Gitlab variables
+     *  - then, generate an Rclone configuration file from a Twig template, interpolating the variables from previous steps
+     *  - finally, assert that the configuration has been generated correctly
+     *
      */
     public function iConfigureRcloneWithADeveloperAccount()
     {
@@ -67,15 +75,19 @@ class DeveloperSteps extends \Codeception\Actor
      */
     public function iRunTheCommandToListBuckets()
     {
-        throw new \PHPUnit\Framework\IncompleteTestError("Step `I run the command to list buckets` is not defined");
+        system("rclone --config=/project/tests/_output/developer.conf lsd wasabiTest:", $status);
+        $this->I->assertEquals(self::EXIT_CODE_OK, $status);
+
     }
 
     /**
-     * @Then I should see buckets:
+     * @Then I should see the list of buckets
      */
     public function iShouldSeeBuckets()
     {
-        throw new \PHPUnit\Framework\IncompleteTestError("Step `I should see buckets:` is not defined");
+        $output = shell_exec("rclone --config=/project/tests/_output/developer.conf lsd wasabiTest:");
+        $this->I->assertTrue(str_contains($output," -1 gigadb-datasets"));
+        $this->I->assertTrue(str_contains($output," -1 test-gigadb-datasets"));
     }
 
 }
