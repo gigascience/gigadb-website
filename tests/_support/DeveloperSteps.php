@@ -90,4 +90,24 @@ class DeveloperSteps extends \Codeception\Actor
         $this->I->assertTrue(str_contains($output," -1 test-gigadb-datasets"));
     }
 
+    /**
+     * @When I run the command to download file :file from the :env environment
+     */
+    public function iRunTheCommandToDownloadFileFromTheEnvironment($file, $env)
+    {
+        $outputDir =  (new DateTimeImmutable())->format('Y-m-d-H')."-".getmypid();
+        system("rclone --config=/project/tests/_output/developer.conf copy wasabiTest:gigadb-datasets/$env/$file /project/tests/_output/$outputDir/$env/$file", $status);
+        $this->I->assertEquals(self::EXIT_CODE_OK, $status);
+    }
+
+    /**
+     * @Then I can see :file on my local filesystem
+     */
+    public function iCanSeeOnMyLocalFilesystem($file)
+    {
+        $outputDir =  (new DateTimeImmutable())->format('Y-m-d-H')."-".getmypid();
+        $this->I->assertFileExists("/project/tests/_output/$outputDir/$file");
+    }
+
+
 }
