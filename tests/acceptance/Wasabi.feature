@@ -33,13 +33,33 @@ Feature:
     When I run the command to download file "test.txt" from the "live" environment
     Then I can see "live/test.txt" on my local filesystem
 
+
+  @ok @wasabi @storage
   Scenario: Group Developers can write data in dev environment
+    Given I configure rclone with a Developer account
+    When I run the command to upload a file to the "dev" environment
+    Then I can see that file on the remote filesystem under "gigadb-datasets/dev"
+  @ok @wasabi @storage
   Scenario: Group Developers can write data in CI environment
+    Given I configure rclone with a Developer account
+    When I run the command to upload a file to the "CI" environment
+    Then I can see that file on the remote filesystem under "gigadb-datasets/CI"
+
+  @ok @wasabi @storage
   Scenario: Group Developers can write data in staging environment
+    Given I configure rclone with a Developer account
+    When I run the command to upload a file to the "staging" environment
+    Then I can see that file on the remote filesystem under "gigadb-datasets/staging"
+
+  @ok @wasabi @storage
   Scenario: Group Developers can write data in live environment
+    Given I configure rclone with a Developer account
+    When I run the command to upload a file to the "live" environment
+    Then I can see that file on the remote filesystem under "gigadb-datasets/live"
 
   Scenario: Group Developers cannot manage IAM Users and keys
   Scenario: Group Developers cannot delete data in live environment
+
 
   Scenario: User Migration can read data in live environment
   Scenario: User Migration can write data in live environment
