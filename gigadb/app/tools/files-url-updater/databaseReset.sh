@@ -14,6 +14,9 @@ else
   backupDate=$1
 fi
 
+# Stop any existing legacy database server if it hasn't done so in previous run (e.g: due to errors)
+docker stop pg9_3 || true
+
 # Spin up legacy database (PosgresQL 9.3)
 # Make sure the port 5432 is accessible from host
 docker run --rm --detach --name pg9_3 -p 5432:5432 registry.gitlab.com/$GITLAB_PROJECT_NAME/production_pg9_3:$GIGADB_ENVIRONMENT
