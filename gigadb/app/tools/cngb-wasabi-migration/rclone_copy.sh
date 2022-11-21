@@ -61,15 +61,13 @@ then
     exit
 fi
 
-# Determine which DOI directory range to use
-dir_range=""
 if [ "$starting_doi" -lt 101000 ];
 then
     dir_range="100001_101000"
-elif [ "$starting_doi" -lt 102000 ] && [ "$starting_doi" -gt 101001 ]; 
+elif [ "$starting_doi" -lt 102000 ] && [ "$starting_doi" -gt 101001 ];
 then
     dir_range="101001_102000"
-elif [ "$starting_doi" -lt 103000 ] && [ "$starting_doi" -gt 102001 ]; 
+elif [ "$starting_doi" -lt 103000 ] && [ "$starting_doi" -gt 102001 ];
 then
     dir_range="102001_103000"
 fi
@@ -82,12 +80,21 @@ do
   
     # Create directory paths
     source_path="${DATASETS_PATH}${dir_range}/${current_doi}"
-    destination_path="wasabi:gigadb-datasets/dev/pub/10.5524/${dir_range}/${current_doi}"
-    
+
+    # Determine destination path to use in Wasabi bucket
+    if [ "$HOST_HOSTNAME" == "cngb-gigadb-bak" ];
+    then
+        # If on backup server
+        destination_path="wasabi:gigadb-datasets/live/pub/10.5524/${dir_range}/${current_doi}"
+    else
+        # Anywhere else
+        destination_path="wasabi:gigadb-datasets/dev/pub/10.5524/${dir_range}/${current_doi}"
+    fi
+
     # Check directory for current DOI exists
     if [ -d "$source_path" ]; then
         echo "$(date +'%Y/%m/%d %H:%M:%S') DEBUG  : Found directory $source_path" >> "$LOGFILE"
-        echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Attempting to copy dataset ${current_doi} to Wasabi..."  >> "$LOGFILE"
+        echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Attempting to copy dataset ${current_doi} to ${destination_path}"  >> "$LOGFILE"
 
         # Perform data transfer to Wasabi
         rclone copy "$source_path" "$destination_path" \
