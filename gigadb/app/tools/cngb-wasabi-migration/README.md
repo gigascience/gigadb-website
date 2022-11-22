@@ -121,11 +121,23 @@ bucket can be quickly deleted using `rclone_reset.sh`:
 $ docker-compose run --rm rclone /app/rclone_reset.sh
 ```
 
-## Production usage
+## Test usage on live server
 
 To run the batch copy script on CNGB server, we need to pass the hostname of
 the server to the script. The hostname is provided by passing the value returned
-by the `hostname` command which can be called using backticks:
+by the `hostname` command which can be called using backticks. In addition, for
+testing purposes, we can force the backup server to use the test data that comes
+with this code using the `--use-test-data` flag:
+```
+$ docker-compose run --rm -e HOST_HOSTNAME=`hostname` rclone /app/rclone_copy.sh --use-test-data --starting-doi 100002 --ending-doi 100020
+```
+
+If the script determines that it is running on the CNGB backup server then it
+source the required proxy settings and use the appropriate `live` path for the 
+destination to where data set files should be copied to.
+
+## Production usage on live server
+
 ```
 $ docker-compose run --rm -e HOST_HOSTNAME=`hostname` rclone /app/rclone_copy.sh --starting-doi 100002 --ending-doi 100020
 ```

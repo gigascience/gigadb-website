@@ -3,8 +3,8 @@
 # Bail out upon error
 set -e
 
-# Allow all scripts to base include, log, etc. paths off the
-# directory where backup script is located
+# Allow all scripts to base themselves from the directory where backup script 
+# is located
 APP_SOURCE=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 # Setup logging
@@ -13,12 +13,22 @@ LOGFILE="$LOGDIR/migration_$(date +'%Y%m%d_%H%M%S').log"
 mkdir -p $LOGDIR
 touch $LOGFILE
 
-# Source proxy settings to perform data transfer if script is running on CNGB 
-# Tencent backup server as determined by its expected hostname
+# Assume we are using test data for uploading and copying to dev directory 
+# in Wasabi
+DATASETS_PATH="/app/tests/data/cngbdb/giga/gigadb/pub/10.5524/"
+DESTINATION_PATH="wasabi:gigadb-datasets/dev/pub/10.5524/"
+
+# If we're on the backup server then source proxy settings to perform 
+# data transfer as determined by its expected hostname
 if [ "$HOST_HOSTNAME" == "cngb-gigadb-bak" ];
 then
     source "$APP_SOURCE/proxy_settings.sh" || exit 1
     echo "$(date +'%Y/%m/%d %H:%M:%S') DEBUG  : Sourced proxy settings for CNGB backup server" >> "$LOGFILE"
+
+    # Also use path to real data on backup server
+    DATASETS_PATH="/cngbdb/giga/gigadb/pub/10.5524/"
+    # And copy to live directory on Wasabi if on backup server
+    DESTINATION_PATH="wasabi:gigadb-datasets/live/pub/10.5524/"
 fi
 
 # Exit if no command line parameters provided
@@ -38,6 +48,13 @@ while [[ $# -gt 0 ]]; do
             ending_doi=$2
             shift
             ;;
+    # To force use of test data on backup server and force file copying
+    # to dev directory in Wasabi
+    --use-test-data)
+            DATASETS_PATH="/app/tests/data/cngbdb/giga/gigadb/pub/10.5524/"
+            DESTINATION_PATH="wasabi:gigadb-datasets/dev/pub/10.5524/${dir_range}/${current_doi}"
+            shift
+            ;;
     *)
         echo "Invalid option: $1"
         exit 1  ## Could be optional.
@@ -45,9 +62,6 @@ while [[ $# -gt 0 ]]; do
     esac
     shift
 done
-
-# Variables for creating directory paths
-DATASETS_PATH="/cngbdb/giga/gigadb/pub/10.5524/"
 
 echo "$(date +'%Y/%m/%d %H:%M:%S') DEBUG  : Begin new batch migration to Wasabi" >> "$LOGFILE"
 echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Starting DOI is: $starting_doi" >> "$LOGFILE"
@@ -61,6 +75,7 @@ then
     exit
 fi
 
+# Determine DOI range directory to use based on starting DOI
 if [ "$starting_doi" -lt 101000 ];
 then
     dir_range="100001_101000"
@@ -81,23 +96,13 @@ do
     # Create directory paths
     source_path="${DATASETS_PATH}${dir_range}/${current_doi}"
 
-    # Determine destination path to use in Wasabi bucket
-    if [ "$HOST_HOSTNAME" == "cngb-gigadb-bak" ];
-    then
-        # If on backup server
-        destination_path="wasabi:gigadb-datasets/live/pub/10.5524/${dir_range}/${current_doi}"
-    else
-        # Anywhere else
-        destination_path="wasabi:gigadb-datasets/dev/pub/10.5524/${dir_range}/${current_doi}"
-    fi
-
     # Check directory for current DOI exists
     if [ -d "$source_path" ]; then
         echo "$(date +'%Y/%m/%d %H:%M:%S') DEBUG  : Found directory $source_path" >> "$LOGFILE"
-        echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Attempting to copy dataset ${current_doi} to ${destination_path}"  >> "$LOGFILE"
+        echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Attempting to copy dataset ${current_doi} to ${DESTINATION_PATH}"  >> "$LOGFILE"
 
         # Perform data transfer to Wasabi
-        rclone copy "$source_path" "$destination_path" \
+        rclone copy "$source_path" "$DESTINATION_PATH" \
             --create-empty-src-dirs \
             --log-file="$LOGFILE" \
             --log-level INFO \

@@ -16,4 +16,3 @@ services:
       # Mount source-code for development
       - ./config:/root/.config/rclone
       - .:/app
-      - ./tests/data/cngbdb:/cngbdb
