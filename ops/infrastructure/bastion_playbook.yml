@@ -248,7 +248,7 @@
         name: swatch
         state: present
 
-    - name: Setup cronjob to automate copying database backup file to S3
+    - name: Setup cronjob to automate disk usage monitoring
       ansible.builtin.cron:
         name: "Check daily the disk usage and notify from 50%"
         minute: "00"
