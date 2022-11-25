@@ -45,10 +45,17 @@ while [[ $# -gt 0 ]]; do
     # Option to force use of live data on backup server and force file copying
     # to live directory in Wasabi
     --use-live-data)
-        # Use path to real data on backup server
-        SOURCE_PATH="/cngbdb/giga/gigadb/pub/10.5524/"
-        # And copy to live directory on Wasabi if on backup server
-        DESTINATION_PATH="wasabi:gigadb-datasets/live/pub/10.5524/"
+        # Ensure we are on backup server otherwise there is no access to live data
+        if [ "$HOST_HOSTNAME" == "cngb-gigadb-bak" ];
+        then
+            # Use path to real data on backup server
+            SOURCE_PATH="/cngbdb/giga/gigadb/pub/10.5524/"
+            # And copy to live directory on Wasabi if on backup server
+            DESTINATION_PATH="wasabi:gigadb-datasets/live/pub/10.5524/"
+        else
+            echo "Cannot copy live data if we are not on backup server - exiting..."
+            exit 1
+        fi
         shift
         ;;
     *)
