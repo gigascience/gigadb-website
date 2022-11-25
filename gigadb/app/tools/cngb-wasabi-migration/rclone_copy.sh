@@ -14,7 +14,7 @@ mkdir -p $LOGDIR
 touch $LOGFILE
 
 # Default is to use copy TEST data to dev directory in Wasabi
-SOURCE_DATASETS_PATH="/app/tests/data/cngbdb/giga/gigadb/pub/10.5524/"
+SOURCE_PATH="/app/tests/data/cngbdb/giga/gigadb/pub/10.5524/"
 DESTINATION_PATH="wasabi:gigadb-datasets/dev/pub/10.5524/"
 
 # If we're on the backup server then source proxy settings to perform 
@@ -46,7 +46,7 @@ while [[ $# -gt 0 ]]; do
     # to live directory in Wasabi
     --use-live-data)
         # Use path to real data on backup server
-        SOURCE_DATASETS_PATH="/cngbdb/giga/gigadb/pub/10.5524/"
+        SOURCE_PATH="/cngbdb/giga/gigadb/pub/10.5524/"
         # And copy to live directory on Wasabi if on backup server
         DESTINATION_PATH="wasabi:gigadb-datasets/live/pub/10.5524/"
         shift
@@ -90,16 +90,16 @@ do
     echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Assessing DOI: $current_doi" >> "$LOGFILE"
   
     # Create directory paths
-    source_path="${SOURCE_DATASETS_PATH}${dir_range}/${current_doi}"
-    destination_path="${DESTINATION_PATH}${dir_range}/${current_doi}"
+    source_dataset_path="${SOURCE_PATH}${dir_range}/${current_doi}"
+    destination_dataset_path="${DESTINATION_PATH}${dir_range}/${current_doi}"
 
     # Check directory for current DOI exists
-    if [ -d "$source_path" ]; then
-        echo "$(date +'%Y/%m/%d %H:%M:%S') DEBUG  : Found directory $source_path" >> "$LOGFILE"
-        echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Attempting to copy dataset ${current_doi} to ${destination_path}"  >> "$LOGFILE"
+    if [ -d "$source_dataset_path" ]; then
+        echo "$(date +'%Y/%m/%d %H:%M:%S') DEBUG  : Found directory $source_dataset_path" >> "$LOGFILE"
+        echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Attempting to copy dataset ${current_doi} to ${destination_dataset_path}"  >> "$LOGFILE"
 
         # Perform data transfer to Wasabi
-        rclone copy "$source_path" "$destination_path" \
+        rclone copy "$source_dataset_path" "$destination_dataset_path" \
             --create-empty-src-dirs \
             --log-file="$LOGFILE" \
             --log-level INFO \
