@@ -9,7 +9,7 @@ APP_HOME=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 # Setup logging
 LOGDIR="$APP_HOME/logs"
-LOGFILE="$LOGDIR/transfer_$(date +'%Y%m%d_%H%M%S').log"
+LOGFILE="$LOGDIR/reset_$(date +'%Y%m%d_%H%M%S').log"
 mkdir -p $LOGDIR
 touch "$LOGFILE"
 
