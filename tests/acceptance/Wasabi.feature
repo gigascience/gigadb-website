@@ -65,6 +65,20 @@ Feature:
     Then the file is deleted from the "dev" environment
 
   @ok @wasabi @storage
+  Scenario: Group Developers can delete data in CI environment
+    Given I configure rclone with a Developer account
+    And I run the command to upload a file to the "CI" environment
+    When I run the command to delete the file uploaded to the "CI" environment
+    Then the file is deleted from the "CI" environment
+
+  @ok @wasabi @storage
+  Scenario: Group Developers can delete data in staging environment
+    Given I configure rclone with a Developer account
+    And I run the command to upload a file to the "staging" environment
+    When I run the command to delete the file uploaded to the "staging" environment
+    Then the file is deleted from the "staging" environment
+
+  @ok @wasabi @storage
   Scenario: Group Developers cannot delete data in live environment
     Given I configure rclone with a Developer account
     When I run the command to delete a file on the live environment
