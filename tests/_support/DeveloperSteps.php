@@ -129,5 +129,24 @@ class DeveloperSteps extends \Codeception\Actor
         $this->I->assertTrue(str_contains($output,"sample.txt"));
     }
 
+    /**
+     * @When I run the command to delete a file on the :env environment
+     */
+    public function iRunTheCommandToDeleteAFileOnTheEnvironment($env)
+    {
+        system("rclone --config=/project/tests/_output/developer.conf delete --s3-no-check-bucket wasabiTest:gigadb-datasets/$env/test.txt",$status);
+        $this->I->assertNotEquals(self::EXIT_CODE_OK, $status);
+    }
+
+
+    /**
+     * @Then the file is not deleted
+     */
+    public function theFileIsNotDeleted()
+    {
+        $output = shell_exec("rclone --config=/project/tests/_output/developer.conf ls wasabiTest:gigadb-datasets/live/test.txt");
+        $this->I->assertTrue(str_contains($output,"  34 test.txt"));
+    }
+
 
 }
