@@ -57,11 +57,17 @@ Feature:
     When I run the command to upload a file to the "live" environment
     Then I can see that file on the remote filesystem under "gigadb-datasets/live"
 
+  @ok @wasabi @storage
+  Scenario: Group Developers can delete data in dev environment
+    Given I configure rclone with a Developer account
+    And I run the command to upload a file to the "dev" environment
+    When I run the command to delete the file uploaded to the "dev" environment
+    Then the file is deleted from the "dev" environment
 
   @ok @wasabi @storage
   Scenario: Group Developers cannot delete data in live environment
     Given I configure rclone with a Developer account
-    When I run the command to delete a file on the "live" environment
+    When I run the command to delete a file on the live environment
     Then the file is not deleted
 
   Scenario: Role Admin can delete data in live environment

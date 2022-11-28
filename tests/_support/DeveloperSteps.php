@@ -130,12 +130,11 @@ class DeveloperSteps extends \Codeception\Actor
     }
 
     /**
-     * @When I run the command to delete a file on the :env environment
+     * @When I run the command to delete a file on the live environment
      */
-    public function iRunTheCommandToDeleteAFileOnTheEnvironment($env)
+    public function iRunTheCommandToDeleteAFileOnTheLiveEnvironment()
     {
-        system("rclone --config=/project/tests/_output/developer.conf delete --s3-no-check-bucket wasabiTest:gigadb-datasets/$env/test.txt",$status);
-        $this->I->assertNotEquals(self::EXIT_CODE_OK, $status);
+        system("rclone --config=/project/tests/_output/developer.conf delete --s3-no-check-bucket wasabiTest:gigadb-datasets/live/test.txt",$status);
     }
 
 
@@ -147,6 +146,29 @@ class DeveloperSteps extends \Codeception\Actor
         $output = shell_exec("rclone --config=/project/tests/_output/developer.conf ls wasabiTest:gigadb-datasets/live/test.txt");
         $this->I->assertTrue(str_contains($output,"  34 test.txt"));
     }
+
+
+    /**
+     * @When I run the command to delete the file uploaded to the :env environment
+     */
+    public function iRunTheCommandToDeleteTheFileUploadedToTheEnvironment($env)
+    {
+        $targetDir =  getenv("REPO_NAME")."/".(new DateTimeImmutable())->format('Y-m-d-H.i.A');
+        $targetFile = "sample.txt";
+        system("rclone --config=/project/tests/_output/developer.conf delete --s3-no-check-bucket wasabiTest:gigadb-datasets/$env/tests/$targetDir/$targetFile",$status);
+    }
+
+    /**
+     * @Then the file is deleted from the :env environment
+     */
+    public function theFileIsDeletedFromTheEnvironment($env)
+    {
+        $targetDir =  getenv("REPO_NAME")."/".(new DateTimeImmutable())->format('Y-m-d-H.i.A');
+        $targetFile = "sample.txt";
+        $output = shell_exec("rclone --config=/project/tests/_output/developer.conf ls wasabiTest:gigadb-datasets/$env/tests/$targetDir/$targetFile");
+        $this->I->assertNull($output);
+    }
+
 
 
 }
