@@ -52,8 +52,9 @@ while [[ $# -gt 0 ]]; do
             SOURCE_PATH="/cngbdb/giga/gigadb/pub/10.5524"
             # And copy to live directory on Wasabi if on backup server
             DESTINATION_PATH="wasabi:gigadb-datasets/live/pub/10.5524"
+            echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Using live data on CNGB backup server" >> "$LOGFILE"
         else
-            echo "Cannot copy live data if we are not on backup server - exiting..."
+            echo "Cannot copy live data because we are not on backup server - exiting..."
             exit 1
         fi
         shift
