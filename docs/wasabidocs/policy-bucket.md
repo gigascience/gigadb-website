@@ -78,19 +78,7 @@ Policy: AllowDevelopersToListGetPutInGigadbDatasetsBucket
         "arn:aws:s3:::test-gigadb-datasets",
         "arn:aws:s3:::test-gigadb-datasets/*"
       ]
-	},
-    {
-      "Sid": "NotAllowDevelopersToDeleteGigaDbDatasetsCBucket",
-      "Effect": "Deny",
-      "Action": ["s3:DeleteBucket","s3:DeleteObject"],
-      "Resource": [
-        "arn:aws:s3:::test-gigadb-datasets",
-        "arn:aws:s3:::gigadb-datasets/staging",
-        "arn:aws:s3:::gigadb-datasets/staging/*",
-        "arn:aws:s3:::gigadb-datasets/live",
-        "arn:aws:s3:::gigadb-datasets/live/*"
-      ]
-    }
+	}
   ]
 }
 ```
