@@ -13,6 +13,12 @@ services:
       context: .
       dockerfile: Dockerfile
     volumes:
-      # Mount source-code for development
       - ./config:/root/.config/rclone
       - .:/app
+        
+  rclone_cngb:
+    image: rclone:cngb
+    volumes:
+      - ./config:/root/.config/rclone
+      - .:/app
+      - /data/gigadb/pub/10.5524/:/live-data/gigadb/pub/10.5524/:ro
