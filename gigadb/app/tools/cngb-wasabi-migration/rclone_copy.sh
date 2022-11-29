@@ -14,7 +14,7 @@ mkdir -p $LOGDIR
 touch $LOGFILE
 
 # Default is to use copy TEST data to dev directory in Wasabi
-SOURCE_PATH="/app/tests/data/cngbdb/giga/gigadb/pub/10.5524"
+SOURCE_PATH="/app/tests/data/gigadb/pub/10.5524"
 DESTINATION_PATH="wasabi:gigadb-datasets/dev/pub/10.5524"
 
 # If we're on the backup server then source proxy settings to perform 
