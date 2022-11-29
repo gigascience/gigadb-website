@@ -48,16 +48,15 @@ while [[ $# -gt 0 ]]; do
         # Ensure we are on backup server otherwise there is no access to live data
         if [ "$HOST_HOSTNAME" == "cngb-gigadb-bak" ];
         then
-            # Use path to real data on backup server
-            SOURCE_PATH="/cngbdb/giga/gigadb/pub/10.5524"
+            # Use path to the mounted real data on backup server
+            SOURCE_PATH="/live-data/gigadb/pub/10.5524"
             # And copy to live directory on Wasabi if on backup server
             DESTINATION_PATH="wasabi:gigadb-datasets/live/pub/10.5524"
-            echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Using live data on CNGB backup server" >> "$LOGFILE"
+            echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Updated paths to data for CNGB backup server" >> "$LOGFILE"
         else
-            echo "Cannot copy live data because we are not on backup server - exiting..."
+            echo "Cannot copy live data if we are not on backup server - exiting..."
             exit 1
         fi
-        shift
         ;;
     *)
         echo "Invalid option: $1"
