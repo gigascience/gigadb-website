@@ -13,7 +13,7 @@ LOGFILE="$LOGDIR/migration_$(date +'%Y%m%d_%H%M%S').log"
 mkdir -p $LOGDIR
 touch $LOGFILE
 
-# Default is to use copy TEST data to dev directory in Wasabi
+# Default is to copy TEST data to dev directory in Wasabi
 SOURCE_PATH="/app/tests/data/gigadb/pub/10.5524"
 DESTINATION_PATH="wasabi:gigadb-datasets/dev/pub/10.5524"
 
@@ -54,7 +54,7 @@ while [[ $# -gt 0 ]]; do
             DESTINATION_PATH="wasabi:gigadb-datasets/live/pub/10.5524"
             echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Updated paths to data for CNGB backup server" >> "$LOGFILE"
         else
-            echo "Cannot copy live data if we are not on backup server - exiting..."
+            echo "Cannot copy live data because you are not on backup server - exiting..."
             exit 1
         fi
         ;;
@@ -96,7 +96,7 @@ while [ "$current_doi" -lt "$ending_doi" ] || [ "$current_doi" -eq "$ending_doi"
 do
     echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Assessing DOI: $current_doi" >> "$LOGFILE"
   
-    # Create directory paths
+    # Create directory path to datasets
     source_dataset_path="${SOURCE_PATH}/${dir_range}/${current_doi}"
     destination_dataset_path="${DESTINATION_PATH}/${dir_range}/${current_doi}"
 

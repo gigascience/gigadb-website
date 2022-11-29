@@ -1,6 +1,6 @@
 # CNGB Wasabi migration tool
 
-This migration tool involves using [rclone](https://rclone.org) to copy dataset 
+This migration tool uses [rclone](https://rclone.org) to batch copy dataset 
 files from the backup server to a Wasabi bucket.
 
 ## Prerequisites
@@ -17,8 +17,10 @@ to access Wasabi buckets.
 
 ## Configuration
 
-Make a copy of the `env.example` file called `.env`:
+Change directory to the `gigadb-website/gigadb/app/tools/wasabi-migration`
+directory and make a copy of the `env.example` file called `.env`:
 ```
+$ cd gigadb/app/tools/wasabi-migration
 $ cp env.example .env
 ```
 
@@ -27,7 +29,8 @@ In the new `.env` file, uncomment and provide a value for the
 
 Also provide the name of GitLab project fork in the `REPO_NAME` variable.
 
-You can create the configuration file for rclone by executing:
+You should then be able to create the configuration file for rclone by 
+executing:
 ```
 $ docker-compose run --rm config
 ```
@@ -38,17 +41,22 @@ Check if the configuration process has worked by looking for the
 ## Test Usage
 
 The `docker-compose run` command can be used to create an `rclone` container, 
-execute a command in its shell and discard it afterwards. N.B. `-rm` causes 
-Docker to automatically remove the container when it exits:
+execute a command in its shell. It can then be discarded afterwards using `-rm` 
+which causes Docker to automatically remove the container when it exits:
 ```
 # List contents of dev directory in gigadb-datasets bucket
 $ docker-compose run --rm rclone rclone ls wasabi:gigadb-datasets/dev
+Creating wasabi-migration_rclone_run ... done
+    25964 dermatology.data
+    39975 pub/10.5524/100001_101000/100002/CR.kegg.gz
+      649 pub/10.5524/100001_101000/100002/readme.txt
 ```
 
 The `rclone_copy.sh` script can batch upload a set of datasets as defined by a 
 starting DOI and an ending DOI. The script will look for the existence of all 
 datasets between these two DOIs. For example, the following command will upload 
-two test datasets:
+two datasets which are fouund in the `tests/data/gigadb/pub/10.5524/100001_1010001`
+directory:
 ```
 $ docker-compose run --rm rclone /app/rclone_copy.sh --starting-doi 100001 --ending-doi 100020
 ```
@@ -74,7 +82,8 @@ to 100 datasets:
 $ docker-compose run --rm rclone /app/rclone_copy.sh --starting-doi 100002 --ending-doi 100304
 ```
 
-If you look at the log file for the above command then you will see an error:
+If you look at the latest file in `logs` directory for the above command then 
+you will see an error:
 ```
 2022/11/14 05:06:14 DEBUG  : Begin new batch migration to Wasabi
 2022/11/14 05:06:14 INFO  : Starting DOI is: 100002
@@ -83,7 +92,8 @@ If you look at the log file for the above command then you will see an error:
 ```
 
 You might see other error messages if there are other types of problems 
-encountered by rclone in the batch copy process. For example:
+encountered by rclone in the batch copy process. For example, the messages below
+come from the rclone tool itself:
 ```
 2022/11/08 03:51:28 ERROR : CR.kegg.gz: Failed to copy: Forbidden: Forbidden
 	status code: 403, request id: 995175177AB4CB74, host id: 9fAA3voAuShWb+iFGMlGuH1xfLTF6gVyOz+/ru8VKkf/JZFvOFl+pBmRZHtMiaFppWlHFHFKA3Au
@@ -104,8 +114,8 @@ encountered by rclone in the batch copy process. For example:
 
 ## Running rclone commands in a bash shell
 
-It's also possible to start a Bash session by running the `rclone` container.
-You can then execute `rclone` commands in the shell:
+It's possible to start a bash session by running the `rclone` container which
+can then be used to execute `rclone` commands in the shell:
 ```
 $ docker-compose run --rm rclone bash
 bash-5.1#
@@ -116,38 +126,44 @@ bash-5.1# rclone ls wasabi:
     39975 gigadb-datasets/dev/pub/10.5524/100001_101000/100002/CR.kegg.gz
 ```
 
-Datasets that have been uploaded to the `dev` directory in the `gigadb-datasets`
-bucket can be quickly deleted using `rclone_reset.sh`:
-```
-$ docker-compose run --rm rclone /app/rclone_reset.sh
-```
+## Installing migration tool on backup server
 
-## Test usage on live server
-
-The CNGB live server has problems with pulling Docker images on the official
-registry. To overcome this problem, required images need to be built on your
-local machine, saved and then copied to the CNGB backup server:
+The CNGB backup server has problems with pulling Docker images from the official
+registry. To overcome this problem, these images need to be first built on your
+local machine, and then saved and copied to the CNGB backup server:
 ```
-# Ensure you are in cngb-wasabi-migration directory and generate Rclone 
-# configuration
-$ docker-compose run --rm config
-
-# Build and tag Rclone image
+# Build rclone image
 $ docker build -t rclone .
+# Check there is a new image called rclone with the tag latest
+$ docker images
+# Tag rclone image
 $ docker tag rclone:latest rclone:cngb
 
-# Save images as tar.gz files:
+# Save Docker images as tar.gz files:
 $ docker save alpine:3.16 | gzip > alpine_3_16.tar.gz
 $ docker save rija/docker-alpine-shell-tools:1.0.1 | gzip > rija_docker_alpine_shell_tools_1_0_1.tar.gz
 $ docker save rclone:cngb | gzip > rclone_cngb.tar.gz
 ```
 
-You also need to create a tarball of the `cngb-wasabi-migration` directory.
+You also need to create a zipped tarball of the `wasabi-migration` directory:
+```
+$ cd ..
+$ tar -czvf wasabi-migration.tar.gz wasabi-migration
+$ mv wasabi-migration.tar.gz wasabi-migration
+```
 
-Now transfer all tar.gz files to the CNGB backup server using the Smoc web site. 
+You should now have 4 tar.gz files:
+```
+$ ls *gz
+alpine_3_16.tar.gz                          rija_docker_alpine_shell_tools_1_0_1.tar.gz
+rclone_cngb.tar.gz                          wasabi-migration.tar.gz
+```
 
-When this is done, use the SMOC website to open a shell to the server to load 
-the images:
+These tar.gz files need to uploaded to the CNGB backup server using the SMOC web
+site. 
+
+When this is done, use the SMOC website to open a shell to the backup server to 
+load the images:
 ```
 # Load images from tar archives
 [gigadb@cngb-gigadb-bak ~]$ docker load < rija_docker_alpine_shell_tools_1_0_1.tar.gz
@@ -158,13 +174,37 @@ the images:
 [gigadb@cngb-gigadb-bak ~]$ docker images
 ```
 
-Also, unzip the `cngb-wasabi-migration` tarball and change directory to it.
-
-To test the loaded Rclone container is working, we use the `rclone_cngb` service
-in `docker-compose.yml` which expects a `rclone:cngb` image (which has been 
-loaded into the backup server) to be available:
+Also, unzip the `wasabi-migration` tarball and change directory to it:
 ```
-# Check version
+$ tar -xvf wasabi-migration.tar.gz
+$ cd wasabi-migration
+```
+
+You will probably already have an `.env` file in the `wasabi-migration` 
+directory that you created whn testing on your local machine. Since we are now
+using the CNGB backup server, this `.env` file should be customised with the
+upstream user's details:
+```
+GITLAB_PRIVATE_TOKEN=<Provide token for upstream user>
+
+REPO_NAME="gigadb-website"
+CI_PROJECT_URL="https://gitlab.com/gigascience/upstream/gigadb-website"
+GROUP_VARIABLES_URL="https://gitlab.com/api/v4/groups/gigascience/variables?per_page=100"
+FORK_VARIABLES_URL="https://gitlab.com/api/v4/groups/3506500/variables"
+PROJECT_VARIABLES_URL="https://gitlab.com/api/v4/projects/gigascience%2FUpstream%2F$REPO_NAME/variables"
+MISC_VARIABLES_URL="https://gitlab.com/api/v4/projects/gigascience%2Fcnhk-infra/variables"
+```
+
+Now run `$ docker-compose run --rm config`, this time to create the rclone
+configuration for the Wasabi `Migration` sub-user.
+
+## Testing migration tool on backup server
+
+To test the loaded rclone container is working, we use the `rclone_cngb` service
+in `docker-compose.yml` since this service expects a `rclone:cngb` image (that 
+has just been loaded into the backup server) to be available:
+```
+# Check rclone version used in container
 [gigadb@cngb-gigadb-bak cngb-wasabi-migration]$ docker-compose run --rm rclone_cngb rclone version
 
 # List contents in bucket
@@ -181,11 +221,11 @@ $ docker-compose run --rm -e HOST_HOSTNAME=`hostname` rclone_cngb /app/rclone_co
 
 If the script determines that it is running on the CNGB backup server then it
 will source the required proxy settings and use the appropriate `dev` path for 
-the destination to where data set files should be copied to.
+the Wasabi destination to where data set files should be copied to.
 
 Check the latest migration log file in the `logs` directory. The first line
-can be interpreted as the script is being run on the CNGB backup server and so
-it is sourcing the network proxy settings:
+can be interpreted as the script confirming that it is being run on the CNGB 
+backup server and so it is sourcing the network proxy settings:
 ```
 2022/11/29 03:18:39 DEBUG  : Sourced proxy settings for CNGB backup server
 2022/11/29 03:18:39 DEBUG  : Begin new batch migration to Wasabi
@@ -201,16 +241,18 @@ it is sourcing the network proxy settings:
 ```
 
 In addition, you can confirm the test dataset files have been uploaded into the
-Wasabi bucket at `gigadb-dataset/dev` using the web console with your Wasabi 
-subuser account.
+Wasabi bucket by looking at the contents of `gigadb-dataset/dev` in the web 
+console with your Wasabi subuser account.
 
-## Production usage on live server
+## Using the migration tool on backup server to copy real datasets to Wasabi
 
 In order for the script to copy `live` GigaDB data, the `--use-live-data` option
-should be provided when calling this script as follows:
+should be provided when calling the `rclone_copy.sh` script as follows:
 ```
 $ docker-compose run --rm -e HOST_HOSTNAME=`hostname` rclone_cngb /app/rclone_copy.sh --starting-doi 100216 --ending-doi 100221 --use-live-data
 ```
+
+This command will copy a selection of real GigaDB data
 
 If the `--use-live-data` flag is used and the script determines that it is not 
 running on the CNGB server then the script will exit with an error message:
