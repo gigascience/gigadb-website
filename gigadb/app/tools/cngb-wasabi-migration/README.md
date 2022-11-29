@@ -124,26 +124,97 @@ $ docker-compose run --rm rclone /app/rclone_reset.sh
 
 ## Test usage on live server
 
+The CNGB live server has problems with pulling Docker images on the official
+registry. To overcome this problem, required images need to be built on your
+local machine, saved and then copied to the CNGB backup server:
+```
+# Ensure you are in cngb-wasabi-migration directory and generate Rclone 
+# configuration
+$ docker-compose run --rm config
+
+# Build and tag Rclone image
+$ docker build -t rclone .
+$ docker tag rclone:latest rclone:cngb
+
+# Save images as tar.gz files:
+$ docker save alpine:3.16 | gzip > alpine_3_16.tar.gz
+$ docker save rija/docker-alpine-shell-tools:1.0.1 | gzip > rija_docker_alpine_shell_tools_1_0_1.tar.gz
+$ docker save rclone:cngb | gzip > rclone_cngb.tar.gz
+```
+
+You also need to create a tarball of the `cngb-wasabi-migration` directory.
+
+Now transfer all tar.gz files to the CNGB backup server using the Smoc web site. 
+
+When this is done, use the SMOC website to open a shell to the server to load 
+the images:
+```
+# Load images from tar archives
+[gigadb@cngb-gigadb-bak ~]$ docker load < rija_docker_alpine_shell_tools_1_0_1.tar.gz
+[gigadb@cngb-gigadb-bak ~]$ docker load < alpine_3_16.tar.gz
+[gigadb@cngb-gigadb-bak ~]$ docker load < rclone_cngb.tar.gz
+
+# Check images have been loaded
+[gigadb@cngb-gigadb-bak ~]$ docker images
+```
+
+Also, unzip the `cngb-wasabi-migration` tarball and change directory to it.
+
+To test the loaded Rclone container is working, we use the `rclone_cngb` service
+in `docker-compose.yml` which expects a `rclone:cngb` image (which has been 
+loaded into the backup server) to be available:
+```
+# Check version
+[gigadb@cngb-gigadb-bak cngb-wasabi-migration]$ docker-compose run --rm rclone_cngb rclone version
+
+# List contents in bucket
+[gigadb@cngb-gigadb-bak cngb-wasabi-migration]$ docker-compose run --rm rclone_cngb bash -c 'source /app/proxy_settings.sh; rclone -vv ls wasabi:gigadb-datasets/dev'
+```
+
 To use the batch copy script on the CNGB backup server, we need to pass it the 
 hostname of the server to the script. The hostname is provided by passing the 
 value returned by the `hostname` command which can be called using backticks. By
-default, for testing purposes, the script will copy/upload the test data that
-comes with the script
+default, the script will copy/upload the test data that comes with the script:
 ```
-$ docker-compose run --rm -e HOST_HOSTNAME=`hostname` rclone /app/rclone_copy.sh --starting-doi 100002 --ending-doi 100020
+$ docker-compose run --rm -e HOST_HOSTNAME=`hostname` rclone_cngb /app/rclone_copy.sh --starting-doi 100002 --ending-doi 100020
 ```
 
 If the script determines that it is running on the CNGB backup server then it
 will source the required proxy settings and use the appropriate `dev` path for 
 the destination to where data set files should be copied to.
 
+Check the latest migration log file in the `logs` directory. The first line
+can be interpreted as the script is being run on the CNGB backup server and so
+it is sourcing the network proxy settings:
+```
+2022/11/29 03:18:39 DEBUG  : Sourced proxy settings for CNGB backup server
+2022/11/29 03:18:39 DEBUG  : Begin new batch migration to Wasabi
+2022/11/29 03:18:39 INFO  : Starting DOI is: 100002
+2022/11/29 03:18:39 INFO  : Ending DOI is: 100020
+2022/11/29 03:18:39 INFO  : Assessing DOI: 100002
+2022/11/29 03:18:39 DEBUG  : Found directory /app/tests/data/cngbdb/giga/gigadb/pub/10.5524/100001_101000/100002
+2022/11/29 03:18:39 INFO  : Attempting to copy dataset 100002 to wasabi:gigadb-datasets/dev/pub/10.5524/100001_101000/100002
+2022/11/29 03:18:43 INFO  : CR.kegg.gz: Copied (new)
+2022/11/29 03:18:43 INFO  : readme.txt: Copied (new)
+2022/11/29 03:18:43 INFO  : Successfully copied files to Wasabi for DOI: 100002
+2022/11/29 03:18:43 INFO  : Assessing DOI: 100003
+```
+
+In addition, you can confirm the test dataset files have been uploaded into the
+Wasabi bucket at `gigadb-dataset/dev` using the web console with your Wasabi 
+subuser account.
+
 ## Production usage on live server
 
 In order for the script to copy `live` GigaDB data, the `--use-live-data` option
 should be provided when calling this script as follows:
 ```
-$ docker-compose run --rm -e HOST_HOSTNAME=`hostname` rclone /app/rclone_copy.sh --use-live-data --starting-doi 100002 --ending-doi 100020
+$ docker-compose run --rm -e HOST_HOSTNAME=`hostname` rclone_cngb /app/rclone_copy.sh --starting-doi 100216 --ending-doi 100221 --use-live-data
 ```
 
 If the `--use-live-data` flag is used and the script determines that it is not 
-running on the CNGB server then the script will exit with an error message.
+running on the CNGB server then the script will exit with an error message:
+```
+[centos@ip-xxx-xx-x-x]$ sudo docker-compose run --rm -e HOST_HOSTNAME=`hostname` rclone /app/rclone_copy.sh --use-live-data --starting-doi 100002 --ending-doi 100020
+Cannot copy live data because we are not on backup server - exiting...
+```
