@@ -23,6 +23,9 @@ if [ "$HOST_HOSTNAME" == "cngb-gigadb-bak" ];
 then
     source "$APP_SOURCE/proxy_settings.sh" || exit 1
     echo "$(date +'%Y/%m/%d %H:%M:%S') DEBUG  : Sourced proxy settings for CNGB backup server" >> "$LOGFILE"
+    # Also update destination to staging directory to 
+    # comply with Migration user policy
+    DESTINATION_PATH="wasabi:gigadb-datasets/staging/pub/10.5524"
 fi
 
 # Exit if no command line parameters provided
