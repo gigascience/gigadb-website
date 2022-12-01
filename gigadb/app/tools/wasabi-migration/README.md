@@ -241,8 +241,8 @@ default, the script will copy/upload the test data that comes with the script:
 ```
 
 If the script determines that it is running on the CNGB backup server then it
-will source the required proxy settings and use the appropriate `dev` path for 
-the Wasabi destination to where data set files should be copied to.
+will source the required proxy settings and copy dataset files to the `staging` 
+directory in the Wasabi `gigadb-datasets` bucket.
 
 Check the latest migration log file in the `logs` directory. The first line
 can be interpreted as the script confirming that it is being run on the CNGB 
@@ -254,7 +254,7 @@ backup server and so it is sourcing the network proxy settings:
 2022/11/29 03:18:39 INFO  : Ending DOI is: 100020
 2022/11/29 03:18:39 INFO  : Assessing DOI: 100002
 2022/11/29 03:18:39 DEBUG  : Found directory /app/tests/data/cngbdb/giga/gigadb/pub/10.5524/100001_101000/100002
-2022/11/29 03:18:39 INFO  : Attempting to copy dataset 100002 to wasabi:gigadb-datasets/dev/pub/10.5524/100001_101000/100002
+2022/11/29 03:18:39 INFO  : Attempting to copy dataset 100002 to wasabi:gigadb-datasets/staging/pub/10.5524/100001_101000/100002
 2022/11/29 03:18:43 INFO  : CR.kegg.gz: Copied (new)
 2022/11/29 03:18:43 INFO  : readme.txt: Copied (new)
 2022/11/29 03:18:43 INFO  : Successfully copied files to Wasabi for DOI: 100002
@@ -262,7 +262,7 @@ backup server and so it is sourcing the network proxy settings:
 ```
 
 In addition, you can confirm the test dataset files have been uploaded into the
-Wasabi bucket by looking at the contents of `gigadb-dataset/dev` in the web 
+Wasabi bucket by looking at the contents of `gigadb-dataset/staging` in the web 
 console with your Wasabi subuser account.
 
 #### Copying real datasets to Wasabi
@@ -273,7 +273,10 @@ should be provided when calling the `rclone_copy.sh` script as follows:
 $ docker-compose run --rm -e HOST_HOSTNAME=`hostname` rclone_cngb /app/rclone_copy.sh --starting-doi 100216 --ending-doi 100221 --use-live-data
 ```
 
-This command will copy a selection of real GigaDB data
+This command will copy a set of real GigaDB datasets into the
+`gigadb-datasets/live` directory. You can confirm this by browsing the
+`gigadb-datasets/live` directory using the Wasabi web console and checking the 
+latest log file in the `logs` directory.
 
 If the `--use-live-data` flag is used and the script determines that it is not 
 running on the CNGB server then the script will exit with an error message:
