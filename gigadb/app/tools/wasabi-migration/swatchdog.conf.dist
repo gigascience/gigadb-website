@@ -1,0 +1,2 @@
+watchfor /\sERROR\s\s:/
+        echo=red
