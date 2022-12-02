@@ -17,6 +17,9 @@ touch $LOGFILE
 SOURCE_PATH="/app/tests/data/gigadb/pub/10.5524"
 DESTINATION_PATH="wasabi:gigadb-datasets/dev/pub/10.5524"
 
+# Default batch size
+max_batch_size=100
+
 # If we're on the backup server then source proxy settings to perform 
 # data transfer as determined by its expected hostname
 if [ "$HOST_HOSTNAME" == "cngb-gigadb-bak" ];
@@ -43,6 +46,10 @@ while [[ $# -gt 0 ]]; do
         ;;
     --ending-doi)
         ending_doi=$2
+        shift
+        ;;
+    --max-batch-size)
+        max_batch_size=$2
         shift
         ;;
     # Option to force use of live data on backup server and force file copying
@@ -75,9 +82,9 @@ echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Ending DOI is: $ending_doi" >> "$LOGF
 
 # Check batch size between DOIs
 batch_size="$(($ending_doi-$starting_doi))"
-if [ "$batch_size" -gt 100 ];
+if [ "$batch_size" -gt "$max_batch_size" ];
 then
-    echo "$(date +'%Y/%m/%d %H:%M:%S') ERROR  : Batch size is more that 100 - please reduce size of batch to copy!" >> "$LOGFILE"
+    echo "$(date +'%Y/%m/%d %H:%M:%S') ERROR  : Batch size is more than $max_batch_size - please reduce size of batch to copy!" >> "$LOGFILE"
     exit
 fi
 

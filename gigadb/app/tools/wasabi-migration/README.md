@@ -287,3 +287,12 @@ running on the CNGB server then the script will exit with an error message:
 [centos@ip-xxx-xx-x-x]$ sudo docker-compose run --rm -e HOST_HOSTNAME=`hostname` rclone /app/rclone_copy.sh --use-live-data --starting-doi 100002 --ending-doi 100020
 Cannot copy live data because we are not on backup server - exiting...
 ```
+
+#### Batch size for file uploads
+
+The maximum number of datasets that can be uploaded has a default value of 100.
+This can be overridden using the `--max-batch-size`. For example, to increase
+the batch size to 200:
+```
+$ docker-compose run --rm -e HOST_HOSTNAME=`hostname` rclone_cngb /app/rclone_copy.sh --starting-doi 100000 --ending-doi 100300 --max-batch-size 300
+```
