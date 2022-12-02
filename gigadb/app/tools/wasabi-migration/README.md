@@ -153,6 +153,9 @@ MISC_VARIABLES_URL="https://gitlab.com/api/v4/projects/gigascience%2Fcnhk-infra/
 
 Generate the required rclone configuration:
 ```
+# Create a config directory
+$ mkdir config
+# Create rclone.conf file in config directory
 $ docker-compose run --rm config
 ```
 
