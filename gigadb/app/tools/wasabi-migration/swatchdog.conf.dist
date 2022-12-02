@@ -1,2 +1,3 @@
 watchfor /\sERROR\s\s:/
         echo=red
+        exec "./send_notification.sh '$_'"

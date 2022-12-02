@@ -72,3 +72,11 @@ SOURCE=${APP_SOURCE}/rclone.conf.dist
 TARGET=${APP_SOURCE}/config/rclone.conf
 VARS='$WASABI_ACCESS_KEY_ID:$WASABI_SECRET_ACCESS_KEY'
 envsubst $VARS < $SOURCE > $TARGET
+
+# Generate swatchdog configuration file
+SOURCE=${APP_SOURCE}/swatchdog.conf.dist
+TARGET=${APP_SOURCE}/config/swatchdog.conf
+envsubst $VARS < $SOURCE > $TARGET
+
+
+
