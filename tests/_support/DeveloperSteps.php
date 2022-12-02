@@ -33,23 +33,7 @@ class DeveloperSteps extends \Codeception\Actor
      */
     public function iConfigureRcloneWithADeveloperAccount()
     {
-        $client = new \GuzzleHttp\Client();
-        try {
-            $response = $client->get(self::MISC_VARIABLES_URL . "/wasabi_group_developer_test_access_key_id", [
-                'headers' => [
-                    'PRIVATE-TOKEN' => getenv("GITLAB_PRIVATE_TOKEN")
-                ],
-            ]);
-            $accessKeyId = json_decode($response->getBody(), true)["value"];
-            $response = $client->get(self::MISC_VARIABLES_URL . "/wasabi_group_developer_test_secret_access_key", [
-                'headers' => [
-                    'PRIVATE-TOKEN' => getenv("GITLAB_PRIVATE_TOKEN")
-                ],
-            ]);
-            $secretKey = json_decode($response->getBody(), true)["value"];
-        } catch (\GuzzleHttp\Exception\GuzzleException $e) {
-            codecept_debug($e->getMessage());
-        }
+        list($accessKeyId, $secretKey) = $this->getWasabiCredentials();
 
         $this->renderRcloneConfig($accessKeyId, $secretKey);
 
@@ -179,5 +163,30 @@ class DeveloperSteps extends \Codeception\Actor
         }
     }
 
+  
+    /**
+     * @return array
+     */
+    public function getWasabiCredentials(): array
+    {
+        $client = new \GuzzleHttp\Client();
+        try {
+            $response = $client->get(self::MISC_VARIABLES_URL . "/wasabi_group_developer_test_access_key_id", [
+                'headers' => [
+                    'PRIVATE-TOKEN' => getenv("GITLAB_PRIVATE_TOKEN")
+                ],
+            ]);
+            $accessKeyId = json_decode($response->getBody(), true)["value"];
+            $response = $client->get(self::MISC_VARIABLES_URL . "/wasabi_group_developer_test_secret_access_key", [
+                'headers' => [
+                    'PRIVATE-TOKEN' => getenv("GITLAB_PRIVATE_TOKEN")
+                ],
+            ]);
+            $secretKey = json_decode($response->getBody(), true)["value"];
+        } catch (\GuzzleHttp\Exception\GuzzleException $e) {
+            codecept_debug($e->getMessage());
+        }
+        return array($accessKeyId, $secretKey);
+    }
 
 }
