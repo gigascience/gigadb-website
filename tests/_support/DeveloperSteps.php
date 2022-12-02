@@ -51,21 +51,7 @@ class DeveloperSteps extends \Codeception\Actor
             codecept_debug($e->getMessage());
         }
 
-        $loader = new \Twig\Loader\FilesystemLoader('/project/tests/_data/RcloneConfigs');
-        $twig = new \Twig\Environment($loader, [
-            'cache' => '/project/tests/_output',
-        ]);
-        try {
-            file_put_contents(
-                "/project/tests/_output/developer.conf",
-                $twig->render('developer.conf.twig', [
-                    'wasabi_group_developer_test_access_key_id' => $accessKeyId,
-                    'wasabi_group_developer_test_secret_access_key' => $secretKey
-                ]),
-            );
-        } catch (\Twig\Error\LoaderError | \Twig\Error\RuntimeError | \Twig\Error\SyntaxError $e) {
-            codecept_debug($e->getMessage());
-        }
+        $this->renderRcloneConfig($accessKeyId, $secretKey);
 
         $this->I->assertFileExists("/project/tests/_output/developer.conf");
     }
@@ -169,6 +155,29 @@ class DeveloperSteps extends \Codeception\Actor
         $this->I->assertNull($output);
     }
 
+    /**
+     * @param $accessKeyId
+     * @param $secretKey
+     * @return void
+     */
+    public function renderRcloneConfig($accessKeyId, $secretKey): void
+    {
+        $loader = new \Twig\Loader\FilesystemLoader('/project/tests/_data/RcloneConfigs');
+        $twig = new \Twig\Environment($loader, [
+            'cache' => '/project/tests/_output',
+        ]);
+        try {
+            file_put_contents(
+                "/project/tests/_output/developer.conf",
+                $twig->render('developer.conf.twig', [
+                    'wasabi_group_developer_test_access_key_id' => $accessKeyId,
+                    'wasabi_group_developer_test_secret_access_key' => $secretKey
+                ]),
+            );
+        } catch (\Twig\Error\LoaderError|\Twig\Error\RuntimeError|\Twig\Error\SyntaxError $e) {
+            codecept_debug($e->getMessage());
+        }
+    }
 
 
 }
