@@ -16,6 +16,7 @@
     "codeception/module-soap": "^3.0",
     "codeception/module-webdriver": "^3.2",
     "guzzlehttp/guzzle": "^7.5",
+    "aws/aws-sdk-php": "^3.0",
     "twig/twig": "^3.4"
   }
 }

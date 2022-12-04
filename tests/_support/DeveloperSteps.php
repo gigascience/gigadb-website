@@ -1,5 +1,8 @@
 <?php
 
+use Aws\Sts\StsClient;
+use Aws\Exception\AwsException;
+
 /**
  * Class DeveloperSteps
  * steps specific to user story for curators
@@ -100,21 +103,29 @@ class DeveloperSteps extends \Codeception\Actor
     }
 
     /**
-     * @When I run the command to delete a file on the live environment
+     * @When I run the command to delete a file on the :env environment
      */
-    public function iRunTheCommandToDeleteAFileOnTheLiveEnvironment()
+    public function iRunTheCommandToDeleteAFileOnTheEnvironment($env)
     {
-        system("rclone --config=/project/tests/_output/developer.conf delete --s3-no-check-bucket wasabiTest:gigadb-datasets/live/test.txt",$status);
+        $targetDir =  getenv("REPO_NAME")."/".(new DateTimeImmutable())->format('Y-m-d-H.i.A');
+        system("rclone --config=/project/tests/_output/developer.conf delete --s3-no-check-bucket wasabiTest:gigadb-datasets/$env/tests/$targetDir/sample.txt",$status);
     }
 
+    /**
+     * @When I run the command to delete existing file
+     */
+    public function iRunTheCommandToDeleteExistingFile()
+    {
+        system("rclone --config=/project/tests/_output/developer.conf delete --s3-no-check-bucket wasabiTest:gigadb-datasets/live/DoNotDelete.txt",$status);
 
+    }
     /**
      * @Then the file is not deleted
      */
     public function theFileIsNotDeleted()
     {
-        $output = shell_exec("rclone --config=/project/tests/_output/developer.conf ls wasabiTest:gigadb-datasets/live/test.txt");
-        $this->I->assertTrue(str_contains($output,"  34 test.txt"));
+        $output = shell_exec("rclone --config=/project/tests/_output/developer.conf ls wasabiTest:gigadb-datasets/live/DoNotDelete.txt");
+        $this->I->assertTrue(str_contains($output,"  35 DoNotDelete.txt"));
     }
 
 
@@ -144,18 +155,17 @@ class DeveloperSteps extends \Codeception\Actor
      * @param $secretKey
      * @return void
      */
-    public function renderRcloneConfig($accessKeyId, $secretKey): void
+    public function renderRcloneConfig($accessKeyId, $secretKey, $sessionToken=null): void
     {
         $loader = new \Twig\Loader\FilesystemLoader('/project/tests/_data/RcloneConfigs');
-        $twig = new \Twig\Environment($loader, [
-            'cache' => '/project/tests/_output',
-        ]);
+        $twig = new \Twig\Environment($loader);
         try {
             file_put_contents(
                 "/project/tests/_output/developer.conf",
                 $twig->render('developer.conf.twig', [
                     'wasabi_group_developer_test_access_key_id' => $accessKeyId,
-                    'wasabi_group_developer_test_secret_access_key' => $secretKey
+                    'wasabi_group_developer_test_secret_access_key' => $secretKey,
+                    'wasabi_group_developer_test_session_token' => $sessionToken,
                 ]),
             );
         } catch (\Twig\Error\LoaderError|\Twig\Error\RuntimeError|\Twig\Error\SyntaxError $e) {
@@ -163,7 +173,49 @@ class DeveloperSteps extends \Codeception\Actor
         }
     }
 
-  
+    /**
+     * @Given I assume the Admin role
+     */
+    public function iAssumeTheAdminRole()
+    {
+
+
+        $roleToAssumeArn = 'arn:aws:iam::100000166496:role/Admin';
+
+        list($accessKeyId, $secretKey) = $this->getWasabiCredentials();
+
+        /**
+         * Assume Role
+         *
+         * This code expects that you have AWS credentials set up per:
+         * https://docs.aws.amazon.com/sdk-for-php/v3/developer-guide/guide_credentials.html
+         */
+        $client = new StsClient([
+            'endpoint' => 'https://sts.wasabisys.com',
+            'region' => 'us-east-1',
+            'version' => '2011-06-15',
+            'credentials' => [
+                'key'    => $accessKeyId,
+                'secret' => $secretKey,
+            ],
+        ]);
+
+
+        try {
+            $result = $client->assumeRole([
+                'RoleArn' => $roleToAssumeArn,
+                'RoleSessionName' => 'codeceptsession'
+            ]);
+            // output AssumedRole credentials, you can use these credentials
+            // to initiate a new AWS Service client with the IAM Role's permissions
+
+            $this->renderRcloneConfig($result['Credentials']['AccessKeyId'], $result['Credentials']['SecretAccessKey'],$result['Credentials']['SessionToken']);
+        } catch (AwsException $e) {
+            // output error message if fails
+            codecept_debug($e->getMessage());
+        }
+    }
+
     /**
      * @return array
      */

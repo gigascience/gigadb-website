@@ -30,8 +30,8 @@ Feature:
   @ok @wasabi @storage
   Scenario: Group Developers can read data in live environment
     Given I configure rclone with a Developer account
-    When I run the command to download file "test.txt" from the "live" environment
-    Then I can see "live/test.txt" on my local filesystem
+    When I run the command to download file "DoNotDelete.txt" from the "live" environment
+    Then I can see "live/DoNotDelete.txt" on my local filesystem
 
 
   @ok @wasabi @storage
@@ -81,11 +81,15 @@ Feature:
   @ok @wasabi @storage
   Scenario: Group Developers cannot delete data in live environment
     Given I configure rclone with a Developer account
-    When I run the command to delete a file on the live environment
+    When I run the command to delete existing file
     Then the file is not deleted
 
-  Scenario: Role Admin can delete data in live environment
-  Scenario: Role Admin can manage IAM Users and keys
+  @ok @wasabi @storage
+  Scenario: Developer assuming the Admin Role can delete data in live environment
+    Given I assume the Admin role
+    And I run the command to upload a file to the "live" environment
+    When I run the command to delete a file on the "live" environment
+    Then the file is deleted from the "live" environment
 
 
   Scenario: User Migration can read data in live environment
