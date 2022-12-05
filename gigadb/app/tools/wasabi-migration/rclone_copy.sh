@@ -115,6 +115,8 @@ do
         echo "$(date +'%Y/%m/%d %H:%M:%S') DEBUG  : Found directory $source_dataset_path" >> "$LOGFILE"
         echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Attempting to copy dataset ${current_doi} to ${destination_dataset_path}"  >> "$LOGFILE"
 
+        # Continue running script if there is an error executing rclone copy
+        set +e
         # Perform data transfer to Wasabi
         rclone copy "$source_dataset_path" "$destination_dataset_path" \
             --create-empty-src-dirs \
@@ -123,11 +125,12 @@ do
             --stats-log-level DEBUG >> "$LOGFILE"
 
         # Check exit code for rclone command
-        if [ $? -eq 0 ] 
+        rclone_exit_code=$?
+        if [ $rclone_exit_code -eq 0 ]
         then 
             echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Successfully copied files to Wasabi for DOI: $current_doi" >> "$LOGFILE"
         else 
-            echo "$(date +'%Y/%m/%d %H:%M:%S') ERROR  : Problem with copying files to Wasabi by rclone: " >&2 >> "$LOGFILE"
+            echo "$(date +'%Y/%m/%d %H:%M:%S') ERROR  : Problem with copying files to Wasabi - rclone has exit code: $rclone_exit_code" >> "$LOGFILE"
         fi
     fi
 
