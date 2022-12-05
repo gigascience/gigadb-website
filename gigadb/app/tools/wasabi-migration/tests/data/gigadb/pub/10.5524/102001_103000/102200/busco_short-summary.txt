@@ -1,0 +1,12 @@
+Complete BUSCOs(C)	Complete and single-copy BUSCOs(S)	Complete and duplicated BUSCOs(D)	Fragmented BUSCOs(F)	Missing BUSCOs(M)	Total Lineage BUSCOs
+1583 (98.08%)	1191 (73.79%)	392 (24.29%)	10 (0.62%)	21 (1.30%)	1614
+
+	***** Results: *****
+
+	C:98.08%[S:73.79%,D:24.29%],F:0.62%,M:1.30%,n:1614
+	1583	Complete BUSCOs (C)			   
+	1191	Complete and single-copy BUSCOs (S)	   
+	392	Complete and duplicated BUSCOs (D)	   
+	10	Fragmented BUSCOs (F)			   
+	21	Missing BUSCOs (M)			   
+	1614	Total BUSCO groups searched		   

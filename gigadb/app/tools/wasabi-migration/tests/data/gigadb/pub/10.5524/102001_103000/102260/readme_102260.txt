@@ -1,0 +1,24 @@
+[DOI] 10.5524/102260
+
+[Title] Supporting data for "Discovery of Druggable Cancer-Specific Pathways with Application in Acute Myeloid Leukemia"
+
+[Release Date] 2022-09-02
+
+[Citation] Trac, Q, T; Zhou, T; Pawitan, Y; Vu, T, N (2022): Supporting data for "Discovery of Druggable Cancer-Specific Pathways with Application in Acute Myeloid Leukemia" GigaScience Database. http://dx.doi.org/10.5524/102260
+
+[Data Type] Software,Bioinformatics
+
+[Dataset Summary]  An individualized cancer therapy is ideally chosen to target the cancer&rsquo;s driving biological pathways, but identifying such pathways is challenging because of their underlying heterogeneity and there is no guarantee that they are druggable. We hypothesize that a cancer with an activated druggable cancer-specific pathway (DCSP) is more likely to respond to the relevant drug. Here we develop and validate a systematic method to search for such DCSPs, by (i) introducing a pathway activation score (PAS) that integrates cancer-specific driver mutations and gene expression profile, and drug-specific gene targets; (ii) applying the method to identify DCSPs from pan-cancer datasets; (iii) analysing the correlation between PAS and the response to relevant drugs. In total, 4,794 DCSPs from 23 different cancers are discovered in the Genomics of Drug Sensitivity in Cancer database and validated in The Cancer Genome Atlas database. Supporting the hypothesis, for the DCSPs in acute myeloid leukemia, cancers with higher PASs are shown to have stronger drug response, and this is validated in the BeatAML cohort.
+
+[File Location] https://ftp.cngb.org/pub/gigadb/pub/10.5524/102001_103000/102260/
+
+[File name] - [File Description]
+readme_102260.txt  -  None
+DCSP-main.zip  -  Archival copy of the GitHub repository https://github.com/tracquangthinh/DCSP downloaded 23 Aug 2022. Discovery of Druggable Cancer-Specific Pathway (DCSP) resources. For most recent updates please visit the GitHub repository. Released under a GLP-3.0 license.
+
+
+[License]
+All files and data are distributed under the Creative Commons Attribution-CC0 License unless specifically stated otherwise, see http://gigadb.org/site/term for more details.
+
+[Comments]
+[End]
