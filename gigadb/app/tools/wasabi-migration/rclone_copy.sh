@@ -13,10 +13,6 @@ LOGFILE="$LOGDIR/migration_$(date +'%Y%m%d_%H%M%S').log"
 mkdir -p $LOGDIR
 touch $LOGFILE
 
-# Spin up swatch daemon
-SWATCHDOG_CONFIG="/app/config/swatchdog.conf"
-swatchdog -c $SWATCHDOG_CONFIG -t $LOGFILE --daemon
-
 # Default is to copy TEST data to dev directory in Wasabi
 SOURCE_PATH="/app/tests/data/gigadb/pub/10.5524"
 DESTINATION_PATH="wasabi:gigadb-datasets/dev/pub/10.5524"
@@ -144,5 +140,5 @@ done
 
 echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Finished batch copy process to Wasabi" >> "$LOGFILE"
 
-# Shutdown swatchdog daemon
-#ps -ef | grep "migration" | grep -v "grep" | awk '{print $1}' | xargs -r kill -9
+
+
