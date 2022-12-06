@@ -106,7 +106,6 @@ class DeveloperSteps extends \Codeception\Actor
     {
         $targetDir =  getenv("REPO_NAME")."/".(new DateTimeImmutable())->format('Y-m-d-H.i.A');
         system("rclone --config=/project/tests/_output/developer.conf copy --s3-no-check-bucket /project/tests/_data/sample.txt wasabiTest:gigadb-datasets/$env/tests/$targetDir", $status);
-        $this->I->assertEquals(self::EXIT_CODE_OK, $status);
     }
 
     /**
@@ -118,6 +117,17 @@ class DeveloperSteps extends \Codeception\Actor
         $output = shell_exec("rclone --config=/project/tests/_output/developer.conf ls wasabiTest:$root/tests/$targetDir");
         $this->I->assertTrue(str_contains($output,"sample.txt"));
     }
+
+    /**
+     * @Then I cannot see that file on the remote filesystem under :root
+     */
+    public function iCannotSeeThatFileOnTheRemoteFilesystemUnder($root)
+    {
+        $targetDir =  getenv("REPO_NAME")."/".(new DateTimeImmutable())->format('Y-m-d-H.i.A');
+        $output = shell_exec("rclone --config=/project/tests/_output/developer.conf ls wasabiTest:$root/tests/$targetDir");
+        $this->I->assertFalse(str_contains($output,"sample.txt"));
+    }
+
 
     /**
      * @When I run the command to delete a file on the :env environment
