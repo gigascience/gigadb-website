@@ -97,8 +97,14 @@ Feature:
     When I run the command to download file "DoNotDelete.txt" from the "live" environment
     Then I can see "live/DoNotDelete.txt" on my local filesystem
 
+  @ok @wasabi @storage
   Scenario: User Migration can write data in live environment
+    Given I configure rclone with a "Migration user" account
+    When I run the command to upload a file to the "live" environment
+    Then I can see that file on the remote filesystem under "gigadb-datasets/live"
+
   Scenario: User Migration can read data in staging environment
+
   Scenario: User Migration can write data in staging environment
 
   Scenario: User Migration cannot write data in CI environment
