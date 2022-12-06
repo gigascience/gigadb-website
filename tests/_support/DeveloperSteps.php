@@ -21,6 +21,9 @@ class DeveloperSteps extends \Codeception\Actor
     /** @const url of cnhk-infra variables  */
     const MISC_VARIABLES_URL = "https://gitlab.com/api/v4/projects/gigascience%2Fcnhk-infra/variables";
 
+    /** @const url of Forks variables  */
+    const FORKS_VARIABLES_URL = "https://gitlab.com/api/v4/groups/3501869/variables" ;
+
     public function __construct(AcceptanceTester $I)
     {
         $this->I = $I;
@@ -217,19 +220,22 @@ class DeveloperSteps extends \Codeception\Actor
     }
 
     /**
+     * @param string $variablesEndpoint
+     * @param string $accessKeyVariableName
+     * @param string $secretKeyVariableName
      * @return array
      */
-    public function getWasabiCredentials(): array
+    public function getWasabiCredentials(string $variablesEndpoint = self::MISC_VARIABLES_URL, string $accessKeyVariableName = "wasabi_group_developer_test_access_key_id", string $secretKeyVariableName = "wasabi_group_developer_test_secret_access_key" ): array
     {
         $client = new \GuzzleHttp\Client();
         try {
-            $response = $client->get(self::MISC_VARIABLES_URL . "/wasabi_group_developer_test_access_key_id", [
+            $response = $client->get( "$variablesEndpoint/$accessKeyVariableName", [
                 'headers' => [
                     'PRIVATE-TOKEN' => getenv("GITLAB_PRIVATE_TOKEN")
                 ],
             ]);
             $accessKeyId = json_decode($response->getBody(), true)["value"];
-            $response = $client->get(self::MISC_VARIABLES_URL . "/wasabi_group_developer_test_secret_access_key", [
+            $response = $client->get( "$variablesEndpoint/$secretKeyVariableName", [
                 'headers' => [
                     'PRIVATE-TOKEN' => getenv("GITLAB_PRIVATE_TOKEN")
                 ],
