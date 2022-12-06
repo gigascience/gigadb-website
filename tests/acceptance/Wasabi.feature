@@ -127,8 +127,11 @@ Feature:
     When I run the command to upload a file to the "dev" environment
     Then I cannot see that file on the remote filesystem under "gigadb-datasets/dev"
 
+  @ok @wasabi @storage
   Scenario: User Migration cannot delete data in live environment
-
+    Given I configure rclone with a "Migration user" account
+    When I run the command to delete existing file
+    Then the file is not deleted
 
 
   Scenario: Group Curators can read data in live environment
@@ -140,7 +143,3 @@ Feature:
   Scenario: Group Curators cannot write data in dev environment
 
   Scenario: Group Curators cannot delete data in live environment
-
-
-  Scenario: Group Curators cannot manage IAM Users and keys
-  Scenario: Group Developers cannot manage IAM Users and keys
