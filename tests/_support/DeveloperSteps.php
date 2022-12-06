@@ -30,18 +30,30 @@ class DeveloperSteps extends \Codeception\Actor
     }
 
     /**
-     * @Given I configure rclone with a Developer account
+     * @Given I configure rclone with a :accountType account
      *
      *  - first retrieve the test access keys and secret keys from Gitlab variables
      *  - then, generate an Rclone configuration file from a Twig template, interpolating the variables from previous steps
      *  - finally, assert that the configuration has been generated correctly
      *
+     * @param $accountType
      */
-    public function iConfigureRcloneWithADeveloperAccount()
+    public function iConfigureRcloneWithAAccount($accountType)
     {
+        switch ($accountType) {
+            case "Developer":
+                $accessKeyToRetrieve = "CODECEPTDEV_WASABI_ACCESS_KEY_ID";
+                $secretKeyToRetrieve = "CODECEPTDEV_WASABI_SECRET_ACCESS_KEY";
+                break;
+            case "Migration user":
+                $accessKeyToRetrieve = "MIGRATION_ALT_WASABI_ACCESS_KEY_ID";
+                $secretKeyToRetrieve = "MIGRATION_ALT_WASABI_SECRET_ACCESS_KEY";
+                break;
+        }
+
         list($accessKeyId, $secretKey) = $this->getWasabiCredentials(self::FORKS_VARIABLES_URL,
-                                                    "CODECEPTDEV_WASABI_ACCESS_KEY_ID",
-                                                    "CODECEPTDEV_WASABI_SECRET_ACCESS_KEY");
+            $accessKeyToRetrieve,
+            $secretKeyToRetrieve);
 
         $this->renderRcloneConfig($accessKeyId, $secretKey);
 
