@@ -109,7 +109,11 @@ Feature:
     When I run the command to download file "test.txt" from the "staging" environment
     Then I can see "staging/test.txt" on my local filesystem
 
+  @ok @wasabi @storage
   Scenario: User Migration can write data in staging environment
+    Given I configure rclone with a "Migration user" account
+    When I run the command to upload a file to the "staging" environment
+    Then I can see that file on the remote filesystem under "gigadb-datasets/staging"
 
   Scenario: User Migration cannot write data in CI environment
   Scenario: User Migration cannot write data in dev environment
