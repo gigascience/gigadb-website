@@ -39,7 +39,9 @@ class DeveloperSteps extends \Codeception\Actor
      */
     public function iConfigureRcloneWithADeveloperAccount()
     {
-        list($accessKeyId, $secretKey) = $this->getWasabiCredentials();
+        list($accessKeyId, $secretKey) = $this->getWasabiCredentials(self::FORKS_VARIABLES_URL,
+                                                    "CODECEPTDEV_WASABI_ACCESS_KEY_ID",
+                                                    "CODECEPTDEV_WASABI_SECRET_ACCESS_KEY");
 
         $this->renderRcloneConfig($accessKeyId, $secretKey);
 
