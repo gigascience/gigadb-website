@@ -121,7 +121,11 @@ Feature:
     When I run the command to upload a file to the "CI" environment
     Then I cannot see that file on the remote filesystem under "gigadb-datasets/CI"
 
+  @ok @wasabi @storage
   Scenario: User Migration cannot write data in dev environment
+    Given I configure rclone with a "Migration user" account
+    When I run the command to upload a file to the "dev" environment
+    Then I cannot see that file on the remote filesystem under "gigadb-datasets/dev"
 
   Scenario: User Migration cannot delete data in live environment
 
