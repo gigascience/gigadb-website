@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source .secrets
+source /app/.secrets
 
 serverName=$(uname -a | cut -f2 -d' ')
 date=$(date)
