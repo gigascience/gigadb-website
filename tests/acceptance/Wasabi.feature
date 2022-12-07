@@ -139,8 +139,13 @@ Feature:
     When I run the command to download file "DoNotDelete.txt" from the "live" environment
     Then I can see "live/DoNotDelete.txt" on my local filesystem
 
-
+  @ok @wasabi @storage
   Scenario: Group Curators can write data in live environment
+    Given I configure rclone with a "Curator" account
+    When I run the command to upload a file to the "live" environment
+    Then I can see that file on the remote filesystem under "gigadb-datasets/live"
+
+
   Scenario: Group Curators can read data in staging environment
   Scenario: Group Curators can write data in staging environment
 
