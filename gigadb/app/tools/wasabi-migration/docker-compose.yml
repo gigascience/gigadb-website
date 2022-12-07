@@ -15,16 +15,7 @@ services:
     volumes:
       - ./config:/root/.config/rclone
       - .:/app
-
-  swatchdog:
-    build:
-      context: .
-      dockerfile: Swatchdog-Dockerfile
-    volumes:
-      - .:/app
-    command: /bin/bash spinup_swatchdog_daemon.sh
-
-
+        
   rclone_cngb:
     image: rclone:cngb
     volumes:
