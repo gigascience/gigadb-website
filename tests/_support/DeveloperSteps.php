@@ -45,6 +45,10 @@ class DeveloperSteps extends \Codeception\Actor
                 $accessKeyToRetrieve = "CODECEPTDEV_WASABI_ACCESS_KEY_ID";
                 $secretKeyToRetrieve = "CODECEPTDEV_WASABI_SECRET_ACCESS_KEY";
                 break;
+            case "Curator":
+                $accessKeyToRetrieve = "CODECEPTCUR_WASABI_ACCESS_KEY_ID";
+                $secretKeyToRetrieve = "CODECEPTCUR_WASABI_SECRET_ACCESS_KEY";
+                break;
             case "Migration user":
                 $accessKeyToRetrieve = "MIGRATION_ALT_WASABI_ACCESS_KEY_ID";
                 $secretKeyToRetrieve = "MIGRATION_ALT_WASABI_SECRET_ACCESS_KEY";

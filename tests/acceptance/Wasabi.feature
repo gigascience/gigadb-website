@@ -133,8 +133,13 @@ Feature:
     When I run the command to delete existing file
     Then the file is not deleted
 
-
+  @ok @wasabi @storage
   Scenario: Group Curators can read data in live environment
+    Given I configure rclone with a "Curator" account
+    When I run the command to download file "DoNotDelete.txt" from the "live" environment
+    Then I can see "live/DoNotDelete.txt" on my local filesystem
+
+
   Scenario: Group Curators can write data in live environment
   Scenario: Group Curators can read data in staging environment
   Scenario: Group Curators can write data in staging environment
