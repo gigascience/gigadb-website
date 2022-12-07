@@ -37,46 +37,47 @@ Feature:
   @ok @wasabi @storage
   Scenario: Group Developers can write data in dev environment
     Given I configure rclone with a "Developer" account
-    When I run the command to upload a file to the "dev" environment
-    Then I can see that file on the remote filesystem under "gigadb-datasets/dev"
+    When I run the command to upload file "Developer_dev_writable_test.txt" to the "dev" environment
+    Then I can see the file "Developer_dev_writable_test.txt" on the "dev" environment
+
   @ok @wasabi @storage
   Scenario: Group Developers can write data in CI environment
     Given I configure rclone with a "Developer" account
-    When I run the command to upload a file to the "CI" environment
-    Then I can see that file on the remote filesystem under "gigadb-datasets/CI"
+    When I run the command to upload file "Developer_CI_writable_test.txt" to the "CI" environment
+    Then I can see the file "Developer_CI_writable_test.txt" on the "CI" environment
 
   @ok @wasabi @storage
   Scenario: Group Developers can write data in staging environment
     Given I configure rclone with a "Developer" account
-    When I run the command to upload a file to the "staging" environment
-    Then I can see that file on the remote filesystem under "gigadb-datasets/staging"
+    When I run the command to upload file "Developer_staging_writable_test.txt" to the "staging" environment
+    Then I can see the file "Developer_staging_writable_test.txt" on the "staging" environment
 
   @ok @wasabi @storage
   Scenario: Group Developers can write data in live environment
     Given I configure rclone with a "Developer" account
-    When I run the command to upload a file to the "live" environment
-    Then I can see that file on the remote filesystem under "gigadb-datasets/live"
+    When I run the command to upload file "Developer_live_writable_test.txt" to the "live" environment
+    Then I can see the file "Developer_live_writable_test.txt" on the "live" environment
 
   @ok @wasabi @storage
   Scenario: Group Developers can delete data in dev environment
     Given I configure rclone with a "Developer" account
-    And I run the command to upload a file to the "dev" environment
-    When I run the command to delete the file uploaded to the "dev" environment
-    Then the file is deleted from the "dev" environment
+    And I run the command to upload file "Developer_dev_deletable_test.txt" to the "dev" environment
+    When I run the command to delete the file "Developer_dev_deletable_test.txt" uploaded to the "dev" environment
+    Then the file "Developer_dev_deletable_test.txt" is deleted from the "dev" environment
 
   @ok @wasabi @storage
   Scenario: Group Developers can delete data in CI environment
     Given I configure rclone with a "Developer" account
-    And I run the command to upload a file to the "CI" environment
-    When I run the command to delete the file uploaded to the "CI" environment
-    Then the file is deleted from the "CI" environment
+    And I run the command to upload file "Developer_CI_deletable_test.txt" to the "CI" environment
+    When I run the command to delete the file "Developer_CI_deletable_test.txt" uploaded to the "CI" environment
+    Then the file "Developer_CI_deletable_test.txt" is deleted from the "CI" environment
 
   @ok @wasabi @storage
   Scenario: Group Developers can delete data in staging environment
     Given I configure rclone with a "Developer" account
-    And I run the command to upload a file to the "staging" environment
-    When I run the command to delete the file uploaded to the "staging" environment
-    Then the file is deleted from the "staging" environment
+    And I run the command to upload file "Developer_staging_deletable_test.txt" to the "staging" environment
+    When I run the command to delete the file "Developer_staging_deletable_test.txt" uploaded to the "staging" environment
+    Then the file "Developer_staging_deletable_test.txt" is deleted from the "staging" environment
 
   @ok @wasabi @storage
   Scenario: Group Developers cannot delete data in live environment
@@ -87,9 +88,9 @@ Feature:
   @ok @wasabi @storage
   Scenario: Developer assuming the Admin Role can delete data in live environment
     Given I assume the Admin role
-    And I run the command to upload a file to the "live" environment
-    When I run the command to delete a file on the "live" environment
-    Then the file is deleted from the "live" environment
+    And I run the command to upload file "DeveloperAsAdmin_live_deletable_test.txt" to the "live" environment
+    When I run the command to delete the file "DeveloperAsAdmin_live_deletable_test.txt" on the "live" environment
+    Then the file "DeveloperAsAdmin_live_deletable_test.txt" is deleted from the "live" environment
 
   @ok @wasabi @storage
   Scenario: User Migration can read data in live environment
@@ -100,8 +101,8 @@ Feature:
   @ok @wasabi @storage
   Scenario: User Migration can write data in live environment
     Given I configure rclone with a "Migration user" account
-    When I run the command to upload a file to the "live" environment
-    Then I can see that file on the remote filesystem under "gigadb-datasets/live"
+    When I run the command to upload file "Migration_live_writable_test.txt" to the "live" environment
+    Then I can see the file "Migration_live_writable_test.txt" on the "live" environment
 
   @ok @wasabi @storage
   Scenario: User Migration can read data in staging environment
@@ -112,20 +113,20 @@ Feature:
   @ok @wasabi @storage
   Scenario: User Migration can write data in staging environment
     Given I configure rclone with a "Migration user" account
-    When I run the command to upload a file to the "staging" environment
-    Then I can see that file on the remote filesystem under "gigadb-datasets/staging"
+    When I run the command to upload file "Migration_staging_writable_test.txt" to the "staging" environment
+    Then I can see the file "Migration_staging_writable_test.txt" on the "staging" environment
 
   @ok @wasabi @storage
   Scenario: User Migration cannot write data in CI environment
     Given I configure rclone with a "Migration user" account
-    When I run the command to upload a file to the "CI" environment
-    Then I cannot see that file on the remote filesystem under "gigadb-datasets/CI"
+    When I run the command to upload file "Migration_CI_unwritable_test.txt" to the "CI" environment
+    Then I cannot see the file "Migration_CI_unwritable_test.txt" on the "CI" environment
 
-  @ok @wasabi @storage
+  @todo
   Scenario: User Migration cannot write data in dev environment
     Given I configure rclone with a "Migration user" account
-    When I run the command to upload a file to the "dev" environment
-    Then I cannot see that file on the remote filesystem under "gigadb-datasets/dev"
+    When I run the command to upload file "Migration_dev_unwritable_test.txt" to the "dev" environment
+    Then I cannot see the file "Migration_dev_unwritable_test.txt" on the "dev" environment
 
   @ok @wasabi @storage
   Scenario: User Migration cannot delete data in live environment
@@ -142,8 +143,8 @@ Feature:
   @ok @wasabi @storage
   Scenario: Group Curators can write data in live environment
     Given I configure rclone with a "Curator" account
-    When I run the command to upload a file to the "live" environment
-    Then I can see that file on the remote filesystem under "gigadb-datasets/live"
+    When I run the command to upload file "Curator_live_writable_test.txt" to the "live" environment
+    Then I can see the file "Curator_live_writable_test.txt" on the "live" environment
 
   @ok @wasabi @storage
   Scenario: Group Curators can read data in staging environment
@@ -154,20 +155,20 @@ Feature:
   @ok @wasabi @storage
   Scenario: Group Curators can write data in staging environment
     Given I configure rclone with a "Curator" account
-    When I run the command to upload a file to the "staging" environment
-    Then I can see that file on the remote filesystem under "gigadb-datasets/staging"
+    When I run the command to upload file "Curator_staging_writable_test.txt" to the "staging" environment
+    Then I can see the file "Curator_staging_writable_test.txt" on the "staging" environment
 
   @ok @wasabi @storage
   Scenario: Group Curators cannot write data in CI environment
     Given I configure rclone with a "Curator" account
-    When I run the command to upload a file to the "CI" environment
-    Then I cannot see that file on the remote filesystem under "gigadb-datasets/CI"
+    When I run the command to upload file "Curator_CI_unwritable_test.txt" to the "CI" environment
+    Then I cannot see the file "Curator_CI_unwritable_test.txt" on the "CI" environment
 
   @ok @wasabi @storage
   Scenario: Group Curators cannot write data in dev environment
     Given I configure rclone with a "Curator" account
-    When I run the command to upload a file to the "dev" environment
-    Then I cannot see that file on the remote filesystem under "gigadb-datasets/dev"
+    When I run the command to upload file "Curator_dev_unwritable_test.txt" to the "dev" environment
+    Then I cannot see the file "Curator_dev_unwritable_test.txt" on the "dev" environment
 
   @ok @wasabi @storage
   Scenario: Group Curators cannot delete data in live environment

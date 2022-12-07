@@ -104,42 +104,48 @@ class DeveloperSteps extends \Codeception\Actor
     }
 
     /**
-     * @When I run the command to upload a file to the :env environment
+     * @When I run the command to upload file :file to the :env environment
      */
-    public function iRunTheCommandToUploadAFileToTheEnvironment($env)
+    public function iRunTheCommandToUploadFileToTheEnvironment($file, $env)
     {
         $targetDir =  getenv("REPO_NAME")."/".(new DateTimeImmutable())->format('Y-m-d-H.i.A');
-        system("rclone --config=/project/tests/_output/developer.conf copy --s3-no-check-bucket /project/tests/_data/sample.txt wasabiTest:gigadb-datasets/$env/tests/$targetDir", $status);
+        system("rclone --config=/project/tests/_output/developer.conf copy --s3-no-check-bucket /project/tests/_data/$file wasabiTest:gigadb-datasets/$env/tests/$targetDir", $status);
     }
 
     /**
-     * @Then I can see that file on the remote filesystem under :root
+     * @Then I can see the file :file on the :env environment
      */
-    public function iCanSeeThatFileOnTheRemoteFilesystemUnder($root)
+    public function iCanSeeTheFileOnTheEnvironment($file, $env)
     {
+        $this->I->wait(2);
         $targetDir =  getenv("REPO_NAME")."/".(new DateTimeImmutable())->format('Y-m-d-H.i.A');
-        $output = shell_exec("rclone --config=/project/tests/_output/developer.conf ls wasabiTest:$root/tests/$targetDir");
-        $this->I->assertTrue(str_contains($output,"sample.txt"));
+        $output = shell_exec("rclone --config=/project/tests/_output/developer.conf ls wasabiTest:gigadb-datasets/$env/tests/$targetDir");
+        codecept_debug($targetDir);
+        codecept_debug($output);
+        $this->I->assertTrue(str_contains($output,$file));
     }
 
     /**
-     * @Then I cannot see that file on the remote filesystem under :root
+     * @Then I cannot see the file :file on the :env environment
      */
-    public function iCannotSeeThatFileOnTheRemoteFilesystemUnder($root)
+    public function iCannotSeeTheFileOnTheEnvironment($file, $env)
     {
+        $this->I->wait(2);
         $targetDir =  getenv("REPO_NAME")."/".(new DateTimeImmutable())->format('Y-m-d-H.i.A');
-        $output = shell_exec("rclone --config=/project/tests/_output/developer.conf ls wasabiTest:$root/tests/$targetDir");
-        $this->I->assertFalse(str_contains($output,"sample.txt"));
+        $output = shell_exec("rclone --config=/project/tests/_output/developer.conf ls wasabiTest:gigadb-datasets/$env/tests/$targetDir");
+        codecept_debug($targetDir);
+        codecept_debug($output);
+        $this->I->assertFalse(str_contains($output,$file));
     }
 
 
     /**
-     * @When I run the command to delete a file on the :env environment
+     * @When I run the command to delete the file :file on the :env environment
      */
-    public function iRunTheCommandToDeleteAFileOnTheEnvironment($env)
+    public function iRunTheCommandToDeleteTheFileOnTheEnvironment($file, $env)
     {
         $targetDir =  getenv("REPO_NAME")."/".(new DateTimeImmutable())->format('Y-m-d-H.i.A');
-        system("rclone --config=/project/tests/_output/developer.conf delete --s3-no-check-bucket wasabiTest:gigadb-datasets/$env/tests/$targetDir/sample.txt",$status);
+        system("rclone --config=/project/tests/_output/developer.conf delete --s3-no-check-bucket wasabiTest:gigadb-datasets/$env/tests/$targetDir/$file",$status);
     }
 
     /**
@@ -161,23 +167,21 @@ class DeveloperSteps extends \Codeception\Actor
 
 
     /**
-     * @When I run the command to delete the file uploaded to the :env environment
+     * @When I run the command to delete the file :file uploaded to the :env environment
      */
-    public function iRunTheCommandToDeleteTheFileUploadedToTheEnvironment($env)
+    public function iRunTheCommandToDeleteTheFileUploadedToTheEnvironment($file, $env)
     {
         $targetDir =  getenv("REPO_NAME")."/".(new DateTimeImmutable())->format('Y-m-d-H.i.A');
-        $targetFile = "sample.txt";
-        system("rclone --config=/project/tests/_output/developer.conf delete --s3-no-check-bucket wasabiTest:gigadb-datasets/$env/tests/$targetDir/$targetFile",$status);
+        system("rclone --config=/project/tests/_output/developer.conf delete --s3-no-check-bucket wasabiTest:gigadb-datasets/$env/tests/$targetDir/$file",$status);
     }
 
     /**
-     * @Then the file is deleted from the :env environment
+     * @Then the file :file is deleted from the :env environment
      */
-    public function theFileIsDeletedFromTheEnvironment($env)
+    public function theFileIsDeletedFromTheEnvironment($file,$env)
     {
         $targetDir =  getenv("REPO_NAME")."/".(new DateTimeImmutable())->format('Y-m-d-H.i.A');
-        $targetFile = "sample.txt";
-        $output = shell_exec("rclone --config=/project/tests/_output/developer.conf ls wasabiTest:gigadb-datasets/$env/tests/$targetDir/$targetFile");
+        $output = shell_exec("rclone --config=/project/tests/_output/developer.conf ls wasabiTest:gigadb-datasets/$env/tests/$targetDir/$file");
         $this->I->assertNull($output);
     }
 
@@ -239,7 +243,6 @@ class DeveloperSteps extends \Codeception\Actor
             ]);
             // output AssumedRole credentials, you can use these credentials
             // to initiate a new AWS Service client with the IAM Role's permissions
-
             $this->renderRcloneConfig($result['Credentials']['AccessKeyId'], $result['Credentials']['SecretAccessKey'],$result['Credentials']['SessionToken']);
         } catch (AwsException $e) {
             // output error message if fails
