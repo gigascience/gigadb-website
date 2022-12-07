@@ -15,7 +15,8 @@ services:
     volumes:
       - ./config:/root/.config/rclone
       - .:/app
-        
+    command: /app/spin_up_swatchdog.sh
+
   rclone_cngb:
     image: rclone:cngb
     volumes:
