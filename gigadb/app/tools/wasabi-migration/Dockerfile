@@ -10,6 +10,7 @@ RUN apk update \
         ca-certificates \
         fuse \
         curl \
+        swatch \
     && cd /tmp \
     && curl "https://downloads.rclone.org/${RCLONE_VERSION}/rclone-${RCLONE_VERSION}-linux-${ARCH}.zip" -o "/tmp/rclone-${RCLONE_VERSION}-linux-${ARCH}.zip" \
     && unzip /tmp/rclone-*-linux-${ARCH}.zip \
