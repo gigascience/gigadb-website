@@ -13,6 +13,16 @@ LOGFILE="$LOGDIR/migration_$(date +'%Y%m%d_%H%M%S').log"
 mkdir -p $LOGDIR
 touch $LOGFILE
 
+# Make the latest log file available for swatchdog
+if [ -f $APP_SOURCE/logs/rclone_latest.log ];then
+  mv $APP_SOURCE/logs/rclone_latest.log $APP_SOURCE/logs/rclone_latest.log.previous_run || true
+  ln -s $LOGFILE $APP_SOURCE/logs/rclone_latest.log
+else
+  ln -s $LOGFILE $APP_SOURCE/logs/rclone_latest.log
+fi
+
+
+
 # Default is to copy TEST data to dev directory in Wasabi
 SOURCE_PATH="/app/tests/data/gigadb/pub/10.5524"
 DESTINATION_PATH="wasabi:gigadb-datasets/dev/pub/10.5524"
