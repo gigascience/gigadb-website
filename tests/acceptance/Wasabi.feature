@@ -169,4 +169,8 @@ Feature:
     When I run the command to upload a file to the "dev" environment
     Then I cannot see that file on the remote filesystem under "gigadb-datasets/dev"
 
+  @ok @wasabi @storage
   Scenario: Group Curators cannot delete data in live environment
+    Given I configure rclone with a "Curator" account
+    When I run the command to delete existing file
+    Then the file is not deleted
