@@ -122,7 +122,7 @@ Feature:
     When I run the command to upload file "Migration_CI_unwritable_test.txt" to the "CI" environment
     Then I cannot see the file "Migration_CI_unwritable_test.txt" on the "CI" environment
 
-  @todo @incorrect-policy
+  @ok @wasabi @storage
   Scenario: User Migration cannot write data in dev environment
     Given I configure rclone with a "Migration user" account
     When I run the command to upload file "Migration_dev_unwritable_test.txt" to the "dev" environment
