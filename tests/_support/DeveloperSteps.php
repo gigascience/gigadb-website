@@ -14,6 +14,7 @@ class DeveloperSteps extends \Codeception\Actor
 {
     protected $I;
     protected $module;
+    protected $targetDir;
 
     /** @const int represents the value of status code returned by successful CLI command */
     const EXIT_CODE_OK = 0 ;
@@ -27,6 +28,7 @@ class DeveloperSteps extends \Codeception\Actor
     public function __construct(AcceptanceTester $I)
     {
         $this->I = $I;
+        $this->targetDir = getenv("REPO_NAME")."/".(new DateTimeImmutable())->format('Y-m-d.A');
     }
 
     /**
@@ -108,8 +110,7 @@ class DeveloperSteps extends \Codeception\Actor
      */
     public function iRunTheCommandToUploadFileToTheEnvironment($file, $env)
     {
-        $targetDir =  getenv("REPO_NAME")."/".(new DateTimeImmutable())->format('Y-m-d-H.i.A');
-        system("rclone --config=/project/tests/_output/developer.conf copy --s3-no-check-bucket /project/tests/_data/$file wasabiTest:gigadb-datasets/$env/tests/$targetDir", $status);
+        system("rclone --config=/project/tests/_output/developer.conf copy --s3-no-check-bucket /project/tests/_data/$file wasabiTest:gigadb-datasets/$env/tests/".$this->targetDir, $status);
     }
 
     /**
@@ -117,11 +118,7 @@ class DeveloperSteps extends \Codeception\Actor
      */
     public function iCanSeeTheFileOnTheEnvironment($file, $env)
     {
-        $this->I->wait(2);
-        $targetDir =  getenv("REPO_NAME")."/".(new DateTimeImmutable())->format('Y-m-d-H.i.A');
-        $output = shell_exec("rclone --config=/project/tests/_output/developer.conf ls wasabiTest:gigadb-datasets/$env/tests/$targetDir");
-        codecept_debug($targetDir);
-        codecept_debug($output);
+        $output = shell_exec("rclone --config=/project/tests/_output/developer.conf ls wasabiTest:gigadb-datasets/$env/tests/".$this->targetDir);
         $this->I->assertTrue(str_contains($output,$file));
     }
 
@@ -130,11 +127,7 @@ class DeveloperSteps extends \Codeception\Actor
      */
     public function iCannotSeeTheFileOnTheEnvironment($file, $env)
     {
-        $this->I->wait(2);
-        $targetDir =  getenv("REPO_NAME")."/".(new DateTimeImmutable())->format('Y-m-d-H.i.A');
-        $output = shell_exec("rclone --config=/project/tests/_output/developer.conf ls wasabiTest:gigadb-datasets/$env/tests/$targetDir");
-        codecept_debug($targetDir);
-        codecept_debug($output);
+        $output = shell_exec("rclone --config=/project/tests/_output/developer.conf ls wasabiTest:gigadb-datasets/$env/tests/".$this->targetDir);
         $this->I->assertFalse(str_contains($output,$file));
     }
 
@@ -144,8 +137,7 @@ class DeveloperSteps extends \Codeception\Actor
      */
     public function iRunTheCommandToDeleteTheFileOnTheEnvironment($file, $env)
     {
-        $targetDir =  getenv("REPO_NAME")."/".(new DateTimeImmutable())->format('Y-m-d-H.i.A');
-        system("rclone --config=/project/tests/_output/developer.conf delete --s3-no-check-bucket wasabiTest:gigadb-datasets/$env/tests/$targetDir/$file",$status);
+        system("rclone --config=/project/tests/_output/developer.conf delete --s3-no-check-bucket wasabiTest:gigadb-datasets/$env/tests/".$this->targetDir."/$file",$status);
     }
 
     /**
@@ -171,8 +163,7 @@ class DeveloperSteps extends \Codeception\Actor
      */
     public function iRunTheCommandToDeleteTheFileUploadedToTheEnvironment($file, $env)
     {
-        $targetDir =  getenv("REPO_NAME")."/".(new DateTimeImmutable())->format('Y-m-d-H.i.A');
-        system("rclone --config=/project/tests/_output/developer.conf delete --s3-no-check-bucket wasabiTest:gigadb-datasets/$env/tests/$targetDir/$file",$status);
+        system("rclone --config=/project/tests/_output/developer.conf delete --s3-no-check-bucket wasabiTest:gigadb-datasets/$env/tests/".$this->targetDir."/$file",$status);
     }
 
     /**
@@ -180,8 +171,7 @@ class DeveloperSteps extends \Codeception\Actor
      */
     public function theFileIsDeletedFromTheEnvironment($file,$env)
     {
-        $targetDir =  getenv("REPO_NAME")."/".(new DateTimeImmutable())->format('Y-m-d-H.i.A');
-        $output = shell_exec("rclone --config=/project/tests/_output/developer.conf ls wasabiTest:gigadb-datasets/$env/tests/$targetDir/$file");
+        $output = shell_exec("rclone --config=/project/tests/_output/developer.conf ls wasabiTest:gigadb-datasets/$env/tests/".$this->targetDir."/$file");
         $this->I->assertNull($output);
     }
 
