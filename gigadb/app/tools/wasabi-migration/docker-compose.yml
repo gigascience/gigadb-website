@@ -23,3 +23,6 @@ services:
       - ./config:/root/.config/rclone
       - .:/app
       - /data/gigadb/pub/10.5524/:/live-data/gigadb/pub/10.5524/:ro
+    environment:
+      HOST_HOSTNAME: "cngb-gigadb-bak"
+    command: /app/spin_up_swatchdog.sh
