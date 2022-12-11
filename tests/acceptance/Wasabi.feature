@@ -53,10 +53,10 @@ Feature:
     Then I can see the file "Developer_staging_writable_test.txt" on the "staging" environment
 
   @ok @wasabi @storage
-  Scenario: Group Developers can write data in live environment
+  Scenario: Group Developers cannot write data in live environment
     Given I configure rclone with a "Developer" account
-    When I run the command to upload file "Developer_live_writable_test.txt" to the "live" environment
-    Then I can see the file "Developer_live_writable_test.txt" on the "live" environment
+    When I run the command to upload file "Developer_live_unwritable_test.txt" to the "live" environment
+    Then I cannot see the file "Developer_live_unwritable_test.txt" on the "CI" environment
 
   @ok @wasabi @storage
   Scenario: Group Developers can delete data in dev environment
