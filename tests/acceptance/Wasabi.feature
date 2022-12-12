@@ -175,3 +175,9 @@ Feature:
     Given I configure rclone with a "Curator" account
     When I run the command to delete existing file
     Then the file is not deleted
+
+  @ok @wasabi @storage @AllowListBuckets
+  Scenario: Group Curators can see list of buckets in console
+    Given I configure rclone with a "Curator" account
+    When I run the command to list buckets
+    Then I should see the list of buckets
