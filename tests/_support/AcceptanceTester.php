@@ -1,4 +1,5 @@
 <?php
+
 use Facebook\WebDriver\WebDriverKeys;
 use Codeception\Util\Locator;
 
@@ -67,7 +68,7 @@ class AcceptanceTester extends \Codeception\Actor
      */
     public function iShouldSeeATextField($id)
     {
-        $this->seeElement('input',['id' => $id, 'type' => "text"]);
+        $this->seeElement('input', ['id' => $id, 'type' => "text"]);
     }
 
     /**
@@ -75,7 +76,7 @@ class AcceptanceTester extends \Codeception\Actor
      */
     public function iShouldSeeAPasswordField($id)
     {
-        $this->seeElement('input',['id' => $id, 'type' => "password"]);
+        $this->seeElement('input', ['id' => $id, 'type' => "password"]);
     }
 
     /**
@@ -94,14 +95,14 @@ class AcceptanceTester extends \Codeception\Actor
      */
     public function iShouldSeeADropdownFieldWithValues($id, \Behat\Gherkin\Node\TableNode $preferredLinks)
     {
-        $this->seeElement('select',['id' => $id]);
+        $this->seeElement('select', ['id' => $id]);
 
         foreach ($preferredLinks->getRows() as $index => $row) {
             if ($index === 0) { // first row to define fields
                 $keys = $row;
                 continue;
             }
-            $this->seeElement('option',[ 'value'=> $row[0] ]);
+            $this->seeElement('option', [ 'value' => $row[0] ]);
         }
     }
 
@@ -110,7 +111,7 @@ class AcceptanceTester extends \Codeception\Actor
      */
     public function iShouldSeeACheckboxField($id)
     {
-        $this->seeElement('input',['id' => $id, 'type' => "checkbox"]);
+        $this->seeElement('input', ['id' => $id, 'type' => "checkbox"]);
     }
 
     /**
@@ -118,7 +119,7 @@ class AcceptanceTester extends \Codeception\Actor
      */
     public function iShouldSeeALinkTo($title, $url)
     {
-        $this->seeLink($title,$url);
+        $this->seeLink($title, $url);
     }
 
     /**
@@ -133,7 +134,7 @@ class AcceptanceTester extends \Codeception\Actor
      */
     public function iShouldSeeASubmitButton($value)
     {
-        $this->seeElement('input',['value' => $value, 'type' => "submit"]);
+        $this->seeElement('input', ['value' => $value, 'type' => "submit"]);
     }
 
     /**
@@ -141,7 +142,7 @@ class AcceptanceTester extends \Codeception\Actor
      */
     public function iShouldSeeADisabledSubmitButton($value)
     {
-        $this->seeElement(Locator::find('input', ['type' => 'submit', 'value' => $value, 'disabled' =>'disabled']));
+        $this->seeElement(Locator::find('input', ['type' => 'submit', 'value' => $value, 'disabled' => 'disabled']));
     }
 
     /**
@@ -158,7 +159,7 @@ class AcceptanceTester extends \Codeception\Actor
      */
     public function iFillInTheFieldOfWith($attribute, $fieldName, $value)
     {
-        $this->fillField([$attribute => $fieldName],$value);
+        $this->fillField([$attribute => $fieldName], $value);
     }
 
     /**
@@ -166,7 +167,7 @@ class AcceptanceTester extends \Codeception\Actor
      */
     public function iSelectFromTheField($option, $fieldName)
     {
-        $this->selectOption(["id" => $fieldName],$option);
+        $this->selectOption(["id" => $fieldName], $option);
     }
 
     /**
@@ -217,7 +218,6 @@ class AcceptanceTester extends \Codeception\Actor
     public function iPressReturnOnTheElement($elementXPath)
     {
         $this->pressKey($elementXPath, WebDriverKeys::RETURN_KEY);
-
     }
 
     /**
@@ -233,7 +233,7 @@ class AcceptanceTester extends \Codeception\Actor
      */
     public function iShouldSeeAnElementWith($id, $class)
     {
-        $this->seeElement(['id'=>$id], ['class'=>$class]);
+        $this->seeElement(['id' => $id], ['class' => $class]);
     }
 
     /**
@@ -261,7 +261,7 @@ class AcceptanceTester extends \Codeception\Actor
      */
     public function iClickTheTableSettings($table)
     {
-        $this->click("#".$table);
+        $this->click("#" . $table);
         $this->wait(1);
     }
 

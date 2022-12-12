@@ -26,5 +26,4 @@ class AuthorSteps #extends \Codeception\Actor
         $this->I->fillField('LoginForm[password]', 'gigadb');
         $this->I->iPressTheButton('Login');
     }
-
 }

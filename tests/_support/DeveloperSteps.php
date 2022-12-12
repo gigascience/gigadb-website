@@ -28,7 +28,7 @@ class DeveloperSteps extends \Codeception\Actor
     public function __construct(AcceptanceTester $I)
     {
         $this->I = $I;
-        $this->targetDir = getenv("REPO_NAME")."/".(new DateTimeImmutable())->format('Y-m-d.A');
+        $this->targetDir = getenv("REPO_NAME") . "/" . (new DateTimeImmutable())->format('Y-m-d.A');
     }
 
     /**
@@ -57,9 +57,11 @@ class DeveloperSteps extends \Codeception\Actor
                 break;
         }
 
-        list($accessKeyId, $secretKey) = $this->getWasabiCredentials(self::FORKS_VARIABLES_URL,
+        list($accessKeyId, $secretKey) = $this->getWasabiCredentials(
+            self::FORKS_VARIABLES_URL,
             $accessKeyToRetrieve,
-            $secretKeyToRetrieve);
+            $secretKeyToRetrieve
+        );
 
         $this->renderRcloneConfig($accessKeyId, $secretKey);
 
@@ -73,7 +75,6 @@ class DeveloperSteps extends \Codeception\Actor
     {
         system("rclone --config=/project/tests/_output/developer.conf lsd wasabiTest:", $status);
         $this->I->assertEquals(self::EXIT_CODE_OK, $status);
-
     }
 
     /**
@@ -82,8 +83,8 @@ class DeveloperSteps extends \Codeception\Actor
     public function iShouldSeeBuckets()
     {
         $output = shell_exec("rclone --config=/project/tests/_output/developer.conf lsd wasabiTest:");
-        $this->I->assertTrue(str_contains($output," -1 gigadb-datasets"));
-        $this->I->assertTrue(str_contains($output," -1 test-gigadb-datasets"));
+        $this->I->assertTrue(str_contains($output, " -1 gigadb-datasets"));
+        $this->I->assertTrue(str_contains($output, " -1 test-gigadb-datasets"));
     }
 
     /**
@@ -91,7 +92,7 @@ class DeveloperSteps extends \Codeception\Actor
      */
     public function iRunTheCommandToDownloadFileFromTheEnvironment($file, $env)
     {
-        $outputDir =  (new DateTimeImmutable())->format('Y-m-d-H')."-".getmypid();
+        $outputDir =  (new DateTimeImmutable())->format('Y-m-d-H') . "-" . getmypid();
         system("rclone --config=/project/tests/_output/developer.conf copy wasabiTest:gigadb-datasets/$env/$file /project/tests/_output/$outputDir/$env/$file", $status);
         $this->I->assertEquals(self::EXIT_CODE_OK, $status);
     }
@@ -101,7 +102,7 @@ class DeveloperSteps extends \Codeception\Actor
      */
     public function iCanSeeOnMyLocalFilesystem($file)
     {
-        $outputDir =  (new DateTimeImmutable())->format('Y-m-d-H')."-".getmypid();
+        $outputDir =  (new DateTimeImmutable())->format('Y-m-d-H') . "-" . getmypid();
         $this->I->assertFileExists("/project/tests/_output/$outputDir/$file");
     }
 
@@ -110,7 +111,7 @@ class DeveloperSteps extends \Codeception\Actor
      */
     public function iRunTheCommandToUploadFileToTheEnvironment($file, $env)
     {
-        system("rclone --config=/project/tests/_output/developer.conf copy --s3-no-check-bucket /project/tests/_data/$file wasabiTest:gigadb-datasets/$env/tests/".$this->targetDir, $status);
+        system("rclone --config=/project/tests/_output/developer.conf copy --s3-no-check-bucket /project/tests/_data/$file wasabiTest:gigadb-datasets/$env/tests/" . $this->targetDir, $status);
     }
 
     /**
@@ -118,8 +119,8 @@ class DeveloperSteps extends \Codeception\Actor
      */
     public function iCanSeeTheFileOnTheEnvironment($file, $env)
     {
-        $output = shell_exec("rclone --config=/project/tests/_output/developer.conf ls wasabiTest:gigadb-datasets/$env/tests/".$this->targetDir);
-        $this->I->assertTrue(str_contains($output,$file));
+        $output = shell_exec("rclone --config=/project/tests/_output/developer.conf ls wasabiTest:gigadb-datasets/$env/tests/" . $this->targetDir);
+        $this->I->assertTrue(str_contains($output, $file));
     }
 
     /**
@@ -127,8 +128,8 @@ class DeveloperSteps extends \Codeception\Actor
      */
     public function iCannotSeeTheFileOnTheEnvironment($file, $env)
     {
-        $output = shell_exec("rclone --config=/project/tests/_output/developer.conf ls wasabiTest:gigadb-datasets/$env/tests/".$this->targetDir);
-        $this->I->assertFalse(str_contains($output,$file));
+        $output = shell_exec("rclone --config=/project/tests/_output/developer.conf ls wasabiTest:gigadb-datasets/$env/tests/" . $this->targetDir);
+        $this->I->assertFalse(str_contains($output, $file));
     }
 
 
@@ -137,7 +138,7 @@ class DeveloperSteps extends \Codeception\Actor
      */
     public function iRunTheCommandToDeleteTheFileOnTheEnvironment($file, $env)
     {
-        system("rclone --config=/project/tests/_output/developer.conf delete --s3-no-check-bucket wasabiTest:gigadb-datasets/$env/tests/".$this->targetDir."/$file",$status);
+        system("rclone --config=/project/tests/_output/developer.conf delete --s3-no-check-bucket wasabiTest:gigadb-datasets/$env/tests/" . $this->targetDir . "/$file", $status);
     }
 
     /**
@@ -145,8 +146,7 @@ class DeveloperSteps extends \Codeception\Actor
      */
     public function iRunTheCommandToDeleteExistingFile()
     {
-        system("rclone --config=/project/tests/_output/developer.conf delete --s3-no-check-bucket wasabiTest:gigadb-datasets/live/DoNotDelete.txt",$status);
-
+        system("rclone --config=/project/tests/_output/developer.conf delete --s3-no-check-bucket wasabiTest:gigadb-datasets/live/DoNotDelete.txt", $status);
     }
     /**
      * @Then the file is not deleted
@@ -154,7 +154,7 @@ class DeveloperSteps extends \Codeception\Actor
     public function theFileIsNotDeleted()
     {
         $output = shell_exec("rclone --config=/project/tests/_output/developer.conf ls wasabiTest:gigadb-datasets/live/DoNotDelete.txt");
-        $this->I->assertTrue(str_contains($output,"  35 DoNotDelete.txt"));
+        $this->I->assertTrue(str_contains($output, "  35 DoNotDelete.txt"));
     }
 
 
@@ -163,15 +163,15 @@ class DeveloperSteps extends \Codeception\Actor
      */
     public function iRunTheCommandToDeleteTheFileUploadedToTheEnvironment($file, $env)
     {
-        system("rclone --config=/project/tests/_output/developer.conf delete --s3-no-check-bucket wasabiTest:gigadb-datasets/$env/tests/".$this->targetDir."/$file",$status);
+        system("rclone --config=/project/tests/_output/developer.conf delete --s3-no-check-bucket wasabiTest:gigadb-datasets/$env/tests/" . $this->targetDir . "/$file", $status);
     }
 
     /**
      * @Then the file :file is deleted from the :env environment
      */
-    public function theFileIsDeletedFromTheEnvironment($file,$env)
+    public function theFileIsDeletedFromTheEnvironment($file, $env)
     {
-        $output = shell_exec("rclone --config=/project/tests/_output/developer.conf ls wasabiTest:gigadb-datasets/$env/tests/".$this->targetDir."/$file");
+        $output = shell_exec("rclone --config=/project/tests/_output/developer.conf ls wasabiTest:gigadb-datasets/$env/tests/" . $this->targetDir . "/$file");
         $this->I->assertNull($output);
     }
 
@@ -180,7 +180,7 @@ class DeveloperSteps extends \Codeception\Actor
      * @param $secretKey
      * @return void
      */
-    public function renderRcloneConfig($accessKeyId, $secretKey, $sessionToken=null): void
+    public function renderRcloneConfig($accessKeyId, $secretKey, $sessionToken = null): void
     {
         $loader = new \Twig\Loader\FilesystemLoader('/project/tests/_data/RcloneConfigs');
         $twig = new \Twig\Environment($loader);
@@ -193,7 +193,7 @@ class DeveloperSteps extends \Codeception\Actor
                     'wasabi_group_developer_test_session_token' => $sessionToken,
                 ]),
             );
-        } catch (\Twig\Error\LoaderError|\Twig\Error\RuntimeError|\Twig\Error\SyntaxError $e) {
+        } catch (\Twig\Error\LoaderError | \Twig\Error\RuntimeError | \Twig\Error\SyntaxError $e) {
             codecept_debug($e->getMessage());
         }
     }
@@ -233,7 +233,7 @@ class DeveloperSteps extends \Codeception\Actor
             ]);
             // output AssumedRole credentials, you can use these credentials
             // to initiate a new AWS Service client with the IAM Role's permissions
-            $this->renderRcloneConfig($result['Credentials']['AccessKeyId'], $result['Credentials']['SecretAccessKey'],$result['Credentials']['SessionToken']);
+            $this->renderRcloneConfig($result['Credentials']['AccessKeyId'], $result['Credentials']['SecretAccessKey'], $result['Credentials']['SessionToken']);
         } catch (AwsException $e) {
             // output error message if fails
             codecept_debug($e->getMessage());
@@ -246,17 +246,17 @@ class DeveloperSteps extends \Codeception\Actor
      * @param string $secretKeyVariableName
      * @return array
      */
-    public function getWasabiCredentials(string $variablesEndpoint = self::MISC_VARIABLES_URL, string $accessKeyVariableName = "wasabi_group_developer_test_access_key_id", string $secretKeyVariableName = "wasabi_group_developer_test_secret_access_key" ): array
+    public function getWasabiCredentials(string $variablesEndpoint = self::MISC_VARIABLES_URL, string $accessKeyVariableName = "wasabi_group_developer_test_access_key_id", string $secretKeyVariableName = "wasabi_group_developer_test_secret_access_key"): array
     {
         $client = new \GuzzleHttp\Client();
         try {
-            $response = $client->get( "$variablesEndpoint/$accessKeyVariableName", [
+            $response = $client->get("$variablesEndpoint/$accessKeyVariableName", [
                 'headers' => [
                     'PRIVATE-TOKEN' => getenv("GITLAB_PRIVATE_TOKEN")
                 ],
             ]);
             $accessKeyId = json_decode($response->getBody(), true)["value"];
-            $response = $client->get( "$variablesEndpoint/$secretKeyVariableName", [
+            $response = $client->get("$variablesEndpoint/$secretKeyVariableName", [
                 'headers' => [
                     'PRIVATE-TOKEN' => getenv("GITLAB_PRIVATE_TOKEN")
                 ],
@@ -267,5 +267,4 @@ class DeveloperSteps extends \Codeception\Actor
         }
         return array($accessKeyId, $secretKey);
     }
-
 }

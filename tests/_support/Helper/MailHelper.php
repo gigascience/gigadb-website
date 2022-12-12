@@ -1,4 +1,5 @@
 <?php
+
 namespace Helper;
 
 // here you can define custom actions
@@ -27,10 +28,11 @@ class MailHelper extends \Codeception\Module
     {
         $files = scandir(self::$eml_dir);
         // Iterate files and use unlink to delete them
-        foreach($files as $file){
-            $file = self::$eml_dir."/".$file;
-            if(is_file($file))
+        foreach ($files as $file) {
+            $file = self::$eml_dir . "/" . $file;
+            if (is_file($file)) {
                 unlink($file);
+            }
         }
     }
 
@@ -48,12 +50,11 @@ class MailHelper extends \Codeception\Module
     public function getLastMessage()
     {
         $messages = $this->getMessages();
-        if (empty($messages))
-        {
-            $this->fail('No messages found in eml directory: '.self::$eml_dir);
+        if (empty($messages)) {
+            $this->fail('No messages found in eml directory: ' . self::$eml_dir);
         }
         $last_msg = end($messages);
-        return self::$eml_dir."/".$last_msg;
+        return self::$eml_dir . "/" . $last_msg;
     }
 
     /**
