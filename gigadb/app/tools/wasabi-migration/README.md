@@ -3,6 +3,9 @@
 This migration tool uses [rclone](https://rclone.org) to batch copy dataset 
 files from the backup server to a Wasabi bucket.
 
+If the backup process has been stopped/exited unexpectedly, the error message will be sent
+to a gitter chatroom. This notification feature is employed by using [swatchdog](https://github.com/ToddAtkins/swatchdog).
+
 ## Prerequisites
 
 In your GitLab project, two new secret variables need to be created:
@@ -15,7 +18,16 @@ In your GitLab project, two new secret variables need to be created:
 The values of these variables are your Wasabi subuser credentials which you use 
 to access Wasabi buckets.
 
-## Configuration
+To enable the notification feature, the following credentials are also required:
+
+| Variable | Options | Environment | Value               |
+| -------- | ------- | ----------- |---------------------|
+| GITTER_API_TOKEN | Masked | All | Gitter api token    |
+| GITTER_IT_NOTIFICATION_ROOM_ID | Masked | All | Gitter chat room id |
+
+## Using migration tool on dev environment
+
+#### Configuration
 
 Change directory to the `gigadb-website/gigadb/app/tools/wasabi-migration`
 directory and make a copy of the `env.example` file called `.env`:
@@ -32,13 +44,15 @@ Also provide the name of GitLab project fork in the `REPO_NAME` variable.
 You should then be able to create the configuration file for rclone by 
 executing:
 ```
+# Create a config directory
+$ mkdir config
 $ docker-compose run --rm config
 ```
 
 Check if the configuration process has worked by looking for the
 `config/rclone.conf` file.
 
-## Test Usage
+#### Test Usage
 
 The `docker-compose run` command can be used to create an `rclone` container, 
 execute a command in its shell. It can then be discarded afterwards using `-rm` 
@@ -112,7 +126,26 @@ come from the rclone tool itself:
 	status code: 403, request id: 4FD236673B39B110, host id: iAbakIt14agdiNaRUxKsezfAO8b2Eh6ESeXLqdqZaWsXfNV8iUlTPXnAuGbBih3Fe71/HA3tgnyU
 ```
 
-## Running rclone commands in a bash shell
+#### Testing the notification feature if error occurs during the backup process
+```
+# To generate log file containing ERROR
+% docker-compose run --rm rclone /app/rclone_copy.sh --starting-doi 100001 --ending-doi 100320
+# Check the log file can be found in the logs/ dir
+# Spin up the swatchdog 
+% docker-compose up -d rclone
+Starting wasabi-migration_rclone_1 ... done
+# Check the ERROR message in the gitter room
+# Stop and remove rclone container 
+% docker stop $(docker ps -aq) && docker rm $(docker ps -aq)
+# Or chain the cmd together, so the swatchdog could recognize the latest log and capture it, and then send it gitter room
+% docker-compose run --rm rclone /app/rclone_copy.sh --starting-doi 100001 --ending-doi 100320 && docker-compose up -d rclone && docker stop $(docker ps -aq) && docker rm $(docker ps -aq)
+Creating wasabi-migration_rclone_run ... done
+Starting wasabi-migration_rclone_1 ... done
+20381927369a
+20381927369a
+```
+
+#### Running rclone commands in a bash shell
 
 It's possible to start a bash session by running the `rclone` container which
 can then be used to execute `rclone` commands in the shell:
@@ -295,4 +328,20 @@ This can be overridden using the `--max-batch-size`. For example, to increase
 the batch size to 200:
 ```
 $ docker-compose run --rm -e HOST_HOSTNAME=`hostname` rclone_cngb /app/rclone_copy.sh --starting-doi 100000 --ending-doi 100300 --max-batch-size 300
+```
+
+#### Testing the notification feature if error occurs during the backup process
+```
+# To generate log file containing ERROR
+[gigadb@cngb-gigadb-bak wasabi-migration]$ docker-compose run --rm rclone_ken_cngb /app/rclone_copy.sh --starting-doi 100002 --ending-doi 100320 
+# Check the log file can be found in the logs/ dir
+# Spin up the swatchdog 
+[gigadb@cngb-gigadb-bak wasabi-migration]$ docker-compose up -d rclone_ken_cngb 
+# Stop and remove rclone container 
+[gigadb@cngb-gigadb-bak wasabi-migration]$ docker stop $(docker ps -aq) && docker rm $(docker ps -aq)
+# Or chain the cmd together, so the swatchdog could recognize the latest log and capture it, and then send it gitter room
+[gigadb@cngb-gigadb-bak wasabi-migration]$ docker-compose run --rm rclone_ken_cngb /app/rclone_copy.sh --starting-doi 100002 --ending-doi 100320 && docker-compose up -d rclone_ken_cngb && docker stop $(docker ps -aq) && docker rm $(docker ps -aq)
+Creating wasabi-migration_rclone_ken_cngb_1 ... done
+5de195b68fdc
+5de195b68fdc
 ```
