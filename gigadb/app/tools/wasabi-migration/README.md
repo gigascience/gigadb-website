@@ -341,7 +341,7 @@ $ docker-compose run --rm -e HOST_HOSTNAME=`hostname` rclone_cngb /app/rclone_co
 [gigadb@cngb-gigadb-bak wasabi-migration]$ docker stop $(docker ps -aq) && docker rm $(docker ps -aq)
 # Or chain the cmd together, so the swatchdog could recognize the latest log and capture it, and then send it gitter room
 [gigadb@cngb-gigadb-bak wasabi-migration]$ docker-compose run --rm rclone_cngb /app/rclone_copy.sh --starting-doi 100002 --ending-doi 100320 && docker-compose up -d rclone_cngb && docker stop $(docker ps -aq) && docker rm $(docker ps -aq)
-Creating wasabi-migration_rclone_ken_cngb_1 ... done
+Creating wasabi-migration_rclone_cngb_1 ... done
 5de195b68fdc
 5de195b68fdc
 ```
