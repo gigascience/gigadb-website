@@ -333,14 +333,14 @@ $ docker-compose run --rm -e HOST_HOSTNAME=`hostname` rclone_cngb /app/rclone_co
 #### Testing the notification feature if error occurs during the backup process
 ```
 # To generate log file containing ERROR
-[gigadb@cngb-gigadb-bak wasabi-migration]$ docker-compose run --rm rclone_ken_cngb /app/rclone_copy.sh --starting-doi 100002 --ending-doi 100320 
+[gigadb@cngb-gigadb-bak wasabi-migration]$ docker-compose run --rm rclone_cngb /app/rclone_copy.sh --starting-doi 100002 --ending-doi 100320 
 # Check the log file can be found in the logs/ dir
 # Spin up the swatchdog 
-[gigadb@cngb-gigadb-bak wasabi-migration]$ docker-compose up -d rclone_ken_cngb 
+[gigadb@cngb-gigadb-bak wasabi-migration]$ docker-compose up -d rclone_cngb 
 # Stop and remove rclone container 
 [gigadb@cngb-gigadb-bak wasabi-migration]$ docker stop $(docker ps -aq) && docker rm $(docker ps -aq)
 # Or chain the cmd together, so the swatchdog could recognize the latest log and capture it, and then send it gitter room
-[gigadb@cngb-gigadb-bak wasabi-migration]$ docker-compose run --rm rclone_ken_cngb /app/rclone_copy.sh --starting-doi 100002 --ending-doi 100320 && docker-compose up -d rclone_ken_cngb && docker stop $(docker ps -aq) && docker rm $(docker ps -aq)
+[gigadb@cngb-gigadb-bak wasabi-migration]$ docker-compose run --rm rclone_cngb /app/rclone_copy.sh --starting-doi 100002 --ending-doi 100320 && docker-compose up -d rclone_cngb && docker stop $(docker ps -aq) && docker rm $(docker ps -aq)
 Creating wasabi-migration_rclone_ken_cngb_1 ... done
 5de195b68fdc
 5de195b68fdc
