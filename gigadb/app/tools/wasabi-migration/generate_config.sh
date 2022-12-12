@@ -67,6 +67,14 @@ source "./.secrets"
 # Restore default settings for variables
 set +a
 
+# Create config dir if doesn't exist
+if [[ ! -d "${APP_SOURCE}/config" ]]; then
+  echo "Creating directory: config"
+  mkdir -p ${APP_SOURCE}/config
+else
+  echo "config directory already exists"
+fi
+
 # Generate rclone configuration
 SOURCE=${APP_SOURCE}/rclone.conf.dist
 TARGET=${APP_SOURCE}/config/rclone.conf
