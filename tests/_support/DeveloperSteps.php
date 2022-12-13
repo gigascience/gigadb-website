@@ -111,7 +111,8 @@ class DeveloperSteps extends \Codeception\Actor
      */
     public function iRunTheCommandToUploadFileToTheEnvironment($file, $env)
     {
-        system("rclone --config=/project/tests/_output/developer.conf copy --s3-no-check-bucket /project/tests/_data/$file wasabiTest:gigadb-datasets/$env/tests/" . $this->targetDir, $status);
+        $output = system("rclone --config=/project/tests/_output/developer.conf copy --s3-no-check-bucket /project/tests/_data/$file wasabiTest:gigadb-datasets/$env/tests/" . $this->targetDir, $status);
+        codecept_debug($output);
     }
 
     /**
@@ -120,6 +121,7 @@ class DeveloperSteps extends \Codeception\Actor
     public function iCanSeeTheFileOnTheEnvironment($file, $env)
     {
         $output = shell_exec("rclone --config=/project/tests/_output/developer.conf ls wasabiTest:gigadb-datasets/$env/tests/" . $this->targetDir);
+        codecept_debug($output);
         $this->I->assertTrue(str_contains($output, $file));
     }
 
