@@ -1,6 +1,6 @@
 <?php
 
-namespace GigaScience;
+namespace Steps;
 
 /**
  * Class CuratorSteps

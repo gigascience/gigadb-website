@@ -1,6 +1,6 @@
 <?php
 
-namespace GigaScience;
+namespace Steps;
 
 use Aws\Sts\StsClient;
 use Aws\Exception\AwsException;
@@ -19,13 +19,13 @@ class DeveloperSteps extends \Codeception\Actor
     protected $targetDir;
 
     /** @const int represents the value of status code returned by successful CLI command */
-    const EXIT_CODE_OK = 0 ;
+    public const EXIT_CODE_OK = 0 ;
 
     /** @const url of cnhk-infra variables  */
-    const MISC_VARIABLES_URL = "https://gitlab.com/api/v4/projects/gigascience%2Fcnhk-infra/variables";
+    public const MISC_VARIABLES_URL = "https://gitlab.com/api/v4/projects/gigascience%2Fcnhk-infra/variables";
 
     /** @const url of Forks variables  */
-    const FORKS_VARIABLES_URL = "https://gitlab.com/api/v4/groups/3501869/variables" ;
+    public const FORKS_VARIABLES_URL = "https://gitlab.com/api/v4/groups/3501869/variables" ;
 
     public function __construct(\AcceptanceTester $I)
     {

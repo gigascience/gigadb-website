@@ -48,11 +48,11 @@ gherkin:
       - AcceptanceTester
     role:
       curator:
-        - \GigaScience\CuratorSteps
+        - \Steps\CuratorSteps
       author:
-        - \GigaScience\AuthorSteps
+        - \Steps\AuthorSteps
       "website user":
-        - \GigaScience\WebsiteUserSteps
+        - \Steps\WebsiteUserSteps
       developer:
-        - \GigaScience\DeveloperSteps
+        - \Steps\DeveloperSteps
 bootstrap: initdb.php
