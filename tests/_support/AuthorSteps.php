@@ -1,5 +1,7 @@
 <?php
 
+namespace GigaScience;
+
 /**
  * Class UserSteps
  * Steps specific to user story for users
@@ -11,7 +13,7 @@ class AuthorSteps #extends \Codeception\Actor
 {
     protected $I;
 
-    function __construct(AcceptanceTester $I)
+    function __construct(\AcceptanceTester $I)
     {
         $this->I = $I;
     }

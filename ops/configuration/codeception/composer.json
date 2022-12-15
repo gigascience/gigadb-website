@@ -18,5 +18,10 @@
     "guzzlehttp/guzzle": "^7.5",
     "aws/aws-sdk-php": "^3.0",
     "twig/twig": "^3.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "GigaScience\\": "/project"
+    }
   }
 }

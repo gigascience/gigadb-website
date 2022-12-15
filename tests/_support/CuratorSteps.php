@@ -1,5 +1,7 @@
 <?php
 
+namespace GigaScience;
+
 /**
  * Class CuratorSteps
  * steps specific to user story for curators
@@ -13,7 +15,7 @@ class CuratorSteps extends \Codeception\Actor
     protected $module;
 
 
-    public function __construct(AcceptanceTester $I)
+    public function __construct(\AcceptanceTester $I)
     {
         $this->I = $I;
     }

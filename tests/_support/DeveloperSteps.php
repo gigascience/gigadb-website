@@ -1,5 +1,7 @@
 <?php
 
+namespace GigaScience;
+
 use Aws\Sts\StsClient;
 use Aws\Exception\AwsException;
 
@@ -25,10 +27,10 @@ class DeveloperSteps extends \Codeception\Actor
     /** @const url of Forks variables  */
     const FORKS_VARIABLES_URL = "https://gitlab.com/api/v4/groups/3501869/variables" ;
 
-    public function __construct(AcceptanceTester $I)
+    public function __construct(\AcceptanceTester $I)
     {
         $this->I = $I;
-        $this->targetDir = getenv("REPO_NAME") . "/" . (new DateTimeImmutable())->format('Y-m-d.A');
+        $this->targetDir = getenv("REPO_NAME") . "/" . (new \DateTimeImmutable())->format('Y-m-d.A');
     }
 
     /**
@@ -92,7 +94,7 @@ class DeveloperSteps extends \Codeception\Actor
      */
     public function iRunTheCommandToDownloadFileFromTheEnvironment($file, $env)
     {
-        $outputDir =  (new DateTimeImmutable())->format('Y-m-d-H') . "-" . getmypid();
+        $outputDir =  (new \DateTimeImmutable())->format('Y-m-d-H') . "-" . getmypid();
         system("rclone --config=/project/tests/_output/developer.conf copy wasabiTest:gigadb-datasets/$env/$file /project/tests/_output/$outputDir/$env/$file", $status);
         $this->I->assertEquals(self::EXIT_CODE_OK, $status);
     }
@@ -102,7 +104,7 @@ class DeveloperSteps extends \Codeception\Actor
      */
     public function iCanSeeOnMyLocalFilesystem($file)
     {
-        $outputDir =  (new DateTimeImmutable())->format('Y-m-d-H') . "-" . getmypid();
+        $outputDir =  (new \DateTimeImmutable())->format('Y-m-d-H') . "-" . getmypid();
         $this->I->assertFileExists("/project/tests/_output/$outputDir/$file");
     }
 
