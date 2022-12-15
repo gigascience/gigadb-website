@@ -13,7 +13,7 @@ class AuthorSteps #extends \Codeception\Actor
 {
     protected $I;
 
-    function __construct(\AcceptanceTester $I)
+    public function __construct(\AcceptanceTester $I)
     {
         $this->I = $I;
     }
