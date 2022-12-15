@@ -7,8 +7,7 @@
       "Resource": [
         "arn:aws:s3:::gigadb-datasets/CI",
         "arn:aws:s3:::gigadb-datasets/CI/*"
-      ],
-      "Condition": {}
+      ]
     },
     {
       "Effect": "Allow",
@@ -16,8 +15,7 @@
       "Resource": [
         "arn:aws:s3:::gigadb-datasets/CI",
         "arn:aws:s3:::gigadb-datasets/CI/*"
-      ],
-      "Condition": {}
+      ]
     },
     {
       "Effect": "Allow",
@@ -25,8 +23,7 @@
       "Resource": [
         "arn:aws:s3:::gigadb-datasets/CI",
         "arn:aws:s3:::gigadb-datasets/CI/*"
-      ],
-      "Condition": {}
+      ]
     },
     {
       "Effect": "Allow",
@@ -34,8 +31,7 @@
       "Resource": [
         "arn:aws:s3:::gigadb-datasets/CI",
         "arn:aws:s3:::gigadb-datasets/CI/*"
-      ],
-      "Condition": {}
+      ]
     },
     {
       "Effect": "Allow",
@@ -43,8 +39,7 @@
       "Resource": [
         "arn:aws:s3:::gigadb-datasets/CI",
         "arn:aws:s3:::gigadb-datasets/CI/*"
-      ],
-      "Condition": {}
+      ]
     },
     {
       "Effect": "Allow",
@@ -52,8 +47,7 @@
       "Resource": [
         "arn:aws:s3:::gigadb-datasets/CI",
         "arn:aws:s3:::gigadb-datasets/CI/*"
-      ],
-      "Condition": {}
+      ]
     }
   ]
 }

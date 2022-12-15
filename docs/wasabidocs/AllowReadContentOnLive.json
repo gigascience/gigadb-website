@@ -7,8 +7,7 @@
       "Resource": [
         "arn:aws:s3:::gigadb-datasets/live",
         "arn:aws:s3:::gigadb-datasets/live/*"
-      ],
-      "Condition": {}
+      ]
     },
     {
       "Effect": "Allow",
@@ -16,8 +15,7 @@
       "Resource": [
         "arn:aws:s3:::gigadb-datasets/live",
         "arn:aws:s3:::gigadb-datasets/live/*"
-      ],
-      "Condition": {}
+      ]
     },
     {
       "Effect": "Allow",
@@ -25,8 +23,7 @@
       "Resource": [
         "arn:aws:s3:::gigadb-datasets/live",
         "arn:aws:s3:::gigadb-datasets/live/*"
-      ],
-      "Condition": {}
+      ]
     },
     {
       "Effect": "Allow",
@@ -34,8 +31,7 @@
       "Resource": [
         "arn:aws:s3:::gigadb-datasets/live",
         "arn:aws:s3:::gigadb-datasets/live/*"
-      ],
-      "Condition": {}
+      ]
     }
   ]
 }
