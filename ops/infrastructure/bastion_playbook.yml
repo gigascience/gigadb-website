@@ -173,6 +173,43 @@
         insertafter: '# User specific environment and startup programs\n'
         line: "GITLAB_PROJECT={{ gitlab_project }}"
 
+    - name: Add curator user
+      ansible.builtin.user:
+        name: curator
+        shell: /bin/bash
+        groups: centos
+        append: yes
+
+    - name: Add curator to sudoers
+      ansible.builtin.copy:
+        content: "curator ALL=(ALL)       NOPASSWD: /home/centos/datasetUpload.sh, /home/centos/postUpload.sh\n"
+        dest: /etc/sudoers.d/91-add-curator
+        owner: root
+        group: root
+        mode: 440
+
+    - name: Retrieve public key from gitlab variables
+      uri:
+        url: "https://gitlab.com/api/v4/projects/gigascience%2Fcnhk-infra/variables/curator_bastion_public_key"
+        method: GET
+        headers:
+          PRIVATE-TOKEN: "{{ gitlab_private_token }}"
+        status_code:
+          - 200
+      register: curator_bastion_public_key
+
+
+    - name: Add public key to authorized keys
+      ansible.builtin.copy:
+        content: "{{ curator_bastion_public_key.json.value }}"
+        dest: /home/curator/.ssh/authorized_keys
+        owner: curator
+        group: curator
+        mode: g-rw,o-rw
+
+    - name: Restart systemd sshd service
+      command: systemctl restart sshd.service
+
 - name: Create setup for generating and uploading database dump files to S3
   hosts: name_bastion_server_staging*:name_bastion_server_live*
 
