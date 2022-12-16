@@ -1,5 +1,7 @@
 <?php
 
+namespace Steps;
+
 /**
  * Class CuratorSteps
  * steps specific to user story for curators
@@ -13,7 +15,7 @@ class CuratorSteps extends \Codeception\Actor
     protected $module;
 
 
-    public function __construct(AcceptanceTester $I)
+    public function __construct(\AcceptanceTester $I)
     {
         $this->I = $I;
     }
@@ -112,7 +114,7 @@ class CuratorSteps extends \Codeception\Actor
                 $keys = $row;
                 continue;
             }
-            $this->I->seeLink($row[0],$row[1]);
+            $this->I->seeLink($row[0], $row[1]);
         }
     }
 
@@ -121,7 +123,7 @@ class CuratorSteps extends \Codeception\Actor
      */
     public function thereIsNoUserWithEmail($email)
     {
-        $dbConfig = json_decode(file_get_contents(dirname(__FILE__).'/../../protected/config/db.json'), true);
+        $dbConfig = json_decode(file_get_contents(dirname(__FILE__) . '/../../../protected/config/db.json'), true);
         shell_exec("psql -h {$dbConfig['host']} -U {$dbConfig['user']} -d {$dbConfig['user']} -c \"DELETE FROM gigadb_user WHERE email='$email'\"");
     }
 
@@ -135,7 +137,7 @@ class CuratorSteps extends \Codeception\Actor
         $this->I->fillField(['name' => 'LoginForm[username]'], 'admin@gigadb.org');
         $this->I->fillField(['name' => 'LoginForm[password]'], 'gigadb');
         $this->I->click('Login');
-        $this->I->waitForText("Home",10);
+        $this->I->waitForText("Home", 10);
     }
 
     /**
@@ -154,8 +156,6 @@ class CuratorSteps extends \Codeception\Actor
     {
         $this->I->type($keyword);
         $this->I->clickWithLeftButton(['css' => '#urltoredirect']);
-        $this->I->waitForText($keyword,5,".tag-editor-tag");
+        $this->I->waitForText($keyword, 5, ".tag-editor-tag");
     }
-
-
 }

@@ -48,9 +48,11 @@ gherkin:
       - AcceptanceTester
     role:
       curator:
-        - CuratorSteps
+        - \Steps\CuratorSteps
       author:
-        - AuthorSteps
+        - \Steps\AuthorSteps
       "website user":
-        - WebsiteUserSteps
+        - \Steps\WebsiteUserSteps
+      developer:
+        - \Steps\DeveloperSteps
 bootstrap: initdb.php

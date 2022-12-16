@@ -1,4 +1,5 @@
 <?php
+
 namespace Helper;
 
 // here you can define custom actions
@@ -6,7 +7,6 @@ namespace Helper;
 
 class Functional extends \Codeception\Module
 {
-
     /**
      * Calculate md5 checksum of response content of current page
      *
@@ -28,11 +28,9 @@ class Functional extends \Codeception\Module
     public function deleteRowByCriteria(string $table, array $criteria): void
     {
         try {
-            $this->getModule('Db')->_getDriver()->deleteQueryByCriteria($table,$criteria);
-        }
-        catch (\Exception $e) {
-            $this->debug("Couldn't delete record " . json_encode($criteria) ." from $table");
+            $this->getModule('Db')->_getDriver()->deleteQueryByCriteria($table, $criteria);
+        } catch (\Exception $e) {
+            $this->debug("Couldn't delete record " . json_encode($criteria) . " from $table");
         }
     }
-
 }

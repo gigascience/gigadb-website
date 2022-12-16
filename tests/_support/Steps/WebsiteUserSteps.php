@@ -1,5 +1,7 @@
 <?php
 
+namespace Steps;
+
 /**
  * Class WebsiteUserSteps
  * Steps specific to user story for general public
@@ -11,7 +13,7 @@ class WebsiteUserSteps extends \Codeception\Actor
 {
     protected $I;
 
-    function __construct(AcceptanceTester $I)
+    public function __construct(\AcceptanceTester $I)
     {
         $this->I = $I;
     }
@@ -33,7 +35,7 @@ class WebsiteUserSteps extends \Codeception\Actor
         $this->I->click("Files");
         $this->I->click("#files_table_settings");
         $this->I->wait(1);
-        $this->I->selectOption("form[name=myFilesSettingform] select[name=pageSize]",$pageSize);
+        $this->I->selectOption("form[name=myFilesSettingform] select[name=pageSize]", $pageSize);
         $this->I->click('#save-files-settings');
         $this->I->wait(1);
     }
@@ -49,9 +51,7 @@ class WebsiteUserSteps extends \Codeception\Actor
                 $keys = $row;
                 continue;
             }
-            $this->I->seeLink($row[0],$row[1]);
+            $this->I->seeLink($row[0], $row[1]);
         }
     }
-
-
 }

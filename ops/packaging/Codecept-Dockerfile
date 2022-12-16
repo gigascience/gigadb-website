@@ -1,5 +1,11 @@
-FROM codeception/codeception:5.0.2
+FROM codeception/codeception:5.0.4
 
 RUN apt-get update -yq \
-    && apt-get install -y postgresql-client-13 \
+    && apt-get install -y postgresql-client-13 rclone \
     && apt-get clean
+
+COPY configuration/codeception/composer.json /codecept/composer.json
+COPY configuration/codeception/composer.lock /codecept/composer.lock
+RUN composer -d /codecept install
+RUN composer -d /codecept update twig/twig
+#ENTRYPOINT [ "bash", "-c" ]

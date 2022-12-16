@@ -1,0 +1,53 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": "s3:ListBucket",
+      "Resource": [
+        "arn:aws:s3:::gigadb-datasets/live",
+        "arn:aws:s3:::gigadb-datasets/live/*"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": "s3:GetObject",
+      "Resource": [
+        "arn:aws:s3:::gigadb-datasets/live",
+        "arn:aws:s3:::gigadb-datasets/live/*"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": "s3:GetObjectVersion",
+      "Resource": [
+        "arn:aws:s3:::gigadb-datasets/live",
+        "arn:aws:s3:::gigadb-datasets/live/*"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": "s3:GetObjectAcl",
+      "Resource": [
+        "arn:aws:s3:::gigadb-datasets/live",
+        "arn:aws:s3:::gigadb-datasets/live/*"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": "s3:PutObject",
+      "Resource": [
+        "arn:aws:s3:::gigadb-datasets/live",
+        "arn:aws:s3:::gigadb-datasets/live/*"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": "s3:PutObjectAcl",
+      "Resource": [
+        "arn:aws:s3:::gigadb-datasets/live",
+        "arn:aws:s3:::gigadb-datasets/live/*"
+      ]
+    }
+  ]
+}

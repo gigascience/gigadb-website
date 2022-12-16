@@ -1,5 +1,7 @@
 <?php
 
+namespace Steps;
+
 /**
  * Class UserSteps
  * Steps specific to user story for users
@@ -11,7 +13,7 @@ class AuthorSteps #extends \Codeception\Actor
 {
     protected $I;
 
-    function __construct(AcceptanceTester $I)
+    public function __construct(\AcceptanceTester $I)
     {
         $this->I = $I;
     }
@@ -26,5 +28,4 @@ class AuthorSteps #extends \Codeception\Actor
         $this->I->fillField('LoginForm[password]', 'gigadb');
         $this->I->iPressTheButton('Login');
     }
-
 }

@@ -1,0 +1,27 @@
+{
+  "require": {
+    "codeception/codeception": "^5.0",
+    "codeception/module-apc": "^3.0",
+    "codeception/module-asserts": "^3.0",
+    "codeception/module-cli": "^2.0",
+    "codeception/module-db": "^3.0",
+    "codeception/module-filesystem": "^3.0",
+    "codeception/module-ftp": "^3.0",
+    "codeception/module-memcache": "^3.0",
+    "codeception/module-mongodb": "^3.0",
+    "codeception/module-phpbrowser": "^3.0",
+    "codeception/module-redis": "^3.0",
+    "codeception/module-rest": "^3.3",
+    "codeception/module-sequence": "^3.0",
+    "codeception/module-soap": "^3.0",
+    "codeception/module-webdriver": "^3.2",
+    "guzzlehttp/guzzle": "^7.5",
+    "aws/aws-sdk-php": "^3.0",
+    "twig/twig": "^3.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "GigaScience\\": "/project"
+    }
+  }
+}

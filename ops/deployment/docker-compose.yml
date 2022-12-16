@@ -240,11 +240,13 @@ services:
 
   codecept:
     build:
-      context: .
-      dockerfile: ../packaging/Codecept-Dockerfile
+      context: ..
+      dockerfile: packaging/Codecept-Dockerfile
     environment:
       YII_PATH: ${YII_PATH}
       YII2_PATH: ${YII2_PATH}
+      GITLAB_PRIVATE_TOKEN: ${GITLAB_PRIVATE_TOKEN}
+      REPO_NAME: ${REPO_NAME}
     volumes:
       - ${APPLICATION}/:/project
       - ${APPLICATION}/:/var/www
