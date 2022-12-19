@@ -184,8 +184,6 @@ MISC_VARIABLES_URL="https://gitlab.com/api/v4/projects/gigascience%2Fcnhk-infra/
 
 Generate the required rclone configuration:
 ```
-# Create a config directory
-$ mkdir config
 # Create rclone.conf file in config directory
 $ docker-compose run --rm config
 ```
@@ -217,17 +215,27 @@ $ pwd
 $ docker build -t rclone .
 # Tag rclone image
 $ docker tag rclone:latest rclone:cngb
-# Check there is a new image called rclone with the tag cngb
+# Build swatchdog image
+$ docker build -f Swatchdog-Dockerfile -t swatchdog .
+# Tag swatchdog image
+$ docker tag swatchdog:latest swatchdog:cngb
+# Check there are new images called rclone and swatchdog with the tag cngb
 $ docker images
+REPOSITORY                       TAG                  IMAGE ID       CREATED         SIZE
+rclone                           cngb                 ccd22e890601   7 minutes ago   61.3MB
+rclone                           latest               ccd22e890601   7 minutes ago   61.3MB
+swatchdog                        cngb                 44d987ded07f   12 days ago         60.3MB
+swatchdog                        latest               44d987ded07f   12 days ago         60.3MB
 
 # Save Docker image as a tar.gz file:
 $ docker save rclone:cngb | gzip > rclone_cngb.tar.gz
+$ docker save swatchdog:cngb | gzip > swatchdog_cngb.tar.gz
 ```
 
-You should now have 2 tar.gz files:
+You should now have 3 tar.gz files:
 ```
-$ ls *gz
-rclone_cngb.tar.gz                          wasabi-migration.tar.gz
+$ ls *.gz                  
+rclone_cngb.tar.gz      swatchdog_cngb.tar.gz   wasabi-migration.tar.gz
 ```
 
 These tar.gz files need to uploaded to the CNGB backup server using the SMOC web
@@ -238,9 +246,13 @@ to load the image:
 ```
 # Load image from tar archives
 [gigadb@cngb-gigadb-bak ~]$ docker load < rclone_cngb.tar.gz
+[gigadb@cngb-gigadb-bak ~]$ docker load < swatchdog_cngb.tar.gz 
 
 # Check image has been loaded
 [gigadb@cngb-gigadb-bak ~]$ docker images
+REPOSITORY                       TAG                 IMAGE ID            CREATED             SIZE
+rclone                           cngb                ccd22e890601        20 minutes ago      61.3 MB
+swatchdog                        cngb                44d987ded07f        12 days ago         60.3 MB
 ```
 
 
@@ -257,21 +269,32 @@ in `docker-compose.yml` since this service expects a `rclone:cngb` image (that
 has just been loaded into the backup server) to be available:
 ```
 # Check rclone version used in container
-[gigadb@cngb-gigadb-bak cngb-wasabi-migration]$ docker-compose run --rm rclone_cngb rclone version
-
+[gigadb@cngb-gigadb-bak wasabi-migration]$ docker-compose run --rm rclone_cngb rclone version
+rclone v1.60.0
+- os/version: alpine 3.16.3 (64 bit)
+- os/kernel: 3.10.0-862.14.4.el7.x86_64 (x86_64)
+- os/type: linux
+- os/arch: amd64
+- go/version: go1.19.2
+- go/linking: static
+- go/tags: none
+# Check swatchdog version used in container
+[gigadb@cngb-gigadb-bak wasabi-migration]$ docker-compose run --rm swatchdog_cngb swatchdog --version
+This is swatchdog version 3.2.4
+Built on Aug 25, 2008
+Built by E. Todd Atkins <Todd.Atkins@StanfordAlumni.ORG>
 # List dev directory contents in bucket
-[gigadb@cngb-gigadb-bak cngb-wasabi-migration]$ docker-compose run --rm rclone_cngb bash -c 'source /app/proxy_settings.sh; rclone -vv ls wasabi:gigadb-datasets/dev'
-
+[gigadb@cngb-gigadb-bak wasabi-migration]$ docker-compose run --rm rclone_cngb bash -c 'source /app/proxy_settings.sh; rclone -vv ls wasabi:gigadb-datasets/dev'
 # Migration user should also be able to list contents in live directory
-[gigadb@cngb-gigadb-bak cngb-wasabi-migration]$ docker-compose run --rm rclone_cngb bash -c 'source /app/proxy_settings.sh; rclone -vv ls wasabi:gigadb-datasets/live'
+[gigadb@cngb-gigadb-bak wasabi-migration]$ docker-compose run --rm rclone_cngb bash -c 'source /app/proxy_settings.sh; rclone -vv ls wasabi:gigadb-datasets/live'
 ```
 
 To use the batch copy script on the CNGB backup server, we need to pass it the 
-hostname of the server to the script. The hostname is provided by passing the 
-value returned by the `hostname` command which can be called using backticks. By
-default, the script will copy/upload the test data that comes with the script:
+hostname of the server to the script. The hostname value is embedded in the docker-compose.yml file,
+as an environment variable. This helps to shorten the command, and make the container services more specific to
+the CNGB backup server.By default, the script will copy/upload the test data that comes with the script:
 ```
-[gigadb@cngb-gigadb-bak cngb-wasabi-migration]$ docker-compose run --rm rclone_cngb /app/rclone_copy.sh --starting-doi 100002 --ending-doi 100020
+[gigadb@cngb-gigadb-bak wasabi-migration]$ docker-compose run --rm rclone_cngb /app/rclone_copy.sh --starting-doi 100002 --ending-doi 100020
 ```
 
 If the script determines that it is running on the CNGB backup server then it
@@ -304,7 +327,7 @@ console with your Wasabi subuser account.
 In order for the script to copy `live` GigaDB data, the `--use-live-data` option
 should be provided when calling the `rclone_copy.sh` script as follows:
 ```
-$ docker-compose run --rm rclone_cngb /app/rclone_copy.sh --starting-doi 100216 --ending-doi 100221 --use-live-data
+[gigadb@cngb-gigadb-bak wasabi-migration]$ docker-compose run --rm rclone_cngb /app/rclone_copy.sh --starting-doi 100216 --ending-doi 100221 --use-live-data
 ```
 
 This command will copy a set of real GigaDB datasets into the
@@ -325,15 +348,14 @@ The maximum number of datasets that can be uploaded has a default value of 100.
 This can be overridden using the `--max-batch-size`. For example, to increase
 the batch size to 200:
 ```
-$ docker-compose run --rm rclone_cngb /app/rclone_copy.sh --starting-doi 100000 --ending-doi 100300 --max-batch-size 300
+[gigadb@cngb-gigadb-bak wasabi-migration]$ docker-compose run --rm rclone_cngb /app/rclone_copy.sh --starting-doi 100000 --ending-doi 100300 --max-batch-size 300
 ```
 
 #### Testing the notification feature if error occurs during the backup process
 ```
 # Spin up the log monitoring service 
-% docker-compose up -d swatchdog_cngb
+[gigadb@cngb-gigadb-bak wasabi-migration]$ docker-compose up -d swatchdog_cngb
 # Check the swatchdog state
-% docker-compose ps 
 [gigadb@cngb-gigadb-bak wasabi-migration]$ docker-compose ps
              Name                            Command               State   Ports
 --------------------------------------------------------------------------------
@@ -342,6 +364,7 @@ migration_swatchdog_cngb_1
 # To generate log file containing ERROR
 [gigadb@cngb-gigadb-bak wasabi-migration]$ docker-compose run --rm rclone_cngb /app/rclone_copy.sh --starting-doi 100002 --ending-doi 100320 
 # Check the log file can be found in the logs/ dir
+# Check the ERROR message in the gitter room
 # Stop and remove rclone container 
 [gigadb@cngb-gigadb-bak wasabi-migration]$ docker stop $(docker ps -aq) && docker rm $(docker ps -aq)
 ```
