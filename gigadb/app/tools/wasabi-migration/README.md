@@ -128,21 +128,19 @@ come from the rclone tool itself:
 
 #### Testing the notification feature if error occurs during the backup process
 ```
+# Spin up the log monitoring service 
+% docker-compose up -d swatchdog
+# Check the swatchdog state
+% docker-compose ps 
+            Name                          Command               State   Ports
+-----------------------------------------------------------------------------
+wasabi-migration_swatchdog_1   swatchdog -c /app/config/s ...   Up           
 # To generate log file containing ERROR
 % docker-compose run --rm rclone /app/rclone_copy.sh --starting-doi 100001 --ending-doi 100320
 # Check the log file can be found in the logs/ dir
-# Spin up the swatchdog 
-% docker-compose up -d rclone
-Starting wasabi-migration_rclone_1 ... done
 # Check the ERROR message in the gitter room
-# Stop and remove rclone container 
+# Stop and remove containers 
 % docker stop $(docker ps -aq) && docker rm $(docker ps -aq)
-# Or chain the cmd together, so the swatchdog could recognize the latest log and capture it, and then send it gitter room
-% docker-compose run --rm rclone /app/rclone_copy.sh --starting-doi 100001 --ending-doi 100320 && docker-compose up -d rclone && docker stop $(docker ps -aq) && docker rm $(docker ps -aq)
-Creating wasabi-migration_rclone_run ... done
-Starting wasabi-migration_rclone_1 ... done
-20381927369a
-20381927369a
 ```
 
 #### Running rclone commands in a bash shell
@@ -273,7 +271,7 @@ hostname of the server to the script. The hostname is provided by passing the
 value returned by the `hostname` command which can be called using backticks. By
 default, the script will copy/upload the test data that comes with the script:
 ```
-[gigadb@cngb-gigadb-bak cngb-wasabi-migration]$ docker-compose run --rm -e HOST_HOSTNAME=`hostname` rclone_cngb /app/rclone_copy.sh --starting-doi 100002 --ending-doi 100020
+[gigadb@cngb-gigadb-bak cngb-wasabi-migration]$ docker-compose run --rm rclone_cngb /app/rclone_copy.sh --starting-doi 100002 --ending-doi 100020
 ```
 
 If the script determines that it is running on the CNGB backup server then it
@@ -306,7 +304,7 @@ console with your Wasabi subuser account.
 In order for the script to copy `live` GigaDB data, the `--use-live-data` option
 should be provided when calling the `rclone_copy.sh` script as follows:
 ```
-$ docker-compose run --rm -e HOST_HOSTNAME=`hostname` rclone_cngb /app/rclone_copy.sh --starting-doi 100216 --ending-doi 100221 --use-live-data
+$ docker-compose run --rm rclone_cngb /app/rclone_copy.sh --starting-doi 100216 --ending-doi 100221 --use-live-data
 ```
 
 This command will copy a set of real GigaDB datasets into the
@@ -317,7 +315,7 @@ latest log file in the `logs` directory.
 If the `--use-live-data` flag is used and the script determines that it is not 
 running on the CNGB server then the script will exit with an error message:
 ```
-[centos@ip-xxx-xx-x-x]$ sudo docker-compose run --rm -e HOST_HOSTNAME=`hostname` rclone /app/rclone_copy.sh --use-live-data --starting-doi 100002 --ending-doi 100020
+[centos@ip-xxx-xx-x-x]$ sudo docker-compose run --rm rclone /app/rclone_copy.sh --use-live-data --starting-doi 100002 --ending-doi 100020
 Cannot copy live data because we are not on backup server - exiting...
 ```
 
@@ -327,21 +325,23 @@ The maximum number of datasets that can be uploaded has a default value of 100.
 This can be overridden using the `--max-batch-size`. For example, to increase
 the batch size to 200:
 ```
-$ docker-compose run --rm -e HOST_HOSTNAME=`hostname` rclone_cngb /app/rclone_copy.sh --starting-doi 100000 --ending-doi 100300 --max-batch-size 300
+$ docker-compose run --rm rclone_cngb /app/rclone_copy.sh --starting-doi 100000 --ending-doi 100300 --max-batch-size 300
 ```
 
 #### Testing the notification feature if error occurs during the backup process
 ```
+# Spin up the log monitoring service 
+% docker-compose up -d swatchdog_cngb
+# Check the swatchdog state
+% docker-compose ps 
+[gigadb@cngb-gigadb-bak wasabi-migration]$ docker-compose ps
+             Name                            Command               State   Ports
+--------------------------------------------------------------------------------
+wasabi-                           swatchdog -c /app/config/s ...   Up           
+migration_swatchdog_cngb_1      
 # To generate log file containing ERROR
 [gigadb@cngb-gigadb-bak wasabi-migration]$ docker-compose run --rm rclone_cngb /app/rclone_copy.sh --starting-doi 100002 --ending-doi 100320 
 # Check the log file can be found in the logs/ dir
-# Spin up the swatchdog 
-[gigadb@cngb-gigadb-bak wasabi-migration]$ docker-compose up -d rclone_cngb 
 # Stop and remove rclone container 
 [gigadb@cngb-gigadb-bak wasabi-migration]$ docker stop $(docker ps -aq) && docker rm $(docker ps -aq)
-# Or chain the cmd together, so the swatchdog could recognize the latest log and capture it, and then send it gitter room
-[gigadb@cngb-gigadb-bak wasabi-migration]$ docker-compose run --rm rclone_cngb /app/rclone_copy.sh --starting-doi 100002 --ending-doi 100320 && docker-compose up -d rclone_cngb && docker stop $(docker ps -aq) && docker rm $(docker ps -aq)
-Creating wasabi-migration_rclone_cngb_1 ... done
-5de195b68fdc
-5de195b68fdc
 ```
