@@ -32,3 +32,11 @@ services:
     volumes:
       - .:/app
     command: swatchdog -c /app/config/swatchdog.conf -t "/app/logs/rclone_latest.log"
+
+  swatchdog_cngb:
+    image: swatchdog:cngb
+    volumes:
+      - .:/app
+    environment:
+      HOST_HOSTNAME: "cngb-gigadb-bak"
+    command: swatchdog -c /app/config/swatchdog.conf -t "/app/logs/rclone_latest.log"
