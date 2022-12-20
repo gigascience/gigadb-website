@@ -126,6 +126,17 @@ come from the rclone tool itself:
 	status code: 403, request id: 4FD236673B39B110, host id: iAbakIt14agdiNaRUxKsezfAO8b2Eh6ESeXLqdqZaWsXfNV8iUlTPXnAuGbBih3Fe71/HA3tgnyU
 ```
 
+#### Using the `start_backup_process.sh` to start swatchdog and the backup process
+The `start_backup_process.sh` is a bash script to spin up swatchdog, start the backup process and remove the containers as the house-keeping step.
+In `dev` environment, it requires 3 arguments (starting doi, ending doi, max batch size) for executing the script, for example:
+```
+% ./start_backup_process.sh 100001 100020 100
+Creating wasabi-migration_swatchdog_1 ... done
+Creating wasabi-migration_rclone_run ... done
+c0030a95c899
+c0030a95c899
+```
+
 #### Testing the notification feature if error occurs during the backup process
 ```
 # Spin up the log monitoring service 
@@ -141,6 +152,8 @@ wasabi-migration_swatchdog_1   swatchdog -c /app/config/s ...   Up
 # Check the ERROR message in the gitter room
 # Stop and remove containers 
 % docker stop $(docker ps -aq) && docker rm $(docker ps -aq)
+# Or execute the wrapper script
+% ./start_backup_process.sh 100001 100320 100
 ```
 
 #### Running rclone commands in a bash shell
@@ -351,6 +364,15 @@ the batch size to 200:
 [gigadb@cngb-gigadb-bak wasabi-migration]$ docker-compose run --rm rclone_cngb /app/rclone_copy.sh --starting-doi 100000 --ending-doi 100300 --max-batch-size 300
 ```
 
+#### Using the `start_backup_process.sh` to start swatchdog and the backup process
+The `start_backup_process.sh` is a bash script to spin up swatchdog, start the backup process and remove the containers as the house-keeping step.
+In `live` environment, it requires 3 arguments (starting doi, ending doi, max batch size) and 1 optional argument `use-live-data` for executing the script, for example:
+```
+# By default, the wrapper script will not use live data as the source
+# Unless `true` is supplied as the 4th arguement
+[gigadb@cngb-gigadb-bak wasabi-migration]$ % ./start_backup_process.sh 100216 100221 100 true
+```
+
 #### Testing the notification feature if error occurs during the backup process
 ```
 # Spin up the log monitoring service 
@@ -367,4 +389,6 @@ migration_swatchdog_cngb_1
 # Check the ERROR message in the gitter room
 # Stop and remove rclone container 
 [gigadb@cngb-gigadb-bak wasabi-migration]$ docker stop $(docker ps -aq) && docker rm $(docker ps -aq)
+# Or execute the wrapper script
+[gigadb@cngb-gigadb-bak wasabi-migration]$ ./start_backup_process.sh 100001 100320 100
 ```
