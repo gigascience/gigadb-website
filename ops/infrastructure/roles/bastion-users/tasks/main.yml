@@ -5,25 +5,7 @@
     groups: centos
     append: yes
 
-- name: Add curator to sudoers
-  ansible.builtin.copy:
-    content: "curator ALL=(ALL)       NOPASSWD: /home/centos/datasetUpload.sh, /home/centos/postUpload.sh\n"
-    dest: /etc/sudoers.d/91-add-curator
-    owner: root
-    group: root
-    mode: 440
-
-- name: Retrieve public key from gitlab variables
-  uri:
-    url: "https://gitlab.com/api/v4/projects/gigascience%2Fcnhk-infra/variables/curator_bastion_public_key"
-    method: GET
-    headers:
-      PRIVATE-TOKEN: "{{ gitlab_private_token }}"
-    status_code:
-      - 200
-  register: curator_bastion_public_key
-
-- name: Create a .ssh directory
+- name: Create a .ssh and uploadDir directories
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
@@ -34,10 +16,32 @@
     - "/home/curator/.ssh"
     - "/home/curator/uploadDir"
 
+- name: Create directory to store keys
+  ansible.builtin.file:
+    path: "/home/centos/curator.keys"
+    state: directory
+    owner: centos
+    group: centos
+
+
+- name: generate private/public key pair
+  community.crypto.openssh_keypair:
+    path: /home/centos/curator.keys/id_ssh_rsa
+    owner: centos
+  register: pk
+
+
+- name: Add curator to sudoers
+  ansible.builtin.copy:
+    content: "curator ALL=(ALL)       NOPASSWD: /home/centos/datasetUpload.sh, /home/centos/postUpload.sh\n"
+    dest: /etc/sudoers.d/91-add-curator
+    owner: root
+    group: root
+    mode: 440
 
 - name: Add public key to authorized keys
   ansible.builtin.copy:
-    content: "{{ curator_bastion_public_key.json.value }}"
+    content: "{{ pk.public_key }}"
     dest: /home/curator/.ssh/authorized_keys
     owner: curator
     group: curator
