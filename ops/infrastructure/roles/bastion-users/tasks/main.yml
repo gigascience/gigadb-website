@@ -1,6 +1,8 @@
+- debug: msg="{{ newuser }}"
+
 - name: Add curator user
   ansible.builtin.user:
-    name: curator
+    name: "{{ newuser }}"
     shell: /bin/bash
     groups: centos
     append: yes
@@ -9,16 +11,16 @@
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
-    owner: curator
-    group: curator
+    owner: "{{ newuser }}"
+    group: "{{ newuser }}"
     mode: '0700'
   loop:
-    - "/home/curator/.ssh"
-    - "/home/curator/uploadDir"
+    - "/home/{{ newuser }}/.ssh"
+    - "/home/{{ newuser }}/uploadDir"
 
 - name: Create directory to store keys
   ansible.builtin.file:
-    path: "/home/centos/curator.keys"
+    path: "/home/centos/{{ newuser }}.keys"
     state: directory
     owner: centos
     group: centos
@@ -26,15 +28,15 @@
 
 - name: generate private/public key pair
   community.crypto.openssh_keypair:
-    path: /home/centos/curator.keys/id_ssh_rsa
+    path: "/home/centos/{{ newuser }}.keys/id_ssh_rsa"
     owner: centos
   register: pk
 
 
 - name: Add curator to sudoers
   ansible.builtin.copy:
-    content: "curator ALL=(ALL)       NOPASSWD: /home/centos/datasetUpload.sh, /home/centos/postUpload.sh\n"
-    dest: /etc/sudoers.d/91-add-curator
+    content: "{{ newuser }} ALL=(ALL)       NOPASSWD: /home/centos/datasetUpload.sh, /home/centos/postUpload.sh\n"
+    dest: "/etc/sudoers.d/91-add-{{ newuser }}"
     owner: root
     group: root
     mode: 440
@@ -42,9 +44,9 @@
 - name: Add public key to authorized keys
   ansible.builtin.copy:
     content: "{{ pk.public_key }}"
-    dest: /home/curator/.ssh/authorized_keys
-    owner: curator
-    group: curator
+    dest: "/home/{{ newuser }}/.ssh/authorized_keys"
+    owner: "{{ newuser }}"
+    group: "{{ newuser }}"
     mode: g-rw,o-rw
 
 - name: Restart systemd sshd service
