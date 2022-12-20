@@ -44,8 +44,6 @@ Also provide the name of GitLab project fork in the `REPO_NAME` variable.
 You should then be able to create the configuration file for rclone by 
 executing:
 ```
-# Create a config directory
-$ mkdir config
 $ docker-compose run --rm config
 ```
 
