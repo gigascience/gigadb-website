@@ -34,12 +34,13 @@
 
 
 - name: Add curator to sudoers
-  ansible.builtin.copy:
-    content: "{{ newuser }} ALL=(ALL)       NOPASSWD: /home/centos/datasetUpload.sh, /home/centos/postUpload.sh\n"
-    dest: "/etc/sudoers.d/91-add-{{ newuser }}"
+  ansible.builtin.lineinfile:
+    path: "/etc/sudoers.d/91-add-{{ newuser }}"
+    line: "{{ newuser }} ALL=(ALL)       NOPASSWD: /home/centos/datasetUpload.sh, /home/centos/postUpload.sh\n"
     owner: root
     group: root
     mode: 440
+    create: yes
 
 - name: Add public key to authorized keys
   ansible.builtin.copy:
