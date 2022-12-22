@@ -3,8 +3,9 @@
 PATH=/usr/local/bin:$PATH
 export PATH
 
+currentPath=$(pwd)
 if [[ $(uname -n) =~ compute ]];then
-  uploadDir=${1:-"/home/centos/uploadDir"}
+  uploadDir=${1:-"$currentPath/uploadDir"}
   cd /home/centos
   . .bash_profile
 
