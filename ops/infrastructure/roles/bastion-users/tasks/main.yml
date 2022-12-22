@@ -50,5 +50,11 @@
     group: "{{ newuser }}"
     mode: g-rw,o-rw
 
+- name: downloading the private key
+  ansible.builtin.fetch:
+    src: "/home/centos/{{ newuser }}.keys/id_ssh_rsa"
+    dest: "output/privkeys-{{ inventory_hostname }}/{{ newuser }}"
+    flat: yes
+
 - name: Restart systemd sshd service
   command: systemctl restart sshd.service
