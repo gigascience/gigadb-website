@@ -173,7 +173,6 @@
         insertafter: '# User specific environment and startup programs\n'
         line: "GITLAB_PROJECT={{ gitlab_project }}"
 
-
 - name: Create setup for generating and uploading database dump files to S3
   hosts: name_bastion_server_staging*:name_bastion_server_live*
 
