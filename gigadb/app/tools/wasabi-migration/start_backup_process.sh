@@ -51,10 +51,10 @@ sleep 5
 
 # house keeping step, stop swatchdog service
 # if the status in not empty and the backup process success
-if [ -n "$devBackupStatus" ] && [ "$devBackupStatus" -eq 0 ]; then
+if [[ -n ${devBackupStatus+x} && $devBackupStatus -eq 0 ]]; then
   docker-compose stop swatchdog
 fi
 
-if [ -n "$liveBackupStatus" ] && [ "$liveBackupStatus" -eq 0 ]; then
+if [[ -n ${liveBackupStatus+x} && $liveBackupStatus -eq 0 ]]; then
   docker-compose stop swatchdog_cngb
 fi
