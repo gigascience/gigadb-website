@@ -11,8 +11,8 @@ maxBatchSize=$3
 useLiveData="false"
 
 devBackupStatus=""
-if [ "$serverName" != "cngb-gigadb-bak" ]; then
-  if [ "$(docker-compose ps | grep "wasabi-migration_swatchdog" | grep -c "Up")" -gt 0 ]; then
+if [[ $serverName != "cngb-gigadb-bak" ]]; then
+  if [[ $(docker-compose ps | grep "wasabi-migration_swatchdog" | grep -c "Up") -gt 0 ]]; then
     # stop existing swatchdog service, if any
     docker-compose stop swatchdog || true
   fi
@@ -26,8 +26,8 @@ if [ "$serverName" != "cngb-gigadb-bak" ]; then
 fi
 
 liveBackupStatus=""
-if [ "$serverName" == "cngb-gigadb-bak" ]; then
-  if [ "$(docker-compose ps | grep "wasabi-migration_swatchdog_cngb" | grep -c "Up")" -gt 0 ]; then
+if [[ $serverName == "cngb-gigadb-bak" ]]; then
+  if [[ $(docker-compose ps | grep "wasabi-migration_swatchdog_cngb" | grep -c "Up") -gt 0 ]]; then
       # stop existing swatchdog service, if any
       docker-compose stop swatchdog || true
     fi
@@ -36,7 +36,7 @@ if [ "$serverName" == "cngb-gigadb-bak" ]; then
   docker-compose up -d swatchdog_cngb
 
   # start the backup process
-  if [ "$useLiveData" == "true" ]; then
+  if [[ $useLiveData == "true" ]]; then
     docker-compose run --rm rclone_cngb /app/rclone_copy.sh --starting-doi "$startingDoi" --ending-doi "$endingDoi" --max-batch-size "$maxBatchSize" --use-live-data
     liveBackupStatus=$?
   else
