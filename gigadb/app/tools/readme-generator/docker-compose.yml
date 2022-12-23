@@ -1,0 +1,20 @@
+version: '3.7'
+services:
+
+  tool:
+    build:
+      context: .
+    volumes:
+      # Mount source-code for development
+      - .:/app
+      - .:/logs
+      # For using model classes from file-worker tool
+      - ../../../app:/gigadb-apps
+      # Destination for readme files
+      - ./curators:/home/curators
+
+  config:
+    image: rija/docker-alpine-shell-tools:1.0.1
+    volumes:
+      - .:/app
+#    command: /app/generate_config.sh

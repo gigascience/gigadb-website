@@ -3,8 +3,7 @@
 ## Notes
 
 * Consider PSR-12 code standard via PHP-codesniffer - install tools into PHPStorm
-
-Using files-url-updater as a guide for Yii2 template
+* Using files-url-updater as a guide for Yii2 template
 
 1. Create new branch
 ```
@@ -30,7 +29,7 @@ cp -R basic/composer.lock basic/yii basic/yii.bat .
 
 6. Test yii installation
 ```
-$ docker-compose run --rm tool ./yii
+$ docker-compose run --rm tool /app/yii
 Creating readme-generator_generator_run ... done
 This is Yii version 2.0.47.
 ```
@@ -39,7 +38,24 @@ This is Yii version 2.0.47.
 
 8. Create ReadmeGeneratorController class
 
-9. List functionality required for creating readme files for datasets
+9. Use model classes from file-worker for relational object mapping. If model
+   classes are missing, create them using Gii tool:
+```
+# Check gii command line tool is working
+$ docker-compose run --rm tool /app/yii gii
+
+# Get help on how to gii/model sub command
+$ docker-compose run --rm tool /app/yii help gii/model
+
+# Requires local gigadb database from repo root
+$ ./up.sh
+
+# Generate model class from a table
+$ docker-compose run --rm tool /app/yii gii/model --tableName=dataset_author --modelClass=DatasetAuthor
+
+```
+
+11. List functionality required for creating readme files for datasets
 
 * Take DOI as a parameter to determine what dataset to create README
 * Test mode will connect with local database service
