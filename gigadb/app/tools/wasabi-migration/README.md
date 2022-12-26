@@ -125,7 +125,7 @@ come from the rclone tool itself:
 ```
 
 #### Using the `start_backup_process.sh` to start swatchdog and the backup process
-The `start_backup_process.sh` is a bash script to spin up swatchdog, start the backup process and remove the containers as the house-keeping step.
+The `start_backup_process.sh` is a bash script to spin up swatchdog, start the backup process and stop the container as the house-keeping step.
 In `dev` environment, it requires 3 arguments (starting doi, ending doi, max batch size) for executing the script, for example:
 ```
 % ./start_backup_process.sh 100001 100020 100
@@ -148,8 +148,8 @@ wasabi-migration_swatchdog_1   swatchdog -c /app/config/s ...   Up
 % docker-compose run --rm rclone /app/rclone_copy.sh --starting-doi 100001 --ending-doi 100320
 # Check the log file can be found in the logs/ dir
 # Check the ERROR message in the gitter room
-# Stop and remove containers 
-% docker stop $(docker ps -aq) && docker rm $(docker ps -aq)
+# Stop the container
+% docker-compose stop swatchdog
 # Or execute the wrapper script
 % ./start_backup_process.sh 100001 100320 100
 ```
@@ -385,8 +385,8 @@ migration_swatchdog_cngb_1
 [gigadb@cngb-gigadb-bak wasabi-migration]$ docker-compose run --rm rclone_cngb /app/rclone_copy.sh --starting-doi 100002 --ending-doi 100320 
 # Check the log file can be found in the logs/ dir
 # Check the ERROR message in the gitter room
-# Stop and remove rclone container 
-[gigadb@cngb-gigadb-bak wasabi-migration]$ docker stop $(docker ps -aq) && docker rm $(docker ps -aq)
+# Stop the container 
+[gigadb@cngb-gigadb-bak wasabi-migration]$ docker-compose stop swatchdog_cngb
 # Or execute the wrapper script
 [gigadb@cngb-gigadb-bak wasabi-migration]$ ./start_backup_process.sh 100001 100320 100
 ```
