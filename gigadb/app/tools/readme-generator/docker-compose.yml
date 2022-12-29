@@ -9,7 +9,7 @@ services:
       - .:/app
       - .:/logs
       # For using model classes from file-worker tool
-      - ../../../app:/gigadb-apps
+      - ../../:/gigadb-apps
       # Destination for readme files
       - ./curators:/home/curators
 

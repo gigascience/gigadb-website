@@ -52,10 +52,31 @@ $ ./up.sh
 
 # Generate model class from a table
 $ docker-compose run --rm tool /app/yii gii/model --tableName=dataset_author --modelClass=DatasetAuthor
-
 ```
 
-11. List functionality required for creating readme files for datasets
+10. Run create read me file function in controller
+```
+$ docker-compose run --rm tool /app/yii readme/create --doi 100935
+```
+
+11. Create and run a container to access its bash shell
+```
+$ docker-compose run tool sh
+```
+
+13. Run functional test:
+```
+$ docker-compose run --rm tool ./vendor/bin/codecept run tests/functional
+```
+
+14. Update composer packages will create a `composer.lock`. This file goes into
+version control so that the project is locked to these specific versions of the
+dependency and all developers will therefore be using.
+```
+$ docker-compose run --rm tool composer update
+```
+
+12. List functionality required for creating readme files for datasets
 
 * Take DOI as a parameter to determine what dataset to create README
 * Test mode will connect with local database service
