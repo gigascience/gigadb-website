@@ -56,7 +56,7 @@ $ docker-compose run --rm tool /app/yii gii/model --tableName=dataset_author --m
 
 10. Run create read me file function in controller
 ```
-$ docker-compose run --rm tool /app/yii readme/create --doi 100935
+$ docker-compose run --rm tool /app/yii readme/create --doi 100142
 ```
 
 11. Create and run a container to access its bash shell
@@ -71,7 +71,8 @@ $ docker-compose run --rm tool ./vendor/bin/codecept run tests/functional
 
 14. Update composer packages will create a `composer.lock`. This file goes into
 version control so that the project is locked to these specific versions of the
-dependency and all developers will therefore be using.
+dependency and all developers will therefore be using. A `composer.lock` file
+is required for autoloading to work from file-worker model classes.
 ```
 $ docker-compose run --rm tool composer update
 ```

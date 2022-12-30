@@ -285,4 +285,17 @@ class Dataset extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Relation::className(), ['dataset_id' => 'id']);
     }
+
+    /**
+     * Returns authors corresponding to Dataset.
+     * 
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAuthors()
+    {
+        // many-to-many: uses datasetAuthors relation above which uses an
+        // ActiveRecord class
+        return $this->hasMany(Author::className(), ['id' => 'author_id'])
+            ->via('datasetAuthors');
+    }
 }
