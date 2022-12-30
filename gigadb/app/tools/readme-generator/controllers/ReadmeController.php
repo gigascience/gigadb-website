@@ -90,11 +90,16 @@ class ReadmeController extends Controller
             
         // [Citation]
         $citation = "[Citation] ";
-        foreach ($dataset->authors as $author) {
-            $first_name_initial = substr($author->first_name, 0, 1);
-            $middle_name_initial = substr($author->middle_name, 0, 1);
-            $full_name = "$author->surname, $first_name_initial$middle_name_initial";
-            $citation .= "$full_name; ";
+        $authors = $dataset->authors;
+        for ($i = 0; $i < count($authors); $i++) {
+            $first_name_initial = substr($authors[$i]->first_name, 0, 1);
+            $middle_name_initial = substr($authors[$i]->middle_name, 0, 1);
+            $surname = $authors[$i]->surname;
+            $full_name = "$surname, $first_name_initial$middle_name_initial";
+            if ($i == count($authors)-1)
+                $citation .= "$full_name ";
+            else
+                $citation .= "$full_name; ";
         }
         echo "$citation\n";
         
