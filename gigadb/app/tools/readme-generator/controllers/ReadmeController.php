@@ -77,8 +77,8 @@ class ReadmeController extends Controller
         $readme = "";
 
         // Create [DOI]
-        $doi = "[DOI] 10.5524/$doi\n";
-        $readme .= $doi;
+        $citation_doi = "[DOI] 10.5524/$doi\n";
+        $readme .= $citation_doi;
 
         // Create [Title]
         $title = "[Title] $dataset->title\n";
@@ -101,10 +101,13 @@ class ReadmeController extends Controller
             else
                 $citation .= "$full_name; ";
         }
-        echo "$citation\n";
-        
 
-        
+        $publicaton_date = $dataset->publication_date;
+        $publicaton_year = substr($publicaton_date, 0, 4);
+        $citation .= "($publicaton_year): ";
+        $citation .= "$dataset->title GigaScience Database. http://dx.doi.org/10.5524/$doi\n";
+        $readme .= $citation;
+
         return $readme;
     }
 }
