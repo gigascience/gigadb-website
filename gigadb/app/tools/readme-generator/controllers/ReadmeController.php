@@ -131,6 +131,17 @@ class ReadmeController extends Controller
         $file_location = "[File Location] $dataset->ftp_site";
         $readme .= "$file_location\n";
 
+        // [File name] - [File Description]
+        $file_name_description = "[File name] - [File Description]\n";
+        // Returns array of File objects
+        $files = $dataset->files;
+        foreach ($files as $file) {
+            $file_name = $file->name;
+            $file_description = $file->description;
+            $file_name_description .= "$file_name  -  $file_description\n";
+        }
+        $readme .= "$file_name_description\n";
+        
         // print_r($dataset);
         
         return $readme;
