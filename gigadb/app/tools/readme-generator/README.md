@@ -82,7 +82,7 @@ $ docker-compose run --rm tool composer update
 12. List functionality required for creating readme files for datasets
 
 * Take DOI as a parameter to determine what dataset to create README
-* Test mode will connect with local database service
+* Test mode will connect with local database service, use 100142
 * Test in dev environment with latest database backup using doi 100314, 100310
 * Default is to print readme to standard output
 * Use flag --outdir to write readme to file in /home/curators

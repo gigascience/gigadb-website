@@ -126,7 +126,13 @@ class ReadmeController extends Controller
         // [Dataset Summary]
         $dataset_summary = "[Data Summary] $dataset->description";
         $readme .= "$dataset_summary\n";
+        
+        // [File Location]
+        $file_location = "[File Location] $dataset->ftp_site";
+        $readme .= "$file_location\n";
 
+        // print_r($dataset);
+        
         return $readme;
     }
 }
