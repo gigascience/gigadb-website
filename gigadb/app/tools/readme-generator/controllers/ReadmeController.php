@@ -108,6 +108,21 @@ class ReadmeController extends Controller
         $citation .= "$dataset->title GigaScience Database. http://dx.doi.org/10.5524/$doi\n";
         $readme .= $citation;
 
+        // [Data Type]
+        $dataset_type = "[Data Type] ";
+        // Returns array of DatasetType objects
+        $datasetTypes = $dataset->datasetTypes;
+        for ($i = 0; $i < count($datasetTypes); $i++) {
+            // $type is an ActiveQuery object
+            $type = $datasetTypes[$i]->getType();
+            $typeName = $type->one()->name;
+            if ($i == count($datasetTypes)-1)
+                $dataset_type .= $typeName;
+            else
+                $dataset_type .= "$typeName,";
+        }
+        $readme .= "$dataset_type\n";
+
         return $readme;
     }
 }

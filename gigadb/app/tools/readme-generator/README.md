@@ -52,6 +52,8 @@ $ ./up.sh
 
 # Generate model class from a table
 $ docker-compose run --rm tool /app/yii gii/model --tableName=dataset_author --modelClass=DatasetAuthor
+$ docker-compose run --rm tool /app/yii gii/model --tableName=author --modelClass=Author
+$ docker-compose run --rm tool /app/yii gii/model --tableName=dataset_type --modelClass=DataType
 ```
 
 10. Run create read me file function in controller
