@@ -123,6 +123,10 @@ class ReadmeController extends Controller
         }
         $readme .= "$dataset_type\n";
 
+        // [Dataset Summary]
+        $dataset_summary = "[Data Summary] $dataset->description";
+        $readme .= "$dataset_summary\n";
+
         return $readme;
     }
 }
