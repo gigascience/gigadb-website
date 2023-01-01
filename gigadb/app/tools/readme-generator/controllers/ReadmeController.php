@@ -22,6 +22,11 @@ class ReadmeController extends Controller
     public string $doi = "";
 
     /**
+     * @var string $outdir The output directory that the readme file should be saved in
+     */
+    public string $outdir = "";
+
+    /**
      * Specify options available to console command provided by this controller.
      * Returns a list of controller class's public properties
      * 
@@ -29,7 +34,7 @@ class ReadmeController extends Controller
      */
     public function options($actionID)
     {
-        return ['doi'];
+        return ['doi', 'outdir'];
     }
 
     /**
@@ -43,16 +48,18 @@ class ReadmeController extends Controller
     public function actionCreate(): int
     {
         $optDoi = $this->doi;
+        $optOutdir = $this->outdir;
+        
         //Return usage unless mandatory options are passed
         if(!($optDoi)) {
             $this->stdout(
-                "\nUsage:\n\t./yii readme/create --doi\n"
+                "\nUsage:\n\t./yii readme/create --doi 100142 | --outdir /home/curators".PHP_EOL
             );
             return ExitCode::USAGE;
         }
 
         try {
-            echo $this->writeReadme($optDoi);
+            echo $this->writeReadme($optDoi, $optOutdir);
         }
         catch (Exception $e) {
             $this->stdout($e->getMessage().PHP_EOL, Console::FG_RED);
@@ -67,7 +74,7 @@ class ReadmeController extends Controller
      * 
      * @throws Exception
      */
-    private function writeReadme($doi): string
+    private function writeReadme($doi, $outdir = null): string
     {
         // Check dataset exists otherwise throw exception to exit
         $dataset = Dataset::findOne(['identifier' => $doi]);
@@ -142,7 +149,14 @@ class ReadmeController extends Controller
         //[End]
         $readme[] = "[End]".PHP_EOL;
 
-        // Convert readme array to string and return
-        return implode(PHP_EOL, $readme);
+        // Convert readme array to string
+        $readmeString = implode(PHP_EOL, $readme);
+
+        // Save file if output directory exists
+        if($outdir != null && is_dir($outdir)) {
+            $filename = "$outdir/readme_$doi.txt";
+            file_put_contents($filename, $readmeString);
+        }
+        return $readmeString;
     }
 }

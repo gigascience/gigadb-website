@@ -59,6 +59,9 @@ $ docker-compose run --rm tool /app/yii gii/model --tableName=dataset_type --mod
 10. Run create read me file function in controller
 ```
 $ docker-compose run --rm tool /app/yii readme/create --doi 100142
+
+# For saving readme file
+$ docker-compose run --rm tool /app/yii readme/create --doi=100142 --outdir=/home/curators
 ```
 
 11. Create and run a container to access its bash shell
