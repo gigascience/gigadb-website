@@ -70,23 +70,14 @@ class ReadmeController extends Controller
     {
         // Check dataset exists otherwise throw exception to exit
         $dataset = Dataset::findOne(['identifier' => $doi]);
-        if (!$dataset) {
-            throw new Exception("Dataset directory for $doi not found");
-        }
+        if (!$dataset)
+            throw new Exception("Dataset $doi not found");
 
-        $readme = "";
-
-        // Create [DOI]
-        $citation_doi = "[DOI] 10.5524/$doi\n";
-        $readme .= $citation_doi;
-
-        // Create [Title]
-        $title = "[Title] $dataset->title\n";
-        $readme .= $title;
-
-        // [Release Date]
-        $release_date = "[Release Date] $dataset->publication_date\n";
-        $readme .= $release_date;
+        // Use array to store readme information
+        $readme = [ "[DOI] 10.5524/$doi".PHP_EOL, 
+            "[Title] $dataset->title".PHP_EOL,
+            "[Release Date] $dataset->publication_date".PHP_EOL
+        ];
             
         // [Citation]
         $citation = "[Citation] ";
@@ -96,17 +87,17 @@ class ReadmeController extends Controller
             $middle_name_initial = substr($authors[$i]->middle_name, 0, 1);
             $surname = $authors[$i]->surname;
             $full_name = "$surname, $first_name_initial$middle_name_initial";
-            if ($i == count($authors)-1)
+            $last_index = count($authors)-1;
+            if ($i == $last_index)
                 $citation .= "$full_name ";
             else
                 $citation .= "$full_name; ";
         }
 
-        $publicaton_date = $dataset->publication_date;
-        $publicaton_year = substr($publicaton_date, 0, 4);
+        $publicaton_year = substr($dataset->publication_date, 0, 4);
         $citation .= "($publicaton_year): ";
         $citation .= "$dataset->title GigaScience Database. http://dx.doi.org/10.5524/$doi\n";
-        $readme .= $citation;
+        $readme[] = $citation;
 
         // [Data Type]
         $dataset_type = "[Data Type] ";
@@ -116,44 +107,41 @@ class ReadmeController extends Controller
             // $type is an ActiveQuery object
             $type = $datasetTypes[$i]->getType();
             $typeName = $type->one()->name;
-            if ($i == count($datasetTypes)-1)
-                $dataset_type .= $typeName;
+            $last_index = count($datasetTypes)-1;
+            if ($i == $last_index)
+                $dataset_type .= $typeName.PHP_EOL;
             else
                 $dataset_type .= "$typeName,";
         }
-        $readme .= "$dataset_type\n";
+        $readme[] = $dataset_type;
 
         // [Dataset Summary]
-        $dataset_summary = "[Data Summary] $dataset->description";
-        $readme .= "$dataset_summary\n";
-        
+        $readme[] = "[Data Summary] $dataset->description".PHP_EOL;
+
         // [File Location]
-        $file_location = "[File Location] $dataset->ftp_site";
-        $readme .= "$file_location\n";
+        $readme[] = "[File Location] $dataset->ftp_site".PHP_EOL;
 
         // [File name] - [File Description]
-        $file_name_description = "[File name] - [File Description]\n";
+        $file_name_description = "[File name] - [File Description]".PHP_EOL;
         // Returns array of File objects
         $files = $dataset->files;
         foreach ($files as $file) {
             $file_name = $file->name;
             $file_description = $file->description;
-            $file_name_description .= "$file_name  -  $file_description\n";
+            $file_name_description .= "$file_name  -  $file_description".PHP_EOL;
         }
-        $readme .= "$file_name_description\n";
+        $readme[] = $file_name_description;
         
         // [License]
-        $license = "[License]\nAll files and data are distributed under the Creative Commons Attribution-CC0 License unless specifically stated otherwise, see http://gigadb.org/site/term for more details.\n";
-        $readme .= "$license\n";
-        
+        $readme[] = "[License]".PHP_EOL."All files and data are distributed under the Creative Commons Attribution-CC0 License unless specifically stated otherwise, see http://gigadb.org/site/term for more details.".PHP_EOL;
+
         // [Comments]
-        $comments = "[Comments]\n";
-        $readme .= "$comments\n";
-        
+        $readme[] = "[Comments]".PHP_EOL;
+
         //[End]
-        $end = "[End]\n";
-        $readme .= "$end\n";
-        
-        return $readme;
+        $readme[] = "[End]".PHP_EOL;
+
+        // Convert readme array to string and return
+        return implode(PHP_EOL, $readme);
     }
 }
