@@ -142,7 +142,17 @@ class ReadmeController extends Controller
         }
         $readme .= "$file_name_description\n";
         
-        // print_r($dataset);
+        // [License]
+        $license = "[License]\nAll files and data are distributed under the Creative Commons Attribution-CC0 License unless specifically stated otherwise, see http://gigadb.org/site/term for more details.\n";
+        $readme .= "$license\n";
+        
+        // [Comments]
+        $comments = "[Comments]\n";
+        $readme .= "$comments\n";
+        
+        //[End]
+        $end = "[End]\n";
+        $readme .= "$end\n";
         
         return $readme;
     }
