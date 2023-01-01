@@ -64,6 +64,7 @@ class ReadmeController extends Controller
 
     /**
      * For outputting readme file
+     * 
      * @throws Exception
      */
     private function writeReadme($doi): string
@@ -94,9 +95,9 @@ class ReadmeController extends Controller
                 $citation .= "$full_name; ";
         }
 
-        $publicaton_year = substr($dataset->publication_date, 0, 4);
-        $citation .= "($publicaton_year): ";
-        $citation .= "$dataset->title GigaScience Database. http://dx.doi.org/10.5524/$doi\n";
+        $publication_year = substr($dataset->publication_date, 0, 4);
+        $citation .= "($publication_year): ";
+        $citation .= "$dataset->title GigaScience Database. http://dx.doi.org/10.5524/$doi".PHP_EOL;
         $readme[] = $citation;
 
         // [Data Type]
