@@ -69,12 +69,31 @@ $ docker-compose run --rm tool /app/yii readme/create --doi=100142 --outdir=/hom
 $ docker-compose run tool sh
 ```
 
-13. Run functional test:
+12. Unit tests to check custom-written `getAuthors` function in Dataset class which
+returns the authors of a dataset based on many-to-many mapping between dataset
+and author tables via a junction `dataset_authors` table. Using test_gigadb database
+```
+$ docker-compose run --rm tool ./vendor/bin/codecept run tests/unit
+```
+
+13. Connect to database to set up test database for unit tests
+```
+# Use vagrant as password
+$ docker-compose run --rm test psql -h database -p 5432 -U gigadb postgres
+
+# Run bash script to create gigadb_test database and gigadb_test role
+$ docker-compose run --rm test gigadb/app/tools/readme-generator/bootstrap_gigadb_test.sh
+
+# Run script to create tables in gigadb_test database
+docker-compose run --rm test gigadb/app/tools/readme-generator/sql/repopulate_testdb.sql
+```
+
+14. Run functional test:
 ```
 $ docker-compose run --rm tool ./vendor/bin/codecept run tests/functional
 ```
 
-14. Update composer packages will create a `composer.lock`. This file goes into
+15. Update composer packages will create a `composer.lock`. This file goes into
 version control so that the project is locked to these specific versions of the
 dependency and all developers will therefore be using. A `composer.lock` file
 is required for autoloading to work from file-worker model classes.
@@ -82,7 +101,7 @@ is required for autoloading to work from file-worker model classes.
 $ docker-compose run --rm tool composer update
 ```
 
-12. List functionality required for creating readme files for datasets
+16. List functionality required for creating readme files for datasets
 
 * Take DOI as a parameter to determine what dataset to create README
 * Test mode will connect with local database service, use 100142
