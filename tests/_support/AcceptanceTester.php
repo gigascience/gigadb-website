@@ -323,6 +323,14 @@ class AcceptanceTester extends \Codeception\Actor
     }
 
     /**
+     * @When I go to the new tab
+     */
+    public function iGoToTheNewTab()
+    {
+        $this->switchToNextTab();
+    }
+
+    /**
      * @Then I should see an input button :button
      */
     public function iShouldSeeAnInputButton($button)
