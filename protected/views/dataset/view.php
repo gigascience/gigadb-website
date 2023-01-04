@@ -51,31 +51,15 @@ $sampleDataProvider = $samples->getDataProvider() ;
                                             <div class="dropdown-box">
                                                 <button id="CiteDataset" class="drop-citation-btn dropdown-toggle" type="button" data-toggle="dropdown">Cite Dataset<span class="caret"></span></button>
                                                 <?php
-//                                                $text = file_get_contents('https://data.datacite.org/text/x-bibliography/10.5524/' . $model->identifier);
-//                                                $clean_text = strip_tags(preg_replace("/&#?[a-z0-9]+;/i", "", $text));
-
-                                                $url = 'https://data.datacite.org/text/x-bibliography/10.5524/' . '999999';
+                                                $url = 'https://data.datacite.org/text/x-bibliography/10.5524/' . $model->identifier;
                                                 $webClient = new GuzzleHttp\Client();
                                                 try {
                                                     $response = $webClient->request('GET', $url);
-                                                    if ($response->getStatusCode() === 200) {
-                                                        $text = $response->getBody()->getContents();
-                                                    }
+                                                    $text = $response->getBody()->getContents();
                                                 } catch (GuzzleHttp\Exception\RequestException $e) {
-                                                    if ($e->getResponse()) {
-                                                        $response = $e->getResponse();
-                                                        var_dump($response->getStatusCode());
-                                                        var_dump($response->getReasonPhrase());
-                                                        var_dump(json_decode((string) $response->getBody()));
-                                                        var_dump($response->getHeaders());
-                                                        var_dump($response->hasHeader('Content-Type'));
-                                                    }
-
-                                                    Yii::log($e->getMessage(), "debug");
-                                                    echo "Citation for $url is not yet available" . PHP_EOL;
+                                                    $text = "Datacite citation is unavailable due to Exeception code: ". $e->getCode();
+                                                    Yii::log($e->getMessage(), "error");
                                                 }
-
-
                                                 ?>
                                                 <script>
                                                     function showText() {
