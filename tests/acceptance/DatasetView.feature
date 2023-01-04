@@ -145,7 +145,7 @@ Feature: a user visit the dataset page
     And I should see "https://github.com/cihga39871/Atria"
 
   @ok @issue-1056
-  Scenario: Display the citation dropdown box
+  Scenario: Display the cite dataset dropdown box content
     Given I have not signed in
     And I am on "/dataset/100006"
     When I press the button "Cite Dataset"
