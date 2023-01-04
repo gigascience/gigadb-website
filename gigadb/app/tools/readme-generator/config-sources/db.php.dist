@@ -1,0 +1,9 @@
+<?php
+
+return [
+    'class' => 'yii\db\Connection',
+    'dsn' => "pgsql:host=host.docker.internal;dbname=${GIGADB_DB};port=54321",
+    'username' => "${GIGADB_USER}",
+    'password' => "${GIGADB_PASSWORD}",
+    'charset' => 'utf8',
+];

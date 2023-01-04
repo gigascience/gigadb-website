@@ -110,3 +110,18 @@ $ docker-compose run --rm tool composer update
 * Use flag --outdir to write readme to file in /home/curators
 * Create unit test
 * Create functional test to check script outputs a file
+
+17. Configuration for
+* db.php to access database
+* db_test.php to access test database for running tests
+```
+# Check you are in readme-generator directory
+$ pwd
+/path/to/gigadb-website/gigadb/app/tools/readme-generator
+# Check GITLAB_PRIVATE_TOKEN is set to your personal access token, README_ENV=dev
+# and .env file has correct GROUP_VARIABLES_URL and PROJECT_VARIABLES_URL
+$ cp config-sources/env.example .env
+# Generate configuration using variables in .env, GitLab, then exit
+$ docker-compose run --rm config
+```
+
