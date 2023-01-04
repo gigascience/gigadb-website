@@ -212,6 +212,49 @@
       job: "docker run --env-file .env -v /home/centos/backups:/backups -v /home/centos/.config/rclone/rclone.conf:/root/.config/rclone/rclone.conf registry.gitlab.com/{{ gitlab_project }}/production_s3backup:{{ gigadb_environment }}"
       state: "{{ upload_database_backup_to_S3_cronjob_state }}"
 
+- name: Setup Disk usage monitoring tool
+  hosts: name_bastion_server_staging*:name_bastion_server_live*
+
+  tasks:
+    - name: Create the diskUsage monitoring script
+      ansible.builtin.copy:
+        content: 'df -h | grep /dev/ | cut -d " " -f10 | cut -d% -f1'
+        dest: /home/centos/diskUsage
+        owner: centos
+        group: centos
+        mode: a+x
+
+    - name: Create the Gitter notify script
+      ansible.builtin.copy:
+        content: "source /home/centos/.env;curl -X POST -i -H \"Content-Type: application/json\" -H \"Accept: application/json\" -H \"Authorization: Bearer $GITTER_API_TOKEN\" \"https://api.gitter.im/v1/rooms/$GITTER_IT_NOTIFICATION_ROOM_ID/chatMessages\"  -d '{\"text\":\"Disk space usage requires attention on '\"$DEPLOYMENT_TIER-$GIGADB_ENVIRONMENT\"': '\"$1\"'%\"}'"
+        dest: /home/centos/notify
+        owner: centos
+        group: centos
+        mode: a+x
+
+    - name: Copy swatch config file
+      ansible.builtin.copy:
+        src: "{{ item }}"
+        dest: /home/centos/
+        owner: centos
+        group: centos
+      loop:
+          - "../../../../gigadb/app/tools/disk-usage-monitor/swatch.conf"
+          - "../../../../gigadb/app/tools/disk-usage-monitor/check-swatch.conf"
+
+    - name: Install swatch packages
+      become: yes
+      dnf:
+        name: swatch
+        state: present
+
+    - name: Setup cronjob to automate disk usage monitoring
+      ansible.builtin.cron:
+        name: "Check daily the disk usage and notify from 50%"
+        minute: "00"
+        hour: "23"
+        user: "centos"
+        job: "swatch -c swatch.conf -p ./diskUsage"
 
 - name: Load latest DB backup
   hosts: name_bastion_server_staging*:name_bastion_server_live*
