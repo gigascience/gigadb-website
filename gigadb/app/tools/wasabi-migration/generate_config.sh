@@ -46,7 +46,7 @@ if ! [ -s ./.secrets ];then
     cat .project_vars.json | jq --arg ENVIRONMENT $GIGADB_ENV -r '.[] | select(.environment_scope == "*" or .environment_scope == "dev" ) | select(.key | test("private_key|tlsauth|ca|pem|cert";"i") | not ) |.key + "=" + .value' > .project_var
 
     echo "Retrieving variables from ${MISC_VARIABLES_URL}"
-    curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "${MISC_VARIABLES_URL}?per_page=100" | jq --arg ENVIRONMENT $GIGADB_ENV -r '.[] | select(.environment_scope == "*" or .environment_scope == $ENVIRONMENT ) | select(.key | test("sftp_") ) | .key + "=" + .value' > .misc_var
+    curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "${MISC_VARIABLES_URL}?per_page=100" | jq --arg ENVIRONMENT $GIGADB_ENV -r '.[] | select(.environment_scope == "*" or .environment_scope == $ENVIRONMENT ) | select(.key | test("sftp_|GITTER_") ) | .key + "=" + .value' > .misc_var
 
     # Need to account for the fact that there is no .fork_var when dealing with
     # upstream configuration. An error will be generated if we try to cat a
@@ -67,8 +67,24 @@ source "./.secrets"
 # Restore default settings for variables
 set +a
 
+# Create config dir if doesn't exist
+if [[ ! -d "${APP_SOURCE}/config" ]]; then
+  echo "Creating directory: config"
+  mkdir -p ${APP_SOURCE}/config
+else
+  echo "config directory already exists"
+fi
+
 # Generate rclone configuration
 SOURCE=${APP_SOURCE}/rclone.conf.dist
 TARGET=${APP_SOURCE}/config/rclone.conf
 VARS='$WASABI_ACCESS_KEY_ID:$WASABI_SECRET_ACCESS_KEY'
 envsubst $VARS < $SOURCE > $TARGET
+
+# Generate swatchdog configuration file
+SOURCE=${APP_SOURCE}/swatchdog.conf.dist
+TARGET=${APP_SOURCE}/config/swatchdog.conf
+envsubst $VARS < $SOURCE > $TARGET
+
+
+

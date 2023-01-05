@@ -15,10 +15,28 @@ services:
     volumes:
       - ./config:/root/.config/rclone
       - .:/app
-        
+
   rclone_cngb:
     image: rclone:cngb
     volumes:
       - ./config:/root/.config/rclone
       - .:/app
       - /data/gigadb/pub/10.5524/:/live-data/gigadb/pub/10.5524/:ro
+    environment:
+      HOST_HOSTNAME: "cngb-gigadb-bak"
+
+  swatchdog:
+    build:
+      context: .
+      dockerfile: Swatchdog-Dockerfile
+    volumes:
+      - .:/app
+    command: swatchdog -c /app/config/swatchdog.conf -t "/app/logs/rclone_latest.log"
+
+  swatchdog_cngb:
+    image: swatchdog:cngb
+    volumes:
+      - .:/app
+    environment:
+      HOST_HOSTNAME: "cngb-gigadb-bak"
+    command: swatchdog -c /app/config/swatchdog.conf -t "/app/logs/rclone_latest.log"
