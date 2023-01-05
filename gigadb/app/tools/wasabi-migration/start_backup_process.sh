@@ -28,9 +28,9 @@ fi
 liveBackupStatus=""
 if [[ $serverName == "cngb-gigadb-bak" ]]; then
   if [[ $(docker-compose ps | grep "wasabi-migration_swatchdog_cngb" | grep -c "Up") -gt 0 ]]; then
-      # stop existing swatchdog service, if any
-      docker-compose stop swatchdog || true
-    fi
+    # stop existing swatchdog service, if any
+    docker-compose stop swatchdog || true
+  fi
 
   # spin up a new swatchdog service
   docker-compose up -d swatchdog_cngb
