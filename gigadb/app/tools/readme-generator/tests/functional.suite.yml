@@ -1,0 +1,28 @@
+# Codeception Test Suite Configuration
+
+# suite for functional (integration) tests.
+# emulate web requests and make application process them.
+# (tip: better to use with frameworks).
+
+# RUN `build` COMMAND AFTER ADDING/REMOVING MODULES.
+#basic/web/index.php
+actor: FunctionalTester
+modules:
+    enabled:
+      - Db:
+          dsn: 'pgsql:host=database;dbname=gigadb;port=5432'
+          user: 'gigadb'
+          password: ''
+          dump: '/app/sql/gigadb.pgdmp'
+          populate: true # run populator before all tests
+          cleanup: true # run populator before each test
+          # Can use --verbose in pg_restore command to output progress messages
+          populator: 'pg_restore -h database -p 5432 -U gigadb -d gigadb --no-owner /app/sql/gigadb.pgdmp'
+      - Filesystem
+      - Yii2
+      - Asserts
+      - Cli
+        
+        
+        
+        

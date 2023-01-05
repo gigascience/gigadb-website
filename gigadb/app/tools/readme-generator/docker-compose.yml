@@ -10,6 +10,8 @@ services:
       - .:/logs
       # For using model classes from file-worker tool
       - ../../:/gigadb-apps
+      # For accessing pgdmp database dumps created during ./up.sh
+      - ../../../../sql:/app/sql
       # Destination for readme files
       - ./curators:/home/curators
     networks:
@@ -21,37 +23,6 @@ services:
     volumes:
       - .:/app
     command: /app/generate_config.sh
-
-  test:
-    build:
-      context: .
-      dockerfile: ../../../../ops/packaging/Dockerfile
-      args:
-        - PHP_VERSION=${PHP_VERSION}
-        - INSTALL_OPCACHE=false
-        - INSTALL_INTL=false
-        - INSTALL_PGSQL=true
-        - INSTALL_PG_CLIENT=true
-        - PG_CLIENT_VERSION=${POSTGRES_VERSION}
-        - INSTALL_XDEBUG=false
-        - INSTALL_NETCAT_JQ=true
-        - INSTALL_GRAPHVIZ=false
-        - INSTALL_COMPOSER=true
-        - INSTALL_LIBSODIUM=false
-        - INSTALL_GIT=true
-        - INSTALL_APCU=false
-        - APCU_VERSION=$APCU_VERSION
-        - INSTALL_MAILPARSE=false
-        - INSTALL_CSSLINT_JSHINT=false
-    environment:
-      YII_PATH: ${YII_PATH}
-      YII2_PATH: ${YII2_PATH}
-    volumes:
-      - ${APPLICATION}/:/var/www
-#      - ${APPLICATION}/ops/configuration/php-conf/gigadb.ini:/usr/local/etc/php/conf.d/gigadb.ini
-#      - ${APPLICATION}/ops/configuration/php-conf/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
-#      - ${APPLICATION}/tmp:/tmp
-      - /var/run/docker.sock:/var/run/docker.sock
 
 networks:
   proxy-db-tier:  # represents db-tier network in ops/docker-compose.yml

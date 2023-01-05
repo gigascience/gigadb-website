@@ -17,6 +17,17 @@ RUN apt-get update -yq && \
 RUN docker-php-ext-install pdo_pgsql
 RUN docker-php-ext-install pgsql
 
+ARG INSTALL_PG_CLIENT=true
+ARG PG_CLIENT_VERSION=10.5
+RUN if [ ${INSTALL_PG_CLIENT} = true ]; then \
+    # Create folders if not exists (https://github.com/tianon/docker-brew-debian/issues/65)
+    mkdir -p /usr/share/man/man1 && \
+    mkdir -p /usr/share/man/man7 && \
+    # Install the pgsql client
+    apt-get update -yq && \
+    apt-get install -y postgresql-client-11 \
+;fi
+
 # Install composer
 RUN docker-php-ext-configure zip \
     && docker-php-ext-install zip \

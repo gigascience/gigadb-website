@@ -81,13 +81,15 @@ $ docker-compose run --rm tool ./vendor/bin/codecept run tests/unit
 13. Connect to database to set up test database for unit tests
 ```
 # Use vagrant as password
-$ docker-compose run --rm test psql -h database -p 5432 -U gigadb postgres
+$ docker-compose run --rm tool psql -h database -p 5432 -U gigadb postgres
+
+postgres=# CREATE DATABASE gigadb OWNER gigadb;
 
 # Run bash script to create gigadb_test database and gigadb_test role
-$ docker-compose run --rm test gigadb/app/tools/readme-generator/bootstrap_gigadb_test.sh
+$ docker-compose run --rm tool gigadb/app/tools/readme-generator/bootstrap_gigadb_test.sh
 
 # Run script to create tables in gigadb_test database
-docker-compose run --rm test gigadb/app/tools/readme-generator/sql/repopulate_testdb.sql
+docker-compose run --rm tool gigadb/app/tools/readme-generator/sql/repopulate_testdb.sql
 ```
 
 14. Run functional test:
