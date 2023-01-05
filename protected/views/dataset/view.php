@@ -56,17 +56,24 @@ $sampleDataProvider = $samples->getDataProvider() ;
                                                 try {
                                                     $response = $webClient->request('GET', $url);
                                                     $text = $response->getBody()->getContents();
+                                                    $showButton = true;
                                                 } catch (GuzzleHttp\Exception\RequestException $e) {
-                                                    $text = "Datacite citation is unavailable due to Exeception code: ". $e->getCode();
+                                                    $showButton = false;
                                                     Yii::log($e->getMessage(), "error");
                                                 }
                                                 ?>
+                                                <?php if ($showButton == 'true') { ?>
                                                 <script>
                                                     function showText() {
                                                         var textWindow = window.open();
                                                         textWindow.document.write(`<?php echo $text; ?>`);
                                                     }
                                                 </script>
+                                                <?php } else { ?>
+                                                <script>
+                                                    $("#CiteDataset").addClass("hide");
+                                                </script>
+                                                <?php } ?>
                                                 <ul class="dropdown-menu" aria-labelledby="CiteDataset">
                                                     <li><a id="Text" onclick="showText()" target="_blank">Text</a></li>
                                                     <li><a id="citeRis" href='https://data.datacite.org/application/x-research-info-systems/10.5524/<?php echo $model->identifier;?>' target="_self">RIS</a></li>
