@@ -2,7 +2,7 @@
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => "pgsql:host=host.docker.internal;dbname=${GIGADB_DB};port=54321",
+    'dsn' => "pgsql:host=${GIGADB_HOST};dbname=${GIGADB_DB};port=5432",
     'username' => "${GIGADB_USER}",
     'password' => "${GIGADB_PASSWORD}",
     'charset' => 'utf8',

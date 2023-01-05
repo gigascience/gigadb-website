@@ -12,6 +12,9 @@ services:
       - ../../:/gigadb-apps
       # Destination for readme files
       - ./curators:/home/curators
+    networks:
+      # Connect to db-tier network in ops/docker-compose.yml
+      - proxy-db-tier
 
   config:
     image: rija/docker-alpine-shell-tools:1.0.1
@@ -49,3 +52,7 @@ services:
 #      - ${APPLICATION}/ops/configuration/php-conf/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
 #      - ${APPLICATION}/tmp:/tmp
       - /var/run/docker.sock:/var/run/docker.sock
+
+networks:
+  proxy-db-tier:  # represents db-tier network in ops/docker-compose.yml
+      name: deployment_db-tier

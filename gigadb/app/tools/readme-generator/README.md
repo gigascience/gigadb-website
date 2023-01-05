@@ -10,7 +10,9 @@
 git checkout -b readme-generator develop
 ```
 
-2. Create docker-compose.yml file
+2. Create docker-compose.yml - a proxy network is defined in this file to
+represent the `db-tier` network in `ops/docker-compose.yml` for the readme tool
+to connect to the `database` container.
 
 3. Create Yii2 basic project template
 ```
