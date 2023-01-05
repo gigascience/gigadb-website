@@ -163,12 +163,9 @@ Feature: a user visit the dataset page
     Then I should see "Li, J., Zhang, G., Lambert, D., & Wang, J. (2011). Genomic data from Adelie penguin (Pygoscelis adeliae) [Data set]. GigaScience. https://doi.org/10.5524/100006"
 
   @ok @issue-1056
-  Scenario: Display exception error message when retrieving the citation text from datacite
+  Scenario: Display no Cite Dataset button when bad request
     Given I have not signed in
-    And I am on "/dataset/300070"
+    When I am on "/dataset/300070"
     And I should see "test generic image will be display for no image dataset"
-    When I press the button "Cite Dataset"
-    And I follow "Text"
-    And I go to the new tab
-    Then I should see "Datacite citation is unavailable due to Exeception code: 404"
+    Then I should not see "Cite Dataset"
 
