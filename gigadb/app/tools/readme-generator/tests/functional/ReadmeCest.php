@@ -1,8 +1,5 @@
 <?php
 
-use Yii;
-use yii\console\ExitCode;
-
 class ReadmeCest {
     public function _before() {
     }
@@ -16,7 +13,7 @@ class ReadmeCest {
      * @param FunctionalTester $I
      */
     public function tryCreate(\FunctionalTester $I) {
-        $I->runShellCommand("/app/yii readme/create --doi 100142 --outdir=/home/curators");
+        $I->runShellCommand("/app/yii_test readme/create --doi 100142 --outdir=/home/curators");
         $I->seeInShellOutput("[DOI] 10.5524/100142");
         $I->runShellCommand("ls /home/curators");
         $I->seeInShellOutput("readme_100142.txt");
