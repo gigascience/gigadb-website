@@ -2,9 +2,6 @@
 
 ## Notes
 
-* Consider PSR-12 code standard via PHP-codesniffer - install tools into PHPStorm
-* Using files-url-updater as a guide for Yii2 template
-
 1. Create new branch
 ```
 git checkout -b readme-generator develop

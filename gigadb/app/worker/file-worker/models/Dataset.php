@@ -2,8 +2,6 @@
 
 namespace app\models;
 
-use Yii;
-
 /**
  * This is the model class for table "dataset".
  *
@@ -288,7 +286,7 @@ class Dataset extends \yii\db\ActiveRecord
 
     /**
      * Returns authors corresponding to Dataset.
-     * 
+     *
      * @return \yii\db\ActiveQuery
      */
     public function getAuthors()

@@ -2,12 +2,12 @@
 
 namespace app\controllers;
 
-use \Yii;
-use yii\base\ErrorException;
+use Throwable;
+use Yii;
 use yii\base\Exception;
-use \yii\helpers\Console;
-use \yii\console\Controller;
-use \yii\console\ExitCode;
+use yii\helpers\Console;
+use yii\console\Controller;
+use yii\console\ExitCode;
 use app\models\Dataset;
 
 /**
@@ -19,22 +19,23 @@ class ReadmeController extends Controller
     /**
      * @var string $doi The DOI of the dataset that the readme file should be created for
      */
-    public string $doi = "";
+    public $doi = "";
 
     /**
      * @var string $outdir The output directory that the readme file should be saved in
      */
-    public string $outdir = "";
-    
+    public $outdir = "";
+
+    // Character width of text in readme file
     const STRING_WIDTH = 80;
 
     /**
      * Specify options available to console command provided by this controller.
      * Returns a list of controller class's public properties
-     * 
+     *
      * @var string $actionID blah
      */
-    public function options($actionID)
+    public function options($actionID): array
     {
         return ['doi', 'outdir'];
     }
@@ -44,7 +45,7 @@ class ReadmeController extends Controller
      *
      *  Usage:
      *      ./yii readme/create --doi
-     * @throws \Throwable
+     * @throws Throwable
      * @return int Exit code
      */
     public function actionCreate(): int
@@ -53,7 +54,7 @@ class ReadmeController extends Controller
         $optOutdir = $this->outdir;
         
         //Return usage unless mandatory options are passed
-        if(!($optDoi)) {
+        if (!($optDoi)) {
             $this->stdout(
                 "\nUsage:\n\t./yii readme/create --doi 100142 | --outdir /home/curators".PHP_EOL
             );
@@ -62,8 +63,7 @@ class ReadmeController extends Controller
 
         try {
             echo $this->writeReadme($optDoi, $optOutdir);
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             $this->stdout($e->getMessage().PHP_EOL, Console::FG_RED);
             Yii::error($e->getMessage());
             return ExitCode::DATAERR;
@@ -73,15 +73,16 @@ class ReadmeController extends Controller
 
     /**
      * For outputting readme file
-     * 
+     *
      * @throws Exception
      */
     private function writeReadme($doi, $outdir = null): string
     {
         // Check dataset exists otherwise throw exception to exit
         $dataset = Dataset::findOne(['identifier' => $doi]);
-        if (!$dataset)
+        if (!$dataset) {
             throw new Exception("Dataset $doi not found");
+        }
 
         // Use array to store readme information
         $formatted_title = wordwrap("[Title] $dataset->title", self::STRING_WIDTH, PHP_EOL);
@@ -99,15 +100,16 @@ class ReadmeController extends Controller
             $surname = $authors[$i]->surname;
             $full_name = "$surname, $first_name_initial$middle_name_initial";
             $last_index = count($authors)-1;
-            if ($i == $last_index)
+            if ($i == $last_index) {
                 $citation .= "$full_name ";
-            else
+            } else {
                 $citation .= "$full_name; ";
+            }
         }
 
         $publication_year = substr($dataset->publication_date, 0, 4);
         $citation .= "($publication_year): ";
-        $citation .= "$dataset->title GigaScience Database. http://dx.doi.org/10.5524/$doi".PHP_EOL;
+        $citation .= "$dataset->title GigaScience Database. https://dx.doi.org/10.5524/$doi".PHP_EOL;
         $formatted_citation = wordwrap("$citation", self::STRING_WIDTH, PHP_EOL);
         $readme[] = $formatted_citation;
 
@@ -120,10 +122,11 @@ class ReadmeController extends Controller
             $type = $datasetTypes[$i]->getType();
             $typeName = $type->one()->name;
             $last_index = count($datasetTypes)-1;
-            if ($i == $last_index)
-                $dataset_type .= $typeName.PHP_EOL;
-            else
+            if ($i == $last_index) {
+                $dataset_type .= $typeName . PHP_EOL;
+            } else {
                 $dataset_type .= "$typeName,";
+            }
         }
         $readme[] = $dataset_type;
 
@@ -146,7 +149,12 @@ class ReadmeController extends Controller
         $readme[] = $file_name_description;
         
         // [License]
-        $formatted_license = wordwrap("All files and data are distributed under the Creative Commons Attribution-CC0 License unless specifically stated otherwise, see http://gigadb.org/site/term for more details.", self::STRING_WIDTH, PHP_EOL);
+        $license = <<<LIC
+        All files and data are distributed under the Creative Commons Attribution-CC0 
+        License unless specifically stated otherwise, see http://gigadb.org/site/term 
+        for more details.
+        LIC;
+        $formatted_license = wordwrap($license, self::STRING_WIDTH, PHP_EOL);
         $readme[] = "[License]".PHP_EOL.$formatted_license.PHP_EOL;
 
         // [Comments]
@@ -159,7 +167,7 @@ class ReadmeController extends Controller
         $readmeString = implode(PHP_EOL, $readme);
 
         // Save file if output directory exists
-        if($outdir != null && is_dir($outdir)) {
+        if ($outdir != null && is_dir($outdir)) {
             $filename = "$outdir/readme_$doi.txt";
             file_put_contents($filename, $readmeString);
         }

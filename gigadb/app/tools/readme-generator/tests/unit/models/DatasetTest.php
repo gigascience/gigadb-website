@@ -6,8 +6,6 @@ use app\fixtures\DatasetFixture;
 use app\fixtures\AuthorFixture;
 use app\fixtures\DatasetAuthorFixture;
 use app\models\Dataset;
-use app\models\Author;
-use app\models\DatasetAuthor;
 
 class DatasetTest extends \Codeception\Test\Unit
 {
@@ -19,7 +17,8 @@ class DatasetTest extends \Codeception\Test\Unit
     /**
      * We need to assume existence of dataset in database hence have fixture for it
      */
-    public function _fixtures(){
+    public function _fixtures()
+    {
         return [
             'datasets' => [
                 'class' => DatasetFixture::className(),
@@ -38,10 +37,11 @@ class DatasetTest extends \Codeception\Test\Unit
 
     /**
      * Tests the custom getAuthors() function in Dataset model class
-     * 
+     *
      * @return void
      */
-    public function testGetAuthors() {
+    public function testGetAuthors()
+    {
         $dataset = $this->tester->grabRecord('app\models\Dataset', ['identifier' => '100888']);
         codecept_debug($dataset->title);
         $dataset = Dataset::findOne(1);
