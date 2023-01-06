@@ -13,7 +13,7 @@ services:
       # For accessing pgdmp database dumps created during ./up.sh
       - ../../../../sql:/app/sql
       # Destination for readme files
-      - ./curators:/home/curators
+      - ./runtime/curators:/home/curators
     networks:
       # Connect to db-tier network in ops/docker-compose.yml
       - proxy-db-tier

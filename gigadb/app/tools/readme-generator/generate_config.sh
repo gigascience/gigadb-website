@@ -57,7 +57,6 @@ if ! [ -s ./.secrets ];then
     echo "Retrieving variables from ${MISC_VARIABLES_URL}"
     curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "${MISC_VARIABLES_URL}?per_page=100" | jq --arg ENVIRONMENT $GIGADB_ENV -r '.[] | select(.environment_scope == "*" or .environment_scope == $ENVIRONMENT ) | select(.key | test("sftp_") ) | .key + "=" + .value' > .misc_var
 
-
     cat .group_var .fork_var .project_var .misc_var > .secrets && rm .group_var && rm .fork_var && rm .project_var && rm .misc_var && rm .project_var_raw1 && rm .project_var_raw2 && rm .project_vars.json
     echo "# Some help about this file in ops/configuration/variables/secrets-sample" >> .secrets
 fi
@@ -65,7 +64,6 @@ echo "Sourcing secrets"
 source "./.secrets"
 
 set +a
-
 
 # generate config for Yii2 config files
 
@@ -79,20 +77,5 @@ TARGET=${APP_SOURCE}/config/test_db.php
 VARS='$GIGADB_HOST:$GIGADB_DB:$GIGADB_USER:$GIGADB_PASSWORD'
 envsubst $VARS < $SOURCE > $TARGET
 
-
-#export TESTDB_HOST=$REVIEW_DB_HOST
-#export TESTDB_PORT=$REVIEW_DB_PORT
-#export TESTDB_DBNAME=${REVIEW_DB_DATABASE}_test
-#export TESTDB_USER=$REVIEW_DB_USERNAME
-#export TESTDB_PASSWORD=$REVIEW_DB_PASSWORD
-
-
-#SOURCE=${APP_SOURCE}/config-sources/acceptance.suite.yml.template
-#TARGET=${APP_SOURCE}/console/tests/acceptance.suite.yml
-#VARS='$TESTDB_HOST:$TESTDB_PORT:$TESTDB_DBNAME:$TESTDB_USER:$TESTDB_PASSWORD'
-#envsubst $VARS < $SOURCE > $TARGET
-
-#SOURCE=${APP_SOURCE}/config-sources/functional.suite.yml.template
-#TARGET=${APP_SOURCE}/console/tests/functional.suite.yml
-#VARS='$TESTDB_HOST:$TESTDB_PORT:$TESTDB_DBNAME:$TESTDB_USER:$TESTDB_PASSWORD'
-#envsubst $VARS < $SOURCE > $TARGET
+# Create curators directory in runtime folder
+mkdir -p ./runtime/curators
