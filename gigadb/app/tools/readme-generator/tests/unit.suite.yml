@@ -9,10 +9,3 @@ modules:
       - Asserts
       - Yii2:
             part: [orm, email, fixtures]
-#      - Db:
-#          dsn: 'pgsql:host=host.docker.internal;dbname=gigadb_test;port=54321'
-#          user: 'gigadb'
-#          password: 'vagrant'
-#          populate: true
-#          clean: true
-#          populator: '/app/sql/repopulate_testdb.sh'

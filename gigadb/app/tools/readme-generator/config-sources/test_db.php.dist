@@ -2,7 +2,7 @@
 // test database! Important not to run tests on production or development databases
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => "pgsql:host=${GIGADB_HOST};dbname=${GIGADB_DB}_test;port=5432",
+    'dsn' => "pgsql:host=${GIGADB_HOST};dbname=${GIGADB_DB}_testdata;port=5432",
     'username' => "${GIGADB_USER}",
     'password' => "${GIGADB_PASSWORD}",
     'charset' => 'utf8',
