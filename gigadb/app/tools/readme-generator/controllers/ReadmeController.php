@@ -25,6 +25,8 @@ class ReadmeController extends Controller
      * @var string $outdir The output directory that the readme file should be saved in
      */
     public string $outdir = "";
+    
+    const STRING_WIDTH = 80;
 
     /**
      * Specify options available to console command provided by this controller.
@@ -82,8 +84,9 @@ class ReadmeController extends Controller
             throw new Exception("Dataset $doi not found");
 
         // Use array to store readme information
-        $readme = [ "[DOI] 10.5524/$doi".PHP_EOL, 
-            "[Title] $dataset->title".PHP_EOL,
+        $formatted_title = wordwrap("[Title] $dataset->title", self::STRING_WIDTH, PHP_EOL);
+        $readme = [ "[DOI] 10.5524/$doi".PHP_EOL,
+            $formatted_title.PHP_EOL,
             "[Release Date] $dataset->publication_date".PHP_EOL
         ];
             
@@ -105,7 +108,8 @@ class ReadmeController extends Controller
         $publication_year = substr($dataset->publication_date, 0, 4);
         $citation .= "($publication_year): ";
         $citation .= "$dataset->title GigaScience Database. http://dx.doi.org/10.5524/$doi".PHP_EOL;
-        $readme[] = $citation;
+        $formatted_citation = wordwrap("$citation", self::STRING_WIDTH, PHP_EOL);
+        $readme[] = $formatted_citation;
 
         // [Data Type]
         $dataset_type = "[Data Type] ";
@@ -124,7 +128,8 @@ class ReadmeController extends Controller
         $readme[] = $dataset_type;
 
         // [Dataset Summary]
-        $readme[] = "[Data Summary] $dataset->description".PHP_EOL;
+        $formatted_description = wordwrap("[Data Summary] $dataset->description", self::STRING_WIDTH, PHP_EOL);
+        $readme[] = "$formatted_description".PHP_EOL;
 
         // [File Location]
         $readme[] = "[File Location] $dataset->ftp_site".PHP_EOL;
@@ -141,7 +146,8 @@ class ReadmeController extends Controller
         $readme[] = $file_name_description;
         
         // [License]
-        $readme[] = "[License]".PHP_EOL."All files and data are distributed under the Creative Commons Attribution-CC0 License unless specifically stated otherwise, see http://gigadb.org/site/term for more details.".PHP_EOL;
+        $formatted_license = wordwrap("All files and data are distributed under the Creative Commons Attribution-CC0 License unless specifically stated otherwise, see http://gigadb.org/site/term for more details.", self::STRING_WIDTH, PHP_EOL);
+        $readme[] = "[License]".PHP_EOL.$formatted_license.PHP_EOL;
 
         // [Comments]
         $readme[] = "[Comments]".PHP_EOL;
