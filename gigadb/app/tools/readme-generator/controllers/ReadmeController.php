@@ -62,7 +62,16 @@ class ReadmeController extends Controller
         }
 
         try {
-            echo $this->writeReadme($optDoi, $optOutdir);
+            $readme = $this->getReadme($optDoi);
+            echo $readme;
+
+            // Save file if output directory exists
+            if ($optOutdir != null && is_dir($optOutdir)) {
+                $filename = "$optOutdir/readme_$optDoi.txt";
+                file_put_contents($filename, $readme);
+            } elseif ($optOutdir != null && !is_dir($optOutdir)) {
+                throw new Exception("Cannot save readme file - Output directory does not exist or is not a directory");
+            }
         } catch (Exception $e) {
             $this->stdout($e->getMessage().PHP_EOL, Console::FG_RED);
             Yii::error($e->getMessage());
@@ -76,7 +85,7 @@ class ReadmeController extends Controller
      *
      * @throws Exception
      */
-    private function writeReadme($doi, $outdir = null): string
+    private function getReadme($doi): string
     {
         // Check dataset exists otherwise throw exception to exit
         $dataset = Dataset::findOne(['identifier' => $doi]);
@@ -164,13 +173,6 @@ class ReadmeController extends Controller
         $readme[] = "[End]".PHP_EOL;
 
         // Convert readme array to string
-        $readmeString = implode(PHP_EOL, $readme);
-
-        // Save file if output directory exists
-        if ($outdir != null && is_dir($outdir)) {
-            $filename = "$outdir/readme_$doi.txt";
-            file_put_contents($filename, $readmeString);
-        }
-        return $readmeString;
+        return implode(PHP_EOL, $readme);
     }
 }

@@ -2,7 +2,7 @@
 
 ## Preparation
 
-In the `gigadb-website` root repo directory, spin up the GigaDB application:
+In the `gigadb-website` repo root directory, spin up the GigaDB application:
 ```
 $ pwd
 /path/to/gigadb-website
@@ -36,9 +36,30 @@ DOI:
 $ docker-compose run --rm tool /app/yii readme/create --doi 100142
 ```
 
+Information for the readme is retrieved from the `database` container that was
+spun up using the `up.sh` command above. The tool is able to connect to this
+container by connecting to the Docker `db-tier` network.
+
 Saving the readme information into a file requires a file path, for example:
 ```
 $ docker-compose run --rm tool /app/yii readme/create --doi=100142 --outdir=/home/curators
+```
+Since `/home/curators` has been mounted to `runtime/curators` directory in
+`docker-compose.yml`, you find a `readme_100142.txt` created there.
+
+## Tests
+
+The unit test checks custom-written `getAuthors` function in Dataset model class 
+which returns the authors of a dataset based on many-to-many mapping between 
+dataset and author tables via a junction `dataset_authors` table:
+```
+$ docker-compose run --rm tool ./vendor/bin/codecept run tests/unit
+```
+
+There is a functional test which checks the `actionCreate()` function in 
+ReadmeController.
+```
+$ docker-compose run --rm tool ./vendor/bin/codecept run tests/functional
 ```
 
 ## Notes
