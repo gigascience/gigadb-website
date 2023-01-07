@@ -1,5 +1,46 @@
 # README GENERATOR TOOL
 
+## Preparation
+
+In the `gigadb-website` root repo directory, spin up the GigaDB application:
+```
+$ pwd
+/path/to/gigadb-website
+$ ./up.sh
+```
+
+Now change directory to the `readme-generator` folder
+```
+$ cd gigadb/app/tools/readme-generator
+```
+
+Create a `.env` file:
+```
+$ cp config-sources/env.example .env
+```
+> Ensure you have provide values for `GITLAB_PRIVATE_TOKEN` and `REPO_NAME`
+> variables.
+
+Generate config files:
+```
+# Generate configuration using variables in .env, GitLab, then exit
+$ docker-compose run --rm config
+```
+> db.php and test_db.php should be present in the `config` directory.
+
+## Using the readme generator tool
+
+The readme information for a dataset can be viewed on standard output using it's
+DOI:
+```
+$ docker-compose run --rm tool /app/yii readme/create --doi 100142
+```
+
+Saving the readme information into a file requires a file path, for example:
+```
+$ docker-compose run --rm tool /app/yii readme/create --doi=100142 --outdir=/home/curators
+```
+
 ## Notes
 
 1. Create new branch
