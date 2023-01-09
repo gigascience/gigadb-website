@@ -321,4 +321,12 @@ class AcceptanceTester extends \Codeception\Actor
         $this->seeInPopup($message);
         $this->acceptPopup();
     }
+
+    /**
+     * @Then I should see an option :option
+     */
+    public function iShouldSeeAnOption($option)
+    {
+        $this->seeElement('input', ['type' => "button", 'value' => $option]);
+    }
 }
