@@ -41,5 +41,8 @@ upload_database_backup_to_S3_cronjob_state = "absent"
 
 gitlab_project = {{ lookup('ini', 'gitlab_project type=properties file=ansible.properties') }}
 gitlab_project_string = {{ lookup('ini', 'gitlab_project type=properties file=ansible.properties') |  regex_replace('/','-') }}
+
 gitter_room_id = {{ lookup('ini', 'gitter_room_id type=properties file=ansible.properties') }}
 gitter_api_token = {{ lookup('ini', 'gitter_api_token type=properties file=ansible.properties') }}
+newuser=""
+

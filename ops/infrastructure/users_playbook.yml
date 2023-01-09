@@ -1,0 +1,7 @@
+---
+# Create users on bastion server
+
+- name: Create an additional user on bastion for curators team
+  hosts: name_bastion_server_staging*:name_bastion_server_live*
+  roles:
+    - role: ../../roles/bastion-users

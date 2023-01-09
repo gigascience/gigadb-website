@@ -1,0 +1,60 @@
+- debug: msg="{{ newuser }}"
+
+- name: Add curator user
+  ansible.builtin.user:
+    name: "{{ newuser }}"
+    shell: /bin/bash
+    groups: centos
+    append: yes
+
+- name: Create a .ssh and uploadDir directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ newuser }}"
+    group: "{{ newuser }}"
+    mode: '0700'
+  loop:
+    - "/home/{{ newuser }}/.ssh"
+    - "/home/{{ newuser }}/uploadDir"
+
+- name: Create directory to store keys
+  ansible.builtin.file:
+    path: "/home/centos/{{ newuser }}.keys"
+    state: directory
+    owner: centos
+    group: centos
+
+
+- name: generate private/public key pair
+  community.crypto.openssh_keypair:
+    path: "/home/centos/{{ newuser }}.keys/id_ssh_rsa"
+    owner: centos
+  register: pk
+
+
+- name: Add curator to sudoers
+  ansible.builtin.lineinfile:
+    path: "/etc/sudoers.d/91-add-{{ newuser }}"
+    line: "{{ newuser }} ALL=(ALL)       NOPASSWD: /home/centos/datasetUpload.sh, /home/centos/postUpload.sh\n"
+    owner: root
+    group: root
+    mode: 440
+    create: yes
+
+- name: Add public key to authorized keys
+  ansible.builtin.copy:
+    content: "{{ pk.public_key }}"
+    dest: "/home/{{ newuser }}/.ssh/authorized_keys"
+    owner: "{{ newuser }}"
+    group: "{{ newuser }}"
+    mode: g-rw,o-rw
+
+- name: downloading the private key
+  ansible.builtin.fetch:
+    src: "/home/centos/{{ newuser }}.keys/id_ssh_rsa"
+    dest: "output/privkeys-{{ inventory_hostname }}/{{ newuser }}"
+    flat: yes
+
+- name: Restart systemd sshd service
+  command: systemctl restart sshd.service
