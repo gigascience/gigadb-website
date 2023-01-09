@@ -2,7 +2,9 @@
 
 ## Preparation
 
-In the `gigadb-website` repo root directory, spin up the GigaDB application:
+In the `gigadb-website` repo root directory, spin up the GigaDB application
+since we need access to the `database` container for the `gigadb` and 
+`gigadb_testdata` databases.
 ```
 $ pwd
 /path/to/gigadb-website
@@ -27,6 +29,11 @@ Generate config files:
 $ docker-compose run --rm config
 ```
 > db.php and test_db.php should be present in the `config` directory.
+
+Install Composer dependencies:
+```
+$  docker-compose run --rm tool composer install 
+```
 
 ## Using the readme generator tool
 
