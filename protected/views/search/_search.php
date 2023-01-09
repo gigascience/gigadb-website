@@ -25,12 +25,12 @@
                                                 <i class="fa fa-search"></i> Search again
                                             </button>
     <?
-        if(!Yii::app()->user->isGuest) {
-    ?>
-            <input type="button" id="save-search-criteria" class="btn background-btn" value="Save current search criteria"/>
-    <?
-        }
-    ?>
+//        if(!Yii::app()->user->isGuest) {
+//    ?>
+<!--            <input type="button" id="save-search-criteria" class="btn background-btn" value="Save current search criteria"/>-->
+<!--    --><?//
+//        }
+//    ?>
         </span>
     </div>
 </div>

@@ -4,7 +4,7 @@ Feature:
   So that I can have my own search record
 
 
-  @wip @issue-1186
+  @ok @issue-1186
   Scenario: Hide the Save current search criteria option
     Given I sign in as a user
     And I am on "/"
@@ -15,4 +15,4 @@ Feature:
     And I should see a link "Pygoscelis_adeliae.s..." to "https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006/Pygoscelis_adeliae.scaf.fa.gz"
     And I should see "Adelie penguin NCBI taxonomy"
     And I should see "Search again"
-    And I should see an option "Save current search criteria"
+    And I should not see an option "Save current search criteria"

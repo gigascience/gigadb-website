@@ -329,4 +329,12 @@ class AcceptanceTester extends \Codeception\Actor
     {
         $this->seeElement('input', ['type' => "button", 'value' => $option]);
     }
+
+    /**
+     * @Then I should not see an option :option
+     */
+    public function iShouldNotSeeAnOption($option)
+    {
+        $this->dontSeeElement('input', ['type' => "button", 'value' => $option]);
+    }
 }
