@@ -134,10 +134,20 @@ class EMReportJobTest extends \Codeception\Test\Unit
             ]
         );
 
-        $mockManuscript[] = $mockManuscriptOne;
+        $mockManuscriptTwo = $this->make(Manuscript::class,
+            [
+                'manuscript_number' => 'GIGA-D-22-00100',
+                'article_title' => 'Another test manuscript review with invalid date format',
+                # Format for date is MM/dd/yyyy so date below is invalid
+                'editorial_status_date' => '16/7/2022',
+                'editorial_status' => 'Final Decision Accept'
+            ]
+        );
+
+        $mockManuscripts = array($mockManuscriptOne, $mockManuscriptTwo);
 
         $emReportJob = new EMReportJob();
-        $storeStatus = $emReportJob->storeManuscripts($mockManuscript);
+        $storeStatus = $emReportJob->storeManuscripts($mockManuscripts);
 
         $this->assertFalse($storeStatus, "Instance with invalid date format is stored to the manuscript table!");
     }

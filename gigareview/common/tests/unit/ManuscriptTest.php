@@ -99,4 +99,121 @@ class ManuscriptTest extends \Codeception\Test\Unit
 
         }, $sampleCsvReportData, $manuscriptInstances);
     }
+
+    /**
+     * Checks validation of editorial status dates
+     */
+    public function testEditorialStatusDateValidation()
+    {
+        $sampleCsvReportData = [
+            [
+                'manuscript_number' => 'GIGA-D-22-00001',
+                'article_title' => 'Factum per Litteras',
+                # Since dates in Manuscript objects need to be in MM/dd/yyyy
+                # format, this editorial_status_date is not valid
+                'editorial_status_date' => '13/6/2022',
+                'editorial_status' => 'Final Decision Accept'
+            ],
+            [
+                'manuscript_number' => 'GIGA-D-22-00002',
+                'article_title' => 'Pedes in Terra ad Sidera Visus',
+                # Valid editorial_status_date
+                'editorial_status_date' => '05/16/2022',
+                'editorial_status' => 'Final Decision Accept'
+            ]
+        ];
+
+        $manuscriptInstances = Manuscript::createInstancesFromEmReport($sampleCsvReportData);
+
+        foreach ($manuscriptInstances as $instance) {
+            if($instance->validate()) {
+                # Confirm second manuscript is ok
+                $this->assertStringContainsString("Pedes in Terra ad Sidera Visus", $instance->article_title);
+            }
+            else {
+                # Confirm problem with first manuscript object
+                $this->assertStringContainsString("Factum per Litteras", $instance->article_title);
+                # Confirm problem is with editorial_status_date attribute
+                $first_errors = $instance->getFirstErrors();
+                $this->assertArrayHasKey('editorial_status_date', $first_errors, "No editorial_status_date error found!");
+                $this->assertStringContainsString('Editorial Status Date is invalid', $first_errors['editorial_status_date']);
+            }
+        }
+    }
+
+    /**
+     * Checks validation of editorial statuses
+     */
+    public function testEditorialStatusValidation()
+    {
+        $sampleCsvReportData = [
+            [
+                'manuscript_number' => 'GIGA-D-22-00001',
+                'article_title' => 'Factum per Litteras',
+                'editorial_status_date' => '6/12/2022',
+                'editorial_status' => 'Final Decision Accept'  # Valid
+            ],
+            [
+                'manuscript_number' => 'GIGA-D-22-00006',
+                'article_title' => 'Alea iacta est',
+                'editorial_status_date' => '6/12/2022',
+                'editorial_status' => 'Final Decision Reject'  # Invalid
+            ]
+        ];
+
+        $manuscriptInstances = Manuscript::createInstancesFromEmReport($sampleCsvReportData);
+
+        foreach ($manuscriptInstances as $instance) {
+            if($instance->validate()) {
+                # Confirm first manuscript is ok
+                $this->assertStringContainsString("Final Decision Accept", $instance->editorial_status);
+            }
+            else {
+                # Confirm problem with second manuscript object
+                $this->assertStringContainsString("Alea iacta est", $instance->article_title);
+                # Confirm problem is with editorial_status attribute
+                $first_errors = $instance->getFirstErrors();
+                $this->assertArrayHasKey('editorial_status', $first_errors, "There should be a editorial_status validation error found!");
+                $this->assertStringContainsString('Editorial Status is invalid', $first_errors['editorial_status']);
+            }
+        }
+    }
+
+    /**
+     * Checks validation of manuscript numbers
+     */
+    public function testManuscriptNumberValidation()
+    {
+        $sampleCsvReportData = [
+            [
+                'manuscript_number' => 'GIGA-D-22-00001',
+                'article_title' => 'Factum per Litteras',
+                'editorial_status_date' => '6/12/2022',
+                'editorial_status' => 'Final Decision Accept'  # Valid
+            ],
+            [
+                'manuscript_number' => 'GIGA-D-22-abcde',
+                'article_title' => 'Acta, non verba',
+                'editorial_status_date' => '6/12/2022',
+                'editorial_status' => 'Final Decision Accept'  # Invalid
+            ]
+        ];
+
+        $manuscriptInstances = Manuscript::createInstancesFromEmReport($sampleCsvReportData);
+
+        foreach ($manuscriptInstances as $instance) {
+            if($instance->validate()) {
+                # Confirm first manuscript is ok
+                $this->assertStringContainsString("Factum per Litteras", $instance->article_title);
+            }
+            else {
+                # Confirm problem with second manuscript object
+                $this->assertStringContainsString("Acta, non verba", $instance->article_title);
+                # Confirm problem is with manuscript_number attribute
+                $first_errors = $instance->getFirstErrors();
+                $this->assertArrayHasKey('manuscript_number', $first_errors, "There should be a manuscript number validation error found!");
+                $this->assertStringContainsString('Manuscript Number is invalid', $first_errors['manuscript_number']);
+            }
+        }
+    }
 }

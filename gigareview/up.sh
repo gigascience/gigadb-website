@@ -37,7 +37,7 @@ echo "All" | docker-compose run --rm console ./init --env=$REVIEW_ENV
 
 
 # Building services
-docker-compose build public api reviewdb console beanstalkd
+docker-compose build public api reviewdb console beanstalkd web
 
 # running composer update and update
 docker-compose run --rm console composer install
@@ -64,7 +64,7 @@ if [ -f ./yii_test ];then
 fi
 
 # Launching all the remaining services
-docker-compose up -d public api
+docker-compose up -d public api web
 
 # Launch workers
 docker-compose up -d manuscripts-worker

@@ -47,7 +47,7 @@ class Manuscript extends \yii\db\ActiveRecord
         return [
             [['doi', 'created_at', 'updated_at'], 'default', 'value' => null],
             [['doi', 'created_at', 'updated_at'], 'integer'],
-            [['publication_date', 'editorial_status_date'], 'date', 'format' => 'dd/MM/yyyy'],
+            [['publication_date', 'editorial_status_date'], 'date', 'format' => 'MM/dd/yyyy'],
             [['manuscript_number'], 'match', 'pattern' => '/^GIGA\-D\-\d{2}\-\d{5}$/'],
             [['editors_note'], 'string'],
             [['editorial_status'], 'match', 'pattern' => '/^Final\sDecision\sAccept$/'],

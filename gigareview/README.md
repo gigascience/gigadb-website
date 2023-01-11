@@ -2,13 +2,29 @@
 
 ## Getting started
 
-Go to the gigareview diredctory then start the gigareview application
+Go to the gigareview directory then start the gigareview application
 ```
 $ cd gigareview
 $ ./up.sh
 
 ```
 >**Note**: In the rest of this doc, we assume we are in the ``gigareview`` directory
+
+## Operating GigaReview
+
+Fetch latest EM reports from SFTP server:
+```
+$ docker-compose run --rm console ./yii fetch-reports/fetch
+```
+
+Process jobs in manuscript queue:
+```
+$ docker-compose run --rm console ./yii manuscripts-q/run
+```
+
+Go to http://gigadb.gigasciencejournal.com:9170/gigareview/index.php?r=manuscript.
+If there were manuscripts that have been accepted for publication during the
+previous day then these will be displayed on the Manuscripts page.
 
 ## Run the tests
 
@@ -125,3 +141,25 @@ Create Feature file for BDD (Gherkin) style acceptance tests:
 ```
 $ docker-compose run --rm console ./vendor/codeception/codeception/codecept -c console/codeception.yml generate:feature acceptance FetchReports
 ```
+
+## Use local FTP server provided by Docker container
+
+There is a Docker service called `sftp_test` defined in `docker-compose.yml`
+which can provide a local SFTP server containing EM reports which can be 
+customised for development work. To use the `sftp_test` service, replace the 
+`sftp` configuration in `gigareview/common/config/params-local.php` with the 
+following:
+```
+'sftp' => [
+    "host" => "sftp_test",
+    "username" => "testuser",
+    "password" => "testpass",
+    "baseDirectory" => "editorialmanager",
+],
+```
+
+Now, execute `./up.sh` to start the GigaReview application. Running
+`docker-compose run --rm console ./yii fetch-reports/fetch` will now retrieve
+EM reports from the `sftp_test` SFTP server instead of the production SFTP
+server. The fetched EM reports are those which are found in the 
+`gigareview/console/tests/_data` directory.
