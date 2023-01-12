@@ -10,6 +10,7 @@
  */
 class StoredDatasetSamples extends DatasetComponents implements DatasetSamplesInterface
 {
+    const SAMPLES_ROWS_LIMIT  = 1000 ;
 	private $_id;
 	private $_db;
 
@@ -47,6 +48,8 @@ class StoredDatasetSamples extends DatasetComponents implements DatasetSamplesIn
 	 */
 	public function getDatasetSamples(): array
 	{
+        Yii::log("QUERYING DATABASE !!!!!!");
+
 		$objectToHash =  function ($sample) {
 
 			$toNameValueHash = function ($sample_attribute) {
@@ -75,7 +78,7 @@ class StoredDatasetSamples extends DatasetComponents implements DatasetSamplesIn
 		$sql = "select
 		ds.sample_id as id, s.name, s.species_id, s.consent_document, s.submitted_id, s.submission_date, s.contact_author_name, s.contact_author_email, s.sampling_protocol
 		from sample s, dataset_sample ds
-		where ds.sample_id = s.id and ds.dataset_id=:id" ;
+		where ds.sample_id = s.id and ds.dataset_id=:id limit " . self::SAMPLES_ROWS_LIMIT ;
 		//In the sql above, make sure that the only 'id' field is ds.sample_id, otherwise ActiveRecord may pick up the wrong id field (e.g: ds.id)
 		$samples = Sample::model()->findAllBySql($sql, array('id'=>$this->_id));
 		$result = array_map($objectToHash, $samples);

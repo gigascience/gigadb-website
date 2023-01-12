@@ -62,52 +62,8 @@ class FormattedDatasetSamples extends DatasetComponents implements DatasetSample
 	 */
 	public function getDataProvider(): CArrayDataProvider
 	{
-//		$samples = $this->getDatasetSamples();
-        $objectToHash =  function ($sample) {
-
-            $toNameValueHash = function ($sample_attribute) {
-                return array( $sample_attribute->attribute->attribute_name => $sample_attribute->value);
-            };
-
-            return array(
-                'sample_id' => $sample->id,
-                'linkName' => $sample->getLinkName(),
-                'dataset_id' => $this->getDatasetId(),
-                'species_id' => $sample->species_id,
-                'tax_id' => $sample->species->tax_id,
-                'common_name'=> $sample->species->common_name,
-                'scientific_name'=> $sample->species->scientific_name,
-                'genbank_name' => $sample->species->genbank_name,
-                'name' => $sample->name,
-                'consent_document' => $sample->consent_document,
-                'submitted_id' => $sample->submitted_id,
-                'submission_date' => $sample->submission_date,
-                'contact_author_name' => $sample->contact_author_name,
-                'contact_author_email' => $sample->contact_author_email,
-                'sampling_protocol' => $sample->sampling_protocol,
-                'sample_attributes' => array_map($toNameValueHash, SampleAttribute::model()->findAllByAttributes( array('sample_id' => $sample->id) )),
-            );
-        };
-        $sql = "select
-		ds.sample_id as id, s.name, s.species_id, s.consent_document, s.submitted_id, s.submission_date, s.contact_author_name, s.contact_author_email, s.sampling_protocol
-		from sample s, dataset_sample ds
-		where ds.sample_id = s.id and ds.dataset_id=:id" ;
-
-        $samples_pagination = new CPagination(count($samples));
-        $samples_pagination->setPageSize($this->_pageSize);
-        $samples_pagination->pageVar = "Samples_page";
-
-        $criteria = new CDbCriteria;
-        $criteria->select = "ds.sample_id as id, t.name, t.species_id, t.consent_document, t.submitted_id, t.submission_date, t.contact_author_name, t.contact_author_email, t.sampling_protocol";
-        $criteria->join = "join dataset_sample ds on t.id = ds.sample_id";
-        $criteria->condition = "ds.dataset_id=:id";
-        $criteria->params = [":id" => $this->getDatasetId()];
-        $samples_pagination->applyLimit($criteria);
-        $samples = Sample::model()->findAll($criteria);
-        $result = array_map($objectToHash, $samples);
-
-
-        $dataProvider= new CArrayDataProvider( $result , array(
+		$samples = $this->getDatasetSamples();
+        $dataProvider= new CArrayDataProvider( $samples , array(
 		    'sort' => array('defaultOrder'=>'t.name ASC',
                             'attributes' => array(
                                     'name',
@@ -119,10 +75,10 @@ class FormattedDatasetSamples extends DatasetComponents implements DatasetSample
 		    'pagination' => null
 		    )
 		);
+        $samples_pagination = new CPagination(count($samples));
+        $samples_pagination->setPageSize($this->_pageSize);
+        $samples_pagination->pageVar = "Samples_page";
         $dataProvider->setPagination($samples_pagination);
-        Yii::log("sample count:" . count($result));
-        Yii::log("pagination limit:" . $samples_pagination->getLimit());
-        Yii::log("pagination offset:" . $samples_pagination->getOffset());
         return $dataProvider;
 	}
 
