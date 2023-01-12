@@ -31,15 +31,15 @@ class DatasetComponents extends yii\base\BaseObject implements Cacheable
 	 * retrieve local cached data transparently.
 	 *
 	 * @uses Cacheable::getCacheKeyForLocalData()
-	 * @return array the content retrieved from cache, or empty array if content is expired
+	 * @return mixed the content retrieved from cache, or false if content is expired
 	 */
-	public function getCachedLocalData(string $dataset_id): array
+	public function getCachedLocalData(string $dataset_id)
 	{
 		 $result = $this->_cache->get( $this->getCacheKeyForLocalData( $dataset_id ) );
 		 if (defined('YII_DEBUG') && true === YII_DEBUG)
 		    Yii::log("cache for ". $this->getCacheKeyForLocalData( $dataset_id ).": ".(false === $result ? "MISS" : "HIT") ,'info');
 
-         return $result ?: [];
+         return $result;
 	}
 
 	/**
