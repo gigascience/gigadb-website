@@ -323,18 +323,18 @@ class AcceptanceTester extends \Codeception\Actor
     }
 
     /**
-     * @Then I should see an option :option
+     * @Then I should see an input button :button
      */
-    public function iShouldSeeAnOption($option)
+    public function iShouldSeeAnInputButton($button)
     {
-        $this->seeElement('input', ['type' => "button", 'value' => $option]);
+        $this->seeElement('input', ['type' => "button", 'value' => $button]);
     }
 
     /**
-     * @Then I should not see an option :option
+     * @Then I should not see an input button :button
      */
-    public function iShouldNotSeeAnOption($option)
+    public function iShouldNotSeeAnInputButton($button)
     {
-        $this->dontSeeElement('input', ['type' => "button", 'value' => $option]);
+        $this->dontSeeElement('input', ['type' => "button", 'value' => $button]);
     }
 }

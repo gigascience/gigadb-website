@@ -15,4 +15,4 @@ Feature:
     And I should see a link "Pygoscelis_adeliae.s..." to "https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006/Pygoscelis_adeliae.scaf.fa.gz"
     And I should see "Adelie penguin NCBI taxonomy"
     And I should see "Search again"
-    And I should not see an option "Save current search criteria"
+    And I should not see an input button "Save current search criteria"
