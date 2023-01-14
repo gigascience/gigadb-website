@@ -77,7 +77,8 @@
     ], 
     "autoload": {
         "psr-4": {
-            "app\\models\\" : "/gigadb-apps/worker/file-worker/models"
+            "app\\models\\" : "/gigadb-apps/worker/file-worker/models",
+            "app\\components\\" : "/gigadb-apps/worker/file-worker/components"
         }
     }
 }
