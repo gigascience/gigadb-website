@@ -32,7 +32,7 @@ class DatasetService extends Component
      * @return string Contents of readme file
      * @throws Exception Dataset DOI not found
      */
-    public static function getReadme(string $doi): string
+    public function getReadme(string $doi): string
     {
         // Check dataset exists otherwise throw exception to exit
         $dataset = Dataset::findOne(['identifier' => $doi]);
