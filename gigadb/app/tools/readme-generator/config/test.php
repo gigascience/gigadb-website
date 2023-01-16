@@ -17,6 +17,10 @@ return [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
+        // To access DatasetService component in file-worker
+        'datasetService' => [
+            'class' => 'app\components\DatasetService',
+        ],
         'log' => [
             'targets' => [
                 [

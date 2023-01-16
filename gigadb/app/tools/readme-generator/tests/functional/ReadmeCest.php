@@ -9,9 +9,9 @@ class ReadmeCest
      */
     public function tryCreate(FunctionalTester $I)
     {
-        $I->runShellCommand("/app/yii_test readme/create --doi 100142 --outdir=/home/curators");
-        $I->seeInShellOutput("[DOI] 10.5524/100142");
+        $I->runShellCommand("/app/yii_test readme/create --doi 100005 --outdir=/home/curators");
+        $I->seeInShellOutput("[DOI] 10.5524/100005");
         $I->runShellCommand("ls /home/curators");
-        $I->seeInShellOutput("readme_100142.txt");
+        $I->seeInShellOutput("readme_100005.txt");
     }
 }

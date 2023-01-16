@@ -13,11 +13,10 @@ modules:
           dsn: 'pgsql:host=database;dbname=gigadb_testdata;port=5432'
           user: 'gigadb'
           password: ''
-          dump: '/app/sql/gigadb.pgdmp'
           populate: true # run populator before all tests
           cleanup: true # run populator before each test
           # Can use --verbose in pg_restore command to output progress messages
-          populator: 'pg_restore -h database -p 5432 -U gigadb -d gigadb_testdata --no-owner /app/sql/gigadb.pgdmp'
+          populator: 'pg_restore -h database -p 5432 -U gigadb -d gigadb_testdata --no-owner /app/sql/gigadb_testdata.pgdmp'
       - Filesystem
       - Yii2
       - Asserts

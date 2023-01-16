@@ -68,7 +68,7 @@ $ docker-compose run --rm tool ./vendor/bin/codecept run tests/unit
 
 There's also a unit test to check the DatasetService component class:
 ```
-$ docker-compose run --rm test ./vendor/codeception/codeception/codecept run --debug tests/unit/DatasetServiceTest.php
+$ docker-compose run --rm tool ./vendor/bin/codecept run --debug tests/unit/components/DatasetServiceTest.php
 ```
 
 ### Functional test
@@ -77,4 +77,7 @@ There is a functional test which checks the `actionCreate()` function in
 `ReadmeController`.
 ```
 $ docker-compose run --rm tool ./vendor/bin/codecept run tests/functional
+
+# Run single test
+$ docker-compose run --rm tool ./vendor/bin/codecept run tests/functional/ReadmeCest.php
 ```
