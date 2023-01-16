@@ -20,17 +20,16 @@
              'value'=>$model->keyword
         ));
           ?>
-            <span class="input-group-btn">
-       <button class="btn background-btn" type="submit">
-                                                <i class="fa fa-search"></i> Search again
-                                            </button>
-    <?
-        if(!Yii::app()->user->isGuest) {
-    ?>
-            <input type="button" id="save-search-criteria" class="btn background-btn" value="Save current search criteria"/>
-    <?
-        }
-    ?>
+        <span class="input-group-btn">
+            <button class="btn background-btn" type="submit"><i class="fa fa-search"></i> Search again</button>
+<!--TODO: Will re-implement the save search function in ticket #1168-->
+//    <?
+//        if(!Yii::app()->user->isGuest) {
+//    ?>
+<!--            <input type="button" id="save-search-criteria" class="btn background-btn" value="Save current search criteria"/>-->
+<!--    --><?//
+//        }
+//    ?>
         </span>
     </div>
 </div>

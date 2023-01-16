@@ -321,4 +321,20 @@ class AcceptanceTester extends \Codeception\Actor
         $this->seeInPopup($message);
         $this->acceptPopup();
     }
+
+    /**
+     * @Then I should see an input button :button
+     */
+    public function iShouldSeeAnInputButton($button)
+    {
+        $this->seeElement('input', ['type' => "button", 'value' => $button]);
+    }
+
+    /**
+     * @Then I should not see an input button :button
+     */
+    public function iShouldNotSeeAnInputButton($button)
+    {
+        $this->dontSeeElement('input', ['type' => "button", 'value' => $button]);
+    }
 }
