@@ -117,6 +117,9 @@ class StoredDatasetConnections extends DatasetComponents implements DatasetConne
                 Yii::log( "{Connection timeout with https://doi.org/". $result['identifier'], "error");
                 Yii::log($se->getTrace(), "debug");
             }
+            catch (GuzzleHttp\Exception\RequestException $re) {
+                Yii::log($re->getMessage(), "error");
+            }
 			$result['citation'] = $response !== null ? (string) $response->getBody() : null;
 			$result['pmurl'] = null;
 			if (null !== $result['pmid']) {
