@@ -119,6 +119,7 @@ class StoredDatasetConnections extends DatasetComponents implements DatasetConne
             }
             catch (GuzzleHttp\Exception\RequestException $re) {
                 Yii::log($re->getMessage(), "error");
+                Yii::log($re->getTrace(), "debug");
             }
 			$result['citation'] = $response !== null ? (string) $response->getBody() : null;
 			$result['pmurl'] = null;
