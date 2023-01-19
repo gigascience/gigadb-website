@@ -128,13 +128,20 @@ come from the rclone tool itself:
 	status code: 403, request id: 4FD236673B39B110, host id: iAbakIt14agdiNaRUxKsezfAO8b2Eh6ESeXLqdqZaWsXfNV8iUlTPXnAuGbBih3Fe71/HA3tgnyU
 ```
 
-#### Using the `start_backup_process.sh` to start swatchdog and the backup process
-The `start_backup_process.sh` is a bash script to spin up swatchdog, start the 
+#### Using `migrate.sh` to start swatchdog and data migration
+
+The `migrate.sh` is a bash script to spin up swatchdog, start the 
 backup process and stop the container as the house-keeping step. In `dev` 
 environment, it requires 3 arguments (starting doi, ending doi, max batch size) 
 for executing the script, for example:
 ```
-% ./start_backup_process.sh 100001 100020 100
+# Test batch size too big
+$ ./migrate.sh 100002 100304 100
+
+# Test migrate 2 datasets
+$ ./migrate.sh 100001 100020 100
+
+% ./migrate.sh 100001 100020 100
 Creating wasabi-migration_swatchdog_1 ... done
 Creating wasabi-migration_rclone_run ... done
 c0030a95c899
@@ -157,7 +164,7 @@ wasabi-migration_swatchdog_1   swatchdog -c /app/config/s ...   Up
 # Stop the container
 % docker-compose stop swatchdog
 # Or execute the wrapper script
-% ./start_backup_process.sh 100001 100320 100
+% ./migrate.sh 100001 100320 100
 ```
 
 #### Running rclone commands in a bash shell

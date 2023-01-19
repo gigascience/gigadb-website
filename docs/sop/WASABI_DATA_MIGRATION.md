@@ -253,16 +253,16 @@ the batch size to 200:
 [gigadb@cngb-gigadb-bak]$ docker-compose run --rm rclone_cngb /app/rclone_copy.sh --starting-doi 100000 --ending-doi 100300 --max-batch-size 300
 ```
 
-#### Using `start_backup_process.sh` to start swatchdog and the backup process
+#### Using `migrate.sh` to start swatchdog and the backup process
 
-The `start_backup_process.sh` is a bash script to spin up swatchdog, start the 
+The `migrate.sh` is a bash script to spin up swatchdog, start the 
 backup process and remove the containers as the house-keeping step. In `live` 
 environment, it requires 3 arguments (starting doi, ending doi, max batch size) 
 and 1 optional argument `use-live-data` for executing the script, for example:
 ```
 # By default, the wrapper script will not use live data as the source
 # Unless `true` is supplied as the 4th arguement
-[gigadb@cngb-gigadb-bak]$ ./start_backup_process.sh 100216 100221 100 true
+[gigadb@cngb-gigadb-bak]$ ./migrate.sh 100216 100221 100 true
 ```
 
 #### Testing the notification feature if error occurs during the backup process
@@ -282,5 +282,5 @@ migration_swatchdog_cngb_1
 # Stop the container 
 [gigadb@cngb-gigadb-bak wasabi-migration]$ docker-compose stop swatchdog_cngb
 # Or execute the wrapper script
-[gigadb@cngb-gigadb-bak wasabi-migration]$ ./start_backup_process.sh 100001 100320 100
+[gigadb@cngb-gigadb-bak wasabi-migration]$ ./migrate.sh 100001 100320 100
 ```
