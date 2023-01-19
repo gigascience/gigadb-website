@@ -100,7 +100,6 @@ services:
       - ${APPLICATION}/ops/configuration/php-conf/php-${GIGADB_ENV}.ini:/usr/local/etc/php/php.ini
       - ${APPLICATION}/ops/configuration/php-conf/gigadb.pool.conf:/usr/local/etc/php-fpm.d/gigadb.pool.conf
       - ${APPLICATION}/ops/configuration/php-conf/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini
-      - ${APPLICATION}/ops/configuration/php-conf/gigadb.ini:/usr/local/etc/php/conf.d/gigadb.ini
       # access to File Upload Wizard model classes
       - ../../fuw/app:/app      
     expose:
