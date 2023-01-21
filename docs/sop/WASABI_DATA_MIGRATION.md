@@ -253,34 +253,101 @@ the batch size to 200:
 [gigadb@cngb-gigadb-bak]$ docker-compose run --rm rclone_cngb /app/rclone_copy.sh --starting-doi 100000 --ending-doi 100300 --max-batch-size 300
 ```
 
-#### Using `migrate.sh` to start swatchdog and the backup process
+### Using `migrate.sh` to start swatchdog and data migration process
 
-The `migrate.sh` is a bash script to spin up swatchdog, start the 
-backup process and remove the containers as the house-keeping step. In `live` 
-environment, it requires 3 arguments (starting doi, ending doi, max batch size) 
-and 1 optional argument `use-live-data` for executing the script, for example:
+#### Test usage
+
+`migrate.sh` is a bash script to spin up swatchdog, start the migration process
+and remove the containers as the house-keeping step. Data migration on the 
+CNGB backup server with `migrate.sh` can be tested by uploading test data to 
+`wasabi:gigadb-datasets/staging` using three command-line arguments: a starting 
+DOI, ending DOI and maximum allowed batch size:
 ```
-# By default, the wrapper script will not use live data as the source
-# Unless `true` is supplied as the 4th arguement
-[gigadb@cngb-gigadb-bak]$ ./migrate.sh 100216 100221 100 true
+[gigadb@cngb-gigadb-bak]$ ./migrate.sh 100002 100012 100
 ```
 
-#### Testing the notification feature if error occurs during the backup process
+A log of the migration process can be viewed by looking at the latest log file
+in the `logs` directory:
 ```
-# Spin up the log monitoring service 
-[gigadb@cngb-gigadb-bak wasabi-migration]$ docker-compose up -d swatchdog_cngb
-# Check the swatchdog state
-[gigadb@cngb-gigadb-bak wasabi-migration]$ docker-compose ps
-             Name                            Command               State   Ports
---------------------------------------------------------------------------------
-wasabi-                           swatchdog -c /app/config/s ...   Up           
-migration_swatchdog_cngb_1      
-# To generate log file containing ERROR
-[gigadb@cngb-gigadb-bak wasabi-migration]$ docker-compose run --rm rclone_cngb /app/rclone_copy.sh --starting-doi 100002 --ending-doi 100320 
-# Check the log file can be found in the logs/ dir
-# Check the ERROR message in the gitter room
-# Stop the container 
-[gigadb@cngb-gigadb-bak wasabi-migration]$ docker-compose stop swatchdog_cngb
-# Or execute the wrapper script
-[gigadb@cngb-gigadb-bak wasabi-migration]$ ./migrate.sh 100001 100320 100
+[gigadb@cngb-gigadb-bak]$ more logs/migration_20230120_001031.log 
+2023/01/20 00:10:31 DEBUG  : Sourced proxy settings for CNGB backup server
+2023/01/20 00:10:31 DEBUG  : Begin new batch migration to Wasabi
+2023/01/20 00:10:31 INFO  : Starting DOI is: 100002
+2023/01/20 00:10:31 INFO  : Ending DOI is: 100012
+2023/01/20 00:10:31 INFO  : Assessing DOI: 100002
+2023/01/20 00:10:31 DEBUG  : Found directory /app/tests/data/gigadb/pub/10.5524/100001_101000/100002
+2023/01/20 00:10:31 INFO  : Attempting to copy dataset 100002 to wasabi:gigadb-datasets/staging/pub/10.5524/100001_101000/100002
+2023/01/20 00:10:33 INFO  : readme.txt: Copied (new)
+2023/01/20 00:10:33 INFO  : CR.kegg.gz: Copied (new)
+2023/01/20 00:10:33 INFO  : Successfully copied files to Wasabi for DOI: 100002
+```
+
+If you now go to the Wasabi web console and look in
+`Buckets/gigadb-datasets/staging/pub/10.5524/100001_101000` then you will see 
+two datasets that have DOIs: 100002 and 100012 uploaded to the ***staging***
+directory of the `gigadb-datasets` bucket. The latest `logs/log` file should
+also report the transfer of the two datasets.
+
+#### Live usage to migrate production data
+
+To migrate real GigaDB datasets on the CNGB backup server to the 
+`wasabi:gigadb-datasets/live` directory, an additional fourth command-line 
+`true` argument is required to inform the migration process should transfer live 
+data:
+```
+[gigadb@cngb-gigadb-bak]$ ./migrate.sh 100216 100218 100 true
+Starting wasabi-migration_swatchdog_cngb_1 ... done
+Stopping wasabi-migration_swatchdog_cngb_1 ... done
+```
+> Before running the above command, you will need to delete three datasets to
+> from the `live` directory to see them uploaded. If you are logged into the 
+> Wasabi web console, use the Switch Role functionality to gain Admin access to 
+> delete the 100216, 100217 and 100218 datasets.
+
+Check latest log file. You should see reporting of the datasets uploaded into 
+`wasabi:gigadb-datasets/live`:
+```
+$ more logs/migration_20230120_013724.log 
+2023/01/20 01:37:24 DEBUG  : Sourced proxy settings for CNGB backup server
+2023/01/20 01:37:24 INFO  : Updated paths to data for CNGB backup server
+2023/01/20 01:37:24 DEBUG  : Begin new batch migration to Wasabi
+2023/01/20 01:37:24 INFO  : Starting DOI is: 100216
+2023/01/20 01:37:24 INFO  : Ending DOI is: 100218
+2023/01/20 01:37:24 INFO  : Assessing DOI: 100216
+2023/01/20 01:37:24 DEBUG  : Found directory /live-data/gigadb/pub/10.5524/100001_101000/100216
+2023/01/20 01:37:24 INFO  : Attempting to copy dataset 100216 to wasabi:gigadb-datasets/live/pub/10.5524/100001_101000/100216
+2023/01/20 01:37:36 INFO  : Badhwar_HBM_Brainspell-master.zip: Copied (new)
+2023/01/20 01:37:36 INFO  : Successfully copied files to Wasabi for DOI: 100216
+2023/01/20 01:37:36 INFO  : Assessing DOI: 100217
+2023/01/20 01:37:36 DEBUG  : Found directory /live-data/gigadb/pub/10.5524/100001_101000/100217
+2023/01/20 01:37:36 INFO  : Attempting to copy dataset 100217 to wasabi:gigadb-datasets/live/pub/10.5524/100001_101000/100217
+2023/01/20 01:37:37 INFO  : There was nothing to transfer
+2023/01/20 01:37:37 INFO  : Successfully copied files to Wasabi for DOI: 100217
+2023/01/20 01:37:37 INFO  : Assessing DOI: 100218
+2023/01/20 01:37:37 DEBUG  : Found directory /live-data/gigadb/pub/10.5524/100001_101000/100218
+2023/01/20 01:37:37 INFO  : Attempting to copy dataset 100218 to wasabi:gigadb-datasets/live/pub/10.5524/100001_101000/100218
+2023/01/20 01:37:39 INFO  : There was nothing to transfer
+2023/01/20 01:37:39 INFO  : Successfully copied files to Wasabi for DOI: 100218
+2023/01/20 01:37:39 INFO  : Finished batch copy process to Wasabi
+```
+
+Also, go to the Wasabi web console and look in
+`Buckets/gigadb-datasets/live/pub/10.5524/100001_101000`. You should see three
+datasets that have DOIs: 100002 and 100012 uploaded to the ***live***
+directory of the `gigadb-datasets` bucket.
+
+#### Error notification testing with migrate.sh script
+
+We can test the Swatchdog notification service is working by trying to migrate a
+number of datasets that is greater than the maximum allowed batch size:
+```
+# Max batch size is less than number of datasets to be migrated
+[gigadb@cngb-gigadb-bak]$ ./migrate.sh 100001 100320 100
+```
+
+If you look at the `GigaScience-IT-Notification` room, you should see the 
+following message:
+```
+gigatech23 @gigatech23 10:35
+CNGB BACKUP SERVER : 2023/01/21 02:36:19 ERROR : Batch size is more than 100 - please reduce size of batch to copy!
 ```

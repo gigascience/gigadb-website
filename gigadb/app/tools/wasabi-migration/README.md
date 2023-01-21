@@ -141,8 +141,9 @@ $ ./migrate.sh 100001 100020 100
 
 If you now go to the Wasabi web console and look in 
 `Buckets/gigadb-datasets/dev/pub/10.5524/100001_101000` then you will see two
-datasets uploaded that have DOIs: 100002 and 100012. The latest `logs/log` file
-should also report the transfer of the two datasets.
+datasets that have DOIs: 100002 and 100012 uploaded to the ***dev***
+directory of the `gigadb-datasets` bucket. The latest `logs/log` file should 
+also report the transfer of the two datasets.
 
 The Swatchdog notification service can be tested if you try to migrate a batch 
 size of datasets that it over the maximum allowed. The command below will try to
