@@ -8,7 +8,13 @@ serverName=$(uname -a | cut -f2 -d' ')
 startingDoi=$1
 endingDoi=$2
 maxBatchSize=$3
+
+# A fourth command-line argument determines whether to
+# migrate production data or test transfer using test data
 useLiveData="false"
+if [ $# -eq 4 ] && [ "$4" == "true" ]; then
+  useLiveData="true"
+fi
 
 devBackupStatus=""
 if [[ $serverName != "cngb-gigadb-bak" ]]; then
