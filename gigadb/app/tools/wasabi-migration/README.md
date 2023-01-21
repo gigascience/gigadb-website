@@ -130,23 +130,36 @@ come from the rclone tool itself:
 
 #### Using `migrate.sh` to start swatchdog and data migration
 
-The `migrate.sh` is a bash script to spin up swatchdog, start the 
-backup process and stop the container as the house-keeping step. In `dev` 
-environment, it requires 3 arguments (starting doi, ending doi, max batch size) 
-for executing the script, for example:
+The `migrate.sh` is a bash script which is able to spin up the swatchdog 
+monitoring service, start the backup process and stop the container as the 
+house-keeping step. To test `migrate.sh` in a `dev` environment, it requires 
+three  arguments: starting DOI, ending DOI, and maximum batch size:
+```
+# Test migrate 2 datasets
+$ ./migrate.sh 100001 100020 100
+```
+
+If you now go to the Wasabi web console and look in 
+`Buckets/gigadb-datasets/dev/pub/10.5524/100001_101000` then you will see two
+datasets uploaded that have DOIs: 100002 and 100012. The latest `logs/log` file
+should also report the transfer of the two datasets.
+
+The Swatchdog notification service can be tested if you try to migrate a batch 
+size of datasets that it over the maximum allowed. The command below will try to
+upload over 300 datasets but the maximum batch size has been configured to be
+100:
 ```
 # Test batch size too big
 $ ./migrate.sh 100002 100304 100
-
-# Test migrate 2 datasets
-$ ./migrate.sh 100001 100020 100
-
-% ./migrate.sh 100001 100020 100
-Creating wasabi-migration_swatchdog_1 ... done
-Creating wasabi-migration_rclone_run ... done
-c0030a95c899
-c0030a95c899
 ```
+
+A message in the Gitter room `GigaScience-IT-Notification` should appear:
+```
+gigatech23 @gigatech23 09:52
+(Drill) rclone.docker : 2023/01/21 01:52:07 ERROR : Batch size is more than 100 - please reduce size of batch to copy!
+```
+
+***
 
 #### Testing the notification feature if error occurs during the backup process
 ```
