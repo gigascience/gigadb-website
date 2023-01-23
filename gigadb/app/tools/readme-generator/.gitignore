@@ -2,4 +2,4 @@
 config/db.php
 config/test_db.php
 
-_generated
+tests/_support/_generated
