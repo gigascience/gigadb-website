@@ -118,7 +118,7 @@ VARS='$FTP_CONNECTION_URL'
 envsubst $VARS < $SOURCE > $TARGET
 
 
-if [[ $GIGADB_ENV != "dev" && $GIGADB_ENV != "CI" ]];then
+if [[ $GIGADB_ENV != "dev" && $GIGADB_ENV != "CI" && $GIGADB_ENV != "staging" ]];then
   export YII_TRACE_LEVEL=${YII_TRACE_LEVEL:-"0"}
   export YII_DEBUG=${YII_DEBUG:-"false"}
   export DISABLE_CACHE=${DISABLE_CACHE:-"false"}
