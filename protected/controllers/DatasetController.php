@@ -99,6 +99,7 @@ class DatasetController extends Controller
                 ->setDatasetSamples($sampleSettings["pageSize"])
                 ->setSearchForm();
 
+            Yii::log("*** In DatasetController after assembling pages components !!! ***");
             // Rendering section
             $this->layout='new_column2';
 
