@@ -46,6 +46,7 @@ class FormattedDatasetFiles extends DatasetComponents implements DatasetFilesInt
 	 */
 	public function getDatasetFiles(): array
 	{
+        Yii::log("*** In FormattedDatasetFiles::getDatasetFiles !!! ***");
 		$formatted_files = [];
 		$files =   $this->_cachedDatasetFiles->getDatasetFiles();
 		foreach ($files as &$file) {
@@ -80,6 +81,7 @@ class FormattedDatasetFiles extends DatasetComponents implements DatasetFilesInt
 	 */
 	public function getDatasetFilesSamples(): array
 	{
+        Yii::log("*** In FormattedDatasetFiles::getDatasetFilesSamples !!! ***");
 		return $this->_cachedDatasetFiles->getDatasetFilesSamples();
 	}
 
