@@ -49,6 +49,7 @@ class DatasetController extends Controller
 
     public function actionView($id)
     {
+        Yii::log("*** In DatasetController before everything !!! ***");
         // Retrieving the data
         $model = Dataset::model()->find("identifier=?", array($id));
         $dao = new DatasetDAO(["identifier" => $id]) ;
@@ -78,6 +79,8 @@ class DatasetController extends Controller
             $flag="file";
         }
 
+        Yii::log("*** In DatasetController after fileSettings !!! ***");
+
         //configuring samples table
         $sampleSettings = $datasetPageSettings->getSampleSettings($cookies);
 
@@ -86,6 +89,7 @@ class DatasetController extends Controller
             $flag="sample";
         }
 
+        Yii::log("*** In DatasetController after sampleSettings !!! ***");
         // Assembling page components and page settings
         if ("invalid" !== $datasetPageSettings->getPageType()) {
 
