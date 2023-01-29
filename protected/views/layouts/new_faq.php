@@ -126,6 +126,7 @@
                             <ul class="dropdown-menu">
                                 <li><a href="/site/about">General</a></li>
                                 <li><a href="/site/team">Our team</a></li>
+                                <li><a href="https://jobs.gigasciencejournal.com/">Jobs</a></li>
                                 <li><a href="/site/contact">Contact</a></li>
                                 <li><a href="/site/advisory">Advisory Board</a></li>
                             </ul>
