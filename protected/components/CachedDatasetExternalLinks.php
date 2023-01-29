@@ -3,7 +3,7 @@
  * DAO class to retrieve from cache external links associated with a given dataset
  *
  *
- * @param CCache $cache object
+ * @param ICache $cache object
  * @param CCacheDependency $cacheDependency Cache dependency for invalidating the cache
  * @param CDbConnection $dbConnection The database connection object to interact with the database storage
  * @param DatasetExternalLinksInterface $datasetExternalLinks the adaptee class to fall back on if no cache variant
@@ -14,7 +14,7 @@ class CachedDatasetExternalLinks extends DatasetComponents implements DatasetExt
 {
 	private $_storedDatasetExternalLinks;
 
-	public function __construct (CCache $cache, CCacheDependency $cacheDependency, DatasetExternalLinksInterface $datasetExternalLinks)
+	public function __construct (ICache $cache, CCacheDependency $cacheDependency, DatasetExternalLinksInterface $datasetExternalLinks)
 	{
 		parent::__construct();
 		$this->_cache = $cache;

@@ -2,7 +2,7 @@
 /**
  * DAO class to retrieve dataset links, and prefixes from cache
  *
- * @param CCache $cache object
+ * @param ICache $cache object
  * @param CCacheDependency $cacheDependency Cache dependency for invalidating the cache
  * @param DatasetAccessionsInterface $datasetAccessions DAO for which this is a cache adapter.
  * 		  We use PHP object interface for future flexibility (The O and L in SOLID principles)
@@ -13,7 +13,7 @@ class CachedDatasetAccessions extends DatasetComponents implements DatasetAccess
 {
 	private $_datasetAccessions;
 
-	public function __construct (CCache $cache, CCacheDependency $cacheDependency, DatasetAccessionsInterface $datasetAccessions)
+	public function __construct (ICache $cache, CCacheDependency $cacheDependency, DatasetAccessionsInterface $datasetAccessions)
 	{
 		parent::__construct();
 		$this->_cache = $cache;

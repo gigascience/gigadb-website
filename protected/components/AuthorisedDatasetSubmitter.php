@@ -2,7 +2,7 @@
 /**
  * DAO class to retrieve submitter email address from cache if the current user is logged in
  *
- * @param CCache cache object
+ * @param ICache cache object
  * @param StoredDatasetSubmitter the DAO for which this is a cache adapter
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0

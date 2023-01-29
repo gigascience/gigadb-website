@@ -3,7 +3,7 @@
  * DAO class to retrieve dataset and associated information from cache
  *
  *
- * @param CCache $cache Cache system to use
+ * @param ICache $cache Cache system to use
  * @param CCacheDependency $cacheDependency Cache dependency for invalidating the cache
  * @param DatasetMainSectionInterface $datasetMainSection the adaptee class to fall back on if no cache variant
  * @author Rija Menage <rija+git@cinecinetique.com>
@@ -13,7 +13,7 @@ class CachedDatasetMainSection extends DatasetComponents implements DatasetMainS
 {
 	private $_storedDatasetMainSection;
 
-	public function __construct (CCache $cache, CCacheDependency $cacheDependency, DatasetMainSectionInterface $datasetMainSection)
+	public function __construct (ICache $cache, CCacheDependency $cacheDependency, DatasetMainSectionInterface $datasetMainSection)
 	{
 		parent::__construct();
 		$this->_cache = $cache;

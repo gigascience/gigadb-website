@@ -3,7 +3,7 @@
  * DAO class to retrieve from cache related dataset and keywords for a given dataset
  *
  *
- * @param CCache $cache object
+ * @param ICache $cache object
  * @param CCacheDependency $cacheDependency Cache dependency for invalidating the cache
  * @param CDbConnection $dbConnection The database connection object to interact with the database storage
  * @param DatasetConnectionsInterface $datasetConnections the adaptee class to fall back on if no cache variant
@@ -15,7 +15,7 @@ class CachedDatasetConnections extends DatasetComponents implements DatasetConne
 {
 	private $_storedDatasetConnections;
 
-	public function __construct (CCache $cache, CCacheDependency $cacheDependency, DatasetConnectionsInterface $datasetConnections)
+	public function __construct (ICache $cache, CCacheDependency $cacheDependency, DatasetConnectionsInterface $datasetConnections)
 	{
 		parent::__construct();
 		$this->_cache = $cache;

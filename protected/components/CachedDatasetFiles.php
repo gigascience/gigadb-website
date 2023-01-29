@@ -2,7 +2,7 @@
 /**
  * DAO class to retrieve from cache the files associated to a dataset
  *
- * @param CCache $cache Cache system to use
+ * @param ICache $cache Cache system to use
  * @param CCacheDependency $cacheDependency Cache dependency for invalidating the cache
  * @param DatasetFilesInterface $datasetFiles the adaptee class to fall back on if no cache variant
  * @author Rija Menage <rija+git@cinecinetique.com>
@@ -12,7 +12,7 @@ class CachedDatasetFiles extends DatasetComponents implements DatasetFilesInterf
 {
 	private $_storedDatasetFiles;
 
-	public function __construct (CCache $cache, CCacheDependency $cacheDependency, DatasetFilesInterface $datasetFiles)
+	public function __construct (ICache $cache, CCacheDependency $cacheDependency, DatasetFilesInterface $datasetFiles)
 	{
 		parent::__construct();
 		$this->_cache = $cache;

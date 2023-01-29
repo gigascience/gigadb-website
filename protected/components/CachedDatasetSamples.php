@@ -2,7 +2,7 @@
 /**
  * DAO class to retrieve from cache the samples associated to a dataset
  *
- * @param CCache $cache Cache system to use
+ * @param ICache $cache Cache system to use
  * @param CCacheDependency $cacheDependency Cache dependency for invalidating the cache
  * @param DatasetSamplesInterface $datasetSamples the adaptee class to fall back on if no cache variant
  * @author Rija Menage <rija+git@cinecinetique.com>
@@ -12,7 +12,7 @@ class CachedDatasetSamples extends DatasetComponents implements DatasetSamplesIn
 {
 	private $_storedDatasetSamples;
 
-	public function __construct (CCache $cache, CCacheDependency $cacheDependency, DatasetSamplesInterface $datasetSamples)
+	public function __construct (ICache $cache, CCacheDependency $cacheDependency, DatasetSamplesInterface $datasetSamples)
 	{
 		parent::__construct();
 		$this->_cache = $cache;

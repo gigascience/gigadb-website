@@ -2,7 +2,7 @@
 /**
  * DAO class to retrieve submitter email address from cache
  *
- * @param CCache cache object
+ * @param ICache cache object
  * @param CCacheDependency $cacheDependency Cache dependency for invalidating the cache
  * @param DatasetSubmitterInterface $datasetSubmitter the DAO for which this is a cache adapter
  * @author Rija Menage <rija+git@cinecinetique.com>
@@ -12,7 +12,7 @@ class CachedDatasetSubmitter extends DatasetComponents implements DatasetSubmitt
 {
 	private $_storedDatasetSubmitter;
 
-	public function __construct(CCache $cache, CCacheDependency $cacheDependency, DatasetSubmitterInterface $datasetSubmitter)
+	public function __construct(ICache $cache, CCacheDependency $cacheDependency, DatasetSubmitterInterface $datasetSubmitter)
 	{
 		parent::__construct();
 		$this->_cache = $cache;
