@@ -1,0 +1,5 @@
+# Ignore files generated from template
+config/db.php
+config/test_db.php
+
+tests/_support/_generated

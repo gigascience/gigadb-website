@@ -1,0 +1,15 @@
+actor: Tester
+bootstrap: _bootstrap.php
+paths:
+    tests: tests
+    output: tests/_output
+    data: tests/_data
+    helpers: tests/_support
+settings:
+    memory_limit: 1024M
+    colors: true
+modules:
+    config:
+        Yii2:
+            configFile: 'config/test.php'
+

@@ -1,0 +1,19 @@
+# Codeception Test Suite Configuration
+
+# suite for unit (internal) tests.
+# RUN `build` COMMAND AFTER ADDING/REMOVING MODULES.
+
+class_name: UnitTester
+modules:
+    enabled:
+      - Db:
+          dsn: 'pgsql:host=database;dbname=gigadb_testdata;port=5432'
+          user: 'gigadb'
+          password: ''
+          populate: true # run populator before all tests
+          cleanup: true # run populator before each test
+          # Can use --verbose in pg_restore command to output progress messages
+          populator: 'pg_restore -h database -p 5432 -U gigadb -d gigadb_testdata --no-owner /app/sql/gigadb_testdata.pgdmp'
+      - Asserts
+      - Yii2:
+            part: [orm, email, fixtures]

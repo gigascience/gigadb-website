@@ -1,0 +1,29 @@
+version: '3.7'
+services:
+
+  tool:
+    build:
+      context: .
+    volumes:
+      # Mount source-code for development
+      - .:/app
+      - .:/logs
+      # For using model classes from file-worker tool
+      - ../../:/gigadb-apps
+      # For accessing pgdmp database dumps created during ./up.sh
+      - ../../../../sql:/app/sql
+      # Destination for readme files
+      - ./runtime/curators:/home/curators
+    networks:
+      # Connect to db-tier network in ops/docker-compose.yml
+      - proxy-db-tier
+
+  config:
+    image: rija/docker-alpine-shell-tools:1.0.1
+    volumes:
+      - .:/app
+    command: /app/generate_config.sh
+
+networks:
+  proxy-db-tier:  # represents db-tier network in ops/docker-compose.yml
+      name: ${GIGADB_COMPOSE_PROJECT_NAME}_db-tier
