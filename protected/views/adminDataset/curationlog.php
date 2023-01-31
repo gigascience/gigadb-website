@@ -3,7 +3,7 @@
 $dataset = Dataset::model()->find('id=:dataset_id', array(':dataset_id'=>$dataset_id));
 
 ?>
-<a href="/curationlog/create/id/<?php echo $dataset_id ?>" class="btn">Create New Log</a>
+<a href="/curationLog/create/id/<?php echo $dataset_id ?>" class="btn">Create New Log</a>
 <div class="clear"></div>
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(
