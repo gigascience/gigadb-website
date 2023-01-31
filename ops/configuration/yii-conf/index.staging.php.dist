@@ -21,6 +21,4 @@ require_once($composer);
 # Run the Yii1.1 application
 Yii::$enableIncludePath = false;
 $config=dirname(__FILE__).'/protected/config/main.php';
-#Yii::createWebApplication($config)->run();
-
-Hello world
+Yii::createWebApplication($config)->run();
