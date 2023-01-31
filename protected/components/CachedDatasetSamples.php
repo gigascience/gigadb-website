@@ -48,7 +48,6 @@ class CachedDatasetSamples extends DatasetComponents implements DatasetSamplesIn
 	 */
 	public function getDatasetSamples(): array
 	{
-        Yii::log("*** In CachedDatasetSamples::getDatasetSamples() !!! ***");
 		$samples =  $this->getCachedLocalData( $this->getDatasetId() );
 		if (false == $samples) {
 			$samples = $this->_storedDatasetSamples->getDatasetSamples();

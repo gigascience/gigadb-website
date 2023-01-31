@@ -48,7 +48,6 @@ class CachedDatasetFiles extends DatasetComponents implements DatasetFilesInterf
 	 */
 	public function getDatasetFiles(): array
 	{
-        Yii::log("*** In CachedDatasetFiles::getDatasetFiles !!! ***");
 		$files =  $this->getCachedLocalData( $this->getDatasetId() );
 		if (false == $files) {
 			$files = $this->_storedDatasetFiles->getDatasetFiles();
@@ -64,7 +63,6 @@ class CachedDatasetFiles extends DatasetComponents implements DatasetFilesInterf
 	 */
 	public function getDatasetFilesSamples(): array
 	{
-        Yii::log("*** In CachedDatasetFiles::getDatasetFilesSamples !!! ***");
 		$samples =  $this->getCachedLocalData( $this->getDatasetId() );
 		if (false == $samples) {
 			$samples = $this->_storedDatasetFiles->getDatasetFilesSamples();

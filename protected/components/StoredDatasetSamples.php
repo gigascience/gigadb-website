@@ -48,8 +48,6 @@ class StoredDatasetSamples extends DatasetComponents implements DatasetSamplesIn
 	 */
 	public function getDatasetSamples(): array
 	{
-        Yii::log("*** In StoredDatasetSamples::getDatasetSamples() !!! ***");
-        Yii::log("QUERYING DATABASE !, memory_limit:" . ini_get("memory_limit"));
 
 		$objectToHash =  function ($sample) {
 

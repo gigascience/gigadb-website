@@ -298,7 +298,6 @@ class DatasetPageAssembly extends yii\base\Component
 	 */
 	public function getDatasetSamples(): DatasetSamplesInterface
 	{
-        Yii::log("*** In DatasetPageAssembly::getDatasetSamples !!! ***");
 		return $this->_samples;
 	}
 

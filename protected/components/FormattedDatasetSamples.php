@@ -46,7 +46,6 @@ class FormattedDatasetSamples extends DatasetComponents implements DatasetSample
 	 */
 	public function getDatasetSamples(): array
 	{
-        Yii::log("*** In FormattedDatasetSamples::getDatasetSamples() !!! ***");
 		$formatted_samples = [];
 		$samples =   array_filter($this->_cachedDatasetSamples->getDatasetSamples());
 		foreach ($samples as &$sample) {
@@ -63,7 +62,6 @@ class FormattedDatasetSamples extends DatasetComponents implements DatasetSample
 	 */
 	public function getDataProvider(): CArrayDataProvider
 	{
-        Yii::log("*** In FormattedDatasetSamples::getDataProvider() !!! ***");
 		$samples = $this->getDatasetSamples();
         $dataProvider= new CArrayDataProvider( $samples , array(
 		    'sort' => array('defaultOrder'=>'t.name ASC',
