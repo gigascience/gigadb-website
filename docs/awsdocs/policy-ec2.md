@@ -64,7 +64,8 @@ when using the AWS management console.
                 "ForAllValues:StringLike": {
                     "ec2:InstanceType": [
                         "t3.nano",
-                        "t3.micro"
+                        "t3.micro",
+                        "t3a.small"
                     ]
                 }
             }
