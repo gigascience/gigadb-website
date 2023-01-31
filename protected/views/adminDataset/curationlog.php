@@ -22,13 +22,13 @@ $dataset = Dataset::model()->find('id=:dataset_id', array(':dataset_id'=>$datase
 			'class'=>'CButtonColumn',
                      'buttons'=>array(
                 'view' => array(
-                        'url' => 'Yii::app()->createUrl("curationlog/view" , array("id" => $data->id))'
+                        'url' => 'Yii::app()->createUrl("curationLog/view" , array("id" => $data->id))'
                         ),
                 'update' => array(
-                        'url' => 'Yii::app()->createUrl("curationlog/update" , array("id" => $data->id))'
+                        'url' => 'Yii::app()->createUrl("curationLog/update" , array("id" => $data->id))'
                         ),   
                 'delete' => array(
-                        'url' => 'Yii::app()->createUrl("curationlog/delete" , array("id" => $data->id))'
+                        'url' => 'Yii::app()->createUrl("curationLog/delete" , array("id" => $data->id))'
                         )          
                 ),
 		),
