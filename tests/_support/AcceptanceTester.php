@@ -150,7 +150,7 @@ class AcceptanceTester extends \Codeception\Actor
      */
     public function iShouldSeeAButtonWithLink($expectButton)
     {
-        $actualButton = $this->grabTextFrom("//a[contains(@href, '/curationlog/create/id/')]");
+        $actualButton = $this->grabTextFrom("//a[contains(@href, '/curationLog/create/id/')]");
         $this->assertEquals($actualButton, $expectButton);
     }
 
