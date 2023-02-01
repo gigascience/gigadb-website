@@ -119,7 +119,7 @@ envsubst $VARS < $SOURCE > $TARGET
 if [[ $GIGADB_ENV != "dev" && $GIGADB_ENV != "CI" ]];then
   export YII_TRACE_LEVEL=${YII_TRACE_LEVEL:-"3"}
   export YII_DEBUG=${YII_DEBUG:-"true"}
-  export DISABLE_CACHE=${DISABLE_CACHE:-"false"}
+  export DISABLE_CACHE=${DISABLE_CACHE:-"true"}
 else
   export YII_TRACE_LEVEL=${YII_TRACE_LEVEL:-"3"}
   export YII_DEBUG=${YII_DEBUG:-"true"}
