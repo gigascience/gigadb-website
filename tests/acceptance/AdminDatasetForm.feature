@@ -34,7 +34,7 @@ Feature: form to update dataset details
     And I should see "Keywords"
     And I should see "URL to redirect"
     And I should see a submit button "Save"
-    And I should see a button "Create New Log" with creation log link
+    And I should see a button "Create New Log" with curation log link
     And I should not see "Publisher"
 
 

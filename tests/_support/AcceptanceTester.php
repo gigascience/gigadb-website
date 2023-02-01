@@ -146,7 +146,7 @@ class AcceptanceTester extends \Codeception\Actor
     }
 
     /**
-     * @Then I should see a button :button with creation log link
+     * @Then I should see a button :button with curation log link
      */
     public function iShouldSeeAButtonWithLink($expectButton)
     {
