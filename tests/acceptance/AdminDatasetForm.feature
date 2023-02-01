@@ -303,7 +303,7 @@ Feature: form to update dataset details
     When I am on "/adminDataset/update/id/22"
     And I should see an image with alternate text "View" is linked to "http://gigadb.test/curationLog/view/id/3"
     And I click on image with alternate text "View"
-    Then I am on "/curationlog/view/id/3"
+    Then I am on "/curationLog/view/id/3"
     And I should see "View Curation Log #3"
     And I should see a link "Back to this Dataset Curation Log" to "http://gigadb.test/adminDataset/update/id/22"
 
@@ -312,7 +312,7 @@ Feature: form to update dataset details
     When I am on "/adminDataset/update/id/22"
     And I should see an image with alternate text "Update" is linked to "http://gigadb.test/curationLog/update/id/3"
     And I click on image with alternate text "Update"
-    Then I am on "/curationlog/update/id/3"
+    Then I am on "/curationLog/update/id/3"
     And I should see "Update Curation Log 3"
 
   @ok @curationlog
