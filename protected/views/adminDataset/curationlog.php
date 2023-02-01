@@ -22,9 +22,9 @@ $this->widget(
             [
                 'class'   => 'CButtonColumn',
                 'buttons' => [
-                    'view'   => ['url' => 'Yii::app()->createUrl("curationLog/view", ["id" => $data->id])'],
-                    'update' => ['url' => 'Yii::app()->createUrl("curationLog/update", ["id" => $data->id])'],
-                    'delete' => ['url' => 'Yii::app()->createUrl("curationLog/delete", ["id" => $data->id])'],
+                    'view'   => ['url' => 'Yii::app()->createUrl("curationlog/view", ["id" => $data->id])'],
+                    'update' => ['url' => 'Yii::app()->createUrl("curationlog/update", ["id" => $data->id])'],
+                    'delete' => ['url' => 'Yii::app()->createUrl("curationlog/delete", ["id" => $data->id])'],
                 ],
             ],
         ],

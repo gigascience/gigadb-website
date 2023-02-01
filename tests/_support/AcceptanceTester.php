@@ -257,6 +257,30 @@ class AcceptanceTester extends \Codeception\Actor
     }
 
     /**
+     * @Then I should see an image with alternate text :alt is linked to :expectedUrl
+     */
+    public function iShouldSeeAnImageWithAlternateTextIsLinkedTo($alt, $expectedUrl)
+    {
+        $this->seeElement("//img[@alt='$alt']");
+        $actualUrl = $this->grabAttributeFrom("//img[@alt='$alt']/parent::*", "href");
+        $this->assertEquals($expectedUrl, $actualUrl);
+    }
+
+    /**
+     * Open a link provided by an image with alternate text attribute
+     * 
+     * Beware that a web page may have multiple linked images each with alt
+     * attribute.
+     * 
+     * @Then I click on image with alternate text :alt
+     */
+    public function iClickOnImageWithAlternateText($alt)
+    {
+        $this->seeElement("//img[@alt='$alt']");
+        $this->click($alt);
+    }
+
+    /**
      * @When I click the table settings for :table
      */
     public function iClickTheTableSettings($table)
