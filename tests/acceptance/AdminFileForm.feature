@@ -22,7 +22,7 @@ Feature: form to manage file metadata
     Then I should see "2022-01-01"
 
   @ok @issue-1175
-  Scenario: Dataset page can view the updated location url when caching is disable
+  Scenario: Dataset page can view the updated location url when DISABLE_CACHE is false
     Given I am on "/adminFile/update/id/17679"
     When I fill in the field of "id" "File_location" with "https://test.org/phylogeny_study_update/Pygoscelis_adeliae.RepeatMasker.out.gz"
     And I press the button "Save"
