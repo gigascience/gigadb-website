@@ -248,7 +248,7 @@ Cannot copy live data because we are not on backup server - exiting...
 
 The maximum number of datasets that can be uploaded has a default value of 100.
 This can be overridden using the `--max-batch-size`. For example, to increase
-the batch size to 200:
+the batch size to 300:
 ```
 [gigadb@cngb-gigadb-bak]$ docker-compose run --rm rclone_cngb /app/rclone_copy.sh --starting-doi 100000 --ending-doi 100300 --max-batch-size 300
 ```
