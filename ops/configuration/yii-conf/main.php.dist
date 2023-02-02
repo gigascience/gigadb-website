@@ -163,7 +163,8 @@ return CMap::mergeArray(array(
             'driver'=>'GD',
         ),
         'cache'=>array(
-            'class'=>'CDummyCache',
+            'class'=>'system.caching.CApcCache',
+            'useApcu'=>true
         ),
     ),
 
