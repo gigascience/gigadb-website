@@ -323,6 +323,5 @@ Feature: form to update dataset details
     And I click on image with alternate text "Delete"
     And I confirm to "Are you sure you want to delete this item?"
     And I wait "2" seconds
-    And I make a screenshot called "delete_popup"
     Then I am on "/adminDataset/update/id/22"
     And I should not see "Status changed to Published"
