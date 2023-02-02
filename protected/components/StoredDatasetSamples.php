@@ -10,7 +10,7 @@
  */
 class StoredDatasetSamples extends DatasetComponents implements DatasetSamplesInterface
 {
-    const SAMPLES_ROWS_LIMIT  = 5000 ;
+    const SAMPLES_ROWS_LIMIT  = 3000 ;
 	private $_id;
 	private $_db;
 
