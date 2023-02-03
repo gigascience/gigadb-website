@@ -8,6 +8,7 @@ ReadmeGeneratorTest:
     GIGADB_ENV: dev
     PROJECT_VARIABLES_URL: "https://gitlab.com/api/v4/projects/gigascience%2Fforks%2F$REPO_NAME/variables"
     MISC_VARIABLES_URL: "https://gitlab.com/api/v4/projects/gigascience%2Fcnhk-infra/variables"
+    GIGADB_COMPOSE_PROJECT_NAME: "deployment"
 #    FOO: "bar"
   stage: test
   artifacts:
@@ -34,6 +35,18 @@ ReadmeGeneratorTest:
     when: always
     expire_in: 1 week
   script:
+    # Need GigaDB images to provide database
+    - env | grep "^HOME_URL" >> $APPLICATION/.env
+    - env | grep "^GIGADB_" >> $APPLICATION/.secrets
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/console:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/web:latest || true
+    - env
+    - pwd
+    - ./up.sh
+    - docker-compose ps -a
+    - pwd
     - env | grep -iE "(GIGADB_ENV|PROJECT_VARIABLES_URL|MISC_VARIABLES_URL|GITLAB_PRIVATE_TOKEN|CI_PROJECT_URL)"| tee gigadb/app/tools/readme-generator/.env
     - cd gigadb/app/tools/readme-generator
     - $LOCAL_COMPOSE run --rm config
