@@ -58,7 +58,7 @@ ReadmeGeneratorTest:
     - ./up.sh
     - echo $APPLICATION
     - pwd
-    - env | grep -iE "(GIGADB_ENV|PROJECT_VARIABLES_URL|MISC_VARIABLES_URL|GITLAB_PRIVATE_TOKEN|CI_PROJECT_URL)"| tee gigadb/app/tools/readme-generator/.env
+    - env | grep -iE "(GIGADB_ENV|PROJECT_VARIABLES_URL|MISC_VARIABLES_URL|GITLAB_PRIVATE_TOKEN|CI_PROJECT_URL|GROUP_VARIABLES_URL)"| tee gigadb/app/tools/readme-generator/.env
     - cd gigadb/app/tools/readme-generator
     - $LOCAL_COMPOSE run --rm config
     - $LOCAL_COMPOSE run --rm tool composer install
