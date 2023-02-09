@@ -314,6 +314,12 @@ Feature: form to update dataset details
     And I click on image with alternate text "Update"
     Then I am on "/curationLog/update/id/3"
     And I should see "Update Curation Log 3"
+    And I fill in the field of "name" "CurationLog[comments]" with "cogito, ergo sum"
+    And I press the button "Save"
+    And I wait "2" seconds
+    Then I am on "/curationLog/view/id/3"
+    And I should see "View Curation Log #3"
+    And I should see "cogito, ergo sum"
 
   @ok @curationlog
   Scenario: Click delete curation record image with link
