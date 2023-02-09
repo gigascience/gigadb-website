@@ -5,6 +5,7 @@ $dbConfig = json_decode(file_get_contents(dirname(__FILE__).'/db.json'), true);
 $pre_config = require(dirname(__FILE__).'/local.php');
 Yii::setPathOfAlias('scholar', realpath(dirname(__FILE__).'/../scripts/scholar.py'));
 
+$main_config = require(dirname(__FILE__).'/main.php');
 
 # Location where user images are stored
 #Yii::setPathOfAlias('uploadPath', realpath(dirname(__FILE__). '/../../images/uploads'));
@@ -87,5 +88,6 @@ return CMap::mergeArray($pre_config, array(
     'params'=>array(
         // For creating URLs to dataset files
         'ftp_connection_url' => '${FTP_CONNECTION_URL}',
+        'invalidationQuery' => $main_config['params']['cacheConfig']['DatasetComponents']['invalidationQuery']
     ),
 ));

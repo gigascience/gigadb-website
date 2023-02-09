@@ -9,6 +9,7 @@ class InvalidationQueryCommand extends CConsoleCommand
         $helpText .= "Usage: ./protected/yiic invalidationquery getmaxcreateddatefromcurationlog" . PHP_EOL;
         $helpText .= "Usage: ./protected/yiic invalidationquery getmaxcreatefromdatasetlogandcurationlog" . PHP_EOL;
         $helpText .= "Usage: ./protected/yiic invalidationquery getmaxcreatebyleftjoindatasetlogandcurationlog" . PHP_EOL;
+        $helpText .= "Usage: ./protected/yicc invalidationquery getlatestcreateusingqueryfrommainconfigfile" . PHP_EOL;
         return $helpText;
     }
 
@@ -37,6 +38,16 @@ class InvalidationQueryCommand extends CConsoleCommand
     {
         $sql = "select max(created_at) as dataset_log_latest, max(creation_date) as curation_log_latest from dataset_log d left join curation_log c on c.dataset_id = d.dataset_id  where d.dataset_id = 8 or c.dataset_id = 8;";
         $rows = Yii::app()->db->createCommand($sql)->queryRow();
+        foreach ($rows as $row) {
+            print_r($row);
+        }
+    }
+
+    public function actionGetLatestCreateUsingQueryFromMainConfigFile()
+    {
+        $dataset_id = 8;
+        $invalidationQuery = preg_replace("/@id/", $dataset_id, Yii::app()->params['invalidationQuery']);
+        $rows = Yii::app()->db->createCommand($invalidationQuery)->queryRow();
         foreach ($rows as $row) {
             print_r($row);
         }
