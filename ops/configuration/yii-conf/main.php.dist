@@ -191,7 +191,7 @@ return CMap::mergeArray(array(
         ),
         'cacheConfig' =>array(
             'DatasetComponents' => array(
-                'invalidationQuery' =>"select max(created_at) as dataset_log_latest, max(creation_date) as curation_log_latest from dataset_log d left join curation_log c on c.dataset_id = d.dataset_id where d.dataset_id = @id;",
+                'invalidationQuery' =>"select max(created_at) as dataset_log_latest, max(creation_date) as curation_log_latest from dataset_log d left join curation_log c on c.dataset_id = d.dataset_id where d.dataset_id = @id or c.dataset_id = @id ;",
                 'timeToLive' =>2592000 //30 days: 60*60*24*30
             ),
         ),

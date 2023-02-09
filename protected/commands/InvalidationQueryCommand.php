@@ -35,8 +35,10 @@ class InvalidationQueryCommand extends CConsoleCommand
 
     public function actionGetMaxCreateByLeftJoinDatasetlogAndCurationlog()
     {
-        $sql = "select max(created_at) as dataset_log_latest, max(creation_date) as curation_log_latest from dataset_log d left join curation_log c on c.dataset_id = d.dataset_id  where d.dataset_id = 8;";
-        $rows = Yii::app()->db->createCommand($sql)->queryAll();
-        print_r($rows);
+        $sql = "select max(created_at) as dataset_log_latest, max(creation_date) as curation_log_latest from dataset_log d left join curation_log c on c.dataset_id = d.dataset_id  where d.dataset_id = 8 or c.dataset_id = 8;";
+        $rows = Yii::app()->db->createCommand($sql)->queryRow();
+        foreach ($rows as $row) {
+            print_r($row);
+        }
     }
 }
