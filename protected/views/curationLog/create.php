@@ -1,9 +1,16 @@
 <h1>Create Curation Log</h1>
-<? if (Yii::app()->user->checkAccess('admin')) { ?>
+<?php if (Yii::app()->user->checkAccess('admin') === true) { ?>
 <div class="actionBar">
-[<?= CHtml::link('Manage Logs', array('admin')) ?>]
+<?php CHtml::link('Manage Logs', ['admin']); ?>
 </div>
-<? } ?>
+<?php } ?>
 
-<?php echo $this->renderPartial('_form1', array('model'=>$model,'dataset_id'=>$dataset_id)); ?>
+<?php
+echo $this->renderPartial(
+    '_form1',
+    [
+        'model'      => $model,
+        'dataset_id' => $dataset_id,
+    ]
+);
 
