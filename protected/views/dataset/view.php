@@ -52,21 +52,28 @@ $sampleDataProvider = $samples->getDataProvider() ;
                                                 <button id="CiteDataset" class="drop-citation-btn dropdown-toggle" type="button" data-toggle="dropdown">Cite Dataset<span class="caret"></span></button>
                                                 <?php
                                                 $url = 'https://data.datacite.org/text/x-bibliography/10.5524/' . $model->identifier;
-                                                $webClient = new GuzzleHttp\Client();
-                                                try {
-                                                    $response = $webClient->request('GET', $url);
-                                                    $text = $response->getBody()->getContents();
+//                                                $webClient = new GuzzleHttp\Client();
+//                                                try {
+//                                                    $response = $webClient->request('GET', $url);
+//                                                    $text = $response->getBody()->getContents();
+//                                                    $showButton = true;
+//                                                } catch (GuzzleHttp\Exception\RequestException $e) {
+//                                                    $showButton = false;
+//                                                    Yii::log($e->getMessage(), "error");
+//                                                }
+                                                $textFileExist = DownloadService::fileExists($url);
+                                                if ($textFileExist) {
+                                                    $textFile = DownloadService::downloadFile($url);
                                                     $showButton = true;
-                                                } catch (GuzzleHttp\Exception\RequestException $e) {
+                                                } else {
                                                     $showButton = false;
-                                                    Yii::log($e->getMessage(), "error");
                                                 }
                                                 ?>
                                                 <?php if ($showButton == 'true') { ?>
                                                 <script>
                                                     function showText() {
                                                         var textWindow = window.open();
-                                                        textWindow.document.write(`<?php echo $text; ?>`);
+                                                        textWindow.document.write(`<?php echo $textFile; ?>`);
                                                     }
                                                 </script>
                                                 <?php } else { ?>
