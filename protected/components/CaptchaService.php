@@ -1,6 +1,7 @@
 <?php
 
 use Gregwar\Captcha\CaptchaBuilder;
+
 /**
  * Component service for handling captcha generation
  *
@@ -17,7 +18,7 @@ class CaptchaService extends CApplicationComponent
      */
     public function init()
     {
-        $this->captchaBuilder = new CaptchaBuilder;
+        $this->captchaBuilder = new CaptchaBuilder();
         parent::init();
     }
 
@@ -49,8 +50,7 @@ class CaptchaService extends CApplicationComponent
     public function validate(CModel $model, string $attribute): void
     {
         if (!empty($model->$attribute)) {
-            if ($model->$attribute != $_SESSION["captcha"])
-            {
+            if ($model->$attribute != $_SESSION["captcha"]) {
                 $model->addError($attribute, 'Captcha is incorrect!');
             }
         } else {
@@ -58,6 +58,3 @@ class CaptchaService extends CApplicationComponent
         }
     }
 }
-
-
-?>

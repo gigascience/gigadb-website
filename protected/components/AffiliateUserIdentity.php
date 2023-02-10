@@ -1,10 +1,11 @@
 <?php
+
 /**
  * Class to handle the identity of affiliate user and how they authenticate
  *
  */
-class AffiliateUserIdentity extends UserIdentity {
-
+class AffiliateUserIdentity extends UserIdentity
+{
     public $_id;
 
     /**
@@ -35,9 +36,10 @@ class AffiliateUserIdentity extends UserIdentity {
      *
      * @return boolean whether authentication succeeds. True if successful, False otherwise
      */
-    public function authenticate() {
+    public function authenticate()
+    {
 
-        $user = User::findAffiliateUser($this->provider,$this->uid);
+        $user = User::findAffiliateUser($this->provider, $this->uid);
 
         if ($user === null) {
             $this->errorCode = self::ERROR_USERNAME_INVALID;
@@ -45,7 +47,7 @@ class AffiliateUserIdentity extends UserIdentity {
             $this->_id = $user->id;
             $this->errorCode = self::ERROR_NONE;
             $this->setState("_id", $user->id);
-            $this->setState('roles',$user->role);
+            $this->setState('roles', $user->role);
         }
 
         return !$this->errorCode;
@@ -54,18 +56,19 @@ class AffiliateUserIdentity extends UserIdentity {
     /**
      * revoke affilate login token
     **/
-    public static function revoke_token() {
+    public static function revoke_token()
+    {
         $provider = null;
         $token = null;
 
-        if(isset($_SESSION['affiliate_login'])) {
+        if (isset($_SESSION['affiliate_login'])) {
             $provider = isset($_SESSION['affiliate_login']['provider']) ? $_SESSION['affiliate_login']['provider'] : null ;
             $token = isset($_SESSION['affiliate_login']['token']) ? $_SESSION['affiliate_login']['token'] : null ;
         }
 
         if ("Orcid" == $provider) {
             $environment = ("sandbox" == Yii::app()->getModules()['opauth']['opauthParams']["Strategy"]["Orcid"]["environment"] ? "sandbox."  : "") ;
-            $service_url = 'https://'. $environment . 'orcid.org/oauth/revoke';  #TODO: make orcid coming form config
+            $service_url = 'https://' . $environment . 'orcid.org/oauth/revoke';  #TODO: make orcid coming form config
             $curl = curl_init($service_url);
             $curl_post_data = array(
                 "client_id" => Yii::app()->getModules()['opauth']['opauthParams']["Strategy"]["Orcid"]["client_id"],
@@ -78,17 +81,12 @@ class AffiliateUserIdentity extends UserIdentity {
             curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($curl, CURLOPT_POST, true);
-            curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($curl_post_data) );
+            curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($curl_post_data));
             curl_exec($curl);
             curl_getinfo($curl, CURLINFO_HTTP_CODE);
             curl_close($curl);
-
         }
         //TODO: add Google, Facebook, Twitter
         //TODO: refactor most of the curl stuff into its own function as likely common to all providers
     }
-
-
 }
-
-?>

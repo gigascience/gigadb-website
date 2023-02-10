@@ -2,9 +2,11 @@
 
 Yii::import("system.web.widgets.pagers.CLinkPager");
 
-class SiteLinkPager extends CLinkPager {
+class SiteLinkPager extends CLinkPager
+{
     public $cssFile = '/css/pager.css';
-    public function init() {
+    public function init()
+    {
         parent::init();
         $this->firstPageLabel = Yii::t('app', '<< First');
         $this->footer = Yii::t('app', '');
@@ -14,5 +16,3 @@ class SiteLinkPager extends CLinkPager {
         $this->prevPageLabel = Yii::t('app', '< Previous');
     }
 }
-
-?>

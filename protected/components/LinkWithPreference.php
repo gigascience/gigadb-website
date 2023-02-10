@@ -20,51 +20,50 @@
  */
 class LinkWithPreference extends yii\base\BaseObject implements LinkInterface
 {
-	/**
-	 * @var string $_preferred_source hold the currently logged in  user preferred source for dataset links
-	 */
-	private $_preferred_source;
+    /**
+     * @var string $_preferred_source hold the currently logged in  user preferred source for dataset links
+     */
+    private $_preferred_source;
 
-	/**
-	 * @var Link $_link hold the Link object for which this is an adapter
-	 */
-	private $_link;
+    /**
+     * @var Link $_link hold the Link object for which this is an adapter
+     */
+    private $_link;
 
 
-	public function __construct(LinkInterface $link, string $preferred_source)
-	{
-		$this->_preferred_source = $preferred_source;
-		$this->_link = $link;
-	}
+    public function __construct(LinkInterface $link, string $preferred_source)
+    {
+        $this->_preferred_source = $preferred_source;
+        $this->_link = $link;
+    }
 
-	public function getPreferred_Source(): string
-	{
-		return $this->_preferred_source;
-	}
+    public function getPreferred_Source(): string
+    {
+        return $this->_preferred_source;
+    }
 
-	public function getId()
-	{
-		return $this->_link->id;
-	}
+    public function getId()
+    {
+        return $this->_link->id;
+    }
 
-	public function getDataset_Id()
-	{
-		return $this->_link->dataset_id;
-	}
+    public function getDataset_Id()
+    {
+        return $this->_link->dataset_id;
+    }
 
-	public function getLink()
-	{
-		return $this->_link->link;
-	}
+    public function getLink()
+    {
+        return $this->_link->link;
+    }
 
-	public function getIs_Primary()
-	{
-		return $this->_link->is_primary;
-	}
+    public function getIs_Primary()
+    {
+        return $this->_link->is_primary;
+    }
 
-	public function getFullUrl(string $link_type=''): string
-	{
-		return $this->_link->getFullUrl($link_type);
-	}
-
+    public function getFullUrl(string $link_type = ''): string
+    {
+        return $this->_link->getFullUrl($link_type);
+    }
 }
