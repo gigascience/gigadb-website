@@ -10,7 +10,7 @@ ReadmeGeneratorTest:
     MISC_VARIABLES_URL: "https://gitlab.com/api/v4/projects/gigascience%2Fcnhk-infra/variables"
     GROUP_VARIABLES_URL: "https://gitlab.com/api/v4/groups/gigascience/variables?per_page=100"
     FORK_VARIABLES_URL: "https://gitlab.com/api/v4/groups/3501869/variables" 
-    GIGADB_COMPOSE_PROJECT_NAME: "deployment"
+    GIGADB_COMPOSE_PROJECT_NAME: $CI_PROJECT_NAME
 #    FOO: "bar"
   stage: test
   artifacts:
