@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Routing, aggregating and composing logic for making the public dataset view
  *
@@ -7,7 +8,7 @@
  */
 class DatasetController extends Controller
 {
-	/**
+    /**
      * @return array action filters
      */
     public function filters()
@@ -26,11 +27,11 @@ class DatasetController extends Controller
     {
         return array(
             array('allow',  // allow all users to perform 'index' and 'view' actions
-                'actions'=>array('view', 'mockup'),
-                'users'=>array('*'),
+                'actions' => array('view', 'mockup'),
+                'users' => array('*'),
             ),
             array('deny',  // deny all users
-                'users'=>array('*'),
+                'users' => array('*'),
             ),
         );
     }
@@ -59,23 +60,22 @@ class DatasetController extends Controller
         $datasetPageSettings = new DatasetPageSettings($model);
 
         $cookies = Yii::app()->request->cookies;
-        $flag=null;
-        $assembly=null;
+        $flag = null;
+        $assembly = null;
 
         $userHostAddress = Yii::app()->request->getUserHostAddress();
-        $userHostSubnet = substr($userHostAddress,0,strrpos($userHostAddress,"."));
+        $userHostSubnet = substr($userHostAddress, 0, strrpos($userHostAddress, "."));
 
         // configuring files table
-        if("172.16.238" == $userHostSubnet && $id !== "101001") { //always displays all columns in tests
+        if ("172.16.238" == $userHostSubnet && $id !== "101001") { //always displays all columns in tests
             $fileSettings = $datasetPageSettings->getFileSettings($cookies, DatasetPageSettings::MOCKUP_COLUMNS);
-        }
-        else {
+        } else {
             $fileSettings = $datasetPageSettings->getFileSettings($cookies);
         }
 
         if (isset($_POST['setting']) && $_POST['pageSize']) {
             $fileSettings = $datasetPageSettings->setFileSettings($_POST['setting'], $_POST['pageSize'], $cookies);
-            $flag="file";
+            $flag = "file";
         }
 
 
@@ -84,24 +84,23 @@ class DatasetController extends Controller
 
         if (isset($_POST['columns'])) {
             $sampleSettings = $datasetPageSettings->setSampleSettings($_POST['columns'], $_POST['samplePageSize'], $cookies);
-            $flag="sample";
+            $flag = "sample";
         }
 
         // Assembling page components and page settings
         if ("invalid" !== $datasetPageSettings->getPageType()) {
-
-            $assembly = DatasetPageAssembly::assemble($model, Yii::app(),$srv);
+            $assembly = DatasetPageAssembly::assemble($model, Yii::app(), $srv);
             $assembly->setDatasetSubmitter()
                 ->setDatasetAccessions()
                 ->setDatasetMainSection()
                 ->setDatasetConnections()
                 ->setDatasetExternalLinks()
-                ->setDatasetFiles($fileSettings["pageSize"],"stored")
+                ->setDatasetFiles($fileSettings["pageSize"], "stored")
                 ->setDatasetSamples($sampleSettings["pageSize"])
                 ->setSearchForm();
-            
+
             // Rendering section
-            $this->layout='new_column2';
+            $this->layout = 'new_column2';
 
             $this->metaData['description'] = $assembly->getDataset()->description;
 
@@ -109,30 +108,30 @@ class DatasetController extends Controller
             $currentAbsoluteFullUrl = Yii::app()->request->getBaseUrl(true) . Yii::app()->request->url ;
 
             if ($urlToRedirect && $currentAbsoluteFullUrl == $urlToRedirect) {
-                $this->metaData['redirect'] = 'http://dx.doi.org/10.5524/'.$assembly->getDataset()->identifier ;
+                $this->metaData['redirect'] = 'http://dx.doi.org/10.5524/' . $assembly->getDataset()->identifier ;
                 $this->render('interstitial', array(
-                    'model'=>$assembly->getDataset()
+                    'model' => $assembly->getDataset()
                 ));
             }
         }
 
         // Final rendering phase
 
-        $mainRenderer = function ($assembly, $datasetPageSettings, $previousDataset,$nextDataset,$fileSettings,$sampleSettings,$flag) {
+        $mainRenderer = function ($assembly, $datasetPageSettings, $previousDataset, $nextDataset, $fileSettings, $sampleSettings, $flag) {
             $this->render('view', array(
                 'datasetPageSettings' => $datasetPageSettings,
-                'model'=>$assembly->getDataset(),
-                'form'=>$assembly->getSearchForm(),
+                'model' => $assembly->getDataset(),
+                'form' => $assembly->getSearchForm(),
                 'email' => $assembly->getDatasetSubmitter()->getEmailAddress(),
                 'accessions' => $assembly->getDatasetAccessions(),
                 'mainSection' => $assembly->getDatasetMainSection(),
                 'connections' => $assembly->getDatasetConnections(),
                 'links' => $assembly->getDatasetExternalLinks(),
-                'files'=>$assembly->getDatasetFiles(),
-                'samples'=>$assembly->getDatasetSamples(),
+                'files' => $assembly->getDatasetFiles(),
+                'samples' => $assembly->getDatasetSamples(),
                 'previous_doi' => $previousDataset->identifier,
                 'previous_title' => $previousDataset->title,
-                'next_title'=> $nextDataset->title,
+                'next_title' => $nextDataset->title,
                 'next_doi' => $nextDataset->identifier,
                 'setting' => $fileSettings["columns"],
                 'columns' => $sampleSettings["columns"],
@@ -141,25 +140,19 @@ class DatasetController extends Controller
         };
 
         // Different rendering based on page type (invalid, hidden, public)
-        if( "invalid" === $datasetPageSettings->getPageType() ) {
+        if ("invalid" === $datasetPageSettings->getPageType()) {
             $this->render('invalid', array('model' => new Dataset('search'), 'keyword' => $id, 'general_search' => 1));
-        }
-        elseif( "hidden" === $datasetPageSettings->getPageType() ) {
+        } elseif ("hidden" === $datasetPageSettings->getPageType()) {
             // Page private ? Disable robot to index
             $this->metaData['private'] = true;
 
-            if ("/dataset/$id/token/".$assembly->getDataset()->token === $_SERVER['REQUEST_URI']) { //access using mockup page url
-                $mainRenderer($assembly, $datasetPageSettings, $previousDataset,$nextDataset,$fileSettings,$sampleSettings,$flag);
-            }
-            else  {
+            if ("/dataset/$id/token/" . $assembly->getDataset()->token === $_SERVER['REQUEST_URI']) { //access using mockup page url
+                $mainRenderer($assembly, $datasetPageSettings, $previousDataset, $nextDataset, $fileSettings, $sampleSettings, $flag);
+            } else {
                 $this->render('invalid', array('model' => new Dataset('search'), 'keyword' => $id));
             }
-
-        }
-        else { //page type is public
-            $mainRenderer($assembly, $datasetPageSettings, $previousDataset,$nextDataset,$fileSettings,$sampleSettings,$flag);
+        } else { //page type is public
+            $mainRenderer($assembly, $datasetPageSettings, $previousDataset, $nextDataset, $fileSettings, $sampleSettings, $flag);
         }
     }
-
 }
-?>
