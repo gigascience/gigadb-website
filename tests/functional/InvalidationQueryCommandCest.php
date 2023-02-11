@@ -74,6 +74,6 @@ class InvalidationQueryCommandCest
 
         $output = shell_exec(" ./protected/yiic invalidationquery getlatestcreateusingqueryfrommainconfigfile");
         codecept_debug($output);
-        $I->assertContains($date, $output);
+        $I->assertEquals($date . $date, $output);
     }
 }
