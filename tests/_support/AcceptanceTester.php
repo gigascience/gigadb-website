@@ -146,11 +146,11 @@ class AcceptanceTester extends \Codeception\Actor
     }
 
     /**
-     * @Then I should see a button :button with creation log link
+     * @Then I should see a button :button with curation log link
      */
     public function iShouldSeeAButtonWithLink($expectButton)
     {
-        $actualButton = $this->grabTextFrom("//a[contains(@href, '/curationlog/create/id/')]");
+        $actualButton = $this->grabTextFrom("//a[contains(@href, '/curationLog/create/id/')]");
         $this->assertEquals($actualButton, $expectButton);
     }
 
@@ -254,6 +254,30 @@ class AcceptanceTester extends \Codeception\Actor
         $this->seeElement("//img[@src='$image']");
         $actualUrl = $this->grabAttributeFrom("//img[@src='$image']/parent::*", "href");
         $this->assertEquals($expectedUrl, $actualUrl);
+    }
+
+    /**
+     * @Then I should see an image with alternate text :alt is linked to :expectedUrl
+     */
+    public function iShouldSeeAnImageWithAlternateTextIsLinkedTo($alt, $expectedUrl)
+    {
+        $this->seeElement("//img[@alt='$alt']");
+        $actualUrl = $this->grabAttributeFrom("//img[@alt='$alt']/parent::*", "href");
+        $this->assertEquals($expectedUrl, $actualUrl);
+    }
+
+    /**
+     * Open a link provided by an image with alternate text attribute
+     * 
+     * Beware that a web page may have multiple linked images each with alt
+     * attribute.
+     * 
+     * @Then I click on image with alternate text :alt
+     */
+    public function iClickOnImageWithAlternateText($alt)
+    {
+        $this->seeElement("//img[@alt='$alt']");
+        $this->click($alt);
     }
 
     /**

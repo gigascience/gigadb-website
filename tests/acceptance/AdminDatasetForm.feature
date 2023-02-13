@@ -6,7 +6,7 @@ Feature: form to update dataset details
   Background:
     Given I have signed in as admin
 
-  @ok @issue-381 @issue-926
+  @ok @issue-381 @issue-926 @curationlog
   Scenario: Form loading with all necessary fields
     When I am on "/adminDataset/update/id/8"
     Then I should see "Submitter *"
@@ -34,7 +34,7 @@ Feature: form to update dataset details
     And I should see "Keywords"
     And I should see "URL to redirect"
     And I should see a submit button "Save"
-    And I should see a button "Create New Log" with creation log link
+    And I should see a button "Create New Log" with curation log link
     And I should not see "Publisher"
 
 
@@ -283,3 +283,51 @@ Feature: form to update dataset details
     And I press the button "Save"
     Then I am on "dataset/100006"
     And I should see "bam"
+
+  @ok @curationlog
+  Scenario: Create new curation log record for a dataset
+    When I am on "/adminDataset/update/id/5"
+    And I press the button "Create New Log"
+    And I am on "/curationLog/create/id/5"
+    And I should see "Create Curation Log"
+    And I select "Comment" from the field "CurationLog_action"
+    And I fill in the field of "name" "CurationLog[comments]" with "hello world"
+    And I press the button "Create"
+    And I wait "2" seconds
+    Then I am on "/curationLog/view/id/4"
+    And I should see "View Curation Log #4"
+    And I should see "hello world"
+
+  @ok @curationlog
+  Scenario: Click view curation record image with link
+    When I am on "/adminDataset/update/id/22"
+    And I should see an image with alternate text "View" is linked to "http://gigadb.test/curationLog/view/id/3"
+    And I click on image with alternate text "View"
+    Then I am on "/curationLog/view/id/3"
+    And I should see "View Curation Log #3"
+    And I should see a link "Back to this Dataset Curation Log" to "http://gigadb.test/adminDataset/update/id/22"
+
+  @ok @curationlog
+  Scenario: Click update curation record image with link
+    When I am on "/adminDataset/update/id/22"
+    And I should see an image with alternate text "Update" is linked to "http://gigadb.test/curationLog/update/id/3"
+    And I click on image with alternate text "Update"
+    Then I am on "/curationLog/update/id/3"
+    And I should see "Update Curation Log 3"
+    And I fill in the field of "name" "CurationLog[comments]" with "cogito, ergo sum"
+    And I press the button "Save"
+    And I wait "2" seconds
+    Then I am on "/curationLog/view/id/3"
+    And I should see "View Curation Log #3"
+    And I should see "cogito, ergo sum"
+
+  @ok @curationlog
+  Scenario: Click delete curation record image with link
+    When I am on "/adminDataset/update/id/22"
+    And I should see "Status changed to Published"
+    And I should see an image with alternate text "Delete" is linked to "http://gigadb.test/curationLog/delete/id/3"
+    And I click on image with alternate text "Delete"
+    And I confirm to "Are you sure you want to delete this item?"
+    And I wait "2" seconds
+    Then I am on "/adminDataset/update/id/22"
+    And I should not see "Status changed to Published"

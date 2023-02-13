@@ -1,1 +1,4 @@
 id,dataset_id,creation_date,created_by,last_modified_date,last_modified_by,action,comments
+1,22,2011-09-12,Joe Bloggs,,,Status changed to Request,""
+2,22,2011-10-12,Joe Bloggs,,,Status changed to Uploaded,""
+3,22,2011-11-12,Joe Bloggs,,,Status changed to Published,""
