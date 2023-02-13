@@ -388,7 +388,7 @@ echo $form->hiddenField($model, "image_id");
            <!-- <?php echo CHtml::link('Curation Log', $this->createAbsoluteUrl('curationlog/admin',array('id'=>$model->id))); ?> -->
             
             <?php if ( isset($dataset_id) ) {
-                echo $this->renderPartial("curationlog",array('dataset_id'=>$dataset_id,'model'=>$curationlog));
+                echo $this->renderPartial("curationLog",array('dataset_id'=>$dataset_id,'model'=>$curationlog));
             }
             ?>
 
