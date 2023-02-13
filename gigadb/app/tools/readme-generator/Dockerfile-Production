@@ -42,10 +42,12 @@ RUN docker-php-ext-configure zip \
 
 # Copy source code
 COPY . /app/
-# Copy file-worker components folder
-ADD worker/file-worker/components /app/
-# Copy file-worker model folder into container
-ADD worker/file-worker/models /app/
+
+# Copy file-worker components and models folders into image
+RUN mkdir -p /app/components \
+    && mkdir -p /app/models
+COPY worker/file-worker/components /app/components
+COPY worker/file-worker/models /app/models
 
 # Bind mount Yii2 basic app
 VOLUME ["/app"]
