@@ -46,7 +46,7 @@ YII2_PATH=/var/www/vendor/yiisoft/yii2
 DATA_SAVE_PATH=~/.containers-data/default-gigadb
 YII_DEBUG=true
 YII_TRACE=3
-DISABLE_CACHE=true
+DISABLE_CACHE=false
 
 ### Core services managed in Docker compose ##############################################################################
 NGINX_VERSION=1.21.3
