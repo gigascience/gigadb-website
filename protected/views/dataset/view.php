@@ -1,20 +1,20 @@
 <?php
-$title= strlen($model->title)>100?strip_tags(substr($model->title, 0,100))." ...":strip_tags($model->title);
-$this->pageTitle="GigaDB Dataset - DOI 10.5524/".$model->identifier." - ".$title;
+$title = strlen($model->title) > 100 ? strip_tags(substr($model->title, 0, 100)) . " ..." : strip_tags($model->title);
+$this->pageTitle = "GigaDB Dataset - DOI 10.5524/" . $model->identifier . " - " . $title;
 
 $fileDataProvider = $files->getDataProvider();
 $sampleDataProvider = $samples->getDataProvider() ;
 
 ?>
 
-<?php if( Yii::app()->user->hasFlash('mockupMode') ) { ?>
+<?php if (Yii::app()->user->hasFlash('mockupMode')) { ?>
 <div class="alert alert-info">
     <?php echo Yii::app()->user->getFlash('mockupMode'); ?>
 </div>
 <?php } ?>
 
-<?php $this->renderPartial('_sample_setting',array('columns' => $columns, 'pageSize' =>$sampleDataProvider->getPagination()->getPageSize() )); ?>
-<?php $this->renderPartial('_files_setting',array('setting' => $setting, 'pageSize' =>$fileDataProvider->getPagination()->getPageSize()));?>
+<?php $this->renderPartial('_sample_setting', array('columns' => $columns, 'pageSize' => $sampleDataProvider->getPagination()->getPageSize() )); ?>
+<?php $this->renderPartial('_files_setting', array('setting' => $setting, 'pageSize' => $fileDataProvider->getPagination()->getPageSize()));?>
 
 <div class="content">
     <div class="container">
@@ -22,26 +22,28 @@ $sampleDataProvider = $samples->getDataProvider() ;
                 <div class="subsection">
                     <div class="media">
                         <div class="media-left">
-                                        <?php if($model->image) {
-                $url = $model->image->isUrlValid() ? $model->image->url : "https://assets.gigadb-cdn.net/live/images/datasets/no_image.png";
+                                        <?php if ($model->image) {
+                                            $url = $model->image->isUrlValid() ? $model->image->url : "https://assets.gigadb-cdn.net/live/images/datasets/no_image.png";
 
-                ?>
+                                            ?>
             <a href="<?= $url ?>" >
-                <?= CHtml::image($url, $model->image->tag ,
-                    array(
-                        'class'=>'media-object',
-                        'title'=>$model->image->tag.' License: '.$model->image->license.' Source: '.$model->image->source.' Photographer: '.$model->image->photographer
-                    )
-                ); ?>
+                                            <?= CHtml::image(
+                                                $url,
+                                                $model->image->tag,
+                                                array(
+                                                'class' => 'media-object',
+                                                'title' => $model->image->tag . ' License: ' . $model->image->license . ' Source: ' . $model->image->source . ' Photographer: ' . $model->image->photographer
+                                                )
+                                            ); ?>
             </a>
-            <?php } ?>
+                                        <?php } ?>
 
                         </div>
                         <div class="media-body">
                             <h4 class="left-border-title left-border-title-lg"><?= $mainSection->getHeadline()['title']; ?></h4>
                             <p class="dataset-release-date-text">Dataset type:  <?= $mainSection->getHeadline()['types'];?> <br> Data released on <?= $mainSection->getHeadline()['release_date'] ?></p>
                             <div class="color-background color-background-block dataset-color-background-block">
-                                <p><?= $mainSection->getReleaseDetails()['authors'] ?> (<?=$mainSection->getReleaseDetails()['release_year']?>): <?= $mainSection->getReleaseDetails()['dataset_title'].' '.($mainSection->getReleaseDetails()['publisher'] ?? '<span class="label label-danger">NO PUBLISHER SET</span>').'. '; ?><a href="https://doi.org/10.5524/<?php echo $model->identifier;?>">https://doi.org/10.5524/<?php echo $model->identifier;?></a></p>
+                                <p><?= $mainSection->getReleaseDetails()['authors'] ?> (<?=$mainSection->getReleaseDetails()['release_year']?>): <?= $mainSection->getReleaseDetails()['dataset_title'] . ' ' . ($mainSection->getReleaseDetails()['publisher'] ?? '<span class="label label-danger">NO PUBLISHER SET</span>') . '. '; ?><a href="https://doi.org/10.5524/<?php echo $model->identifier;?>">https://doi.org/10.5524/<?php echo $model->identifier;?></a></p>
                                 <div id="dataset-block-wrapper">
                                     <div id="badge-div">
                                         <a class="doi-badge" href="#"><span class="badge">DOI</span><span class="badge">10.5524/<?php echo $model->identifier;?></span></a>
@@ -98,7 +100,7 @@ $sampleDataProvider = $samples->getDataProvider() ;
                 </div>
 
                 <div class="subsection">
-                     <?php if( !empty( $mainSection->getKeywords() ) ) {?>
+                     <?php if (!empty($mainSection->getKeywords())) {?>
                     <p>Keywords:</p>
                     <ul class="list-inline">
                     <? foreach( $mainSection->getKeywords() as $keyword_link ){
@@ -110,9 +112,9 @@ $sampleDataProvider = $samples->getDataProvider() ;
                  <div class="pull-right">
                     <p>
                         <?php
-                            foreach ( array_values($mainSection->getCitationsLinks() ) as $citation) {
-                                echo $citation;
-                            }
+                        foreach (array_values($mainSection->getCitationsLinks()) as $citation) {
+                            echo $citation;
+                        }
                         ?>
 
                     </p>
@@ -120,7 +122,7 @@ $sampleDataProvider = $samples->getDataProvider() ;
                 </div>
                                 <div class="subsection">
                                      <span class="content-popup" <?= $email != '' ? '' : 'data-content="Please login to contact submitter"' ?> data-original-title="">
-                    <a class="btn background-btn background-btn-o <?= $email != '' ? '' : 'notlogged' ?>" <?= $email != '' ? 'href="mailto:'.$email.'"' : 'href="#"' ?>>
+                    <a class="btn background-btn background-btn-o <?= $email != '' ? '' : 'notlogged' ?>" <?= $email != '' ? 'href="mailto:' . $email . '"' : 'href="#"' ?>>
                         Contact Submitter
                     </a>
                     </span>
@@ -140,7 +142,7 @@ $sampleDataProvider = $samples->getDataProvider() ;
                                         <div id="message"></div>
                                         <div id="advice"></div>
                                     </div>
-                                    <?php echo CHtml::beginForm('/userCommand/claim','GET'); ?>
+                                    <?php echo CHtml::beginForm('/userCommand/claim', 'GET'); ?>
                                         <div class="modal-body text-center">
                                             <?php if (count($model->authors) > 0) { ?>
                                                     <table>
@@ -151,7 +153,7 @@ $sampleDataProvider = $samples->getDataProvider() ;
                                                                     data-author-id="<?= $author->id ?>"
                                                                     id="claim_button_<?= $author->id ?>"
                                                             >
-                                                                <?= $author->first_name.' '.$author->middle_name.' '.$author->surname ?>
+                                                                <?= $author->first_name . ' ' . $author->middle_name . ' ' . $author->surname ?>
                                                             </a>
                                                         </td><td><? echo $author->orcid ? " (orcid id:".$author->orcid.")" : "" ?> </td></tr>
                                                     <? } ?>
@@ -173,8 +175,8 @@ $sampleDataProvider = $samples->getDataProvider() ;
 
 
                 <div class="subsection">
-                  <?php if($model->fairnuse) {
-                            if( (time() < strtotime($model->fairnuse))) { ?>
+                  <?php if ($model->fairnuse) {
+                        if ((time() < strtotime($model->fairnuse))) { ?>
                     <img src="/images/fair_use2.gif" alt="policy" style=""/>
                     <p>
                         These data are made available pre-publication under the Fort Lauderdale rules.
@@ -184,8 +186,9 @@ $sampleDataProvider = $samples->getDataProvider() ;
                         If you wish to perform analyses on this complete dataset, please contact the authors directly
                         so that you can work in collaboration rather than in competition.
                     </p>
-                    <p><strong>This dataset fair use agreement is in place until <?= strftime('%d %B %Y',strtotime($model->fairnuse))?></strong></p>
-                <?php } } ?>
+                    <p><strong>This dataset fair use agreement is in place until <?= strftime('%d %B %Y', strtotime($model->fairnuse))?></strong></p>
+                        <?php }
+                  } ?>
                 </div>
                 <div class="subsection">
                     <div class="underline-title">
@@ -196,7 +199,7 @@ $sampleDataProvider = $samples->getDataProvider() ;
                     <?php
                     $publications = $connections->getPublications();
                     if (!empty($publications)) { ?>
-                        <h5><strong><?= Yii::t('app' , 'Read the peer-reviewed publication(s):')?></strong></h5>
+                        <h5><strong><?= Yii::t('app', 'Read the peer-reviewed publication(s):')?></strong></h5>
                         <p>
                             <? foreach ($publications as $publication){
                                 echo $publication['citation'].$publication['pmurl'];
@@ -208,33 +211,32 @@ $sampleDataProvider = $samples->getDataProvider() ;
 
                 <?php
                     $relations = $connections->getRelations();
-                    if (count($relations) > 0) {
-                ?>
-                <?php $this->renderPartial('_connections',array('relations' => $relations )); ?>
+                if (count($relations) > 0) {
+                    ?>
+                    <?php $this->renderPartial('_connections', array('relations' => $relations )); ?>
 
                 <?php } ?>
                 <p>
                     <?php
                         $mainbodyExternalLinks = $links->getDatasetExternalLinksTypesAndCount(["Additional information", "Genome browser", "Github links"]) ;
-                        foreach( array_keys( $mainbodyExternalLinks ) as $linkType ) {
-                            echo "<h5><strong>${linkType}:</strong></h5>";
-                            foreach ($links->getDatasetExternalLinks([$linkType]) as $link) {
-                                echo '<p>'. CHtml::link($link['url'], $link['url'], array("title" =>$linkType." for dataset " . $model->identifier )) . '</p>';
-                            }
+                    foreach (array_keys($mainbodyExternalLinks) as $linkType) {
+                        echo "<h5><strong>${linkType}:</strong></h5>";
+                        foreach ($links->getDatasetExternalLinks([$linkType]) as $link) {
+                            echo '<p>' . CHtml::link($link['url'], $link['url'], array("title" => $linkType . " for dataset " . $model->identifier )) . '</p>';
                         }
+                    }
                     ?>
                 </p>
 
 
                 <?php if (count($accessions) > 0) { ?>
-
                     <?php
                     $primary_links = $accessions->getPrimaryLinks();
                     $secondary_links = $accessions->getSecondaryLinks();
                     ?>
 
                     <?php if (!empty($primary_links)) { ?>
-                <h5><strong><?=Yii::t('app' , 'Accessions (data included in GigaDB):')?></strong></h5>
+                <h5><strong><?=Yii::t('app', 'Accessions (data included in GigaDB):')?></strong></h5>
                         <p>
                             <?php foreach ($primary_links as $link) {
                                 echo $link->format;
@@ -243,11 +245,11 @@ $sampleDataProvider = $samples->getDataProvider() ;
                     <?php } ?>
 
                     <?php if (!empty($secondary_links)) { ?>
-                        <h5><strong><?=Yii::t('app' , 'Accessions (data not in GigaDB):')?></strong></h5>
+                        <h5><strong><?=Yii::t('app', 'Accessions (data not in GigaDB):')?></strong></h5>
                         <p>
                             <?php foreach ($secondary_links as $link) {
                                 echo $link->format;
-                             } ?>
+                            } ?>
                         </p>
                     <?php } ?>
 
@@ -255,7 +257,7 @@ $sampleDataProvider = $samples->getDataProvider() ;
 
                 <?php $projects = $connections->getProjects() ;
                 if (count($projects) > 0) { ?>
-                    <h5><strong><?=Yii::t('app' , 'Projects:')?></strong></h5>
+                    <h5><strong><?=Yii::t('app', 'Projects:')?></strong></h5>
                     <p>
                         <? foreach ($projects as $project){
                             echo $project['format'];
@@ -273,36 +275,35 @@ $sampleDataProvider = $samples->getDataProvider() ;
                         $jb = array();
                         $dmodel = array();
                         $codeocean = array();
-                        Yii::log("Nb of files: ".$fileDataProvider->getTotalItemCount(),"debug");
+                        Yii::log("Nb of files: " . $fileDataProvider->getTotalItemCount(), "debug");
                 ?>
                     <ul class="nav nav-tabs nav-border-tabs" role="tablist">
-                        <?php if(count($model->samples) > 0) {
+                        <?php if (count($model->samples) > 0) {
                             ?>
                            <li role="presentation" id="p-sample"><a href="#sample" aria-controls="sample" role="tab" data-toggle="tab">Sample</a></li>
                         <?php }
                         ?>
-                        <?php if( $fileDataProvider->getTotalItemCount() > 0 ) {
-
-                              if(count($model->samples) < 1)
-                              {
-                                  ?>
-                        <li role="presentation" id="p-file" class="active"><a href="#files" aria-controls="files" role="tab" data-toggle="tab">Files</a></li>
-                              <?php } else {
-                              ?>
-                        <li role="presentation" id="p-file"><a href="#files" aria-controls="files" role="tab" data-toggle="tab">Files</a></li>
-                        <?php }}
-                        ?>
-                         <?php if(count($model->datasetFunders) > 0) {
-                            ?>
-                            <li role="presentation" id="p-funding"><a href="#funding" aria-controls="funding" role="tab" data-toggle="tab">Funding</a></li>
-                        <?php }
-                        ?>
-                        <?php
-                            foreach ( $links->getDatasetExternalLinksTypesNames(["Protocols.io","JBrowse","3D Models", "Code Ocean"]) as $linkType => $linkCode ) {
+                        <?php if ($fileDataProvider->getTotalItemCount() > 0) {
+                            if (count($model->samples) < 1) {
                                 ?>
-                                <li role="presentation" id="p-<?= $linkCode ?>"><a href="#<?= $linkCode ?>" aria-controls="<?= $linkCode ?>" role="tab" data-toggle="tab"><?= $linkType ?></a></li>
+                        <li role="presentation" id="p-file" class="active"><a href="#files" aria-controls="files" role="tab" data-toggle="tab">Files</a></li>
+                            <?php } else {
+                                ?>
+                        <li role="presentation" id="p-file"><a href="#files" aria-controls="files" role="tab" data-toggle="tab">Files</a></li>
+                            <?php }
+                        }
+                        ?>
+                         <?php if (count($model->datasetFunders) > 0) {
+                                ?>
+                            <li role="presentation" id="p-funding"><a href="#funding" aria-controls="funding" role="tab" data-toggle="tab">Funding</a></li>
+                         <?php }
+                            ?>
                         <?php
-                            }
+                        foreach ($links->getDatasetExternalLinksTypesNames(["Protocols.io","JBrowse","3D Models", "Code Ocean"]) as $linkType => $linkCode) {
+                            ?>
+                                <li role="presentation" id="p-<?= $linkCode ?>"><a href="#<?= $linkCode ?>" aria-controls="<?= $linkCode ?>" role="tab" data-toggle="tab"><?= $linkType ?></a></li>
+                            <?php
+                        }
                         ?>
 
                         <li role="presentation" id="p-history"><a href="#history" aria-controls="history" role="tab" data-toggle="tab">History</a></li>
@@ -312,8 +313,8 @@ $sampleDataProvider = $samples->getDataProvider() ;
 
                     <div class="tab-content">
 
-                             <?php if(count($model->samples) > 0) {
-                            ?>
+                             <?php if (count($model->samples) > 0) {
+                                    ?>
 
                       <div role="tabpanel" class="tab-pane active" id="sample">
                         <a id="samples_table_settings" class="btn btn-default pull-right" data-toggle="modal" data-target="#samples_settings" href="#"><span class="glyphicon glyphicon-adjust"></span>Table Settings</a>
@@ -329,10 +330,9 @@ $sampleDataProvider = $samples->getDataProvider() ;
                                 </tr>
                             </thead>
                             <tbody>
-                               <?php $sample_models =$sampleDataProvider->getData();
+                                    <?php $sample_models = $sampleDataProvider->getData();
 
-                                foreach($sample_models as $sample)
-                                { ?>
+                                    foreach ($sample_models as $sample) { ?>
                                  <tr>
                                     <td><?= $sample['linkName'] ?></td>
                                     <td><?= $sample['common_name'] ?></td>
@@ -341,32 +341,31 @@ $sampleDataProvider = $samples->getDataProvider() ;
                                     <td><?= $sample['taxonomy_link'] ?></td>
                                     <td><?= $sample['genbank_name'] ?></td>
                                 </tr>
-                                <?php } ?>
+                                    <?php } ?>
 
                             </tbody>
                         </table>
-                        <?php
-                            $this->widget('SiteLinkPager', array(
-                                'id' => 'samples-pager',
-                                'pages'=>$sampleDataProvider->getPagination(),
-                            ));
-                        ?>
+                                    <?php
+                                    $this->widget('SiteLinkPager', array(
+                                    'id' => 'samples-pager',
+                                    'pages' => $sampleDataProvider->getPagination(),
+                                    ));
+                                    ?>
                       </div>
-                            <?php }
-                        ?>
+                             <?php }
+                                ?>
                     <?php
-                    if( $fileDataProvider->getTotalItemCount() > 0 ) {
-
+                    if ($fileDataProvider->getTotalItemCount() > 0) {
                         $filesPerPage = $fileDataProvider->getItemCount();
                         $totalNbFiles = $fileDataProvider->getTotalItemCount();
 
-                        if(count($model->samples) > 0) {
+                        if (count($model->samples) > 0) {
                             ?>
                         <div role="tabpanel" class="tab-pane" id="files">
-                         <?php }  else {?>
+                        <?php } else {?>
                         <div role="tabpanel" class="tab-pane active" id="files">
-                         <?php   } ?>
-                            <span class="glyphicon glyphicon-adjust"></span> <?= CHtml::link(Yii::t('app','(FTP site)'),$model->ftp_site,array('target'=>'_blank', 'class'=>'button', 'title' =>'FTP site'))?>
+                        <?php   } ?>
+                            <span class="glyphicon glyphicon-adjust"></span> <?= CHtml::link(Yii::t('app', '(FTP site)'), $model->ftp_site, array('target' => '_blank', 'class' => 'button', 'title' => 'FTP site'))?>
 
                             <a id="files_table_settings" class="btn btn-default pull-right" data-toggle="modal" data-target="#files_settings" href="#"><span class="glyphicon glyphicon-adjust"></span>Table Settings</a>
                             <br>
@@ -386,10 +385,9 @@ $sampleDataProvider = $samples->getDataProvider() ;
                                     </tr>
                                 </thead>
                                 <tbody>
-                                   <?php $file_models =$fileDataProvider->getData();
-                                    foreach($file_models as $file)
-                                    {
-                                   ?>
+                                   <?php $file_models = $fileDataProvider->getData();
+                                    foreach ($file_models as $file) {
+                                        ?>
                                      <tr>
                                         <td><?= $file['nameHtml'] ?></td>
                                         <td><?= $file['description'] ?></td>
@@ -412,16 +410,16 @@ $sampleDataProvider = $samples->getDataProvider() ;
                             </table>
                             <?php
 
-                                if ($filesPerPage <> $totalNbFiles ) {
-                                    $this->widget('SiteLinkPager', array(
-                                        'id' => 'files-pager',
-                                        'pages'=>$fileDataProvider->getPagination(),
-                                    ));
-                            ?>
+                            if ($filesPerPage <> $totalNbFiles) {
+                                $this->widget('SiteLinkPager', array(
+                                    'id' => 'files-pager',
+                                    'pages' => $fileDataProvider->getPagination(),
+                                ));
+                                ?>
                                     <button class="btn_click" onclick="goToPage()"><strong>Go to page</strong></button>
                                     <input type="number" id="pageNumber" class="page_box" onkeypress="detectEnterKeyPress()">
                                     <a class="color-background"><strong> of <?php echo$fileDataProvider->getPagination()->getPageCount()?></strong></a>
-                                <?php } ?>
+                            <?php } ?>
                             <div class="pull-right">
                                 <div class="summary">Displaying <?php echo $filesPerPage ?> files of <?php echo $totalNbFiles ?></div>
                             </div>
@@ -430,8 +428,8 @@ $sampleDataProvider = $samples->getDataProvider() ;
 
                     <?php
                     $funding = $mainSection->getFunding();
-                    if(count($funding) > 0) {
-                            ?>
+                    if (count($funding) > 0) {
+                        ?>
 
                         <div role="tabpanel" class="tab-pane" id="funding">
 
@@ -447,52 +445,52 @@ $sampleDataProvider = $samples->getDataProvider() ;
                         </thead>
                         <tbody>
 
-                          <?php foreach($funding as $funder) { ?>
+                          <?php foreach ($funding as $funder) { ?>
                             <tr>
                                 <td><?= $funder['funder_name'] ?></td>
                                 <td><?= $funder['awardee'] ?></td>
                                 <td><?= $funder['grant_award'] ?></td>
                                 <td><?= $funder['comments'] ?></td>
                             </tr>
-                            <?php } ?>
+                          <?php } ?>
                         </tbody>
                     </table>
 
 
                         </div>
                     <?php }
-                        ?>
+                    ?>
 
                     <?php
-                        foreach ( $links->getDatasetExternalLinksTypesNames(["Protocols.io","JBrowse","3D Models", "Code Ocean"]) as $linkType => $linkCode ) {
-                    ?>
+                    foreach ($links->getDatasetExternalLinksTypesNames(["Protocols.io","JBrowse","3D Models", "Code Ocean"]) as $linkType => $linkCode) {
+                        ?>
                             <div role="tabpanel" class="tab-pane" id="<?= $linkCode ?>">
                             <p><?= $linkType ?>:</p>
-                    <?php
-                            foreach ($links->getDatasetExternalLinks([$linkType]) as $link) {
-                                $p = $link['url'];
-                                switch($linkType) {
-                                    case "Protocols.io" :
-                                        $ps = HTTPSHelper::httpsize($p);
-                                        echo "<iframe src=\"$ps\" style=\"width: 850px; height: 320px; border: 1px solid transparent;\"></iframe>";
-                                        break;
-                                    case "JBrowse" :
-                                        echo "<a href=\"$p\" target=\"_blank\">Open the JBrowse</a>";
-                                        echo "<iframe src=\"$p\" style=\"width: 1000px; height: 520px; border: 1px solid transparent;\"></iframe>";
-                                        echo "<br>";
-                                        break;
-                                    case "3D Models" :
-                                        echo "<iframe src=\"$p\" style=\"width: 950px; height: 520px; border: 1px solid transparent;\"></iframe>";
-                                        break;
-                                    case "Code Ocean" :
-                                        echo "<p>$p</p>";
-                                        break;
-                                }
+                        <?php
+                        foreach ($links->getDatasetExternalLinks([$linkType]) as $link) {
+                            $p = $link['url'];
+                            switch ($linkType) {
+                                case "Protocols.io":
+                                    $ps = HTTPSHelper::httpsize($p);
+                                    echo "<iframe src=\"$ps\" style=\"width: 850px; height: 320px; border: 1px solid transparent;\"></iframe>";
+                                    break;
+                                case "JBrowse":
+                                    echo "<a href=\"$p\" target=\"_blank\">Open the JBrowse</a>";
+                                    echo "<iframe src=\"$p\" style=\"width: 1000px; height: 520px; border: 1px solid transparent;\"></iframe>";
+                                    echo "<br>";
+                                    break;
+                                case "3D Models":
+                                    echo "<iframe src=\"$p\" style=\"width: 950px; height: 520px; border: 1px solid transparent;\"></iframe>";
+                                    break;
+                                case "Code Ocean":
+                                    echo "<p>$p</p>";
+                                    break;
                             }
-                    ?>
-                            </div>
-                    <?php
                         }
+                        ?>
+                            </div>
+                        <?php
+                    }
                     ?>
 
                         <div role="tabpanel" class="tab-pane" id="history">
@@ -505,7 +503,7 @@ $sampleDataProvider = $samples->getDataProvider() ;
                             </tr>
                         </thead>
                         <tbody>
-                        <?php foreach($mainSection->getHistory() as $log) { ?>
+                        <?php foreach ($mainSection->getHistory() as $log) { ?>
                         <tr>
                             <td><?= date('F j, Y', strtotime($log['created_at'])) ?></td>
                             <td><?= $log['message'] ?></td>
@@ -542,13 +540,13 @@ document.addEventListener("DOMContentLoaded", function(event) { //This event is 
                 wrap: 'circular'
             });
         }
-        	$('.tab-container').on("click", function() {
-    		$(this).toggleClass('tab-show');
-    		$(this).toggleClass('tab-hide');
+            $('.tab-container').on("click", function() {
+            $(this).toggleClass('tab-show');
+            $(this).toggleClass('tab-hide');
 
-    		var arrow = $(this).find('.tab-container__arrow')[0];
-    		$(arrow).toggleClass('flip-vertical');
-    	});
+            var arrow = $(this).find('.tab-container__arrow')[0];
+            $(arrow).toggleClass('flip-vertical');
+        });
 
             var url = location.pathname;
             var sample_index = url.lastIndexOf('Sample_');
@@ -608,7 +606,7 @@ document.addEventListener("DOMContentLoaded", function(event) { //This event is 
                 }
             }
         }
-        var MyJSStringVar = "<?php Print($flag); ?>"
+        var MyJSStringVar = "<?php print($flag); ?>"
         if(MyJSStringVar == 'file')
         {
                  $("#p-sample").removeClass("active");
@@ -639,12 +637,12 @@ document.addEventListener("DOMContentLoaded", function(event) { //This event is 
             "pageLength": <?=$sampleDataProvider->getPagination()->getPageSize() ?>,
             "pagingType": "simple_numbers",
             "columns": [
-                { "visible": <?= in_array('name', $columns)? 'true' : 'false' ?> },
-                { "visible": <?= in_array('common_name', $columns)? 'true' : 'false' ?> },
-                { "visible": <?= in_array('scientific_name', $columns)? 'true' : 'false' ?> },
-                { "visible": <?= in_array('attribute', $columns)? 'true' : 'false' ?> },
-                { "visible": <?= in_array('taxonomic_id', $columns)? 'true' : 'false' ?> },
-                { "visible": <?= in_array('genbank_name', $columns)? 'true' : 'false' ?> },
+                { "visible": <?= in_array('name', $columns) ? 'true' : 'false' ?> },
+                { "visible": <?= in_array('common_name', $columns) ? 'true' : 'false' ?> },
+                { "visible": <?= in_array('scientific_name', $columns) ? 'true' : 'false' ?> },
+                { "visible": <?= in_array('attribute', $columns) ? 'true' : 'false' ?> },
+                { "visible": <?= in_array('taxonomic_id', $columns) ? 'true' : 'false' ?> },
+                { "visible": <?= in_array('genbank_name', $columns) ? 'true' : 'false' ?> },
               ]
         } );
 
@@ -658,15 +656,15 @@ document.addEventListener("DOMContentLoaded", function(event) { //This event is 
             "pageLength": <?=$fileDataProvider->getPagination()->getPageSize() ?>,
             "pagingType": "simple_numbers",
             "columns": [
-                { "visible": <?= in_array('name', $setting)? 'true' : 'false' ?> },
-                { "visible": <?= in_array('description', $setting)? 'true' : 'false' ?> },
-                { "visible": <?= in_array('sample_id', $setting)? 'true' : 'false' ?> },
-                { "visible": <?= in_array('type_id', $setting)? 'true' : 'false' ?> },
-                { "visible": <?= in_array('format_id', $setting)? 'true' : 'false' ?> },
-                { "visible": <?= in_array('size', $setting)? 'true' : 'false' ?> },
-                { "visible": <?= in_array('date_stamp', $setting)? 'true' : 'false' ?> },
-                { "visible": <?= in_array('attribute', $setting)? 'true' : 'false' ?> },
-                { "visible": <?= in_array('location', $setting)? 'true' : 'false' ?> },
+                { "visible": <?= in_array('name', $setting) ? 'true' : 'false' ?> },
+                { "visible": <?= in_array('description', $setting) ? 'true' : 'false' ?> },
+                { "visible": <?= in_array('sample_id', $setting) ? 'true' : 'false' ?> },
+                { "visible": <?= in_array('type_id', $setting) ? 'true' : 'false' ?> },
+                { "visible": <?= in_array('format_id', $setting) ? 'true' : 'false' ?> },
+                { "visible": <?= in_array('size', $setting) ? 'true' : 'false' ?> },
+                { "visible": <?= in_array('date_stamp', $setting) ? 'true' : 'false' ?> },
+                { "visible": <?= in_array('attribute', $setting) ? 'true' : 'false' ?> },
+                { "visible": <?= in_array('location', $setting) ? 'true' : 'false' ?> },
               ]
         } );
 
