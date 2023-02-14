@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\components\DatasetService;
 use Throwable;
 use Yii;
 use yii\base\Exception;
@@ -61,7 +62,9 @@ class ReadmeController extends Controller
         }
 
         try {
-            $readme = Yii::$app->datasetService->getReadme($optDoi);
+            # $readme = Yii::$app->datasetService->getReadme($optDoi);
+            $ds = new \app\components\DatasetService();
+            $readme = $ds->getReadme($optDoi);
             echo $readme;
             // Save file if output directory exists
             if ($optOutdir != null && is_dir($optOutdir)) {
