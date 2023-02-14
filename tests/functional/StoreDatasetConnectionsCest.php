@@ -22,5 +22,6 @@ class StoreDatasetConnectionsCest
         # go to the dataset page
         $I->amOnPage("/dataset/view/id/100142");
         $I->canSee("Supporting scripts and data for \"Investigation into the annotation of protocol sequencing steps in the Sequence Read Archive\".");
+        $I->dontSee("Read the peer-reviewed publication(s):");
     }
 }

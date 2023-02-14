@@ -189,7 +189,7 @@ $sampleDataProvider = $samples->getDataProvider() ;
                     </div>
                     <?php
                     $publications = $connections->getPublications();
-                    if (!empty($publications)) { ?>
+                    if (!empty($publications) && null !== $publications['citation']) { ?>
                         <h5><strong><?= Yii::t('app', 'Read the peer-reviewed publication(s):')?></strong></h5>
                         <p>
                             <? foreach ($publications as $publication){
