@@ -44,10 +44,8 @@ RUN docker-php-ext-configure zip \
 COPY . /app/
 
 # Copy file-worker components and models folders into image
-RUN mkdir -p /gigadb-apps/worker/file-worker/components \
-    && mkdir -p /gigadb-apps/worker/file-worker/models
-COPY worker/file-worker/components /gigadb-apps/worker/file-worker/components
-COPY worker/file-worker/models /gigadb-apps/worker/file-worker/models
+COPY worker/file-worker/components /gigadb-apps/worker/file-worker/components/
+COPY worker/file-worker/models /gigadb-apps/worker/file-worker/models/
 
 # Bind mount Yii2 basic app
 VOLUME ["/app"]
