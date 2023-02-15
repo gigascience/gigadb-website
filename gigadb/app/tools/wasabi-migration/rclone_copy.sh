@@ -69,7 +69,7 @@ while [[ $# -gt 0 ]]; do
         if [ "$HOST_HOSTNAME" == "cngb-gigadb-bak" ];
         then
             # Use path to the mounted real data on backup server
-            SOURCE_PATH="/live-data/gigadb/pub/10.5524"
+            SOURCE_PATH="/data/gigadb/pub/10.5524"
             # And copy to live directory on Wasabi if on backup server
             DESTINATION_PATH="wasabi:gigadb-datasets/live/pub/10.5524"
             echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Updated paths to data for CNGB backup server" >> "$LOGFILE"
@@ -121,7 +121,8 @@ do
     destination_dataset_path="${DESTINATION_PATH}/${dir_range}/${current_doi}"
 
     # Check directory for current DOI exists
-    if [ -d "$source_dataset_path" ]; then
+    if [ -d "$source_dataset_path" ];
+    then
         echo "$(date +'%Y/%m/%d %H:%M:%S') DEBUG  : Found directory $source_dataset_path" >> "$LOGFILE"
         echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Attempting to copy dataset ${current_doi} to ${destination_dataset_path}"  >> "$LOGFILE"
 
@@ -142,6 +143,8 @@ do
         else 
             echo "$(date +'%Y/%m/%d %H:%M:%S') ERROR  : Problem with copying files to Wasabi - rclone has exit code: $rclone_exit_code" >> "$LOGFILE"
         fi
+    else
+        echo "$(date +'%Y/%m/%d %H:%M:%S') DEBUG  : Could not find directory $source_dataset_path" >> "$LOGFILE"
     fi
 
     # Increment current DOI
