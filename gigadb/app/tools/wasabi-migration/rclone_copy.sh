@@ -102,10 +102,10 @@ fi
 if [ "$starting_doi" -lt 101000 ];
 then
     dir_range="100001_101000"
-elif [ "$starting_doi" -lt 102000 ] && [ "$starting_doi" -gt 101001 ];
+elif [ "$starting_doi" -lt 102001 ] && [ "$starting_doi" -gt 101000 ];
 then
     dir_range="101001_102000"
-elif [ "$starting_doi" -lt 103000 ] && [ "$starting_doi" -gt 102001 ];
+elif [ "$starting_doi" -lt 103001 ] && [ "$starting_doi" -gt 102000 ];
 then
     dir_range="102001_103000"
 fi
