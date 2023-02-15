@@ -83,7 +83,8 @@
         "psr-4": {
             "common\\models\\" : "/app/common/models",     
             "backend\\models\\" : "/app/backend/models",
-            "GigaDB\\models\\" : "/gigadb/app/models"
+            "GigaDB\\models\\" : "/gigadb/app/models",
+            "GigaDB\\services\\" : "/gigadb/app/services"
         }
     },
     "repositories": [
