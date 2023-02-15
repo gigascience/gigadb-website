@@ -102,6 +102,7 @@ services:
       - ${APPLICATION}/ops/configuration/php-conf/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini
       # access to File Upload Wizard model classes
       - ../../fuw/app:/app      
+      - ../../gigadb:/gigadb
     expose:
       - "9000"
     extra_hosts:
@@ -225,7 +226,8 @@ services:
       - ${DATA_SAVE_PATH}/pure-ftpd:/etc/pure-ftpd
       - ${DATA_SAVE_PATH}/pure-ftpd/passwd:/etc/pure-ftpd/passwd
       # access to File Upload Wizard model classes
-      - ../../fuw/app:/app      
+      - ../../fuw/app:/app
+      - ../../gigadb:/gigadb
 
     networks:
       - web-tier
