@@ -5,13 +5,14 @@
     REMOTE_WEBAPP_DOCKER: "$remote_public_ip:2376"
     REMOTE_BASTION_DOCKER: "$remote_bastion_public_ip:2376"
     DATA_SAVE_PATH: "/home/centos/app_data"
+    PHP_VERSION: "8.0.28"
   stage: deployment
   allow_failure: false
   script:
     # Load Base image
     - docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
-    - docker load -i php-$PHP_VERSION-fpm-buster.tar
-    - docker load -i php-$PHP_VERSION-cli-buster.tar
+#    - docker load -i php-$PHP_VERSION-fpm-buster.tar
+#    - docker load -i php-$PHP_VERSION-cli-buster.tar
     - docker load -i alpine-3_14.tar
     - docker load -i nginx-$NGINX_VERSION-alpine.tar
     - docker load -i node-$NODE_VERSION-buster-slim.tar

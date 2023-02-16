@@ -129,14 +129,15 @@ b_gigadb:
     CSV_DIR: "prod_like"
     PORTAINER_BCRYPT: ""
     REMOTE_DOCKER_HOSTNAME: ""
+    PHP_VERSION: "8.0.28"
 
   stage: production build
   allow_failure: false
   script:
     # Load Base image
     - docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
-    - time docker load -i php-$PHP_VERSION-fpm-buster.tar
-    - time docker load -i php-$PHP_VERSION-cli-buster.tar
+#    - time docker load -i php-$PHP_VERSION-fpm-buster.tar
+#    - time docker load -i php-$PHP_VERSION-cli-buster.tar
     - docker load -i alpine-3_14.tar
     - docker load -i nginx-$NGINX_VERSION-alpine.tar
     - time docker load -i node-$NODE_VERSION-buster-slim.tar
