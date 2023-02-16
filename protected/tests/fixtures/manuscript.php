@@ -12,4 +12,9 @@ return array(
 		'identifier' => "10.1038/nature10158",
 		'dataset_id'=>1,
 	),
+    array(
+        'id' => 3,
+        'identifier' => "10.6789/s13742-015",
+        'dataset_id'=>1,
+    ),
 );
