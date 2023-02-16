@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 class StoreDatasetConnectionsCest
 {
@@ -10,10 +10,9 @@ class StoreDatasetConnectionsCest
     public function tryViewTheDatasetPageWithNotFoundIdentifier(FunctionalTester $I)
     {
         $I->amOnPage("/site/login");
-        $I->submitForm('form.form-horizontal',[
+        $I->submitForm('form.form-horizontal', [
                 'LoginForm[username]' => 'admin@gigadb.org',
-                'LoginForm[password]' => 'gigadb']
-        );
+                'LoginForm[password]' => 'gigadb']);
         $notFoundIdentifier = "10.1186/s13742-015-9999-9";
         $I->amOnPage("/adminManuscript/update/id/281");
         $I->fillField(['id' => 'Manuscript_identifier'], "$notFoundIdentifier");
