@@ -118,12 +118,13 @@ class StoredDatasetConnectionsTest extends CDbTestCase
 						->disableOriginalConstructor()
 						->getMock();
 
-		$response->expects($this->exactly(2))
+		$response->expects($this->exactly(3))
 				->method('getBody')
 				->will(
 					$this->onConsecutiveCalls(
 						"full citation fetched remotely. doi:10.1186/gb-2012-13-10-r100",
-						"Another full citation fetched remotely. doi:10.1038/nature10158"
+						"Another full citation fetched remotely. doi:10.1038/nature10158",
+                        "The third citation fetched remotely. doi.org/10.6789/s13742-015"
 					));
 
 		// create a mock for the HTTP request to dx.doi
@@ -133,7 +134,7 @@ class StoredDatasetConnectionsTest extends CDbTestCase
 						->getMock();
 
 		// create the expectations for each call to dx.doi for citations
-		$webClient->expects($this->exactly(2))
+		$webClient->expects($this->exactly(3))
 					->method('request')
 					->withConsecutive(
 						[
@@ -151,7 +152,15 @@ class StoredDatasetConnectionsTest extends CDbTestCase
 							    ],
 							    'connect_timeout' => 30
 							]
-						]
+						],
+                        [
+                            'GET', 'https://doi.org/10.6789/s13742-015', [
+                            'headers' => [
+                                'Accept' => 'text/x-bibliography',
+                                ],
+                                'connect_timeout' => 30
+                            ]
+                        ],
 					)
 					->willReturn($response);
 
@@ -173,6 +182,14 @@ class StoredDatasetConnectionsTest extends CDbTestCase
 							'citation' => "Another full citation fetched remotely. doi:10.1038/nature10158",
 							'pmurl' => null,
 						),
+                        array(
+                            'id' => 3,
+                            'identifier' => "10.6789/s13742-015",
+                            'dataset_id' => 1,
+                            'pmid' => null,
+                            'citation' => "The third citation fetched remotely. doi.org/10.6789/s13742-015",
+                            'pmurl' => null,
+                        ),
 					);
 		$daoUnderTest = new StoredDatasetConnections($dataset_id,
 								$this->getFixtureManager()->getDbConnection(),
@@ -186,8 +203,9 @@ class StoredDatasetConnectionsTest extends CDbTestCase
 		// Create mock handler with two 504 responses in its queue
 		$mock = new GuzzleHttp\Handler\MockHandler([
 			new GuzzleHttp\Psr7\Response(504, ['Foo' => 'Bar'], "Simulating first time out"),
-			new GuzzleHttp\Psr7\Response(504, ['Fred' => 'Waldo'], "Simulating second time out error")
-		]);
+			new GuzzleHttp\Psr7\Response(504, ['Fred' => 'Waldo'], "Simulating second time out error"),
+            new GuzzleHttp\Psr7\Response(200, ['Accept' => 'text/x-bibliography'], "Citation text 2 here.")
+        ]);
 		$handler = GuzzleHttp\HandlerStack::create($mock);
 		$webClient = new GuzzleHttp\Client(['handler' => $handler]);
 
@@ -212,6 +230,14 @@ class StoredDatasetConnectionsTest extends CDbTestCase
 							'citation' => null,
 							'pmurl' => null,
 						),
+                        array(
+                            'id' => 3,
+                            'identifier' => "10.6789/s13742-015",
+                            'pmid' => null,
+                            'dataset_id' => 1,
+                            'citation' => "Citation text 2 here.",
+                            'pmurl' => null
+                        ),
 					);
 		$daoUnderTest = new StoredDatasetConnections($dataset_id,
 			$this->getFixtureManager()->getDbConnection(),
@@ -219,6 +245,120 @@ class StoredDatasetConnectionsTest extends CDbTestCase
 		);
 		$this->assertEquals($expected, $daoUnderTest->getPublications(), "Array from getPublications() did not match contents expected by testStoredReturnsPublicationsWithGatewayTimeoutError()");
 	}
+
+    public function testStoredReturnsPublicationsWithNotFoundErrorAtFirst()
+    {
+        $mock = new GuzzleHttp\Handler\MockHandler([
+            new GuzzleHttp\Psr7\Response(404, ['404' => 'Not Found'], "The resource you are looking for dosen't exist."),
+            new GuzzleHttp\Psr7\Response(200, ['Accept' => 'text/x-bibliography'], "Citation text 1 here."),
+            new GuzzleHttp\Psr7\Response(200, ['Accept' => 'text/x-bibliography'], "Citation text 2 here.")
+        ]);
+        $handler = GuzzleHttp\HandlerStack::create($mock);
+        $webClient = new GuzzleHttp\Client(['handler' => $handler]);
+        $dataset_id = 1;
+
+        // Empty array is expected when the catch block is triggered by the 404 Not found exception
+        $expected = array(
+            array(
+                'id' => 2,
+                'identifier' => "10.1038/nature10158",
+                'pmid' => null,
+                'dataset_id' => 1,
+                'citation' => "Citation text 1 here.",
+                'pmurl' => null,
+            ),
+            array(
+                'id' => 3,
+                'identifier' => "10.6789/s13742-015",
+                'pmid' => null,
+                'dataset_id' => 1,
+                'citation' => "Citation text 2 here.",
+                'pmurl' => null
+            ),
+        );
+
+        $daoUnderTest = new StoredDatasetConnections(
+            $dataset_id,
+            $this->getFixtureManager()->getDbConnection(),
+            $webClient
+        );
+        $this->assertEquals($expected, $daoUnderTest->getPublications(), "More than 2 arrays are returned!");
+    }
+
+    public function testStoredReturnsPublicationsWithNotFoundErrorInMiddle()
+    {
+        $mock = new GuzzleHttp\Handler\MockHandler([
+            new GuzzleHttp\Psr7\Response(200, ['Accept' => 'text/x-bibliography'], "Citation text 1 here."),
+            new GuzzleHttp\Psr7\Response(404, ['404' => 'Not Found'], "The resource you are looking for dosen't exist."),
+            new GuzzleHttp\Psr7\Response(200, ['Accept' => 'text/x-bibliography'], "Citation text 2 here.")
+        ]);
+        $handler = GuzzleHttp\HandlerStack::create($mock);
+        $webClient = new GuzzleHttp\Client(['handler' => $handler]);
+        $dataset_id = 1;
+
+        $expected = array(
+            array(
+                'id' => 1,
+                'identifier' => "10.1186/gb-2012-13-10-r100",
+                'pmid' => 23075480,
+                'dataset_id' => 1,
+                'citation' => "Citation text 1 here.",
+                'pmurl' => "http://www.ncbi.nlm.nih.gov/pubmed/23075480",
+            ),
+            array(
+                'id' => 3,
+                'identifier' => "10.6789/s13742-015",
+                'pmid' => null,
+                'dataset_id' => 1,
+                'citation' => "Citation text 2 here.",
+                'pmurl' => null
+            ),
+        );
+
+        $daoUnderTest = new StoredDatasetConnections(
+            $dataset_id,
+            $this->getFixtureManager()->getDbConnection(),
+            $webClient
+        );
+        $this->assertEquals($expected, $daoUnderTest->getPublications(), "More than 2 arrays are returned!");
+    }
+
+    public function testStoredReturnsPublicationsWithNotFoundErrorAtLast()
+    {
+        $mock = new GuzzleHttp\Handler\MockHandler([
+            new GuzzleHttp\Psr7\Response(200, ['Accept' => 'text/x-bibliography'], "Citation text 1 here."),
+            new GuzzleHttp\Psr7\Response(200, ['Accept' => 'text/x-bibliography'], "Citation text 2 here."),
+            new GuzzleHttp\Psr7\Response(404, ['404' => 'Not Found'], "The resource you are looking for dosen't exist."),
+        ]);
+        $handler = GuzzleHttp\HandlerStack::create($mock);
+        $webClient = new GuzzleHttp\Client(['handler' => $handler]);
+        $dataset_id = 1;
+
+        $expected = array(
+            array(
+                'id' => 1,
+                'identifier' => "10.1186/gb-2012-13-10-r100",
+                'pmid' => 23075480,
+                'dataset_id' => 1,
+                'citation' => "Citation text 1 here.",
+                'pmurl' => "http://www.ncbi.nlm.nih.gov/pubmed/23075480",
+            ),
+            array(
+                'id' => 2,
+                'identifier' => "10.1038/nature10158",
+                'pmid' => null,
+                'dataset_id' => 1,
+                'citation' => "Citation text 2 here.",
+                'pmurl' => null
+            ),
+        );
+        $daoUnderTest = new StoredDatasetConnections(
+            $dataset_id,
+            $this->getFixtureManager()->getDbConnection(),
+            $webClient
+        );
+        $this->assertEquals($expected, $daoUnderTest->getPublications(), "More than 2 arrays are returned!");
+    }
 
 	public function testStoredReturnsProjects()
 	{
