@@ -5,7 +5,7 @@ namespace tests\unit\models;
 use app\fixtures\DatasetFixture;
 use app\fixtures\AuthorFixture;
 use app\fixtures\DatasetAuthorFixture;
-use app\models\Dataset;
+use GigaDB\models\Dataset;
 
 class DatasetTest extends \Codeception\Test\Unit
 {
