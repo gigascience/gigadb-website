@@ -19,12 +19,6 @@ RUN apt-get update -yq && \
         apt-get clean && \
         rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# install mcrypt to work with PHP 7.2 (first version that lacks mcrypt source)
-RUN apt-get update && apt-get install -y libmcrypt-dev && \
-    pecl install mcrypt-1.0.2 && \
-    docker-php-ext-enable mcrypt && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Install extensions for the postgresql and PHP integration
 RUN docker-php-ext-install pdo_pgsql
