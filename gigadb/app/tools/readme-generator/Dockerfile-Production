@@ -40,12 +40,12 @@ RUN docker-php-ext-configure zip \
     && rm composer-setup.php \
     && composer config --global repo.packagist composer https://packagist.org 
 
-# Copy source code
-COPY . /app/
+# Copy readme generator source code
+COPY app/tools/readme-generator/ /app/
 
-# Copy file-worker components and models folders into image
-COPY worker/file-worker/components /gigadb-apps/worker/file-worker/components/
-COPY worker/file-worker/models /gigadb-apps/worker/file-worker/models/
+# Copy models and services classes
+COPY app/models/ /gigadb/models/
+COPY app/services/ /gigadb/services/
 
 # Bind mount Yii2 basic app
 VOLUME ["/app"]

@@ -3,8 +3,8 @@ services:
 
   production_tool:
     build:
-      context: ../..
-      dockerfile: tools/readme-generator/Dockerfile-Production
+      context: ../../..
+      dockerfile: gigadb/app/readme-generator/Dockerfile-Production
       cache_from:
         - "registry.gitlab.com/$CI_PROJECT_PATH/production_tool:$GIGADB_ENV"
 
