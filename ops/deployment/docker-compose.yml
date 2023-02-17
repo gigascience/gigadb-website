@@ -155,7 +155,7 @@ services:
     environment:
       YII_PATH: ${YII_PATH}
       YII2_PATH: ${YII2_PATH}
-    image: ${COMPOSE_PROJECT_NAME}_application:latest
+    image: ${COMPOSE_PROJECT_NAME}-application:latest
     volumes:
       - ${APPLICATION}/:/var/www
     command: bash -c "./protected/yiic lesscompiler"
@@ -166,7 +166,7 @@ services:
     environment:
       YII_PATH: ${YII_PATH}
       YII2_PATH: ${YII2_PATH}
-    image: ${COMPOSE_PROJECT_NAME}_application:latest
+    image: ${COMPOSE_PROJECT_NAME}-application:latest
     volumes:
       - ${APPLICATION}/:/var/www
     command: bash -c "./protected/yiic generatefiletypes"
@@ -178,7 +178,7 @@ services:
     environment:
       YII_PATH: ${YII_PATH}
       YII2_PATH: ${YII2_PATH}
-    image: ${COMPOSE_PROJECT_NAME}_application:latest
+    image: ${COMPOSE_PROJECT_NAME}-application:latest
     volumes:
       - ${APPLICATION}/:/var/www
     command: bash -c "./protected/yiic generatefileformats"

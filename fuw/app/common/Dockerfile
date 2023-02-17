@@ -20,11 +20,11 @@ RUN apt-get update -yq && \
         rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # install mcrypt to work with PHP 7.2 (first version that lacks mcrypt source)
-RUN apt-get update && apt-get install -y libmcrypt-dev && \
-    pecl install mcrypt-1.0.2 && \
-    docker-php-ext-enable mcrypt && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+#RUN apt-get update && apt-get install -y libmcrypt-dev && \
+#    pecl install mcrypt-1.0.2 && \
+#    docker-php-ext-enable mcrypt && \
+#    apt-get clean && \
+#    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Install extensions for the postgresql and PHP integration
 RUN docker-php-ext-install pdo_pgsql
@@ -36,8 +36,8 @@ RUN docker-php-ext-install bcmath
 # Install the PHP gd library
 RUN docker-php-ext-install gd && \
     docker-php-ext-configure gd \
-        --with-jpeg-dir=/usr/lib \
-        --with-freetype-dir && \
+        --with-jpeg \
+        --with-freetype && \
     docker-php-ext-install gd
 
 # Set Environment Variables

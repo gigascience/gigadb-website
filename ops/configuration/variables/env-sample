@@ -50,7 +50,7 @@ DISABLE_CACHE=true
 
 ### Core services managed in Docker compose ##############################################################################
 NGINX_VERSION=1.21.3
-PHP_VERSION=7.3.33
+PHP_VERSION=7.4.33
 APCU_VERSION=5.1.21
 NODE_VERSION=17.6.0
 POSTGRES_VERSION=11.13
