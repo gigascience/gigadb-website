@@ -19,7 +19,7 @@ return [
         ],
         // To access DatasetService component in file-worker
         'datasetService' => [
-            'class' => 'app\components\DatasetService',
+            'class' => 'GigaDB\services\DatasetService',
         ],
         'log' => [
             'targets' => [
