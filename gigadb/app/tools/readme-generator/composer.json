@@ -74,11 +74,11 @@
             "type": "composer",
             "url": "https://asset-packagist.org"
         }
-    ], 
+    ],
     "autoload": {
         "psr-4": {
-            "app\\models\\" : "/gigadb-apps/worker/file-worker/models",
-            "app\\components\\" : "/gigadb-apps/worker/file-worker/components"
+            "GigaDB\\models\\" : "/gigadb/app/models",
+            "GigaDB\\services\\" : "/gigadb/app/services"
         }
     }
 }

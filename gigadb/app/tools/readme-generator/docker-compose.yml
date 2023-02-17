@@ -8,8 +8,8 @@ services:
       # Mount source-code for development
       - .:/app
       - .:/logs
-      # For using model classes from file-worker tool
-      - ../../:/gigadb-apps
+      # For using classes in GigaDB models and services
+      - ../../../:/gigadb
       # For accessing pgdmp database dumps created during ./up.sh
       - ../../../../sql:/app/sql
       # Destination for readme files
