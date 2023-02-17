@@ -30,8 +30,8 @@ RUN docker-php-ext-install bcmath
 # Install the PHP gd library
 RUN docker-php-ext-install gd && \
     docker-php-ext-configure gd \
-        --with-jpeg-dir=/usr/lib \
-        --with-freetype-dir && \
+        --with-jpeg \
+        --with-freetype && \
     docker-php-ext-install gd
 
 # set random root password
