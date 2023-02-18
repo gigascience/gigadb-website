@@ -78,6 +78,7 @@ ReadmeGeneratorBuildStaging:
     MISC_VARIABLES_URL: "https://gitlab.com/api/v4/projects/gigascience%2Fcnhk-infra/variables"
     GROUP_VARIABLES_URL: "https://gitlab.com/api/v4/groups/gigascience/variables?per_page=100"
     FORK_VARIABLES_URL: "https://gitlab.com/api/v4/groups/3501869/variables"
+    GIGADB_COMPOSE_PROJECT_NAME: $CI_PROJECT_NAME
   script:
     - env | grep -iE "(GIGADB_ENV|PROJECT_VARIABLES_URL|MISC_VARIABLES_URL|GITLAB_PRIVATE_TOKEN|CI_PROJECT_URL|GROUP_VARIABLES_URL|FORK_VARIABLES_URL)"| tee gigadb/app/tools/readme-generator/.env
     - cd gigadb/app/tools/readme-generator
