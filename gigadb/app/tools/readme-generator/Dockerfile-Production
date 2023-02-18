@@ -44,8 +44,8 @@ RUN docker-php-ext-configure zip \
 COPY gigadb/app/tools/readme-generator/ /app/
 
 # Copy models and services classes
-COPY gigadb/app/models/ /gigadb/models/
-COPY gigadb/app/services/ /gigadb/services/
+COPY gigadb/app/models/ /gigadb/app/models/
+COPY gigadb/app/services/ /gigadb/app/services/
 
 # Bind mount Yii2 basic app
 VOLUME ["/app"]
