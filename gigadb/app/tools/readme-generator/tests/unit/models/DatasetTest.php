@@ -42,7 +42,7 @@ class DatasetTest extends \Codeception\Test\Unit
      */
     public function testGetAuthors()
     {
-        $dataset = $this->tester->grabRecord('app\models\Dataset', ['identifier' => '100888']);
+        $dataset = $this->tester->grabRecord('GigaDB\models\Dataset', ['identifier' => '100888']);
         codecept_debug($dataset->title);
         $dataset = Dataset::findOne(1);
         $authors = $dataset->authors;  // Returns array of author model objects
