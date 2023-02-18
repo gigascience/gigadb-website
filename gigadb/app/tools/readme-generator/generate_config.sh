@@ -65,6 +65,14 @@ source "./.secrets"
 
 set +a
 
+# If we are on staging environment override variable name with their remote environment counterpart
+if [[ $GIGADB_ENV != "dev" && $GIGADB_ENV != "CI" ]];then
+    GIGADB_HOST=$gigadb_db_host
+    GIGADB_USER=$gigadb_db_user
+    GIGADB_PASSWORD=$gigadb_db_password
+    GIGADB_DB=$gigadb_db_database
+fi
+
 # generate config for Yii2 config files
 
 SOURCE=${APP_SOURCE}/config-sources/db.php.dist
