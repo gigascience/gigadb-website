@@ -72,15 +72,6 @@ services:
       - SYS_ADMIN
     restart: unless-stopped
 
-  less:
-    environment:
-      YII_PATH: ${YII_PATH}
-      YII2_PATH: ${YII2_PATH}
-    image: php:7.3.33-alpine3.15
-    volumes:
-      - assets:/var/www/assets
-    command: sh -c "/var/www/protected/yiic lesscompiler"
-
   fuw-admin:
     <<: *logging
     environment:

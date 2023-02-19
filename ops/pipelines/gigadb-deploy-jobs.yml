@@ -64,7 +64,6 @@
     - '[[ -z "`echo $MIGRATION_STATUS | grep "up-to-date"`" ]] && docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml run --rm  application ./protected/yiic migrate --migrationPath=application.migrations.schema --interactive=0'
     - '[[ -z "`echo $MIGRATION_STATUS | grep "up-to-date"`" ]] && docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml run --rm  application ./protected/yiic migrate --migrationPath=application.migrations.fix_import --interactive=0'
     # post-install script to run
-    - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml run --rm less
     - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml run --rm application ./protected/yiic generatefiletypes
     - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml run --rm application ./protected/yiic generatefileformats
     - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml run --rm application ./protected/yiic custommigrations refreshmaterializedviews
