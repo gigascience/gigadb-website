@@ -155,10 +155,10 @@ services:
     environment:
       YII_PATH: ${YII_PATH}
       YII2_PATH: ${YII2_PATH}
-    image: ${COMPOSE_PROJECT_NAME}-application:latest
+    image: php:7.3.33-alpine3.15
     volumes:
       - ${APPLICATION}/:/var/www
-    command: bash -c "./protected/yiic lesscompiler"
+    command: sh -c "/var/www/protected/yiic lesscompiler"
     networks:
       - web-tier
 

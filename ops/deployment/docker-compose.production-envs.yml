@@ -76,10 +76,10 @@ services:
     environment:
       YII_PATH: ${YII_PATH}
       YII2_PATH: ${YII2_PATH}
-    image: registry.gitlab.com/$CI_PROJECT_PATH/production_app:$GIGADB_ENV
+    image: php:7.3.33-alpine3.15
     volumes:
       - assets:/var/www/assets
-    command: bash -c "./protected/yiic lesscompiler"
+    command: sh -c "/var/www/protected/yiic lesscompiler"
 
   fuw-admin:
     <<: *logging

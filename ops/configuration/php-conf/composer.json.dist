@@ -5,7 +5,7 @@
     "homepage": "http://gigadb.org",
     "license": "GPL-3.0-or-later",
     "require": {
-        "php": "^${PHP_VERSION}",
+        "php": "7.3.33",
         "yidas/yii2-composer-bower-skip": "~2.0.13",
         "yiisoft/yii": "~${YII_VERSION}",
         "yiisoft/yii2": "~${YII2_VERSION}",
@@ -59,7 +59,7 @@
     "config": {
         "bin-dir": "bin",
         "platform": {
-            "php": "${PHP_VERSION}"
+            "php": "7.3.33"
         },
         "allow-plugins": {
                     "yiisoft/yii2-composer": true
