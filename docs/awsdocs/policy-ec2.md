@@ -65,7 +65,8 @@ when using the AWS management console.
                     "ec2:InstanceType": [
                         "t3.nano",
                         "t3.micro",
-                        "t3a.small"
+                        "t3a.small",
+                        "t3.small",
                     ]
                 }
             }
