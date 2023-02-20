@@ -20,14 +20,16 @@ to access Wasabi buckets.
 
 To enable the notification feature, the following credentials are also required:
 
-| Variable | Options | Environment | Value               |
-| -------- | ------- | ----------- |---------------------|
-| GITTER_API_TOKEN | Masked | All | Gitter api token    |
-| GITTER_IT_NOTIFICATION_ROOM_ID | Masked | All | Gitter chat room id |
+| Variable                       | Options | Environment | Value                  |
+|--------------------------------|--------|-------------|------------------------|
+| MATRIX_HOMESERVER              | ------- | All         | Matrix home server     |
+| MATRIX_TOKEN                   | Masked | All         | Matrix api token       |
+| MATRIX_IT_NOTIFICATION_ROOM_ID | Masked | All         | Matrix IT chat room id |
 
-Both `GITTER_API_TOKEN` and `GITTER_IT_NOTIFICATION_ROOM_ID` have been 
-defined in the `Forks` sub-group so, as a developer, there is no need to create
-these two variables.
+Both `MATRIX_HOMESERVER  `, `MATRIX_TOKEN` and `MATRIX_IT_NOTIFICATION_ROOM_ID` have been 
+defined in the `cngb-infra` sub-group so, as a developer, there is no need to create
+these three variables. Additional information, the `MATRIX_TOKEN` is for the user `gigatech23`,
+a specific user account for the tech team testing.
 
 ## Using migration tool on dev environment
 
