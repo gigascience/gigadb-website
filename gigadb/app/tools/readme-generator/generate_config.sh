@@ -75,8 +75,6 @@ fi
 echo "Sourcing secrets"
 source "./.secrets"
 
-set +a
-
 # If we are on staging environment override variable name with their remote environment counterpart
 if [[ $GIGADB_ENV != "dev" && $GIGADB_ENV != "CI" ]];then
     GIGADB_HOST=$gigadb_db_host
@@ -86,6 +84,9 @@ if [[ $GIGADB_ENV != "dev" && $GIGADB_ENV != "CI" ]];then
     echo "GigaDB_ENV is not dev nor CI!!"
     echo $GIGADB_HOST
 fi
+
+# restore default settings for variables
+set +a
 
 # generate config for Yii2 config files
 
