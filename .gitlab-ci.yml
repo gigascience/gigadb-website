@@ -69,7 +69,8 @@ include:
   - local: "gigadb/app/tools/files-url-updater/gitlab-config.yml"
   - local: "gigadb/app/tools/excel-spreadsheet-uploader/gitlab-config-staging.yml"
   - local: "gigadb/app/tools/excel-spreadsheet-uploader/gitlab-config-live.yml"
-  - local: "gigadb/app/tools/readme-generator/gitlab-config.yml"
+  - local: "gigadb/app/tools/readme-generator/gitlab-config-staging.yml"
+  - local: "gigadb/app/tools/readme-generator/gitlab-config-live.yml"
   - local: "gigareview/gitlab-config.yml"
 
 services:
