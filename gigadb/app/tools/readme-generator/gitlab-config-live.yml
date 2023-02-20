@@ -33,7 +33,7 @@ ReadmeGeneratorBuildLive:
     expire_in: 3 days
   needs: ["ReadmeGeneratorDeployStaging"]
 
-ReadmeGeneratorDeployLive
+ReadmeGeneratorDeployLive:
   stage: live deploy
   variables:
     GIGADB_ENV: live
