@@ -107,7 +107,18 @@ sd_gigadb:
     url: $REMOTE_HOME_URL
     on_stop: sd_teardown
   when: always
-  
+
+sd_warmcache:
+  variables:
+    GIGADB_ENV: "staging"
+  stage: staging deploy
+  tags:
+    - $GITLAB_USER_LOGIN
+  script:
+    - curl $REMOTE_HOME_URL/dataset/100314
+    - curl $REMOTE_HOME_URL/dataset/100310
+  needs: ["sd_gigadb"]
+
 ld_gigadb:
   variables:
     GIGADB_ENV: "live"
