@@ -45,7 +45,7 @@ class DownloadService extends yii\base\Component
             $webClient->head($url);
             return true;
         } catch (GuzzleHttp\Exception\ClientException $e) {
-            yii::log("No file found at $url", "error");
+            echo "No file found at $url".PHP_EOL;
             return false;
         }
     }
