@@ -35,7 +35,8 @@ Install Composer dependencies:
 $  docker-compose run --rm tool composer install 
 ```
 
-## Using the readme generator tool
+
+## Using readme generator tool
 
 The readme information for a dataset can be viewed on standard output using it's
 DOI:
@@ -54,6 +55,29 @@ $ docker-compose run --rm tool /app/yii readme/create --doi=100142 --outdir=/hom
 Since `/home/curators` has been mounted to `runtime/curators` directory in
 `docker-compose.yml`, you should find a `readme_100142.txt` created there after
 running the above command.
+
+## Using readme generator tool via shell wrapper script 
+
+There is a shell script which can also be used to call the readme tool:
+```
+$ ./create_readme.sh --doi 100142 --outdir /home/curators
+```
+
+In the absence of an output directory `outdir` parameter or if the directory
+cannot be created then an error message will be displayed:
+```
+$ ./create_readme.sh --doi 100142 --outdir /home/foo
+Cannot save readme file - Output directory does not exist or is not a directory
+ERROR: 65
+```
+
+An error message is also displayed if a DOI is provided for a dataset that does 
+not exist:
+```
+$ ./create_readme.sh --doi 1
+Creating readme_tool_run ... done
+Exception 'Exception' with message 'Dataset 1 not found'
+```
 
 ## Tests
 
