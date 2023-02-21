@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+# Stop script upon error
+set -e
+
+PATH=/usr/local/bin:$PATH
+export PATH
+
+# Parse command line parameters
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+    --doi)
+        doi=$2
+        shift
+        ;;
+    --outdir)
+        outdir=$2
+        shift
+        ;;
+    *)
+        echo "Invalid option: $1"
+        exit 1  ## Could be optional.
+        ;;
+    esac
+    shift
+done
+
+if [[ $(uname -n) =~ compute ]];then
+  . /home/centos/.bash_profile
+  docker run -it registry.gitlab.com/gigascience/forks/$GITLAB_PROJECT/production_tool:$GIGADB_ENV /app/yii readme/create --doi "$doi" --outdir "$outdir"
+else
+  docker-compose run --rm tool /app/yii readme/create --doi "$doi" --outdir "$outdir"
+fi
