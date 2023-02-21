@@ -60,13 +60,13 @@ running the above command.
 
 There is a shell script which can also be used to call the readme tool:
 ```
-$ ./create_readme.sh --doi 100142 --outdir /home/curators
+$ ./createReadme.sh --doi 100142 --outdir /home/curators
 ```
 
 In the absence of an output directory `outdir` parameter or if the directory
 cannot be created then an error message will be displayed:
 ```
-$ ./create_readme.sh --doi 100142 --outdir /home/foo
+$ ./createReadme.sh --doi 100142 --outdir /home/foo
 Cannot save readme file - Output directory does not exist or is not a directory
 ERROR: 65
 ```
