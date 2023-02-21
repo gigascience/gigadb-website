@@ -117,15 +117,7 @@ sd_warmcache:
   script:
     - echo $REMOTE_HOME_URL
     - curl $REMOTE_HOME_URL/dataset/100314
-    - curl $REMOTE_HOME_URL/dataset/100193
-    - curl $REMOTE_HOME_URL/dataset/100824
-    - curl $REMOTE_HOME_URL/dataset/100855
-    - curl $REMOTE_HOME_URL/dataset/100332
-    - curl $REMOTE_HOME_URL/dataset/100396
     - curl $REMOTE_HOME_URL/dataset/100310
-    - curl $REMOTE_HOME_URL/dataset/100707
-    - curl $REMOTE_HOME_URL/dataset/100608
-    - curl $REMOTE_HOME_URL/dataset/100512
   needs: ["sd_gigadb"]
   environment:
     name: "staging"
@@ -153,15 +145,7 @@ ld_warmcache:
   script:
     - echo $REMOTE_HOME_URL
     - curl $REMOTE_HOME_URL/dataset/100314
-    - curl $REMOTE_HOME_URL/dataset/100193
-    - curl $REMOTE_HOME_URL/dataset/100824
-    - curl $REMOTE_HOME_URL/dataset/100855
-    - curl $REMOTE_HOME_URL/dataset/100332
-    - curl $REMOTE_HOME_URL/dataset/100396
     - curl $REMOTE_HOME_URL/dataset/100310
-    - curl $REMOTE_HOME_URL/dataset/100707
-    - curl $REMOTE_HOME_URL/dataset/100608
-    - curl $REMOTE_HOME_URL/dataset/100512
   needs: ["ld_gigadb"]
   environment:
     name: "live"
