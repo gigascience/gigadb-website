@@ -115,10 +115,13 @@ sd_warmcache:
   tags:
     - $GITLAB_USER_LOGIN
   script:
-    - echo $CI_ENVIRONMENT_URL
-    - curl $CI_ENVIRONMENT_URL/dataset/100314
-    - curl $CI_ENVIRONMENT_URL/dataset/100310
+    - echo $REMOTE_HOME_URL
+    - curl $REMOTE_HOME_URL/dataset/100314
+    - curl $REMOTE_HOME_URL/dataset/100310
   needs: ["sd_gigadb"]
+  environment:
+    name: "staging"
+    url: $REMOTE_HOME_URL
 
 ld_gigadb:
   variables:
