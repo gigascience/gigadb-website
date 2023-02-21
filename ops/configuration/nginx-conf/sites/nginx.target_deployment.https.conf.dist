@@ -44,7 +44,7 @@ server {
         fastcgi_buffer_size 32k;
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
         fastcgi_intercept_errors on;
-        fastcgi_read_timeout 600;
+        fastcgi_read_timeout 6000;
         fastcgi_send_timeout 600;
         fastcgi_connect_timeout 600;
         include fastcgi_params;
