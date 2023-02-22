@@ -268,6 +268,15 @@
         group: centos
         mode: a+x
 
+    # Files created by readme tool container can be accessed in this directory
+    - name: Create a directory where readme files can be saved to
+      ansible.builtin.file:
+        path: /home/centos/readmeFiles
+        state: directory
+        mode: '0755'
+        owner: centos
+        group: centos
+
 - name: Load latest DB backup
   hosts: name_bastion_server_staging*:name_bastion_server_live*
 

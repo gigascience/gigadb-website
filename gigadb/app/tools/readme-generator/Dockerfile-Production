@@ -43,6 +43,8 @@ RUN docker-php-ext-configure zip \
 # Copy readme generator source code
 COPY gigadb/app/tools/readme-generator/ /app/
 
+RUN mkdir -p /app/readmeFiles
+
 # Copy models and services classes
 COPY gigadb/app/models/ /gigadb/app/models/
 COPY gigadb/app/services/ /gigadb/app/services/

@@ -7,6 +7,9 @@ services:
       dockerfile: gigadb/app/tools/readme-generator/Dockerfile-Production
       cache_from:
         - "registry.gitlab.com/$CI_PROJECT_PATH/production_tool:$GIGADB_ENV"
+    volumes:
+      # Map host directory /home/centos/readmeFiles to /app/readmeFiles in container
+      - /home/centos/readmeFiles:/app/readmeFiles
 
   config:
     image: rija/docker-alpine-shell-tools:1.0.1
