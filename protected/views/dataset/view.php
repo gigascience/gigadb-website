@@ -54,12 +54,12 @@ $sampleDataProvider = $samples->getDataProvider() ;
                                                 <button id="CiteDataset" class="drop-citation-btn dropdown-toggle" type="button" data-toggle="dropdown">Cite Dataset<span class="caret"></span></button>
                                                 <?php
                                                 $url = 'https://data.datacite.org/text/x-bibliography/10.5524/' . $model->identifier;
-                                                $textFileExist = DownloadService::fileExists($url);
-                                                if ($textFileExist) {
+                                                try {
                                                     $textFile = DownloadService::downloadFile($url);
                                                     $showButton = true;
-                                                } else {
+                                                } catch (\GuzzleHttp\Exception\BadResponseException $e) {
                                                     $showButton = false;
+                                                    yii::log($e->getMessage(), "error");
                                                 }
                                                 ?>
                                                 <?php if ($showButton == 'true') { ?>
