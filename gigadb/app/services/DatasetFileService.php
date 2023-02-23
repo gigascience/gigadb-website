@@ -9,14 +9,14 @@ use yii\base\BaseObject;
 use yii\base\Component;
 
 /**
- * Services that operate on the file table
+ * Services that provide generic operation on the file table
  */
 class DatasetFileService extends Component
 {
     /**
      * @property string
      */
-    private $doi;
+    private string $doi;
 
     /**
      * @param string $doi The service needs a DOI on which to operate
