@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace GigaDB\services;
 
-use CException;
-use DownloadService;
+use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\GuzzleException;
 use Yii;
-use yii\base\BaseObject;
 use yii\base\Component;
 
 /**
@@ -16,7 +15,7 @@ use yii\base\Component;
 final class URLsService extends Component
 {
     /**
-     * @param array $urls url(s) to operate on
+     * @param array $urls a property for url(s) to operate on, immutable
      * @param array $config
      */
     public function __construct(readonly array $urls, array $config = [])
@@ -24,9 +23,29 @@ final class URLsService extends Component
          parent::__construct($config);
     }
 
-    public function fetchResponseHeader(string $string): array
+    /**
+     * Retrieve a specific header from the URLs' response
+     * it's possible to pass a filtering function to alter the value in specific situation
+     * if the filter returns null, the actual value is returned
+     *
+     * @param string $headerLabel the header whose value we want for all urls
+     * @param ClientInterface $webClient a web client to perform the HTTP request with
+     * @param callable|null $filter function to filter out specific value, need to be passed $response and $url
+     * @return array
+     */
+    public function fetchResponseHeader(string $headerLabel, ClientInterface $webClient, ?callable $filter): array
     {
-        return [];
+        $responses = [];
+        foreach ($this->urls as $url) {
+            try {
+                $response = $webClient->head($url);
+            } catch (GuzzleException $e) {
+                Yii::error($e->getTraceAsString());
+                continue;
+            }
+            $headerValue = $filter($response, $url) ?? $response->getHeaderLine($headerLabel);
+            $responses[$url] = $headerValue;
+        }
+        return $responses;
     }
-
 }

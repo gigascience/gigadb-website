@@ -16,7 +16,8 @@
     "require": {
         "php": ">=8.0.0",
         "yiisoft/yii2": "~2.0.47",
-        "yiisoft/yii2-symfonymailer": "~2.0.3"
+        "yiisoft/yii2-symfonymailer": "~2.0.3",
+        "guzzlehttp/guzzle": "~7.5.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",
