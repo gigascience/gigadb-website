@@ -143,3 +143,29 @@ Feature: a user visit the dataset page
     When I am on "/dataset/100935"
     Then I should see "Github links"
     And I should see "https://github.com/cihga39871/Atria"
+
+  @ok @cite-dataset-button
+  Scenario: Display the cite dataset dropdown box content
+    Given I have not signed in
+    And I am on "/dataset/100006"
+    When I press the button "Cite Dataset"
+    Then I should see "Text"
+    And I should see "RIS"
+    And I should see "BibTeX"
+
+  @ok @cite-dataset-button
+  Scenario: Display the citation text from datacite
+    Given I have not signed in
+    And I am on "/dataset/100006"
+    And I press the button "Cite Dataset"
+    When I follow "Text"
+    And I go to the new tab
+    Then I should see "Li, J., Zhang, G., Lambert, D., & Wang, J. (2011). Genomic data from Adelie penguin (Pygoscelis adeliae) [Data set]. GigaScience. https://doi.org/10.5524/100006"
+
+  @ok @cite-dataset-button
+  Scenario: Display no Cite Dataset button when bad request
+    Given I have not signed in
+    When I am on "/dataset/300070"
+    And I should see "test generic image will be display for no image dataset"
+    Then I should not see "Cite Dataset"
+
