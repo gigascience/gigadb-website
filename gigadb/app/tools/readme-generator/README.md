@@ -79,6 +79,32 @@ Creating readme_tool_run ... done
 Exception 'Exception' with message 'Dataset 1 not found'
 ```
 
+## Using readme generator tool on Bastion server
+
+Log into bastion server
+```
+# Get public IP address for bastion server
+$ terraform output
+ec2_bastion_private_ip = "10.88.8.888"
+ec2_bastion_public_ip = "88.888.888.888"
+
+# Log into bastion server
+$ ssh -i ~/.ssh/your-private-key.pem centos@88.888.888.888
+```
+
+Using docker command to access tool:
+```
+$ docker run --rm -v /home/centos/readmeFiles:/app/readmeFiles registry.gitlab.com/$GITLAB_PROJECT/production_tool:staging /app/yii readme/create --doi 100142 --outdir /app/readmeFiles
+```
+
+Use shell script to run readme tool:
+```
+$ ./createReadme.sh --doi 100142 --outdir /app/readmeFiles
+```
+
+In both cases, look in the readmeFiles directory for the readme file that has
+been created by the tool.
+
 ## Tests
 
 ### Unit test
