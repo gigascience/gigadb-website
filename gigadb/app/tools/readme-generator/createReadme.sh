@@ -27,7 +27,7 @@ done
 
 if [[ $(uname -n) =~ compute ]];then
   . /home/centos/.bash_profile
-  docker run -it registry.gitlab.com/$GITLAB_PROJECT/production_tool:$GIGADB_ENV /app/yii readme/create --doi "$doi" --outdir "$outdir"
+  docker run --rm -v /home/centos/readmeFiles:/app/readmeFiles registry.gitlab.com/$GITLAB_PROJECT/production_tool:$GIGADB_ENV /app/yii readme/create --doi "$doi" --outdir "$outdir"
 else
   docker-compose run --rm tool /app/yii readme/create --doi "$doi" --outdir "$outdir"
 fi
