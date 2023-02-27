@@ -11,6 +11,7 @@
  */
 class StoredDatasetFiles extends DatasetComponents implements DatasetFilesInterface
 {
+    private const FILES_ROWS_LIMIT = 8000;
     private $_id;
     private $_db;
 
@@ -48,7 +49,6 @@ class StoredDatasetFiles extends DatasetComponents implements DatasetFilesInterf
      */
     public function getDatasetFiles(): array
     {
-
         $objectToHash =  function ($file) {
 
             $toNameValueHash = function ($file_attribute) {
@@ -56,24 +56,25 @@ class StoredDatasetFiles extends DatasetComponents implements DatasetFilesInterf
             };
 
             return array(
-                 'id' => $file->id,
-                 'dataset_id' => $file->dataset_id,
-                 'name' => $file->name,
-                 'location' => $file->location,
-                 'extension' => $file->extension,
-                 'size' => $file->size,
-                 'description' => $file->description,
-                 'date_stamp' => $file->date_stamp,
-                 'format' => $file->format->name,
-                 'type' => $file->type->name,
-                 'file_attributes' => array_map($toNameValueHash, $file->fileAttributes),
-                 'download_count' => $file->download_count,
+                'id' => $file->id,
+                'dataset_id' => $file->dataset_id,
+                'name' => $file->name,
+                'location' => $file->location,
+                'extension' => $file->extension,
+                'size' => $file->size,
+                'description' => $file->description,
+                'date_stamp' => $file->date_stamp,
+                'format' => $file->format->name,
+                'type' => $file->type->name,
+                'file_attributes' => array_map($toNameValueHash, $file->fileAttributes),
+                'download_count' => $file->download_count,
             );
         };
         $sql = "select
 		id, dataset_id, name, location, extension, size, description, date_stamp, format_id, type_id, download_count
 		from file
-		where dataset_id=:id" ;
+		where dataset_id=:id limit " . self::FILES_ROWS_LIMIT ;
+        ;
         $files = File::model()->findAllBySql($sql, array('id' => $this->_id));
         $result = array_map($objectToHash, $files);
         // var_dump($result);
