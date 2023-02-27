@@ -2,6 +2,7 @@
 
 namespace tests\functional;
 
+use app\components\DatasetFilesUpdater;
 use GigaDB\services\URLsService;
 use GuzzleHttp\Client;
 
@@ -46,8 +47,10 @@ class UpdateFileSizeCest
         }
     }
 
-    #[Codeception\Attribute\Skip]
     public function tryUpdateFileSizeWhenContentLengthInBytes(\FunctionalTester $I): void
     {
+        $dfu = new DatasetFilesUpdater(["doi" => "100142"]);
+        $success = $dfu->updateFileSize();
+        $I->assertEquals(4,$success,"Not all files were updated successfully");
     }
 }

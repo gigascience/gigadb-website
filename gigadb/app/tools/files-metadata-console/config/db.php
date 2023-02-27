@@ -2,9 +2,9 @@
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=localhost;dbname=yii2basic',
-    'username' => 'root',
-    'password' => '',
+    'dsn' => 'pgsql:host=localhost;dbname=gigadb;port=54321',
+    'username' => 'gigadb',
+    'password' => 'vagrant',
     'charset' => 'utf8',
 
     // Schema cache options (for production environment)
