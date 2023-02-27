@@ -370,18 +370,9 @@ class AdminSampleController extends Controller
                 $sAttr = str_replace('"', '', $sAttr);
                 $data = explode('=', $sAttr);
                 if (count($data) == 2) {
-                    
-                    // Get attribute, if not exist we create
+                    // Get attribute model
                     $attribute = Attribute::model()->findByAttributes(array('structured_comment_name' => trim($data[0])));
-                    if (!$attribute) {
-                        $attribute = new Attribute();
-                        $attribute->structured_comment_name = trim($data[0]);
-                        $attribute->attribute_name = str_replace('_', ' ', trim($data[0]));
-                        $attribute->definition = str_replace('_', ' ', trim($data[0]));
-                        $attribute->save();
-                    }
-                    
-                    // Let's save the new sample attribute
+                    // Save the new sample attribute value
                     $sampleAttribute = clone $sampleAttr;
                     $sampleAttribute->value = trim($data[1]);
                     $sampleAttribute->attribute_id = $attribute->id;
