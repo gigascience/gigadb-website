@@ -1,9 +1,30 @@
-version: '2'
+version: '3.7'
 services:
-  php:
-    image: yiisoftware/yii2-php:7.4-apache
+  console:
+    build:
+      context: .
     volumes:
       - ~/.composer-docker/cache:/root/.composer/cache:delegated
-      - ./:/app:delegated
+      - ./:/gigadb/app/tools/files-metadata-console:delegated
+      - ../../services:/gigadb/app/services
+      - ../../models:/gigadb/app/models
     ports:
       - '8000:80'
+    networks:
+      # Connect to db-tier network in ops/docker-compose.yml
+      - proxy-db-tier
+
+  composer:
+    environment:
+      DOCKER_RUNNING: true
+    image: composer/composer:2.4.4
+    volumes:
+      - ~/.composer-docker/cache:/root/.composer/cache:delegated
+      - ./:/gigadb/app/tools/files-metadata-console:delegated
+      - ../../services:/gigadb/app/services
+      - ../../models:/gigadb/app/models
+
+
+networks:
+  proxy-db-tier:  # represents db-tier network in ops/docker-compose.yml
+    name: deployment_db-tier

@@ -2,7 +2,7 @@
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'pgsql:host=localhost;dbname=gigadb;port=54321',
+    'dsn' => getenv("DOCKER_RUNNING") ? 'pgsql:host=database;dbname=gigadb;port=5432' : 'pgsql:host=localhost;dbname=gigadb;port=54321',
     'username' => 'gigadb',
     'password' => 'vagrant',
     'charset' => 'utf8',
