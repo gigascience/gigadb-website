@@ -1,36 +1,46 @@
 <?php
 
 declare(strict_types=1);
-/**
- * @link http://www.yiiframework.com/
- * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
- */
 
 namespace app\controllers;
 
+use app\components\DatasetFilesUpdater;
+use GigaDB\services\URLsService;
+use GuzzleHttp\Client;
 use yii\console\Controller;
 use yii\console\ExitCode;
+use yii\helpers\Console;
 
 /**
- * This command echoes the first argument that you have entered.
+ * Console commands for manipulating files meta-data
  *
- * This command is provided as an example for you to learn how to create console commands.
- *
- * @author Qiang Xue <qiang.xue@gmail.com>
- * @since 2.0
  */
-class UpdateController extends Controller
+final class UpdateController extends Controller
 {
-    /**
-     * This command echoes what you have entered as the message.
-     * @param string $message the message to be echoed.
-     * @return int Exit code
-     */
-    public function actionIndex($message = 'hello world'): int
-    {
-        echo $message . "\n";
+    public string $doi = "";
 
+
+    /**
+     * Console command for updating files' size for the given dataset
+     *
+     * ./yii update/file-size --doi=100142
+     *
+     * @return int
+     */
+    public function actionFileSize(): int
+    {
+        $webClient = new Client([ 'allow_redirects' => false ]);
+        $us = new URLsService();
+        $dfu = new DatasetFilesUpdater(["doi" => $this->doi, "us" => $us, "webClient" => $webClient]);
+        $success = $dfu->updateFileSize();
+        $this->stdout("nb. changes: $success" . PHP_EOL, Console::FG_GREEN);
         return ExitCode::OK;
+    }
+
+    public function options($actionID)
+    {
+        return array_merge(parent::options($actionID), [
+            'color', 'interactive', 'help','doi'
+        ]);
     }
 }

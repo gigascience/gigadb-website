@@ -23,7 +23,7 @@ final class DatasetFilesUpdater extends Component
      */
     public string $doi;
     /**
-     * @var URLsService service with URLs related helper functions (here we interested in batch grab of specific response header)
+     * @var URLsService URLs helper functions (here we interested in batch grab of specific response header)
      */
     public URLsService $us;
     /**
@@ -57,17 +57,21 @@ final class DatasetFilesUpdater extends Component
         $values = function ($item) {
             return $item["location"];
         };
-        $flatURLs = array_map($values,$urls);
+        $flatURLs = array_map($values, $urls);
         $this->us->urls = $flatURLs;
-        $contentLengthList = $this->us->fetchResponseHeader("Content-Length", $this->webClient, $zeroOutRedirectsAndDirectories);
-        foreach($contentLengthList as $location => $contentLength){
+        $contentLengthList = $this->us->fetchResponseHeader(
+            "Content-Length",
+            $this->webClient,
+            $zeroOutRedirectsAndDirectories
+        );
+        foreach ($contentLengthList as $location => $contentLength) {
             $f = File::find()->where(["location" => $location])->one();
             $f->size = (int) $contentLength;
-            if ($f->save())
+            if ($f->save()) {
                 $success++;
+            }
         }
 
         return $success;
     }
-
 }
