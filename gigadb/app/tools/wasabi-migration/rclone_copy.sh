@@ -96,11 +96,11 @@ if [ "$batch_size" -gt "$max_batch_size" ]; then
 fi
 
 # Determine DOI range directory to use based on starting DOI
-if [ "$starting_doi" -lt 101000 ]; then
+if [ "$starting_doi" -le 101000 ]; then
     dir_range="100001_101000"
-elif [ "$starting_doi" -lt 102001 ] && [ "$starting_doi" -gt 101000 ]; then
+elif [ "$starting_doi" -le 102000 ] && [ "$starting_doi" -ge 101001 ]; then
     dir_range="101001_102000"
-elif [ "$starting_doi" -lt 103001 ] && [ "$starting_doi" -gt 102000 ]; then
+elif [ "$starting_doi" -le 103000 ] && [ "$starting_doi" -ge 102001 ]; then
     dir_range="102001_103000"
 fi
 
