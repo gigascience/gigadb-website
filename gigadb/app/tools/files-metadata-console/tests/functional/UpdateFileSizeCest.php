@@ -26,7 +26,7 @@ class UpdateFileSizeCest
             0,
         ];
 
-        $u = new URLsService(self::TEST_URLS);
+        $u = new URLsService(["urls" => self::TEST_URLS]);
         $I->assertTrue(is_a($u, "GigaDB\\services\\URLsService"));
 
         $zeroOutRedirectsAndDirectories = function ($response, $url) {
@@ -49,7 +49,9 @@ class UpdateFileSizeCest
 
     public function tryUpdateFileSizeWhenContentLengthInBytes(\FunctionalTester $I): void
     {
-        $dfu = new DatasetFilesUpdater(["doi" => "100142"]);
+        $webClient = new Client([ 'allow_redirects' => false ]);
+        $us = new URLsService();
+        $dfu = new DatasetFilesUpdater(["doi" => "100142", "us" => $us, "webClient" => $webClient]);
         $success = $dfu->updateFileSize();
         $I->assertEquals(4,$success,"Not all files were updated successfully");
     }

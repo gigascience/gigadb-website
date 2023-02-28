@@ -11,11 +11,31 @@ use GuzzleHttp\Client;
 use Yii;
 use yii\base\Component;
 
-
+/**
+ * DatasetFilesUpdater
+ *
+ * encapsulate business logic for updating the file table
+ */
 final class DatasetFilesUpdater extends Component
 {
+    /**
+     * @var string Dataset identifier for the dataset whose files need to be operated on
+     */
     public string $doi;
+    /**
+     * @var URLsService service with URLs related helper functions (here we interested in batch grab of specific response header)
+     */
+    public URLsService $us;
+    /**
+     * @var \GuzzleHttp\Client web client needed for URLsService
+     */
+    public \GuzzleHttp\Client $webClient;
 
+    /**
+     * Method to update the file size for the all the files of the dataset identified with $doi
+     *
+     * @return int returns the number of files that has been successfully updated
+     */
     public function updateFileSize(): int
     {
         $success = 0;
@@ -38,9 +58,8 @@ final class DatasetFilesUpdater extends Component
             return $item["location"];
         };
         $flatURLs = array_map($values,$urls);
-        $webClient = new Client([ 'allow_redirects' => false ]);
-        $us = new URLsService($flatURLs);
-        $contentLengthList = $us->fetchResponseHeader("Content-Length", $webClient, $zeroOutRedirectsAndDirectories);
+        $this->us->urls = $flatURLs;
+        $contentLengthList = $this->us->fetchResponseHeader("Content-Length", $this->webClient, $zeroOutRedirectsAndDirectories);
         foreach($contentLengthList as $location => $contentLength){
             $f = File::find()->where(["location" => $location])->one();
             $f->size = (int) $contentLength;

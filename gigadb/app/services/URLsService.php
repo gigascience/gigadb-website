@@ -14,14 +14,7 @@ use yii\base\Component;
  */
 final class URLsService extends Component
 {
-    /**
-     * @param array $urls a property for url(s) to operate on, immutable
-     * @param array $config
-     */
-    public function __construct(readonly array $urls, array $config = [])
-    {
-         parent::__construct($config);
-    }
+   public array $urls;
 
     /**
      * Retrieve a specific header from the URLs' response
