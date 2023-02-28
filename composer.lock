@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "32d4ca1c161fc205f86069fb7a09f26d",
+    "content-hash": "6177a9fed3a72e3a8b6cdc8ea64aabcf",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -1175,22 +1175,22 @@
         },
         {
             "name": "leafo/lessphp",
-            "version": "v0.3.9",
+            "version": "v0.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/leafo/lessphp.git",
-                "reference": "a11a6141b5715162b933c405379765d817891c5d"
+                "reference": "0f5a7f5545d2bcf4e9fad9a228c8ad89cc9aa283"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/leafo/lessphp/zipball/a11a6141b5715162b933c405379765d817891c5d",
-                "reference": "a11a6141b5715162b933c405379765d817891c5d",
+                "url": "https://api.github.com/repos/leafo/lessphp/zipball/0f5a7f5545d2bcf4e9fad9a228c8ad89cc9aa283",
+                "reference": "0f5a7f5545d2bcf4e9fad9a228c8ad89cc9aa283",
                 "shasum": ""
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.3-dev"
+                    "dev-master": "0.4.x-dev"
                 }
             },
             "autoload": {
@@ -1214,9 +1214,9 @@
             "homepage": "http://leafo.net/lessphp/",
             "support": {
                 "issues": "https://github.com/leafo/lessphp/issues",
-                "source": "https://github.com/leafo/lessphp/tree/master"
+                "source": "https://github.com/leafo/lessphp/tree/v0.5.0"
             },
-            "time": "2013-03-02T16:13:31+00:00"
+            "time": "2014-11-24T18:39:20+00:00"
         },
         {
             "name": "league/flysystem",
@@ -10461,11 +10461,11 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": "^7.3.33"
+        "php": "^7.4.33"
     },
     "platform-dev": [],
     "platform-overrides": {
-        "php": "7.3.33"
+        "php": "7.4.33"
     },
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.3.0"
 }

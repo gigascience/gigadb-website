@@ -51,11 +51,13 @@ class MailService extends CApplicationComponent
      */
     public function sendHTMLEmail(string $from, string $to, string $subject, string $content)
     {
-        return $this->mailer->compose('template',
+        return $this->mailer->compose(
+            'template',
             ['top_img' => '/var/www/images/email/top.png',
                 'bottom_img' => '/var/www/images/email/bottom.png',
                 'logo_img' => '/var/www/images/email/logo.png',
-                'content' => $content])
+            'content' => $content]
+        )
             ->setFrom($from)
             ->setTo($to)
             ->setSubject($subject)
@@ -75,11 +77,13 @@ class MailService extends CApplicationComponent
      */
     public function sendHTMLEmailWithAttachment(string $from, string $to, string $subject, string $content, string $filepath, string $attachmentFileName)
     {
-        return $this->mailer->compose('template',
+        return $this->mailer->compose(
+            'template',
             ['top_img' => '/var/www/images/email/top.png',
                 'bottom_img' => '/var/www/images/email/bottom.png',
                 'logo_img' => '/var/www/images/email/logo.png',
-                'content' => $content])
+            'content' => $content]
+        )
             ->setFrom($from)
             ->setTo($to)
             ->setSubject($subject)
@@ -87,4 +91,3 @@ class MailService extends CApplicationComponent
             ->send();
     }
 }
-?>

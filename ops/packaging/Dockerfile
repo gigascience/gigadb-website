@@ -31,8 +31,8 @@ RUN docker-php-ext-install pdo_pgsql && \
 # Install the PHP gd library
 RUN docker-php-ext-install gd && \
     docker-php-ext-configure gd \
-        --with-jpeg-dir=/usr/lib \
-        --with-freetype-dir && \
+        --with-jpeg \
+        --with-freetype && \
     docker-php-ext-install gd
 
 # Set Environment Variables

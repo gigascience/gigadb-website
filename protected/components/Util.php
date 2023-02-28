@@ -1,7 +1,9 @@
 <?php
 
-class Util {
-    public static function returnJSON($data) {
+class Util
+{
+    public static function returnJSON($data)
+    {
         header('Content-type: application/json');
         echo CJSON::encode($data);
         ob_start();
@@ -10,15 +12,17 @@ class Util {
         exit(0);
     }
 
-    public static function trimText($text) {
-    	try {
-		return (ctype_space($text))? "" : $text;  
-	} catch (Exception $e) {
-		return "";
-	}
+    public static function trimText($text)
+    {
+        try {
+            return (ctype_space($text)) ? "" : $text;
+        } catch (Exception $e) {
+            return "";
+        }
     }
 
-    public static function getDois() {
+    public static function getDois()
+    {
         $dois = Yii::app()->db->createCommand()
                 ->select("id, identifier")
                 ->from("dataset")
@@ -28,5 +32,3 @@ class Util {
         return $dois;
     }
 }
-
-?>

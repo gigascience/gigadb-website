@@ -29,8 +29,8 @@ RUN docker-php-ext-install bcmath
 # Install the PHP gd library
 RUN docker-php-ext-install gd && \
     docker-php-ext-configure gd \
-        --with-jpeg-dir=/usr/lib \
-        --with-freetype-dir && \
+        --with-jpeg \
+        --with-freetype && \
     docker-php-ext-install gd
 
 # Set Environment Variables
@@ -194,7 +194,6 @@ ARG TARGET_PHP_VERSION=7.0
 COPY ops/configuration/php-conf/php-production.ini /usr/local/etc/php/php.ini
 COPY ops/configuration/php-conf/gigadb.pool.conf /usr/local/etc/php-fpm.d/gigadb.pool.conf
 COPY ops/configuration/php-conf/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
-COPY ops/configuration/php-conf/gigadb.ini /usr/local/etc/php/conf.d/gigadb.ini
 
 WORKDIR /var/www
 

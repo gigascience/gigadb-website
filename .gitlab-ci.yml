@@ -36,7 +36,7 @@ variables:
   DATA_SAVE_PATH: "/builds/$CI_PROJECT_PATH/containers-data"
   DOCKER_VERSION: "20.10.12"
   NGINX_VERSION: "1.21.3"
-  PHP_VERSION: "7.3.33"
+  PHP_VERSION: "7.4.33"
   APCU_VERSION: "5.1.21"
   NODE_VERSION: "17.6.0"
   YII_VERSION: "1.1.25"
@@ -107,7 +107,22 @@ sd_gigadb:
     url: $REMOTE_HOME_URL
     on_stop: sd_teardown
   when: always
-  
+
+sd_warmcache:
+  variables:
+    GIGADB_ENV: "staging"
+  stage: staging deploy
+  tags:
+    - $GITLAB_USER_LOGIN
+  script:
+    - echo $REMOTE_HOME_URL
+    - curl $REMOTE_HOME_URL/dataset/100314
+    - curl $REMOTE_HOME_URL/dataset/100310
+  needs: ["sd_gigadb"]
+  environment:
+    name: "staging"
+    url: $REMOTE_HOME_URL
+
 ld_gigadb:
   variables:
     GIGADB_ENV: "live"
@@ -119,4 +134,19 @@ ld_gigadb:
   environment:
     name: "live"
     deployment_tier: production
+    url: $REMOTE_HOME_URL
+
+ld_warmcache:
+  variables:
+    GIGADB_ENV: "live"
+  stage: live deploy
+  tags:
+    - $GITLAB_USER_LOGIN
+  script:
+    - echo $REMOTE_HOME_URL
+    - curl $REMOTE_HOME_URL/dataset/100314
+    - curl $REMOTE_HOME_URL/dataset/100310
+  needs: ["ld_gigadb"]
+  environment:
+    name: "live"
     url: $REMOTE_HOME_URL

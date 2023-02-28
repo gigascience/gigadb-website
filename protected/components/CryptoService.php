@@ -40,4 +40,3 @@ class CryptoService extends yii\base\Component
         return Yii::$app->security->generateRandomString(self::RANDOM_STRING_LENGTH);
     }
 }
-?>

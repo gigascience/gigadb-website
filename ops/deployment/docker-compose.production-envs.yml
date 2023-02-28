@@ -72,15 +72,6 @@ services:
       - SYS_ADMIN
     restart: unless-stopped
 
-  less:
-    environment:
-      YII_PATH: ${YII_PATH}
-      YII2_PATH: ${YII2_PATH}
-    image: registry.gitlab.com/$CI_PROJECT_PATH/production_app:$GIGADB_ENV
-    volumes:
-      - assets:/var/www/assets
-    command: bash -c "./protected/yiic lesscompiler"
-
   fuw-admin:
     <<: *logging
     environment:

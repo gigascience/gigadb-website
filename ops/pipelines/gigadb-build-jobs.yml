@@ -129,6 +129,7 @@ b_gigadb:
     CSV_DIR: "prod_like"
     PORTAINER_BCRYPT: ""
     REMOTE_DOCKER_HOSTNAME: ""
+    PHP_VERSION: "7.4.33"
 
   stage: production build
   allow_failure: false

@@ -1,8 +1,9 @@
 <?php
+
 /**
  * DAO class to retrieve from cache the files associated to a dataset
  *
- * @param CCache $cache Cache system to use
+ * @param ICache $cache Cache system to use
  * @param CCacheDependency $cacheDependency Cache dependency for invalidating the cache
  * @param DatasetFilesInterface $datasetFiles the adaptee class to fall back on if no cache variant
  * @author Rija Menage <rija+git@cinecinetique.com>
@@ -10,66 +11,64 @@
  */
 class CachedDatasetFiles extends DatasetComponents implements DatasetFilesInterface
 {
-	private $_storedDatasetFiles;
+    private $_storedDatasetFiles;
 
-	public function __construct (CCache $cache, CCacheDependency $cacheDependency, DatasetFilesInterface $datasetFiles)
-	{
-		parent::__construct();
-		$this->_cache = $cache;
-		$this->_cacheDependency = $cacheDependency;
-		$this->_storedDatasetFiles = $datasetFiles;
-	}
+    public function __construct(ICache $cache, CCacheDependency $cacheDependency, DatasetFilesInterface $datasetFiles)
+    {
+        parent::__construct();
+        $this->_cache = $cache;
+        $this->_cacheDependency = $cacheDependency;
+        $this->_storedDatasetFiles = $datasetFiles;
+    }
 
-	/**
-	 * return the dataset id
-	 *
-	 * @return int
-	 */
-	public function getDatasetId(): int
-	{
-		return $this->_storedDatasetFiles->getDatasetId();
-	}
+    /**
+     * return the dataset id
+     *
+     * @return int
+     */
+    public function getDatasetId(): int
+    {
+        return $this->_storedDatasetFiles->getDatasetId();
+    }
 
-	/**
-	 * return the dataset identifier (DOI)
-	 *
-	 * @return string
-	 */
-	public function getDatasetDOI(): string
-	{
-		return $this->_storedDatasetFiles->getDatasetDOI();
-	}
+    /**
+     * return the dataset identifier (DOI)
+     *
+     * @return string
+     */
+    public function getDatasetDOI(): string
+    {
+        return $this->_storedDatasetFiles->getDatasetDOI();
+    }
 
 
-	/**
-	 * retrieve from cache files associated to a dataset
-	 *
-	 * @return array of files array maps
-	 */
-	public function getDatasetFiles(): array
-	{
-		$files =  $this->getCachedLocalData( $this->getDatasetId() );
-		if (false == $files) {
-			$files = $this->_storedDatasetFiles->getDatasetFiles();
-			$this->saveLocaldataInCache( $this->getDatasetId(), $files );
-		}
-		return $files;
-	}
+    /**
+     * retrieve from cache files associated to a dataset
+     *
+     * @return array of files array maps
+     */
+    public function getDatasetFiles(): array
+    {
+        $files =  $this->getCachedLocalData($this->getDatasetId());
+        if (false == $files) {
+            $files = $this->_storedDatasetFiles->getDatasetFiles();
+            $this->saveLocaldataInCache($this->getDatasetId(), $files);
+        }
+        return $files;
+    }
 
-	/**
-	 * retrieve, cache and format the sample attached to files associated to a dataset
-	 *
-	 * @return array of files array maps
-	 */
-	public function getDatasetFilesSamples(): array
-	{
-		$samples =  $this->getCachedLocalData( $this->getDatasetId() );
-		if (false == $samples) {
-			$samples = $this->_storedDatasetFiles->getDatasetFilesSamples();
-			$this->saveLocaldataInCache( $this->getDatasetId(), $samples );
-		}
-		return $samples;
-	}
+    /**
+     * retrieve, cache and format the sample attached to files associated to a dataset
+     *
+     * @return array of files array maps
+     */
+    public function getDatasetFilesSamples(): array
+    {
+        $samples =  $this->getCachedLocalData($this->getDatasetId());
+        if (false == $samples) {
+            $samples = $this->_storedDatasetFiles->getDatasetFilesSamples();
+            $this->saveLocaldataInCache($this->getDatasetId(), $samples);
+        }
+        return $samples;
+    }
 }
-
-?>
