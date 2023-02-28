@@ -32,8 +32,7 @@ max_batch_size=100
 
 # If we're on the backup server then source proxy settings to perform 
 # data transfer as determined by its expected hostname
-if [ "$HOST_HOSTNAME" == "cngb-gigadb-bak" ];
-then
+if [ "$HOST_HOSTNAME" == "cngb-gigadb-bak" ]; then
     source "$APP_SOURCE/proxy_settings.sh" || exit 1
     echo "$(date +'%Y/%m/%d %H:%M:%S') DEBUG  : Sourced proxy settings for CNGB backup server" >> "$LOGFILE"
     # Also update destination to staging directory to 
@@ -66,8 +65,7 @@ while [[ $# -gt 0 ]]; do
     # to live directory in Wasabi
     --use-live-data)
         # Ensure we are on backup server otherwise there is no access to live data
-        if [ "$HOST_HOSTNAME" == "cngb-gigadb-bak" ];
-        then
+        if [ "$HOST_HOSTNAME" == "cngb-gigadb-bak" ]; then
             # Use path to the mounted real data on backup server
             SOURCE_PATH="/live-data/gigadb/pub/10.5524"
             # And copy to live directory on Wasabi if on backup server
@@ -92,21 +90,17 @@ echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Ending DOI is: $ending_doi" >> "$LOGF
 
 # Check batch size between DOIs
 batch_size="$(($ending_doi-$starting_doi))"
-if [ "$batch_size" -gt "$max_batch_size" ];
-then
+if [ "$batch_size" -gt "$max_batch_size" ]; then
     echo "$(date +'%Y/%m/%d %H:%M:%S') ERROR  : Batch size is more than $max_batch_size - please reduce size of batch to copy!" >> "$LOGFILE"
     exit
 fi
 
 # Determine DOI range directory to use based on starting DOI
-if [ "$starting_doi" -lt 101000 ];
-then
+if [ "$starting_doi" -lt 101000 ]; then
     dir_range="100001_101000"
-elif [ "$starting_doi" -lt 102001 ] && [ "$starting_doi" -gt 101000 ];
-then
+elif [ "$starting_doi" -lt 102001 ] && [ "$starting_doi" -gt 101000 ]; then
     dir_range="101001_102000"
-elif [ "$starting_doi" -lt 103001 ] && [ "$starting_doi" -gt 102000 ];
-then
+elif [ "$starting_doi" -lt 103001 ] && [ "$starting_doi" -gt 102000 ]; then
     dir_range="102001_103000"
 fi
 
@@ -121,8 +115,7 @@ do
     destination_dataset_path="${DESTINATION_PATH}/${dir_range}/${current_doi}"
 
     # Check directory for current DOI exists
-    if [ -d "$source_dataset_path" ];
-    then
+    if [ -d "$source_dataset_path" ]; then
         echo "$(date +'%Y/%m/%d %H:%M:%S') DEBUG  : Found directory $source_dataset_path" >> "$LOGFILE"
         echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Attempting to copy dataset ${current_doi} to ${destination_dataset_path}"  >> "$LOGFILE"
 
@@ -137,8 +130,7 @@ do
 
         # Check exit code for rclone command
         rclone_exit_code=$?
-        if [ $rclone_exit_code -eq 0 ]
-        then 
+        if [ $rclone_exit_code -eq 0 ]; then
             echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Successfully copied files to Wasabi for DOI: $current_doi" >> "$LOGFILE"
         else 
             echo "$(date +'%Y/%m/%d %H:%M:%S') ERROR  : Problem with copying files to Wasabi - rclone has exit code: $rclone_exit_code" >> "$LOGFILE"
