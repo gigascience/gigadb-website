@@ -106,7 +106,7 @@ fi
 
 # Copy dataset files for all DOIs between starting and ending DOIs
 current_doi="$starting_doi"
-while [ "$current_doi" -lt "$ending_doi" ] || [ "$current_doi" -eq "$ending_doi" ]
+while [ "$current_doi" -le "$ending_doi" ]
 do
     echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Assessing DOI: $current_doi" >> "$LOGFILE"
   
