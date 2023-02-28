@@ -104,9 +104,9 @@ class DatasetService extends Component
 
         // [License]
         $license = <<<LIC
-        All files and data are distributed under the Creative Commons Attribution-CC0 
-        License unless specifically stated otherwise, see http://gigadb.org/site/term 
-        for more details.
+        All files and data are distributed under the CC0 1.0 Universal (CC0 1.0) Public 
+        Domain Dedication (https://creativecommons.org/publicdomain/zero/1.0/), unless 
+        specifically stated otherwise, see http://gigadb.org/site/term for more details.
         LIC;
         $formatted_license = wordwrap($license, self::STRING_WIDTH, PHP_EOL);
         $readme[] = "[License]".PHP_EOL.$formatted_license.PHP_EOL;
