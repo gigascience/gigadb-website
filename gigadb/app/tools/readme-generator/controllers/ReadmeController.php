@@ -12,32 +12,38 @@ use yii\console\ExitCode;
 
 /**
  * The tool for generating dataset readme files
- * @package app\commands
  */
 class ReadmeController extends Controller
 {
-    /**
-     * @var string $doi The DOI of the dataset that the readme file should be created for
-     */
-    public $doi = "";
 
     /**
-     * @var string $outdir The output directory that the readme file should be saved in
+     * DOI of the dataset that the readme file should be created for
+     *
+     * @var string $doi
      */
-    public $outdir = "";
+    public $doi = '';
 
-    // Character width of text in readme file
-    const STRING_WIDTH = 80;
+    /**
+     * The output directory that the readme file should be saved in
+     *
+     * @var string $outdir
+     */
+    public $outdir = '';
+
 
     /**
      * Specify options available to console command provided by this controller.
-     * Returns a list of controller class's public properties
      *
-     * @var string $actionID blah
+     * @var    $actionID
+     * @return array List of controller class's public properties
      */
     public function options($actionID): array
     {
-        return ['doi', 'outdir'];
+        return [
+            'doi',
+            'outdir',
+        ];
+
     }
 
     /**
@@ -45,16 +51,18 @@ class ReadmeController extends Controller
      *
      *  Usage:
      *      ./yii readme/create --doi
+     *
      * @throws Throwable
-     * @return int Exit code
+     * @throws Exception
+     * @return integer Exit code
      */
     public function actionCreate(): int
     {
-        $optDoi = $this->doi;
+        $optDoi    = $this->doi;
         $optOutdir = $this->outdir;
-        
-        //Return usage unless mandatory options are passed
-        if (!($optDoi)) {
+
+        // Return usage unless mandatory options are passed.
+        if ($optDoi === false) {
             $this->stdout(
                 "\nUsage:\n\t./yii readme/create --doi 100142 | --outdir /home/curators".PHP_EOL
             );
@@ -64,18 +72,19 @@ class ReadmeController extends Controller
         try {
             $readme = Yii::$app->datasetService->getReadme($optDoi);
             echo $readme;
-            // Save file if output directory exists
-            if ($optOutdir != null && is_dir($optOutdir)) {
-                $filename = "$optOutdir/readme_$optDoi.txt";
+            // Save file if output directory exists.
+            if ($optOutdir !== null && is_dir($optOutdir) === true) {
+                $filename = $optOutdir.'/readme_'.$optDoi.'.txt';
                 file_put_contents($filename, $readme);
-            } elseif ($optOutdir != null && !is_dir($optOutdir)) {
-                throw new Exception("Cannot save readme file - Output directory does not exist or is not a directory");
+            } else if ($optOutdir !== null && is_dir($optOutdir) === false) {
+                throw new Exception('Cannot save readme file - Output directory does not exist or is not a directory');
             }
         } catch (Exception $e) {
             $this->stdout($e->getMessage().PHP_EOL, Console::FG_RED);
             Yii::error($e->getMessage());
             return ExitCode::DATAERR;
         }
+
         return ExitCode::OK;
     }
 }
