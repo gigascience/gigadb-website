@@ -105,11 +105,9 @@ class DatasetService extends Component
 
         $readme[] = $fileNameDescription;
 
-        $license          = <<<LIC
-        All files and data are distributed under the CC0 1.0 Universal (CC0 1.0) Public 
-        Domain Dedication (https://creativecommons.org/publicdomain/zero/1.0/), unless 
-        specifically stated otherwise, see http://gigadb.org/site/term for more details.
-        LIC;
+        $license          = 'All files and data are distributed under the CC0 1.0 Universal (CC0 1.0) Public ';
+        $license         .= 'Domain Dedication (https://creativecommons.org/publicdomain/zero/1.0/), unless ';
+        $license         .= 'specifically stated otherwise, see http://gigadb.org/site/term for more details.';
         $formattedLicense = wordwrap($license, self::STRING_WIDTH, PHP_EOL);
         $readme[]         = '[License]'.PHP_EOL.$formattedLicense.PHP_EOL;
 

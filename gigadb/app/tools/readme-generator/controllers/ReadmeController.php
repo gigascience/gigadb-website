@@ -43,7 +43,6 @@ class ReadmeController extends Controller
             'doi',
             'outdir',
         ];
-
     }
 
     /**
@@ -52,8 +51,7 @@ class ReadmeController extends Controller
      *  Usage:
      *      ./yii readme/create --doi
      *
-     * @throws Throwable
-     * @throws Exception
+     * @throws Exception When output directory cannot be found.
      * @return integer Exit code
      */
     public function actionCreate(): int
@@ -62,7 +60,7 @@ class ReadmeController extends Controller
         $optOutdir = $this->outdir;
 
         // Return usage unless mandatory options are passed.
-        if ($optDoi === false) {
+        if ($optDoi === '') {
             $this->stdout(
                 "\nUsage:\n\t./yii readme/create --doi 100142 | --outdir /home/curators".PHP_EOL
             );
@@ -73,10 +71,10 @@ class ReadmeController extends Controller
             $readme = Yii::$app->datasetService->getReadme($optDoi);
             echo $readme;
             // Save file if output directory exists.
-            if ($optOutdir !== null && is_dir($optOutdir) === true) {
+            if ($optOutdir !== '' && is_dir($optOutdir) === true) {
                 $filename = $optOutdir.'/readme_'.$optDoi.'.txt';
                 file_put_contents($filename, $readme);
-            } else if ($optOutdir !== null && is_dir($optOutdir) === false) {
+            } else if ($optOutdir !== '' && is_dir($optOutdir) === false) {
                 throw new Exception('Cannot save readme file - Output directory does not exist or is not a directory');
             }
         } catch (Exception $e) {
@@ -84,7 +82,9 @@ class ReadmeController extends Controller
             Yii::error($e->getMessage());
             return ExitCode::DATAERR;
         }
-
         return ExitCode::OK;
+
     }
+
+
 }
