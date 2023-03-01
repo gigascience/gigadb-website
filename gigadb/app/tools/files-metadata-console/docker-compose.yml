@@ -18,6 +18,7 @@ services:
     environment:
       DOCKER_RUNNING: true
     image: composer/composer:2.4.4
+    working_dir: /gigadb/app/tools/files-metadata-console
     volumes:
       - ~/.composer-docker/cache:/root/.composer/cache:delegated
       - ./:/gigadb/app/tools/files-metadata-console:delegated
