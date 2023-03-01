@@ -16,7 +16,7 @@ services:
 
   composer:
     environment:
-      DOCKER_RUNNING: true
+      DOCKER_RUNNING: "true"
     image: composer/composer:2.4.4
     working_dir: /gigadb/app/tools/files-metadata-console
     volumes:
