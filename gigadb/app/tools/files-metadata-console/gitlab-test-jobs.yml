@@ -11,6 +11,6 @@ files_metadata_console_tests:
     - ./up.sh
     - cd gigadb/app/tools/files-metadata-console
     - docker-compose -f ./docker-compose.yml run --rm composer install
-    - docker-compose run --rm console ./vendor/bin/codecept run functional
+    - docker-compose -f ./docker-compose.yml run --rm console ./vendor/bin/codecept run functional
   environment:
     name: dev
