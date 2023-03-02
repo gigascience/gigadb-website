@@ -3,6 +3,7 @@ services:
   console:
     build:
       context: .
+    working_dir: /gigadb/app/tools/files-metadata-console
     volumes:
       - ~/.composer-docker/cache:/root/.composer/cache:delegated
       - ./:/gigadb/app/tools/files-metadata-console:delegated
