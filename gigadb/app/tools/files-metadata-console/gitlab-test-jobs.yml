@@ -13,6 +13,7 @@ files_metadata_console_tests:
     - docker-compose -f ./docker-compose.yml run --rm composer install
     - ls -al vendor/
     - ls -al vendor/bin/
+    - docker-compose -f ./docker-compose.yml run --rm console pwd
     - docker-compose -f ./docker-compose.yml run --rm console ./vendor/bin/codecept run functional
   environment:
     name: dev
