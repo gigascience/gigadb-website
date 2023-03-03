@@ -1,0 +1,24 @@
+files_metadata_console_tbuild:
+  variables:
+    PORTAINER_BCRYPT: ""
+    REMOTE_DOCKER_HOSTNAME: ""
+  stage: build for test
+  tags:
+    - $GITLAB_USER_LOGIN
+  script:
+    # Load Base image
+    - docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
+    - docker load -i php-8.2.3-cli-bullseye.tar
+    # login to gitlab container registry
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+    # build for test
+    - echo "Building app"
+    - cd gigadb/app/tools/files-metadata-console
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/files-metadata-console:latest || true
+    - docker-compose -f ./docker-compose.yml -f ./docker-compose.ci.yml build files-metadata-console
+    - docker tag ${CI_PROJECT_NAME}_files-metadata-console:latest registry.gitlab.com/$CI_PROJECT_PATH/files-metadata-console:latest
+    - docker push registry.gitlab.com/$CI_PROJECT_PATH/files-metadata-console:latest
+  artifacts:
+    untracked: true
+    when: always
+    expire_in: 1 week

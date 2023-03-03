@@ -6,9 +6,11 @@ base_images:
     # login and pull from docker hub the base image for php-fpm so it's done only once
     - docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
     - docker pull php:$PHP_VERSION-fpm-buster
+    - docker pull php:8.2.3-cli-bullseye
     - docker save -o php-$PHP_VERSION-fpm-buster.tar php:$PHP_VERSION-fpm-buster
     - docker pull php:$PHP_VERSION-cli-buster
     - docker save -o php-$PHP_VERSION-cli-buster.tar php:$PHP_VERSION-cli-buster
+    - docker save -o php-8.2.3-cli-bullseye.tar php:8.2.3-cli-bullseye
     - docker pull alpine:3.14.2
     - docker save -o alpine-3_14.tar alpine:3.14.2
     - docker pull nginx:$NGINX_VERSION-alpine
@@ -19,6 +21,7 @@ base_images:
     paths:
       - php-$PHP_VERSION-fpm-buster.tar
       - php-$PHP_VERSION-cli-buster.tar
+      - php-8.2.3-cli-bullseye.tar
       - alpine-3_14.tar
       - nginx-$NGINX_VERSION-alpine.tar
       - node-$NODE_VERSION-buster-slim.tar

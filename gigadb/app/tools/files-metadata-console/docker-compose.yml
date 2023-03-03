@@ -1,6 +1,6 @@
 version: '3.7'
 services:
-  console:
+  files-metadata-console:
     build:
       context: .
     working_dir: /gigadb/app/tools/files-metadata-console
