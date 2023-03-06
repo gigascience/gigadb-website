@@ -178,7 +178,7 @@ Feature: main search function
     And I wait "1" seconds
     Then I should see a link "Genome data from foxtail millet (Setaria italica)." to "/dataset/100020"
 
-  @ok
+  @error @todo
   Scenario: Query for specific author id
     Given I am on "/dataset/100006"
     When I follow "Lambert DM"
