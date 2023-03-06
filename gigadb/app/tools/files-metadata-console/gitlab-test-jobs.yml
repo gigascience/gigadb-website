@@ -4,17 +4,20 @@ files_metadata_console_tests:
   script:
     - env | grep "^HOME_URL" >> $APPLICATION/.env
     - env | grep "^GIGADB_" >> $APPLICATION/.secrets
+    - cp .env gigadb/app/tools/files-metadata-console/
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/console:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/web:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/files-metadata-console:latest || true
+    - docker tag registry.gitlab.com/$CI_PROJECT_PATH/files-metadata-console:latest ${CI_PROJECT_NAME}_files-metadata-console:latest
     - ./up.sh
     - cd gigadb/app/tools/files-metadata-console
-    - docker-compose -f ./docker-compose.yml run --rm composer install
+    - docker-compose -f ./docker-compose.yml -f ./docker-compose.ci.yml run --rm composer install
     - ls -al vendor/
     - ls -al vendor/bin/
-    - docker-compose -f ./docker-compose.yml run --rm files-metadata-console pwd
-    - docker-compose -f ./docker-compose.yml run --rm files-metadata-console ./vendor/bin/codecept run functional
+    - docker network ls
+    - docker-compose -f ./docker-compose.yml -f ./docker-compose.ci.yml run --rm files-metadata-console pwd
+    - docker-compose -f ./docker-compose.yml -f ./docker-compose.ci.yml run --rm files-metadata-console ./vendor/bin/codecept run functional
   environment:
     name: dev
