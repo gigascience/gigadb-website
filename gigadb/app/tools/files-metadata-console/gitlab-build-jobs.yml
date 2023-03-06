@@ -16,6 +16,7 @@ files_metadata_console_tbuild:
     - cd gigadb/app/tools/files-metadata-console
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/files-metadata-console:latest || true
     - docker-compose -f ./docker-compose.yml -f ./docker-compose.ci.yml build files-metadata-console
+    - docker-compose -f ./docker-compose.yml -f ./docker-compose.ci.yml images
     - docker tag ${CI_PROJECT_NAME}_files-metadata-console:latest registry.gitlab.com/$CI_PROJECT_PATH/files-metadata-console:latest
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/files-metadata-console:latest
   artifacts:
