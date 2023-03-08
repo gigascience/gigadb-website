@@ -234,7 +234,7 @@ class AdminSampleController extends Controller
                     $model->attributesList = $_POST['Sample']['attributesList'];
                     $this->updateSampleAttributes($model);
                     
-                    if ($model->save())
+                    if (!$model->errors)
                     {
                         // $dataset_id= DatasetSample::model()->findByAttributes(array('sample_id'=>$model->id))->dataset_id;
                         //     $files= File::model()->findAllByAttributes(array('code'=>$old_code,'dataset_id'=>$dataset_id));
@@ -244,6 +244,7 @@ class AdminSampleController extends Controller
                         //         $file->save();
                         //         //echo $model->code;
                         //     }
+                        $model->save();
                         $this->redirect(array('view', 'id' => $model->id));
                     }
                     
@@ -372,7 +373,10 @@ class AdminSampleController extends Controller
                 if (count($data) == 2) {
                     // Get attribute model
                     $attribute = Attribute::model()->findByAttributes(array('structured_comment_name' => trim($data[0])));
-                    // Save the new sample attribute value
+                    if (!$attribute) {
+                        $model->addError('error', 'This input attribute ' . $data[0] . ' does not exist and will not be saved if continue!');
+                    }
+                    // Let's save the new sample attribute
                     $sampleAttribute = clone $sampleAttr;
                     $sampleAttribute->value = trim($data[1]);
                     $sampleAttribute->attribute_id = $attribute->id;
