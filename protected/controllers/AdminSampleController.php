@@ -91,8 +91,9 @@ class AdminSampleController extends Controller
             //     }
             //     //$model->s_attrs=$attribute_temp;
             // }
-                    if($model->save()) {
-                        $this->updateSampleAttributes($model);
+                    $this->updateSampleAttributes($model);
+                    if(!$model->errors) {
+                        $model->save();
                         $this->redirect(array('view','id'=>$model->id));
                     }
 		}
