@@ -49,6 +49,7 @@ class Attribute extends CActiveRecord
 			array('definition, ontology_link', 'length', 'max'=>1000),
 			array('model', 'length', 'max'=>30),
 			array('structured_comment_name, note', 'length', 'max'=>50),
+            array('structured_comment_name', 'validateStructuredCommentName'),
 			array('value_syntax', 'length', 'max'=>500),
 			array('occurance', 'length', 'max'=>5),
 			// The following rule is used by search().
@@ -126,5 +127,13 @@ class Attribute extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+
+    public function validateStructuredCommentName($attribute, $params)
+    {
+        $attributes = self::model()->findByAttributes(array('structured_comment_name' => $this->$attribute));
+        if (!$attributes) {
+            $this->addError('structured_comment_name', $this->$attribute . ' does not exist.');
+        }
+    }
 }
 
