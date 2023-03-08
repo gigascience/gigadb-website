@@ -375,7 +375,7 @@ class AdminSampleController extends Controller
                     // Get attribute model
                     $attribute = Attribute::model()->findByAttributes(array('structured_comment_name' => trim($data[0])));
                     if (!$attribute) {
-                        $model->addError('error', 'This input attribute ' . $data[0] . ' does not exist and will not be saved if continue!');
+                        $model->addError('error', 'Attribute name ' . $data[0] . ' does not exist in the database and will not be saved if continue!');
                     }
                     // Let's save the new sample attribute
                     $sampleAttribute = clone $sampleAttr;
