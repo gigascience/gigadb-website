@@ -256,24 +256,24 @@ class AdminSampleController extends Controller
             }
         }
 
-            $specie = Species::model()->findByPk($model->species_id);
+            $species = Species::model()->findByPk($model->species_id);
 
-            $model->species_id = $specie->tax_id . ":";
+            $model->species_id = $species->tax_id . ":";
             $has_common_name = false;
-        if ($specie->common_name != null) {
+        if ($species->common_name != null) {
                    $has_common_name = true;
-                   $model->species_id .= $specie->common_name;
+                   $model->species_id .= $species->common_name;
         }
 
-        if ($specie->scientific_name != null) {
+        if ($species->scientific_name != null) {
             if ($has_common_name) {
                 $model->species_id .= ",";
             }
-                    $model->species_id .= $specie->scientific_name;
+                    $model->species_id .= $species->scientific_name;
         }
             $this->render('update', array(
                 'model' => $model,
-                'specie' => $specie,
+                'species' => $species,
             ));
     }
 
