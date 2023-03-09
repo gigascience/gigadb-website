@@ -41,23 +41,64 @@ class AdminSampleCest
         ]);
     }
 
-//    public function tryUpdateAttributeListWithTwoNonExistAttribute(FunctionalTester $I)
-//    {
-//        $I->amOnPage("/adminSample/update/id/432");
-//        $I->canSee("Update Sample 432");
-//        $I->fillField("Sample[attributesList]", "animal=\"tiger\",plant=\"rose\"");
-//        $I->click("Save");
-//        $I->canSee("lease fix the following input errors:");
-//        $I->canSee("Attribute name animal does not exist in the database and will not be saved if continue!");
-//        $I->canSee("Attribute name plant does not exist in the database and will not be saved if continue!");
-//        $I->click("Save");
-//        $I->dontSeeInDatabase("sample_attribute", [
-//            "sample_id" => "432",
-//            "value" => "tiger"
-//        ]);
-//        $I->dontSeeInDatabase("sample_attribute", [
-//            "sample_id" => "432",
-//            "value" => "rose"
-//        ]);
-//    }
+    public function tryUpdateAttributeListWithTwoNonExistAttribute(FunctionalTester $I)
+    {
+        $I->amOnPage("/adminSample/update/id/432");
+        $I->canSee("Update Sample 432");
+        $I->fillField("Sample[attributesList]", "lat_lon=\"38.0,114.4\",animal=\"tiger\",plant=\"rose\"");
+        $I->click("Save");
+        $I->canSee("lease fix the following input errors:");
+        $I->canSee("Attribute name animal does not exist in the database and will not be saved if continue!");
+        $I->canSee("Attribute name plant does not exist in the database and will not be saved if continue!");
+        $I->click("Save");
+        $I->canSee("lat_lon=\"38.0,114.4\"");
+        $I->canSeeInDatabase("sample_attribute", [
+            "sample_id" => "432",
+            "attribute_id" => "269",
+            "value" => "38.0,114.4"
+        ]);
+        $I->dontSeeInDatabase("sample_attribute", [
+            "sample_id" => "432",
+            "value" => "tiger"
+        ]);
+        $I->dontSeeInDatabase("sample_attribute", [
+            "sample_id" => "432",
+            "value" => "rose"
+        ]);
+    }
+
+    public function tryCreateAttributeListWithOneNonExistAttribute(FunctionalTester $I)
+    {
+        $I->amOnPage("/adminSample/create");
+        $I->canSee("Create Sample");
+        $I->fillField("Sample[species_id]", "87676:Eucalyptus pauciflora");
+        $I->fillField("Sample[attributesList]", "animal=\"tiger\"");
+        $I->click("Create");
+        $I->canSee("Please fix the following input errors:");
+        $I->canSee("Attribute name animal does not exist in the database and will not be saved if continue!");
+        $I->dontSeeInDatabase("sample_attribute", [
+            "sample_id" => "432",
+            "value" => "tiger"
+        ]);
+    }
+
+    public function tryCreateAttributeListWithTwoNonExistAttribute(FunctionalTester $I)
+    {
+        $I->amOnPage("/adminSample/create");
+        $I->canSee("Create Sample");
+        $I->fillField("Sample[species_id]", "87676:Eucalyptus pauciflora");
+        $I->fillField("Sample[attributesList]", "animal=\"tiger\",plant=\"rose\"");
+        $I->click("Create");
+        $I->canSee("Please fix the following input errors:");
+        $I->canSee("Attribute name animal does not exist in the database and will not be saved if continue!");
+        $I->canSee("Attribute name plant does not exist in the database and will not be saved if continue!");
+        $I->dontSeeInDatabase("sample_attribute", [
+            "sample_id" => "432",
+            "value" => "tiger"
+        ]);
+        $I->dontSeeInDatabase("sample_attribute", [
+            "sample_id" => "432",
+            "value" => "rose"
+        ]);
+    }
 }
