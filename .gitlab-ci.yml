@@ -77,8 +77,8 @@ include:
   - local: "gigadb/app/tools/readme-generator/gitlab-config-build-live.yml"
   - local: "gigadb/app/tools/readme-generator/gitlab-config-deploy-live.yml"
   - local: "gigareview/gitlab-config.yml"
-  - local: "gigadb/app/tools/files-metadata-console/gitlab-build-jobs.yml"
-  - local: "gigadb/app/tools/files-metadata-console/gitlab-test-jobs.yml"
+  - local: "gigadb/app/tools/files-metadata-console/gitlab-ci-build-job.yml"
+  - local: "gigadb/app/tools/files-metadata-console/gitlab-ci-test-job.yml"
 
 services:
   - docker:${DOCKER_VERSION}-dind
