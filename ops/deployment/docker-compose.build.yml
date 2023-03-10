@@ -36,6 +36,8 @@ services:
         - INSTALL_LIBSODIUM=false
         - INSTALL_APCU=true
         - APCU_VERSION=$APCU_VERSION
+        - TIDEWAYS_APIKEY=${TIDEWAYS_APIKEY}
+        - GIGADB_ENV=${GIGADB_ENV}
 
   production_gigadb-worker:
     build:
