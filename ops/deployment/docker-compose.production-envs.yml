@@ -61,6 +61,7 @@ services:
       - feeds:/var/www/files/data
     expose:
       - "9000"
+      - "9135"
     networks:
       - web-tier
     extra_hosts:
