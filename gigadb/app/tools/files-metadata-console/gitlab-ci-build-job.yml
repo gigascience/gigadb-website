@@ -1,4 +1,4 @@
-files_metadata_console_tbuild:
+Ci_FilesMetaDataConsoleBuild:
   variables:
     PORTAINER_BCRYPT: ""
     REMOTE_DOCKER_HOSTNAME: ""
