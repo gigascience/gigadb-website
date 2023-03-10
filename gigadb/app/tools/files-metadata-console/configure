@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+# bail out upon error
+set -e
+
+# bail out if an unset variable is used
+set -u
+
+# load the library of configuration function
+source ../../configurator/src/GitLabVariablesToDotFiles.sh
+
+# set up the application source
+appSource=.
+
+set -a
+makeDotEnv $appSource
+makeDotSecrets $appSource
+set +a
+
+# generate config for Yii2 config files: SOURCE TARGET VARS
+makeConfigs "${appSource}/config-sources/db.php.dist" "${appSource}/config/db.php" '$GIGADB_HOST:$GIGADB_DB:$GIGADB_USER:$GIGADB_PASSWORD'
+makeConfigs "${appSource}/config-sources/test_db.php.dist" "${appSource}/config/test_db.php" '$GIGADB_HOST:$GIGADB_DB:$GIGADB_USER:$GIGADB_PASSWORD'
