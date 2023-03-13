@@ -2,7 +2,6 @@
 
 namespace app\controllers;
 
-use GigaDB\services\DatasetService;
 use Throwable;
 use Yii;
 use yii\base\Exception;
@@ -68,7 +67,7 @@ class ReadmeController extends Controller
         }
 
         try {
-            $readme = Yii::$app->datasetService->getReadme($optDoi);
+            $readme = Yii::$app->ReadmeGenerator->getReadme($optDoi);
             echo $readme;
             // Save file if output directory exists.
             if ($optOutdir !== '' && is_dir($optOutdir) === true) {

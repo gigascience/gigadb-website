@@ -17,8 +17,8 @@ $config = [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
-        'datasetService' => [
-            'class' => 'GigaDB\services\DatasetService',
+        'ReadmeGenerator' => [
+            'class' => 'app\components\ReadmeGenerator',
         ],
         'log' => [
             'targets' => [

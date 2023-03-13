@@ -101,4 +101,4 @@ VARS='$GIGADB_HOST:$GIGADB_DB:$GIGADB_USER:$GIGADB_PASSWORD'
 envsubst $VARS < $SOURCE > $TARGET
 
 # Create curators directory in runtime folder
-mkdir -p ./runtime/curators
+mkdir -p "$APP_SOURCE"/runtime/curators

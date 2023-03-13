@@ -1,6 +1,6 @@
 <?php
 
-namespace GigaDB\services;
+namespace app\components;
 
 use Exception;
 use GigaDB\models\Dataset;
@@ -10,7 +10,7 @@ use yii\base\Component;
 /**
  * Component service to output contents for a readme file for a dataset
  */
-class DatasetService extends Component
+class ReadmeGenerator extends Component
 {
     // Character width of text in readme file.
     const STRING_WIDTH = 80;
