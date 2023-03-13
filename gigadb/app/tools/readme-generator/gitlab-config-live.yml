@@ -22,6 +22,7 @@ ReadmeGeneratorBuildLive:
   dependencies: []
   environment:
     name: live
+  when: manual
   artifacts:
     paths:
       - gigadb/app/tools/readme-generator/.env
