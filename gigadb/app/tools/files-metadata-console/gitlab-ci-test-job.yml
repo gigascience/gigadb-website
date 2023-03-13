@@ -5,6 +5,14 @@ Ci_FilesMetaDataConsoleTests:
     - env | grep "^HOME_URL" >> $APPLICATION/.env
     - env | grep "^GIGADB_" >> $APPLICATION/.secrets
     - cp .env gigadb/app/tools/files-metadata-console/
+    # Load Base image
+    - docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
+    - docker load -i php-8.2.3-cli-bullseye.tar
+    - docker load -i php-$PHP_VERSION-fpm-buster.tar
+    - docker load -i php-$PHP_VERSION-cli-buster.tar
+    - docker load -i alpine-3_14.tar
+    - docker load -i nginx-$NGINX_VERSION-alpine.tar
+    - docker load -i node-$NODE_VERSION-buster-slim.tar
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/console:latest || true
@@ -33,3 +41,7 @@ Ci_FilesMetaDataConsoleTests:
     - docker-compose -f ./docker-compose.yml -f ./docker-compose.ci.yml run --rm files-metadata-console ./vendor/bin/codecept run functional
   environment:
     name: dev
+  artifacts:
+    untracked: true
+    when: always
+    expire_in: 1 week
