@@ -9,8 +9,6 @@ services:
       - ./:/gigadb/app/tools/files-metadata-console:delegated
       - ../../services:/gigadb/app/services
       - ../../models:/gigadb/app/models
-    ports:
-      - '8000:80'
     networks:
       # Connect to db-tier network in ops/docker-compose.yml
       - proxy-db-tier
