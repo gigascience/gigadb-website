@@ -1,6 +1,6 @@
 Ci_FilesMetaDataConsoleTests:
   stage: test
-  dependencies: ["Ci_FilesMetaDataConsoleBuild"]
+  needs: ["Ci_FilesMetaDataConsoleBuild"]
   script:
     - env | grep "^HOME_URL" >> $APPLICATION/.env
     - env | grep "^GIGADB_" >> $APPLICATION/.secrets
@@ -32,8 +32,6 @@ Ci_FilesMetaDataConsoleTests:
     - docker tag registry.gitlab.com/$CI_PROJECT_PATH/files-metadata-console:latest ${CI_PROJECT_NAME}_files-metadata-console:latest
     - ./up.sh
     - cd gigadb/app/tools/files-metadata-console
-    - ls -al ../../
-    - ls -al ../../configurator/src 
     - ./configure
     - docker-compose -f ./docker-compose.yml -f ./docker-compose.ci.yml run --rm composer install
     - ls -al vendor/
