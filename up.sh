@@ -40,7 +40,7 @@ fi;
 docker-compose build web test
 
 # Launch the services required by GigaDB and FUW, and then start nginx (web server)
-docker-compose up -d --build application database fuw-public fuw-admin console
+docker-compose up -d --build application database fuw-public fuw-admin console tideways-daemon
 
 # start web server
 docker-compose up -d web
