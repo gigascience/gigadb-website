@@ -28,6 +28,7 @@ XLSUploaderBuildLive:
   dependencies: []
   environment:
     name: $TARGET_ENV
+  when: manual
   artifacts:
     paths:
       - gigadb/app/tools/excel-spreadsheet-uploader/.env
