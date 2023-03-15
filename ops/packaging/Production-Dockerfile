@@ -34,12 +34,6 @@ RUN docker-php-ext-install gd && \
     docker-php-ext-install gd
 
 # Set Environment Variables
-ENV TIDEWAYS_APIKEY=${TIDEWAYS_APIKEY}
-ENV TIDEWAYS_SERVICE=app
-ENV TIDEWAYS_SAMPLERATE=25
-ENV TIDEWAYS_CONNECTION=tcp://tideways-daemon:9135
-ENV TIDEWAYS_ENVIRONMENT=${GIGADB_ENV}
-
 ENV DEBIAN_FRONTEND noninteractive
 
 # always run apt update when start and after add new source list, then clean up at end.
