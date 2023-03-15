@@ -66,10 +66,6 @@ services:
     environment:
       YII_PATH: ${YII_PATH}
       YII2_PATH: ${YII2_PATH}
-      TIDEWAYS_APIKEY: ${TIDEWAYS_APIKEY}
-      TIDEWAYS_SERVICE: gigadb-website
-      TIDEWAYS_SAMPLERATE: 25
-      TIDEWAYS_CONNECTION: tcp://tideways-daemon:9135
     build:
       context: .
       dockerfile: ../packaging/Dockerfile
@@ -109,24 +105,12 @@ services:
       - ../../gigadb:/gigadb
     expose:
       - "9000"
-      - "9135"
     extra_hosts:
       - "fuw-admin-api:172.16.238.10"
       - "fuw-public-api:172.16.238.10"
     networks:
       - web-tier
       - db-tier
-
-  tideways-daemon:
-    environment:
-      TIDEWAYS_ENVIRONMENT: $GIGADB_ENV
-    build:
-      context: .
-      dockerfile: ../packaging/Tideways-Dockerfile
-    expose:
-      - "9135"
-    networks:
-      - web-tier
 
   database:
     <<: *logging
