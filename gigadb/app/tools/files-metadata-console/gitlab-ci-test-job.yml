@@ -36,7 +36,7 @@ Ci_FilesMetaDataConsoleTests:
     - which bash
     - ls -al ../../
     - ls -al ../../configurator/src
-    - file ../../configurator/src/GitLabVariablesToDotFiles.sh
+    - ls -al ../../configurator/src/dummy.sh
     - ./configure
     - docker-compose -f ./docker-compose.yml -f ./docker-compose.ci.yml run --rm composer install
     - ls -al vendor/
