@@ -60,6 +60,7 @@ services:
       TIDEWAYS_SERVICE: gigadb-website
       TIDEWAYS_SAMPLERATE: 25
       TIDEWAYS_CONNECTION: tcp://tideways-daemon:9135
+      TIDEWAYS_ENVIRONMENT: $GIGADB_ENV
     volumes:
       - assets:/var/www/assets
       - feeds:/var/www/files/data
