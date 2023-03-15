@@ -60,7 +60,6 @@ services:
       TIDEWAYS_SERVICE: gigadb-website
       TIDEWAYS_SAMPLERATE: 25
       TIDEWAYS_CONNECTION: tcp://tideways-daemon:9135
-      TIDEWAYS_ENVIRONMENT: $GIGADB_ENV
     volumes:
       - assets:/var/www/assets
       - feeds:/var/www/files/data
@@ -77,6 +76,16 @@ services:
       - NET_ADMIN
       - SYS_ADMIN
     restart: unless-stopped
+
+  tideways-daemon:
+    <<: *logging
+    image: registry.gitlab.com/$CI_PROJECT_PATH/production_tideways-daemon:$GIGADB_ENV
+    environment:
+      TIDEWAYS_ENVIRONMENT: $GIGADB_ENV
+    expose:
+      - '9135'
+    networks:
+      - web-tier
 
   fuw-admin:
     <<: *logging

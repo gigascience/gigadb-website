@@ -46,9 +46,9 @@ services:
       TIDEWAYS_ENVIRONMENT: $GIGADB_ENV
     build:
       context: .
-      dockerfile: ../packaging/Tideways-Dockerfile
+      dockerfile: ops/packaging/Tideways-Dockerfile
       cache_from:
-        - "registry.gitlab.com/$CI_PROJECT_PATH/production_app:${GIGADB_ENV}"
+        - "registry.gitlab.com/$CI_PROJECT_PATH/production_tideways-daemon:${GIGADB_ENV}"
     expose:
       - "9135"
 
