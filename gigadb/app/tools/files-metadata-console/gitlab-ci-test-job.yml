@@ -34,7 +34,7 @@ Ci_FilesMetaDataConsoleTests:
     - cd gigadb/app/tools/files-metadata-console
     - ls -al ../../
     - ls -al ../../configurator/src
-    - chmod a+x ../../configurator/src/GitLabVariablesToDotFiles.sh
+    - ls -al ../../configurator/src/GitLabVariablesToDotFiles.sh
     - ./configure
     - docker-compose -f ./docker-compose.yml -f ./docker-compose.ci.yml run --rm composer install
     - ls -al vendor/
