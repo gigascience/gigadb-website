@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
+# load the library of configuration function
+source ../../configurator/src/dotfiles.sh
+
 # bail out upon error
 set -e
 
 # bail out if an unset variable is used
 set -u
-
-# load the library of configuration function
-source ../../configurator/src/dotfiles.sh
 
 # set up the application source
 appSource=.
