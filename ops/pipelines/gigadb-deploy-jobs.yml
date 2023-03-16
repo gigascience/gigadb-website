@@ -35,7 +35,7 @@
     - docker --tlsverify -H=$REMOTE_WEBAPP_DOCKER info
     - docker --tlsverify -H=$REMOTE_WEBAPP_DOCKER login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
     - docker --tlsverify -H=$REMOTE_WEBAPP_DOCKER pull registry.gitlab.com/$CI_PROJECT_PATH/production_web:$GIGADB_ENV
-    - docker --tlsverify -H=$REMOTE_WEBAPP_DOCKER pull registry.gitlab.com/$CI_PROJECT_PATH/production_tideways-daemon:$GIGADB_ENV
+#    - docker --tlsverify -H=$REMOTE_WEBAPP_DOCKER pull registry.gitlab.com/$CI_PROJECT_PATH/production_tideways-daemon:$GIGADB_ENV
     - docker --tlsverify -H=$REMOTE_WEBAPP_DOCKER pull registry.gitlab.com/$CI_PROJECT_PATH/production_app:$GIGADB_ENV
     - docker --tlsverify -H=$REMOTE_WEBAPP_DOCKER pull registry.gitlab.com/$CI_PROJECT_PATH/production_config:$GIGADB_ENV
 #    - docker --tlsverify -H=$REMOTE_WEBAPP_DOCKER pull registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-console:$GIGADB_ENV
@@ -54,7 +54,7 @@
     # verify config renders correctly after variables interpolation
     - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml config
     # Redeploy all containers but the web container
-    - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml up -d application tideways-daemon #fuw-admin fuw-public
+    - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml up -d application #tideways-daemon fuw-admin fuw-public
     # deploy the web container once the application servers are up
     - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml up -d web
     # Run database migrations if any
@@ -105,4 +105,47 @@
     exclude:
       - "*.tar"
     when: always
+    expire_in: 1 week
+
+.deploy_tideways:
+  variables:
+    GIGADB_ENV: $DEPLOYMENT_ENV
+    COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
+    REMOTE_WEBAPP_DOCKER: "$remote_public_ip:2376"
+    REMOTE_BASTION_DOCKER: "$remote_bastion_public_ip:2376"
+    DATA_SAVE_PATH: "/home/centos/app_data"
+  stage: deployment
+  allow_failure: false
+  script:
+      # Load Base image
+      - docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
+      # login to gitlab container registry
+      - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+      # appending production variables at the end of the .env and .secrets
+      - env | grep -v "SAST" | grep -iE "^(staging_|remote_)" | grep -viE "(password|email|tester|secret|key|user|app_id|client_id|token|tls)" >> $APPLICATION/.env
+      - env | grep -v "SAST" | grep -iE "^TIDEWAYS_APIKEY" >> $APPLICATION/.env
+      - env | grep -v "SAST" | grep -iE "^(staging_|remote_)" | grep -iE "(password|email|tester|secret|key|user|app_id|client_id|token)" | grep -viE "tlsauth">> $APPLICATION/.secrets
+      - env | grep -v "SAST" | grep "^CI_API_V4_URL" >> $APPLICATION/.env
+      - env | grep -v "SAST" | grep "^CI_PROJECT_PATH" >> $APPLICATION/.env
+      - env | grep -v "SAST" | grep "^GITLAB_PRIVATE_TOKEN" >> $APPLICATION/.secrets
+      # Steps below are for interacting with the remote staging server to deploy, configure and start the production containers using staging compose file
+      # Create client certificate files for authenticating with remote docker daemon
+      - mkdir -pv ~/.docker
+      - bash -c "echo '$docker_tlsauth_ca' >  ~/.docker/ca.pem || true"
+      - bash -c "echo '$docker_tlsauth_cert' > ~/.docker/cert.pem || true"
+      - bash -c "echo '$docker_tlsauth_key' > ~/.docker/key.pem || true"
+      # Pull production container from the registry
+      - docker --tlsverify -H=$REMOTE_WEBAPP_DOCKER info
+      - docker --tlsverify -H=$REMOTE_WEBAPP_DOCKER login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+      - docker --tlsverify -H=$REMOTE_WEBAPP_DOCKER pull registry.gitlab.com/$CI_PROJECT_PATH/production_tideways-daemon:$GIGADB_ENV
+      # Redeploy all containers but the web container
+      - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml up -d tideways-daemon
+      # Debug
+      - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml logs tideways-daemon
+  environment:
+    name: $DEPLOYMENT_ENV
+    url: $REMOTE_HOME_URL
+  when: manual
+  artifacts:
+    when: on_failure
     expire_in: 1 week

@@ -116,6 +116,7 @@ sd_gigadb:
   needs: ["base_images","build_staging"]
   tags:
     - $GITLAB_USER_LOGIN
+  needs: ["base_images","build_staging"]
   environment:
     name: "staging"
     url: $REMOTE_HOME_URL
@@ -132,6 +133,18 @@ sd_warmcache:
     - curl $REMOTE_HOME_URL/dataset/100314
     - curl $REMOTE_HOME_URL/dataset/100310
   needs: ["sd_gigadb"]
+  environment:
+    name: "staging"
+    url: $REMOTE_HOME_URL
+
+sd_tideways:
+  stage: staging deploy
+  variables:
+    GIGADB_ENV: "staging"
+  extends: .deploy_tideways
+  tags:
+    - $GITLAB_USER_LOGIN
+  needs: ["sd_gigadb","TidewaysBuildStaging"]
   environment:
     name: "staging"
     url: $REMOTE_HOME_URL
@@ -160,6 +173,18 @@ ld_warmcache:
     - curl $REMOTE_HOME_URL/dataset/100314
     - curl $REMOTE_HOME_URL/dataset/100310
   needs: ["ld_gigadb"]
+  environment:
+    name: "live"
+    url: $REMOTE_HOME_URL
+
+ld_tideways:
+  stage: live deploy
+  variables:
+    GIGADB_ENV: "live"
+  extends: .deploy_tideways
+  tags:
+    - $GITLAB_USER_LOGIN
+  needs: ["ld_gigadb","TidewaysBuildLive"]
   environment:
     name: "live"
     url: $REMOTE_HOME_URL
