@@ -34,7 +34,9 @@ function makeDotEnv () {
 
   fi
   echo "Sourcing .env"
+  set -a
   source "$mdeBaseDir/.env"
+  set +a
 }
 
 # generate, if not existing yet, .secrets file populated with key and values from Gitlab variables. Then source .secrets.
@@ -75,7 +77,9 @@ function makeDotSecrets () {
       echo "# Some help about this file in ops/configuration/variables/secrets-sample" >> .secrets
   fi
   echo "Sourcing secrets"
+  set -a
   source "$mdsBaseDir/.secrets"
+  set +a
 }
 
 # generate config file TARGET from template SOURCE by interpolating placeholders with VARS
