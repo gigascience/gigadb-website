@@ -7,7 +7,7 @@ set -e
 set -u
 
 # load the library of configuration function
-source ../../configurator/src/GitLabVariablesToDotFiles.sh
+source ../../configurator/src/dotfiles.sh
 
 # set up the application source
 appSource=.
