@@ -12,8 +12,11 @@ set -u
 # set up the application source
 appSource=.
 
+set -a
 makeDotEnv $appSource
+export -p
 makeDotSecrets $appSource
+set +a
 
 # generate config for Yii2 config files: SOURCE TARGET VARS
 makeConfigs "${appSource}/config-sources/db.php.dist" "${appSource}/config/db.php" '$GIGADB_HOST:$GIGADB_DB:$GIGADB_USER:$GIGADB_PASSWORD'
