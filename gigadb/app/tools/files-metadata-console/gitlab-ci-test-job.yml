@@ -31,7 +31,7 @@ Ci_FilesMetaDataConsoleTests:
     - docker tag registry.gitlab.com/$CI_PROJECT_PATH/files-metadata-console:latest ${CI_PROJECT_NAME}_files-metadata-console:latest
     - ./up.sh
     - cd gigadb/app/tools/files-metadata-console
-    - rm .env || true
+    - rm .env || true 2> /dev/null
     - ./configure
     - docker-compose -f ./docker-compose.yml -f ./docker-compose.ci.yml run --rm composer install
     - ls -al vendor/
