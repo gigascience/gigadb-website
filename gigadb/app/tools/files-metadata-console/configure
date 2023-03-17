@@ -14,7 +14,6 @@ appSource=.
 
 set -a
 makeDotEnv $appSource
-export -p
 makeDotSecrets $appSource
 set +a
 

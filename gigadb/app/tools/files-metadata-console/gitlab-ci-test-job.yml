@@ -4,7 +4,6 @@ Ci_FilesMetaDataConsoleTests:
   script:
     - env | grep "^HOME_URL" >> $APPLICATION/.env
     - env | grep "^GIGADB_" >> $APPLICATION/.secrets
-    - cp .env gigadb/app/tools/files-metadata-console/
     # Load Base image
     - docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
     - docker load -i php-8.2.3-cli-bullseye.tar
@@ -31,6 +30,7 @@ Ci_FilesMetaDataConsoleTests:
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/files-metadata-console:latest || true
     - docker tag registry.gitlab.com/$CI_PROJECT_PATH/files-metadata-console:latest ${CI_PROJECT_NAME}_files-metadata-console:latest
     - ./up.sh
+    - cp .env gigadb/app/tools/files-metadata-console/
     - cd gigadb/app/tools/files-metadata-console
     - ./configure
     - docker-compose -f ./docker-compose.yml -f ./docker-compose.ci.yml run --rm composer install
