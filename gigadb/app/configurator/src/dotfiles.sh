@@ -43,9 +43,9 @@ function makeDotEnv () {
 # generate, if not existing yet, .secrets file populated with key and values from Gitlab variables. Then source .secrets.
 function makeDotSecrets () {
   mdsBaseDir=$1
-  accessToken=${CI_BUILD_TOKEN:-$GITLAB_PRIVATE_TOKEN}
 
   if ! [ -s ./.secrets ];then
+      accessToken=${CI_BUILD_TOKEN:-$GITLAB_PRIVATE_TOKEN}
 
       if [ "$accessToken" == "replace-me" ];then
         echo -e "\033[31m ! Replace the value of GITLAB_PRIVATE_TOKEN in .env, then try again\033[0m"
