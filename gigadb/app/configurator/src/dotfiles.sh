@@ -18,7 +18,7 @@ function makeDotEnv () {
         ciProjectUrl="https://gitlab.com/api/v4/projects/gigascience/forks/$repoName/"
         projectVariablesUrl="https://gitlab.com/api/v4/projects/gigascience%2Fforks%2F$repoName/variables"
       else
-        currentEnv="$CI_ENVIRONMENT_SLUG"
+        currentEnv="$GIGADB_ENV"
         repoName="$CI_PROJECT_TITLE"
         ciProjectUrl="https://gitlab.com/api/v4/projects/$CI_PROJECT_PATH"
         projectVariablesUrl="https://gitlab.com/api/v4/projects/gigascience%2Fforks%2F$repoName/variables"
