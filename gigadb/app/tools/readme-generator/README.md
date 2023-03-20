@@ -118,7 +118,7 @@ $ docker-compose run --rm tool ./vendor/bin/codecept run tests/unit
 
 There's also a unit test to check the DatasetService component class:
 ```
-$ docker-compose run --rm tool ./vendor/bin/codecept run --debug tests/unit/components/DatasetServiceTest.php
+$ docker-compose run --rm tool ./vendor/bin/codecept run --debug tests/unit/components/ReadmeGeneratorTest.php
 ```
 
 ### Functional test
