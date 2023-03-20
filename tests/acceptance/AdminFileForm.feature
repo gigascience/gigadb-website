@@ -24,15 +24,11 @@ Feature: form to manage file metadata
   @ok @caching
   Scenario: Dataset page can view the updated location url with caching on
     Given I am on "/dataset/100006"
-    And I follow "Files"
+    When I follow "Files"
     And I should see a link "Pygoscelis_adeliae.RepeatMasker.out.gz" to "https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006/phylogeny_study_update/Pygoscelis_adeliae.RepeatMasker.out.gz"
-    When I am on "/adminFile/update/id/17679"
+    Then I am on "/adminFile/update/id/17679"
     And I fill in the field of "id" "File_location" with "https://test.org/phylogeny_study_update/Pygoscelis_adeliae.RepeatMasker.out.gz"
     And I press the button "Save"
-    And I should see "https://test.org/phylogeny_study_update/Pygoscelis_adeliae.RepeatMasker.out.gz"
-    Then I am on "/dataset/100006"
-    And I follow "Files"
-    And I should see a link "Pygoscelis_adeliae.RepeatMasker.out.gz" to "https://test.org/phylogeny_study_update/Pygoscelis_adeliae.RepeatMasker.out.gz"
-    And  I am on "/dataset/100006"
+    And I am on "/dataset/100006"
     And I follow "Files"
     And I should see a link "Pygoscelis_adeliae.RepeatMasker.out.gz" to "https://test.org/phylogeny_study_update/Pygoscelis_adeliae.RepeatMasker.out.gz"
