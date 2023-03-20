@@ -33,4 +33,26 @@ class Functional extends \Codeception\Module
             $this->debug("Couldn't delete record " . json_encode($criteria) . " from $table");
         }
     }
+
+    /**
+     * Method to get the query results from invalidation in the main config file
+     *
+     * @param $dataset_id
+     * @return array
+     */
+    public function getLatestCreateUsingQueryFromMainConfigFile($dataset_id): array
+    {
+        $invalidationQuery = "select max(created_at) as dataset_log_latest, max(creation_date) as curation_log_latest from dataset_log d left join curation_log c on c.dataset_id = d.dataset_id where d.dataset_id = @id or c.dataset_id = @id;";
+        if ($invalidationQuery !== null) {
+            try {
+                $invalidationQuery = preg_replace("/@id/", $dataset_id, $invalidationQuery);
+                return $this->getModule('Db')->_getDriver()->executeQuery($invalidationQuery, [])->fetchAll();
+            } catch (\Exception $e) {
+                $this->debug("Couldn't execute invalidation query: " . $e->getMessage());
+            }
+        } else {
+            $this->debug("Invalidation query not found");
+        }
+        return [];
+    }
 }

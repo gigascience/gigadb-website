@@ -17,6 +17,7 @@ class InvalidationQueryCommandCest
     // tests
     public function tryToGetTheLatestCreatedAtFromTableDatasetlog(FunctionalTester $I)
     {
+        $dataset_id = 8;
         $date = date('Y-m-d H:i:s');
         $I->haveInDatabase("dataset_log", [
                 "dataset_id" => 8,
@@ -27,13 +28,16 @@ class InvalidationQueryCommandCest
                 "url" => "/adminFile/update/id/17679"
             ]);
 
-        $output = shell_exec(" ./protected/yiic invalidationquery getlatestcreateusingqueryfrommainconfigfile");
-        codecept_debug($output);
-        $I->assertContains($date, $output);
+        $outputs = $I->getLatestCreateUsingQueryFromMainConfigFile($dataset_id);
+        foreach ($outputs as $output) {
+            $I->assertArrayHasKey('dataset_log_latest', $output);
+            $I->assertEquals($date, $output['dataset_log_latest']);
+        }
     }
 
     public function tryToGetTheLatestCreationDateFromTableCurationlog(FunctionalTester $I)
     {
+        $dataset_id = 8;
         $date = date('Y-m-d H:i:s');
         $I->haveInDatabase("curation_log", [
             "dataset_id" => 8,
@@ -45,13 +49,16 @@ class InvalidationQueryCommandCest
             "comments" => "None",
         ]);
 
-        $output = shell_exec(" ./protected/yiic invalidationquery getlatestcreateusingqueryfrommainconfigfile");
-        codecept_debug($output);
-        $I->assertContains($date, $output);
+        $outputs = $I->getLatestCreateUsingQueryFromMainConfigFile($dataset_id);
+        foreach ($outputs as $output) {
+            $I->assertArrayHasKey('curation_log_latest', $output);
+            $I->assertEquals($date, $output['curation_log_latest']);
+        }
     }
 
     public function tryToGetTheLatestCreatedAtFromDatasetlogAndCreationDateFromCurationlog(FunctionalTester $I)
     {
+        $dataset_id = 8;
         $date = date('Y-m-d H:i:s');
         $I->haveInDatabase("dataset_log", [
             "dataset_id" => 8,
@@ -72,8 +79,12 @@ class InvalidationQueryCommandCest
             "comments" => "None",
         ]);
 
-        $output = shell_exec(" ./protected/yiic invalidationquery getlatestcreateusingqueryfrommainconfigfile");
-        codecept_debug($output);
-        $I->assertEquals($date . $date, $output);
+        $outputs = $I->getLatestCreateUsingQueryFromMainConfigFile($dataset_id);
+        foreach ($outputs as $output) {
+            $I->assertArrayHasKey('dataset_log_latest', $output);
+            $I->assertEquals($date, $output['dataset_log_latest']);
+            $I->assertArrayHasKey('curation_log_latest', $output);
+            $I->assertEquals($date, $output['curation_log_latest']);
+        }
     }
 }
