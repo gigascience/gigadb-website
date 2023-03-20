@@ -6,14 +6,13 @@ use Exception;
 use GigaDB\models\Dataset;
 use yii\base\Component;
 
-
 /**
  * Component service to output contents for a readme file for a dataset
  */
 class ReadmeGenerator extends Component
 {
     // Character width of text in readme file.
-    const STRING_WIDTH = 80;
+    public const STRING_WIDTH = 80;
 
 
     /**
@@ -38,15 +37,15 @@ class ReadmeGenerator extends Component
         // Check dataset exists otherwise throw exception to exit.
         $dataset = Dataset::findOne(['identifier' => $doi]);
         if ($dataset === false) {
-            throw new Exception('Dataset '.$doi.' not found');
+            throw new Exception('Dataset ' . $doi . ' not found');
         }
 
         // Use array to store readme information.
-        $formattedTitle = wordwrap('[Title] '.$dataset->title, self::STRING_WIDTH, PHP_EOL);
+        $formattedTitle = wordwrap('[Title] ' . $dataset->title, self::STRING_WIDTH, PHP_EOL);
         $readme         = [
-            '[DOI] 10.5524/'.$doi.PHP_EOL,
-            $formattedTitle.PHP_EOL,
-            '[Release Date] '.$dataset->publication_date.PHP_EOL,
+            '[DOI] 10.5524/' . $doi . PHP_EOL,
+            $formattedTitle . PHP_EOL,
+            '[Release Date] ' . $dataset->publication_date . PHP_EOL,
         ];
 
         $citation        = '[Citation] ';
@@ -56,18 +55,18 @@ class ReadmeGenerator extends Component
             $firstNameInitial  = substr($authors[$i]->first_name, 0, 1);
             $middleNameInitial = substr($authors[$i]->middle_name, 0, 1);
             $surname           = $authors[$i]->surname;
-            $fullName          = $surname.', '.$firstNameInitial.$middleNameInitial;
+            $fullName          = $surname . ', ' . $firstNameInitial . $middleNameInitial;
             $lastIndex         = (count($authors) - 1);
             if ($i === $lastIndex) {
-                $citation .= $fullName.' ';
+                $citation .= $fullName . ' ';
             } else {
-                $citation .= $fullName.'; ';
+                $citation .= $fullName . '; ';
             }
         }
 
         $publicationYear   = substr($dataset->publication_date, 0, 4);
-        $citation         .= '('.$publicationYear.'): ';
-        $citation         .= $dataset->title.' GigaScience Database. https://dx.doi.org/10.5524/'.$doi.PHP_EOL;
+        $citation         .= '(' . $publicationYear . '): ';
+        $citation         .= $dataset->title . ' GigaScience Database. https://dx.doi.org/10.5524/' . $doi . PHP_EOL;
         $formattedCitation = wordwrap($citation, self::STRING_WIDTH, PHP_EOL);
         $readme[]          = $formattedCitation;
 
@@ -81,26 +80,26 @@ class ReadmeGenerator extends Component
             $typeName  = $type->one()->name;
             $lastIndex = (count($datasetTypes) - 1);
             if ($i === $lastIndex) {
-                $datasetType .= $typeName.PHP_EOL;
+                $datasetType .= $typeName . PHP_EOL;
             } else {
-                $datasetType .= $typeName.',';
+                $datasetType .= $typeName . ',';
             }
         }
 
         $readme[] = $datasetType;
 
-        $formattedDescription = wordwrap('[Data Summary] '.$dataset->description, self::STRING_WIDTH, PHP_EOL);
-        $readme[]             = $formattedDescription.PHP_EOL;
+        $formattedDescription = wordwrap('[Data Summary] ' . $dataset->description, self::STRING_WIDTH, PHP_EOL);
+        $readme[]             = $formattedDescription . PHP_EOL;
 
-        $readme[] = '[File Location] '.$dataset->ftp_site.PHP_EOL;
+        $readme[] = '[File Location] ' . $dataset->ftp_site . PHP_EOL;
 
-        $fileNameDescription = '[File name] - [File Description]'.PHP_EOL;
+        $fileNameDescription = '[File name] - [File Description]' . PHP_EOL;
         // Returns array of File objects.
         $files = $dataset->files;
         foreach ($files as $file) {
             $fileName             = $file->name;
             $fileDescription      = $file->description;
-            $fileNameDescription .= $fileName.'  -  '.$fileDescription.PHP_EOL;
+            $fileNameDescription .= $fileName . '  -  ' . $fileDescription . PHP_EOL;
         }
 
         $readme[] = $fileNameDescription;
@@ -109,16 +108,13 @@ class ReadmeGenerator extends Component
         $license         .= 'Domain Dedication (https://creativecommons.org/publicdomain/zero/1.0/), unless ';
         $license         .= 'specifically stated otherwise, see http://gigadb.org/site/term for more details.';
         $formattedLicense = wordwrap($license, self::STRING_WIDTH, PHP_EOL);
-        $readme[]         = '[License]'.PHP_EOL.$formattedLicense.PHP_EOL;
+        $readme[]         = '[License]' . PHP_EOL . $formattedLicense . PHP_EOL;
 
-        $readme[] = '[Comments]'.PHP_EOL;
+        $readme[] = '[Comments]' . PHP_EOL;
 
-        $readme[] = '[End]'.PHP_EOL;
+        $readme[] = '[End]' . PHP_EOL;
 
         // Convert readme array to string.
         return implode(PHP_EOL, $readme);
-
-    }//end getReadme()
-
-
-}//end class
+    }
+}
