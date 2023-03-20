@@ -116,7 +116,7 @@ dataset and author tables via a junction `dataset_authors` table:
 $ docker-compose run --rm tool ./vendor/bin/codecept run tests/unit
 ```
 
-There's also a unit test to check the DatasetService component class:
+There's also a unit test to check the ReadmeGenerator component class:
 ```
 $ docker-compose run --rm tool ./vendor/bin/codecept run --debug tests/unit/components/ReadmeGeneratorTest.php
 ```
