@@ -1,0 +1,9 @@
+FROM files-metadata-console:latest
+
+COPY gigadb/app/tools/files-metadata-console /gigadb/app/tools/files-metadata-console/
+COPY gigadb/app/models /gigadb/app/models/
+COPY gigadb/app/services /gigadb/app/services/
+
+# Volume for Yii2 basic app because we need to write there (vendor and runtime)
+VOLUME ["/gigadb/app/tools/files-metadata-console"]
+WORKDIR /gigadb/app/tools/files-metadata-console
