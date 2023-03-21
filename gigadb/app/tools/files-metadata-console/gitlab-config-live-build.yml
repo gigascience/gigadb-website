@@ -1,13 +1,14 @@
-FilesMetadataConsoleBuildStaging:
+FilesMetadataConsoleBuildLive:
   variables:
     GIGADB_ENV: "staging"
     YII_DEBUG: "true"
-  stage: staging build
+  stage: live build
   tags:
     - $GITLAB_USER_LOGIN
-  needs: ["Ci_FilesMetaDataConsoleTests"]
+  needs: ["FilesMetaDataConsoleDeployStaging"]
+  when: manual
   environment:
-    name: "staging"
+    name: "live"
     url: $REMOTE_HOME_URL
   script:
     # Load Base image
