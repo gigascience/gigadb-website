@@ -250,7 +250,6 @@ build_staging:
   environment:
     name: "staging"
     url: $REMOTE_HOME_URL
-  when: always
 
 build_live:
   variables:

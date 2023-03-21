@@ -113,6 +113,7 @@ sd_gigadb:
     GIGADB_ENV: "staging"
   extends: .deploy
   stage: staging deploy
+  needs: ["base_images","build_staging"]
   tags:
     - $GITLAB_USER_LOGIN
   environment:
