@@ -119,7 +119,6 @@ sd_gigadb:
     name: "staging"
     url: $REMOTE_HOME_URL
     on_stop: sd_teardown
-  when: always
 
 sd_warmcache:
   variables:
