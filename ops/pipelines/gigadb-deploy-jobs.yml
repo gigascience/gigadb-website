@@ -97,7 +97,6 @@
   environment:
     name: $DEPLOYMENT_ENV
     url: $REMOTE_HOME_URL
-  when: manual
   artifacts:
     untracked: true
     exclude:
