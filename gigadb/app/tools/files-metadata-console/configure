@@ -19,6 +19,8 @@ set +a
 
 # generate config for Yii2 config files: SOURCE TARGET VARS
 # If we are on staging environment override variable name with their remote environment counterpart
+echo "Current environment: $GIGADB_ENV"
+
 if [[ $GIGADB_ENV != "dev" && $GIGADB_ENV != "CI" ]];then
     GIGADB_HOST=$gigadb_db_host
     GIGADB_USER=$gigadb_db_user
