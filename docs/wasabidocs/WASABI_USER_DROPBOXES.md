@@ -137,8 +137,12 @@ from submitters:
 
 ## Transfer files to Wasabi bucket using Wasabi Explorer
 
-Wasabi Explorer can be downloaded from [here](https://wasabi.com/help/downloads/).
+[Wasabi Explorer](https://wasabi.com/help/downloads/) provides a desktop app 
+for users to upload files. The user needs to add their Wasabi user account into
+Wasabi Explorer using the credentials (access key and secret key) that we will
+provide them with. Wasabi Explorer can then be used to transfer files into their
+bucket or directory using dropdown menus.
 
 ## Automate infrastructure for private user drop boxes
 
-https://wasabi-support.zendesk.com/hc/en-us/articles/360057225472
+The setup of the 100 plus user drop boxes can be [automated](https://wasabi-support.zendesk.com/hc/en-us/articles/360057225472).
