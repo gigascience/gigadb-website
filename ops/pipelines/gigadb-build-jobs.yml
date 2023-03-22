@@ -227,7 +227,6 @@ b_gigadb:
   environment:
     name: $DEPLOYMENT_ENV
     url: $REMOTE_HOME_URL
-  when: manual
   artifacts:
     paths:
       - php-$PHP_VERSION-fpm-buster.tar
@@ -259,6 +258,7 @@ build_live:
   tags:
     - $GITLAB_USER_LOGIN
   needs: ["base_images","a_gigadb"]
+  when: manual
   environment:
     name: "live"
     deployment_tier: production
