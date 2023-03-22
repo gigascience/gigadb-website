@@ -217,10 +217,10 @@ but as they already have default values, one needs to change their values only i
 to depart from the default.
 
 | Key | Role | Default on Dev/CI | Default on Staging | Default on Live |
-| ---  | --- | --- | --- | --- | 
+| ---  | --- | -- | --- | --- | 
 | YII_DEBUG | enable debug mode for extra logging | true | true | false
 | YII_TRACE_LEVEL | how many lines of context for log entries | 3 | 0 | 0 | 
-| DISABLE_CACHE | whether to disable caching of DB queries | true | false | false |
+| DISABLE_CACHE | whether to disable caching of DB queries | false | false | false |
 | SEARCH_RESULT_LIMIT | Nb. of results per page | 10 | 10 | 10 |
 
 >Note: the value of each of the first three variables has impact on website performances. 
@@ -229,6 +229,9 @@ to depart from the default.
 
 >Note: those three variables set the values for PHP constants of the same names that are
 > defined in the Yii web application's ``index.php`` file (generated from templates  ``ops/configuration/yii-conf/index.$GIGADB_ENV.php.dist``)
+
+> Note: Although caching is on by default for all environments, but DISABLE_CACHE variable will be still available to provide flexibility if some specific development work needs it off.
+>  DISABLE_CACHE can be manually configured to true in .env to turn off caching in dev environment.
 
 ##### Exceptions
 
