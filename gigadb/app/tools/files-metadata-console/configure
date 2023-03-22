@@ -21,6 +21,7 @@ set +a
 # If we are on staging environment override variable name with their remote environment counterpart
 echo "Current environment: $GIGADB_ENV"
 
+set -a
 if [[ $GIGADB_ENV != "dev" && $GIGADB_ENV != "CI" ]];then
     GIGADB_HOST=$gigadb_db_host
     GIGADB_USER=$gigadb_db_user
@@ -29,5 +30,7 @@ if [[ $GIGADB_ENV != "dev" && $GIGADB_ENV != "CI" ]];then
     echo "GigaDB_ENV is not dev nor CI!!"
     echo $GIGADB_HOST
 fi
+set +a
+
 makeConfigs "${appSource}/config-sources/db.php.dist" "${appSource}/config/db.php" '$GIGADB_HOST:$GIGADB_DB:$GIGADB_USER:$GIGADB_PASSWORD'
 makeConfigs "${appSource}/config-sources/test_db.php.dist" "${appSource}/config/test_db.php" '$GIGADB_HOST:$GIGADB_DB:$GIGADB_USER:$GIGADB_PASSWORD'
