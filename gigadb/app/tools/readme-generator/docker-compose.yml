@@ -8,9 +8,9 @@ services:
       # Mount source-code for development
       - .:/app
       - .:/logs
-      # For using model classes from file-worker tool
-      - ../../:/gigadb-apps
-      # For accessing pgdmp database dumps created during ./up.sh
+      # For using classes in GigaDB models and services
+      - ../../../:/gigadb
+      # For accessing pgdmp database dumps
       - ../../../../sql:/app/sql
       # Destination for readme files
       - ./runtime/curators:/home/curators
@@ -26,4 +26,4 @@ services:
 
 networks:
   proxy-db-tier:  # represents db-tier network in ops/docker-compose.yml
-      name: ${GIGADB_COMPOSE_PROJECT_NAME}_db-tier
+    name: ${GIGADB_COMPOSE_PROJECT_NAME}_db-tier

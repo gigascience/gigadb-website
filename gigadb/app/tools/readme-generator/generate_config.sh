@@ -33,6 +33,18 @@ echo "Generating configuration for environment: $GIGADB_ENV"
 # fetch and set environment variables from GitLab
 # Only necessary on DEV, as on CI (STG and PROD), the variables are exposed to build environment
 
+if [[ -z $GITLAB_PRIVATE_TOKEN ]];then
+  echo "GITLAB_PRIVATE_TOKEN is not defined!"
+fi
+
+if [[ -z $MISC_VARIABLES_URL ]];then
+  echo "MISC_VARIABLES_URL is not defined!"
+fi
+
+if [[ -z $GIGADB_ENV ]];then
+  echo "GIGADB_ENV is not defined!"
+fi
+
 if ! [ -s ./.secrets ];then
 
     # deal with special case we are in Upstream
@@ -63,6 +75,17 @@ fi
 echo "Sourcing secrets"
 source "./.secrets"
 
+# If we are on staging environment override variable name with their remote environment counterpart
+if [[ $GIGADB_ENV != "dev" && $GIGADB_ENV != "CI" ]];then
+    GIGADB_HOST=$gigadb_db_host
+    GIGADB_USER=$gigadb_db_user
+    GIGADB_PASSWORD=$gigadb_db_password
+    GIGADB_DB=$gigadb_db_database
+    echo "GigaDB_ENV is not dev nor CI!!"
+    echo $GIGADB_HOST
+fi
+
+# restore default settings for variables
 set +a
 
 # generate config for Yii2 config files
@@ -78,4 +101,4 @@ VARS='$GIGADB_HOST:$GIGADB_DB:$GIGADB_USER:$GIGADB_PASSWORD'
 envsubst $VARS < $SOURCE > $TARGET
 
 # Create curators directory in runtime folder
-mkdir -p ./runtime/curators
+mkdir -p "$APP_SOURCE"/runtime/curators

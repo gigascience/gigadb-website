@@ -35,7 +35,8 @@ Install Composer dependencies:
 $  docker-compose run --rm tool composer install 
 ```
 
-## Using the readme generator tool
+
+## Using readme generator tool
 
 The readme information for a dataset can be viewed on standard output using it's
 DOI:
@@ -55,6 +56,55 @@ Since `/home/curators` has been mounted to `runtime/curators` directory in
 `docker-compose.yml`, you should find a `readme_100142.txt` created there after
 running the above command.
 
+## Using readme generator tool via shell wrapper script 
+
+There is a shell script which can also be used to call the readme tool:
+```
+$ ./createReadme.sh --doi 100142 --outdir /home/curators
+```
+
+In the absence of an output directory `outdir` parameter or if the directory
+cannot be created then an error message will be displayed:
+```
+$ ./createReadme.sh --doi 100142 --outdir /home/foo
+Cannot save readme file - Output directory does not exist or is not a directory
+ERROR: 65
+```
+
+An error message is also displayed if a DOI is provided for a dataset that does 
+not exist:
+```
+$ ./create_readme.sh --doi 1
+Creating readme_tool_run ... done
+Exception 'Exception' with message 'Dataset 1 not found'
+```
+
+## Using readme generator tool on Bastion server
+
+Log into bastion server
+```
+# Get public IP address for bastion server
+$ terraform output
+ec2_bastion_private_ip = "10.88.8.888"
+ec2_bastion_public_ip = "88.888.888.888"
+
+# Log into bastion server
+$ ssh -i ~/.ssh/your-private-key.pem centos@88.888.888.888
+```
+
+Using docker command to access tool:
+```
+$ docker run --rm -v /home/centos/readmeFiles:/app/readmeFiles registry.gitlab.com/$GITLAB_PROJECT/production_tool:staging /app/yii readme/create --doi 100142 --outdir /app/readmeFiles
+```
+
+Use shell script to run readme tool:
+```
+$ ./createReadme.sh --doi 100142 --outdir /app/readmeFiles
+```
+
+In both cases, look in the readmeFiles directory for the readme file that has
+been created by the tool.
+
 ## Tests
 
 ### Unit test
@@ -66,9 +116,9 @@ dataset and author tables via a junction `dataset_authors` table:
 $ docker-compose run --rm tool ./vendor/bin/codecept run tests/unit
 ```
 
-There's also a unit test to check the DatasetService component class:
+There's also a unit test to check the ReadmeGenerator component class:
 ```
-$ docker-compose run --rm tool ./vendor/bin/codecept run --debug tests/unit/components/DatasetServiceTest.php
+$ docker-compose run --rm tool ./vendor/bin/codecept run --debug tests/unit/components/ReadmeGeneratorTest.php
 ```
 
 ### Functional test
