@@ -7,7 +7,7 @@ FilesMetadataConsoleBuildStaging:
     - $GITLAB_USER_LOGIN
   needs: ["Ci_FilesMetaDataConsoleTests"]
   environment:
-    name: "live"
+    name: "staging"
     url: $REMOTE_HOME_URL
   script:
     # Load Base image
