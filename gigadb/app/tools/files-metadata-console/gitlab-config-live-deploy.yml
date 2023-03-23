@@ -17,3 +17,7 @@ FilesMetaDataConsoleDeployLive:
     name: $GIGADB_ENV
   dependencies: []
   needs: [ "FilesMetadataConsoleBuildLive" ]
+  artifacts:
+    untracked: true
+    when: always
+    expire_in: 1 week

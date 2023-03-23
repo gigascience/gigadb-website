@@ -17,3 +17,7 @@ FilesMetaDataConsoleDeployStaging:
     name: $GIGADB_ENV
   dependencies: []
   needs: [ "FilesMetadataConsoleBuildStaging" ]
+  artifacts:
+    untracked: true
+    when: always
+    expire_in: 1 week
