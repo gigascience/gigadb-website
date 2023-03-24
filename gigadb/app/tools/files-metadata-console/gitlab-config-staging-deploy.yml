@@ -15,16 +15,8 @@ FilesMetaDataConsoleDeployStaging:
     - docker --tlsverify -H=$REMOTE_BASTION_DOCKER pull registry.gitlab.com/$CI_PROJECT_PATH/production-files-metadata-console:latest
   environment:
     name: $GIGADB_ENV
-  dependencies: []
   needs: [ "FilesMetadataConsoleBuildStaging" ]
   artifacts:
     untracked: true
-    paths:
-      - php-$PHP_VERSION-fpm-buster.tar
-      - php-$PHP_VERSION-cli-buster.tar
-      - php-8.2.3-cli-bullseye.tar
-      - alpine-3_14.tar
-      - nginx-$NGINX_VERSION-alpine.tar
-      - node-$NODE_VERSION-buster-slim.tar
     when: always
     expire_in: 1 week
