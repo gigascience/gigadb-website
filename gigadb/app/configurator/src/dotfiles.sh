@@ -11,18 +11,11 @@ function makeDotEnv () {
     cp  $mdeBaseDir/config-sources/env.example  $mdeBaseDir/.env
   else
       echo "Neither .env file or default example were present, generating one on the fly"
-      if [[ $(uname -o) == Darwin ]];then
-        currentEnv=dev
-        username=$(git config --get user.name | cut -d" " -f1 | tr '[:upper:]' '[:lower:]')
-        repoName="$username-gigadb-website"
-        ciProjectUrl="https://gitlab.com/api/v4/projects/gigascience/forks/$repoName/"
-        projectVariablesUrl="https://gitlab.com/api/v4/projects/gigascience%2Fforks%2F$repoName/variables"
-      else
-        currentEnv="$GIGADB_ENV"
-        repoName="$CI_PROJECT_TITLE"
-        ciProjectUrl="https://gitlab.com/api/v4/projects/$CI_PROJECT_PATH"
-        projectVariablesUrl="https://gitlab.com/api/v4/projects/gigascience%2Fforks%2F$repoName/variables"
-      fi
+      currentEnv=dev
+      username=$(git config --get user.name | cut -d" " -f1 | tr '[:upper:]' '[:lower:]')
+      repoName="$username-gigadb-website"
+      ciProjectUrl="https://gitlab.com/api/v4/projects/gigascience/forks/$repoName/"
+      projectVariablesUrl="https://gitlab.com/api/v4/projects/gigascience%2Fforks%2F$repoName/variables"
 
       echo "REPO_NAME=$repoName" > .env
       {
