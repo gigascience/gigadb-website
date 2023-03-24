@@ -5,7 +5,7 @@ FilesMetadataConsoleBuildStaging:
   stage: staging build
   tags:
     - $GITLAB_USER_LOGIN
-  needs: ["Ci_FilesMetaDataConsoleTests"]
+  needs: ["FilesMetaDataConsoleTestRun"]
   environment:
     name: "staging"
     url: $REMOTE_HOME_URL

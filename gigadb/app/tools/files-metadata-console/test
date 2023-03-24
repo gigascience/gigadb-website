@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+./vendor/bin/codecept run functional tests/functional
+
+cd ../../configurator
+bats tests
+cd ../tools/files-metadata-console

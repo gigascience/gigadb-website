@@ -1,4 +1,4 @@
-#!/usr/sbin/env bats
+#!/usr/bin/env bats
 
 source ./src/dotfiles.sh
 

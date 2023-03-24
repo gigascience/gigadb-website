@@ -1,6 +1,6 @@
-Ci_FilesMetaDataConsoleTests:
+FilesMetaDataConsoleTestRun:
   stage: test
-  needs: ["Ci_FilesMetaDataConsoleBuild"]
+  needs: ["FilesMetaDataConsoleTestBuild"]
   script:
     - env | grep "^HOME_URL" >> $APPLICATION/.env
     - env | grep "^GIGADB_" >> $APPLICATION/.secrets
@@ -39,7 +39,7 @@ Ci_FilesMetaDataConsoleTests:
     - ls -al vendor/bin/
     - docker network ls
     - docker-compose -f ./docker-compose.yml -f ./docker-compose.ci.yml run --rm files-metadata-console pwd
-    - docker-compose -f ./docker-compose.yml -f ./docker-compose.ci.yml run --rm files-metadata-console ./vendor/bin/codecept run functional
+    - ./test
   environment:
     name: dev
   artifacts:
