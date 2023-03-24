@@ -37,7 +37,7 @@ function makeDotEnv () {
 function makeDotSecrets () {
   mdsBaseDir=$1
 
-  if ! [ -s ./.secrets ];then
+  if ! [ -s "$mdsBaseDir/.secrets" ];then
       accessToken=${CI_BUILD_TOKEN:-$GITLAB_PRIVATE_TOKEN}
 
       if [ "$accessToken" == "replace-me" ];then
