@@ -23,7 +23,7 @@ services:
     environment:
       PHP_VERSION: ${PHP_VERSION}
       TIDEWAYS_APIKEY: ${TIDEWAYS_APIKEY}
-      TIDEWAYS_SERVICE: gigadb-website
+      TIDEWAYS_SERVICE: $CI_PROJECT_PATH
       TIDEWAYS_SAMPLERATE: 25
       TIDEWAYS_CONNECTION: tcp://tideways-daemon:9135
     build:
