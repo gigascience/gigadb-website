@@ -4,11 +4,11 @@
 function makeDotEnv () {
   mdeBaseDir=$1
 
-  if [ -f  $mdeBaseDir/.env ];then
+  if [ -f  "$mdeBaseDir/.env" ];then
       echo "An .env file is present"
-  elif [ -f  $mdeBaseDir/config-sources/env.example ];then
+  elif [ -f  "$mdeBaseDir/config-sources/env.example" ];then
     echo "An .env file wasn't present, creating a new one from the default example"
-    cp  $mdeBaseDir/config-sources/env.example  $mdeBaseDir/.env
+    cp "$mdeBaseDir/config-sources/env.example" "$mdeBaseDir/.env"
   else
       echo "Neither .env file or default example were present, generating one on the fly"
       currentEnv=dev
@@ -17,7 +17,7 @@ function makeDotEnv () {
       ciProjectUrl="https://gitlab.com/api/v4/projects/gigascience/forks/$repoName/"
       projectVariablesUrl="https://gitlab.com/api/v4/projects/gigascience%2Fforks%2F$repoName/variables"
 
-      echo "REPO_NAME=$repoName" > .env
+      echo "REPO_NAME=$repoName" > $mdeBaseDir/.env
       {
         echo "GITLAB_PRIVATE_TOKEN=replace-me"
         echo "GIGADB_ENV=$currentEnv"
@@ -26,7 +26,7 @@ function makeDotEnv () {
         echo 'GROUP_VARIABLES_URL="https://gitlab.com/api/v4/groups/gigascience/variables?per_page=100"'
         echo 'MISC_VARIABLES_URL="https://gitlab.com/api/v4/projects/gigascience%2Fcnhk-infra/variables"'
         echo 'FORK_VARIABLES_URL="https://gitlab.com/api/v4/groups/3501869/variables"'
-      } >> .env
+      } >> "$mdeBaseDir/.env"
 
   fi
   echo "Sourcing .env"
@@ -68,7 +68,7 @@ function makeDotSecrets () {
       curl -s --header "PRIVATE-TOKEN: $accessToken" "${MISC_VARIABLES_URL}?per_page=100" | jq --arg ENVIRONMENT $GIGADB_ENV -r '.[] | select(.environment_scope == "*" or .environment_scope == $ENVIRONMENT ) | select(.key | test("sftp_") ) | .key + "=" + .value' > "$mdsBaseDir/.misc_var"
 
       cat "$mdsBaseDir/.group_var" "$mdsBaseDir/.fork_var" "$mdsBaseDir/.project_var" "$mdsBaseDir/.misc_var" > "$mdsBaseDir/.secrets" && rm "$mdsBaseDir/.group_var" && rm "$mdsBaseDir/.fork_var" && rm "$mdsBaseDir/.project_var" && rm "$mdsBaseDir/.misc_var" && rm "$mdsBaseDir/.project_var_raw1" && rm "$mdsBaseDir/.project_var_raw2" && rm "$mdsBaseDir/.project_vars.json"
-      echo "# Some help about this file in ops/configuration/variables/secrets-sample" >> .secrets
+      echo "# Some help about this file in ops/configuration/variables/secrets-sample" >> "$mdsBaseDir/.secrets"
   fi
   echo "Sourcing secrets"
   source "$mdsBaseDir/.secrets"
