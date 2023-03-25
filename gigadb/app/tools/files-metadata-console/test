@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
-docker-compose -f ./docker-compose.yml run --rm files-metadata-console ./vendor/bin/codecept run functional
+docker-compose run --rm files-metadata-console ./vendor/bin/codecept run functional
 
-docker-compose -f ./docker-compose.yml run --rm bats
+docker-compose run --rm bats
