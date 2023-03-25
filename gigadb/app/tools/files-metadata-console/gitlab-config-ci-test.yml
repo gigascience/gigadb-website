@@ -1,6 +1,4 @@
 FilesMetaDataConsoleTestRun:
-  variables:
-    COMPOSE_FILE: ./docker-compose.yml:./docker-compose.ci.yml
   stage: test
   needs: ["FilesMetaDataConsoleTestBuild"]
   script:
@@ -35,8 +33,8 @@ FilesMetaDataConsoleTestRun:
     - cp .secrets gigadb/app/tools/files-metadata-console/
     - cp .env gigadb/app/tools/files-metadata-console/
     - cd gigadb/app/tools/files-metadata-console
-    - docker-compose run --rm configure
-    - docker-compose run --rm composer install
+    - docker-compose -f docker-compose.yml -f docker-compose.ci.yml run --rm configure
+    - docker-compose -f docker-compose.yml -f docker-compose.ci.yml run --rm composer install
     - ./test
   environment:
     name: dev
