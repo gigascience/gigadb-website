@@ -6,6 +6,8 @@ namespace app\controllers;
 
 use app\components\DatasetFilesUpdater;
 use app\components\FilesURLsFetcher;
+use GigaDB\models\Dataset;
+use GigaDB\models\File;
 use GigaDB\services\URLsService;
 use GuzzleHttp\Client;
 use yii\console\Controller;
@@ -31,7 +33,21 @@ final class CheckController extends Controller
     {
         $webClient = new Client([ 'allow_redirects' => false ]);
         $c = new FilesURLsFetcher(["doi" => $this->doi, "webClient" => $webClient]);
-        $report = $c->checkURLs();
+        $d = Dataset::find()->where(["identifier" => $this->doi])->one();
+        if (null === $d) {
+            throw new Exception("DOI does not exist");
+        }
+
+        $urls =  File::find()
+            ->select(["location"])
+            ->where(["dataset_id" => $d->id])
+            ->asArray(true)
+            ->all();
+        $values = function ($item) {
+            return $item["location"];
+        };
+        $flatURLs = array_map($values, $urls);
+        $report = $c->checkURLs($flatURLs);
         $this->stdout("| URL | Issue |" . PHP_EOL, Console::BOLD);
         foreach ($report as $url => $reason) {
             $this->stdout("| " . $url . " | ", Console::FG_GREEN);

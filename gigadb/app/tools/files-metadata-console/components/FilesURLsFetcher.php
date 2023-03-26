@@ -41,7 +41,7 @@ final class FilesURLsFetcher extends Component
      * @return array returns the list of urls with problems
      * @throws Exception|GuzzleException
      */
-    public function checkURLs(): array
+    public function checkURLs(array $urls): array
     {
         $detectsRedirectsAndDirectories = function ($response, $url) {
             if (301 === $response->getStatusCode() || str_ends_with($url, "/")) {
@@ -51,22 +51,9 @@ final class FilesURLsFetcher extends Component
             return null;
         };
 
-        $d = Dataset::find()->where(["identifier" => $this->doi])->one();
-        if (null === $d) {
-            throw new Exception("DOI does not exist");
-        }
 
-        $urls =  File::find()
-            ->select(["location"])
-            ->where(["dataset_id" => $d->id])
-            ->asArray(true)
-            ->all();
-        $values = function ($item) {
-            return $item["location"];
-        };
-        $flatURLs = array_map($values, $urls);
         $badUrls = [];
-        foreach ($flatURLs as $url) {
+        foreach ($urls as $url) {
             $parts = parse_url($url);
             $scheme = $parts['scheme'];
             if ("ftp" === $scheme) {
