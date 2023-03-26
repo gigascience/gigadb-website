@@ -35,4 +35,22 @@ class CheckValidURLsCest
         }
     }
 
+    public function tryHandleWrongDOI(\FunctionalTester $I): void {
+        $testWebClient = new Client([ 'allow_redirects' => false ]);
+        try {
+            $component = new FilesURLsFetcher(["doi" => "100000", "webClient" => $testWebClient]);
+            $report = $component->verifyURLs();
+        } catch (\yii\console\Exception $e) {
+            $I->assertEquals("DOI does not exist",$e->getMessage());
+        }
+    }
+
+    public function tryNoIssueToReport(\FunctionalTester $I): void {
+        $testWebClient = new Client([ 'allow_redirects' => false ]);
+        $component = new FilesURLsFetcher(["doi" => "100142", "webClient" => $testWebClient]);
+        $report = $component->verifyURLs();
+        $I->assertEmpty($report);
+
+    }
+
 }
