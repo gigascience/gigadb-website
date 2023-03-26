@@ -56,14 +56,6 @@ final class URLsService extends Component
      */
     public function checkURLs(ClientInterface $webClient): array
     {
-        $detectsRedirectsAndDirectories = function ($response, $url) {
-            if (301 === $response->getStatusCode() || str_ends_with($url, "/")) {
-                return -1;
-            }
-
-            return null;
-        };
-
 
         $badUrls = [];
         foreach ($this->urls as $url) {
@@ -90,11 +82,8 @@ final class URLsService extends Component
             } catch (ServerException $e) {
                 $badUrls[$url] = "Resource cannot be downloaded, remote endpoint crashed (5xx)";
                 continue;
-            } catch (TransferException $e) {
-                $badUrls[$url] = "Request time out, because resource could not be downloaded under " . self::TIMEOUT . " seconds";
-                continue;
             } catch (ConnectException $e) {
-                $badUrls[$url] = "Network error";
+                $badUrls[$url] = "Request time out, because of a network error ";
                 continue;
             }
         }
