@@ -23,9 +23,9 @@ class CheckValidURLsCest
             "Wrong scheme (ftp://)",
             "URL appears to be a directory (/)",
         ];
-        $webClient = new Client([ 'allow_redirects' => false ]);
-        $c = new FilesURLsFetcher(["doi" => "100006", "webClient" => $webClient]);
-        $report = $c->checkURLs(self::TEST_URLS);
+        $testWebClient = new Client([ 'allow_redirects' => false ]);
+        $u = new URLsService(["urls" => self::TEST_URLS]);
+        $report = $u->checkURLs($testWebClient);
         foreach ($expectedIssues as $index => $expectedIssue) {
             $I->assertEquals(
                 $expectedIssue,

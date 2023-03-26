@@ -33,21 +33,8 @@ final class CheckController extends Controller
     {
         $webClient = new Client([ 'allow_redirects' => false ]);
         $c = new FilesURLsFetcher(["doi" => $this->doi, "webClient" => $webClient]);
-        $d = Dataset::find()->where(["identifier" => $this->doi])->one();
-        if (null === $d) {
-            throw new Exception("DOI does not exist");
-        }
 
-        $urls =  File::find()
-            ->select(["location"])
-            ->where(["dataset_id" => $d->id])
-            ->asArray(true)
-            ->all();
-        $values = function ($item) {
-            return $item["location"];
-        };
-        $flatURLs = array_map($values, $urls);
-        $report = $c->checkURLs($flatURLs);
+        $report = $c->verifyURLs();
         $this->stdout("| URL | Issue |" . PHP_EOL, Console::BOLD);
         foreach ($report as $url => $reason) {
             $this->stdout("| " . $url . " | ", Console::FG_GREEN);
