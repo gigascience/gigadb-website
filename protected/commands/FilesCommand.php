@@ -102,31 +102,5 @@ class FilesCommand extends CConsoleCommand
         throw new Exception("No $doi.md5 file could be found for dataset DOI $doi");
     }
 
-    /**
-     *
-     * Query databse for files url associated to dataset passed as parameter and check that they resolve ok
-     * otherwise output the url
-     *
-     * @param $doi string identifier of the dataset for which to check url
-     * @return int
-     * @throws CException
-     */
-    public function actionCheckUrls($doi): int
-    {
-
-        try {
-            $dfs = new DatasetFileService($doi);
-            $dfs->checkFilesUrl();
-
-        } catch (CDbException $e) {
-            Yii::log($e->getMessage(),"error");
-            return ExitCode::IOERR;
-        }
-
-        return ExitCode::OK;
-
-    }
-
-
 
 }
