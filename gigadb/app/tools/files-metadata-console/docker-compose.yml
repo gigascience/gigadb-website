@@ -32,13 +32,6 @@ services:
       - ../../configurator:/gigadb/app/configurator:ro
     command: /gigadb/app/tools/files-metadata-console/configure
 
-
-  bats:
-    image: bats/bats:latest
-    volumes:
-      - ../../configurator:/code
-    command: tests
-
 networks:
   proxy-db-tier:  # represents db-tier network in ops/docker-compose.yml
     name: deployment_db-tier
