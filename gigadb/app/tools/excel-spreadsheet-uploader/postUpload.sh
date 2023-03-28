@@ -13,6 +13,10 @@ else
   outputDir="/tmp"
 fi
 
+if [ -z "$DOI" ];then
+  echo -e "Usage: ./postUpload.sh <DOI>\n"
+  exit 1;
+fi
 
 updateFileSizeStartMessage="\n* About to update files' size for $DOI"
 updateFileSizeEndMessage="\nDone with updating files' size for $DOI. Nb of successful changes saved in file: $outputDir/updating-file-size-$DOI.txt"
