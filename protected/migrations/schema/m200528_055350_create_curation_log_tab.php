@@ -8,7 +8,7 @@ class m200528_055350_create_curation_log_tab extends CDbMigration
         $this->execute("CREATE TABLE IF NOT EXISTS curation_log (
             id integer NOT NULL,
             dataset_id integer NOT NULL,
-            creation_date date,
+            creation_date timestamp without time zone,
             created_by character varying(100),
             last_modified_date date,
             last_modified_by character varying(100),

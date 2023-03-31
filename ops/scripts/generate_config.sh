@@ -123,7 +123,7 @@ if [[ $GIGADB_ENV != "dev" && $GIGADB_ENV != "CI" ]];then
 else
   export YII_TRACE_LEVEL=${YII_TRACE_LEVEL:-"3"}
   export YII_DEBUG=${YII_DEBUG:-"true"}
-  export DISABLE_CACHE=${DISABLE_CACHE:-"true"}
+  export DISABLE_CACHE=${DISABLE_CACHE:-"false"}
 fi;
 SOURCE=${APP_SOURCE}/ops/configuration/yii-conf/index.${GIGADB_ENV}.php.dist
 TARGET=${APP_SOURCE}/index.php

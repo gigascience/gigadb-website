@@ -2,6 +2,8 @@
 
 namespace Helper;
 
+use Yii;
+
 // here you can define custom actions
 // all public methods declared in helper class will be available in $I
 
@@ -32,5 +34,29 @@ class Functional extends \Codeception\Module
         } catch (\Exception $e) {
             $this->debug("Couldn't delete record " . json_encode($criteria) . " from $table");
         }
+    }
+
+    /**
+     * Method to get the query results from the invalidation query in the main config file
+     *
+     * @param $dataset_id
+     * @return array
+     */
+    public function getLatestCreateUsingQueryFromMainConfigFile($dataset_id): array
+    {
+        $mainConfig = require("/var/www/protected/config/main.php");
+        $invalidationQuery = preg_replace("/@id/", $dataset_id, $mainConfig['params']['cacheConfig']['DatasetComponents']['invalidationQuery']);
+        if ($invalidationQuery !== null) {
+            try {
+                $invalidationQuery = preg_replace("/@id/", $dataset_id, $invalidationQuery);
+                return $this->getModule('Db')->_getDriver()->executeQuery($invalidationQuery, [])->fetchAll();
+            } catch (\Exception $e) {
+                $this->debug("Couldn't execute invalidation query: " . $e->getMessage());
+                return [];
+            }
+        } else {
+            $this->debug("Invalidation query not found");
+        }
+        return [];
     }
 }
