@@ -3,6 +3,7 @@
 # source .env if existing, otherwise create a new from default example then source it
 function makeDotEnv () {
   mdeBaseDir=$1
+  repoName="replace-me"
 
   if [ -f  "$mdeBaseDir/.env" ];then
       echo "An .env file is present"
@@ -12,10 +13,10 @@ function makeDotEnv () {
   else
       echo "Neither .env file or default example were present, generating one on the fly"
       currentEnv=dev
-      username=$(git config --get user.name | cut -d" " -f1 | tr '[:upper:]' '[:lower:]')
-      repoName="$username-gigadb-website"
-      ciProjectUrl="https://gitlab.com/api/v4/projects/gigascience/forks/$repoName/"
-      projectVariablesUrl="https://gitlab.com/api/v4/projects/gigascience%2Fforks%2F$repoName/variables"
+      # shellcheck disable=SC2016
+      ciProjectUrl='https://gitlab.com/api/v4/projects/gigascience/forks/$REPO_NAME/'
+      # shellcheck disable=SC2016
+      projectVariablesUrl='https://gitlab.com/api/v4/projects/gigascience%2Fforks%2F$REPO_NAME/variables'
 
       echo "REPO_NAME=$repoName" > $mdeBaseDir/.env
       {
@@ -36,12 +37,23 @@ function makeDotEnv () {
 # generate, if not existing yet, .secrets file populated with key and values from Gitlab variables. Then source .secrets.
 function makeDotSecrets () {
   mdsBaseDir=$1
+  mdsError=false
 
   if ! [ -s "$mdsBaseDir/.secrets" ];then
       accessToken=${CI_BUILD_TOKEN:-$GITLAB_PRIVATE_TOKEN}
 
+      if [ "$REPO_NAME" == "replace-me" ];then
+        echo -e "\033[31m ! Replace the value of REPO_NAME in .env, then try again\033[0m"
+        mdsError=true
+      fi
+
       if [ "$accessToken" == "replace-me" ];then
         echo -e "\033[31m ! Replace the value of GITLAB_PRIVATE_TOKEN in .env, then try again\033[0m"
+        mdsError=true
+      fi
+
+      if [ $mdsError == true ];then
+        echo "Exiting."
         return
       fi
 
