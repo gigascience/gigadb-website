@@ -6,11 +6,11 @@
       "Effect": "Allow",
       "Action": "iam:CreateUser",
       "Resource": [
-        "arn:aws:iam::${aws:accountid}:user/GIGA-D-*"
+        "arn:aws:iam::${aws:accountid}:user/author-GIGA-D-*"
       ],
       "Condition": {
         "StringLike": {
-          "aws:username": "GIGA-D-??-?????"
+          "aws:username": "author-GIGA-D-??-?????"
         }
       }
     }
