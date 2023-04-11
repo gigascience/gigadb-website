@@ -1,0 +1,22 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AllowCreateGigabyteUser",
+      "Effect": "Allow",
+      "Action": "iam:CreateUser",
+      "Resource": [
+        "arn:aws:iam::${aws:accountid}:user/DRR-*/*",
+        "arn:aws:iam::${aws:accountid}:user/TRR-*/*"
+      ],
+      "Condition": {
+        "StringLike": {
+          "aws:username": [
+            "DRR-??????-??",
+            "TRR-??????-??"
+          ]
+        }
+      }
+    }
+  ]
+}

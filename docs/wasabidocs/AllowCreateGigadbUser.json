@@ -1,0 +1,18 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AllowCreateGigadbUser",
+      "Effect": "Allow",
+      "Action": "iam:CreateUser",
+      "Resource": [
+        "arn:aws:iam::${aws:accountid}:user/GIGA-D-*"
+      ],
+      "Condition": {
+        "StringLike": {
+          "aws:username": "GIGA-D-??-?????"
+        }
+      }
+    }
+  ]
+}
