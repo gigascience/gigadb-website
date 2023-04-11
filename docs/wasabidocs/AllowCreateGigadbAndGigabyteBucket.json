@@ -2,18 +2,18 @@
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Sid": "CreateGigadbBucket",
+      "Sid": "CreateBucketForGigadbUser",
       "Effect": "Allow",
       "Action": "s3:CreateBucket",
       "Resource": "arn:aws:s3:::bucket-GIGA-D-??-?????",
       "Condition": {
         "StringLike": {
-          "s3:BucketName": "bucket-GIGA-D-??-?????"
+          "s3:prefix": "bucket-GIGA-D-??-?????"
         }
       }
     },
     {
-      "Sid": "CreateGigabyteBucket",
+      "Sid": "CreateBucketGigabyteUser",
       "Effect": "Allow",
       "Action": "s3:CreateBucket",
       "Resource": [
@@ -22,7 +22,7 @@
       ],
       "Condition": {
         "StringLike": {
-          "s3:BucketName": [
+          "s3:prefix": [
             "bucket-DRR-??????-??",
             "bucket-TRR-??????-??"
           ]
