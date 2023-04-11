@@ -14,7 +14,8 @@ teardown () {
     [ "$output" = "Sourcing secrets" ]
 }
 
-# bats test_tags=TODO
-@test "can generate .secret" {
-    skip
+@test "can generate .secrets" {
+    [ ! -f tests/.secrets ]
+    run makeDotSecrets tests
+    [ -s tests/.secrets ]
 }
