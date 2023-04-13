@@ -56,11 +56,11 @@ else
 
   cd gigadb/app/tools/files-metadata-console
   echo -e "$checkValidUrlsStartMessage"
-  ./yii check/valid-urls --doi="$DOI" | tee "$outputDir/invalid-urls-$DOI.txt"
+  docker-compose run --rm files-metadata-console ./yii check/valid-urls --doi="$DOI" | tee "$outputDir/invalid-urls-$DOI.txt"
   echo -e "$checkValidUrlsEndMessage"
 
   echo -e "$updateFileSizeStartMessage"
-  ./yii update/file-size --doi="$DOI" | tee "$outputDir/updating-file-size-$DOI.txt"
+  docker-compose run --rm files-metadata-console ./yii update/file-size --doi="$DOI" | tee "$outputDir/updating-file-size-$DOI.txt"
   echo -e "$updateFileSizeEndMessage"
 
   echo -e "$createReadMeFileStartMessage"
