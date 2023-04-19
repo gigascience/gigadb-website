@@ -153,4 +153,49 @@ bucket or directory using dropdown menus.
 
 The setup of the 100 plus user drop boxes can be [automated](https://wasabi-support.zendesk.com/hc/en-us/articles/360057225472).
 
-## 
+## Copy files from author bucket to live directory in gigadb-datasets bucket
+
+Rclone can be used to transfer files from an author's drop box to the live
+storage area in the `gigadb-datasets` bucket.
+
+### Install Rclone
+
+See https://rclone.org/install/ for instructions to install rclone command line
+tool.
+
+### Create rclone configuration to access Wasabi buckets
+
+You should already have a Wasabi access key and secret access key for your user
+account in Wasabi. With the [config](https://rclone.org/commands/rclone_config/)
+tool in rclone to create a configuration to access the GigaDB buckets in Wasabi:
+```
+$ rclone config
+```
+
+You will be asked to provide answers to a series of questions which will result
+in a configuration similar to this:
+```
+[wasabi]
+type = s3
+provider = Wasabi
+access_key_id = A23KJH9DUMMYKJHKAAAAA
+secret_access_key = dlakgalkkgj344DUMMYdfakjaklg
+endpoint = s3.ap-northeast-1.wasabisys.com
+acl = public-read
+```
+
+### Copy procedure
+
+Using the Wasabi web console, create a new directory named by the DOI number for
+the dataset in the live section of the `gigadb-datasets` bucket.
+
+> Currently, it is [not possible](https://forum.rclone.org/t/on-s3-rclone-should-create-persistent-empty-folders/16228/2)
+> to create the new directory in Wasabi using rclone.
+
+Use [rclone copy](https://rclone.org/commands/rclone_copy/) to copy author's 
+dataset files into the newly created directory. For example:
+```
+$ $ rclone copy wasabi:bucket-giga-d-23-00123/ wasabi:gigadb-datasets/live/pub/10.5524/102001_103000/102304/
+```
+
+> Where `102304` is the new DOI directory for the dataset.
