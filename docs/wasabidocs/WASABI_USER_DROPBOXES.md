@@ -1,61 +1,66 @@
 # Wasabi User Drop Boxes
 
 Wasabi provides some [documentation](https://wasabi-support.zendesk.com/hc/en-us/articles/360000016712-How-do-I-set-up-Wasabi-for-user-access-separation-)
-for how to manage submitter users and their dataset file uploads into separate 
-buckets or separate directories within a bucket.
+for how to manage authors and their dataset file uploads into separate 
+buckets.
 
 ## Separate buckets for each user
 
-In this scenario, each submitter has access to their own bucket but not any 
-other buckets:
-* user1 has access to `gigadb-bucket-user1` & user2 has access to
-  `gigadb-bucket-user2`
-* user1 has no access to `gigadb-bucket-user2` and user2 has no access to 
-  `gigadb-bucket-user1`
+In this scenario, each author has a Wasabi user account which is able to access 
+their own bucket but not any other buckets:
+* User `giga-d-23-00123` has access to the `bucket-giga-d-23-00123` bucket and 
+  user `giga-d-23-00288` has access to the `bucket-giga-d-23-00288` bucket.
+* User `giga-d-23-00123` has no access to the `bucket-giga-d-23-00288` bucket 
+  and user `giga-d-23-00288` has no access to `bucket-giga-d-23-00123`.
 
->It is not a good idea to name a bucket `user1`, `user2`, etc since it is likely
->that these bucket names already exist in an availability region and so cannot 
->be used by us.
+Bucket names are not allowed to contain uppercase letters so cannot be named
+`bucket-GIGA-D-23-00123` and instead must be `giga-d-23-00123`. Since we are 
+using dynamic policies for bucket security involving the interpolation of 
+`${aws:username}`, authors are required to have username `giga-d-23-00123`.
 
-* Create a bucket called: `gigadb-bucket-user1`
-* Create a dynamic IAM policy for user1 called `AllowUsersReadWriteDenyDeleteOwnBucket`:
+* Create a bucket called: `bucket-giga-d-23-00123`
+* Create a dynamic IAM policy called `AllowReadWriteOnOwnBucket` to be applied
+  the `Curators` group:
 ```
 {
   "Version": "2012-10-17",
   "Statement": [
     {
       "Effect": "Allow",
-      "Action": "s3:ListAllMyBuckets",
-      "Resource": "arn:aws:s3:::*"
-    },
-    {
-      "Effect": "Allow",
       "Action": "s3:*",
       "Resource": [
-        "arn:aws:s3:::gigadb-bucket-${aws:username}",
-        "arn:aws:s3:::gigadb-bucket-${aws:username}/*"
+        "arn:aws:s3:::bucket-${aws:username}",
+        "arn:aws:s3:::bucket-${aws:username}/*"
       ]
     },
+  ]
+}
+```
+Create a dynamic IAM policy for user1 called `DenyDeleteOwnBucket` to be applied
+to the `Curators` group::
+```
+{
+  "Version": "2012-10-17",
+  "Statement": [
     {
       "Effect": "Deny",
       "Action": "s3:DeleteBucket",
       "Resource": [
-        "arn:aws:s3:::gigadb-bucket-${aws:username}",
-        "arn:aws:s3:::gigadb-bucket-${aws:username}/*"
+        "arn:aws:s3:::bucket-${aws:username}",
+        "arn:aws:s3:::bucket-${aws:username}/*"
       ]
     }
   ]
 }
 ```
 
->To be able to use the Wasabi Explorer, the sub-user must have `ListAllMyBuckets` 
->permission. This will allow the sub-user to list all the buckets when logged 
->into the console, but can only access and see contents from the bucket that 
->sub-user has permission to.
-
+To be able to use the Wasabi Explorer and other tools, the sub-user must have 
+`ListAllMyBuckets` permission. This will allow the sub-user to list all the 
+buckets when logged into the console, but can only access and see contents from 
+the bucket that sub-user has permission to.
 
 For extra safety, we can have an extra explicit deny policy called 
-`DenyUsersOtherBuckets` to stop users from accessing other buckets:
+`DenyAccessToOtherBuckets` to stop users from accessing other buckets:
 ```
 {
   "Version": "2012-10-17",
@@ -68,25 +73,26 @@ For extra safety, we can have an extra explicit deny policy called
         "s3:ListBucketMultipartUploads"
       ],
       "NotResource": [
-        "arn:aws:s3:::gigadb-bucket-${aws:username}/*",
-        "arn:aws:s3:::gigadb-bucket-${aws:username}"
+        "arn:aws:s3:::bucket-${aws:username}/*",
+        "arn:aws:s3:::bucket-${aws:username}"
       ]
     },
     {
       "Effect": "Deny",
       "Action": "s3:*",
       "NotResource": [
-        "arn:aws:s3:::gigadb-bucket-${aws:username}/*",
-        "arn:aws:s3:::gigadb-bucket-${aws:username}"
+        "arn:aws:s3:::bucket-${aws:username}/*",
+        "arn:aws:s3:::bucket-${aws:username}"
       ]
     }
   ]
 }
 ```
 
-Now, create a new user account called `user1`. Select the Programmatic (create 
-API key) option so an API key set is created for future use with this user's 
-storage app. Also provide `user1` with console access if needed.
+Now, create a new user account called `giga-d-23-00123`. Select the Programmatic
+(create API key) option so an API key set is created for future use with this 
+user's storage app. Also provide `giga-d-23-00123` user with console access if 
+needed.
 
 ## Separate directories for each user within one bucket
 
@@ -146,3 +152,5 @@ bucket or directory using dropdown menus.
 ## Automate infrastructure for private user drop boxes
 
 The setup of the 100 plus user drop boxes can be [automated](https://wasabi-support.zendesk.com/hc/en-us/articles/360057225472).
+
+## 
