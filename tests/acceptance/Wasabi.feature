@@ -7,7 +7,8 @@ Feature:
   Scenario: Group Developers can see list of buckets in console
     Given I configure rclone with a "Developer" account
     When I run the command to list buckets
-    Then I should see the list of buckets
+    Then I should see the bucket "gigadb-datasets"
+    And I should see the bucket "test-gigadb-datasets"
 
   @ok @wasabi @storage @AllowReadWriteContentOnDev
   Scenario: Group Developers can read data in dev environment
@@ -180,4 +181,5 @@ Feature:
   Scenario: Group Curators can see list of buckets in console
     Given I configure rclone with a "Curator" account
     When I run the command to list buckets
-    Then I should see the list of buckets
+    Then I should see the bucket "gigadb-datasets"
+    And I should see the bucket "test-gigadb-datasets"

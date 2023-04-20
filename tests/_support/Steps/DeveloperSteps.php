@@ -80,13 +80,12 @@ class DeveloperSteps extends \Codeception\Actor
     }
 
     /**
-     * @Then I should see the list of buckets
+     * @Then I should see the bucket :bucket
      */
-    public function iShouldSeeBuckets()
+    public function iShouldSeeBuckets($bucket)
     {
         $output = shell_exec("rclone --config=/project/tests/_output/developer.conf lsd wasabiTest:");
-        $this->I->assertTrue(str_contains($output, " -1 gigadb-datasets"));
-        $this->I->assertTrue(str_contains($output, " -1 test-gigadb-datasets"));
+        $this->I->assertTrue(str_contains($output, " -1 " . $bucket));
     }
 
     /**
