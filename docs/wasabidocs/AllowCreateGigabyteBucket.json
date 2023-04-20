@@ -1,0 +1,14 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CreateBucketForGigabyteUser",
+      "Effect": "Allow",
+      "Action": "s3:CreateBucket",
+      "Resource": [
+        "arn:aws:s3:::bucket-DRR-??????-??",
+        "arn:aws:s3:::bucket-TRR-??????-??"
+      ]
+    }
+  ]
+}
