@@ -195,7 +195,7 @@ the dataset in the live section of the `gigadb-datasets` bucket.
 Use [rclone copy](https://rclone.org/commands/rclone_copy/) to copy author's 
 dataset files into the newly created directory. For example:
 ```
-$ $ rclone copy wasabi:bucket-giga-d-23-00123/ wasabi:gigadb-datasets/live/pub/10.5524/102001_103000/102304/
+$ rclone copy wasabi:bucket-giga-d-23-00123/ wasabi:gigadb-datasets/live/pub/10.5524/102001_103000/102304/
 ```
 
 > Where `102304` is the new DOI directory for the dataset.
