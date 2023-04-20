@@ -71,6 +71,15 @@ class DeveloperSteps extends \Codeception\Actor
     }
 
     /**
+     * @When I run the command to create bucket :bucket
+     */
+    public function iRunTheCommandToCreateBucket($bucket)
+    {
+        system("rclone --config=/project/tests/_output/developer.conf mkdir wasabiTest:$bucket", $status);
+        $this->I->assertEquals(self::EXIT_CODE_OK, $status);
+    }
+
+    /**
      * @When I run the command to list buckets
      */
     public function iRunTheCommandToListBuckets()

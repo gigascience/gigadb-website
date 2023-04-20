@@ -183,3 +183,18 @@ Feature:
     When I run the command to list buckets
     Then I should see the bucket "gigadb-datasets"
     And I should see the bucket "test-gigadb-datasets"
+
+  @ok @wasabi @storage @AllowCreateGigadbBucket
+  Scenario: Group Curators can create bucket for gigadb user
+    Given I configure rclone with a "Curator" account
+    When I run the command to create bucket "bucket-giga-d-23-12345"
+    Then I should see the bucket "bucket-giga-d-23-12345"
+    
+  @ok @wasabi @storage @AllowCreateGigabyteBucket
+  Scenario: Group Curators can create bucket for gigabyte user
+    Given I configure rclone with a "Curator" account
+    When I run the command to create bucket "bucket-drr-123456-12"
+    And I run the command to create bucket "bucket-trr-654321-67"
+    Then I should see the bucket "bucket-drr-123456-12"
+    And I should see the bucket "bucket-trr-654321-67"
+    
