@@ -75,8 +75,7 @@ class DeveloperSteps extends \Codeception\Actor
      */
     public function iRunTheCommandToCreateBucket($bucket)
     {
-        system("rclone --config=/project/tests/_output/developer.conf mkdir wasabiTest:$bucket", $status);
-        $this->I->assertEquals(self::EXIT_CODE_OK, $status);
+        shell_exec("rclone --config=/project/tests/_output/developer.conf mkdir wasabiTest:$bucket");
     }
 
     /**
@@ -91,10 +90,19 @@ class DeveloperSteps extends \Codeception\Actor
     /**
      * @Then I should see the bucket :bucket
      */
-    public function iShouldSeeBuckets($bucket)
+    public function iShouldSeeTheBuckets($bucket)
     {
         $output = shell_exec("rclone --config=/project/tests/_output/developer.conf lsd wasabiTest:");
         $this->I->assertTrue(str_contains($output, " -1 " . $bucket));
+    }
+
+    /**
+     * @Then I should not see the bucket :bucket
+     */
+    public function iShouldNotSeeTheBucket($bucket)
+    {
+        $output = shell_exec("rclone --config=/project/tests/_output/developer.conf lsd wasabiTest:");
+        $this->I->assertFalse(str_contains($output, " -1 " . $bucket));
     }
 
     /**
