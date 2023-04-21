@@ -9,6 +9,15 @@
         "arn:aws:s3:::bucket-drr-??????-??",
         "arn:aws:s3:::bucket-trr-??????-??"
       ]
+    },
+    {
+      "Sid": "NotAllowDeleteBucket",
+      "Effect": "Deny",
+      "Action": "s3:DeleteBucket",
+      "Resource": [
+        "arn:aws:s3:::bucket-drr-??????-??",
+        "arn:aws:s3:::bucket-trr-??????-??"
+      ]
     }
   ]
 }

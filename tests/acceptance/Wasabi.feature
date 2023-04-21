@@ -189,7 +189,13 @@ Feature:
     Given I configure rclone with a "Curator" account
     When I run the command to create bucket "bucket-giga-d-23-12345"
     Then I should see the bucket "bucket-giga-d-23-12345"
-    
+
+  @ok @wasabi @storage @NotAllowDeleteGigadbBucket
+  Scenario: Group Curators cannot delete bucket for gigadb user
+    Given I configure rclone with a "Curator" account
+    When I should see the bucket "bucket-giga-d-23-12345"
+    Then I cannot delete the bucket "bucket-giga-d-23-12345"
+
   @ok @wasabi @storage @AllowCreateGigabyteBucket
   Scenario: Group Curators can create bucket for gigabyte user
     Given I configure rclone with a "Curator" account
@@ -197,4 +203,13 @@ Feature:
     And I run the command to create bucket "bucket-trr-654321-67"
     Then I should see the bucket "bucket-drr-123456-12"
     And I should see the bucket "bucket-trr-654321-67"
-    
+
+  @ok @wasabi @storage @NotAllowDeleteGigabyteBucket
+  Scenario: Group Curators cannot delete bucket for gigabyte user
+    Given I configure rclone with a "Curator" account
+    When I should see the bucket "bucket-drr-123456-12"
+    And I should see the bucket "bucket-trr-654321-67"
+    Then I cannot delete the bucket "bucket-drr-123456-12"
+    And I cannot delete the bucket "bucket-trr-654321-67"
+
+

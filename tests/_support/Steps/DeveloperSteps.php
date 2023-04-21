@@ -98,6 +98,15 @@ class DeveloperSteps extends \Codeception\Actor
     }
 
     /**
+     * @Then I cannot delete the bucket :bucket
+     */
+    public function iRunTheCommandToDeleteBucket($bucket)
+    {
+        system("rclone --config=/project/tests/_output/developer.conf purge wasabiTest:$bucket", $status);
+        $this->I->assertNotEquals(self::EXIT_CODE_OK, $status);
+    }
+
+    /**
      * @When I run the command to download file :file from the :env environment
      */
     public function iRunTheCommandToDownloadFileFromTheEnvironment($file, $env)
