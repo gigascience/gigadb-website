@@ -1,7 +1,7 @@
 FROM php:7.4-cli-buster
 
 # Always run apt update when start and after add new source list, then clean up at end.
-RUN apt-get update -yqq && \
+RUN apt-get update -yq && \
     apt-get install -y apt-utils && \
     pecl channel-update pecl.php.net && \
     apt-get clean
@@ -12,6 +12,13 @@ RUN apt-get update -yq && \
         libzip-dev \
         libpq-dev && \
         apt-get clean 
+
+# Dependencies for AWS SDK PHP package
+RUN apt-get update -yq && \
+    apt-get install -y --no-install-recommends \
+        curl && \
+        apt-get clean
+RUN docker-php-ext-install xml
 
 # Install extensions for the postgresql and PHP integration
 #RUN docker-php-ext-install pdo_pgsql
