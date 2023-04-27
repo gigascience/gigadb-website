@@ -1,5 +1,8 @@
 FROM php:7.4-cli-buster
 
+# To silence debconf messages
+ENV DEBIAN_FRONTEND noninteractive
+
 # Always run apt update when start and after add new source list, then clean up at end.
 RUN apt-get update -yq && \
     apt-get install -y apt-utils && \
@@ -16,7 +19,10 @@ RUN apt-get update -yq && \
 # Dependencies for AWS SDK PHP package
 RUN apt-get update -yq && \
     apt-get install -y --no-install-recommends \
-        curl && \
+        dialog \
+        apt-utils \
+        curl \
+        libxml2-dev && \
         apt-get clean
 RUN docker-php-ext-install xml
 
