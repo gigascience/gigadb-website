@@ -1,0 +1,18 @@
+<?php
+
+return [
+    'wasabi' => [
+        "profile" => "wasabi",
+        "bucket_endpoint" => "https://s3.ap-northeast-1.wasabisys.com",
+        "bucket_region" => "ap-northeast-1",
+        "iam_endpoint" => "https://iam.wasabisys.com/",
+        "iam_region" => "us-east-1",
+        "version" => "latest",
+        "use_path_style_endpoint" => "true",
+        "credentials" => [
+            "key" => "<insert-access-key>",
+            "secret" => "<insert-secret-key>",
+        ],
+    ],
+];
+
