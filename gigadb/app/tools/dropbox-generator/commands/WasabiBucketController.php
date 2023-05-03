@@ -31,7 +31,7 @@ class WasabiBucketController extends Controller
      *
      * @var string $bucket
      */
-    public $bucket = '';
+    public $bucketName = '';
 
     /**
      * Path to file to be read
@@ -49,8 +49,8 @@ class WasabiBucketController extends Controller
     public function options($actionID): array
     {
         return [
-            'bucket',
-            'filePath',
+            'bucketName',
+//            'filePath',
         ];
     }
 
@@ -62,12 +62,41 @@ class WasabiBucketController extends Controller
                 'key' => Yii::$app->params['wasabi']['key'],
                 'secret' => Yii::$app->params['wasabi']['secret']
             ],
-            'endpoint' => Yii::$app->params['wasabi']['endpoint'],
-            'region' => Yii::$app->params['wasabi']['region'],
+            'endpoint' => Yii::$app->params['wasabi']['bucket_endpoint'],
+            'region' => Yii::$app->params['wasabi']['bucket_region'],
             'version' => 'latest',
             'use_path_style_endpoint' => true,
             // 'debug'   => true
         );
+    }
+
+    /**
+     * Create new bucket
+     * @return int Exit code
+     */
+    public function actionCreate()
+    {
+        $optBucketName = $this->bucketName;
+
+        // Return usage unless mandatory options are passed.
+        if ($optBucketName === '') {
+            $this->stdout(
+                "\nUsage:\n\t./yii wasabi-bucket/create --bucketName theBucketName" . PHP_EOL
+            );
+            return ExitCode::USAGE;
+        }
+
+        //Establish connection to wasabi
+        $s3Client = new S3Client($this->credentials);
+        try {
+            $result = $s3Client->createBucket([
+                'Bucket' => $optBucketName,
+            ]);
+        } catch (S3Exception $e) {
+            echo $e->getMessage() . PHP_EOL;
+        }
+
+        return ExitCode::OK;
     }
 
     /**
@@ -76,24 +105,23 @@ class WasabiBucketController extends Controller
      */
     public function actionRead()
     {
-        $optBucket   = $this->bucket;
-        $optFilePath = $this->filePath;
+        $optBucketName = $this->bucketName;
+        $optFilePath   = $this->filePath;
 
         // Return usage unless mandatory options are passed.
-        if ($optBucket === '') {
+        if ($optBucketName === '') {
             $this->stdout(
-                "\nUsage:\n\t./yii wasabi/read --bucket bucket-name --filePath path/to/file" . PHP_EOL
+                "\nUsage:\n\t./yii wasabi/read --bucketName theBucketName --filePath path/to/file" . PHP_EOL
             );
             return ExitCode::USAGE;
         }
 
         //Establish connection to wasabi via access and secret keys
-        $s3 = new S3Client($this->credentials);
-
+        $s3Client = new S3Client($this->credentials);
         try {
             //Read object
-            $result = $s3->getObject([
-                'Bucket' => $optBucket,
+            $result = $s3Client->getObject([
+                'Bucket' => $optBucketName,
                 'Key' => $optFilePath,
             ]);
 

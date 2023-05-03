@@ -13,12 +13,17 @@ $ docker-compose run --rm tool composer update
 
 # Run command to read file in Wasabi bucket
 ```
-$ docker-compose run --rm tool /app/yii wasabi/read --bucket dbgiga-datasets --filePath "live/pub/10.5524/102001_103000/102304/bar.txt"
+$ docker-compose run --rm tool /app/yii wasabi-bucket/read --bucket dbgiga-datasets --filePath "live/pub/10.5524/102001_103000/102304/bar.txt"
 ```
 
 # Run command to create new user account
 ```
-$ docker-compose run --rm tool /app/yii wasabi/creategigadbuser --manuscriptId giga-d-23-00288
+$ docker-compose run --rm tool /app/yii wasabi-user/creategigadbuser --manuscriptId giga-d-23-00288
+```
+
+# Run command to create new bucket
+```
+$ docker-compose run --rm tool /app/yii wasabi-bucket/create --bucketName bucket-giga-d-23-00288
 ```
 
 ### Functional tests
