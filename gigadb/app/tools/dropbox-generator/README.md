@@ -35,4 +35,7 @@ $ docker-compose run --rm tool ./vendor/bin/codecept run tests/functional
 
 # Run single test
 $ docker-compose run --rm tool ./vendor/bin/codecept run tests/functional/WasabiUserCest.php
+
+$ docker-compose run --rm tool ./vendor/bin/codecept run tests/functional/WasabiBucketCest.php
+
 ```

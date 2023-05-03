@@ -92,6 +92,7 @@ class WasabiBucketController extends Controller
             $result = $s3Client->createBucket([
                 'Bucket' => $optBucketName,
             ]);
+            var_dump($result);
         } catch (S3Exception $e) {
             echo $e->getMessage() . PHP_EOL;
         }
