@@ -53,7 +53,7 @@ class WasabiUserCest
      */
     public function tryCreateWasabiUser(FunctionalTester $I)
     {
-        $I->runShellCommand("/app/yii_test wasabi/creategigadbuser --manuscriptId giga-d-23-00288");
+        $I->runShellCommand("/app/yii_test wasabi-user/creategigadbuser --username giga-d-23-00288");
         # If above console command is successful then we should see the username in output
         $I->seeInShellOutput("giga-d-23-00288");
     }
