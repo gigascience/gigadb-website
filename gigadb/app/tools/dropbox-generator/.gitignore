@@ -19,7 +19,7 @@ Thumbs.db
 composer.phar
 
 # composer lock
-composer.lock
+#composer.lock
 
 # Mac DS_Store Files
 .DS_Store
@@ -31,3 +31,6 @@ phpunit.phar
 
 tests/_output/*
 tests/_support/_generated
+
+# Do not version control due to secrets
+config/params.php

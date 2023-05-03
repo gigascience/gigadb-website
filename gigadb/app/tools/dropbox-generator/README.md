@@ -20,3 +20,14 @@ $ docker-compose run --rm tool /app/yii wasabi/read --bucket dbgiga-datasets --f
 ```
 $ docker-compose run --rm tool /app/yii wasabi/creategigadbuser --manuscriptId giga-d-23-00288
 ```
+
+### Functional tests
+
+There is a functional test which checks the `actionCreategigadbuser()` function in
+`WasabiController`.
+```
+$ docker-compose run --rm tool ./vendor/bin/codecept run tests/functional
+
+# Run single test
+$ docker-compose run --rm tool ./vendor/bin/codecept run tests/functional/WasabiUserCest.php
+```
