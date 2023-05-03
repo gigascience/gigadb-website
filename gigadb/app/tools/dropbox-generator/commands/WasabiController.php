@@ -109,11 +109,11 @@ class WasabiController extends Controller
             'use_path_style_endpoint' => true,
         );
 
-        //Establish connection to wasabi via access and secret keys
+        //Establish connection to wasabi
         $iam = new IamClient($credentials);
 
         try {
-            // Create user
+            // An Aws Result object is returned
             $result = $iam->createUser([
                 'UserName' => "$optUserName"
             ]);

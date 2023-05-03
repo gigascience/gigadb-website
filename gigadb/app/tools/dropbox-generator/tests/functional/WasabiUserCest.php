@@ -1,48 +1,25 @@
 <?php
 
-use yii\console\Controller;
-use yii\console\ExitCode;
-use Aws\S3\Exception\S3Exception;
-use Aws\S3\S3Client;
 use Aws\Iam\Exception\IamException;
 use Aws\Iam\IamClient;
 
 class WasabiUserCest
 {
     /**
-     * Teardown code that is run after each test
+     * For storing credentials to access Wasabi
      *
-     * Currently just removes the readme file for dataset DOI 100005.
+     * @var [] $credentials
+     */
+    public $credentials = [];
+
+    /**
+     * Setup code that is run before each test
      *
      * @return void
      */
-    public function _after()
+    public function _before()
     {
-        // Get list of Wasabi users
-        $users = $this->listWasabiUsers();
-        // If user giga-d-23-00288 exists
-        if (in_array("giga-d-23-00288", $users)) {
-            echo "Got user";
-            $this->deleteWasabiUser("giga-d-23-00288");
-        }
-    }
-
-    /**
-     * Test actionCreate function in ReadmeController
-     *
-     * @param FunctionalTester $I
-     */
-    public function tryCreate(FunctionalTester $I)
-    {
-//        $I->runShellCommand("/app/yii_test wasabi/creategigadbuser --manuscriptId giga-d-23-00288");
-//        $I->seeInShellOutput("[DOI] 10.5524/100005");
-//        $I->runShellCommand("ls /home/curators");
-//        $I->seeInShellOutput("readme_100005.txt");
-    }
-
-    private function listWasabiUsers()
-    {
-        $credentials = [
+        $this->credentials = array(
             'credentials' => [
                 'key' => Yii::$app->params['wasabi']['key'],
                 'secret' => Yii::$app->params['wasabi']['secret']
@@ -51,10 +28,40 @@ class WasabiUserCest
             'region' => Yii::$app->params['wasabi']['iam_region'],
             'version' => 'latest',
             'use_path_style_endpoint' => true,
-        ];
+        );
+    }
 
-        //Establish connection to wasabi via access and secret keys
-        $iam = new IamClient($credentials);
+    /**
+     * Teardown code that is run after each test
+     *
+     * Currently just removes the Wasabi user that was created by this test
+     *
+     * @return void
+     */
+    public function _after()
+    {
+        $users = $this->listWasabiUsers();
+        if (in_array("giga-d-23-00288", $users)) {
+            $this->deleteWasabiUser("giga-d-23-00288");
+        }
+    }
+
+    /**
+     * Test actionCreategigadbuser function in WasabiController
+     *
+     * @param FunctionalTester $I
+     */
+    public function tryCreateWasabiUser(FunctionalTester $I)
+    {
+        $I->runShellCommand("/app/yii_test wasabi/creategigadbuser --manuscriptId giga-d-23-00288");
+        # If above console command is successful then we should see the username in output
+        $I->seeInShellOutput("giga-d-23-00288");
+    }
+
+    private function listWasabiUsers()
+    {
+        //Establish Wasabi connection
+        $iam = new IamClient($this->credentials);
 
         $usernames = array();
         try {
@@ -71,24 +78,12 @@ class WasabiUserCest
 
     private function deleteWasabiUser($username)
     {
-        $credentials = [
-            'credentials' => [
-                'key' => Yii::$app->params['wasabi']['key'],
-                'secret' => Yii::$app->params['wasabi']['secret']
-            ],
-            'endpoint' => Yii::$app->params['wasabi']['iam_endpoint'],
-            'region' => Yii::$app->params['wasabi']['iam_region'],
-            'version' => 'latest',
-            'use_path_style_endpoint' => true,
-        ];
-
-        //Establish connection to wasabi via access and secret keys
-        $iam = new IamClient($credentials);
+        $iam = new IamClient($this->credentials);
 
         try {
-            $result = $iam->deleteUser(array(
-                'UserName' => '$username'
-            ));
+            $iam->deleteUser([
+                'UserName' => "$username"
+            ]);
         } catch (IamException $e) {
             echo $e->getMessage() . PHP_EOL;
         }
