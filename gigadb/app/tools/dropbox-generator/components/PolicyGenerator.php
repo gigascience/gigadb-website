@@ -36,7 +36,7 @@ class PolicyGenerator extends Component
      *
      * @return string Contents of policy
      */
-    public function createAuthorPolicy(string $username): string
+    public function generateAuthorPolicy(string $username): string
     {
         $loader = new FilesystemLoader(__DIR__ . '/../templates');
         $twig = new Environment($loader);

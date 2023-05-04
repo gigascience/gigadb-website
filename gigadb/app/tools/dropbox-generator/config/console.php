@@ -20,6 +20,9 @@ $config = [
         'PolicyGenerator' => [
             'class' => 'app\components\PolicyGenerator',
         ],
+        'WasabiPolicyComponent' => [
+            'class' => 'app\components\WasabiPolicyComponent',
+        ],
         'log' => [
             'targets' => [
                 [

@@ -22,13 +22,6 @@ use Twig\Loader\FilesystemLoader;
 class WasabiPolicyController extends Controller
 {
     /**
-     * For storing credentials to access Wasabi
-     *
-     * @var [] $credentials
-     */
-    public $credentials = [];
-
-    /**
      * Template file name
      *
      * @var string $template
@@ -67,17 +60,6 @@ class WasabiPolicyController extends Controller
     public function init()
     {
         parent::init();
-        $this->credentials = array(
-            'credentials' => [
-                'key' => Yii::$app->params['wasabi']['key'],
-                'secret' => Yii::$app->params['wasabi']['secret']
-            ],
-            'endpoint' => Yii::$app->params['wasabi']['iam_endpoint'],
-            'region' => Yii::$app->params['wasabi']['iam_region'],
-            'version' => 'latest',
-            'use_path_style_endpoint' => true,
-            // 'debug'   => true
-        );
     }
 
     /**
@@ -95,32 +77,26 @@ class WasabiPolicyController extends Controller
             return ExitCode::USAGE;
         }
 
-        $policy = Yii::$app->PolicyGenerator->createAuthorPolicy($optUserName);
-        //echo $policy;
-
-        // Create policy in Wasabi
-        $iam = new IamClient($this->credentials);
-        try {
-            $result = $iam->createPolicy([
-                'PolicyName' => 'policy-' . "$optUserName",
-                'PolicyDocument' => $policy
-            ]);
-            var_dump($result);
-        } catch (IamException $e) {
-            echo $e->getMessage() . PHP_EOL;
-        }
-
+        $policy = Yii::$app->PolicyGenerator->generateAuthorPolicy($optUserName);
+        $result = Yii::$app->WasabiPolicyComponent->createAuthorPolicy($optUserName, $policy);
+        // Extract policy ARN
+        $arn = $result->get("Policy")["Arn"];
+        $result = Yii::$app->WasabiPolicyComponent->attachPolicyToUser($arn, $optUserName);
         return ExitCode::OK;
     }
 
+    /**
+     * Attach policy to a user
+     * @return int Exit code
+     */
     public function actionAttachToUser()
     {
-        $optGroup   = $this->group;
+        $optUsername = $this->username;
 
         // Return usage unless mandatory options are passed.
-        if ($optGroup === '') {
+        if ($optUsername === '') {
             $this->stdout(
-                "\nUsage:\n\t./yii wasabi-policy/attachtogroup --group theGroupName" . PHP_EOL
+                "\nUsage:\n\t./yii wasabi-policy/attachtouser --username theAuthorUserName" . PHP_EOL
             );
             return ExitCode::USAGE;
         }
@@ -131,7 +107,7 @@ class WasabiPolicyController extends Controller
         try {
             $result = $iam->attachUserPolicy(array(
                 // UserName is required
-                'UserName' => $userName,
+                'UserName' => $optUsername,
                 // PolicyArn is required
                 'PolicyArn' => $policyArn,
             ));
