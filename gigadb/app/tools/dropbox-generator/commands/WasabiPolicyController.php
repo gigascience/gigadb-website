@@ -87,7 +87,6 @@ class WasabiPolicyController extends Controller
     public function actionCreate()
     {
         $optUserName   = $this->username;
-
         // Return usage unless mandatory options are passed.
         if ($optUserName === '') {
             $this->stdout(
@@ -97,21 +96,19 @@ class WasabiPolicyController extends Controller
         }
 
         $policy = Yii::$app->PolicyGenerator->createAuthorPolicy($optUserName);
-        echo $policy;
+        //echo $policy;
 
         // Create policy in Wasabi
-//        $iam = new IamClient($this->credentials);
-//        try {
-//            $result = $iam->createPolicy(array(
-//                // PolicyName is required
-//                'PolicyName' => 'myDynamoDBPolicy',
-//                // PolicyDocument is required
-//                'PolicyDocument' => $myManagedPolicy
-//            ));
-//            var_dump($result);
-//        } catch (IamException $e) {
-//            echo $e->getMessage() . PHP_EOL;
-//        }
+        $iam = new IamClient($this->credentials);
+        try {
+            $result = $iam->createPolicy([
+                'PolicyName' => 'policy-' . "$optUserName",
+                'PolicyDocument' => $policy
+            ]);
+            var_dump($result);
+        } catch (IamException $e) {
+            echo $e->getMessage() . PHP_EOL;
+        }
 
         return ExitCode::OK;
     }
