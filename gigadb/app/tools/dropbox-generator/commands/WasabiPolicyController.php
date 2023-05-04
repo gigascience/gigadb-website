@@ -7,13 +7,13 @@
 
 namespace app\commands;
 
-use Twig\Environment;
-use Twig\Loader\FilesystemLoader;
 use \Yii;
 use yii\console\Controller;
 use yii\console\ExitCode;
 use Aws\Iam\Exception\IamException;
 use Aws\Iam\IamClient;
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
 
 /**
  * Read file in bucket
@@ -36,6 +36,13 @@ class WasabiPolicyController extends Controller
     public $template = '';
 
     /**
+     * Wasabi username
+     *
+     * @var string $username
+     */
+    public $username = '';
+
+    /**
      * Specify options available to console command provided by this controller.
      *
      * @var    $actionID
@@ -45,6 +52,7 @@ class WasabiPolicyController extends Controller
     {
         return [
             'template',
+            'username',
         ];
     }
 
@@ -71,20 +79,23 @@ class WasabiPolicyController extends Controller
     public function actionCreate()
     {
         $optTemplate   = $this->template;
+        $optUserName   = $this->username;
 
         // Return usage unless mandatory options are passed.
         if ($optTemplate === '') {
             $this->stdout(
-                "\nUsage:\n\t./yii wasabi-policy/createpolicy --template theTemplateFileName" . PHP_EOL
+                "\nUsage:\n\t./yii wasabi-policy/createpolicy --template theTemplateFileName --username theWasabiUserName" . PHP_EOL
             );
             return ExitCode::USAGE;
         }
 
+        // Create bucket name from author username
+        $bucketName = str_replace('author-', 'bucket-', $optUserName);
+
         $loader = new FilesystemLoader(__DIR__ . '/../templates');
         $twig = new Environment($loader);
 
-        echo $twig->render('first.html.twig', ['name' => 'John Doe',
-            'occupation' => 'gardener']);
+        echo $twig->render("$optTemplate", ['bucket_name' => "$bucketName"]);
 
         return ExitCode::OK;
     }
