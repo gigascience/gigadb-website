@@ -26,6 +26,11 @@ $ docker-compose run --rm tool /app/yii wasabi-user/creategigadbuser --manuscrip
 $ docker-compose run --rm tool /app/yii wasabi-bucket/create --bucketName bucket-giga-d-23-00288
 ```
 
+# Run command to create policy
+```
+$ docker-compose run --rm tool /app/yii wasabi-policy/create --template first.html.twig
+```
+
 ### Functional tests
 
 There is a functional test which checks the `actionCreategigadbuser()` function in
