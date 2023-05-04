@@ -78,4 +78,40 @@ class WasabiPolicyComponent extends Component
         }
         return $result;
     }
+
+    /**
+     * Returns an array containing policy names
+     *
+     * Currently only used by WasabiPolicyCest class.
+     *
+     * @return array
+     */
+    public function listPolicies(): array
+    {
+        $iamClient = new IamClient($this->credentials);
+        try {
+            $result = $iamClient->listPolicies();
+            codecept_debug("" . $result);
+            $policies = $result->get("Policies");
+            foreach ($policies as $policy) {
+                $policyNames[] = $policy["Name"];
+            }
+        } catch (IamException $e) {
+            echo "Problem interacting with Wasabi IAM service: " . $e->getMessage() . PHP_EOL;
+        }
+        return $policyNames;
+    }
+
+    public function deletePolicy($bucketName)
+    {
+        $iamClient = new IamClient($this->credentials);
+
+        try {
+            $iamClient->deletePolicy([
+                'Bucket' => "$bucketName"
+            ]);
+        } catch (IamException $e) {
+            echo $e->getMessage() . PHP_EOL;
+        }
+    }
 }
