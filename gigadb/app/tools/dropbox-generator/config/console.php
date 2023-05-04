@@ -17,6 +17,9 @@ $config = [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
+        'PolicyGenerator' => [
+            'class' => 'app\components\PolicyGenerator',
+        ],
         'log' => [
             'targets' => [
                 [

@@ -28,7 +28,7 @@ $ docker-compose run --rm tool /app/yii wasabi-bucket/create --bucketName bucket
 
 # Run command to create policy
 ```
-$ docker-compose run --rm tool /app/yii wasabi-policy/create --template AllowReadWriteOnBucketByAuthor.html.twig --username author-giga-d-4-00286
+$ docker-compose run --rm tool /app/yii wasabi-policy/create --username author-giga-d-4-00286
 ```
 
 ### Functional tests

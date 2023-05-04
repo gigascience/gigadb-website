@@ -43,6 +43,13 @@ class WasabiPolicyController extends Controller
     public $username = '';
 
     /**
+     * Wasabi group
+     *
+     * @var string $group
+     */
+    public $group = '';
+
+    /**
      * Specify options available to console command provided by this controller.
      *
      * @var    $actionID
@@ -53,6 +60,7 @@ class WasabiPolicyController extends Controller
         return [
             'template',
             'username',
+            'group',
         ];
     }
 
@@ -78,24 +86,62 @@ class WasabiPolicyController extends Controller
      */
     public function actionCreate()
     {
-        $optTemplate   = $this->template;
         $optUserName   = $this->username;
 
         // Return usage unless mandatory options are passed.
-        if ($optTemplate === '') {
+        if ($optUserName === '') {
             $this->stdout(
-                "\nUsage:\n\t./yii wasabi-policy/createpolicy --template theTemplateFileName --username theWasabiUserName" . PHP_EOL
+                "\nUsage:\n\t./yii wasabi-policy/createpolicy --username theWasabiUserName" . PHP_EOL
             );
             return ExitCode::USAGE;
         }
 
-        // Create bucket name from author username
-        $bucketName = str_replace('author-', 'bucket-', $optUserName);
+        $policy = Yii::$app->PolicyGenerator->createAuthorPolicy($optUserName);
+        echo $policy;
 
-        $loader = new FilesystemLoader(__DIR__ . '/../templates');
-        $twig = new Environment($loader);
+        // Create policy in Wasabi
+//        $iam = new IamClient($this->credentials);
+//        try {
+//            $result = $iam->createPolicy(array(
+//                // PolicyName is required
+//                'PolicyName' => 'myDynamoDBPolicy',
+//                // PolicyDocument is required
+//                'PolicyDocument' => $myManagedPolicy
+//            ));
+//            var_dump($result);
+//        } catch (IamException $e) {
+//            echo $e->getMessage() . PHP_EOL;
+//        }
 
-        echo $twig->render("$optTemplate", ['bucket_name' => "$bucketName"]);
+        return ExitCode::OK;
+    }
+
+    public function actionAttachToUser()
+    {
+        $optGroup   = $this->group;
+
+        // Return usage unless mandatory options are passed.
+        if ($optGroup === '') {
+            $this->stdout(
+                "\nUsage:\n\t./yii wasabi-policy/attachtogroup --group theGroupName" . PHP_EOL
+            );
+            return ExitCode::USAGE;
+        }
+
+        //Establish connection to wasabi
+        $iam = new IamClient($this->credentials);
+
+        try {
+            $result = $iam->attachUserPolicy(array(
+                // UserName is required
+                'UserName' => $userName,
+                // PolicyArn is required
+                'PolicyArn' => $policyArn,
+            ));
+            var_dump($result);
+        } catch (IamException $e) {
+            echo $e->getMessage() . PHP_EOL;
+        }
 
         return ExitCode::OK;
     }
