@@ -2,23 +2,19 @@
 
 namespace app\components;
 
-use Exception;
-use GigaDB\models\Dataset;
-use Twig\Error\LoaderError;
-use Twig\Error\RuntimeError;
-use Twig\Error\SyntaxError;
 use yii\base\Component;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 /**
- * Component service to output Wasabi policies
+ * Component class that uses Twig to generate content for Wasabi policies
  */
 class PolicyGenerator extends Component
 {
-    // Character width of text in readme file.
-    public const STRING_WIDTH = 80;
-
+    public const TEMPLATE_LOCATION = __DIR__ . '/../templates';
 
     /**
      * Initialize component
@@ -30,16 +26,15 @@ class PolicyGenerator extends Component
 
 
     /**
-     * Create a policy for an author to access their bucket in Wasabi
+     * Generates content for a policy that restricts an author to their bucket
      *
-     * @param string $username Wasabi username of the author.
-     *
-     * @return string Contents of policy
+     * @param string $username Wasabi username of the author
+     * @return string Contains contents of policy
      */
     public function generateAuthorPolicy(string $username): string
     {
-        $loader = new FilesystemLoader(__DIR__ . '/../templates');
-        $twig = new Environment($loader);
+        $loader = new FilesystemLoader(self::TEMPLATE_LOCATION);
+        $twig   = new Environment($loader);
 
         // Create bucket name from author username
         $bucketName = str_replace('author-', 'bucket-', $username);
@@ -49,11 +44,11 @@ class PolicyGenerator extends Component
                 ['bucket_name' => "$bucketName"]
             );
         } catch (LoaderError $e) {
-            echo "Problem with loading Twig template - " . $e->getMessage() . PHP_EOL;
+            echo "Problem loading Twig template: " . $e->getMessage() . PHP_EOL;
         } catch (RuntimeError $e) {
-            echo "Problem with creating policy by Twig - " . $e->getMessage() . PHP_EOL;
+            echo "Problem creating policy by Twig: " . $e->getMessage() . PHP_EOL;
         } catch (SyntaxError $e) {
-            echo "Syntax problem in Twig template - " . $e->getMessage() . PHP_EOL;
+            echo "Syntax problem in Twig template: " . $e->getMessage() . PHP_EOL;
         }
         return $policy;
     }

@@ -2,20 +2,14 @@
 
 namespace app\components;
 
-use Exception;
-use GigaDB\models\Dataset;
-use Twig\Error\LoaderError;
-use Twig\Error\RuntimeError;
-use Twig\Error\SyntaxError;
+use Yii;
 use yii\base\Component;
-use Twig\Environment;
-use Twig\Loader\FilesystemLoader;
 use Aws\Iam\Exception\IamException;
 use Aws\Iam\IamClient;
-use \Yii;
+use Aws\Result;
 
 /**
- * Component service to output Wasabi policies
+ * Component class for creating and attaching policies in Wasabi
  */
 class WasabiPolicyComponent extends Component
 {
@@ -41,24 +35,22 @@ class WasabiPolicyComponent extends Component
             'region' => Yii::$app->params['wasabi']['iam_region'],
             'version' => 'latest',
             'use_path_style_endpoint' => true,
-            // 'debug'   => true
         );
     }
 
 
     /**
-     * Create a policy for an author to access their bucket in Wasabi
+     * Create a policy in Wasabi that restricts an author to their own bucket
      *
      * @param string $authorUserName Wasabi username of the author.
-     *
-     * @return string Contents of policy
+     * @return Result AWS result object
      */
-    public function createAuthorPolicy(string $authorUserName, string $policy)
+    public function createAuthorPolicy(string $authorUserName, string $policy): Result
     {
         $iam = new IamClient($this->credentials);
         try {
             $result = $iam->createPolicy([
-                'PolicyName' => 'policy-' . "$authorUserName",
+                'PolicyName'     => 'policy-' . "$authorUserName",
                 'PolicyDocument' => $policy
             ]);
         } catch (IamException $e) {
@@ -70,9 +62,8 @@ class WasabiPolicyComponent extends Component
     /**
      * Attaches a policy to a user in Wasabi
      *
-     * @param string $policyArn Amazon Resource Name for policy.
-     *
-     * @return string Contents of policy
+     * @param string $policyArn Amazon Resource Name for policy
+     * @return Result AWS result object
      */
     public function attachPolicyToUser(string $policyArn, $username)
     {
@@ -82,9 +73,8 @@ class WasabiPolicyComponent extends Component
                 'UserName' => $username,
                 'PolicyArn' => $policyArn,
             ]);
-            var_dump($result);
         } catch (IamException $e) {
-            echo $e->getMessage() . PHP_EOL;
+            echo "Problem interacting with AWS IAM service: " . $e->getMessage() . PHP_EOL;
         }
         return $result;
     }

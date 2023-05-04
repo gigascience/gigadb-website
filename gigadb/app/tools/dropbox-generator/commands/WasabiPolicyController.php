@@ -1,33 +1,16 @@
 <?php
-/**
- * @link http://www.yiiframework.com/
- * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
- */
 
 namespace app\commands;
 
-use \Yii;
+use Yii;
 use yii\console\Controller;
 use yii\console\ExitCode;
-use Aws\Iam\Exception\IamException;
-use Aws\Iam\IamClient;
-use Twig\Environment;
-use Twig\Loader\FilesystemLoader;
 
 /**
- * Read file in bucket
- *
+ * Controller class for creating policies in Wasabi
  */
 class WasabiPolicyController extends Controller
 {
-    /**
-     * Template file name
-     *
-     * @var string $template
-     */
-    public $template = '';
-
     /**
      * Wasabi username
      *
@@ -36,14 +19,7 @@ class WasabiPolicyController extends Controller
     public $username = '';
 
     /**
-     * Wasabi group
-     *
-     * @var string $group
-     */
-    public $group = '';
-
-    /**
-     * Specify options available to console command provided by this controller.
+     * Specify options available to console command provided by this controller
      *
      * @var    $actionID
      * @return array List of controller class's public properties
@@ -51,9 +27,7 @@ class WasabiPolicyController extends Controller
     public function options($actionID): array
     {
         return [
-            'template',
             'username',
-            'group',
         ];
     }
 
@@ -63,59 +37,25 @@ class WasabiPolicyController extends Controller
     }
 
     /**
-     * Create new Wasabi policy
+     * Create new policy in Wasabi
      * @return int Exit code
      */
     public function actionCreate()
     {
         $optUserName   = $this->username;
-        // Return usage unless mandatory options are passed.
+        // Return usage unless mandatory options are passed
         if ($optUserName === '') {
             $this->stdout(
-                "\nUsage:\n\t./yii wasabi-policy/createpolicy --username theWasabiUserName" . PHP_EOL
+                "\nUsage:\n\t./yii wasabi-policy/create --username theWasabiUserName" . PHP_EOL
             );
             return ExitCode::USAGE;
         }
 
         $policy = Yii::$app->PolicyGenerator->generateAuthorPolicy($optUserName);
         $result = Yii::$app->WasabiPolicyComponent->createAuthorPolicy($optUserName, $policy);
-        // Extract policy ARN
+        // Extract policy ARN from AWS Result object
         $arn = $result->get("Policy")["Arn"];
-        $result = Yii::$app->WasabiPolicyComponent->attachPolicyToUser($arn, $optUserName);
-        return ExitCode::OK;
-    }
-
-    /**
-     * Attach policy to a user
-     * @return int Exit code
-     */
-    public function actionAttachToUser()
-    {
-        $optUsername = $this->username;
-
-        // Return usage unless mandatory options are passed.
-        if ($optUsername === '') {
-            $this->stdout(
-                "\nUsage:\n\t./yii wasabi-policy/attachtouser --username theAuthorUserName" . PHP_EOL
-            );
-            return ExitCode::USAGE;
-        }
-
-        //Establish connection to wasabi
-        $iam = new IamClient($this->credentials);
-
-        try {
-            $result = $iam->attachUserPolicy(array(
-                // UserName is required
-                'UserName' => $optUsername,
-                // PolicyArn is required
-                'PolicyArn' => $policyArn,
-            ));
-            var_dump($result);
-        } catch (IamException $e) {
-            echo $e->getMessage() . PHP_EOL;
-        }
-
+        Yii::$app->WasabiPolicyComponent->attachPolicyToUser($arn, $optUserName);
         return ExitCode::OK;
     }
 }
