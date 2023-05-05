@@ -31,16 +31,11 @@ class WasabiPolicyController extends Controller
         ];
     }
 
-    public function init()
-    {
-        parent::init();
-    }
-
     /**
-     * Create new policy in Wasabi
+     * Creates new Wasabi policy for an author to upload data into their own bucket
      * @return int Exit code
      */
-    public function actionCreate()
+    public function actionCreateAuthorPolicy(): int
     {
         $optUserName   = $this->username;
         // Return usage unless mandatory options are passed

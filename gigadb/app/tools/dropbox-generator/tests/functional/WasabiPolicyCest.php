@@ -41,24 +41,33 @@ class WasabiPolicyCest
      */
     public function _after()
     {
-        $buckets = $this->listBuckets();
-        if (in_array("bucket-giga-d-23-00288", $buckets)) {
-            codecept_debug("Found bucket to delete");
-            $this->deleteBucket("bucket-giga-d-23-00288");
-        }
+        codecept_debug("Executing _after() function...");
+        $result = Yii::$app->WasabiPolicyComponent->listPolicies();
+        $policies = $result->get("Policies");
+//        codecept_debug($policies);
+//        if (in_array("policy-author-giga-d-23-00286", $policies)) {
+//            codecept_debug("Found policy to delete");
+            Yii::$app->WasabiPolicyComponent->detachUserPolicy("author-giga-d-4-00286", "arn:aws:iam:::policy/policy-author-giga-d-4-00286");
+            Yii::$app->WasabiPolicyComponent->deletePolicy("arn:aws:iam:::policy/policy-author-giga-d-4-00286");
+//        }
     }
 
     /**
-     * Test actionCreate function in WasabiPolicyController
+     * Test actionCreateAuthorPolicy() in WasabiPolicyController
+     *
+     * This test will fail if the policy is already present in Wasabi.
      *
      * @param FunctionalTester $I
      */
-    public function tryCreatePolicy(FunctionalTester $I)
+    public function tryCreateAuthorPolicy(FunctionalTester $I)
     {
-        $I->runShellCommand("/app/yii_test wasabi-policy/create --username author-giga-d-4-00286");
-        # We should see bucket name in output \AWS\Result object
-        $I->seeInShellOutput("bucket-giga-d-23-00288");
+        $I->runShellCommand("/app/yii_test wasabi-policy/create-author-policy --username author-giga-d-4-00286");
+        // Now check for existence of the policy created by above command
+        $result = Yii::$app->WasabiPolicyComponent->listPolicies();
+        $policies = $result->get("Policies");
+//         codecept_debug($policies);
+        // If a key is found then this means that the policy was created
+        $key = array_search("policy-author-giga-d-4-00286", array_column($policies, 'PolicyName'));
+        $I->assertNotFalse($key);
     }
-
-    
 }

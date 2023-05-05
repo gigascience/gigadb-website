@@ -23,6 +23,12 @@ return [
                 ],
             ],
         ],
+        'PolicyGenerator' => [
+            'class' => 'app\components\PolicyGenerator',
+        ],
+        'WasabiPolicyComponent' => [
+            'class' => 'app\components\WasabiPolicyComponent',
+        ],
         'db' => $db,
     ],
     'params' => $params,

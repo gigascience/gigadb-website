@@ -28,7 +28,8 @@ $ docker-compose run --rm tool /app/yii wasabi-bucket/create --bucketName bucket
 
 # Run command to create policy
 ```
-$ docker-compose run --rm tool /app/yii wasabi-policy/create --username author-giga-d-4-00286
+$ docker-compose run --rm tool /app/yii wasabi-policy/create-author-policy --username author-giga-d-4-00286
+
 ```
 
 ### Functional tests
@@ -42,5 +43,7 @@ $ docker-compose run --rm tool ./vendor/bin/codecept run tests/functional
 $ docker-compose run --rm tool ./vendor/bin/codecept run tests/functional/WasabiUserCest.php
 
 $ docker-compose run --rm tool ./vendor/bin/codecept run tests/functional/WasabiBucketCest.php
+
+$ docker-compose run --rm tool ./vendor/bin/codecept run tests/functional/WasabiPolicyCest.php
 
 ```

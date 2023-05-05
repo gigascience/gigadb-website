@@ -86,32 +86,47 @@ class WasabiPolicyComponent extends Component
      *
      * @return array
      */
-    public function listPolicies(): array
+    public function listPolicies(): \Aws\Result
     {
         $iamClient = new IamClient($this->credentials);
         try {
             $result = $iamClient->listPolicies();
-            codecept_debug("" . $result);
             $policies = $result->get("Policies");
-            foreach ($policies as $policy) {
-                $policyNames[] = $policy["Name"];
-            }
+//            foreach ($policies as $policy) {
+//                $policyNames[] = $policy["Name"];
+//            }
         } catch (IamException $e) {
             echo "Problem interacting with Wasabi IAM service: " . $e->getMessage() . PHP_EOL;
         }
-        return $policyNames;
+        return $result;
     }
 
-    public function deletePolicy($bucketName)
+    public function detachUserPolicy($UserName, $PolicyArn)
     {
         $iamClient = new IamClient($this->credentials);
-
         try {
-            $iamClient->deletePolicy([
-                'Bucket' => "$bucketName"
-            ]);
+            $result = $iamClient->detachUserPolicy(array(
+                'UserName'  => "$UserName",
+                'PolicyArn' => "$PolicyArn",
+            ));
+            var_dump($result);
         } catch (IamException $e) {
             echo $e->getMessage() . PHP_EOL;
         }
+        return $result;
+    }
+
+    public function deletePolicy($policyArn)
+    {
+        $iamClient = new IamClient($this->credentials);
+        try {
+            $result = $iamClient->deletePolicy([
+                'PolicyArn' => "$policyArn"
+            ]);
+//            var_dump($result);
+        } catch (IamException $e) {
+            echo $e->getMessage() . PHP_EOL;
+        }
+        return $result;
     }
 }
