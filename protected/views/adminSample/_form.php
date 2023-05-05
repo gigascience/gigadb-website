@@ -11,7 +11,7 @@
 
 	<p class="note">Fields with <span class="required">*</span> are required.</p>
 
-	<?php echo $form->errorSummary($model); ?>
+	<?php echo $form->errorSummary($model, null, null, array('class' => "alert alert-danger")); ?>
 
 	<div class="control-group">
 		<?php echo $form->labelEx($model,'species_id',array('class'=>'control-label')); ?>
