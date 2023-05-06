@@ -11,12 +11,14 @@ class WasabiPolicyCest
      */
     public function _after()
     {
-        codecept_debug("Executing _after() function...");
         $result = Yii::$app->WasabiPolicyComponent->listPolicies();
         $policies = $result->get("Policies");
-        Yii::$app->WasabiPolicyComponent->detachUserPolicy("author-giga-d-4-00286", "arn:aws:iam:::policy/policy-author-giga-d-4-00286");
-        Yii::$app->WasabiPolicyComponent->deletePolicy("arn:aws:iam::100000199914:policy/policy-author-giga-d-4-00286");
-        // Yii::$app->WasabiPolicyComponent->deletePolicy("arn:aws:iam:::policy/policy-author-giga-d-4-00286");
+        $key = array_search("policy-author-giga-d-4-00286", array_column($policies, 'PolicyName'));
+        if ($key !== false) {
+            Yii::$app->WasabiPolicyComponent->detachUserPolicy("author-giga-d-4-00286", "arn:aws:iam:::policy/policy-author-giga-d-4-00286");
+            $arn = $policies[$key]["Arn"];
+            Yii::$app->WasabiPolicyComponent->deletePolicy($arn);
+        }
     }
 
     /**
