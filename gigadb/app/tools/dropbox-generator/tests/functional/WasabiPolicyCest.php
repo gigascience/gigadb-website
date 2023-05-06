@@ -1,15 +1,24 @@
 <?php
 
+namespace app\tests\functional;
+
+use FunctionalTester;
+use Yii;
+
+/**
+ * Class containing functional tests for WasabiPolicyController
+ */
 class WasabiPolicyCest
 {
     /**
-     * Teardown code that is run after each test
+     * Teardown code that is only executed if a test has passed
      *
-     * Currently just removes the Wasabi user that was created by this test
+     * Currently just detaches and deletes a policy created by
+     * tryCreateAuthorPolicy() function.
      *
      * @return void
      */
-    public function _after()
+    public function _passed()
     {
         $result = Yii::$app->WasabiPolicyComponent->listPolicies();
         $policies = $result->get("Policies");
