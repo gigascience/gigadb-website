@@ -123,7 +123,7 @@ class WasabiPolicyComponent extends Component
             $result = $iamClient->deletePolicy([
                 'PolicyArn' => "$policyArn"
             ]);
-//            var_dump($result);
+            // var_dump($result);
         } catch (IamException $e) {
             echo $e->getMessage() . PHP_EOL;
         }
