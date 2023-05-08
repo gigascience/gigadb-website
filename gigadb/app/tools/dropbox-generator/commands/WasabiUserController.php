@@ -12,6 +12,7 @@ use yii\console\Controller;
 use yii\console\ExitCode;
 use Aws\Iam\Exception\IamException;
 use Aws\Iam\IamClient;
+use yii\helpers\Console;
 
 /**
  * Read file in bucket
@@ -19,13 +20,6 @@ use Aws\Iam\IamClient;
  */
 class WasabiUserController extends Controller
 {
-    /**
-     * For storing credentials to access Wasabi
-     *
-     * @var [] $credentials
-     */
-    public $credentials = [];
-
     /**
      * Username for Wasabi account
      *
@@ -49,48 +43,38 @@ class WasabiUserController extends Controller
     public function init()
     {
         parent::init();
-        $this->credentials = array(
-            'credentials' => [
-                'key' => Yii::$app->params['wasabi']['key'],
-                'secret' => Yii::$app->params['wasabi']['secret']
-            ],
-            'endpoint' => Yii::$app->params['wasabi']['iam_endpoint'],
-            'region' => Yii::$app->params['wasabi']['iam_region'],
-            'version' => 'latest',
-            'use_path_style_endpoint' => true,
-            // 'debug'   => true
-        );
     }
 
     /**
      * Create user account
      * @return int Exit code
      */
-    public function actionCreategigadbuser()
+    public function actionCreate()
     {
         $optUserName   = $this->username;
 
-        // Return usage unless mandatory options are passed.
+        // Return usage unless mandatory options are passed
         if ($optUserName === '') {
             $this->stdout(
-                "\nUsage:\n\t./yii wasabi/creategigadbuser --username theUsername" . PHP_EOL
+                "\nUsage:\n\t./yii wasabi-user/create --username theUsername" . PHP_EOL
             );
             return ExitCode::USAGE;
         }
 
-        //Establish connection to wasabi
-        $iam = new IamClient($this->credentials);
-
         try {
-            // An Aws Result object is returned
-            $result = $iam->createUser([
-                'UserName' => "$optUserName"
-            ]);
-            var_dump($result);
+            $result = Yii::$app->WasabiUserComponent->create($optUserName);
+            if ($result) {
+                // Log result output
+                Yii::info($result);
+                $this->stdout($result->get('User')['Arn'] . PHP_EOL, Console::FG_GREEN);
+            }
         } catch (IamException $e) {
-            echo $e->getMessage() . PHP_EOL;
+            // Handle any IamException bubbled up from WasabiUserComponent
+            $this->stdout($e->getMessage() . PHP_EOL, Console::FG_RED);
+            // Log error message
+            Yii::error($e->getMessage());
+            return ExitCode::DATAERR;
         }
-
         return ExitCode::OK;
     }
 }

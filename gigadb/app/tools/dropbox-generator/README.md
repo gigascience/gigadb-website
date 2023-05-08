@@ -18,7 +18,73 @@ $ docker-compose run --rm tool /app/yii wasabi-bucket/read --bucket dbgiga-datas
 
 # Run command to create new user account
 ```
-$ docker-compose run --rm tool /app/yii wasabi-user/creategigadbuser --manuscriptId giga-d-23-00288
+$ docker-compose run --rm tool /app/yii wasabi-user/create --username author-giga-d-23-00288
+object(Aws\Result)#289 (2) {
+  ["data":"Aws\Result":private]=>
+  array(2) {
+    ["User"]=>
+    array(5) {
+      ["Path"]=>
+      string(1) "/"
+      ["UserName"]=>
+      string(22) "author-giga-d-23-00288"
+      ["UserId"]=>
+      string(21) "YDGGFQL9DW38U09I9W0E4"
+      ["Arn"]=>
+      string(53) "arn:aws:iam::100000199914:user/author-giga-d-23-00288"
+      ["CreateDate"]=>
+      object(Aws\Api\DateTimeResult)#299 (3) {
+        ["date"]=>
+        string(26) "2023-05-08 05:30:27.822000"
+        ["timezone_type"]=>
+        int(2)
+        ["timezone"]=>
+        string(1) "Z"
+      }
+    }
+    ["@metadata"]=>
+    array(4) {
+      ["statusCode"]=>
+      int(200)
+      ["effectiveUri"]=>
+      string(26) "https://iam.wasabisys.com/"
+      ["headers"]=>
+      array(9) {
+        ["content-length"]=>
+        string(3) "445"
+        ["content-type"]=>
+        string(8) "text/xml"
+        ["date"]=>
+        string(29) "Mon, 08 May 2023 05:30:27 GMT"
+        ["server"]=>
+        string(9) "WasabiIAM"
+        ["vary"]=>
+        string(15) "Accept-Encoding"
+        ["x-amzn-requestid"]=>
+        string(36) "3e55d596-98de-028c-c233-96d53eefdd4e"
+        ["x-wasabi-cluster-id"]=>
+        string(9) "us-east-1"
+        ["x-wasabi-service"]=>
+        string(11) "iam_service"
+        ["x-wasabi-service-runtime-id"]=>
+        string(12) "69e04db6a36f"
+      }
+      ["transferStats"]=>
+      array(1) {
+        ["http"]=>
+        array(1) {
+          [0]=>
+          array(0) {
+          }
+        }
+      }
+    }
+  }
+  ["monitoringEvents":"Aws\Result":private]=>
+  array(0) {
+  }
+}
+
 ```
 
 # Run command to create new bucket

@@ -26,6 +26,9 @@ $config = [
         'WasabiBucketComponent' => [
             'class' => 'app\components\WasabiBucketComponent',
         ],
+        'WasabiUserComponent' => [
+            'class' => 'app\components\WasabiUserComponent',
+        ],
         'log' => [
             'targets' => [
                 [
