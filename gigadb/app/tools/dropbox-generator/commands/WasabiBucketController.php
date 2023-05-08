@@ -59,9 +59,8 @@ class WasabiBucketController extends Controller
             $result = Yii::$app->WasabiBucketComponent->create($optBucketName);
             if ($result) {
                 // Log result output
-                //Yii::info($result);
-                var_dump($result);
-                //$this->stdout('New bucket created successfully.' . PHP_EOL, Console::FG_GREEN);
+                Yii::info($result);
+                $this->stdout($result->get('Location') . PHP_EOL, Console::FG_GREEN);
             }
         } catch (S3Exception $e) {
             // Handle any S3Exception bubbled up from WasabiBucketComponent
@@ -81,14 +80,11 @@ class WasabiBucketController extends Controller
     {
         try {
             $result = Yii::$app->WasabiBucketComponent->listBuckets();
-            //Yii::info($result);
-            var_dump($result);
-//            $this->stdout('New bucket created successfully.' . PHP_EOL, Console::FG_GREEN);
-//            $buckets = $result->get("Buckets");
-//            foreach ($buckets as $bucket) {
-//                $bucketNames[] = $bucket["Name"];
-//            }
-//            var_dump($bucketNames);
+            Yii::info($result);
+            $buckets = $result->get("Buckets");
+            foreach ($buckets as $bucket) {
+                $this->stdout($bucket["Name"] . PHP_EOL, Console::FG_GREEN);
+            }
         } catch (S3Exception $e) {
             $this->stdout($e->getMessage() . PHP_EOL, Console::FG_RED);
             Yii::error($e->getMessage());
@@ -115,9 +111,13 @@ class WasabiBucketController extends Controller
 
         try {
             $result = Yii::$app->WasabiBucketComponent->deleteBucket($optBucketName);
-            //Yii::info($result);
-            var_dump($result);
-        } catch (S3Exception $e) {
+            Yii::info($result);
+            $statusCode = $result->get("@metadata")["statusCode"];
+            if ($statusCode != 204) {
+                throw new Exception("Delete bucket did not return HTTP 204 No Content status response code!");
+            }
+            $this->stdout("Bucket deleted" . PHP_EOL, Console::FG_GREEN);
+        } catch (S3Exception | Exception $e) {
             $this->stdout($e->getMessage() . PHP_EOL, Console::FG_RED);
             Yii::error($e->getMessage());
             return ExitCode::DATAERR;
