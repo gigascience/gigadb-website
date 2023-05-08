@@ -24,6 +24,168 @@ $ docker-compose run --rm tool /app/yii wasabi-user/creategigadbuser --manuscrip
 # Run command to create new bucket
 ```
 $ docker-compose run --rm tool /app/yii wasabi-bucket/create --bucketName bucket-giga-d-23-00288
+object(Aws\Result)#670 (2) {
+  ["data":"Aws\Result":private]=>
+  array(2) {
+    ["Location"]=>
+    string(64) "https://s3.ap-northeast-1.wasabisys.com/bucket-giga-d-23-00288//"
+    ["@metadata"]=>
+    array(4) {
+      ["statusCode"]=>
+      int(200)
+      ["effectiveUri"]=>
+      string(63) "https://s3.ap-northeast-1.wasabisys.com/bucket-giga-d-23-00288/"
+      ["headers"]=>
+      array(6) {
+        ["date"]=>
+        string(29) "Mon, 08 May 2023 02:55:18 GMT"
+        ["location"]=>
+        string(64) "https://s3.ap-northeast-1.wasabisys.com/bucket-giga-d-23-00288//"
+        ["server"]=>
+        string(48) "WasabiS3/7.13.2207-2023-04-06-dc2f085548 (head2)"
+        ["x-amz-id-2"]=>
+        string(76) "IpOlaMeki7T9/vzq83JTqKUji/tjk9wA8P2YjFDN/G2DGBfMmu3hpScUt5Q+Qw5Rhljrdn+3zz2C"
+        ["x-amz-request-id"]=>
+        string(16) "172D4CE79A06051A"
+        ["content-length"]=>
+        string(1) "0"
+      }
+      ["transferStats"]=>
+      array(1) {
+        ["http"]=>
+        array(1) {
+          [0]=>
+          array(0) {
+          }
+        }
+      }
+    }
+  }
+  ["monitoringEvents":"Aws\Result":private]=>
+  array(0) {
+  }
+}
+```
+# Run command to list buckets
+```
+$ docker-compose run --rm tool /app/yii wasabi-bucket/list-buckets
+object(Aws\Result)#619 (2) {
+  ["data":"Aws\Result":private]=>
+  array(3) {
+    ["Buckets"]=>
+    array(2) {
+      [0]=>
+      array(2) {
+        ["Name"]=>
+        string(22) "bucket-giga-d-23-00123"
+        ["CreationDate"]=>
+        object(Aws\Api\DateTimeResult)#665 (3) {
+          ["date"]=>
+          string(26) "2023-04-18 14:26:01.000000"
+          ["timezone_type"]=>
+          int(2)
+          ["timezone"]=>
+          string(1) "Z"
+        }
+      }
+      [1]=>
+      array(2) {
+        ["Name"]=>
+        string(15) "dbgiga-datasets"
+        ["CreationDate"]=>
+        object(Aws\Api\DateTimeResult)#666 (3) {
+          ["date"]=>
+          string(26) "2023-04-18 13:59:16.000000"
+          ["timezone_type"]=>
+          int(2)
+          ["timezone"]=>
+          string(1) "Z"
+        }
+      }
+    }
+    ["Owner"]=>
+    array(2) {
+      ["DisplayName"]=>
+      string(4) "test"
+      ["ID"]=>
+      string(64) "DB0CFDA9A26F27676CEEF73D523C0824E000A2ADE31598208494A5232972CEBA"
+    }
+    ["@metadata"]=>
+    array(4) {
+      ["statusCode"]=>
+      int(200)
+      ["effectiveUri"]=>
+      string(40) "https://s3.ap-northeast-1.wasabisys.com/"
+      ["headers"]=>
+      array(6) {
+        ["content-type"]=>
+        string(15) "application/xml"
+        ["date"]=>
+        string(29) "Mon, 08 May 2023 03:01:56 GMT"
+        ["server"]=>
+        string(48) "WasabiS3/7.13.2207-2023-04-06-dc2f085548 (head1)"
+        ["x-amz-id-2"]=>
+        string(76) "i+MDniYmYwh3HK4O59ZXo5EFNSlAt+RYZpWDfOTQUaKV1yyz6WiwiwVuChLN+c07XeXuDZCF2PuM"
+        ["x-amz-request-id"]=>
+        string(16) "A7847DFC46797C74"
+        ["transfer-encoding"]=>
+        string(7) "chunked"
+      }
+      ["transferStats"]=>
+      array(1) {
+        ["http"]=>
+        array(1) {
+          [0]=>
+          array(0) {
+          }
+        }
+      }
+    }
+  }
+  ["monitoringEvents":"Aws\Result":private]=>
+  array(0) {
+  }
+}
+```
+
+# Run command to delete bucket
+```
+$ docker-compose run --rm tool /app/yii wasabi-bucket/delete --bucketName bucket-giga-d-23-00288
+object(Aws\Result)#655 (2) {
+  ["data":"Aws\Result":private]=>
+  array(1) {
+    ["@metadata"]=>
+    array(4) {
+      ["statusCode"]=>
+      int(204)
+      ["effectiveUri"]=>
+      string(63) "https://s3.ap-northeast-1.wasabisys.com/bucket-giga-d-23-00288/"
+      ["headers"]=>
+      array(4) {
+        ["date"]=>
+        string(29) "Mon, 08 May 2023 03:08:08 GMT"
+        ["server"]=>
+        string(48) "WasabiS3/7.13.2207-2023-04-06-dc2f085548 (head1)"
+        ["x-amz-id-2"]=>
+        string(76) "kZoKr7y9pCYNPYZc9bAXkclMxW4AZsEkeatw7uOuMpyiE9PLgtc6AIVb3YJj2yEGjGNHOymQylBF"
+        ["x-amz-request-id"]=>
+        string(16) "C4326CB18941F63B"
+      }
+      ["transferStats"]=>
+      array(1) {
+        ["http"]=>
+        array(1) {
+          [0]=>
+          array(0) {
+          }
+        }
+      }
+    }
+  }
+  ["monitoringEvents":"Aws\Result":private]=>
+  array(0) {
+  }
+}
 ```
 
 # Run command to create policy

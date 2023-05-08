@@ -23,11 +23,14 @@ $config = [
         'WasabiPolicyComponent' => [
             'class' => 'app\components\WasabiPolicyComponent',
         ],
+        'WasabiBucketComponent' => [
+            'class' => 'app\components\WasabiBucketComponent',
+        ],
         'log' => [
             'targets' => [
                 [
                     'class' => 'yii\log\FileTarget',
-                    'levels' => ['error', 'warning'],
+                    'levels' => ['error', 'warning', 'info'],
                 ],
             ],
         ],

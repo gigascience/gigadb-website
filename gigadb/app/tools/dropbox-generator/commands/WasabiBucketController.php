@@ -1,44 +1,25 @@
 <?php
-/**
- * @link http://www.yiiframework.com/
- * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
- */
 
 namespace app\commands;
 
+use Exception;
 use \Yii;
 use yii\console\Controller;
 use yii\console\ExitCode;
+use yii\helpers\Console;
 use Aws\S3\Exception\S3Exception;
 use Aws\S3\S3Client;
 
 /**
- * Read file in bucket
+ * Provides Yii2 console commands to create buckets in Wasabi.
  *
  */
 class WasabiBucketController extends Controller
 {
     /**
-     * For storing credentials to access Wasabi
-     *
-     * @var [] $credentials
-     */
-    public $credentials = [];
-
-    /**
-     * Name of bucket
-     *
-     * @var string $bucket
+     * @var string Name of bucket.
      */
     public $bucketName = '';
-
-    /**
-     * Path to file to be read
-     *
-     * @var string $filePath
-     */
-    public $filePath = '';
 
     /**
      * Specify options available to console command provided by this controller.
@@ -50,31 +31,19 @@ class WasabiBucketController extends Controller
     {
         return [
             'bucketName',
-//            'filePath',
         ];
     }
 
     public function init()
     {
         parent::init();
-        $this->credentials = array(
-            'credentials' => [
-                'key' => Yii::$app->params['wasabi']['key'],
-                'secret' => Yii::$app->params['wasabi']['secret']
-            ],
-            'endpoint' => Yii::$app->params['wasabi']['bucket_endpoint'],
-            'region' => Yii::$app->params['wasabi']['bucket_region'],
-            'version' => 'latest',
-            'use_path_style_endpoint' => true,
-            // 'debug'   => true
-        );
     }
 
     /**
      * Create new bucket
      * @return int Exit code
      */
-    public function actionCreate()
+    public function actionCreate(): int
     {
         $optBucketName = $this->bucketName;
 
@@ -86,52 +55,73 @@ class WasabiBucketController extends Controller
             return ExitCode::USAGE;
         }
 
-        //Establish connection to wasabi
-        $s3Client = new S3Client($this->credentials);
         try {
-            $result = $s3Client->createBucket([
-                'Bucket' => $optBucketName,
-            ]);
-            var_dump($result);
+            $result = Yii::$app->WasabiBucketComponent->create($optBucketName);
+            if ($result) {
+                // Log result output
+                //Yii::info($result);
+                var_dump($result);
+                //$this->stdout('New bucket created successfully.' . PHP_EOL, Console::FG_GREEN);
+            }
         } catch (S3Exception $e) {
-            echo $e->getMessage() . PHP_EOL;
+            // Handle any S3Exception bubbled up from WasabiBucketComponent
+            $this->stdout($e->getMessage() . PHP_EOL, Console::FG_RED);
+            // Log error message
+            Yii::error($e->getMessage());
+            return ExitCode::DATAERR;
         }
-
         return ExitCode::OK;
     }
 
     /**
-     * Read file in bucket
+     * Lists all buckets
      * @return int Exit code
      */
-    public function actionRead()
+    public function actionListBuckets(): int
+    {
+        try {
+            $result = Yii::$app->WasabiBucketComponent->listBuckets();
+            //Yii::info($result);
+            var_dump($result);
+//            $this->stdout('New bucket created successfully.' . PHP_EOL, Console::FG_GREEN);
+//            $buckets = $result->get("Buckets");
+//            foreach ($buckets as $bucket) {
+//                $bucketNames[] = $bucket["Name"];
+//            }
+//            var_dump($bucketNames);
+        } catch (S3Exception $e) {
+            $this->stdout($e->getMessage() . PHP_EOL, Console::FG_RED);
+            Yii::error($e->getMessage());
+            return ExitCode::DATAERR;
+        }
+        return ExitCode::OK;
+    }
+
+    /**
+     * Delete bucket given a bucket name
+     * @return int Exit code
+     */
+    public function actionDelete(): int
     {
         $optBucketName = $this->bucketName;
-        $optFilePath   = $this->filePath;
 
         // Return usage unless mandatory options are passed.
         if ($optBucketName === '') {
             $this->stdout(
-                "\nUsage:\n\t./yii wasabi/read --bucketName theBucketName --filePath path/to/file" . PHP_EOL
+                "\nUsage:\n\t./yii wasabi-bucket/delete --bucketName theBucketName" . PHP_EOL
             );
             return ExitCode::USAGE;
         }
 
-        //Establish connection to wasabi via access and secret keys
-        $s3Client = new S3Client($this->credentials);
         try {
-            //Read object
-            $result = $s3Client->getObject([
-                'Bucket' => $optBucketName,
-                'Key' => $optFilePath,
-            ]);
-
-            //Print file contents
-            echo $result['Body'];
+            $result = Yii::$app->WasabiBucketComponent->deleteBucket($optBucketName);
+            //Yii::info($result);
+            var_dump($result);
         } catch (S3Exception $e) {
-            echo $e->getMessage() . PHP_EOL;
+            $this->stdout($e->getMessage() . PHP_EOL, Console::FG_RED);
+            Yii::error($e->getMessage());
+            return ExitCode::DATAERR;
         }
-
         return ExitCode::OK;
     }
 }
