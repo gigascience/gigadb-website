@@ -22,6 +22,13 @@ class WasabiUserController extends Controller
     public $username = '';
 
     /**
+     * Access ke ID for Wasabi account
+     *
+     * @var string $accessKeyId
+     */
+    public $accessKeyId = '';
+
+    /**
      * Specify options available to console command provided by this controller.
      *
      * @var    $actionID
@@ -31,6 +38,7 @@ class WasabiUserController extends Controller
     {
         return [
             'username',
+            'accessKeyId'
         ];
     }
 
@@ -121,6 +129,61 @@ class WasabiUserController extends Controller
             }
             $this->stdout("User deleted" . PHP_EOL, Console::FG_GREEN);
         } catch (IamException | Exception $e) {
+            $this->stdout($e->getMessage() . PHP_EOL, Console::FG_RED);
+            Yii::error($e->getMessage());
+            return ExitCode::DATAERR;
+        }
+        return ExitCode::OK;
+    }
+
+    /**
+     * Create access key for user
+     *
+     * @return int Exit code
+     */
+    public function actionCreateAccessKey(): int
+    {
+        $optUserName = $this->username;
+        if ($optUserName === '') {
+            $this->stdout(
+                "\nUsage:\n\t./yii wasabi-user/create-access-key --username theUserName" . PHP_EOL
+            );
+            return ExitCode::USAGE;
+        }
+
+        try {
+            $result = Yii::$app->WasabiUserComponent->createAccessKey($optUserName);
+            Yii::info($result);
+            $keyID = $result['AccessKey']['AccessKeyId'];
+            $this->stdout($keyID . PHP_EOL, Console::FG_GREEN);
+        } catch (IamException $e) {
+            $this->stdout($e->getMessage() . PHP_EOL, Console::FG_RED);
+            Yii::error($e->getMessage());
+            return ExitCode::DATAERR;
+        }
+        return ExitCode::OK;
+    }
+
+    /**
+     * Delete access key for user
+     *
+     * @return int Exit code
+     */
+    public function actionDeleteAccessKey(): int
+    {
+        $optAccessKeyId = $this->accessKeyId;
+        $optUserName = $this->username;
+        if ($optUserName === '') {
+            $this->stdout(
+                "\nUsage:\n\t./yii wasabi-user/delete-access-key  --access-key-id theAccessKeyID --username theUserName" . PHP_EOL
+            );
+            return ExitCode::USAGE;
+        }
+
+        try {
+            $result = Yii::$app->WasabiUserComponent->deleteAccessKey($optAccessKeyId, $optUserName);
+            Yii::info($result);
+        } catch (IamException $e) {
             $this->stdout($e->getMessage() . PHP_EOL, Console::FG_RED);
             Yii::error($e->getMessage());
             return ExitCode::DATAERR;

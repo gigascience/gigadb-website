@@ -80,4 +80,35 @@ class WasabiUserComponent extends Component
         ]);
         return $result;
     }
+
+    /**
+     * Create access key for user
+     *
+     * @param string $userName Wasabi username
+     * @return Result AWS result object
+     */
+    public function createAccessKey($userName): Result
+    {
+        $iam = new IamClient($this->credentials);
+        $result = $iam->createAccessKey([
+            'UserName' => "$userName"
+        ]);
+        return $result;
+    }
+
+    /**
+     * Delete access key for user
+     *
+     * @param string $userName Wasabi username
+     * @return Result AWS result object
+     */
+    public function deleteAccessKey($accessKeyId, $userName): Result
+    {
+        $iam = new IamClient($this->credentials);
+        $result = $iam->deleteAccessKey([
+            'AccessKeyId' => "$accessKeyId",
+            'UserName' => "$userName",
+        ]);
+        return $result;
+    }
 }
