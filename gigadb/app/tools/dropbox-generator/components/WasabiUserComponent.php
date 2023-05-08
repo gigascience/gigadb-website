@@ -2,13 +2,10 @@
 
 namespace app\components;
 
-use Aws\Iam\IamClient;
-use Aws\S3\Exception\S3Exception;
-use Aws\S3\S3Client;
-use Exception;
 use Yii;
 use yii\base\Component;
 use Aws\Result;
+use Aws\Iam\IamClient;
 
 /**
  * Component class for creating and attaching policies in Wasabi
@@ -78,8 +75,9 @@ class WasabiUserComponent extends Component
     public function deleteUser($userName): Result
     {
         $iam = new IamClient($this->credentials);
-        $iam->deleteUser([
+        $result = $iam->deleteUser([
             'UserName' => "$userName"
         ]);
+        return $result;
     }
 }

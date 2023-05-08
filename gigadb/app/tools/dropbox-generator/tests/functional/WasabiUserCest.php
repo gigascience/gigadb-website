@@ -1,91 +1,39 @@
 <?php
 
-use Aws\Iam\Exception\IamException;
-use Aws\Iam\IamClient;
+namespace app\tests\functional;
 
 class WasabiUserCest
 {
-    /**
-     * For storing credentials to access Wasabi
-     *
-     * @var [] $credentials
-     */
-    public $credentials = [];
-
-    /**
-     * Setup code that is run before each test
-     *
-     * @return void
-     */
-    public function _before()
-    {
-        $this->credentials = array(
-            'credentials' => [
-                'key' => Yii::$app->params['wasabi']['key'],
-                'secret' => Yii::$app->params['wasabi']['secret']
-            ],
-            'endpoint' => Yii::$app->params['wasabi']['iam_endpoint'],
-            'region' => Yii::$app->params['wasabi']['iam_region'],
-            'version' => 'latest',
-            'use_path_style_endpoint' => true,
-        );
-    }
-
     /**
      * Teardown code that is run after each test
      *
      * Currently just removes the Wasabi user that was created by this test
      *
+     * @param FunctionalTester $I
      * @return void
      */
-    public function _after()
+    public function _after(FunctionalTester $I)
     {
-        $users = $this->listWasabiUsers();
-        if (in_array("giga-d-23-00288", $users)) {
-            $this->deleteWasabiUser("giga-d-23-00288");
-        }
+        // Delete bucket created in tryCreateBucket() function
+        $I->runShellCommand("/app/yii_test wasabi-user/delete --username author-giga-d-23-00288");
+        $I->seeResultCodeIs(0);
     }
 
     /**
-     * Test actionCreategigadbuser function in WasabiController
+     * Test actionCreate() function in WasabiUserController
      *
      * @param FunctionalTester $I
      */
-    public function tryCreateWasabiUser(FunctionalTester $I)
+    public function tryCreateUser(FunctionalTester $I)
     {
-        $I->runShellCommand("/app/yii_test wasabi-user/creategigadbuser --username giga-d-23-00288");
-        # If above console command is successful then we should see the username in output
-        $I->seeInShellOutput("giga-d-23-00288");
-    }
+        $I->runShellCommand("/app/yii_test wasabi-user/create --username author-giga-d-23-00288");
+        $I->seeResultCodeIs(0);
+        $out = $I->grabShellOutput();
+        $I->assertStringContainsString("user/author-giga-d-23-00288", $out);
 
-    private function listWasabiUsers()
-    {
-        //Establish Wasabi connection
-        $iam = new IamClient($this->credentials);
-
-        $usernames = array();
-        try {
-            $result = $iam->listUsers();
-            $users = $result->get("Users");
-            foreach ($users as $user) {
-                $usernames[] = $user["UserName"];
-            }
-        } catch (IamException $e) {
-            echo $e->getMessage() . PHP_EOL;
-        }
-        return $usernames;
-    }
-
-    private function deleteWasabiUser($username)
-    {
-        $iam = new IamClient($this->credentials);
-
-        try {
-            $iam->deleteUser([
-                'UserName' => "$username"
-            ]);
-        } catch (IamException $e) {
-            echo $e->getMessage() . PHP_EOL;
-        }
+        // Check author-giga-d-23-00288 user account has been created
+        $I->runShellCommand('/app/yii_test wasabi-user/list-users');
+        $listUsersOutput = $I->grabShellOutput();
+        $I->assertStringContainsString('author-giga-d-23-00288', $listUsersOutput);
     }
 }

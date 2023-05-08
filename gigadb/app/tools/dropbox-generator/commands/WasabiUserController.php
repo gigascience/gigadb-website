@@ -1,22 +1,16 @@
 <?php
-/**
- * @link http://www.yiiframework.com/
- * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
- */
 
 namespace app\commands;
 
-use \Yii;
+use Yii;
 use yii\console\Controller;
 use yii\console\ExitCode;
-use Aws\Iam\Exception\IamException;
-use Aws\Iam\IamClient;
 use yii\helpers\Console;
+use Exception;
+use Aws\Iam\Exception\IamException;
 
 /**
- * Read file in bucket
- *
+ * Console commands for managing users in Wasabi
  */
 class WasabiUserController extends Controller
 {
@@ -47,6 +41,7 @@ class WasabiUserController extends Controller
 
     /**
      * Create user account
+     *
      * @return int Exit code
      */
     public function actionCreate()
@@ -72,6 +67,61 @@ class WasabiUserController extends Controller
             // Handle any IamException bubbled up from WasabiUserComponent
             $this->stdout($e->getMessage() . PHP_EOL, Console::FG_RED);
             // Log error message
+            Yii::error($e->getMessage());
+            return ExitCode::DATAERR;
+        }
+        return ExitCode::OK;
+    }
+
+    /**
+     * Lists all user accounts
+     *
+     * @return int Exit code
+     */
+    public function actionListUsers(): int
+    {
+        try {
+            $result = Yii::$app->WasabiUserComponent->listUsers();
+            Yii::info($result);
+            $users = $result->get("Users");
+            foreach ($users as $user) {
+                $this->stdout($user["UserName"] . PHP_EOL, Console::FG_GREEN);
+            }
+        } catch (IamException $e) {
+            $this->stdout($e->getMessage() . PHP_EOL, Console::FG_RED);
+            Yii::error($e->getMessage());
+            return ExitCode::DATAERR;
+        }
+        return ExitCode::OK;
+    }
+
+    /**
+     * Delete user account given a username
+     *
+     * @return int Exit code
+     */
+    public function actionDelete(): int
+    {
+        $optUserName = $this->username;
+
+        // Return usage unless mandatory options are passed
+        if ($optUserName === '') {
+            $this->stdout(
+                "\nUsage:\n\t./yii wasabi-user/delete --username theUserName" . PHP_EOL
+            );
+            return ExitCode::USAGE;
+        }
+
+        try {
+            $result = Yii::$app->WasabiUserComponent->deleteUser($optUserName);
+            Yii::info($result);
+            $statusCode = $result->get("@metadata")["statusCode"];
+            if ($statusCode != 200) {
+                throw new Exception("Delete user did not return HTTP 200 status response code!");
+            }
+            $this->stdout("User deleted" . PHP_EOL, Console::FG_GREEN);
+        } catch (IamException | Exception $e) {
+            $this->stdout($e->getMessage() . PHP_EOL, Console::FG_RED);
             Yii::error($e->getMessage());
             return ExitCode::DATAERR;
         }
