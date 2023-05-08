@@ -2,11 +2,12 @@
 
 namespace app\commands;
 
-use Aws\Iam\Exception\IamException;
 use Yii;
+use Exception;
 use yii\console\Controller;
 use yii\console\ExitCode;
 use yii\helpers\Console;
+use Aws\Iam\Exception\IamException;
 
 /**
  * Controller class for creating policies in Wasabi
@@ -62,7 +63,9 @@ class WasabiPolicyController extends Controller
             $policyResult = $result->get("Policy");
             $this->stdout($policyResult["Arn"] . PHP_EOL, Console::FG_GREEN);
         } catch (IamException $e) {
-            echo $e->getMessage() . PHP_EOL;
+            $this->stdout($e->getMessage() . PHP_EOL, Console::FG_RED);
+            Yii::error($e->getMessage());
+            return ExitCode::DATAERR;
         }
             return ExitCode::OK;
     }
@@ -76,7 +79,6 @@ class WasabiPolicyController extends Controller
     {
         $optUserName  = $this->username;
         $optPolicyArn = $this->policyArn;
-        // Return usage unless mandatory options are passed
         if ($optUserName === '' || $optPolicyArn === '') {
             $this->stdout(
                 "\nUsage:\n\t./yii wasabi-policy/attach-to-user --username theWasabiUserName --policyArn thePolicyArn" . PHP_EOL
@@ -92,8 +94,10 @@ class WasabiPolicyController extends Controller
                 throw new Exception("Attach policy to user did not return HTTP 200 status response code!");
             }
             $this->stdout("Policy attached to user" . PHP_EOL, Console::FG_GREEN);
-        } catch (IamException $e) {
-            echo $e->getMessage() . PHP_EOL;
+        } catch (IamException | Exception $e) {
+            $this->stdout($e->getMessage() . PHP_EOL, Console::FG_RED);
+            Yii::error($e->getMessage());
+            return ExitCode::DATAERR;
         }
         return ExitCode::OK;
     }
