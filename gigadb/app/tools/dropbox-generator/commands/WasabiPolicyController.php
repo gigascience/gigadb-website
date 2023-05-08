@@ -2,9 +2,11 @@
 
 namespace app\commands;
 
+use Aws\Iam\Exception\IamException;
 use Yii;
 use yii\console\Controller;
 use yii\console\ExitCode;
+use yii\helpers\Console;
 
 /**
  * Controller class for creating policies in Wasabi
@@ -16,7 +18,14 @@ class WasabiPolicyController extends Controller
      *
      * @var string $username
      */
-    public $username = '';
+    public string $username = '';
+
+    /**
+     * Amazon Resource Number for policy
+     *
+     * @var string $policyArn
+     */
+    public string $policyArn = '';
 
     /**
      * Specify options available to console command provided by this controller
@@ -28,6 +37,7 @@ class WasabiPolicyController extends Controller
     {
         return [
             'username',
+            'policyArn'
         ];
     }
 
@@ -37,7 +47,7 @@ class WasabiPolicyController extends Controller
      */
     public function actionCreateAuthorPolicy(): int
     {
-        $optUserName   = $this->username;
+        $optUserName = $this->username;
         // Return usage unless mandatory options are passed
         if ($optUserName === '') {
             $this->stdout(
@@ -46,11 +56,45 @@ class WasabiPolicyController extends Controller
             return ExitCode::USAGE;
         }
 
-        $policy = Yii::$app->PolicyGenerator->generateAuthorPolicy($optUserName);
-        $result = Yii::$app->WasabiPolicyComponent->createAuthorPolicy($optUserName, $policy);
-        // Extract policy ARN from AWS Result object
-        $arn = $result->get("Policy")["Arn"];
-        Yii::$app->WasabiPolicyComponent->attachPolicyToUser($arn, $optUserName);
+        try {
+            $policyContent = Yii::$app->PolicyGenerator->generateAuthorPolicy($optUserName);
+            $result = Yii::$app->WasabiPolicyComponent->createAuthorPolicy($optUserName, $policyContent);
+            $policyResult = $result->get("Policy");
+            $this->stdout($policyResult["Arn"] . PHP_EOL, Console::FG_GREEN);
+        } catch (IamException $e) {
+            echo $e->getMessage() . PHP_EOL;
+        }
+            return ExitCode::OK;
+    }
+
+    /**
+     *
+     * Calls attachPolicyToUser() in WasabiPolicyComponent class
+     * @return int Exit code
+     */
+    public function actionAttachToUser(): int
+    {
+        $optUserName  = $this->username;
+        $optPolicyArn = $this->policyArn;
+        // Return usage unless mandatory options are passed
+        if ($optUserName === '' || $optPolicyArn === '') {
+            $this->stdout(
+                "\nUsage:\n\t./yii wasabi-policy/attach-to-user --username theWasabiUserName --policyArn thePolicyArn" . PHP_EOL
+            );
+            return ExitCode::USAGE;
+        }
+
+        try {
+            $result = Yii::$app->WasabiPolicyComponent->attachPolicyToUser($optPolicyArn, $optUserName);
+            Yii::info($result);
+            $statusCode = $result->get("@metadata")["statusCode"];
+            if ($statusCode != 200) {
+                throw new Exception("Attach policy to user did not return HTTP 200 status response code!");
+            }
+            $this->stdout("Policy attached to user" . PHP_EOL, Console::FG_GREEN);
+        } catch (IamException $e) {
+            echo $e->getMessage() . PHP_EOL;
+        }
         return ExitCode::OK;
     }
 }

@@ -481,6 +481,139 @@ object(Aws\Result)#655 (2) {
 # Run command to create policy
 ```
 $ docker-compose run --rm tool /app/yii wasabi-policy/create-author-policy --username author-giga-d-4-00286
+object(Aws\Result)#407 (2) {
+  ["data":"Aws\Result":private]=>
+  array(2) {
+    ["Policy"]=>
+    array(9) {
+      ["PolicyName"]=>
+      string(28) "policy-author-giga-d-4-00286"
+      ["PolicyId"]=>
+      string(21) "TYK5Y60Y7UXJT3Z4IPYBQ"
+      ["Arn"]=>
+      string(61) "arn:aws:iam::100000199914:policy/policy-author-giga-d-4-00286"
+      ["Path"]=>
+      string(1) "/"
+      ["DefaultVersionId"]=>
+      string(2) "v1"
+      ["AttachmentCount"]=>
+      int(0)
+      ["IsAttachable"]=>
+      bool(true)
+      ["CreateDate"]=>
+      object(Aws\Api\DateTimeResult)#420 (3) {
+        ["date"]=>
+        string(26) "2023-05-08 07:13:58.436000"
+        ["timezone_type"]=>
+        int(2)
+        ["timezone"]=>
+        string(1) "Z"
+      }
+      ["UpdateDate"]=>
+      object(Aws\Api\DateTimeResult)#421 (3) {
+        ["date"]=>
+        string(26) "2023-05-08 07:13:58.436000"
+        ["timezone_type"]=>
+        int(2)
+        ["timezone"]=>
+        string(1) "Z"
+      }
+    }
+    ["@metadata"]=>
+    array(4) {
+      ["statusCode"]=>
+      int(200)
+      ["effectiveUri"]=>
+      string(26) "https://iam.wasabisys.com/"
+      ["headers"]=>
+      array(9) {
+        ["content-length"]=>
+        string(3) "636"
+        ["content-type"]=>
+        string(8) "text/xml"
+        ["date"]=>
+        string(29) "Mon, 08 May 2023 07:13:58 GMT"
+        ["server"]=>
+        string(9) "WasabiIAM"
+        ["vary"]=>
+        string(15) "Accept-Encoding"
+        ["x-amzn-requestid"]=>
+        string(36) "0ec46c18-2a14-9a8e-bcae-d074cec10dd4"
+        ["x-wasabi-cluster-id"]=>
+        string(9) "us-east-1"
+        ["x-wasabi-service"]=>
+        string(11) "iam_service"
+        ["x-wasabi-service-runtime-id"]=>
+        string(12) "6e71e8385586"
+      }
+      ["transferStats"]=>
+      array(1) {
+        ["http"]=>
+        array(1) {
+          [0]=>
+          array(0) {
+          }
+        }
+      }
+    }
+  }
+  ["monitoringEvents":"Aws\Result":private]=>
+  array(0) {
+  }
+}
+```
+
+# Run command to attach policy to user
+```
+$ docker-compose run --rm tool /app/yii wasabi-user/create --username author-giga-d-23-00288
+$ docker-compose run --rm tool /app/yii wasabi-bucket/create --bucketName bucket-giga-d-23-00288
+$ docker-compose run --rm tool /app/yii wasabi-policy/create-author-policy --username author-giga-d-23-00288
+$ docker-compose run --rm tool /app/yii wasabi-policy/attach-to-user --username author-giga-d-23-00288 --policy-arn arn:aws:iam::100000199914:policy/policy-author-giga-d-23-00288
+object(Aws\Result)#285 (2) {
+  ["data":"Aws\Result":private]=>
+  array(1) {
+    ["@metadata"]=>
+    array(4) {
+      ["statusCode"]=>
+      int(200)
+      ["effectiveUri"]=>
+      string(26) "https://iam.wasabisys.com/"
+      ["headers"]=>
+      array(9) {
+        ["content-length"]=>
+        string(3) "199"
+        ["content-type"]=>
+        string(8) "text/xml"
+        ["date"]=>
+        string(29) "Mon, 08 May 2023 07:56:23 GMT"
+        ["server"]=>
+        string(9) "WasabiIAM"
+        ["vary"]=>
+        string(15) "Accept-Encoding"
+        ["x-amzn-requestid"]=>
+        string(36) "f55f2f8e-ebe2-ab89-58b3-75c499adcb78"
+        ["x-wasabi-cluster-id"]=>
+        string(9) "us-east-1"
+        ["x-wasabi-service"]=>
+        string(11) "iam_service"
+        ["x-wasabi-service-runtime-id"]=>
+        string(12) "eeb72e47fc9c"
+      }
+      ["transferStats"]=>
+      array(1) {
+        ["http"]=>
+        array(1) {
+          [0]=>
+          array(0) {
+          }
+        }
+      }
+    }
+  }
+  ["monitoringEvents":"Aws\Result":private]=>
+  array(0) {
+  }
+}
 
 ```
 

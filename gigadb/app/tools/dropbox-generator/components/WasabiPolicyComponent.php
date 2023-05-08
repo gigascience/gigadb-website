@@ -43,19 +43,16 @@ class WasabiPolicyComponent extends Component
      * Create a policy in Wasabi that restricts an author to their own bucket
      *
      * @param string $authorUserName Wasabi username of the author.
+     * @param string $policy Contents of author policy.
      * @return Result AWS result object
      */
     public function createAuthorPolicy(string $authorUserName, string $policy): Result
     {
         $iam = new IamClient($this->credentials);
-        try {
-            $result = $iam->createPolicy([
-                'PolicyName'     => 'policy-' . "$authorUserName",
-                'PolicyDocument' => $policy
-            ]);
-        } catch (IamException $e) {
-            echo $e->getMessage() . PHP_EOL;
-        }
+        $result = $iam->createPolicy([
+            'PolicyName'     => 'policy-' . $authorUserName,
+            'PolicyDocument' => $policy
+        ]);
         return $result;
     }
 
@@ -68,14 +65,10 @@ class WasabiPolicyComponent extends Component
     public function attachPolicyToUser(string $policyArn, $username)
     {
         $iam = new IamClient($this->credentials);
-        try {
-            $result = $iam->attachUserPolicy([
-                'UserName' => $username,
-                'PolicyArn' => $policyArn,
-            ]);
-        } catch (IamException $e) {
-            echo "Problem interacting with AWS IAM service: " . $e->getMessage() . PHP_EOL;
-        }
+        $result = $iam->attachUserPolicy([
+            'UserName' => $username,
+            'PolicyArn' => $policyArn,
+        ]);
         return $result;
     }
 
