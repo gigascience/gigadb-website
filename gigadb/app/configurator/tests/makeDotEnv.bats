@@ -4,13 +4,13 @@ source ./src/dotfiles.sh
 
 
 teardown () {
-	if [ -f tests/.env ];then
-		rm tests/.env
-	fi
-	if [ -f tests/config-sources/env.example ];then
-		rm tests/config-sources/env.example
-		rmdir tests/config-sources
-	fi
+    if [ -f tests/.env ];then
+        rm tests/.env
+    fi
+    if [ -f tests/config-sources/env.example ];then
+        rm tests/config-sources/env.example
+        rmdir tests/config-sources
+    fi
 }
 
 @test ".env already exists, just source it" {

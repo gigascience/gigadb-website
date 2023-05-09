@@ -3,9 +3,9 @@
 source ./src/dotfiles.sh
 
 teardown () {
-	if [ -f tests/.secrets ];then
-		rm tests/.secrets
-	fi
+    if [ -f tests/.secrets ];then
+        rm tests/.secrets
+    fi
 }
 
 @test "source .secrets if already exists" {
