@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+if [ "$(uname)" == "Darwin" ];then
+  docker-compose run --rm files-metadata-console ./vendor/bin/codecept run functional
+else
+  docker-compose -f docker-compose.yml -f docker-compose.ci.yml run --rm files-metadata-console ./vendor/bin/codecept run functional
+fi

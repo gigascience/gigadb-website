@@ -1,0 +1,11 @@
+version: '3.7'
+
+services:
+  files-metadata-console:
+    build:
+      cache_from:
+        - "registry.gitlab.com/$CI_PROJECT_PATH/files-metadata-console:latest"
+
+networks:
+  proxy-db-tier:  # represents db-tier network in ops/docker-compose.yml
+    name: "${COMPOSE_PROJECT_NAME}_db-tier"
