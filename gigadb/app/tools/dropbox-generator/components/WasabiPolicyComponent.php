@@ -9,16 +9,14 @@ use Aws\Iam\IamClient;
 use Aws\Result;
 
 /**
- * Component class for creating and attaching policies in Wasabi
+ * Component class for creating and managing policies in Wasabi
  */
 class WasabiPolicyComponent extends Component
 {
     /**
-     * For storing credentials to access Wasabi
-     *
-     * @var [] $credentials
+     * @var array For storing credentials to access Wasabi
      */
-    public $credentials = [];
+    public array $credentials = [];
 
     /**
      * Initialize component
@@ -50,7 +48,7 @@ class WasabiPolicyComponent extends Component
     {
         $iam = new IamClient($this->credentials);
         $result = $iam->createPolicy([
-            'PolicyName'     => 'policy-' . $authorUserName,
+            'PolicyName'     => "policy-{$authorUserName}",
             'PolicyDocument' => $policy
         ]);
         return $result;
@@ -85,11 +83,16 @@ class WasabiPolicyComponent extends Component
         try {
             $result = $iamClient->listPolicies();
         } catch (IamException $e) {
-            echo "Problem interacting with Wasabi IAM service: " . $e->getMessage() . PHP_EOL;
+            echo "Problem interacting with Wasabi IAM service: {$e->getMessage()}" . PHP_EOL;
         }
         return $result;
     }
 
+    /**
+     * Detach policy from user
+     *
+     * @return Result AWS result object
+     */
     public function detachUserPolicy($userName, $PolicyArn)
     {
         $iamClient = new IamClient($this->credentials);
@@ -104,12 +107,17 @@ class WasabiPolicyComponent extends Component
         return $result;
     }
 
-    public function deletePolicy($policyArn)
+    /**
+     * Delete a policy
+     *
+     * @return Result AWS result object
+     */
+    public function deletePolicy($policyArn): Result
     {
         $iamClient = new IamClient($this->credentials);
         try {
             $result = $iamClient->deletePolicy([
-                'PolicyArn' => "$policyArn"
+                'PolicyArn' => $policyArn
             ]);
         } catch (IamException $e) {
             echo $e->getMessage() . PHP_EOL;

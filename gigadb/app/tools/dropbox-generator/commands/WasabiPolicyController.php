@@ -15,16 +15,12 @@ use Aws\Iam\Exception\IamException;
 class WasabiPolicyController extends Controller
 {
     /**
-     * Wasabi username
-     *
-     * @var string $username
+     * @var string Wasabi username
      */
     public string $username = '';
 
     /**
-     * Amazon Resource Number for policy
-     *
-     * @var string $policyArn
+     * @var string Amazon Resource Number for policy
      */
     public string $policyArn = '';
 

@@ -13,9 +13,7 @@ use Aws\Iam\IamClient;
 class WasabiUserComponent extends Component
 {
     /**
-     * For storing credentials to access Wasabi
-     *
-     * @var [] $credentials
+     * @var array For storing credentials to access Wasabi
      */
     public array $credentials;
 
@@ -27,12 +25,12 @@ class WasabiUserComponent extends Component
         parent::init();
         $this->credentials = [
             'credentials' => [
-                'key' => Yii::$app->params['wasabi']['key'],
+                'key'    => Yii::$app->params['wasabi']['key'],
                 'secret' => Yii::$app->params['wasabi']['secret']
             ],
-            'endpoint' => Yii::$app->params['wasabi']['iam_endpoint'],
-            'region' => Yii::$app->params['wasabi']['iam_region'],
-            'version' => 'latest',
+            'endpoint'                => Yii::$app->params['wasabi']['iam_endpoint'],
+            'region'                  => Yii::$app->params['wasabi']['iam_region'],
+            'version'                 => 'latest',
             'use_path_style_endpoint' => true,
         ];
     }
@@ -49,7 +47,7 @@ class WasabiUserComponent extends Component
         //Establish connection to wasabi
         $iam = new IamClient($this->credentials);
         $result = $iam->createUser([
-            'UserName' => "$userName"
+            'UserName' => $userName
         ]);
         return $result;
     }
@@ -62,8 +60,7 @@ class WasabiUserComponent extends Component
     public function listUsers(): Result
     {
         $iam = new IamClient($this->credentials);
-        $result = $iam->listUsers();
-        return $result;
+        return $iam->listUsers();
     }
 
     /**
@@ -76,7 +73,7 @@ class WasabiUserComponent extends Component
     {
         $iam = new IamClient($this->credentials);
         $result = $iam->deleteUser([
-            'UserName' => "$userName"
+            'UserName' => $userName
         ]);
         return $result;
     }
@@ -91,7 +88,7 @@ class WasabiUserComponent extends Component
     {
         $iam = new IamClient($this->credentials);
         $result = $iam->createAccessKey([
-            'UserName' => "$userName"
+            'UserName' => $userName
         ]);
         return $result;
     }
@@ -106,8 +103,8 @@ class WasabiUserComponent extends Component
     {
         $iam = new IamClient($this->credentials);
         $result = $iam->deleteAccessKey([
-            'AccessKeyId' => "$accessKeyId",
-            'UserName' => "$userName",
+            'AccessKeyId' => $accessKeyId,
+            'UserName'    => $userName,
         ]);
         return $result;
     }

@@ -14,7 +14,15 @@ use Twig\Error\SyntaxError;
  */
 class PolicyGenerator extends Component
 {
+    /**
+     * @const string For storing credentials to access Wasabi
+     */
     public const TEMPLATE_LOCATION = __DIR__ . '/../templates';
+
+    /**
+     * @const string Filename for author policy template
+     */
+    public const AUTHOR_POLICY_TEMPLATE = 'AllowReadWriteOnBucketByAuthor.html.twig';
 
     /**
      * Initialize component
@@ -40,8 +48,8 @@ class PolicyGenerator extends Component
         $bucketName = str_replace('author-', 'bucket-', $username);
         try {
             $policy = $twig->render(
-                "AllowReadWriteOnBucketByAuthor.html.twig",
-                ['bucket_name' => "$bucketName"]
+                self::AUTHOR_POLICY_TEMPLATE,
+                ['bucket_name' => $bucketName]
             );
         } catch (LoaderError $e) {
             echo "Problem loading Twig template: " . $e->getMessage() . PHP_EOL;

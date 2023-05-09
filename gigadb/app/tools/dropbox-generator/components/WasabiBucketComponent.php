@@ -2,12 +2,11 @@
 
 namespace app\components;
 
-use Aws\S3\Exception\S3Exception;
-use Aws\S3\S3Client;
-use Exception;
 use Yii;
 use yii\base\Component;
+use Exception;
 use Aws\Result;
+use Aws\S3\S3Client;
 
 /**
  * Component class for creating and attaching policies in Wasabi
@@ -15,9 +14,7 @@ use Aws\Result;
 class WasabiBucketComponent extends Component
 {
     /**
-     * For storing credentials to access Wasabi
-     *
-     * @var [] $credentials
+     * @var array For storing credentials to access Wasabi
      */
     public array $credentials;
 
@@ -29,12 +26,12 @@ class WasabiBucketComponent extends Component
         parent::init();
         $this->credentials = [
             'credentials' => [
-                'key' => Yii::$app->params['wasabi']['key'],
+                'key'    => Yii::$app->params['wasabi']['key'],
                 'secret' => Yii::$app->params['wasabi']['secret']
             ],
-            'endpoint' => Yii::$app->params['wasabi']['bucket_endpoint'],
-            'region' => Yii::$app->params['wasabi']['bucket_region'],
-            'version' => 'latest',
+            'endpoint'                => Yii::$app->params['wasabi']['bucket_endpoint'],
+            'region'                  => Yii::$app->params['wasabi']['bucket_region'],
+            'version'                 => 'latest',
             'use_path_style_endpoint' => true,
         ];
     }
@@ -58,15 +55,14 @@ class WasabiBucketComponent extends Component
     }
 
     /**
-     * List bucket names in account
+     * List buckets in account
      *
      * @throws Exception
      */
     public function listBuckets(): Result
     {
         $s3Client = new S3Client($this->credentials);
-        $result = $s3Client->listBuckets();
-        return $result;
+        return $s3Client->listBuckets();
     }
 
     /**
@@ -92,12 +88,12 @@ class WasabiBucketComponent extends Component
     {
         $author_credentials = [
             'credentials' => [
-                'key' => $authorAccessKey,
+                'key'    => $authorAccessKey,
                 'secret' => $authorAccessSecret
             ],
-            'endpoint' => Yii::$app->params['wasabi']['bucket_endpoint'],
-            'region' => Yii::$app->params['wasabi']['bucket_region'],
-            'version' => 'latest',
+            'endpoint'                => Yii::$app->params['wasabi']['bucket_endpoint'],
+            'region'                  => Yii::$app->params['wasabi']['bucket_region'],
+            'version'                 => 'latest',
             'use_path_style_endpoint' => true,
         ];
 
@@ -119,19 +115,19 @@ class WasabiBucketComponent extends Component
     {
         $author_credentials = [
             'credentials' => [
-                'key' => $authorAccessKey,
+                'key'    => $authorAccessKey,
                 'secret' => $authorAccessSecret
             ],
-            'endpoint' => Yii::$app->params['wasabi']['bucket_endpoint'],
-            'region' => Yii::$app->params['wasabi']['bucket_region'],
-            'version' => 'latest',
+            'endpoint'                => Yii::$app->params['wasabi']['bucket_endpoint'],
+            'region'                  => Yii::$app->params['wasabi']['bucket_region'],
+            'version'                 => 'latest',
             'use_path_style_endpoint' => true,
         ];
 
         $s3Client = new S3Client($author_credentials);
         $result = $s3Client->deleteObject([
             'Bucket' => $bucketName,
-            'Key' => $key,
+            'Key'    => $key,
         ]);
         return $result;
     }

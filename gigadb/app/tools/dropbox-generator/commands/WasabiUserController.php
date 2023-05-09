@@ -15,18 +15,14 @@ use Aws\Iam\Exception\IamException;
 class WasabiUserController extends Controller
 {
     /**
-     * Username for Wasabi account
-     *
-     * @var string $username
+     * @var string Username for Wasabi account
      */
-    public $username = '';
+    public string $username = '';
 
     /**
-     * Access ke ID for Wasabi account
-     *
-     * @var string $accessKeyId
+     * @var string Access ke ID for Wasabi account
      */
-    public $accessKeyId = '';
+    public string $accessKeyId = '';
 
     /**
      * Specify options available to console command provided by this controller.
@@ -55,7 +51,6 @@ class WasabiUserController extends Controller
     public function actionCreate()
     {
         $optUserName   = $this->username;
-
         // Return usage unless mandatory options are passed
         if ($optUserName === '') {
             $this->stdout(
@@ -111,8 +106,6 @@ class WasabiUserController extends Controller
     public function actionDelete(): int
     {
         $optUserName = $this->username;
-
-        // Return usage unless mandatory options are passed
         if ($optUserName === '') {
             $this->stdout(
                 "\nUsage:\n\t./yii wasabi-user/delete --username theUserName" . PHP_EOL
@@ -167,6 +160,8 @@ class WasabiUserController extends Controller
 
     /**
      * Delete access key for user
+     * 
+     * Need to perform this operation before a Wasabi user can be deleted.
      *
      * @return int Exit code
      */
