@@ -109,4 +109,30 @@ class WasabiBucketComponent extends Component
         ]);
         return $result;
     }
+
+    /**
+     * Delete file in bucket
+     *
+     * @throws Exception
+     */
+    public function deleteObject($bucketName, $key, $authorAccessKey, $authorAccessSecret)
+    {
+        $author_credentials = [
+            'credentials' => [
+                'key' => $authorAccessKey,
+                'secret' => $authorAccessSecret
+            ],
+            'endpoint' => Yii::$app->params['wasabi']['bucket_endpoint'],
+            'region' => Yii::$app->params['wasabi']['bucket_region'],
+            'version' => 'latest',
+            'use_path_style_endpoint' => true,
+        ];
+
+        $s3Client = new S3Client($author_credentials);
+        $result = $s3Client->deleteObject([
+            'Bucket' => $bucketName,
+            'Key' => $key,
+        ]);
+        return $result;
+    }
 }

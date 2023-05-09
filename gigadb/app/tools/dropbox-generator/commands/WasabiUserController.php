@@ -153,8 +153,6 @@ class WasabiUserController extends Controller
 
         try {
             $result = Yii::$app->WasabiUserComponent->createAccessKey($optUserName);
-//            Yii::info($result);
-//            var_dump($result);
             $key = $result['AccessKey']['AccessKeyId'];
             $secret = $result['AccessKey']['SecretAccessKey'];
             $credentials = "key=$key" . PHP_EOL . "secret=$secret" . PHP_EOL;

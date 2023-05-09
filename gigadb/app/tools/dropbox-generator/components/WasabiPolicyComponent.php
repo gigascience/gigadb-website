@@ -84,25 +84,20 @@ class WasabiPolicyComponent extends Component
         $iamClient = new IamClient($this->credentials);
         try {
             $result = $iamClient->listPolicies();
-            $policies = $result->get("Policies");
-//            foreach ($policies as $policy) {
-//                $policyNames[] = $policy["Name"];
-//            }
         } catch (IamException $e) {
             echo "Problem interacting with Wasabi IAM service: " . $e->getMessage() . PHP_EOL;
         }
         return $result;
     }
 
-    public function detachUserPolicy($UserName, $PolicyArn)
+    public function detachUserPolicy($userName, $PolicyArn)
     {
         $iamClient = new IamClient($this->credentials);
         try {
             $result = $iamClient->detachUserPolicy(array(
-                'UserName'  => "$UserName",
+                'UserName'  => "$userName",
                 'PolicyArn' => "$PolicyArn",
             ));
-            var_dump($result);
         } catch (IamException $e) {
             echo $e->getMessage() . PHP_EOL;
         }
@@ -116,7 +111,6 @@ class WasabiPolicyComponent extends Component
             $result = $iamClient->deletePolicy([
                 'PolicyArn' => "$policyArn"
             ]);
-            // var_dump($result);
         } catch (IamException $e) {
             echo $e->getMessage() . PHP_EOL;
         }

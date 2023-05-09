@@ -2,6 +2,9 @@
 
 namespace app\tests\functional;
 
+use Aws\Iam\Exception\IamException;
+use Aws\S3\Exception\S3Exception;
+use Exception;
 use FunctionalTester;
 use Yii;
 
@@ -12,28 +15,36 @@ class WasabiDropboxCest
 {
     public string $manuscriptId = 'giga-d-23-00288';
 
+    public string $policyArn = '';
+
+    public string $accessKey = '';
+
+    public string $accessSecret = '';
+
     /**
-     * Teardown code that is executed after every test
-     *
-     * Currently just detaches and deletes a policy created by
-     * tryCreateAuthorPolicy() function.
+     * Teardown code that is executed after dropbox workflow test
      *
      * @return void
      */
     public function _after()
     {
-//        $policyName = "policy-$this->authorUserName";
-//        $result = Yii::$app->WasabiPolicyComponent->listPolicies();
-//        $policies = $result->get("Policies");
-//        $key = array_search($policyName, array_column($policies, 'PolicyName'));
-//        if ($key !== false) {
-//            Yii::$app->WasabiPolicyComponent->detachUserPolicy(
-//                $this->authorUserName,
-//                "arn:aws:iam:::policy/$policyName"
-//            );
-//            $policyArn = $policies[$key]["Arn"];
-//            Yii::$app->WasabiPolicyComponent->deletePolicy($policyArn);
-//        }
+        try {
+            // Delete test file in bucket
+            $result = Yii::$app->WasabiBucketComponent->deleteObject('bucket-giga-d-23-00288', 'README.md', $this->accessKey, $this->accessSecret);
+            // Delete bucket
+            $result = Yii::$app->WasabiBucketComponent->deleteBucket('bucket-giga-d-23-00288');
+            // Detach policy from user
+            $result = Yii::$app->WasabiPolicyComponent->detachUserPolicy('author-giga-d-23-00288', $this->policyArn);
+            // Delete policy
+            $result = Yii::$app->WasabiPolicyComponent->deletePolicy($this->policyArn);
+            // Delete user's access keys
+            $result = Yii::$app->WasabiUserComponent->deleteAccessKey($this->accessKey, 'author-giga-d-23-00288');
+            // Delete user
+            $result = Yii::$app->WasabiUserComponent->deleteUser('author-giga-d-23-00288');
+        } catch (IamException | S3Exception | Exception $e) {
+            print_r("Caught exception: " . $e->getMessage() . PHP_EOL);
+            $this->stdout($e->getMessage() . PHP_EOL, Console::FG_RED);
+        }
     }
 
     /**
@@ -44,8 +55,7 @@ class WasabiDropboxCest
      */
     public function tryCreateAuthorDropbox(FunctionalTester $I)
     {
-        // First, create Wasabi user account with username based on manuscript
-        // identifier
+        // Create Wasabi user account with username based on manuscript identifier
         $authorUserName = 'author-' . $this->manuscriptId;
         $I->runShellCommand("/app/yii_test wasabi-user/create --username $authorUserName");
         $I->seeResultCodeIs(0);
@@ -62,8 +72,8 @@ class WasabiDropboxCest
         codecept_debug($keyAndSecret);
         // Parse credentials
         $tokens = explode("\n", $keyAndSecret);
-        $accessKey = str_replace('key=', '', $tokens[0]);
-        $accessSecret = str_replace('secret=', '', $tokens[1]);
+        $this->accessKey = str_replace('key=', '', $tokens[0]);
+        $this->accessSecret = str_replace('secret=', '', $tokens[1]);
 
         // Create bucket name for author dropbox
         $bucketName = 'bucket-' . $this->manuscriptId;
@@ -79,18 +89,17 @@ class WasabiDropboxCest
 
         // Create policy
         $I->runShellCommand("/app/yii_test wasabi-policy/create-author-policy --username $authorUserName");
-        $policyArn = $I->grabShellOutput();
+        $this->policyArn = $I->grabShellOutput();
         // Check policy has been created
         $result = Yii::$app->WasabiPolicyComponent->listPolicies();
         $policies = $result->get("Policies");
-//        codecept_debug($policies);
         // Policy was created if key found
         $key = array_search('policy-' . $authorUserName, array_column($policies, 'PolicyName'));
         $I->assertNotFalse($key);
         // Attach policy to user
-        $I->runShellCommand("/app/yii_test wasabi-policy/attach-to-user --username $authorUserName --policy-arn $policyArn");
+        $I->runShellCommand("/app/yii_test wasabi-policy/attach-to-user --username $authorUserName --policy-arn $this->policyArn");
 
         // Test user can upload data into bucket dropbox
-        $I->runShellCommand("/app/yii_test wasabi-bucket/put-object --bucket-name $bucketName --key README.md --file-path /app/README.md --access-key $accessKey --access-secret $accessSecret");
+        $I->runShellCommand("/app/yii_test wasabi-bucket/put-object --bucket-name $bucketName --key README.md --file-path /app/README.md --access-key $this->accessKey --access-secret $this->accessSecret");
     }
 }

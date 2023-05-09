@@ -125,7 +125,7 @@ class WasabiBucketController extends Controller
             $result = Yii::$app->WasabiBucketComponent->deleteBucket($optBucketName);
             Yii::info($result);
             $statusCode = $result->get("@metadata")["statusCode"];
-            if ($statusCode != 204) {
+            if ($statusCode != 200) {
                 throw new Exception("Delete bucket did not return HTTP 204 No Content status response code!");
             }
             $this->stdout("Bucket deleted" . PHP_EOL, Console::FG_GREEN);
@@ -165,7 +165,7 @@ class WasabiBucketController extends Controller
             if ($statusCode != 200) {
                 throw new Exception("Delete bucket did not return HTTP 200 No Content status response code!");
             }
-            $this->stdout("Bucket deleted" . PHP_EOL, Console::FG_GREEN);
+            $this->stdout("$optKey placed in bucket" . PHP_EOL, Console::FG_GREEN);
         } catch (S3Exception | Exception $e) {
             $this->stdout($e->getMessage() . PHP_EOL, Console::FG_RED);
             Yii::error($e->getMessage());
