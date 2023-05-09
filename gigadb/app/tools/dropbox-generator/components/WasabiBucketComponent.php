@@ -82,4 +82,31 @@ class WasabiBucketComponent extends Component
         ]);
         return $result;
     }
+
+    /**
+     * Upload file to bucket
+     *
+     * @throws Exception
+     */
+    public function putObject($bucketName, $key, $filePath, $authorAccessKey, $authorAccessSecret)
+    {
+        $author_credentials = [
+            'credentials' => [
+                'key' => $authorAccessKey,
+                'secret' => $authorAccessSecret
+            ],
+            'endpoint' => Yii::$app->params['wasabi']['bucket_endpoint'],
+            'region' => Yii::$app->params['wasabi']['bucket_region'],
+            'version' => 'latest',
+            'use_path_style_endpoint' => true,
+        ];
+
+        $s3Client = new S3Client($author_credentials);
+        $result = $s3Client->putObject([
+            'Bucket' => $bucketName,
+            'Key' => $key,
+            'SourceFile' => $filePath,
+        ]);
+        return $result;
+    }
 }

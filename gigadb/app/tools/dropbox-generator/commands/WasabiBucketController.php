@@ -21,6 +21,14 @@ class WasabiBucketController extends Controller
      */
     public $bucketName = '';
 
+    public $key = '';
+
+    public $filePath = '';
+
+    public $accessKey = '';
+
+    public $accessSecret = '';
+
     /**
      * Specify options available to console command provided by this controller.
      *
@@ -31,6 +39,10 @@ class WasabiBucketController extends Controller
     {
         return [
             'bucketName',
+            'key',
+            'filePath',
+            'accessKey',
+            'accessSecret'
         ];
     }
 
@@ -115,6 +127,43 @@ class WasabiBucketController extends Controller
             $statusCode = $result->get("@metadata")["statusCode"];
             if ($statusCode != 204) {
                 throw new Exception("Delete bucket did not return HTTP 204 No Content status response code!");
+            }
+            $this->stdout("Bucket deleted" . PHP_EOL, Console::FG_GREEN);
+        } catch (S3Exception | Exception $e) {
+            $this->stdout($e->getMessage() . PHP_EOL, Console::FG_RED);
+            Yii::error($e->getMessage());
+            return ExitCode::DATAERR;
+        }
+        return ExitCode::OK;
+    }
+
+    /**
+     * Upload file into bucket
+     * @return int Exit code
+     */
+    public function actionPutObject(): int
+    {
+        $optBucketName = $this->bucketName;
+        $optKey = $this->key;
+        $optFilePath = $this->filePath;
+        $optAccessKey = $this->accessKey;
+        $optAccessSecret = $this->accessSecret;
+
+        // Return usage unless mandatory options are passed.
+        if ($optBucketName === '') {
+            $this->stdout(
+                "\nUsage:\n\t./yii wasabi-bucket/putObject --bucketName theBucketName --key theKey --file-path theFilePath --access-key theAccessKey --access-secret theAccessSecret" . PHP_EOL
+            );
+            return ExitCode::USAGE;
+        }
+
+        try {
+            $result = Yii::$app->WasabiBucketComponent->putObject($optBucketName, $optKey, $optFilePath, $optAccessKey, $optAccessSecret);
+            Yii::info($result);
+            $statusCode = $result->get("@metadata")["statusCode"];
+            codecept_debug('Put object status code: ' . $statusCode);
+            if ($statusCode != 200) {
+                throw new Exception("Delete bucket did not return HTTP 200 No Content status response code!");
             }
             $this->stdout("Bucket deleted" . PHP_EOL, Console::FG_GREEN);
         } catch (S3Exception | Exception $e) {
