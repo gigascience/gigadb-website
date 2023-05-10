@@ -34,3 +34,6 @@ tests/_support/_generated
 
 # Do not version control due to secrets
 config/params.php
+
+# Do not commit authors' credentials
+author-*txt

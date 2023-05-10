@@ -23,7 +23,7 @@ done
 
 if [[ $(uname -n) =~ compute ]];then
   . /home/centos/.bash_profile
-  docker run --rm -v /home/centos/dropboxGenerator:/app/dropboxGenerator registry.gitlab.com/$GITLAB_PROJECT/production_tool:$GIGADB_ENV /app/createAuthorDropbox.sh --manuscript-id "$manuscript"
+  docker run --rm -v /home/centos/dropboxGenerator:/app/dropboxGenerator registry.gitlab.com/$GITLAB_PROJECT/production_tool:$GIGADB_ENV /app/createAuthorDropbox.sh --manuscript-id "${manuscriptid}"
 else
   # Create Wasabi user account for author based on manuscript identifier
   authorUsername="author-${manuscriptid}"
@@ -31,11 +31,8 @@ else
   echo "Created Wasabi user account for author: ${authorUsername}"
   
   # Create access key for author 
-  docker-compose run --rm tool /app/yii wasabi-user/create-access-key --username "${authorUsername}" > out.txt
-  gsed 's/\x1b\[[0-9;]*m//g' out.txt > "${authorUsername}".txt
-  rm out.txt
+  docker-compose run --rm tool /app/yii wasabi-user/create-access-key --username "${authorUsername}" > "${authorUsername}.txt"
   echo "Saved author's access key and secret in ${authorUsername}.txt"
-  
 
   # Create bucket using bucket name
   bucketName="bucket-${manuscriptid}"

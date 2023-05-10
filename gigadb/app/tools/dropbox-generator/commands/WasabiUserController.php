@@ -149,7 +149,7 @@ class WasabiUserController extends Controller
             $key = $result['AccessKey']['AccessKeyId'];
             $secret = $result['AccessKey']['SecretAccessKey'];
             $credentials = "key=$key" . PHP_EOL . "secret=$secret" . PHP_EOL;
-            $this->stdout($credentials, Console::FG_GREEN);
+            print($credentials);
         } catch (IamException $e) {
             $this->stdout($e->getMessage() . PHP_EOL, Console::FG_RED);
             Yii::error($e->getMessage());
