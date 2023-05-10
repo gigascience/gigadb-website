@@ -57,7 +57,9 @@ class WasabiPolicyController extends Controller
             $policyContent = Yii::$app->PolicyGenerator->generateAuthorPolicy($optUserName);
             $result = Yii::$app->WasabiPolicyComponent->createAuthorPolicy($optUserName, $policyContent);
             $policyResult = $result->get("Policy");
-            $this->stdout($policyResult["Arn"] . PHP_EOL, Console::FG_GREEN);
+            $policyArn = $policyResult["Arn"];
+            print "$policyArn";
+//            $this->stdout($policyArn . PHP_EOL);
         } catch (IamException $e) {
             $this->stdout($e->getMessage() . PHP_EOL, Console::FG_RED);
             Yii::error($e->getMessage());

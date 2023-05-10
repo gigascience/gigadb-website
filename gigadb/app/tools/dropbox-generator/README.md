@@ -1,10 +1,5 @@
 # DROPBOX-GENERATOR TOOL
 
-# Run test command
-```
-$ docker-compose run --rm tool /app/yii hello/index
-```
-
 # Install AWS SDK PHP into composer
 ```
 # Update composer packages
@@ -52,10 +47,13 @@ $ docker-compose run --rm tool /app/yii wasabi-policy/create-author-policy --use
 
 # Run command to attach policy to user
 ```
-$ docker-compose run --rm tool /app/yii wasabi-user/create --username author-giga-d-23-00288
-$ docker-compose run --rm tool /app/yii wasabi-bucket/create --bucketName bucket-giga-d-23-00288
-$ docker-compose run --rm tool /app/yii wasabi-policy/create-author-policy --username author-giga-d-23-00288
 $ docker-compose run --rm tool /app/yii wasabi-policy/attach-to-user --username author-giga-d-23-00288 --policy-arn arn:aws:iam::100000199914:policy/policy-author-giga-d-23-00288
+```
+
+# Run bash script to create dropbox
+```
+$ ./createAuthorDropbox.sh --manuscript-id giga-d-23-00288
+giga-d-23-00288
 ```
 
 ### Functional tests
@@ -71,4 +69,7 @@ $ docker-compose run --rm tool ./vendor/bin/codecept run tests/functional/Wasabi
 $ docker-compose run --rm tool ./vendor/bin/codecept run tests/functional/WasabiBucketCest.php
 
 $ docker-compose run --rm tool ./vendor/bin/codecept run tests/functional/WasabiPolicyCest.php
+
+# Run functional test to check user dropbox creation workflow
+$ docker-compose run --rm tool ./vendor/bin/codecept run tests/functional/WasabiDropboxCest.php
 ```
