@@ -3,12 +3,12 @@
   "Statement": [
     {
       "Effect": "Allow",
-      "Action": "iam:CreateUser",
+      "Action": "iam:CreateAccessKey",
       "Resource": "arn:aws:iam::*:user/author-giga-d-*"
     },
     {
       "Effect": "Allow",
-      "Action": "iam:DeleteUser",
+      "Action": "iam:DeleteAccessKey",
       "Resource": "arn:aws:iam::*:user/author-giga-d-*"
     }
   ]

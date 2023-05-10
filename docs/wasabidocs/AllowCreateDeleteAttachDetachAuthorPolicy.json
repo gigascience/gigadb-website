@@ -8,7 +8,17 @@
     },
     {
       "Effect": "Allow",
+      "Action": "iam:DeletePolicy",
+      "Resource": "arn:aws:iam::*:policy/policy-author-*"
+    },
+    {
+      "Effect": "Allow",
       "Action": "iam:AttachUserPolicy",
+      "Resource": "arn:aws:iam::*:user/author-giga-d-*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": "iam:DetachUserPolicy",
       "Resource": "arn:aws:iam::*:user/author-giga-d-*"
     }
   ]
