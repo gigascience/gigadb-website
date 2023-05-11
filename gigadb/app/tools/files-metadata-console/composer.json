@@ -1,0 +1,81 @@
+{
+    "name": "gigascience/gigadb-files-metadata-console",
+    "description": "Suite of CLI tools to CRUD the file table related data",
+    "keywords": ["yii2", "framework", "basic", "project template"],
+    "homepage": "http://www.yiiframework.com/",
+    "type": "project",
+    "license": "GPL-3.0-or-later",
+    "support": {
+        "issues": "https://github.com/yiisoft/yii2/issues?state=open",
+        "forum": "http://www.yiiframework.com/forum/",
+        "wiki": "http://www.yiiframework.com/wiki/",
+        "irc": "irc://irc.freenode.net/yii",
+        "source": "https://github.com/yiisoft/yii2"
+    },
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=8.0.0",
+        "yiisoft/yii2": "~2.0.47",
+        "yiisoft/yii2-symfonymailer": "~2.0.3",
+        "guzzlehttp/guzzle": "~7.5.0"
+    },
+    "require-dev": {
+        "yiisoft/yii2-debug": "~2.1.0",
+        "yiisoft/yii2-gii": "~2.2.0",
+        "yiisoft/yii2-faker": "~2.0.0",
+        "phpunit/phpunit": "~9.5.0",
+        "codeception/codeception": "^5.0.0 || ^4.0",
+        "codeception/verify": "^2.2",
+        "codeception/lib-innerbrowser": "^3.0 || ^1.1",
+        "codeception/module-filesystem": "^3.0 || ^1.1",
+        "codeception/module-yii2": "^1.1",
+        "codeception/module-asserts": "^3.0 || ^1.1",
+        "codeception/module-cli": "^2.0"
+    },
+    "config": {
+        "process-timeout": 1800,
+        "fxp-asset": {
+            "enabled": false
+        },
+        "allow-plugins": {
+            "yiisoft/yii2-composer": true
+        }
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "yii\\composer\\Installer::postInstall"
+        ],
+        "post-create-project-cmd": [
+            "yii\\composer\\Installer::postCreateProject",
+            "yii\\composer\\Installer::postInstall"
+        ]
+    },
+    "extra": {
+        "yii\\composer\\Installer::postCreateProject": {
+            "setPermission": [
+                {
+                    "runtime": "0777",
+                    "web/assets": "0777",
+                    "yii": "0755"
+                }
+            ]
+        },
+        "yii\\composer\\Installer::postInstall": {
+            "generateCookieValidationKey": [
+                "config/web.php"
+            ]
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "GigaDB\\models\\" : "../../models",
+            "GigaDB\\services\\" : "../../services"
+        }
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        }
+    ]
+}

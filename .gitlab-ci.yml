@@ -77,6 +77,12 @@ include:
   - local: "gigadb/app/tools/readme-generator/gitlab-config-build-live.yml"
   - local: "gigadb/app/tools/readme-generator/gitlab-config-deploy-live.yml"
   - local: "gigareview/gitlab-config.yml"
+  - local: "gigadb/app/tools/files-metadata-console/gitlab-config-ci-build.yml"
+  - local: "gigadb/app/tools/files-metadata-console/gitlab-config-ci-test.yml"
+  - local: "gigadb/app/tools/files-metadata-console/gitlab-config-staging-build.yml"
+  - local: "gigadb/app/tools/files-metadata-console/gitlab-config-staging-deploy.yml"
+  - local: "gigadb/app/tools/files-metadata-console/gitlab-config-live-build.yml"
+  - local: "gigadb/app/tools/files-metadata-console/gitlab-config-live-deploy.yml"
 
 services:
   - docker:${DOCKER_VERSION}-dind
@@ -107,13 +113,13 @@ sd_gigadb:
     GIGADB_ENV: "staging"
   extends: .deploy
   stage: staging deploy
+  needs: ["base_images","build_staging"]
   tags:
     - $GITLAB_USER_LOGIN
   environment:
     name: "staging"
     url: $REMOTE_HOME_URL
     on_stop: sd_teardown
-  when: always
 
 sd_warmcache:
   variables:

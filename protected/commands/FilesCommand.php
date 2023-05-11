@@ -8,6 +8,7 @@
  */
 
 use \yii\console\ExitCode;
+use \GigaDB\services\DatasetFileService;
 
 class FilesCommand extends CConsoleCommand
 {
@@ -100,52 +101,6 @@ class FilesCommand extends CConsoleCommand
         }
         throw new Exception("No $doi.md5 file could be found for dataset DOI $doi");
     }
-
-    /**
-     *
-     * Query databse for files url associated to dataset passed as parameter and check that they resolve ok
-     * otherwise output the url
-     *
-     * @param $doi string identifier of the dataset for which to check url
-     * @return int
-     * @throws CException
-     */
-    public function actionCheckUrls($doi) {
-        $sql =<<<END
-SELECT f.location
-FROM file f, dataset d
-WHERE f.dataset_id = d.id and d.identifier = '$doi';
-END;
-
-        try {
-            $rows = Yii::app()->db->createCommand($sql)->queryAll();
-            foreach ($rows as $row) {
-                $parts = parse_url($row['location']);
-                $pathComponents = pathinfo($parts['path']);
-
-                if( "ftp" === $parts['scheme']) {
-                    echo $row['location'].PHP_EOL;
-                    continue;
-                }
-                if( !$pathComponents['extension'] ) {
-                    echo $row['location'].PHP_EOL;
-                    continue;
-                }
-
-                $file_exists = DownloadService::fileExists($row['location']);
-                if(!$file_exists)
-                    echo $row['location'].PHP_EOL;
-            }
-
-        } catch (CDbException $e) {
-            Yii::log($e->getMessage(),"error");
-            return ExitCode::IOERR;
-        }
-
-        return ExitCode::OK;
-
-    }
-
 
 
 }

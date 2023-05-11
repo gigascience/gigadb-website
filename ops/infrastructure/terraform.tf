@@ -119,10 +119,10 @@ module "vpc" {
   # Private subnets contain resources that do not have public IPs. They have 
   # private IPs and can only interact with resources inside the same network
   # Resources in a private subnet needing internet access require a NAT device
-  # private_subnets  = ["10.99.3.0/24", "10.99.4.0/24", "10.99.5.0/24"]
-  # private_subnet_tags = {
-  #   Name = "subnet-private"
-  # }
+  private_subnets  = ["10.99.3.0/24", "10.99.4.0/24", "10.99.5.0/24"]
+  private_subnet_tags = {
+     Name = "subnet-private"
+  }
 
   database_subnets = ["10.99.6.0/24", "10.99.7.0/24", "10.99.8.0/24"]
   database_subnet_tags = {

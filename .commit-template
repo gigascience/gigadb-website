@@ -1,0 +1,14 @@
+<type>[optional scope]: <description> (What?, must start with present tense verb)
+
+[begin optional body]
+Why?
+
+How? (when it's not obvious)
+
+Dependencies?
+(If this commit is part of a bigger change that required multiple commits, you can specify the commit hash of the previous commit for that change to help reason on the full change)
+
+[end optional body]
+
+[optional footer(s)]
+Refs: #<issue number>
