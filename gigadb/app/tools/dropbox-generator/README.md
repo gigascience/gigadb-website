@@ -1,58 +1,37 @@
 # DROPBOX-GENERATOR TOOL
 
-# Install AWS SDK PHP into composer
+## Preparation
+
+Generate config files so the tools has the credentials to access the Wasabi API:
 ```
+# Generate configuration using variables in .env, GitLab, then exit
+$ docker-compose run --rm config
+```
+> params.php should be present in the `config` directory.
+
+Install Composer dependencies:
+```
+$ docker-compose run --rm tool composer install
 # Update composer packages
 $ docker-compose run --rm tool composer update
 ```
 
-# Run command to read file in Wasabi bucket
+## Using console commands to perform functions
+
+Functions in Controller classes can be called from the command-line to execute
+tasks in Wasabi. For example, to read a file in Wasabi bucket using the
+`actionRead()` function the `WasabiBucketController` class, execute this:
 ```
 $ docker-compose run --rm tool /app/yii wasabi-bucket/read --bucket dbgiga-datasets --filePath "live/pub/10.5524/102001_103000/102304/bar.txt"
 ```
 
-# Run command to create new user account
-```
-$ docker-compose run --rm tool /app/yii wasabi-user/create --username author-giga-d-23-00288
-```
+## Create a user dropbox for an author to upload data
 
-# Run command to list user accounts
+A bash script called `createAuthorDropbox.sh` contains the necessary steps to 
+create a Wasabi bucket for an author to upload their files to. This script
+requires the manuscript identifier in lowercase as a parameter:
 ```
-$ docker-compose run --rm tool /app/yii wasabi-user/list-users
-```
-
-# Run command to delete user account
-```
-$ docker-compose run --rm tool /app/yii wasabi-user/delete --username author-giga-d-23-00288
-```
-
-# Run command to create new bucket
-```
-$ docker-compose run --rm tool /app/yii wasabi-bucket/create --bucketName bucket-giga-d-23-00288
-```
-# Run command to list buckets
-```
-$ docker-compose run --rm tool /app/yii wasabi-bucket/list-buckets
-```
-
-# Run command to delete bucket
-```
-$ docker-compose run --rm tool /app/yii wasabi-bucket/delete --bucketName bucket-giga-d-23-00288
-```
-
-# Run command to create policy
-```
-$ docker-compose run --rm tool /app/yii wasabi-policy/create-author-policy --username author-giga-d-4-00286
-```
-
-# Run command to attach policy to user
-```
-$ docker-compose run --rm tool /app/yii wasabi-policy/attach-to-user --username author-giga-d-23-00288 --policy-arn arn:aws:iam::100000199914:policy/policy-author-giga-d-23-00288
-```
-
-# Run bash script to create dropbox
-```
-$ ./createAuthorDropbox.sh --manuscript-id giga-d-23-00288
+$ docker-compose run --rm tool /app/createAuthorDropbox.sh --manuscript-id giga-d-23-00288
 giga-d-23-00288
 ```
 
