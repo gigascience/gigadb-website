@@ -10,9 +10,8 @@ return [
         "version" => "latest",
         "use_path_style_endpoint" => "true",
         "credentials" => [
-            "key" => "<insert-access-key>",
-            "secret" => "<insert-secret-key>",
+            "key" => "${CURATION_WASABI_ACCESS_KEY_ID}",
+            "secret" => "${CURATION_WASABI_SECRET_ACCESS_KEY}",
         ],
     ],
 ];
-

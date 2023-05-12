@@ -2,10 +2,11 @@
 
 ## Preparation
 
-Generate config files so the tools has the credentials to access the Wasabi API:
+Generate the config/params.php file so the tool has the credentials to access 
+the Wasabi API:
 ```
-# Generate configuration using variables in .env, GitLab, then exit
-$ docker-compose run --rm config
+$ cd gigadb/app/tools/dropbox-generator
+$ ./configure
 ```
 > params.php should be present in the `config` directory.
 
@@ -32,7 +33,6 @@ create a Wasabi bucket for an author to upload their files to. This script
 requires the manuscript identifier in lowercase as a parameter:
 ```
 $ docker-compose run --rm tool /app/createAuthorDropbox.sh --manuscript-id giga-d-23-00288
-giga-d-23-00288
 ```
 
 ### Functional tests

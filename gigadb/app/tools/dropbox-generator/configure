@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+# load the library of configuration function
+source ../../configurator/src/dotfiles.sh
+
+# bail out upon error
+set -e
+
+# bail out if an unset variable is used
+set -u
+
+# set up the application source
+appSource=.
+
+set -a
+makeDotEnv $appSource
+makeDotSecrets $appSource
+set +a
+
+# generate config for Yii2 config files: SOURCE TARGET VARS
+# If we are on staging environment override variable name with their remote environment counterpart
+echo "Current environment: $GIGADB_ENV"
+
+makeConfigs "${appSource}/config-sources/params.php.dist" "${appSource}/config/params.php" '$CURATION_WASABI_ACCESS_KEY_ID:$CURATION_WASABI_SECRET_ACCESS_KEY'
