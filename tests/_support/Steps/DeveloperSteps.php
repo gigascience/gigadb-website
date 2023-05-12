@@ -57,6 +57,9 @@ class DeveloperSteps extends \Codeception\Actor
                 $accessKeyToRetrieve = "MIGRATION_ALT_WASABI_ACCESS_KEY_ID";
                 $secretKeyToRetrieve = "MIGRATION_ALT_WASABI_SECRET_ACCESS_KEY";
                 break;
+            case "Chris":
+                $accessKeyToRetrieve = "TEST_CODECEPTCUR_WASABI_ACCESS_KEY_ID";
+                $secretKeyToRetrieve = "TEST_CODECEPTCUR_WASABI_SECRET_ACCESS_KEY";
         }
 
         list($accessKeyId, $secretKey) = $this->getWasabiCredentials(
