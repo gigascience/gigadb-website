@@ -74,6 +74,11 @@ class WasabiBucketController extends Controller
                 "\nUsage:\n\t./yii wasabi-bucket/create --bucketName theBucketName" . PHP_EOL
             );
             return ExitCode::USAGE;
+        } elseif (preg_match('/[A-Z]/', $optBucketName)) {
+            $this->stdout(
+                "Error: Bucket name " . $optBucketName . " cannot contain upper case letters " . PHP_EOL, Console::FG_RED
+            );
+            return ExitCode::USAGE;
         }
 
         try {
@@ -104,7 +109,7 @@ class WasabiBucketController extends Controller
             Yii::info($result);
             $buckets = $result->get("Buckets");
             foreach ($buckets as $bucket) {
-                $this->stdout($bucket["Name"] . PHP_EOL, Console::FG_GREEN);
+                print($bucket["Name"] . PHP_EOL);
             }
         } catch (S3Exception $e) {
             $this->stdout($e->getMessage() . PHP_EOL, Console::FG_RED);
@@ -132,7 +137,7 @@ class WasabiBucketController extends Controller
             $result = Yii::$app->WasabiBucketComponent->deleteBucket($optBucketName);
             Yii::info($result);
             $statusCode = $result->get("@metadata")["statusCode"];
-            if ($statusCode != 200) {
+            if ($statusCode != 204) {
                 throw new Exception("Delete bucket did not return HTTP 204 No Content status response code!");
             }
             $this->stdout("Bucket deleted" . PHP_EOL, Console::FG_GREEN);

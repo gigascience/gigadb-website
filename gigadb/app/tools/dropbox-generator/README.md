@@ -54,6 +54,9 @@ $ docker-compose run --rm tool ./vendor/bin/codecept run tests/functional/Wasabi
 
 $ docker-compose run --rm tool ./vendor/bin/codecept run tests/functional/WasabiBucketCest.php
 
+# Configure /tests/functional_runner or /tests/acceptance_runner to run specific tests
+$ docker-compose run --rm tool ./vendor/codeception/codeception/codecept run --debug tests/functional/WasabiBucketCest.php:^tryCreateBucketWithBucketNameContainingUpperCaseLetters$
+
 $ docker-compose run --rm tool ./vendor/bin/codecept run tests/functional/WasabiPolicyCest.php
 ```
 
