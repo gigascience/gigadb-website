@@ -21,6 +21,12 @@ while [[ $# -gt 0 ]]; do
     shift
 done
 
+# Check manuscript identifier contains only lowercase letters
+if [[ ! "$manuscriptid" =~ ^[a-z]+$ ]]; then
+  echo -e "Manuscript identifier: ${manuscriptid} cannot contain upper case letters.\nExiting..."
+  exit 1
+fi
+
 if [[ $(uname -n) =~ compute ]];then
   . /home/centos/.bash_profile
   docker run --rm -v /home/centos/dropboxGenerator:/app/dropboxGenerator registry.gitlab.com/$GITLAB_PROJECT/production_tool:$GIGADB_ENV /app/createAuthorDropbox.sh --manuscript-id "${manuscriptid}"
