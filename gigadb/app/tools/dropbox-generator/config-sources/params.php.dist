@@ -9,7 +9,7 @@ return [
         "iam_region" => "us-east-1",
         "version" => "latest",
         "use_path_style_endpoint" => "true",
-        "key" => "${CURATION_WASABI_ACCESS_KEY_ID}",
-        "secret" => "${CURATION_WASABI_SECRET_ACCESS_KEY}",
+        "key" => "${DROPBOX_WASABI_ACCESS_KEY_ID}",
+        "secret" => "${DROPBOX_WASABI_SECRET_ACCESS_KEY}",
     ],
 ];
