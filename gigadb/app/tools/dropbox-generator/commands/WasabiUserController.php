@@ -57,6 +57,11 @@ class WasabiUserController extends Controller
                 "\nUsage:\n\t./yii wasabi-user/create --username theUsername" . PHP_EOL
             );
             return ExitCode::USAGE;
+        } elseif (preg_match('/[A-Z]/', $optUserName)) {
+            $this->stdout(
+                "\nBucket name: " . $optUserName . " is not allowed to contain upper case letters " . PHP_EOL
+            );
+            return ExitCode::USAGE;
         }
 
         try {
