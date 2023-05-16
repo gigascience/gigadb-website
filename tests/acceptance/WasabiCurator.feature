@@ -5,13 +5,13 @@ Feature:
 
   @ok @wasabi @AllowCreateGigadbBucket
   Scenario: Group Curators can create bucket for gigadb user
-    Given I configure rclone with a "Chris" account
+    Given I configure rclone with a "Test curator" account
     When I run the command to create bucket "bucket-giga-d-23-12345"
     Then I should see the bucket "bucket-giga-d-23-12345"
 
   @ok @wasabi @NotAllowDeleteGigadbBucket
   Scenario: Group Curators cannot delete bucket for gigadb user
-    Given I configure rclone with a "Chris" account
+    Given I configure rclone with a "Test curator" account
     When I should see the bucket "bucket-giga-d-23-12345"
     Then I cannot delete the bucket "bucket-giga-d-23-12345"
 
