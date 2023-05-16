@@ -22,7 +22,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 # Check manuscript identifier contains only lowercase letters
-if [[ ! "$manuscriptid" =~ ^[a-z]+$ ]]; then
+if [[ "$manuscriptid" =~ [[:upper:]] ]]; then
   echo -e "Manuscript identifier: ${manuscriptid} cannot contain upper case letters.\nExiting..."
   exit 1
 fi
@@ -33,8 +33,8 @@ if [[ $(uname -n) =~ compute ]];then
 else
   # Create Wasabi user account for author based on manuscript identifier
   authorUsername="author-${manuscriptid}"
-  docker-compose run --rm tool /app/yii wasabi-user/create --username "${authorUsername}"
-  echo "Created Wasabi user account for author: ${authorUsername}"
+  docker-compose run --rm tool /app/yii wasabi-user/create --username "${authorUsername}" > /dev/null 2>&1
+  echo "Created Wasabi user account: ${authorUsername}"
   
   # Create access key for author 
   docker-compose run --rm tool /app/yii wasabi-user/create-access-key --username "${authorUsername}" > "${authorUsername}.txt"
@@ -42,14 +42,17 @@ else
 
   # Create bucket using bucket name
   bucketName="bucket-${manuscriptid}"
-  docker-compose run --rm tool /app/yii wasabi-bucket/create --bucketName "${bucketName}"
-  echo "Created bucket ${bucketName} for ${authorUsername}"
+  docker-compose run --rm tool /app/yii wasabi-bucket/create --bucketName "${bucketName}" > /dev/null 2>&1
+  echo "Created bucket: ${bucketName} for user: ${authorUsername}"
   
   # Create user policy for author
   policyArn=$(docker-compose run --rm tool /app/yii wasabi-policy/create-author-policy --username "${authorUsername}")
-  echo "Created policy ${policyArn}"
+  echo "Created policy: ${policyArn}"
   
   # Attach policy to user
-  docker-compose run --rm tool /app/yii wasabi-policy/attach-to-user --username "${authorUsername}" --policy-arn "${policyArn}"
-  echo "Attached policy ${policyArn} to ${authorUsername}"
+  docker-compose run --rm tool /app/yii wasabi-policy/attach-to-user --username "${authorUsername}" --policy-arn "${policyArn}" > /dev/null 2>&1
+  echo "Attached policy: ${policyArn} to user: ${authorUsername}"
+
+  echo "Successfully finished create author dropbox workflow"
+  exit 1
 fi
