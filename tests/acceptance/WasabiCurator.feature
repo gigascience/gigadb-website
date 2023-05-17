@@ -12,7 +12,8 @@ Feature:
   @ok @wasabi @NotAllowDeleteGigadbBucket
   Scenario: Group Curators cannot delete bucket for gigadb user
     Given I configure rclone with a "Test curator" account
-    When I should see the bucket "bucket-giga-d-23-12345"
+    When I run the command to create bucket "bucket-giga-d-23-12345"
+    And I should see the bucket "bucket-giga-d-23-12345"
     Then I cannot delete the bucket "bucket-giga-d-23-12345"
 
   @wip @wasabi @AllowCreateGigabyteBucket
