@@ -66,6 +66,7 @@ include:
   - local: "ops/pipelines/gigadb-conformance-security-jobs.yml"
   - local: "ops/pipelines/gigadb-deploy-jobs.yml"
   - local: "ops/pipelines/gigadb-operations-jobs.yml"
+  - local: "ops/pipelines/gitlab-tideways-jobs.yml"
   - local: "gigadb/app/tools/files-url-updater/gitlab-config.yml"
   - local: "gigadb/app/tools/excel-spreadsheet-uploader/gitlab-config-build-staging.yml"
   - local: "gigadb/app/tools/excel-spreadsheet-uploader/gitlab-config-deploy-staging.yml"
@@ -137,18 +138,6 @@ sd_warmcache:
     name: "staging"
     url: $REMOTE_HOME_URL
 
-sd_tideways:
-  stage: staging deploy
-  variables:
-    GIGADB_ENV: "staging"
-  extends: .deploy_tideways
-  tags:
-    - $GITLAB_USER_LOGIN
-  needs: ["sd_gigadb","TidewaysBuildStaging"]
-  environment:
-    name: "staging"
-    url: $REMOTE_HOME_URL
-
 ld_gigadb:
   variables:
     GIGADB_ENV: "live"
@@ -173,18 +162,6 @@ ld_warmcache:
     - curl $REMOTE_HOME_URL/dataset/100314
     - curl $REMOTE_HOME_URL/dataset/100310
   needs: ["ld_gigadb"]
-  environment:
-    name: "live"
-    url: $REMOTE_HOME_URL
-
-ld_tideways:
-  stage: live deploy
-  variables:
-    GIGADB_ENV: "live"
-  extends: .deploy_tideways
-  tags:
-    - $GITLAB_USER_LOGIN
-  needs: ["ld_gigadb","TidewaysBuildLive"]
   environment:
     name: "live"
     url: $REMOTE_HOME_URL
