@@ -41,6 +41,8 @@ RUN apt-get update -yqq && \
     apt-get install -y apt-utils && \
     pecl channel-update pecl.php.net
 
+ARG INSTALL_TIDEWAYSPHP=false
+
 # install tideways extension
 RUN if [ ${INSTALL_TIDEWAYSPHP} = true ]; then \
     apt-get update -yq && \
