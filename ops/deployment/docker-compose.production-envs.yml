@@ -86,6 +86,9 @@ services:
       - '9135'
     networks:
       - web-tier
+    cap_drop:
+      - NET_ADMIN
+      - SYS_ADMIN
 
   fuw-admin:
     <<: *logging
