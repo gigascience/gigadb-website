@@ -117,7 +117,6 @@ sd_gigadb:
   needs: ["base_images","build_staging"]
   tags:
     - $GITLAB_USER_LOGIN
-  needs: ["base_images","build_staging"]
   environment:
     name: "staging"
     url: $REMOTE_HOME_URL
