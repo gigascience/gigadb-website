@@ -49,7 +49,11 @@ sleep 15
 docker-compose up -d beanstalkd sftp_test
 
 # Starting webdriver service for the headless browser used in acceptance testing
-docker-compose up -d webdriver
+if [[ $(uname -m) == 'arm64' ]]; then
+  docker-compose up -d chrome-arm
+else
+  docker-compose up -d chrome
+fi
 
 # Make sure DB server is in good state
 docker-compose ps
