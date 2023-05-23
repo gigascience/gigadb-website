@@ -70,7 +70,7 @@ class DatasetFiledropTest extends CTestCase
 		$recipient =  "foo@bar.com" ;
 		$subject = "Upload Instructions for the dataset of your GigaDB submission";
 		$instructions = "Lorem Ipsum";
-		$fakeResponse = ["id" => f2r3s, "instructions" => $instructions];
+		$fakeResponse = ["id" => "f2r3s", "instructions" => $instructions];
 
 		$filedropAccountHash = array('upload_login' => 'uploader-232452',
 					'upload_token' => '9ad4sf',
@@ -107,7 +107,8 @@ class DatasetFiledropTest extends CTestCase
 		$filedropAccountHash = array('upload_login' => 'uploader-232452',
 							'upload_token' => '9ad4sf',
 							'download_login' => 'downloader-286652',
-							'download_token' => 'a97b3');
+							'download_token' => 'a97b3',
+                            'instructions' => '');
 
 		$mockDatasetDAO = $this->createMock(DatasetDAO::class);
 		$mockFiledropSrv = $this->createMock(FiledropService::class);
