@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Unit tests for CachedDatasetFiles to retrieve from cache,the files associated to a dataset
  *
@@ -7,7 +8,6 @@
  */
 class CachedDatasetFilesTest extends CTestCase
 {
-
     public function setUp()
     {
         parent::setUp();
@@ -31,7 +31,7 @@ class CachedDatasetFilesTest extends CTestCase
         $cacheDependency = $this->createMock(CCacheDependency::class);
 
         $daoUnderTest = new CachedDatasetFiles($cache, $cacheDependency, $storedDatasetFiles);
-        $this->assertEquals($dataset_id, $daoUnderTest->getDatasetId() ) ;
+        $this->assertEquals($dataset_id, $daoUnderTest->getDatasetId()) ;
     }
 
     public function testCachedReturnsDatasetDOI()
@@ -53,7 +53,7 @@ class CachedDatasetFilesTest extends CTestCase
 
 
         $daoUnderTest = new CachedDatasetFiles($cache, $cacheDependency, $storedDatasetFiles);
-        $this->assertEquals($doi, $daoUnderTest->getDatasetDOI() ) ;
+        $this->assertEquals($doi, $daoUnderTest->getDatasetDOI()) ;
     }
 
     public function testCachedReturnsDatasetFilesCacheHit()
@@ -65,10 +65,10 @@ class CachedDatasetFilesTest extends CTestCase
                 'id' => 1,
                 'dataset_id' => 1,
                 'name' => "readme.txt",
-                'location'=>'ftp://foo.bar',
-                'extension'=>'txt',
-                'size'=>1322123045,
-                'description'=>'just readme',
+                'location' => 'ftp://foo.bar',
+                'extension' => 'txt',
+                'size' => 1322123045,
+                'description' => 'just readme',
                 'date_stamp' => '2015-10-12',
                 'format' => 'TEXT',
                 'type' => 'Text',
@@ -76,21 +76,21 @@ class CachedDatasetFilesTest extends CTestCase
                     array("keyword" => "some value"),
                     array("number of lines" => "155"),
                 ),
-                'download_count'=>0,
+                'download_count' => 0,
             ),
             array(
                 'id' => 2,
                 'dataset_id' => 1,
                 'name' => "readme.txt",
-                'location'=>'ftp://foo.bar',
-                'extension'=>'txt',
-                'size'=>-1,
-                'description'=>'just readme',
+                'location' => 'ftp://foo.bar',
+                'extension' => 'txt',
+                'size' => -1,
+                'description' => 'just readme',
                 'date_stamp' => '2015-10-13',
                 'format' => 'TEXT',
                 'type' => 'Text',
                 'file_attributes' => [],
-                'download_count'=>0,
+                'download_count' => 0,
             ),
         );
 
@@ -111,7 +111,7 @@ class CachedDatasetFilesTest extends CTestCase
         $cache->expects($this->exactly(1))
                  ->method('get')
                  ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetFiles_getDatasetFiles"))
-                 ->willReturn( $expected );
+                 ->willReturn($expected);
 
         $daoUnderTest = new CachedDatasetFiles($cache, $cacheDependency, $storedDatasetFiles) ;
         $this->assertEquals($expected, $daoUnderTest->getDatasetFiles());
@@ -126,10 +126,10 @@ class CachedDatasetFilesTest extends CTestCase
                 'id' => 1,
                 'dataset_id' => 1,
                 'name' => "readme.txt",
-                'location'=>'ftp://foo.bar',
-                'extension'=>'txt',
-                'size'=>1322123045,
-                'description'=>'just readme',
+                'location' => 'ftp://foo.bar',
+                'extension' => 'txt',
+                'size' => 1322123045,
+                'description' => 'just readme',
                 'date_stamp' => '2015-10-12',
                 'format' => 'TEXT',
                 'type' => 'Text',
@@ -137,21 +137,21 @@ class CachedDatasetFilesTest extends CTestCase
                     array("keyword" => "some value"),
                     array("number of lines" => "155"),
                 ),
-                'download_count'=>0,
+                'download_count' => 0,
             ),
             array(
                 'id' => 2,
                 'dataset_id' => 1,
                 'name' => "readme.txt",
-                'location'=>'ftp://foo.bar',
-                'extension'=>'txt',
-                'size'=>-1,
-                'description'=>'just readme',
+                'location' => 'ftp://foo.bar',
+                'extension' => 'txt',
+                'size' => -1,
+                'description' => 'just readme',
                 'date_stamp' => '2015-10-13',
                 'format' => 'TEXT',
                 'type' => 'Text',
                 'file_attributes' => [],
-                'download_count'=>0,
+                'download_count' => 0,
             ),
         );
 
@@ -165,7 +165,7 @@ class CachedDatasetFilesTest extends CTestCase
                                     ->willReturn(1);
         $storedDatasetFiles->expects($this->exactly(1))
                                     ->method('getDatasetFiles')
-                                    ->willReturn( $expected );
+                                    ->willReturn($expected);
 
         // create a stub of the cache dependency (because we don't need to verify expectations on the cache dependency)
         $cache =  $this->createMock(CApcCache::class);
@@ -180,14 +180,14 @@ class CachedDatasetFilesTest extends CTestCase
         $cache->expects($this->exactly(1))
                  ->method('get')
                  ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetFiles_getDatasetFiles"))
-                 ->willReturn( false );
+                 ->willReturn(false);
 
         $cache->expects($this->exactly(1))
                 ->method('set')
                 ->with(
                     $this->equalTo("dataset_${dataset_id}_CachedDatasetFiles_getDatasetFiles"),
                     $expected,
-                    Cacheable::defaultTTL*30,
+                    Cacheable::defaultTTL * 30,
                     $cacheDependency
                 )
                 ->willReturn(true);
@@ -256,65 +256,65 @@ class CachedDatasetFilesTest extends CTestCase
         $cache->expects($this->exactly(1))
                  ->method('get')
                  ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetFiles_getDatasetFilesSamples"))
-                 ->willReturn( $expected );
+                 ->willReturn($expected);
 
         $daoUnderTest = new CachedDatasetFiles($cache, $cacheDependency, $storedDatasetFiles) ;
         $this->assertEquals($expected, $daoUnderTest->getDatasetFilesSamples());
     }
 
-     public function testStoredReturnsDatasetFilesSamplesCacheMiss()
+    public function testStoredReturnsDatasetFilesSamplesCacheMiss()
     {
         $dataset_id = 1;
 
         $expected = array(
-                        array(
-                            'sample_id' => 1,
-                            'sample_name' => "Sample 1",
-                            'file_id' => 1,
-                        ),
-                        array(
-                            'sample_id' => 2,
-                            'sample_name' => "Sample 2",
-                            'file_id' => 1,
-                        ),
-                        array(
-                            'sample_id' => 3,
-                            'sample_name' => "Sample 3",
-                            'file_id' => 1,
-                        ),
-                        array(
-                            'sample_id' => 4,
-                            'sample_name' => "Sample 4",
-                            'file_id' => 1,
-                        ),
-                        array(
-                            'sample_id' => 5,
-                            'sample_name' => "Sample 5",
-                            'file_id' => 2,
-                        ),
-                        array(
-                            'sample_id' => 6,
-                            'sample_name' => "Sample 6",
-                            'file_id' => 2,
-                        ),
-                        array(
-                            'sample_id' => 7,
-                            'sample_name' => "Sample 7",
-                            'file_id' => 2,
-                        ),
-                    );
+                       array(
+                           'sample_id' => 1,
+                           'sample_name' => "Sample 1",
+                           'file_id' => 1,
+                       ),
+                       array(
+                           'sample_id' => 2,
+                           'sample_name' => "Sample 2",
+                           'file_id' => 1,
+                       ),
+                       array(
+                           'sample_id' => 3,
+                           'sample_name' => "Sample 3",
+                           'file_id' => 1,
+                       ),
+                       array(
+                           'sample_id' => 4,
+                           'sample_name' => "Sample 4",
+                           'file_id' => 1,
+                       ),
+                       array(
+                           'sample_id' => 5,
+                           'sample_name' => "Sample 5",
+                           'file_id' => 2,
+                       ),
+                       array(
+                           'sample_id' => 6,
+                           'sample_name' => "Sample 6",
+                           'file_id' => 2,
+                       ),
+                       array(
+                           'sample_id' => 7,
+                           'sample_name' => "Sample 7",
+                           'file_id' => 2,
+                       ),
+                   );
 
         // create a mock for the StoredDatasetFiles, as we expect it to be called for data retrieval
         $storedDatasetFiles = $this->getMockBuilder(StoredDatasetFiles::class)
-                                            ->setMethods(['getDatasetID', 'getDatasetFilesSamples'])
-                                            ->disableOriginalConstructor()
-                                            ->getMock();
+                                           ->setMethods(['getDatasetID', 'getDatasetFilesSamples'])
+                                           ->disableOriginalConstructor()
+                                           ->getMock();
         $storedDatasetFiles->expects($this->exactly(2))
-                                    ->method('getDatasetID')
-                                    ->willReturn(1);
+                                   ->method('getDatasetID')
+                                   ->willReturn(1);
         $storedDatasetFiles->expects($this->exactly(1))
-                                    ->method('getDatasetFilesSamples')
-                                    ->willReturn( $expected );
+                                   ->method('getDatasetFilesSamples')
+                                   ->willReturn($expected);
 
         // create a stub of the cache dependency (because we don't need to verify expectations on the cache dependency)
         $cache =  $this->createMock(CApcCache::class);
@@ -322,29 +322,27 @@ class CachedDatasetFilesTest extends CTestCase
 
         // create a mock for the cache and we need to make the cache method for getting the key
         $cache = $this->getMockBuilder(CApcCache::class)
-                        ->setMethods(['get', 'set'])
-                        ->getMock();
+                       ->setMethods(['get', 'set'])
+                       ->getMock();
 
         //then we set our expectations for a Cache Miss
         $cache->expects($this->exactly(1))
-                 ->method('get')
-                 ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetFiles_getDatasetFilesSamples"))
-                 ->willReturn( false );
+                ->method('get')
+                ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetFiles_getDatasetFilesSamples"))
+                ->willReturn(false);
 
         $cache->expects($this->exactly(1))
-                ->method('set')
-                ->with(
-                    $this->equalTo("dataset_${dataset_id}_CachedDatasetFiles_getDatasetFilesSamples"),
-                    $expected,
-                    Cacheable::defaultTTL*30,
-                    $cacheDependency
-                )
-                ->willReturn(true);
+               ->method('set')
+               ->with(
+                   $this->equalTo("dataset_${dataset_id}_CachedDatasetFiles_getDatasetFilesSamples"),
+                   $expected,
+                   Cacheable::defaultTTL * 30,
+                   $cacheDependency
+               )
+               ->willReturn(true);
 
 
         $daoUnderTest = new CachedDatasetFiles($cache, $cacheDependency, $storedDatasetFiles) ;
         $this->assertEquals($expected, $daoUnderTest->getDatasetFilesSamples());
     }
-
 }
-?>

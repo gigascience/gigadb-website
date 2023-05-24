@@ -9,7 +9,7 @@ class DatasetComponentsTest extends \Codeception\Test\Unit
      * @var \UnitTester
      */
     protected $tester;
-    
+
     protected function _before()
     {
     }
@@ -28,17 +28,17 @@ class DatasetComponentsTest extends \Codeception\Test\Unit
      */
     public function testSaveToCacheWhenEnabled()
     {
-        define('DISABLE_CACHE',false);
+        define('DISABLE_CACHE', false);
         $mockCache = $this->makeEmpty('CCache', [ 'set' => true]);
         $mockCacheDep = $this->makeEmpty('CDbCacheDependency');
         $mockDatasetFiles = $this->makeEmpty('DatasetFilesInterface');
 
         //DatasetComponents is the class we want to test but it's an abstract class,
         //so instead we test one of its concrete subclasses. We only need to test one.
-        $component = new CachedDatasetFiles($mockCache, $mockCacheDep,$mockDatasetFiles);
+        $component = new CachedDatasetFiles($mockCache, $mockCacheDep, $mockDatasetFiles);
 
-        $result = $component->saveLocaldataInCache("100001","hello world");
-        $this->assertNotEquals('select current_time;',$mockCacheDep->sql);
+        $result = $component->saveLocaldataInCache("100001", "hello world");
+        $this->assertNotEquals('select current_time;', $mockCacheDep->sql);
     }
 
     /**
@@ -60,13 +60,13 @@ class DatasetComponentsTest extends \Codeception\Test\Unit
             '_cache' => $mockCache,
             '_cacheDependency' =>  $mockCacheDep,
             '_storedDatasetFiles' => $mockDatasetFiles,
-        ],[
-            'isCachedDisabled' => function () { return true;},
+        ], [
+            'isCachedDisabled' => function () {
+                return true;
+            },
         ]);
 
-        $result = $component->saveLocaldataInCache("100001","hello world");
-        $this->assertEquals('select current_time;',$mockCacheDep->sql);
+        $result = $component->saveLocaldataInCache("100001", "hello world");
+        $this->assertEquals('select current_time;', $mockCacheDep->sql);
     }
-
-
 }

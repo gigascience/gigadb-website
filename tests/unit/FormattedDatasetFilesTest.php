@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Unit tests for FormattedDatasetFiles to present the files associated to a dataset
  *
@@ -7,7 +8,6 @@
  */
 class FormattedDatasetFilesTest extends CTestCase
 {
-
     public function setUp()
     {
         parent::setUp();
@@ -16,7 +16,7 @@ class FormattedDatasetFilesTest extends CTestCase
     public function testFormattedReturnsDatasetId()
     {
         $dataset_id = 6;
-        $pageSize= 10 ;
+        $pageSize = 10 ;
         // create a mock for the CachedDatasetFiles
         $cachedDatasetFiles = $this->getMockBuilder(CachedDatasetFiles::class)
                          ->setMethods(['getDatasetId'])
@@ -29,13 +29,13 @@ class FormattedDatasetFilesTest extends CTestCase
 
 
         $daoUnderTest = new FormattedDatasetFiles($pageSize, $cachedDatasetFiles);
-        $this->assertEquals($dataset_id, $daoUnderTest->getDatasetId() ) ;
+        $this->assertEquals($dataset_id, $daoUnderTest->getDatasetId()) ;
     }
 
     public function testFormattedReturnsDatasetDOI()
     {
         $dataset_id = 6;
-        $pageSize= 10 ;
+        $pageSize = 10 ;
         $doi = "100044";
          // create a mock for the CachedDatasetFiles
         $cachedDatasetFiles = $this->getMockBuilder(CachedDatasetFiles::class)
@@ -49,7 +49,7 @@ class FormattedDatasetFilesTest extends CTestCase
 
 
         $daoUnderTest = new FormattedDatasetFiles($pageSize, $cachedDatasetFiles);
-        $this->assertEquals($doi, $daoUnderTest->getDatasetDOI() ) ;
+        $this->assertEquals($doi, $daoUnderTest->getDatasetDOI()) ;
     }
 
     /**
@@ -66,10 +66,10 @@ class FormattedDatasetFilesTest extends CTestCase
                 'id' => 1,
                 'dataset_id' => 1,
                 'name' => "readme.txt",
-                'location'=>'ftp://foo.bar',
-                'extension'=>'txt',
-                'size'=>1322123045,
-                'description'=>'just readme',
+                'location' => 'ftp://foo.bar',
+                'extension' => 'txt',
+                'size' => 1322123045,
+                'description' => 'just readme',
                 'date_stamp' => '2015-10-12',
                 'format' => 'TEXT',
                 'type' => 'Text',
@@ -77,21 +77,21 @@ class FormattedDatasetFilesTest extends CTestCase
                     array("keyword" => "some value"),
                     array("number of lines" => "155"),
                 ),
-                'download_count'=>0,
+                'download_count' => 0,
             ),
             array(
                 'id' => 2,
                 'dataset_id' => 1,
                 'name' => "readme2.txt",
-                'location'=>'ftp://foo2.bar',
-                'extension'=>'txt',
-                'size'=>-1,
-                'description'=>'just readme 2',
+                'location' => 'ftp://foo2.bar',
+                'extension' => 'txt',
+                'size' => -1,
+                'description' => 'just readme 2',
                 'date_stamp' => '2015-10-13',
                 'format' => 'TEXT',
                 'type' => 'Text',
                 'file_attributes' => [],
-                'download_count'=>0,
+                'download_count' => 0,
             ),
         );
 
@@ -100,10 +100,10 @@ class FormattedDatasetFilesTest extends CTestCase
                             'id' => 1,
                             'dataset_id' => 1,
                             'name' => "readme.txt",
-                            'location'=>'ftp://foo.bar',
-                            'extension'=>'txt',
-                            'size'=>1322123045,
-                            'description'=>'just readme',
+                            'location' => 'ftp://foo.bar',
+                            'extension' => 'txt',
+                            'size' => 1322123045,
+                            'description' => 'just readme',
                             'date_stamp' => '2015-10-12',
                             'format' => 'TEXT',
                             'type' => 'Text',
@@ -111,26 +111,26 @@ class FormattedDatasetFilesTest extends CTestCase
                                 array("keyword" => "some value"),
                                 array("number of lines" => "155"),
                             ),
-                            'download_count'=>0,
+                            'download_count' => 0,
                             'nameHtml' => "<div title=\"just readme\"><a href=\"ftp://foo.bar\" target='_blank'>readme.txt</a></div>",
-                            'sizeUnit'=>'1.23 GiB',
+                            'sizeUnit' => '1.23 GiB',
                             'attrDesc' => "keyword: some value<br>number of lines: 155<br>",
                         ),
                         array(
                             'id' => 2,
                             'dataset_id' => 1,
                             'name' => "readme2.txt",
-                            'location'=>'ftp://foo2.bar',
-                            'extension'=>'txt',
-                            'size'=>-1,
-                            'description'=>'just readme 2',
+                            'location' => 'ftp://foo2.bar',
+                            'extension' => 'txt',
+                            'size' => -1,
+                            'description' => 'just readme 2',
                             'date_stamp' => '2015-10-13',
                             'format' => 'TEXT',
                             'type' => 'Text',
                             'file_attributes' => [],
-                            'download_count'=>0,
+                            'download_count' => 0,
                             'nameHtml' => "<div title=\"just readme 2\"><a href=\"ftp://foo2.bar\" target='_blank'>readme2.txt</a></div>",
-                            'sizeUnit'=>'-1',
+                            'sizeUnit' => '-1',
                             'attrDesc' => "",
                         ),
                     );
@@ -143,7 +143,7 @@ class FormattedDatasetFilesTest extends CTestCase
         //then we set our expectation
         $cachedDatasetFiles->expects($this->exactly(2))
                  ->method('getDatasetFiles')
-                 ->willReturn( $source );
+                 ->willReturn($source);
 
 
         $daoUnderTest = new FormattedDatasetFiles($pageSize, $cachedDatasetFiles);
@@ -166,10 +166,10 @@ class FormattedDatasetFilesTest extends CTestCase
                             'id' => 1,
                             'dataset_id' => 1,
                             'name' => "readme.txt",
-                            'location'=>'ftp://foo.bar',
-                            'extension'=>'txt',
-                            'size'=>1322123045,
-                            'description'=>'just readme',
+                            'location' => 'ftp://foo.bar',
+                            'extension' => 'txt',
+                            'size' => 1322123045,
+                            'description' => 'just readme',
                             'date_stamp' => '2015-10-12',
                             'format' => 'TEXT',
                             'type' => 'Text',
@@ -177,26 +177,26 @@ class FormattedDatasetFilesTest extends CTestCase
                                 array("keyword" => "some value"),
                                 array("number of lines" => "155"),
                             ),
-                            'download_count'=>0,
+                            'download_count' => 0,
                             'nameHtml' => "<div title=\"just readme\"><a href=\"ftp://foo.bar\" target='_blank'>readme.txt</a></div>",
-                            'sizeUnit'=>'1.23 GiB',
+                            'sizeUnit' => '1.23 GiB',
                             'attrDesc' => "keyword: some value<br>number of lines: 155<br>",
                         ),
                         array(
                             'id' => 2,
                             'dataset_id' => 1,
                             'name' => "readme2.txt",
-                            'location'=>'ftp://foo2.bar',
-                            'extension'=>'txt',
-                            'size'=>-1,
-                            'description'=>'just readme 2',
+                            'location' => 'ftp://foo2.bar',
+                            'extension' => 'txt',
+                            'size' => -1,
+                            'description' => 'just readme 2',
                             'date_stamp' => '2015-10-13',
                             'format' => 'TEXT',
                             'type' => 'Text',
                             'file_attributes' => [],
-                            'download_count'=>0,
+                            'download_count' => 0,
                             'nameHtml' => "<div title=\"just readme 2\"><a href=\"ftp://foo2.bar\" target='_blank'>readme2.txt</a></div>",
-                            'sizeUnit'=>'-1',
+                            'sizeUnit' => '-1',
                             'attrDesc' => "",
                         ),
                     );
@@ -209,12 +209,12 @@ class FormattedDatasetFilesTest extends CTestCase
         //then we set our expectation
         $cachedDatasetFiles->expects($this->exactly(2))
                  ->method('getDatasetFiles')
-                 ->willReturn( $expected );
+                 ->willReturn($expected);
 
 
         $daoUnderTest = new FormattedDatasetFiles($pageSize, $cachedDatasetFiles);
         $this->assertEquals($expected, $daoUnderTest->getDataProvider()->getData()) ;
-        $this->assertEquals(2, $daoUnderTest->getDataProvider()->getPagination()->getPageSize() ) ;
+        $this->assertEquals(2, $daoUnderTest->getDataProvider()->getPagination()->getPageSize()) ;
     }
 
     /**
@@ -232,10 +232,10 @@ class FormattedDatasetFilesTest extends CTestCase
                             'id' => 1,
                             'dataset_id' => 1,
                             'name' => "readme.txt",
-                            'location'=>'ftp://foo.bar',
-                            'extension'=>'txt',
-                            'size'=>1322123045,
-                            'description'=>'just readme',
+                            'location' => 'ftp://foo.bar',
+                            'extension' => 'txt',
+                            'size' => 1322123045,
+                            'description' => 'just readme',
                             'date_stamp' => '2015-10-12',
                             'format' => 'TEXT',
                             'type' => 'Text',
@@ -243,21 +243,21 @@ class FormattedDatasetFilesTest extends CTestCase
                                 array("keyword" => "some value"),
                                 array("number of lines" => "155"),
                             ),
-                            'download_count'=>0,
+                            'download_count' => 0,
                         ),
                         array(
                             'id' => 2,
                             'dataset_id' => 1,
                             'name' => "readme.txt",
-                            'location'=>'ftp://foo.bar',
-                            'extension'=>'txt',
-                            'size'=>-1,
-                            'description'=>'just readme',
+                            'location' => 'ftp://foo.bar',
+                            'extension' => 'txt',
+                            'size' => -1,
+                            'description' => 'just readme',
                             'date_stamp' => '2015-10-13',
                             'format' => 'TEXT',
                             'type' => 'Text',
                             'file_attributes' => [],
-                            'download_count'=>0,
+                            'download_count' => 0,
                         ),
                     );
         $source_samples = array(
@@ -321,19 +321,16 @@ class FormattedDatasetFilesTest extends CTestCase
         //then we set our expectations
         $cachedDatasetFiles->expects($this->exactly(2))
                  ->method('getDatasetFiles')
-                 ->willReturn( $source_files );
+                 ->willReturn($source_files);
 
         $cachedDatasetFiles->expects($this->exactly(3))
                  ->method('getDatasetFilesSamples')
-                 ->willReturn( $source_samples );
+                 ->willReturn($source_samples);
 
 
 
         $daoUnderTest = new FormattedDatasetFiles($pageSize, $cachedDatasetFiles);
         $this->assertEquals($expected, $daoUnderTest->formatDatasetFilesSamples($sample_threshold)) ;
-        $this->assertEquals([$expected[1]], $daoUnderTest->formatDatasetFilesSamples($sample_threshold,2)) ;
+        $this->assertEquals([$expected[1]], $daoUnderTest->formatDatasetFilesSamples($sample_threshold, 2)) ;
     }
-
-
 }
-?>

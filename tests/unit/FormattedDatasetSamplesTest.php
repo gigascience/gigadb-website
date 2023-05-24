@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Unit tests for FormattedDatasetSamples to present the files associated to a dataset
  *
@@ -7,7 +8,6 @@
  */
 class FormattedDatasetSamplesTest extends CTestCase
 {
-
     public function setUp()
     {
         parent::setUp();
@@ -16,7 +16,7 @@ class FormattedDatasetSamplesTest extends CTestCase
     public function testFormattedReturnsDatasetId()
     {
         $dataset_id = 6;
-        $pageSize= 10 ;
+        $pageSize = 10 ;
         // create a mock for the CachedDatasetSamples
         $cachedDatasetSamples = $this->getMockBuilder(CachedDatasetSamples::class)
                          ->setMethods(['getDatasetId'])
@@ -29,13 +29,13 @@ class FormattedDatasetSamplesTest extends CTestCase
 
 
         $daoUnderTest = new FormattedDatasetSamples($pageSize, $cachedDatasetSamples);
-        $this->assertEquals($dataset_id, $daoUnderTest->getDatasetId() ) ;
+        $this->assertEquals($dataset_id, $daoUnderTest->getDatasetId()) ;
     }
 
     public function testFormattedReturnsDatasetDOI()
     {
         $dataset_id = 6;
-        $pageSize= 10 ;
+        $pageSize = 10 ;
         $doi = "100044";
          // create a mock for the CachedDatasetSamples
         $cachedDatasetSamples = $this->getMockBuilder(CachedDatasetSamples::class)
@@ -49,7 +49,7 @@ class FormattedDatasetSamplesTest extends CTestCase
 
 
         $daoUnderTest = new FormattedDatasetSamples($pageSize, $cachedDatasetSamples);
-        $this->assertEquals($doi, $daoUnderTest->getDatasetDOI() ) ;
+        $this->assertEquals($doi, $daoUnderTest->getDatasetDOI()) ;
     }
 
     /**
@@ -68,8 +68,8 @@ class FormattedDatasetSamplesTest extends CTestCase
                 'dataset_id' => 1,
                 'species_id' => 1,
                 'tax_id' => 9238,
-                'common_name'=>'Adelie penguin',
-                'scientific_name'=>'Pygoscelis adeliae',
+                'common_name' => 'Adelie penguin',
+                'scientific_name' => 'Pygoscelis adeliae',
                 'genbank_name' => 'Adelie penguin',
                 'name' => "Sample 1",
                 'consent_document' => "",
@@ -89,8 +89,8 @@ class FormattedDatasetSamplesTest extends CTestCase
                 'dataset_id' => 1,
                 'species_id' => 2,
                 'tax_id' => 4555,
-                'common_name'=>'Foxtail millet',
-                'scientific_name'=>'Setaria italica',
+                'common_name' => 'Foxtail millet',
+                'scientific_name' => 'Setaria italica',
                 'genbank_name' => 'Foxtail millet',
                 'name' => "Sample 2",
                 'consent_document' => "",
@@ -107,8 +107,8 @@ class FormattedDatasetSamplesTest extends CTestCase
                 'dataset_id' => 1,
                 'species_id' => 1,
                 'tax_id' => 9238,
-                'common_name'=>'Adelie penguin',
-                'scientific_name'=>'Pygoscelis adeliae',
+                'common_name' => 'Adelie penguin',
+                'scientific_name' => 'Pygoscelis adeliae',
                 'genbank_name' => 'Adelie penguin',
                 'name' => "Sample 3",
                 'consent_document' => "",
@@ -128,8 +128,8 @@ class FormattedDatasetSamplesTest extends CTestCase
                 'dataset_id' => 1,
                 'species_id' => 1,
                 'tax_id' => 9238,
-                'common_name'=>'Adelie penguin',
-                'scientific_name'=>'Pygoscelis adeliae',
+                'common_name' => 'Adelie penguin',
+                'scientific_name' => 'Pygoscelis adeliae',
                 'genbank_name' => 'Adelie penguin',
                 'name' => "Sample 1",
                 'consent_document' => "",
@@ -151,8 +151,8 @@ class FormattedDatasetSamplesTest extends CTestCase
                 'dataset_id' => 1,
                 'species_id' => 2,
                 'tax_id' => 4555,
-                'common_name'=>'Foxtail millet',
-                'scientific_name'=>'Setaria italica',
+                'common_name' => 'Foxtail millet',
+                'scientific_name' => 'Setaria italica',
                 'genbank_name' => 'Foxtail millet',
                 'name' => "Sample 2",
                 'consent_document' => "",
@@ -171,8 +171,8 @@ class FormattedDatasetSamplesTest extends CTestCase
                 'dataset_id' => 1,
                 'species_id' => 1,
                 'tax_id' => 9238,
-                'common_name'=>'Adelie penguin',
-                'scientific_name'=>'Pygoscelis adeliae',
+                'common_name' => 'Adelie penguin',
+                'scientific_name' => 'Pygoscelis adeliae',
                 'genbank_name' => 'Adelie penguin',
                 'name' => "Sample 3",
                 'consent_document' => "",
@@ -195,7 +195,7 @@ class FormattedDatasetSamplesTest extends CTestCase
         //then we set our expectation
         $cachedDatasetSamples->expects($this->exactly(1))
                  ->method('getDatasetSamples')
-                 ->willReturn( $source );
+                 ->willReturn($source);
 
 
         $daoUnderTest = new FormattedDatasetSamples($pageSize, $cachedDatasetSamples);
@@ -218,8 +218,8 @@ class FormattedDatasetSamplesTest extends CTestCase
                 'dataset_id' => 1,
                 'species_id' => 1,
                 'tax_id' => 9238,
-                'common_name'=>'Adelie penguin',
-                'scientific_name'=>'Pygoscelis adeliae',
+                'common_name' => 'Adelie penguin',
+                'scientific_name' => 'Pygoscelis adeliae',
                 'genbank_name' => 'Adelie penguin',
                 'name' => "Sample 1",
                 'consent_document' => "",
@@ -241,8 +241,8 @@ class FormattedDatasetSamplesTest extends CTestCase
                 'dataset_id' => 1,
                 'species_id' => 2,
                 'tax_id' => 4555,
-                'common_name'=>'Foxtail millet',
-                'scientific_name'=>'Setaria italica',
+                'common_name' => 'Foxtail millet',
+                'scientific_name' => 'Setaria italica',
                 'genbank_name' => 'Foxtail millet',
                 'name' => "Sample 2",
                 'consent_document' => "",
@@ -285,16 +285,12 @@ class FormattedDatasetSamplesTest extends CTestCase
         //then we set our expectation
         $cachedDatasetSamples->expects($this->exactly(2))
                  ->method('getDatasetSamples')
-                 ->willReturn( $expected );
+                 ->willReturn($expected);
 
 
         $daoUnderTest = new FormattedDatasetSamples($pageSize, $cachedDatasetSamples);
         $data = $daoUnderTest->getDataProvider()->getData();
         $this->assertEquals($expected, $data) ;
-        $this->assertEquals(2, $daoUnderTest->getDataProvider()->getPagination()->getPageSize() ) ;
+        $this->assertEquals(2, $daoUnderTest->getDataProvider()->getPagination()->getPageSize()) ;
     }
-
-
-
 }
-?>

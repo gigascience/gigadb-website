@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Unit tests for CachedDatasetSamples to retrieve from cache,the samples associated to a dataset
  *
@@ -7,7 +8,6 @@
  */
 class CachedDatasetSamplesTest extends CTestCase
 {
-
     public function setUp()
     {
         parent::setUp();
@@ -31,7 +31,7 @@ class CachedDatasetSamplesTest extends CTestCase
         $cacheDependency = $this->createMock(CCacheDependency::class);
 
         $daoUnderTest = new CachedDatasetSamples($cache, $cacheDependency, $storedDatasetSamples);
-        $this->assertEquals($dataset_id, $daoUnderTest->getDatasetId() ) ;
+        $this->assertEquals($dataset_id, $daoUnderTest->getDatasetId()) ;
     }
 
     public function testCachedReturnsDatasetDOI()
@@ -53,7 +53,7 @@ class CachedDatasetSamplesTest extends CTestCase
 
 
         $daoUnderTest = new CachedDatasetSamples($cache, $cacheDependency, $storedDatasetSamples);
-        $this->assertEquals($doi, $daoUnderTest->getDatasetDOI() ) ;
+        $this->assertEquals($doi, $daoUnderTest->getDatasetDOI()) ;
     }
 
     public function testCachedReturnsDatasetSamplesCacheHit()
@@ -67,8 +67,8 @@ class CachedDatasetSamplesTest extends CTestCase
                 'dataset_id' => 1,
                 'species_id' => 1,
                 'tax_id' => 9238,
-                'common_name'=>'Adelie penguin',
-                'scientific_name'=>'Pygoscelis adeliae',
+                'common_name' => 'Adelie penguin',
+                'scientific_name' => 'Pygoscelis adeliae',
                 'genbank_name' => 'Adelie penguin',
                 'name' => "Sample 1",
                 'consent_document' => "",
@@ -88,8 +88,8 @@ class CachedDatasetSamplesTest extends CTestCase
                 'dataset_id' => 1,
                 'species_id' => 2,
                 'tax_id' => 4555,
-                'common_name'=>'Foxtail millet',
-                'scientific_name'=>'Setaria italica',
+                'common_name' => 'Foxtail millet',
+                'scientific_name' => 'Setaria italica',
                 'genbank_name' => 'Foxtail millet',
                 'name' => "Sample 2",
                 'consent_document' => "",
@@ -106,8 +106,8 @@ class CachedDatasetSamplesTest extends CTestCase
                 'dataset_id' => 1,
                 'species_id' => 1,
                 'tax_id' => 9238,
-                'common_name'=>'Adelie penguin',
-                'scientific_name'=>'Pygoscelis adeliae',
+                'common_name' => 'Adelie penguin',
+                'scientific_name' => 'Pygoscelis adeliae',
                 'genbank_name' => 'Adelie penguin',
                 'name' => "Sample 3",
                 'consent_document' => "",
@@ -138,7 +138,7 @@ class CachedDatasetSamplesTest extends CTestCase
         $cache->expects($this->exactly(1))
                  ->method('get')
                  ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetSamples_getDatasetSamples"))
-                 ->willReturn( $expected );
+                 ->willReturn($expected);
 
         $daoUnderTest = new CachedDatasetSamples($cache, $cacheDependency, $storedDatasetSamples) ;
         $this->assertEquals($expected, $daoUnderTest->getDatasetSamples());
@@ -155,8 +155,8 @@ class CachedDatasetSamplesTest extends CTestCase
                 'dataset_id' => 1,
                 'species_id' => 1,
                 'tax_id' => 9238,
-                'common_name'=>'Adelie penguin',
-                'scientific_name'=>'Pygoscelis adeliae',
+                'common_name' => 'Adelie penguin',
+                'scientific_name' => 'Pygoscelis adeliae',
                 'genbank_name' => 'Adelie penguin',
                 'name' => "Sample 1",
                 'consent_document' => "",
@@ -176,8 +176,8 @@ class CachedDatasetSamplesTest extends CTestCase
                 'dataset_id' => 1,
                 'species_id' => 2,
                 'tax_id' => 4555,
-                'common_name'=>'Foxtail millet',
-                'scientific_name'=>'Setaria italica',
+                'common_name' => 'Foxtail millet',
+                'scientific_name' => 'Setaria italica',
                 'genbank_name' => 'Foxtail millet',
                 'name' => "Sample 2",
                 'consent_document' => "",
@@ -194,8 +194,8 @@ class CachedDatasetSamplesTest extends CTestCase
                 'dataset_id' => 1,
                 'species_id' => 1,
                 'tax_id' => 9238,
-                'common_name'=>'Adelie penguin',
-                'scientific_name'=>'Pygoscelis adeliae',
+                'common_name' => 'Adelie penguin',
+                'scientific_name' => 'Pygoscelis adeliae',
                 'genbank_name' => 'Adelie penguin',
                 'name' => "Sample 3",
                 'consent_document' => "",
@@ -218,7 +218,7 @@ class CachedDatasetSamplesTest extends CTestCase
                                     ->willReturn(1);
         $storedDatasetSamples->expects($this->exactly(1))
                                     ->method('getDatasetSamples')
-                                    ->willReturn( $expected );
+                                    ->willReturn($expected);
 
         // create a stub of the cache dependency (because we don't need to verify expectations on the cache dependency)
         $cache =  $this->createMock(CApcCache::class);
@@ -233,14 +233,14 @@ class CachedDatasetSamplesTest extends CTestCase
         $cache->expects($this->exactly(1))
                  ->method('get')
                  ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetSamples_getDatasetSamples"))
-                 ->willReturn( false );
+                 ->willReturn(false);
 
         $cache->expects($this->exactly(1))
                 ->method('set')
                 ->with(
                     $this->equalTo("dataset_${dataset_id}_CachedDatasetSamples_getDatasetSamples"),
                     $expected,
-                    Cacheable::defaultTTL*30,
+                    Cacheable::defaultTTL * 30,
                     $cacheDependency
                 )
                 ->willReturn(true);
@@ -249,7 +249,4 @@ class CachedDatasetSamplesTest extends CTestCase
         $daoUnderTest = new CachedDatasetSamples($cache, $cacheDependency, $storedDatasetSamples) ;
         $this->assertEquals($expected, $daoUnderTest->getDatasetSamples());
     }
-
-
 }
-?>

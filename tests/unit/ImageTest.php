@@ -1,6 +1,6 @@
 <?php
 
-use \Codeception\Example;
+use Codeception\Example;
 use CUploadedFile;
 use creocoder\flysystem\AwsS3Filesystem;
 use League\Flysystem\AdapterInterface;
@@ -12,7 +12,7 @@ class ImageTest extends \Codeception\Test\Unit
      * @var \UnitTester
      */
     protected $tester;
-    
+
     protected function _before()
     {
     }
@@ -36,9 +36,13 @@ class ImageTest extends \Codeception\Test\Unit
         $sut = new Image(); // System Under Test
 
         // Codeception's mocking mechanism is enough for this object as mocked functions are simple
-        $mockDatasetImage = $this->make('CUploadedFile',[
-            "getName" => function () use ($imageName) { return $imageName;},
-            "getTempName" => function () use ($tempName){ return $tempName;}
+        $mockDatasetImage = $this->make('CUploadedFile', [
+            "getName" => function () use ($imageName) {
+                return $imageName;
+            },
+            "getTempName" => function () use ($tempName) {
+                return $tempName;
+            }
             ]);
 
         // Need to resort to PHPUnit's MockBuilder as mocked function take arguments
@@ -46,9 +50,9 @@ class ImageTest extends \Codeception\Test\Unit
             ->setMethods(["put"])
             ->disableOriginalConstructor() // otherwise, it will pester about missing configuration for key, secret and bucket
             ->getMock();
-        $mockStorageTarget->expects( $this->once())
+        $mockStorageTarget->expects($this->once())
             ->method("put")
-            ->with($this->matchesRegularExpression($expectedTargetLocationPattern), file_get_contents($tempName), $expectedOptions )
+            ->with($this->matchesRegularExpression($expectedTargetLocationPattern), file_get_contents($tempName), $expectedOptions)
             ->willReturn(true);
 
         $this->assertTrue($sut->write($mockStorageTarget, $datasetUuid, $mockDatasetImage));
@@ -58,7 +62,6 @@ class ImageTest extends \Codeception\Test\Unit
         $this->assertEquals("https", $urlArray["scheme"]);
         $this->assertEquals(Image::BUCKET, $urlArray["host"]);
         $this->assertRegExp($expectedTargetLocationPattern, $urlArray["path"]);
-
     }
 
     /**
@@ -76,9 +79,13 @@ class ImageTest extends \Codeception\Test\Unit
         $sut = new Image(); // System Under Test
 
         // Codeception's mocking mechanism is enough for this object as mocked functions are simple
-        $mockDatasetImage = $this->make('CUploadedFile',[
-            "getName" => function () use ($imageName) { return $imageName;},
-            "getTempName" => function () use ($tempName){ return $tempName;}
+        $mockDatasetImage = $this->make('CUploadedFile', [
+            "getName" => function () use ($imageName) {
+                return $imageName;
+            },
+            "getTempName" => function () use ($tempName) {
+                return $tempName;
+            }
         ]);
 
         // Need to resort to PHPUnit's MockBuilder as mocked function take arguments
@@ -86,13 +93,12 @@ class ImageTest extends \Codeception\Test\Unit
             ->setMethods(["put"])
             ->disableOriginalConstructor() // otherwise, it will pester about missing configuration for key, secret and bucket
             ->getMock();
-        $mockStorageTarget->expects( $this->once())
+        $mockStorageTarget->expects($this->once())
             ->method("put")
-            ->with($this->matchesRegularExpression($expectedTargetLocationPattern), file_get_contents($tempName), $expectedOptions )
+            ->with($this->matchesRegularExpression($expectedTargetLocationPattern), file_get_contents($tempName), $expectedOptions)
             ->willReturn(false);
 
         $this->assertFalse($sut->write($mockStorageTarget, $datasetUuid, $mockDatasetImage));
-
     }
 
     /**
@@ -116,26 +122,31 @@ class ImageTest extends \Codeception\Test\Unit
     {
 
         $dbCommand = $this->make('CDbCommand', [
-            "insert" => function ()  { return true;},
+            "insert" => function () {
+                return true;
+            },
         ]);
-        $dbConnection = $this->make('CDbConnection',[
-            "createCommand" => function () use ($dbCommand) { return $dbCommand;},
+        $dbConnection = $this->make('CDbConnection', [
+            "createCommand" => function () use ($dbCommand) {
+                return $dbCommand;
+            },
         ]);
         $sut = new Image(); // System Under Test
         $sut->url = $url;
         $sut->save();
         $this->assertEquals(
-                            $expectedReturn,
-                            $sut->deleteFile($dbConnection)
+            $expectedReturn,
+            $sut->deleteFile($dbConnection)
         );
-        if (true === $expectedReturn)
-            $this->assertTrue( empty($sut->url) );
-        else
+        if (true === $expectedReturn) {
+            $this->assertTrue(empty($sut->url));
+        } else {
             $this->assertEquals($url, $sut->url);
-
+        }
     }
 
-    public function urlsProvider() {
+    public function urlsProvider()
+    {
         return [
             "valid url" => [ "https://foo.bar", true, true],
             "invalid url (local path)" => [ "var/somepath", false],

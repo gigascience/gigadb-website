@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Unit tests for CachedDatasetExternalLinks to retrieve from cache, external links associated to a dataset
  *
@@ -8,7 +9,6 @@
  */
 class CachedDatasetExternalLinksTest extends CTestCase
 {
-
     public function setUp()
     {
         parent::setUp();
@@ -32,7 +32,7 @@ class CachedDatasetExternalLinksTest extends CTestCase
         $cacheDependency = $this->createMock(CCacheDependency::class);
 
         $daoUnderTest = new CachedDatasetExternalLinks($cache, $cacheDependency, $storedDatasetExternalLinks);
-        $this->assertEquals($dataset_id, $daoUnderTest->getDatasetId() ) ;
+        $this->assertEquals($dataset_id, $daoUnderTest->getDatasetId()) ;
     }
 
     public function testCachedReturnsDatasetDOI()
@@ -54,7 +54,7 @@ class CachedDatasetExternalLinksTest extends CTestCase
 
 
         $daoUnderTest = new CachedDatasetExternalLinks($cache, $cacheDependency, $storedDatasetExternalLinks);
-        $this->assertEquals($doi, $daoUnderTest->getDatasetDOI() ) ;
+        $this->assertEquals($doi, $daoUnderTest->getDatasetDOI()) ;
     }
 
     public function testCachedReturnsDataetExternalLinksCacheHit()
@@ -79,88 +79,88 @@ class CachedDatasetExternalLinksTest extends CTestCase
                  ->method('get')
                  ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetExternalLinks_getDatasetExternalLinks"))
                  ->willReturn(
-                    array(
+                     array(
                         array(
-                            'id'=>1,
-                            'dataset_id'=>1,
-                            'url'=>"http://foo.com",
-                            'external_link_type_id'=>1,
-                            'external_link_type_name'=>"Additional information",
+                            'id' => 1,
+                            'dataset_id' => 1,
+                            'url' => "http://foo.com",
+                            'external_link_type_id' => 1,
+                            'external_link_type_name' => "Additional information",
                         ),
                         array(
-                            'id'=>2,
-                            'dataset_id'=>1,
-                            'url'=>"http://foo2.com",
-                            'external_link_type_id'=>1,
-                            'external_link_type_name'=>"Additional information",
+                            'id' => 2,
+                            'dataset_id' => 1,
+                            'url' => "http://foo2.com",
+                            'external_link_type_id' => 1,
+                            'external_link_type_name' => "Additional information",
                         ),
                         array(
-                            'id'=>3,
-                            'dataset_id'=>1,
-                            'url'=>"http://foo3.com",
-                            'external_link_type_id'=>2,
-                            'external_link_type_name'=>"Genome browser",
+                            'id' => 3,
+                            'dataset_id' => 1,
+                            'url' => "http://foo3.com",
+                            'external_link_type_id' => 2,
+                            'external_link_type_name' => "Genome browser",
                         ),
                         array(
-                            'id'=>4,
-                            'dataset_id'=>1,
-                            'url'=>"http://foo4.com",
-                            'external_link_type_id'=>3,
-                            'external_link_type_name'=>"Protocols.io",
+                            'id' => 4,
+                            'dataset_id' => 1,
+                            'url' => "http://foo4.com",
+                            'external_link_type_id' => 3,
+                            'external_link_type_name' => "Protocols.io",
                         ),
                         array(
-                            'id'=>5,
-                            'dataset_id'=>1,
-                            'url'=>"http://foo5.com",
-                            'external_link_type_id'=>4,
-                            'external_link_type_name'=>"JBrowse",
+                            'id' => 5,
+                            'dataset_id' => 1,
+                            'url' => "http://foo5.com",
+                            'external_link_type_id' => 4,
+                            'external_link_type_name' => "JBrowse",
                         ),
-                    )
-                );
+                     )
+                 );
 
         $expected = array(
             array(
-                'id'=>1,
-                'dataset_id'=>1,
-                'url'=>"http://foo.com",
-                'external_link_type_id'=>1,
-                'external_link_type_name'=>"Additional information",
+                'id' => 1,
+                'dataset_id' => 1,
+                'url' => "http://foo.com",
+                'external_link_type_id' => 1,
+                'external_link_type_name' => "Additional information",
             ),
             array(
-                'id'=>2,
-                'dataset_id'=>1,
-                'url'=>"http://foo2.com",
-                'external_link_type_id'=>1,
-                'external_link_type_name'=>"Additional information",
+                'id' => 2,
+                'dataset_id' => 1,
+                'url' => "http://foo2.com",
+                'external_link_type_id' => 1,
+                'external_link_type_name' => "Additional information",
             ),
             array(
-                'id'=>3,
-                'dataset_id'=>1,
-                'url'=>"http://foo3.com",
-                'external_link_type_id'=>2,
-                'external_link_type_name'=>"Genome browser",
+                'id' => 3,
+                'dataset_id' => 1,
+                'url' => "http://foo3.com",
+                'external_link_type_id' => 2,
+                'external_link_type_name' => "Genome browser",
             ),
             array(
-                'id'=>4,
-                'dataset_id'=>1,
-                'url'=>"http://foo4.com",
-                'external_link_type_id'=>3,
-                'external_link_type_name'=>"Protocols.io",
+                'id' => 4,
+                'dataset_id' => 1,
+                'url' => "http://foo4.com",
+                'external_link_type_id' => 3,
+                'external_link_type_name' => "Protocols.io",
             ),
             array(
-                'id'=>5,
-                'dataset_id'=>1,
-                'url'=>"http://foo5.com",
-                'external_link_type_id'=>4,
-                'external_link_type_name'=>"JBrowse",
+                'id' => 5,
+                'dataset_id' => 1,
+                'url' => "http://foo5.com",
+                'external_link_type_id' => 4,
+                'external_link_type_name' => "JBrowse",
             ),
         );
 
         $daoUnderTest = new CachedDatasetExternalLinks($cache, $cacheDependency, $storedDatasetExternalLinks) ;
         $this->assertEquals($expected, $daoUnderTest->getDatasetExternalLinks());
-        $this->assertEquals([$expected[2]], $daoUnderTest->getDatasetExternalLinks(["Genome browser"]) ) ;
-        $this->assertEquals([$expected[3],$expected[4]], $daoUnderTest->getDatasetExternalLinks(["JBrowse", "Protocols.io"]) ) ;
-        $this->assertEquals([], $daoUnderTest->getDatasetExternalLinks(["fake"]) ) ;
+        $this->assertEquals([$expected[2]], $daoUnderTest->getDatasetExternalLinks(["Genome browser"])) ;
+        $this->assertEquals([$expected[3],$expected[4]], $daoUnderTest->getDatasetExternalLinks(["JBrowse", "Protocols.io"])) ;
+        $this->assertEquals([], $daoUnderTest->getDatasetExternalLinks(["fake"])) ;
     }
 
     public function testCachedReturnsDatasetExternalLinksCacheMiss()
@@ -180,39 +180,39 @@ class CachedDatasetExternalLinksTest extends CTestCase
                                     ->willReturn(
                                         array(
                                             array(
-                                                'id'=>1,
-                                                'dataset_id'=>1,
-                                                'url'=>"http://foo.com",
-                                                'external_link_type_id'=>1,
-                                                'external_link_type_name'=>"Additional information",
+                                                'id' => 1,
+                                                'dataset_id' => 1,
+                                                'url' => "http://foo.com",
+                                                'external_link_type_id' => 1,
+                                                'external_link_type_name' => "Additional information",
                                             ),
                                             array(
-                                                'id'=>2,
-                                                'dataset_id'=>1,
-                                                'url'=>"http://foo2.com",
-                                                'external_link_type_id'=>1,
-                                                'external_link_type_name'=>"Additional information",
+                                                'id' => 2,
+                                                'dataset_id' => 1,
+                                                'url' => "http://foo2.com",
+                                                'external_link_type_id' => 1,
+                                                'external_link_type_name' => "Additional information",
                                             ),
                                             array(
-                                                'id'=>3,
-                                                'dataset_id'=>1,
-                                                'url'=>"http://foo3.com",
-                                                'external_link_type_id'=>2,
-                                                'external_link_type_name'=>"Genome browser",
+                                                'id' => 3,
+                                                'dataset_id' => 1,
+                                                'url' => "http://foo3.com",
+                                                'external_link_type_id' => 2,
+                                                'external_link_type_name' => "Genome browser",
                                             ),
                                             array(
-                                                'id'=>4,
-                                                'dataset_id'=>1,
-                                                'url'=>"http://foo4.com",
-                                                'external_link_type_id'=>3,
-                                                'external_link_type_name'=>"Protocols.io",
+                                                'id' => 4,
+                                                'dataset_id' => 1,
+                                                'url' => "http://foo4.com",
+                                                'external_link_type_id' => 3,
+                                                'external_link_type_name' => "Protocols.io",
                                             ),
                                             array(
-                                                'id'=>5,
-                                                'dataset_id'=>1,
-                                                'url'=>"http://foo5.com",
-                                                'external_link_type_id'=>4,
-                                                'external_link_type_name'=>"JBrowse",
+                                                'id' => 5,
+                                                'dataset_id' => 1,
+                                                'url' => "http://foo5.com",
+                                                'external_link_type_id' => 4,
+                                                'external_link_type_name' => "JBrowse",
                                             ),
                                         )
                                     );
@@ -230,7 +230,7 @@ class CachedDatasetExternalLinksTest extends CTestCase
         $cache->expects($this->exactly(4))
                  ->method('get')
                  ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetExternalLinks_getDatasetExternalLinks"))
-                 ->willReturn( false );
+                 ->willReturn(false);
 
         $cache->expects($this->exactly(4))
                 ->method('set')
@@ -238,89 +238,89 @@ class CachedDatasetExternalLinksTest extends CTestCase
                     $this->equalTo("dataset_${dataset_id}_CachedDatasetExternalLinks_getDatasetExternalLinks"),
                     array(
                         array(
-                            'id'=>1,
-                            'dataset_id'=>1,
-                            'url'=>"http://foo.com",
-                            'external_link_type_id'=>1,
-                            'external_link_type_name'=>"Additional information",
+                            'id' => 1,
+                            'dataset_id' => 1,
+                            'url' => "http://foo.com",
+                            'external_link_type_id' => 1,
+                            'external_link_type_name' => "Additional information",
                         ),
                         array(
-                            'id'=>2,
-                            'dataset_id'=>1,
-                            'url'=>"http://foo2.com",
-                            'external_link_type_id'=>1,
-                            'external_link_type_name'=>"Additional information",
+                            'id' => 2,
+                            'dataset_id' => 1,
+                            'url' => "http://foo2.com",
+                            'external_link_type_id' => 1,
+                            'external_link_type_name' => "Additional information",
                         ),
                         array(
-                            'id'=>3,
-                            'dataset_id'=>1,
-                            'url'=>"http://foo3.com",
-                            'external_link_type_id'=>2,
-                            'external_link_type_name'=>"Genome browser",
+                            'id' => 3,
+                            'dataset_id' => 1,
+                            'url' => "http://foo3.com",
+                            'external_link_type_id' => 2,
+                            'external_link_type_name' => "Genome browser",
                         ),
                         array(
-                            'id'=>4,
-                            'dataset_id'=>1,
-                            'url'=>"http://foo4.com",
-                            'external_link_type_id'=>3,
-                            'external_link_type_name'=>"Protocols.io",
+                            'id' => 4,
+                            'dataset_id' => 1,
+                            'url' => "http://foo4.com",
+                            'external_link_type_id' => 3,
+                            'external_link_type_name' => "Protocols.io",
                         ),
                         array(
-                            'id'=>5,
-                            'dataset_id'=>1,
-                            'url'=>"http://foo5.com",
-                            'external_link_type_id'=>4,
-                            'external_link_type_name'=>"JBrowse",
+                            'id' => 5,
+                            'dataset_id' => 1,
+                            'url' => "http://foo5.com",
+                            'external_link_type_id' => 4,
+                            'external_link_type_name' => "JBrowse",
                         ),
                     ),
-                    Cacheable::defaultTTL*30,
+                    Cacheable::defaultTTL * 30,
                     $cacheDependency
                 )
                 ->willReturn(true);
 
         $expected = array(
             array(
-                'id'=>1,
-                'dataset_id'=>1,
-                'url'=>"http://foo.com",
-                'external_link_type_id'=>1,
-                'external_link_type_name'=>"Additional information",
+                'id' => 1,
+                'dataset_id' => 1,
+                'url' => "http://foo.com",
+                'external_link_type_id' => 1,
+                'external_link_type_name' => "Additional information",
             ),
             array(
-                'id'=>2,
-                'dataset_id'=>1,
-                'url'=>"http://foo2.com",
-                'external_link_type_id'=>1,
-                'external_link_type_name'=>"Additional information",
+                'id' => 2,
+                'dataset_id' => 1,
+                'url' => "http://foo2.com",
+                'external_link_type_id' => 1,
+                'external_link_type_name' => "Additional information",
             ),
             array(
-                'id'=>3,
-                'dataset_id'=>1,
-                'url'=>"http://foo3.com",
-                'external_link_type_id'=>2,
-                'external_link_type_name'=>"Genome browser",
+                'id' => 3,
+                'dataset_id' => 1,
+                'url' => "http://foo3.com",
+                'external_link_type_id' => 2,
+                'external_link_type_name' => "Genome browser",
             ),
             array(
-                'id'=>4,
-                'dataset_id'=>1,
-                'url'=>"http://foo4.com",
-                'external_link_type_id'=>3,
-                'external_link_type_name'=>"Protocols.io",
+                'id' => 4,
+                'dataset_id' => 1,
+                'url' => "http://foo4.com",
+                'external_link_type_id' => 3,
+                'external_link_type_name' => "Protocols.io",
             ),
             array(
-                'id'=>5,
-                'dataset_id'=>1,
-                'url'=>"http://foo5.com",
-                'external_link_type_id'=>4,
-                'external_link_type_name'=>"JBrowse",
+                'id' => 5,
+                'dataset_id' => 1,
+                'url' => "http://foo5.com",
+                'external_link_type_id' => 4,
+                'external_link_type_name' => "JBrowse",
             ),
         );
 
         $daoUnderTest = new CachedDatasetExternalLinks($cache, $cacheDependency, $storedDatasetExternalLinks) ;
         $this->assertEquals($expected, $daoUnderTest->getDatasetExternalLinks());
-        $this->assertEquals([$expected[2]], $daoUnderTest->getDatasetExternalLinks(["Genome browser"]) ) ;
-        $this->assertEquals([$expected[3],$expected[4]], $daoUnderTest->getDatasetExternalLinks(["JBrowse", "Protocols.io"]) ) ;
-        $this->assertEquals([], $daoUnderTest->getDatasetExternalLinks(["fake"]) ) ;
+        $this->assertEquals([$expected[2]], $daoUnderTest->getDatasetExternalLinks(["Genome browser"])) ;
+        $this->assertEquals([$expected[3],$expected[4]], $daoUnderTest->getDatasetExternalLinks(["JBrowse", "Protocols.io"])) ;
+        $this->assertEquals([], $daoUnderTest->getDatasetExternalLinks(["fake"])) ;
     }
 
     public function testCachedReturnsDatasetExternalLinksTypesAndCountCacheHit()
@@ -345,26 +345,25 @@ class CachedDatasetExternalLinksTest extends CTestCase
                  ->method('get')
                  ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetExternalLinks_getDatasetExternalLinksTypesAndCount"))
                  ->willReturn(
-                    array(
+                     array(
                         "Additional information" => 2,
                         "Genome browser" => 1,
-                        "Protocols.io" =>1,
+                        "Protocols.io" => 1,
                         "JBrowse" => 1,
-                    )
-                );
+                     )
+                 );
 
         $expected = array(
             "Additional information" => 2,
             "Genome browser" => 1,
-            "Protocols.io" =>1,
+            "Protocols.io" => 1,
             "JBrowse" => 1,
         );
 
         $daoUnderTest = new CachedDatasetExternalLinks($cache, $cacheDependency, $storedDatasetExternalLinks) ;
         $this->assertEquals($expected, $daoUnderTest->getDatasetExternalLinksTypesAndCount());
-        $this->assertEquals(array("Genome browser" => 1), $daoUnderTest->getDatasetExternalLinksTypesAndCount(["Genome browser"]) ) ;
-        $this->assertEquals(array("Protocols.io" => 1, "JBrowse" => 1), $daoUnderTest->getDatasetExternalLinksTypesAndCount(["JBrowse", "Protocols.io"]) ) ;
-
+        $this->assertEquals(array("Genome browser" => 1), $daoUnderTest->getDatasetExternalLinksTypesAndCount(["Genome browser"])) ;
+        $this->assertEquals(array("Protocols.io" => 1, "JBrowse" => 1), $daoUnderTest->getDatasetExternalLinksTypesAndCount(["JBrowse", "Protocols.io"])) ;
     }
 
     public function testCachedReturnsDatasetExternalLinksTypesAndCountCacheMiss()
@@ -385,7 +384,7 @@ class CachedDatasetExternalLinksTest extends CTestCase
                                         array(
                                             "Additional information" => 2,
                                             "Genome browser" => 1,
-                                            "Protocols.io" =>1,
+                                            "Protocols.io" => 1,
                                             "JBrowse" => 1,
                                         )
                                     );
@@ -403,7 +402,7 @@ class CachedDatasetExternalLinksTest extends CTestCase
         $cache->expects($this->exactly(3))
                  ->method('get')
                  ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetExternalLinks_getDatasetExternalLinksTypesAndCount"))
-                 ->willReturn( false );
+                 ->willReturn(false);
 
         $cache->expects($this->exactly(3))
                 ->method('set')
@@ -412,10 +411,10 @@ class CachedDatasetExternalLinksTest extends CTestCase
                     array(
                         "Additional information" => 2,
                         "Genome browser" => 1,
-                        "Protocols.io" =>1,
+                        "Protocols.io" => 1,
                         "JBrowse" => 1,
                     ),
-                    Cacheable::defaultTTL*30,
+                    Cacheable::defaultTTL * 30,
                     $cacheDependency
                 )
                 ->willReturn(true);
@@ -423,14 +422,13 @@ class CachedDatasetExternalLinksTest extends CTestCase
         $expected = array(
                         "Additional information" => 2,
                         "Genome browser" => 1,
-                        "Protocols.io" =>1,
+                        "Protocols.io" => 1,
                         "JBrowse" => 1,
                     );
 
         $daoUnderTest = new CachedDatasetExternalLinks($cache, $cacheDependency, $storedDatasetExternalLinks) ;
         $this->assertEquals($expected, $daoUnderTest->getDatasetExternalLinksTypesAndCount());
-        $this->assertEquals(array("Genome browser" => 1), $daoUnderTest->getDatasetExternalLinksTypesAndCount(["Genome browser"]) ) ;
-        $this->assertEquals(array("Protocols.io" => 1, "JBrowse" => 1), $daoUnderTest->getDatasetExternalLinksTypesAndCount(["JBrowse", "Protocols.io"]) ) ;
+        $this->assertEquals(array("Genome browser" => 1), $daoUnderTest->getDatasetExternalLinksTypesAndCount(["Genome browser"])) ;
+        $this->assertEquals(array("Protocols.io" => 1, "JBrowse" => 1), $daoUnderTest->getDatasetExternalLinksTypesAndCount(["JBrowse", "Protocols.io"])) ;
     }
 }
-?>
