@@ -25,16 +25,16 @@ if (isset($_GET['status'])) {
                 </div>
             </div>
         </div>
-    <?php
+        <?php
     }
-} else if (isset($study)) {
-   
-        ?>
+} elseif (isset($study)) {
+
+?>
         <h2>Submission request accepted</h2>
         <div class="clear"></div>
         <div class="span12 form well">
             <div class="form-horizontal">
-                <?= $this->renderPartial('/user/uploadedDatasets', array('uploadedDatasets' => $uploadedDatasets,'selected'=>$study)); ?>
+                <?= $this->renderPartial('/user/uploadedDatasets', array('uploadedDatasets' => $uploadedDatasets,'selected' => $study)); ?>
                 <div class="row">
                     <!--            <div class="span8 offset2">
                                     <div class="form well light-green">-->
