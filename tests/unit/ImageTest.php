@@ -1,8 +1,6 @@
 <?php
 
-use Codeception\Example;
-use CUploadedFile;
-use creocoder\flysystem\AwsS3Filesystem;
+
 use League\Flysystem\AdapterInterface;
 use Ramsey\Uuid\Uuid;
 
