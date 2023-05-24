@@ -199,7 +199,6 @@ services:
         - INSTALL_INTL=true
         - INSTALL_PGSQL=true
         - INSTALL_PG_CLIENT=true
-        - PG_CLIENT_VERSION=${POSTGRES_VERSION}
         - INSTALL_XDEBUG=true
         - INSTALL_NETCAT_JQ=true
         - INSTALL_GRAPHVIZ=true
@@ -555,7 +554,6 @@ services:
         - INSTALL_DOCKER_API_ACCESS=true
         - INSTALL_NETCAT_JQ=true
         - INSTALL_GIT=true
-        - PG_CLIENT_VERSION=9.6
         - INSTALL_PG_CLIENT=true
         - INSTALL_XDEBUG=true
         - INSTALL_IPROUTE2=true
