@@ -39,7 +39,7 @@ class FiledropServiceTest extends \CTestCase
         $instructions = "foo bar";
         $method = "PUT";
         $connect_timeout = 5 ;
-        $auth_header = ['Authorization' => "Bearer ".$this->mockToken];
+        $auth_header = ['Authorization' => "Bearer ".$mockToken];
         $form_params = [
                         'doi' => $doi,
                         'subject' => $subject,
@@ -115,7 +115,7 @@ class FiledropServiceTest extends \CTestCase
         $instructions = "foo bar";
         $method = "PUT";
         $connect_timeout = 5 ;
-        $auth_header = ['Authorization' => "Bearer ".$this->mockToken];
+        $auth_header = ['Authorization' => "Bearer ".$mockToken];
         $form_params = [
                         'doi' => $doi,
                         'instructions' => $instructions,
@@ -211,7 +211,7 @@ class FiledropServiceTest extends \CTestCase
         $api_endpoint = "http://fuw-admin-api/filedrop-accounts/move/$filedrop_id";
         $method = "POST";
         $connect_timeout = 5 ;
-        $auth_header = ['Authorization' => "Bearer ".$this->mockToken];
+        $auth_header = ['Authorization' => "Bearer ".$mockToken];
 
         $mockTokenSrv->expects($this->once())
                  ->method('generateTokenForUser')
