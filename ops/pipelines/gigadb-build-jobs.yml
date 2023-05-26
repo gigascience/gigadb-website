@@ -149,6 +149,7 @@ b_gigadb:
     # appending remote variables at the end of the .env and .secrets
     - env > full_env.txt
     - env | grep -v "SAST" | grep -iE "^(staging_|remote_)" | grep -viE "(password|email|tester|secret|key|user|app_id|client_id|token|tlsauth)" >> $APPLICATION/.env
+    - env | grep -v "SAST" | grep -iE "^TIDEWAYS_APIKEY" >> $APPLICATION/.env
     - env | grep -v "SAST" | grep -iE "^(staging_|remote_)" | grep -iE "(password|email|tester|secret|key|user|app_id|client_id|token)" | grep -viE "tlsauth">> $APPLICATION/.secrets
     - env | grep -v "SAST" | grep -iE "gitlab_private_token">> $APPLICATION/.secrets
     - env | grep -v "SAST" | grep -iE "CI_PROJECT_URL">> $APPLICATION/.secrets

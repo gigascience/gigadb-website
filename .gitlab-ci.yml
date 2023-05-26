@@ -66,6 +66,7 @@ include:
   - local: "ops/pipelines/gigadb-conformance-security-jobs.yml"
   - local: "ops/pipelines/gigadb-deploy-jobs.yml"
   - local: "ops/pipelines/gigadb-operations-jobs.yml"
+  - local: "ops/pipelines/gitlab-tideways-jobs.yml"
   - local: "gigadb/app/tools/files-url-updater/gitlab-config.yml"
   - local: "gigadb/app/tools/excel-spreadsheet-uploader/gitlab-config-build-staging.yml"
   - local: "gigadb/app/tools/excel-spreadsheet-uploader/gitlab-config-deploy-staging.yml"

@@ -51,6 +51,14 @@ resource "aws_security_group" "docker_host_sg" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+  egress {
+    from_port   = 9135
+    to_port     = 9135
+    protocol    = "tcp"
+    cidr_blocks = [var.vpc_cidr_block]
+  }
+
    tags = {
      Name = "docker_host_sg_${var.deployment_target}_${var.owner}"
    }
