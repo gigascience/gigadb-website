@@ -31,6 +31,46 @@ final class DatasetFilesUpdater extends Component
      */
     public \GuzzleHttp\Client $webClient;
 
+    public string $prefix;
+    public string $separator;
+    public array $excludedDois;
+
+    /**
+     * Replace substring of a URL with a new prefix for all files in a dataset
+     *
+     * @return int returns the number of files that has been successfully updated
+     */
+    public function replaceFileUrlSubstringWithPrefix(): int
+    {
+        $success = 0;
+
+        $d = Dataset::find()->where(["identifier" => $this->doi])->one();
+
+        $urls =  File::find()
+            ->select(["location"])
+            ->where(["dataset_id" => $d->id])
+            ->asArray(true)
+            ->all();
+        $values = function ($item) {
+            return $item["location"];
+        };
+        $flatURLs = array_map($values, $urls);
+        $this->us->urls = $flatURLs;
+        print_r($flatURLs);
+
+        foreach ($flatURLs as $url) {
+            if(str_contains($url, $this->separator)) {
+                // Remove portion of string after separator string
+                $newUrl = substr($url,strrpos($url, $this->separator) + strlen($this->separator), strlen($url)) . PHP_EOL;
+                $newUrl = $this->prefix . "$this->separator" . $newUrl;
+                // Display value of variable
+                echo $newUrl;
+            }
+        }
+
+        return $success;
+    }
+
     /**
      * Method to update the file size for the all the files of the dataset identified with $doi
      *
