@@ -1,5 +1,5 @@
 FROM alpine:3.15
-RUN apk --no-cache add postgresql12-client rclone bash coreutils
+RUN apk --no-cache add postgresql14-client rclone bash coreutils
 COPY upload_database_backup_to_S3.sh /upload_database_backup_to_S3.sh
 COPY restore_database_from_s3_backup.sh /restore_database_from_s3_backup.sh
 COPY restore_database_from_converted_backup.sh /restore_database_from_converted_backup.sh
