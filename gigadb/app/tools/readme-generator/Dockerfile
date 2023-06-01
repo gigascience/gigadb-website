@@ -10,7 +10,10 @@ RUN apt-get update -yqq && \
 RUN apt-get update -yq && \
     apt-get install -y --no-install-recommends \
         libzip-dev \
-        libpq-dev && \
+        libpq-dev \
+        gnupg \
+        wget \
+        ca-certificates && \
         apt-get clean 
 
 # Install extensions for the postgresql and PHP integration
