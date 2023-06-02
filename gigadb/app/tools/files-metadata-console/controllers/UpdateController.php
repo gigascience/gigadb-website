@@ -62,14 +62,14 @@ final class UpdateController extends Controller
             "webClient" => $webClient
         ]);
         $success = $dfu->replaceFileUrlSubstringWithPrefix();
-        $this->stdout("nb. changes: $success" . PHP_EOL, Console::FG_GREEN);
+        $this->stdout("Number of changes: $success" . PHP_EOL, Console::FG_GREEN);
         return ExitCode::OK;
     }
 
     public function options($actionID)
     {
         return array_merge(parent::options($actionID), [
-            'color', 'interactive', 'help','doi'
+            'color', 'interactive', 'help', 'doi', 'prefix', 'separator', 'exclude-dois'
         ]);
     }
 }

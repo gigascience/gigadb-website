@@ -44,27 +44,36 @@ final class DatasetFilesUpdater extends Component
     {
         $success = 0;
 
-        $d = Dataset::find()->where(["identifier" => $this->doi])->one();
+        # Get dataset object whose file URLs we need to update
+        $dataset = Dataset::find()
+            ->where(["identifier" => $this->doi])
+            ->one();
 
         $urls =  File::find()
             ->select(["location"])
-            ->where(["dataset_id" => $d->id])
+            ->where(["dataset_id" => $dataset->id])
             ->asArray(true)
             ->all();
         $values = function ($item) {
             return $item["location"];
         };
         $flatURLs = array_map($values, $urls);
-        $this->us->urls = $flatURLs;
-        print_r($flatURLs);
 
+        # Update each URL with new prefix
         foreach ($flatURLs as $url) {
-            if(str_contains($url, $this->separator)) {
-                // Remove portion of string after separator string
-                $newUrl = substr($url,strrpos($url, $this->separator) + strlen($this->separator), strlen($url)) . PHP_EOL;
+            if (str_contains($url, $this->separator)) {
+                # Remove substring after separator
+                $newUrl = substr($url, strrpos($url, $this->separator) + strlen($this->separator), strlen($url)) . PHP_EOL;
                 $newUrl = $this->prefix . "$this->separator" . $newUrl;
-                // Display value of variable
-                echo $newUrl;
+                # Update location attribute in file object
+                $file = File::find()
+                    ->where(['location' => $url, 'dataset_id' => $dataset->id])
+                    ->one();
+                $file->location = $newUrl;
+                print_r($file->location);
+                if ($file->save()) {
+                    $success++;
+                }
             }
         }
 
