@@ -38,39 +38,32 @@ final class DatasetFilesUpdater extends Component
     /**
      * Replace substring of a URL with a new prefix for all files in a dataset
      *
-     * @return int returns the number of files that has been successfully updated
+     * @return int returns number of files that have been successfully updated
      */
     public function replaceFileUrlSubstringWithPrefix(): int
     {
+        # Record how many files with their URL locations updated
         $success = 0;
-
-        # Get dataset object whose file URLs we need to update
+        # Get dataset whose file URLs we need to update
         $dataset = Dataset::find()
             ->where(["identifier" => $this->doi])
             ->one();
-
-        $urls =  File::find()
-            ->select(["location"])
+        # Get all files belonging to dataset
+        $files =  File::find()
             ->where(["dataset_id" => $dataset->id])
-            ->asArray(true)
             ->all();
-        $values = function ($item) {
-            return $item["location"];
-        };
-        $flatURLs = array_map($values, $urls);
-
-        # Update each URL with new prefix
-        foreach ($flatURLs as $url) {
+        # Update each location URL with new prefix
+        foreach ($files as $file) {
+            $url = $file->location;
             if (str_contains($url, $this->separator)) {
                 # Remove substring after separator
-                $newUrl = substr($url, strrpos($url, $this->separator) + strlen($this->separator), strlen($url)) . PHP_EOL;
+                $newUrl = substr(
+                    $url,
+                    strrpos($url, $this->separator) + strlen($this->separator),
+                    strlen($url)
+                ) . PHP_EOL;
                 $newUrl = $this->prefix . "$this->separator" . $newUrl;
-                # Update location attribute in file object
-                $file = File::find()
-                    ->where(['location' => $url, 'dataset_id' => $dataset->id])
-                    ->one();
                 $file->location = $newUrl;
-                print_r($file->location);
                 if ($file->save()) {
                     $success++;
                 }
