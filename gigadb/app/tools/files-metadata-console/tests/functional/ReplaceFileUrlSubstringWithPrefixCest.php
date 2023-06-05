@@ -41,6 +41,6 @@ class ReplaceFileUrlSubstringWithPrefixCest
             "us" => $us,
             "webClient" => $webClient
         ]);
-        $dfu->getNextPendingDatasets('100142', 5);
+        $dfu->getNextPendingDatasets('100000', 10);
     }
 }

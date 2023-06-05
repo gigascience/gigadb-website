@@ -73,20 +73,20 @@ final class DatasetFilesUpdater extends Component
     }
 
     /**
-     *
      * Get next batch of pending datasets
-     *
      *
      * @param int $after dataset id after which to start fetching the list
      * @param int $next batch size
      * @return array
      */
-    public function getNextPendingDatasets(string $doi, int $next)
+    public function getNextPendingDatasets(string $doi, int $next): array
     {
-        $dois = ['100142','100039'];
+        $startDoi = intval($doi);
+        $endDoi = $startDoi + ($next - 1);
+        $dois = range($startDoi, $endDoi);
 
         $rows = (new \yii\db\Query())
-            ->select('dataset.id, dataset.identifier, file.dataset_id, file.location')
+            ->select('dataset.identifier')
             ->from('dataset')
             ->rightJoin('file', 'dataset.id = file.dataset_id')
             ->where(['dataset.identifier' => $dois])
@@ -98,10 +98,9 @@ final class DatasetFilesUpdater extends Component
                 ['like', 'file.location', 'https://ftp.cngb.org']
             ])
             ->orderBy('dataset.identifier')
+            ->distinct()
             ->all();
-        print_r($rows);
-
-        return [];
+        return array_column($rows, 'identifier');
     }
 
     /**
