@@ -83,11 +83,13 @@ final class DatasetFilesUpdater extends Component
      */
     public function getNextPendingDatasets(string $doi, int $next)
     {
+        $dois = ['100142','100039'];
+
         $rows = (new \yii\db\Query())
             ->select('dataset.id, dataset.identifier, file.dataset_id, file.location')
             ->from('dataset')
             ->rightJoin('file', 'dataset.id = file.dataset_id')
-            ->where(['dataset.identifier' => $doi])
+            ->where(['dataset.identifier' => $dois])
             ->andWhere(['like','file.location','ftp'])
             ->all();
         print_r($rows);
