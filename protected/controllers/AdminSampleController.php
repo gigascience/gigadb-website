@@ -64,36 +64,7 @@ class AdminSampleController extends Controller
             $model->name = $_POST['Sample']['name'];
             $array = explode(":", $_POST['Sample']['species_id']);
             $tax_id = $array[0];
-            $species = Species::model()->findByAttributes(array('tax_id' => $tax_id));
-            $model->species_id = $species->id;
-            $model->attributesList = $_POST['Sample']['attributesList'];
-
-            //              if(strstr($_POST['Sample']['code'],':'))
-            //     {
-            //     //$attribute_temp=null;
-            //     $temp=explode(':', $_POST['Sample']['code']);
-            //     if($temp[0]=='SAMPLE')
-            //     {
-            //         $xmlpath=  'http://www.ebi.ac.uk/ena/data/view/'."$temp[1]".'&display=xml';
-            //         $allfile= simplexml_load_file($xmlpath);
-
-
-
-            //     foreach ($allfile->SAMPLE->SAMPLE_ATTRIBUTES->SAMPLE_ATTRIBUTE as $child)
-            //     {
-            //         if($child->TAG=='Sample type'||$child->TAG=='Time of sample collection'||$child->TAG=='Habitat'||$child->TAG=='Sample extracted from')
-            //             $attribute_temp.= $child->TAG." = "."\"".$child->VALUE."\", ";
-            //     }
-            //     //$attribute_temp.="Description = "."\"".$allfile->SAMPLE->DESCRIPTION."\", ";
-
-            //     }
-            //     //$model->s_attrs=$attribute_temp;
-            // }
-            $this->updateSampleAttributes($model);
-            if (!$model->errors) {
-                $model->save();
-                $this->redirect(array('view','id' => $model->id));
-            }
+            $species = $this->getSpecies($tax_id, $model);
         }
         $this->render('create', array(
             'model' => $model,
@@ -229,25 +200,7 @@ class AdminSampleController extends Controller
                 $array = explode(":", $_POST['Sample']['species_id']);
                 $tax_id = $array[0];
                 if (is_numeric($tax_id)) {
-                    $species = Species::model()->findByAttributes(array('tax_id' => $tax_id));
-                    $model->species_id = $species->id;
-
-                    // save sample attributes
-                    $model->attributesList = $_POST['Sample']['attributesList'];
-                    $this->updateSampleAttributes($model);
-
-                    if (!$model->errors) {
-                        // $dataset_id= DatasetSample::model()->findByAttributes(array('sample_id'=>$model->id))->dataset_id;
-                        //     $files= File::model()->findAllByAttributes(array('code'=>$old_code,'dataset_id'=>$dataset_id));
-                        //     foreach($files as $file)
-                        //     {
-                        //         $file->code=$model->code;
-                        //         $file->save();
-                        //         //echo $model->code;
-                        //     }
-                        $model->save();
-                        $this->redirect(array('view', 'id' => $model->id));
-                    }
+                    $species = $this->getSpecies($tax_id, $model);
                 } else {
                     $model->addError("error", 'The species id should be numeric');
                 }
@@ -383,5 +336,23 @@ class AdminSampleController extends Controller
                 }
             }
         }
+    }
+
+    /**
+     * @param $tax_id
+     * @param $model
+     * @return array|CActiveRecord|mixed|Species|null
+     */
+    private function getSpecies($tax_id, $model)
+    {
+        $species = Species::model()->findByAttributes(array('tax_id' => $tax_id));
+        $model->species_id = $species->id;
+        $model->attributesList = $_POST['Sample']['attributesList'];
+        $this->updateSampleAttributes($model);
+        if (!$model->errors) {
+            $model->save();
+            $this->redirect(array('view', 'id' => $model->id));
+        }
+        return $species;
     }
 }
