@@ -69,8 +69,50 @@ final class DatasetFilesUpdater extends Component
                 }
             }
         }
-
         return $success;
+    }
+
+    /**
+     *
+     * Get next batch of pending datasets
+     *
+     *
+     * @param int $after dataset id after which to start fetching the list
+     * @param int $next batch size
+     * @return array
+     */
+    public function getNextPendingDatasets(string $doi, int $next)
+    {
+        $rows = (new \yii\db\Query())
+            ->select('dataset.id, dataset.identifier, file.dataset_id, file.location')
+            ->from('dataset')
+            ->rightJoin('file', 'dataset.id = file.dataset_id')
+            ->where(['dataset.identifier' => $doi])
+            ->andWhere(['like','file.location','ftp'])
+            ->all();
+        print_r($rows);
+
+        return [];
+    }
+
+    /**
+     * Make a Yii2 DB query that filter datasets based on whether their urls need replacing
+     *
+     * @param int $after return datasets listed after the one specified here
+     * @return \yii\db\Query
+     */
+    public function filterByFTPUrls(int $after = 0): \yii\db\Query
+    {
+        return ( new \yii\db\Query())
+            ->select(['dataset_id'])
+            ->from('file')
+            ->where(['like','location','ftp://parrot.genomics'])
+            ->orWhere(['like','location','ftp://ftp.cngb.org'])
+            ->orWhere(['like','location','ftp://climb.genomics'])
+            ->orWhere(['like','location','https://ftp.cngb.org'])
+            ->groupBy('dataset_id')
+            ->orderBy('dataset_id')
+            ->having(['>','dataset_id', $after]);
     }
 
     /**

@@ -240,4 +240,7 @@ $ docker-compose run --rm files-metadata-console ./yii update/urls --prefix=http
 
 ```
 docker-compose run --rm files-metadata-console ./vendor/codeception/codeception/codecept run --debug tests/functional/ReplaceFileUrlSubstringWithPrefixCest.php
+
+docker-compose run --rm files-metadata-console ./vendor/codeception/codeception/codecept run --debug tests/functional/ReplaceFileUrlSubstringWithPrefixCest.php:^tryGetPendingDatasets$
+
 ```
