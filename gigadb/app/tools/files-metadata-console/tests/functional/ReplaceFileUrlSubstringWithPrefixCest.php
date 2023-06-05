@@ -41,6 +41,7 @@ class ReplaceFileUrlSubstringWithPrefixCest
             "us" => $us,
             "webClient" => $webClient
         ]);
-        $dfu->getNextPendingDatasets('100000', 10);
+        $doiBatch = $dfu->getNextPendingDatasets('100006', 3);
+        print_r($doiBatch);
     }
 }

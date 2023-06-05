@@ -31,22 +31,34 @@ final class DatasetFilesUpdater extends Component
      */
     public \GuzzleHttp\Client $webClient;
 
+    /**
+     * @var string a string replacing portion of URL
+     */
     public string $prefix;
+
+    /**
+     * @var string a short string that separates the half of the URL
+     *      to be kept from the other half of the URL to be removed
+     */
     public string $separator;
+
+    /**
+     * @var array a list of DOIs to be excluded from URL updates
+     */
     public array $excludedDois;
 
     /**
-     * Replace substring of a URL with a new prefix for all files in a dataset
+     * Replaces substring of a URL with a new prefix for all files in a dataset
      *
      * @return int returns number of files that have been successfully updated
      */
-    public function replaceFileUrlSubstringWithPrefix(): int
+    public function replaceFileUrlSubstringWithPrefix($doi, $separator, $prefix): int
     {
         # Record how many files with their URL locations updated
         $success = 0;
-        # Get dataset whose file URLs we need to update
+        # Get dataset object whose file URLs we need to update
         $dataset = Dataset::find()
-            ->where(["identifier" => $this->doi])
+            ->where(["identifier" => $doi])
             ->one();
         # Get all files belonging to dataset
         $files =  File::find()
@@ -55,14 +67,14 @@ final class DatasetFilesUpdater extends Component
         # Update each location URL with new prefix
         foreach ($files as $file) {
             $url = $file->location;
-            if (str_contains($url, $this->separator)) {
+            if (str_contains($url, $separator)) {
                 # Remove substring after separator
                 $newUrl = substr(
                     $url,
-                    strrpos($url, $this->separator) + strlen($this->separator),
+                    strrpos($url, $separator) + strlen($separator),
                     strlen($url)
                 ) . PHP_EOL;
-                $newUrl = $this->prefix . "$this->separator" . $newUrl;
+                $newUrl = $prefix . "$separator" . $newUrl;
                 $file->location = $newUrl;
                 if ($file->save()) {
                     $success++;
@@ -79,17 +91,12 @@ final class DatasetFilesUpdater extends Component
      * @param int $next batch size
      * @return array
      */
-    public function getNextPendingDatasets(string $doi, int $next): array
+    public function getNextPendingDatasets(int $next): array
     {
-        $startDoi = intval($doi);
-        $endDoi = $startDoi + ($next - 1);
-        $dois = range($startDoi, $endDoi);
-
         $rows = (new \yii\db\Query())
             ->select('dataset.identifier')
             ->from('dataset')
             ->rightJoin('file', 'dataset.id = file.dataset_id')
-            ->where(['dataset.identifier' => $dois])
             ->andWhere([
                 'or',
                 ['like', 'file.location', 'ftp://parrot.genomics'],
@@ -99,6 +106,7 @@ final class DatasetFilesUpdater extends Component
             ])
             ->orderBy('dataset.identifier')
             ->distinct()
+            ->limit($next)
             ->all();
         return array_column($rows, 'identifier');
     }

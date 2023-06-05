@@ -31,6 +31,11 @@ final class UpdateController extends Controller
     public int $next = 0;
 
     /**
+     * @var bool true if dry run mode is activated, false otherwise (default)
+     */
+    public bool $dryrun = true;
+
+    /**
      * Console command for updating files' size for the given dataset
      *
      * ./yii update/file-size --doi=100142
@@ -48,11 +53,12 @@ final class UpdateController extends Controller
     }
 
     /**
-     * Console command for updating the URL for all files in a dataset 
+     * Console command for updating the URL for all files in a dataset
      *
      * docker-compose run --rm files-metadata-console  ./yii update/urls --doi=100142 --next <batch size> --prefix=https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live  --separator=/pub/ --exclude-dois=[1000,234324,43534534]
      *
      * @return int
+     * @throws \Throwable
      */
     public function actionUrls(): int
     {
@@ -61,6 +67,7 @@ final class UpdateController extends Controller
         $optPrefix = $this->prefix;
         $optSeparator = $this->separator;
         $optNext = $this->next;
+        $optDryRun = $this->dryrun;
 
         //Return usage unless mandatory options are passed
         if (!($optDoi) || !($optPrefix) || !($optSeparator)) {
@@ -68,25 +75,30 @@ final class UpdateController extends Controller
             return ExitCode::USAGE;
         }
 
-        $webClient = new Client([ 'allow_redirects' => false ]);
-        $us = new URLsService();
-        $dfu = new DatasetFilesUpdater([
-            "doi" => $this->doi,
-            "prefix" => $this->prefix,
-            "separator" => $this->separator,
-            "excludedDois" => $this->excludedDois,
-            "us" => $us,
-            "webClient" => $webClient
-        ]);
-        $success = $dfu->replaceFileUrlSubstringWithPrefix();
-        $this->stdout("Number of changes: $success" . PHP_EOL, Console::FG_GREEN);
+        try {
+            $webClient = new Client(['allow_redirects' => false]);
+            $us = new URLsService();
+            $dfu = new DatasetFilesUpdater();
+            $dois = $dfu->getNextPendingDatasets($optNext);
+
+            foreach ($dois as $doi) {
+                $success = $dfu->replaceFileUrlSubstringWithPrefix($doi, $optSeparator, $optPrefix);
+                $this->stdout("Number of file changes: $success on dataset DOI $doi" . PHP_EOL, Console::FG_GREEN);
+            }
+        } catch (\Throwable $e) {
+            $this->stdout(" ftp_site ERROR", Console::BG_RED);
+//            $this->stdout(" location FAILURE (0/$nbFiles)", Console::BG_RED);
+//            $this->stdout("\n** Rolling back transaction for dataset of id {$value["dataset_id"]}\n", Console::BG_RED);
+//            $transaction->rollBack();
+            throw $e; //we stop the whole run
+        }
         return ExitCode::OK;
     }
 
     public function options($actionID)
     {
         return array_merge(parent::options($actionID), [
-            'color', 'interactive', 'help', 'doi', 'prefix', 'separator', 'exclude-dois'
+            'color', 'interactive', 'help', 'doi', 'prefix', 'separator', 'exclude-dois', 'next'
         ]);
     }
 }
