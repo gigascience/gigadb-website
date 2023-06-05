@@ -90,31 +90,18 @@ final class DatasetFilesUpdater extends Component
             ->from('dataset')
             ->rightJoin('file', 'dataset.id = file.dataset_id')
             ->where(['dataset.identifier' => $dois])
-            ->andWhere(['like','file.location','ftp'])
+            ->andWhere([
+                'or',
+                ['like', 'file.location', 'ftp://parrot.genomics'],
+                ['like','file.location','ftp://ftp.cngb.org'],
+                ['like','file.location','ftp://climb.genomics'],
+                ['like', 'file.location', 'https://ftp.cngb.org']
+            ])
+            ->orderBy('dataset.identifier')
             ->all();
         print_r($rows);
 
         return [];
-    }
-
-    /**
-     * Make a Yii2 DB query that filter datasets based on whether their urls need replacing
-     *
-     * @param int $after return datasets listed after the one specified here
-     * @return \yii\db\Query
-     */
-    public function filterByFTPUrls(int $after = 0): \yii\db\Query
-    {
-        return ( new \yii\db\Query())
-            ->select(['dataset_id'])
-            ->from('file')
-            ->where(['like','location','ftp://parrot.genomics'])
-            ->orWhere(['like','location','ftp://ftp.cngb.org'])
-            ->orWhere(['like','location','ftp://climb.genomics'])
-            ->orWhere(['like','location','https://ftp.cngb.org'])
-            ->groupBy('dataset_id')
-            ->orderBy('dataset_id')
-            ->having(['>','dataset_id', $after]);
     }
 
     /**
