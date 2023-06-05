@@ -22,7 +22,7 @@ Feature: admin page for samples
     And I press the button "Save"
     And I wait "1" seconds
     Then I should see "Please fix the following input errors:"
-    And I should see "Attribute name animal is not valid - please select a valid attribute name!"
+    And I should see "Attribute name for the input animal=\tiger\ is not valid - please select a valid attribute name!"
 
   @ok
   Scenario: display 2 input error messages when update
@@ -32,8 +32,8 @@ Feature: admin page for samples
     And I press the button "Save"
     And I wait "1" seconds
     Then I should see "Please fix the following input errors:"
-    And I should see "Attribute name animal is not valid - please select a valid attribute name!"
-    And I should see "Attribute name plant is not valid - please select a valid attribute name!"
+    And I should see "Attribute name for the input animal=\tiger\ is not valid - please select a valid attribute name!"
+    And I should see "Attribute name for the input plant=\rose\ is not valid - please select a valid attribute name!"
 
   @ok
   Scenario: display 1 input error message when create
@@ -44,7 +44,7 @@ Feature: admin page for samples
     And I press the button "Create"
     And I wait "1" seconds
     Then I should see "Please fix the following input errors:"
-    And I should see "Attribute name animal is not valid - please select a valid attribute name!"
+    And I should see "Attribute name for the input animal=\tiger\ is not valid - please select a valid attribute name!"
 
   @ok
   Scenario: display 2 input error messages when create
@@ -55,5 +55,5 @@ Feature: admin page for samples
     And I press the button "Create"
     And I wait "1" seconds
     Then I should see "Please fix the following input errors:"
-    And I should see "Attribute name animal is not valid - please select a valid attribute name!"
-    And I should see "Attribute name plant is not valid - please select a valid attribute name!"
+    And I should see "Attribute name for the input animal=\tiger\ is not valid - please select a valid attribute name!"
+    And I should see "Attribute name for the input plant=\rose\ is not valid - please select a valid attribute name!"

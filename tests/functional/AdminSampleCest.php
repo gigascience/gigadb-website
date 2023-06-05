@@ -27,7 +27,7 @@ class AdminSampleCest
         $I->fillField("Sample[attributesList]", "lat_lon=\"38.0,114.4\",animal=\"tiger\"");
         $I->click("Save");
         $I->canSee("Please fix the following input errors:");
-        $I->canSee("Attribute name animal is not valid - please select a valid attribute name!");
+        $I->canSee("Attribute name for the input animal=tiger is not valid - please select a valid attribute name!");
         $I->click("Save");
         $I->canSee("lat_lon=\"38.0,114.4\"");
         $I->canSeeInDatabase("sample_attribute", [
@@ -48,8 +48,8 @@ class AdminSampleCest
         $I->fillField("Sample[attributesList]", "lat_lon=\"38.0,114.4\",animal=\"tiger\",plant=\"rose\"");
         $I->click("Save");
         $I->canSee("lease fix the following input errors:");
-        $I->canSee("Attribute name animal is not valid - please select a valid attribute name!");
-        $I->canSee("Attribute name plant is not valid - please select a valid attribute name!");
+        $I->canSee("Attribute name for the input animal=tiger is not valid - please select a valid attribute name!");
+        $I->canSee("Attribute name for the input plant=rose is not valid - please select a valid attribute name!");
         $I->click("Save");
         $I->canSee("lat_lon=\"38.0,114.4\"");
         $I->canSeeInDatabase("sample_attribute", [
@@ -75,7 +75,7 @@ class AdminSampleCest
         $I->fillField("Sample[attributesList]", "animal=\"tiger\"");
         $I->click("Create");
         $I->canSee("Please fix the following input errors:");
-        $I->canSee("Attribute name animal is not valid - please select a valid attribute name!");
+        $I->canSee("Attribute name for the input animal=tiger is not valid - please select a valid attribute name!");
         $I->dontSeeInDatabase("sample_attribute", [
             "sample_id" => "432",
             "value" => "tiger"
@@ -90,8 +90,8 @@ class AdminSampleCest
         $I->fillField("Sample[attributesList]", "animal=\"tiger\",plant=\"rose\"");
         $I->click("Create");
         $I->canSee("Please fix the following input errors:");
-        $I->canSee("Attribute name animal is not valid - please select a valid attribute name!");
-        $I->canSee("Attribute name plant is not valid - please select a valid attribute name!");
+        $I->canSee("Attribute name for the input animal=tiger is not valid - please select a valid attribute name!");
+        $I->canSee("Attribute name for the input plant=rose is not valid - please select a valid attribute name!");
         $I->dontSeeInDatabase("sample_attribute", [
             "sample_id" => "432",
             "value" => "tiger"
