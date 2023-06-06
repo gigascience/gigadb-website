@@ -27,7 +27,7 @@ class ReplaceFileUrlSubstringWithPrefixCest
             "us" => $us,
             "webClient" => $webClient
         ]);
-        $success = $dfu->replaceFileUrlSubstringWithPrefix();
+        $success = $dfu->replaceFileUrlSubstringWithPrefix('100142', '/pub/', 'https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live');
     }
 
     public function tryGetPendingDatasets(\FunctionalTester $I): void

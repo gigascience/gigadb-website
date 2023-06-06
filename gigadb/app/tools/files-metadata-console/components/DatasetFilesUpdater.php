@@ -8,6 +8,7 @@ use GigaDB\models\Dataset;
 use GigaDB\models\File;
 use GigaDB\services\URLsService;
 use GuzzleHttp\Client;
+use PHPUnit\Runner\Exception;
 use Yii;
 use yii\base\Component;
 
@@ -48,6 +49,11 @@ final class DatasetFilesUpdater extends Component
     public array $excludedDois;
 
     /**
+     * @const the new url host to use
+     */
+    public const NEW_HOST = "https://s3.ap-northeast-1.wasabisys.com";
+
+    /**
      * Replaces substring of a URL with a new prefix for all files in a dataset
      *
      * @return int returns number of files that have been successfully updated
@@ -60,6 +66,18 @@ final class DatasetFilesUpdater extends Component
         $dataset = Dataset::find()
             ->where(["identifier" => $doi])
             ->one();
+
+        # Update ftp_site attribute in dataset object
+        # Should look like this https://ftp.cngb.org/pub/gigadb/pub/10.5524/102001_103000/102404/
+        $oldFTPSite = $dataset->ftp_site;
+        $uriParts = parse_url(ltrim($oldFTPSite));
+        $path = mb_split("/pub", $uriParts['path'])[1];
+        $newFTPSite = self::NEW_HOST . "/gigadb-datasets/live/pub" . $path;
+        $dataset->ftp_site = $newFTPSite;
+        if (!$dataset->save()) {
+            throw new Exception("Problem saving ftp_site attribute value in dataset");
+        }
+
         # Get all files belonging to dataset
         $files =  File::find()
             ->where(["dataset_id" => $dataset->id])
@@ -87,9 +105,8 @@ final class DatasetFilesUpdater extends Component
     /**
      * Get next batch of pending datasets
      *
-     * @param int $after dataset id after which to start fetching the list
      * @param int $next batch size
-     * @return array
+     * @return array List of DOIs requiring dataset file URLs to be updated
      */
     public function getNextPendingDatasets(int $next): array
     {
