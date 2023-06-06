@@ -235,7 +235,7 @@ You can see code coverage output under the `tests/_output` directory.
 ### Updating dataset file URLs with Wasabi prefix
 
 ```
-$ docker-compose run --rm files-metadata-console ./yii update/urls --prefix=https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live --separator=/pub/ --doi=100006 --next=3
+$ docker-compose run --rm files-metadata-console ./yii update/urls --prefix=https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live --separator=/pub/ --doi=100006 --next=3 --apply
 ```
 
 ```

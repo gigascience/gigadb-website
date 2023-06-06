@@ -54,6 +54,27 @@ final class DatasetFilesUpdater extends Component
     public const NEW_HOST = "https://s3.ap-northeast-1.wasabisys.com";
 
     /**
+     * @const to indicate that we want to run the command in dry run mode
+     */
+    public const APPLY_OFF = true;
+
+    /**
+     * @var bool $apply flag to indicate whether the apply mode is activated (true) or not (false, the default)
+     */
+    public bool $apply = false;
+
+    /**
+     * Factory for this class
+     *
+     * @param bool $apply
+     * @return DatasetFilesUpdater
+     */
+    public static function build(bool $apply = false): DatasetFilesUpdater
+    {
+        return new DatasetFilesUpdater(["apply" => $apply]);
+    }
+
+    /**
      * Replaces substring of a URL with a new prefix for all files in a dataset
      *
      * @return int returns number of files that have been successfully updated
@@ -74,8 +95,11 @@ final class DatasetFilesUpdater extends Component
         $path = mb_split("/pub", $uriParts['path'])[1];
         $newFTPSite = self::NEW_HOST . "/gigadb-datasets/live/pub" . $path;
         $dataset->ftp_site = $newFTPSite;
-        if (!$dataset->save()) {
-            throw new Exception("Problem saving ftp_site attribute value in dataset");
+        print('Apply is: ' . $this->apply);
+        if ($this->apply === true) {
+            if (!$dataset->save()) {
+                throw new Exception("Problem saving ftp_site attribute value in dataset");
+            }
         }
 
         # Get all files belonging to dataset
@@ -94,8 +118,10 @@ final class DatasetFilesUpdater extends Component
                 ) . PHP_EOL;
                 $newUrl = $prefix . "$separator" . $newUrl;
                 $file->location = $newUrl;
-                if ($file->save()) {
-                    $success++;
+                if ($this->apply === true) {
+                    if ($file->save()) {
+                        $success++;
+                    }
                 }
             }
         }

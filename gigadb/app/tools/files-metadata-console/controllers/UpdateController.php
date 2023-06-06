@@ -33,7 +33,7 @@ final class UpdateController extends Controller
     /**
      * @var bool true if dry run mode is activated, false otherwise (default)
      */
-    public bool $dryrun = true;
+    public bool $apply = false;
 
     /**
      * Console command for updating files' size for the given dataset
@@ -67,7 +67,7 @@ final class UpdateController extends Controller
         $optPrefix = $this->prefix;
         $optSeparator = $this->separator;
         $optNext = $this->next;
-        $optDryRun = $this->dryrun;
+        $optApply = $this->apply;
 
         //Return usage unless mandatory options are passed
         if (!($optDoi) || !($optPrefix) || !($optSeparator)) {
@@ -76,9 +76,7 @@ final class UpdateController extends Controller
         }
 
         try {
-            $webClient = new Client(['allow_redirects' => false]);
-            $us = new URLsService();
-            $dfu = new DatasetFilesUpdater();
+            $dfu = DatasetFilesUpdater::build($optApply);
             $dois = $dfu->getNextPendingDatasets($optNext);
 
             foreach ($dois as $doi) {
@@ -98,7 +96,7 @@ final class UpdateController extends Controller
     public function options($actionID)
     {
         return array_merge(parent::options($actionID), [
-            'color', 'interactive', 'help', 'doi', 'prefix', 'separator', 'exclude-dois', 'next'
+            'color', 'interactive', 'help', 'doi', 'prefix', 'separator', 'exclude-dois', 'next', 'apply'
         ]);
     }
 }

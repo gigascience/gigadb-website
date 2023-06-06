@@ -20,13 +20,7 @@ class ReplaceFileUrlSubstringWithPrefixCest
     {
         $webClient = new Client([ 'allow_redirects' => false ]);
         $us = new URLsService();
-        $dfu = new DatasetFilesUpdater([
-            "doi" => '100142',
-            "prefix" => 'https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live',
-            "separator" => '/pub/',
-            "us" => $us,
-            "webClient" => $webClient
-        ]);
+        $dfu = DatasetFilesUpdater::build(true);
         $success = $dfu->replaceFileUrlSubstringWithPrefix('100142', '/pub/', 'https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live');
     }
 
@@ -34,13 +28,7 @@ class ReplaceFileUrlSubstringWithPrefixCest
     {
         $webClient = new Client([ 'allow_redirects' => false ]);
         $us = new URLsService();
-        $dfu = new DatasetFilesUpdater([
-            "doi" => '100142',
-            "prefix" => 'https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live',
-            "separator" => '/pub/',
-            "us" => $us,
-            "webClient" => $webClient
-        ]);
+        $dfu = DatasetFilesUpdater::build(true);
         $doiBatch = $dfu->getNextPendingDatasets('100006', 3);
         print_r($doiBatch);
     }
