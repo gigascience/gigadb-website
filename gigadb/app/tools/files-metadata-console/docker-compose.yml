@@ -9,6 +9,8 @@ services:
       - ./:/gigadb/app/tools/files-metadata-console:delegated
       - ../../services:/gigadb/app/services
       - ../../models:/gigadb/app/models
+      # For accessing pgdmp database dumps
+      - ../../../../sql:/gigadb/app/tools/files-metadata-console/sql
     networks:
       # Connect to db-tier network in ops/docker-compose.yml
       - proxy-db-tier
