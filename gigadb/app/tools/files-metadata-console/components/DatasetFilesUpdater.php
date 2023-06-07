@@ -95,7 +95,6 @@ final class DatasetFilesUpdater extends Component
         $path = mb_split("/pub", $uriParts['path'])[1];
         $newFTPSite = self::NEW_HOST . "/gigadb-datasets/live/pub" . $path;
         $dataset->ftp_site = $newFTPSite;
-        print('Apply is: ' . $this->apply);
         if ($this->apply === true) {
             if (!$dataset->save()) {
                 throw new Exception("Problem saving ftp_site attribute value in dataset");

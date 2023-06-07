@@ -26,7 +26,7 @@ final class UpdateController extends Controller
     /**
      * @var array list of DOIs which should not have their URLs updated
      */
-    public array $excludedDois = [];
+    public array $excluded = [];
 
     /**
      * @var int $next get list of next $next pending datasets
@@ -71,7 +71,7 @@ final class UpdateController extends Controller
         $optSeparator = $this->separator;
         $optNext = $this->next;
         $optApply = $this->apply;
-        $optExcludedDois = $this->excludedDois;
+        $optExcludedDois = $this->excluded;
 
         //Return usage unless mandatory options are passed
         if (!($optDoi) || !($optPrefix) || !($optSeparator)) {
@@ -100,7 +100,7 @@ final class UpdateController extends Controller
     public function options($actionID)
     {
         return array_merge(parent::options($actionID), [
-            'color', 'interactive', 'help', 'doi', 'prefix', 'separator', 'excluded-dois', 'next', 'apply'
+            'color', 'interactive', 'help', 'doi', 'prefix', 'separator', 'excluded', 'next', 'apply'
         ]);
     }
 }
