@@ -234,9 +234,15 @@ You can see code coverage output under the `tests/_output` directory.
 
 ### Updating dataset file URLs with Wasabi prefix
 
-Execute unit tests:
+Execute all unit tests:
 ```
 $ docker-compose run --rm files-metadata-console ./vendor/codeception/codeception/codecept run --debug tests/unit/DatasetFilesUpdaterTest.php
+```
+
+Execute single unit test:
+```
+$ docker-compose run --rm files-metadata-console ./vendor/codeception/codeception/codecept run --debug tests/unit/DatasetFilesUpdaterTest.php:^testReplaceFileUrlSubstringWithPrefix$
+
 ```
 
 ```

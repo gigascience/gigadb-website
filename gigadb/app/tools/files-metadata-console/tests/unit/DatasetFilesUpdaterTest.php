@@ -38,4 +38,19 @@ class DatasetFilesUpdaterTest extends \Codeception\Test\Unit
         $this->assertTrue(in_array("100002", $dois), "DOI 100002 was not found");
         $this->assertFalse(in_array("100003", $dois), "DOI 100003 should not have been returned");
     }
+
+    /**
+     * Test file URLs for dataset DOI 100002 can be updated
+     */
+    public function testReplaceFileUrlSubstringWithPrefix(): void
+    {
+        $doi = '100002';
+        $separator = '/pub/';
+        $prefix = 'https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live';
+
+        $dfu = DatasetFilesUpdater::build(true);
+        $success = $dfu->replaceFileUrlSubstringWithPrefix($doi, $separator, $prefix);
+        codecept_debug("Number of file URLs updated: " . $success);
+        $this->assertTrue($success === 7, "Unexpected number of file URLs updated");
+    }
 }
