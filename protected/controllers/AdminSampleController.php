@@ -316,21 +316,21 @@ class AdminSampleController extends Controller
 
         if (trim($model->attributesList)) {
             // From a model we will clone
-            $sampleAttr = new SampleAttribute();
-            $sampleAttr->sample_id = $model->id;
+            $sampleAttribute = new SampleAttribute();
+            $sampleAttribute->sample_id = $model->id;
 
-            foreach (explode('",', $model->attributesList) as $sAttr) {
-                $sAttr = str_replace('"', '', $sAttr);
-                $data = explode('=', $sAttr);
-                if (count($data) == 2) {
+            foreach (explode('",', $model->attributesList) as $attributes) {
+                $attributes = str_replace('"', '', $attributes);
+                $attributeData = explode('=', $attributes);
+                if (count($attributeData) == 2) {
                     // Get attribute model
-                    $attribute = Attribute::model()->findByAttributes(array('structured_comment_name' => trim($data[0])));
+                    $attribute = Attribute::model()->findByAttributes(array('structured_comment_name' => trim($attributeData[0])));
                     if (!$attribute) {
-                        $model->addError('error', 'Attribute name for the input ' . $data[0] . "=" . $data[1] . ' is not valid - please select a valid attribute name!');
+                        $model->addError('error', 'Attribute name for the input ' . $attributeData[0] . ' is not valid - please select a valid attribute name!');
                     }
                     // Let's save the new sample attribute
-                    $sampleAttribute = clone $sampleAttr;
-                    $sampleAttribute->value = trim($data[1]);
+                    $sampleAttribute = clone $sampleAttribute;
+                    $sampleAttribute->value = trim($attributeData[1]);
                     $sampleAttribute->attribute_id = $attribute->id;
                     $sampleAttribute->save();
                 }
