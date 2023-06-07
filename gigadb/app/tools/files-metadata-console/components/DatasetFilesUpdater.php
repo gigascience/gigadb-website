@@ -134,7 +134,7 @@ final class DatasetFilesUpdater extends Component
      * @param int $next batch size
      * @return array List of DOIs requiring dataset file URLs to be updated
      */
-    public function getNextPendingDatasets(int $next, array $optExcludedDois): array
+    public function getNextPendingDatasets(int $next, array $optExcludedDois = []): array
     {
         $rows = (new \yii\db\Query())
             ->select('dataset.identifier')
