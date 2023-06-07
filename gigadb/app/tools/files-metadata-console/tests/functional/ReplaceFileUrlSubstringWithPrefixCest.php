@@ -29,7 +29,7 @@ class ReplaceFileUrlSubstringWithPrefixCest
         $webClient = new Client([ 'allow_redirects' => false ]);
         $us = new URLsService();
         $dfu = DatasetFilesUpdater::build(true);
-        $doiBatch = $dfu->getNextPendingDatasets('100006', 3);
+        $doiBatch = $dfu->getNextPendingDatasets(3, ['100020', '100039']);
         print_r($doiBatch);
     }
 }

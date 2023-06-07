@@ -23,6 +23,9 @@ final class UpdateController extends Controller
 
     public string $separator = "";
 
+    /**
+     * @var array list of DOIs which should not have their URLs updated
+     */
     public array $excludedDois = [];
 
     /**
@@ -68,6 +71,7 @@ final class UpdateController extends Controller
         $optSeparator = $this->separator;
         $optNext = $this->next;
         $optApply = $this->apply;
+        $optExcludedDois = $this->excludedDois;
 
         //Return usage unless mandatory options are passed
         if (!($optDoi) || !($optPrefix) || !($optSeparator)) {
@@ -77,7 +81,7 @@ final class UpdateController extends Controller
 
         try {
             $dfu = DatasetFilesUpdater::build($optApply);
-            $dois = $dfu->getNextPendingDatasets($optNext);
+            $dois = $dfu->getNextPendingDatasets($optNext, $optExcludedDois);
 
             foreach ($dois as $doi) {
                 $success = $dfu->replaceFileUrlSubstringWithPrefix($doi, $optSeparator, $optPrefix);
@@ -96,7 +100,7 @@ final class UpdateController extends Controller
     public function options($actionID)
     {
         return array_merge(parent::options($actionID), [
-            'color', 'interactive', 'help', 'doi', 'prefix', 'separator', 'exclude-dois', 'next', 'apply'
+            'color', 'interactive', 'help', 'doi', 'prefix', 'separator', 'excluded-dois', 'next', 'apply'
         ]);
     }
 }
