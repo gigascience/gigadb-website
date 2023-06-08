@@ -24,9 +24,9 @@ final class UpdateController extends Controller
     public string $separator = "";
 
     /**
-     * @var array list of DOIs which should not have their URLs updated
+     * @var string list of DOIs which should not have their URLs updated
      */
-    public array $excluded = [];
+    public string $excluded = "";
 
     /**
      * @var int $next get list of next $next pending datasets
@@ -75,12 +75,13 @@ final class UpdateController extends Controller
 
         //Return usage unless mandatory options are passed
         if (!($optDoi) || !($optPrefix) || !($optSeparator)) {
-            $this->stdout("\nUsage:\n\t./yii update/urls --doi <dataset doi> --prefix <URL prefix> --separator <substring to separate current URL> [--next <batch size>][--exclude-dois <comma separated list of dois>][--dryrun][--verbose]\n\n");
+            $this->stdout("\nUsage:\n\t./yii update/urls --doi <dataset doi> --prefix <URL prefix> --separator <substring to separate current URL> [--next <batch size>][--exclude-dois <comma separated list of dois>][--apply][--verbose]\n\n");
             return ExitCode::USAGE;
         }
 
         try {
             $dfu = DatasetFilesUpdater::build($optApply);
+            $optExcludedDois = explode(',', $optExcludedDois);
             $dois = $dfu->getNextPendingDatasets($optNext, $optExcludedDois);
 
             foreach ($dois as $doi) {
