@@ -64,7 +64,16 @@ class AdminSampleController extends Controller
             $model->name = $_POST['Sample']['name'];
             $array = explode(":", $_POST['Sample']['species_id']);
             $tax_id = $array[0];
-            $species = $this->getSpecies($tax_id, $model);
+            try {
+                $species = $this->getSpecies($tax_id, $model);
+            } catch (Exception $e) {
+                Yii::log($e->getMessage(), 'error');
+                if ($tax_id == '') {
+                    $model->addError('error', 'Species name is empty!');
+                } else {
+                    $model->addError('error', 'Species name ' . $tax_id . ' is not found!');
+                }
+            }
         }
         $this->render('create', array(
             'model' => $model,
@@ -326,7 +335,7 @@ class AdminSampleController extends Controller
                     // Get attribute model
                     $attribute = Attribute::model()->findByAttributes(array('structured_comment_name' => trim($attributeData[0])));
                     if (!$attribute) {
-                        $model->addError('error', 'Attribute name for the input ' . $attributeData[0] . ' is not valid - please select a valid attribute name!');
+                        $model->addError('error', 'Attribute name for the input ' . $attributeData[0]. "=" . $attributeData[1] .' is not valid - please select a valid attribute name!');
                     }
                     // Let's save the new sample attribute
                     $sampleAttribute = clone $sampleAttribute;
@@ -346,6 +355,9 @@ class AdminSampleController extends Controller
     private function getSpecies($tax_id, $model)
     {
         $species = Species::model()->findByAttributes(array('tax_id' => $tax_id));
+        if (!$species) {
+            $model->addError('error', 'Species id ' . $tax_id . ' is not found!');
+        }
         $model->species_id = $species->id;
         $model->attributesList = $_POST['Sample']['attributesList'];
         $this->updateSampleAttributes($model);

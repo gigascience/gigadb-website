@@ -47,7 +47,7 @@ class AdminSampleCest
         $I->canSee("Update Sample 432");
         $I->fillField("Sample[attributesList]", "lat_lon=\"38.0,114.4\",animal=\"tiger\",plant=\"rose\"");
         $I->click("Save");
-        $I->canSee("lease fix the following input errors:");
+        $I->canSee("Please fix the following input errors:");
         $I->canSee("Attribute name for the input animal=tiger is not valid - please select a valid attribute name!");
         $I->canSee("Attribute name for the input plant=rose is not valid - please select a valid attribute name!");
         $I->click("Save");
@@ -67,6 +67,37 @@ class AdminSampleCest
         ]);
     }
 
+    public function tryCreateAttributeListWithEmptySpeciesName(FunctionalTester $I)
+    {
+        $I->amOnPage("/adminSample/create");
+        $I->canSee("Create Sample");
+        $I->fillField("Sample[species_id]", "");
+        $I->click("Create");
+        $I->canSee("Please fix the following input errors:");
+        $I->canSee("Species name is empty!");
+    }
+    public function tryCreateAttributeListWithNonExistSpeciesName(FunctionalTester $I)
+    {
+        $I->amOnPage("/adminSample/create");
+        $I->canSee("Create Sample");
+        $I->fillField("Sample[species_id]", "Human");
+        $I->click("Create");
+        $I->canSee("Please fix the following input errors:");
+        $I->canSee("Species name Human is not found!");
+    }
+
+    public function tryCreateAttributeListWithNonExistSpeciesId(FunctionalTester $I)
+    {
+        $I->amOnPage("/adminSample/create");
+        $I->canSee("Create Sample");
+        $I->fillField("Sample[species_id]", "789123");
+        $I->click("Create");
+        $I->canSee("Please fix the following input errors:");
+        $I->canSee("Species id 789123 is not found!");
+        $I->dontSeeInDatabase("sample", [
+            "species_id" => "789123"
+        ]);
+    }
     public function tryCreateAttributeListWithOneNonExistAttribute(FunctionalTester $I)
     {
         $I->amOnPage("/adminSample/create");

@@ -36,6 +36,36 @@ Feature: admin page for samples
     And I should see "Attribute name for the input plant=\rose\ is not valid - please select a valid attribute name!"
 
   @ok
+  Scenario: display error message for not found species name when create
+    Given I am on "/adminSample/create"
+    And I should see "Create"
+    When I fill in the field of "name" "Sample[species_id]" with ""
+    And I press the button "Create"
+    And I wait "1" seconds
+    Then I should see "Please fix the following input errors:"
+    And I should see "Species name is empty!"
+
+  @ok
+  Scenario: display error message for non exist species name when create
+    Given I am on "/adminSample/create"
+    And I should see "Create"
+    When I fill in the field of "name" "Sample[species_id]" with "Human"
+    And I press the button "Create"
+    And I wait "1" seconds
+    Then I should see "Please fix the following input errors:"
+    And I should see "Species name Human is not found!"
+
+  @ok
+  Scenario: display error message for non exist species id when create
+    Given I am on "/adminSample/create"
+    And I should see "Create"
+    When I fill in the field of "name" "Sample[species_id]" with "789123"
+    And I press the button "Create"
+    And I wait "1" seconds
+    Then I should see "Please fix the following input errors:"
+    And I should see "Species id 789123 is not found!"
+
+  @ok
   Scenario: display 1 input error message when create
     Given I am on "/adminSample/create"
     And I should see "Create"
@@ -57,3 +87,15 @@ Feature: admin page for samples
     Then I should see "Please fix the following input errors:"
     And I should see "Attribute name for the input animal=\tiger\ is not valid - please select a valid attribute name!"
     And I should see "Attribute name for the input plant=\rose\ is not valid - please select a valid attribute name!"
+
+  @ok
+  Scenario: display error message for non exist species with attributes when create
+    Given I am on "/adminSample/create"
+    And I should see "Create"
+    When I fill in the field of "name" "Sample[species_id]" with "789123:Human"
+    And I fill in the field of "name" "Sample[attributesList]" with "animal=\"tiger\""
+    And I press the button "Create"
+    And I wait "1" seconds
+    Then I should see "Please fix the following input errors:"
+    And I should see "Species id 789123 is not found!"
+    And I should see "Attribute name for the input animal=\tiger\ is not valid - please select a valid attribute name!"
