@@ -25,16 +25,16 @@ if (isset($_GET['status'])) {
                 </div>
             </div>
         </div>
-    <?php
+        <?php
     }
-} else if (isset($study)) {
-   
-        ?>
+} elseif (isset($study)) {
+
+?>
         <h2>Submission request accepted</h2>
         <div class="clear"></div>
         <div class="span12 form well">
             <div class="form-horizontal">
-                <?= $this->renderPartial('/user/uploadedDatasets', array('uploadedDatasets' => $uploadedDatasets,'selected'=>$study)); ?>
+                <?= $this->renderPartial('/user/uploadedDatasets', array('uploadedDatasets' => $uploadedDatasets,'selected' => $study)); ?>
                 <div class="row">
                     <!--            <div class="span8 offset2">
                                     <div class="form well light-green">-->
@@ -105,43 +105,7 @@ if (isset($_GET['status'])) {
                     </div>
             </td>
             <td style="vertical-align: top; padding-left: 0px">          
-                <div>
-                    <h2>Online Submission</h2>
-                    <div class="form well" style="height: 340px;width: 415px">
 
-                        Provide all the information required for submission via a series of web-forms:
-                        <br/><br/>
-                        <ul>
-                            <li>Study details</li>
-
-                            <li>Authors</li>
-                            <li>Project details</li>
-                            <li>links and related datasets</li>
-                            <li>Sample information</li>
-
-                        </ul>
-                        <br/>
-                        <br/>
-                        <br/> 
-                        <br/>
-                        <br/>
-                        <br/>
-
-
-
-
-
-
-                        <input id="agree-checkbox1" type="checkbox" style="margin-right:5px"/><a target="_blank" href="/site/term">I have read GigaDB's Terms and Conditions</a>
-                        <br/>
-                        <div class="clear"></div>
-                        <?php echo CHtml::form(Yii::app()->createUrl('datasetSubmission/create1'), 'post', array('enctype' => 'multipart/form-data')); ?>
-                        <div class="pull-right">
-                            <?php echo CHtml::submitButton('Submission wizard', array('id' => 'online', 'class' => 'btn-green', 'disabled' => 'disabled', 'title' => 'You must agree to the terms and conditions before continuing.')); ?>
-                        </div>
-                        <br/>
-                    </div>
-                </div>
 
 
             </td>

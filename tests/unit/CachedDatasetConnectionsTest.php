@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Unit tests for CachedDatasetConnections to retrieve from cache connected datasets
  *
@@ -7,7 +8,6 @@
  */
 class CachedDatasetConnectionsTest extends CTestCase
 {
-
     public function setUp()
     {
         parent::setUp();
@@ -31,7 +31,7 @@ class CachedDatasetConnectionsTest extends CTestCase
         $cacheDependency = $this->createMock(CCacheDependency::class);
 
         $daoUnderTest = new CachedDatasetConnections($cache, $cacheDependency, $storedDatasetConnections);
-        $this->assertEquals($dataset_id, $daoUnderTest->getDatasetId() ) ;
+        $this->assertEquals($dataset_id, $daoUnderTest->getDatasetId()) ;
     }
 
     public function testCachedReturnsDatasetDOI()
@@ -53,7 +53,7 @@ class CachedDatasetConnectionsTest extends CTestCase
 
 
         $daoUnderTest = new CachedDatasetConnections($cache, $cacheDependency, $storedDatasetConnections);
-        $this->assertEquals($doi, $daoUnderTest->getDatasetDOI() ) ;
+        $this->assertEquals($doi, $daoUnderTest->getDatasetDOI()) ;
     }
 
     public function testCachedReturnsRelationsCacheHit()
@@ -78,38 +78,38 @@ class CachedDatasetConnectionsTest extends CTestCase
                  ->method('get')
                  ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetConnections_getRelations"))
                  ->willReturn(
-                    array(
+                     array(
                         array(
-                            'dataset_id'=>6, // 100044
-                            'dataset_doi'=>"100044", // 100044
-                            'related_id'=>5, // 100038
-                            'related_doi'=>"100038", // 100038
-                            'relationship'=>"Compiles", //18 Compiles
+                            'dataset_id' => 6, // 100044
+                            'dataset_doi' => "100044", // 100044
+                            'related_id' => 5, // 100038
+                            'related_doi' => "100038", // 100038
+                            'relationship' => "Compiles", //18 Compiles
                         ),
                         array(
-                            'dataset_id'=>6, // 100044
-                            'dataset_doi'=>"100044", // 100044
-                            'related_id'=>7, // 100148
-                            'related_doi'=>"100148", // 100148
-                            'relationship'=>"IsPreviousVersionOf", //10 IsPreviousVersionOf
+                            'dataset_id' => 6, // 100044
+                            'dataset_doi' => "100044", // 100044
+                            'related_id' => 7, // 100148
+                            'related_doi' => "100148", // 100148
+                            'relationship' => "IsPreviousVersionOf", //10 IsPreviousVersionOf
                         )
-                    )
-                );
+                     )
+                 );
 
         $expected = array(
             array(
-                'dataset_id'=>6, // 100044
-                'dataset_doi'=>"100044", // 100044
-                'related_id'=>5, // 100038
-                'related_doi'=>"100038", // 100038
-                'relationship'=>"Compiles", //18 Compiles
+                'dataset_id' => 6, // 100044
+                'dataset_doi' => "100044", // 100044
+                'related_id' => 5, // 100038
+                'related_doi' => "100038", // 100038
+                'relationship' => "Compiles", //18 Compiles
             ),
             array(
-                'dataset_id'=>6, // 100044
-                'dataset_doi'=>"100044", // 100044
-                'related_id'=>7, // 100148
-                'related_doi'=>"100148", // 100148
-                'relationship'=>"IsPreviousVersionOf", //10 IsPreviousVersionOf
+                'dataset_id' => 6, // 100044
+                'dataset_doi' => "100044", // 100044
+                'related_id' => 7, // 100148
+                'related_doi' => "100148", // 100148
+                'relationship' => "IsPreviousVersionOf", //10 IsPreviousVersionOf
             )
         );
 
@@ -118,8 +118,6 @@ class CachedDatasetConnectionsTest extends CTestCase
         $this->assertEquals([$expected[1]], $daoUnderTest->getRelations("IsPreviousVersionOf"));
         $this->assertEquals([$expected[0]], $daoUnderTest->getRelations("Compiles"));
         $this->assertEquals([], $daoUnderTest->getRelations("DoesNotExistRelationship"));
-
-
     }
 
 
@@ -140,18 +138,18 @@ class CachedDatasetConnectionsTest extends CTestCase
                                     ->willReturn(
                                         array(
                                             array(
-                                                'dataset_id'=>6, // 100044
-                                                'dataset_doi'=>"100044", // 100044
-                                                'related_id'=>5, // 100038
-                                                'related_doi'=>"100038", // 100038
-                                                'relationship'=>"Compiles", //18 Compiles
+                                                'dataset_id' => 6, // 100044
+                                                'dataset_doi' => "100044", // 100044
+                                                'related_id' => 5, // 100038
+                                                'related_doi' => "100038", // 100038
+                                                'relationship' => "Compiles", //18 Compiles
                                             ),
                                             array(
-                                                'dataset_id'=>6, // 100044
-                                                'dataset_doi'=>"100044", // 100044
-                                                'related_id'=>7, // 100148
-                                                'related_doi'=>"100148", // 100148
-                                                'relationship'=>"IsPreviousVersionOf", //10 IsPreviousVersionOf
+                                                'dataset_id' => 6, // 100044
+                                                'dataset_doi' => "100044", // 100044
+                                                'related_id' => 7, // 100148
+                                                'related_doi' => "100148", // 100148
+                                                'relationship' => "IsPreviousVersionOf", //10 IsPreviousVersionOf
                                             )
                                         )
                                     );
@@ -169,7 +167,7 @@ class CachedDatasetConnectionsTest extends CTestCase
         $cache->expects($this->exactly(4))
                  ->method('get')
                  ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetConnections_getRelations"))
-                 ->willReturn( false );
+                 ->willReturn(false);
 
         $cache->expects($this->exactly(4))
                 ->method('set')
@@ -177,39 +175,39 @@ class CachedDatasetConnectionsTest extends CTestCase
                     $this->equalTo("dataset_${dataset_id}_CachedDatasetConnections_getRelations"),
                     array(
                         array(
-                            'dataset_id'=>6, // 100044
-                            'dataset_doi'=>"100044", // 100044
-                            'related_id'=>5, // 100038
-                            'related_doi'=>"100038", // 100038
-                            'relationship'=>"Compiles", //18 Compiles
+                            'dataset_id' => 6, // 100044
+                            'dataset_doi' => "100044", // 100044
+                            'related_id' => 5, // 100038
+                            'related_doi' => "100038", // 100038
+                            'relationship' => "Compiles", //18 Compiles
                         ),
                         array(
-                            'dataset_id'=>6, // 100044
-                            'dataset_doi'=>"100044", // 100044
-                            'related_id'=>7, // 100148
-                            'related_doi'=>"100148", // 100148
-                            'relationship'=>"IsPreviousVersionOf", //10 IsPreviousVersionOf
+                            'dataset_id' => 6, // 100044
+                            'dataset_doi' => "100044", // 100044
+                            'related_id' => 7, // 100148
+                            'related_doi' => "100148", // 100148
+                            'relationship' => "IsPreviousVersionOf", //10 IsPreviousVersionOf
                         )
                     ),
-                    Cacheable::defaultTTL*30,
+                    Cacheable::defaultTTL * 30,
                     $cacheDependency
                 )
                 ->willReturn(true);
 
         $expected = array(
             array(
-                'dataset_id'=>6, // 100044
-                'dataset_doi'=>"100044", // 100044
-                'related_id'=>5, // 100038
-                'related_doi'=>"100038", // 100038
-                'relationship'=>"Compiles", //18 Compiles
+                'dataset_id' => 6, // 100044
+                'dataset_doi' => "100044", // 100044
+                'related_id' => 5, // 100038
+                'related_doi' => "100038", // 100038
+                'relationship' => "Compiles", //18 Compiles
             ),
             array(
-                'dataset_id'=>6, // 100044
-                'dataset_doi'=>"100044", // 100044
-                'related_id'=>7, // 100148
-                'related_doi'=>"100148", // 100148
-                'relationship'=>"IsPreviousVersionOf", //10 IsPreviousVersionOf
+                'dataset_id' => 6, // 100044
+                'dataset_doi' => "100044", // 100044
+                'related_id' => 7, // 100148
+                'related_doi' => "100148", // 100148
+                'relationship' => "IsPreviousVersionOf", //10 IsPreviousVersionOf
             )
         );
 
@@ -218,8 +216,6 @@ class CachedDatasetConnectionsTest extends CTestCase
         $this->assertEquals([$expected[1]], $daoUnderTest->getRelations("IsPreviousVersionOf"));
         $this->assertEquals([$expected[0]], $daoUnderTest->getRelations("Compiles"));
         $this->assertEquals([], $daoUnderTest->getRelations("DoesNotExistRelationship"));
-
-
     }
 
     public function testCachedReturnsPublicationsCacheHit()
@@ -244,12 +240,12 @@ class CachedDatasetConnectionsTest extends CTestCase
                  ->method('get')
                  ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetConnections_getPublications"))
                  ->willReturn(
-                    array(
+                     array(
                         array(
                             'id' => 1,
                             'identifier' => "10.1186/gb-2012-13-10-r100",
                             'pmid' => 23075480,
-                            'dataset_id'=>1,
+                            'dataset_id' => 1,
                             'citation' => "full citation fetched remotely. doi:10.1186/gb-2012-13-10-r100",
                             'pmurl' => "http://www.ncbi.nlm.nih.gov/pubmed/23075480",
                         ),
@@ -257,19 +253,19 @@ class CachedDatasetConnectionsTest extends CTestCase
                             'id' => 2,
                             'identifier' => "10.1038/nature10158",
                             'pmid' => null,
-                            'dataset_id'=>1,
+                            'dataset_id' => 1,
                             'citation' => "Another full citation fetched remotely. doi:10.1038/nature10158",
                             'pmurl' => null,
                         ),
-                    )
-                );
+                     )
+                 );
 
         $expected = array(
                         array(
                             'id' => 1,
                             'identifier' => "10.1186/gb-2012-13-10-r100",
                             'pmid' => 23075480,
-                            'dataset_id'=>1,
+                            'dataset_id' => 1,
                             'citation' => "full citation fetched remotely. doi:10.1186/gb-2012-13-10-r100",
                             'pmurl' => "http://www.ncbi.nlm.nih.gov/pubmed/23075480",
                         ),
@@ -277,7 +273,7 @@ class CachedDatasetConnectionsTest extends CTestCase
                             'id' => 2,
                             'identifier' => "10.1038/nature10158",
                             'pmid' => null,
-                            'dataset_id'=>1,
+                            'dataset_id' => 1,
                             'citation' => "Another full citation fetched remotely. doi:10.1038/nature10158",
                             'pmurl' => null,
                         ),
@@ -309,7 +305,7 @@ class CachedDatasetConnectionsTest extends CTestCase
                                                 'id' => 1,
                                                 'identifier' => "10.1186/gb-2012-13-10-r100",
                                                 'pmid' => 23075480,
-                                                'dataset_id'=>1,
+                                                'dataset_id' => 1,
                                                 'citation' => "full citation fetched remotely. doi:10.1186/gb-2012-13-10-r100",
                                                 'pmurl' => "http://www.ncbi.nlm.nih.gov/pubmed/23075480",
                                             ),
@@ -317,7 +313,7 @@ class CachedDatasetConnectionsTest extends CTestCase
                                                 'id' => 2,
                                                 'identifier' => "10.1038/nature10158",
                                                 'pmid' => null,
-                                                'dataset_id'=>1,
+                                                'dataset_id' => 1,
                                                 'citation' => "Another full citation fetched remotely. doi:10.1038/nature10158",
                                                 'pmurl' => null,
                                             ),
@@ -336,8 +332,8 @@ class CachedDatasetConnectionsTest extends CTestCase
                  ->method('get')
                  ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetConnections_getPublications"))
                  ->willReturn(
-                        false
-                );
+                     false
+                 );
 
         $cache->expects($this->once())
                 ->method('set')
@@ -348,7 +344,7 @@ class CachedDatasetConnectionsTest extends CTestCase
                             'id' => 1,
                             'identifier' => "10.1186/gb-2012-13-10-r100",
                             'pmid' => 23075480,
-                            'dataset_id'=>1,
+                            'dataset_id' => 1,
                             'citation' => "full citation fetched remotely. doi:10.1186/gb-2012-13-10-r100",
                             'pmurl' => "http://www.ncbi.nlm.nih.gov/pubmed/23075480",
                         ),
@@ -356,12 +352,12 @@ class CachedDatasetConnectionsTest extends CTestCase
                             'id' => 2,
                             'identifier' => "10.1038/nature10158",
                             'pmid' => null,
-                            'dataset_id'=>1,
+                            'dataset_id' => 1,
                             'citation' => "Another full citation fetched remotely. doi:10.1038/nature10158",
                             'pmurl' => null,
                         ),
                     ),
-                    Cacheable::defaultTTL*30,
+                    Cacheable::defaultTTL * 30,
                     $cacheDependency
                 )
                 ->willReturn(true);
@@ -371,7 +367,7 @@ class CachedDatasetConnectionsTest extends CTestCase
                             'id' => 1,
                             'identifier' => "10.1186/gb-2012-13-10-r100",
                             'pmid' => 23075480,
-                            'dataset_id'=>1,
+                            'dataset_id' => 1,
                             'citation' => "full citation fetched remotely. doi:10.1186/gb-2012-13-10-r100",
                             'pmurl' => "http://www.ncbi.nlm.nih.gov/pubmed/23075480",
                         ),
@@ -379,7 +375,7 @@ class CachedDatasetConnectionsTest extends CTestCase
                             'id' => 2,
                             'identifier' => "10.1038/nature10158",
                             'pmid' => null,
-                            'dataset_id'=>1,
+                            'dataset_id' => 1,
                             'citation' => "Another full citation fetched remotely. doi:10.1038/nature10158",
                             'pmurl' => null,
                         ),
@@ -411,34 +407,34 @@ class CachedDatasetConnectionsTest extends CTestCase
                  ->method('get')
                  ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetConnections_getProjects"))
                  ->willReturn(
-                    array(
+                     array(
                         array(
-                            'id'=>1,
-                            'url'=>"http://avian.genomics.cn/en/index.html",
-                            'name'=>"The Avian Phylogenomic Project",
-                            'image_location'=>"http://gigadb.org/images/project/phylogenomiclogo.png",
+                            'id' => 1,
+                            'url' => "http://avian.genomics.cn/en/index.html",
+                            'name' => "The Avian Phylogenomic Project",
+                            'image_location' => "http://gigadb.org/images/project/phylogenomiclogo.png",
                         ),
                         array(
-                            'id'=>2,
-                            'url'=>"http://www.genome10k.org/",
-                            'name'=>"Genome 10K",
-                            'image_location'=>null,
+                            'id' => 2,
+                            'url' => "http://www.genome10k.org/",
+                            'name' => "Genome 10K",
+                            'image_location' => null,
                         ),
-                    )
-                );
+                     )
+                 );
 
         $expected = array(
                         array(
-                            'id'=>1,
-                            'url'=>"http://avian.genomics.cn/en/index.html",
-                            'name'=>"The Avian Phylogenomic Project",
-                            'image_location'=>"http://gigadb.org/images/project/phylogenomiclogo.png",
+                            'id' => 1,
+                            'url' => "http://avian.genomics.cn/en/index.html",
+                            'name' => "The Avian Phylogenomic Project",
+                            'image_location' => "http://gigadb.org/images/project/phylogenomiclogo.png",
                         ),
                         array(
-                            'id'=>2,
-                            'url'=>"http://www.genome10k.org/",
-                            'name'=>"Genome 10K",
-                            'image_location'=>null,
+                            'id' => 2,
+                            'url' => "http://www.genome10k.org/",
+                            'name' => "Genome 10K",
+                            'image_location' => null,
                         ),
         );
 
@@ -465,16 +461,16 @@ class CachedDatasetConnectionsTest extends CTestCase
                                     ->willReturn(
                                         array(
                                             array(
-                                                'id'=>1,
-                                                'url'=>"http://avian.genomics.cn/en/index.html",
-                                                'name'=>"The Avian Phylogenomic Project",
-                                                'image_location'=>"http://gigadb.org/images/project/phylogenomiclogo.png",
+                                                'id' => 1,
+                                                'url' => "http://avian.genomics.cn/en/index.html",
+                                                'name' => "The Avian Phylogenomic Project",
+                                                'image_location' => "http://gigadb.org/images/project/phylogenomiclogo.png",
                                             ),
                                             array(
-                                                'id'=>2,
-                                                'url'=>"http://www.genome10k.org/",
-                                                'name'=>"Genome 10K",
-                                                'image_location'=>null,
+                                                'id' => 2,
+                                                'url' => "http://www.genome10k.org/",
+                                                'name' => "Genome 10K",
+                                                'image_location' => null,
                                             ),
                                         )
                                     );
@@ -492,50 +488,48 @@ class CachedDatasetConnectionsTest extends CTestCase
                  ->method('get')
                  ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetConnections_getProjects"))
                  ->willReturn(
-                    false
-                );
+                     false
+                 );
 
         $cache->expects($this->once())
                  ->method('set')
                                  ->with(
-                    $this->equalTo("dataset_${dataset_id}_CachedDatasetConnections_getProjects"),
-                    array(
-                        array(
-                            'id'=>1,
-                            'url'=>"http://avian.genomics.cn/en/index.html",
-                            'name'=>"The Avian Phylogenomic Project",
-                            'image_location'=>"http://gigadb.org/images/project/phylogenomiclogo.png",
-                        ),
-                        array(
-                            'id'=>2,
-                            'url'=>"http://www.genome10k.org/",
-                            'name'=>"Genome 10K",
-                            'image_location'=>null,
-                        ),
-                    ),
-                    Cacheable::defaultTTL*30,
-                    $cacheDependency
-                )
-                 ->willReturn(true );
+                                     $this->equalTo("dataset_${dataset_id}_CachedDatasetConnections_getProjects"),
+                                     array(
+                                     array(
+                                     'id' => 1,
+                                     'url' => "http://avian.genomics.cn/en/index.html",
+                                     'name' => "The Avian Phylogenomic Project",
+                                     'image_location' => "http://gigadb.org/images/project/phylogenomiclogo.png",
+                                     ),
+                                     array(
+                                     'id' => 2,
+                                     'url' => "http://www.genome10k.org/",
+                                     'name' => "Genome 10K",
+                                     'image_location' => null,
+                                     ),
+                                     ),
+                                     Cacheable::defaultTTL * 30,
+                                     $cacheDependency
+                                 )
+                 ->willReturn(true);
 
         $expected = array(
                         array(
-                            'id'=>1,
-                            'url'=>"http://avian.genomics.cn/en/index.html",
-                            'name'=>"The Avian Phylogenomic Project",
-                            'image_location'=>"http://gigadb.org/images/project/phylogenomiclogo.png",
+                            'id' => 1,
+                            'url' => "http://avian.genomics.cn/en/index.html",
+                            'name' => "The Avian Phylogenomic Project",
+                            'image_location' => "http://gigadb.org/images/project/phylogenomiclogo.png",
                         ),
                         array(
-                            'id'=>2,
-                            'url'=>"http://www.genome10k.org/",
-                            'name'=>"Genome 10K",
-                            'image_location'=>null,
+                            'id' => 2,
+                            'url' => "http://www.genome10k.org/",
+                            'name' => "Genome 10K",
+                            'image_location' => null,
                         ),
         );
 
         $daoUnderTest = new CachedDatasetConnections($cache, $cacheDependency, $storedDatasetConnections) ;
         $this->assertEquals($expected, $daoUnderTest->getProjects());
-
     }
 }
-?>

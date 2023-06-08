@@ -1,46 +1,46 @@
 <?php
+
 class DatasetSubmitterDataTest extends CDbTestCase
 {
-	protected $fixtures=array(
-        'datasets'=>'Dataset',
+    protected $fixtures = array(
+        'datasets' => 'Dataset',
     );
 
-	public function setUp()
-	{
-		parent::setUp();
-	}
+    public function setUp()
+    {
+        parent::setUp();
+    }
 
-	public function testStoredReturnsDatasetId()
-	{
-		$dataset_id = 1;
-		$daoUnderTest = new StoredDatasetSubmitter($dataset_id,  $this->getFixtureManager()->getDbConnection());
-		$this->assertEquals($dataset_id, $daoUnderTest->getDatasetId() ) ;
-	}
+    public function testStoredReturnsDatasetId()
+    {
+        $dataset_id = 1;
+        $daoUnderTest = new StoredDatasetSubmitter($dataset_id, $this->getFixtureManager()->getDbConnection());
+        $this->assertEquals($dataset_id, $daoUnderTest->getDatasetId()) ;
+    }
 
-	public function testStoredReturnsDatasetDOI()
-	{
-		$dataset_id = 1;
-		$doi = 100243;
-		$daoUnderTest = new StoredDatasetSubmitter($dataset_id,  $this->getFixtureManager()->getDbConnection());
-		$this->assertEquals($doi, $daoUnderTest->getDatasetDOI() ) ;
-	}
+    public function testStoredReturnsDatasetDOI()
+    {
+        $dataset_id = 1;
+        $doi = 100243;
+        $daoUnderTest = new StoredDatasetSubmitter($dataset_id, $this->getFixtureManager()->getDbConnection());
+        $this->assertEquals($doi, $daoUnderTest->getDatasetDOI()) ;
+    }
 
-	public function testStoredReturnsEmailAddress()
-	{
+    public function testStoredReturnsEmailAddress()
+    {
 
-		$dataset_id = 1;
+        $dataset_id = 1;
 
-		$dao_under_test = new StoredDatasetSubmitter($dataset_id, $this->getFixtureManager()->getDbConnection() );
-		$this->assertEquals("user@gigadb.org", $dao_under_test->getEmailAddress());
+        $dao_under_test = new StoredDatasetSubmitter($dataset_id, $this->getFixtureManager()->getDbConnection());
+        $this->assertEquals("user@gigadb.org", $dao_under_test->getEmailAddress());
+    }
 
-	}
+    public function testCachedReturnsEmailAddressCacheHit()
+    {
 
-	public function testCachedReturnsEmailAddressCacheHit()
-	{
-
-		$dataset_id = 1;
-		//we first need to create a mock object for the cache
-		$cache = $this->getMockBuilder(CApcCache::class)
+        $dataset_id = 1;
+        //we first need to create a mock object for the cache
+        $cache = $this->getMockBuilder(CApcCache::class)
                          ->setMethods(['get'])
                          ->getMock();
         //then we set our expecation for a Cache Hit
@@ -49,24 +49,24 @@ class DatasetSubmitterDataTest extends CDbTestCase
                  ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetSubmitter_getEmailAddress"))
                  ->willReturn("user@gigadb.org");
 
-		// create a stub of the cache dependency (because we don't need to verify expectations on the cache dependency)
+        // create a stub of the cache dependency (because we don't need to verify expectations on the cache dependency)
         $cacheDependency = $this->createMock(CCacheDependency::class);
 
-		$dao_under_test = new CachedDatasetSubmitter(
-			$cache,
-			$cacheDependency,
-			new StoredDatasetSubmitter($dataset_id, $this->getFixtureManager()->getDbConnection() )
-		);
+        $dao_under_test = new CachedDatasetSubmitter(
+            $cache,
+            $cacheDependency,
+            new StoredDatasetSubmitter($dataset_id, $this->getFixtureManager()->getDbConnection())
+        );
 
-		$this->assertEquals("user@gigadb.org", $dao_under_test->getEmailAddress() );
-	}
+        $this->assertEquals("user@gigadb.org", $dao_under_test->getEmailAddress());
+    }
 
 
-	public function testCachedReturnsEmailAddressCacheMiss()
-	{
-		$dataset_id = 1;
-		//we first need to create a mock object for the cache
-		$cache = $this->getMockBuilder(CApcCache::class)
+    public function testCachedReturnsEmailAddressCacheMiss()
+    {
+        $dataset_id = 1;
+        //we first need to create a mock object for the cache
+        $cache = $this->getMockBuilder(CApcCache::class)
                          ->setMethods(['get','set'])
                          ->getMock();
         //then we set our expecation for a Cache Miss
@@ -75,38 +75,38 @@ class DatasetSubmitterDataTest extends CDbTestCase
                  ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetSubmitter_getEmailAddress"))
                  ->willReturn(false);
 
-		// create a stub of the cache dependency (because we don't need to verify expectations on the cache dependency)
+        // create a stub of the cache dependency (because we don't need to verify expectations on the cache dependency)
         $cacheDependency = $this->createMock(CCacheDependency::class);
 
         //when there is a cache miss, we also expect the value to be set into the cache for 24 hours
         $cache->expects($this->once())
                  ->method('set')
                  ->with(
-                 	$this->equalTo("dataset_${dataset_id}_CachedDatasetSubmitter_getEmailAddress"),
-                 	"user@gigadb.org",
-                 	Cacheable::defaultTTL*30,
-                 	$cacheDependency
+                     $this->equalTo("dataset_${dataset_id}_CachedDatasetSubmitter_getEmailAddress"),
+                     "user@gigadb.org",
+                     Cacheable::defaultTTL * 30,
+                     $cacheDependency
                  )
                  ->willReturn(false);
 
-		$dao_under_test = new CachedDatasetSubmitter(
-							$cache,
-							$cacheDependency,
-							new StoredDatasetSubmitter(
-								$dataset_id,
-								$this->getFixtureManager()->getDbConnection()
-							)
-						);
+        $dao_under_test = new CachedDatasetSubmitter(
+            $cache,
+            $cacheDependency,
+            new StoredDatasetSubmitter(
+                $dataset_id,
+                $this->getFixtureManager()->getDbConnection()
+            )
+        );
 
-		$this->assertEquals("user@gigadb.org", $dao_under_test->getEmailAddress() );
-	}
+        $this->assertEquals("user@gigadb.org", $dao_under_test->getEmailAddress());
+    }
 
 
-	public function testAuthorisedReturnsEmailAddressAccepted()
-	{
-		$dataset_id = 1;
-		//we first need to create a stub object for CachedDatasetSubmitter
-		$cachedDatasetSubmitter = $this->createMock(CachedDatasetSubmitter::class);
+    public function testAuthorisedReturnsEmailAddressAccepted()
+    {
+        $dataset_id = 1;
+        //we first need to create a stub object for CachedDatasetSubmitter
+        $cachedDatasetSubmitter = $this->createMock(CachedDatasetSubmitter::class);
 
         //then we set a stub method for CachedDatasetSubmitter
         $cachedDatasetSubmitter->method('getEmailAddress')
@@ -122,19 +122,19 @@ class DatasetSubmitterDataTest extends CDbTestCase
                  ->method('getIsGuest')
                  ->willReturn(false);
 
-		$dao_under_test = new AuthorisedDatasetSubmitter(
-								$current_user,
-								$cachedDatasetSubmitter
-						);
+        $dao_under_test = new AuthorisedDatasetSubmitter(
+            $current_user,
+            $cachedDatasetSubmitter
+        );
 
-		$this->assertEquals("user@gigadb.org", $dao_under_test->getEmailAddress() );
-	}
+        $this->assertEquals("user@gigadb.org", $dao_under_test->getEmailAddress());
+    }
 
-	public function testAuthorisedReturnsEmailAddressDenied()
-	{
-		$dataset_id = 1;
-		//we first need to create a stub object for CachedDatasetSubmitter
-		$cachedDatasetSubmitter = $this->createMock(CachedDatasetSubmitter::class);
+    public function testAuthorisedReturnsEmailAddressDenied()
+    {
+        $dataset_id = 1;
+        //we first need to create a stub object for CachedDatasetSubmitter
+        $cachedDatasetSubmitter = $this->createMock(CachedDatasetSubmitter::class);
 
         //then we set a stub method for CachedDatasetSubmitter
         $cachedDatasetSubmitter->method('getEmailAddress')
@@ -150,11 +150,11 @@ class DatasetSubmitterDataTest extends CDbTestCase
                  ->method('getIsGuest')
                  ->willReturn(true);
 
-		$dao_under_test = new AuthorisedDatasetSubmitter(
-								$current_user,
-								$cachedDatasetSubmitter
-						);
+        $dao_under_test = new AuthorisedDatasetSubmitter(
+            $current_user,
+            $cachedDatasetSubmitter
+        );
 
-		$this->assertEquals("", $dao_under_test->getEmailAddress() );
-	}
+        $this->assertEquals("", $dao_under_test->getEmailAddress());
+    }
 }

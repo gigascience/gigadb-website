@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Unit tests for FormattedDatasetMainSection to present to the dataset view main dataset info
  *
@@ -8,10 +9,10 @@
  */
 class FormattedDatasetMainSectionTest extends CTestCase
 {
-	public function setUp()
-	{
-		parent::setUp();
-	}
+    public function setUp()
+    {
+        parent::setUp();
+    }
 
     public function testFormattedReturnsDatasetDOI()
     {
@@ -28,9 +29,9 @@ class FormattedDatasetMainSectionTest extends CTestCase
                  ->willReturn($doi);
 
         $daoUnderTest = new FormattedDatasetMainSection(
-                            $cachedDatasetMainSection
-                        );
-        $this->assertEquals($doi, $daoUnderTest->getDatasetDOI() ) ;
+            $cachedDatasetMainSection
+        );
+        $this->assertEquals($doi, $daoUnderTest->getDatasetDOI()) ;
     }
 
     /**
@@ -49,22 +50,22 @@ class FormattedDatasetMainSectionTest extends CTestCase
         $cachedDatasetMainSection->expects($this->once())
                  ->method('getHeadline')
                  ->willReturn(
-                        array(
+                     array(
                             "title" => 'Supporting data for "Analyzing climate variations on multiple timescales can guide Zika virus response measures"',
                             "types" => array(
                                 "Genomic",
                                 "Workflow"
                             ),
-                            "release_date"=> '2018-08-23',
+                            "release_date" => '2018-08-23',
                         )
                  );
 
-       $daoUnderTest = new FormattedDatasetMainSection( $cachedDatasetMainSection );
+        $daoUnderTest = new FormattedDatasetMainSection($cachedDatasetMainSection);
 
         $expected = array(
                         "title" => 'Supporting data for "Analyzing climate variations on multiple timescales can guide Zika virus response measures"',
                         "types" => "Genomic, Workflow",
-                        "release_date"=> "August 23, 2018",
+                        "release_date" => "August 23, 2018",
                     );
 
         $this->assertEquals($expected, $daoUnderTest->getHeadline());
@@ -74,18 +75,17 @@ class FormattedDatasetMainSectionTest extends CTestCase
                  ->setMethods(['getHeadline'])
                  ->disableOriginalConstructor()
                  ->getMock();
-       $cachedDatasetMainSection2->expects($this->once())
+        $cachedDatasetMainSection2->expects($this->once())
                  ->method('getHeadline')
                  ->willReturn([]);
 
-        $daoUnderTest2 = new FormattedDatasetMainSection( $cachedDatasetMainSection2 );
+        $daoUnderTest2 = new FormattedDatasetMainSection($cachedDatasetMainSection2);
         $expected = array(
                         "title" => "",
                         "types" => "",
-                        "release_date"=> "",
+                        "release_date" => "",
                     );
         $this->assertEquals($expected, $daoUnderTest2->getHeadline());
-
     }
 
 
@@ -105,38 +105,38 @@ class FormattedDatasetMainSectionTest extends CTestCase
         $cachedDatasetMainSection->expects($this->once())
                  ->method('getReleaseDetails')
                  ->willReturn(
-                    array(
+                     array(
                         "authors" => array(
                             array(
                                 'id' => 2,
-                                'surname'=>'Montana,',
-                                'first_name'=>'Carlos',
-                                'middle_name'=>'Ábel G',
-                                'custom_name'=>'Montana C', //It's in this scenario that this property make a difference
+                                'surname' => 'Montana,',
+                                'first_name' => 'Carlos',
+                                'middle_name' => 'Ábel G',
+                                'custom_name' => 'Montana C', //It's in this scenario that this property make a difference
                             ),
                             array(
                                 'id' => 1,
-                                'surname'=>'Muñoz',
-                                'first_name'=>'Ángel',
-                                'middle_name'=>'GG',
-                                'custom_name'=>null,
+                                'surname' => 'Muñoz',
+                                'first_name' => 'Ángel',
+                                'middle_name' => 'GG',
+                                'custom_name' => null,
                             ),
                             array(
                                 'id' => 7,
-                                'surname'=>'Schiøtt,',
-                                'first_name'=>'Morten',
-                                'middle_name'=>null,
-                                'custom_name'=>null,
+                                'surname' => 'Schiøtt,',
+                                'first_name' => 'Morten',
+                                'middle_name' => null,
+                                'custom_name' => null,
                             ),
                         ),
                         "release_year" => "2018",
                         "dataset_title" => 'Supporting data for "Analyzing climate variations on multiple timescales can guide Zika virus response measures"',
                         "publisher" => "Gigascience",
                         "full_doi" => "10.5072/100243",
-                    )
+                     )
                  );
 
-       $daoUnderTest = new FormattedDatasetMainSection( $cachedDatasetMainSection );
+        $daoUnderTest = new FormattedDatasetMainSection($cachedDatasetMainSection);
 
         $expected = array(
                         "authors" => '<a class="result-sub-links" href="/search/new?keyword=Montana C&amp;author_id=2">Montana C</a>; <a class="result-sub-links" href="/search/new?keyword=Muñoz ÁGG&amp;author_id=1">Muñoz ÁGG</a>; <a class="result-sub-links" href="/search/new?keyword=Schiøtt M&amp;author_id=7">Schiøtt M</a>',
@@ -153,17 +153,17 @@ class FormattedDatasetMainSectionTest extends CTestCase
                  ->setMethods(['getReleaseDetails'])
                  ->disableOriginalConstructor()
                  ->getMock();
-       $cachedDatasetMainSection2->expects($this->once())
+        $cachedDatasetMainSection2->expects($this->once())
                  ->method('getReleaseDetails')
                  ->willReturn([]);
 
-        $daoUnderTest2 = new FormattedDatasetMainSection( $cachedDatasetMainSection2 );
+        $daoUnderTest2 = new FormattedDatasetMainSection($cachedDatasetMainSection2);
         $expected = array(
                         "authors" => "",
                         "release_year" => "",
-                        "dataset_title"=> "",
-                        "publisher"=> "",
-                        "full_doi"=> "",
+                        "dataset_title" => "",
+                        "publisher" => "",
+                        "full_doi" => "",
                     );
         $this->assertEquals($expected, $daoUnderTest2->getReleaseDetails());
     }
@@ -185,12 +185,12 @@ class FormattedDatasetMainSectionTest extends CTestCase
         $cachedDatasetMainSection->expects($this->once())
                  ->method('getDescription')
                  ->willReturn(
-                    array(
+                     array(
                         "description" => 'The emergence of Zika virus (ZIKV) as a public health emergency in Latin America and the Caribbean (LAC) occurred during a period of severe drought and unusually high temperatures. Speculation in the literature exists that these climate conditions were associated with the 2015/2016 El Niño event and/or climate change but to date no quantitative '
-                    )
+                     )
                  );
 
-       $daoUnderTest = new FormattedDatasetMainSection( $cachedDatasetMainSection );
+        $daoUnderTest = new FormattedDatasetMainSection($cachedDatasetMainSection);
 
         $expected = array(
                         "description" => 'The emergence of Zika virus (ZIKV) as a public health emergency in Latin America and the Caribbean (LAC) occurred during a period of severe drought and unusually high temperatures. Speculation in the literature exists that these climate conditions were associated with the 2015/2016 El Niño event and/or climate change but to date no quantitative '
@@ -240,8 +240,8 @@ class FormattedDatasetMainSectionTest extends CTestCase
                  ->willReturn($source);
 
         $daoUnderTest = new FormattedDatasetMainSection(
-                            $cachedDatasetMainSection
-                        );
+            $cachedDatasetMainSection
+        );
         $this->assertCount(count($expected), $daoUnderTest->getCitationsLinks());
     }
 
@@ -260,16 +260,15 @@ class FormattedDatasetMainSectionTest extends CTestCase
         //we expect a call to getKeywords
         $cachedDatasetMainSection->expects($this->once())
                  ->method('getKeywords')
-                 ->willReturn( array("am", "gram") );
+                 ->willReturn(array("am", "gram"));
 
         $expected = array(
             "<a href='/search/new?keyword=am'>am</a>",
             "<a href='/search/new?keyword=gram'>gram</a>",
         );
         $daoUnderTest = new FormattedDatasetMainSection(
-                            $cachedDatasetMainSection
-                        );
-        $this->assertEquals($expected, $daoUnderTest->getKeywords() ) ;
+            $cachedDatasetMainSection
+        );
+        $this->assertEquals($expected, $daoUnderTest->getKeywords()) ;
     }
-
 }

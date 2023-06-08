@@ -1,17 +1,15 @@
 <?php
 
-class RelationDAOTest extends CDbTestCase {
-
-
-
-
-	/**
+class RelationDAOTest extends CDbTestCase
+{
+    /**
      * @dataProvider relationshipProvider
      */
-	public function testItshouldAddReciprocalRelation($relationship, $expected_reciprocal) {
-		$relation_stub = $this->createMock(Relation::class);
+    public function testItshouldAddReciprocalRelation($relationship, $expected_reciprocal)
+    {
+        $relation_stub = $this->createMock(Relation::class);
 
-		// Configure the stub for the relation for which to create a reciprocal relation
+        // Configure the stub for the relation for which to create a reciprocal relation
         $relation_stub->method('getRelatedDOI')
              ->willReturn('100249'); //of id 2
         $relation_stub->method('getDatasetID')
@@ -54,12 +52,12 @@ class RelationDAOTest extends CDbTestCase {
         $reciprocal_relation->expects($this->once())
                  ->method('save');
 
-		$system_under_test = new RelationDAO() ;
-		// createReciprocalTo make use of dependency injection for the reciprocal relation instantiation
-		$system_under_test->createReciprocalTo($relation_stub, $reciprocal_relation);
-	}
+        $system_under_test = new RelationDAO() ;
+        // createReciprocalTo make use of dependency injection for the reciprocal relation instantiation
+        $system_under_test->createReciprocalTo($relation_stub, $reciprocal_relation);
+    }
 
-	public function relationshipProvider()
+    public function relationshipProvider()
     {
         return [
             ["IsSupplementTo", "IsSupplementedBy"],
@@ -72,5 +70,4 @@ class RelationDAOTest extends CDbTestCase {
             ["References", "IsReferencedBy"],
         ];
     }
-
 }

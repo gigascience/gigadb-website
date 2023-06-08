@@ -33,7 +33,7 @@ export PATH
 docker-compose run --rm config
 
 # Deploy correct Yii2 configuration files
-echo "All" | docker-compose run --rm console ./init --env=$REVIEW_ENV
+echo "All" | docker-compose run --rm -T console ./init --env=$REVIEW_ENV
 
 
 # Building services
@@ -49,7 +49,11 @@ sleep 15
 docker-compose up -d beanstalkd sftp_test
 
 # Starting webdriver service for the headless browser used in acceptance testing
-docker-compose up -d webdriver
+if [[ $(uname -m) == 'arm64' ]]; then
+  docker-compose up -d chrome-arm
+else
+  docker-compose up -d chrome
+fi
 
 # Make sure DB server is in good state
 docker-compose ps

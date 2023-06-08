@@ -15,12 +15,10 @@ class DownloadTest extends \Codeception\Test\Unit
         try {
             $output = DownloadService::downloadFile($url);
             $this->assertStringContainsString("Keratin", $output);
-        }
-        catch (\GuzzleHttp\Exception\GuzzleException $ge) {
-            echo $ge->getMessage().PHP_EOL;
-        }
-        catch (Exception $e) {
-            echo $e->getMessage().PHP_EOL;
+        } catch (\GuzzleHttp\Exception\GuzzleException $ge) {
+            echo $ge->getMessage() . PHP_EOL;
+        } catch (Exception $e) {
+            echo $e->getMessage() . PHP_EOL;
         }
     }
 

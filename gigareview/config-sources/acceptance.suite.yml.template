@@ -11,7 +11,7 @@ modules:
               # host: 'firefox'
               # port: 4444
               # browser: firefox'
-              host: 'webdriver'
+              host: '172.16.238.11'
               port: 4444
               browser: chrome
               capabilities:

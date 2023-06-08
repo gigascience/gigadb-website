@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Unit tests for FormattedDatasetExternalLinks to present external links associated to a dataset
  *
@@ -7,8 +8,6 @@
  */
 class FormattedDatasetExternalLinksTest extends CTestCase
 {
-
-
     public function setUp()
     {
         parent::setUp();
@@ -29,7 +28,7 @@ class FormattedDatasetExternalLinksTest extends CTestCase
 
 
         $daoUnderTest = new FormattedDatasetExternalLinks($cachedDatasetExternalLinks);
-        $this->assertEquals($dataset_id, $daoUnderTest->getDatasetId() ) ;
+        $this->assertEquals($dataset_id, $daoUnderTest->getDatasetId()) ;
     }
 
     public function testFormattedReturnsDatasetDOI()
@@ -48,7 +47,7 @@ class FormattedDatasetExternalLinksTest extends CTestCase
 
 
         $daoUnderTest = new FormattedDatasetExternalLinks($cachedDatasetExternalLinks);
-        $this->assertEquals($doi, $daoUnderTest->getDatasetDOI() ) ;
+        $this->assertEquals($doi, $daoUnderTest->getDatasetDOI()) ;
     }
 
     public function testFormattedReturnsDatasetExternalLinksTypesNames()
@@ -63,26 +62,24 @@ class FormattedDatasetExternalLinksTest extends CTestCase
         $cachedDatasetExternalLinks->expects($this->once())
                  ->method('getDatasetExternalLinksTypesAndCount')
                  ->willReturn(
-                    array(
+                     array(
                         "Additional information" => 2,
                         "Genome browser" => 1,
-                        "Protocols.io" =>1,
+                        "Protocols.io" => 1,
                         "JBrowse" => 1,
                         "3D Models" => 1,
-                    )
+                     )
                  );
 
         $expected = array(
                         "Additional information" => "additionalinformation",
                         "Genome browser" => "genomebrowser",
-                        "Protocols.io" =>"protocolsio",
+                        "Protocols.io" => "protocolsio",
                         "JBrowse" => "jbrowse",
                         "3D Models" => "3dmodels",
                     ) ;
 
         $daoUnderTest = new FormattedDatasetExternalLinks($cachedDatasetExternalLinks);
-        $this->assertEquals($expected, $daoUnderTest->getDatasetExternalLinksTypesNames() ) ;
+        $this->assertEquals($expected, $daoUnderTest->getDatasetExternalLinksTypesNames()) ;
     }
-
 }
-?>

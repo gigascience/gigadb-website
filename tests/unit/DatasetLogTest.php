@@ -1,6 +1,5 @@
 <?php
 
-
 class DatasetLogTest extends CDbTestCase
 {
     public function testDataSetLogEntryFactory()
@@ -23,8 +22,8 @@ class DatasetLogTest extends CDbTestCase
     }
 
     // Includde Dataset fixture to avoid unique duplicate key value violation with dataset_log_pkey
-    protected $fixtures=array(
-        'datasets'=>'Dataset',
+    protected $fixtures = array(
+        'datasets' => 'Dataset',
     );
 
     public function testCreateDatasetLogEntry()
@@ -36,7 +35,7 @@ class DatasetLogTest extends CDbTestCase
         $fileId = 16945; //mockup ID
         $saveNewEntry = DatasetLog::createDatasetLogEntry($datasetId, $fileName, $fileModel, $modelId, $fileId);
         $this->assertTrue(is_bool($saveNewEntry) === true, "bool is returned");
-        $this->assertTrue(true===$saveNewEntry, "No new entry is saved to dataset log table");
+        $this->assertTrue(true === $saveNewEntry, "No new entry is saved to dataset log table");
 
         // To assert the delete message will be generated as expected
         $datasetlog = DatasetLog::model()->findByPk($datasetId);
