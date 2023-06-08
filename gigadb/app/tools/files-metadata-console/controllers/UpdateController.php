@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace app\controllers;
 
-use app\components\DatasetFilesUpdater;
+use app\components\DatasetFilesURLUpdater;
 use GigaDB\services\URLsService;
 use GuzzleHttp\Client;
 use yii\console\Controller;
@@ -49,7 +49,7 @@ final class UpdateController extends Controller
     {
         $webClient = new Client([ 'allow_redirects' => false ]);
         $us = new URLsService();
-        $dfu = new DatasetFilesUpdater(["doi" => $this->doi, "us" => $us, "webClient" => $webClient]);
+        $dfu = new DatasetFilesURLUpdater(["doi" => $this->doi, "us" => $us, "webClient" => $webClient]);
         $success = $dfu->updateFileSize();
         $this->stdout("nb. changes: $success" . PHP_EOL, Console::FG_GREEN);
         return ExitCode::OK;
@@ -80,7 +80,7 @@ final class UpdateController extends Controller
         }
 
         try {
-            $dfu = DatasetFilesUpdater::build($optApply);
+            $dfu = DatasetFilesURLUpdater::build($optApply);
             $optExcludedDois = explode(',', $optExcludedDois);
             $dois = $dfu->getNextPendingDatasets($optNext, $optExcludedDois);
 

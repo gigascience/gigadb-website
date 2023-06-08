@@ -2,7 +2,7 @@
 
 namespace tests\functional;
 
-use app\components\DatasetFilesUpdater;
+use app\components\DatasetFilesURLUpdater;
 use FunctionalTester;
 
 class ReplaceFileUrlSubstringWithPrefixCest
@@ -71,7 +71,7 @@ class ReplaceFileUrlSubstringWithPrefixCest
         $I->seeInDatabase('file', ['id' => '88266', 'location' => "ftp://climb.genomics.cn/pub/10.5524/100001_101000/100020/readme.txt"]);
 
         # Run tool to update file URLs for dataset 100002
-        $I->runShellCommand("echo yes | ./yii_test update/urls --prefix=https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live --separator=/pub/ --doi=100002 --next=3 --excluded='100003,100004' --apply");
+        $I->runShellCommand("echo yes | ./yii_test update/urls --prefix=https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live --separator=/pub/ --doi=100002 --next=3 --apply");
 
         # Check output
         $I->canSeeInShellOutput('Number of file changes: 7 on dataset DOI 100002');

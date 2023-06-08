@@ -243,12 +243,12 @@ $ docker-compose run --rm files-metadata-console ./yii update/urls --prefix=http
 
 Execute all unit tests:
 ```
-$ docker-compose run --rm files-metadata-console ./vendor/codeception/codeception/codecept run --debug tests/unit/DatasetFilesUpdaterTest.php
+$ docker-compose run --rm files-metadata-console ./vendor/codeception/codeception/codecept run --debug tests/unit/DatasetFilesURLUpdaterTest.php
 ```
 
 Execute single unit test:
 ```
-$ docker-compose run --rm files-metadata-console ./vendor/codeception/codeception/codecept run --debug tests/unit/DatasetFilesUpdaterTest.php:^testReplaceFileUrlSubstringWithPrefix$
+$ docker-compose run --rm files-metadata-console ./vendor/codeception/codeception/codecept run --debug tests/unit/DatasetFilesURLUpdaterTest.php:^testReplaceFileUrlSubstringWithPrefix$
 ```
 
 Execute all functional tests:

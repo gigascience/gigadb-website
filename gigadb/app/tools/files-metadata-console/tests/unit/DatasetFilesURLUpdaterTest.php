@@ -1,11 +1,11 @@
 <?php
 
-use app\components\DatasetFilesUpdater;
+use app\components\DatasetFilesURLUpdater;
 
 /**
- * Tests DatasetFilesUpdater component
+ * Tests DatasetFilesURLUpdater component
  */
-class DatasetFilesUpdaterTest extends \Codeception\Test\Unit
+class DatasetFilesURLUpdaterTest extends \Codeception\Test\Unit
 {
     /**
      * Test that a list of dataset DOIs can be returned that need their file
@@ -15,7 +15,7 @@ class DatasetFilesUpdaterTest extends \Codeception\Test\Unit
     {
         $batchSize = 3;
 
-        $dfu = DatasetFilesUpdater::build(true);
+        $dfu = DatasetFilesURLUpdater::build(true);
         $dois = $dfu->getNextPendingDatasets($batchSize);
         codecept_debug($dois);
         $this->assertEquals(3, sizeof($dois), "Unexpected number of DOIs returned");
@@ -31,7 +31,7 @@ class DatasetFilesUpdaterTest extends \Codeception\Test\Unit
         $batchSize = 3;
         $excludedDois = ['100003', '100004'];
 
-        $dfu = DatasetFilesUpdater::build(true);
+        $dfu = DatasetFilesURLUpdater::build(true);
         $dois = $dfu->getNextPendingDatasets($batchSize, $excludedDois);
         codecept_debug($dois);
         $this->assertEquals(3, sizeof($dois), "Unexpected number of DOIs returned");
@@ -48,7 +48,7 @@ class DatasetFilesUpdaterTest extends \Codeception\Test\Unit
         $separator = '/pub/';
         $prefix = 'https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live';
 
-        $dfu = DatasetFilesUpdater::build(true);
+        $dfu = DatasetFilesURLUpdater::build(true);
         $success = $dfu->replaceFileUrlSubstringWithPrefix($doi, $separator, $prefix);
         codecept_debug("Number of file URLs updated: " . $success);
         $this->assertTrue($success === 7, "Unexpected number of file URLs updated");
