@@ -11,9 +11,7 @@ use Yii;
 use yii\base\Component;
 
 /**
- * DatasetFilesUpdater
- *
- * encapsulate business logic for updating the file table
+ * For updating file URLs belonging to datasets
  */
 final class DatasetFilesURLUpdater extends Component
 {
@@ -49,7 +47,7 @@ final class DatasetFilesURLUpdater extends Component
     public const APPLY_OFF = false;
 
     /**
-     * @var bool $apply flag to indicate whether the apply mode is activated (true) or not (false, the default)
+     * @var bool flag to indicate whether the apply mode is activated (true) or not (false, the default)
      */
     public bool $apply = false;
 
@@ -83,11 +81,8 @@ final class DatasetFilesURLUpdater extends Component
         $uriParts = parse_url(ltrim($oldFTPSite));
         $path = mb_split("/pub", $uriParts['path'])[1];
         $newFTPSite = self::NEW_HOST . "/gigadb-datasets/live/pub" . $path;
-        $dataset->ftp_site = $newFTPSite;
         if ($this->apply === true) {
-            if (!$dataset->save()) {
-                throw new Exception("Problem saving ftp_site attribute value in dataset");
-            }
+            $this->updateDbDatasetTable($newFTPSite, $dataset->id);
         }
 
         # Get all files belonging to dataset
@@ -117,7 +112,25 @@ final class DatasetFilesURLUpdater extends Component
     }
 
     /**
-     * Get next batch of pending datasets
+     * @param string $newFTPSite
+     * @param int $dataset_id
+     * @return int
+     * @throws Exception
+     */
+    private function updateDbDatasetTable(string $newFTPSite, int $dataset_id): int
+    {
+        return Yii::$app->db
+            ->createCommand()
+            ->update('dataset',
+                ['ftp_site' => $newFTPSite],
+                'id = :id',
+                [':id' => $dataset_id]
+            )
+            ->execute();
+    }
+
+    /**
+     * Get next batch of pending datasets using Yii2 Query
      *
      * @param int $next batch size
      * @return array List of DOIs requiring dataset file URLs to be updated
