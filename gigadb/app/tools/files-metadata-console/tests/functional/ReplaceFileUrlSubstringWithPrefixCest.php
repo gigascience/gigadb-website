@@ -10,6 +10,28 @@ class ReplaceFileUrlSubstringWithPrefixCest
     /**
      * @param FunctionalTester $I
      */
+    public function tryDryRunExecution(\FunctionalTester $I): void
+    {
+        # Check old data is present
+        $I->seeInDatabase('dataset', ['identifier' => '100002', 'ftp_site' => 'ftp://climb.genomics.cn/pub/10.5524/100001_101000/100002']);
+        $I->seeInDatabase('file', ['name' => 'Pygoscelis_adeliae.gff.gz', 'location' => "ftp://climb.genomics.cn/pub/10.5524/100001_101000/100006/phylogeny_study_update/Pygoscelis_adeliae.gff.gz"]);
+
+        # Run tool to update file URLs for dataset 100002
+        $I->runShellCommand("echo yes | ./yii_test update/urls --prefix=https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live --separator=/pub/ --doi=100002 --next=3 --excluded='100003,100004'");
+
+        # Check output
+        $I->canSeeInShellOutput('Number of file changes: 0 on dataset DOI 100002');
+        $I->canSeeInShellOutput('Number of file changes: 0 on dataset DOI 100005');
+        $I->canSeeInShellOutput('Number of file changes: 0 on dataset DOI 100039');
+
+        # Check records have not been updated with new Wasabi URLs
+        $I->dontseeInDatabase('dataset', ['identifier' => '100002', 'ftp_site' => 'https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/10.5524/100001_101000/100002']);
+        $I->dontseeInDatabase('file', ['name' => 'Pygoscelis_adeliae.gff.gz', 'location' => "https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/10.5524/100001_101000/100006/phylogeny_study_update/Pygoscelis_adeliae.gff.gz\n"]);
+    }
+
+    /**
+     * @param FunctionalTester $I
+     */
     public function tryExcludingDOIsFromFileUrlChanges(\FunctionalTester $I): void
     {
         # Check old data is present
