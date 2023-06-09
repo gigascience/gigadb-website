@@ -1,0 +1,15 @@
+---
+# Deploy monitoring on an ec2 instance
+
+
+- name: Install Prometheus
+  hosts: monitoring_hosts
+  roles:
+    - prometheus.prometheus.prometheus
+  vars:
+    prometheus_targets:
+      node:
+        - targets:
+            - localhost:9100
+          labels:
+            env: gigascience-monitoring

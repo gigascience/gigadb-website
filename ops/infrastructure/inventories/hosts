@@ -1,14 +1,13 @@
-# do not add any IP address here as it is dynamically managed using terraform-inventory
+[monitoring_hosts]
+18.163.33.128
 
-[name_bastion_server_staging]
+[monitoring_hosts:vars]
 
-# do not add any IP address here as it is dynamically managed using terraform-inventory
+ansible_ssh_private_key_file="~/.ssh/gigascience-monitoring.pem"
+ansible_user = "admin"
+ansible_become = "true"
 
-[name_bastion_server_live]
-
-# do not add any IP address here as it is dynamically managed using terraform-inventory
-
-[all:vars]
+[type_aws_instance:vars]
 
 gitlab_url = "https://gitlab.com/api/v4/projects/{{ lookup('ini', 'gitlab_project type=properties file=ansible.properties') | urlencode | regex_replace('/','%2F') }}"
 ansible_ssh_private_key_file = "{{ lookup('ini', 'ssh_private_key_file type=properties file=ansible.properties') }}"
