@@ -62,7 +62,7 @@ final class DatasetFilesURLUpdater extends Component
      *
      * @return int returns number of files that have been successfully updated
      */
-    public function replaceFileUrlSubstringWithPrefix($doi, $separator, $prefix): int
+    public function updateDatasetFileLocations($doi, $separator, $prefix): int
     {
         # Record how many files with their URL locations updated
         $success = 0;
@@ -72,7 +72,7 @@ final class DatasetFilesURLUpdater extends Component
             ->one();
 
         # Update ftp_site attribute in dataset object
-        $oldFTPSite = $dataset->ftp_site;
+        $oldFTPSite = $dataset['ftp_site'];
         $newFTPSite = $this->replaceDatasetFTPSitePrefix($oldFTPSite);
         if ($this->apply === true) {
             $this->updateDbDatasetTable($newFTPSite, $dataset->id);
@@ -82,9 +82,8 @@ final class DatasetFilesURLUpdater extends Component
         $files =  File::find()->where(["dataset_id" => $dataset->id])->all();
         # Update each file's location URL
         foreach ($files as $file) {
-            $url = $file->location;
-            $newUrl = $this->replaceFileLocationPrefix($url, $separator, $prefix);
-            $file->location = $newUrl;
+            $url = $file['location'];
+            $newUrl = $this->replaceFileLocationPrefix($url, $separator);
             if ($this->apply === true) {
                 $this->updateDbFileTable($newUrl, $file->id);
                 $success++;
@@ -96,21 +95,32 @@ final class DatasetFilesURLUpdater extends Component
     /**
      * Replace ftp_site in dataset with Wasabi URL
      *
-     * Success and no-op return the value saved in database.
-     * Failure return null and an error is logged
-     *
      * @param string $oldFileLocation old file URL location
      * @return string new file URL location
      */
-    public function replaceFileLocationPrefix($oldFileLocation, $separator, $prefix)
+    public function replaceFileLocationPrefix($oldFileLocation, $separator)
     {
-        $newUrl = substr(
-            $oldFileLocation,
-            strrpos($oldFileLocation, $separator) + strlen($separator),
-            strlen($oldFileLocation)
-        ) . PHP_EOL;
-        $newFileLocation = $prefix . "$separator" . $newUrl;
-        return $newFileLocation;
+        // Change https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100020/readme.txt
+        // to https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/10.5524/100001_101000/100020/readme.txt
+
+        $bucketDirectories = '/gigadb-datasets/live/pub/';
+        $newFTPLocationPrefix = self::NEW_HOST . $bucketDirectories;
+
+        $uriParts = parse_url(ltrim($oldFileLocation));
+        // Update ftp_site if it starts with ftp:// or contains ftp.cngb.org
+        if ("ftp" === $uriParts['scheme'] || "ftp.cngb.org" === $uriParts['host']) {
+            // Extract file path from old file location URL
+            $path = substr(
+                $oldFileLocation,
+                strrpos($oldFileLocation, $separator) + strlen($separator),
+                strlen($oldFileLocation)
+            ) . PHP_EOL;
+            $newFileLocation = $newFTPLocationPrefix . $path;
+            return $newFileLocation;
+        }
+        else {
+            throw new Exception('File has unexpected URL location: ' . $oldFileLocation);
+        }
     }
 
     /**
@@ -127,15 +137,14 @@ final class DatasetFilesURLUpdater extends Component
         $newFTPSitePrefix = self::NEW_HOST . '/gigadb-datasets/live/pub';
 
         $uriParts = parse_url(ltrim($oldFTPSite));
-        var_dump($uriParts);
-        // Update ftp_site if it starts with ftp://climb.genomics.cn or https://ftp.cngb.org
+        // Update ftp_site if it starts with ftp:// or contains ftp.cngb.org
         if ("ftp" === $uriParts['scheme'] || "ftp.cngb.org" === $uriParts['host']) {
             $path = mb_split("/pub", $uriParts['path'])[1];
             $newFTPSite = $newFTPSitePrefix . $path;
             return $newFTPSite;
         }
         else {
-            error_log("dataset has unexpected ftp_site: " . $oldFTPSite);
+            error_log("Dataset has unexpected ftp_site: " . $oldFTPSite);
             return null;
         }
     }
@@ -148,15 +157,19 @@ final class DatasetFilesURLUpdater extends Component
      */
     private function updateDbDatasetTable(string $newFTPSite, int $dataset_id): int
     {
-        return Yii::$app->db
-            ->createCommand()
-            ->update(
-                'dataset',
-                ['ftp_site' => $newFTPSite],
-                'id = :id',
-                [':id' => $dataset_id]
-            )
-            ->execute();
+        try {
+            return Yii::$app->db
+                ->createCommand()
+                ->update(
+                    'dataset',
+                    ['ftp_site' => $newFTPSite],
+                    'id = :id',
+                    [':id' => $dataset_id]
+                )
+                ->execute();
+        } catch (\Yii\Db\Exception $e) {
+            throw new Exception($e->getMessage());
+        }
     }
 
     /**
@@ -167,15 +180,19 @@ final class DatasetFilesURLUpdater extends Component
      */
     private function updateDbFileTable(string $newFileLocation, int $file_id): int
     {
-        return Yii::$app->db
-            ->createCommand()
-            ->update(
-                'file',
-                ['location' => $newFileLocation],
-                'id = :id',
-                [':id' => $file_id]
-            )
-            ->execute();
+        try {
+            return Yii::$app->db
+                ->createCommand()
+                ->update(
+                    'file',
+                    ['location' => $newFileLocation],
+                    'id = :id',
+                    [':id' => $file_id]
+                )
+                ->execute();
+        } catch (\Yii\Db\Exception $e) {
+            throw new Exception($e->getMessage());
+        }
     }
 
     /**

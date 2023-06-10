@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace app\controllers;
 
 use app\components\DatasetFilesURLUpdater;
+use Exception;
 use GigaDB\services\URLsService;
 use GuzzleHttp\Client;
 use yii\console\Controller;
@@ -79,21 +80,22 @@ final class UpdateController extends Controller
             return ExitCode::USAGE;
         }
 
+        $db = \Yii::$app->db;
+        $transaction = $db->beginTransaction();
         try {
-            $dfu = DatasetFilesURLUpdater::build($optApply);
+            $dfuu = DatasetFilesURLUpdater::build($optApply);
             $optExcludedDois = explode(',', $optExcludedDois);
-            $dois = $dfu->getNextPendingDatasets($optNext, $optExcludedDois);
+            $dois = $dfuu->getNextPendingDatasets($optNext, $optExcludedDois);
 
             foreach ($dois as $doi) {
-                $success = $dfu->replaceFileUrlSubstringWithPrefix($doi, $optSeparator, $optPrefix);
+                $success = $dfuu->updateDatasetFileLocations($doi, $optSeparator, $optPrefix);
                 $this->stdout("Number of file changes: $success on dataset DOI $doi" . PHP_EOL, Console::FG_GREEN);
             }
-        } catch (\Throwable $e) {
-            $this->stdout(" ftp_site ERROR", Console::BG_RED);
-//            $this->stdout(" location FAILURE (0/$nbFiles)", Console::BG_RED);
-//            $this->stdout("\n** Rolling back transaction for dataset of id {$value["dataset_id"]}\n", Console::BG_RED);
-//            $transaction->rollBack();
-            throw $e; //we stop the whole run
+            $transaction->commit();
+        } catch (Exception $e) {
+            $this->stdout($e, Console::BG_RED);
+            $this->stdout("\n** Rolling back transaction\n", Console::BG_RED);
+            $transaction->rollBack();
         }
         return ExitCode::OK;
     }
