@@ -44,24 +44,14 @@ class DatasetFilesURLUpdaterTest extends \Codeception\Test\Unit
     /**
      * Test file URLs for dataset DOI 100002 can be updated
      */
-    public function testReplaceFileLocationURLSubstring(): void
+    public function testUpdateFileLocationsForDataset(): void
     {
         $separator = '/pub/';
-        $testLocation1 = 'ftp://climb.genomics.cn/pub/10.5524/100001_101000/100039/readme.txt';
-        $newFileLocation1 = 'https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/10.5524/100001_101000/100039/readme.txt';
-
-        $testLocation2 = 'https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100001/2011vs2001_v2.xls';
-        $newFileLocation2 = 'https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/10.5524/100001_101000/100001/2011vs2001_v2.xls';
-
-        $testLocation3 = 'https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/10.5524/100001_101000/100001/2011vs2001_v2.xls';
+        $doi = '100003';
 
         $this->dfuu = DatasetFilesURLUpdater::build(true);
-        $output = $this->dfuu->replaceFileLocationPrefix($testLocation1, $separator);
+        $output = $this->dfuu->replaceLocationsForDatasetFiles($doi, $separator);
         codecept_debug($output);
-        $this->assertStringContainsString($newFileLocation1, $output);
-
-        $output = $this->dfuu->replaceFileLocationPrefix($testLocation2, $separator);
-        codecept_debug($output);
-        $this->assertStringContainsString($newFileLocation2, $output);
+        $this->assertTrue($output == 6);
     }
 }

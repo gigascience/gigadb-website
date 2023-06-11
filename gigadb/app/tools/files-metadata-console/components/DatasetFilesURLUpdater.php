@@ -63,69 +63,48 @@ final class DatasetFilesURLUpdater extends Component
     }
 
     /**
-     * Replaces substring of a URL with a new prefix for all files in a dataset
-     *
-     * @return int returns number of files that have been successfully updated
-     */
-    public function updateDatasetFileLocations($doi, $separator): int
-    {
-        # Record how many files with their URL locations updated
-        $success = 0;
-        # Get dataset object whose file URLs we need to update
-        $dataset = Dataset::find()
-            ->where(["identifier" => $doi])
-            ->one();
-
-        # Update ftp_site attribute in dataset object
-        $oldFTPSite = $dataset['ftp_site'];
-        $newFTPSite = $this->replaceDatasetFTPSitePrefix($oldFTPSite);
-        if ($this->apply === true) {
-            $this->updateDbDatasetTable($newFTPSite, $dataset->id);
-        }
-
-        # Get all files belonging to dataset
-        $files =  File::find()->where(["dataset_id" => $dataset->id])->all();
-        # Update each file's location URL
-        foreach ($files as $file) {
-            $url = $file['location'];
-            $newUrl = $this->replaceFileLocationPrefix($url, $separator);
-            if ($this->apply === true) {
-                $this->updateDbFileTable($newUrl, $file->id);
-                $success++;
-            }
-        }
-        return $success;
-    }
-
-    /**
      * Replace ftp_site in dataset with Wasabi URL
      *
      * @param string $oldFileLocation old file URL location
      * @return string new file URL location
      */
-    public function replaceFileLocationPrefix(string $currentFileLocation, string $separator)
+    public function replaceLocationsForDatasetFiles(string $doi, string $separator)
     {
         // Change https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100020/readme.txt
         // to https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/10.5524/100001_101000/100020/readme.txt
 
         $newFTPLocationPrefix = self::NEW_HOST . self::BUCKET_DIRECTORIES;
 
-        codecept_debug('Current file location is: ' . $currentFileLocation);
-        $uriParts = parse_url(ltrim($currentFileLocation));
-        if ("https" === $uriParts['scheme'] && "s3.ap-northeast-1.wasabisys.com" === $uriParts['host']) {
-            # Just return current file location because it is already Wasabi URL
-            return $currentFileLocation;
+        # Record how many files with their URL locations updated
+        $processed = 0;
+        # Get dataset object whose file URLs we need to update
+        $dataset = Dataset::find()
+            ->where(["identifier" => $doi])
+            ->one();
+
+        # Get all files belonging to dataset
+        $files =  File::find()->where(["dataset_id" => $dataset->id])->all();
+        # Update each file's location URL
+        foreach ($files as $file) {
+            $newFileLocation = "";
+            $currentFileLocation = $file['location'];
+            $uriParts = parse_url(ltrim($currentFileLocation));
+            if ("https" === $uriParts['scheme'] && "s3.ap-northeast-1.wasabisys.com" === $uriParts['host']) {
+                # Nothing to do as there is no URL to change
+                continue;
+            } elseif ("ftp" === $uriParts['scheme'] || "ftp.cngb.org" === $uriParts['host']) {
+                // Update ftp_site if it starts with ftp:// or contains ftp.cngb.org
+                $tokens = explode($separator, $uriParts['path']);
+                $newFileLocation = $newFTPLocationPrefix . end($tokens);
+                if ($this->apply === true) {
+                    $this->updateDbFileTable($newFileLocation, $file->id);
+                    $processed++;
+                }
+            } else {
+                throw new Exception('File has unexpected URL location: ' . $currentFileLocation);
+            }
         }
-        elseif ("ftp" === $uriParts['scheme'] || "ftp.cngb.org" === $uriParts['host']) {
-            // Update ftp_site if it starts with ftp:// or contains ftp.cngb.org
-            $tokens = explode($separator, $uriParts['path']);
-            codecept_debug('Extracted path is: ' . end($tokens));
-            $newFileLocation = $newFTPLocationPrefix . end($tokens);
-            return $newFileLocation;
-        }
-        else {
-            throw new Exception('File has unexpected URL location: ' . $currentFileLocation);
-        }
+        return $processed;
     }
 
     /**
@@ -137,20 +116,34 @@ final class DatasetFilesURLUpdater extends Component
      * @param string old ftp_site
      * @return string new ftp_site
      */
-    public function replaceDatasetFTPSitePrefix($oldFTPSite)
+    public function replaceFTPSiteForDataset($doi)
     {
+        $success = 0;
         $newFTPSitePrefix = self::NEW_HOST . self::BUCKET_DIRECTORIES;;
 
-        $uriParts = parse_url(ltrim($oldFTPSite));
+        # Get dataset object whose file URLs we need to update
+        $dataset = Dataset::find()
+            ->where(["identifier" => $doi])
+            ->one();
+
+        # Get all files belonging to dataset
+        $dataset =  Dataset::find()->where(["identifier" => $doi])->one();
+        $currentFTPSite = $dataset['ftp_site'];
+        $uriParts = parse_url(ltrim($dataset['ftp_site']));
         // Update ftp_site if it starts with ftp:// or contains ftp.cngb.org
         if ("ftp" === $uriParts['scheme'] || "ftp.cngb.org" === $uriParts['host']) {
             $path = mb_split("/pub", $uriParts['path'])[1];
             $newFTPSite = $newFTPSitePrefix . $path;
-            return $newFTPSite;
+            if ($this->apply === true) {
+                $this->updateDbDatasetTable($newFTPSite, $dataset->id);
+                $success++;
+            }
         }
         else {
-            throw new Exception("Dataset has unexpected ftp_site: " . $oldFTPSite);
+            throw new Exception("Dataset has unexpected ftp_site: " . $currentFTPSite);
         }
+        
+        return $success;
     }
 
     /**

@@ -81,17 +81,20 @@ final class UpdateController extends Controller
         }
 
         $db = \Yii::$app->db;
-        $transaction = $db->beginTransaction();
+
         try {
             $dfuu = DatasetFilesURLUpdater::build($optApply);
             $optExcludedDois = explode(',', $optExcludedDois);
             $dois = $dfuu->getNextPendingDatasets($optNext, $optExcludedDois);
 
             foreach ($dois as $doi) {
-                $success = $dfuu->updateDatasetFileLocations($doi, $optSeparator, $optPrefix);
-                $this->stdout("Number of file changes: $success on dataset DOI $doi" . PHP_EOL, Console::FG_GREEN);
+                $transaction = $db->beginTransaction();
+                $success = $dfuu->replaceFTPSiteForDataset($doi, $optSeparator);
+                $processed = $dfuu->replaceLocationsForDatasetFiles($doi, $optSeparator);
+                $transaction->commit();
+                $this->stdout("Number of dataset ftp_site changes: $success on dataset DOI $doi" . PHP_EOL, Console::FG_GREEN);
+                $this->stdout("Number of file location changes: $processed on dataset DOI $doi" . PHP_EOL, Console::FG_GREEN);
             }
-            $transaction->commit();
         } catch (Exception $e) {
             $this->stdout($e, Console::BG_RED);
             $this->stdout("\n** Rolling back transaction\n", Console::BG_RED);
