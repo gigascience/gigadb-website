@@ -67,7 +67,7 @@ final class DatasetFilesURLUpdater extends Component
      *
      * @return int returns number of files that have been successfully updated
      */
-    public function updateDatasetFileLocations($doi, $separator, $prefix): int
+    public function updateDatasetFileLocations($doi, $separator): int
     {
         # Record how many files with their URL locations updated
         $success = 0;
@@ -103,27 +103,28 @@ final class DatasetFilesURLUpdater extends Component
      * @param string $oldFileLocation old file URL location
      * @return string new file URL location
      */
-    public function replaceFileLocationPrefix($oldFileLocation, $separator)
+    public function replaceFileLocationPrefix(string $currentFileLocation, string $separator)
     {
         // Change https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100020/readme.txt
         // to https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/10.5524/100001_101000/100020/readme.txt
 
         $newFTPLocationPrefix = self::NEW_HOST . self::BUCKET_DIRECTORIES;
 
-        $uriParts = parse_url(ltrim($oldFileLocation));
-        // Update ftp_site if it starts with ftp:// or contains ftp.cngb.org
-        if ("ftp" === $uriParts['scheme'] || "ftp.cngb.org" === $uriParts['host']) {
-            // Extract file path from old file location URL
-            $path = substr(
-                $oldFileLocation,
-                strrpos($oldFileLocation, $separator) + strlen($separator),
-                strlen($oldFileLocation)
-            ) . PHP_EOL;
-            $newFileLocation = $newFTPLocationPrefix . $path;
+        codecept_debug('Current file location is: ' . $currentFileLocation);
+        $uriParts = parse_url(ltrim($currentFileLocation));
+        if ("https" === $uriParts['scheme'] && "s3.ap-northeast-1.wasabisys.com" === $uriParts['host']) {
+            # Just return current file location because it is already Wasabi URL
+            return $currentFileLocation;
+        }
+        elseif ("ftp" === $uriParts['scheme'] || "ftp.cngb.org" === $uriParts['host']) {
+            // Update ftp_site if it starts with ftp:// or contains ftp.cngb.org
+            $tokens = explode($separator, $uriParts['path']);
+            codecept_debug('Extracted path is: ' . end($tokens));
+            $newFileLocation = $newFTPLocationPrefix . end($tokens);
             return $newFileLocation;
         }
         else {
-            throw new Exception('File has unexpected URL location: ' . $oldFileLocation);
+            throw new Exception('File has unexpected URL location: ' . $currentFileLocation);
         }
     }
 

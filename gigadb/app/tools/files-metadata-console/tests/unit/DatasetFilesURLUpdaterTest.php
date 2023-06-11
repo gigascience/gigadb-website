@@ -7,6 +7,8 @@ use app\components\DatasetFilesURLUpdater;
  */
 class DatasetFilesURLUpdaterTest extends \Codeception\Test\Unit
 {
+    public DatasetFilesURLUpdater $dfuu;
+    
     /**
      * Test that a list of dataset DOIs can be returned that need their file
      * URLs updating
@@ -42,15 +44,24 @@ class DatasetFilesURLUpdaterTest extends \Codeception\Test\Unit
     /**
      * Test file URLs for dataset DOI 100002 can be updated
      */
-    public function testReplaceFileUrlSubstringWithPrefix(): void
+    public function testReplaceFileLocationURLSubstring(): void
     {
-        $doi = '100002';
         $separator = '/pub/';
-        $prefix = 'https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live';
+        $testLocation1 = 'ftp://climb.genomics.cn/pub/10.5524/100001_101000/100039/readme.txt';
+        $newFileLocation1 = 'https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/10.5524/100001_101000/100039/readme.txt';
 
-        $dfu = DatasetFilesURLUpdater::build(true);
-        $success = $dfu->replaceFileUrlSubstringWithPrefix($doi, $separator, $prefix);
-        codecept_debug("Number of file URLs updated: " . $success);
-        $this->assertTrue($success === 7, "Unexpected number of file URLs updated");
+        $testLocation2 = 'https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100001/2011vs2001_v2.xls';
+        $newFileLocation2 = 'https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/10.5524/100001_101000/100001/2011vs2001_v2.xls';
+
+        $testLocation3 = 'https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/10.5524/100001_101000/100001/2011vs2001_v2.xls';
+
+        $this->dfuu = DatasetFilesURLUpdater::build(true);
+        $output = $this->dfuu->replaceFileLocationPrefix($testLocation1, $separator);
+        codecept_debug($output);
+        $this->assertStringContainsString($newFileLocation1, $output);
+
+        $output = $this->dfuu->replaceFileLocationPrefix($testLocation2, $separator);
+        codecept_debug($output);
+        $this->assertStringContainsString($newFileLocation2, $output);
     }
 }
