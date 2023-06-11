@@ -148,8 +148,7 @@ final class DatasetFilesURLUpdater extends Component
             return $newFTPSite;
         }
         else {
-            error_log("Dataset has unexpected ftp_site: " . $oldFTPSite);
-            return null;
+            throw new Exception("Dataset has unexpected ftp_site: " . $oldFTPSite);
         }
     }
 
