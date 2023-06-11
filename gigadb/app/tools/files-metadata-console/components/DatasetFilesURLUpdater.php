@@ -37,6 +37,11 @@ final class DatasetFilesURLUpdater extends Component
     public const NEW_HOST = "https://s3.ap-northeast-1.wasabisys.com";
 
     /**
+     * @const the bucket name and subdirectories to use
+     */
+    public const BUCKET_DIRECTORIES = "/gigadb-datasets/live/pub/";
+
+    /**
      * @const to indicate that we want to run the command in dry run mode
      */
     public const APPLY_OFF = false;
@@ -103,8 +108,7 @@ final class DatasetFilesURLUpdater extends Component
         // Change https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100020/readme.txt
         // to https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/10.5524/100001_101000/100020/readme.txt
 
-        $bucketDirectories = '/gigadb-datasets/live/pub/';
-        $newFTPLocationPrefix = self::NEW_HOST . $bucketDirectories;
+        $newFTPLocationPrefix = self::NEW_HOST . self::BUCKET_DIRECTORIES;
 
         $uriParts = parse_url(ltrim($oldFileLocation));
         // Update ftp_site if it starts with ftp:// or contains ftp.cngb.org
@@ -134,7 +138,7 @@ final class DatasetFilesURLUpdater extends Component
      */
     public function replaceDatasetFTPSitePrefix($oldFTPSite)
     {
-        $newFTPSitePrefix = self::NEW_HOST . '/gigadb-datasets/live/pub';
+        $newFTPSitePrefix = self::NEW_HOST . self::BUCKET_DIRECTORIES;;
 
         $uriParts = parse_url(ltrim($oldFTPSite));
         // Update ftp_site if it starts with ftp:// or contains ftp.cngb.org
