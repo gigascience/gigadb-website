@@ -8,7 +8,7 @@ use app\components\DatasetFilesURLUpdater;
 class DatasetFilesURLUpdaterTest extends \Codeception\Test\Unit
 {
     public DatasetFilesURLUpdater $dfuu;
-    
+
     /**
      * Test that a list of dataset DOIs can be returned that need their file
      * URLs updating
@@ -42,7 +42,7 @@ class DatasetFilesURLUpdaterTest extends \Codeception\Test\Unit
     }
 
     /**
-     * Test file URLs for dataset DOI 100002 can be updated
+     * Test file URLs for dataset DOI 100003 can be updated
      */
     public function testUpdateFileLocationsForDataset(): void
     {
@@ -51,7 +51,18 @@ class DatasetFilesURLUpdaterTest extends \Codeception\Test\Unit
 
         $this->dfuu = DatasetFilesURLUpdater::build(true);
         $output = $this->dfuu->replaceLocationsForDatasetFiles($doi, $separator);
-        codecept_debug($output);
         $this->assertTrue($output == 6);
+    }
+
+    /**
+     * Test ftp_site for dataset DOI 100002 can be updated
+     */
+    public function testUpdateFTPSiteForDataset(): void
+    {
+        $doi = '100002';
+
+        $this->dfuu = DatasetFilesURLUpdater::build(true);
+        $output = $this->dfuu->replaceFTPSiteForDataset($doi);
+        $this->assertTrue($output == 1);
     }
 }
