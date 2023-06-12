@@ -66,7 +66,7 @@ final class UpdateController extends Controller
      */
     public function actionUrls(): int
     {
-        //Managing input
+        //Manage inputs
         $optDoi = $this->doi;
         $optPrefix = $this->prefix;
         $optSeparator = $this->separator;
@@ -81,24 +81,45 @@ final class UpdateController extends Controller
         }
 
         $db = \Yii::$app->db;
-
+        $transaction = $db->beginTransaction();
         try {
             $dfuu = DatasetFilesURLUpdater::build($optApply);
             $optExcludedDois = explode(',', $optExcludedDois);
             $dois = $dfuu->getNextPendingDatasets($optNext, $optExcludedDois);
 
             foreach ($dois as $doi) {
-                $transaction = $db->beginTransaction();
-                $success = $dfuu->replaceFTPSiteForDataset($doi, $optSeparator);
-                $processed = $dfuu->replaceLocationsForDatasetFiles($doi, $optSeparator);
-                $transaction->commit();
-                $this->stdout("Number of dataset ftp_site changes: $success on dataset DOI $doi" . PHP_EOL, Console::FG_GREEN);
-                $this->stdout("Number of file location changes: $processed on dataset DOI $doi" . PHP_EOL, Console::FG_GREEN);
+                $nbFiles = count($dfuu->queryFilesForDataset($doi));
+                
+                $this->stdout("\tTransforming ftp_site for dataset $doi... " . PHP_EOL);
+                $ftpSiteOutcome = $dfuu->replaceFTPSiteForDataset($doi);
+                if ($ftpSiteOutcome) {
+                    $this->stdout("DONE" . PHP_EOL, Console::BG_GREEN);
+                }
+                else {
+                    $this->stdout("ERROR" . PHP_EOL, Console::BG_RED);
+                }
+
+                $this->stdout("\n\tTransforming file locations for dataset $doi..." . PHP_EOL, Console::BOLD);
+                $locationOutcome = $dfuu->replaceLocationsForDatasetFiles($doi, $optSeparator);
+                switch ($locationOutcome) {
+                    case 0:
+                        $this->stdout("FAILURE (0/$nbFiles)" . PHP_EOL, Console::BG_RED);
+                        break;
+                    case $nbFiles:
+                        $this->stdout("DONE ($nbFiles/$nbFiles)" . PHP_EOL, Console::BG_GREEN);
+                        break;
+                    default:
+                        $this->stdout("ERROR ($locationOutcome/$nbFiles)" . PHP_EOL, Console::BG_YELLOW);
+                        break;
+                }
+                $this->stdout("\n");
             }
+            $transaction->commit();
         } catch (Exception $e) {
             $this->stdout($e, Console::BG_RED);
             $this->stdout("\n** Rolling back transaction\n", Console::BG_RED);
             $transaction->rollBack();
+            throw $e; // Stop whole run
         }
         return ExitCode::OK;
     }

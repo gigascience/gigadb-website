@@ -9,6 +9,7 @@ use GigaDB\models\File;
 use PHPUnit\Runner\Exception;
 use Yii;
 use yii\base\Component;
+use yii\db\ActiveRecord;
 
 /**
  * For updating file URLs belonging to datasets
@@ -64,7 +65,7 @@ final class DatasetFilesURLUpdater extends Component
 
     /**
      * Replace ftp_site in dataset with Wasabi URL
-     * 
+     *
      * Most file locations will look like this:
      * https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100020/readme.txt
      * The above URL will be updated to a Wasabi link:
@@ -82,7 +83,7 @@ final class DatasetFilesURLUpdater extends Component
         $processed = 0;
         # Get all files belonging to dataset
         $dataset = Dataset::find()->where(["identifier" => $doi])->one();
-        $files =  File::find()->where(["dataset_id" => $dataset->id])->all();
+        $files = $this->queryFilesForDataset($doi);
         # Update each file's location URL
         foreach ($files as $file) {
             $currentFileLocation = $file['location'];
@@ -114,14 +115,14 @@ final class DatasetFilesURLUpdater extends Component
     public function replaceFTPSiteForDataset($doi)
     {
         $success = 0;
-        $newFTPSitePrefix = self::NEW_HOST . self::BUCKET_DIRECTORIES;;
+        $newFTPSitePrefix = self::NEW_HOST . self::BUCKET_DIRECTORIES;
 
         $dataset =  Dataset::find()->where(["identifier" => $doi])->one();
         $currentFTPSite = $dataset['ftp_site'];
         $uriParts = parse_url(ltrim($dataset['ftp_site']));
         // Update ftp_site if it starts with ftp:// or contains ftp.cngb.org
         if ("ftp" === $uriParts['scheme'] || "ftp.cngb.org" === $uriParts['host']) {
-            $path = mb_split("/pub", $uriParts['path'])[1];
+            $path = mb_split("/pub/", $uriParts['path'])[1];
             $newFTPSite = $newFTPSitePrefix . $path;
             if ($this->apply === true) {
                 $this->updateDbDatasetTable($newFTPSite, $dataset->id);
@@ -208,5 +209,19 @@ final class DatasetFilesURLUpdater extends Component
             ->limit($next)
             ->all();
         return array_column($rows, 'identifier');
+    }
+
+    /**
+     * Query the files associated with the given dataset id
+     * It does not retrieve all the result, as we need to the freedom
+     * to count, retrieve all or batch retrieve the result
+     *
+     * @param string $dataset_doi
+     * @return ActiveRecord[]
+     */
+    public function queryFilesForDataset(string $doi): array
+    {
+        $dataset = Dataset::find()->where(["identifier" => $doi])->one();
+        return File::find()->where(["dataset_id" => $dataset->id])->all();
     }
 }
