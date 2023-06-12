@@ -66,7 +66,7 @@ final class UpdateController extends Controller
      */
     public function actionUrls(): int
     {
-        //Manage inputs
+        // Manage inputs
         $optDoi = $this->doi;
         $optPrefix = $this->prefix;
         $optSeparator = $this->separator;
@@ -89,7 +89,6 @@ final class UpdateController extends Controller
 
             foreach ($dois as $doi) {
                 $nbFiles = count($dfuu->queryFilesForDataset($doi));
-                
                 $this->stdout("\tTransforming ftp_site for dataset $doi... " . PHP_EOL);
                 $ftpSiteOutcome = $dfuu->replaceFTPSiteForDataset($doi);
                 if ($ftpSiteOutcome) {
@@ -100,7 +99,7 @@ final class UpdateController extends Controller
                 }
 
                 $this->stdout("\n\tTransforming file locations for dataset $doi..." . PHP_EOL, Console::BOLD);
-                $locationOutcome = $dfuu->replaceLocationsForDatasetFiles($doi, $optSeparator);
+                $locationOutcome = $dfuu->replaceFileLocationsForDataset($doi, $optSeparator);
                 switch ($locationOutcome) {
                     case 0:
                         $this->stdout("FAILURE (0/$nbFiles)" . PHP_EOL, Console::BG_RED);

@@ -50,7 +50,7 @@ class DatasetFilesURLUpdaterTest extends \Codeception\Test\Unit
         $doi = '100003';
 
         $this->dfuu = DatasetFilesURLUpdater::build(true);
-        $output = $this->dfuu->replaceLocationsForDatasetFiles($doi, $separator);
+        $output = $this->dfuu->replaceFileLocationsForDataset($doi, $separator);
         $this->assertTrue($output == 6);
     }
 

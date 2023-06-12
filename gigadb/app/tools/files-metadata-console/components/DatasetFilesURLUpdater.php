@@ -64,7 +64,7 @@ final class DatasetFilesURLUpdater extends Component
     }
 
     /**
-     * Replace ftp_site in dataset with Wasabi URL
+     * Replace all file locations in dataset with Wasabi URL
      *
      * Most file locations will look like this:
      * https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100020/readme.txt
@@ -73,9 +73,9 @@ final class DatasetFilesURLUpdater extends Component
      *
      * @param string $doi Dataset identifier
      * @param string $separator A substring providing position to split current file location URL
-     * @return string new file URL location
+     * @return int Number of file locations updated
      */
-    public function replaceLocationsForDatasetFiles(string $doi, string $separator)
+    public function replaceFileLocationsForDataset(string $doi, string $separator)
     {
         $newFTPLocationPrefix = self::NEW_HOST . self::BUCKET_DIRECTORIES;
 
