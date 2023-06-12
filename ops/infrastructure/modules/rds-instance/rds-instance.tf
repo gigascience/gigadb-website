@@ -43,7 +43,7 @@ module "db" {
 
   parameter_group_name      = (var.deployment_target == "staging" ? aws_db_parameter_group.gigadb-db-param-group[0].name : null)
   engine                    = "postgres"
-  engine_version            = "11.13"
+  engine_version            = "11.20"
   family                    = "postgres11"  # DB parameter group
   major_engine_version      = "11"          # DB option group
   instance_class            = "db.t3.micro"
