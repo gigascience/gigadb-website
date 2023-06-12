@@ -64,36 +64,34 @@ final class DatasetFilesURLUpdater extends Component
 
     /**
      * Replace ftp_site in dataset with Wasabi URL
+     * 
+     * Most file locations will look like this:
+     * https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100020/readme.txt
+     * The above URL will be updated to a Wasabi link:
+     * https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/10.5524/100001_101000/100020/readme.txt
      *
-     * @param string $oldFileLocation old file URL location
+     * @param string $doi Dataset identifier
+     * @param string $separator A substring providing position to split current file location URL
      * @return string new file URL location
      */
     public function replaceLocationsForDatasetFiles(string $doi, string $separator)
     {
-        // Change https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100020/readme.txt
-        // to https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/10.5524/100001_101000/100020/readme.txt
-
         $newFTPLocationPrefix = self::NEW_HOST . self::BUCKET_DIRECTORIES;
 
         # Record how many files with their URL locations updated
         $processed = 0;
-        # Get dataset object whose file URLs we need to update
-        $dataset = Dataset::find()
-            ->where(["identifier" => $doi])
-            ->one();
-
         # Get all files belonging to dataset
+        $dataset = Dataset::find()->where(["identifier" => $doi])->one();
         $files =  File::find()->where(["dataset_id" => $dataset->id])->all();
         # Update each file's location URL
         foreach ($files as $file) {
-            $newFileLocation = "";
             $currentFileLocation = $file['location'];
             $uriParts = parse_url(ltrim($currentFileLocation));
             if ("https" === $uriParts['scheme'] && "s3.ap-northeast-1.wasabisys.com" === $uriParts['host']) {
-                # Nothing to do as there is no URL to change
+                # Nothing to do as it's already a Wasabi URL
                 continue;
             } elseif ("ftp" === $uriParts['scheme'] || "ftp.cngb.org" === $uriParts['host']) {
-                // Update ftp_site if it starts with ftp:// or contains ftp.cngb.org
+                // Update ftp_site as it starts with ftp:// or contains ftp.cngb.org
                 $tokens = explode($separator, $uriParts['path']);
                 $newFileLocation = $newFTPLocationPrefix . end($tokens);
                 if ($this->apply === true) {
@@ -110,23 +108,14 @@ final class DatasetFilesURLUpdater extends Component
     /**
      * Replace ftp_site in dataset with Wasabi URL
      *
-     * Success and no-op return the value saved in database.
-     * Failure return null and an error is logged
-     *
-     * @param string old ftp_site
-     * @return string new ftp_site
+     * @param string Dataset DOI
+     * @return int Number of ftp_site changes
      */
     public function replaceFTPSiteForDataset($doi)
     {
         $success = 0;
         $newFTPSitePrefix = self::NEW_HOST . self::BUCKET_DIRECTORIES;;
 
-        # Get dataset object whose file URLs we need to update
-        $dataset = Dataset::find()
-            ->where(["identifier" => $doi])
-            ->one();
-
-        # Get all files belonging to dataset
         $dataset =  Dataset::find()->where(["identifier" => $doi])->one();
         $currentFTPSite = $dataset['ftp_site'];
         $uriParts = parse_url(ltrim($dataset['ftp_site']));
@@ -142,7 +131,6 @@ final class DatasetFilesURLUpdater extends Component
         else {
             throw new Exception("Dataset has unexpected ftp_site: " . $currentFTPSite);
         }
-        
         return $success;
     }
 
