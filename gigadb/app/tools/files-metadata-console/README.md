@@ -236,7 +236,7 @@ You can see code coverage output under the `tests/_output` directory.
 
 To begin batch update of file URLs from a given DOI, execute:
 ```
-$ docker-compose run --rm files-metadata-console ./yii update/urls --prefix=https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live --separator=/pub/ --doi=100006 --next=3 --excluded-dois='100020,100039' --apply 
+$ docker-compose run --rm files-metadata-console ./yii update/urls --prefix=https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live --separator=/pub/ --doi=100006 --next=3 --exclude='100020,100039' --apply 
 ```
 
 ### Running unit and functional tests in files metadata console tool

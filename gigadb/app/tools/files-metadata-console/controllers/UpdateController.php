@@ -18,24 +18,33 @@ use yii\helpers\Console;
  */
 final class UpdateController extends Controller
 {
+    /**
+     * @var string Starting dataset DOI to begin updating URLs
+     */
     public string $doi = "";
 
+    /**
+     * @var string A new URL domain and path to where datasets have been re-located to 
+     */
     public string $prefix = "";
 
+    /**
+     * @var string Part of the URL which is used to split a URL in half
+     */
     public string $separator = "";
 
     /**
-     * @var string list of DOIs which should not have their URLs updated
+     * @var string List of DOIs which should not have their URLs updated, e.g. '100020,100039'
      */
-    public string $excluded = "";
+    public string $exclude = "";
 
     /**
-     * @var int $next get list of next $next pending datasets
+     * @var int Number of datasets to be batch processed
      */
     public int $next = 0;
 
     /**
-     * @var bool true if dry run mode is activated, false otherwise (default)
+     * @var bool Include --apply flag to deactivate dry run mode 
      */
     public bool $apply = false;
 
@@ -59,7 +68,7 @@ final class UpdateController extends Controller
     /**
      * Console command for updating the URL for all files in a dataset
      *
-     * docker-compose run --rm files-metadata-console  ./yii update/urls --doi=100142 --next <batch size> --prefix=https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live  --separator=/pub/ --exclude-dois=[1000,234324,43534534]
+     * docker-compose run --rm files-metadata-console  ./yii update/urls --doi=100142 --next=10 --prefix=https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live  --separator=/pub/ --exclude='1000465,1000665,1000765'
      *
      * @return int
      * @throws \Throwable
@@ -72,7 +81,7 @@ final class UpdateController extends Controller
         $optSeparator = $this->separator;
         $optNext = $this->next;
         $optApply = $this->apply;
-        $optExcludedDois = $this->excluded;
+        $optExcludedDois = $this->exclude;
 
         //Return usage unless mandatory options are passed
         if (!($optDoi) || !($optPrefix) || !($optSeparator)) {
@@ -126,7 +135,7 @@ final class UpdateController extends Controller
     public function options($actionID)
     {
         return array_merge(parent::options($actionID), [
-            'color', 'interactive', 'help', 'doi', 'prefix', 'separator', 'excluded', 'next', 'apply'
+            'color', 'interactive', 'help', 'doi', 'prefix', 'separator', 'exclude', 'next', 'apply'
         ]);
     }
 }
