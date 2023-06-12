@@ -1,6 +1,10 @@
 ---
 # Deploy monitoring on an ec2 instance
 
+- name: Install node exporter
+  hosts: monitoring_hosts
+  roles:
+    - prometheus.prometheus.node_exporter
 
 - name: Install Prometheus
   hosts: monitoring_hosts
@@ -13,3 +17,5 @@
             - localhost:9100
           labels:
             env: gigascience-monitoring
+
+
