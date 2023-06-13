@@ -43,9 +43,9 @@ module "db" {
 
   parameter_group_name      = (var.deployment_target == "staging" ? aws_db_parameter_group.gigadb-db-param-group[0].name : null)
   engine                    = "postgres"
-  engine_version            = "11.13"
+  engine_version            = "12.15"
   family                    = "postgres11"  # DB parameter group
-  major_engine_version      = "11"          # DB option group
+  major_engine_version      = "12"          # DB option group
   instance_class            = "db.t3.micro"
   allocated_storage         = 8
   deletion_protection       = false
@@ -63,7 +63,7 @@ resource "aws_db_parameter_group" "gigadb-db-param-group" {
   count = var.deployment_target == "staging" ? 1 : 0
   name = "gigadb-db-param-group-${var.owner}"
   description = "DB parameter group for staging server"
-  family = "postgres11"
+  family = "postgres12"
 
   parameter {
     apply_method = "immediate"
