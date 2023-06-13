@@ -18,4 +18,35 @@
           labels:
             env: gigascience-monitoring
 
+- name: Install Grafana
+  hosts: monitoring_hosts
+  roles:
+    - ansible-grafana
 
+- name: Configure Grafana
+  hosts: monitoring_hosts
+  collections:
+    - community.grafana
+
+  module_defaults:
+    group/community.grafana.grafana:
+      grafana_url: "http://localhost:3000"
+      grafana_user: "admin"
+      grafana_password: "admin"
+
+  tasks:
+    - name: Ensure Prometheus datasource exists.
+      grafana_datasource:
+        grafana_url: "http://localhost:3000"
+        grafana_user: "admin"
+        grafana_password: "admin"
+        name: "datasource-prometheus"
+        ds_type: "prometheus"
+        ds_url: "http://localhost:9090"
+        access: "proxy"
+        validate_certs: "false"
+        tls_skip_verify: "true"
+        state: present
+    - name: Import Prometheus Grafana dashboard
+      grafana_dashboard:
+        dashboard_url: https://grafana.com/api/dashboards/1860/revisions/1/download
