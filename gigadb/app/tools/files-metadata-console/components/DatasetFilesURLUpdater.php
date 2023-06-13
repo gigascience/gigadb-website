@@ -97,8 +97,8 @@ final class DatasetFilesURLUpdater extends Component
                 $newFileLocation = $newFTPLocationPrefix . end($tokens);
                 if ($this->apply === true) {
                     $this->updateDbFileTable($newFileLocation, $file->id);
-                    $processed++;
                 }
+                $processed++;
             } else {
                 throw new Exception('File has unexpected URL location: ' . $currentFileLocation);
             }
@@ -126,8 +126,8 @@ final class DatasetFilesURLUpdater extends Component
             $newFTPSite = $newFTPSitePrefix . $path;
             if ($this->apply === true) {
                 $this->updateDbDatasetTable($newFTPSite, $dataset->id);
-                $success++;
             }
+            $success++;
         }
         else {
             throw new Exception("Dataset has unexpected ftp_site: " . $currentFTPSite);
