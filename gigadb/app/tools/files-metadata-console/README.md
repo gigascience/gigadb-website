@@ -234,9 +234,14 @@ You can see code coverage output under the `tests/_output` directory.
 
 ### Updating dataset file URLs with Wasabi prefix
 
-To begin batch update of file URLs from a given DOI, execute:
+To begin batch update of file URLs from a given DOI, execute in dry run mode:
 ```
-$ docker-compose run --rm files-metadata-console ./yii update/urls --prefix=https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live --separator=/pub/ --doi=100006 --next=3 --exclude='100020,100039' --apply 
+$ docker-compose run --rm files-metadata-console ./yii update/urls --prefix=https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live --separator=/pub/ --next=3 --exclude='100020,100039' 
+```
+
+To make changes to the database, use the `--apply` flag:
+```
+$ docker-compose run --rm files-metadata-console ./yii update/urls --prefix=https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live --separator=/pub/ --next=3 --exclude='100020,100039' --apply 
 ```
 
 ### Running unit and functional tests in files metadata console tool
@@ -253,10 +258,14 @@ $ docker-compose run --rm files-metadata-console ./vendor/codeception/codeceptio
 
 Execute all functional tests:
 ```
+$ docker-compose run --rm files-metadata-console ./vendor/codeception/codeception/codecept run --debug tests/functional/CheckValidURLsCest.php
+
 $ docker-compose run --rm files-metadata-console ./vendor/codeception/codeception/codecept run --debug tests/functional/ReplaceFileUrlSubstringWithPrefixCest.php
 ```
 
 Execute single functional test:
 ```
+$ docker-compose run --rm files-metadata-console ./vendor/codeception/codeception/codecept run --debug tests/functional/CheckValidURLsCest.php:^tryNoIssueToReport$
+
 $ docker-compose run --rm files-metadata-console ./vendor/codeception/codeception/codecept run --debug tests/functional/ReplaceFileUrlSubstringWithPrefixCest:^tryExcludingDOIsFromFileUrlChanges$
 ```

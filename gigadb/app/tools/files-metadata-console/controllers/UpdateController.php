@@ -19,7 +19,7 @@ use yii\helpers\Console;
 final class UpdateController extends Controller
 {
     /**
-     * @var string Starting dataset DOI to begin updating URLs
+     * @var string DOI of dataset
      */
     public string $doi = "";
 
@@ -76,7 +76,6 @@ final class UpdateController extends Controller
     public function actionUrls(): int
     {
         // Manage inputs
-        $optDoi = $this->doi;
         $optPrefix = $this->prefix;
         $optSeparator = $this->separator;
         $optNext = $this->next;
@@ -84,8 +83,8 @@ final class UpdateController extends Controller
         $optExcludedDois = $this->exclude;
 
         //Return usage unless mandatory options are passed
-        if (!($optDoi) || !($optPrefix) || !($optSeparator)) {
-            $this->stdout("\nUsage:\n\t./yii update/urls --doi <dataset doi> --prefix <URL prefix> --separator <substring to separate current URL> [--next <batch size>][--exclude-dois <comma separated list of dois>][--apply][--verbose]\n\n");
+        if (!($optPrefix) || !($optSeparator)) {
+            $this->stdout("\nUsage:\n\t./yii update/urls --prefix <URL prefix> --separator <substring to separate current URL> [--next <batch size>][--exclude-dois <comma separated list of dois>][--apply][--verbose]\n\n");
             return ExitCode::USAGE;
         }
 
@@ -93,6 +92,10 @@ final class UpdateController extends Controller
         $transaction = $db->beginTransaction();
         try {
             $dfuu = DatasetFilesURLUpdater::build($optApply);
+            if (!$optApply) {
+                $this->stdout("Running tool in dry run mode" . PHP_EOL, Console::FG_YELLOW);
+            }
+
             $optExcludedDois = explode(',', $optExcludedDois);
             $dois = $dfuu->getNextPendingDatasets($optNext, $optExcludedDois);
 
@@ -101,23 +104,23 @@ final class UpdateController extends Controller
                 $this->stdout("\tTransforming ftp_site for dataset $doi... " . PHP_EOL);
                 $ftpSiteOutcome = $dfuu->replaceFTPSiteForDataset($doi);
                 if ($ftpSiteOutcome) {
-                    $this->stdout("DONE" . PHP_EOL, Console::BG_GREEN);
+                    $this->stdout("DONE" . PHP_EOL, Console::FG_GREEN);
                 }
                 else {
-                    $this->stdout("ERROR" . PHP_EOL, Console::BG_RED);
+                    $this->stdout("ERROR" . PHP_EOL, Console::FG_RED);
                 }
 
-                $this->stdout("\n\tTransforming file locations for dataset $doi..." . PHP_EOL, Console::BOLD);
+                $this->stdout("\n\tTransforming file locations for dataset $doi..." . PHP_EOL);
                 $locationOutcome = $dfuu->replaceFileLocationsForDataset($doi, $optSeparator);
                 switch ($locationOutcome) {
                     case 0:
-                        $this->stdout("FAILURE (0/$nbFiles)" . PHP_EOL, Console::BG_RED);
+                        $this->stdout("FAILURE (0/$nbFiles)" . PHP_EOL, Console::FG_RED);
                         break;
                     case $nbFiles:
-                        $this->stdout("DONE ($nbFiles/$nbFiles)" . PHP_EOL, Console::BG_GREEN);
+                        $this->stdout("DONE ($nbFiles/$nbFiles)" . PHP_EOL, Console::FG_GREEN);
                         break;
                     default:
-                        $this->stdout("ERROR ($locationOutcome/$nbFiles)" . PHP_EOL, Console::BG_YELLOW);
+                        $this->stdout("ERROR ($locationOutcome/$nbFiles)" . PHP_EOL, Console::FG_YELLOW);
                         break;
                 }
                 $this->stdout("\n");
@@ -135,7 +138,7 @@ final class UpdateController extends Controller
     public function options($actionID)
     {
         return array_merge(parent::options($actionID), [
-            'color', 'interactive', 'help', 'doi', 'prefix', 'separator', 'exclude', 'next', 'apply'
+            'color', 'interactive', 'help', 'prefix', 'separator', 'exclude', 'next', 'apply'
         ]);
     }
 }
