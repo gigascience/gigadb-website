@@ -46,7 +46,14 @@
         access: "proxy"
         validate_certs: "false"
         tls_skip_verify: "true"
+        uid: gigascience-prometheus-datasource
         state: present
+      register: datasource
+
+    - debug:
+        msg: "datasource output: {{ datasource }}"
+
     - name: Import Prometheus Grafana dashboard
       grafana_dashboard:
-        dashboard_url: https://grafana.com/api/dashboards/1860/revisions/1/download
+        dashboard_url: https://s3.ap-northeast-1.wasabisys.com/gigadb-monitoring-resources/node-exporter-full_rev31.json
+        overwrite: true
