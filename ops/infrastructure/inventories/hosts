@@ -6,6 +6,8 @@
 ansible_ssh_private_key_file="~/.ssh/gigascience-monitoring.pem"
 ansible_user = "admin"
 ansible_become = "true"
+prometheus_aws_access_key = "{{ lookup('ini', 'prometheus_aws_access_key type=properties file=ansible.properties') }}"
+prometheus_aws_private_key = "{{ lookup('ini', 'prometheus_aws_private_key type=properties file=ansible.properties') }}"
 
 [type_aws_instance:vars]
 

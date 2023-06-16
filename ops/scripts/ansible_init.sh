@@ -90,6 +90,13 @@ gitter_api_token=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$FOR
 echo "gitter_room_id = $gitter_room_id" >> ansible.properties
 echo "gitter_api_token = $gitter_api_token" >> ansible.properties
 
+
+# variables needed for monitoring provisioning
+prometheus_aws_access_key=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$FORK_VARIABLES_URL/prometheus_aws_access_key" | jq -r .value)
+prometheus_aws_private_key=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$FORK_VARIABLES_URL/prometheus_aws_private_key" | jq -r .value)
+echo "prometheus_aws_access_key = $prometheus_aws_access_key" >> ansible.properties
+echo "prometheus_aws_private_key = $prometheus_aws_private_key" >> ansible.properties
+
 # Add newly created vms to known host file
 # Remove old key
 ssh-keygen -R $bastion_ip

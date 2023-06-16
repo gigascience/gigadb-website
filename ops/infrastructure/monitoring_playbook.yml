@@ -30,13 +30,13 @@
               - "{{ prometheus_config_dir }}/file_sd/node.yml"
       - job_name: "ec2-node"
         ec2_sd_configs:
-#          - region: ap-east-1
-#            access_key: "{{ prometheus_access_key }}"
-#            secret_key: "{{ prometheus_secret_key }}"
-#            port: 9100
+          - region: ap-east-1
+            access_key: "{{ prometheus_aws_access_key }}"
+            secret_key: "{{ prometheus_aws_private_key }}"
+            port: 9100
           - region: eu-west-3
-            access_key: "{{ prometheus_access_key }}"
-            secret_key: "{{ prometheus_secret_key }}"
+            access_key: "{{ prometheus_aws_access_key }}"
+            secret_key: "{{ prometheus_aws_private_key }}"
             port: 9100
         relabel_configs:
           - source_labels: [__meta_ec2_public_ip]
@@ -46,6 +46,9 @@
             target_label: instance
           - source_labels: [__meta_ec2_tag_Environment]
             target_label: environment
+          - source_labels: [ instance ]
+            regex: 'monitoring.*'
+            action: drop
 
 
 - name: Install Grafana
