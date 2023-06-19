@@ -24,7 +24,7 @@ final class UpdateController extends Controller
     public string $doi = "";
 
     /**
-     * @var string A new URL domain and path to where datasets have been re-located to 
+     * @var string A new URL domain and path to where datasets have been re-located to
      */
     public string $prefix = "";
 
@@ -44,7 +44,7 @@ final class UpdateController extends Controller
     public int $next = 0;
 
     /**
-     * @var bool Include --apply flag to deactivate dry run mode 
+     * @var bool Include --apply flag to deactivate dry run mode
      */
     public bool $apply = false;
 
@@ -90,7 +90,7 @@ final class UpdateController extends Controller
 
         //Return usage unless mandatory options are passed
         if (!($optPrefix) || !($optSeparator)) {
-            $this->stdout("\nUsage:\n\t./yii update/urls --prefix <URL prefix> --separator <substring to separate current URL> [--next <batch size>][--exclude-dois <comma separated list of dois>[--stop <DOI to stop processing>][--apply][--verbose]\n\n");
+            $this->stdout("\nUsage:\n\t./yii update/urls --prefix <URL prefix> --separator <substring to separate current URL> [--next <batch size>][--exclude-dois <comma separated list of dois>][--stop <DOI to stop processing>][--apply][--verbose]\n\n");
             return ExitCode::USAGE;
         }
 
