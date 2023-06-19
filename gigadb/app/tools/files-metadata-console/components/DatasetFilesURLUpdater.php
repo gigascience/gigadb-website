@@ -91,6 +91,42 @@ final class DatasetFilesURLUpdater extends Component
             if ("https" === $uriParts['scheme'] && "s3.ap-northeast-1.wasabisys.com" === $uriParts['host']) {
                 # Nothing to do as it's already a Wasabi URL
                 continue;
+            } elseif ("http" === $uriParts['scheme'] && str_contains($uriParts['host'], 'amazonaws.com')) {
+                # Nothing to do as it looks like an AWS S3 URL
+                continue;
+            } elseif ("http" === $uriParts['scheme'] && str_contains($uriParts['host'], 'dx.doi.org')) {
+                # Nothing to do as it looks like a DOI URL
+                continue;
+            } elseif ("https" === $uriParts['scheme'] && str_contains($uriParts['host'], 'doi.org')) {
+                # Nothing to do as it looks like a DOI URL
+                continue;
+            } elseif ("http" === $uriParts['scheme'] && str_contains($uriParts['host'], 'ac.uk')) {
+                # Nothing to do as it looks like a UK academic URL, e.g. http://repos.tgac.ac.uk/vms/Galaxy_with_GeneSeqToFamily.ova
+                continue;
+            } elseif ("https" === $uriParts['scheme'] && str_contains($uriParts['host'], 'ebi.ac.uk')) {
+                # Nothing to do as it looks like a EBI URL, e.g. https://www.ebi.ac.uk/ena/data/view/PRJEB23358
+                continue;
+            } elseif ("https" === $uriParts['scheme'] && str_contains($uriParts['host'], 'inra.fr')) {
+                # Nothing to do as it looks like a UK academic URL, e.g. https://urgi.versailles.inra.fr/download/wheat/3B/ta3bAllScaffoldsV443.genom.fa.gz
+                continue;
+            } elseif ("https" === $uriParts['scheme'] && str_contains($uriParts['host'], 'ncbi.nlm.nih.gov')) {
+                # Nothing to do as it looks like a NCBI URL, e.g. https://www.ncbi.nlm.nih.gov/Traces/wgs/LSYQ01/LSYQ01000006
+                continue;
+            } elseif ("https" === $uriParts['scheme'] && str_contains($uriParts['host'], 'figshare.com')) {
+                # Nothing to do as it looks like a Figshare URL, e.g. https://ndownloader.figshare.com/files/13392434
+                continue;
+            } elseif ("https" === $uriParts['scheme'] && str_contains($uriParts['host'], 'commonwl.org')) {
+                # Nothing to do as it looks like a Common WL URL, e.g. https://view.commonwl.org/workflows/github.com/pitagora-network/pitagora-cwl/blob/master/workflows/hisat2-cufflinks/paired_end/hisat2-cufflinks_wf_pe.cwl
+                continue;
+            } elseif ("http" === $uriParts['scheme'] && str_contains($uriParts['host'], 'embl.de')) {
+                # Nothing to do as it looks like a EMBL URL, e.g. http://eggnog.embl.de/orthobench2/orthobench2.all.data.tar.gz
+                continue;
+            } elseif ("https" === $uriParts['scheme'] && str_contains($uriParts['host'], 'cloud.google.com')) {
+                # Nothing to do as it looks like a Google Cloud URL, e.g. https://console.cloud.google.com/storage/browser/genomics-public-data/resources/broad/hg38/v0
+                continue;
+            } elseif ("https" === $uriParts['scheme'] && str_contains($uriParts['host'], 'globus.org')) {
+                # Nothing to do as it looks like a Globus URL, e.g. https://g-624536.53220.5898.data.globus.org/11/published/publication_437/submitted_data/Q22/03_Videos_mpgFiles/Q22ILi2_of1_inj01_20040128_009_012_003_002_001.mpg
+                continue;
             } elseif ("ftp" === $uriParts['scheme'] || "ftp.cngb.org" === $uriParts['host']) {
                 // Update ftp_site as it starts with ftp:// or contains ftp.cngb.org
                 $tokens = explode($separator, $uriParts['path']);
@@ -128,8 +164,7 @@ final class DatasetFilesURLUpdater extends Component
                 $this->updateDbDatasetTable($newFTPSite, $dataset->id);
             }
             $success++;
-        }
-        else {
+        } else {
             throw new Exception("Dataset has unexpected ftp_site: " . $currentFTPSite);
         }
         return $success;
@@ -196,8 +231,8 @@ final class DatasetFilesURLUpdater extends Component
             ->andWhere([
                 'or',
                 ['like', 'file.location', 'ftp://parrot.genomics'],
-                ['like','file.location','ftp://ftp.cngb.org'],
-                ['like','file.location','ftp://climb.genomics'],
+                ['like', 'file.location', 'ftp://ftp.cngb.org'],
+                ['like', 'file.location', 'ftp://climb.genomics'],
                 ['like', 'file.location', 'https://ftp.cngb.org']
             ])
             ->andWhere([
