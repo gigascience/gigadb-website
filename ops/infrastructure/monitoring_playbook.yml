@@ -34,6 +34,14 @@
             access_key: "{{ prometheus_aws_access_key }}"
             secret_key: "{{ prometheus_aws_private_key }}"
             port: 9100
+          - region: ap-northeast-1
+            access_key: "{{ prometheus_aws_access_key }}"
+            secret_key: "{{ prometheus_aws_private_key }}"
+            port: 9100
+          - region: ap-southeast-1
+            access_key: "{{ prometheus_aws_access_key }}"
+            secret_key: "{{ prometheus_aws_private_key }}"
+            port: 9100
           - region: eu-west-3
             access_key: "{{ prometheus_aws_access_key }}"
             secret_key: "{{ prometheus_aws_private_key }}"
