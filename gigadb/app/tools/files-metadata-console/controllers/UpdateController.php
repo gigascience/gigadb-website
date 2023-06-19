@@ -49,6 +49,11 @@ final class UpdateController extends Controller
     public bool $apply = false;
 
     /**
+     * @var string A DOI , e.g. 200002 when it is reached that will stop this tool from processing any more datasets
+     */
+    public string $stop = "";
+
+    /**
      * Console command for updating files' size for the given dataset
      *
      * ./yii update/file-size --doi=100142
@@ -68,7 +73,7 @@ final class UpdateController extends Controller
     /**
      * Console command for updating the URL for all files in a dataset
      *
-     * docker-compose run --rm files-metadata-console  ./yii update/urls --doi=100142 --next=10 --prefix=https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live  --separator=/pub/ --exclude='1000465,1000665,1000765'
+     * docker-compose run --rm files-metadata-console ./yii update/urls --next=10 --prefix=https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live --separator=/pub/ --exclude='100046,100066,100076' --stop=200002
      *
      * @return int
      * @throws \Throwable
@@ -81,10 +86,11 @@ final class UpdateController extends Controller
         $optNext = $this->next;
         $optApply = $this->apply;
         $optExcludedDois = $this->exclude;
+        $optStopDoi = $this->stop;
 
         //Return usage unless mandatory options are passed
         if (!($optPrefix) || !($optSeparator)) {
-            $this->stdout("\nUsage:\n\t./yii update/urls --prefix <URL prefix> --separator <substring to separate current URL> [--next <batch size>][--exclude-dois <comma separated list of dois>][--apply][--verbose]\n\n");
+            $this->stdout("\nUsage:\n\t./yii update/urls --prefix <URL prefix> --separator <substring to separate current URL> [--next <batch size>][--exclude-dois <comma separated list of dois>[--stop <DOI to stop processing>][--apply][--verbose]\n\n");
             return ExitCode::USAGE;
         }
 
@@ -100,13 +106,16 @@ final class UpdateController extends Controller
             $dois = $dfuu->getNextPendingDatasets($optNext, $optExcludedDois);
 
             foreach ($dois as $doi) {
+                if ($doi === $optStopDoi) {
+                    $this->stdout("Stop DOI $optStopDoi been reached - processing will stop now." . PHP_EOL, Console::FG_YELLOW);
+                    return ExitCode::OK;
+                }
                 $nbFiles = count($dfuu->queryFilesForDataset($doi));
                 $this->stdout("\tTransforming ftp_site for dataset $doi... " . PHP_EOL);
                 $ftpSiteOutcome = $dfuu->replaceFTPSiteForDataset($doi);
                 if ($ftpSiteOutcome) {
                     $this->stdout("DONE" . PHP_EOL, Console::FG_GREEN);
-                }
-                else {
+                } else {
                     $this->stdout("ERROR" . PHP_EOL, Console::FG_RED);
                 }
 
@@ -138,7 +147,7 @@ final class UpdateController extends Controller
     public function options($actionID)
     {
         return array_merge(parent::options($actionID), [
-            'color', 'interactive', 'help', 'prefix', 'separator', 'exclude', 'next', 'apply'
+            'color', 'interactive', 'help', 'prefix', 'separator', 'exclude', 'next', 'apply', 'stop'
         ]);
     }
 }

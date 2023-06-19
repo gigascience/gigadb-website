@@ -104,4 +104,22 @@ class ReplaceFileUrlSubstringWithPrefixCest
         $I->canSeeInShellOutput("\tTransforming ftp_site for dataset 100039...\nDONE");
         $I->canSeeInShellOutput("\tTransforming file locations for dataset 100039...\nDONE (24/24)");
     }
+
+    /**
+     * @param FunctionalTester $I
+     */
+    public function tryStopDoi(\FunctionalTester $I): void
+    {
+        # Run tool to update file URLs for dataset 100002
+        $I->runShellCommand("echo yes | ./yii_test update/urls --prefix=https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live --separator=/pub/ --next=3 --stop=100004 --apply");
+
+        # Check output
+        $I->canSeeInShellOutput("\tTransforming ftp_site for dataset 100002...\nDONE");
+        $I->canSeeInShellOutput("\tTransforming file locations for dataset 100002...\nDONE (7/7)");
+        $I->canSeeInShellOutput("\tTransforming ftp_site for dataset 100003...\nDONE");
+        $I->canSeeInShellOutput("\tTransforming file locations for dataset 100003...\nDONE (6/6)");
+        $I->cantSeeInShellOutput("\tTransforming ftp_site for dataset 100004...\nDONE");
+        $I->cantSeeInShellOutput("\tTransforming file locations for dataset 100004...\nDONE (2/2)");
+        $I->canSeeInShellOutput("Stop DOI 100004 been reached - processing will stop now.");
+    }
 }
