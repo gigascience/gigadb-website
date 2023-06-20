@@ -248,16 +248,57 @@ To make changes to the database, use the `--apply` flag:
 $ docker-compose run --rm files-metadata-console ./yii update/urls --prefix=https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live --separator=/pub/ --exclude='100396,100446,100584,100747,100957,102311,102396' --stop=200002 --next=30 --apply 
 ```
 
+##### Test with production data
+
+```
+# Connect to dev database
+$ PGPASSWORD=vagrant psql -h localhost -p 54321 -U gigadb postgres
+# Delete connections on a given database
+postgres=# SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE pg_stat_activity.datname = 'gigadb';
+postgres=# \q
+# Load database backup file
+$ docker-compose run --rm test pg_restore -h database -p 5432 -U gigadb -d gigadb -v "/gigadb/app/tools/files-metadata-console/sql/gigadbv3_20230619.backup"
+# Run tool
+$ docker-compose run --rm files-metadata-console ./yii update/urls --prefix=https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live --separator=/pub/ --exclude='100396,100446,100584,100747,100957,102311,102396' --stop=200002 --next=30 --apply 
+```
+
+##### Dataset 100396
+
+Dataset 100396 contains nearly 200,000 files which all need to have their location column updating with correct Wasabi 
+URL. The tool is not able to work with so many files and so need to update manually:
+```
+# Connect to dev database
+$ PGPASSWORD=vagrant psql -h localhost -p 54321 -U gigadb postgres
+# Delete connections on a given database
+postgres=# SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE pg_stat_activity.datname = 'gigadb';
+postgres=# \q
+# Load database backup file
+$ docker-compose run --rm test pg_restore -h database -p 5432 -U gigadb -d gigadb -v "/gigadb/app/tools/files-metadata-console/sql/gigadbv3_20230619.backup"
+# Connect to dev database
+$ PGPASSWORD=vagrant psql -h localhost -p 54321 -U gigadb postgres
+# Delete connections on a given database
+postgres=# SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE pg_stat_activity.datname = 'gigadb';
+postgres=# \c gigadb;
+# Update location column for dataset - will take about a minute to complete
+gigadb=# Update file set location = REPLACE(location, 'https://ftp.cngb.org/pub/gigadb/pub/', 'https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/') where dataset_id = 629;
+UPDATE 197214
+# Test updates have been made
+gigadb=# select * from file where dataset_id = 629 and id = 287662;
+ 287662 |        629 | 50930810.pdb | https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/10.5524/100001_101000/100396/eModelBDB/810/50930810.pdb | pdb       | 370380 | reactant set ID 50930810 | 2018-07-04 |         6 |     254 | FILE_CODE |             |              0 | 
+```
+
 #### Staging and live environments
 
 Drop database triggers otherwise tool will hang due to memory issues:
 ```
+# Log into bastion server using SSH
+$ ssh -i ~/.ssh/id-rsa-aws-tokyo-peter.pem centos@bastion-ip 
 $ docker run --rm  --env-file ./db-env registry.gitlab.com/$GITLAB_PROJECT/production_pgclient:$GIGADB_ENV -c 'drop trigger if exists file_finder_trigger on file RESTRICT'
 $ docker run --rm  --env-file ./db-env registry.gitlab.com/$GITLAB_PROJECT/production_pgclient:$GIGADB_ENV -c 'drop trigger if exists sample_finder_trigger on sample RESTRICT'
 $ docker run --rm  --env-file ./db-env registry.gitlab.com/$GITLAB_PROJECT/production_pgclient:$GIGADB_ENV -c 'drop trigger if exists dataset_finder_trigger on dataset RESTRICT'
 ```
 
-Now execute tool until all datasets have had their file locations updated with Wasabi links:
+Execute tool until all datasets have had their file locations updated with Wasabi links:
 ```
 $ docker run --rm "registry.gitlab.com/$GITLAB_PROJECT/production-files-metadata-console:latest" ./yii update/urls --prefix=https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live --separator=/pub/ --exclude='100396,100446,100584,100747,100957,102311,102396' --stop=200002 --next=30 --apply
 ```
@@ -267,6 +308,11 @@ Re-create database triggers:
 $ docker run --rm  --env-file ./db-env registry.gitlab.com/$GITLAB_PROJECT/production_pgclient:$GIGADB_ENV -c 'create trigger file_finder_trigger after insert or update or delete or truncate on file for each statement execute procedure refresh_file_finder()'
 $ docker run --rm  --env-file ./db-env registry.gitlab.com/$GITLAB_PROJECT/production_pgclient:$GIGADB_ENV -c 'create trigger sample_finder_trigger after insert or update or delete or truncate on sample for each statement execute procedure refresh_sample_finder()'
 $ docker run --rm  --env-file ./db-env registry.gitlab.com/$GITLAB_PROJECT/production_pgclient:$GIGADB_ENV -c 'create trigger dataset_finder_trigger after insert or update or delete or truncate on dataset for each statement execute procedure refresh_dataset_finder()'
+```
+
+Manually update file location URLs for dataset 100396
+```
+$ docker run --rm  --env-file ./db-env registry.gitlab.com/$GITLAB_PROJECT/production_pgclient:$GIGADB_ENV -c 'Update file set location = REPLACE(location, 'https://ftp.cngb.org/pub/gigadb/pub/', 'https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/') where dataset_id = 629;'
 ```
 
 ### Running unit and functional tests in files metadata console tool
