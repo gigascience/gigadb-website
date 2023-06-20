@@ -23,7 +23,7 @@ class ReplaceFileUrlSubstringWithPrefixCest
         $I->canSeeInShellOutput("\tTransforming ftp_site for dataset 100002...\nDONE");
         $I->canSeeInShellOutput("\tTransforming file locations for dataset 100002...\nDONE (7/7)");
         $I->canSeeInShellOutput("\tTransforming ftp_site for dataset 100005...\nDONE");
-        $I->canSeeInShellOutput("\tTransforming file locations for dataset 100005...\nDONE (1/1)");
+        $I->canSeeInShellOutput("\tTransforming file locations for dataset 100005...\nWARNING (1/3)");
         $I->canSeeInShellOutput("\tTransforming ftp_site for dataset 100039...\nDONE");
         $I->canSeeInShellOutput("\tTransforming file locations for dataset 100039...\nDONE (24/24)");
 
@@ -50,7 +50,7 @@ class ReplaceFileUrlSubstringWithPrefixCest
         $I->dontSeeInShellOutput("\tTransforming ftp_site for dataset 100003...\nDONE");
         $I->dontSeeInShellOutput("\tTransforming ftp_site for dataset 100004...\nDONE");
         $I->canSeeInShellOutput("\tTransforming ftp_site for dataset 100005...\nDONE");
-        $I->canSeeInShellOutput("\tTransforming file locations for dataset 100005...\nDONE (1/1)");
+        $I->canSeeInShellOutput("\tTransforming file locations for dataset 100005...\nWARNING (1/3)");
         $I->canSeeInShellOutput("\tTransforming ftp_site for dataset 100039...\nDONE");
         $I->canSeeInShellOutput("\tTransforming file locations for dataset 100039...\nDONE (24/24)");
 
@@ -58,9 +58,9 @@ class ReplaceFileUrlSubstringWithPrefixCest
         $I->seeInDatabase('dataset', ['identifier' => '100002', 'ftp_site' => 'https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/10.5524/100001_101000/100002']);
         $I->seeInDatabase('file', ['name' => 'Pygoscelis_adeliae.gff.gz', 'location' => "https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/10.5524/100001_101000/100006/phylogeny_study_update/Pygoscelis_adeliae.gff.gz"]);
         $I->dontseeInDatabase('dataset', ['identifier' => '100003', 'ftp_site' => 'https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/10.5524/100001_101000/100003']);
-        $I->dontseeInDatabase('file', ['name' => 'millet.chr.version2.3.fa.gz', 'location' => "https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/10.5524/100001_101000/100020/millet.chr.version2.3.fa.gz\n"]);
+        $I->dontseeInDatabase('file', ['name' => 'millet.chr.version2.3.fa.gz', 'location' => "https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/10.5524/100001_101000/100020/millet.chr.version2.3.fa.gz"]);
         $I->dontseeInDatabase('dataset', ['identifier' => '100004', 'ftp_site' => 'https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/10.5524/100001_101000/100004']);
-        $I->dontseeInDatabase('file', ['id' => '88266', 'location' => "https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/10.5524/100001_101000/100020/readme.txt\n"]);
+        $I->dontseeInDatabase('file', ['id' => '88266', 'location' => "https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/10.5524/100001_101000/100020/readme.txt"]);
     }
 
     /**
@@ -100,7 +100,7 @@ class ReplaceFileUrlSubstringWithPrefixCest
 
         # Check output
         $I->canSeeInShellOutput("\tTransforming ftp_site for dataset 100005...\nDONE");
-        $I->canSeeInShellOutput("\tTransforming file locations for dataset 100005...\nDONE (1/1)");
+        $I->canSeeInShellOutput("\tTransforming file locations for dataset 100005...\nWARNING (1/3)");
         $I->canSeeInShellOutput("\tTransforming ftp_site for dataset 100039...\nDONE");
         $I->canSeeInShellOutput("\tTransforming file locations for dataset 100039...\nDONE (24/24)");
     }

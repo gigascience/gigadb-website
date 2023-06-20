@@ -234,18 +234,39 @@ You can see code coverage output under the `tests/_output` directory.
 
 ### Updating dataset file URLs with Wasabi prefix
 
-To begin batch update of file URLs from a given DOI, execute in dry run mode:
+#### Dev environment
+
+To begin update of file URLs in batches of 30 datasets, execute in dry run mode:
 ```
-$ docker-compose run --rm files-metadata-console ./yii update/urls --prefix=https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live --separator=/pub/ --next=3 --exclude='100020,100039'
+$ docker-compose run --rm files-metadata-console ./yii update/urls --prefix=https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live --separator=/pub/ --exclude='100396,100446,100584,100747,100957,102311,102396' --stop=200002 --next=30
 ```
+> The excluded DOIs are datasets that currently have problematic file locations. Datasets that have DOI 200002 and above
+> should not be processed as they are not real datasets.
 
 To make changes to the database, use the `--apply` flag:
 ```
-$ docker-compose run --rm files-metadata-console ./yii update/urls --prefix=https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live --separator=/pub/ --next=3 --exclude='100020,100039' --apply 
+$ docker-compose run --rm files-metadata-console ./yii update/urls --prefix=https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live --separator=/pub/ --exclude='100396,100446,100584,100747,100957,102311,102396' --stop=200002 --next=30 --apply 
 ```
 
+#### Staging and live environments
+
+Drop database triggers otherwise tool will hang due to memory issues:
 ```
-docker run --rm "registry.gitlab.com/$GITLAB_PROJECT/production-files-metadata-console:latest" ./yii update/urls --prefix=https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live --separator=/pub/ --next=3 --exclude='100001'
+$ docker run --rm  --env-file ./db-env registry.gitlab.com/$GITLAB_PROJECT/production_pgclient:$GIGADB_ENV -c 'drop trigger if exists file_finder_trigger on file RESTRICT'
+$ docker run --rm  --env-file ./db-env registry.gitlab.com/$GITLAB_PROJECT/production_pgclient:$GIGADB_ENV -c 'drop trigger if exists sample_finder_trigger on sample RESTRICT'
+$ docker run --rm  --env-file ./db-env registry.gitlab.com/$GITLAB_PROJECT/production_pgclient:$GIGADB_ENV -c 'drop trigger if exists dataset_finder_trigger on dataset RESTRICT'
+```
+
+Now execute tool until all datasets have had their file locations updated with Wasabi links:
+```
+$ docker run --rm "registry.gitlab.com/$GITLAB_PROJECT/production-files-metadata-console:latest" ./yii update/urls --prefix=https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live --separator=/pub/ --exclude='100396,100446,100584,100747,100957,102311,102396' --stop=200002 --next=30 --apply
+```
+
+Re-create database triggers:
+```
+$ docker run --rm  --env-file ./db-env registry.gitlab.com/$GITLAB_PROJECT/production_pgclient:$GIGADB_ENV -c 'create trigger file_finder_trigger after insert or update or delete or truncate on file for each statement execute procedure refresh_file_finder()'
+$ docker run --rm  --env-file ./db-env registry.gitlab.com/$GITLAB_PROJECT/production_pgclient:$GIGADB_ENV -c 'create trigger sample_finder_trigger after insert or update or delete or truncate on sample for each statement execute procedure refresh_sample_finder()'
+$ docker run --rm  --env-file ./db-env registry.gitlab.com/$GITLAB_PROJECT/production_pgclient:$GIGADB_ENV -c 'create trigger dataset_finder_trigger after insert or update or delete or truncate on dataset for each statement execute procedure refresh_dataset_finder()'
 ```
 
 ### Running unit and functional tests in files metadata console tool

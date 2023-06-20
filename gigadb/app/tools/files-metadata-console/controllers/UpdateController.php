@@ -129,7 +129,7 @@ final class UpdateController extends Controller
                         $this->stdout("DONE ($nbFiles/$nbFiles)" . PHP_EOL, Console::FG_GREEN);
                         break;
                     default:
-                        $this->stdout("ERROR ($locationOutcome/$nbFiles)" . PHP_EOL, Console::FG_YELLOW);
+                        $this->stdout("WARNING ($locationOutcome/$nbFiles)" . PHP_EOL, Console::FG_YELLOW);
                         break;
                 }
                 $this->stdout("\n");
