@@ -1,0 +1,189 @@
+# SOP: Update software version for gigadb website
+
+This sop is about how to update software version for the gigadb website.
+The file `ops/configuration/variables/env-sample` stores the currently using version for the dev environment, while the file `.gitlab-ci.yml` stores the currently using version for the production environment,
+any changes in the version should be done in the correct file according to the requirement.
+
+### Dev environment
+
+##### Update PostgreSQL engine and client version
+
+In `ops/configuration/variables/env-sample`, update the value of the variable `POSTGRES_VERSION`, for example:
+```
+POSTGRES_VERSION=14.8
+```
+And accordingly update the `postgresql client` version in different service's Dockerfile based on the `ops/deployment/docker-compose.yml` file, see the below table for details:
+
+
+| Services  | Dockerfile                                                     | INSTALL_PG_CLIENT | current pg_client version |
+|-----------|----------------------------------------------------------------|-------------------|---------------------------|
+| test      | ops/packaging/Dockerfile                                       | true              | postgresql-client-14      | 
+| console   | fuw/app/common/Dockerfile                                      | true              | postgresql-client-14      |
+| tool      | gigadb/app/tools/readme-generator/Dockerfile                   | true              | postgresql-client-14      |
+| pg_client | gigadb/app/tools/excel-spreadsheet-uploader/PgClientDockerfile | true              | postgresql-client-14      |
+
+The follow commands can be used to update the versions of postgreSQL engine and postgreSQL client, and validate if the version is updated.
+```
+# get the updated version number
+% cp ops/configuration/variables/env-sample .env
+# spin up gigadb website, 
+./up.sh
+# sql/gigadb.pgdm will be created by pg_dump version 14.8
+# check there is a directory is created for the updated database version  
+% ls ~/.containers-data/default-gigadb/postgres
+14.8
+# check the postgresql engine version in database service
+% docker-compose run --rm database bash
+Creating deployment_database_run ... done
+77c1063b671c:/# psql --version
+psql (PostgreSQL) 14.8
+77c1063b671c:/# pg_dump --version
+pg_dump (PostgreSQL) 14.8
+77c1063b671c:/# 
+% docker-compose run --rm console bash
+Creating deployment_console_run ... done
+root@f53581214658:/app# psql --version
+psql (PostgreSQL) 14.8 (Debian 14.8-1.pgdg100+1)
+root@f53581214658:/app# pg_dump --version
+pg_dump (PostgreSQL) 14.8 (Debian 14.8-1.pgdg100+1)
+% docker-compose run --rm test bash -c "psql --version"
+Creating deployment_test_run ... done
+psql (PostgreSQL) 14.8 (Debian 14.8-1.pgdg100+1)
+% docker-compose run --rm test bash -c "pg_dump --version"
+Creating deployment_test_run ... done
+pg_dump (PostgreSQL) 14.8 (Debian 14.8-1.pgdg100+1)
+# Restore the dump database created by pg_dump version 14.8
+ % docker-compose run --rm test bash -c "pg_restore --version"
+Creating deployment_test_run ... done
+pg_restore (PostgreSQL) 14.8 (Debian 14.8-1.pgdg100+1)
+% docker-compose run --rm test bash -c "pg_restore -h database -p 5432 -U gigadb -d gigadb --clean --no-owner -v sql/gigadb.pgdmp"
+```
+
+##### Update Yii version
+
+The Yii framework version release information can be found at [here](https://www.yiiframework.com/news?tag=release)
+
+In `ops/configuration/variables/env-sample`, update the value of the variables `YII_VERSION` and `YII2_VERSION`, for example:
+```
+YII_VERSION=1.1.28
+YII2_VERSION=2.0.48
+```
+
+The `composer.lock` file specifies the versions of all packages, the following commands can be used to update a specific package after `./up.sh`, and validate if the version is updated.
+```
+# get the latest updated
+% cp ops/configuration/variables/env-sample .env
+# generate the composer.json file
+% docker-compose run --rm config
+# perform manual upgrade for the gigadb main services
+% docker-compose exec -T application composer require yiisoft/yii:"1.1.28"
+% docker-compose exec -T application composer require yiisoft/yii2:"2.0.48"
+% docker-compose run --rm console bash -c 'composer require yiisoft/yii2:"~2.0.48"'
+# only yii1 and yii2 in the composer.lock will be updated
+# verfiy the composer.lock is working 
+% docker-compose exec -T application composer install
+# the above command will only perform install according to the lock file
+# if there is composer error, or the upgrade is no longer wanted, can restore the composer.lock to its previous state using
+% git restore composer.lock
+# if there is no error and works as ecpected, commit the updated composer.lock to github 
+# spin up the gigadb website again
+% ./up.sh
+# scroll throught the scrren output log, the migration jobs are performed by the following tools
+...
+Yii Migration Tool v1.0 (based on Yii v1.1.28)
+Yii Migration Tool (based on Yii v2.0.48)
+...
+```
+
+Be aware that `composer update` will update all packages in the lock to their latest version, unless it is your intention to do so.
+
+
+
+
+### Production environment
+
+##### Update PostgreSQL engine and client version
+
+In `.gitlab-ci.yml`, update the value of the variable `POSTGRES_VERSION`, for example:
+```
+POSTGRES_VERSION: "14.8"
+```
+And accordingly update the `postgresql client` version in different service's Dockerfile based on the `ops/deployment/docker-compose.build.yml` and `ops/deployment/docker-compose.production-envs.yml` files,
+see the below table for details:
+
+| Services               | Dockerfile                                                     | INSTALL_PG_CLIENT | current pg_client version |
+|------------------------|----------------------------------------------------------------|-------------------|---------------------------|
+| production_fuw-console | fuw/app/common/Production-Dockerfile                           | true              | postgresql-client-14      |
+| production_app**       | ops/packaging/Production-Dockerfile                            | false             | postgresql-client-14      |
+| production_tool        | gigadb/app/tools/readme-generator/Dockerfile-Production        | true              | postgresql-client-14      |
+| production_pgclient    | gigadb/app/tools/excel-spreadsheet-uploader/PgClientDockerfile | true              | postgresql-client-14      |
+| production_s3backup    | gigadb/app/tools/files-url-updater/S3BackupDockerfile          | true              | postgresql-client-14      |
+
+**: postgresql client will not be installed by default, updates in Dockerfile to make it ready for future use. 
+
+##### Update AWS bastion server PostgreSQL client version and RDS PostgreSQL engine version
+
+Update the PostgreSQL client package version in `ops/infrastructure/bastion_playbook.yml`, for example:
+```
+    - name: Install PostgreSQL 14 client packages
+      become: yes
+      dnf:
+        name: postgresql14
+        state: present
+
+    - name: Test pg_isready can connect to RDS instance
+      ansible.builtin.command: "/usr/pgsql-14/bin/pg_isready -h {{ pg_host }}"
+      register: pg_isready
+    - debug: msg="{{ pg_isready.stdout }}"
+```
+
+Here is the [official document](https://docs.aws.amazon.com/AmazonRDS/latest/PostgreSQLReleaseNotes/postgresql-release-calendar.html) for supported PostgreSQL version on AWS RDS, it contains the information about the engine version and its end of standard support date.
+Update the RDS instance configuratin in `ops/infrastructure/modules/rds-instance/rds-instance.tf`, for example:
+```
+engine_version            = "14.8"
+family                    = "postgres14"  # DB parameter group
+major_engine_version      = "14"          # DB option group
+```
+
+##### Update Yii framework version
+
+In `.gitlab-ci.yml`, update the value of the variables `YII_VERSION` and `YII2_VERSION`, for example:
+```
+YII_VERSION: "1.1.28"
+YII2_VERSION: "2.0.48"
+```
+
+##### Steps to check for the version update
+
+```
+# instantiate and provision aws EC2 servers freshly after checkout this branch
+% cd /gigadb-website/ops/infrastructure/envs/staging
+%  ../../../scripts/tf_init.sh --project gigascience/forks/kencho-gigadb-website --env staging
+% terraform apply
+% terraform refresh
+# go to aws RDS console, click $database, Configuration, check for the engine version
+% ../../../scripts/ansible_init.sh --env staging
+% TF_KEY_NAME=private_ip ansible-playbook -i ../../inventories -v webapp_playbook.yml -v
+% ansible-playbook -i ../../inventories bastion_playbook.yml -v -e "backupDate=latest"
+# staging now is having the latest datasets, check the RSS feed in staging website
+# log in to the staging bastion
+% ssh -i "$aws.pem" centos@"$basion.ip"
+[centos@ip-10-99-0-111 ~]$ pg_dump --version
+pg_dump (PostgreSQL) 14.8
+[centos@ip-10-99-0-111 ~]$ psql --version
+psql (PostgreSQL) 14.8
+# upload the current latest database to s3
+$ docker run --env-file .env -v /home/centos/backups:/backups -v /home/centos/.config/rclone/rclone.conf:/root/.config/rclone/rclone.conf registry.gitlab.com/gigascience/forks/kencho-gigadb-website/production_s3backup:staging 2> logs/upload-errors-"$latestDate".log 1> logs/upload-output-"$latestDate".log
+# log in aws console s3 dashboard to check s3:gigadb-database-backups bucket and look for gigadb_gigascience-forks-$GITLAB_USERNAME-gigadb-website_$env_"$latestDate".backup, eg: gigadb_gigascience-forks-kencho-gigadb-website_staging_20230620.backup
+# back to bastion server
+# download and restore the datasets from earlier date
+$ ./databaseReset.sh 20230606 2> logs/errors-6jun.log 1> logs/output-6jun.log
+# check the RSS feed in staging website
+# restore the $latest backup from s3
+$ docker run --rm --env-file .env -v /home/centos/.config/rclone/rclone.conf:/root/.config/rclone/rclone.conf --entrypoint /restore_database_from_s3_backup.sh registry.gitlab.com/gigascience/forks/kencho-gigadb-website/production_s3backup:staging "$latestDate" 2> logs/restore-latest-erros.log 1> logs/restore-latest-output.log
+#  check the RSS feed in staging website
+# check the logs/*output* logs, the migration jobs are performed by the following tools
+Yii Migration Tool v1.0 (based on Yii v1.1.28)
+Yii Migration Tool (based on Yii v2.0.48)
+```
+
