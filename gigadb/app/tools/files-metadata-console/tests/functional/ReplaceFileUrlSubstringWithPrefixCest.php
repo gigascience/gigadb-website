@@ -7,6 +7,14 @@ use FunctionalTester;
 
 class ReplaceFileUrlSubstringWithPrefixCest
 {
+    public function _before(\FunctionalTester $I)
+    {
+//        $db = $I->getModule('Db');
+        $I->haveInDatabase('file', ['dataset_id' => 213, 'name' => 'tt_indexcov.html', 'location' => 'http://indexcov.s3-website-us-east-1.amazonaws.com/', 'extension' => 'html', 'size' => 4096, 'format_id' => 41, 'type_id' => 113]);
+        $I->haveInDatabase('file', ['dataset_id' => 213, 'name' => 'LAGOS-NE-LOCUSv1.01','location' => 'http://dx.doi.org/10.6073/pasta/940b25d022c695b440e1bdbc49fbb77b', 'extension' => 'unknown', 'size' => 217, 'format_id' => 41, 'type_id' => 113]);
+        $I->haveInDatabase('file', ['dataset_id' => 213, 'name' => 'hisat2-cufflinks_wf_pe.cwl','location' => 'https://view.commonwl.org/workflows/github.com/pitagora-network/pitagora-cwl/blob/master/workflows/hisat2-cufflinks/paired_end/hisat2-cufflinks_wf_pe.cwl', 'extension' => 'cwl', 'size' => 1, 'format_id' => 41, 'type_id' => 113]);
+    }
+
     /**
      * @param FunctionalTester $I
      */
