@@ -45,9 +45,9 @@ module "db" {
   engine                    = "postgres"
   engine_version            = "14.8"
   family                    = "postgres14"  # DB parameter group
-  major_engine_version      = "12"          # DB option group
+  major_engine_version      = "14"          # DB option group
   instance_class            = "db.t3.micro"
-  allocated_storage         = 8
+  allocated_storage         = 16
   deletion_protection       = false
   maintenance_window        = "Mon:00:00-Mon:03:00"
   backup_window             = "03:00-06:00"  # UTC time
