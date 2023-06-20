@@ -23,7 +23,7 @@ class ReplaceFileUrlSubstringWithPrefixCest
         $I->canSeeInShellOutput("\tTransforming ftp_site for dataset 100002...\nDONE");
         $I->canSeeInShellOutput("\tTransforming file locations for dataset 100002...\nDONE (7/7)");
         $I->canSeeInShellOutput("\tTransforming ftp_site for dataset 100005...\nDONE");
-        $I->canSeeInShellOutput("\tTransforming file locations for dataset 100005...\nWARNING (1/3)");
+        $I->canSeeInShellOutput("\tTransforming file locations for dataset 100005...\nWARNING (1/4)");
         $I->canSeeInShellOutput("\tTransforming ftp_site for dataset 100039...\nDONE");
         $I->canSeeInShellOutput("\tTransforming file locations for dataset 100039...\nDONE (24/24)");
 
@@ -50,7 +50,7 @@ class ReplaceFileUrlSubstringWithPrefixCest
         $I->dontSeeInShellOutput("\tTransforming ftp_site for dataset 100003...\nDONE");
         $I->dontSeeInShellOutput("\tTransforming ftp_site for dataset 100004...\nDONE");
         $I->canSeeInShellOutput("\tTransforming ftp_site for dataset 100005...\nDONE");
-        $I->canSeeInShellOutput("\tTransforming file locations for dataset 100005...\nWARNING (1/3)");
+        $I->canSeeInShellOutput("\tTransforming file locations for dataset 100005...\nWARNING (1/4)");
         $I->canSeeInShellOutput("\tTransforming ftp_site for dataset 100039...\nDONE");
         $I->canSeeInShellOutput("\tTransforming file locations for dataset 100039...\nDONE (24/24)");
 
@@ -100,7 +100,7 @@ class ReplaceFileUrlSubstringWithPrefixCest
 
         # Check output
         $I->canSeeInShellOutput("\tTransforming ftp_site for dataset 100005...\nDONE");
-        $I->canSeeInShellOutput("\tTransforming file locations for dataset 100005...\nWARNING (1/3)");
+        $I->canSeeInShellOutput("\tTransforming file locations for dataset 100005...\nWARNING (1/4)");
         $I->canSeeInShellOutput("\tTransforming ftp_site for dataset 100039...\nDONE");
         $I->canSeeInShellOutput("\tTransforming file locations for dataset 100039...\nDONE (24/24)");
     }
