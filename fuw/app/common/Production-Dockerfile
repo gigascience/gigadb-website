@@ -15,6 +15,9 @@ RUN apt-get update -yq && \
         libfreetype6-dev \
         libssl-dev \
         bc \
+        gnupg \
+        wget \
+        ca-certificates \
         --no-install-recommends && \
         apt-get clean && \
         rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
@@ -71,15 +74,17 @@ RUN if [ ${INSTALL_PGSQL} = true ]; then \
 ;fi
 
 ARG INSTALL_PG_CLIENT=false
-ARG PG_CLIENT_VERSION=10.5
 
 RUN if [ ${INSTALL_PG_CLIENT} = true ]; then \
     # Create folders if not exists (https://github.com/tianon/docker-brew-debian/issues/65)
     mkdir -p /usr/share/man/man1 && \
     mkdir -p /usr/share/man/man7 && \
-    # Install the pgsql client
+    # Add the PostgreSQL Apt Repository
+    echo "deb http://apt.postgresql.org/pub/repos/apt buster-pgdg main" > /etc/apt/sources.list.d/pgdg.list && \
+    wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - && \
+    # Install the pgsql client	    # Install the pgsql client
     apt-get update -yq && \
-    apt-get install -y postgresql-client-11 && \
+    apt-get install -y postgresql-client-14 && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
 ;fi
