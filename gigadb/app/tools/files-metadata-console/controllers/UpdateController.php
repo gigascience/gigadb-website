@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace app\controllers;
 
+use app\components\DatasetFilesUpdater;
 use app\components\DatasetFilesURLUpdater;
 use Exception;
 use GigaDB\services\URLsService;
@@ -64,7 +65,7 @@ final class UpdateController extends Controller
     {
         $webClient = new Client([ 'allow_redirects' => false ]);
         $us = new URLsService();
-        $dfu = new DatasetFilesURLUpdater(["doi" => $this->doi, "us" => $us, "webClient" => $webClient]);
+        $dfu = new DatasetFilesUpdater(["doi" => $this->doi, "us" => $us, "webClient" => $webClient]);
         $success = $dfu->updateFileSize();
         $this->stdout("nb. changes: $success" . PHP_EOL, Console::FG_GREEN);
         return ExitCode::OK;
@@ -147,7 +148,7 @@ final class UpdateController extends Controller
     public function options($actionID)
     {
         return array_merge(parent::options($actionID), [
-            'color', 'interactive', 'help', 'prefix', 'separator', 'exclude', 'next', 'apply', 'stop'
+            'color', 'interactive', 'help', 'doi', 'prefix', 'separator', 'exclude', 'next', 'apply', 'stop'
         ]);
     }
 }
