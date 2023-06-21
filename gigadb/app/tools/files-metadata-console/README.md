@@ -300,7 +300,7 @@ $ docker run --rm  --env-file ./db-env registry.gitlab.com/$GITLAB_PROJECT/produ
 
 Execute tool until all datasets have had their file locations updated with Wasabi links:
 ```
-$ docker run --rm "registry.gitlab.com/$GITLAB_PROJECT/production-files-metadata-console:latest" ./yii update/urls --prefix=https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live --separator=/pub/ --exclude='100396,100446,100584,100747,100957,102311,102396' --stop=200002 --next=30 --apply
+$ docker run --rm "registry.gitlab.com/$GITLAB_PROJECT/production-files-metadata-console:latest" ./yii update/urls --prefix=https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live --separator=/pub/ --exclude='100396,100446,100584,100747,100957,102311' --stop=200002 --next=30 --apply
 ```
 
 Re-create database triggers:
