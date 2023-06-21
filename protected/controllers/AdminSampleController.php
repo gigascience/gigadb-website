@@ -341,7 +341,9 @@ class AdminSampleController extends Controller
                     $sampleAttribute = clone $sampleAttribute;
                     $sampleAttribute->value = trim($attributeData[1]);
                     $sampleAttribute->attribute_id = $attribute->id;
-                    $sampleAttribute->save();
+                    if (!$sampleAttribute->save()) {
+                        $model->addError('error', 'Sample_attribute table fail to save!');
+                    }
                 }
             }
         }
