@@ -3,11 +3,15 @@
 
 - name: Install node exporter
   hosts: monitoring_hosts
+  tags:
+    - node-exporter-install
   roles:
     - prometheus.prometheus.node_exporter
 
 - name: Install Prometheus
   hosts: monitoring_hosts
+  tags:
+    - prometheus-install
   roles:
     - prometheus.prometheus.prometheus
   vars:
@@ -61,11 +65,111 @@
 
 - name: Install Grafana
   hosts: monitoring_hosts
+  tags:
+    - grafana-install
   roles:
     - ansible-grafana
+  vars:
+    grafana_smtp_enabled: "true"
+    grafana_smtp_host: "{{ grafana_contact_smtp_host }}"
+    grafana_smtp_user: "{{ grafana_contact_smtp_user }}"
+    grafana_smtp_password: "{{ grafana_contact_smtp_password }}"
+    grafana_smtp_skip_verify: "false"
+    grafana_smtp_from_address: "{{ grafana_contact_smtp_from_address }}"
+    grafana_smtp_from_name: "{{ grafana_contact_smtp_from_name }}"
+
+- name: API key for grafana
+  hosts: monitoring_hosts
+  tags:
+    - grafana-api-token
+
+  tasks:
+    - name: Switch to org 1
+      uri:
+        url: "http://admin:admin@localhost:3000/api/user/using/1"
+        method: POST
+        force_basic_auth: true
+        status_code: 200
+      register: switch_to_org
+
+    - debug:
+        msg: "Switching to default org: {{ switch_to_org }}"
+
+    - name: Create an API key
+      uri:
+        url: "http://admin:admin@localhost:3000/api/auth/keys"
+        method: POST
+        force_basic_auth: true
+        return_content: true
+        headers:
+          Content-Type: "application/json"
+        body_format: json
+        body:
+          name: "apikeycurl"
+          role: "Admin"
+        status_code:
+         - 200
+         - 409
+      register: create_key_outcome
+
+    - name: Get the list of keys
+      uri:
+        url: "http://admin:admin@localhost:3000/api/auth/keys"
+        method: GET
+        force_basic_auth: true
+        return_content: true
+        headers:
+          Content-Type: "application/json"
+        status_code:
+          - 200
+      register: keys_list
+      when: create_key_outcome.status == 409
+
+    - debug:
+        msg: "{{ keys_list }}"
+
+    - name: Delete the API key
+      uri:
+        url: "http://admin:admin@localhost:3000/api/auth/keys/{{ keys_list.json[0]['id'] }}"
+        method: DELETE
+        force_basic_auth: true
+        return_content: true
+        headers:
+          Content-Type: "application/json"
+        status_code:
+          - 200
+      register: delete_key_outcome
+      when: create_key_outcome.status == 409
+
+    - name: Recreate an API key
+      uri:
+        url: "http://admin:admin@localhost:3000/api/auth/keys"
+        method: POST
+        force_basic_auth: true
+        return_content: true
+        headers:
+          Content-Type: "application/json"
+        body_format: json
+        body:
+          name: "apikeycurl"
+          role: "Admin"
+        status_code:
+          - 200
+      register: create_key_outcome
+      when: create_key_outcome.status == 409
+
+    - debug:
+        msg: "{{ create_key_outcome }}"
+
+    - debug:
+        msg: "Response for grafana api key creation: {{ create_key_outcome.json['key'] }}"
+
+
 
 - name: Configure Grafana
   hosts: monitoring_hosts
+  tags:
+    - grafana-config
   collections:
     - community.grafana
 
@@ -93,3 +197,4 @@
 
     - debug:
         msg: "datasource output: {{ datasource }}"
+
