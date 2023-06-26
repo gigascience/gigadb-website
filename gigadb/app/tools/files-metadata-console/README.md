@@ -267,7 +267,8 @@ $ docker-compose run --rm files-metadata-console ./yii update/urls --prefix=http
 ##### Dataset 100396
 
 Dataset 100396 contains nearly 200,000 files which all need to have their location column updating with correct Wasabi 
-URL. The tool is not able to work with so many files and so need to update manually:
+URL. The tool is not able to work with so many files and so need to update manually. Firstly, update ftp_site column in
+dataset table for Dataset 100396:
 ```
 # Connect to dev database
 $ PGPASSWORD=vagrant psql -h localhost -p 54321 -U gigadb postgres
@@ -281,7 +282,20 @@ $ PGPASSWORD=vagrant psql -h localhost -p 54321 -U gigadb postgres
 # Delete connections on a given database
 postgres=# SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE pg_stat_activity.datname = 'gigadb';
 postgres=# \c gigadb;
-# Update location column for dataset - will take about a minute to complete
+# Update ftp_site column for dataset
+gigadb=# Update dataset set ftp_site = REPLACE(ftp_site, 'https://ftp.cngb.org/pub/gigadb/pub/', 'https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/') where identifier = '100396';
+UPDATE 1
+# Test updates have been made
+gigadb=# select ftp_site from dataset where identifier = '100396';
+                                            ftp_site                                            
+------------------------------------------------------------------------------------------------
+ https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/10.5524/100001_101000/100396/
+(1 row)
+```
+
+Next, update all location fields for all files associated with dataset 100396:
+```
+# Update location column for dataset files - will take about a minute to complete
 gigadb=# Update file set location = REPLACE(location, 'https://ftp.cngb.org/pub/gigadb/pub/', 'https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/') where dataset_id = 629;
 UPDATE 197214
 # Test updates have been made
@@ -302,7 +316,7 @@ docker run --rm  --env-file ./db-env registry.gitlab.com/$GITLAB_PROJECT/product
 
 Execute tool until all datasets have had their file locations updated with Wasabi links:
 ```
-docker run --rm registry.gitlab.com/$GITLAB_PROJECT/production-files-metadata-console:latest ./yii update/urls --prefix=https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live --separator=/pub/ --exclude='100396,100446,100584,100747,100957,102311' --stop=200002 --next=30 --apply
+docker run --rm registry.gitlab.com/$GITLAB_PROJECT/production-files-metadata-console:latest ./yii update/urls --prefix=https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live --separator=/pub/ --exclude='100396,100446,100584,100747,100957,102311' --stop=200002 --next=3
 ```
 
 Re-create database triggers:
