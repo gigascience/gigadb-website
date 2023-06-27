@@ -20,8 +20,10 @@ the bastion playbook.
 
 ## Procedure
 
-Log into the bastion server. You can find its address from the AWS console when logged in as the `Gigadb` IAM user. You
-can also get the bastion server public IP address this way:
+Change directory to `/path/to/gigascience/gigadb-website/ops/infrastructure/envs/live`
+and log into the bastion server. You can find its address from the AWS console when 
+logged in as the `Gigadb` IAM user. You can also get the bastion server public IP 
+address this way:
 ```
 $ terraform output
 ec2_bastion_private_ip = "10.xx.x.xxx"
@@ -31,6 +33,24 @@ ec2_public_ip = "16.xxx.xxx.xx"
 rds_instance_address = "rds-server-live-gigadb.xxxxxxxxxxxx.ap-east-1.rds.amazonaws.com"
 vpc_database_subnet_group = "vpc-ap-east-1-live-gigadb-gigadb"
 ```
+
+If you are not the developer that instantiated a current running GigaDB application
+then the `live` directory will be empty and no outputs will be displayed:
+```
+$ terraform output
+╷
+│ Warning: No outputs found
+```
+
+In this case, run the command to copy terraform files to live environment:
+```
+$ ../../../scripts/tf_init.sh --project gigascience/upstream/gigadb-website --env live
+You need to specify the path to the ssh private key to use to connect to the EC2 instance: ~/.ssh/id-rsa-aws-hk-gigadb.pem
+You need to specify your GitLab username: <your gitlab username>
+You need to specify an AWS region: ap-east-1
+```
+
+Running `terraform output` should now display the various IP addresses.
 
 >If you get the following error message after executing `terraform output`:
 ```

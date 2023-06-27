@@ -31,14 +31,16 @@ application.
 
 > :warning: **Restoring an RDS instance from an automated backup will take several minutes. The GigaDB website will also show a `504 gateway timeout` message until the new DB instance is ready**
 
-1. If we want to restore a database backup onto a new RDS instance with the same 
+1. Log into the AWS console using the `Gigadb` AWS user account. Select the
+[RDS Dashboard](https://ap-east-1.console.aws.amazon.com/rds/home?region=ap-east-1#)
+for the Hong Kong ap-east-1 region.
+2. If we want to restore a database backup onto a new RDS instance with the same 
 DB instance identifier, e.g. `rds-server-staging-gigadb` or `rds-server-live-gigadb`
 then any pre-existing RDS instances with these identifiers need to be deleted
 first. This can be done from the [RDS Dashboard](https://ap-east-1.console.aws.amazon.com/rds/home?region=ap-east-1#).
 Also, make sure to check the `Retain automated backups` checkbox, otherwise there
-will not be any retained backup to work with the rest of this procedure.
-2. Go to the AWS [RDS Dashboard](https://ap-east-1.console.aws.amazon.com/rds/home?region=ap-east-1#) 
-for the Hong Kong ap-east-1 region.
+will not be any retained backup to work with the rest of this procedure. Deletion
+of the RDS instance will take several minutes.
 3. Click on the [Automated backups](https://ap-east-1.console.aws.amazon.com/rds/home?region=ap-east-1#automatedbackups:)
 link located on the left-hand side menu in the dashboard. 
 4. In the `Retained` tab, decide which backup you want to restore by clicking on
@@ -54,7 +56,7 @@ the cheapest instance type `db.t3.micro`
 9. In the *Connectivity* box, select the required VPC based on `live` 
 environment, i.e. `vpc-ap-east-1-live-gigadb-gigadb`
 10. In the *Connectivity* box, `Public access` should be *No*
-11. In the *Connectivity* box, select VPC security group, e.g. `rds_sg_live_gigadb-20220426875429729`
+11. In the *Connectivity* box, select VPC security group, e.g. `rds_sg_live_gigadb-*`
 12. In the *Connectivity* box, *Password authentication* should be deleted
 13. In the *Additional configuration* box, there is no need to provide an `initial database name`
 because the automated backup contains the names of the databases to be restored.
@@ -63,8 +65,10 @@ the `Gigadb` user, this will be `gigadb-db-param-group-gigadb`.
 14. Check the `Copy tags to snapshots` checkbox
 15. Do not check `Enable auto minor version upgrade` checkbox
 16. Do not check `Enable deletion protection` checkbox
-17. Click `Restore to point in time` button
-18. When the RDS instance has been created then you will need to manually add 
+17. Click `Restore to point in time` button. This will lead you back to the
+`Databases` RDS console page where it will show a `Creating` status for your 
+RDS instance.
+18. When the RDS instance has status `Available` then you will need to manually add 
 its tags:
 * Environment = live
 * Owner = gigadb
@@ -77,13 +81,33 @@ policy requires resources to be tagged with Owner in order to do this.
 
 ### Update AWS credentials configuration
 
-1. Check `id-rsa-aws-hk-gigadb.pem` available from [cnhk-infra CI/CD variables page](https://gitlab.com/gigascience/cnhk-infra/-/settings/ci_cd)
-is in  your `~/.ssh` directory.
+1. Check that `id-rsa-aws-hk-gigadb.pem` from [cnhk-infra CI/CD variables page](https://gitlab.com/gigascience/cnhk-infra/-/settings/ci_cd)
+is in your `~/.ssh` directory.
 
 2. You should have `config.upstream` and `credentials.upstream` in your 
 `~/.aws` directory. These files should be used to update the actual `config`
 and `credentials` files in `~/.aws`:
 ```
+# Contents of upstream config and credentials 
+$ more config.upstream 
+[default]
+region=ap-east-1
+output=json
+
+[profile Gigadb]
+region=ap-east-1
+output=json
+
+$ more credentials.upstream 
+[default]
+aws_access_key_id=AAAAAAAAAAAAAAAAAA
+aws_secret_access_key=ZZZZZZZZZZZZZZZZZZZZ
+
+[Gigadb]
+aws_access_key_id=AAAAAAAAAAAAAAAAAA
+aws_secret_access_key=ZZZZZZZZZZZZZZZZZZZZ
+
+
 $ cp config.upstream config
 $ cp credentials.upstream credentials
 ```
@@ -93,7 +117,24 @@ $ cp credentials.upstream credentials
 
 Go to environment directory:
 ```
-$ cd <path_to>/PhpstormProjects/gigascience/gigadb-website/ops/infrastructure/envs/staging
+$ cd /path/to/gigascience/gigadb-website/ops/infrastructure/envs/live
+```
+
+If you are not the developer that instantiated a current, running GigaDB
+application then the `live` directory will be empty and no outputs will be 
+displayed:
+```
+$ terraform output
+╷
+│ Warning: No outputs found
+```
+
+In this case, run the command to copy terraform files to live environment:
+```
+$ ../../../scripts/tf_init.sh --project gigascience/upstream/gigadb-website --env live
+You need to specify the path to the ssh private key to use to connect to the EC2 instance: ~/.ssh/id-rsa-aws-hk-gigadb.pem
+You need to specify your GitLab username: <your gitlab username>
+You need to specify an AWS region: ap-east-1
 ```
 
 If we want to restore a database backup onto a new RDS instance with the same DB
