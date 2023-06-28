@@ -38,6 +38,11 @@ variable "gigadb_db_password" {
   description = "Password for PostgreSQL database"
 }
 
+#variable "rds_master_password" {
+#  type = string
+#  description = "Password for postgres user"
+#}
+
 variable "snapshot_identifier" {
   type = string
   description = "Snapshot identifier for restoring RDS service"
@@ -86,12 +91,31 @@ provider "aws" {
 terraform {
   backend "http" {
   }
+
+  required_providers {
+    random = {
+      source  = "hashicorp/random"
+      version = "3.5.1"
+    }
+
+    external = {
+      source  = "hashicorp/external"
+      version = "2.3.1"
+    }
+    
+    aws = {
+      source  = "hashicorp/aws"
+      version = "5.5.0"
+    }
+  }
+
+  required_version = ">= 1.1"
 }
 
 # A custom virtual private cloud network for RDS and EC2 instances
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "~> 2"
+  version = "5.0.0"
 
   name = "vpc-${var.aws_region}-${var.deployment_target}-gigadb-${data.external.callerUserName.result.userName}"
   # CIDR block is a range of IPv4 addresses in the VPC. This cidr block below 
@@ -225,6 +249,7 @@ module "rds" {
   gigadb_db_database = var.gigadb_db_database
   gigadb_db_user = var.gigadb_db_user
   gigadb_db_password = var.gigadb_db_password
+#  rds_master_password = var.rds_master_password
 
   # Security group rule required to allow port 5432 connections from private IP
   # of bastion server and ec2_dockerhost instance.
