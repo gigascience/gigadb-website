@@ -82,7 +82,7 @@ echo "aws_secret_access_key = $aws_secret_access_key" >> ansible.properties
 bastion_ip=$(terraform output ec2_bastion_public_ip | sed 's/"//g')
 webapp_ip=$(terraform output ec2_private_ip | sed 's/"//g')
 
-echo "ec2_bastion_login_account= centos@$bastion_ip" >> ansible.properties
+echo "ec2_bastion_login_account = centos@$bastion_ip" >> ansible.properties
 
 # variables needed by disk-usage-monitor
 gitter_room_id=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$FORK_VARIABLES_URL/GITTER_IT_NOTIFICATION_ROOM_ID" | jq -r .value)
