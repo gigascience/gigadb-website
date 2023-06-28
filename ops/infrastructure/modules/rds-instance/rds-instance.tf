@@ -29,12 +29,11 @@ module "db" {
   snapshot_identifier = var.snapshot_identifier
   restore_to_point_in_time = var.restore_to_point_in_time
 
-  db_name                = var.gigadb_db_database
-  username               = var.gigadb_db_user
-  password               = var.gigadb_db_password
-#  create_random_password = false
+  db_name                     = var.gigadb_db_database
+  username                    = var.gigadb_db_user
+  password                    = var.gigadb_db_password
   manage_master_user_password = false
-  port                   = 5432
+  port                        = 5432
 
   # Create this RDS instance in database subnet group in VPC
   db_subnet_group_name   = var.vpc_database_subnet_group
