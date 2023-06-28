@@ -62,6 +62,7 @@ if [ -z $GITLAB_PRIVATE_TOKEN ];then
   read -p "You need to specify your GitLab private token: " GITLAB_PRIVATE_TOKEN
 fi
 
+
 if [ -z $AWS_REGION ];then
   read -p "You need to specify an AWS region: " AWS_REGION
 fi
@@ -75,6 +76,7 @@ fi
 # url encode gitlab project
 encoded_gitlab_project=$(echo $gitlab_project | sed -e 's/\//%2F/g')
 
+
 # Ensure we are in the environment-specific directory
 if [ "envs/$target_environment" != `pwd | rev | cut -d"/" -f 1,2 | rev` ];then
   echo "You are not in the correct directory given the specified parameters. you should be in 'envs/$target_environment'"
@@ -82,6 +84,7 @@ if [ "envs/$target_environment" != `pwd | rev | cut -d"/" -f 1,2 | rev` ];then
 fi
 
 # copy the terraform and playbook files to the environment specific directory
+
 cp ../../terraform.tf .
 cp ../../getIAMUserNameToJSON.sh .
 
@@ -108,9 +111,6 @@ echo "gigadb_db_user=\"$gigadb_db_user\"" >> terraform.tfvars
 gigadb_db_password=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$PROJECT_VARIABLES_URL/gigadb_db_password?filter%5benvironment_scope%5d=$target_environment" | jq -r .value)
 echo "gigadb_db_password=\"$gigadb_db_password\"" >> terraform.tfvars
 
-# Include RDS master password for postgres user
-#rds_master_password=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$FORK_VARIABLES_URL/POSTGRES_PASSWORD" | jq -r .value)
-#echo "rds_master_password=\"$rds_master_password\"" >> terraform.tfvars
 
 # Check that if the gitlab project is in the Forks group, it must match .env's $REPO_NAME to avoid overwriting some else remote TF state
 if [[ $gitlab_project =~ /forks/ && ! $gitlab_project =~ $REPO_NAME ]];then

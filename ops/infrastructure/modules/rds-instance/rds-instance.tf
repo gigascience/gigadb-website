@@ -31,8 +31,8 @@ module "db" {
 
   db_name                     = var.gigadb_db_database
   username                    = var.gigadb_db_user
-  password                    = var.gigadb_db_password
   manage_master_user_password = false
+  password                    = var.gigadb_db_password
   port                        = 5432
 
   # Create this RDS instance in database subnet group in VPC

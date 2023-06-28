@@ -8,4 +8,3 @@ variable "rds_subnet_ids" {}
 variable "vpc_database_subnet_group" {}
 variable "snapshot_identifier" {}
 variable "restore_to_point_in_time" {}
-#variable "rds_master_password" {}

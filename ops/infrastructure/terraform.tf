@@ -38,11 +38,6 @@ variable "gigadb_db_password" {
   description = "Password for PostgreSQL database"
 }
 
-#variable "rds_master_password" {
-#  type = string
-#  description = "Password for postgres user"
-#}
-
 variable "snapshot_identifier" {
   type = string
   description = "Snapshot identifier for restoring RDS service"
@@ -249,7 +244,6 @@ module "rds" {
   gigadb_db_database = var.gigadb_db_database
   gigadb_db_user = var.gigadb_db_user
   gigadb_db_password = var.gigadb_db_password
-#  rds_master_password = var.rds_master_password
 
   # Security group rule required to allow port 5432 connections from private IP
   # of bastion server and ec2_dockerhost instance.
