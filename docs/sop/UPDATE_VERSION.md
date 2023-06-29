@@ -1,12 +1,12 @@
-# SOP: Update software version for gigadb website
+# SOP: Update software's major version for gigadb website
 
-This sop is about how to update software version for the gigadb website.
-The file `ops/configuration/variables/env-sample` stores the currently using version for the dev environment, while the file `.gitlab-ci.yml` stores the currently using version for the production environment,
+This sop is about how to update software's major version for the gigadb website.
+The file `ops/configuration/variables/env-sample` stores the currently using version for the dev environment, while the file `.gitlab-ci.yml` stores the currently using version for the production environments,
 any changes in the version should be done in the correct file according to the requirement.
 
 ### Dev environment
 
-##### Update PostgreSQL engine and client version
+##### Update PostgreSQL engine and client majar version
 
 In `ops/configuration/variables/env-sample`, update the value of the variable `POSTGRES_VERSION`, for example:
 ```
@@ -15,14 +15,17 @@ POSTGRES_VERSION=14.8
 And accordingly update the `postgresql client` version in different service's Dockerfile based on the `ops/deployment/docker-compose.yml` file, see the below table for details:
 
 
-| Services  | Dockerfile                                                     | INSTALL_PG_CLIENT | current pg_client version |
-|-----------|----------------------------------------------------------------|-------------------|---------------------------|
-| test      | ops/packaging/Dockerfile                                       | true              | postgresql-client-14      | 
-| console   | fuw/app/common/Dockerfile                                      | true              | postgresql-client-14      |
-| tool      | gigadb/app/tools/readme-generator/Dockerfile                   | true              | postgresql-client-14      |
-| pg_client | gigadb/app/tools/excel-spreadsheet-uploader/PgClientDockerfile | true              | postgresql-client-14      |
+| Services      | Dockerfile                                                     | INSTALL_PG_CLIENT | current pg_client version |
+|---------------|----------------------------------------------------------------|-------------------|---------------------------|
+| test          | ops/packaging/Dockerfile                                       | true              | postgresql-client-14      | 
+| application** | ops/packaging/Dockerfile                                       | false             | postgresql-client-14      |
+| console       | fuw/app/common/Dockerfile                                      | true              | postgresql-client-14      |
+| tool          | gigadb/app/tools/readme-generator/Dockerfile                   | true              | postgresql-client-14      |
+| pg_client     | gigadb/app/tools/excel-spreadsheet-uploader/PgClientDockerfile | true              | postgresql-client-14      |
 
-The follow commands can be used to update the versions of postgreSQL engine and postgreSQL client, and validate if the version is updated.
+**: postgresql client will not be installed by default, updates in Dockerfile to make it ready for future use.
+
+The following commands can be used to update the versions of postgreSQL engine and postgreSQL client, and validate if the version is updated.
 ```
 # get the updated version number
 % cp ops/configuration/variables/env-sample .env
@@ -76,8 +79,8 @@ The `composer.lock` file specifies the versions of all packages, the following c
 # generate the composer.json file
 % docker-compose run --rm config
 # perform manual upgrade for the gigadb main services
-% docker-compose exec -T application composer require yiisoft/yii:"1.1.28"
-% docker-compose exec -T application composer require yiisoft/yii2:"2.0.48"
+% docker-compose exec -T application composer require yiisoft/yii:"~1.1.28"
+% docker-compose exec -T application composer require yiisoft/yii2:"~2.0.48"
 % docker-compose run --rm console bash -c 'composer require yiisoft/yii2:"~2.0.48"'
 # only yii1 and yii2 in the composer.lock will be updated
 # verfiy the composer.lock is working 
@@ -98,11 +101,13 @@ Yii Migration Tool (based on Yii v2.0.48)
 Be aware that `composer update` will update all packages in the lock to their latest version, unless it is your intention to do so.
 
 
+### Production environments
 
+##### Warning!
 
-### Production environment
+Services will be temporarily suspended during the software version update process, so it is suggested to remind gigadb.org users of the downtime issue if the update is in the `Upstream`.
 
-##### Update PostgreSQL engine and client version
+##### Update PostgreSQL engine and client major version
 
 In `.gitlab-ci.yml`, update the value of the variable `POSTGRES_VERSION`, for example:
 ```
@@ -121,7 +126,7 @@ see the below table for details:
 
 **: postgresql client will not be installed by default, updates in Dockerfile to make it ready for future use. 
 
-##### Update AWS bastion server PostgreSQL client version and RDS PostgreSQL engine version
+##### Update AWS bastion server PostgreSQL client version and RDS PostgreSQL engine major version
 
 Update the PostgreSQL client package version in `ops/infrastructure/bastion_playbook.yml`, for example:
 ```
@@ -153,8 +158,9 @@ YII_VERSION: "1.1.28"
 YII2_VERSION: "2.0.48"
 ```
 
-##### Steps to check for the version update
+##### Steps to check for the version updates
 
+###### Staging
 ```
 # instantiate and provision aws EC2 servers freshly after checkout this branch
 % cd /gigadb-website/ops/infrastructure/envs/staging
@@ -165,25 +171,92 @@ YII2_VERSION: "2.0.48"
 % ../../../scripts/ansible_init.sh --env staging
 % TF_KEY_NAME=private_ip ansible-playbook -i ../../inventories -v webapp_playbook.yml -v
 % ansible-playbook -i ../../inventories bastion_playbook.yml -v -e "backupDate=latest"
-# staging now is having the latest datasets, check the RSS feed in staging website
+# make sure staging has been deployed successfully through the gitlab pipeline, eg. sd_gigadb
+# staging now should have the latest datasets, check the RSS feed in staging website
 # log in to the staging bastion
 % ssh -i "$aws.pem" centos@"$basion.ip"
-[centos@ip-10-99-0-111 ~]$ pg_dump --version
+[centos@ip-10-xx-x-xx ~]$ pg_dump --version
 pg_dump (PostgreSQL) 14.8
-[centos@ip-10-99-0-111 ~]$ psql --version
+[centos@ip-10-xx-x-xx ~]$ psql --version
 psql (PostgreSQL) 14.8
 # upload the current latest database to s3
-$ docker run --env-file .env -v /home/centos/backups:/backups -v /home/centos/.config/rclone/rclone.conf:/root/.config/rclone/rclone.conf registry.gitlab.com/gigascience/forks/kencho-gigadb-website/production_s3backup:staging 2> logs/upload-errors-"$latestDate".log 1> logs/upload-output-"$latestDate".log
+[centos@ip-10-xx-x-xx ~]$ docker run --env-file .env -v /home/centos/backups:/backups -v /home/centos/.config/rclone/rclone.conf:/root/.config/rclone/rclone.conf registry.gitlab.com/gigascience/forks/kencho-gigadb-website/production_s3backup:staging 2> logs/upload-errors-"$latestDate".log 1> logs/upload-output-"$latestDate".log
 # log in aws console s3 dashboard to check s3:gigadb-database-backups bucket and look for gigadb_gigascience-forks-$GITLAB_USERNAME-gigadb-website_$env_"$latestDate".backup, eg: gigadb_gigascience-forks-kencho-gigadb-website_staging_20230620.backup
-# back to bastion server
-# download and restore the datasets from earlier date
-$ ./databaseReset.sh 20230606 2> logs/errors-6jun.log 1> logs/output-6jun.log
-# check the RSS feed in staging website
+# back to the bastion server
+# download and restore the datasets from the earlier date
+[centos@ip-10-xx-x-xx ~]$ ./databaseReset.sh 20230606 2> logs/errors-6jun.log 1> logs/output-6jun.log
+# check the RSS feed in the staging website
 # restore the $latest backup from s3
-$ docker run --rm --env-file .env -v /home/centos/.config/rclone/rclone.conf:/root/.config/rclone/rclone.conf --entrypoint /restore_database_from_s3_backup.sh registry.gitlab.com/gigascience/forks/kencho-gigadb-website/production_s3backup:staging "$latestDate" 2> logs/restore-latest-erros.log 1> logs/restore-latest-output.log
-#  check the RSS feed in staging website
+[centos@ip-10-xx-x-xx ~]$ docker run --rm --env-file .env -v /home/centos/.config/rclone/rclone.conf:/root/.config/rclone/rclone.conf --entrypoint /restore_database_from_s3_backup.sh registry.gitlab.com/gigascience/forks/kencho-gigadb-website/production_s3backup:staging "$latestDate" 2> logs/restore-latest-erros.log 1> logs/restore-latest-output.log
+# check the RSS feed in staging website
 # check the logs/*output* logs, the migration jobs are performed by the following tools
 Yii Migration Tool v1.0 (based on Yii v1.1.28)
 Yii Migration Tool (based on Yii v2.0.48)
 ```
 
+###### Live
+```
+# instantiate and provision aws EC2 servers freshly after checkout this branch
+% cd /gigadb-website/ops/infrastructure/envs/live
+%  ../../../scripts/tf_init.sh --project gigascience/forks/kencho-gigadb-website --env live
+% terraform apply
+% terraform refresh
+# go to aws RDS console, click $database, Configuration, check for the engine version
+% ../../../scripts/ansible_init.sh --env live
+% TF_KEY_NAME=private_ip ansible-playbook -i ../../inventories -v webapp_playbook.yml -v
+% ansible-playbook -i ../../inventories bastion_playbook.yml -v -e "backupDate=latest"
+# make sure live has been deployed successfully through the gitlab pipeline, eg. ld_gigadb
+# live now should have the latest datasets, check the RSS feed in staging website
+# log in to the live bastion
+% ssh -i "$aws.pem" centos@"$basion.ip"
+[centos@ip-10-xx-x-xx ~]$ pg_dump --version
+pg_dump (PostgreSQL) 14.8
+[centos@ip-10-xx-x-xx ~]$ psql --version
+psql (PostgreSQL) 14.8
+# upload the current latest database to s3
+[centos@ip-10-xx-x-xx ~]$ docker run --env-file .env -v /home/centos/backups:/backups -v /home/centos/.config/rclone/rclone.conf:/root/.config/rclone/rclone.conf registry.gitlab.com/gigascience/forks/kencho-gigadb-website/production_s3backup:live 2> logs/upload-errors-"$latestDate".log 1> logs/upload-output-"$latestDate".log
+# log in aws console s3 dashboard to check s3:gigadb-database-backups bucket and look for gigadb_gigascience-forks-$GITLAB_USERNAME-gigadb-website_$env_"$latestDate".backup, eg: gigadb_gigascience-forks-kencho-gigadb-website_live_20230620.backup
+# back to the bastion server
+# download and restore the datasets from the earlier date
+[centos@ip-10-xx-x-xx ~]$ ./databaseReset.sh 20230606 2> logs/errors-6jun.log 1> logs/output-6jun.log
+# check the RSS feed in staging website
+# restore the $latest backup from s3
+[centos@ip-10-xx-x-xx ~]$ docker run --rm --env-file .env -v /home/centos/.config/rclone/rclone.conf:/root/.config/rclone/rclone.conf --entrypoint /restore_database_from_s3_backup.sh registry.gitlab.com/gigascience/forks/kencho-gigadb-website/production_s3backup:live "$latestDate" 2> logs/restore-latest-erros.log 1> logs/restore-latest-output.log
+# check the RSS feed in the live gigadb website
+# check the logs/*output* logs, the migration jobs are performed by the following tools
+Yii Migration Tool v1.0 (based on Yii v1.1.28)
+Yii Migration Tool (based on Yii v2.0.48)
+```
+
+##### Steps to check for the version updates in Upstream live
+
+###### Upstream live
+```
+# log in upstream accrount 
+# instantiate and provision aws EC2 servers freshly after checkout this branch
+% cd /gigadb-website/ops/infrastructure/envs/live
+% ../../../scripts/tf_init.sh --project gigascience/upstream/gigadb-website --env live
+% terraform apply
+% terraform refresh
+# make sure upstream live has been re-builded and re-deployed successfully through the gitlab pipeline from the `upstream/gigadb-website/`, eg. build_live, ld_gigadb
+# upstream live now should have the latest datasets, check the RSS feed in the live gigadb website, https://beta.gigadb.org
+# log in to the upstream live bastion server
+% ssh -i "$aws-upstream.pem" centos@"$basion.ip"
+[centos@ip-10-xx-x-xx ~]$ pg_dump --version
+pg_dump (PostgreSQL) 14.8
+[centos@ip-10-xx-x-xx ~]$ psql --version
+psql (PostgreSQL) 14.8
+# upload the current latest database to s3
+[centos@ip-10-xx-x-xx ~]$ docker run --env-file .env -v /home/centos/backups:/backups -v /home/centos/.config/rclone/rclone.conf:/root/.config/rclone/rclone.conf registry.gitlab.com/gigascience/upstream/gigadb-website/production_s3backup:live 2> logs/upload-errors-"$latestDate".log 1> logs/upload-output-"$latestDate".log
+# log in aws console s3 dashboard to check s3:gigadb-database-backups bucket and look for gigadb_gigascience-upstream-gigadb-website_live_"$latestDate".backup, eg: gigadb_gigascience-upstream-gigadb-website_live_20230628.backup
+# back to the upstream live bastion server
+# download and restore the datasets from the earlier date
+[centos@ip-10-xx-x-xx ~]$ ./databaseReset.sh 20230606 2> logs/errors-6jun.log 1> logs/output-6jun.log
+# check the RSS feed in the live gigadb website, https://beta.gigadb.org
+# restore the $latest backup from s3
+[centos@ip-10-xx-x-xx ~]$ docker run --rm --env-file .env -v /home/centos/.config/rclone/rclone.conf:/root/.config/rclone/rclone.conf --entrypoint /restore_database_from_s3_backup.sh registry.gitlab.com/gigascience/upstream/gigadb-website/production_s3backup:live "$latestDate" 2> logs/restore-latest-erros.log 1> logs/restore-latest-output.log
+# check the RSS feed in the live gigadb website, https://beta.gigadb.org
+# check the logs/*output* logs, the migration jobs are performed by the following tools
+Yii Migration Tool v1.0 (based on Yii v1.1.28)
+Yii Migration Tool (based on Yii v2.0.48)
+```
