@@ -5,6 +5,16 @@
 actor: UnitTester
 modules:
     enabled:
+        - Db:
+              dsn: 'pgsql:host=database;dbname=gigadb_testdata;port=5432'
+              user: 'gigadb'
+              password: ''
+              populate: true # run populator before test suite
+              cleanup: true # run populator before each test
+              skip_cleanup_if_failed: true
+              dump: 'sql/gigadb_testdata.pgdmp'
+              # Can use --verbose in pg_restore command to output progress messages
+              populator: 'pg_restore -h database -p 5432 -U gigadb -d gigadb_testdata --no-owner $dump'
         - Asserts
         - \Helper\Unit
     step_decorators: ~
