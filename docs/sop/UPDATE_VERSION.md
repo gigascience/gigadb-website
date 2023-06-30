@@ -6,7 +6,7 @@ any changes in the version should be done in the correct file according to the r
 
 ### Dev environment
 
-##### Update PostgreSQL engine and client majar version
+##### Update PostgreSQL engine and client major version
 
 In `ops/configuration/variables/env-sample`, update the value of the variable `POSTGRES_VERSION`, for example:
 ```
@@ -105,7 +105,11 @@ Be aware that `composer update` will update all packages in the lock to their la
 
 ##### Warning!
 
-Services will be temporarily suspended during the software version update process, so it is suggested to remind gigadb.org users of the downtime issue if the update is in the `Upstream`.
+Before you are going to update software's major version in the `Upstream`, make sure you have:
+
+1. Reminded gigadb.org users of the downtime issue, because services would be temporarily suspended during the update process.
+2. Confirmed that the most recent backup database  exists in the bucket `s3:gigadb-database-backups`, eg. `gigadb_gigascience-upstream-gigadb-website_live_"$latestDate".backup`, where `$latestDate` is `current date - 1`.
+3. Confirmed that the backup database is not corrupt and the restoration steps can be executed successfully in developer's production environments. 
 
 ##### Update PostgreSQL engine and client major version
 
@@ -158,7 +162,7 @@ YII_VERSION: "1.1.28"
 YII2_VERSION: "2.0.48"
 ```
 
-##### Steps to check for the version updates
+##### Steps to check for the version updates in developer's environments
 
 ###### Staging
 ```
@@ -169,8 +173,8 @@ YII2_VERSION: "2.0.48"
 % terraform refresh
 # go to aws RDS console, click $database, Configuration, check for the engine version
 % ../../../scripts/ansible_init.sh --env staging
-% TF_KEY_NAME=private_ip ansible-playbook -i ../../inventories -v webapp_playbook.yml -v
-% ansible-playbook -i ../../inventories bastion_playbook.yml -v -e "backupDate=latest"
+% TF_KEY_NAME=private_ip ansible-playbook -i ../../inventories webapp_playbook.yml -v
+% ansible-playbook -i ../../inventories bastion_playbook.yml -e "backupDate=latest" -v
 # make sure staging has been deployed successfully through the gitlab pipeline, eg. sd_gigadb
 # staging now should have the latest datasets, check the RSS feed in staging website
 # log in to the staging bastion
@@ -203,8 +207,8 @@ Yii Migration Tool (based on Yii v2.0.48)
 % terraform refresh
 # go to aws RDS console, click $database, Configuration, check for the engine version
 % ../../../scripts/ansible_init.sh --env live
-% TF_KEY_NAME=private_ip ansible-playbook -i ../../inventories -v webapp_playbook.yml -v
-% ansible-playbook -i ../../inventories bastion_playbook.yml -v -e "backupDate=latest"
+% TF_KEY_NAME=private_ip ansible-playbook -i ../../inventories webapp_playbook.yml -v
+% ansible-playbook -i ../../inventories bastion_playbook.yml -e "backupDate=latest" -v
 # make sure live has been deployed successfully through the gitlab pipeline, eg. ld_gigadb
 # live now should have the latest datasets, check the RSS feed in staging website
 # log in to the live bastion
@@ -230,7 +234,7 @@ Yii Migration Tool (based on Yii v2.0.48)
 
 ##### Steps to check for the version updates in Upstream live
 
-###### Upstream live
+###### Upstream live (only if all steps are passing in developer's environments)
 ```
 # log in upstream accrount 
 # instantiate and provision aws EC2 servers freshly after checkout this branch
@@ -238,6 +242,10 @@ Yii Migration Tool (based on Yii v2.0.48)
 % ../../../scripts/tf_init.sh --project gigascience/upstream/gigadb-website --env live
 % terraform apply
 % terraform refresh
+# go to aws RDS console, click $database, Configuration, check for the engine version
+% ../../../scripts/ansible_init.sh --env live
+% TF_KEY_NAME=private_ip ansible-playbook -i ../../inventories webapp_playbook.yml -v
+% ansible-playbook -i ../../inventories bastion_playbook.yml -e "backupDate=latest" -v
 # make sure upstream live has been re-builded and re-deployed successfully through the gitlab pipeline from the `upstream/gigadb-website/`, eg. build_live, ld_gigadb
 # upstream live now should have the latest datasets, check the RSS feed in the live gigadb website, https://beta.gigadb.org
 # log in to the upstream live bastion server
