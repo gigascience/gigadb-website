@@ -7,6 +7,9 @@ export PATH
 
 DOI=$1
 
+currentPath=$(pwd)
+userOutputDir="$currentPath/uploadDir"
+
 if [[ $(uname -n) =~ compute ]];then
   outputDir="/home/centos/uploadLogs"
 else
@@ -48,6 +51,11 @@ if [[ $(uname -n) =~ compute ]];then
   echo -e "$createReadMeFileStartMessage"
   docker run --rm -v /home/centos/readmeFiles:/app/readmeFiles "registry.gitlab.com/$GITLAB_PROJECT/production_tool:$GIGADB_ENV" /app/yii readme/create --doi "$DOI" | tee "$outputDir/readme-$DOI.txt"
   echo -e "$createReadMeFileEndMessage"
+
+  if [[ $userOutputDir != "/home/centos/outputDir" ]];then
+      mv /home/centos/uploadLogs/* "$userOutputDir/"
+      mv /home/centos/uploadDir/* "$userOutputDir/" || true
+  fi
 
 else
   echo -e "$updateMD5ChecksumStartMessage"
