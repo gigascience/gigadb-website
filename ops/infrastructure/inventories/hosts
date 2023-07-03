@@ -8,6 +8,11 @@ ansible_user = "admin"
 ansible_become = "true"
 prometheus_aws_access_key = "{{ lookup('ini', 'prometheus_aws_access_key type=properties file=ansible.properties') }}"
 prometheus_aws_private_key = "{{ lookup('ini', 'prometheus_aws_private_key type=properties file=ansible.properties') }}"
+grafana_contact_smtp_host = "{{ lookup('ini', 'grafana_contact_smtp_host type=properties file=ansible.properties') }}"
+grafana_contact_smtp_user = "{{ lookup('ini', 'grafana_contact_smtp_user type=properties file=ansible.properties') }}"
+grafana_contact_smtp_password = "{{ lookup('ini', 'grafana_contact_smtp_password type=properties file=ansible.properties') }}"
+grafana_contact_smtp_from_address =  "{{ lookup('ini', 'grafana_contact_smtp_from_address type=properties file=ansible.properties') }}"
+grafana_contact_smtp_from_name = "{{ lookup('ini', 'grafana_contact_smtp_from_name type=properties file=ansible.properties') }}"
 
 [type_aws_instance:vars]
 

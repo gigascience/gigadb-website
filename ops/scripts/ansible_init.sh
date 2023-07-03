@@ -94,8 +94,18 @@ echo "gitter_api_token = $gitter_api_token" >> ansible.properties
 # variables needed for monitoring provisioning
 prometheus_aws_access_key=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$FORK_VARIABLES_URL/prometheus_aws_access_key" | jq -r .value)
 prometheus_aws_private_key=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$FORK_VARIABLES_URL/prometheus_aws_private_key" | jq -r .value)
+grafana_contact_smtp_host=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$FORK_VARIABLES_URL/grafana_contact_smtp_host" | jq -r .value)
+grafana_contact_smtp_user=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$FORK_VARIABLES_URL/grafana_contact_smtp_user" | jq -r .value)
+grafana_contact_smtp_password=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$FORK_VARIABLES_URL/grafana_contact_smtp_password" | jq -r .value)
+grafana_contact_smtp_from_address=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$FORK_VARIABLES_URL/grafana_contact_smtp_from_address" | jq -r .value)
+grafana_contact_smtp_from_name=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$FORK_VARIABLES_URL/grafana_contact_smtp_from_name" | jq -r .value)
 echo "prometheus_aws_access_key = $prometheus_aws_access_key" >> ansible.properties
 echo "prometheus_aws_private_key = $prometheus_aws_private_key" >> ansible.properties
+echo "grafana_contact_smtp_host = $grafana_contact_smtp_host" >> ansible.properties
+echo "grafana_contact_smtp_user = $grafana_contact_smtp_user" >> ansible.properties
+echo "grafana_contact_smtp_password = $grafana_contact_smtp_password" >> ansible.properties
+echo "grafana_contact_smtp_from_address = $grafana_contact_smtp_from_address" >> ansible.properties
+echo "grafana_contact_smtp_from_name = $grafana_contact_smtp_from_name" >> ansible.properties
 
 # Add newly created vms to known host file
 # Remove old key
