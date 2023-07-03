@@ -52,9 +52,12 @@ if [[ $(uname -n) =~ compute ]];then
   docker run --rm -v /home/centos/readmeFiles:/app/readmeFiles "registry.gitlab.com/$GITLAB_PROJECT/production_tool:$GIGADB_ENV" /app/yii readme/create --doi "$DOI" | tee "$outputDir/readme-$DOI.txt"
   echo -e "$createReadMeFileEndMessage"
 
-  if [[ $userOutputDir != "/home/centos/outputDir" ]];then
-      mv /home/centos/uploadLogs/* "$userOutputDir/"
-      mv /home/centos/uploadDir/* "$userOutputDir/" || true
+  if [[ $userOutputDir != "$outputDir" && -n "$(ls -A $outputDir)" ]];then
+      mv $outputDir/* "$userOutputDir/" || true
+      echo -e "\nAll postUpload logs have been moved to: $userOutputDir"
+      echo -e "\nPostUpload jobs done!"
+  else
+      echo -e "\nNo logs found in: $outputDir!"
   fi
 
 else
