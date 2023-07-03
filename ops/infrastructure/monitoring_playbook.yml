@@ -197,4 +197,21 @@
 
     - debug:
         msg: "datasource output: {{ datasource }}"
+    
+    - name: Copy Node exporter dashboard to the server
+      ansible.builtin.copy:
+        src: "../../gigascience-node-exporter-dashboard.json"
+        dest: /tmp/gigascience-node-exporter-dashboard.json
 
+    - name: Import Prometheus Grafana dashboard
+      grafana_dashboard:
+        grafana_url: "http://localhost:3000"
+        grafana_user: "admin"
+        grafana_password: "admin"
+        folder: General
+        path: /tmp/gigascience-node-exporter-dashboard.json
+        validate_certs: "false"
+      register: imported_dashboard
+
+    - debug:
+        msg: "imported_dashboard: {{ imported_dashboard }}"
