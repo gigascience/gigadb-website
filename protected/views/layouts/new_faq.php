@@ -155,8 +155,6 @@
                 <div class="col-xs-6">
                     <ul class="list-inline base-footer-logo-bar">
                         <li><a href="http://gigasciencepress.com/"><img src="/images/new_interface_image/gigascience_white.png" alt="Go to GigaScience Journal web site"></a></li>
-                        <li><a href="http://www.genomics.cn/"><img src="/images/new_interface_image/bgi_logo_white.png" alt="Go to 华大基因 BGI (Beijing Genomics Institute) website"></a></li>
-                        <li><a href="https://www.cngb.org"><img src="/images/new_interface_image/chinagenbank.png" alt="Go to CNGB (China National Gene Bank) website"></a></li>
                     </ul>
                 </div>
                 <div class="col-xs-6 text-right">
