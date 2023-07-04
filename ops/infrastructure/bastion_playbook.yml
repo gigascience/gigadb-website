@@ -37,14 +37,14 @@
         name: https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm
         state: present
 
-    - name: Install PostgreSQL 11 client packages
+    - name: Install PostgreSQL 14 client packages
       become: yes
       dnf:
-        name: postgresql11
+        name: postgresql14
         state: present
 
     - name: Test pg_isready can connect to RDS instance
-      ansible.builtin.command: "/usr/pgsql-11/bin/pg_isready -h {{ pg_host }}"
+      ansible.builtin.command: "/usr/pgsql-14/bin/pg_isready -h {{ pg_host }}"
       register: pg_isready
     - debug: msg="{{ pg_isready.stdout }}"
 

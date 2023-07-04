@@ -9,9 +9,12 @@ RUN apt-get update -yqq && \
 # Basic dependencies
 RUN apt-get update -yq && \
     apt-get install -y --no-install-recommends \
-        libzip-dev \
-        libpq-dev && \
-        apt-get clean 
+            libzip-dev \
+            libpq-dev \
+            gnupg \
+            wget \
+            ca-certificates && \
+            apt-get clean
 
 # Install extensions for the postgresql and PHP integration
 RUN docker-php-ext-install pdo_pgsql
@@ -22,9 +25,12 @@ RUN if [ ${INSTALL_PG_CLIENT} = true ]; then \
     # Create folders if not exists (https://github.com/tianon/docker-brew-debian/issues/65)
     mkdir -p /usr/share/man/man1 && \
     mkdir -p /usr/share/man/man7 && \
+    # Add the PostgreSQL Apt Repository
+    echo "deb http://apt.postgresql.org/pub/repos/apt buster-pgdg main" > /etc/apt/sources.list.d/pgdg.list && \
+    wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - && \
     # Install the pgsql client
     apt-get update -yq && \
-    apt-get install -y postgresql-client-11 \
+    apt-get install -y postgresql-client-14 \
 ;fi
 
 # Install composer

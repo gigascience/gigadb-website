@@ -16,7 +16,7 @@
     "require": {
         "php": ">=5.4.0",
         "yidas/yii2-composer-bower-skip": "~2.0.13",
-        "yiisoft/yii2": "~2.0.14",
+        "yiisoft/yii2": "~2.0.48",
         "yiisoft/yii2-bootstrap": "~2.0.0",
         "pda/pheanstalk":"~3.2.0",
         "yiisoft/yii2-queue": "~2.3.0",
