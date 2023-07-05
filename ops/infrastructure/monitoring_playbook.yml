@@ -82,6 +82,7 @@
   hosts: monitoring_hosts
   tags:
     - grafana-api-token
+    - grafana-config
 
   tasks:
     - name: Switch to org 1
@@ -172,6 +173,7 @@
     - grafana-config
   collections:
     - community.grafana
+    - grafana.grafana
 
   module_defaults:
     group/community.grafana.grafana:
@@ -215,3 +217,32 @@
 
     - debug:
         msg: "imported_dashboard: {{ imported_dashboard }}"
+    
+    - name: Get the UID of the default contact point
+      tags:
+        - contact-points
+      ansible.builtin.uri:
+        url: "http://localhost:3000/api/v1/provisioning/contact-points?name=grafana-default-email"
+        method: GET
+        return_content: true
+        headers:
+          Content-Type: application/json
+          Authorization: "Bearer {{ create_key_outcome.json['key'] }}"  
+      register: contact_points
+
+    - debug:
+        msg: "Contact point UID: {{ contact_points.json[0]['uid'] }}"
+
+    - name: Update the grafana-default-email contact point with tech team email
+      tags:
+        - contact-points
+      ansible.builtin.uri:
+        url: "http://localhost:3000/api/v1/provisioning/contact-points/{{ contact_points.json[0]['uid'] }}"
+        method: PUT
+        body: "{{ lookup('ansible.builtin.file','../../grafana-contact-points.json') }}"
+        status_code: 202
+        body_format: json
+        headers:
+          Content-Type: application/json
+          Authorization: "Bearer {{ create_key_outcome.json['key'] }}"  
+
