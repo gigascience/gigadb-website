@@ -246,3 +246,11 @@
           Content-Type: application/json
           Authorization: "Bearer {{ create_key_outcome.json['key'] }}"  
 
+    - name: Create a folder for our alert rule
+      community.grafana.grafana_folder:
+        title: "gigadb-ec2-instances"
+        state: present
+      register: folder
+
+    - debug:
+        msg: "Folder UID: {{ folder.folder['uid'] }}"
