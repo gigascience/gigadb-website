@@ -247,6 +247,8 @@
           Authorization: "Bearer {{ create_key_outcome.json['key'] }}"  
 
     - name: Create a folder for our alert rule
+      tags:
+        - alert-rules
       community.grafana.grafana_folder:
         title: "gigadb-ec2-instances"
         state: present
@@ -254,3 +256,46 @@
 
     - debug:
         msg: "Folder UID: {{ folder.folder['uid'] }}"
+
+
+    - name: Create a new alert rule for low disk space
+      tags:
+        - alert-rules
+      ansible.builtin.uri:
+        url: "http://localhost:3000/api/v1/provisioning/alert-rules"
+        method: POST
+        return_content: true
+        headers:
+          Content-Type: "application/json"
+          Authorization: "Bearer {{ create_key_outcome.json['key'] }}"  
+        body_format: json
+        body: "{{ lookup('ansible.builtin.file','../../gigadb-disk-alert-rule.json') }}"
+        status_code:
+          - 201
+          - 500
+      register: created_alert_rule
+
+    - debug:
+        msg: "{{ created_alert_rule }}"
+
+    - name: Delete existing alert rule
+      tags:
+        - alert-rules
+      ansible.builtin.uri:
+        url: "http://localhost:3000/api/v1/provisioning/alert-rules"
+        method: POST
+        return_content: true
+        headers:
+          Content-Type: "application/json"
+          Authorization: "Bearer {{ create_key_outcome.json['key'] }}"  
+        body_format: json
+        body: "{{ lookup('ansible.builtin.file','../../gigadb-disk-alert-rule.json') }}"
+        status_code:
+          - 201
+          - 500
+      register: deleted_alert_rule
+      when: created_alert_rule.status == 500
+
+    - debug:
+        msg: "{{ deleted_alert_rule }}"
+
