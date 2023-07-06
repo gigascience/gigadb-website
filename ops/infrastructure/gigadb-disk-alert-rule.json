@@ -2,7 +2,7 @@
   "orgID": 1,
   "folderUID": "f500615a-6825-484d-bfae-d0abdde78ebd",
   "ruleGroup": "regular",
-  "title": "Disk Space Alert 2",
+  "title": "Disk Space Alert",
   "condition": "C",
   "data": [
     {

@@ -278,7 +278,37 @@
     - debug:
         msg: "{{ created_alert_rule }}"
 
+    - name: Get the list of alert rules if creating alert rule failed
+      tags:
+        - alert-rules
+      ansible.builtin.uri:
+        url: "http://localhost:3000/api/v1/provisioning/alert-rules"
+        method: GET
+        return_content: true
+        headers:
+          Content-Type: "application/json"
+          Authorization: "Bearer {{ create_key_outcome.json['key'] }}"  
+        status_code:
+          - 200
+      register: alert_rules
+      when: created_alert_rule.status == 500
+
     - name: Delete existing alert rule
+      tags:
+        - alert-rules
+      ansible.builtin.uri:
+        url: "http://localhost:3000/api/v1/provisioning/alert-rules/{{ alert_rules.json[0]['uid'] }}"
+        method: DELETE
+        return_content: true
+        headers:
+          Content-Type: "application/json"
+          Authorization: "Bearer {{ create_key_outcome.json['key'] }}"  
+        status_code:
+          - 204
+      register: deleted_alert_rule
+      when: created_alert_rule.status == 500
+
+    - name: Re-create a new alert rule for low disk space
       tags:
         - alert-rules
       ansible.builtin.uri:
@@ -292,10 +322,10 @@
         body: "{{ lookup('ansible.builtin.file','../../gigadb-disk-alert-rule.json') }}"
         status_code:
           - 201
-          - 500
-      register: deleted_alert_rule
+      register: created_alert_rule
       when: created_alert_rule.status == 500
 
     - debug:
-        msg: "{{ deleted_alert_rule }}"
+        msg: "{{ created_alert_rule }}"
+
 
