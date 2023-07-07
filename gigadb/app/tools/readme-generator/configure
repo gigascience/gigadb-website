@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+
+# load the library of configuration function
+source ../../configurator/src/dotfiles.sh
+
+# bail out upon error
+set -e
+
+# bail out if an unset variable is used
+set -u
+
+# set up the application source
+appSource=.
+
+set -a
+makeDotEnv $appSource
+makeDotSecrets $appSource
+set +a
+
+# generate config for Yii2 config files: SOURCE TARGET VARS
+# If we are on staging environment override variable name with their remote environment counterpart
+echo "Current environment: $GIGADB_ENV"
+
+set -a
+if [[ $GIGADB_ENV != "dev" && $GIGADB_ENV != "CI" ]];then
+    GIGADB_HOST=$gigadb_db_host
+    GIGADB_USER=$gigadb_db_user
+    GIGADB_PASSWORD=$gigadb_db_password
+    GIGADB_DB=$gigadb_db_database
+    echo "GigaDB_ENV is not dev nor CI!!"
+    echo $GIGADB_HOST
+fi
+set +a
+
+makeConfigs "${appSource}/config-sources/db.php.dist" "${appSource}/config/db.php" '$GIGADB_HOST:$GIGADB_DB:$GIGADB_USER:$GIGADB_PASSWORD'
+makeConfigs "${appSource}/config-sources/test_db.php.dist" "${appSource}/config/test_db.php" '$GIGADB_HOST:$GIGADB_DB:$GIGADB_USER:$GIGADB_PASSWORD'
+
+# Create curators directory in runtime folder
+mkdir -p "${appSource}"/runtime/curators

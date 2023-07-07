@@ -18,11 +18,13 @@ services:
       # Connect to db-tier network in ops/docker-compose.yml
       - proxy-db-tier
 
-  config:
+  configure:
     image: rija/docker-alpine-shell-tools:1.0.1
+    working_dir: /gigadb/app/tools/readme-generator
     volumes:
-      - .:/app
-    command: /app/generate_config.sh
+      - ./:/gigadb/app/tools/readme-generator:delegated
+      - ../../configurator:/gigadb/app/configurator:ro
+    command: /gigadb/app/tools/readme-generator/configure
 
 networks:
   proxy-db-tier:  # represents db-tier network in ops/docker-compose.yml

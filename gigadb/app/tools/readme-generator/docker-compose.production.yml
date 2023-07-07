@@ -15,4 +15,4 @@ services:
     image: rija/docker-alpine-shell-tools:1.0.1
     volumes:
       - .:/app
-    command: /app/generate_config.sh
+    command: /app/configure

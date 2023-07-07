@@ -26,9 +26,10 @@ $ cp config-sources/env.example .env
 Generate config files:
 ```
 # Generate configuration using variables in .env, GitLab, then exit
-$ docker-compose run --rm config
+$ docker-compose run --rm configure
 ```
-> db.php and test_db.php should be present in the `config` directory.
+> db.php and test_db.php should be present in the `config` directory. There 
+> should be a runtime/curators directory too.
 
 Install Composer dependencies:
 ```
@@ -38,7 +39,7 @@ $  docker-compose run --rm tool composer install
 
 ## Using readme generator tool
 
-The readme information for a dataset can be viewed on standard output using it's
+The readme information for a dataset can be viewed on standard output using its
 DOI:
 ```
 $ docker-compose run --rm tool /app/yii readme/create --doi 100142
