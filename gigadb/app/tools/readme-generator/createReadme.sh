@@ -17,6 +17,9 @@ while [[ $# -gt 0 ]]; do
         outdir=$2
         shift
         ;;
+    --wasabi)
+        wasabi_upload=true
+        ;;
     *)
         echo "Invalid option: $1"
         exit 1  ## Could be optional.
@@ -30,4 +33,8 @@ if [[ $(uname -n) =~ compute ]];then
   docker run --rm -v /home/centos/readmeFiles:/app/readmeFiles registry.gitlab.com/$GITLAB_PROJECT/production_tool:$GIGADB_ENV /app/yii readme/create --doi "$doi" --outdir "$outdir"
 else
   docker-compose run --rm tool /app/yii readme/create --doi "$doi" --outdir "$outdir"
+fi
+
+if [ "$wasabi_upload" ]; then
+  echo "Uploading readme file to Wasabi..."
 fi
