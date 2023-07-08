@@ -63,6 +63,7 @@ copy_to_wasabi () {
     echo "$(date +'%Y/%m/%d %H:%M:%S') DEBUG  : Found file $source_dataset_path" >> "$LOGFILE"
     echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Attempting to copy file to ${destination_dataset_path}"  >> "$LOGFILE"
 
+  docker-compose run --rm rclone rclone ls wasabi:gigadb-datasets/dev
 #    # Continue running script if there is an error executing rclone copy
 #    set +e
 #    # Perform data transfer to Wasabi
