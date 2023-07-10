@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+#
+# Create readme file and optionally upload to Wasabi
 
 # Stop script upon error
 set -e
@@ -42,18 +44,25 @@ touch "$LOGFILE"
 SOURCE_PATH="$APP_SOURCE/runtime/curators"
 DESTINATION_PATH="wasabi:gigadb-datasets/dev/pub/10.5524"
 
-doi_directory_range () {
-  # Determine DOI range directory to use based on starting DOI
+#######################################
+# Determine DOI range directory name
+# Globals:
+#   dir_range
+#   doi
+# Arguments:
+#   None
+#######################################
+get_doi_directory_range() {
   if [ "$doi" -le 101000 ]; then
-      dir_range="100001_101000"
+    dir_range="100001_101000"
   elif [ "$doi" -le 102000 ] && [ "$doi" -ge 101001 ]; then
-      dir_range="101001_102000"
+    dir_range="101001_102000"
   elif [ "$doi" -le 103000 ] && [ "$doi" -ge 102001 ]; then
-      dir_range="102001_103000"
+    dir_range="102001_103000"
   fi
 }
 
-copy_to_wasabi () {
+copy_to_wasabi() {
   # Create directory path to datasets
   source_dataset_path="${SOURCE_PATH}/readme_${doi}.txt"
   destination_dataset_path="${DESTINATION_PATH}/${dir_range}/${doi}/"
@@ -93,8 +102,9 @@ else
 fi
 
 if [ "$wasabi_upload" ]; then
+  echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Uploading file ${source_dataset_path} into Wasabi" >> "$LOGFILE"
   dir_range=""
-  doi_directory_range
+  get_doi_directory_range
   copy_to_wasabi
-  echo "Uploaded readme file to Wasabi bucket directory: ${destination_dataset_path}"
+  echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : File uploaded to Wasabi bucket directory ${destination_dataset_path}" >> "$LOGFILE"
 fi
