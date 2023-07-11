@@ -36,6 +36,14 @@ Install Composer dependencies:
 $  docker-compose run --rm tool composer install 
 ```
 
+## How to test
+
+Ensure you have `bats` installed (e.g: on macOS, you could do `brew install bats-core`
+or `port install bats-core`). Then run:
+```
+$ bats tests
+```
+
 
 ## Using readme generator tool
 
