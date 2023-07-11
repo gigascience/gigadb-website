@@ -40,7 +40,7 @@ LOGFILE="$LOGDIR/wasabi_${doi}_$(date +'%Y%m%d_%H%M%S').log"
 mkdir -p $LOGDIR
 touch "$LOGFILE"
 
-# Default is to copy TEST readme file to dev directory in Wasabi
+# Default is to copy readme file to dev directory in Wasabi
 SOURCE_PATH="$APP_SOURCE/runtime/curators"
 DESTINATION_PATH="wasabi:gigadb-datasets/dev/pub/10.5524"
 
@@ -62,6 +62,20 @@ get_doi_directory_range() {
   fi
 }
 
+#######################################
+# Copies readme text file into Wasabi bucket
+# Globals:
+#   source_dataset_path
+#   destination_dataset_path
+#   SOURCE_PATH
+#   doi
+#   DESTINATION_PATH
+#   dir_range
+#   LOGFILE
+#   rclone_exit_code
+# Arguments:
+#   None
+#######################################
 copy_to_wasabi() {
   # Create directory path to datasets
   source_dataset_path="${SOURCE_PATH}/readme_${doi}.txt"
@@ -94,6 +108,7 @@ copy_to_wasabi() {
   fi
 }
 
+# Conditional for how to generate readme file - dependant on user's environment
 if [[ $(uname -n) =~ compute ]];then
   . /home/centos/.bash_profile
   docker run --rm -v /home/centos/readmeFiles:/app/readmeFiles registry.gitlab.com/$GITLAB_PROJECT/production_tool:$GIGADB_ENV /app/yii readme/create --doi "$doi" --outdir "$outdir"
@@ -101,6 +116,7 @@ else
   docker-compose run --rm tool /app/yii readme/create --doi "$doi" --outdir "$outdir"
 fi
 
+# Readme file can be copied into Wasabi if --wasabi flag is present
 if [ "$wasabi_upload" ]; then
   echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Uploading file ${source_dataset_path} into Wasabi" >> "$LOGFILE"
   dir_range=""
