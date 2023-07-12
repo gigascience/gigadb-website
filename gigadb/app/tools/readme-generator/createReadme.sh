@@ -52,7 +52,7 @@ DESTINATION_PATH="wasabi:gigadb-datasets/dev/pub/10.5524"
 # Arguments:
 #   None
 #######################################
-get_doi_directory_range() {
+function get_doi_directory_range() {
   if [ "$doi" -le 101000 ]; then
     dir_range="100001_101000"
   elif [ "$doi" -le 102000 ] && [ "$doi" -ge 101001 ]; then
@@ -76,7 +76,7 @@ get_doi_directory_range() {
 # Arguments:
 #   None
 #######################################
-copy_to_wasabi() {
+function copy_to_wasabi() {
   # Create directory path to datasets
   source_dataset_path="${SOURCE_PATH}/readme_${doi}.txt"
   destination_dataset_path="${DESTINATION_PATH}/${dir_range}/${doi}/"

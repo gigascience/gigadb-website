@@ -36,12 +36,37 @@ Install Composer dependencies:
 $  docker-compose run --rm tool composer install 
 ```
 
+The create readme tool also uses the rclone configuration file from the wasabi
+migration tool. Change directory to the `gigadb-website/gigadb/app/tools/wasabi-migration`
+directory and make a copy of the `env.example` file called `.env`:
+```
+$ cd gigadb/app/tools/wasabi-migration
+$ cp env.example .env
+```
+
+In the new `.env` file, uncomment and provide a value for the
+`GITLAB_PRIVATE_TOKEN` variable.
+
+Also provide the name of GitLab project fork in the `REPO_NAME` variable.
+
+You should then be able to create the configuration file for rclone by
+executing:
+```
+$ docker-compose run --rm config
+```
+
+Check if the configuration process has worked by looking for the
+`config/rclone.conf` file.
+
 ## How to test
 
 Ensure you have `bats` installed (e.g: on macOS, you could do `brew install bats-core`
 or `port install bats-core`). Then run:
 ```
+# Ensure you are in gigadb/app/tools/readme-generator directory
 $ bats tests
+ ✓ create readme file
+ ✓ create readme file and copy to wasabi
 ```
 
 
