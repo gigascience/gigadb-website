@@ -11,6 +11,7 @@ if [[ $(uname -n) =~ compute ]];then
 
   if [[ $uploadDir != "/home/centos/uploadDir" ]];then
     mv $uploadDir/* /home/centos/uploadDir/
+    chown centos:centos /home/centos/uploadDir/*
   fi
 
   docker run --rm  --env-file ./db-env registry.gitlab.com/$GITLAB_PROJECT/production_pgclient:$GIGADB_ENV -c 'drop trigger if exists file_finder_trigger on file RESTRICT'
