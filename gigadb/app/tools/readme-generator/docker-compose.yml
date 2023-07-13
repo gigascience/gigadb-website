@@ -18,14 +18,6 @@ services:
       # Connect to db-tier network in ops/docker-compose.yml
       - proxy-db-tier
 
-  rclone:
-    build:
-      context: .
-      dockerfile: ../wasabi-migration/Dockerfile
-    volumes:
-      - ../wasabi-migration/config:/root/.config/rclone
-      - .:/app
-
   configure:
     image: rija/docker-alpine-shell-tools:1.0.1
     working_dir: /gigadb/app/tools/readme-generator
