@@ -36,7 +36,20 @@ Install Composer dependencies:
 $  docker-compose run --rm tool composer install 
 ```
 
-The create readme tool also uses the rclone configuration file from the wasabi
+The copying of readme files created by this tool into Wasabi requires Rclone
+to be installed on your `dev` machine. This can be done using as follows:
+```
+# Using Homebrew
+$ brew install rclome
+# Or using Macports
+$ sudo port install rclone
+```
+
+> There is an analogous step in the Ansible playbook for the bastion server 
+> for installing Rclone on staging and live environments.
+> ansible-galaxy install -r ../../../infrastructure/requirements.yml
+
+The create readme tool uses the rclone configuration file from the wasabi
 migration tool. Change directory to the `gigadb-website/gigadb/app/tools/wasabi-migration`
 directory and make a copy of the `env.example` file called `.env`:
 ```
@@ -114,6 +127,12 @@ Exception 'Exception' with message 'Dataset 1 not found'
 ```
 
 ## Using readme generator tool on Bastion server
+
+Before running the bastion playbook, execute the following command to install
+the ansible-rclone role for Ansible in your development environment:
+```
+$ ansible-galaxy install -r ../../../infrastructure/requirements.yml
+```
 
 Log into bastion server
 ```
