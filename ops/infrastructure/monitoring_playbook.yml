@@ -173,7 +173,6 @@
     - grafana-config
   collections:
     - community.grafana
-    - grafana.grafana
 
   module_defaults:
     group/community.grafana.grafana:
@@ -184,9 +183,6 @@
   tasks:
     - name: Ensure Prometheus datasource exists.
       grafana_datasource:
-        grafana_url: "http://localhost:3000"
-        grafana_user: "admin"
-        grafana_password: "admin"
         name: "datasource-prometheus"
         ds_type: "prometheus"
         ds_url: "http://localhost:9090"
@@ -207,9 +203,6 @@
 
     - name: Import Prometheus Grafana dashboard
       grafana_dashboard:
-        grafana_url: "http://localhost:3000"
-        grafana_user: "admin"
-        grafana_password: "admin"
         folder: General
         path: /tmp/gigascience-node-exporter-dashboard.json
         validate_certs: "false"
