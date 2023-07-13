@@ -6,3 +6,16 @@ secret_access_key = {{ aws_secret_access_key }}
 region = ap-east-1
 location_constraint = ap-east-1
 acl = private
+
+[wasabi]
+type = s3
+env_auth = false
+access_key_id = {{ wasabi_access_key_id }}
+secret_access_key = {{ wasabi_secret_access_key }}
+region = ap-northeast-1
+endpoint = s3.ap-northeast-1.wasabisys.com
+location_constraint = 
+acl = public-read
+server_side_encryption = 
+storage_class = 
+provider = Other

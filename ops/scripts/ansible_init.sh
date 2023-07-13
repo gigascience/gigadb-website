@@ -78,6 +78,13 @@ aws_secret_access_key=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" 
 echo "aws_access_key_id = $aws_access_key_id" >> ansible.properties
 echo "aws_secret_access_key = $aws_secret_access_key" >> ansible.properties
 
+# Required by rclone.conf.j2 for bastion server to copy readme files to Wasabi bucket
+wasabi_access_key_id=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$PROJECT_VARIABLES_URL/WASABI_ACCESS_KEY_ID" | jq -r .value)
+wasabi_secret_access_key=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$PROJECT_VARIABLES_URL/WASABI_SECRET_ACCESS_KEY" | jq -r .value)
+
+echo "wasabi_access_key_id = $wasabi_access_key_id" >> ansible.properties
+echo "wasabi_secret_access_key = $wasabi_secret_access_key" >> ansible.properties
+
 # Retrieve ips of provisioned ec2 instances
 bastion_ip=$(terraform output ec2_bastion_public_ip | sed 's/"//g')
 webapp_ip=$(terraform output ec2_private_ip | sed 's/"//g')
