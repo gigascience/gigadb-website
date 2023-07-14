@@ -8,6 +8,10 @@ set -e
 PATH=/usr/local/bin:$PATH
 export PATH
 
+# Locations of rclone.conf
+BASTION_RCLONE_CONF_LOCATION=' --config /home/centos/.config/rclone/rclone.conf'
+DEV_RCLONE_CONF_LOCATION=' --config ../wasabi-migration/config/rclone.conf'
+
 # Rclone copy is executed in dry run mode as default
 # Use --apply flag to turn off dry run mode
 dry_run=true
@@ -107,8 +111,11 @@ function copy_to_wasabi() {
     set +e
     # Construct rclone command to copy readme file to Wasabi
     rclone_cmd="rclone copy ${source_dataset_path} ${destination_dataset_path}"
-    rclone_cmd+=" --config ../wasabi-migration/config/rclone.conf"
-    rclone_cmd+=" --create-empty-src-dirs"
+    if [[ $(uname -n) =~ compute ]];then
+      rclone_cmd+="${BASTION_RCLONE_CONF_LOCATION}"
+    else
+      rclone_cmd+="${DEV_RCLONE_CONF_LOCATION}"
+    fi
     rclone_cmd+=" --log-file=${LOGFILE}"
     rclone_cmd+=" --log-level INFO"
     rclone_cmd+=" --stats-log-level DEBUG"
