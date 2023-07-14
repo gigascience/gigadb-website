@@ -12,6 +12,11 @@ export PATH
 # Use --apply flag to turn off dry run mode
 dry_run=true
 
+# By default, readme files will be copied into the
+# dev directory. Use the --use-live-data flag to
+# readme files to the live directory
+use_live_data=false
+
 # Parse command line parameters
 while [[ $# -gt 0 ]]; do
     case "$1" in
@@ -28,6 +33,9 @@ while [[ $# -gt 0 ]]; do
         ;;
     --apply)
         dry_run=false
+        ;;
+    --use-live-data)
+        use_live_data=true
         ;;
     *)
         echo "Invalid option: $1"
@@ -49,7 +57,12 @@ touch "${LOGFILE}"
 
 # Default is to copy readme file to dev directory in Wasabi
 SOURCE_PATH="${APP_SOURCE}/runtime/curators"
-DESTINATION_PATH="wasabi:gigadb-datasets/dev/pub/10.5524"
+if [ "${use_live_data}" = false ]; then
+  DESTINATION_PATH="wasabi:gigadb-datasets/dev/pub/10.5524"
+elif [ "${use_live_data}" = true ]; then
+  echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Copying readme file into LIVE data directory" >> "$LOGFILE"
+  DESTINATION_PATH="wasabi:gigadb-datasets/live/pub/10.5524"
+fi
 
 #######################################
 # Determine DOI range directory name
@@ -90,7 +103,6 @@ function copy_to_wasabi() {
 
   # Check readme file exists
   if [ -f "$source_dataset_path" ]; then
-    echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Attempting to copy ${source_dataset_path} to ${destination_dataset_path}"  >> "$LOGFILE"
     # Continue running script if there is an error executing rclone copy
     set +e
     # Construct rclone command to copy readme file to Wasabi
