@@ -8,6 +8,10 @@ set -e
 PATH=/usr/local/bin:$PATH
 export PATH
 
+# Rclone copy is executed in dry run mode as default
+# Use --apply flag to turn off dry run mode
+dry_run=true
+
 # Parse command line parameters
 while [[ $# -gt 0 ]]; do
     case "$1" in
@@ -21,6 +25,9 @@ while [[ $# -gt 0 ]]; do
         ;;
     --wasabi)
         wasabi_upload=true
+        ;;
+    --apply)
+        dry_run=false
         ;;
     *)
         echo "Invalid option: $1"
@@ -93,6 +100,9 @@ function copy_to_wasabi() {
     rclone_cmd+=" --log-file=${LOGFILE}"
     rclone_cmd+=" --log-level INFO"
     rclone_cmd+=" --stats-log-level DEBUG"
+    if [ "${dry_run}" = true ]; then
+      rclone_cmd+=" --dry-run"
+    fi
     rclone_cmd+=" >> ${LOGFILE}"
     echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Executing: ${rclone_cmd}" >> "$LOGFILE"
     # Execute command
