@@ -37,11 +37,11 @@ APP_SOURCE=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 # Setup logging
 LOGDIR="$APP_SOURCE/logs"
 LOGFILE="$LOGDIR/wasabi_${doi}_$(date +'%Y%m%d_%H%M%S').log"
-mkdir -p $LOGDIR
-touch "$LOGFILE"
+mkdir -p "${LOGDIR}"
+touch "${LOGFILE}"
 
 # Default is to copy readme file to dev directory in Wasabi
-SOURCE_PATH="$APP_SOURCE/runtime/curators"
+SOURCE_PATH="${APP_SOURCE}/runtime/curators"
 DESTINATION_PATH="wasabi:gigadb-datasets/dev/pub/10.5524"
 
 #######################################
@@ -53,11 +53,11 @@ DESTINATION_PATH="wasabi:gigadb-datasets/dev/pub/10.5524"
 #   None
 #######################################
 function get_doi_directory_range() {
-  if [ "$doi" -le 101000 ]; then
+  if [ "${doi}" -le 101000 ]; then
     dir_range="100001_101000"
-  elif [ "$doi" -le 102000 ] && [ "$doi" -ge 101001 ]; then
+  elif [ "${doi}" -le 102000 ] && [ "${doi}" -ge 101001 ]; then
     dir_range="101001_102000"
-  elif [ "$doi" -le 103000 ] && [ "$doi" -ge 102001 ]; then
+  elif [ "${doi}" -le 103000 ] && [ "${doi}" -ge 102001 ]; then
     dir_range="102001_103000"
   fi
 }
@@ -86,14 +86,17 @@ function copy_to_wasabi() {
     echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Attempting to copy ${source_dataset_path} to ${destination_dataset_path}"  >> "$LOGFILE"
     # Continue running script if there is an error executing rclone copy
     set +e
-    # Perform data transfer to Wasabi using rclone config in wasabi-migration tool
-    rclone copy "$source_dataset_path" "$destination_dataset_path" \
-        --config "../wasabi-migration/config/rclone.conf" \
-        --create-empty-src-dirs \
-        --log-file="$LOGFILE" \
-        --log-level INFO \
-        --stats-log-level DEBUG >> "$LOGFILE"
-  
+    # Construct rclone command to copy readme file to Wasabi
+    rclone_cmd="rclone copy ${source_dataset_path} ${destination_dataset_path}"
+    rclone_cmd+=" --config ../wasabi-migration/config/rclone.conf"
+    rclone_cmd+=" --create-empty-src-dirs"
+    rclone_cmd+=" --log-file=${LOGFILE}"
+    rclone_cmd+=" --log-level INFO"
+    rclone_cmd+=" --stats-log-level DEBUG"
+    rclone_cmd+=" >> ${LOGFILE}"
+    echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Executing: ${rclone_cmd}" >> "$LOGFILE"
+    # Execute command
+    eval "${rclone_cmd}"
     # Check exit code for rclone command
     rclone_exit_code=$?
     if [ $rclone_exit_code -eq 0 ]; then
