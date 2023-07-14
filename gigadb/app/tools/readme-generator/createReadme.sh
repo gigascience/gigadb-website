@@ -81,28 +81,26 @@ function copy_to_wasabi() {
   source_dataset_path="${SOURCE_PATH}/readme_${doi}.txt"
   destination_dataset_path="${DESTINATION_PATH}/${dir_range}/${doi}/"
 
-  # Check directory for current DOI exists
+  # Check readme file exists
   if [ -f "$source_dataset_path" ]; then
-    echo "$(date +'%Y/%m/%d %H:%M:%S') DEBUG  : Found file $source_dataset_path" >> "$LOGFILE"
-    echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Attempting to copy file to ${destination_dataset_path}"  >> "$LOGFILE"
-
-  # Continue running script if there is an error executing rclone copy
-  set +e
-  # Perform data transfer to Wasabi using rclone config in wasabi-migration tool
-  rclone copy "$source_dataset_path" "$destination_dataset_path" \
-      --config "../wasabi-migration/config/rclone.conf" \
-      --create-empty-src-dirs \
-      --log-file="$LOGFILE" \
-      --log-level INFO \
-      --stats-log-level DEBUG >> "$LOGFILE"
-
-  # Check exit code for rclone command
-  rclone_exit_code=$?
-  if [ $rclone_exit_code -eq 0 ]; then
-    echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Successfully copied file to Wasabi for DOI: $doi" >> "$LOGFILE"
-  else 
-    echo "$(date +'%Y/%m/%d %H:%M:%S') ERROR  : Problem with copying file to Wasabi - rclone has exit code: $rclone_exit_code" >> "$LOGFILE"
-  fi
+    echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Attempting to copy ${source_dataset_path} to ${destination_dataset_path}"  >> "$LOGFILE"
+    # Continue running script if there is an error executing rclone copy
+    set +e
+    # Perform data transfer to Wasabi using rclone config in wasabi-migration tool
+    rclone copy "$source_dataset_path" "$destination_dataset_path" \
+        --config "../wasabi-migration/config/rclone.conf" \
+        --create-empty-src-dirs \
+        --log-file="$LOGFILE" \
+        --log-level INFO \
+        --stats-log-level DEBUG >> "$LOGFILE"
+  
+    # Check exit code for rclone command
+    rclone_exit_code=$?
+    if [ $rclone_exit_code -eq 0 ]; then
+      echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Successfully copied file to Wasabi for DOI: $doi" >> "$LOGFILE"
+    else 
+      echo "$(date +'%Y/%m/%d %H:%M:%S') ERROR  : Problem with copying file to Wasabi - rclone has exit code: $rclone_exit_code" >> "$LOGFILE"
+    fi
   else
     echo "$(date +'%Y/%m/%d %H:%M:%S') DEBUG  : Could not find file $source_dataset_path" >> "$LOGFILE"
   fi
@@ -118,9 +116,7 @@ fi
 
 # Readme file can be copied into Wasabi if --wasabi flag is present
 if [ "$wasabi_upload" ]; then
-  echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Uploading file ${source_dataset_path} into Wasabi" >> "$LOGFILE"
   dir_range=""
   get_doi_directory_range
   copy_to_wasabi
-  echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : File uploaded to Wasabi bucket directory ${destination_dataset_path}" >> "$LOGFILE"
 fi
