@@ -9,8 +9,8 @@ PATH=/usr/local/bin:$PATH
 export PATH
 
 # Locations of rclone.conf
-BASTION_RCLONE_CONF_LOCATION=' --config /home/centos/.config/rclone/rclone.conf'
-DEV_RCLONE_CONF_LOCATION=' --config ../wasabi-migration/config/rclone.conf'
+BASTION_RCLONE_CONF_LOCATION='/home/centos/.config/rclone/rclone.conf'
+DEV_RCLONE_CONF_LOCATION='../wasabi-migration/config/rclone.conf'
 
 # Rclone copy is executed in dry run mode as default
 # Use --apply flag to turn off dry run mode
@@ -53,20 +53,43 @@ done
 # is located
 APP_SOURCE=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
+# Location where readme files will be created
+SOURCE_PATH="${APP_SOURCE}/runtime/curators"
+
 # Setup logging
 LOGDIR="$APP_SOURCE/logs"
 LOGFILE="$LOGDIR/wasabi_${doi}_$(date +'%Y%m%d_%H%M%S').log"
 mkdir -p "${LOGDIR}"
 touch "${LOGFILE}"
 
-# Default is to copy readme file to dev directory in Wasabi
-SOURCE_PATH="${APP_SOURCE}/runtime/curators"
-if [ "${use_live_data}" = false ]; then
+#######################################
+# Determine source and destination 
+# paths for rclone copy command
+# Globals:
+#   SOURCE_PATH
+#   APP_SOURCE
+#   DESTINATION_PATH
+#   use_live_data
+# Arguments:
+#   None
+#######################################
+function determine_destination_path() {
+  # Default is to copy readme file to dev directory because
+  # developers have access to the dev bucket directory
   DESTINATION_PATH="wasabi:gigadb-datasets/dev/pub/10.5524"
-elif [ "${use_live_data}" = true ]; then
-  echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Copying readme file into LIVE data directory" >> "$LOGFILE"
-  DESTINATION_PATH="wasabi:gigadb-datasets/live/pub/10.5524"
-fi
+  # If we are on bastion server then migration user credentials 
+  # for wasabi will be used, therefore readme files will be
+  # copied to staging directory in bucket
+  if [[ $(uname -n) =~ compute ]];then
+    DESTINATION_PATH="wasabi:gigadb-datasets/staging/pub/10.5524"
+  fi
+  # But if --use-live-data flag is present then always copy to 
+  # live directory regardless of environment
+  if [ "${use_live_data}" = true ]; then
+    echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Copying readme file into LIVE data directory" >> "$LOGFILE"
+    DESTINATION_PATH="wasabi:gigadb-datasets/live/pub/10.5524"
+  fi
+}
 
 #######################################
 # Determine DOI range directory name
@@ -112,20 +135,21 @@ function copy_to_wasabi() {
     # Construct rclone command to copy readme file to Wasabi
     rclone_cmd="rclone copy ${source_dataset_path} ${destination_dataset_path}"
     if [[ $(uname -n) =~ compute ]];then
-      rclone_cmd+="${BASTION_RCLONE_CONF_LOCATION}"
+      rclone_cmd+=" --config ${BASTION_RCLONE_CONF_LOCATION}"
     else
-      rclone_cmd+="${DEV_RCLONE_CONF_LOCATION}"
+      rclone_cmd+=" --config ${DEV_RCLONE_CONF_LOCATION}"
     fi
-    rclone_cmd+=" --log-file=${LOGFILE}"
-    rclone_cmd+=" --log-level INFO"
-    rclone_cmd+=" --stats-log-level DEBUG"
+    
     if [ "${dry_run}" = true ]; then
       rclone_cmd+=" --dry-run"
     fi
+    rclone_cmd+=" --log-file ${LOGFILE}"
+    rclone_cmd+=" --log-level INFO"
+    rclone_cmd+=" --stats-log-level DEBUG"
     rclone_cmd+=" >> ${LOGFILE}"
-    echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Executing: ${rclone_cmd}" >> "$LOGFILE"
     # Execute command
     eval "${rclone_cmd}"
+    echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Executed: ${rclone_cmd}" >> "$LOGFILE"
     # Check exit code for rclone command
     rclone_exit_code=$?
     if [ $rclone_exit_code -eq 0 ]; then
@@ -141,13 +165,15 @@ function copy_to_wasabi() {
 # Conditional for how to generate readme file - dependant on user's environment
 if [[ $(uname -n) =~ compute ]];then
   . /home/centos/.bash_profile
-  docker run --rm -v /home/centos/readmeFiles:/app/readmeFiles registry.gitlab.com/$GITLAB_PROJECT/production_tool:$GIGADB_ENV /app/yii readme/create --doi "$doi" --outdir "$outdir"
+  docker run --rm -v /home/centos/readmeFiles:/app/readmeFiles registry.gitlab.com/$GITLAB_PROJECT/production_tool:$GIGADB_ENV /app/yii readme/create --doi "${doi}" --outdir "${outdir}"
 else
   docker-compose run --rm tool /app/yii readme/create --doi "$doi" --outdir "$outdir"
 fi
+echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Created readme file in ${SOURCE_PATH}/readme_${doi}.txt" >> "$LOGFILE"
 
 # Readme file can be copied into Wasabi if --wasabi flag is present
 if [ "$wasabi_upload" ]; then
+  determine_destination_path
   dir_range=""
   get_doi_directory_range
   copy_to_wasabi
