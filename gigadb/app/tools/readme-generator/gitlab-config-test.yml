@@ -44,7 +44,7 @@ ReadmeGeneratorTest:
     - pwd
     - env | grep -iE "(GIGADB_ENV|PROJECT_VARIABLES_URL|MISC_VARIABLES_URL|GITLAB_PRIVATE_TOKEN|CI_PROJECT_URL|GROUP_VARIABLES_URL|FORK_VARIABLES_URL|GIGADB_COMPOSE_PROJECT_NAME)"| tee gigadb/app/tools/readme-generator/.env
     - cd gigadb/app/tools/readme-generator
-    - $LOCAL_COMPOSE run --rm config
+    - $LOCAL_COMPOSE run --rm configure
     - $LOCAL_COMPOSE run --rm tool composer install
     - $LOCAL_COMPOSE run --rm tool ./vendor/bin/codecept build
     - sleep 5
