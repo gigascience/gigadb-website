@@ -37,12 +37,14 @@ ReadmeGeneratorTest:
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/console:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/web:latest || true
-    - env
+#    - env
     - pwd
     - ./up.sh
+    - cp .secrets gigadb/app/tools/readme-generator/
+    - cp .env gigadb/app/tools/readme-generator/
     - echo $APPLICATION
     - pwd
-    - env | grep -iE "(GIGADB_ENV|PROJECT_VARIABLES_URL|MISC_VARIABLES_URL|GITLAB_PRIVATE_TOKEN|CI_PROJECT_URL|GROUP_VARIABLES_URL|FORK_VARIABLES_URL|GIGADB_COMPOSE_PROJECT_NAME)"| tee gigadb/app/tools/readme-generator/.env
+#    - env | grep -iE "(GIGADB_ENV|PROJECT_VARIABLES_URL|MISC_VARIABLES_URL|GITLAB_PRIVATE_TOKEN|CI_PROJECT_URL|GROUP_VARIABLES_URL|FORK_VARIABLES_URL|GIGADB_COMPOSE_PROJECT_NAME)"| tee gigadb/app/tools/readme-generator/.env
     - cd gigadb/app/tools/readme-generator
     - $LOCAL_COMPOSE run --rm configure
     - $LOCAL_COMPOSE run --rm tool composer install
