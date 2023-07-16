@@ -125,9 +125,14 @@ function get_doi_directory_range() {
 #######################################
 function copy_to_wasabi() {
   # Create directory path to datasets
-  source_dataset_path="${SOURCE_PATH}/readme_${doi}.txt"
+  source_dataset_path=""
+  if [[ $(uname -n) =~ compute ]];then
+    source_dataset_path="/home/centos/readmeFiles/readme_${doi}.txt"
+  else
+    source_dataset_path="${SOURCE_PATH}/readme_${doi}.txt"
+  fi
   destination_dataset_path="${DESTINATION_PATH}/${dir_range}/${doi}/"
-
+  
   # Check readme file exists
   if [ -f "$source_dataset_path" ]; then
     # Continue running script if there is an error executing rclone copy
