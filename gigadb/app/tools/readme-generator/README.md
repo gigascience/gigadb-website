@@ -158,6 +158,28 @@ $ ./createReadme.sh --doi 100142 --outdir /app/readmeFiles
 In both cases, look in the readmeFiles directory for the readme file that has
 been created by the tool.
 
+The createReadme.sh script can also be used to copy the newly created readme 
+file into the Wasabi gigadb-datasets bucket. To test this in dry-run mode,
+execute:
+```
+$ ./createReadme.sh --doi 100142 --outdir /app/readmeFiles --wasabi
+```
+
+If you look at the latest log file in the logs directory, you will see the
+destination path that the readme file will be copied to which will be in the 
+staging directory. You can deactivate dry-run mode using the --apply flag:
+```
+$ ./createReadme.sh --doi 100142 --outdir /app/readmeFiles --wasabi --apply
+```
+
+You can confirm that the presence of the new readme file in the 100142 directory
+using the Wasabi web console.
+
+To copy the readme file to the live data directory:
+```
+$ ./createReadme.sh --doi 100142 --outdir /app/readmeFiles --wasabi --use-live-data --apply
+```
+
 ## Tests
 
 ### Unit test
