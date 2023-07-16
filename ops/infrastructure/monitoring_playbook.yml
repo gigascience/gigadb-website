@@ -137,7 +137,6 @@
         status_code:
           - 200
       register: keys_list
-      when: create_key_outcome.status == 409
 
     - debug:
         msg: "{{ keys_list }}"
@@ -169,12 +168,30 @@
           role: "Admin"
         status_code:
           - 200
-      register: create_key_outcome
+      register: recreate_key_outcome
+      when: create_key_outcome.status == 409
+
+    - name: setting up the API Key from first run
+      ansible.builtin.set_fact: 
+        api_key: "{{ create_key_outcome.json['key'] }}" 
+      when: create_key_outcome.status == 200
+
+    - name: setting up the API Key after recreation
+      ansible.builtin.set_fact: 
+        api_key: "{{ recreate_key_outcome.json['key'] }}" 
       when: create_key_outcome.status == 409
 
     - debug:
-        msg: "Response for grafana api key creation: {{ create_key_outcome }}"
+        msg: "Value of create_key_outcome: {{ create_key_outcome }}"
       when: create_key_outcome
+
+    - debug:
+        msg: "Value of recreate_key_outcome: {{ recreate_key_outcome }}"
+      when: recreate_key_outcome
+
+    - debug:
+        msg: "Bearer {{ api_key }}"
+
 
 - name: Configure Grafana
   hosts: monitoring_hosts
@@ -220,55 +237,6 @@
     - debug:
         msg: "imported_dashboard: {{ imported_dashboard }}"
 
-    # - name: Create a new contact point
-    #   tags: 
-    #     - contact-points
-    #   ansible.builtin.uri:
-    #     url: "http://localhost:3000/api/v1/provisioning/contact-points"
-    #     method: POST
-    #     return_content: true
-    #     headers:
-    #       Content-Type: "application/json"
-    #       Authorization: "Bearer {{ create_key_outcome.json['key'] }}"  
-    #     body_format: json
-    #     body: "{{ lookup('ansible.builtin.file','../../grafana-contact-points.json') }}"
-    #     status_code:
-    #       - 202
-    #       - 500
-    #   register: created_contact_point
-    #
-   
-    # - debug:
-    #     msg: "API key: {{ create_key_outcome }}"
-    #
-    # - name: Get the UID of the default contact point
-    #   tags:
-    #     - contact-points
-    #   ansible.builtin.uri:
-    #     url: "http://localhost:3000/api/v1/provisioning/contact-points?name=grafana-default-email"
-    #     method: GET
-    #     return_content: true
-    #     headers:
-    #       Content-Type: application/json
-    #       Authorization: "Bearer {{ create_key_outcome.json['key'] }}"  
-    #   register: contact_points
-    #
-    # - debug:
-    #     msg: "contact point: {{ contact_points.json }}"
-    #
-    # - name: Update the grafana-default-email contact point with tech team email
-    #   tags:
-    #     - contact-points
-    #   ansible.builtin.uri:
-    #     url: "http://localhost:3000/api/v1/provisioning/contact-points/{{ contact_points.json[0]['uid'] }}"
-    #     method: PUT
-    #     body: "{{ lookup('ansible.builtin.file','../../grafana-contact-points.json') }}"
-    #     status_code: 202
-    #     body_format: json
-    #     headers:
-    #       Content-Type: application/json
-    #       Authorization: "Bearer {{ create_key_outcome.json['key'] }}"  
-    #
     - name: Create a folder for our alert rule
       tags:
         - alert-rules
@@ -290,7 +258,7 @@
         return_content: true
         headers:
           Content-Type: "application/json"
-          Authorization: "Bearer {{ create_key_outcome.json['key'] }}"  
+          Authorization: "Bearer {{ api_key }}"  
         body_format: json
         body: "{{ lookup('ansible.builtin.template','../../gigadb-disk-alert-rule.j2', template_vars=dict(folder=folder.folder['uid']), variable_start_string='[%', variable_end_string='%]') }}"
         status_code:
@@ -310,7 +278,7 @@
         return_content: true
         headers:
           Content-Type: "application/json"
-          Authorization: "Bearer {{ create_key_outcome.json['key'] }}"  
+          Authorization: "Bearer {{ api_key }}"  
         status_code:
           - 200
       register: alert_rules
@@ -325,7 +293,7 @@
         return_content: true
         headers:
           Content-Type: "application/json"
-          Authorization: "Bearer {{ create_key_outcome.json['key'] }}"  
+          Authorization: "Bearer {{ api_key }}"  
         status_code:
           - 204
       register: deleted_alert_rule
@@ -340,7 +308,7 @@
         return_content: true
         headers:
           Content-Type: "application/json"
-          Authorization: "Bearer {{ create_key_outcome.json['key'] }}"  
+          Authorization: "Bearer {{ api_key }}"  
         body_format: json
         body: "{{ lookup('ansible.builtin.template','../../gigadb-disk-alert-rule.j2', template_vars=dict(folder=folder.folder['uid']), variable_start_string='[%', variable_end_string='%]') }}"
         status_code:
