@@ -62,6 +62,15 @@
             regex: 'monitoring.*'
             action: drop
 
+- name: Pre-heat debian packages
+  hosts: monitoring_hosts
+  tags:
+    - grafana-install
+  tasks:
+    - name: Run the equivalent of "apt-get update" as a separate step
+      ansible.builtin.apt:
+        update_cache: yes
+
 
 - name: Install Grafana
   hosts: monitoring_hosts
@@ -113,6 +122,10 @@
          - 409
       register: create_key_outcome
 
+    - debug:
+        msg: "Response for grafana api key creation: {{ create_key_outcome }}"
+      when: create_key_outcome
+
     - name: Get the list of keys
       uri:
         url: "http://admin:admin@localhost:3000/api/auth/keys"
@@ -160,12 +173,8 @@
       when: create_key_outcome.status == 409
 
     - debug:
-        msg: "{{ create_key_outcome }}"
-
-    - debug:
-        msg: "Response for grafana api key creation: {{ create_key_outcome.json['key'] }}"
-
-
+        msg: "Response for grafana api key creation: {{ create_key_outcome }}"
+      when: create_key_outcome
 
 - name: Configure Grafana
   hosts: monitoring_hosts
@@ -210,35 +219,56 @@
 
     - debug:
         msg: "imported_dashboard: {{ imported_dashboard }}"
-    
-    - name: Get the UID of the default contact point
-      tags:
-        - contact-points
-      ansible.builtin.uri:
-        url: "http://localhost:3000/api/v1/provisioning/contact-points?name=grafana-default-email"
-        method: GET
-        return_content: true
-        headers:
-          Content-Type: application/json
-          Authorization: "Bearer {{ create_key_outcome.json['key'] }}"  
-      register: contact_points
 
-    - debug:
-        msg: "Contact point UID: {{ contact_points.json[0]['uid'] }}"
-
-    - name: Update the grafana-default-email contact point with tech team email
-      tags:
-        - contact-points
-      ansible.builtin.uri:
-        url: "http://localhost:3000/api/v1/provisioning/contact-points/{{ contact_points.json[0]['uid'] }}"
-        method: PUT
-        body: "{{ lookup('ansible.builtin.file','../../grafana-contact-points.json') }}"
-        status_code: 202
-        body_format: json
-        headers:
-          Content-Type: application/json
-          Authorization: "Bearer {{ create_key_outcome.json['key'] }}"  
-
+    # - name: Create a new contact point
+    #   tags: 
+    #     - contact-points
+    #   ansible.builtin.uri:
+    #     url: "http://localhost:3000/api/v1/provisioning/contact-points"
+    #     method: POST
+    #     return_content: true
+    #     headers:
+    #       Content-Type: "application/json"
+    #       Authorization: "Bearer {{ create_key_outcome.json['key'] }}"  
+    #     body_format: json
+    #     body: "{{ lookup('ansible.builtin.file','../../grafana-contact-points.json') }}"
+    #     status_code:
+    #       - 202
+    #       - 500
+    #   register: created_contact_point
+    #
+   
+    # - debug:
+    #     msg: "API key: {{ create_key_outcome }}"
+    #
+    # - name: Get the UID of the default contact point
+    #   tags:
+    #     - contact-points
+    #   ansible.builtin.uri:
+    #     url: "http://localhost:3000/api/v1/provisioning/contact-points?name=grafana-default-email"
+    #     method: GET
+    #     return_content: true
+    #     headers:
+    #       Content-Type: application/json
+    #       Authorization: "Bearer {{ create_key_outcome.json['key'] }}"  
+    #   register: contact_points
+    #
+    # - debug:
+    #     msg: "contact point: {{ contact_points.json }}"
+    #
+    # - name: Update the grafana-default-email contact point with tech team email
+    #   tags:
+    #     - contact-points
+    #   ansible.builtin.uri:
+    #     url: "http://localhost:3000/api/v1/provisioning/contact-points/{{ contact_points.json[0]['uid'] }}"
+    #     method: PUT
+    #     body: "{{ lookup('ansible.builtin.file','../../grafana-contact-points.json') }}"
+    #     status_code: 202
+    #     body_format: json
+    #     headers:
+    #       Content-Type: application/json
+    #       Authorization: "Bearer {{ create_key_outcome.json['key'] }}"  
+    #
     - name: Create a folder for our alert rule
       tags:
         - alert-rules
@@ -262,7 +292,7 @@
           Content-Type: "application/json"
           Authorization: "Bearer {{ create_key_outcome.json['key'] }}"  
         body_format: json
-        body: "{{ lookup('ansible.builtin.file','../../gigadb-disk-alert-rule.json') }}"
+        body: "{{ lookup('ansible.builtin.template','../../gigadb-disk-alert-rule.j2', template_vars=dict(folder=folder.folder['uid']), variable_start_string='[%', variable_end_string='%]') }}"
         status_code:
           - 201
           - 500
@@ -312,13 +342,11 @@
           Content-Type: "application/json"
           Authorization: "Bearer {{ create_key_outcome.json['key'] }}"  
         body_format: json
-        body: "{{ lookup('ansible.builtin.file','../../gigadb-disk-alert-rule.json') }}"
+        body: "{{ lookup('ansible.builtin.template','../../gigadb-disk-alert-rule.j2', template_vars=dict(folder=folder.folder['uid']), variable_start_string='[%', variable_end_string='%]') }}"
         status_code:
           - 201
       register: created_alert_rule
       when: created_alert_rule.status == 500
 
-    - debug:
-        msg: "{{ created_alert_rule }}"
 
 
