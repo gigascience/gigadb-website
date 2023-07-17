@@ -175,6 +175,13 @@ $ ./createReadme.sh --doi 100142 --outdir /app/readmeFiles --wasabi --apply
 You can confirm that the presence of the new readme file in the 100142 directory
 using the Wasabi web console.
 
+There is a batch mode for the script which can be used by providing the 
+`--batch` flag followed by a number to denote the number of datasets to be
+processed. For example, to process DOIs 100141, 100142, 100143, 100144, 100145:
+```
+$ ./createReadme.sh --doi 100141 --outdir /app/readmeFiles --wasabi --batch 5 --apply
+```
+
 To copy the readme file to the live data directory:
 ```
 $ ./createReadme.sh --doi 100142 --outdir /app/readmeFiles --wasabi --use-live-data --apply
