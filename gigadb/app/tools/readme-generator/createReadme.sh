@@ -8,17 +8,23 @@ set -e
 PATH=/usr/local/bin:$PATH
 export PATH
 
+# Allow all scripts to base themselves from directory where backup script 
+# is located
+APP_SOURCE=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
+# Location where readme files will be created
+SOURCE_PATH="${APP_SOURCE}/runtime/curators"
+
 # Locations of rclone.conf
 BASTION_RCLONE_CONF_LOCATION='/home/centos/.config/rclone/rclone.conf'
 DEV_RCLONE_CONF_LOCATION='../wasabi-migration/config/rclone.conf'
 
-# Rclone copy is executed in dry run mode as default
-# Use --apply flag to turn off dry run mode
+# Rclone copy is executed in dry run mode as default. Use --apply flag to turn 
+# off dry run mode
 dry_run=true
 
-# By default, readme files will be copied into the
-# dev directory. Use the --use-live-data flag to
-# readme files to the live directory
+# By default, readme files will be copied into dev directory. Use 
+# --use-live-data flag to copy readme files to live directory
 use_live_data=false
 
 # Parse command line parameters
@@ -49,18 +55,21 @@ while [[ $# -gt 0 ]]; do
     shift
 done
 
-# Allow all scripts to base themselves from the directory where backup script 
-# is located
-APP_SOURCE=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-
-# Location where readme files will be created
-SOURCE_PATH="${APP_SOURCE}/runtime/curators"
-
-# Setup logging
-LOGDIR="$APP_SOURCE/logs"
-LOGFILE="$LOGDIR/wasabi_${doi}_$(date +'%Y%m%d_%H%M%S').log"
-mkdir -p "${LOGDIR}"
-touch "${LOGFILE}"
+#######################################
+# Set up logging
+# Globals:
+#   LOGDIR
+#   APP_SOURCE
+#   doi
+# Arguments:
+#   None
+#######################################
+function set_up_logging() {
+  LOGDIR="$APP_SOURCE/logs"
+  LOGFILE="$LOGDIR/wasabi_${doi}_$(date +'%Y%m%d_%H%M%S').log"
+  mkdir -p "${LOGDIR}"
+  touch "${LOGFILE}"
+}
 
 #######################################
 # Determine source and destination 
@@ -166,6 +175,8 @@ function copy_to_wasabi() {
     echo "$(date +'%Y/%m/%d %H:%M:%S') DEBUG  : Could not find file $source_dataset_path" >> "$LOGFILE"
   fi
 }
+
+set_up_logging
 
 # Conditional for how to generate readme file - dependant on user's environment
 if [[ $(uname -n) =~ compute ]];then
