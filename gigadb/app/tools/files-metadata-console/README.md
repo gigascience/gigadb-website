@@ -340,16 +340,14 @@ $ docker-compose run --rm files-metadata-console ./vendor/codeception/codeceptio
 
 Execute single unit test:
 ```
-$ docker-compose run --rm files-metadata-console ./vendor/codeception/codeception/codecept run --debug tests/unit/DatasetFilesURLUpdaterTest.php:^testReplaceFileUrlSubstringWithPrefix$
+$ docker-compose run --rm files-metadata-console ./vendor/codeception/codeception/codecept run --debug tests/unit/DatasetFilesURLUpdaterTest.php:^testGetPendingDatasets$
 ```
 
-Execute all functional tests:
+Execute functional tests:
 ```
 $ docker-compose run --rm files-metadata-console ./vendor/codeception/codeception/codecept run --debug tests/functional/CheckValidURLsCest.php
 
 $ docker-compose run --rm files-metadata-console ./vendor/codeception/codeception/codecept run --debug tests/functional/ReplaceFileUrlSubstringWithPrefixCest.php
-
-docker-compose run --rm files-metadata-console ./vendor/codeception/codeception/codecept run --debug tests/functional/ReplaceFileUrlSubstringWithPrefixCest.php:^tryStopDoi$
 ```
 
 Execute single functional test:
