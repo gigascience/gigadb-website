@@ -39,7 +39,6 @@ class ReadmeGenerator extends Component
         if (is_null($dataset)) {
             throw new Exception('Dataset ' . $doi . ' not found');
         }
-
         // Use array to store readme information.
         $formattedTitle = wordwrap('[Title] ' . $dataset->title, self::STRING_WIDTH, PHP_EOL);
         $readme         = [
