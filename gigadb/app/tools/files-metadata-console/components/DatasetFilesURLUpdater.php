@@ -33,9 +33,9 @@ final class DatasetFilesURLUpdater extends Component
     public string $separator;
 
     /**
-     * @const the bucket name and subdirectories to use
+     * @var string bucket name and subdirectories to use
      */
-    public const BUCKET_DIRECTORIES = "/gigadb-datasets/live/pub/";
+    public string $bucket_directories;
 
     /**
      * @const to indicate that we want to run the command in dry run mode
@@ -55,7 +55,8 @@ final class DatasetFilesURLUpdater extends Component
      */
     public static function build(bool $apply = false): DatasetFilesURLUpdater
     {
-        return new DatasetFilesURLUpdater(["apply" => $apply]);
+        $bucket_directories = '/gigadb-datasets/' . Yii::$app->params['DEPLOYMENT_ENV'] . '/pub/';
+        return new DatasetFilesURLUpdater(["apply" => $apply, "bucket_directories" => $bucket_directories]);
     }
 
     /**
@@ -72,7 +73,7 @@ final class DatasetFilesURLUpdater extends Component
      */
     public function replaceFileLocationsForDataset(string $doi, string $separator)
     {
-        $newFTPLocationPrefix = Yii::$app->params['URL_PREFIX'] . self::BUCKET_DIRECTORIES;
+        $newFTPLocationPrefix = Yii::$app->params['URL_PREFIX'] . $this->bucket_directories;
 
         # Record how many files with their URL locations updated
         $processed = 0;
@@ -132,7 +133,7 @@ final class DatasetFilesURLUpdater extends Component
     public function replaceFTPSiteForDataset($doi)
     {
         $success = 0;
-        $newFTPSitePrefix = Yii::$app->params['URL_PREFIX'] . self::BUCKET_DIRECTORIES;
+        $newFTPSitePrefix = Yii::$app->params['URL_PREFIX'] . $this->bucket_directories;
 
         $dataset =  Dataset::find()->where(["identifier" => $doi])->one();
         $currentFTPSite = $dataset['ftp_site'];
