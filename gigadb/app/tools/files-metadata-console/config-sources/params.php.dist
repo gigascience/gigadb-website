@@ -2,4 +2,5 @@
 
 return [
     'URL_PREFIX' => '${URL_PREFIX}',
+    'DEPLOYMENT_ENV' => '${DEPLOYMENT_ENV}',
 ];
