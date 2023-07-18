@@ -234,6 +234,17 @@ You can see code coverage output under the `tests/_output` directory.
 
 ### Updating dataset file URLs with Wasabi prefix
 
+#### Preparation
+
+Go to `gigadb/app/tools/files-metadata-console` and create a .env file: 
+```
+$ docker-compose run --rm configure
+```
+
+Update the .env file with values for REPO_NAME and GITLAB_PRIVATE_TOKEN. Re-run
+`docker-compose run --rm configure` to create a .secrets file and other 
+configuration files in config directory.
+
 #### Dev environment
 
 To begin update of file URLs in batches of 3 datasets, execute in dry run mode:

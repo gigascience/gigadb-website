@@ -1,0 +1,5 @@
+<?php
+
+return [
+    'URL_PREFIX' => '${URL_PREFIX}',
+];

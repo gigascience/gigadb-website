@@ -34,3 +34,4 @@ set +a
 
 makeConfigs "${appSource}/config-sources/db.php.dist" "${appSource}/config/db.php" '$GIGADB_HOST:$GIGADB_DB:$GIGADB_USER:$GIGADB_PASSWORD'
 makeConfigs "${appSource}/config-sources/test_db.php.dist" "${appSource}/config/test_db.php" '$GIGADB_HOST:$GIGADB_DB:$GIGADB_USER:$GIGADB_PASSWORD'
+makeConfigs "${appSource}/config-sources/params.php.dist" "${appSource}/config/params.php" '$URL_PREFIX'
