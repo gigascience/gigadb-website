@@ -33,11 +33,6 @@ final class DatasetFilesURLUpdater extends Component
     public string $separator;
 
     /**
-     * @const the new url host to use
-     */
-    public const NEW_HOST = "https://s3.ap-northeast-1.wasabisys.com";
-
-    /**
      * @const the bucket name and subdirectories to use
      */
     public const BUCKET_DIRECTORIES = "/gigadb-datasets/live/pub/";
@@ -77,7 +72,7 @@ final class DatasetFilesURLUpdater extends Component
      */
     public function replaceFileLocationsForDataset(string $doi, string $separator)
     {
-        $newFTPLocationPrefix = self::NEW_HOST . self::BUCKET_DIRECTORIES;
+        $newFTPLocationPrefix = Yii::$app->params['URL_PREFIX'] . self::BUCKET_DIRECTORIES;
 
         # Record how many files with their URL locations updated
         $processed = 0;
@@ -137,7 +132,7 @@ final class DatasetFilesURLUpdater extends Component
     public function replaceFTPSiteForDataset($doi)
     {
         $success = 0;
-        $newFTPSitePrefix = self::NEW_HOST . self::BUCKET_DIRECTORIES;
+        $newFTPSitePrefix = Yii::$app->params['URL_PREFIX'] . self::BUCKET_DIRECTORIES;
 
         $dataset =  Dataset::find()->where(["identifier" => $doi])->one();
         $currentFTPSite = $dataset['ftp_site'];
