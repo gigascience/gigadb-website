@@ -25,11 +25,6 @@ final class UpdateController extends Controller
     public string $doi = "";
 
     /**
-     * @var string A new URL domain and path to where datasets have been re-located to
-     */
-    public string $prefix = "";
-
-    /**
      * @var string Part of the URL which is used to split a URL in half
      */
     public string $separator = "";
@@ -74,7 +69,7 @@ final class UpdateController extends Controller
     /**
      * Console command for updating the URL for all files in a dataset
      *
-     * docker-compose run --rm files-metadata-console ./yii update/urls --next=10 --prefix=https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live --separator=/pub/ --exclude='100046,100066,100076' --stop=200002
+     * docker-compose run --rm files-metadata-console ./yii update/urls --next=10 --separator=/pub/ --exclude='100046,100066,100076' --stop=200002
      *
      * @return int
      * @throws \Throwable
@@ -82,7 +77,6 @@ final class UpdateController extends Controller
     public function actionUrls(): int
     {
         // Manage inputs
-        $optPrefix = $this->prefix;
         $optSeparator = $this->separator;
         $optNext = $this->next;
         $optApply = $this->apply;
@@ -90,8 +84,8 @@ final class UpdateController extends Controller
         $optStopDoi = $this->stop;
 
         //Return usage unless mandatory options are passed
-        if (!($optPrefix) || !($optSeparator)) {
-            $this->stdout("\nUsage:\n\t./yii update/urls --prefix <URL prefix> --separator <substring to separate current URL> [--next <batch size>][--exclude-dois <comma separated list of dois>][--stop <DOI to stop processing>][--apply][--verbose]\n\n");
+        if (!($optSeparator)) {
+            $this->stdout("\nUsage:\n\t./yii update/urls --separator <substring to separate current URL> [--next <batch size>][--exclude-dois <comma separated list of dois>][--stop <DOI to stop processing>][--apply][--verbose]\n\n");
             return ExitCode::USAGE;
         }
 
@@ -148,7 +142,7 @@ final class UpdateController extends Controller
     public function options($actionID)
     {
         return array_merge(parent::options($actionID), [
-            'color', 'interactive', 'help', 'doi', 'prefix', 'separator', 'exclude', 'next', 'apply', 'stop'
+            'color', 'interactive', 'help', 'doi', 'separator', 'exclude', 'next', 'apply', 'stop'
         ]);
     }
 }

@@ -249,13 +249,13 @@ configuration files in config directory.
 
 To begin update of file URLs in batches of 3 datasets, execute in dry run mode:
 ```
-$ docker-compose run --rm files-metadata-console ./yii update/urls --prefix=https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live --separator=/pub/ --exclude='100020' --next=3
+$ docker-compose run --rm files-metadata-console ./yii update/urls --separator=/pub/ --exclude='100020' --next=3
 ```
 > Dataset 100020 has been excluded so is not processed by the tool.
 
 To make changes to the database, use the `--apply` flag:
 ```
-$ docker-compose run --rm files-metadata-console ./yii update/urls --prefix=https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live --separator=/pub/ --exclude='100020' --next=3 --apply
+$ docker-compose run --rm files-metadata-console ./yii update/urls --separator=/pub/ --exclude='100020' --next=3 --apply
 ```
 
 ##### Test with production data
@@ -327,7 +327,7 @@ docker run --rm  --env-file ./db-env registry.gitlab.com/$GITLAB_PROJECT/product
 
 Execute tool until all datasets have had their file locations updated with Wasabi links:
 ```
-docker run --rm registry.gitlab.com/$GITLAB_PROJECT/production-files-metadata-console:latest ./yii update/urls --prefix=https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live --separator=/pub/ --exclude='100396,100446,100584,100747,100957,102311' --stop=200002 --next=3
+docker run --rm registry.gitlab.com/$GITLAB_PROJECT/production-files-metadata-console:latest ./yii update/urls --separator=/pub/ --exclude='100396,100446,100584,100747,100957,102311' --stop=200002 --next=3
 ```
 
 Re-create database triggers:
