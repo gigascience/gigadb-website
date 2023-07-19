@@ -113,7 +113,11 @@ final class DatasetFilesURLUpdater extends Component
                     $tokens = explode($separator, $uriParts['path']);
                     $newFileLocation = $newFTPLocationPrefix . end($tokens);
                     if ($this->apply === true) {
-                        $this->updateDbFileTable($newFileLocation, $file->id);
+                        $file = File::findOne($file->id);
+                        $file->location = $newFileLocation ;
+                        if(!$file->save()) {
+                            throw new Exception(implode($file->getErrors(null)));
+                        }
                     }
                     $processed++;
                     break;
@@ -143,59 +147,17 @@ final class DatasetFilesURLUpdater extends Component
             $path = mb_split("/pub/", $uriParts['path'])[1];
             $newFTPSite = $newFTPSitePrefix . $path;
             if ($this->apply === true) {
-                $this->updateDbDatasetTable($newFTPSite, $dataset->id);
+                $dataset = Dataset::findOne($dataset->id);
+                $dataset->ftp_site = $newFTPSite ;
+                if(!$dataset->save()) {
+                    throw new Exception(implode($dataset->getErrors(null)));
+                }
             }
             $success++;
         } else {
             throw new Exception("Dataset has unexpected ftp_site: " . $currentFTPSite);
         }
         return $success;
-    }
-
-    /**
-     * @param string $newFTPSite
-     * @param int $dataset_id
-     * @return int
-     * @throws Exception
-     */
-    private function updateDbDatasetTable(string $newFTPSite, int $dataset_id): int
-    {
-        try {
-            return Yii::$app->db
-                ->createCommand()
-                ->update(
-                    'dataset',
-                    ['ftp_site' => $newFTPSite],
-                    'id = :id',
-                    [':id' => $dataset_id]
-                )
-                ->execute();
-        } catch (\Yii\Db\Exception $e) {
-            throw new Exception($e->getMessage());
-        }
-    }
-
-    /**
-     * @param string $newFileLocation
-     * @param int $file_id
-     * @return int
-     * @throws Exception
-     */
-    private function updateDbFileTable(string $newFileLocation, int $file_id): int
-    {
-        try {
-            return Yii::$app->db
-                ->createCommand()
-                ->update(
-                    'file',
-                    ['location' => $newFileLocation],
-                    'id = :id',
-                    [':id' => $file_id]
-                )
-                ->execute();
-        } catch (\Yii\Db\Exception $e) {
-            throw new Exception($e->getMessage());
-        }
     }
 
     /**
