@@ -337,6 +337,12 @@ $ docker run --rm  --env-file ./db-env registry.gitlab.com/$GITLAB_PROJECT/produ
 $ docker run --rm  --env-file ./db-env registry.gitlab.com/$GITLAB_PROJECT/production_pgclient:$GIGADB_ENV -c 'create trigger dataset_finder_trigger after insert or update or delete or truncate on dataset for each statement execute procedure refresh_dataset_finder()'
 ```
 
+The information on dataset page displayed to users may not reflect the changes 
+to dataset FTP site and file location URLs now in the database because of how
+the current GigaDB website caching functionality works. For this reason, the
+web application should be restarted to reset the cache on the Gitlab pipeline
+web console.
+
 Manually update file location URLs for dataset 100396
 ```
 $ docker run --rm  --env-file ./db-env registry.gitlab.com/$GITLAB_PROJECT/production_pgclient:$GIGADB_ENV -c 'Update file set location = REPLACE(location, 'https://ftp.cngb.org/pub/gigadb/pub/', 'https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/') where dataset_id = 629;'
