@@ -67,9 +67,9 @@ class ReplaceFileUrlSubstringWithPrefixCest
         $I->seeInDatabase('dataset', ['identifier' => '100002', 'ftp_site' => 'https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/' . Yii::$app->params['DEPLOYMENT_ENV'] . '/pub/10.5524/100001_101000/100002']);
         $I->seeInDatabase('file', ['name' => 'Pygoscelis_adeliae.gff.gz', 'location' => 'https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/' . Yii::$app->params['DEPLOYMENT_ENV'] . '/pub/10.5524/100001_101000/100006/phylogeny_study_update/Pygoscelis_adeliae.gff.gz']);
         $I->dontseeInDatabase('dataset', ['identifier' => '100003', 'ftp_site' => 'https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/' . Yii::$app->params['DEPLOYMENT_ENV'] . '/pub/10.5524/100001_101000/100003']);
-        $I->dontseeInDatabase('file', ['name' => 'millet.chr.version2.3.fa.gz', 'location' => 'https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/' . Yii::$app->params['DEPLOYMENT_ENV'] . '/pub/10.5524/100001_101000/100020/millet.chr.version2.3.fa.gz']);
+        $I->dontseeInDatabase('file', ['name' => 'millet.chr.version2.3.fa.gz', 'location' => 'https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/' . Yii::$app->params['DEPLOYMENT_ENV'] . '/pub/10.5524/100001_101000/100003/millet.chr.version2.3.fa.gz']);
         $I->dontseeInDatabase('dataset', ['identifier' => '100004', 'ftp_site' => 'https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/' . Yii::$app->params['DEPLOYMENT_ENV'] . '/pub/10.5524/100001_101000/100004']);
-        $I->dontseeInDatabase('file', ['id' => '88266', 'location' => 'https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/' . Yii::$app->params['DEPLOYMENT_ENV'] . '/pub/10.5524/100001_101000/100020/readme.txt']);
+        $I->dontseeInDatabase('file', ['id' => '88266', 'location' => 'https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/' . Yii::$app->params['DEPLOYMENT_ENV'] . '/pub/10.5524/100001_101000/100003/readme.txt']);
     }
 
     /**
@@ -81,9 +81,9 @@ class ReplaceFileUrlSubstringWithPrefixCest
         $I->seeInDatabase('dataset', ['identifier' => '100002', 'ftp_site' => 'ftp://climb.genomics.cn/pub/10.5524/100001_101000/100002']);
         $I->seeInDatabase('file', ['name' => 'Pygoscelis_adeliae.gff.gz', 'location' => "ftp://climb.genomics.cn/pub/10.5524/100001_101000/100006/phylogeny_study_update/Pygoscelis_adeliae.gff.gz"]);
         $I->seeInDatabase('dataset', ['identifier' => '100003', 'ftp_site' => 'ftp://climb.genomics.cn/pub/10.5524/100001_101000/100003']);
-        $I->seeInDatabase('file', ['name' => 'millet.chr.version2.3.fa.gz', 'location' => "ftp://climb.genomics.cn/pub/10.5524/100001_101000/100020/millet.chr.version2.3.fa.gz"]);
+        $I->seeInDatabase('file', ['name' => 'millet.chr.version2.3.fa.gz', 'location' => "ftp://climb.genomics.cn/pub/10.5524/100001_101000/100003/millet.chr.version2.3.fa.gz"]);
         $I->seeInDatabase('dataset', ['identifier' => '100004', 'ftp_site' => 'ftp://climb.genomics.cn/pub/10.5524/100001_101000/100004']);
-        $I->seeInDatabase('file', ['id' => '88266', 'location' => "ftp://climb.genomics.cn/pub/10.5524/100001_101000/100020/readme.txt"]);
+        $I->seeInDatabase('file', ['id' => '88266', 'location' => "ftp://climb.genomics.cn/pub/10.5524/100001_101000/100003/readme.txt"]);
 
         # Run tool to update file URLs for dataset 100002
         $I->runShellCommand("./yii_test update/urls --separator=/pub/ --next=3 --apply");
@@ -100,9 +100,9 @@ class ReplaceFileUrlSubstringWithPrefixCest
         $I->seeInDatabase('dataset', ['identifier' => '100002', 'ftp_site' => 'https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/' . Yii::$app->params['DEPLOYMENT_ENV'] . '/pub/10.5524/100001_101000/100002']);
         $I->seeInDatabase('file', ['name' => 'Pygoscelis_adeliae.gff.gz', 'location' => 'https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/' . Yii::$app->params['DEPLOYMENT_ENV'] . '/pub/10.5524/100001_101000/100006/phylogeny_study_update/Pygoscelis_adeliae.gff.gz']);
         $I->seeInDatabase('dataset', ['identifier' => '100003', 'ftp_site' => 'https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/' . Yii::$app->params['DEPLOYMENT_ENV'] . '/pub/10.5524/100001_101000/100003']);
-        $I->seeInDatabase('file', ['name' => 'millet.chr.version2.3.fa.gz', 'location' => 'https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/' . Yii::$app->params['DEPLOYMENT_ENV'] . '/pub/10.5524/100001_101000/100020/millet.chr.version2.3.fa.gz']);
+        $I->seeInDatabase('file', ['name' => 'millet.chr.version2.3.fa.gz', 'location' => 'https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/' . Yii::$app->params['DEPLOYMENT_ENV'] . '/pub/10.5524/100001_101000/100003/millet.chr.version2.3.fa.gz']);
         $I->seeInDatabase('dataset', ['identifier' => '100004', 'ftp_site' => 'https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/' . Yii::$app->params['DEPLOYMENT_ENV'] . '/pub/10.5524/100001_101000/100004']);
-        $I->seeInDatabase('file', ['id' => '88266', 'location' => 'https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/' . Yii::$app->params['DEPLOYMENT_ENV'] . '/pub/10.5524/100001_101000/100020/readme.txt']);
+        $I->seeInDatabase('file', ['id' => '88266', 'location' => 'https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/' . Yii::$app->params['DEPLOYMENT_ENV'] . '/pub/10.5524/100001_101000/100003/readme.txt']);
 
         # Run tool again with the same arguments as before
         $I->runShellCommand("./yii_test update/urls --separator=/pub/ --next=3 --exclude='100003,100004' --apply");
