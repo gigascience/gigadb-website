@@ -113,7 +113,6 @@ final class DatasetFilesURLUpdater extends Component
                     $tokens = explode($separator, $uriParts['path']);
                     $newFileLocation = $newFTPLocationPrefix . end($tokens);
                     if ($this->apply === true) {
-                        $file = File::findOne($file->id);
                         $file->location = $newFileLocation ;
                         if(!$file->save()) {
                             throw new Exception(implode($file->getErrors(null)));
@@ -147,8 +146,7 @@ final class DatasetFilesURLUpdater extends Component
             $path = mb_split("/pub/", $uriParts['path'])[1];
             $newFTPSite = $newFTPSitePrefix . $path;
             if ($this->apply === true) {
-                $dataset = Dataset::findOne($dataset->id);
-                $dataset->ftp_site = $newFTPSite ;
+                $dataset->ftp_site = $newFTPSite;
                 if(!$dataset->save()) {
                     throw new Exception(implode($dataset->getErrors(null)));
                 }
