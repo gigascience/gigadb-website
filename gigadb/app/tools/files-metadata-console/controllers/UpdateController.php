@@ -85,7 +85,7 @@ final class UpdateController extends Controller
 
         //Return usage unless mandatory options are passed
         if (!($optSeparator)) {
-            $this->stdout("\nUsage:\n\t./yii update/urls --separator <substring to separate current URL> [--next <batch size>][--exclude-dois <comma separated list of dois>][--stop <DOI to stop processing>][--apply][--verbose]\n\n");
+            $this->stdout("\nUsage:\n\t./yii update/urls --separator <substring to separate current URL> [--next <batch size>][--exclude <comma separated list of dois>][--stop <DOI to stop processing>][--apply][--verbose]\n\n");
             return ExitCode::USAGE;
         }
 
@@ -99,6 +99,9 @@ final class UpdateController extends Controller
 
             $optExcludedDois = explode(',', $optExcludedDois);
             $dois = $dfuu->getNextPendingDatasets($optNext, $optExcludedDois);
+            if (count($dois) == 0) {
+                $this->stdout("No more datasets to process." . PHP_EOL, Console::FG_YELLOW);
+            }
 
             foreach ($dois as $doi) {
                 if ($doi === $optStopDoi) {
