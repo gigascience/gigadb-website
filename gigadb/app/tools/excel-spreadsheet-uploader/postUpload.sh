@@ -54,6 +54,7 @@ if [[ $(uname -n) =~ compute ]];then
 
   if [[ $userOutputDir != "$outputDir" && -n "$(ls -A $outputDir)" ]];then
       mv $outputDir/* "$userOutputDir/" || true
+      chown "$SUDO_USER":"$SUDO_USER" "$userOutputDir"/*
       echo -e "\nAll postUpload logs have been moved to: $userOutputDir"
       echo -e "\nPostUpload jobs done!"
   else

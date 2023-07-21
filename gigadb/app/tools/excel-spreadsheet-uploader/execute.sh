@@ -10,7 +10,7 @@ if [[ $(uname -n) =~ compute ]];then
   . .bash_profile
 
   if [[ $uploadDir != "/home/centos/uploadDir" ]];then
-    mv $uploadDir/* /home/centos/uploadDir/
+    mv "$uploadDir"/* /home/centos/uploadDir/
     chown centos:centos /home/centos/uploadDir/*
   fi
 
@@ -26,10 +26,11 @@ if [[ $(uname -n) =~ compute ]];then
 
   if [[ -n "$(ls -A /home/centos/uploadDir)" ]];then
     echo "Spreadsheet cannot not be uploaded, please check the logs!"
-    mv /home/centos/uploadDir/* $uploadDir/
+    mv /home/centos/uploadDir/* "$uploadDir/"
   fi
-  mv /home/centos/uploadLogs/* $uploadDir/ || true
-  chown $SUDO_USER:$SUDO_USER $uploadDir/*
+
+  mv /home/centos/uploadLogs/* "$uploadDir/" || true
+  chown "$SUDO_USER":"$SUDO_USER" "$uploadDir"/*
   echo "Done."
 else
   mkdir -p logs
