@@ -24,9 +24,12 @@ if [[ $(uname -n) =~ compute ]];then
   docker run --rm  --env-file ./db-env registry.gitlab.com/$GITLAB_PROJECT/production_pgclient:$GIGADB_ENV -c 'create trigger sample_finder_trigger after insert or update or delete or truncate on sample for each statement execute procedure refresh_sample_finder()'
   docker run --rm  --env-file ./db-env registry.gitlab.com/$GITLAB_PROJECT/production_pgclient:$GIGADB_ENV -c 'create trigger dataset_finder_trigger after insert or update or delete or truncate on dataset for each statement execute procedure refresh_dataset_finder()'
 
-  if [[ $uploadDir != "/home/centos/uploadDir" ]];then
-    mv /home/centos/uploadLogs/* "$uploadDir/" || true
+  if [[ "$(ls -A /home/centos/uploadDir)" ]];then
+    echo "Spreadsheet cannot not be uploaded, please check the logs!"
+    mv /home/centos/uploadDir/* $uploadDir/
   fi
+  mv /home/centos/uploadLogs/* $uploadDir/ || true
+  chown $SUDO_USER:$SUDO_USER $uploadDir/*
   echo "Done."
 else
   mkdir -p logs
