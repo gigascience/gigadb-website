@@ -325,9 +325,14 @@ $ docker run --rm  --env-file ./db-env registry.gitlab.com/$GITLAB_PROJECT/produ
 $ docker run --rm  --env-file ./db-env registry.gitlab.com/$GITLAB_PROJECT/production_pgclient:$GIGADB_ENV -c 'drop trigger if exists dataset_finder_trigger on dataset RESTRICT'
 ```
 
-Execute tool until all datasets have had their file locations updated with Wasabi links:
+Execute tool in dry run mode to check the functionality is working:
 ```
 $ docker run --rm registry.gitlab.com/$GITLAB_PROJECT/production-files-metadata-console:$GIGADB_ENV ./yii update/urls --separator=/pub/ --exclude='100396,100446,100584,100747,100957,102311' --stop=200002 --next=3
+```
+
+Execute tool until all datasets have had their file locations updated with Wasabi links:
+```
+$ docker run --rm registry.gitlab.com/$GITLAB_PROJECT/production-files-metadata-console:$GIGADB_ENV ./yii update/urls --separator=/pub/ --exclude='100396,100446,100584,100747,100957,102311' --stop=200002 --next=3 --apply
 ```
 
 Re-create database triggers:
@@ -341,7 +346,8 @@ The information on dataset page displayed to users may not reflect the changes
 to dataset FTP site and file location URLs now in the database because of how
 the current GigaDB website caching functionality works. For this reason, the
 web application should be restarted to reset the cache on the Gitlab pipeline
-web console.
+web console. This can be using the Pipelines page on the Gitlab web console by
+manually executing `*_stop_app` and `*_start_app` jobs.
 
 Manually update file location URLs for dataset 100396
 ```
