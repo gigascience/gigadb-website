@@ -79,6 +79,18 @@ resource "aws_instance" "bastion" {
   }
 }
 
+data "aws_eip" "bastion_host_eip" {
+  filter {
+    name   = "tag:Name"
+    values = [var.eip_tag_name]
+  }
+}
+
+resource "aws_eip_association" "docker_host_eip_assoc" {
+  instance_id   = aws_instance.bastion.id
+  allocation_id = data.aws_eip.bastion_host_eip.id
+}
+
 output "bastion_private_ip" {
   description = "EC2 bastion instance private IP address"
   value = aws_instance.bastion.private_ip

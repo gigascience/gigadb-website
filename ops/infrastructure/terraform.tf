@@ -189,6 +189,7 @@ module "ec2_bastion" {
   owner = data.external.callerUserName.result.userName
   deployment_target = var.deployment_target
   key_name = var.key_name
+  eip_tag_name = "eip-gigadb-bastion-${var.deployment_target}-${data.external.callerUserName.result.userName}"
 
   # Bastion instance goes into a public subnet for developer access
   vpc_id = module.vpc.vpc_id
