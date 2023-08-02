@@ -84,3 +84,8 @@ CSV_DIR=production_like
 ### Portainer credentials
 # you obtain the bcrypt password by running:
 # docker run --rm httpd:2.4-alpine htpasswd -nbB admin "your-password" | cut -d ":" -f 2 | sed -e 's/\$/\\\$/g'
+
+### Monitoring
+MONITORING_HOST=x.x.x.x
+MONITORING_USER=admin
+MONITORING_PRIVATE_KEY_LOCAL_PATH=~/.ssh/gigadb-monitoring.pem

@@ -1,0 +1,10 @@
+{
+    "name": "grafana-default-email",
+    "type": "email",
+    "settings": {
+      "addresses": "tech@gigasciencejournal.com",
+      "singleEmail": false
+    },
+    "disableResolveMessage": false
+  }
+

@@ -1,14 +1,20 @@
-# do not add any IP address here as it is dynamically managed using terraform-inventory
+[monitoring_hosts]
+monitoring ansible_host="{{ lookup('ini', 'MONITORING_HOST type=properties file=../../../../.env') }}"
 
-[name_bastion_server_staging]
+[monitoring_hosts:vars]
 
-# do not add any IP address here as it is dynamically managed using terraform-inventory
+ansible_ssh_private_key_file="{{ lookup('ini', 'MONITORING_PRIVATE_KEY_LOCAL_PATH type=properties file=../../../../.env') }}"
+ansible_user = "{{ lookup('ini', 'MONITORING_USER type=properties file=../../../../.env') }}"
+ansible_become = "true"
+prometheus_aws_access_key = "{{ lookup('ini', 'prometheus_aws_access_key type=properties file=ansible.properties') }}"
+prometheus_aws_private_key = "{{ lookup('ini', 'prometheus_aws_private_key type=properties file=ansible.properties') }}"
+grafana_contact_smtp_host = "{{ lookup('ini', 'grafana_contact_smtp_host type=properties file=ansible.properties') }}"
+grafana_contact_smtp_user = "{{ lookup('ini', 'grafana_contact_smtp_user type=properties file=ansible.properties') }}"
+grafana_contact_smtp_password = "{{ lookup('ini', 'grafana_contact_smtp_password type=properties file=ansible.properties') }}"
+grafana_contact_smtp_from_address =  "{{ lookup('ini', 'grafana_contact_smtp_from_address type=properties file=ansible.properties') }}"
+grafana_contact_smtp_from_name = "{{ lookup('ini', 'grafana_contact_smtp_from_name type=properties file=ansible.properties') }}"
 
-[name_bastion_server_live]
-
-# do not add any IP address here as it is dynamically managed using terraform-inventory
-
-[all:vars]
+[type_aws_instance:vars]
 
 gitlab_url = "https://gitlab.com/api/v4/projects/{{ lookup('ini', 'gitlab_project type=properties file=ansible.properties') | urlencode | regex_replace('/','%2F') }}"
 ansible_ssh_private_key_file = "{{ lookup('ini', 'ssh_private_key_file type=properties file=ansible.properties') }}"

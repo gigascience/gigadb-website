@@ -1,0 +1,324 @@
+---
+# Deploy monitoring on an ec2 instance
+
+- name: Install node exporter
+  hosts: monitoring_hosts
+  tags:
+    - node-exporter-install
+  roles:
+    - prometheus.prometheus.node_exporter
+
+- name: Install Prometheus
+  hosts: monitoring_hosts
+  tags:
+    - prometheus-install
+  roles:
+    - prometheus.prometheus.prometheus
+  vars:
+    prometheus_targets:
+      node:
+        - targets:
+            - localhost:9100
+          labels:
+            env: gigascience-monitoring
+    prometheus_scrape_configs:
+      - job_name: "prometheus"
+        metrics_path: "/metrics"
+        static_configs:
+          - targets:
+              - "localhost:9090"
+              - "localhost:9100"
+      - job_name: "node"
+        file_sd_configs:
+          - files:
+              - "{{ prometheus_config_dir }}/file_sd/node.yml"
+      - job_name: "ec2-node"
+        ec2_sd_configs:
+          - region: ap-east-1
+            access_key: "{{ prometheus_aws_access_key }}"
+            secret_key: "{{ prometheus_aws_private_key }}"
+            port: 9100
+          - region: ap-northeast-1
+            access_key: "{{ prometheus_aws_access_key }}"
+            secret_key: "{{ prometheus_aws_private_key }}"
+            port: 9100
+          - region: ap-northeast-2
+            access_key: "{{ prometheus_aws_access_key }}"
+            secret_key: "{{ prometheus_aws_private_key }}"
+            port: 9100
+          - region: ap-southeast-1
+            access_key: "{{ prometheus_aws_access_key }}"
+            secret_key: "{{ prometheus_aws_private_key }}"
+            port: 9100
+          - region: eu-west-3
+            access_key: "{{ prometheus_aws_access_key }}"
+            secret_key: "{{ prometheus_aws_private_key }}"
+            port: 9100
+        relabel_configs:
+          - source_labels: [__meta_ec2_public_ip]
+            replacement: '${1}:9100'
+            target_label: __address__
+          - source_labels: [__meta_ec2_tag_Name]
+            target_label: instance
+          - source_labels: [__meta_ec2_tag_Environment]
+            target_label: environment
+          - source_labels: [ instance ]
+            regex: 'monitoring.*'
+            action: drop
+
+- name: Pre-heat debian packages
+  hosts: monitoring_hosts
+  tags:
+    - grafana-install
+  tasks:
+    - name: Run the equivalent of "apt-get update" as a separate step
+      ansible.builtin.apt:
+        update_cache: yes
+
+
+- name: Install Grafana
+  hosts: monitoring_hosts
+  tags:
+    - grafana-install
+  roles:
+    - ansible-grafana
+  vars:
+    grafana_smtp_enabled: "true"
+    grafana_smtp_host: "{{ grafana_contact_smtp_host }}"
+    grafana_smtp_user: "{{ grafana_contact_smtp_user }}"
+    grafana_smtp_password: "{{ grafana_contact_smtp_password }}"
+    grafana_smtp_skip_verify: "false"
+    grafana_smtp_from_address: "{{ grafana_contact_smtp_from_address }}"
+    grafana_smtp_from_name: "{{ grafana_contact_smtp_from_name }}"
+
+- name: API key for grafana
+  hosts: monitoring_hosts
+  tags:
+    - grafana-api-token
+    - grafana-config
+
+  tasks:
+    - name: Switch to org 1
+      uri:
+        url: "http://admin:admin@localhost:3000/api/user/using/1"
+        method: POST
+        force_basic_auth: true
+        status_code: 200
+      register: switch_to_org
+
+    - debug:
+        msg: "Switching to default org: {{ switch_to_org }}"
+
+    - name: Create an API key
+      uri:
+        url: "http://admin:admin@localhost:3000/api/auth/keys"
+        method: POST
+        force_basic_auth: true
+        return_content: true
+        headers:
+          Content-Type: "application/json"
+        body_format: json
+        body:
+          name: "apikeycurl"
+          role: "Admin"
+        status_code:
+         - 200
+         - 409
+      register: create_key_outcome
+
+    - debug:
+        msg: "Response for grafana api key creation: {{ create_key_outcome }}"
+      when: create_key_outcome
+
+    - name: Get the list of keys
+      uri:
+        url: "http://admin:admin@localhost:3000/api/auth/keys"
+        method: GET
+        force_basic_auth: true
+        return_content: true
+        headers:
+          Content-Type: "application/json"
+        status_code:
+          - 200
+      register: keys_list
+
+    - debug:
+        msg: "{{ keys_list }}"
+
+    - name: Delete the API key
+      uri:
+        url: "http://admin:admin@localhost:3000/api/auth/keys/{{ keys_list.json[0]['id'] }}"
+        method: DELETE
+        force_basic_auth: true
+        return_content: true
+        headers:
+          Content-Type: "application/json"
+        status_code:
+          - 200
+      register: delete_key_outcome
+      when: create_key_outcome.status == 409
+
+    - name: Recreate an API key
+      uri:
+        url: "http://admin:admin@localhost:3000/api/auth/keys"
+        method: POST
+        force_basic_auth: true
+        return_content: true
+        headers:
+          Content-Type: "application/json"
+        body_format: json
+        body:
+          name: "apikeycurl"
+          role: "Admin"
+        status_code:
+          - 200
+      register: recreate_key_outcome
+      when: create_key_outcome.status == 409
+
+    - name: setting up the API Key from first run
+      ansible.builtin.set_fact: 
+        api_key: "{{ create_key_outcome.json['key'] }}" 
+      when: create_key_outcome.status == 200
+
+    - name: setting up the API Key after recreation
+      ansible.builtin.set_fact: 
+        api_key: "{{ recreate_key_outcome.json['key'] }}" 
+      when: create_key_outcome.status == 409
+
+    - debug:
+        msg: "Value of create_key_outcome: {{ create_key_outcome }}"
+      when: create_key_outcome
+
+    - debug:
+        msg: "Value of recreate_key_outcome: {{ recreate_key_outcome }}"
+      when: recreate_key_outcome
+
+    - debug:
+        msg: "Bearer {{ api_key }}"
+
+
+- name: Configure Grafana
+  hosts: monitoring_hosts
+  tags:
+    - grafana-config
+  collections:
+    - community.grafana
+
+  module_defaults:
+    group/community.grafana.grafana:
+      grafana_url: "http://localhost:3000"
+      grafana_user: "admin"
+      grafana_password: "admin"
+
+  tasks:
+    - name: Ensure Prometheus datasource exists.
+      grafana_datasource:
+        name: "datasource-prometheus"
+        ds_type: "prometheus"
+        ds_url: "http://localhost:9090"
+        access: "proxy"
+        validate_certs: "false"
+        tls_skip_verify: "true"
+        uid: gigascience-prometheus-datasource
+        state: present
+      register: datasource
+
+    - debug:
+        msg: "datasource output: {{ datasource }}"
+    
+    - name: Copy Node exporter dashboard to the server
+      ansible.builtin.copy:
+        src: "../../gigascience-node-exporter-dashboard.json"
+        dest: /tmp/gigascience-node-exporter-dashboard.json
+
+    - name: Import Prometheus Grafana dashboard
+      grafana_dashboard:
+        folder: General
+        path: /tmp/gigascience-node-exporter-dashboard.json
+        validate_certs: "false"
+      register: imported_dashboard
+
+    - debug:
+        msg: "imported_dashboard: {{ imported_dashboard }}"
+
+    - name: Create a folder for our alert rule
+      tags:
+        - alert-rules
+      community.grafana.grafana_folder:
+        title: "gigadb-ec2-instances"
+        state: present
+      register: folder
+
+    - debug:
+        msg: "Folder UID: {{ folder.folder['uid'] }}"
+
+
+    - name: Create a new alert rule for low disk space
+      tags:
+        - alert-rules
+      ansible.builtin.uri:
+        url: "http://localhost:3000/api/v1/provisioning/alert-rules"
+        method: POST
+        return_content: true
+        headers:
+          Content-Type: "application/json"
+          Authorization: "Bearer {{ api_key }}"  
+        body_format: json
+        body: "{{ lookup('ansible.builtin.template','../../gigadb-disk-alert-rule.j2', template_vars=dict(folder=folder.folder['uid']), variable_start_string='[%', variable_end_string='%]') }}"
+        status_code:
+          - 201
+          - 500
+      register: created_alert_rule
+
+    - debug:
+        msg: "{{ created_alert_rule }}"
+
+    - name: Get the list of alert rules if creating alert rule failed
+      tags:
+        - alert-rules
+      ansible.builtin.uri:
+        url: "http://localhost:3000/api/v1/provisioning/alert-rules"
+        method: GET
+        return_content: true
+        headers:
+          Content-Type: "application/json"
+          Authorization: "Bearer {{ api_key }}"  
+        status_code:
+          - 200
+      register: alert_rules
+      when: created_alert_rule.status == 500
+
+    - name: Delete existing alert rule
+      tags:
+        - alert-rules
+      ansible.builtin.uri:
+        url: "http://localhost:3000/api/v1/provisioning/alert-rules/{{ alert_rules.json[0]['uid'] }}"
+        method: DELETE
+        return_content: true
+        headers:
+          Content-Type: "application/json"
+          Authorization: "Bearer {{ api_key }}"  
+        status_code:
+          - 204
+      register: deleted_alert_rule
+      when: created_alert_rule.status == 500
+
+    - name: Re-create a new alert rule for low disk space
+      tags:
+        - alert-rules
+      ansible.builtin.uri:
+        url: "http://localhost:3000/api/v1/provisioning/alert-rules"
+        method: POST
+        return_content: true
+        headers:
+          Content-Type: "application/json"
+          Authorization: "Bearer {{ api_key }}"  
+        body_format: json
+        body: "{{ lookup('ansible.builtin.template','../../gigadb-disk-alert-rule.j2', template_vars=dict(folder=folder.folder['uid']), variable_start_string='[%', variable_end_string='%]') }}"
+        status_code:
+          - 201
+      register: created_alert_rule
+      when: created_alert_rule.status == 500
+
+
+

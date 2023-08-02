@@ -293,3 +293,10 @@
 
   - debug:
       msg: "reset database stderr : {{ reset_database_output.stderr }}"
+
+- name: Install node exporter
+  hosts: name_bastion_server_staging*:name_bastion_server_live*
+  tags:
+    - node-exporter
+  roles:
+    - prometheus.prometheus.node_exporter

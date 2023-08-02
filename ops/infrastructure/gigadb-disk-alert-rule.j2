@@ -1,0 +1,126 @@
+{
+  "orgID": 1,
+  "folderUID": "[% folder %]",
+  "ruleGroup": "regular",
+  "title": "Disk Space Alert",
+  "condition": "C",
+  "data": [
+    {
+      "refId": "A",
+      "queryType": "",
+      "relativeTimeRange": {
+        "from": 600,
+        "to": 0
+      },
+      "datasourceUid": "gigascience-prometheus-datasource",
+      "model": {
+        "editorMode": "code",
+        "expr": "100 - ((node_filesystem_avail_bytes{job=\"ec2-node\",device!~'rootfs',device!~\"tmpfs\"} * 100) / node_filesystem_size_bytes{job=\"ec2-node\",device!~'rootfs',device!~\"tmpfs\"})",
+        "hide": false,
+        "instant": true,
+        "intervalMs": 1000,
+        "maxDataPoints": 43200,
+        "range": false,
+        "refId": "A"
+      }
+    },
+    {
+      "refId": "B",
+      "queryType": "",
+      "relativeTimeRange": {
+        "from": 600,
+        "to": 0
+      },
+      "datasourceUid": "__expr__",
+      "model": {
+        "conditions": [
+          {
+            "evaluator": {
+              "params": [],
+              "type": "gt"
+            },
+            "operator": {
+              "type": "and"
+            },
+            "query": {
+              "params": [
+                "B"
+              ]
+            },
+            "reducer": {
+              "params": [],
+              "type": "last"
+            },
+            "type": "query"
+          }
+        ],
+        "datasource": {
+          "type": "__expr__",
+          "uid": "__expr__"
+        },
+        "expression": "A",
+        "hide": false,
+        "intervalMs": 1000,
+        "maxDataPoints": 43200,
+        "reducer": "last",
+        "refId": "B",
+        "type": "reduce"
+      }
+    },
+    {
+      "refId": "C",
+      "queryType": "",
+      "relativeTimeRange": {
+        "from": 600,
+        "to": 0
+      },
+      "datasourceUid": "__expr__",
+      "model": {
+        "conditions": [
+          {
+            "evaluator": {
+              "params": [
+                70
+              ],
+              "type": "gt"
+            },
+            "operator": {
+              "type": "and"
+            },
+            "query": {
+              "params": [
+                "C"
+              ]
+            },
+            "reducer": {
+              "params": [],
+              "type": "last"
+            },
+            "type": "query"
+          }
+        ],
+        "datasource": {
+          "type": "__expr__",
+          "uid": "__expr__"
+        },
+        "expression": "B",
+        "hide": false,
+        "intervalMs": 1000,
+        "maxDataPoints": 43200,
+        "refId": "C",
+        "type": "threshold"
+      }
+    }
+  ],
+  "updated": "2023-06-22T14:29:10Z",
+  "noDataState": "NoData",
+  "execErrState": "Error",
+  "for": "10s",
+  "annotations": {
+    "summary": "Instance {{ index $labels \"instance.name\" }} is low on disk space"
+  },
+  "labels": {
+    "alert-type": "hardware"
+  },
+  "isPaused": false
+}

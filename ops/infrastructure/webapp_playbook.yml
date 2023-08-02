@@ -33,3 +33,10 @@
     - role: ../../roles/docker-postinstall
     - role: ../../roles/docker-daemon-enable-start
     - role: ../../roles/fuw
+
+- name: Install node exporter
+  hosts: name_gigadb_server_staging*:name_gigadb_server_live*
+  tags:
+    - node-exporter
+  roles:
+    - prometheus.prometheus.node_exporter

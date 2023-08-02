@@ -114,6 +114,13 @@ and only setting up the `Gigadb` AWS user configuration in it. This means you
 will use this `Gigadb` operating system user for managing deployments to 
 staging and beta.gigadb.org.
 
+### Tools
+
+ensure gnu-tar is installed on the system you will be running the provisioning script:
+```
+$ brew install gnu-tar
+```
+
 ## Deployment procedure
 
 ### Set up gigadb-website repo on your local dev environment
@@ -240,12 +247,12 @@ $ ansible-galaxy install -r ../../../infrastructure/requirements.yml
 
 Provision RDS via bastion server:
 ```
-$ ansible-playbook -i ../../inventories bastion_playbook.yml
+$ OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories bastion_playbook.yml
 ```
 
 Provision web application server:
 ```
-$ TF_KEY_NAME=private_ip ansible-playbook -i ../../inventories webapp_playbook.yml
+$ TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories webapp_playbook.yml
 ```
 
 ## Deploy to staging.gigadb.org using CI/CD pipeline
@@ -308,17 +315,17 @@ $ ../../../scripts/ansible_init.sh --env live
 
 Provision RDS via bastion server:
 ```
-$ ansible-playbook -i ../../inventories bastion_playbook.yml
+$ OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories bastion_playbook.yml
 ```
 
 Enable cronjob for periodically resetting the database:
 ```
-$ ansible-playbook -i ../../inventories bastion_playbook.yml -e "reset_database_cronjob_state=present"
+$ OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories bastion_playbook.yml -e "reset_database_cronjob_state=present"
 ```
 
 Enable cronjob for periodically creating a database dump and storing it in S3:
 ```
-$ ansible-playbook -i ../../inventories bastion_playbook.yml -e "upload_database_backup_to_S3_cronjob_state=present"
+$ OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories bastion_playbook.yml -e "upload_database_backup_to_S3_cronjob_state=present"
 ```
 
 To confirm the cron jobs have been created, log in with ssh on bastion, and run 
@@ -334,7 +341,7 @@ $ ssh -i ~/.ssh/id-rsa-aws-hk-gigadb.pem centos@<bastion public ip>
 
 Provision web application server:
 ```
-$ TF_KEY_NAME=private_ip ansible-playbook -i ../../inventories webapp_playbook.yml
+$ TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories webapp_playbook.yml
 ```
 
 ## Deploy to beta.gigadb.org using CI/CD pipeline
