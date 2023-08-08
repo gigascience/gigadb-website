@@ -151,7 +151,7 @@ function copy_to_wasabi() {
     # Continue running script if there is an error executing rclone copy
     set +e
     # Construct rclone command to copy readme file to Wasabi
-    rclone_cmd="rclone copy ${readme_file} ${doi_directory}"
+    rclone_cmd="rclone copy --s3-no-check-bucket ${readme_file} ${doi_directory}"
     if [[ $(uname -n) =~ compute ]];then
       rclone_cmd+=" --config ${BASTION_RCLONE_CONF_LOCATION}"
     else
