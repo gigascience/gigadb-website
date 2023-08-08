@@ -13,6 +13,8 @@ services:
 
   configure:
     image: rija/docker-alpine-shell-tools:1.0.1
+    working_dir: /gigadb/app/tools/readme-generator
     volumes:
-      - .:/app
-    command: /app/configure
+      - .:/gigadb/app/tools/readme-generator:delegated
+      - ../../configurator:/gigadb/app/configurator:ro
+    command: /gigadb/app/tools/readme-generator/configure
