@@ -11,7 +11,7 @@ services:
       # Map host directory /home/centos/readmeFiles to /app/readmeFiles in container
       - /home/centos/readmeFiles:/app/readmeFiles
 
-  config:
+  configure:
     image: rija/docker-alpine-shell-tools:1.0.1
     volumes:
       - .:/app
