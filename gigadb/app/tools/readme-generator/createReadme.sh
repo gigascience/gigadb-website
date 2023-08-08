@@ -167,9 +167,9 @@ function copy_to_wasabi() {
     rclone_cmd+=" >> ${LOGFILE}"
     # Execute command
     eval "${rclone_cmd}"
-    echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Executed: ${rclone_cmd}" >> "$LOGFILE"
-    # Check exit code for rclone command
+    # Get exit code for rclone command
     rclone_exit_code=$?
+    echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Executed: ${rclone_cmd}" >> "$LOGFILE"
     if [ ${rclone_exit_code} -eq 0 ]; then
       echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Successfully copied file to Wasabi for DOI: $doi" >> "${LOGFILE}"
     else 
