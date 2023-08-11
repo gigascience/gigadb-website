@@ -22,7 +22,7 @@ DEV_RCLONE_CONF_LOCATION='../wasabi-migration/config/rclone.conf'
 # Wasabi directory paths
 WASABI_DEV_DIRECTORY="wasabi:gigadb-datasets/dev/pub/10.5524"
 WASABI_STAGING_DIRECTORY="wasabi:gigadb-datasets/staging/pub/10.5524"
-WASABI_LIVE_DIRECTORY="wasabi:gigadb-datasets/staging/pub/10.5524"
+WASABI_LIVE_DIRECTORY="wasabi:gigadb-datasets/live/pub/10.5524"
 
 # Rclone copy is executed in dry run mode as default. Use --apply flag to turn 
 # off dry run mode
