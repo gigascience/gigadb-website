@@ -113,9 +113,9 @@ final class DatasetFilesURLUpdater extends Component
                     $tokens = explode($separator, $uriParts['path']);
                     $newFileLocation = $newFTPLocationPrefix . end($tokens);
                     if ($this->apply === true) {
-                        $file->location = $newFileLocation ;
+                        $file->location = $newFileLocation;
                         if(!$file->save()) {
-                            throw new Exception(implode($file->getErrors(null)));
+                            throw new Exception('File location URL ' . $newFileLocation . ' could not be saved into File table');
                         }
                     }
                     $processed++;
