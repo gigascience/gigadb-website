@@ -107,6 +107,7 @@ final class DatasetFilesURLUpdater extends Component
                 case str_contains($host, 'embl.de'):
                 case str_contains($host, 'cloud.google.com'):
                 case str_contains($host, 'globus.org'):
+                case str_contains($host, 'ensemblgenomes.org'):
                     break;
                 case str_contains($host, 'climb.genomics.cn'):
                 case str_contains($host, 'ftp.cngb.org'):
