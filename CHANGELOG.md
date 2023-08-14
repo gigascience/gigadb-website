@@ -4,6 +4,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Fix #1310 and #1311: Copy readme files created by readme tool into the 
+  gigadb-datasets wasabi bucket.
 - Feat #1294: Added tool into files metadata console to update dataset FTP site
   and file location URLs.
 - Fix #1277: Fix terraform errors and warnings and update SOPS for database backup restoration
