@@ -108,8 +108,11 @@ final class DatasetFilesURLUpdater extends Component
                 case str_contains($host, 'cloud.google.com'):
                 case str_contains($host, 'globus.org'):
                 case str_contains($host, 'ensemblgenomes.org'):
+                case str_contains($host, 'ensembl.org'):
+                case str_contains($host, 'pacbcloud.com'):
                     break;
                 case str_contains($host, 'climb.genomics.cn'):
+                case str_contains($host, 'parrot.genomics.cn'):
                 case str_contains($host, 'ftp.cngb.org'):
                     $tokens = explode($separator, $uriParts['path']);
                     $newFileLocation = $newFTPLocationPrefix . end($tokens);
@@ -149,7 +152,7 @@ final class DatasetFilesURLUpdater extends Component
             if ($this->apply === true) {
                 $dataset->ftp_site = $newFTPSite;
                 if(!$dataset->save()) {
-                    throw new Exception(implode($dataset->getErrors(null)));
+                    throw new Exception('FTP site URL ' . $newFTPSite . ' could not be saved into Dataset table');
                 }
             }
             $success++;
