@@ -8,13 +8,6 @@ services:
       cache_from:
         - "registry.gitlab.com/$CI_PROJECT_PATH/production_tool:$GIGADB_ENV"
     volumes:
-      # Mount source-code for development
-      - .:/app
-      - .:/logs
-      # For using classes in GigaDB models and services
-      - ../../../:/gigadb
-      # For accessing pgdmp database dumps
-      - ../../../../sql:/app/sql
       # Map host directory /home/centos/readmeFiles to /app/readmeFiles in container
       - /home/centos/readmeFiles:/app/readmeFiles
     networks:
