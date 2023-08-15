@@ -104,9 +104,9 @@ final class UpdateController extends Controller
             }
 
             foreach ($dois as $doi) {
-                if ($doi === $optStopDoi) {
+                if ($doi >= $optStopDoi) {
                     $this->stdout("Stop DOI $optStopDoi been reached - processing will stop now." . PHP_EOL, Console::FG_YELLOW);
-                    return ExitCode::OK;
+                    break;
                 }
                 $nbFiles = count($dfuu->queryFilesForDataset($doi));
                 $this->stdout("\tTransforming ftp_site for dataset $doi... " . PHP_EOL);
