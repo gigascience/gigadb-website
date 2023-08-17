@@ -47,7 +47,7 @@ final class UpdateController extends Controller
     /**
      * @var string A DOI , e.g. 200002 when it is reached that will stop this tool from processing any more datasets
      */
-    public string $stop = "";
+    public string $stop = '0';
 
     /**
      * Console command for updating files' size for the given dataset
@@ -104,7 +104,7 @@ final class UpdateController extends Controller
             }
 
             foreach ($dois as $doi) {
-                if ($doi >= $optStopDoi) {
+                if ($optStopDoi != 0 && $doi >= $optStopDoi) {
                     $this->stdout("Stop DOI $optStopDoi been reached - processing will stop now." . PHP_EOL, Console::FG_YELLOW);
                     break;
                 }
