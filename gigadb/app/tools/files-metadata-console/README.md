@@ -258,6 +258,12 @@ To make changes to the database, use the `--apply` flag:
 $ docker-compose run --rm files-metadata-console ./yii update/urls --separator=/pub/ --exclude='100020' --next=3 --apply
 ```
 
+You can also specify a stop DOI so when the current DOI to be processed is greater
+than or equal to the stop DOI then File URL transformation is terminated:
+```
+$ docker-compose run --rm files-metadata-console ./yii update/urls --separator=/pub/ --exclude='100020' --next=3 --stop='200000' --apply
+```
+
 ##### Test with production data
 
 ```
@@ -272,7 +278,7 @@ postgres=# \q
 # Load database backup file
 $ docker-compose run --rm test pg_restore -h database -p 5432 -U gigadb -d gigadb -v "/gigadb/app/tools/files-metadata-console/sql/gigadbv3_20230622.backup"
 # Run tool
-$ docker-compose run --rm files-metadata-console ./yii update/urls --prefix=https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live --separator=/pub/ --exclude='100396,100446,100584,100747,100957,102311' --stop=200002 --next=3 --apply 
+$ docker-compose run --rm files-metadata-console ./yii update/urls --separator=/pub/ --exclude='100396,100446,100584,100747,100957,102311' --stop=200002 --next=3 --apply 
 ```
 
 ##### Dataset 100396
