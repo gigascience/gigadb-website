@@ -116,11 +116,11 @@ final class DatasetFilesURLUpdater extends Component
                 case str_contains($host, 'ftp.cngb.org'):
                     try {
                         $tokens = explode($separator, $uriParts['path']);
+                        $newFileLocation = $newFTPLocationPrefix . end($tokens);
                     } catch (Exception $e) {
                         echo 'Caught exception: ',  $e->getMessage();
-                        throw new Exception('Problem with updating: ' . $currentFileLocation . "\n");
+                        throw new Exception('Problem with transforming: ' . $currentFileLocation . "\n");
                     }
-                    $newFileLocation = $newFTPLocationPrefix . end($tokens);
                     if ($this->apply === true) {
                         $file->location = $newFileLocation;
                         if(!$file->save()) {
