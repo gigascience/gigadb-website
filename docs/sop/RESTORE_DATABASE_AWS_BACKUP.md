@@ -51,13 +51,13 @@ or a `Custom data and time`
 7. In the *Settings* box, enter `rds-server-live-gigadb` as the database 
 instance identifier. You will be able to do this because you will have already 
 deleted the RDS instance that had this database instance identifier
-8. In the *Instance configuration~ box, select `burstable classes` then select 
-the cheapest instance type `db.t3.micro`
+8. In the *Instance configuration* box, select `burstable classes` then select 
+the cheapest instance type `db.t3.micro`, then select `Single DB instance` in the *Availability and durability* box beneath.
 9. In the *Connectivity* box, select the required VPC based on `live` 
 environment, i.e. `vpc-ap-east-1-live-gigadb-gigadb`
 10. In the *Connectivity* box, `Public access` should be *No*
 11. In the *Connectivity* box, select VPC security group, e.g. `rds_sg_live_gigadb-*`
-12. In the *Connectivity* box, *Password authentication* should be deleted
+12. In the *Database authentication* box, *Password authentication* should be selected
 13. In the *Additional configuration* box, there is no need to provide an `initial database name`
 because the automated backup contains the names of the databases to be restored.
 You should make sure that the appropriate DB parameter group is selected. For
