@@ -114,7 +114,12 @@ final class DatasetFilesURLUpdater extends Component
                 case str_contains($host, 'climb.genomics.cn'):
                 case str_contains($host, 'parrot.genomics.cn'):
                 case str_contains($host, 'ftp.cngb.org'):
-                    $tokens = explode($separator, $uriParts['path']);
+                    try {
+                        $tokens = explode($separator, $uriParts['path']);
+                    } catch (Exception $e) {
+                        echo 'Caught exception: ',  $e->getMessage();
+                        throw new Exception('Problem with updating: ' . $currentFileLocation . "\n");
+                    }
                     $newFileLocation = $newFTPLocationPrefix . end($tokens);
                     if ($this->apply === true) {
                         $file->location = $newFileLocation;
