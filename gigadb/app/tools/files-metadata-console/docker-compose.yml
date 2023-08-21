@@ -37,4 +37,5 @@ services:
 networks:
   proxy-db-tier:  # represents db-tier network in ops/docker-compose.yml
     name: deployment_db-tier
-    external: true
+    # TODO: Uncomment this option after upgrading Docker compose in CICD pipeline
+    # external: true
