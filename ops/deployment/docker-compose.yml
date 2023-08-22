@@ -129,6 +129,7 @@ services:
       - ${APPLICATION}/fuw/app/common/config/bootstrap.sql:/docker-entrypoint-initdb.d/3-fuw.sql
       - ${APPLICATION}/ops/configuration/postgresql-conf/pg_hba.conf:/etc/postgresql/pg_hba.conf
     command: postgres -c 'hba_file=/etc/postgresql/pg_hba.conf' -c 'stats_temp_directory=/tmp' -c 'log_statement=none' -c 'log_min_duration_statement=1000ms'
+    stop_grace_period: 120s
     networks:
       - db-tier
 
