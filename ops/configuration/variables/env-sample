@@ -83,7 +83,9 @@ CSV_DIR=production_like
 
 ### Portainer credentials
 # you obtain the bcrypt password by running:
-# docker run --rm httpd:2.4-alpine htpasswd -nbB admin "your-password" | cut -d ":" -f 2 | sed -e 's/\$/\\\$/g'
+# docker run --rm httpd:2.4-alpine htpasswd -nbB admin "<your chosen password here>" | cut -d ":" -f 2 | sed -e 's/\$/\$\$/g'
+# then set the variable below with the obtained value
+# PORTAINER_BCRYPT=
 
 ### Monitoring
 MONITORING_HOST=x.x.x.x
