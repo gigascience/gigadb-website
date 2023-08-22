@@ -86,12 +86,31 @@ provider "aws" {
 terraform {
   backend "http" {
   }
+
+  required_providers {
+    random = {
+      source  = "hashicorp/random"
+      version = "3.5.1"
+    }
+
+    external = {
+      source  = "hashicorp/external"
+      version = "2.3.1"
+    }
+    
+    aws = {
+      source  = "hashicorp/aws"
+      version = "5.5.0"
+    }
+  }
+
+  required_version = ">= 1.1"
 }
 
 # A custom virtual private cloud network for RDS and EC2 instances
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "~> 2"
+  version = "5.0.0"
 
   name = "vpc-${var.aws_region}-${var.deployment_target}-gigadb-${data.external.callerUserName.result.userName}"
   # CIDR block is a range of IPv4 addresses in the VPC. This cidr block below 

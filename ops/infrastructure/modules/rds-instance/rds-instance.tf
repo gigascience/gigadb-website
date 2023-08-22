@@ -4,7 +4,7 @@ locals {
 
 module "security_group" {
   source  = "terraform-aws-modules/security-group/aws"
-  version = "~> 4"
+  version = "5.1.0"
 
   name        = "rds_sg_${var.deployment_target}_${var.owner}"
   description = "Security group for GigaDB RDS"
@@ -23,16 +23,17 @@ module "security_group" {
 
 module "db" {
   source = "terraform-aws-modules/rds/aws"
+  version = "6.0.0"
   identifier = "rds-server-${var.deployment_target}-${var.owner}"
 
   snapshot_identifier = var.snapshot_identifier
   restore_to_point_in_time = var.restore_to_point_in_time
 
-  db_name                = var.gigadb_db_database
-  username               = var.gigadb_db_user
-  create_random_password = false
-  password               = var.gigadb_db_password
-  port                   = 5432
+  db_name                     = var.gigadb_db_database
+  username                    = var.gigadb_db_user
+  manage_master_user_password = false
+  password                    = var.gigadb_db_password
+  port                        = 5432
 
   # Create this RDS instance in database subnet group in VPC
   db_subnet_group_name   = var.vpc_database_subnet_group

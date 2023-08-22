@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Fix #1277: Fix terraform errors and warnings and update SOPS for database backup restoration
 - Fix #1088: Excel spreadsheet upload will not insert non exist sample attribute in the spreadsheet into the database.
 - Fix #1338: Enable persistent IP address using EIP for bastion hosts on AWS deployments
 - Feat #580: Provision monitoring infrastructure with Prometheus and Grafana
