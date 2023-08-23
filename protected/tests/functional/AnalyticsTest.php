@@ -25,23 +25,22 @@ class AnalyticsTest extends FunctionalTesting
      * The test aims to test the credentials for connecting to Google API are configured correctly
      * Otherwise, a 500 Server Error will be returned. That's why we test the return code
      */
-//    public function testItShouldLoadGoogleAnalyticsPage()
-//    {
-//        $this->loginToWebSiteWithSessionAndCredentialsThenAssert("admin@gigadb.org","gigadb","Admin");
-//        // Make a call to the report controller
-//        $url = "http://gigadb.dev/report/index" ;
-//        $this->visitPageWithSessionAndUrlThenAssertContentHasOrNull($url, null);
-//
-//        $this->fillReportIndexForm();
-//
-//        // Check that after submission we land on the same view
-//        $this->assertEquals( "http://gigadb.dev/report/index", $this->getCurrentUrl() );
-//
-//        // Check that the status code is 200 OK
-//        $this->assertEquals( 200,  $this->getStatusCode() );
-//
-//    }
-// TODO: failing for no obvious reason when using the default .env.
+    public function testItShouldLoadGoogleAnalyticsPage()
+    {
+        $this->loginToWebSiteWithSessionAndCredentialsThenAssert("admin@gigadb.org","gigadb","Admin");
+        // Make a call to the report controller
+        $url = "http://gigadb.dev/report/index" ;
+        $this->visitPageWithSessionAndUrlThenAssertContentHasOrNull($url, null);
+
+        $this->fillReportIndexForm();
+
+        // Check that after submission we land on the same view
+        $this->assertEquals( "http://gigadb.dev/report/index", $this->getCurrentUrl() );
+
+        // Check that the status code is 200 OK
+        $this->assertEquals( 200,  $this->getStatusCode() );
+
+    }
 
 }
 

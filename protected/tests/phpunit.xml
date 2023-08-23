@@ -15,6 +15,8 @@
 		  <exclude>/var/www/protected/tests/functional/DatasetViewTest.php</exclude>
 		  <exclude>/var/www/protected/tests/functional/AdminDatasetAssignFTPBoxActionTest.php</exclude>
 		  <exclude>/var/www/protected/tests/functional/RSSFeedTest.php</exclude>
+		  <exclude>/var/www/protected/tests/functional/NewsletterTest.php</exclude>
+		  <exclude>/var/www/protected/tests/functional/AnalyticsTest.php</exclude>
 	  </testsuite>
 	  <testsuite name="all">
 	    <directory>unit</directory>
