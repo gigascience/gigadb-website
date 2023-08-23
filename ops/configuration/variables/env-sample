@@ -26,7 +26,7 @@ GITLAB_PRIVATE_TOKEN=
 # the variables will be merged into a .secrets file
 # Replace <Your fork name here> with urlencoded name of the fork
 
-REPO_NAME="<Your fork name here>"
+REPO_NAME=
 GROUP_VARIABLES_URL="https://gitlab.com/api/v4/groups/gigascience/variables?per_page=100"
 FORK_VARIABLES_URL="https://gitlab.com/api/v4/groups/3501869/variables"
 PROJECT_VARIABLES_URL="https://gitlab.com/api/v4/projects/gigascience%2Fforks%2F$REPO_NAME/variables"
@@ -46,7 +46,7 @@ YII2_PATH=/var/www/vendor/yiisoft/yii2
 DATA_SAVE_PATH=~/.containers-data/default-gigadb
 YII_DEBUG=true
 YII_TRACE=3
-DISABLE_CACHE=false
+DISABLE_CACHE=true
 
 ### Core services managed in Docker compose ##############################################################################
 NGINX_VERSION=1.21.3
@@ -55,7 +55,7 @@ APCU_VERSION=5.1.21
 NODE_VERSION=17.6.0
 POSTGRES_VERSION=14.8
 YII_VERSION=1.1.28
-YII2_VERSION=2.0.48
+YII2_VERSION=2.0.48.1
 
 
 ### Application Access variables ########################################################################################
@@ -74,7 +74,7 @@ CERT_EMAIL=foo@bar
 
 ### Test Coverage configuration #########################################################################################
 COVERALLS_RUN_LOCALLY=1
-GITLAB_UPSTREAM_PROJECT_ID=7041674
+GITLAB_UPSTREAM_PROJECT_ID=
 MAIN_BRANCH=develop
 
 
@@ -85,9 +85,9 @@ CSV_DIR=production_like
 # you obtain the bcrypt password by running:
 # docker run --rm httpd:2.4-alpine htpasswd -nbB admin "<your chosen password here>" | cut -d ":" -f 2 | sed -e 's/\$/\$\$/g'
 # then set the variable below with the obtained value
-# PORTAINER_BCRYPT=
+PORTAINER_BCRYPT=
 
 ### Monitoring
-MONITORING_HOST=x.x.x.x
-MONITORING_USER=admin
-MONITORING_PRIVATE_KEY_LOCAL_PATH=~/.ssh/gigadb-monitoring.pem
+MONITORING_HOST=
+MONITORING_USER=
+MONITORING_PRIVATE_KEY_LOCAL_PATH=
