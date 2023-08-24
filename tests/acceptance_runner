@@ -13,8 +13,11 @@ if [[ $(uname -m) == 'arm64' ]]; then
 fi
 
 if [ ${GITLAB_PRIVATE_TOKEN:+1} ] ;then
-  docker-compose run --rm codecept run --no-redirect -g wasabi-on acceptance
+  docker-compose run --rm codecept run --no-redirect -g ok-needs-secrets acceptance
+  docker-compose run --rm application ./protected/yiic migrate --interactive=0
+  docker-compose run --rm test ./vendor/behat/behat/bin/behat --profile $profile -v --stop-on-failure
+
 fi
-docker-compose run --rm codecept run --no-redirect -g ok acceptance
+docker-compose run --rm codecept run --no-redirect -g ok-can-offline acceptance
 docker-compose run --rm application ./protected/yiic migrate --interactive=0
-docker-compose run --rm test ./vendor/behat/behat/bin/behat --profile $profile -v --stop-on-failure
+docker-compose run --rm test ./vendor/behat/behat/bin/behat --profile no-secrets -v --stop-on-failure

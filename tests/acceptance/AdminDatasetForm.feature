@@ -1,3 +1,4 @@
+@ok-needs-secrets
 Feature: form to update dataset details
   As a curator
   I want a form to update dataset details
