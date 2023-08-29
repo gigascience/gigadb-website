@@ -20,12 +20,6 @@ website. This current release is version 3.1.
 
 * Docker (version 18 or more recent) is [installed](https://www.docker.com/products/docker-desktop) 
 on your machine (Windows or macOS)
-* You have a [GitLab account](https://gitlab.com/), which is a member of the 
-[Gigascience Forks group](https://gitlab.com/gigascience/forks), so you can 
-access the application's [secret variables](https://docs.gitlab.com/ee/api/README.html)
-* You have generated a [personal access token](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html) 
-from your GitLab user settings so your local setup can access the secret 
-variables
 * You have git cloned the [gigascience/gigadb-website](https://github.com/gigascience/gigadb-website)
 project locally under `gigadb-website`
 
@@ -87,7 +81,15 @@ $ docker-compose run --rm  application ./protected/yiic migrate --migrationPath=
 >```
 
 
-### Configuration variables
+### Configuration variables (optional)
+
+>*Pre-requisites*:
+>* You have a [GitLab account](https://gitlab.com/), which is a member of the
+  [Gigascience Forks group](https://gitlab.com/gigascience/forks), so you can
+  access the application's [secret variables](https://docs.gitlab.com/ee/api/README.html)
+>* You have generated a [personal access token](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html)
+  from your GitLab user settings so your local setup can access the secret
+  variables
 
 The project can be configured using *deployment variables* managed in `.env`, 
 *application variables* managed in the [docker-compose.yml](ops/deployment/docker-compose.yml) 
