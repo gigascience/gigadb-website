@@ -28,4 +28,24 @@ class ReadmeCest
         $I->runShellCommand("ls /home/curators");
         $I->seeInShellOutput("readme_100005.txt");
     }
+
+    /**
+     * Test functionality using a DOI for a dataset that does not exist
+     *
+     * @param FunctionalTester $I
+     */
+    public function tryCreateWithBadDoi(FunctionalTester $I)
+    {
+        # Test actionCreate function in ReadmeController should fail
+        $I->runShellCommand("/app/yii_test readme/create --doi 888888 --outdir=/home/curators", false);
+        $I->seeResultCodeIs(1);
+
+        # Test getReadme function in ReadmeGenerator class to
+        # throw exception when no dataset can be found for a DOI
+        $expectedExceptionMessage = 'Dataset 888888 not found';
+        $I->expectThrowable(new Exception($expectedExceptionMessage), function() {
+            $readmeGenerator = new \app\components\ReadmeGenerator();
+            $readmeGenerator->getReadme('888888');
+        });
+    }
 }
