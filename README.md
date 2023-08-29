@@ -27,6 +27,8 @@ project locally under `gigadb-website`
 
 ```
 $ cd gigadb-website
+$ cp ops/configuration/variables/env-sample .env
+$ cp ops/configuration/variables/secrets-sample .secrets
 $ ./up.sh
 ```
 This will start up all necessary services, perform the database migrations, generate the configuration and reference data feeds.
