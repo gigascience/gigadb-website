@@ -9,6 +9,8 @@ services:
       - ./:/gigadb/app/tools/files-metadata-console:delegated
       - ../../services:/gigadb/app/services
       - ../../models:/gigadb/app/models
+      # For accessing pgdmp database dumps
+      - ../../../../sql:/gigadb/app/tools/files-metadata-console/sql
     networks:
       # Connect to db-tier network in ops/docker-compose.yml
       - proxy-db-tier
@@ -35,3 +37,5 @@ services:
 networks:
   proxy-db-tier:  # represents db-tier network in ops/docker-compose.yml
     name: deployment_db-tier
+    # TODO: Uncomment this option after upgrading Docker compose in CICD pipeline
+    # external: true

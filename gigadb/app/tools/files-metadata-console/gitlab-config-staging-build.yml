@@ -29,8 +29,8 @@ FilesMetadataConsoleBuildStaging:
     - docker-compose -f ./docker-compose.yml run --rm configure
     - docker-compose -f ./docker-compose.yml run --rm composer install
     - docker-compose -f ./docker-compose.production-envs.yml build production-files-metadata-console
-    - docker tag ${CI_PROJECT_NAME}_production-files-metadata-console:latest registry.gitlab.com/$CI_PROJECT_PATH/production-files-metadata-console:latest
-    - docker push registry.gitlab.com/$CI_PROJECT_PATH/production-files-metadata-console:latest
+    - docker tag ${CI_PROJECT_NAME}_production-files-metadata-console:latest registry.gitlab.com/$CI_PROJECT_PATH/production-files-metadata-console:$GIGADB_ENV
+    - docker push registry.gitlab.com/$CI_PROJECT_PATH/production-files-metadata-console:$GIGADB_ENV
   artifacts:
     untracked: true
     when: always

@@ -2,7 +2,7 @@
 // test database! Important not to run tests on production or development databases
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => getenv("DOCKER_RUNNING") ? 'pgsql:host=${GIGADB_HOST};dbname=${GIGADB_DB};port=5432' : 'pgsql:host=localhost;dbname=${GIGADB_DB};port=54321',
+    'dsn' => getenv("DOCKER_RUNNING") ? 'pgsql:host=${GIGADB_HOST};dbname=${GIGADB_DB}_testdata;port=5432' : 'pgsql:host=localhost;dbname=${GIGADB_DB}_testdata;port=54321',
     'username' => "${GIGADB_USER}",
     'password' => "${GIGADB_PASSWORD}",
     'charset' => 'utf8',
