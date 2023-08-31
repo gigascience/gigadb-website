@@ -18,7 +18,7 @@
                     <div class="col-xs-8">
                         <div class="underline-title">
                             <ol class="breadcrumb pull-right" style="cursor:pointer">
-                                <li><span>+ more</span></li>
+                                <li><button>+ more</button></li>
                             </ol>
                             <div>
                                 <h4>Dataset types</h4>
@@ -234,17 +234,20 @@
     <script>
     document.addEventListener("DOMContentLoaded", function(event) { //This event is fired after deferred scripts are loaded
         $("#dataset-hint").popover();
+    });
+    // NOTE: $(document).ready "only run once the page Document Object Model (DOM) is ready for JavaScript code to execute" so wrapping it inside "DOMContentLoaded" is unnecessary
+    $(document).ready(function toggleExpandContent() {
+        $(".breadcrumb li button").click(function() {
+            var togglediv = $(".home-text-icon-list:nth-child(3)");
+            togglediv.toggle();
 
-        $(document).ready(function() {
-            $(".breadcrumb li span").click(function() {
-                var togglediv = $(".home-text-icon-list:nth-child(3)");
-                togglediv.toggle();
-                if (togglediv.css("display") == 'block') {
-                    $(this).text('- less');
-                    $("#rss").height("500px");
-                } else { $(this).text('+ more');
-                    $("#rss").height("300px"); }
-            });
+            if (togglediv.css("display") == 'block') {
+                $(this).text('- less');
+                $("#rss").height("500px");
+            } else {
+                $(this).text('+ more');
+                $("#rss").height("300px");
+            }
         });
     });
     </script>
