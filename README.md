@@ -19,9 +19,11 @@ website. This current release is version 3.1.
 ### Requirements
 
 * Docker (version 18 or more recent) is [installed](https://www.docker.com/products/docker-desktop) 
-on your machine (Windows or macOS)
+on your machine (Windows, Linux or macOS)
 * You have git cloned the [gigascience/gigadb-website](https://github.com/gigascience/gigadb-website)
 project locally under `gigadb-website`
+
+>Note to Linux users: This does not provide `docker-compose` which GigaDB deployment relies on from the command-line console. To fix this, you can create a script at /bin/docker-compose with `docker compose "@0"` as its content
 
 ### Get started quickly
 
