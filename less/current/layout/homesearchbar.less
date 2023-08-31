@@ -2,6 +2,14 @@
   // Dark fallback in case image doesn't load to keep text readable
   background-color: @color-warm-black;
   background: transparent url(../../../images/new_interface_image/banner.jpg)repeat scroll center center;
+  position: relative;
+}
+
+.image-overlay {
+  // this ensures a color contrast ratio above 4.5:1 of any white text over the background image
+  background: hsla(0deg,0%,0%,0.4);
+  position: absolute;
+  inset: 0;
 }
 
 .home-search-bar-title {
