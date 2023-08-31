@@ -277,6 +277,19 @@
         owner: centos
         group: centos
 
+- name: Set up and configuration of rclone on bastion server
+  hosts: name_bastion_server_staging*:name_bastion_server_live*
+  
+  tasks:
+    - name: Install rclone
+      ansible.builtin.include_role:
+        name: ansible-rclone
+      vars:
+        rclone_version: "1.60.0"
+        rclone_arch: "amd64"
+        install_manpages: "true"
+        rclone_config_location: "/home/centos/.config/rclone/rclone.conf"
+
 - name: Load latest DB backup
   hosts: name_bastion_server_staging*:name_bastion_server_live*
 

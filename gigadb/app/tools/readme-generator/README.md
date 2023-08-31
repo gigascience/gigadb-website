@@ -26,19 +26,66 @@ $ cp config-sources/env.example .env
 Generate config files:
 ```
 # Generate configuration using variables in .env, GitLab, then exit
-$ docker-compose run --rm config
+$ docker-compose run --rm configure
 ```
-> db.php and test_db.php should be present in the `config` directory.
+> db.php and test_db.php should be present in the `config` directory. There 
+> should be a runtime/curators directory too.
 
 Install Composer dependencies:
 ```
 $  docker-compose run --rm tool composer install 
 ```
 
+The copying of readme files created by this tool into Wasabi requires Rclone
+to be installed on your `dev` machine. This can be done using as follows:
+```
+# Using Homebrew
+$ brew install rclome
+# Or using Macports
+$ sudo port install rclone
+```
+
+> There is an analogous step in the Ansible playbook for the bastion server 
+> for installing Rclone on staging and live environments.
+> ansible-galaxy install -r ../../../infrastructure/requirements.yml
+
+The create readme tool uses the rclone configuration file from the wasabi
+migration tool. Change directory to the `gigadb-website/gigadb/app/tools/wasabi-migration`
+directory and make a copy of the `env.example` file called `.env`:
+```
+$ cd gigadb/app/tools/wasabi-migration
+$ cp env.example .env
+```
+
+In the new `.env` file, uncomment and provide a value for the
+`GITLAB_PRIVATE_TOKEN` variable.
+
+Also provide the name of GitLab project fork in the `REPO_NAME` variable.
+
+You should then be able to create the configuration file for rclone by
+executing:
+```
+$ docker-compose run --rm config
+```
+
+Check if the configuration process has worked by looking for the
+`config/rclone.conf` file.
+
+## How to test
+
+Ensure you have `bats` installed (e.g: on macOS, you could do `brew install bats-core`
+or `port install bats-core`). Then run:
+```
+# Ensure you are in gigadb/app/tools/readme-generator directory
+$ bats tests
+ ✓ create readme file
+ ✓ create readme file and copy to wasabi
+```
+
 
 ## Using readme generator tool
 
-The readme information for a dataset can be viewed on standard output using it's
+The readme information for a dataset can be viewed on standard output using its
 DOI:
 ```
 $ docker-compose run --rm tool /app/yii readme/create --doi 100142
@@ -81,6 +128,12 @@ Exception 'Exception' with message 'Dataset 1 not found'
 
 ## Using readme generator tool on Bastion server
 
+Before running the bastion playbook, execute the following command to install
+the ansible-rclone role for Ansible in your development environment:
+```
+$ ansible-galaxy install -r ../../../infrastructure/requirements.yml
+```
+
 Log into bastion server
 ```
 # Get public IP address for bastion server
@@ -104,6 +157,28 @@ $ ./createReadme.sh --doi 100142 --outdir /app/readmeFiles
 
 In both cases, look in the readmeFiles directory for the readme file that has
 been created by the tool.
+
+The createReadme.sh script can also be used to copy the newly created readme 
+file into the Wasabi gigadb-datasets bucket. To test this in dry-run mode,
+execute:
+```
+$ ./createReadme.sh --doi 100142 --outdir /app/readmeFiles --wasabi
+```
+
+If you look at the latest log file in the logs directory, you will see the
+destination path that the readme file will be copied to which will be in the 
+staging directory. You can deactivate dry-run mode using the --apply flag:
+```
+$ ./createReadme.sh --doi 100142 --outdir /app/readmeFiles --wasabi --apply
+```
+
+You can confirm that the presence of the new readme file in the 100142 directory
+using the Wasabi web console.
+
+To copy the readme file to the live data directory:
+```
+$ ./createReadme.sh --doi 100142 --outdir /app/readmeFiles --wasabi --use-live-data --apply
+```
 
 ## Tests
 
