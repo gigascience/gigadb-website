@@ -7,20 +7,20 @@ $this->pageTitle = 'GigaDB - About';
 <div class="clear"></div>
 <div class="content">
     <div class="container">
-        <section class="page-title-section">
+        <div class="page-title-container">
             <div class="page-title">
                 <ol class="breadcrumb pull-right">
                     <li><a href="/">Home</a></li>
                     <li class="active">General information</li>
                 </ol>
-                <h4>General information</h4>
+                <h1>General information</h1>
             </div>
-        </section>
+        </div>
         <div class="subsection">
             <img src="../images/new_interface_image/about.png">
         </div>
         <section>
-            <h4 class="about-title">Database: <em>GigaDB</em></h4>
+            <h2 class="h4 about-title">Database: <em>GigaDB</em></h2>
             <p><a href="/site/index" target="_blank"><em>GigaDB</em></a> is a data repository supporting scientific
                 publications in the Life/Biomedical Sciences domain. <a href="/site/index"
                                                                         target="_blank"><em>GigaDB</em></a> organises
@@ -49,7 +49,7 @@ $this->pageTitle = 'GigaDB - About';
                 information on the issues surrounding CC0 and data see <a
                         href="http://dx.doi.org/10.1186/1756-0500-5-494">Hrynaszkiewicz and Cockerill, 2012</a>).</p>
             <hr>
-            <h4 class="about-title"><em>GigaDB</em> Submission Criteria</h4>
+            <h2 class="h4 about-title"><em>GigaDB</em> Submission Criteria</h2>
             <p><a href="/site/index" target="_blank"><em>GigaDB</em></a> has also been accepting submission of datasets
                 associated with Open Access publications, and is currently working to scale this out with other
                 publishers. As with all current datasets in <a href="/site/index" target="_blank"><em>GigaDB</em></a>
@@ -59,7 +59,7 @@ $this->pageTitle = 'GigaDB - About';
                 in this option should contact the <em>GigaScience</em> team via <a
                         href="mailto:database@gigasciencejournal.com">database@gigasciencejournal.com</a>.</p>
             <hr>
-            <h4 class="about-title">Journal: <em>GigaScience</em></h4>
+            <h2 class="h4 about-title">Journal: <em>GigaScience</em></h2>
             <p><a href="http://www.gigasciencejournal.com/" target="_blank"><em>GigaScience</em></a> is an online,
                 open-access journal that includes, as part of its publishing activities, the database <a
                         href="/site/index" target="_blank"><em>GigaDB</em></a>. <a
@@ -76,7 +76,7 @@ $this->pageTitle = 'GigaDB - About';
                 handling large-scale data. See <a href="http://www.gigasciencejournal.com/">http://www.gigasciencejournal.com/</a>
                 for additional information about the journal and prospective article submission.</p>
             <hr>
-            <h4 class="about-title">Indexing</h4>
+            <h2 class="h4 about-title">Indexing</h2>
             <p><a href="/site/index" target="_blank"><em>GigaDB</em></a> has been included in several external indexing
                 systems including <a href="https://toolbox.google.com/datasetsearch">Google Dataset Search</a> (via
                 schema.org markup), the <a href="http://search.datacite.org/ui/">DataCite search engine</a>, NCBI <a
@@ -106,7 +106,7 @@ $this->pageTitle = 'GigaDB - About';
                 </tr>
                 </tbody>
             </table>
-            <p>This website’s content and logo has been published under the Creative Commons CC0 license</p>
+            <p>This website's content and logo has been published under the Creative Commons CC0 license</p>
         </section>
     </div>
 </div>
