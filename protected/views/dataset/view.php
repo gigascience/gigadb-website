@@ -18,8 +18,7 @@ $sampleDataProvider = $samples->getDataProvider() ;
 
 <div class="content">
     <div class="container">
-                <section></section>
-                <div class="subsection">
+                <div class="subsection subsection-margin-top">
                     <div class="media">
                         <div class="media-left">
                                         <?php if ($model->image) {
@@ -40,7 +39,7 @@ $sampleDataProvider = $samples->getDataProvider() ;
 
                         </div>
                         <div class="media-body">
-                            <h4 class="left-border-title left-border-title-lg"><?= $mainSection->getHeadline()['title']; ?></h4>
+                            <h1 class="left-border-title left-border-title-lg"><?= $mainSection->getHeadline()['title']; ?></h1>
                             <p class="dataset-release-date-text">Dataset type:  <?= $mainSection->getHeadline()['types'];?> <br> Data released on <?= $mainSection->getHeadline()['release_date'] ?></p>
                             <div class="color-background color-background-block dataset-color-background-block">
                                 <p><?= $mainSection->getReleaseDetails()['authors'] ?> (<?=$mainSection->getReleaseDetails()['release_year']?>): <?= $mainSection->getReleaseDetails()['dataset_title'] . ' ' . ($mainSection->getReleaseDetails()['publisher'] ?? '<span class="label label-danger">NO PUBLISHER SET</span>') . '. '; ?><a href="https://doi.org/10.5524/<?php echo $model->identifier;?>">https://doi.org/10.5524/<?php echo $model->identifier;?></a></p>
@@ -184,13 +183,13 @@ $sampleDataProvider = $samples->getDataProvider() ;
                 <div class="subsection">
                     <div class="underline-title">
                         <div>
-                            <h4>Additional details</h4>
+                            <h2>Additional details</h2>
                         </div>
                     </div>
                     <?php
                     $publications = $connections->getPublications();
                     if (!empty($publications)) { ?>
-                        <h5><strong><?= Yii::t('app', 'Read the peer-reviewed publication(s):')?></strong></h5>
+                        <h3><strong><?= Yii::t('app', 'Read the peer-reviewed publication(s):')?></strong></h3>
                         <p>
                             <? foreach ($publications as $publication){
                                 echo $publication['citation'].$publication['pmurl'];
@@ -211,7 +210,7 @@ $sampleDataProvider = $samples->getDataProvider() ;
                     <?php
                         $mainbodyExternalLinks = $links->getDatasetExternalLinksTypesAndCount(["Additional information", "Genome browser", "Github links"]) ;
                     foreach (array_keys($mainbodyExternalLinks) as $linkType) {
-                        echo "<h5><strong>${linkType}:</strong></h5>";
+                        echo "<h3><strong>${linkType}:</strong></h3>";
                         foreach ($links->getDatasetExternalLinks([$linkType]) as $link) {
                             echo '<p>' . CHtml::link($link['url'], $link['url'], array("title" => $linkType . " for dataset " . $model->identifier )) . '</p>';
                         }
@@ -227,7 +226,7 @@ $sampleDataProvider = $samples->getDataProvider() ;
                     ?>
 
                     <?php if (!empty($primary_links)) { ?>
-                <h5><strong><?=Yii::t('app', 'Accessions (data included in GigaDB):')?></strong></h5>
+                <h3><strong><?=Yii::t('app', 'Accessions (data included in GigaDB):')?></strong></h3>
                         <p>
                             <?php foreach ($primary_links as $link) {
                                 echo $link->format;
@@ -236,7 +235,7 @@ $sampleDataProvider = $samples->getDataProvider() ;
                     <?php } ?>
 
                     <?php if (!empty($secondary_links)) { ?>
-                        <h5><strong><?=Yii::t('app', 'Accessions (data not in GigaDB):')?></strong></h5>
+                        <h3><strong><?=Yii::t('app', 'Accessions (data not in GigaDB):')?></strong></h3>
                         <p>
                             <?php foreach ($secondary_links as $link) {
                                 echo $link->format;
@@ -248,7 +247,7 @@ $sampleDataProvider = $samples->getDataProvider() ;
 
                 <?php $projects = $connections->getProjects() ;
                 if (count($projects) > 0) { ?>
-                    <h5><strong><?=Yii::t('app', 'Projects:')?></strong></h5>
+                    <h3><strong><?=Yii::t('app', 'Projects:')?></strong></h3>
                     <p>
                         <? foreach ($projects as $project){
                             echo $project['format'];
