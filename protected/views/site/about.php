@@ -17,7 +17,7 @@ $this->pageTitle = 'GigaDB - About';
             </div>
         </div>
         <div class="subsection">
-            <img src="../images/new_interface_image/about.png">
+            <img src="../images/new_interface_image/about.png" alt="Photo of the members of the GigaDB team">
         </div>
         <section>
             <h2 class="h4 about-title">Database: <em>GigaDB</em></h2>
