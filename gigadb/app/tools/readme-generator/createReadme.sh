@@ -78,7 +78,7 @@ done
 #######################################
 function set_up_logging() {
   LOGDIR="$APP_SOURCE/logs"
-  LOGFILE="$LOGDIR/readme_${doi}_batch_${batch}_$(date +'%Y%m%d_%H%M%S').log"
+  LOGFILE="$LOGDIR/readme_${doi}_$(date +'%Y%m%d_%H%M%S').log"
   mkdir -p "${LOGDIR}"
   touch "${LOGFILE}"
 }
@@ -213,6 +213,10 @@ function main {
       exit 1
     elif [ "${exitCode}" -eq 65 ]; then
       echo "$(date +'%Y/%m/%d %H:%M:%S') WARN  : No dataset for DOI ${doi}" >> "$LOGFILE"
+      # Exit script if not running in batch mode
+      if [ "${batch}" -eq 1 ]; then
+        exit 0
+      fi
     else
       echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Created readme file for DOI ${doi} in ${SOURCE_PATH}/readme_${doi}.txt" >> "$LOGFILE"
 
