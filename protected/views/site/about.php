@@ -13,13 +13,13 @@ $this->pageTitle = 'GigaDB - About';
                     <li><a href="/">Home</a></li>
                     <li class="active">General information</li>
                 </ol>
-                <h1>General information</h1>
+                <h1 id="aboutSectionTitle">General information</h1>
             </div>
         </div>
         <div class="subsection">
-            <img src="../images/new_interface_image/about.png" alt="Photo of the members of the GigaDB team">
+            <img src="../images/new_interface_image/about.png" alt="Photo of the GigaDB team">
         </div>
-        <section>
+        <section aria-labelledby="aboutSectionTitle">
             <h2 class="h4 about-title">Database: <em>GigaDB</em></h2>
             <p><a href="/site/index" target="_blank"><em>GigaDB</em></a> is a data repository supporting scientific
                 publications in the Life/Biomedical Sciences domain. <a href="/site/index"
@@ -90,23 +90,47 @@ $this->pageTitle = 'GigaDB - About';
                 addition, <em>GigaDB</em> is listed in <a href="https://fairsharing.org/">FAIRsharing</a>, <a
                         href="http://re3data.org/">Re3Data.org</a> and other database catalogues to ensure we reach as
                 wide an audience as possible.</p>
-        </section>
-        <section>
-            <table class="table text-center about-partner-table">
-                <tbody>
-                <tr>
-                    <td><a href="http://www.datacite.org/"><img src="/images/DataCite_header_final1_1.png"></a></td>
-                    <td><a href="http://isa-tools.org/"><img src="/images/isa.jpg"></a></td>
-                    <td><a href="https://fairsharing.org"><img src="/images/fairshare.png"></a></td>
-                    <td><a href="http://wokinfo.com/products_tools/multidisciplinary/dci/"><img
-                                    src="/images/data_citation.png"></a></td>
-                    <td><a href="http://Re3Data.org"><img src="/images/re3data.png"></a></td>
-                    <td><a href="https://repositive.io/"><img src="/images/repositive.png"></a></td>
-                    <td><a href="https://datamed.org/"><img src="/images/datamed.png"></a></td>
-                </tr>
-                </tbody>
-            </table>
-            <p>This website's content and logo has been published under the Creative Commons CC0 license</p>
+            <div class="container">
+                <h3 class="sr-only">External Indexing Systems</h3>
+                <ul class="row text-center">
+                    <li class="col-4 col-sm-3 col-md-1 p-1">
+                        <a href="http://www.datacite.org/" aria-label="Visit DataCite website">
+                            <img src="/images/DataCite_header_final1_1.png" alt="DataCite logo" class="img-responsive">
+                        </a>
+                    </li>
+                    <li class="col-4 col-sm-3 col-md-1 p-1">
+                        <a href="http://isa-tools.org/" aria-label="Visit ISA Tools website">
+                            <img src="/images/isa.jpg" alt="ISA Tools logo" class="img-responsive">
+                        </a>
+                    </li>
+                    <li class="col-4 col-sm-3 col-md-1 p-1">
+                        <a href="https://fairsharing.org" aria-label="Visit Fairsharing website">
+                            <img src="/images/fairshare.png" alt="Fairsharing logo" class="img-responsive">
+                        </a>
+                    </li>
+                    <li class="col-4 col-sm-3 col-md-1 p-1">
+                        <a href="http://wokinfo.com/products_tools/multidisciplinary/dci/" aria-label="Visit Clarivate Analytics website">
+                            <img src="/images/data_citation.png" alt="Data Citation Index logo" class="img-responsive">
+                        </a>
+                    </li>
+                    <li class="col-4 col-sm-3 col-md-1 p-1">
+                        <a href="http://Re3Data.org" aria-label="Visit Re3Data website">
+                            <img src="/images/re3data.png" alt="Re3Data logo" class="img-responsive">
+                        </a>
+                    </li>
+                    <li class="col-4 col-sm-3 col-md-1 p-1">
+                        <a href="https://repositive.io/" aria-label="Visit Repositive website">
+                            <img src="/images/repositive.png" alt="Repositive logo" class="img-responsive">
+                        </a>
+                    </li>
+                    <li class="col-4 col-sm-3 col-md-1 p-1">
+                        <a href="https://datamed.org/" aria-label="Visit DataMed website">
+                            <img src="/images/datamed.png" alt="DataMed logo" class="img-responsive">
+                        </a>
+                    </li>
+                </ul>
+                <p class="mt-4">This website's content and logo has been published under the Creative Commons CC0 license</p>
+            </div>
         </section>
     </div>
 </div>
