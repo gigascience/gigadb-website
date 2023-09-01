@@ -208,8 +208,11 @@ function main {
       docker-compose run --rm tool /app/yii readme/create --doi "${doi}" --outdir "${outdir}"
     fi
     exitCode=$?
-    if [ "${exitCode}" -ne 0 ]; then
-      echo "$(date +'%Y/%m/%d %H:%M:%S') ERROR  : Problem creating readme file for DOI ${doi}" >> "$LOGFILE"
+    if [ "${exitCode}" -eq 74 ]; then
+      echo "$(date +'%Y/%m/%d %H:%M:%S') ERROR  : Could not save readme file for DOI ${doi} at ${outdir}" >> "$LOGFILE"
+      exit 1
+    elif [ "${exitCode}" -eq 65 ]; then
+      echo "$(date +'%Y/%m/%d %H:%M:%S') WARN  : No dataset for DOI ${doi}" >> "$LOGFILE"
     else
       echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Created readme file for DOI ${doi} in ${SOURCE_PATH}/readme_${doi}.txt" >> "$LOGFILE"
 
