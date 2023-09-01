@@ -78,7 +78,7 @@ done
 #######################################
 function set_up_logging() {
   LOGDIR="$APP_SOURCE/logs"
-  LOGFILE="$LOGDIR/wasabi_${doi}_$(date +'%Y%m%d_%H%M%S').log"
+  LOGFILE="$LOGDIR/readme_${doi}_batch_${batch}_$(date +'%Y%m%d_%H%M%S').log"
   mkdir -p "${LOGDIR}"
   touch "${LOGFILE}"
 }
@@ -220,10 +220,10 @@ function main {
         get_doi_directory_range
         copy_to_wasabi
       fi
+      count=$((count+1))
     fi
-  
+
     doi=$((doi+1))
-    count=$((count+1))
   done
 }
 
