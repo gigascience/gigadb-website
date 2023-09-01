@@ -84,7 +84,7 @@ $ bats tests
 ```
 
 
-## Using readme generator tool
+## Using readme generator tool in dev environment
 
 The readme information for a dataset can be viewed on standard output using its
 DOI:
@@ -105,7 +105,7 @@ Since `/home/curators` has been mounted to `runtime/curators` directory in
 running the above command.
 
 
-## Using readme generator tool via shell wrapper script 
+## Using readme generator tool via shell wrapper script in dev environment
 
 There is a shell script which can be used to call the readme tool:
 ```
@@ -244,6 +244,33 @@ Elapsed time:         0.3s
 2023/09/01 11:39:41 INFO  : Successfully copied file to Wasabi for DOI: 100020
 ```
 
+## Tests
+
+### Unit test
+
+The unit test checks custom-written `getAuthors` function in Dataset model class
+which returns the authors of a dataset based on many-to-many mapping between
+dataset and author tables via a junction `dataset_authors` table:
+```
+$ docker-compose run --rm tool ./vendor/bin/codecept run tests/unit
+```
+
+There's also a unit test to check the ReadmeGenerator component class:
+```
+$ docker-compose run --rm tool ./vendor/bin/codecept run --debug tests/unit/components/ReadmeGeneratorTest.php
+```
+
+### Functional test
+
+There is a functional test which checks the `actionCreate()` function in
+`ReadmeController`.
+```
+$ docker-compose run --rm tool ./vendor/bin/codecept run tests/functional
+
+# Run single test
+$ docker-compose run --rm tool ./vendor/bin/codecept run tests/functional/ReadmeCest.php
+```
+
 ## Using readme generator tool on Bastion server
 
 Before running the bastion playbook, execute the following command to install
@@ -252,7 +279,7 @@ the ansible-rclone role for Ansible in your development environment:
 $ ansible-galaxy install -r ../../../infrastructure/requirements.yml
 ```
 
-Log into bastion server
+Instantiate and log into bastion server:
 ```
 # Get public IP address for bastion server
 $ terraform output
@@ -265,7 +292,16 @@ $ ssh -i ~/.ssh/your-private-key.pem centos@88.888.888.888
 
 Using docker command to access tool:
 ```
-$ docker run --rm -v /home/centos/readmeFiles:/app/readmeFiles registry.gitlab.com/$GITLAB_PROJECT/production_tool:staging /app/yii readme/create --doi 100142 --outdir /app/readmeFiles
+$ docker run --rm -v /home/centos/readmeFiles:/app/readmeFiles registry.gitlab.com/$GITLAB_PROJECT/production_tool:$GIGADB_ENV /app/yii readme/create --doi 100142 --outdir /app/readmeFiles
+```
+
+Check a readme file has been created:
+```
+$ head readmeFiles/readme_100142.txt 
+[DOI] 10.5524/100142
+
+[Title] Supporting scripts and data for "Investigation into the annotation of
+protocol sequencing steps in the Sequence Read Archive".
 ```
 
 Use shell script to run readme tool:
@@ -273,8 +309,11 @@ Use shell script to run readme tool:
 $ ./createReadme.sh --doi 100142 --outdir /app/readmeFiles
 ```
 
-In both cases, look in the readmeFiles directory for the readme file that has
-been created by the tool.
+This time, you can check the log of this create readme file command:
+```
+$ more logs/readme_100142_20230901_080216.log 
+2023/09/01 08:02:22 INFO  : Created readme file for DOI 100142 in /home/centos/runtime/curators/readme_100142.txt
+```
 
 The createReadme.sh script can also be used to copy the newly created readme 
 file into the Wasabi gigadb-datasets bucket. To test this in dry-run mode,
@@ -291,43 +330,23 @@ $ ./createReadme.sh --doi 100142 --outdir /app/readmeFiles --wasabi --apply
 ```
 
 You can confirm that the presence of the new readme file in the 100142 directory
-using the Wasabi web console.
+using the Wasabi web console by checking the gigadb-datasets/staging bucket.
 
 There is a batch mode for the script which can be used by providing the 
 `--batch` flag followed by a number to denote the number of datasets to be
-processed. For example, to process DOIs 100141, 100142, 100143, 100144, 100145:
+processed. For example, to process DOIs 100141, 100142, 100143:
 ```
-$ ./createReadme.sh --doi 100141 --outdir /app/readmeFiles --wasabi --batch 5 --apply
+$ ./createReadme.sh --doi 100141 --outdir /app/readmeFiles --wasabi --batch 3
 ```
 
-To copy the readme file to the live data directory:
+You will be able to see in the latest log file in the logs directory that 3
+readme files have been created and copied into Wasabi in dry-run mode.
+
+To copy the readme file to the live data directory, use the `--use-live-data`
+and `--apply` flags:
 ```
 $ ./createReadme.sh --doi 100142 --outdir /app/readmeFiles --wasabi --use-live-data --apply
 ```
 
-## Tests
-
-### Unit test
-
-The unit test checks custom-written `getAuthors` function in Dataset model class 
-which returns the authors of a dataset based on many-to-many mapping between 
-dataset and author tables via a junction `dataset_authors` table:
-```
-$ docker-compose run --rm tool ./vendor/bin/codecept run tests/unit
-```
-
-There's also a unit test to check the ReadmeGenerator component class:
-```
-$ docker-compose run --rm tool ./vendor/bin/codecept run --debug tests/unit/components/ReadmeGeneratorTest.php
-```
-
-### Functional test
-
-There is a functional test which checks the `actionCreate()` function in 
-`ReadmeController`.
-```
-$ docker-compose run --rm tool ./vendor/bin/codecept run tests/functional
-
-# Run single test
-$ docker-compose run --rm tool ./vendor/bin/codecept run tests/functional/ReadmeCest.php
-```
+Now check the directory for dataset 100142 in relevant location in
+gigadb-datasets/live bucket in Wasabi.
