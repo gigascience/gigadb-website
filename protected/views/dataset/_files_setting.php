@@ -15,8 +15,8 @@
                 <input type='hidden' name='setting[]' value="name"/>
 
                     <div class="attribute-setting-item">
-                        <label><strong>Items per page:</strong></label>
-                        <select name="pageSize" class="selectPageSize">
+                        <label for="selectPageSizeFilesSetting"><strong>Items per page:</strong></label>
+                        <select name="pageSize" class="selectPageSize" id="selectPageSizeFilesSetting">
                         <?php $options = [5,10,20,50,100,200];
                             foreach ($options as $option) {
                         ?>
