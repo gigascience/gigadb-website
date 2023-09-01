@@ -17,14 +17,12 @@
                 <div class="row">
                     <div class="col-xs-8">
                         <div class="underline-title">
-                            <ol class="breadcrumb pull-right" style="cursor:pointer">
-                                <li><button aria-controls="">+ more</button></li>
-                            </ol>
+                            <button class="pull-right btn btn-link" aria-controls="datasetTypesList" aria-label="Show more dataset types">+ more</button>
                             <div>
-                                <h2>Dataset types</h2>
+                                <h2 class="heading">Dataset types</h2>
                             </div>
                         </div>
-                        <ul class="list-inline home-text-icon-list">
+                        <ul id="datasetTypesList" class="list-inline home-text-icon-list">
                             <li>
                                 <a href="/search/new?keyword=Genomic&type%5B%5D=dataset&dataset_type%5B%5D=Genomic">
                                     <div class="text-icon text-icon-green">
@@ -150,7 +148,7 @@
                     <div class="col-xs-4" id="rss" style="height:300px;overflow:scroll;">
                         <div class="underline-title">
                             <div>
-                                <h2>RSS</h2>
+                                <h2 class="heading">RSS</h2>
                             </div>
                         </div>
                         <?php $flag=1;foreach($rss_arr as $item)  {?>
@@ -178,7 +176,7 @@
                 <div class="container">
                     <div class="underline-title">
                         <div>
-                            <h2>Latest news</h2>
+                            <h2 class="heading">Latest news</h2>
                         </div>
                     </div>
                     <div id="news_slider" class="row">
@@ -246,9 +244,11 @@
 
             if (showAllDatasetTypes) {
                 $(this).text('- less');
+                $(this).attr('aria-label', 'Show less dataset types')
                 $("#rss").height("500px");
             } else {
                 $(this).text('+ more');
+                $(this).attr('aria-label', 'Show more dataset types')
                 $("#rss").height("300px");
             }
         });
