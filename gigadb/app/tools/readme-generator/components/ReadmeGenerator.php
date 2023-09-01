@@ -5,6 +5,7 @@ namespace app\components;
 use Exception;
 use GigaDB\models\Dataset;
 use yii\base\Component;
+use yii\base\UserException;
 
 /**
  * Component service to output contents for a readme file for a dataset
@@ -37,7 +38,7 @@ class ReadmeGenerator extends Component
         // Check dataset exists otherwise throw exception to exit.
         $dataset = Dataset::findOne(['identifier' => $doi]);
         if (is_null($dataset)) {
-            throw new Exception('Dataset ' . $doi . ' not found');
+            throw new UserException('Dataset ' . $doi . ' not found');
         }
         // Use array to store readme information.
         $formattedTitle = wordwrap('[Title] ' . $dataset->title, self::STRING_WIDTH, PHP_EOL);

@@ -77,8 +77,7 @@ class ReadmeController extends Controller
                 throw new Exception('Cannot save readme file - Output directory does not exist or is not a directory');
             }
         } catch (Exception $e) {
-            $this->stdout($e->getMessage().PHP_EOL, Console::FG_RED);
-            Yii::error($e->getMessage());
+            $this->stderr($e->getMessage().PHP_EOL, Console::FG_RED);
             return ExitCode::DATAERR;
         }
         return ExitCode::OK;
