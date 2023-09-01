@@ -5,6 +5,7 @@ namespace app\controllers;
 use Throwable;
 use Yii;
 use yii\base\Exception;
+use yii\base\UserException;
 use yii\helpers\Console;
 use yii\console\Controller;
 use yii\console\ExitCode;
@@ -76,9 +77,12 @@ class ReadmeController extends Controller
             } else if ($optOutdir !== '' && is_dir($optOutdir) === false) {
                 throw new Exception('Cannot save readme file - Output directory does not exist or is not a directory');
             }
+        } catch (UserException $e) {
+            $this->stderr($e->getMessage().PHP_EOL, Console::FG_YELLOW);
+            return ExitCode::DATAERR;
         } catch (Exception $e) {
             $this->stderr($e->getMessage().PHP_EOL, Console::FG_RED);
-            return ExitCode::DATAERR;
+            return ExitCode::IOERR;
         }
         return ExitCode::OK;
 
