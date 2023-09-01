@@ -21,7 +21,7 @@
                                 <li><button aria-controls="">+ more</button></li>
                             </ol>
                             <div>
-                                <h4>Dataset types</h4>
+                                <h2>Dataset types</h2>
                             </div>
                         </div>
                         <ul class="list-inline home-text-icon-list">
@@ -150,7 +150,7 @@
                     <div class="col-xs-4" id="rss" style="height:300px;overflow:scroll;">
                         <div class="underline-title">
                             <div>
-                                <h4>RSS</h4>
+                                <h2>RSS</h2>
                             </div>
                         </div>
                         <?php $flag=1;foreach($rss_arr as $item)  {?>
@@ -178,7 +178,7 @@
                 <div class="container">
                     <div class="underline-title">
                         <div>
-                            <h4>Latest news</h4>
+                            <h2>Latest news</h2>
                         </div>
                     </div>
                     <div id="news_slider" class="row">
@@ -188,39 +188,40 @@
             </section>
             <? }?>
                 <section>
+                <h2 class="sr-only">Data Overview Metrics</h2>
                     <div class="container">
                         <div class="color-background ">
                             <div class="row home-color-background-grid">
                                 <div class="col-xs-3">
                                     <div class="home-color-background-block">
                                         <div class="text-icon text-icon-o text-icon-lg">
-                                            <img src="/images/new_interface_image/datasets.svg" alt="Number of datasets"></div>
-                                        <h4><? echo $count ?></h4>
-                                        <p>Datasets</p>
+                                            <img src="/images/new_interface_image/datasets.svg" alt=""></div>
+                                        <h3 class="heading"><span class="sr-only">Number of datasets </span><? echo $count ?></h3>
+                                        <div aria-hidden="true" class="content">Datasets</div>
                                     </div>
                                 </div>
                                 <div class="col-xs-3">
                                     <div class="home-color-background-block" onclick="window.location='/site/mapbrowse';">
                                         <div class="text-icon text-icon-o text-icon-lg">
-                                            <img src="/images/new_interface_image/samples.svg" alt="Number of samples"></div>
-                                        <h4><? echo $count_sample ?></h4>
-                                        <p>Samples</p>
+                                            <img src="/images/new_interface_image/samples.svg" alt=""></div>
+                                        <h3 class="heading"><span class="sr-only">Number of samples </span><? echo $count_sample ?></h3>
+                                        <div aria-hidden="true" class="content">Samples</div>
                                     </div>
                                 </div>
                                 <div class="col-xs-3">
                                     <div class="home-color-background-block">
                                         <div class="text-icon text-icon-o text-icon-lg">
-                                            <img src="/images/new_interface_image/files.svg" alt="Number of files"></div>
-                                        <h4><? echo $count_file ?></h4>
-                                        <p>Files</p>
+                                            <img src="/images/new_interface_image/files.svg" alt=""></div>
+                                        <h3 class="heading"><span class="sr-only">Number of files </span><? echo $count_file ?></h3>
+                                        <div aria-hidden="true" class="content">Files</div>
                                     </div>
                                 </div>
                                 <div class="col-xs-3">
                                     <div class="home-color-background-block">
                                         <div class="text-icon text-icon-o text-icon-lg">
-                                            <img src="/images/new_interface_image/volume.svg" alt="Total Volume of Data"></div>
-                                        <h4>31</h4>
-                                        <p>Data volume(TB)</p>
+                                            <img src="/images/new_interface_image/volume.svg" alt=""></div>
+                                        <h3 class="heading"><span class="sr-only">Total Volume of Data </span>31</h3>
+                                        <div aria-hidden="true" class="content">Data volume(TB)</div>
                                     </div>
                                 </div>
                             </div>
