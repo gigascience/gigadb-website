@@ -18,7 +18,7 @@
                     <div class="col-xs-8">
                         <div class="underline-title">
                             <ol class="breadcrumb pull-right" style="cursor:pointer">
-                                <li><button>+ more</button></li>
+                                <li><button aria-controls="">+ more</button></li>
                             </ol>
                             <div>
                                 <h4>Dataset types</h4>
@@ -97,51 +97,49 @@
                                         <img src="/images/new_interface_image/Metadata.svg" alt="Link to Metadata datasets">
                                     </div>Metadata (<span><? echo $number_metadata ?></span>)</a>
                             </li>
-                        </ul>
-                        <ul class="list-inline home-text-icon-list" style="display: none;">
-                            <li>
+                            <li class="toggleable">
                                 <a href="/search/new?keyword=climate&type%5B%5D=dataset&dataset_type%5B%5D=climate">
                                     <div class="text-icon text-icon-green">
                                         <img src="/images/new_interface_image/Climate.svg"  alt="Link to Climate datasets">
                                     </div>Climate (<span><? echo $number_climate ?></span>)</a>
                             </li>
-                            <li>
+                            <li class="toggleable">
                                 <a href="/search/new?keyword=Network-Analysis&type%5B%5D=dataset&dataset_type%5B%5D=12">
                                     <div class="text-icon text-icon-blue">
                                         <img src="/images/new_interface_image/Network-Analysis.svg" alt="Link to Network-Analysis datasets">
                                     </div>Network-Analysis (<span><? echo $number_na ?></span>)</a>
                             </li>
-                            <li>
+                            <li class="toggleable">
                                 <a href="/search/new?keyword=ElectroEncephaloGraphy(EEG)&type%5B%5D=dataset&dataset_type%5B%5D=15">
                                     <div class="text-icon text-icon-yellow">
                                         <img src="/images/new_interface_image/EEG.svg" alt="Link to EEG datasets">
                                     </div>EEG (<span><? echo $number_eeg ?></span>)</a>
                             </li>
-                            <li>
+                            <li class="toggleable">
                                 <a href="/search/new?keyword=Phenotyping&type%5B%5D=dataset&dataset_type%5B%5D=21">
                                     <div class="text-icon text-icon-red">
                                         <img src="/images/new_interface_image/Phenotyping.svg" alt="Link to Phenotyping datasets">
                                     </div>Phenotyping (<span><? echo $number_pt ?></span>)</a>
                             </li>
-                            <li>
+                            <li class="toggleable">
                                 <a href="/search/new?keyword=Metabolomic&type%5B%5D=dataset&dataset_type%5B%5D=8">
                                     <div class="text-icon text-icon-yellow">
                                         <img src="/images/new_interface_image/Metabolomic.svg" alt="Link to Metabolomic datasets">
                                     </div>Metabolomic (<span><? echo $number_metabolomic ?></span>)</a>
                             </li>
-                            <li>
+                            <li class="toggleable">
                                 <a href="/search/new?keyword=Lipidomic&type%5B%5D=dataset&dataset_type%5B%5D=20">
                                     <div class="text-icon text-icon-green">
                                         <img src="/images/new_interface_image/Lipidomic.svg" alt="Link to Lipidomic datasets">
                                     </div>Lipidomic (<span><? echo $number_lipi ?></span>)</a>
                             </li>
-                            <li>
+                            <li class="toggleable">
                                 <a href="/search/new?keyword=ecology&type%5B%5D=dataset&dataset_type%5B%5D=19">
                                     <div class="text-icon text-icon-blue">
                                         <img src="/images/new_interface_image/Ecology.svg" alt="Link to Ecology datasets">
                                     </div>Ecology (<span><? echo $number_ecology ?></span>)</a>
                             </li>
-                            <li>
+                            <li class="toggleable">
                                 <a href="/search/new?keyword=Virtual-Machine&type%5B%5D=dataset&dataset_type%5B%5D=14">
                                     <div class="text-icon text-icon-green">
                                         <img src="/images/new_interface_image/Virtual-Machine.svg" alt="Link to Virtual-Machine datasets">
@@ -235,13 +233,17 @@
     document.addEventListener("DOMContentLoaded", function(event) { //This event is fired after deferred scripts are loaded
         $("#dataset-hint").popover();
     });
+
+    var showAllDatasetTypes = false;
     // NOTE: $(document).ready "only run once the page Document Object Model (DOM) is ready for JavaScript code to execute" so wrapping it inside "DOMContentLoaded" is unnecessary
     $(document).ready(function toggleExpandContent() {
-        $(".breadcrumb li button").click(function() {
-            var togglediv = $(".home-text-icon-list:nth-child(3)");
-            togglediv.toggle();
+        // .click() was deprecated in jQuery 3.3
+        $(".breadcrumb li button").on("click", function() {
+            var datasetTypes = $(".home-text-icon-list li:nth-child(n+13)");
+            datasetTypes.toggle();
+            showAllDatasetTypes = !showAllDatasetTypes
 
-            if (togglediv.css("display") == 'block') {
+            if (showAllDatasetTypes) {
                 $(this).text('- less');
                 $("#rss").height("500px");
             } else {
