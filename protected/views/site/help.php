@@ -38,15 +38,24 @@ $this->pageTitle='GigaDB - Help';
                             <table class="table">
                                 <tbody>
                                     <tr>
-                                        <td><div class="text-icon text-icon-sm text-icon-blue">G</div></td>
+                                        <td>
+                                            <div class="text-icon text-icon-sm text-icon-blue" aria-hidden="true">G</div>
+                                            <span class="sr-only">Datasets</span>
+                                        </td>
                                         <td><p>For each dataset result, author names and DOI are displayed. Hovering over dataset name provides the description of dataset. Dataset and sample names are linked to the specific DOI page for those data, as well as file links are provided to download.</p></td>
                                     </tr>
                                     <tr>
-                                        <td><div class="text-icon text-icon-sm text-icon-green">S</div></td>
+                                        <td>
+                                            <div class="text-icon text-icon-sm text-icon-green" aria-hidden="true">S</div>
+                                            <span class="sr-only">Samples</span>
+                                        </td>
                                         <td><p>For each sample result, the sample name, species name and species ID are displayed with links to the NCBI taxonomy page for the species and to the <em>GigaDB</em> dataset page.</p></td>
                                     </tr>
                                     <tr>
-                                        <td><div class="text-icon text-icon-sm text-icon-yellow">F</div></td>
+                                        <td>
+                                            <div class="text-icon text-icon-sm text-icon-yellow" aria-hidden="true">F</div>
+                                            <span class="sr-only">Files</span>
+                                        </td>
                                         <td><p>For each file result, the file name, file type and file size are displayed with a direct link to the FTP server location of that file.</p></td>
                                     </tr>
                                 </tbody>
