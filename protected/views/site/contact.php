@@ -109,12 +109,14 @@
                                     <h2 class="h4">Contacts</h2>
                                 </div>
                             </div>
-                            <ul class="fa-ul">
-                                <li><i class="fa-li fa fa-home"></i> Room A-D, 26/F, Kings Wing Plaza 2, 1 On Kwan Street, Shek Mun, Shatin, NT, Hong Kong</li>
-                                <li><i class="fa-li fa fa-envelope"></i> database@gigasciencejournal.com</li>
-                                <li><i class="fa-li fa fa-phone"></i> (852) 36103533</li>
-                                <li><i class="fa-li fa fa-globe"></i> http://www.gigadb.org</li>
-                            </ul>
+                            <address>
+                                <ul class="fa-ul">
+                                    <li><i class="fa-li fa fa-home" aria-hidden="true"></i><span class="sr-only">Address:</span> Room A-D, 26/F, Kings Wing Plaza 2, 1 On Kwan Street, Shek Mun, Shatin, NT, Hong Kong</li>
+                                    <li><i class="fa-li fa fa-envelope" aria-hidden="true"></i><span class="sr-only">Email:</span> database@gigasciencejournal.com</li>
+                                    <li><i class="fa-li fa fa-phone" aria-hidden="true"></i><span class="sr-only">Phone:</span> (852) 36103533</li>
+                                    <li><i class="fa-li fa fa-globe" aria-hidden="true"></i><span class="sr-only">Website:</span> http://www.gigadb.org</li>
+                                </ul>
+                            </address>
                         </div>
                 </div>
                 </section>
