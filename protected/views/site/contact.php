@@ -23,7 +23,7 @@
                     </div>
                 </section>
                 <div class="subsection">
-                    <img src="../images/new_interface_image/shekmun_map.png">
+                    <img src="../images/new_interface_image/shekmun_map.png" alt="Map highlighting the GigaDB location on 1 On Kwan Street in Sha Tin, Hong Kong">
                 </div>
                 <section>
                     <div class="row">
