@@ -18,20 +18,20 @@
             <div class="span1" style="margin-left: 40px;margin-top: 10px;height: 30px;width: 40px"><div class="text-icon text-icon-sm text-icon-blue" style="margin-right: 0px;">G
             </div></div>
             <div class="span8 main-content" style="float:right">
-                <ul class="nav nav-tabs nav-stacked result-cell">
-                  <li><a data-content="<?php echo CHtml::encode($dt['description']) ?>" class="result-main-link left content-popup" href="<?php echo $dt['shorturl'] ?>"><?php echo $dt['title'] ?></a></li>
-                  <li>
+                <div class="nav nav-tabs nav-stacked result-cell">
+                  <h3 class="result-cell-item"><a data-content="<?php echo CHtml::encode($dt['description']) ?>" class="result-main-link left content-popup" href="<?php echo $dt['shorturl'] ?>"><?php echo $dt['title'] ?></a></h3>
+                  <div class="result-cell-item">
                     <strong>
                         <?php echo $dt['authornames'] ?>
                     </strong>
-                  </li>
-                  <li class="searchID"><?= Yii::t('app', 'DOI') ?>:<?php echo "10.5524/" . $dt['identifier'] ?></li>
-                </ul>
+                  </div>
+                  <div class="result-cell-item searchID"><?= Yii::t('app', 'DOI') ?>:<?php echo "10.5524/" . $dt['identifier'] ?></div>
+                </div>
             </div>
         </div>
         <?php } ?>
 
-        <?php if(in_array('sample', $display)) { 
+        <?php if(in_array('sample', $display)) {
             foreach($dsamples as $sample) { ?>
             <!--Sample section-->
             <div class="row1">
@@ -43,7 +43,7 @@
                       <li>
                         <strong>
                             <?= $sample['species_common_name'] ?>
-                            NCBI taxonomy : 
+                            NCBI taxonomy :
                             <a class="result-sub-links" target="_blank" href="http://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?mode=Info&id=<?php echo $sample['species_tax_id'] ?>">
                                 <?= $sample['species_tax_id'] ?>
                             </a>
@@ -66,8 +66,8 @@
             </div>
             <?php }} ?>
 	</div>
-		
-	<div style="clear:both;"></div>	
+
+	<div style="clear:both;"></div>
 	<br/>
-	<?php } ?>	
+	<?php } ?>
 </div>
