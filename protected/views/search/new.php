@@ -3,28 +3,28 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-xs-10 col-xs-offset-1 text-center">
-                            <h1 class="home-search-bar-title">GIGADB DATASETS</h1>     
+                            <h1 class="home-search-bar-title">GIGADB DATASETS</h1>
                              <p class="home-search-bar-subtitle"></p>
                              <br>
                              <br>
                              <br>
-                             <? $this->renderPartial('_search', array('model' => $model))?>   
-                                
+                             <? $this->renderPartial('_search', array('model' => $model))?>
+
                         </div>
                     </div>
                 </div>
             </section>
             <div class="container">
                 <div class="row">
-                    
-                    <div class="col-xs-4 search-filter-sidebar">                  
+
+                    <div class="col-xs-4 search-filter-sidebar">
                         <h4 class="search-result-title">Search result for <span><i><?php echo $model->keyword ?></i></span></h4>
                           <p><?php $this->renderPartial('_range', array(
                                     'total_dataset'=>$datasets['total'],
                                     'page'=>$page,
                                     'limit'=>$limit
                               ));?> </p>
-                          
+
                            <div>
                                 <?php $this->renderPartial("_filter", array(
                                           'model' => $model,
@@ -32,7 +32,7 @@
                                 )) ?>
                             </div>
                              </div>
-                        
+
                     <div class="col-xs-8">
                         <div class="span9 result" id="result">
         <!--<span class='pull-right'><?= Yii::t('app', 'Selected all files') ?> <input type="checkbox" class="select-all"/></span> -->
@@ -45,17 +45,17 @@
                                  )) ?>
                          </div>
                         <div class="row1">
-                            <div class="span9 offset3" style="margin-left: 50px;height:72px;">
+                            <nav class="span9 offset3" style="margin-left: 50px;height:72px;" role="navigation" aria-label="Pagination Navigation">
                               <ul id="search-pg" class="pagination-sm" style="margin: auto;width: 100%"></ul>
-                            </div>
+                            </nav>
                         </div>
-                        
-                        
+
+
                     </div>
-             
+
             </div>
         </div>
-    
+
     <br>
     <br>
 
@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", function(event) { //This event is 
         visiblePages: 5,
         onPageClick: function (event, page) {
             url = document.URL;
-            $.post(url, {'page': page}, function(result) {                
+            $.post(url, {'page': page}, function(result) {
                 if(result.success) {
                     $('#filter').html(result.filter);
                     $('#result').html(result.result);
