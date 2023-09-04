@@ -13,7 +13,7 @@
                 <div class="row">
 
                     <div class="col-xs-4 search-filter-sidebar">
-                        <h4 class="search-result-title">Search result for <span><i><?php echo $model->keyword ?></i></span></h4>
+                        <h2 class="h4 search-result-title" id="search_result_heading">Search result for <span><i><?php echo $model->keyword ?></i></span></h2>
                           <p><?php $this->renderPartial('_range', array(
                                     'total_dataset'=>$datasets['total'],
                                     'page'=>$page,
@@ -28,7 +28,7 @@
                             </div>
                              </div>
 
-                    <div class="col-xs-8">
+                    <section class="subsection col-xs-8" aria-labelledby="search_result_heading">
                         <div class="span9 result" id="result">
         <!--<span class='pull-right'><?= Yii::t('app', 'Selected all files') ?> <input type="checkbox" class="select-all"/></span> -->
                             <?php $this->renderPartial("_new_result", array(
@@ -44,9 +44,7 @@
                               <ul id="search-pg" class="pagination-sm" style="margin: auto;width: 100%"></ul>
                             </div>
                         </div>
-
-
-                    </div>
+                    </section>
 
             </div>
         </div>
