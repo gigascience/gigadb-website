@@ -2,14 +2,9 @@
             <section class="image-background">
                 <div class="container">
                     <div class="row">
-                        <div class="col-xs-10 col-xs-offset-1 text-center">
+                        <div class="col-xs-10 col-xs-offset-1 text-center home-search-bar-content">
                             <h1 class="home-search-bar-title">SEARCH GIGADB DATASETS</h1>
-                             <p class="home-search-bar-subtitle"></p>
-                             <br>
-                             <br>
-                             <br>
-                             <? $this->renderPartial('_search', array('model' => $model))?>
-
+                            <? $this->renderPartial('_search', array('model' => $model))?>
                         </div>
                     </div>
                 </div>
