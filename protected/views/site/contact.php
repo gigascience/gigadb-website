@@ -37,72 +37,97 @@
                                 <p>For more information or questions regarding submitting data to GigaDB, please contact us at: <a href="mailto:database@gigasciencejournal.com" target="_blank">database@gigasciencejournal.com</a>.</p>
                                 <p>Fields with <span class="text-danger">*</span> are required.</p>
                             </div>
-                            
-                            
-		
+
+
+
 			<? $form=$this->beginWidget('CActiveForm', array('htmlOptions'=>array('class'=>'form contact-form'))); ?>
 				<div class="col-xs-7">
-                                    <div class="form-group">
-					<?= $form->labelEx($model,'name', array('class'=>'text-danger')); ?>
-                                        <?= $form->textField($model,'name',array('class'=>'form-control')); ?>
-                                        <?php echo $form->error($model,'name'); ?>
-					
-                                     </div>
-                                 </div>    
+                    <div class="form-group">
+                        <?= $form->labelEx($model,'name', array(
+                            'class'=>'control-label',
+                            'for'=>'contact_form_name_input'
+                            )); ?>
+                        <?= $form->textField($model,'name', array(
+                            'class'=>'form-control',
+                            'aria-required'=>'true',
+                            'id'=>'contact_form_name_input'
+                            )); ?>
+                        <?php echo $form->error($model,'name', array()); ?>
+                    </div>
+                </div>
 
 				<div class="col-xs-7">
-                                    <div class="form-group">
-					<?= $form->labelEx($model,'email', array('class'=>'control-label')); ?>
-					
-						<?= $form->textField($model,'email',array('class'=>'form-control')); ?>
+                    <div class="form-group">
+                        <?= $form->labelEx($model,'email', array(
+                            'class'=>'control-label',
+                            'for'=>'contact_form_email_input'
+                            )); ?>
+						<?= $form->textField($model,'email',array(
+                            'class'=>'form-control',
+                            'aria-required'=>'true',
+                            'id'=>'contact_form_email_input'
+                            )); ?>
 						<?php echo $form->error($model,'email'); ?>
 					</div>
 				</div>
 
 				<div class="col-xs-7">
-                                    <div class="form-group">
-					<?= $form->labelEx($model,'subject', array('class'=>'control-label')); ?>
-					
-						<?= $form->textField($model,'subject',array('class'=>'form-control')); ?>
+                    <div class="form-group">
+                        <?= $form->labelEx($model,'subject', array(
+                            'class'=>'control-label',
+                            'for'=>'contact_form_subject_input'
+                            )); ?>
+						<?= $form->textField($model,'subject',array(
+                            'class'=>'form-control',
+                            'aria-required'=>'true',
+                            'id'=>'contact_form_subject_input'
+                            )); ?>
 						<?php echo $form->error($model,'subject'); ?>
 					</div>
 				</div>
 
 				<div class="col-xs-12">
-                                    <div class="form-group">
-					<?= $form->labelEx($model,'body', array('class'=>'control-label')); ?>
-					
-						<?= $form->textArea($model,'body',array('rows'=>5,'class'=>'form-control')); ?>
+                    <div class="form-group">
+                        <?= $form->labelEx($model,'body', array(
+                            'class'=>'control-label',
+                            'for'=>'contact_form_body_input'
+                            )); ?>
+						<?= $form->textArea($model,'body',array(
+                            'rows'=>5,
+                            'class'=>'form-control',
+                            'aria-required'=>'true',
+                            'id'=>'contact_form_body_input'
+                            )); ?>
 						<?php echo $form->error($model,'body'); ?>
 					</div>
 				</div>
 
                                 <div class="col-xs-7">
-                                    <div class="form-group">		
-					<?php echo $form->labelEx($model,'verifyCode'); ?>		
-                                         				
-						<div style="width:100%">	
+                                    <div class="form-group">
+					<?php echo $form->labelEx($model,'verifyCode'); ?>
+
+						<div style="width:100%">
 							<img style="width:200px;" src="<?php echo Yii::app()->captcha->output(); ?>">
 						</div>
                                                 <br>
                                                 <br>
-						<?php echo $form->textField($model,'verifyCode',array('class'=>'form-control')); ?>	
+						<?php echo $form->textField($model,'verifyCode',array('class'=>'form-control')); ?>
 						<div class="hint">Please enter the letters as they are shown in the image above.
 						<br/>Letters are case-sensitive.</div>
-						<?php echo $form->error($model, 'verifyCode'); ?>					
-						</div>		
+						<?php echo $form->error($model, 'verifyCode'); ?>
+						</div>
                                 </div>
-			
 
-				
 
-			
-		
+
+
+
+
                 <div class="span8 offset2"><?= CHtml::submitButton('Submit', array('class'=>'btn background-btn')); ?></div>
 
                 <? $this->endWidget(); ?>
                 </div><!-- form -->
-                     
+
                         <div class="col-xs-3">
                             <div class="underline-title">
                                 <div>
@@ -118,7 +143,7 @@
                         </div>
                 </div>
                 </section>
-                                   
+
             </div>
         </div>
 
