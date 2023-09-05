@@ -11,8 +11,11 @@
  */
 class ResetPasswordCest
 {
-    public function _before(FunctionalTester $I)
+    public function _before(FunctionalTester $I, \Codeception\Scenario $scenario)
     {
+        $config = require(__DIR__."/../../protected/config/yii2/web.php");
+        if (!$config['components']['mailer']['transport']['username'])
+            $scenario->skip('skipping on local dev');
     }
 
     /**

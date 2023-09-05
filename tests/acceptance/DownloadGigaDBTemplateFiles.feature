@@ -1,3 +1,4 @@
+@ok-can-offline
 Feature: An author can download file template
   As an author
   I want to download the dataset metadata upload form template after login
