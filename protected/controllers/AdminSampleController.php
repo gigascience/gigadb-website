@@ -342,7 +342,11 @@ class AdminSampleController extends Controller
                     $sampleAttribute->value = trim($attributeData[1]);
                     $sampleAttribute->attribute_id = $attribute->id;
                     if (!$sampleAttribute->save()) {
-                        $model->addError('error', 'Sample_attribute table fail to save!');
+                        foreach ($sampleAttribute->getErrors() as $errors) {
+                            foreach ($errors as $errorMessage) {
+                                $model->addError('error', $errorMessage);
+                            }
+                        }
                     }
                 }
             }
