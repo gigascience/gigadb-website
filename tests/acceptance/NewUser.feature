@@ -1,3 +1,4 @@
+@ok-needs-secrets
 Feature: NewUser
   As a curator
   I want a form to enter user details

@@ -9,6 +9,14 @@ class FlysystemCest
 {
     const TEST_IMAGE_FILE = "/tmp/my.png";
 
+
+    public function _before(FunctionalTester $I, \Codeception\Scenario $scenario)
+    {
+        $config = require(__DIR__."/../../protected/config/yii2/web.php");
+        if (!$config['components']['cloudStore']['key'])
+            $scenario->skip('skipping on local dev');
+    }
+
     public function _after(FunctionalTester $I)
     {
 
