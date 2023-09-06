@@ -23,6 +23,7 @@ Feature: admin page for samples
     And I wait "1" seconds
     Then I should see "Please fix the following input errors:"
     And I should see "Attribute name for the input animal=\tiger\ is not valid - please select a valid attribute name!"
+    And I should see "The specified attribute id does not exist in the Attribute table."
 
   @ok
   Scenario: display 2 input error messages when update
@@ -34,6 +35,7 @@ Feature: admin page for samples
     Then I should see "Please fix the following input errors:"
     And I should see "Attribute name for the input animal=\tiger\ is not valid - please select a valid attribute name!"
     And I should see "Attribute name for the input plant=\rose\ is not valid - please select a valid attribute name!"
+    And I should see "The specified attribute id does not exist in the Attribute table."
 
   @ok
   Scenario: display error message for not found species name when create
@@ -75,6 +77,8 @@ Feature: admin page for samples
     And I wait "1" seconds
     Then I should see "Please fix the following input errors:"
     And I should see "Attribute name for the input animal=\tiger\ is not valid - please select a valid attribute name!"
+    And I should see "The specified sample id does not exist in the Sample table."
+    And I should see "The specified attribute id does not exist in the Attribute table."
 
   @ok
   Scenario: display 2 input error messages when create
@@ -87,6 +91,8 @@ Feature: admin page for samples
     Then I should see "Please fix the following input errors:"
     And I should see "Attribute name for the input animal=\tiger\ is not valid - please select a valid attribute name!"
     And I should see "Attribute name for the input plant=\rose\ is not valid - please select a valid attribute name!"
+    And I should see "The specified sample id does not exist in the Sample table."
+    And I should see "The specified attribute id does not exist in the Attribute table."
 
   @ok
   Scenario: display error message for non exist species with attributes when create
@@ -99,3 +105,5 @@ Feature: admin page for samples
     Then I should see "Please fix the following input errors:"
     And I should see "Species id 789123 is not found!"
     And I should see "Attribute name for the input animal=\tiger\ is not valid - please select a valid attribute name!"
+    And I should see "The specified sample id does not exist in the Sample table."
+    And I should see "The specified attribute id does not exist in the Attribute table."
