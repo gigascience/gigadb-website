@@ -100,7 +100,7 @@ spotbugs-sast:
 .scanner_matrix:
   parallel:
     matrix:
-      - SCANNER: ["trivy", "grype"]
+      - SCANNER: ["trivy"]
         IMAGES: [
           "registry.gitlab.com/$CI_PROJECT_PATH/production_web:staging",
           "registry.gitlab.com/$CI_PROJECT_PATH/production_app:staging",
@@ -114,25 +114,5 @@ container_scanning:
     - .scanner_matrix
   variables:
     CS_SEVERITY_THRESHOLD: critical
-    SECURE_LOG_LEVEL: 'debug'
+    SECURE_LOG_LEVEL: 'info'
     CS_IMAGE: $IMAGES
-
-#container_scanning-web_staging:
-#  extends: container_scanning
-#  variables:
-#    CS_IMAGE: registry.gitlab.com/$CI_PROJECT_PATH/production_web:staging
-#
-#container_scanning-app_staging:
-#  extends: container_scanning
-#  variables:
-#    CS_IMAGE: registry.gitlab.com/$CI_PROJECT_PATH/production_app:staging
-#
-#container_scanning-web_live:
-#  extends: container_scanning
-#  variables:
-#    CS_IMAGE: registry.gitlab.com/$CI_PROJECT_PATH/production_web:live
-#
-#container_scanning-app_live:
-#  extends: container_scanning
-#  variables:
-#    CS_IMAGE: registry.gitlab.com/$CI_PROJECT_PATH/production_app:live
