@@ -61,7 +61,7 @@ class SampleAttribute extends CActiveRecord
     {
         $attributeModel = Attribute::model()->findByPk($this->attribute_id);
         if ($attributeModel === null) {
-            $this->addError('attribute_id', 'The specified attribute_id does not exist in the Attribute table.');
+            $this->addError('attribute_id', 'The specified attribute id does not exist in the Attribute table.');
         }
     }
 
@@ -76,7 +76,7 @@ class SampleAttribute extends CActiveRecord
     {
         $sampleModel = Sample::model()->findByPk($this->sample_id);
         if ($sampleModel === null) {
-            $this->addError('sample_id', 'The specified sample_id does not exist in the Sample table.');
+            $this->addError('sample_id', 'The specified sample id does not exist in the Sample table.');
         }
     }
 
