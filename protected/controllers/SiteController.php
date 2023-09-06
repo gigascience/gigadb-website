@@ -67,6 +67,7 @@ class SiteController extends Controller {
 	**/
 
 	public function actionAdmin() {
+        $this->layout='new_main';
 		$this->render('admin');
 	}
 
@@ -532,6 +533,6 @@ class SiteController extends Controller {
         echo Yii::app()->newsAndFeedsService->getRss();
         exit;
     }
-    
+
 
 }
