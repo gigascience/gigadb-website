@@ -79,8 +79,10 @@ or `port install bats-core`). Then run:
 # Ensure you are in gigadb/app/tools/readme-generator directory
 $ bats tests
  ✓ create readme file
+ ✓ create one readme file using batch mode
+ ✓ create two readme files using batch mode
 
-1 test, 0 failures
+3 tests, 0 failures
 ```
 
 

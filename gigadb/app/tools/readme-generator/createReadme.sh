@@ -213,10 +213,6 @@ function main {
       exit 1
     elif [ "${exitCode}" -eq 65 ]; then
       echo "$(date +'%Y/%m/%d %H:%M:%S') WARN  : No dataset for DOI ${doi}" >> "$LOGFILE"
-      # Exit script if not running in batch mode
-      if [ "${batch}" -eq 1 ]; then
-        exit 0
-      fi
     else
       echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Created readme file for DOI ${doi} in ${SOURCE_PATH}/readme_${doi}.txt" >> "$LOGFILE"
 
