@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1334: add guest mode for freelancers to spin up local gigadb website without GitLab account
 - Fix #1310 and #1311: Copy readme files created by readme tool into the 
   gigadb-datasets wasabi bucket.
 - Feat #1294: Added tool into files metadata console to update dataset FTP site
