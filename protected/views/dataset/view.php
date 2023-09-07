@@ -356,8 +356,6 @@ $sampleDataProvider = $samples->getDataProvider() ;
                         <?php } else {?>
                         <div role="tabpanel" class="tab-pane active" id="files">
                         <?php   } ?>
-                            <span class="glyphicon glyphicon-adjust"></span> <?= CHtml::link(Yii::t('app', '(FTP site)'), $model->ftp_site, array('target' => '_blank', 'class' => 'button', 'title' => 'FTP site'))?>
-
                             <a id="files_table_settings" class="btn btn-default pull-right" data-toggle="modal" data-target="#files_settings" href="#"><span class="glyphicon glyphicon-adjust"></span>Table Settings</a>
                             <br>
                             <br>

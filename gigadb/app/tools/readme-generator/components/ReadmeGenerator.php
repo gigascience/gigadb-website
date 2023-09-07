@@ -36,7 +36,7 @@ class ReadmeGenerator extends Component
     {
         // Check dataset exists otherwise throw exception to exit.
         $dataset = Dataset::findOne(['identifier' => $doi]);
-        if ($dataset === false) {
+        if (is_null($dataset)) {
             throw new Exception('Dataset ' . $doi . ' not found');
         }
 

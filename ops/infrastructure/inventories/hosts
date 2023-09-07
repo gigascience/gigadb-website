@@ -43,6 +43,9 @@ backupDate = "latest"
 aws_access_key_id = "{{ lookup('ini', 'aws_access_key_id type=properties file=ansible.properties') }}"
 aws_secret_access_key = "{{ lookup('ini', 'aws_secret_access_key type=properties file=ansible.properties') }}"
 
+wasabi_access_key_id = "{{ lookup('ini', 'wasabi_access_key_id type=properties file=ansible.properties') }}"
+wasabi_secret_access_key = "{{ lookup('ini', 'wasabi_secret_access_key type=properties file=ansible.properties') }}"
+
 upload_database_backup_to_S3_cronjob_state = "absent"
 
 gitlab_project = {{ lookup('ini', 'gitlab_project type=properties file=ansible.properties') }}

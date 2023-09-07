@@ -51,8 +51,8 @@ class UpdateFileSizeCest
     {
         $webClient = new Client([ 'allow_redirects' => false ]);
         $us = new URLsService();
-        $dfu = new DatasetFilesUpdater(["doi" => "100142", "us" => $us, "webClient" => $webClient]);
+        $dfu = new DatasetFilesUpdater(["doi" => "100005", "us" => $us, "webClient" => $webClient]);
         $success = $dfu->updateFileSize();
-        $I->assertEquals(4, $success, "Not all files were updated successfully");
+        $I->assertEquals(1, $success, "Not all files were updated successfully");
     }
 }

@@ -28,6 +28,7 @@ following variables that can be used by all projects:
 | FORK | gigascience | NewsletterTest.php | As above |
 | FTP_CONNECTION_URL | | main.php.dist | As above |
 | GITLAB_PRIVATE_TOKEN | | GitLab API authentication | As above |
+| URL_PREFIX | | File location URL updates | As above |
 
 ## PROJECT: gigascience > Upstream > gigadb-website
 
@@ -219,6 +220,7 @@ sub-group can use:
 | Twitter_tester_last_name | | Affiliate login tests                                          | As above                                                                                                            |
 | GITTER_API_TOKEN | | API token to access Gitter API                                 | Use personal token on dev forks, tech@ token on Upstream                                                            |
 | GITTER_IT_NOTIFICATION_ROOM_ID | | Numeric ID of a specific Gitter room (the IT notification one) |                                                                                                             |
+| URL_PREFIX | | File location URL updates | As above |
 
 ## PROJECT: *-gigadb-website
 

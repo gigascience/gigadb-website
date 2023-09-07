@@ -35,6 +35,7 @@ FilesMetaDataConsoleTestRun:
     - cd gigadb/app/tools/files-metadata-console
     - docker-compose -f docker-compose.yml -f docker-compose.ci.yml run --rm configure
     - docker-compose -f docker-compose.yml -f docker-compose.ci.yml run --rm composer install
+    - docker-compose -f docker-compose.yml -f docker-compose.ci.yml run --rm files-metadata-console vendor/codeception/codeception/codecept build
     - ./test
   environment:
     name: dev

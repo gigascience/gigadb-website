@@ -47,7 +47,7 @@ class CheckValidURLsCest
 
     public function tryNoIssueToReport(\FunctionalTester $I): void {
         $testWebClient = new Client([ 'allow_redirects' => false ]);
-        $component = new FilesURLsFetcher(["doi" => "100142", "webClient" => $testWebClient]);
+        $component = new FilesURLsFetcher(["doi" => "100005", "webClient" => $testWebClient]);
         $report = $component->verifyURLs();
         $I->assertEmpty($report);
 

@@ -12,7 +12,7 @@ FilesMetaDataConsoleDeployStaging:
     - bash -c "echo '$docker_bastion_tlsauth_key' > ~/.docker/key.pem"
     - docker --tlsverify -H=$REMOTE_BASTION_DOCKER info
     - docker --tlsverify -H=$REMOTE_BASTION_DOCKER login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
-    - docker --tlsverify -H=$REMOTE_BASTION_DOCKER pull registry.gitlab.com/$CI_PROJECT_PATH/production-files-metadata-console:latest
+    - docker --tlsverify -H=$REMOTE_BASTION_DOCKER pull registry.gitlab.com/$CI_PROJECT_PATH/production-files-metadata-console:$GIGADB_ENV
   environment:
     name: $GIGADB_ENV
   needs: [ "FilesMetadataConsoleBuildStaging" ]

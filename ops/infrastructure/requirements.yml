@@ -2,6 +2,7 @@ roles:
   - src: https://github.com/ansible/role-secure-docker-daemon
   - src: https://github.com/geerlingguy/ansible-role-postgresql
   - src: https://github.com/atosatto/ansible-grafana
+  - src: https://github.com/stefangweichinger/ansible-rclone
 
 collections:
   - source: https://galaxy.ansible.com
