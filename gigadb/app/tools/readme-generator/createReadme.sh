@@ -33,7 +33,7 @@ dry_run=true
 use_live_data=false
 
 # Default number of DOIs to process
-batch=1
+batch=0
 
 # Parse command line parameters
 while [[ $# -gt 0 ]]; do
@@ -199,7 +199,9 @@ function main {
   set_up_logging
   
   count=0
-  while [  "${count}" -lt "${batch}" ]; do
+  # Execute loop if number of readme files created is less than batch number
+  # or run loop if batch = 0
+  while [ "${count}" -lt "${batch}" ] || [ "${batch}" -eq 0 ]; do
     # Conditional for how to generate readme file - dependant on user's environment
     if [[ $(uname -n) =~ compute ]];then
       . /home/centos/.bash_profile
@@ -213,6 +215,10 @@ function main {
       exit 1
     elif [ "${exitCode}" -eq 65 ]; then
       echo "$(date +'%Y/%m/%d %H:%M:%S') WARN  : No dataset for DOI ${doi}" >> "$LOGFILE"
+      # Exit if not running in batch mode
+      if [ "${batch}" -eq 0 ]; then
+        exit 0
+      fi
     else
       echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Created readme file for DOI ${doi} in ${SOURCE_PATH}/readme_${doi}.txt" >> "$LOGFILE"
 
@@ -222,6 +228,11 @@ function main {
         dir_range=""
         get_doi_directory_range
         copy_to_wasabi
+      fi
+
+      # Exit if not running in batch mode
+      if [ "${batch}" -eq 0 ]; then
+        exit 0
       fi
       count=$((count+1))
     fi
