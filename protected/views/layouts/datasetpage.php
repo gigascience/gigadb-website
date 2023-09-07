@@ -95,9 +95,9 @@
 </header>
 
 
-<div class="container" id="wrap">
+<main class="container" id="wrap">
     <?php echo $content; ?>
-</div>
+</main>
 <footer id="footer">
     <div class="container">
         <div class="pull-left">
