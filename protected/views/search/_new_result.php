@@ -27,7 +27,7 @@
                         <div class="search-result-subcontent">
                             <?php echo $dt['authornames'] ?>
                         </div>
-                        <div class="searchID"><?= Yii::t('app', 'DOI') ?>:<?php echo "10.5524/" . $dt['identifier'] ?></div>
+                        <div><?= Yii::t('app', 'DOI') ?>:<?php echo "10.5524/" . $dt['identifier'] ?></div>
                     </div>
                 </div>
             <?php } ?>
@@ -51,7 +51,7 @@
                                     <?= $sample['species_tax_id'] ?>
                                 </a>
                             </div>
-                            <div class="search-result-subcontent searchID">
+                            <div class="search-result-subcontent">
                                 <a class="search-result-link" href="<?php echo $dt['shorturl'] ?>">DOI:10.5524/<?= $dt['identifier'] ?></a>
                             </div>
                         </div>
@@ -77,8 +77,5 @@
             <?php }
             } ?>
         </div>
-
-        <div style="clear:both;"></div>
-        <br />
     <?php } ?>
 </div>
