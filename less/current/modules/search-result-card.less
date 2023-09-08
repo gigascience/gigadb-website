@@ -1,0 +1,76 @@
+.search-result-card {
+  background-color: @color-lighter-gray;
+  border: 1px solid @color-medium-gray;
+  border-radius: 8px;
+  padding: 10px 0;
+  margin-bottom: 20px;
+  max-width: 100%;
+  .search-result-file-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .search-result-row {
+    display: flex;
+    .search-result-icon-container {
+      padding: 10px 20px;
+      .search-result-icon {
+        margin-right: 0px;
+      }
+    }
+    .search-result-content {
+      padding: 8px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-inline: 10px;
+      width: 620px;
+      &.file-content {
+        flex-direction: row;
+        align-items: center;
+        gap: 0;
+        .file-name {
+          padding-left: 0;
+          max-width: 220px;
+          // might replace with .truncate-text util
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          .file-link {
+            color: @gigadb-green-on-lighter-gray;
+            &:hover {
+              color: @color-gigadb-green-900;
+            }
+          }
+        }
+        .file-type,
+        .file-size {
+          text-align: center;
+        }
+      }
+      .search-result-title {
+        margin: 0;
+        line-height: 18px;
+        font-size: 17px !important;
+        .search-result-link {
+          color: @gigadb-green-on-lighter-gray;
+          &:hover {
+            color: @color-gigadb-green-900;
+          }
+        }
+      }
+      .search-result-subcontent {
+        font-weight: bold;
+        .result-sub-links,
+        .search-result-link {
+          font-weight: 600;
+          color: @gray-on-lighter-gray;
+          text-decoration: underline;
+          &:hover {
+            color: @gigadb-green-on-lighter-gray;
+          }
+        }
+      }
+    }
+  }
+}

@@ -34,7 +34,7 @@
 @color-dark-blue: #005580;
 
 // Color variants
-// NOTE feel free to uncomment and use more variants as needed
+// NOTE feel free to uncomment and use more variants as needed, keeping these around until a11y issues are fixed
 // @color-gigadb-green-50: #eefff4;
 // @color-gigadb-green-100: #d8ffe8;
 // @color-gigadb-green-200: #b4fed1;
@@ -51,6 +51,7 @@
 // naming: [text-color]-on-[bg-color]
 @gigadb-green-on-lighter-gray: @color-gigadb-green-800;
 @gigadb-green-on-light-gray: @color-gigadb-green-800;
+@gray-on-lighter-gray: @color-warm-black;
 
 //== Scaffolding
 //
@@ -81,6 +82,11 @@
 // In common.css font-size: 13px
 @font-size-base:  13px;
 
+// Use these instead of @font-size-h4
+@font-size-page-title: 18px;
+@font-size-page-subtitle: 16px;
+
+// NOTE: Avoid coupling semantic headings (h1, h2, ...) to styles
 // In common.css h4 has font-size: 16px;
 @font-size-h4:            16px;
 
