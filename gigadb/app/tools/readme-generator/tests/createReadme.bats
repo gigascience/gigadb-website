@@ -1,9 +1,5 @@
 #!/usr/bin/env bats
 
-setup() {
-  echo "executing setup code"
-}
-
 teardown () {
     echo "executing teardown code"
     FILES="runtime/curators/readme_100142.txt
