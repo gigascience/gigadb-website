@@ -23,10 +23,12 @@
                         <h3 class="search-result-title">
                             <a data-content="<?php echo CHtml::encode($dt['description']) ?>" class="search-result-link content-popup" href="<?php echo $dt['shorturl'] ?>"><?php echo $dt['title'] ?></a>
                         </h3>
-                        <!-- NOTE This should be a list of author links (ul>li>a) but the model directly returns a string sequence of <a>, so it's a bit more complicated to change -->
-                        <div class="search-result-subcontent">
-                            <?php echo $dt['authornames'] ?>
-                        </div>
+                        <?php if (!empty($dt['authornames'])) : ?>
+                            <!-- NOTE This should be a list of author links (ul>li>a) but the model directly returns a string sequence of <a>, so it's a bit more complicated to change -->
+                            <div class="search-result-subcontent">
+                                <?php echo $dt['authornames']; ?>
+                            </div>
+                        <?php endif; ?>
                         <div><?= Yii::t('app', 'DOI') ?>:<?php echo "10.5524/" . $dt['identifier'] ?></div>
                     </div>
                 </div>
