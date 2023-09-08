@@ -258,6 +258,8 @@
 
 - name: Setup create readme tool
   hosts: name_bastion_server_staging*:name_bastion_server_live*
+  tags:
+    - readme_tool
 
   tasks:
     - name: Copy readme tool shell script

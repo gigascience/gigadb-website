@@ -281,6 +281,17 @@ the ansible-rclone role for Ansible in your development environment:
 $ ansible-galaxy install -r ../../../infrastructure/requirements.yml
 ```
 
+Running the bastion playbook will copy `createReadme.sh` script to the server:
+```
+$ env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories bastion_playbook.yml
+```
+
+If changes are made to `createReadme.sh`, this part of the bastion playbook will
+need to be executed again to copy the updated shell script to the server:
+```
+$ env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories bastion_playbook.yml --tags "readme_tool"
+```
+
 Instantiate and log into bastion server:
 ```
 # Get public IP address for bastion server
@@ -352,3 +363,4 @@ $ ./createReadme.sh --doi 100142 --outdir /app/readmeFiles --wasabi --use-live-d
 
 Now check the directory for dataset 100142 in relevant location in
 gigadb-datasets/live bucket in Wasabi.
+
