@@ -153,7 +153,7 @@ Feature: main search function
     And I press the button "Apply Filter"
     And I wait "1" seconds
     Then I should see a link "Genomic data from Adelie penguin (Pygoscelis adeliae)." to "/dataset/100006"
-    Then I should see a link "Pygoscelis_adeliae.s..." to "https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006/Pygoscelis_adeliae.scaf.fa.gz"
+    Then I should see a link "Pygoscelis_adeliae.scaf.fa.gz" to "https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006/Pygoscelis_adeliae.scaf.fa.gz"
     And I should not see "Adelie penguin NCBI taxonomy"
 
   @ok
