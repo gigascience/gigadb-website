@@ -9,8 +9,7 @@
         };
         $dsamples = array_filter($samples['data'], $filterOnDatasetId);
         $dfiles = array_filter($files['data'], $filterOnDatasetId);
-        $has_dataset = in_array('dataset', $display);
-        $is_display = $has_dataset || (in_array('file', $display) && $dfiles) || (in_array('sample', $display) && $dsamples);
+        $is_display = in_array('dataset', $display) || (in_array('file', $display) && $dfiles) || (in_array('sample', $display) && $dsamples);
         ?>
         <?php if ($is_display) { ?>
             <div class="search-result-card">
