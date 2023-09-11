@@ -1,4 +1,4 @@
-@issue-875
+@ok-can-offline @issue-875
 Feature: Go to login page and affiliate login options will not been seen
   As website user,
   I want there are no affiliate login options in the login page
