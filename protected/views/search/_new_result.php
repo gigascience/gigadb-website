@@ -25,9 +25,26 @@
                             <a data-content="<?php echo CHtml::encode($dt['description']) ?>" class="search-result-link content-popup" href="<?php echo $dt['shorturl'] ?>"><?php echo $dt['title'] ?></a>
                         </h3>
                         <?php if (!empty($dt['authornames'])) : ?>
-                            <!-- NOTE This should be a list of author links (ul>li>a) but the model directly returns a string sequence of <a>, so it's a bit more complicated to change -->
+                            <!-- HACK to render a list of links for authors, since the model directly returns a sequence of links as a string -->
                             <div class="search-result-subcontent">
-                                <?php echo $dt['authornames']; ?>
+                                <?php
+                                    $authorLinks = explode(';', $dt['authornames']);
+                                    $authorLinks = array_map('trim', $authorLinks);
+
+                                    $listItems = '';
+                                    $numberOfLinks = count($authorLinks);
+                                    foreach ($authorLinks as $index => $link) {
+                                        $listItems .= '<li>' . $link;
+                                        if ($index !== $numberOfLinks - 1) {
+                                            $listItems .= ';&nbsp;';
+                                        }
+                                        $listItems .= '</li>';
+                                    }
+
+                                    $unorderedList = '<ul class="search-result-list search-result-author-list">' . $listItems . '</ul>';
+
+                                    echo $unorderedList;
+                                ?>
                             </div>
                         <?php endif; ?>
                         <div><?= Yii::t('app', 'DOI') ?>:<?php echo "10.5524/" . $dt['identifier'] ?></div>
