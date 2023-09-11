@@ -90,42 +90,42 @@ $this->pageTitle = 'GigaDB - About';
                 addition, <em>GigaDB</em> is listed in <a href="https://fairsharing.org/">FAIRsharing</a>, <a
                         href="http://re3data.org/">Re3Data.org</a> and other database catalogues to ensure we reach as
                 wide an audience as possible.</p>
-            <div class="container">
+            <div>
                 <h3 class="sr-only">External Indexing Systems</h3>
-                <ul class="row text-center">
-                    <li class="col-4 col-sm-3 col-md-1 p-1">
+                <ul class="logo-list list-unstyled">
+                    <li>
                         <a href="http://www.datacite.org/" aria-label="Visit DataCite website">
-                            <img src="/images/DataCite_header_final1_1.png" alt="DataCite logo" class="img-responsive">
+                            <img src="/images/DataCite_header_final1_1.png" alt="DataCite logo" class="img-responsive logo-list-img">
                         </a>
                     </li>
-                    <li class="col-4 col-sm-3 col-md-1 p-1">
+                    <li>
                         <a href="http://isa-tools.org/" aria-label="Visit ISA Tools website">
-                            <img src="/images/isa.jpg" alt="ISA Tools logo" class="img-responsive">
+                            <img src="/images/isa.jpg" alt="ISA Tools logo" class="img-responsive logo-list-img">
                         </a>
                     </li>
-                    <li class="col-4 col-sm-3 col-md-1 p-1">
+                    <li>
                         <a href="https://fairsharing.org" aria-label="Visit Fairsharing website">
-                            <img src="/images/fairshare.png" alt="Fairsharing logo" class="img-responsive">
+                            <img src="/images/fairshare.png" alt="Fairsharing logo" class="img-responsive logo-list-img">
                         </a>
                     </li>
-                    <li class="col-4 col-sm-3 col-md-1 p-1">
+                    <li>
                         <a href="http://wokinfo.com/products_tools/multidisciplinary/dci/" aria-label="Visit Clarivate Analytics website">
-                            <img src="/images/data_citation.png" alt="Data Citation Index logo" class="img-responsive">
+                            <img src="/images/data_citation.png" alt="Data Citation Index logo" class="img-responsive logo-list-img">
                         </a>
                     </li>
-                    <li class="col-4 col-sm-3 col-md-1 p-1">
+                    <li>
                         <a href="http://Re3Data.org" aria-label="Visit Re3Data website">
-                            <img src="/images/re3data.png" alt="Re3Data logo" class="img-responsive">
+                            <img src="/images/re3data.png" alt="Re3Data logo" class="img-responsive logo-list-img">
                         </a>
                     </li>
-                    <li class="col-4 col-sm-3 col-md-1 p-1">
+                    <li>
                         <a href="https://repositive.io/" aria-label="Visit Repositive website">
-                            <img src="/images/repositive.png" alt="Repositive logo" class="img-responsive">
+                            <img src="/images/repositive.png" alt="Repositive logo" class="img-responsive logo-list-img">
                         </a>
                     </li>
-                    <li class="col-4 col-sm-3 col-md-1 p-1">
+                    <li>
                         <a href="https://datamed.org/" aria-label="Visit DataMed website">
-                            <img src="/images/datamed.png" alt="DataMed logo" class="img-responsive">
+                            <img src="/images/datamed.png" alt="DataMed logo" class="img-responsive logo-list-img">
                         </a>
                     </li>
                 </ul>
