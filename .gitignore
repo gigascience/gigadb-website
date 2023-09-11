@@ -43,6 +43,9 @@ ops/scripts/package-lock.json
 *.iws
 .idea/
 
+# VSCode
+.vscode
+
 # NetBeans
 nbproject/private/
 nbproject/project.xml
