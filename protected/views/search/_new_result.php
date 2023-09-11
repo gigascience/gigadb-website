@@ -11,9 +11,9 @@
         $dfiles = array_filter($files['data'], $filterOnDatasetId);
         ?>
         <div class="search-result-card">
-            <!--Dataset section-->
             <?php $is_display = in_array('dataset', $display) || (in_array('file', $display) && $dfiles) || (in_array('sample', $display) && $dsamples); ?>
             <?php if ($is_display) { ?>
+                <!--Dataset section-->
                 <div class="search-result-row">
                     <div class="search-result-icon-container">
                         <div class="text-icon text-icon-sm text-icon-blue search-result-icon" aria-hidden="true">G</div>
@@ -34,37 +34,39 @@
                 </div>
             <?php } ?>
 
-            <?php if (in_array('sample', $display)) {
-                foreach ($dsamples as $sample) { ?>
-                    <!--Sample section-->
-                    <div class="search-result-row">
-                        <div class="search-result-icon-container">
-                            <div class="text-icon text-icon-sm text-icon-green search-result-icon" aria-hidden="true">S</div>
-                            <span class="sr-only">Sample</span>
-                        </div>
-                        <div class="search-result-content">
-                            <h3 class="search-result-title">
-                                <a class="search-result-link" href="<?= $dt['shorturl'] ?>"><?php echo $sample['name'] ?></a>
-                            </h3>
-                            <div class="search-result-subcontent">
-                                <?= $sample['species_common_name'] ?>
-                                NCBI taxonomy :
-                                <a class="search-result-link" target="_blank" href="http://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?mode=Info&id=<?php echo $sample['species_tax_id'] ?>">
-                                    <?= $sample['species_tax_id'] ?>
-                                </a>
+            <?php if (in_array('sample', $display)) { ?>
+                <ul class="search-result-list">
+                    <?php foreach ($dsamples as $sample) { ?>
+                        <!--Sample section-->
+                        <li class="search-result-row">
+                            <div class="search-result-icon-container">
+                                <div class="text-icon text-icon-sm text-icon-green search-result-icon" aria-hidden="true">S</div>
+                                <span class="sr-only">Sample</span>
                             </div>
-                            <div class="search-result-subcontent">
-                                <a class="search-result-link" href="<?php echo $dt['shorturl'] ?>">DOI:10.5524/<?= $dt['identifier'] ?></a>
+                            <div class="search-result-content">
+                                <h4 class="search-result-title">
+                                    <a class="search-result-link" href="<?= $dt['shorturl'] ?>"><?php echo $sample['name'] ?></a>
+                                </h4>
+                                <div class="search-result-subcontent">
+                                    <?= $sample['species_common_name'] ?>
+                                    NCBI taxonomy :
+                                    <a class="search-result-link" target="_blank" href="http://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?mode=Info&id=<?php echo $sample['species_tax_id'] ?>">
+                                        <?= $sample['species_tax_id'] ?>
+                                    </a>
+                                </div>
+                                <div class="search-result-subcontent">
+                                    <a class="search-result-link" href="<?php echo $dt['shorturl'] ?>">DOI:10.5524/<?= $dt['identifier'] ?></a>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-            <?php }
-            } ?>
+                        </li>
+                    <?php } ?>
+                </ul>
+            <?php } ?>
             <!--Download File list-->
-            <?php if (in_array('file', $display)) {
-                foreach ($dfiles as $file) { ?>
-                    <ul class="search-result-file-list">
-                        <li class="search-result-row file-list-item">
+            <?php if (in_array('file', $display)) { ?>
+                <ul class="search-result-list">
+                    <?php foreach ($dfiles as $file) { ?>
+                        <li class="search-result-row">
                             <div class="search-result-icon-container">
                                 <div class="text-icon text-icon-sm text-icon-yellow search-result-icon" aria-hidden="true">F</div>
                                 <span class="sr-only">File</span>
@@ -75,9 +77,9 @@
                                 <div class="col-xs-3 file-size"><?php echo CHtml::encode(File::specifySizeUnits($file['size'], null, 2)) ?></div>
                             </div>
                         </li>
-                    </ul>
-            <?php }
-            } ?>
+                    <?php } ?>
+                </ul>
+            <?php } ?>
         </div>
     <?php } ?>
 </div>
