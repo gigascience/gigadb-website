@@ -14,27 +14,25 @@
         ?>
         <?php if ($is_display) { ?>
             <div class="search-result-card">
-                <?php if ($has_dataset) { ?>
-                    <!--Dataset section-->
-                    <div class="search-result-row">
-                        <div class="search-result-icon-container">
-                            <div class="text-icon text-icon-sm text-icon-blue search-result-icon" aria-hidden="true">G</div>
-                            <span class="sr-only">Dataset</span>
-                        </div>
-                        <div class="search-result-content">
-                            <h3 class="search-result-title">
-                                <a data-content="<?php echo CHtml::encode($dt['description']) ?>" class="search-result-link content-popup" href="<?php echo $dt['shorturl'] ?>"><?php echo $dt['title'] ?></a>
-                            </h3>
-                            <?php if (!empty($dt['authornames'])) : ?>
-                                <!-- NOTE This should be a list of author links (ul>li>a) but the model directly returns a string sequence of <a>, so it's a bit more complicated to change -->
-                                <div class="search-result-subcontent">
-                                    <?php echo $dt['authornames']; ?>
-                                </div>
-                            <?php endif; ?>
-                            <div><?= Yii::t('app', 'DOI') ?>:<?php echo "10.5524/" . $dt['identifier'] ?></div>
-                        </div>
+                <!--Dataset section-->
+                <div class="search-result-row">
+                    <div class="search-result-icon-container">
+                        <div class="text-icon text-icon-sm text-icon-blue search-result-icon" aria-hidden="true">G</div>
+                        <span class="sr-only">Dataset</span>
                     </div>
-                <?php } ?>
+                    <div class="search-result-content">
+                        <h3 class="search-result-title">
+                            <a data-content="<?php echo CHtml::encode($dt['description']) ?>" class="search-result-link content-popup" href="<?php echo $dt['shorturl'] ?>"><?php echo $dt['title'] ?></a>
+                        </h3>
+                        <?php if (!empty($dt['authornames'])) : ?>
+                            <!-- NOTE This should be a list of author links (ul>li>a) but the model directly returns a string sequence of <a>, so it's a bit more complicated to change -->
+                            <div class="search-result-subcontent">
+                                <?php echo $dt['authornames']; ?>
+                            </div>
+                        <?php endif; ?>
+                        <div><?= Yii::t('app', 'DOI') ?>:<?php echo "10.5524/" . $dt['identifier'] ?></div>
+                    </div>
+                </div>
 
                 <?php if (in_array('sample', $display)) { ?>
                     <ul class="search-result-list">
