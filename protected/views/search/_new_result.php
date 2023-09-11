@@ -46,9 +46,9 @@
                                     <span class="sr-only">Sample</span>
                                 </div>
                                 <div class="search-result-content">
-                                    <h4 class="search-result-title">
+                                    <h3 class="search-result-title">
                                         <a class="search-result-link" href="<?= $dt['shorturl'] ?>"><?php echo $sample['name'] ?></a>
-                                    </h4>
+                                    </h3>
                                     <div class="search-result-subcontent">
                                         <?= $sample['species_common_name'] ?>
                                         NCBI taxonomy :
