@@ -17,6 +17,15 @@
 		  <exclude>/var/www/protected/tests/functional/RSSFeedTest.php</exclude>
 		  <exclude>/var/www/protected/tests/functional/NewsletterTest.php</exclude>
 		  <exclude>/var/www/protected/tests/functional/AnalyticsTest.php</exclude>
+		  <exclude>/var/www/protected/tests/functional/AdminDatasetMockupActionTest.php</exclude>
+		  <exclude>/var/www/protected/tests/functional/AdminDatasetMoveFilesActionTest.php</exclude>
+		  <exclude>/var/www/protected/tests/functional/AdminDatasetSendInstructionsActionTest.php</exclude>
+		  <exclude>/var/www/protected/tests/functional/AdminDatasetUpdateActionTest.php</exclude>
+		  <exclude>/var/www/protected/tests/functional/AuthorisedDatasetFilesUploadActionTest.php</exclude>
+		  <exclude>/var/www/protected/tests/functional/DatasetMockupViewActionTest.php</exclude>
+		  <exclude>/var/www/protected/tests/functional/FileUploadServiceTest.php</exclude>
+		  <exclude>/var/www/protected/tests/functional/SearchViewTest.php</exclude>
+		  <exclude>/var/www/protected/tests/functional/AuthorisedDatasetFilesAnnotateActionTest.php</exclude>
 	  </testsuite>
 	  <testsuite name="all">
 	    <directory>unit</directory>
