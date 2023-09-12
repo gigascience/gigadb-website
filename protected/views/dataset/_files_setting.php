@@ -73,8 +73,8 @@
 
             </div> <!-- /.modal-body -->
             <div class="modal-footer">
-                <a class="btn btn-default" data-dismiss="modal" href="#" title="Close">Close</a>
-                <a id="save-files-settings" class="btn btn-primary" href="#" title="Save changes">Save changes</a>
+                <button class="btn btn-default" data-dismiss="modal">Close</button>
+                <button id="save-files-settings" class="btn btn-primary">Save changes</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

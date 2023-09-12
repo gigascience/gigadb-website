@@ -57,7 +57,7 @@
             </div> <!-- /.modal-body -->
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <a id="save-samples-settings" href="#" class="btn btn-primary">Save changes</a>
+                <button id="save-samples-settings" class="btn btn-primary">Save changes</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
