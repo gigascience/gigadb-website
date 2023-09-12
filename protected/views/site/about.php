@@ -13,7 +13,7 @@ $this->pageTitle = 'GigaDB - About';
                     <li><a href="/">Home</a></li>
                     <li class="active">General information</li>
                 </ol>
-                <h1 id="aboutSectionTitle">General information</h1>
+                <h1 class="page-heading" id="aboutSectionTitle">General information</h1>
             </div>
         </div>
         <div class="subsection">
