@@ -17,8 +17,8 @@ $sampleDataProvider = $samples->getDataProvider() ;
 <?php $this->renderPartial('_files_setting', array('setting' => $setting, 'pageSize' => $fileDataProvider->getPagination()->getPageSize()));?>
 
 <div class="content">
-    <div class="container">
-                <div class="subsection subsection-margin-top">
+    <div class="container dataset-view-container">
+                <div class="subsection">
                     <div class="media">
                         <div class="media-left">
                                         <?php if ($model->image) {
