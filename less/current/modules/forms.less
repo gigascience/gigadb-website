@@ -38,6 +38,9 @@ input[type="checkbox"] {
   left: 0;
   display: inline-block;
 }
+.checkbox > input[type="checkbox"]:focus + label::before {
+  box-shadow: @color-true-white 0px 0px 0px 1px, @color-gigadb-green 0px 0px 0px 3px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+}
 
 .form-control,
 .form-control:hover,
