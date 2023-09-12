@@ -391,7 +391,7 @@ $sampleDataProvider = $samples->getDataProvider() ;
                                         <td><?= $file['sizeUnit'] ?></td>
                                         <td><?= $file['date_stamp'] ?></td>
                                         <td><?= $file['attrDesc'] ?></td>
-                                        <td><a class="download-btn js-download-count" href="<?= $file['location'] ?>">&nbsp;</a></td>
+                                        <td><a class="download-btn js-download-count" href="<?= $file['location'] ?>" aria-label="Download file <?= $file['name'] ?>">&nbsp;</a></td>
                                     </tr>
                                     <?php } ?>
                                 </tbody>
