@@ -41,6 +41,22 @@ input[type="checkbox"] {
 .checkbox > input[type="checkbox"]:focus + label::before {
   box-shadow: @color-true-white 0px 0px 0px 1px, @color-gigadb-green 0px 0px 0px 3px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
 }
+.checkbox.checkbox-green > input[type="checkbox"] {
+  accent-color: @color-gigadb-green;
+  opacity: 1;
+  margin-right: 0;
+  margin-left: 0;
+  margin-top: 0;
+}
+.checkbox.checkbox-green > input[type="checkbox"] + label {
+  vertical-align: top;
+  margin-left: 8px;
+  margin-bottom: 0;
+}
+.checkbox.checkbox-green > input[type="checkbox"] + label::before {
+  content: "";
+  box-shadow: none;
+}
 
 .form-control,
 .form-control:hover,
