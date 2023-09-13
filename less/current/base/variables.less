@@ -6,7 +6,9 @@
 //
 
 // Canonical colors
-@color-gigadb-green: #099242;
+// @color-gigadb-green: #099242;
+@color-gigadb-green: #08893e;
+@color-gigadb-green-high-contrast: #08893e; // this has enough contrast with white
 @color-brand-danger:  #ff2020;
 
 // Neutral colors
@@ -15,23 +17,67 @@
 @color-light-gray: #e5e5e5;
 @color-medium-gray: #cccccc;
 @color-dark-gray: #999;
-@color-darker-gray: #656565;
-@color-warm-black: #333;
-@color-true-black: #000000;
+@color-darker-gray: #656565; // ok on white
+@color-warm-black: #333; // ok on white
+@color-true-black: #000000; // ok on white
 
 // Utility colors
 @color-datatype-green: #32bca3;
 @color-datatype-blue: #25b6d3;
 @color-datatype-yellow: #f7bb41;
-@color-datatype-red: #e04f5e;
+// @color-datatype-red: #e04f5e;
+@color-datatype-red: #dc3647; // enough contrast on white
 @color-pale-green: #F3FAF6;
-@color-watercourse-green: #087A38;
+// @color-watercourse-green: #087A38;
+@color-watercourse-green: #0d6e36;
 @color-light-green: #a5cc7e;
 @color-medium-green: #6ea23a;
 @color-patina-green: #5a9c7b;
 @color-dark-green: #005b2d;
 @color-medium-blue: #08c;
 @color-dark-blue: #005580;
+
+// NOTE feel free to uncomment and use more variants as needed, keeping these around until a11y issues are fixed
+@color-gigadb-green-50: #eefff4;
+@color-gigadb-green-100: #d8ffe8;
+@color-gigadb-green-200: #b4fed1;
+@color-gigadb-green-300: #7afbae;
+@color-gigadb-green-400: #39ef83;
+@color-gigadb-green-500: #0fd861;
+@color-gigadb-green-600: #06b34d;
+@color-gigadb-green-700: #099242; // == @color-gigadb-green
+@color-gigadb-green-750: #08893e; // this has enough contrast with white
+@color-gigadb-green-800: #0d6e36;
+@color-gigadb-green-900: #0d5a2e;
+@color-gigadb-green-950: #003317;
+
+// text to bg accessible color contrast (AA Normal)
+// naming: [text-color]-on-[bg-color]
+// white on green (for buttons, top bar...)
+// light gray on white (+ more in home)
+// red (#e04f5e) on white
+// gray on gray (features on home)
+// green on white (links, outline buttons)
+// white on dark gray (footer)
+// gray on white (for disabled outline buttons) eg dataset page when logged out
+// white on gray (for disabled outline buttons)
+// light gray on dark gray (footer text)
+// -- dataset list cards
+// green on light gray
+// green hover on light gray
+// dark gray text on white (normal text on most pages)
+// dark gray on light gray
+// dark gray on white (non active tab)
+// darker gray on white (active tab)
+// black on gray (site/guide page)
+@gigadb-green-on-lighter-gray: @color-gigadb-green-800;
+@dark-gray-on-light-gray: @color-darker-gray;
+@gray-on-lighter-gray: @color-warm-black;
+@dark-gray-on-white: #757575;
+@text-on-gigadb-green: #021a0c;
+@gray-on-warm-black: #bbb;
+@white-on-gigadb-green: @color-true-white;
+@gigadb-green-on-lighter-gray: @color-gigadb-green-800;
 
 
 //== Scaffolding
@@ -43,7 +89,7 @@
 
 //** Global textual link color.
 @link-color:  @color-gigadb-green;
-
+@link-color-hover: @color-gigadb-green-900;
 
 //== Typography
 //
@@ -65,6 +111,14 @@
 
 // In common.css h4 has font-size: 16px;
 @font-size-h4:            16px;
+
+// font size -> this is just too many variations, it's simpler to assign font-sizes on demand
+
+// Font sizes
+// Hero title
+// Section title (h4)
+// Section subtitle
+// paragraph-title (h5)
 
 // In common.css line-height: 1
 @line-height-base:        1;
