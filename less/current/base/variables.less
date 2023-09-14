@@ -6,12 +6,8 @@
 //
 
 // Canonical colors
-// @color-gigadb-green: #099242; // original gigadb-green
-@color-gigadb-green: #08893e;
-// Defining a high-contrast variable temporarily
-@color-gigadb-green-high-contrast: #08893e; // this has enough contrast with white
-@color-brand-danger:  #ff2020; // not enough contrast on white
-@color-brand-danger-high-contrast: #eb0000; // enough contrast on white
+@color-gigadb-green: #08893e; // AA Normal on white
+@color-brand-danger: #ff2020; // AA Large on white
 
 // Neutral colors
 @color-true-white: #ffffff;
@@ -19,96 +15,53 @@
 @color-light-gray: #e5e5e5;
 @color-medium-gray: #cccccc;
 @color-dark-gray: #999999;
-@color-darker-gray: #656565; // ok on white
-@color-warm-black: #333333; // ok on white
-@color-true-black: #000000; // ok on white
+@color-darker-gray: #656565; // AA Normal on white
+@color-warm-black: #333333; // AA Normal on white
+@color-true-black: #000000; // AA Normal on white
 
 // Utility colors
-// Leaving this annotation as reference temporarily
-// DATATYPE GREEN
-// these greens have enough contrast in white: #238372 #267e90
-@color-datatype-green: #32bca3; // no contrast with white
-// @color-datatype-green: #238372;
-// @color-datatype-green: #267e90;
-// DATATYPE BLUE
-// these blues have enough contrast in white: #2576d3 #088199
-@color-datatype-blue: #25b6d3; // no contrast with white
-// @color-datatype-blue: #088199;
-// @color-datatype-blue: #2576d3;
-// DATATYPE YELLOW
-// these yellows have enough contrast in white: #8d7006 #cd4919
-@color-datatype-yellow: #f7bb41; // no contrast with white
-// @color-datatype-yellow: #8d7006;
-// @color-datatype-yellow: #cd4919;
-// @color-datatype-red: #e04f5e;
-@color-datatype-red: #dc3647; // enough contrast on white
-@color-pale-green: #F3FAF6;
-// @color-watercourse-green: #087A38;
-@color-watercourse-green: #0d6e36;
+@color-datatype-green: #28a68f; // AA Large on white
+@color-datatype-blue: #259fd3; // AA Large on white
+@color-datatype-yellow: #e17a09; // AA Large on white
+@color-datatype-red: #e04f5e; // AA Large on white
+@color-pale-green: #f3faf6;
 @color-light-green: #a5cc7e;
 @color-medium-green: #6ea23a;
 @color-patina-green: #5a9c7b;
+@color-watercourse-green: #087a38;
 @color-dark-green: #005b2d;
 @color-medium-blue: #08c;
 @color-dark-blue: #005580;
 
-// NOTE feel free to uncomment and use more variants as needed, keeping these around until a11y issues are fixed
-@color-gigadb-green-50: #eefff4;
-@color-gigadb-green-100: #d8ffe8;
-@color-gigadb-green-200: #b4fed1;
-@color-gigadb-green-300: #7afbae;
-@color-gigadb-green-400: #39ef83;
-@color-gigadb-green-500: #0fd861;
-@color-gigadb-green-600: #06b34d;
-@color-gigadb-green-700: #099242; // == original @color-gigadb-green
-@color-gigadb-green-750: #08893e; // @color-gigadb-green-high-contrast enough contrast on white, enough contrast on black
+// NOTE feel free to uncomment and use more variants as needed, keeping these around until frontend refactor is completed
+// @color-gigadb-green-50: #eefff4;
+// @color-gigadb-green-100: #d8ffe8;
+// @color-gigadb-green-200: #b4fed1;
+// @color-gigadb-green-300: #7afbae;
+// @color-gigadb-green-400: #39ef83;
+// @color-gigadb-green-500: #0fd861;
+// @color-gigadb-green-600: #06b34d;
+// @color-gigadb-green-700: #099242;
+@color-gigadb-green-750: @color-gigadb-green; // AA Normal on white
 @color-gigadb-green-800: #0d6e36;
 @color-gigadb-green-900: #0d5a2e;
-@color-gigadb-green-950: #003317;
+// @color-gigadb-green-950: #003317;
 
-@color-brand-danger-50: #fff1f1;
-@color-brand-danger-100: #ffdfdf;
-@color-brand-danger-200: #ffc5c5;
-@color-brand-danger-300: #ff9d9d;
-@color-brand-danger-400: #ff6464;
-@color-brand-danger-500: #ff2020; // == @color-brand-danger
-@color-brand-danger-600: #ed1515;
-@color-brand-danger-650: #eb0000; // @color-brand-danger-high-contrast enough contrast on white, enough contrast on black
-@color-brand-danger-700: #c80d0d;
-@color-brand-danger-800: #a50f0f;
-@color-brand-danger-900: #881414;
-@color-brand-danger-950: #4b0404;
+// @color-brand-danger-50: #fff1f1;
+// @color-brand-danger-100: #ffdfdf;
+// @color-brand-danger-200: #ffc5c5;
+// @color-brand-danger-300: #ff9d9d;
+// @color-brand-danger-400: #ff6464;
+@color-brand-danger-500: @color-brand-danger;
+// @color-brand-danger-600: #ed1515;
+@color-brand-danger-650: #eb0000; // AA Normal on white
+// @color-brand-danger-700: #c80d0d;
+// @color-brand-danger-800: #a50f0f;
+// @color-brand-danger-900: #881414;
+// @color-brand-danger-950: #4b0404;
 
-
-//== Accessible color combinations
-
-// text to bg accessible color contrast (AA Normal)
-// all below combos fulfill AA criterion
+//== Accessible color combinations (AA Normal)
 // naming: [text-color]-on-[bg-color]
-// == color combos found:
-// white on green (for buttons, top bar...)
-// light gray on white (+ more in home)
-// red (#e04f5e) on white
-// gray on gray (features on home)
-// green on white (links, outline buttons)
-// white on dark gray (footer)
-// gray on white (for disabled outline buttons) eg dataset page when logged out
-// white on gray (for disabled outline buttons)
-// light gray on dark gray (footer text)
-// -- dataset list cards
-// green on light gray
-// green hover on light gray
-// dark gray text on white (normal text on most pages)
-// dark gray on light gray
-// dark gray on white (non active tab)
-// darker gray on white (active tab)
-// black on gray (site/guide page)
-
-// bg colors
-// green, white, gray, dark gray, light gray
-// text colors
-// white, light gray, red, gray, green, dark gray, darker gray, black
-
 // on white
 @dark-gray-on-white: @color-darker-gray;
 @darker-gray-on-white: @color-warm-black;
@@ -117,26 +70,23 @@
 @brand-danger-on-white: @color-brand-danger-650;
 // on lighter-gray
 @gigadb-green-on-lighter-gray: @color-gigadb-green-800;
-@darker-gray-on-lighter-gray: @color-darker-gray;
 @warm-black-on-lighter-gray: @color-warm-black;
 // on light gray
 @dark-gray-on-light-gray: @color-darker-gray;
 // on gigadb-green
-@text-on-gigadb-green: #021a0c;
 @white-on-gigadb-green: @color-true-white;
 // on warm-black
-@gray-on-warm-black: #bbb;
-
+@gray-on-warm-black: @color-medium-gray;
 
 //== Scaffolding
 //
 //## Settings for some of the most global styles.
 
 //** Global text color on `<body>`.
-@text-color:  @color-dark-gray;
+@text-color: @color-dark-gray;
 
 //** Global textual link color.
-@link-color:  @color-gigadb-green;
+@link-color: @color-gigadb-green;
 @link-color-hover: @color-gigadb-green-900;
 
 //== Typography
@@ -151,14 +101,15 @@
 //}
 
 // In common.css font-family: 'Open Sans', Lato, 'PT Sans', Arial, 'Microsoft Yahei', 'Hiragino Sans GB', 'WenQuanYi Zen Hei Mono', sans-serif;
-@font-family-sans-serif:  "Open Sans", Lato, "PT Sans", Arial, "Microsoft Yahei", "Hiragino Sans GB", "WenQuanYi Zen Hei Mono", sans-serif;
-@font-family-base:        @font-family-sans-serif;
+@font-family-sans-serif: "Open Sans", Lato, "PT Sans", Arial, "Microsoft Yahei",
+  "Hiragino Sans GB", "WenQuanYi Zen Hei Mono", sans-serif;
+@font-family-base: @font-family-sans-serif;
 
 // In common.css font-size: 13px
-@font-size-base:  13px;
+@font-size-base: 13px;
 
 // In common.css h4 has font-size: 16px;
-@font-size-h4:            16px;
+@font-size-h4: 16px;
 
 // font size -> this is just too many variations, it's simpler to assign font-sizes on demand
 
@@ -169,15 +120,14 @@
 // paragraph-title (h5)
 
 // In common.css line-height: 1
-@line-height-base:        1;
-
+@line-height-base: 1;
 
 //== Iconography
 //
 //## Specify custom location and filename of the included Glyphicons icon font. Useful for those including Bootstrap via Bower.
 
 //** Load fonts from this directory.
-@icon-font-path:          "../fonts/";
+@icon-font-path: "../fonts/";
 
 //== Buttons
 //
