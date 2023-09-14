@@ -232,6 +232,13 @@
   background-color: @color-dark-gray;
   border-color: @color-dark-gray;
 }
+.nav-tabs .open .dropdown-toggle,
+.nav-pills .open .dropdown-toggle,
+.nav > li.dropdown.open.active > a:focus {
+  // use of !important necessary to override bootstrap styles
+  background-color: @color-darker-gray!important;
+  border-color: @color-darker-gray!important;
+}
 .nav li.dropdown.open .caret,
 .nav li.dropdown.open.active .caret,
 .nav li.dropdown.open a:hover .caret {
