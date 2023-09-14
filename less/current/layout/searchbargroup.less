@@ -1,13 +1,15 @@
 .search-bar-group input,
 .search-bar-group input:focus {
   height: 60px;
-  font-family: Tahoma;
-  color: @color-dark-gray;
+  color: @darker-gray-on-white;
   line-height: 20px;
   padding: 20px;
   border: 0px;
   box-shadow: none;
   z-index: 0;
+}
+.search-bar-group input::placeholder {
+  color: @dark-gray-on-white;
 }
 .search-bar-group button,
 .search-bar-group button:hover {
