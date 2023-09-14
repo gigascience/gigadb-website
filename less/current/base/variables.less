@@ -70,6 +70,7 @@
 
 // text to bg accessible color contrast (AA Normal)
 // naming: [text-color]-on-[bg-color]
+// == color combos found:
 // white on green (for buttons, top bar...)
 // light gray on white (+ more in home)
 // red (#e04f5e) on white
@@ -87,16 +88,23 @@
 // dark gray on white (non active tab)
 // darker gray on white (active tab)
 // black on gray (site/guide page)
+
+// on white
+@dark-gray-on-white: @color-darker-gray;
+@darker-gray-on-white: @color-warm-black;
+@warm-black-on-white: @color-warm-black;
 @gigadb-green-on-white: @color-gigadb-green-750;
-@gigadb-green-on-lighter-gray: @color-gigadb-green-800;
-@dark-gray-on-light-gray: @color-darker-gray;
-@gray-on-lighter-gray: @color-warm-black;
-@dark-gray-on-white: #757575;
-@text-on-gigadb-green: #021a0c;
-@gray-on-warm-black: #bbb;
-@white-on-gigadb-green: @color-true-white;
-@gigadb-green-on-lighter-gray: @color-gigadb-green-800;
 @brand-danger-on-white: @color-brand-danger-650;
+// on lighter-gray
+@gigadb-green-on-lighter-gray: @color-gigadb-green-800;
+@gray-on-lighter-gray: @color-warm-black;
+// on light gray
+@dark-gray-on-light-gray: @color-darker-gray;
+// on gigadb-green
+@text-on-gigadb-green: #021a0c;
+@white-on-gigadb-green: @color-true-white;
+// on warm-black
+@gray-on-warm-black: #bbb;
 
 
 //== Scaffolding
