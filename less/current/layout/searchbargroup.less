@@ -8,8 +8,11 @@
   box-shadow: none;
   z-index: 0;
 }
-.search-bar-group input::placeholder {
-  color: @dark-gray-on-white;
+.search-bar-group input {
+  &::placeholder, &::-moz-placeholder {
+    color: @dark-gray-on-white;
+    opacity: 1;
+  }
 }
 .search-bar-group button,
 .search-bar-group button:hover {
