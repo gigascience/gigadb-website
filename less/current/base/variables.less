@@ -18,9 +18,9 @@
 @color-lighter-gray: #f8f8f8;
 @color-light-gray: #e5e5e5;
 @color-medium-gray: #cccccc;
-@color-dark-gray: #999;
+@color-dark-gray: #999999;
 @color-darker-gray: #656565; // ok on white
-@color-warm-black: #333; // ok on white
+@color-warm-black: #333333; // ok on white
 @color-true-black: #000000; // ok on white
 
 // Utility colors
@@ -80,8 +80,10 @@
 @color-brand-danger-950: #4b0404;
 
 
+//== Accessible color combinations
 
 // text to bg accessible color contrast (AA Normal)
+// all below combos fulfill AA criterion
 // naming: [text-color]-on-[bg-color]
 // == color combos found:
 // white on green (for buttons, top bar...)
@@ -110,7 +112,8 @@
 @brand-danger-on-white: @color-brand-danger-650;
 // on lighter-gray
 @gigadb-green-on-lighter-gray: @color-gigadb-green-800;
-@gray-on-lighter-gray: @color-warm-black;
+@darker-gray-on-lighter-gray: @color-darker-gray;
+@warm-black-on-lighter-gray: @color-warm-black;
 // on light gray
 @dark-gray-on-light-gray: @color-darker-gray;
 // on gigadb-green
