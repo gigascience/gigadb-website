@@ -38,7 +38,7 @@ th, td {
                                     <li><a href="/site/guidegenomic">Genomic Dataset Checklist</a></li>
                                     <li><a href="/site/guideimaging">Imaging Dataset Checklist</a></li>
                                     <li><a href="/site/guidemetabolomic">Metabolomic and Lipidomic Dataset Checklist</a></li>
-                                    <li><a href="/site/guideepigenomic">Epigenomic Dataset Checklist</a></li> 
+                                    <li><a href="/site/guideepigenomic">Epigenomic Dataset Checklist</a></li>
                                     <li><a href="/site/guidemetagenomic">Metagenomic Dataset Checklist</a></li>
                                     <li><a href="/site/guidesoftware">Software Dataset Checklist</a></li>
                                 </ul>
@@ -48,7 +48,7 @@ th, td {
         <section>
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane active" id="general">
-                        <h4 style="color: #099242; margin-bottom: 10px;">Metagenomic Dataset Checklist </h4>
+                        <h4 class="page-subtitle">Metagenomic Dataset Checklist </h4>
                         <div class="subsection">
                             <p>It should be noted that this section refers to Whole Genome Shotgun (WGS) metagenomics, as amplicon based microbiome studies are rarely accepted as <i>GigaScience</i> scale data. All raw sequence data must be deposited in a public database at <a target="_blank" href="http://www.ncbi.nlm.nih.gov/">NCBI</a>, <a target="_blank" href="http://www.ebi.ac.uk/">EBI</a>, or <a target="_blank" href="http://www.ddbj.nig.ac.jp/">DDBJ</a> before you submit to <i>GigaScience</i> or GigaDB. </p>
                             <p>Please note that where data is generated from Human environments e.g. faecal material, the authors are required to filter the sequence data for human sequence contamination before submission to the public archives, or if the human sequences are part of the study you must submit the data to <a target="_blank" href="http://www.ncbi.nlm.nih.gov/gap/">dbGaP</a> or <a target="_blank" href="http://ega-archive.org/">EGA</a>. Additionally, where identifiable metadata is used (e.g. age, sex, race, location etc) that is not specifically consented for public release the authors should submit that metadata to <a target="_blank" href="http://ega-archive.org/">EGA</a>.</p>
@@ -530,7 +530,7 @@ th, td {
                             <br>
                             <p>* - Requirements are listed as R= Recommended, O= Optional. Note ^ denotes absolutely mandatory fields.</p>
                         </div>
-                    </div> 
+                    </div>
                 </div>
         </section>
 
@@ -544,11 +544,11 @@ $(document).ready(function () {
     if(location.hash != null && location.hash != ""){
         $('ul li').removeClass('active');
         $('div'+ '.tab-pane').removeClass('active');
-        var variableli = location.hash; 
+        var variableli = location.hash;
         $(location.hash).addClass('active');
         $(variableli.replace('#','#li')).addClass('active');
     }
-    
+
 });
 
 </script>

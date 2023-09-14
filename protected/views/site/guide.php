@@ -40,7 +40,7 @@ th, td {
                                     <li><a href="/site/guidegenomic">Genomic Dataset Checklist</a></li>
                                     <li><a href="/site/guideimaging">Imaging Dataset Checklist</a></li>
                                     <li><a href="/site/guidemetabolomic">Metabolomic and Lipidomic Dataset Checklist</a></li>
-                                    <li><a href="/site/guideepigenomic">Epigenomic Dataset Checklist</a></li> 
+                                    <li><a href="/site/guideepigenomic">Epigenomic Dataset Checklist</a></li>
                                     <li><a href="/site/guidemetagenomic">Metagenomic Dataset Checklist</a></li>
                                     <li><a href="/site/guidesoftware">Software Dataset Checklist</a></li>
                                 </ul>
@@ -50,13 +50,13 @@ th, td {
             <section>
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane active" id="general">
-                        <h4 style="color: #099242; margin-bottom: 10px;">General Submission Guidelines </h4>
+                        <h4 class="page-subtitle">General Submission Guidelines </h4>
                         <div class="subsection">
                             <p>GigaDB is a <a target="_blank" href="https://www.cngb.org/aboutUs.html?i18nlang=en_US">China National GeneBank</a> supported repository used to host data and tools associated with articles in <i>GigaScience</i>. As part of your manuscript submission and in line with the <a target="_blank" href="https://academic.oup.com/gigascience/pages/editorial_policies_and_reporting_standards">Reporting Standards</a> and <a target="_blank" href="http://doi.org/10.25504/fairsharing.prdtva">FAIRsharing guidelines for data deposition and formatting for papers submitted to <i>GigaScience</i></a> we will provide an associated GigaDB dataset to host the data and files required for transparency and reproducibility. GigaDB is an open-access database. As such, all data submitted to GigaDB must be fully consented for public release (for more information about our data policies, please see our <a href="/site/term">Terms of use</a> page).
                             </p>
-                        </div>      
-                    
-                        <h4 style="color: #099242; margin-bottom: 10px;">Workflow</h4>
+                        </div>
+
+                        <h4 class="page-subtitle">Workflow</h4>
                         <div class="subsection">
                             <p>The workflow diagram below details a standard submission process:</p>
                             <img src="/images/workflow.png" alt="Workflow"></img>
@@ -67,9 +67,9 @@ th, td {
                                 -	Supply the appropriate metadata<br>
                                 -	Proofread and approve the GigaDB pre-publication dataset page<br>
                             </p>
-                        </div>  
-                        
-                        <h4 style="color: #099242; margin-bottom: 10px;">Required metadata</h4>
+                        </div>
+
+                        <h4 class="page-subtitle">Required metadata</h4>
                         <div class="subsection">
                             <p>For all datasets the following information will be required. Most of the details will be imported directly from the <i>GigaScience</i> manuscript submission, other details will be requested by the curators.</p>
                             <br>
@@ -428,15 +428,15 @@ th, td {
                             <p><a href="/site/guidegenomic">Genomic Dataset checklists</a></p>
                             <p><a href="/site/guideimaging">Imaging Dataset checklists</a></p>
                             <p><a href="/site/guidemetabolomic">Metabolomic and Lipidomic Dataset checklists</a></p>
-                            <p><a href="/site/guideepigenomic">Epigenomic Dataset checklists</a></p> 
+                            <p><a href="/site/guideepigenomic">Epigenomic Dataset checklists</a></p>
                             <p><a href="/site/guidemetagenomic">Metagenomic Dataset checklists</a></p>
                             <p><a href="/site/guidesoftware">Software Dataset checklists</a></p>
                         </div>
                         <p>If you have any questions, please contact us at <a href="mailto:database@gigasciencejournal.com">database@gigasciencejournal.com</a>.</p>
-                        
-                    </div>  
 
-                    
+                    </div>
+
+
                 </div>
             </section>
 
@@ -457,11 +457,11 @@ $(document).ready(function () {
     if(location.hash != null && location.hash != ""){
         $('ul li').removeClass('active');
         $('div'+ '.tab-pane').removeClass('active');
-        var variableli = location.hash; 
+        var variableli = location.hash;
         $(location.hash).addClass('active');
         $(variableli.replace('#','#li')).addClass('active');
     }
-    
+
 });
 
 </script>
