@@ -6,10 +6,12 @@
 //
 
 // Canonical colors
-// @color-gigadb-green: #099242;
+// @color-gigadb-green: #099242; // original gigadb-green
 @color-gigadb-green: #08893e;
+// Defining a high-contrast variable temporarily
 @color-gigadb-green-high-contrast: #08893e; // this has enough contrast with white
-@color-brand-danger:  #ff2020;
+@color-brand-danger:  #ff2020; // not enough contrast on white
+@color-brand-danger-high-contrast: #eb0000; // enough contrast on white
 
 // Neutral colors
 @color-true-white: #ffffff;
@@ -45,11 +47,26 @@
 @color-gigadb-green-400: #39ef83;
 @color-gigadb-green-500: #0fd861;
 @color-gigadb-green-600: #06b34d;
-@color-gigadb-green-700: #099242; // == @color-gigadb-green
-@color-gigadb-green-750: #08893e; // this has enough contrast with white
+@color-gigadb-green-700: #099242; // == original @color-gigadb-green
+@color-gigadb-green-750: #08893e; // @color-gigadb-green-high-contrast enough contrast on white, enough contrast on black
 @color-gigadb-green-800: #0d6e36;
 @color-gigadb-green-900: #0d5a2e;
 @color-gigadb-green-950: #003317;
+
+@color-brand-danger-50: #fff1f1;
+@color-brand-danger-100: #ffdfdf;
+@color-brand-danger-200: #ffc5c5;
+@color-brand-danger-300: #ff9d9d;
+@color-brand-danger-400: #ff6464;
+@color-brand-danger-500: #ff2020; // == @color-brand-danger
+@color-brand-danger-600: #ed1515;
+@color-brand-danger-650: #eb0000; // @color-brand-danger-high-contrast enough contrast on white, enough contrast on black
+@color-brand-danger-700: #c80d0d;
+@color-brand-danger-800: #a50f0f;
+@color-brand-danger-900: #881414;
+@color-brand-danger-950: #4b0404;
+
+
 
 // text to bg accessible color contrast (AA Normal)
 // naming: [text-color]-on-[bg-color]
@@ -70,6 +87,7 @@
 // dark gray on white (non active tab)
 // darker gray on white (active tab)
 // black on gray (site/guide page)
+@gigadb-green-on-white: @color-gigadb-green-750;
 @gigadb-green-on-lighter-gray: @color-gigadb-green-800;
 @dark-gray-on-light-gray: @color-darker-gray;
 @gray-on-lighter-gray: @color-warm-black;
@@ -78,6 +96,7 @@
 @gray-on-warm-black: #bbb;
 @white-on-gigadb-green: @color-true-white;
 @gigadb-green-on-lighter-gray: @color-gigadb-green-800;
+@brand-danger-on-white: @color-brand-danger-650;
 
 
 //== Scaffolding
