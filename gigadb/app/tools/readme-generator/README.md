@@ -20,7 +20,7 @@ Create a `.env` file:
 ```
 $ cp config-sources/env.example .env
 ```
-> Ensure you have provide values for `GITLAB_PRIVATE_TOKEN` and `REPO_NAME`
+> Ensure you have provided values for `GITLAB_PRIVATE_TOKEN` and `REPO_NAME`
 > variables.
 
 Generate config files:
@@ -79,10 +79,11 @@ or `port install bats-core`). Then run:
 # Ensure you are in gigadb/app/tools/readme-generator directory
 $ bats tests
  ✓ create readme file
+ ✓ check does not create readme with invalid doi and exits
  ✓ create one readme file using batch mode
  ✓ create two readme files using batch mode
 
-3 tests, 0 failures
+4 tests, 0 failures
 ```
 
 
@@ -160,7 +161,7 @@ Elapsed time:         5.1s
 Using the `--apply` flag will switch off dry run mode and copy the readme file
 into the gigadb-datasets/dev bucket:
 ```
-# Execute wasabi upload in dry run mode
+# Confirm actual wasabi upload of files using apply flag
 $ ./createReadme.sh --doi 100142 --outdir /home/curators --wasabi --apply
 ```
 
