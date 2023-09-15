@@ -367,8 +367,14 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242<</pre>
 
                     <h2 class="h4" style="color: #099242; margin-bottom: 10px;">Upload status</h2>
                     <dl class="help-description-list">
-                        <div class="help-definition-container"><dt>Publish:</dt> <dd>this dataset is fully consented for immediate release upon <span class="text-italic">Giga</span>DB approval</dd></div>
-                        <div class="help-definition-container"><dt>HUP:</dt> <dd>this dataset should be Held Until Publication (HUP)</dd></div>
+                        <div class="help-definition-container">
+                            <dt>Publish:</dt>
+                            <dd>this dataset is fully consented for immediate release upon <span class="text-italic">Giga</span>DB approval</dd>
+                        </div>
+                        <div class="help-definition-container">
+                            <dt>HUP:</dt>
+                            <dd>this dataset should be Held Until Publication (HUP)</dd>
+                        </div>
                     </dl>
 
                     <hr style="border-top-style: dashed;">
@@ -379,14 +385,38 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242<</pre>
                     <p>Definition: Description of the relationship of the resource being registered (A) and the related resource (B).</p>
 
                     <dl class="help-description-list">
-                        <div class="help-definition-container"><dt>IsSupplementTo:</dt> <dd>indicates that A is a supplement to B</dd></div>
-                        <div class="help-definition-container"><dt>IsSupplementedBy:</dt> <dd>indicates that B is a supplement to A</dd></div>
-                        <div class="help-definition-container"><dt>IsNewVersionOf:</dt> <dd>indicates A is a new edition of B, where the new edition has been modified or updated</dd></div>
-                        <div class="help-definition-container"><dt>IsPreviousVersionOf:</dt> <dd>indicates A is a previous edition of B</dd></div>
-                        <div class="help-definition-container"><dt>IsPartOf:</dt> <dd>indicates A is a portion of B; may be used for elements of a series</dd></div>
-                        <div class="help-definition-container"><dt>HasPart:</dt> <dd>indicates A includes the part B</dd></div>
-                        <div class="help-definition-container"><dt>References:</dt> <dd>indicates B is used as a source of information for A</dd></div>
-                        <div class="help-definition-container"><dt>IsReferencedBy:</dt> <dd>indicates A is used as a source of information by B</dd></div>
+                        <div class="help-definition-container">
+                            <dt>IsSupplementTo:</dt>
+                            <dd>indicates that A is a supplement to B</dd>
+                        </div>
+                        <div class="help-definition-container">
+                            <dt>IsSupplementedBy:</dt>
+                            <dd>indicates that B is a supplement to A</dd>
+                        </div>
+                        <div class="help-definition-container">
+                            <dt>IsNewVersionOf:</dt>
+                            <dd>indicates A is a new edition of B, where the new edition has been modified or updated</dd>
+                        </div>
+                        <div class="help-definition-container">
+                            <dt>IsPreviousVersionOf:</dt>
+                            <dd>indicates A is a previous edition of B</dd>
+                        </div>
+                        <div class="help-definition-container">
+                            <dt>IsPartOf:</dt>
+                            <dd>indicates A is a portion of B; may be used for elements of a series</dd>
+                        </div>
+                        <div class="help-definition-container">
+                            <dt>HasPart:</dt>
+                            <dd>indicates A includes the part B</dd>
+                        </div>
+                        <div class="help-definition-container">
+                            <dt>References:</dt>
+                            <dd>indicates B is used as a source of information for A</dd>
+                        </div>
+                        <div class="help-definition-container">
+                            <dt>IsReferencedBy:</dt>
+                            <dd>indicates A is used as a source of information by B</dd>
+                        </div>
                     </dl>
 
                     <hr style="border-top-style: dashed;">
@@ -396,10 +426,22 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242<</pre>
                     <p>For attributes (sample, dataset or files) that have some or all values missing please use the following controlled value terms to describe the exact reason for the missing value.</p>
 
                     <dl class="help-description-list">
-                        <div class="help-definition-container"><dt>not applicable:</dt> <dd>information is inappropriate to report, often this attribute can be removed entirely.</dd></div>
-                        <div class="help-definition-container"><dt>restricted access:</dt> <dd>information exists but cannot be released openly because of privacy concerns</dd></div>
-                        <div class="help-definition-container"><dt>not provided:</dt> <dd>information is not available at the time of submission, a value may be provided at the later stage</dd></div>
-                        <div class="help-definition-container"><dt>not collected:</dt> <dd>information was not collected and will therefore never be available</dd></div>
+                        <div class="help-definition-container">
+                            <dt>not applicable:</dt>
+                            <dd>information is inappropriate to report, often this attribute can be removed entirely.</dd>
+                        </div>
+                        <div class="help-definition-container">
+                            <dt>restricted access:</dt>
+                            <dd>information exists but cannot be released openly because of privacy concerns</dd>
+                        </div>
+                        <div class="help-definition-container">
+                            <dt>not provided:</dt>
+                            <dd>information is not available at the time of submission, a value may be provided at the later stage</dd>
+                        </div>
+                        <div class="help-definition-container">
+                            <dt>not collected:</dt>
+                            <dd>information was not collected and will therefore never be available</dd>
+                        </div>
                     </dl>
 
                 </div>
@@ -418,26 +460,33 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242<</pre>
                     <p>It is currently possible to search "all" fields, or to specify one of a select few fields to search.</p>
                     <p>It is possible to have results return all metadata for each dataset with "hits" to the search term, or to specify a particular portion of the metadata, these portions are currently "dataset", "sample" and "file", which is in alignment with the same functionality on the web-search tool. The default is to return results as <a href="https://sites.google.com/a/gigasciencejournal.com/gigascience/public-pages/xml-schema">GigaDB v3 XML</a></p>
                     <p>It is planned that we will have the option to specify the format to be GigaDBv3-JSON or ISA2.0-JSON in the future, but that has not been implemented yet.</p>
+
                     <hr style="border-top-style: dashed;">
+
+
                     <h2 class="h4" style="color: #099242; margin-bottom: 10px;">Terminology</h2>
-                    <p>To specify exact fields to return data from, use terms; dataset?=, sample?=, file?=, (or experiment?=*)</p>
-                    <p>* - experiment will be implemented in the future</p>
-                    <p>To search for datasets without the ID's, use the term search?keyword=</p>
-                    <p>To search by specific attributes use search?&lt;attribute_name&gt;=</p>
+                    <p>To specify exact fields to return data from, use terms; <span>dataset?=</span>, <span>sample?=</span>, <span>file?=</span>, (or <span>experiment?=</span><span aria-hidden="true">*</span>)</p>
+                    <p><span aria-hidden="true">* - </span><em>experiment will be implemented in the future</em></p>
+                    <p>To search for datasets without the ID's, use the term <span>search?keyword=</span></p>
+                    <p>To search by specific attributes use <span>search?&lt;attribute_name&gt;=</span></p>
                     <p>Available <strong>attribute_name</strong> to search include:</p>
-                    <p><strong>taxno</strong> = Taxonomic ID (NCBI)</p>
-                    <p><strong>taxname</strong> = species name (nb must exact spelling, no synonyms searched)</p>
-                    <p><strong>author</strong> = restricts search to the author table</p>
-                    <p><strong>datasettype</strong> = restricts search to the types of datasets, e.g. metagenomic, genomic, transcriptomic etc..</p>
-                    <p><strong>manuscript</strong> = restricts search to the manuscript ID associated with <em>GigaDB</em> dataset(s) e.g. search?manuscript=10.1186/2047-217X-3-21</p>
-                    <p><strong>project</strong> = restricts search to the project name, e.g. Genome 10K</p>
-                    <p>eg..../search?taxno=9606</p>
-                    <p>To specify results to be returned are ONLY a particular level of data, add the phrase <strong>&amp;results=dataset</strong> ,or file or sample: </p>e.g.
-                    <p><a href="http://gigadb.org/api/search?project=Genome%2010K&amp;result=sample" target="_blank">http://gigadb.org/api/search?project=Genome%2010K&amp;result=sample</a></p>
+                    <ul class="help-terminology-list">
+                        <li><strong>taxno</strong> = Taxonomic ID (NCBI)</li>
+                        <li><strong>taxname</strong> = species name (nb must exact spelling, no synonyms searched)</li>
+                        <li><strong>author</strong> = restricts search to the author table</li>
+                        <li><strong>datasettype</strong> = restricts search to the types of datasets, e.g. metagenomic, genomic, transcriptomic etc.</li>
+                        <li><strong>manuscript</strong> = restricts search to the manuscript ID associated with <em>GigaDB</em> dataset(s) e.g. <span>search?manuscript=10.1186/2047-217X-3-21</span></li>
+                        <li><strong>project</strong> = restricts search to the project name, e.g. Genome 10K</li>
+                    </ul>
+                    <p>eg. <span>..../search?taxno=9606</span></p>
+                    <p>To specify results to be returned are ONLY a particular level of data, add the phrase <strong><span>&amp;results=dataset</span></strong>, or file or sample:<br />e.g. <a href="http://gigadb.org/api/search?project=Genome%2010K&amp;result=sample" target="_blank">http://gigadb.org/api/search?project=Genome%2010K&amp;result=sample</a></p>
                     <p>NB - the search still looks everywhere, but the results returned are only those samples that are in datasets that are found by the search.</p>
                     <p><strong>Default results are "dataset" only.</strong></p>
+
                     <hr style="border-top-style: dashed;">
+
                     <h2 class="h4" style="color: #099242; margin-bottom: 10px;">Examples</h2>
+
                     <p>1. retrieve known datasets by doi</p>
                     <p><a href="http://gigadb.org/api/dataset?doi=100051" target="_blank">http://gigadb.org/api/dataset?doi=100051</a></p>
                     <p>2. retrieve samples from a known DOI</p>
