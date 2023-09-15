@@ -1,3 +1,4 @@
+@ok-can-offline
 Feature: a user visit the dataset page
   As a website user
   I want to see all the information pertaining to a dataset
