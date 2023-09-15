@@ -20,12 +20,12 @@
                                     'limit'=>$limit
                               ));?> </p>
 
-                           <div>
+                           <section>
                                 <?php $this->renderPartial("_filter", array(
                                           'model' => $model,
                                           'list_dataset_types' => $list_dataset_types,
                                 )) ?>
-                            </div>
+                            </section>
                              </div>
 
                     <section class="subsection col-xs-8" aria-labelledby="search_result_heading">
