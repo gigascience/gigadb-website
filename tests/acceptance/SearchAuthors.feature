@@ -1,3 +1,4 @@
+@ok-can-offline
 Feature:
   As an author
   I want to save keywords from the search bar
