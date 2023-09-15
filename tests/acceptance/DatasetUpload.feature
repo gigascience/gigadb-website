@@ -1,4 +1,4 @@
-@author-dataset-spreadsheet-upload
+@ok-needs-secrets @author-dataset-spreadsheet-upload
 Feature: Dataset spreadsheet upload
   As an author
   I want to upload dataset metadata from a spreadsheet

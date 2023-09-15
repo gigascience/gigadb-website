@@ -532,6 +532,6 @@ class SiteController extends Controller {
         echo Yii::app()->newsAndFeedsService->getRss();
         exit;
     }
-    
+
 
 }
