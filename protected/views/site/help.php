@@ -92,7 +92,7 @@ $this->pageTitle='GigaDB - Help';
                                 <li>4 informational tabs [Samples (info), Files (info), CV, Links]</li>
                             </ol>
                             <p>Mandatory fields are highlighted in yellow.</p>
-                            <h5>Study</h5>
+                            <h2 class="h5">Study</h2>
                             <p>Required information includes submitter name, email and affiliation, upload status [can we publish this dataset immediately after review (Publish) or should it be held until publication (HUP)], author list, <a href="http://gigadb.org/site/help#datasettype" target="_blank">dataset type(s)</a> (selected from a controlled vocabulary list), dataset title and description, estimated total size of the files that will be submitted and dataset image information.</p>
                             <p>Optional information includes links to additional resources and related manuscripts, accessions for data in other databases (prefixes are found in the Links tab), and <a href="http://gigadb.org/site/help#relation" target="_blank">relationship</a> (if any) to a previously published <em>Giga</em>DB dataset (selected from a controlled vocabulary list).</p>
                             <h2 class="h5">Samples</h2>
