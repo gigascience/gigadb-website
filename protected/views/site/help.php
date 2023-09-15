@@ -20,7 +20,7 @@ $this->pageTitle = 'GigaDB - Help';
             <p>The <a href="http://gigadb.org/" target="_blank"><span class="text-italic">GigaDB</span></a> homepage allows you to browse datasets by type eg Genomic, Metagenomic, Transcriptomic. Clicking on the DOI (digital object identifier) or image will take you directly to the webpage for the dataset of interest.</p>
             <p>Alternatively you can use the search functions to find datasets, samples or files of interest.</p>
         </div>
-        <div>
+        <div class="section">
             <ul class="nav nav-tabs nav-border-tabs" role="tablist" id="alltabs" aria-label="GigaDB help">
                 <li id="lisearch" role="presentation" class="active"><a href="#search" aria-controls="search" role="tab" data-toggle="tab" aria-selected="true"><span class="text-italic">GigaDB</span> search</a></li>
                 <li id="liguideline" role="presentation"><a href="#guidelines" aria-controls="guidelines" role="tab" data-toggle="tab" aria-selected="false">Submission guidelines</a></li>
@@ -119,46 +119,161 @@ $this->pageTitle = 'GigaDB - Help';
                 </div>
                 <div role="tabpanel" class="tab-pane" id="vocabulary" aria-labelledby="livocabulary">
                     <h2 class="h4" id="datasettypes" style="color: #099242; margin-bottom: 10px;">Dataset types</h2>
-                    <p><strong>Genomic</strong> - Includes all genetic and genomic data eg sequence, assemblies, alignments, genotypes, variation and annotation. Minimal requirements: DNA sequence data eg next-gen raw reads (fastq files) OR assembled DNA sequences (fasta files).</p>
-                    <p><strong>Transcriptomic</strong> - Includes all data relating to mRNA. Minimal requirements: RNA sequence data eg next-gen raw reads (fastq files) OR transcript statistics eg RNA coverage/depth.</p>
-                    <p><strong>Epigenomic</strong> - Includes methylation and histone modification data. Minimal requirements: Details on methylation sites/status eg qmap files OR details on histone modification sites/status.</p>
-                    <p><strong>Metagenomic</strong> - Includes all genetic and genomic data eg sequence, assemblies, alignments, genotypes, variation and annotation from environmental samples. Minimal requirements: Environmental DNA sequence data eg next-gen raw reads (fastq files) OR assembled DNA sequences (fasta files).</p>
-                    <p><strong>Metatranscriptomic</strong> - RNA sequences analysis data from environmental samples, e.g. assemblies, expression profiles, variations, annotations etc.</p>
-                    <p><strong>Genome mapping</strong> - Datasets containing sequence analysis of genes/conserved sequences mapped to genome(s), and/or optical maps of entire genomes.</p>
-                    <p><strong>Imaging</strong> - Includes all imaging data, e.g. light microscopy, 3D imaging, high-resolution images, camera-trap images etc...</p>
-                    <p><strong>Software</strong> - Includes datasets that package code together into a useful bioinformatics tool. Note, datasets that contain short scripts are not labelled as software.</p>
-                    <p><strong>Virtual-Machine</strong> - Includes software that has been packaged into a virtual machine environment.</p>
-                    <p><strong>Workflow</strong> - Datasets that include tools that have been pieced together into a workflow using CWL or other workflow languages.</p>
-                    <p><strong>Metabolomic</strong> - Includes analysis of specific metabolights across multiple samples and/or multiple metabolights in fewer samples, usually LC-MS data.</p>
-                    <p><strong>Proteomic</strong> - Includes all mass spec data. Minimal requirements: Peptide/protein data eg mass spec.</p>
-                    <p><strong>Lipidomic</strong> - Includes datasets with focus on lipid analysis, usually using mass spectrometry.</p>
-                    <p><strong>Metabarcoding</strong> - Datasets using barcode sequences for environmental analysis and/or monitoring studies e.g. biodiversity assessment.</p>
-                    <p><strong>Metadata</strong> - Denotes datasets where there is a focus on collection of metadata e.g. ontologies or metadata standards.</p>
-                    <p><strong>Network-Analysis</strong> - Datasets containing analysis of biological networks, either species interactions or at the molecular level.</p>
-                    <p><strong>Neuroscience</strong> - Includes all datasets that hold data about brains/neurons, can be imaging, molecular and/or software/tools.</p>
-                    <p><strong>Electro-encephalography (EEG)</strong> - Datasets containing or using EEG data.</p>
-                    <p><strong>Phenotyping</strong> - Includes datasets with extensive phenotypic information about the samples/specimens.</p>
-                    <p><strong>Ecology</strong> - Data used/collected for ecological studies.</p>
-                    <p><strong>Climate</strong> - Data used/collected for climate studies.</p>
+                    <dl class="help-description-list">
+                        <div class="help-definition-container">
+                            <dt>Genomic</dt><span aria-hidden="true"> - </span>
+                            <dd>Includes all genetic and genomic data eg sequence, assemblies, alignments, genotypes, variation and annotation. Minimal requirements: DNA sequence data eg next-gen raw reads (fastq files) OR assembled DNA sequences (fasta files).</dd>
+                        </div>
+                        <div class="help-definition-container">
+                            <dt>Transcriptomic</dt><span aria-hidden="true"> - </span>
+                            <dd>Includes all data relating to mRNA. Minimal requirements: RNA sequence data eg next-gen raw reads (fastq files) OR transcript statistics eg RNA coverage/depth.</dd>
+                        </div>
+                        <div class="help-definition-container">
+                            <dt>Epigenomic</dt><span aria-hidden="true"> - </span>
+                            <dd>Includes methylation and histone modification data. Minimal requirements: Details on methylation sites/status eg qmap files OR details on histone modification sites/status.</dd>
+                        </div>
+                        <div class="help-definition-container">
+                            <dt>Metagenomic</dt><span aria-hidden="true"> - </span>
+                            <dd>Includes all genetic and genomic data eg sequence, assemblies, alignments, genotypes, variation and annotation from environmental samples. Minimal requirements: Environmental DNA sequence data eg next-gen raw reads (fastq files) OR assembled DNA sequences (fasta files).</dd>
+                        </div>
+                        <div class="help-definition-container">
+                            <dt>Metatranscriptomic</dt><span aria-hidden="true"> - </span>
+                            <dd>RNA sequences analysis data from environmental samples, e.g. assemblies, expression profiles, variations, annotations etc.</dd>
+                        </div>
+                        <div class="help-definition-container">
+                            <dt>Genome mapping</dt><span aria-hidden="true"> - </span>
+                            <dd>Datasets containing sequence analysis of genes/conserved sequences mapped to genome(s), and/or optical maps of entire genomes.</dd>
+                        </div>
+                        <div class="help-definition-container">
+                            <dt>Imaging</dt><span aria-hidden="true"> - </span>
+                            <dd>Includes all imaging data, e.g. light microscopy, 3D imaging, high-resolution images, camera-trap images etc...</dd>
+                        </div>
+                        <div class="help-definition-container">
+                            <dt>Software</dt><span aria-hidden="true"> - </span>
+                            <dd>Includes datasets that package code together into a useful bioinformatics tool. Note, datasets that contain short scripts are not labelled as software.</dd>
+                        </div>
+                        <div class="help-definition-container">
+                            <dt>Virtual-Machine</dt><span aria-hidden="true"> - </span>
+                            <dd>Includes software that has been packaged into a virtual machine environment.</dd>
+                        </div>
+                        <div class="help-definition-container">
+                            <dt>Workflow</dt><span aria-hidden="true"> - </span>
+                            <dd>Datasets that include tools that have been pieced together into a workflow using CWL or other workflow languages.</dd>
+                        </div>
+                        <div class="help-definition-container">
+                            <dt>Metabolomic</dt><span aria-hidden="true"> - </span>
+                            <dd>Includes analysis of specific metabolights across multiple samples and/or multiple metabolights in fewer samples, usually LC-MS data.</dd>
+                        </div>
+                        <div class="help-definition-container">
+                            <dt>Proteomic</dt><span aria-hidden="true"> - </span>
+                            <dd>Includes all mass spec data. Minimal requirements: Peptide/protein data eg mass spec.</dd>
+                        </div>
+                        <div class="help-definition-container">
+                            <dt>Lipidomic</dt><span aria-hidden="true"> - </span>
+                            <dd>Includes datasets with focus on lipid analysis, usually using mass spectrometry.</dd>
+                        </div>
+                        <div class="help-definition-container">
+                            <dt>Metabarcoding</dt><span aria-hidden="true"> - </span>
+                            <dd>Datasets using barcode sequences for environmental analysis and/or monitoring studies e.g. biodiversity assessment.</dd>
+                        </div>
+                        <div class="help-definition-container">
+                            <dt>Metadata</dt><span aria-hidden="true"> - </span>
+                            <dd>Denotes datasets where there is a focus on collection of metadata e.g. ontologies or metadata standards.</dd>
+                        </div>
+                        <div class="help-definition-container">
+                            <dt>Network-Analysis</dt><span aria-hidden="true"> - </span>
+                            <dd>Datasets containing analysis of biological networks, either species interactions or at the molecular level.</dd>
+                        </div>
+                        <div class="help-definition-container">
+                            <dt>Neuroscience</dt><span aria-hidden="true"> - </span>
+                            <dd>Includes all datasets that hold data about brains/neurons, can be imaging, molecular and/or software/tools.</dd>
+                        </div>
+                        <div class="help-definition-container">
+                            <dt>Electro-encephalography (EEG)</dt><span aria-hidden="true"> - </span>
+                            <dd>Datasets containing or using EEG data.</dd>
+                        </div>
+                        <div class="help-definition-container">
+                            <dt>Phenotyping</dt><span aria-hidden="true"> - </span>
+                            <dd>Includes datasets with extensive phenotypic information about the samples/specimens.</dd>
+                        </div>
+                        <div class="help-definition-container">
+                            <dt>Ecology</dt><span aria-hidden="true"> - </span>
+                            <dd>Data used/collected for ecological studies.</dd>
+                        </div>
+                        <div class="help-definition-container">
+                            <dt>Climate</dt><span aria-hidden="true"> - </span>
+                            <dd>Data used/collected for climate studies.</dd>
+                        </div>
+                    </dl>
                     <p>Additional dataset types can be added, upon review, as new submissions are received.</p>
                     <h2 class="h4" id="filetypes" style="color: #099242; margin-bottom: 10px;">File types</h2>
                     <p>File types and examples of associated file extensions:</p>
-                    <p><strong>Alignments:</strong> .bam, .chain, .maf, .net, .sam</p>
-                    <p><strong>Allele frequencies:</strong> .frq</p>
-                    <p><strong>Annotation:</strong> .gff, .ipr, .kegg, .wego</p>
-                    <p><strong>Coding sequence:</strong> .cds, .fa</p>
-                    <p><strong>InDels:</strong> .gff, .txt, .vcf</p>
-                    <p><strong>ISA-Tab:</strong> see <a href="http://isa-tools.org/format/specification.html" target="_blank">ISA tools</a></p>
-                    <p><strong>Genome assembly:</strong> .agp, .contig, .depth, .fa, .length, .scafseq</p>
-                    <p><strong>Genome sequence:</strong> .fastq, .fq</p>
-                    <p><strong>Haplotypes:</strong> .haplotype</p>
-                    <p><strong>Methylome data:</strong> .fa, .qmap, .rpm, .txt</p>
-                    <p><strong>Protein sequence:</strong> .fa, .pep</p>
-                    <p><strong>Readme:</strong> .pdf, .txt</p>
-                    <p><strong>SNPs:</strong> .annotation, .gff, .txt, .vcf</p>
-                    <p><strong>SVs:</strong> .gff, .txt, .vcf</p>
-                    <p><strong>Transcriptome data:</strong> .depth, .rpkm, .wig</p>
-                    <p><strong>Other:</strong> .xls, .pdf, .txt</p>
+                    <dl class="help-description-list">
+                        <div class="help-definition-container">
+                            <dt>Alignments:</dt>
+                            <dd>.bam, .chain, .maf, .net, .sam</dd>
+                        </div>
+                        <div class="help-definition-container">
+                            <dt>Allele frequencies:</dt>
+                            <dd>.frq</dd>
+                        </div>
+                        <div class="help-definition-container">
+                            <dt>Annotation:</dt>
+                            <dd>.gff, .ipr, .kegg, .wego</dd>
+                        </div>
+                        <div class="help-definition-container">
+                            <dt>Coding sequence:</dt>
+                            <dd>.cds, .fa</dd>
+                        </div>
+                        <div class="help-definition-container">
+                            <dt>InDels:</dt>
+                            <dd>.gff, .txt, .vcf</dd>
+                        </div>
+                        <div class="help-definition-container">
+                            <dt>ISA-Tab:</dt>
+                            <dd>see <a href="http://isa-tools.org/format/specification.html" target="_blank">ISA tools</a></dd>
+                        </div>
+                        <div class="help-definition-container">
+                            <dt>Genome assembly:</dt>
+                            <dd>.agp, .contig, .depth, .fa, .length, .scafseq</dd>
+                        </div>
+                        <div class="help-definition-container">
+                            <dt>Genome sequence:</dt>
+                            <dd>.fastq, .fq</dd>
+                        </div>
+                        <div class="help-definition-container">
+                            <dt>Haplotypes:</dt>
+                            <dd>.haplotype</dd>
+                        </div>
+                        <div class="help-definition-container">
+                            <dt>Methylome data:</dt>
+                            <dd>.fa, .qmap, .rpm, .txt</dd>
+                        </div>
+                        <div class="help-definition-container">
+                            <dt>Protein sequence:</dt>
+                            <dd>.fa, .pep</dd>
+                        </div>
+                        <div class="help-definition-container">
+                            <dt>Readme:</dt>
+                            <dd>.pdf, .txt</dd>
+                        </div>
+                        <div class="help-definition-container">
+                            <dt>SNPs:</dt>
+                            <dd>.annotation, .gff, .txt, .vcf</dd>
+                        </div>
+                        <div class="help-definition-container">
+                            <dt>SVs:</dt>
+                            <dd>.gff, .txt, .vcf</dd>
+                        </div>
+                        <div class="help-definition-container">
+                            <dt>Transcriptome data:</dt>
+                            <dd>.depth, .rpkm, .wig</dd>
+                        </div>
+                        <div class="help-definition-container">
+                            <dt>Other:</dt>
+                            <dd>.xls, .pdf, .txt</dd>
+                        </div>
+                    </dl>
                     <p>Additional file types can be added, upon review, as new submissions are received.</p>
                     <hr style="border-top-style: dashed;">
                     <h2 class="h4" id="fileformats" style="color: #099242; margin-bottom: 10px;">File formats</h2>
@@ -249,28 +364,44 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242<</pre>
                     <p id="unknown"><strong>UNKNOWN</strong> - any file format not in this list</p>
                     <p id="xml"><strong>XML</strong> (.xml) - <a href="http://www.w3schools.com/xml/" target="_blank">eXtensible Markup Language</a></p>
                     <hr style="border-top-style: dashed;">
-                    <h2 class="h4" style="color: #099242; margin-bottom: 10px;">Upload status</a></h4>
-                        <p><strong>Publish: </strong>this dataset is fully consented for immediate release upon <em>Giga</em>DB approval </p>
-                        <p><strong>HUP: </strong>this dataset should be Held Until Publication (HUP)</p>
-                        <hr style="border-top-style: dashed;">
-                        <h2 class="h4" style="color: #099242; margin-bottom: 10px;">DOI relationship</h2>
-                        <p>The DOI relationship vocabulary is taken from the <a href="http://schema.datacite.org/meta/kernel-2.2/doc/DataCite-MetadataKernel_v2.2.pdf" target="_blank">DataCite</a> 'relationType' schema property (ID=12.2).</p>
-                        <p>Definition: Description of the relationship of the resource being registered (A) and the related resource (B).</p>
-                        <p><strong>IsSupplementTo:</strong> indicates that A is a supplement to B</p>
-                        <p><strong>IsSupplementedBy:</strong> indicates that B is a supplement to A</p>
-                        <p><strong>IsNewVersionOf:</strong> indicates A is a new edition of B, where the new edition has been modified or updated</p>
-                        <p><strong>IsPreviousVersionOf:</strong> indicates A is a previous edition of B</p>
-                        <p><strong>IsPartOf:</strong> indicates A is a portion of B; may be used for elements of a series</p>
-                        <p><strong>HasPart:</strong> indicates A includes the part B</p>
-                        <p><strong>References:</strong> indicates B is used as a source of information for A</p>
-                        <p><strong>IsReferencedBy:</strong> indicates A is used as a source of information by B</p>
-                        <hr style="border-top-style: dashed;">
-                        <h2 class="h4" style="color: #099242; margin-bottom: 10px;">Missing Value reporting</h2>
-                        <p>For attributes (sample, dataset or files) that have some or all values missing please use the following controlled value terms to describe the exact reason for the missing value.</p>
-                        <p><strong>not applicable:</strong> information is inappropriate to report, often this attribute can be removed entirely.</p>
-                        <p><strong>restricted access:</strong> information exists but cannot be released openly because of privacy concerns</p>
-                        <p><strong>not provided:</strong> information is not available at the time of submission, a value may be provided at the later stage</p>
-                        <p><strong>not collected:</strong> information was not collected and will therefore never be available</p>
+
+                    <h2 class="h4" style="color: #099242; margin-bottom: 10px;">Upload status</h2>
+                    <dl class="help-description-list">
+                        <div class="help-definition-container"><dt>Publish:</dt> <dd>this dataset is fully consented for immediate release upon <span class="text-italic">Giga</span>DB approval</dd></div>
+                        <div class="help-definition-container"><dt>HUP:</dt> <dd>this dataset should be Held Until Publication (HUP)</dd></div>
+                    </dl>
+
+                    <hr style="border-top-style: dashed;">
+
+                    <h2 class="h4" style="color: #099242; margin-bottom: 10px;">DOI relationship</h2>
+
+                    <p>The DOI relationship vocabulary is taken from the <a href="http://schema.datacite.org/meta/kernel-2.2/doc/DataCite-MetadataKernel_v2.2.pdf" target="_blank">DataCite</a> 'relationType' schema property (ID=12.2).</p>
+                    <p>Definition: Description of the relationship of the resource being registered (A) and the related resource (B).</p>
+
+                    <dl class="help-description-list">
+                        <div class="help-definition-container"><dt>IsSupplementTo:</dt> <dd>indicates that A is a supplement to B</dd></div>
+                        <div class="help-definition-container"><dt>IsSupplementedBy:</dt> <dd>indicates that B is a supplement to A</dd></div>
+                        <div class="help-definition-container"><dt>IsNewVersionOf:</dt> <dd>indicates A is a new edition of B, where the new edition has been modified or updated</dd></div>
+                        <div class="help-definition-container"><dt>IsPreviousVersionOf:</dt> <dd>indicates A is a previous edition of B</dd></div>
+                        <div class="help-definition-container"><dt>IsPartOf:</dt> <dd>indicates A is a portion of B; may be used for elements of a series</dd></div>
+                        <div class="help-definition-container"><dt>HasPart:</dt> <dd>indicates A includes the part B</dd></div>
+                        <div class="help-definition-container"><dt>References:</dt> <dd>indicates B is used as a source of information for A</dd></div>
+                        <div class="help-definition-container"><dt>IsReferencedBy:</dt> <dd>indicates A is used as a source of information by B</dd></div>
+                    </dl>
+
+                    <hr style="border-top-style: dashed;">
+
+                    <h2 class="h4" style="color: #099242; margin-bottom: 10px;">Missing Value reporting</h2>
+
+                    <p>For attributes (sample, dataset or files) that have some or all values missing please use the following controlled value terms to describe the exact reason for the missing value.</p>
+
+                    <dl class="help-description-list">
+                        <div class="help-definition-container"><dt>not applicable:</dt> <dd>information is inappropriate to report, often this attribute can be removed entirely.</dd></div>
+                        <div class="help-definition-container"><dt>restricted access:</dt> <dd>information exists but cannot be released openly because of privacy concerns</dd></div>
+                        <div class="help-definition-container"><dt>not provided:</dt> <dd>information is not available at the time of submission, a value may be provided at the later stage</dd></div>
+                        <div class="help-definition-container"><dt>not collected:</dt> <dd>information was not collected and will therefore never be available</dd></div>
+                    </dl>
+
                 </div>
                 <div role="tabpanel" class="tab-pane" id="interface" aria-labelledby="liapi">
                     <h2 class="h4" style="color: #099242; margin-bottom: 10px;">Availability</h2>
@@ -353,24 +484,24 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242<</pre>
                     <p>HTTP/1.1 404 Not Found / HTTP/1.1 500 Internal server error</p>
                 </div>
             </div>
-        </section>
+            </section>
+        </div>
     </div>
-</div>
-<script type="text/javascript">
-    $(document).ready(function() {
-        if (location.hash != '' && location.hash != null) {
-            $("a[href='" + location.hash + "']").click();
-        }
-    });
+    <script type="text/javascript">
+        $(document).ready(function() {
+            if (location.hash != '' && location.hash != null) {
+                $("a[href='" + location.hash + "']").click();
+            }
+        });
 
-    function DatasetFunction(){
-        $('ul li').removeClass('active');
-        $('#livocabulary').addClass('active');
-        $('#search').removeClass('active');
-        $('#vocabulary').addClass('active');
-        var e = document.getElementById('datasettypes');
-        if (!!e && e.scrollIntoView) {
-            e.scrollIntoView();
+        function DatasetFunction() {
+            $('ul li').removeClass('active');
+            $('#livocabulary').addClass('active');
+            $('#search').removeClass('active');
+            $('#vocabulary').addClass('active');
+            var e = document.getElementById('datasettypes');
+            if (!!e && e.scrollIntoView) {
+                e.scrollIntoView();
+            }
         }
-    }
-</script>
+    </script>
