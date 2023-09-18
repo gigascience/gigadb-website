@@ -671,7 +671,7 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242&lt;</pre>
 
                     <h2 class="h4" style="color: #099242; margin-bottom: 10px;">DOI relationship</h2>
 
-                    <p>The DOI relationship vocabulary is taken from the <a href="http://schema.datacite.org/meta/kernel-2.2/doc/DataCite-MetadataKernel_v2.2.pdf" target="_blank">DataCite</a> 'relationType' schema property (ID=12.2).</p>
+                    <p>The DOI relationship vocabulary is taken from the <a href="http://schema.datacite.org/meta/kernel-2.2/doc/DataCite-MetadataKernel_v2.2.pdf" target="_blank" aria-label="DataCite Pdf file">DataCite</a> 'relationType' schema property (ID=12.2).</p>
                     <p>Definition: Description of the relationship of the resource being registered (A) and the related resource (B).</p>
 
                     <dl class="help-description-list">
