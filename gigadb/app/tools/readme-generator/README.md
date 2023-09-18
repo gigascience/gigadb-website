@@ -20,7 +20,7 @@ Create a `.env` file:
 ```
 $ cp config-sources/env.example .env
 ```
-> Ensure you have provide values for `GITLAB_PRIVATE_TOKEN` and `REPO_NAME`
+> Ensure you have provided values for `GITLAB_PRIVATE_TOKEN` and `REPO_NAME`
 > variables.
 
 Generate config files:
@@ -79,11 +79,15 @@ or `port install bats-core`). Then run:
 # Ensure you are in gigadb/app/tools/readme-generator directory
 $ bats tests
  ✓ create readme file
- ✓ create readme file and copy to wasabi
+ ✓ check does not create readme with invalid doi and exits
+ ✓ create one readme file using batch mode
+ ✓ create two readme files using batch mode
+
+4 tests, 0 failures
 ```
 
 
-## Using readme generator tool
+## Using readme generator tool in dev environment
 
 The readme information for a dataset can be viewed on standard output using its
 DOI:
@@ -103,27 +107,171 @@ Since `/home/curators` has been mounted to `runtime/curators` directory in
 `docker-compose.yml`, you should find a `readme_100142.txt` created there after
 running the above command.
 
-## Using readme generator tool via shell wrapper script 
 
-There is a shell script which can also be used to call the readme tool:
+## Using readme generator tool via shell wrapper script in dev environment
+
+There is a shell script which can be used to call the readme tool:
 ```
 $ ./createReadme.sh --doi 100142 --outdir /home/curators
 ```
 
-In the absence of an output directory `outdir` parameter or if the directory
-cannot be created then an error message will be displayed:
+You should see a `readme_100142.txt` file created in runtime/curators directory.
+There will also be a new log file created in logs/ directory which is named:
+`readme_100142_batch_1_*.log`.
+
+In the absence of an output directory `outdir` parameter value or if the
+directory cannot be created then an error message will be displayed:
 ```
 $ ./createReadme.sh --doi 100142 --outdir /home/foo
 Cannot save readme file - Output directory does not exist or is not a directory
-ERROR: 65
+```
+
+The corresponding log file will confirm this:
+```
+2023/09/01 10:51:43 ERROR  : Could not save readme file for DOI 100142 at /home/foo
 ```
 
 An error message is also displayed if a DOI is provided for a dataset that does 
 not exist:
 ```
-$ ./create_readme.sh --doi 1
-Creating readme_tool_run ... done
-Exception 'Exception' with message 'Dataset 1 not found'
+$ ./createReadme.sh --doi 1
+Dataset 1 not found
+```
+
+### Wasabi upload of readme files
+
+The readme tool is also able to copy readme files it creates into Wasabi:
+```
+# Execute wasabi upload in dry run mode
+$ ./createReadme.sh --doi 100142 --outdir /home/curators --wasabi
+```
+
+The latest log file will confirm dry run mode Wasabi upload:
+```
+2023/09/01 11:13:58 INFO  : Created readme file for DOI 100142 in /Volumes/PLEXTOR/PhpstormProjects/pli888/gigadb-website/gigadb/app/tools/readme-generator/runtime/curators/readme_100142.txt
+2023/09/01 11:14:03 NOTICE: readme_100142.txt: Skipped update modification time as --dry-run is set (size 1.603Ki)
+2023/09/01 11:14:03 NOTICE: 
+Transferred:   	          0 B / 0 B, -, 0 B/s, ETA -
+Elapsed time:         5.1s
+
+2023/09/01 11:14:03 INFO  : Executed: rclone copy --s3-no-check-bucket /Volumes/PLEXTOR/PhpstormProjects/pli888/gigadb-website/gigadb/app/tools/readme-generator/runtime/curators/readme_100142.txt wasabi:gigadb-datasets/dev/pub/10.5524/100001_101000/100142/ --config ../wasabi-migration/config/rclone.conf --dry-run --log-file /Volumes/PLEXTOR/PhpstormProjects/pli888/gigadb-website/gigadb/app/tools/readme-generator/logs/readme_100142_20230901_111357.log --log-level INFO --stats-log-level DEBUG >> /Volumes/PLEXTOR/PhpstormProjects/pli888/gigadb-website/gigadb/app/tools/readme-generator/logs/readme_100142_20230901_111357.log
+2023/09/01 11:14:03 INFO  : Successfully copied file to Wasabi for DOI: 100142
+```
+
+Using the `--apply` flag will switch off dry run mode and copy the readme file
+into the gigadb-datasets/dev bucket:
+```
+# Confirm actual wasabi upload of files using apply flag
+$ ./createReadme.sh --doi 100142 --outdir /home/curators --wasabi --apply
+```
+
+The latest log file should confirm Wasabi upload:
+```
+2023/09/01 11:18:20 INFO  : Created readme file for DOI 100142 in /Volumes/PLEXTOR/PhpstormProjects/pli888/gigadb-website/gigadb/app/tools/readme-generator/runtime/curators/readme_100142.txt
+2023/09/01 11:18:21 INFO  : readme_100142.txt: Updated modification time in destination
+2023/09/01 11:18:21 INFO  : Executed: rclone copy --s3-no-check-bucket /Volumes/PLEXTOR/PhpstormProjects/pli888/gigadb-website/gigadb/app/tools/readme-generator/runtime/curators/readme_100142.txt wasabi:gigadb-datasets/dev/pub/10.5524/100001_101000/100142/ --config ../wasabi-migration/config/rclone.conf --log-file /Volumes/PLEXTOR/PhpstormProjects/pli888/gigadb-website/gigadb/app/tools/readme-generator/logs/readme_100142_20230901_111819.log --log-level INFO --stats-log-level DEBUG >> /Volumes/PLEXTOR/PhpstormProjects/pli888/gigadb-website/gigadb/app/tools/readme-generator/logs/readme_100142_20230901_111819.log
+2023/09/01 11:18:21 INFO  : Successfully copied file to Wasabi for DOI: 100142
+```
+
+### Batch processing of readme files
+
+The createReadme.sh script has a batch processing mode which can be accessed
+using the `--batch` flag:
+```
+# Create 2 readme files
+$ ./createReadme.sh --doi 100005 --outdir /home/curators --batch 2
+```
+
+The `--batch` flag takes a value equal to the number of readme files you would
+like to successfully create. The above command will create a total of 2 readme
+files which its log file will confirm:
+
+```
+2023/09/01 11:31:55 WARN  : No dataset for DOI 100005
+2023/09/01 11:31:57 INFO  : Created readme file for DOI 100006 in /Volumes/PLEXTOR/PhpstormProjects/pli888/gigadb-website/gigadb/app/tools/readme-generator/runtime/curators/readme_100006.txt
+2023/09/01 11:31:58 WARN  : No dataset for DOI 100007
+2023/09/01 11:31:59 WARN  : No dataset for DOI 100008
+2023/09/01 11:32:00 WARN  : No dataset for DOI 100009
+2023/09/01 11:32:01 WARN  : No dataset for DOI 100010
+2023/09/01 11:32:02 WARN  : No dataset for DOI 100011
+2023/09/01 11:32:03 WARN  : No dataset for DOI 100012
+2023/09/01 11:32:03 WARN  : No dataset for DOI 100013
+2023/09/01 11:32:04 WARN  : No dataset for DOI 100014
+2023/09/01 11:32:05 WARN  : No dataset for DOI 100015
+2023/09/01 11:32:06 WARN  : No dataset for DOI 100016
+2023/09/01 11:32:06 WARN  : No dataset for DOI 100017
+2023/09/01 11:32:07 WARN  : No dataset for DOI 100018
+2023/09/01 11:32:08 WARN  : No dataset for DOI 100019
+2023/09/01 11:32:10 INFO  : Created readme file for DOI 100020 in /Volumes/PLEXTOR/PhpstormProjects/pli888/gigadb-website/gigadb/app/tools/readme-generator/runtime/curators/readme_100020.txt
+```
+
+Batch processing will work with Wasabi upload of readme files too. For example:
+```
+# Execute wasabi upload in dry run mode
+$ ./createReadme.sh --doi 100005 --outdir /home/curators --wasabi --batch 2
+```
+
+The corresponding log file will confirm the dry run upload of 2 readme files:
+```
+2023/09/01 11:39:25 WARN  : No dataset for DOI 100005
+2023/09/01 11:39:25 INFO  : Created readme file for DOI 100006 in /Volumes/PLEXTOR/PhpstormProjects/pli888/gigadb-website/gigadb/app/tools/readme-generator/runtime/curators/readme_100006.txt
+2023/09/01 11:39:30 NOTICE: readme_100006.txt: Skipped copy as --dry-run is set (size 2.461Ki)
+2023/09/01 11:39:30 NOTICE: 
+Transferred:   	    2.461 KiB / 2.461 KiB, 100%, 0 B/s, ETA -
+Transferred:            1 / 1, 100%
+Elapsed time:         4.7s
+
+2023/09/01 11:39:30 INFO  : Executed: rclone copy --s3-no-check-bucket /Volumes/PLEXTOR/PhpstormProjects/pli888/gigadb-website/gigadb/app/tools/readme-generator/runtime/curators/readme_100006.txt wasabi:gigadb-datasets/dev/pub/10.5524/100001_101000/100006/ --config ../wasabi-migration/config/rclone.conf --dry-run --log-file /Volumes/PLEXTOR/PhpstormProjects/pli888/gigadb-website/gigadb/app/tools/readme-generator/logs/readme_100005_20230901_113924.log --log-level INFO --stats-log-level DEBUG >> /Volumes/PLEXTOR/PhpstormProjects/pli888/gigadb-website/gigadb/app/tools/readme-generator/logs/readme_100005_20230901_113924.log
+2023/09/01 11:39:30 INFO  : Successfully copied file to Wasabi for DOI: 100006
+2023/09/01 11:39:31 WARN  : No dataset for DOI 100007
+2023/09/01 11:39:32 WARN  : No dataset for DOI 100008
+2023/09/01 11:39:32 WARN  : No dataset for DOI 100009
+2023/09/01 11:39:33 WARN  : No dataset for DOI 100010
+2023/09/01 11:39:34 WARN  : No dataset for DOI 100011
+2023/09/01 11:39:35 WARN  : No dataset for DOI 100012
+2023/09/01 11:39:36 WARN  : No dataset for DOI 100013
+2023/09/01 11:39:36 WARN  : No dataset for DOI 100014
+2023/09/01 11:39:37 WARN  : No dataset for DOI 100015
+2023/09/01 11:39:38 WARN  : No dataset for DOI 100016
+2023/09/01 11:39:39 WARN  : No dataset for DOI 100017
+2023/09/01 11:39:39 WARN  : No dataset for DOI 100018
+2023/09/01 11:39:40 WARN  : No dataset for DOI 100019
+2023/09/01 11:39:41 INFO  : Created readme file for DOI 100020 in /Volumes/PLEXTOR/PhpstormProjects/pli888/gigadb-website/gigadb/app/tools/readme-generator/runtime/curators/readme_100020.txt
+2023/09/01 11:39:41 NOTICE: readme_100020.txt: Skipped copy as --dry-run is set (size 2.002Ki)
+2023/09/01 11:39:41 NOTICE: 
+Transferred:   	    2.002 KiB / 2.002 KiB, 100%, 0 B/s, ETA -
+Transferred:            1 / 1, 100%
+Elapsed time:         0.3s
+
+2023/09/01 11:39:41 INFO  : Executed: rclone copy --s3-no-check-bucket /Volumes/PLEXTOR/PhpstormProjects/pli888/gigadb-website/gigadb/app/tools/readme-generator/runtime/curators/readme_100020.txt wasabi:gigadb-datasets/dev/pub/10.5524/100001_101000/100020/ --config ../wasabi-migration/config/rclone.conf --dry-run --log-file /Volumes/PLEXTOR/PhpstormProjects/pli888/gigadb-website/gigadb/app/tools/readme-generator/logs/readme_100005_20230901_113924.log --log-level INFO --stats-log-level DEBUG >> /Volumes/PLEXTOR/PhpstormProjects/pli888/gigadb-website/gigadb/app/tools/readme-generator/logs/readme_100005_20230901_113924.log
+2023/09/01 11:39:41 INFO  : Successfully copied file to Wasabi for DOI: 100020
+```
+
+## Tests
+
+### Unit test
+
+The unit test checks custom-written `getAuthors` function in Dataset model class
+which returns the authors of a dataset based on many-to-many mapping between
+dataset and author tables via a junction `dataset_authors` table:
+```
+$ docker-compose run --rm tool ./vendor/bin/codecept run tests/unit
+```
+
+There's also a unit test to check the ReadmeGenerator component class:
+```
+$ docker-compose run --rm tool ./vendor/bin/codecept run --debug tests/unit/components/ReadmeGeneratorTest.php
+```
+
+### Functional test
+
+There is a functional test which checks the `actionCreate()` function in
+`ReadmeController`.
+```
+$ docker-compose run --rm tool ./vendor/bin/codecept run tests/functional
+
+# Run single test
+$ docker-compose run --rm tool ./vendor/bin/codecept run tests/functional/ReadmeCest.php
 ```
 
 ## Using readme generator tool on Bastion server
@@ -134,7 +282,18 @@ the ansible-rclone role for Ansible in your development environment:
 $ ansible-galaxy install -r ../../../infrastructure/requirements.yml
 ```
 
-Log into bastion server
+Running the bastion playbook will copy `createReadme.sh` script to the server:
+```
+$ env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories bastion_playbook.yml
+```
+
+If changes are made to `createReadme.sh`, this part of the bastion playbook will
+need to be executed again to copy the updated shell script to the server:
+```
+$ env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories bastion_playbook.yml --tags "readme_tool"
+```
+
+Instantiate and log into bastion server:
 ```
 # Get public IP address for bastion server
 $ terraform output
@@ -147,7 +306,16 @@ $ ssh -i ~/.ssh/your-private-key.pem centos@88.888.888.888
 
 Using docker command to access tool:
 ```
-$ docker run --rm -v /home/centos/readmeFiles:/app/readmeFiles registry.gitlab.com/$GITLAB_PROJECT/production_tool:staging /app/yii readme/create --doi 100142 --outdir /app/readmeFiles
+$ docker run --rm -v /home/centos/readmeFiles:/app/readmeFiles registry.gitlab.com/$GITLAB_PROJECT/production_tool:$GIGADB_ENV /app/yii readme/create --doi 100142 --outdir /app/readmeFiles
+```
+
+Check a readme file has been created:
+```
+$ head readmeFiles/readme_100142.txt 
+[DOI] 10.5524/100142
+
+[Title] Supporting scripts and data for "Investigation into the annotation of
+protocol sequencing steps in the Sequence Read Archive".
 ```
 
 Use shell script to run readme tool:
@@ -155,8 +323,11 @@ Use shell script to run readme tool:
 $ ./createReadme.sh --doi 100142 --outdir /app/readmeFiles
 ```
 
-In both cases, look in the readmeFiles directory for the readme file that has
-been created by the tool.
+This time, you can check the log of this create readme file command:
+```
+$ more logs/readme_100142_20230901_080216.log 
+2023/09/01 08:02:22 INFO  : Created readme file for DOI 100142 in /home/centos/runtime/curators/readme_100142.txt
+```
 
 The createReadme.sh script can also be used to copy the newly created readme 
 file into the Wasabi gigadb-datasets bucket. To test this in dry-run mode,
@@ -173,36 +344,24 @@ $ ./createReadme.sh --doi 100142 --outdir /app/readmeFiles --wasabi --apply
 ```
 
 You can confirm that the presence of the new readme file in the 100142 directory
-using the Wasabi web console.
+using the Wasabi web console by checking the gigadb-datasets/staging bucket.
 
-To copy the readme file to the live data directory:
+There is a batch mode for the script which can be used by providing the 
+`--batch` flag followed by a number to denote the number of datasets to be
+processed. For example, to process DOIs 100141, 100142, 100143:
+```
+$ ./createReadme.sh --doi 100141 --outdir /app/readmeFiles --wasabi --batch 3
+```
+
+You will be able to see in the latest log file in the logs directory that 3
+readme files have been created and copied into Wasabi in dry-run mode.
+
+To copy the readme file to the live data directory, use the `--use-live-data`
+and `--apply` flags:
 ```
 $ ./createReadme.sh --doi 100142 --outdir /app/readmeFiles --wasabi --use-live-data --apply
 ```
 
-## Tests
+Now check the directory for dataset 100142 in relevant location in
+gigadb-datasets/live bucket in Wasabi.
 
-### Unit test
-
-The unit test checks custom-written `getAuthors` function in Dataset model class 
-which returns the authors of a dataset based on many-to-many mapping between 
-dataset and author tables via a junction `dataset_authors` table:
-```
-$ docker-compose run --rm tool ./vendor/bin/codecept run tests/unit
-```
-
-There's also a unit test to check the ReadmeGenerator component class:
-```
-$ docker-compose run --rm tool ./vendor/bin/codecept run --debug tests/unit/components/ReadmeGeneratorTest.php
-```
-
-### Functional test
-
-There is a functional test which checks the `actionCreate()` function in 
-`ReadmeController`.
-```
-$ docker-compose run --rm tool ./vendor/bin/codecept run tests/functional
-
-# Run single test
-$ docker-compose run --rm tool ./vendor/bin/codecept run tests/functional/ReadmeCest.php
-```
