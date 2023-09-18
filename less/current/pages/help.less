@@ -5,6 +5,24 @@
   font-size: @font-size-base;
 }
 
+.help-search-result {
+  margin-bottom: 20px;
+  .help-search-result-item {
+    border-top: 1px solid @color-light-gray;
+    display: flex;
+    :is(dt,dd) {
+      padding: 8px;
+      color: @color-darker-gray;
+      line-height: 22px;
+      margin-bottom: 5px
+    }
+    dt {
+      font-weight: 500;
+      flex: 0 0 50px;
+    }
+  }
+}
+
 .help-description-list {
   .help-definition-container {
     color: @color-warm-black;

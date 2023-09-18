@@ -35,7 +35,32 @@ $this->pageTitle = 'GigaDB - Help';
                     <hr style="border-top-style: dashed;">
                     <h2 class="h4" style="color: #099242; margin-bottom: 10px;">Search result</h2>
                     <p>The search results are grouped by <span class="text-italic">GigaDB</span> Datasets (G), Samples (S) and Files (F).</p>
-                    <table class="table">
+
+                    <dl class="help-search-result">
+                        <div class="help-search-result-item">
+                            <dt>
+                                <div class="text-icon text-icon-sm text-icon-blue" aria-hidden="true">G</div>
+                                <span class="sr-only">Datasets</span>
+                            </dt>
+                            <dd>For each dataset result, author names and DOI are displayed. Hovering over dataset name provides the description of dataset. Dataset and sample names are linked to the specific DOI page for those data, as well as file links are provided to download.</dd>
+                        </div>
+                        <div class="help-search-result-item">
+                            <dt>
+                                <div class="text-icon text-icon-sm text-icon-green" aria-hidden="true">S</div>
+                                <span class="sr-only">Samples</span>
+                            </dt>
+                            <dd>For each sample result, the sample name, species name and species ID are displayed with links to the NCBI taxonomy page for the species and to the <span class="text-italic">GigaDB</span> dataset page.</dd>
+                        </div>
+                        <div class="help-search-result-item">
+                            <dt>
+                                <div class="text-icon text-icon-sm text-icon-yellow" aria-hidden="true">F</div>
+                                <span class="sr-only">Files</span>
+                            </dt>
+                            <dd>For each file result, the file name, file type and file size are displayed with a direct link to the FTP server location of that file.</dd>
+                        </div>
+                    </dl>
+
+                    <!-- <table class="table">
                         <tbody>
                             <tr>
                                 <td>
@@ -65,7 +90,7 @@ $this->pageTitle = 'GigaDB - Help';
                                 </td>
                             </tr>
                         </tbody>
-                    </table>
+                    </table> -->
                     <p>Only those objects that have direct matches are displayed in the search results, i.e. the only Files to be displayed in the search results will be those with matches to the search term, all other files within the same dataset will NOT be displayed.</p>
                     <p>For example, searching for the term "Potato" will return the dataset with the title "Genomic data from the potato" which contains 17 files, however, the search results table will only display 3 of those 17 files because only 3 contain the search term “potato”. To find all data associated with a dataset you must follow the link to the dataset page.</p>
                     <hr class="dashed">
