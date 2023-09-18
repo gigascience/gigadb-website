@@ -60,37 +60,6 @@ $this->pageTitle = 'GigaDB - Help';
                         </div>
                     </dl>
 
-                    <!-- <table class="table">
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <div class="text-icon text-icon-sm text-icon-blue" aria-hidden="true">G</div>
-                                    <span class="sr-only">Datasets</span>
-                                </td>
-                                <td>
-                                    <p>For each dataset result, author names and DOI are displayed. Hovering over dataset name provides the description of dataset. Dataset and sample names are linked to the specific DOI page for those data, as well as file links are provided to download.</p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="text-icon text-icon-sm text-icon-green" aria-hidden="true">S</div>
-                                    <span class="sr-only">Samples</span>
-                                </td>
-                                <td>
-                                    <p>For each sample result, the sample name, species name and species ID are displayed with links to the NCBI taxonomy page for the species and to the <span class="text-italic">GigaDB</span> dataset page.</p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="text-icon text-icon-sm text-icon-yellow" aria-hidden="true">F</div>
-                                    <span class="sr-only">Files</span>
-                                </td>
-                                <td>
-                                    <p>For each file result, the file name, file type and file size are displayed with a direct link to the FTP server location of that file.</p>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table> -->
                     <p>Only those objects that have direct matches are displayed in the search results, i.e. the only Files to be displayed in the search results will be those with matches to the search term, all other files within the same dataset will NOT be displayed.</p>
                     <p>For example, searching for the term "Potato" will return the dataset with the title "Genomic data from the potato" which contains 17 files, however, the search results table will only display 3 of those 17 files because only 3 contain the search term “potato”. To find all data associated with a dataset you must follow the link to the dataset page.</p>
                     <hr class="dashed">
