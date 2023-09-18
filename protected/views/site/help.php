@@ -60,6 +60,37 @@ $this->pageTitle = 'GigaDB - Help';
                         </div>
                     </dl>
 
+                    <!-- <table class="table">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="text-icon text-icon-sm text-icon-blue" aria-hidden="true">G</div>
+                                    <span class="sr-only">Datasets</span>
+                                </td>
+                                <td>
+                                    <p>For each dataset result, author names and DOI are displayed. Hovering over dataset name provides the description of dataset. Dataset and sample names are linked to the specific DOI page for those data, as well as file links are provided to download.</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="text-icon text-icon-sm text-icon-green" aria-hidden="true">S</div>
+                                    <span class="sr-only">Samples</span>
+                                </td>
+                                <td>
+                                    <p>For each sample result, the sample name, species name and species ID are displayed with links to the NCBI taxonomy page for the species and to the <span class="text-italic">GigaDB</span> dataset page.</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="text-icon text-icon-sm text-icon-yellow" aria-hidden="true">F</div>
+                                    <span class="sr-only">Files</span>
+                                </td>
+                                <td>
+                                    <p>For each file result, the file name, file type and file size are displayed with a direct link to the FTP server location of that file.</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table> -->
                     <p>Only those objects that have direct matches are displayed in the search results, i.e. the only Files to be displayed in the search results will be those with matches to the search term, all other files within the same dataset will NOT be displayed.</p>
                     <p>For example, searching for the term "Potato" will return the dataset with the title "Genomic data from the potato" which contains 17 files, however, the search results table will only display 3 of those 17 files because only 3 contain the search term “potato”. To find all data associated with a dataset you must follow the link to the dataset page.</p>
                     <hr class="dashed">
@@ -726,106 +757,155 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242&lt;</pre>
                             <dt>not collected:</dt>
                             <dd>information was not collected and will therefore never be available</dd>
                         </div>
-                        <div role="tabpanel" class="tab-pane" id="interface">
-                            <h4 style="color: #099242; margin-bottom: 10px;">Availability</h4>
-                            <p>The current API version is available on our main production database. This version will be periodically updated with new additional functionality and we will whenever possible maintain backwards compatibility. Occasionally this may not be possible and for this reason we recommend regularly checking and updating your usage of our API. </p>
-                            <p>The basic functionality of the API is to retrieve dataset metadata held in <em>GigaDB</em>. The actual data files will still need to be pulled by FTP, but you can gather the exact FTP locations from the metadata using the API, then use that to pull only the files you actually need/want.</p>
-                            <p>Search function is based on the web-search function and will therefore give the same results.</p>
-                            <hr style="border-top-style: dashed;">
-                            <h4 style="color: #099242; margin-bottom: 10px;">Comments and Bug reporting</h4>
-                            <p>The GigaScience github issue for the API works is here:</p>
-                            <p><a href="https://github.com/gigascience/gigadb-website/issues/27" target="_blank">https://github.com/gigascience/gigadb-website/issues/27</a></p>
-                            <p>Please add feedback / comments/ questions to that issue.</p>
-                            <hr style="border-top-style: dashed;">
-                            <h4 style="color: #099242; margin-bottom: 10px;">Summary</h4>
-                            <p>It is currently possible to search "all" fields, or to specify one of a select few fields to search.</p>
-                            <p>It is possible to have results return all metadata for each dataset with "hits" to the search term, or to specify a particular portion of the metadata, these portions are currently "dataset", "sample" and "file", which is in alignment with the same functionality on the web-search tool. The default is to return results as <a href="https://sites.google.com/a/gigasciencejournal.com/gigascience/public-pages/xml-schema">GigaDB v3 XML</a></p>
-                            <p>It is planned that we will have the option to specify the format to be GigaDBv3-JSON or ISA2.0-JSON in the future, but that has not been implemented yet.</p>
-                            <hr style="border-top-style: dashed;">
-                            <h4 style="color: #099242; margin-bottom: 10px;">Terminology</h4>
-                            <p>To specify exact fields to return data from, use terms; dataset?=, sample?=, file?=, (or experiment?=*)</p>
-                            <p>* - experiment will be implemented in the future</p>
-                            <p>To search for datasets without the ID's, use the term search?keyword=</p>
-                            <p>To search by specific attributes use search?&lt;attribute_name&gt;=</p>
-                            <p>Available <strong>attribute_name</strong> to search include:</p>
-                            <p><strong>taxno</strong> = Taxonomic ID (NCBI)</p>
-                            <p><strong>taxname</strong> = species name (nb must exact spelling, no synonyms searched)</p>
-                            <p><strong>author</strong> = restricts search to the author table</p>
-                            <p><strong>datasettype</strong> = restricts search to the types of datasets, e.g. metagenomic, genomic, transcriptomic etc..</p>
-                            <p><strong>manuscript</strong> = restricts search to the manuscript ID associated with <em>GigaDB</em> dataset(s) e.g. search?manuscript=10.1186/2047-217X-3-21</p>
-                            <p><strong>project</strong> = restricts search to the project name, e.g. Genome 10K</p>
-                            <p>eg..../search?taxno=9606</p>
-                            <p>To specify results to be returned are ONLY a particular level of data, add the phrase <strong>&amp;results=dataset</strong> ,or file or sample: </p>e.g.
-                            <p><a href="http://gigadb.org/api/search?project=Genome%2010K&amp;result=sample" target="_blank">http://gigadb.org/api/search?project=Genome%2010K&amp;result=sample</a></p>
-                            <p>NB - the search still looks everywhere, but the results returned are only those samples that are in datasets that are found by the search.</p>
-                            <p><strong>Default results are "dataset" only.</strong></p>
-                            <hr style="border-top-style: dashed;">
-                            <h4 style="color: #099242; margin-bottom: 10px;">Examples</h4>
-                            <p>1. retrieve known datasets by doi</p>
-                            <p><a href="http://gigadb.org/api/dataset?doi=100051" target="_blank">http://gigadb.org/api/dataset?doi=100051</a></p>
-                            <p>2. retrieve samples from a known DOI</p>
-                            <p><a href="http://gigadb.org/api/sample?doi=100051" target="_blank">http://gigadb.org/api/sample?doi=100051</a></p>
-                            <p>3. retrieve file information from a known DOI</p>
-                            <p><a href="http://gigadb.org/api/file?doi=100051" target="_blank">http://gigadb.org/api/file?doi=100051</a></p>
-                            <p>4. Search all <em>GigaDB</em> by keyword, return only the top level dataset metadata</p>
-                            <p><a href="http://gigadb.org/api/search?keyword=chimp&amp;result=dataset" target="_blank">http://gigadb.org/api/search?keyword=chimp&amp;result=dataset</a></p>
-                            <p>5.Search all <em>GigaDB</em> by keyword, return only the sample level metadata</p>
-                            <p><a href="http://gigadb.org/api/search?keyword=chimp&amp;result=sample" target="_blank">http://gigadb.org/api/search?keyword=chimp&amp;result=sample</a></p>
-                            <p>6.Search all <em>GigaDB</em> by keyword, return only the file level metadata</p>
-                            <p><a href="http://gigadb.org/api/search?keyword=chimp&amp;result=file" target="_blank">http://gigadb.org/api/search?keyword=chimp&amp;result=file</a></p>
-                            <p>7. refine search to just the title of the dataset</p>
-                            <p><a href="http://gigadb.org/api/search?keyword=title:human&amp;result=dataset" target="_blank">http://gigadb.org/api/search?keyword=title:human&amp;result=dataset</a></p>
-                            <p>8. refine search to the descriptions of datasets</p>
-                            <p><a href="http://gigadb.org/api/search?keyword=description:human&amp;result=dataset" target="_blank">http://gigadb.org/api/search?keyword=description:human&amp;result=dataset</a></p>
-                            <p>9.refine search to NCBI taxonomic ID</p>
-                            <p><a href="http://gigadb.org/api/search?taxno=9606&amp;result=dataset" target="_blank">http://gigadb.org/api/search?taxno=9606&amp;result=dataset</a></p>
-                            <p>10. refine search to taxonomic names</p>
-                            <p><a href="http://gigadb.org/api/search?taxname=Homo%20sapiens&amp;result=dataset" target="_blank">http://gigadb.org/api/search?taxname=Homo%20sapiens&amp;result=dataset</a></p>
-                            <p>11. refine search to Authors</p>
-                            <p><a href="http://gigadb.org/api/search?author=Wang%20Jun" target="_blank">http://gigadb.org/api/search?author=Wang%20Jun</a></p>
-                            <p>12. refine search to linked manuscript IDs</p>
-                            <p><a href="http://gigadb.org/api/search?manuscript=10.1371/journal.pone.0005795" target="_blank">http://gigadb.org/api/search?manuscript=10.1371/journal.pone.0005795</a></p>
-                            <p>13. refine search to dataset types</p>
-                            <p><a href="http://gigadb.org/api/search?datasettype=Genomic" target="_blank">http://gigadb.org/api/search?datasettype=Genomic</a></p>
-                            <p>14. refine search to project names</p>
-                            <p><a href="http://gigadb.org/api/search?project=Genome%2010K&amp;result=sample" target="_blank">http://gigadb.org/api/search?project=Genome%2010K&amp;result=sample</a></p>
-                            <p>15. list all published dataset DOIs (listed in publication date order)</p>
-                            <p><a href="http://gigadb.org/api/list" target="_blank">http://gigadb.org/api/list</a></p>
-                            <p>16. dump the database</p>
-                            <p><a href="http://gigadb.org/api/dump" target="_blank">http://gigadb.org/api/dump</a></p>
-                            <p>17. list all dataset DOI's published in a date range (results ordered by publication date)</p>
-                            <p><a href="http://gigadb.org/api/list?start_date=2018-01-01&end_date=2018-01-30" target="_blank">http://gigadb.org/api/list?start_date=2018-01-01&end_date=2018-01-30</a></p>
-                            <hr style="border-top-style: dashed;">
-                            <h4 style="color: #099242; margin-bottom: 10px;">Command line usage</h4>
-                            <p>You can also use the curl commands on the command line to retrieve metadata :</p>
-                            <p>eg.</p>
-                            <p>curl <a href="http://gigadb.org/api/dataset?doi=100051" target="_blank">http://gigadb.org/api/dataset?doi=100051</a></p>
-                            <p>If you want to check whether a search will work you can use the -I flag:</p>
-                            <p>curl -I <a href="http://gigadb.org/api/dataset?doi=100051" target="_blank">http://gigadb.org/api/dataset?doi=100051</a></p>
-                            <p>HTTP/1.1 200 OK</p>
-                            <p>or </p>
-                            <p>HTTP/1.1 404 Not Found / HTTP/1.1 500 Internal server error</p>
-                        </div>
+                    </dl>
+
                 </div>
-                </section>
+                <div role="tabpanel" class="tab-pane" id="interface" aria-labelledby="liapi">
+                    <h2 class="h4" style="color: #099242; margin-bottom: 10px;">Availability</h2>
+                    <p>The current API version is available on our main production database. This version will be periodically updated with new additional functionality and we will whenever possible maintain backwards compatibility. Occasionally this may not be possible and for this reason we recommend regularly checking and updating your usage of our API. </p>
+                    <p>The basic functionality of the API is to retrieve dataset metadata held in <span class="text-italic">GigaDB</span>. The actual data files will still need to be pulled by FTP, but you can gather the exact FTP locations from the metadata using the API, then use that to pull only the files you actually need/want.</p>
+                    <p>Search function is based on the web-search function and will therefore give the same results.</p>
+                    <hr style="border-top-style: dashed;">
+                    <h2 class="h4" style="color: #099242; margin-bottom: 10px;">Comments and Bug reporting</h2>
+                    <p>The GigaScience github issue for the API works is here:</p>
+                    <p><a href="https://github.com/gigascience/gigadb-website/issues/27" target="_blank">https://github.com/gigascience/gigadb-website/issues/27</a></p>
+                    <p>Please add feedback / comments/ questions to that issue.</p>
+                    <hr style="border-top-style: dashed;">
+                    <h2 class="h4" style="color: #099242; margin-bottom: 10px;">Summary</h2>
+                    <p>It is currently possible to search "all" fields, or to specify one of a select few fields to search.</p>
+                    <p>It is possible to have results return all metadata for each dataset with "hits" to the search term, or to specify a particular portion of the metadata, these portions are currently "dataset", "sample" and "file", which is in alignment with the same functionality on the web-search tool. The default is to return results as <a href="https://sites.google.com/a/gigasciencejournal.com/gigascience/public-pages/xml-schema">GigaDB v3 XML</a></p>
+                    <p>It is planned that we will have the option to specify the format to be GigaDBv3-JSON or ISA2.0-JSON in the future, but that has not been implemented yet.</p>
+
+                    <hr style="border-top-style: dashed;">
+
+
+                    <h2 class="h4" style="color: #099242; margin-bottom: 10px;">Terminology</h2>
+                    <p>To specify exact fields to return data from, use terms; <span>dataset?=</span>, <span>sample?=</span>, <span>file?=</span>, (or <span>experiment?=</span><span aria-hidden="true">*</span>)</p>
+                    <p><span aria-hidden="true">* - </span><em>experiment will be implemented in the future</em></p>
+                    <p>To search for datasets without the ID's, use the term <span>search?keyword=</span></p>
+                    <p>To search by specific attributes use <span>search?&lt;attribute_name&gt;=</span></p>
+                    <p>Available <strong>attribute_name</strong> to search include:</p>
+                    <ul class="help-terminology-list">
+                        <li><strong>taxno</strong> = Taxonomic ID (NCBI)</li>
+                        <li><strong>taxname</strong> = species name (nb must exact spelling, no synonyms searched)</li>
+                        <li><strong>author</strong> = restricts search to the author table</li>
+                        <li><strong>datasettype</strong> = restricts search to the types of datasets, e.g. metagenomic, genomic, transcriptomic etc.</li>
+                        <li><strong>manuscript</strong> = restricts search to the manuscript ID associated with <span class="text-italic">GigaDB</span> dataset(s) e.g. <span>search?manuscript=10.1186/2047-217X-3-21</span></li>
+                        <li><strong>project</strong> = restricts search to the project name, e.g. Genome 10K</li>
+                    </ul>
+                    <p>eg. <span>..../search?taxno=9606</span></p>
+                    <p>To specify results to be returned are ONLY a particular level of data, add the phrase <strong><span>&amp;results=dataset</span></strong>, or file or sample:<br />e.g. <a href="http://gigadb.org/api/search?project=Genome%2010K&amp;result=sample" target="_blank">http://gigadb.org/api/search?project=Genome%2010K&amp;result=sample</a></p>
+                    <p>NB - the search still looks everywhere, but the results returned are only those samples that are in datasets that are found by the search.</p>
+                    <p><strong>Default results are "dataset" only.</strong></p>
+
+                    <hr style="border-top-style: dashed;">
+
+                    <h2 class="h4" style="color: #099242; margin-bottom: 10px;">Examples</h2>
+
+                    <ol class="help-examples-list">
+                        <li>
+                            Retrieve known datasets by doi<br />
+                            <a href="http://gigadb.org/api/dataset?doi=100051" target="_blank">http://gigadb.org/api/dataset?doi=100051</a>
+                        </li>
+                        <li>
+                            Retrieve samples from a known DOI<br />
+                            <a href="http://gigadb.org/api/sample?doi=100051" target="_blank">http://gigadb.org/api/sample?doi=100051</a>
+                        </li>
+                        <li>
+                            Retrieve file information from a known DOI<br />
+                            <a href="http://gigadb.org/api/file?doi=100051" target="_blank">http://gigadb.org/api/file?doi=100051</a>
+                        </li>
+                        <li>
+                            Search all <span class="text-italic">GigaDB</span> by keyword, return only the top level dataset
+                            metadata<br />
+                            <a href="http://gigadb.org/api/search?keyword=chimp&amp;result=dataset" target="_blank">http://gigadb.org/api/search?keyword=chimp&amp;result=dataset</a>
+                        </li>
+                        <li>
+                            Search all <span class="text-italic">GigaDB</span> by keyword, return only the sample level
+                            metadata<br />
+                            <a href="http://gigadb.org/api/search?keyword=chimp&amp;result=sample" target="_blank">http://gigadb.org/api/search?keyword=chimp&amp;result=sample</a>
+                        </li>
+                        <li>
+                            Search all <span class="text-italic">GigaDB</span> by keyword, return only the file level
+                            metadata<br />
+                            <a href="http://gigadb.org/api/search?keyword=chimp&amp;result=file" target="_blank">http://gigadb.org/api/search?keyword=chimp&amp;result=file</a>
+                        </li>
+                        <li>
+                            Refine search to just the title of the dataset<br />
+                            <a href="http://gigadb.org/api/search?keyword=title:human&amp;result=dataset" target="_blank">http://gigadb.org/api/search?keyword=title:human&amp;result=dataset</a>
+                        </li>
+                        <li>
+                            Refine search to the descriptions of datasets<br />
+                            <a href="http://gigadb.org/api/search?keyword=description:human&amp;result=dataset" target="_blank">http://gigadb.org/api/search?keyword=description:human&amp;result=dataset</a>
+                        </li>
+                        <li>
+                            Refine search to NCBI taxonomic ID<br />
+                            <a href="http://gigadb.org/api/search?taxno=9606&amp;result=dataset" target="_blank">http://gigadb.org/api/search?taxno=9606&amp;result=dataset</a>
+                        </li>
+                        <li>
+                            Refine search to taxonomic names<br />
+                            <a href="http://gigadb.org/api/search?taxname=Homo%20sapiens&amp;result=dataset" target="_blank">http://gigadb.org/api/search?taxname=Homo%20sapiens&amp;result=dataset</a>
+                        </li>
+                        <li>
+                            Refine search to Authors<br />
+                            <a href="http://gigadb.org/api/search?author=Wang%20Jun" target="_blank">http://gigadb.org/api/search?author=Wang%20Jun</a>
+                        </li>
+                        <li>
+                            Refine search to linked manuscript IDs<br />
+                            <a href="http://gigadb.org/api/search?manuscript=10.1371/journal.pone.0005795" target="_blank">http://gigadb.org/api/search?manuscript=10.1371/journal.pone.0005795</a>
+                        </li>
+                        <li>
+                            Refine search to dataset types<br />
+                            <a href="http://gigadb.org/api/search?datasettype=Genomic" target="_blank">http://gigadb.org/api/search?datasettype=Genomic</a>
+                        </li>
+                        <li>
+                            Refine search to project names<br />
+                            <a href="http://gigadb.org/api/search?project=Genome%2010K&amp;result=sample" target="_blank">http://gigadb.org/api/search?project=Genome%2010K&amp;result=sample</a>
+                        </li>
+                        <li>
+                            List all published dataset DOIs (listed in publication date order)<br />
+                            <a href="http://gigadb.org/api/list" target="_blank">http://gigadb.org/api/list</a>
+                        </li>
+                        <li>
+                            Dump the database<br />
+                            <a href="http://gigadb.org/api/dump" target="_blank">http://gigadb.org/api/dump</a>
+                        </li>
+                        <li>
+                            List all dataset DOI's published in a date range (results ordered by
+                            publication date)<br />
+                            <a href="http://gigadb.org/api/list?start_date=2018-01-01&amp;end_date=2018-01-30" target="_blank">http://gigadb.org/api/list?start_date=2018-01-01&amp;end_date=2018-01-30</a>
+                        </li>
+                    </ol>
+
+                    <hr style="border-top-style: dashed;">
+                    <h2 class="h4">Command line usage</h2>
+                    <p>You can also use the curl commands on the command line to retrieve metadata, e.g.:</p>
+                    <pre><code>curl <a href="http://gigadb.org/api/dataset?doi=100051" target="_blank" rel="noopener noreferrer">http://gigadb.org/api/dataset?doi=100051</a></code></pre>
+                    <p>If you want to check whether a search will work you can use the <code>-I</code> flag:</p>
+                    <pre><code>curl -I <a href="http://gigadb.org/api/dataset?doi=100051" target="_blank" rel="noopener noreferrer">http://gigadb.org/api/dataset?doi=100051</a>
+# HTTP/1.1 200 OK
+# or
+# HTTP/1.1 404 Not Found / HTTP/1.1 500 Internal server error</code></pre>
+                </div>
             </div>
+            </section>
         </div>
-        <script type="text/javascript">
-            $(document).ready(function() {
-                if (location.hash != '' && location.hash != null) {
-                    $("a[href='" + location.hash + "']").click();
-                }
-            });
-
-            function DatasetFunction() {
-                $('ul li').removeClass('active');
-                $('#livocabulary').addClass('active');
-                $('#search').removeClass('active');
-                $('#vocabulary').addClass('active');
-                var e = document.getElementById('datasettypes');
-                if (!!e && e.scrollIntoView) {
-                    e.scrollIntoView();
-                }
-
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            if (location.hash != '' && location.hash != null) {
+                $("a[href='" + location.hash + "']").click();
             }
-        </script>
+        });
+
+        function DatasetFunction() {
+            $('ul li').removeClass('active');
+            $('#livocabulary').addClass('active');
+            $('#search').removeClass('active');
+            $('#vocabulary').addClass('active');
+            var e = document.getElementById('datasettypes');
+            if (!!e && e.scrollIntoView) {
+                e.scrollIntoView();
+            }
+        }
+    </script>
