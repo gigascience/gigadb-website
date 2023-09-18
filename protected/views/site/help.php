@@ -806,28 +806,26 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242&lt;</pre>
                             <p>or </p>
                             <p>HTTP/1.1 404 Not Found / HTTP/1.1 500 Internal server error</p>
                         </div>
-                    </div>
+                </div>
                 </section>
             </div>
         </div>
-<script type="text/javascript">
-$(document).ready(function () {
-    if(location.hash != '' && location.hash != null){
-        $("a[href='"+location.hash+"']").click();
-    }
-});
+        <script type="text/javascript">
+            $(document).ready(function() {
+                if (location.hash != '' && location.hash != null) {
+                    $("a[href='" + location.hash + "']").click();
+                }
+            });
 
-function DatasetFunction(){
-  $('ul li').removeClass('active');
-  $('#livocabulary').addClass('active');
-  $('#search').removeClass('active');
-  $('#vocabulary').addClass('active');
-   var e = document.getElementById('datasettypes');
-   if (!!e && e.scrollIntoView) {
-       e.scrollIntoView();
-   }
+            function DatasetFunction() {
+                $('ul li').removeClass('active');
+                $('#livocabulary').addClass('active');
+                $('#search').removeClass('active');
+                $('#vocabulary').addClass('active');
+                var e = document.getElementById('datasettypes');
+                if (!!e && e.scrollIntoView) {
+                    e.scrollIntoView();
+                }
 
-  }
-
-</script>
-
+            }
+        </script>
