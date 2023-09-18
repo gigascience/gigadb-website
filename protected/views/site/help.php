@@ -52,7 +52,7 @@ $this->pageTitle = 'GigaDB - Help';
                                     <span class="sr-only">Samples</span>
                                 </td>
                                 <td>
-                                    <p>For each sample result, the sample name, species name and species ID are displayed with links to the NCBI taxonomy page for the species and to the <em>GigaDB</em> dataset page.</p>
+                                    <p>For each sample result, the sample name, species name and species ID are displayed with links to the NCBI taxonomy page for the species and to the <span class="text-italic">GigaDB</span> dataset page.</p>
                                 </td>
                             </tr>
                             <tr>
@@ -738,7 +738,7 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242&lt;</pre>
                 <div role="tabpanel" class="tab-pane" id="interface" aria-labelledby="liapi">
                     <h2 class="h4" style="color: #099242; margin-bottom: 10px;">Availability</h2>
                     <p>The current API version is available on our main production database. This version will be periodically updated with new additional functionality and we will whenever possible maintain backwards compatibility. Occasionally this may not be possible and for this reason we recommend regularly checking and updating your usage of our API. </p>
-                    <p>The basic functionality of the API is to retrieve dataset metadata held in <em>GigaDB</em>. The actual data files will still need to be pulled by FTP, but you can gather the exact FTP locations from the metadata using the API, then use that to pull only the files you actually need/want.</p>
+                    <p>The basic functionality of the API is to retrieve dataset metadata held in <span class="text-italic">GigaDB</span>. The actual data files will still need to be pulled by FTP, but you can gather the exact FTP locations from the metadata using the API, then use that to pull only the files you actually need/want.</p>
                     <p>Search function is based on the web-search function and will therefore give the same results.</p>
                     <hr style="border-top-style: dashed;">
                     <h2 class="h4" style="color: #099242; margin-bottom: 10px;">Comments and Bug reporting</h2>
@@ -765,7 +765,7 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242&lt;</pre>
                         <li><strong>taxname</strong> = species name (nb must exact spelling, no synonyms searched)</li>
                         <li><strong>author</strong> = restricts search to the author table</li>
                         <li><strong>datasettype</strong> = restricts search to the types of datasets, e.g. metagenomic, genomic, transcriptomic etc.</li>
-                        <li><strong>manuscript</strong> = restricts search to the manuscript ID associated with <em>GigaDB</em> dataset(s) e.g. <span>search?manuscript=10.1186/2047-217X-3-21</span></li>
+                        <li><strong>manuscript</strong> = restricts search to the manuscript ID associated with <span class="text-italic">GigaDB</span> dataset(s) e.g. <span>search?manuscript=10.1186/2047-217X-3-21</span></li>
                         <li><strong>project</strong> = restricts search to the project name, e.g. Genome 10K</li>
                     </ul>
                     <p>eg. <span>..../search?taxno=9606</span></p>
