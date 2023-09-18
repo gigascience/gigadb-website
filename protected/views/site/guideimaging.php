@@ -38,7 +38,7 @@ th, td {
                                     <li><a href="/site/guidegenomic">Genomic Dataset Checklist</a></li>
                                     <li><a href="/site/guideimaging">Imaging Dataset Checklist</a></li>
                                     <li><a href="/site/guidemetabolomic">Metabolomic and Lipidomic Dataset Checklist</a></li>
-                                    <li><a href="/site/guideepigenomic">Epigenomic Dataset Checklist</a></li> 
+                                    <li><a href="/site/guideepigenomic">Epigenomic Dataset Checklist</a></li>
                                     <li><a href="/site/guidemetagenomic">Metagenomic Dataset Checklist</a></li>
                                     <li><a href="/site/guidesoftware">Software Dataset Checklist</a></li>
                                 </ul>
@@ -48,11 +48,11 @@ th, td {
         <section>
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane active" id="general">
-                        <h4 style="color: #099242; margin-bottom: 10px;">Imaging Dataset Checklist </h4>
+                        <h4 class="page-subtitle">Imaging Dataset Checklist </h4>
                         <div class="subsection">
                             <p>All clinical imaging data must be fully anonymised including removal of any identifiable <a target="_blank" href="https://www.dicomlibrary.com/dicom/">DICOM</a> metadata from the image library files (there are several free tools designed to do this).
                             </p>
-                            <p>For imaging datasets we would expect to see many of the files listed in the table below, please note this list is not comprehensive and curators/reviewers may ask for additional/different files depending on the specific content of the manuscript.</p>                           
+                            <p>For imaging datasets we would expect to see many of the files listed in the table below, please note this list is not comprehensive and curators/reviewers may ask for additional/different files depending on the specific content of the manuscript.</p>
                             <div id='table_imaging_format' class="scrollbar">
                                 <table border="1" style="text-align: center;">
                                     <tr>
@@ -564,7 +564,7 @@ th, td {
                             <br>
                             <p>* - Requirements are listed as R= Recommended, O= Optional. Note ^ denotes absolutely mandatory fields.</p>
                         </div>
-                    </div> 
+                    </div>
                 </div>
         </section>
 
@@ -578,11 +578,11 @@ $(document).ready(function () {
     if(location.hash != null && location.hash != ""){
         $('ul li').removeClass('active');
         $('div'+ '.tab-pane').removeClass('active');
-        var variableli = location.hash; 
+        var variableli = location.hash;
         $(location.hash).addClass('active');
         $(variableli.replace('#','#li')).addClass('active');
     }
-    
+
 });
 
 </script>
