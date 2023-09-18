@@ -853,15 +853,14 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242&lt;</pre>
                     </ol>
 
                     <hr style="border-top-style: dashed;">
-                    <h2 class="h4" style="color: #099242; margin-bottom: 10px;">Command line usage</h2>
-                    <p>You can also use the curl commands on the command line to retrieve metadata :</p>
-                    <p>eg.</p>
-                    <p>curl <a href="http://gigadb.org/api/dataset?doi=100051" target="_blank">http://gigadb.org/api/dataset?doi=100051</a></p>
-                    <p>If you want to check whether a search will work you can use the -I flag:</p>
-                    <p>curl -I <a href="http://gigadb.org/api/dataset?doi=100051" target="_blank">http://gigadb.org/api/dataset?doi=100051</a></p>
-                    <p>HTTP/1.1 200 OK</p>
-                    <p>or </p>
-                    <p>HTTP/1.1 404 Not Found / HTTP/1.1 500 Internal server error</p>
+                    <h2 class="h4">Command line usage</h2>
+                    <p>You can also use the curl commands on the command line to retrieve metadata, e.g.:</p>
+                    <pre><code>curl <a href="http://gigadb.org/api/dataset?doi=100051" target="_blank" rel="noopener noreferrer">http://gigadb.org/api/dataset?doi=100051</a></code></pre>
+                    <p>If you want to check whether a search will work you can use the <code>-I</code> flag:</p>
+                    <pre><code>curl -I <a href="http://gigadb.org/api/dataset?doi=100051" target="_blank" rel="noopener noreferrer">http://gigadb.org/api/dataset?doi=100051</a>
+# HTTP/1.1 200 OK
+# or
+# HTTP/1.1 404 Not Found / HTTP/1.1 500 Internal server error</code></pre>
                 </div>
             </div>
             </section>
