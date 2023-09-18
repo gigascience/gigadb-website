@@ -11,7 +11,7 @@ $this->pageTitle = 'GigaDB - Help';
                     <li><a href="about">About</a></li>
                     <li class="active">Help</li>
                 </ol>
-                <h1 class="h4">Help</h1>
+                <h1 class="page-subtitle">Help</h1>
             </div>
         </section>
         <div class="subsection">
@@ -29,11 +29,11 @@ $this->pageTitle = 'GigaDB - Help';
             </ul>
             <div class="tab-content">
                 <div role="tabpanel" class="tab-pane active" id="search" aria-labelledby="lisearch">
-                    <h2 class="h4" style="color: #099242; margin-bottom: 10px;">Search operation</h2>
+                    <h2 class="page-subtitle">Search operation</h2>
                     <p>To search across all Dataset, Sample and File records in <span class="text-italic">GigaDB</span>, simply enter a search term in the search bar found at the top of all <span class="text-italic">GigaDB</span> pages.</p>
                     <p>The search is case insensitive which means both uppercase and lowercase keywords will have the same result.</p>
                     <hr style="border-top-style: dashed;">
-                    <h2 class="h4" style="color: #099242; margin-bottom: 10px;">Search result</h2>
+                    <h2 class="page-subtitle">Search result</h2>
                     <p>The search results are grouped by <span class="text-italic">GigaDB</span> Datasets (G), Samples (S) and Files (F).</p>
 
                     <dl class="help-search-result">
@@ -63,7 +63,7 @@ $this->pageTitle = 'GigaDB - Help';
                     <p>Only those objects that have direct matches are displayed in the search results, i.e. the only Files to be displayed in the search results will be those with matches to the search term, all other files within the same dataset will NOT be displayed.</p>
                     <p>For example, searching for the term "Potato" will return the dataset with the title "Genomic data from the potato" which contains 17 files, however, the search results table will only display 3 of those 17 files because only 3 contain the search term “potato”. To find all data associated with a dataset you must follow the link to the dataset page.</p>
                     <hr class="dashed">
-                    <h2 class="h4" style="color: #099242; margin-bottom: 10px;">Filtering result</h2>
+                    <h2 class="page-subtitle">Filtering result</h2>
                     <p style="margin-bottom: 20px;">On the left of the search results you have the option to further refine the results by using the filters. By default all filters are disabled, allowing you to see all search results for your keyword. If you want to hide some results based on some criteria, choose the filter for your criteria, and select the options that match what you want to see.</p>
                     <h3 class="tabpanel-subtitle">TFilter options for Datasets:</h3>
                     <ol>
@@ -112,7 +112,7 @@ $this->pageTitle = 'GigaDB - Help';
                     <p>If you have any questions, please contact us at <a href="mailto:database@gigasciencejournal.com" target="_blank">database@gigasciencejournal.com</a>.</p>
                 </div>
                 <div role="tabpanel" class="tab-pane" id="vocabulary" aria-labelledby="livocabulary">
-                    <h2 class="h4" id="datasettypes" style="color: #099242; margin-bottom: 10px;">Dataset types</h2>
+                    <h2 class="page-subtitle" id="datasettypes">Dataset types</h2>
                     <dl class="help-description-list">
                         <div class="help-definition-container">
                             <dt>Genomic</dt><span aria-hidden="true"> - </span>
@@ -200,7 +200,7 @@ $this->pageTitle = 'GigaDB - Help';
                         </div>
                     </dl>
                     <p>Additional dataset types can be added, upon review, as new submissions are received.</p>
-                    <h2 class="h4" id="filetypes" style="color: #099242; margin-bottom: 10px;">File types</h2>
+                    <h2 class="page-subtitle" id="filetypes">File types</h2>
                     <p>File types and examples of associated file extensions:</p>
                     <dl class="help-description-list">
                         <div class="help-definition-container">
@@ -270,7 +270,7 @@ $this->pageTitle = 'GigaDB - Help';
                     </dl>
                     <p>Additional file types can be added, upon review, as new submissions are received.</p>
                     <hr style="border-top-style: dashed;">
-                    <h2 class="h4" id="fileformats" style="color: #099242; margin-bottom: 10px;">File formats</h2>
+                    <h2 class="page-subtitle" id="fileformats">File formats</h2>
                     <ol style="padding-left: 22px;">
                         <li><a href="#agp">AGP</a></li>
                         <li><a href="#bam">BAM</a></li>
@@ -648,7 +648,7 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242&lt;</pre>
 
                     <hr style="border-top-style: dashed;">
 
-                    <h2 class="h4" style="color: #099242; margin-bottom: 10px;">Upload status</h2>
+                    <h2 class="page-subtitle">Upload status</h2>
                     <dl class="help-description-list">
                         <div class="help-definition-container">
                             <dt>Publish:</dt>
@@ -663,7 +663,7 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242&lt;</pre>
 
                     <hr style="border-top-style: dashed;">
 
-                    <h2 class="h4" style="color: #099242; margin-bottom: 10px;">DOI relationship</h2>
+                    <h2 class="page-subtitle">DOI relationship</h2>
 
                     <p>The DOI relationship vocabulary is taken from the <a href="http://schema.datacite.org/meta/kernel-2.2/doc/DataCite-MetadataKernel_v2.2.pdf" target="_blank" aria-label="DataCite Pdf file">DataCite</a> 'relationType' schema property (ID=12.2).</p>
                     <p>Definition: Description of the relationship of the resource being registered (A) and the related resource (B).</p>
@@ -705,7 +705,7 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242&lt;</pre>
 
                     <hr style="border-top-style: dashed;">
 
-                    <h2 class="h4" style="color: #099242; margin-bottom: 10px;">Missing Value reporting</h2>
+                    <h2 class="page-subtitle">Missing Value reporting</h2>
 
                     <p>For attributes (sample, dataset or files) that have some or all values missing please use the following controlled value terms to describe the exact reason for the missing value.</p>
 
@@ -730,17 +730,17 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242&lt;</pre>
 
                 </div>
                 <div role="tabpanel" class="tab-pane" id="interface" aria-labelledby="liapi">
-                    <h2 class="h4" style="color: #099242; margin-bottom: 10px;">Availability</h2>
+                    <h2 class="page-subtitle">Availability</h2>
                     <p>The current API version is available on our main production database. This version will be periodically updated with new additional functionality and we will whenever possible maintain backwards compatibility. Occasionally this may not be possible and for this reason we recommend regularly checking and updating your usage of our API. </p>
                     <p>The basic functionality of the API is to retrieve dataset metadata held in <span class="text-italic">GigaDB</span>. The actual data files will still need to be pulled by FTP, but you can gather the exact FTP locations from the metadata using the API, then use that to pull only the files you actually need/want.</p>
                     <p>Search function is based on the web-search function and will therefore give the same results.</p>
                     <hr style="border-top-style: dashed;">
-                    <h2 class="h4" style="color: #099242; margin-bottom: 10px;">Comments and Bug reporting</h2>
+                    <h2 class="page-subtitle">Comments and Bug reporting</h2>
                     <p>The GigaScience github issue for the API works is here:</p>
                     <p><a href="https://github.com/gigascience/gigadb-website/issues/27" target="_blank">https://github.com/gigascience/gigadb-website/issues/27</a></p>
                     <p>Please add feedback / comments/ questions to that issue.</p>
                     <hr style="border-top-style: dashed;">
-                    <h2 class="h4" style="color: #099242; margin-bottom: 10px;">Summary</h2>
+                    <h2 class="page-subtitle">Summary</h2>
                     <p>It is currently possible to search "all" fields, or to specify one of a select few fields to search.</p>
                     <p>It is possible to have results return all metadata for each dataset with "hits" to the search term, or to specify a particular portion of the metadata, these portions are currently "dataset", "sample" and "file", which is in alignment with the same functionality on the web-search tool. The default is to return results as <a href="https://sites.google.com/a/gigasciencejournal.com/gigascience/public-pages/xml-schema">GigaDB v3 XML</a></p>
                     <p>It is planned that we will have the option to specify the format to be GigaDBv3-JSON or ISA2.0-JSON in the future, but that has not been implemented yet.</p>
@@ -748,7 +748,7 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242&lt;</pre>
                     <hr style="border-top-style: dashed;">
 
 
-                    <h2 class="h4" style="color: #099242; margin-bottom: 10px;">Terminology</h2>
+                    <h2 class="page-subtitle">Terminology</h2>
                     <p>To specify exact fields to return data from, use terms; <span>dataset?=</span>, <span>sample?=</span>, <span>file?=</span>, (or <span>experiment?=</span><span aria-hidden="true">*</span>)</p>
                     <p><span aria-hidden="true">* - </span><em>experiment will be implemented in the future</em></p>
                     <p>To search for datasets without the ID's, use the term <span>search?keyword=</span></p>
@@ -769,7 +769,7 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242&lt;</pre>
 
                     <hr style="border-top-style: dashed;">
 
-                    <h2 class="h4" style="color: #099242; margin-bottom: 10px;">Examples</h2>
+                    <h2 class="page-subtitle">Examples</h2>
 
                     <ol class="help-examples-list">
                         <li>
@@ -847,7 +847,7 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242&lt;</pre>
                     </ol>
 
                     <hr style="border-top-style: dashed;">
-                    <h2 class="h4">Command line usage</h2>
+                    <h2 class="page-subtitle">Command line usage</h2>
                     <p>You can also use the curl commands on the command line to retrieve metadata, e.g.:</p>
                     <pre><code>curl <a href="http://gigadb.org/api/dataset?doi=100051" target="_blank" rel="noopener noreferrer">http://gigadb.org/api/dataset?doi=100051</a></code></pre>
                     <p>If you want to check whether a search will work you can use the <code>-I</code> flag:</p>
