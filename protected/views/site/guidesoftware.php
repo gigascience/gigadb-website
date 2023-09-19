@@ -47,7 +47,7 @@ $this->pageTitle = 'GigaDB - Software Dataset checklists';
         <section>
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane active" id="general">
-                        <h4 style="color: #099242; margin-bottom: 10px;">Software Dataset Checklist </h4>
+                        <h4 class="page-subtitle">Software Dataset Checklist </h4>
                         <div class="subsection">
                             <h5 style="padding-left: 1px">Minimal requirements</h5>
                             <p>The minimal requirement for a GigaDB dataset associated with a manuscript describing software is that the source-code be made openly available under an <a href="https://web.archive.org/web/20160412003944/https://opensource.org/licenses">Open Source Initiative</a> approved licence. Most authors host their open-source projects in a GitHub repository, and as a standard procedure we would take a snapshot of the GitHub repository at the point of publication as a version of record to ensure the version as published is always available even when the GitHub repositories are updated. Note- All archival GitHub files are labeled with download date and a description suggesting users visit the current GitHub repository for the most recent updates.</p>

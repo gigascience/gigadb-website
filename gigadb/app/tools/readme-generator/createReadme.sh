@@ -3,7 +3,7 @@
 # Create readme file and optionally upload to Wasabi
 
 # Stop script upon error
-set -e
+#set -e
 
 PATH=/usr/local/bin:$PATH
 export PATH
@@ -32,11 +32,18 @@ dry_run=true
 # --use-live-data flag to copy readme files to live directory
 use_live_data=false
 
+# Default number of DOIs to process
+batch=0
+
 # Parse command line parameters
 while [[ $# -gt 0 ]]; do
     case "$1" in
     --doi)
         doi=$2
+        shift
+        ;;
+    --batch)
+        batch=$2
         shift
         ;;
     --outdir)
@@ -71,7 +78,7 @@ done
 #######################################
 function set_up_logging() {
   LOGDIR="$APP_SOURCE/logs"
-  LOGFILE="$LOGDIR/wasabi_${doi}_$(date +'%Y%m%d_%H%M%S').log"
+  LOGFILE="$LOGDIR/readme_${doi}_$(date +'%Y%m%d_%H%M%S').log"
   mkdir -p "${LOGDIR}"
   touch "${LOGFILE}"
 }
@@ -191,22 +198,47 @@ function copy_to_wasabi() {
 function main {
   set_up_logging
   
-  # Conditional for how to generate readme file - dependant on user's environment
-  if [[ $(uname -n) =~ compute ]];then
-    . /home/centos/.bash_profile
-    docker run --rm -v /home/centos/readmeFiles:/app/readmeFiles registry.gitlab.com/$GITLAB_PROJECT/production_tool:$GIGADB_ENV /app/yii readme/create --doi "${doi}" --outdir "${outdir}"
-  else
-    docker-compose run --rm tool /app/yii readme/create --doi "$doi" --outdir "$outdir"
-  fi
-  echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Created readme file in ${SOURCE_PATH}/readme_${doi}.txt" >> "$LOGFILE"
-  
-  # Readme file can be copied into Wasabi if --wasabi flag is present
-  if [ "${wasabi_upload}" ]; then
-    determine_destination_path
-    dir_range=""
-    get_doi_directory_range
-    copy_to_wasabi
-  fi
+  count=0
+  # Execute loop if number of readme files created is less than batch number
+  # or run loop if batch = 0
+  while [ "${count}" -lt "${batch}" ] || [ "${batch}" -eq 0 ]; do
+    # Conditional for how to generate readme file - dependant on user's environment
+    if [[ $(uname -n) =~ compute ]];then
+      . /home/centos/.bash_profile
+      docker run --rm -v /home/centos/readmeFiles:/app/readmeFiles registry.gitlab.com/$GITLAB_PROJECT/production_tool:$GIGADB_ENV /app/yii readme/create --doi "${doi}" --outdir "${outdir}"
+    else
+      docker-compose run --rm tool /app/yii readme/create --doi "${doi}" --outdir "${outdir}"
+    fi
+    exitCode=$?
+    if [ "${exitCode}" -eq 74 ]; then
+      echo "$(date +'%Y/%m/%d %H:%M:%S') ERROR  : Could not save readme file for DOI ${doi} at ${outdir}" >> "$LOGFILE"
+      exit 1
+    elif [ "${exitCode}" -eq 65 ]; then
+      echo "$(date +'%Y/%m/%d %H:%M:%S') WARN  : No dataset for DOI ${doi}" >> "$LOGFILE"
+      # Exit if not running in batch mode
+      if [ "${batch}" -eq 0 ]; then
+        exit 0
+      fi
+    else
+      echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Created readme file for DOI ${doi} in ${SOURCE_PATH}/readme_${doi}.txt" >> "$LOGFILE"
+
+      # Readme file can be copied into Wasabi if --wasabi flag is present
+      if [ "${wasabi_upload}" ]; then
+        determine_destination_path
+        dir_range=""
+        get_doi_directory_range
+        copy_to_wasabi
+      fi
+
+      # Exit if not running in batch mode
+      if [ "${batch}" -eq 0 ]; then
+        exit 0
+      fi
+      count=$((count+1))
+    fi
+
+    doi=$((doi+1))
+  done
 }
 
 # Call main function
