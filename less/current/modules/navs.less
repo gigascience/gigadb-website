@@ -8,26 +8,36 @@
   margin-bottom: 15px;
   border-bottom-color: @color-light-gray;
 }
-.nav-tabs.nav-border-tabs > li > a,
-.nav-tabs.nav-border-tabs > li > a:focus,
-.nav-tabs.nav-border-tabs > li > a:hover {
+
+.nav-tabs.nav-border-tabs > li > a {
   border: 1px solid transparent;
   border-top-width: 2px;
-  border-radius: 0px;
+  border-radius: 0;
   text-decoration: none;
-  color: @color-dark-gray;
+  color: @dark-gray-on-white;
   background-color: @color-true-white;
   border-bottom-color: @color-light-gray;
+  &:hover {
+    color: @dark-gray-on-light-gray;
+  }
+  &:focus {
+    outline-color: @color-true-black;
+    outline-width: 1px;
+    outline-style: solid;
+  }
 }
-.nav-tabs.nav-border-tabs > li.active > a,
-.nav-tabs.nav-border-tabs > li.active > a:focus,
-.nav-tabs.nav-border-tabs > li.active > a:hover {
-  border-color: @color-light-gray;
-  border-bottom-color: @color-true-white;
+
+.nav-tabs.nav-border-tabs > li.active > a {
+  border: 1px solid @color-light-gray;
   border-top: 2px solid @color-gigadb-green;
+  border-bottom-color: @color-true-white;
   color: @color-warm-black;
   text-decoration: none;
   background-color: transparent;
+}
+
+.nav-tabs.nav-border-tabs > li.open > a:hover {
+  color: @color-true-white;
 }
 
 .tab-content {
@@ -213,8 +223,8 @@
 }
 .nav-tabs .dropdown-toggle:hover .caret,
 .nav-pills .dropdown-toggle:hover .caret {
-  border-top-color: #005580;
-  border-bottom-color: #005580;
+  border-top-color: @color-dark-blue;
+  border-bottom-color: @color-dark-blue;
 }
 .nav-tabs .active .dropdown-toggle .caret,
 .nav-pills .active .dropdown-toggle .caret {
@@ -231,6 +241,17 @@
   color: @color-true-white;
   background-color: @color-dark-gray;
   border-color: @color-dark-gray;
+}
+.nav-tabs .open .dropdown-toggle,
+.nav-pills .open .dropdown-toggle,
+.nav > li.dropdown.open.active > a:focus {
+  // use of !important necessary to override bootstrap styles
+  background-color: @color-darker-gray!important;
+  border-color: @color-darker-gray!important;
+  color: @color-true-white;
+  &:hover {
+    background-color: @color-warm-black!important;
+  }
 }
 .nav li.dropdown.open .caret,
 .nav li.dropdown.open.active .caret,
@@ -258,7 +279,7 @@
 .main-nav-bar li a{
   display: inline-block;
   height: 34px;
-  color: @color-darker-gray;
+  color: @dark-gray-on-light-gray;
   text-decoration: none !important;
 }
 .main-nav-bar li .dropdown-menu{
