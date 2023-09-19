@@ -20,7 +20,8 @@
                 <link rel="stylesheet" type="text/css" href="/fonts/open_sans/v13/open_sans.css">
                 <link rel="stylesheet" type="text/css" href="/fonts/pt_sans/v8/pt_sans.css">
                 <link rel="stylesheet" type="text/css" href="/fonts/lato/v11/lato.css">
-                <link rel="stylesheet" type="text/css" href="/css/common.css" />
+                <!-- <link rel="stylesheet" type="text/css" href="/css/common.css" /> -->
+                <link rel="stylesheet" type="text/css" href="/css/current.css" />
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
                 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
                 <? } ?>
@@ -43,14 +44,14 @@
                         <ul class="list-inline text-left base-top-account-bar">
                             <? if(Yii::app()->user->isGuest) { ?>
                                 <li><a href="/site/login"><i class="fa fa-sign-in"></i> Login / Signup</a></li>
-                                <? } else { 
-        
+                                <? } else {
+
                                 $name = Yii::app()->user->getFirst_Name();
-        
+
                                 // var_dump($name);
-        
+
                                 if (substr($name, -1) === 's') {
-        
+
                                 $name = $name . '\'';
                                 } else {
                                 $name = $name . "'s";

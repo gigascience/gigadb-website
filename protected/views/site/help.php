@@ -29,11 +29,11 @@ $this->pageTitle='GigaDB - Help';
                     </ul>
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane active" id="search">
-                            <h4 style="color: #099242; margin-bottom: 10px;">Search operation</h4>
+                            <h4 class="page-subtitle">Search operation</h4>
                             <p>To search across all Dataset, Sample and File records in <em>GigaDB</em>, simply enter a search term in the search bar found at the top of all <em>GigaDB</em> pages.</p>
                             <p>The search is case insensitive which means both uppercase and lowercase keywords will have the same result.</p>
                             <hr style="border-top-style: dashed;">
-                            <h4 style="color: #099242; margin-bottom: 10px;">Search result</h4>
+                            <h4 class="page-subtitle">Search result</h4>
                             <p>The search results are grouped by <em>GigaDB</em> Datasets (G), Samples (S) and Files (F).</p>
                             <table class="table">
                                 <tbody>
@@ -54,7 +54,7 @@ $this->pageTitle='GigaDB - Help';
                             <p>Only those objects that have direct matches are displayed in the search results, i.e. the only Files to be displayed in the search results will be those with matches to the search term, all other files within the same dataset will NOT be displayed.</p>
                             <p>For example, searching for the term "Potato" will return the dataset with the title "Genomic data from the potato" which contains 17 files, however, the search results table will only display 3 of those 17 files because only 3 contain the search term “potato”. To find all data associated with a dataset you must follow the link to the dataset page.</p>
                             <hr style="border-top-style: dashed;">
-                            <h4 style="color: #099242; margin-bottom: 10px;">Filtering result</h4>
+                            <h4 class="page-subtitle">Filtering result</h4>
                             <p style="margin-bottom: 20px;">On the left of the search results you have the option to further refine the results by using the filters. By default all filters are disabled, allowing you to see all search results for your keyword. If you want to hide some results based on some criteria, choose the filter for your criteria, and select the options that match what you want to see.</p>
                             <p style="margin-bottom: 0px;">TFilter options for Datasets:</p>
                             <ol>
@@ -101,7 +101,7 @@ $this->pageTitle='GigaDB - Help';
                             <p>If you have any questions, please contact us at <a href="mailto:database@gigasciencejournal.com" target="_blank">database@gigasciencejournal.com</a>.</p>
                         </div>
                         <div role="tabpanel" class="tab-pane" id="vocabulary">
-                            <h4 id="datasettypes" style="color: #099242; margin-bottom: 10px;">Dataset types</h4>
+                            <h4 id="datasettypes" class="page-subtitle">Dataset types</h4>
                             <p><strong>Genomic</strong> - Includes all genetic and genomic data eg sequence, assemblies, alignments, genotypes, variation and annotation. Minimal requirements: DNA sequence data eg next-gen raw reads (fastq files) OR assembled DNA sequences (fasta files).</p>
                             <p><strong>Transcriptomic</strong> - Includes all data relating to mRNA. Minimal requirements: RNA sequence data eg next-gen raw reads (fastq files) OR transcript statistics eg RNA coverage/depth.</p>
                             <p><strong>Epigenomic</strong> - Includes methylation and histone modification data. Minimal requirements: Details on methylation sites/status eg qmap files OR details on histone modification sites/status.</p>
@@ -124,7 +124,7 @@ $this->pageTitle='GigaDB - Help';
                             <p><strong>Ecology</strong> - Data used/collected for ecological studies.</p>
                             <p><strong>Climate</strong> - Data used/collected for climate studies.</p>
                             <p>Additional dataset types can be added, upon review, as new submissions are received.</p>
-                            <h4 id="filetypes" style="color: #099242; margin-bottom: 10px;">File types</h4>
+                            <h4 id="filetypes" class="page-subtitle">File types</h4>
                             <p>File types and examples of associated file extensions:</p>
                             <p><strong>Alignments:</strong> .bam, .chain, .maf, .net, .sam</p>
                             <p><strong>Allele frequencies:</strong> .frq</p>
@@ -144,7 +144,7 @@ $this->pageTitle='GigaDB - Help';
                             <p><strong>Other:</strong> .xls, .pdf, .txt</p>
                             <p>Additional file types can be added, upon review, as new submissions are received.</p>
                             <hr style="border-top-style: dashed;">
-                            <h4 id="fileformats" style="color: #099242; margin-bottom: 10px;">File formats</h4>
+                            <h4 id="fileformats" class="page-subtitle">File formats</h4>
                             <ol style="padding-left: 22px;">
                                 <li><a href="#agp">AGP</a></li>
                                 <li><a href="#bam">BAM</a></li>
@@ -232,11 +232,11 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242<</pre>
                             <p id="unknown"><strong>UNKNOWN</strong> - any file format not in this list</p>
                             <p id="xml"><strong>XML</strong> (.xml) - <a href="http://www.w3schools.com/xml/" target="_blank">eXtensible Markup Language</a></p>
                             <hr style="border-top-style: dashed;">
-                            <h4 style="color: #099242; margin-bottom: 10px;">Upload status</a></h4>
+                            <h4 class="page-subtitle">Upload status</a></h4>
                             <p><strong>Publish: </strong>this dataset is fully consented for immediate release upon <em>Giga</em>DB approval </p>
                             <p><strong>HUP: </strong>this dataset should be Held Until Publication (HUP)</p>
                             <hr style="border-top-style: dashed;">
-                            <h4 style="color: #099242; margin-bottom: 10px;">DOI relationship</h4>
+                            <h4 class="page-subtitle">DOI relationship</h4>
                             <p>The DOI relationship vocabulary is taken from the <a href="http://schema.datacite.org/meta/kernel-2.2/doc/DataCite-MetadataKernel_v2.2.pdf" target="_blank">DataCite</a> 'relationType' schema property (ID=12.2).</p>
                             <p>Definition: Description of the relationship of the resource being registered (A) and the related resource (B).</p>
                             <p><strong>IsSupplementTo:</strong> indicates that A is a supplement to B</p>
@@ -248,7 +248,7 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242<</pre>
                             <p><strong>References:</strong> indicates B is used as a source of information for A</p>
                             <p><strong>IsReferencedBy:</strong> indicates A is used as a source of information by B</p>
                             <hr style="border-top-style: dashed;">
-                            <h4 style="color: #099242; margin-bottom: 10px;">Missing Value reporting</h4>
+                            <h4 class="page-subtitle">Missing Value reporting</h4>
                             <p>For attributes (sample, dataset or files) that have some or all values missing please use the following controlled value terms to describe the exact reason for the missing value.</p>
                             <p><strong>not applicable:</strong> information is inappropriate to report, often this attribute can be removed entirely.</p>
                             <p><strong>restricted access:</strong> information exists but cannot be released openly because of privacy concerns</p>
@@ -256,25 +256,25 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242<</pre>
                             <p><strong>not collected:</strong> information was not collected and will therefore never be available</p>
                         </div>
                         <div role="tabpanel" class="tab-pane" id="interface">
-                            <h4 style="color: #099242; margin-bottom: 10px;">Availability</h4>
+                            <h4 class="page-subtitle">Availability</h4>
                             <p>The current API version is available on our main production database. This version will be periodically updated with new additional functionality and we will whenever possible maintain backwards compatibility. Occasionally this may not be possible and for this reason we recommend regularly checking and updating your usage of our API. </p>
                             <p>The basic functionality of the API is to retrieve dataset metadata held in <em>GigaDB</em>. The actual data files will still need to be pulled by FTP, but you can gather the exact FTP locations from the metadata using the API, then use that to pull only the files you actually need/want.</p>
                             <p>Search function is based on the web-search function and will therefore give the same results.</p>
                             <hr style="border-top-style: dashed;">
-                            <h4 style="color: #099242; margin-bottom: 10px;">Comments and Bug reporting</h4>
+                            <h4 class="page-subtitle">Comments and Bug reporting</h4>
                             <p>The GigaScience github issue for the API works is here:</p>
                             <p><a href="https://github.com/gigascience/gigadb-website/issues/27" target="_blank">https://github.com/gigascience/gigadb-website/issues/27</a></p>
                             <p>Please add feedback / comments/ questions to that issue.</p>
                             <hr style="border-top-style: dashed;">
-                            <h4 style="color: #099242; margin-bottom: 10px;">Summary</h4>
+                            <h4 class="page-subtitle">Summary</h4>
                             <p>It is currently possible to search "all" fields, or to specify one of a select few fields to search.</p>
                             <p>It is possible to have results return all metadata for each dataset with "hits" to the search term, or to specify a particular portion of the metadata, these portions are currently "dataset", "sample" and "file", which is in alignment with the same functionality on the web-search tool. The default is to return results as <a href="https://sites.google.com/a/gigasciencejournal.com/gigascience/public-pages/xml-schema">GigaDB v3 XML</a></p>
                             <p>It is planned that we will have the option to specify the format to be GigaDBv3-JSON or ISA2.0-JSON in the future, but that has not been implemented yet.</p>
                             <hr style="border-top-style: dashed;">
-                            <h4 style="color: #099242; margin-bottom: 10px;">Terminology</h4>
+                            <h4 class="page-subtitle">Terminology</h4>
                             <p>To specify exact fields to return data from, use terms; dataset?=, sample?=, file?=, (or experiment?=*)</p>
                             <p>* - experiment will be implemented in the future</p>
-                            <p>To search for datasets without the ID's, use the term search?keyword=</p> 
+                            <p>To search for datasets without the ID's, use the term search?keyword=</p>
                             <p>To search by specific attributes use search?&lt;attribute_name&gt;=</p>
                             <p>Available <strong>attribute_name</strong> to search include:</p>
                             <p><strong>taxno</strong> = Taxonomic ID (NCBI)</p>
@@ -289,7 +289,7 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242<</pre>
                             <p>NB - the search still looks everywhere, but the results returned are only those samples that are in datasets that are found by the search.</p>
                             <p><strong>Default results are "dataset" only.</strong></p>
                             <hr style="border-top-style: dashed;">
-                            <h4 style="color: #099242; margin-bottom: 10px;">Examples</h4>
+                            <h4 class="page-subtitle">Examples</h4>
                             <p>1. retrieve known datasets by doi</p>
                             <p><a href="http://gigadb.org/api/dataset?doi=100051" target="_blank">http://gigadb.org/api/dataset?doi=100051</a></p>
                             <p>2. retrieve samples from a known DOI</p>
@@ -325,7 +325,7 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242<</pre>
                             <p>17. list all dataset DOI's published in a date range (results ordered by publication date)</p>
                             <p><a href="http://gigadb.org/api/list?start_date=2018-01-01&end_date=2018-01-30" target="_blank">http://gigadb.org/api/list?start_date=2018-01-01&end_date=2018-01-30</a></p>
                             <hr style="border-top-style: dashed;">
-                            <h4 style="color: #099242; margin-bottom: 10px;">Command line usage</h4>
+                            <h4 class="page-subtitle">Command line usage</h4>
                             <p>You can also use the curl commands on the command line to retrieve metadata :</p>
                             <p>eg.</p>
                             <p>curl <a href="http://gigadb.org/api/dataset?doi=100051" target="_blank">http://gigadb.org/api/dataset?doi=100051</a></p>
@@ -347,16 +347,16 @@ $(document).ready(function () {
 });
 
 function DatasetFunction(){
-  $('ul li').removeClass('active');  
+  $('ul li').removeClass('active');
   $('#livocabulary').addClass('active');
-  $('#search').removeClass('active');  
+  $('#search').removeClass('active');
   $('#vocabulary').addClass('active');
    var e = document.getElementById('datasettypes');
    if (!!e && e.scrollIntoView) {
        e.scrollIntoView();
    }
-  
+
   }
 
 </script>
-    
+

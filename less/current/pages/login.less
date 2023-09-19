@@ -1,6 +1,6 @@
 /* login */
 .login-div {
-  background-color: #f8f8f8;
+  background-color: @color-lighter-gray;
   padding: 30px;
   width: 555px;
   height: 286px;
@@ -30,6 +30,12 @@
   height: 40px;
   font-size: 18px;
   text-align: center;
+}
+.login-div a {
+  color: @gigadb-green-on-lighter-gray;
+  &:hover {
+    color: @color-gigadb-green-900;
+  }
 }
 .ouath-div > div > span {
   width: 148px;
