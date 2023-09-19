@@ -65,7 +65,7 @@ class AdminSampleController extends Controller
             $array = explode(":", $_POST['Sample']['species_id']);
             $tax_id = $array[0];
             try {
-                $species = $this->getSpecies($tax_id, $model);
+                $species = $this->findSpeciesRecord($tax_id, $model);
             } catch (Exception $e) {
                 Yii::log($e->getMessage(), 'error');
                 if ($tax_id == '') {
@@ -209,7 +209,7 @@ class AdminSampleController extends Controller
                 $array = explode(":", $_POST['Sample']['species_id']);
                 $tax_id = $array[0];
                 if (is_numeric($tax_id)) {
-                    $species = $this->getSpecies($tax_id, $model);
+                    $species = $this->findSpeciesRecord($tax_id, $model);
                 } else {
                     $model->addError("error", 'The species id should be numeric');
                 }
@@ -354,23 +354,23 @@ class AdminSampleController extends Controller
     }
 
     /**
+     * Get species active record using the tax id from the form input
+     *
      * @param $tax_id
-     * @param $model
-     * @return array|CActiveRecord|mixed|Species|null
+     * @param Sample $model
+     * @return CActiveRecord|null
      */
-    private function getSpecies($tax_id, $model)
+    private function findSpeciesRecord($tax_id, $model): ?CActiveRecord
     {
         $species = Species::model()->findByAttributes(array('tax_id' => $tax_id));
         if (!$species) {
-            $model->addError('error', 'Species id ' . $tax_id . ' is not found!');
+            $model->addError('error', 'Taxon ID ' . $tax_id . ' is not found!');
+        } else {
+            $model->species_id = $species->id;
+            $model->attributesList = $_POST['Sample']['attributesList'];
+            $this->updateSampleAttributes($model);
         }
-        $model->species_id = $species->id;
-        $model->attributesList = $_POST['Sample']['attributesList'];
-        $this->updateSampleAttributes($model);
-        if (!$model->errors) {
-            $model->save();
-            $this->redirect(array('view', 'id' => $model->id));
-        }
+        $this->redirect(array('view', 'id' => $model->id));
         return $species;
     }
 }
