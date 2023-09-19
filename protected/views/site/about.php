@@ -7,15 +7,17 @@ $this->pageTitle = 'GigaDB - About';
 <div class="clear"></div>
 <div class="content">
     <div class="container">
-        <section class="page-title-section">
+        <div class="section page-title-section">
             <div class="page-title">
-                <ol class="breadcrumb pull-right">
-                    <li><a href="/">Home</a></li>
-                    <li class="active">General information</li>
-                </ol>
+                <nav aria-label="breadcrumbs">
+                    <ol class="breadcrumb pull-right">
+                        <li><a href="/">Home</a></li>
+                        <li class="active">General information</li>
+                    </ol>
+                </nav>
                 <h4>General information</h4>
             </div>
-        </section>
+        </div>
         <div class="subsection">
             <img src="../images/new_interface_image/about.png">
         </div>

@@ -7,23 +7,25 @@ $this->pageTitle='GigaDB - About';
 <div class="clear"></div>
 <div class="content">
             <div class="container">
-                <section class="page-title-section">
+                <div class="section page-title-section">
                     <div class="page-title">
-                        <ol class="breadcrumb pull-right">
-                            <li><a href="/">Home</a></li>
-                            <li class="active">FAQ</li>
-                        </ol>
+                        <nav aria-label="breadcrumbs">
+                            <ol class="breadcrumb pull-right">
+                                <li><a href="/">Home</a></li>
+                                <li class="active">FAQ</li>
+                            </ol>
+                        </nav>
                         <h4>FAQ</h4>
                     </div>
-                </section>
-               
+                </div>
+
                 <section>
                     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                         <div class="panel panel-default">
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel01" aria-expanded="false" aria-controls="panel01">
-                                    What is <em>GigaDB</em>?    
+                                    What is <em>GigaDB</em>?
                                     </a>
                                 </h4>
                             </div>
@@ -37,7 +39,7 @@ $this->pageTitle='GigaDB - About';
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel02" aria-expanded="false" aria-controls="panel02">
-                                    What journals are integrated with <em>GigaDB</em>?    
+                                    What journals are integrated with <em>GigaDB</em>?
                                     </a>
                                 </h4>
                             </div>
@@ -51,7 +53,7 @@ $this->pageTitle='GigaDB - About';
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel03" aria-expanded="false" aria-controls="panel03">
-                                    Why use <em>GigaDB</em>?    
+                                    Why use <em>GigaDB</em>?
                                     </a>
                                 </h4>
                             </div>
@@ -65,7 +67,7 @@ $this->pageTitle='GigaDB - About';
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel04" aria-expanded="false" aria-controls="panel04">
-                                    What kinds of data does <em>GigaDB</em> accept?    
+                                    What kinds of data does <em>GigaDB</em> accept?
                                     </a>
                                 </h4>
                             </div>
@@ -79,7 +81,7 @@ $this->pageTitle='GigaDB - About';
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel05" aria-expanded="false" aria-controls="panel05">
-                                    My research is on human subjects. Can I archive my data in <em>GigaDB</em>?    
+                                    My research is on human subjects. Can I archive my data in <em>GigaDB</em>?
                                     </a>
                                 </h4>
                             </div>
@@ -93,7 +95,7 @@ $this->pageTitle='GigaDB - About';
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel06" aria-expanded="false" aria-controls="panel06">
-                                    In what file format(s) should I submit my data?    
+                                    In what file format(s) should I submit my data?
                                     </a>
                                 </h4>
                             </div>
@@ -107,7 +109,7 @@ $this->pageTitle='GigaDB - About';
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel07" aria-expanded="false" aria-controls="panel07">
-                                    When should I submit my data?    
+                                    When should I submit my data?
                                     </a>
                                 </h4>
                             </div>
@@ -121,7 +123,7 @@ $this->pageTitle='GigaDB - About';
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel08" aria-expanded="false" aria-controls="panel08">
-                                    How can I modify files I have submitted to <em>GigaDB</em> while my article is in review?    
+                                    How can I modify files I have submitted to <em>GigaDB</em> while my article is in review?
                                     </a>
                                 </h4>
                             </div>
@@ -135,7 +137,7 @@ $this->pageTitle='GigaDB - About';
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel09" aria-expanded="false" aria-controls="panel09">
-                                    What should I prepare before submission?    
+                                    What should I prepare before submission?
                                     </a>
                                 </h4>
                             </div>
@@ -149,7 +151,7 @@ $this->pageTitle='GigaDB - About';
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel10" aria-expanded="false" aria-controls="panel10">
-                                    How can I make my data submission as accessible and reusable as possible?    
+                                    How can I make my data submission as accessible and reusable as possible?
                                     </a>
                                 </h4>
                             </div>
@@ -163,7 +165,7 @@ $this->pageTitle='GigaDB - About';
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel11" aria-expanded="false" aria-controls="panel11">
-                                    How do I submit data?    
+                                    How do I submit data?
                                     </a>
                                 </h4>
                             </div>
@@ -182,7 +184,7 @@ $this->pageTitle='GigaDB - About';
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel12" aria-expanded="false" aria-controls="panel12">
-                                    How do I write a ReadMe file?    
+                                    How do I write a ReadMe file?
                                     </a>
                                 </h4>
                             </div>
@@ -219,7 +221,7 @@ Files:
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel13" aria-expanded="false" aria-controls="panel13">
-                                    How do I cite the data in my manuscript?    
+                                    How do I cite the data in my manuscript?
                                     </a>
                                 </h4>
                             </div>
@@ -233,7 +235,7 @@ Files:
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel14" aria-expanded="false" aria-controls="panel14">
-                                    Are there any problems with publishing my final research paper AFTER publishing the data in GigaScience?    
+                                    Are there any problems with publishing my final research paper AFTER publishing the data in GigaScience?
                                     </a>
                                 </h4>
                             </div>
@@ -254,7 +256,7 @@ Files:
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel15" aria-expanded="false" aria-controls="panel15">
-                                    Do I have the option to embargo release of my data?    
+                                    Do I have the option to embargo release of my data?
                                     </a>
                                 </h4>
                             </div>
@@ -271,7 +273,7 @@ Files:
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel16" aria-expanded="false" aria-controls="panel16">
-                                    How much does it cost?    
+                                    How much does it cost?
                                     </a>
                                 </h4>
                             </div>
@@ -285,7 +287,7 @@ Files:
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel17" aria-expanded="false" aria-controls="panel17">
-                                    Do I have to pay to download or use the data?    
+                                    Do I have to pay to download or use the data?
                                     </a>
                                 </h4>
                             </div>
@@ -299,7 +301,7 @@ Files:
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel18" aria-expanded="false" aria-controls="panel18">
-                                    How do I download a large dataset with my slow internet connection?    
+                                    How do I download a large dataset with my slow internet connection?
                                     </a>
                                 </h4>
                             </div>
@@ -317,7 +319,7 @@ Files:
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel19" aria-expanded="false" aria-controls="panel19">
-                                    How do I cite data from <em>GigaDB</em>?    
+                                    How do I cite data from <em>GigaDB</em>?
                                     </a>
                                 </h4>
                             </div>
@@ -331,7 +333,7 @@ Files:
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel20" aria-expanded="false" aria-controls="panel20">
-                                    How do I download information to my citation management software?    
+                                    How do I download information to my citation management software?
                                     </a>
                                 </h4>
                             </div>
@@ -345,7 +347,7 @@ Files:
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel21" aria-expanded="false" aria-controls="panel21">
-                                    What is a dataset?    
+                                    What is a dataset?
                                     </a>
                                 </h4>
                             </div>
@@ -359,7 +361,7 @@ Files:
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel22" aria-expanded="false" aria-controls="panel22">
-                                    Does my journal work with <em>GigaDB</em> and how?    
+                                    Does my journal work with <em>GigaDB</em> and how?
                                     </a>
                                 </h4>
                             </div>
@@ -373,7 +375,7 @@ Files:
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel23" aria-expanded="false" aria-controls="panel23">
-                                    What is a <em>GigaDB</em> DOI?    
+                                    What is a <em>GigaDB</em> DOI?
                                     </a>
                                 </h4>
                             </div>
@@ -387,7 +389,7 @@ Files:
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel24" aria-expanded="false" aria-controls="panel24">
-                                    Why does <em>GigaDB</em> use Creative Commons Zero?    
+                                    Why does <em>GigaDB</em> use Creative Commons Zero?
                                     </a>
                                 </h4>
                             </div>
@@ -401,7 +403,7 @@ Files:
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel25" aria-expanded="false" aria-controls="panel25">
-                                    Can the <em>GigaDB</em> repository help me prepare a data management plan?    
+                                    Can the <em>GigaDB</em> repository help me prepare a data management plan?
                                     </a>
                                 </h4>
                             </div>
@@ -415,7 +417,7 @@ Files:
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel26" aria-expanded="false" aria-controls="panel26">
-                                    What are the charges for submitting data?    
+                                    What are the charges for submitting data?
                                     </a>
                                 </h4>
                             </div>
@@ -429,7 +431,7 @@ Files:
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel27" aria-expanded="false" aria-controls="panel27">
-                                    Why is submission to <em>GigaDB</em> not closely integrated with submission to GigaScience?    
+                                    Why is submission to <em>GigaDB</em> not closely integrated with submission to GigaScience?
                                     </a>
                                 </h4>
                             </div>
@@ -443,7 +445,7 @@ Files:
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel28" aria-expanded="false" aria-controls="panel28">
-                                    How are datasets in <em>GigaDB</em> backed up?    
+                                    How are datasets in <em>GigaDB</em> backed up?
                                     </a>
                                 </h4>
                             </div>
@@ -457,7 +459,7 @@ Files:
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel29" aria-expanded="false" aria-controls="panel29">
-                                    What happens to data after it is submitted?    
+                                    What happens to data after it is submitted?
                                     </a>
                                 </h4>
                             </div>
@@ -471,7 +473,7 @@ Files:
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel30" aria-expanded="false" aria-controls="panel30">
-                                    Can I see how often my dataset is being used and downloaded?    
+                                    Can I see how often my dataset is being used and downloaded?
                                     </a>
                                 </h4>
                             </div>
@@ -485,7 +487,7 @@ Files:
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel31" aria-expanded="false" aria-controls="panel31">
-                                    How may data from <em>GigaDB</em> be reused?    
+                                    How may data from <em>GigaDB</em> be reused?
                                     </a>
                                 </h4>
                             </div>
@@ -494,12 +496,12 @@ Files:
                                     <p>It can be used for anything by anyone, most* data is given the licence CC0 specifically to remove any restrictions on reuse. * - on occasion we host some files for convenience of our users that are already covered by other licences (e.g. more appropriate OSI-compliant licenses for software, or multiple (all open) licenses in a workflow or virtual machine), where this happens we make every effort to make users aware of the different licences.</p>
                                 </div>
                             </div>
-                        </div>                      
+                        </div>
                         <div class="panel panel-default">
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel32" aria-expanded="false" aria-controls="panel32">
-                                    What is Hypothes.is?    
+                                    What is Hypothes.is?
                                     </a>
                                 </h4>
                             </div>
@@ -513,7 +515,7 @@ Files:
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel33" aria-expanded="false" aria-controls="panel33">
-                                    How do I report missing values in my metadata?    
+                                    How do I report missing values in my metadata?
                                     </a>
                                 </h4>
                             </div>
@@ -532,7 +534,7 @@ Files:
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel34" aria-expanded="false" aria-controls="panel34">
-                                    Why do you request so many sample attributes?    
+                                    Why do you request so many sample attributes?
                                     </a>
                                 </h4>
                             </div>
@@ -546,7 +548,7 @@ Files:
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel35" aria-expanded="false" aria-controls="panel35">
-                                    Why is the directory structure missing from the file table view on my dataset page?   
+                                    Why is the directory structure missing from the file table view on my dataset page?
                                     </a>
                                 </h4>
                             </div>
@@ -560,7 +562,7 @@ Files:
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel36" aria-expanded="false" aria-controls="panel36">
-                                    What should I do if I accidentally identify an individual from anonymized human (meta)data within a dataset?   
+                                    What should I do if I accidentally identify an individual from anonymized human (meta)data within a dataset?
                                     </a>
                                 </h4>
                             </div>
@@ -575,7 +577,7 @@ We will assess the specific case and remove/reduce the amount of metadata availa
                             <div class="panel-heading" role="tab">
                                 <h4 class="panel-title">
                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#panel37" aria-expanded="false" aria-controls="panel37">
-                                    What curation do you carry out?  
+                                    What curation do you carry out?
                                     </a>
                                 </h4>
                             </div>
@@ -745,7 +747,7 @@ We will assess the specific case and remove/reduce the amount of metadata availa
                         </div>
                     </div>
                 </section>
-               
+
             </div>
         </div>
 

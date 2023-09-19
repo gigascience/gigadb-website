@@ -6,15 +6,17 @@ $this->pageTitle='GigaDB - About';
 <div class="clear"></div>
 <div class="content">
             <div class="container">
-                <section class="page-title-section">
+                <div class="section page-title-section">
                     <div class="page-title">
-                        <ol class="breadcrumb pull-right">
-                            <li><a href="/">Home</a></li>
-                            <li class="active">Advisory Board</li>
-                        </ol>
+                        <nav aria-label="breadcrumbs">
+                            <ol class="breadcrumb pull-right">
+                                <li><a href="/">Home</a></li>
+                                <li class="active">Advisory Board</li>
+                            </ol>
+                        </nav>
                         <h4>Advisory Board</h4>
                     </div>
-                </section>
+                </div>
                 <div class="subsection">
                     <p>In order to aid <a href="/site/index" target="_blank">GigaDB</a> in following best practices, advancing community needs, and taking advantage of novel ideas/tools that can promote innovation as the database evolves, we not only leverage the excellent <a href="https://academic.oup.com/gigascience/pages/Editorial_Board">Editorial Board</a> that advises <a href="http://www.gigasciencejournal.com/" target="_blank"><em>GigaScience</em></a> Journal, we also have the following more focused GigaDB Advisory panel that we can ask for advice and guidance on specific topics.</p>
                     <p>We strongly encourage community feedback and involvement, so please feel free to contact any of the <a href="/site/team"><em>GigaScience team</em></a>, or use the <a href="/site/contact">contact us</a> form.</p>

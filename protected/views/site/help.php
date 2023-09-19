@@ -4,16 +4,17 @@ $this->pageTitle='GigaDB - Help';
 
 <div class="content">
             <div class="container">
-                <section class="page-title-section">
+                <div class="section page-title-section">
                     <div class="page-title">
-                        <ol class="breadcrumb pull-right">
-                            <li><a href="/">Home</a></li>
-                            <li><a href="about">About</a></li>
-                            <li class="active">Help</li>
-                        </ol>
+                        <nav aria-label="breadcrumbs">
+                            <ol class="breadcrumb pull-right">
+                                <li><a href="/">Home</a></li>
+                                <li class="active">Help</li>
+                            </ol>
+                        </nav>
                         <h4>Help</h4>
                     </div>
-                </section>
+                </div>
                 <div class="subsection">
                     <p>The <a href="http://gigadb.org/" target="_blank"><em>GigaDB</em></a> website allows any user to browse, search, view datasets and access data files. If you want to submit a dataset, save searches or be alerted of new content of interest we request that you <a href="/user/create" target="_blank">create an account</a>.</p>
                     <p>A 'Latest news' section will be visible to announce any updates or new features to the database and the RSS feed automatically announces each new dataset release.</p>

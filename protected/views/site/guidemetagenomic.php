@@ -17,15 +17,17 @@ th, td {
 </style>
 <div class="content">
     <div class="container">
-        <section class="page-title-section" style="margin-bottom: 10px">
+        <div class="section page-title-section guides-title-section">
             <div class="page-title">
-                <ol class="breadcrumb pull-right">
-                    <li><a href="/">Home</a></li>
-                    <li class="active">Guidelines</li>
-                </ol>
+                <nav aria-label="breadcrumbs">
+                    <ol class="breadcrumb pull-right">
+                        <li><a href="/">Home</a></li>
+                        <li class="active">Guidelines</li>
+                    </ol>
+                </nav>
                 <h4>General Submission Guidelines</h4>
             </div>
-        </section>
+        </div>
         <section style="margin-bottom: 5px;">
                 <div style="display:inline-block;">
                     <ul class="nav nav-tabs nav-border-tabs" role="tablist" style="margin-top: 1px; margin-bottom: 1px">

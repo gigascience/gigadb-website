@@ -4,15 +4,17 @@ $this->pageTitle = 'GigaDB - Terms of use';
 ?>
 <div class="content">
     <div class="container">
-        <section class="page-title-section">
+        <div class="section page-title-section">
             <div class="page-title">
-                <ol class="breadcrumb pull-right">
-                    <li><a href="/">Home</a></li>
-                    <li class="active">Terms of use</li>
-                </ol>
+                <nav aria-label="breadcrumbs">
+                    <ol class="breadcrumb pull-right">
+                        <li><a href="/">Home</a></li>
+                        <li class="active">Terms of use</li>
+                    </ol>
+                </nav>
                 <h4>Terms of use</h4>
             </div>
-        </section>
+        </div>
 <section style="margin-bottom: 15px;">
     <div>
         <ul class="nav nav-tabs nav-border-tabs" role="tablist">

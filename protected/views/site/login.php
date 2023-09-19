@@ -4,18 +4,20 @@ $this->breadcrumbs=array(
 	'Login',
 );
 ?>
-<section>   
+<section>
 
 <div class="container" id="login">
-   <section class="page-title-section">
+   <div class="section page-title-section">
        <div class="page-title">
-            <ol class="breadcrumb pull-right">
-                <li><a href="/">Home</a></li>
-                <li class="active">login</li>
-            </ol>
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumb pull-right">
+                    <li><a href="/">Home</a></li>
+                    <li class="active">Login</li>
+                </ol>
+            </nav>
             <h4>Login</h4>
        </div>
-   </section>
+   </div>
 	<div class="subsection row" style="margin-bottom: 130px;">
         <div class="col-xs-12">
             <?php if(Yii::app()->user->hasFlash('success-reset-password')): ?>
@@ -29,7 +31,7 @@ $this->breadcrumbs=array(
                     <p><?=Yii::t('app' , 'Please fill out the following form with your login credentials:')?></p>
                     <p><?=Yii::t('app' , 'Fields with <span class="symbol">*</span> are required.')?></p>
                 </div>
-               
+
                 <div class="login-div">
 			        <? $form = $this->beginWidget('CActiveForm', array('htmlOptions'=>array('class'=>'form-horizontal'))) ?>
 			    <div class="form-group">
@@ -65,5 +67,5 @@ $this->breadcrumbs=array(
             <? $this->endWidget() ?>
 	</div>
     </div>
-</div><!--login-->   
-</section>  
+</div><!--login-->
+</section>

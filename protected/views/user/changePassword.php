@@ -1,15 +1,17 @@
 
 <div class="content">
     <div class="container">
-        <section class="page-title-section">
+        <div class="section page-title-section">
             <div class="page-title">
-                <ol class="breadcrumb pull-right">
-                    <li><a href="/">Home</a></li>
-                    <li class="active">Change Password</li>
-                </ol>
+                <nav aria-label="breadcrumbs">
+                    <ol class="breadcrumb pull-right">
+                        <li><a href="/">Home</a></li>
+                        <li class="active">Change Password</li>
+                    </ol>
+                </nav>
                 <h4><?= Yii::t('app', 'Change Password') ?></h4>
             </div>
-        </section>
+        </div>
     </div>
 </div>
 
@@ -51,24 +53,24 @@
                     <div class="form-group">
                         <label class="col-xs-5 control-label"><?= Yii::t('app', 'Mailing list') ?></label>
 
-                        <div class="col-xs-5">				    	
+                        <div class="col-xs-5">
 <?php echo $form->checkbox($model, 'newsletter'); ?>
                         </div>
                         <div class="col-xs-5">
-                            <p>Please tick here to join the GigaDB mailing list to receive news, updates and quarterly newsletters about GigaDB</p>   
+                            <p>Please tick here to join the GigaDB mailing list to receive news, updates and quarterly newsletters about GigaDB</p>
                         </div>
                     </div>
                     <div class="form-group">
-                            <?= $form->labelEx($model, 'terms', array('class' => 'col-xs-5 control-label')) ?>              
-                        <div class="col-xs-5">				    	
+                            <?= $form->labelEx($model, 'terms', array('class' => 'col-xs-5 control-label')) ?>
+                        <div class="col-xs-5">
 <?php echo $form->checkbox($model, 'terms'); ?>
                             <br>
                             <font color="red"><?= $form->error($model, 'terms') ?></font>
                             <p>Please tick here to confirm you have read and understood our <a href="/site/term#policies">Terms of use</a> and <a href="/site/term#privacy">Privacy Policy</a></p>
                         </div>
-                    
-                        
-                    </div>                     
+
+
+                    </div>
 
 
                     <div class="text-center">
