@@ -18,7 +18,7 @@
                     <div class="col-xs-8">
                         <div class="underline-title">
                             <div class="breadcrumb pull-right" style="cursor:pointer">
-                                <span class="breadcrumb-item">+ more</span>
+                                <span class="breadcrumb-item" data-toggle="datasettypes">+ more</span>
                             </div>
                             <div>
                                 <h4>Dataset types</h4>
@@ -236,7 +236,7 @@
         $("#dataset-hint").popover();
 
         $(document).ready(function() {
-            $(".breadcrumb li span").click(function() {
+            $('[data-toggle="datasettypes"]').click(function() {
                 var togglediv = $(".home-text-icon-list:nth-child(3)");
                 togglediv.toggle();
                 if (togglediv.css("display") == 'block') {
