@@ -17,9 +17,9 @@
                 <div class="row">
                     <div class="col-xs-8">
                         <div class="underline-title">
-                            <ol class="breadcrumb pull-right" style="cursor:pointer">
-                                <li><span>+ more</span></li>
-                            </ol>
+                            <div class="breadcrumb pull-right" style="cursor:pointer">
+                                <span class="breadcrumb-item">+ more</span>
+                            </div>
                             <div>
                                 <h4>Dataset types</h4>
                             </div>

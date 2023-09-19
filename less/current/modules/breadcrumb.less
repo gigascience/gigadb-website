@@ -1,19 +1,23 @@
 .breadcrumb {
   display: inline-block;
   background-color: transparent;
-  padding: 0px;
+  padding: 0px 0px 4px 0px;
+  border-radius: 0;
 }
-.breadcrumb li.active {
+.breadcrumb .breadcrumb-item {
+  line-height: 22px;
+}
+.breadcrumb :is(li,.breadcrumb-item).active {
   color: @gigadb-green-on-white;
   font-size: 12px;
 }
-.breadcrumb li a,
-.breadcrumb li a:focus {
+.breadcrumb :is(li,.breadcrumb-item) a,
+.breadcrumb :is(li,.breadcrumb-item) a:focus {
   color: @dark-gray-on-white;
   font-size: 12px;
   text-decoration: none;
 }
-.breadcrumb li a:hover {
+.breadcrumb :is(li,.breadcrumb-item) a:hover {
   color: @gigadb-green-on-white;
   text-decoration: none;
 }
