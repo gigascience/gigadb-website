@@ -115,87 +115,87 @@ $this->pageTitle = 'GigaDB - Help';
                     <h2 class="page-subtitle" id="datasettypes">Dataset types</h2>
                     <dl class="help-description-list">
                         <div class="help-definition-container">
-                            <dt>Genomic</dt><span aria-hidden="true"> - </span>
+                            <dt>Genomic</dt>
                             <dd>Includes all genetic and genomic data eg sequence, assemblies, alignments, genotypes, variation and annotation. Minimal requirements: DNA sequence data eg next-gen raw reads (fastq files) OR assembled DNA sequences (fasta files).</dd>
                         </div>
                         <div class="help-definition-container">
-                            <dt>Transcriptomic</dt><span aria-hidden="true"> - </span>
+                            <dt>Transcriptomic</dt>
                             <dd>Includes all data relating to mRNA. Minimal requirements: RNA sequence data eg next-gen raw reads (fastq files) OR transcript statistics eg RNA coverage/depth.</dd>
                         </div>
                         <div class="help-definition-container">
-                            <dt>Epigenomic</dt><span aria-hidden="true"> - </span>
+                            <dt>Epigenomic</dt>
                             <dd>Includes methylation and histone modification data. Minimal requirements: Details on methylation sites/status eg qmap files OR details on histone modification sites/status.</dd>
                         </div>
                         <div class="help-definition-container">
-                            <dt>Metagenomic</dt><span aria-hidden="true"> - </span>
+                            <dt>Metagenomic</dt>
                             <dd>Includes all genetic and genomic data eg sequence, assemblies, alignments, genotypes, variation and annotation from environmental samples. Minimal requirements: Environmental DNA sequence data eg next-gen raw reads (fastq files) OR assembled DNA sequences (fasta files).</dd>
                         </div>
                         <div class="help-definition-container">
-                            <dt>Metatranscriptomic</dt><span aria-hidden="true"> - </span>
+                            <dt>Metatranscriptomic</dt>
                             <dd>RNA sequences analysis data from environmental samples, e.g. assemblies, expression profiles, variations, annotations etc.</dd>
                         </div>
                         <div class="help-definition-container">
-                            <dt>Genome mapping</dt><span aria-hidden="true"> - </span>
+                            <dt>Genome mapping</dt>
                             <dd>Datasets containing sequence analysis of genes/conserved sequences mapped to genome(s), and/or optical maps of entire genomes.</dd>
                         </div>
                         <div class="help-definition-container">
-                            <dt>Imaging</dt><span aria-hidden="true"> - </span>
+                            <dt>Imaging</dt>
                             <dd>Includes all imaging data, e.g. light microscopy, 3D imaging, high-resolution images, camera-trap images etc...</dd>
                         </div>
                         <div class="help-definition-container">
-                            <dt>Software</dt><span aria-hidden="true"> - </span>
+                            <dt>Software</dt>
                             <dd>Includes datasets that package code together into a useful bioinformatics tool. Note, datasets that contain short scripts are not labelled as software.</dd>
                         </div>
                         <div class="help-definition-container">
-                            <dt>Virtual-Machine</dt><span aria-hidden="true"> - </span>
+                            <dt>Virtual-Machine</dt>
                             <dd>Includes software that has been packaged into a virtual machine environment.</dd>
                         </div>
                         <div class="help-definition-container">
-                            <dt>Workflow</dt><span aria-hidden="true"> - </span>
+                            <dt>Workflow</dt>
                             <dd>Datasets that include tools that have been pieced together into a workflow using CWL or other workflow languages.</dd>
                         </div>
                         <div class="help-definition-container">
-                            <dt>Metabolomic</dt><span aria-hidden="true"> - </span>
+                            <dt>Metabolomic</dt>
                             <dd>Includes analysis of specific metabolights across multiple samples and/or multiple metabolights in fewer samples, usually LC-MS data.</dd>
                         </div>
                         <div class="help-definition-container">
-                            <dt>Proteomic</dt><span aria-hidden="true"> - </span>
+                            <dt>Proteomic</dt>
                             <dd>Includes all mass spec data. Minimal requirements: Peptide/protein data eg mass spec.</dd>
                         </div>
                         <div class="help-definition-container">
-                            <dt>Lipidomic</dt><span aria-hidden="true"> - </span>
+                            <dt>Lipidomic</dt>
                             <dd>Includes datasets with focus on lipid analysis, usually using mass spectrometry.</dd>
                         </div>
                         <div class="help-definition-container">
-                            <dt>Metabarcoding</dt><span aria-hidden="true"> - </span>
+                            <dt>Metabarcoding</dt>
                             <dd>Datasets using barcode sequences for environmental analysis and/or monitoring studies e.g. biodiversity assessment.</dd>
                         </div>
                         <div class="help-definition-container">
-                            <dt>Metadata</dt><span aria-hidden="true"> - </span>
+                            <dt>Metadata</dt>
                             <dd>Denotes datasets where there is a focus on collection of metadata e.g. ontologies or metadata standards.</dd>
                         </div>
                         <div class="help-definition-container">
-                            <dt>Network-Analysis</dt><span aria-hidden="true"> - </span>
+                            <dt>Network-Analysis</dt>
                             <dd>Datasets containing analysis of biological networks, either species interactions or at the molecular level.</dd>
                         </div>
                         <div class="help-definition-container">
-                            <dt>Neuroscience</dt><span aria-hidden="true"> - </span>
+                            <dt>Neuroscience</dt>
                             <dd>Includes all datasets that hold data about brains/neurons, can be imaging, molecular and/or software/tools.</dd>
                         </div>
                         <div class="help-definition-container">
-                            <dt>Electro-encephalography (EEG)</dt><span aria-hidden="true"> - </span>
+                            <dt>Electro-encephalography (EEG)</dt>
                             <dd>Datasets containing or using EEG data.</dd>
                         </div>
                         <div class="help-definition-container">
-                            <dt>Phenotyping</dt><span aria-hidden="true"> - </span>
+                            <dt>Phenotyping</dt>
                             <dd>Includes datasets with extensive phenotypic information about the samples/specimens.</dd>
                         </div>
                         <div class="help-definition-container">
-                            <dt>Ecology</dt><span aria-hidden="true"> - </span>
+                            <dt>Ecology</dt>
                             <dd>Data used/collected for ecological studies.</dd>
                         </div>
                         <div class="help-definition-container">
-                            <dt>Climate</dt><span aria-hidden="true"> - </span>
+                            <dt>Climate</dt>
                             <dd>Data used/collected for climate studies.</dd>
                         </div>
                     </dl>
@@ -204,67 +204,67 @@ $this->pageTitle = 'GigaDB - Help';
                     <p>File types and examples of associated file extensions:</p>
                     <dl class="help-description-list">
                         <div class="help-definition-container">
-                            <dt>Alignments:</dt>
+                            <dt>Alignments</dt>
                             <dd>.bam, .chain, .maf, .net, .sam</dd>
                         </div>
                         <div class="help-definition-container">
-                            <dt>Allele frequencies:</dt>
+                            <dt>Allele frequencies</dt>
                             <dd>.frq</dd>
                         </div>
                         <div class="help-definition-container">
-                            <dt>Annotation:</dt>
+                            <dt>Annotation</dt>
                             <dd>.gff, .ipr, .kegg, .wego</dd>
                         </div>
                         <div class="help-definition-container">
-                            <dt>Coding sequence:</dt>
+                            <dt>Coding sequence</dt>
                             <dd>.cds, .fa</dd>
                         </div>
                         <div class="help-definition-container">
-                            <dt>InDels:</dt>
+                            <dt>InDels</dt>
                             <dd>.gff, .txt, .vcf</dd>
                         </div>
                         <div class="help-definition-container">
-                            <dt>ISA-Tab:</dt>
+                            <dt>ISA-Tab</dt>
                             <dd>see <a href="http://isa-tools.org/format/specification.html" target="_blank">ISA tools</a></dd>
                         </div>
                         <div class="help-definition-container">
-                            <dt>Genome assembly:</dt>
+                            <dt>Genome assembly</dt>
                             <dd>.agp, .contig, .depth, .fa, .length, .scafseq</dd>
                         </div>
                         <div class="help-definition-container">
-                            <dt>Genome sequence:</dt>
+                            <dt>Genome sequence</dt>
                             <dd>.fastq, .fq</dd>
                         </div>
                         <div class="help-definition-container">
-                            <dt>Haplotypes:</dt>
+                            <dt>Haplotypes</dt>
                             <dd>.haplotype</dd>
                         </div>
                         <div class="help-definition-container">
-                            <dt>Methylome data:</dt>
+                            <dt>Methylome data</dt>
                             <dd>.fa, .qmap, .rpm, .txt</dd>
                         </div>
                         <div class="help-definition-container">
-                            <dt>Protein sequence:</dt>
+                            <dt>Protein sequence</dt>
                             <dd>.fa, .pep</dd>
                         </div>
                         <div class="help-definition-container">
-                            <dt>Readme:</dt>
+                            <dt>Readme</dt>
                             <dd>.pdf, .txt</dd>
                         </div>
                         <div class="help-definition-container">
-                            <dt>SNPs:</dt>
+                            <dt>SNPs</dt>
                             <dd>.annotation, .gff, .txt, .vcf</dd>
                         </div>
                         <div class="help-definition-container">
-                            <dt>SVs:</dt>
+                            <dt>SVs</dt>
                             <dd>.gff, .txt, .vcf</dd>
                         </div>
                         <div class="help-definition-container">
-                            <dt>Transcriptome data:</dt>
+                            <dt>Transcriptome data</dt>
                             <dd>.depth, .rpkm, .wig</dd>
                         </div>
                         <div class="help-definition-container">
-                            <dt>Other:</dt>
+                            <dt>Other</dt>
                             <dd>.xls, .pdf, .txt</dd>
                         </div>
                     </dl>
@@ -306,7 +306,7 @@ $this->pageTitle = 'GigaDB - Help';
                         <div class="help-definition-container">
                             <dt id="agp">AGP <span class="dt-sidenote">(.agp)</span></dt>
                             <dd>
-                                <span aria-hidden="true"> - </span>
+
                                 <p class="inline">
                                     the Accessioned Golden Path (AGP) file describes the assembly of a
                                     larger sequence object from smaller objects:
@@ -326,7 +326,7 @@ chr1 3181506 4176151 3 W scaffold313 1 994646  m</pre>
                         <div class="help-definition-container">
                             <dt id="bam">BAM <span class="dt-sidenote">(.bam)</span></dt>
                             <dd>
-                                <span aria-hidden="true"> - </span>
+
                                 <p class="inline">
                                     the
                                     <a href="http://genome.sph.umich.edu/wiki/BAM" target="_blank">Binary Alignment/Map (BAM) format</a>
@@ -339,7 +339,7 @@ chr1 3181506 4176151 3 W scaffold313 1 994646  m</pre>
                         <div class="help-definition-container">
                             <dt id="bigwig">BIGWIG <span class="dt-sidenote">(.bw)</span></dt>
                             <dd>
-                                <span aria-hidden="true"> - </span>
+
                                 <p class="inline">
                                     the
                                     <a href="http://genome.ucsc.edu/goldenPath/help/bigWig.html" target="_blank">BIGWIG format</a>
@@ -353,7 +353,7 @@ chr1 3181506 4176151 3 W scaffold313 1 994646  m</pre>
                         <div class="help-definition-container">
                             <dt id="chain">CHAIN <span class="dt-sidenote">(.chain)</span></dt>
                             <dd>
-                                <span aria-hidden="true"> - </span>
+
                                 <p class="inline">
                                     the
                                     <a href="http://genome.ucsc.edu/goldenPath/help/chain.html" target="_blank">CHAIN format</a>
@@ -365,7 +365,7 @@ chr1 3181506 4176151 3 W scaffold313 1 994646  m</pre>
                         <div class="help-definition-container">
                             <dt id="contig">CONTIG <span class="dt-sidenote">(.contig)</span></dt>
                             <dd>
-                                <span aria-hidden="true"> - </span>
+
                                 <p class="inline">
                                     the
                                     <a href="http://soap.genomics.org.cn/soapdenovo.html" target="_blank">CONTIG format</a>
@@ -383,7 +383,7 @@ GGTAAGATTGAGTTTGATCAAATCGCTGCTAT</pre>
                         <div class="help-definition-container">
                             <dt id="excel">EXCEL <span class="dt-sidenote">(.xls, .xlsx)</span></dt>
                             <dd>
-                                <span aria-hidden="true"> - </span>
+
                                 <p class="inline">Microsoft office spreadsheet files</p>
                             </dd>
                         </div>
@@ -394,7 +394,7 @@ GGTAAGATTGAGTTTGATCAAATCGCTGCTAT</pre>
                                     sequence of each scaffold])</span>
                             </dt>
                             <dd>
-                                <span aria-hidden="true"> - </span>
+
                                 <p class="inline">
                                     <a href="http://www.ebi.ac.uk/help/formats.html#fasta" target="_blank">FASTA</a>
                                     is a text-based format for representing either nucleotide sequences or
@@ -405,7 +405,7 @@ GGTAAGATTGAGTTTGATCAAATCGCTGCTAT</pre>
                         <div class="help-definition-container">
                             <dt id="fastq">FASTQ <span class="dt-sidenote">(.fq, .fastq)</span></dt>
                             <dd>
-                                <span aria-hidden="true"> - </span>
+
                                 <p class="inline">
                                     the
                                     <a href="http://maq.sourceforge.net/fastq.shtml" target="_blank">FASTQ format</a>
@@ -417,7 +417,7 @@ GGTAAGATTGAGTTTGATCAAATCGCTGCTAT</pre>
                         <div class="help-definition-container">
                             <dt id="gff">GFF <span class="dt-sidenote">(.gff)</span></dt>
                             <dd>
-                                <span aria-hidden="true"> - </span>
+
                                 <p class="inline">
                                     The
                                     <a href="http://www.sanger.ac.uk/resources/software/gff/" target="_blank">General Feature Format (GFF)</a>
@@ -429,7 +429,7 @@ GGTAAGATTGAGTTTGATCAAATCGCTGCTAT</pre>
                         <div class="help-definition-container">
                             <dt id="ipr">IPR <span class="dt-sidenote">(.ipr)</span></dt>
                             <dd>
-                                <span aria-hidden="true"> - </span>
+
                                 <p class="inline">
                                     the
                                     <a href="http://wego.genomics.org.cn/cgi-bin/wego/Documents.pl" target="_blank">Web Gene Ontology (WEGO) Annotation format</a>
@@ -448,7 +448,7 @@ CR_ENSP00000333725    IPR001781 IPR015880 IPR007087 IPR001909</pre>
                         <div class="help-definition-container">
                             <dt id="kegg">KEGG <span class="dt-sidenote">(.kegg)</span></dt>
                             <dd>
-                                <span aria-hidden="true"> - </span>
+
                                 <p class="inline">
                                     the
                                     <a href="http://wego.genomics.org.cn/cgi-bin/wego/Documents.pl" target="_blank">Web Gene Ontology (WEGO) Annotation format</a>
@@ -469,7 +469,7 @@ CR_ENSP00000414605    ko05146 ko04510 ko04512</pre>
                         <div class="help-definition-container">
                             <dt id="maf">MAF <span class="dt-sidenote">(.maf)</span></dt>
                             <dd>
-                                <span aria-hidden="true"> - </span>
+
                                 <p class="inline">
                                     the
                                     <a href="http://genome.ucsc.edu/FAQ/FAQformat.html#format5" target="_blank">Multiple Alignment Format (MAF)</a>
@@ -481,7 +481,7 @@ CR_ENSP00000414605    ko05146 ko04510 ko04512</pre>
                         <div class="help-definition-container">
                             <dt id="net">NET <span class="dt-sidenote">(.net)</span></dt>
                             <dd>
-                                <span aria-hidden="true"> - </span>
+
                                 <p class="inline">
                                     the
                                     <a href="http://genome.ucsc.edu/goldenPath/help/net.html" target="_blank">NET file format</a>
@@ -493,21 +493,21 @@ CR_ENSP00000414605    ko05146 ko04510 ko04512</pre>
                         <div class="help-definition-container">
                             <dt id="pdf">PDF <span class="dt-sidenote">(.pdf)</span></dt>
                             <dd>
-                                <span aria-hidden="true"> - </span>
+
                                 <p class="inline">portable document format</p>
                             </dd>
                         </div>
                         <div class="help-definition-container">
                             <dt id="png">PNG <span class="dt-sidenote">(.png)</span></dt>
                             <dd>
-                                <span aria-hidden="true"> - </span>
+
                                 <p class="inline">portable network graphics</p>
                             </dd>
                         </div>
                         <div class="help-definition-container">
                             <dt id="qmap">QMAP <span class="dt-sidenote">(.qmap)</span></dt>
                             <dd>
-                                <span aria-hidden="true"> - </span>
+
                                 <p class="inline">
                                     <a href="http://yh.genomics.org.cn/Format%20of%20qmap%20file.txt" target="_blank">QMAP</a>
                                     files are generated for methylation data from an internal
@@ -518,7 +518,7 @@ CR_ENSP00000414605    ko05146 ko04510 ko04512</pre>
                         <div class="help-definition-container">
                             <dt id="qual">QUAL <span class="dt-sidenote">(.qual)</span></dt>
                             <dd>
-                                <span aria-hidden="true"> - </span>
+
                                 <p class="inline">
                                     the
                                     <a href="http://www.broadinstitute.org/crd/wiki/index.php/Qual" target="_blank">QUAL file format</a>
@@ -530,7 +530,7 @@ CR_ENSP00000414605    ko05146 ko04510 ko04512</pre>
                         <div class="help-definition-container">
                             <dt id="rpkm">RPKM <span class="dt-sidenote">(.rpkm)</span></dt>
                             <dd>
-                                <span aria-hidden="true"> - </span>
+
                                 <p class="inline">
                                     Gene expression levels are calculated by
                                     <a href="http://sourceforge.net/apps/mediawiki/seqgene/index.php?title=SeqGene#.rpkm:_expression_estimates_generated_by_rpkm.py" target="_blank">Reads Per Kilobase per Million (RPKM) mapped reads</a>
@@ -547,7 +547,7 @@ ENSP00000368887 24.6477413647837 6002951 174 1176</pre>
                         <div class="help-definition-container">
                             <dt id="sam">SAM <span class="dt-sidenote">(.sam)</span></dt>
                             <dd>
-                                <span aria-hidden="true"> - </span>
+
                                 <p class="inline">
                                     the
                                     <a href="http://genome.sph.umich.edu/wiki/SAM" target="_blank">Sequence Alignment/Map (SAM) format</a>
@@ -568,7 +568,7 @@ ENSP00000368887 24.6477413647837 6002951 174 1176</pre>
                         <div class="help-definition-container">
                             <dt id="tar">TAR <span class="dt-sidenote">(.tar)</span></dt>
                             <dd>
-                                <span aria-hidden="true"> - </span>
+
                                 <p class="inline">an archive containing other files</p>
                             </dd>
                         </div>
@@ -577,14 +577,14 @@ ENSP00000368887 24.6477413647837 6002951 174 1176</pre>
                                 TEXT <span class="dt-sidenote">(.doc, .readme, .text, .txt)</span>
                             </dt>
                             <dd>
-                                <span aria-hidden="true"> - </span>
+
                                 <p class="inline">a text file</p>
                             </dd>
                         </div>
                         <div class="help-definition-container">
                             <dt id="vcf">VCF <span class="dt-sidenote">(.vcf)</span></dt>
                             <dd>
-                                <span aria-hidden="true"> - </span>
+
                                 <p class="inline">
                                     the
                                     <a href="http://www.1000genomes.org/wiki/Analysis/Variant%20Call%20Format/vcf-variant-call-format-version-40" target="_blank">Variant Call Format (VCF)</a>
@@ -596,7 +596,7 @@ ENSP00000368887 24.6477413647837 6002951 174 1176</pre>
                         <div class="help-definition-container">
                             <dt id="wego">WEGO <span class="dt-sidenote">(.wego)</span></dt>
                             <dd>
-                                <span aria-hidden="true"> - </span>
+
                                 <p class="inline">
                                     the
                                     <a href="http://wego.genomics.org.cn/cgi-bin/wego/Documents.pl" target="_blank">Web Gene Ontology (WEGO) Annotation format</a>
@@ -616,7 +616,7 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242&lt;</pre>
                         <div class="help-definition-container">
                             <dt id="wig">WIG <span class="dt-sidenote">(.wig)</span></dt>
                             <dd>
-                                <span aria-hidden="true"> - </span>
+
                                 <p class="inline">
                                     the output file from
                                     <a href="http://tophat.cbcb.umd.edu/" target="_blank">TopHat</a> is a
@@ -628,14 +628,14 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242&lt;</pre>
                         <div class="help-definition-container">
                             <dt id="unknown">UNKNOWN</dt>
                             <dd>
-                                <span aria-hidden="true"> - </span>
+
                                 <p class="inline">any file format not in this list</p>
                             </dd>
                         </div>
                         <div class="help-definition-container">
                             <dt id="xml">XML <span class="dt-sidenote">(.xml)</span></dt>
                             <dd>
-                                <span aria-hidden="true"> - </span>
+
                                 <p class="inline">
                                     <a href="http://www.w3schools.com/xml/" target="_blank">eXtensible Markup Language</a>
                                 </p>
@@ -651,11 +651,11 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242&lt;</pre>
                     <h2 class="page-subtitle">Upload status</h2>
                     <dl class="help-description-list">
                         <div class="help-definition-container">
-                            <dt>Publish:</dt>
+                            <dt>Publish</dt>
                             <dd>this dataset is fully consented for immediate release upon <span class="text-italic">Giga</span>DB approval</dd>
                         </div>
                         <div class="help-definition-container">
-                            <dt>HUP:</dt>
+                            <dt>HUP</dt>
                             <dd>this dataset should be Held Until Publication (HUP)</dd>
                         </div>
                     </dl>
@@ -670,35 +670,35 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242&lt;</pre>
 
                     <dl class="help-description-list">
                         <div class="help-definition-container">
-                            <dt>IsSupplementTo:</dt>
+                            <dt>IsSupplementTo</dt>
                             <dd>indicates that A is a supplement to B</dd>
                         </div>
                         <div class="help-definition-container">
-                            <dt>IsSupplementedBy:</dt>
+                            <dt>IsSupplementedBy</dt>
                             <dd>indicates that B is a supplement to A</dd>
                         </div>
                         <div class="help-definition-container">
-                            <dt>IsNewVersionOf:</dt>
+                            <dt>IsNewVersionOf</dt>
                             <dd>indicates A is a new edition of B, where the new edition has been modified or updated</dd>
                         </div>
                         <div class="help-definition-container">
-                            <dt>IsPreviousVersionOf:</dt>
+                            <dt>IsPreviousVersionOf</dt>
                             <dd>indicates A is a previous edition of B</dd>
                         </div>
                         <div class="help-definition-container">
-                            <dt>IsPartOf:</dt>
+                            <dt>IsPartOf</dt>
                             <dd>indicates A is a portion of B; may be used for elements of a series</dd>
                         </div>
                         <div class="help-definition-container">
-                            <dt>HasPart:</dt>
+                            <dt>HasPart</dt>
                             <dd>indicates A includes the part B</dd>
                         </div>
                         <div class="help-definition-container">
-                            <dt>References:</dt>
+                            <dt>References</dt>
                             <dd>indicates B is used as a source of information for A</dd>
                         </div>
                         <div class="help-definition-container">
-                            <dt>IsReferencedBy:</dt>
+                            <dt>IsReferencedBy</dt>
                             <dd>indicates A is used as a source of information by B</dd>
                         </div>
                     </dl>
@@ -711,19 +711,19 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242&lt;</pre>
 
                     <dl class="help-description-list">
                         <div class="help-definition-container">
-                            <dt>not applicable:</dt>
+                            <dt>not applicable</dt>
                             <dd>information is inappropriate to report, often this attribute can be removed entirely.</dd>
                         </div>
                         <div class="help-definition-container">
-                            <dt>restricted access:</dt>
+                            <dt>restricted access</dt>
                             <dd>information exists but cannot be released openly because of privacy concerns</dd>
                         </div>
                         <div class="help-definition-container">
-                            <dt>not provided:</dt>
+                            <dt>not provided</dt>
                             <dd>information is not available at the time of submission, a value may be provided at the later stage</dd>
                         </div>
                         <div class="help-definition-container">
-                            <dt>not collected:</dt>
+                            <dt>not collected</dt>
                             <dd>information was not collected and will therefore never be available</dd>
                         </div>
                     </dl>
@@ -754,14 +754,37 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242&lt;</pre>
                     <p>To search for datasets without the ID's, use the term <span>search?keyword=</span></p>
                     <p>To search by specific attributes use <span>search?&lt;attribute_name&gt;=</span></p>
                     <p>Available <strong>attribute_name</strong> to search include:</p>
-                    <ul class="help-terminology-list">
-                        <li><strong>taxno</strong> = Taxonomic ID (NCBI)</li>
-                        <li><strong>taxname</strong> = species name (nb must exact spelling, no synonyms searched)</li>
-                        <li><strong>author</strong> = restricts search to the author table</li>
-                        <li><strong>datasettype</strong> = restricts search to the types of datasets, e.g. metagenomic, genomic, transcriptomic etc.</li>
-                        <li><strong>manuscript</strong> = restricts search to the manuscript ID associated with <span class="text-italic">GigaDB</span> dataset(s) e.g. <span>search?manuscript=10.1186/2047-217X-3-21</span></li>
-                        <li><strong>project</strong> = restricts search to the project name, e.g. Genome 10K</li>
-                    </ul>
+                    <dl class="help-description-list">
+                        <div class="help-definition-container">
+                            <dt><strong>taxno</strong></dt>
+                            <dd>Taxonomic ID (NCBI)</dd>
+                        </div>
+
+                        <div class="help-definition-container">
+                            <dt><strong>taxname</strong></dt>
+                            <dd>species name (nb must exact spelling, no synonyms searched)</dd>
+                        </div>
+
+                        <div class="help-definition-container">
+                            <dt><strong>author</strong></dt>
+                            <dd>restricts search to the author table</dd>
+                        </div>
+
+                        <div class="help-definition-container">
+                            <dt><strong>datasettype</strong></dt>
+                            <dd>restricts search to the types of datasets, e.g. metagenomic, genomic, transcriptomic etc.</dd>
+                        </div>
+
+                        <div class="help-definition-container">
+                            <dt><strong>manuscript</strong></dt>
+                            <dd>restricts search to the manuscript ID associated with <span class="text-italic">GigaDB</span> dataset(s) e.g. <span>search?manuscript=10.1186/2047-217X-3-21</span></dd>
+                        </div>
+
+                        <div class="help-definition-container">
+                            <dt><strong>project</strong></dt>
+                            <dd>restricts search to the project name, e.g. Genome 10K</dd>
+                        </div>
+                    </dl>
                     <p>eg. <span>..../search?taxno=9606</span></p>
                     <p>To specify results to be returned are ONLY a particular level of data, add the phrase <strong><span>&amp;results=dataset</span></strong>, or file or sample:<br />e.g. <a href="http://gigadb.org/api/search?project=Genome%2010K&amp;result=sample" target="_blank">http://gigadb.org/api/search?project=Genome%2010K&amp;result=sample</a></p>
                     <p>NB - the search still looks everywhere, but the results returned are only those samples that are in datasets that are found by the search.</p>

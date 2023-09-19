@@ -35,19 +35,13 @@
       color: @dark-gray-on-white;
       font-weight: 500;
     }
+    dt::after {
+      font-weight: 500;
+      content: " - ";
+    }
     dd pre {
       margin-top: 5px;
     }
-  }
-}
-
-.help-terminology-list {
-  list-style: none;
-  margin: 14px 0;
-  padding: 0;
-  color: @dark-gray-on-white;
-  &> :not(:last-child) {
-    margin-bottom: 12px;
   }
 }
 
