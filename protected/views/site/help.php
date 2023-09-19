@@ -69,7 +69,7 @@ $this->pageTitle = 'GigaDB - Help';
                     <hr class="dashed">
                     <section aria-labelledby="filteringResultTitle" class="m-0">
                         <h2 class="page-subtitle" id="filteringResultTitle">Filtering result</h2>
-                        <p style="margin-bottom: 20px;">On the left of the search results you have the option to further refine the results by using the filters. By default all filters are disabled, allowing you to see all search results for your keyword. If you want to hide some results based on some criteria, choose the filter for your criteria, and select the options that match what you want to see.</p>
+                        <p class="mb-20">On the left of the search results you have the option to further refine the results by using the filters. By default all filters are disabled, allowing you to see all search results for your keyword. If you want to hide some results based on some criteria, choose the filter for your criteria, and select the options that match what you want to see.</p>
                         <h3 class="tabpanel-subtitle">TFilter options for Datasets:</h3>
                         <ol>
                             <li>Dataset Type (<a href="#datasettypes" onclick="DatasetFunction()">Dataset Type</a> controlled vocabulary eg 'Genomic', 'Proteomic')</li>
@@ -282,7 +282,7 @@ $this->pageTitle = 'GigaDB - Help';
                     <hr class="dashed">
                     <section aria-labelledby="fileformats" class="m-0">
                     <h2 class="page-subtitle" id="fileformats">File formats</h2>
-                    <ol style="padding-left: 22px;">
+                    <ol class="help-ol">
                         <li><a href="#agp">AGP</a></li>
                         <li><a href="#bam">BAM</a></li>
                         <li><a href="#bigwig">BIGWIG</a></li>

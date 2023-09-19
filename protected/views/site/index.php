@@ -12,7 +12,7 @@
                 </div>
             </div>
         </section>
-        <section style="margin-bottom: 20px;">
+        <section class="mb-20">
             <div class="container">
                 <div class="row">
                     <div class="col-xs-8">
