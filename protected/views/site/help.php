@@ -29,59 +29,65 @@ $this->pageTitle = 'GigaDB - Help';
             </ul>
             <div class="tab-content">
                 <div role="tabpanel" class="tab-pane active" id="search" aria-labelledby="lisearch">
-                    <h2 class="page-subtitle">Search operation</h2>
-                    <p>To search across all Dataset, Sample and File records in <span class="text-italic">GigaDB</span>, simply enter a search term in the search bar found at the top of all <span class="text-italic">GigaDB</span> pages.</p>
-                    <p>The search is case insensitive which means both uppercase and lowercase keywords will have the same result.</p>
+                    <section aria-labelledby="searchOperationTitle" class="m-0">
+                        <h2 class="page-subtitle" id="searchOperationTitle">Search operation</h2>
+                        <p>To search across all Dataset, Sample and File records in <span class="text-italic">GigaDB</span>, simply enter a search term in the search bar found at the top of all <span class="text-italic">GigaDB</span> pages.</p>
+                        <p>The search is case insensitive which means both uppercase and lowercase keywords will have the same result.</p>
+                    </section>
                     <hr class="dashed">
-                    <h2 class="page-subtitle">Search result</h2>
-                    <p>The search results are grouped by <span class="text-italic">GigaDB</span> Datasets (G), Samples (S) and Files (F).</p>
+                    <section aria-labelledby="searchResultTitle" class="m-0">
+                        <h2 class="page-subtitle" id="searchResultTitle">Search result</h2>
+                        <p>The search results are grouped by <span class="text-italic">GigaDB</span> Datasets (G), Samples (S) and Files (F).</p>
 
-                    <dl class="help-search-result">
-                        <div class="help-search-result-item">
-                            <dt>
-                                <div class="text-icon text-icon-sm text-icon-blue" aria-hidden="true">G</div>
-                                <span class="sr-only">Datasets</span>
-                            </dt>
-                            <dd>For each dataset result, author names and DOI are displayed. Hovering over dataset name provides the description of dataset. Dataset and sample names are linked to the specific DOI page for those data, as well as file links are provided to download.</dd>
-                        </div>
-                        <div class="help-search-result-item">
-                            <dt>
-                                <div class="text-icon text-icon-sm text-icon-green" aria-hidden="true">S</div>
-                                <span class="sr-only">Samples</span>
-                            </dt>
-                            <dd>For each sample result, the sample name, species name and species ID are displayed with links to the NCBI taxonomy page for the species and to the <span class="text-italic">GigaDB</span> dataset page.</dd>
-                        </div>
-                        <div class="help-search-result-item">
-                            <dt>
-                                <div class="text-icon text-icon-sm text-icon-yellow" aria-hidden="true">F</div>
-                                <span class="sr-only">Files</span>
-                            </dt>
-                            <dd>For each file result, the file name, file type and file size are displayed with a direct link to the FTP server location of that file.</dd>
-                        </div>
-                    </dl>
+                        <dl class="help-search-result">
+                            <div class="help-search-result-item">
+                                <dt>
+                                    <div class="text-icon text-icon-sm text-icon-blue" aria-hidden="true">G</div>
+                                    <span class="sr-only">Datasets</span>
+                                </dt>
+                                <dd>For each dataset result, author names and DOI are displayed. Hovering over dataset name provides the description of dataset. Dataset and sample names are linked to the specific DOI page for those data, as well as file links are provided to download.</dd>
+                            </div>
+                            <div class="help-search-result-item">
+                                <dt>
+                                    <div class="text-icon text-icon-sm text-icon-green" aria-hidden="true">S</div>
+                                    <span class="sr-only">Samples</span>
+                                </dt>
+                                <dd>For each sample result, the sample name, species name and species ID are displayed with links to the NCBI taxonomy page for the species and to the <span class="text-italic">GigaDB</span> dataset page.</dd>
+                            </div>
+                            <div class="help-search-result-item">
+                                <dt>
+                                    <div class="text-icon text-icon-sm text-icon-yellow" aria-hidden="true">F</div>
+                                    <span class="sr-only">Files</span>
+                                </dt>
+                                <dd>For each file result, the file name, file type and file size are displayed with a direct link to the FTP server location of that file.</dd>
+                            </div>
+                        </dl>
 
-                    <p>Only those objects that have direct matches are displayed in the search results, i.e. the only Files to be displayed in the search results will be those with matches to the search term, all other files within the same dataset will NOT be displayed.</p>
-                    <p>For example, searching for the term "Potato" will return the dataset with the title "Genomic data from the potato" which contains 17 files, however, the search results table will only display 3 of those 17 files because only 3 contain the search term “potato”. To find all data associated with a dataset you must follow the link to the dataset page.</p>
+                        <p>Only those objects that have direct matches are displayed in the search results, i.e. the only Files to be displayed in the search results will be those with matches to the search term, all other files within the same dataset will NOT be displayed.</p>
+                        <p>For example, searching for the term "Potato" will return the dataset with the title "Genomic data from the potato" which contains 17 files, however, the search results table will only display 3 of those 17 files because only 3 contain the search term “potato”. To find all data associated with a dataset you must follow the link to the dataset page.</p>
+                    </section>
                     <hr class="dashed">
-                    <h2 class="page-subtitle">Filtering result</h2>
-                    <p style="margin-bottom: 20px;">On the left of the search results you have the option to further refine the results by using the filters. By default all filters are disabled, allowing you to see all search results for your keyword. If you want to hide some results based on some criteria, choose the filter for your criteria, and select the options that match what you want to see.</p>
-                    <h3 class="tabpanel-subtitle">TFilter options for Datasets:</h3>
-                    <ol>
-                        <li>Dataset Type (<a href="#datasettypes" onclick="DatasetFunction()">Dataset Type</a> controlled vocabulary eg 'Genomic', 'Proteomic')</li>
-                        <li>Project (eg 'Genome 10K', '1000 Genomes'</li>
-                        <li>External Link Types (Controlled vocabulary: 'Genome Browser' or 'Additional Data')</li>
-                        <li>Publication Date (From and To. Format: dd-mm-yyyy)</li>
-                    </ol>
-                    <h3 class="tabpanel-subtitle">Filter options for Samples:</h3>
-                    <ol>
-                        <li>Common Name (Internally controlled eg 'Human', 'Mouse')</li>
-                    </ol>
-                    <h3 class="tabpanel-subtitle">Filter options for Files:</h3>
-                    <ol>
-                        <li>File Type (<a href="#filetypes" onclick="DatasetFunction()">File Type</a> controlled vocabulary eg 'Alignments', 'Genome sequence', 'SNPs')</li>
-                        <li>File Format (<a href="#fileformats" onclick="DatasetFunction()">File format</a> controlled vocabulary eg 'BIGWIG', 'FASTQ', 'VCF')</li>
-                        <li>File Size (From and To: Format KB, MB, GB, TB)</li>
-                    </ol>
+                    <section aria-labelledby="filteringResultTitle" class="m-0">
+                        <h2 class="page-subtitle" id="filteringResultTitle">Filtering result</h2>
+                        <p style="margin-bottom: 20px;">On the left of the search results you have the option to further refine the results by using the filters. By default all filters are disabled, allowing you to see all search results for your keyword. If you want to hide some results based on some criteria, choose the filter for your criteria, and select the options that match what you want to see.</p>
+                        <h3 class="tabpanel-subtitle">TFilter options for Datasets:</h3>
+                        <ol>
+                            <li>Dataset Type (<a href="#datasettypes" onclick="DatasetFunction()">Dataset Type</a> controlled vocabulary eg 'Genomic', 'Proteomic')</li>
+                            <li>Project (eg 'Genome 10K', '1000 Genomes'</li>
+                            <li>External Link Types (Controlled vocabulary: 'Genome Browser' or 'Additional Data')</li>
+                            <li>Publication Date (From and To. Format: dd-mm-yyyy)</li>
+                        </ol>
+                        <h3 class="tabpanel-subtitle">Filter options for Samples:</h3>
+                        <ol>
+                            <li>Common Name (Internally controlled eg 'Human', 'Mouse')</li>
+                        </ol>
+                        <h3 class="tabpanel-subtitle">Filter options for Files:</h3>
+                        <ol>
+                            <li>File Type (<a href="#filetypes" onclick="DatasetFunction()">File Type</a> controlled vocabulary eg 'Alignments', 'Genome sequence', 'SNPs')</li>
+                            <li>File Format (<a href="#fileformats" onclick="DatasetFunction()">File format</a> controlled vocabulary eg 'BIGWIG', 'FASTQ', 'VCF')</li>
+                            <li>File Size (From and To: Format KB, MB, GB, TB)</li>
+                        </ol>
+                    </section>
                 </div>
                 <div role="tabpanel" class="tab-pane" id="guidelines" aria-labelledby="liguideline">
                     <p><a href="http://gigadb.org/"><span class="text-italic">GigaDB</span></a> is an open-access database. As such, all data submitted to <span class="text-italic">GigaDB</span> must be fully consented for public release (for more information about our data policies, please see our <a href="http://gigadb.org/site/term/" target="_blank">Terms of use page</a>).</p>
@@ -112,164 +118,169 @@ $this->pageTitle = 'GigaDB - Help';
                     <p>If you have any questions, please contact us at <a href="mailto:database@gigasciencejournal.com" target="_blank">database@gigasciencejournal.com</a>.</p>
                 </div>
                 <div role="tabpanel" class="tab-pane" id="vocabulary" aria-labelledby="livocabulary">
-                    <h2 class="page-subtitle" id="datasettypes">Dataset types</h2>
-                    <dl class="help-description-list">
-                        <div class="help-definition-container">
-                            <dt>Genomic</dt>
-                            <dd>Includes all genetic and genomic data eg sequence, assemblies, alignments, genotypes, variation and annotation. Minimal requirements: DNA sequence data eg next-gen raw reads (fastq files) OR assembled DNA sequences (fasta files).</dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt>Transcriptomic</dt>
-                            <dd>Includes all data relating to mRNA. Minimal requirements: RNA sequence data eg next-gen raw reads (fastq files) OR transcript statistics eg RNA coverage/depth.</dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt>Epigenomic</dt>
-                            <dd>Includes methylation and histone modification data. Minimal requirements: Details on methylation sites/status eg qmap files OR details on histone modification sites/status.</dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt>Metagenomic</dt>
-                            <dd>Includes all genetic and genomic data eg sequence, assemblies, alignments, genotypes, variation and annotation from environmental samples. Minimal requirements: Environmental DNA sequence data eg next-gen raw reads (fastq files) OR assembled DNA sequences (fasta files).</dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt>Metatranscriptomic</dt>
-                            <dd>RNA sequences analysis data from environmental samples, e.g. assemblies, expression profiles, variations, annotations etc.</dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt>Genome mapping</dt>
-                            <dd>Datasets containing sequence analysis of genes/conserved sequences mapped to genome(s), and/or optical maps of entire genomes.</dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt>Imaging</dt>
-                            <dd>Includes all imaging data, e.g. light microscopy, 3D imaging, high-resolution images, camera-trap images etc...</dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt>Software</dt>
-                            <dd>Includes datasets that package code together into a useful bioinformatics tool. Note, datasets that contain short scripts are not labelled as software.</dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt>Virtual-Machine</dt>
-                            <dd>Includes software that has been packaged into a virtual machine environment.</dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt>Workflow</dt>
-                            <dd>Datasets that include tools that have been pieced together into a workflow using CWL or other workflow languages.</dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt>Metabolomic</dt>
-                            <dd>Includes analysis of specific metabolights across multiple samples and/or multiple metabolights in fewer samples, usually LC-MS data.</dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt>Proteomic</dt>
-                            <dd>Includes all mass spec data. Minimal requirements: Peptide/protein data eg mass spec.</dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt>Lipidomic</dt>
-                            <dd>Includes datasets with focus on lipid analysis, usually using mass spectrometry.</dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt>Metabarcoding</dt>
-                            <dd>Datasets using barcode sequences for environmental analysis and/or monitoring studies e.g. biodiversity assessment.</dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt>Metadata</dt>
-                            <dd>Denotes datasets where there is a focus on collection of metadata e.g. ontologies or metadata standards.</dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt>Network-Analysis</dt>
-                            <dd>Datasets containing analysis of biological networks, either species interactions or at the molecular level.</dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt>Neuroscience</dt>
-                            <dd>Includes all datasets that hold data about brains/neurons, can be imaging, molecular and/or software/tools.</dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt>Electro-encephalography (EEG)</dt>
-                            <dd>Datasets containing or using EEG data.</dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt>Phenotyping</dt>
-                            <dd>Includes datasets with extensive phenotypic information about the samples/specimens.</dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt>Ecology</dt>
-                            <dd>Data used/collected for ecological studies.</dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt>Climate</dt>
-                            <dd>Data used/collected for climate studies.</dd>
-                        </div>
-                    </dl>
-                    <p>Additional dataset types can be added, upon review, as new submissions are received.</p>
-                    <h2 class="page-subtitle" id="filetypes">File types</h2>
-                    <p>File types and examples of associated file extensions:</p>
-                    <dl class="help-description-list">
-                        <div class="help-definition-container">
-                            <dt>Alignments</dt>
-                            <dd>.bam, .chain, .maf, .net, .sam</dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt>Allele frequencies</dt>
-                            <dd>.frq</dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt>Annotation</dt>
-                            <dd>.gff, .ipr, .kegg, .wego</dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt>Coding sequence</dt>
-                            <dd>.cds, .fa</dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt>InDels</dt>
-                            <dd>.gff, .txt, .vcf</dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt>ISA-Tab</dt>
-                            <dd>see <a href="http://isa-tools.org/format/specification.html" target="_blank">ISA tools</a></dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt>Genome assembly</dt>
-                            <dd>.agp, .contig, .depth, .fa, .length, .scafseq</dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt>Genome sequence</dt>
-                            <dd>.fastq, .fq</dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt>Haplotypes</dt>
-                            <dd>.haplotype</dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt>Methylome data</dt>
-                            <dd>.fa, .qmap, .rpm, .txt</dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt>Protein sequence</dt>
-                            <dd>.fa, .pep</dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt>Readme</dt>
-                            <dd>.pdf, .txt</dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt>SNPs</dt>
-                            <dd>.annotation, .gff, .txt, .vcf</dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt>SVs</dt>
-                            <dd>.gff, .txt, .vcf</dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt>Transcriptome data</dt>
-                            <dd>.depth, .rpkm, .wig</dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt>Other</dt>
-                            <dd>.xls, .pdf, .txt</dd>
-                        </div>
-                    </dl>
-                    <p>Additional file types can be added, upon review, as new submissions are received.</p>
+                    <section aria-labelledby="datasettypes" class="m-0">
+                        <h2 class="page-subtitle" id="datasettypes">Dataset types</h2>
+                        <dl class="help-description-list">
+                            <div class="help-definition-container">
+                                <dt>Genomic</dt>
+                                <dd>Includes all genetic and genomic data eg sequence, assemblies, alignments, genotypes, variation and annotation. Minimal requirements: DNA sequence data eg next-gen raw reads (fastq files) OR assembled DNA sequences (fasta files).</dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt>Transcriptomic</dt>
+                                <dd>Includes all data relating to mRNA. Minimal requirements: RNA sequence data eg next-gen raw reads (fastq files) OR transcript statistics eg RNA coverage/depth.</dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt>Epigenomic</dt>
+                                <dd>Includes methylation and histone modification data. Minimal requirements: Details on methylation sites/status eg qmap files OR details on histone modification sites/status.</dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt>Metagenomic</dt>
+                                <dd>Includes all genetic and genomic data eg sequence, assemblies, alignments, genotypes, variation and annotation from environmental samples. Minimal requirements: Environmental DNA sequence data eg next-gen raw reads (fastq files) OR assembled DNA sequences (fasta files).</dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt>Metatranscriptomic</dt>
+                                <dd>RNA sequences analysis data from environmental samples, e.g. assemblies, expression profiles, variations, annotations etc.</dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt>Genome mapping</dt>
+                                <dd>Datasets containing sequence analysis of genes/conserved sequences mapped to genome(s), and/or optical maps of entire genomes.</dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt>Imaging</dt>
+                                <dd>Includes all imaging data, e.g. light microscopy, 3D imaging, high-resolution images, camera-trap images etc...</dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt>Software</dt>
+                                <dd>Includes datasets that package code together into a useful bioinformatics tool. Note, datasets that contain short scripts are not labelled as software.</dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt>Virtual-Machine</dt>
+                                <dd>Includes software that has been packaged into a virtual machine environment.</dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt>Workflow</dt>
+                                <dd>Datasets that include tools that have been pieced together into a workflow using CWL or other workflow languages.</dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt>Metabolomic</dt>
+                                <dd>Includes analysis of specific metabolights across multiple samples and/or multiple metabolights in fewer samples, usually LC-MS data.</dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt>Proteomic</dt>
+                                <dd>Includes all mass spec data. Minimal requirements: Peptide/protein data eg mass spec.</dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt>Lipidomic</dt>
+                                <dd>Includes datasets with focus on lipid analysis, usually using mass spectrometry.</dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt>Metabarcoding</dt>
+                                <dd>Datasets using barcode sequences for environmental analysis and/or monitoring studies e.g. biodiversity assessment.</dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt>Metadata</dt>
+                                <dd>Denotes datasets where there is a focus on collection of metadata e.g. ontologies or metadata standards.</dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt>Network-Analysis</dt>
+                                <dd>Datasets containing analysis of biological networks, either species interactions or at the molecular level.</dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt>Neuroscience</dt>
+                                <dd>Includes all datasets that hold data about brains/neurons, can be imaging, molecular and/or software/tools.</dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt>Electro-encephalography (EEG)</dt>
+                                <dd>Datasets containing or using EEG data.</dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt>Phenotyping</dt>
+                                <dd>Includes datasets with extensive phenotypic information about the samples/specimens.</dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt>Ecology</dt>
+                                <dd>Data used/collected for ecological studies.</dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt>Climate</dt>
+                                <dd>Data used/collected for climate studies.</dd>
+                            </div>
+                        </dl>
+                        <p>Additional dataset types can be added, upon review, as new submissions are received.</p>
+                    </section>
+                    <section aria-labelledby="filetypes" class="m-0">
+                        <h2 class="page-subtitle" id="filetypes">File types</h2>
+                        <p>File types and examples of associated file extensions:</p>
+                        <dl class="help-description-list">
+                            <div class="help-definition-container">
+                                <dt>Alignments</dt>
+                                <dd>.bam, .chain, .maf, .net, .sam</dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt>Allele frequencies</dt>
+                                <dd>.frq</dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt>Annotation</dt>
+                                <dd>.gff, .ipr, .kegg, .wego</dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt>Coding sequence</dt>
+                                <dd>.cds, .fa</dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt>InDels</dt>
+                                <dd>.gff, .txt, .vcf</dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt>ISA-Tab</dt>
+                                <dd>see <a href="http://isa-tools.org/format/specification.html" target="_blank">ISA tools</a></dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt>Genome assembly</dt>
+                                <dd>.agp, .contig, .depth, .fa, .length, .scafseq</dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt>Genome sequence</dt>
+                                <dd>.fastq, .fq</dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt>Haplotypes</dt>
+                                <dd>.haplotype</dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt>Methylome data</dt>
+                                <dd>.fa, .qmap, .rpm, .txt</dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt>Protein sequence</dt>
+                                <dd>.fa, .pep</dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt>Readme</dt>
+                                <dd>.pdf, .txt</dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt>SNPs</dt>
+                                <dd>.annotation, .gff, .txt, .vcf</dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt>SVs</dt>
+                                <dd>.gff, .txt, .vcf</dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt>Transcriptome data</dt>
+                                <dd>.depth, .rpkm, .wig</dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt>Other</dt>
+                                <dd>.xls, .pdf, .txt</dd>
+                            </div>
+                        </dl>
+                        <p>Additional file types can be added, upon review, as new submissions are received.</p>
+                    </section>
                     <hr class="dashed">
+                    <section aria-labelledby="fileformats" class="m-0">
                     <h2 class="page-subtitle" id="fileformats">File formats</h2>
                     <ol style="padding-left: 22px;">
                         <li><a href="#agp">AGP</a></li>
@@ -646,231 +657,246 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242&lt;</pre>
 
                     <!-- ENDOF FILE FORMATS DL -->
 
-                    <hr class="dashed">
-
-                    <h2 class="page-subtitle">Upload status</h2>
-                    <dl class="help-description-list">
-                        <div class="help-definition-container">
-                            <dt>Publish</dt>
-                            <dd>this dataset is fully consented for immediate release upon <span class="text-italic">Giga</span>DB approval</dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt>HUP</dt>
-                            <dd>this dataset should be Held Until Publication (HUP)</dd>
-                        </div>
-                    </dl>
-
+                    </section>
 
                     <hr class="dashed">
 
-                    <h2 class="page-subtitle">DOI relationship</h2>
+                    <section aria-labelledby="uploadStatusTitle" class="m-0">
+                        <h2 class="page-subtitle" id="uploadStatusTitle">Upload status</h2>
+                        <dl class="help-description-list">
+                            <div class="help-definition-container">
+                                <dt>Publish</dt>
+                                <dd>this dataset is fully consented for immediate release upon <span class="text-italic">Giga</span>DB approval</dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt>HUP</dt>
+                                <dd>this dataset should be Held Until Publication (HUP)</dd>
+                            </div>
+                        </dl>
+                    </section>
 
-                    <p>The DOI relationship vocabulary is taken from the <a href="http://schema.datacite.org/meta/kernel-2.2/doc/DataCite-MetadataKernel_v2.2.pdf" target="_blank" aria-label="DataCite Pdf file">DataCite</a> 'relationType' schema property (ID=12.2).</p>
-                    <p>Definition: Description of the relationship of the resource being registered (A) and the related resource (B).</p>
-
-                    <dl class="help-description-list">
-                        <div class="help-definition-container">
-                            <dt>IsSupplementTo</dt>
-                            <dd>indicates that A is a supplement to B</dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt>IsSupplementedBy</dt>
-                            <dd>indicates that B is a supplement to A</dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt>IsNewVersionOf</dt>
-                            <dd>indicates A is a new edition of B, where the new edition has been modified or updated</dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt>IsPreviousVersionOf</dt>
-                            <dd>indicates A is a previous edition of B</dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt>IsPartOf</dt>
-                            <dd>indicates A is a portion of B; may be used for elements of a series</dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt>HasPart</dt>
-                            <dd>indicates A includes the part B</dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt>References</dt>
-                            <dd>indicates B is used as a source of information for A</dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt>IsReferencedBy</dt>
-                            <dd>indicates A is used as a source of information by B</dd>
-                        </div>
-                    </dl>
 
                     <hr class="dashed">
 
-                    <h2 class="page-subtitle">Missing Value reporting</h2>
+                    <section aria-labelledby="doiRelTitle" class="m-0">
+                        <h2 class="page-subtitle" id="doiRelTitle">DOI relationship</h2>
 
-                    <p>For attributes (sample, dataset or files) that have some or all values missing please use the following controlled value terms to describe the exact reason for the missing value.</p>
+                        <p>The DOI relationship vocabulary is taken from the <a href="http://schema.datacite.org/meta/kernel-2.2/doc/DataCite-MetadataKernel_v2.2.pdf" target="_blank" aria-label="DataCite Pdf file">DataCite</a> 'relationType' schema property (ID=12.2).</p>
+                        <p>Definition: Description of the relationship of the resource being registered (A) and the related resource (B).</p>
 
-                    <dl class="help-description-list">
-                        <div class="help-definition-container">
-                            <dt>not applicable</dt>
-                            <dd>information is inappropriate to report, often this attribute can be removed entirely.</dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt>restricted access</dt>
-                            <dd>information exists but cannot be released openly because of privacy concerns</dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt>not provided</dt>
-                            <dd>information is not available at the time of submission, a value may be provided at the later stage</dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt>not collected</dt>
-                            <dd>information was not collected and will therefore never be available</dd>
-                        </div>
-                    </dl>
+                        <dl class="help-description-list">
+                            <div class="help-definition-container">
+                                <dt>IsSupplementTo</dt>
+                                <dd>indicates that A is a supplement to B</dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt>IsSupplementedBy</dt>
+                                <dd>indicates that B is a supplement to A</dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt>IsNewVersionOf</dt>
+                                <dd>indicates A is a new edition of B, where the new edition has been modified or updated</dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt>IsPreviousVersionOf</dt>
+                                <dd>indicates A is a previous edition of B</dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt>IsPartOf</dt>
+                                <dd>indicates A is a portion of B; may be used for elements of a series</dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt>HasPart</dt>
+                                <dd>indicates A includes the part B</dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt>References</dt>
+                                <dd>indicates B is used as a source of information for A</dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt>IsReferencedBy</dt>
+                                <dd>indicates A is used as a source of information by B</dd>
+                            </div>
+                        </dl>
+                    </section>
+
+                    <hr class="dashed">
+
+                    <section aria-labelledby="missingValReportingTitle" class="m-0">
+                        <h2 class="page-subtitle" id="missingValReportingTitle">Missing Value reporting</h2>
+
+                        <p>For attributes (sample, dataset or files) that have some or all values missing please use the following controlled value terms to describe the exact reason for the missing value.</p>
+
+                        <dl class="help-description-list">
+                            <div class="help-definition-container">
+                                <dt>not applicable</dt>
+                                <dd>information is inappropriate to report, often this attribute can be removed entirely.</dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt>restricted access</dt>
+                                <dd>information exists but cannot be released openly because of privacy concerns</dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt>not provided</dt>
+                                <dd>information is not available at the time of submission, a value may be provided at the later stage</dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt>not collected</dt>
+                                <dd>information was not collected and will therefore never be available</dd>
+                            </div>
+                        </dl>
+                    </section>
 
                 </div>
                 <div role="tabpanel" class="tab-pane" id="interface" aria-labelledby="liapi">
-                    <h2 class="page-subtitle">Availability</h2>
-                    <p>The current API version is available on our main production database. This version will be periodically updated with new additional functionality and we will whenever possible maintain backwards compatibility. Occasionally this may not be possible and for this reason we recommend regularly checking and updating your usage of our API. </p>
-                    <p>The basic functionality of the API is to retrieve dataset metadata held in <span class="text-italic">GigaDB</span>. The actual data files will still need to be pulled by FTP, but you can gather the exact FTP locations from the metadata using the API, then use that to pull only the files you actually need/want.</p>
-                    <p>Search function is based on the web-search function and will therefore give the same results.</p>
-                    <hr class="dashed">
-                    <h2 class="page-subtitle">Comments and Bug reporting</h2>
-                    <p>The GigaScience github issue for the API works is here:</p>
-                    <p><a href="https://github.com/gigascience/gigadb-website/issues/27" target="_blank">https://github.com/gigascience/gigadb-website/issues/27</a></p>
-                    <p>Please add feedback / comments/ questions to that issue.</p>
-                    <hr class="dashed">
-                    <h2 class="page-subtitle">Summary</h2>
-                    <p>It is currently possible to search "all" fields, or to specify one of a select few fields to search.</p>
-                    <p>It is possible to have results return all metadata for each dataset with "hits" to the search term, or to specify a particular portion of the metadata, these portions are currently "dataset", "sample" and "file", which is in alignment with the same functionality on the web-search tool. The default is to return results as <a href="https://sites.google.com/a/gigasciencejournal.com/gigascience/public-pages/xml-schema">GigaDB v3 XML</a></p>
-                    <p>It is planned that we will have the option to specify the format to be GigaDBv3-JSON or ISA2.0-JSON in the future, but that has not been implemented yet.</p>
+                    <section aria-labelledby="availTitle" class="m-0">
+                        <h2 class="page-subtitle" id="availTitle">Availability</h2>
+                        <p>The current API version is available on our main production database. This version will be periodically updated with new additional functionality and we will whenever possible maintain backwards compatibility. Occasionally this may not be possible and for this reason we recommend regularly checking and updating your usage of our API. </p>
+                        <p>The basic functionality of the API is to retrieve dataset metadata held in <span class="text-italic">GigaDB</span>. The actual data files will still need to be pulled by FTP, but you can gather the exact FTP locations from the metadata using the API, then use that to pull only the files you actually need/want.</p>
+                        <p>Search function is based on the web-search function and will therefore give the same results.</p>
+                        <hr class="dashed">
+                        <h2 class="page-subtitle">Comments and Bug reporting</h2>
+                        <p>The GigaScience github issue for the API works is here:</p>
+                        <p><a href="https://github.com/gigascience/gigadb-website/issues/27" target="_blank">https://github.com/gigascience/gigadb-website/issues/27</a></p>
+                        <p>Please add feedback / comments/ questions to that issue.</p>
+                        <hr class="dashed">
+                        <h2 class="page-subtitle">Summary</h2>
+                        <p>It is currently possible to search "all" fields, or to specify one of a select few fields to search.</p>
+                        <p>It is possible to have results return all metadata for each dataset with "hits" to the search term, or to specify a particular portion of the metadata, these portions are currently "dataset", "sample" and "file", which is in alignment with the same functionality on the web-search tool. The default is to return results as <a href="https://sites.google.com/a/gigasciencejournal.com/gigascience/public-pages/xml-schema">GigaDB v3 XML</a></p>
+                        <p>It is planned that we will have the option to specify the format to be GigaDBv3-JSON or ISA2.0-JSON in the future, but that has not been implemented yet.</p>
+                    </section>
 
                     <hr class="dashed">
 
 
-                    <h2 class="page-subtitle">Terminology</h2>
-                    <p>To specify exact fields to return data from, use terms; <span>dataset?=</span>, <span>sample?=</span>, <span>file?=</span>, (or <span>experiment?=</span><span aria-hidden="true">*</span>)</p>
-                    <p><span aria-hidden="true">* - </span><em>experiment will be implemented in the future</em></p>
-                    <p>To search for datasets without the ID's, use the term <span>search?keyword=</span></p>
-                    <p>To search by specific attributes use <span>search?&lt;attribute_name&gt;=</span></p>
-                    <p>Available <strong>attribute_name</strong> to search include:</p>
-                    <dl class="help-description-list">
-                        <div class="help-definition-container">
-                            <dt><strong>taxno</strong></dt>
-                            <dd>Taxonomic ID (NCBI)</dd>
-                        </div>
+                    <section aria-labelledby="terminologyTitle" class="m-0">
+                        <h2 class="page-subtitle" id="terminologyTitle">Terminology</h2>
+                        <p>To specify exact fields to return data from, use terms; <span>dataset?=</span>, <span>sample?=</span>, <span>file?=</span>, (or <span>experiment?=</span><span aria-hidden="true">*</span>)</p>
+                        <p><span aria-hidden="true">* - </span><em>experiment will be implemented in the future</em></p>
+                        <p>To search for datasets without the ID's, use the term <span>search?keyword=</span></p>
+                        <p>To search by specific attributes use <span>search?&lt;attribute_name&gt;=</span></p>
+                        <p>Available <strong>attribute_name</strong> to search include:</p>
+                        <dl class="help-description-list">
+                            <div class="help-definition-container">
+                                <dt><strong>taxno</strong></dt>
+                                <dd>Taxonomic ID (NCBI)</dd>
+                            </div>
 
-                        <div class="help-definition-container">
-                            <dt><strong>taxname</strong></dt>
-                            <dd>species name (nb must exact spelling, no synonyms searched)</dd>
-                        </div>
+                            <div class="help-definition-container">
+                                <dt><strong>taxname</strong></dt>
+                                <dd>species name (nb must exact spelling, no synonyms searched)</dd>
+                            </div>
 
-                        <div class="help-definition-container">
-                            <dt><strong>author</strong></dt>
-                            <dd>restricts search to the author table</dd>
-                        </div>
+                            <div class="help-definition-container">
+                                <dt><strong>author</strong></dt>
+                                <dd>restricts search to the author table</dd>
+                            </div>
 
-                        <div class="help-definition-container">
-                            <dt><strong>datasettype</strong></dt>
-                            <dd>restricts search to the types of datasets, e.g. metagenomic, genomic, transcriptomic etc.</dd>
-                        </div>
+                            <div class="help-definition-container">
+                                <dt><strong>datasettype</strong></dt>
+                                <dd>restricts search to the types of datasets, e.g. metagenomic, genomic, transcriptomic etc.</dd>
+                            </div>
 
-                        <div class="help-definition-container">
-                            <dt><strong>manuscript</strong></dt>
-                            <dd>restricts search to the manuscript ID associated with <span class="text-italic">GigaDB</span> dataset(s) e.g. <span>search?manuscript=10.1186/2047-217X-3-21</span></dd>
-                        </div>
+                            <div class="help-definition-container">
+                                <dt><strong>manuscript</strong></dt>
+                                <dd>restricts search to the manuscript ID associated with <span class="text-italic">GigaDB</span> dataset(s) e.g. <span>search?manuscript=10.1186/2047-217X-3-21</span></dd>
+                            </div>
 
-                        <div class="help-definition-container">
-                            <dt><strong>project</strong></dt>
-                            <dd>restricts search to the project name, e.g. Genome 10K</dd>
-                        </div>
-                    </dl>
-                    <p>eg. <span>..../search?taxno=9606</span></p>
-                    <p>To specify results to be returned are ONLY a particular level of data, add the phrase <strong><span>&amp;results=dataset</span></strong>, or file or sample:<br />e.g. <a href="http://gigadb.org/api/search?project=Genome%2010K&amp;result=sample" target="_blank">http://gigadb.org/api/search?project=Genome%2010K&amp;result=sample</a></p>
-                    <p>NB - the search still looks everywhere, but the results returned are only those samples that are in datasets that are found by the search.</p>
-                    <p><strong>Default results are "dataset" only.</strong></p>
-
-                    <hr class="dashed">
-
-                    <h2 class="page-subtitle">Examples</h2>
-
-                    <ol class="help-examples-list">
-                        <li>
-                            Retrieve known datasets by doi<br />
-                            <a href="http://gigadb.org/api/dataset?doi=100051" target="_blank">http://gigadb.org/api/dataset?doi=100051</a>
-                        </li>
-                        <li>
-                            Retrieve samples from a known DOI<br />
-                            <a href="http://gigadb.org/api/sample?doi=100051" target="_blank">http://gigadb.org/api/sample?doi=100051</a>
-                        </li>
-                        <li>
-                            Retrieve file information from a known DOI<br />
-                            <a href="http://gigadb.org/api/file?doi=100051" target="_blank">http://gigadb.org/api/file?doi=100051</a>
-                        </li>
-                        <li>
-                            Search all <span class="text-italic">GigaDB</span> by keyword, return only the top level dataset
-                            metadata<br />
-                            <a href="http://gigadb.org/api/search?keyword=chimp&amp;result=dataset" target="_blank">http://gigadb.org/api/search?keyword=chimp&amp;result=dataset</a>
-                        </li>
-                        <li>
-                            Search all <span class="text-italic">GigaDB</span> by keyword, return only the sample level
-                            metadata<br />
-                            <a href="http://gigadb.org/api/search?keyword=chimp&amp;result=sample" target="_blank">http://gigadb.org/api/search?keyword=chimp&amp;result=sample</a>
-                        </li>
-                        <li>
-                            Search all <span class="text-italic">GigaDB</span> by keyword, return only the file level
-                            metadata<br />
-                            <a href="http://gigadb.org/api/search?keyword=chimp&amp;result=file" target="_blank">http://gigadb.org/api/search?keyword=chimp&amp;result=file</a>
-                        </li>
-                        <li>
-                            Refine search to just the title of the dataset<br />
-                            <a href="http://gigadb.org/api/search?keyword=title:human&amp;result=dataset" target="_blank">http://gigadb.org/api/search?keyword=title:human&amp;result=dataset</a>
-                        </li>
-                        <li>
-                            Refine search to the descriptions of datasets<br />
-                            <a href="http://gigadb.org/api/search?keyword=description:human&amp;result=dataset" target="_blank">http://gigadb.org/api/search?keyword=description:human&amp;result=dataset</a>
-                        </li>
-                        <li>
-                            Refine search to NCBI taxonomic ID<br />
-                            <a href="http://gigadb.org/api/search?taxno=9606&amp;result=dataset" target="_blank">http://gigadb.org/api/search?taxno=9606&amp;result=dataset</a>
-                        </li>
-                        <li>
-                            Refine search to taxonomic names<br />
-                            <a href="http://gigadb.org/api/search?taxname=Homo%20sapiens&amp;result=dataset" target="_blank">http://gigadb.org/api/search?taxname=Homo%20sapiens&amp;result=dataset</a>
-                        </li>
-                        <li>
-                            Refine search to Authors<br />
-                            <a href="http://gigadb.org/api/search?author=Wang%20Jun" target="_blank">http://gigadb.org/api/search?author=Wang%20Jun</a>
-                        </li>
-                        <li>
-                            Refine search to linked manuscript IDs<br />
-                            <a href="http://gigadb.org/api/search?manuscript=10.1371/journal.pone.0005795" target="_blank">http://gigadb.org/api/search?manuscript=10.1371/journal.pone.0005795</a>
-                        </li>
-                        <li>
-                            Refine search to dataset types<br />
-                            <a href="http://gigadb.org/api/search?datasettype=Genomic" target="_blank">http://gigadb.org/api/search?datasettype=Genomic</a>
-                        </li>
-                        <li>
-                            Refine search to project names<br />
-                            <a href="http://gigadb.org/api/search?project=Genome%2010K&amp;result=sample" target="_blank">http://gigadb.org/api/search?project=Genome%2010K&amp;result=sample</a>
-                        </li>
-                        <li>
-                            List all published dataset DOIs (listed in publication date order)<br />
-                            <a href="http://gigadb.org/api/list" target="_blank">http://gigadb.org/api/list</a>
-                        </li>
-                        <li>
-                            Dump the database<br />
-                            <a href="http://gigadb.org/api/dump" target="_blank">http://gigadb.org/api/dump</a>
-                        </li>
-                        <li>
-                            List all dataset DOI's published in a date range (results ordered by
-                            publication date)<br />
-                            <a href="http://gigadb.org/api/list?start_date=2018-01-01&amp;end_date=2018-01-30" target="_blank">http://gigadb.org/api/list?start_date=2018-01-01&amp;end_date=2018-01-30</a>
-                        </li>
-                    </ol>
+                            <div class="help-definition-container">
+                                <dt><strong>project</strong></dt>
+                                <dd>restricts search to the project name, e.g. Genome 10K</dd>
+                            </div>
+                        </dl>
+                        <p>eg. <span>..../search?taxno=9606</span></p>
+                        <p>To specify results to be returned are ONLY a particular level of data, add the phrase <strong><span>&amp;results=dataset</span></strong>, or file or sample:<br />e.g. <a href="http://gigadb.org/api/search?project=Genome%2010K&amp;result=sample" target="_blank">http://gigadb.org/api/search?project=Genome%2010K&amp;result=sample</a></p>
+                        <p>NB - the search still looks everywhere, but the results returned are only those samples that are in datasets that are found by the search.</p>
+                        <p><strong>Default results are "dataset" only.</strong></p>
+                    </section>
 
                     <hr class="dashed">
-                    <h2 class="page-subtitle">Command line usage</h2>
+
+                    <section aria-labelledby="examplesTitle" class="m-0">
+                        <h2 class="page-subtitle" id="examplesTitle">Examples</h2>
+
+                        <ol class="help-examples-list">
+                            <li>
+                                Retrieve known datasets by doi<br />
+                                <a href="http://gigadb.org/api/dataset?doi=100051" target="_blank">http://gigadb.org/api/dataset?doi=100051</a>
+                            </li>
+                            <li>
+                                Retrieve samples from a known DOI<br />
+                                <a href="http://gigadb.org/api/sample?doi=100051" target="_blank">http://gigadb.org/api/sample?doi=100051</a>
+                            </li>
+                            <li>
+                                Retrieve file information from a known DOI<br />
+                                <a href="http://gigadb.org/api/file?doi=100051" target="_blank">http://gigadb.org/api/file?doi=100051</a>
+                            </li>
+                            <li>
+                                Search all <span class="text-italic">GigaDB</span> by keyword, return only the top level dataset
+                                metadata<br />
+                                <a href="http://gigadb.org/api/search?keyword=chimp&amp;result=dataset" target="_blank">http://gigadb.org/api/search?keyword=chimp&amp;result=dataset</a>
+                            </li>
+                            <li>
+                                Search all <span class="text-italic">GigaDB</span> by keyword, return only the sample level
+                                metadata<br />
+                                <a href="http://gigadb.org/api/search?keyword=chimp&amp;result=sample" target="_blank">http://gigadb.org/api/search?keyword=chimp&amp;result=sample</a>
+                            </li>
+                            <li>
+                                Search all <span class="text-italic">GigaDB</span> by keyword, return only the file level
+                                metadata<br />
+                                <a href="http://gigadb.org/api/search?keyword=chimp&amp;result=file" target="_blank">http://gigadb.org/api/search?keyword=chimp&amp;result=file</a>
+                            </li>
+                            <li>
+                                Refine search to just the title of the dataset<br />
+                                <a href="http://gigadb.org/api/search?keyword=title:human&amp;result=dataset" target="_blank">http://gigadb.org/api/search?keyword=title:human&amp;result=dataset</a>
+                            </li>
+                            <li>
+                                Refine search to the descriptions of datasets<br />
+                                <a href="http://gigadb.org/api/search?keyword=description:human&amp;result=dataset" target="_blank">http://gigadb.org/api/search?keyword=description:human&amp;result=dataset</a>
+                            </li>
+                            <li>
+                                Refine search to NCBI taxonomic ID<br />
+                                <a href="http://gigadb.org/api/search?taxno=9606&amp;result=dataset" target="_blank">http://gigadb.org/api/search?taxno=9606&amp;result=dataset</a>
+                            </li>
+                            <li>
+                                Refine search to taxonomic names<br />
+                                <a href="http://gigadb.org/api/search?taxname=Homo%20sapiens&amp;result=dataset" target="_blank">http://gigadb.org/api/search?taxname=Homo%20sapiens&amp;result=dataset</a>
+                            </li>
+                            <li>
+                                Refine search to Authors<br />
+                                <a href="http://gigadb.org/api/search?author=Wang%20Jun" target="_blank">http://gigadb.org/api/search?author=Wang%20Jun</a>
+                            </li>
+                            <li>
+                                Refine search to linked manuscript IDs<br />
+                                <a href="http://gigadb.org/api/search?manuscript=10.1371/journal.pone.0005795" target="_blank">http://gigadb.org/api/search?manuscript=10.1371/journal.pone.0005795</a>
+                            </li>
+                            <li>
+                                Refine search to dataset types<br />
+                                <a href="http://gigadb.org/api/search?datasettype=Genomic" target="_blank">http://gigadb.org/api/search?datasettype=Genomic</a>
+                            </li>
+                            <li>
+                                Refine search to project names<br />
+                                <a href="http://gigadb.org/api/search?project=Genome%2010K&amp;result=sample" target="_blank">http://gigadb.org/api/search?project=Genome%2010K&amp;result=sample</a>
+                            </li>
+                            <li>
+                                List all published dataset DOIs (listed in publication date order)<br />
+                                <a href="http://gigadb.org/api/list" target="_blank">http://gigadb.org/api/list</a>
+                            </li>
+                            <li>
+                                Dump the database<br />
+                                <a href="http://gigadb.org/api/dump" target="_blank">http://gigadb.org/api/dump</a>
+                            </li>
+                            <li>
+                                List all dataset DOI's published in a date range (results ordered by
+                                publication date)<br />
+                                <a href="http://gigadb.org/api/list?start_date=2018-01-01&amp;end_date=2018-01-30" target="_blank">http://gigadb.org/api/list?start_date=2018-01-01&amp;end_date=2018-01-30</a>
+                            </li>
+                        </ol>
+                    </section>
+
+                    <hr class="dashed">
+                    <section aria-labelledby="cliTitle" class="m-0">
+                    <h2 class="page-subtitle" id="cliTitle">Command line usage</h2>
                     <p>You can also use the curl commands on the command line to retrieve metadata, e.g.:</p>
                     <pre><code>curl <a href="http://gigadb.org/api/dataset?doi=100051" target="_blank" rel="noopener noreferrer">http://gigadb.org/api/dataset?doi=100051</a></code></pre>
                     <p>If you want to check whether a search will work you can use the <code>-I</code> flag:</p>
@@ -878,9 +904,9 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242&lt;</pre>
 # HTTP/1.1 200 OK
 # or
 # HTTP/1.1 404 Not Found / HTTP/1.1 500 Internal server error</code></pre>
+                    </section>
                 </div>
             </div>
-            </section>
         </div>
     </div>
     <script type="text/javascript">
