@@ -33,7 +33,7 @@
                             'minLength' => '2',
                         ),
                         'htmlOptions' => array(
-                            'placeholder' => 'name',
+                            'placeholder' => 'Taxon ID',
                             'size' => 'auto',
                             //'value' => $specie->tax_id .':'. $specie->scientific_name,
                         ),
