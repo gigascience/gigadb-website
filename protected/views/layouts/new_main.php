@@ -35,7 +35,7 @@
 </head>
 
 <body>
-    <a href="#maincontent" class="skip-to-main-link">Skip to content</a>
+    <a href="#maincontent" class="skip-to-main-link">Skip to main content</a>
     <header>
         <div class="base-top-bar">
             <div class="container">

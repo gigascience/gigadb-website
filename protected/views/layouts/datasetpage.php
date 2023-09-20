@@ -54,7 +54,7 @@
 </head>
 
 <body>
-<a href="#wrap" class="skip-to-main-link">Skip to content</a>
+<a href="#wrap" class="skip-to-main-link">Skip to main content</a>
 <header>
 
         <div class="container">
