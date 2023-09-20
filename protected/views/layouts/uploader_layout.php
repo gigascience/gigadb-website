@@ -88,7 +88,7 @@
                         </li>
                     </ul>
                     <div class="search-bar clearfix">
-                        <form action="/search/new" method="GET">
+                        <form action="/search/new" method="GET" role="search">
                             <?php
                                 $this->widget('application.components.DeferrableCJuiAutoComplete', array(
                                     'name' => 'keyword',
