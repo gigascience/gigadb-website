@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1372: Fix accessibility issues related to search page headings and hero layout
 - Feat #1361: Add general accessible landmarks to layouts
 - Feat #1363: Fix color contrast issues in pages with new layouts
 - Feat #1309: Implement batch processing functionality for readme tool
