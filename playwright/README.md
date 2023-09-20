@@ -7,7 +7,7 @@
 
 ```sh
 # cd to this folder
-cd e2e
+cd playwright
 # install deps
 pnpm i
 # Run all tests

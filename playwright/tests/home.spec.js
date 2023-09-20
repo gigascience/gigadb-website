@@ -17,7 +17,6 @@ test.describe('homepage', () => {
 
     const accessibilityScanResults = await new AxeBuilder({ page })
     .withTags(['wcag21aa'])
-    // .withRules(['color-contrast'])
     .analyze();
 
     expect(accessibilityScanResults.violations).toEqual([]);
