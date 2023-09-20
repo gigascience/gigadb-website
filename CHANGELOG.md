@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## Unreleased
 
 - Feat #1374: Improve accessibility and use of semantic html of search results card
+- Feat #1361: Add general accessible landmarks to layouts
 - Feat #1363: Fix color contrast issues in pages with new layouts
 - Feat #1309: Implement batch processing functionality for readme tool
 - Feat #1356: Delete local bootstrap files and replace them with Bootstrap 2.0.4 from CDN
