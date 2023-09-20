@@ -5,7 +5,7 @@
         </div>
     <? } ?>
 
-    <?php echo CHtml::beginForm('/search/new','GET',array('class'=>'form','onsubmit'=>'return validateForm(this);')); ?>
+    <?php echo CHtml::beginForm('/search/new','GET',array('class'=>'form','onsubmit'=>'return validateForm(this);','role'=>'search')); ?>
     <?php echo CHtml::errorSummary($model); ?>
 
    <div class="form-group home-search-bar-group">

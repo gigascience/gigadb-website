@@ -1,3 +1,4 @@
+@ok-needs-secrets
 Feature: Reset password
   As an author
   I want to reset my password

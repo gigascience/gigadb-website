@@ -1,3 +1,4 @@
+@ok-needs-secrets
 Feature: User profile page
   As an author
   I want a form to edit my user details

@@ -38,7 +38,7 @@ class ReadmeCest
     {
         # Test actionCreate function in ReadmeController should fail
         $I->runShellCommand("/app/yii_test readme/create --doi 888888 --outdir=/home/curators", false);
-        $I->seeResultCodeIs(1);
+        $I->seeResultCodeIs(65);
 
         # Test getReadme function in ReadmeGenerator class to
         # throw exception when no dataset can be found for a DOI
