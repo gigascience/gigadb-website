@@ -13,3 +13,8 @@ pnpm i
 # Run all tests
 pnpm test
 ```
+
+## Troubleshooting
+
+- The time it takes to run tests can vary, if some unsuspecting tests timeout consistently, try to increase the timeout value in `playwright/playwright.config.js`
+- Docs for local debugging of failing tests: [https://playwright.dev/docs/debug](https://playwright.dev/docs/debug)
