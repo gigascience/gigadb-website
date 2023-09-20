@@ -2,7 +2,7 @@
 
 ## Run tests locally
 
-- Make sure project is running locally on [http://gigadb.gigasciencejournal.com:9170](http://gigadb.gigasciencejournal.com:9170)
+- First, make sure project is running locally on [http://gigadb.gigasciencejournal.com:9170](http://gigadb.gigasciencejournal.com:9170)
 - Have `pnpm` installed: [https://pnpm.io/installation](https://pnpm.io/installation)
 
 ```sh
@@ -13,5 +13,3 @@ pnpm i
 # Run all tests
 pnpm test
 ```
-
-
