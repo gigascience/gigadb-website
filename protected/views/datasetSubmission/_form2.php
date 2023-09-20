@@ -11,7 +11,7 @@
         </font>
     <? } ?>
         
-    <?php echo CHtml::beginForm('/search/index','GET',array('class'=>'form-search well','onsubmit'=>'return validateForm(this);')); ?>
+    <?php echo CHtml::beginForm('/search/index','GET',array('class'=>'form-search well','onsubmit'=>'return validateForm(this);','role'=>'search')); ?>
 
     <?php echo CHtml::errorSummary($model); ?>
      
