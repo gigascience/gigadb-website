@@ -14,6 +14,8 @@ pnpm i
 pnpm test
 ```
 
+- Alternative: for VSCODE users, the [official Playwright VSCODE extension](https://playwright.dev/docs/getting-started-vscode) is recommended
+
 ## Troubleshooting
 
 - The time it takes to run tests can vary, if some unsuspecting tests timeout consistently, try to increase the timeout value in `playwright/playwright.config.js`
