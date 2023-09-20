@@ -10,3 +10,4 @@ export function makeAxeAssertion(path) {
     expect(accessibilityScanResults.violations).toEqual([]);
   }
 }
+
