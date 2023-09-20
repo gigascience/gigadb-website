@@ -25,10 +25,10 @@ const PUBLIC_PATHS = [
   '/site/forgot',
   '/site/thanks',
   // '/site/create',
+  'site/mapbrowse',
 ];
 
 const USER_PATHS = [
-  'site/mapbrowse',
   'user/view_profile',
   // 'datasetSubmission/upload'
 ]
