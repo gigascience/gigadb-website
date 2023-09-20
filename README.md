@@ -18,7 +18,7 @@ website. This current release is version 3.1.
 
 ### Requirements
 
-* Docker (version 18 or more recent) is [installed](https://www.docker.com/products/docker-desktop)
+* Docker (version 18 or more recent) is [installed](https://www.docker.com/products/docker-desktop) 
 on your machine (Windows, Linux or macOS)
 * You have git cloned the [gigascience/gigadb-website](https://github.com/gigascience/gigadb-website)
 project locally under `gigadb-website`
@@ -45,18 +45,18 @@ $ ./up.sh production_like
 ```
 
 >**Note 1**: You can run the script anytime you want to reset the entire state of the codebase, not just the first time.
-
+ 
 >**Note 2**: You can also read, pick and choose the steps in ``up.sh`` for a more manual and adhoc setup or just to understand how it works
 
 #### About the ``--build`` argument
 
 The ``--build`` argument (to force-build containers) is required :
 
-* after changing their Dockerfile
+* after changing their Dockerfile 
 * after making changes to the ``.env`` file
 * after switching/merging git branches with either of the above conditions
 
-to ensure the containers (**application**, **web**, and **test**) are built from the expected local development files due to lingering prior running version of the containers.
+to ensure the containers (**application**, **web**, and **test**) are built from the expected local development files due to lingering prior running version of the containers. 
 
 Avoiding using it when not necessary will speed up container startup by not building them again. Even if not used, the containers will still automatically go through the build process the very first time or after the container image has been deleted.
 
@@ -72,7 +72,7 @@ $ docker-compose up csv-to-migrations
 $ docker-compose run --rm  application ./protected/yiic migrate --migrationPath=application.migrations.data.dev --interactive=0
 ```
 
->Note 1: When creating database migrations for changes to the database schema, ensure any creation of entity only happens if it doesn't exist already, i.e use:
+>Note 1: When creating database migrations for changes to the database schema, ensure any creation of entity only happens if it doesn't exist already, i.e use: 
 > * ``CREATE TABLE IF NOT EXISTS``
 > * ``CREATE SEQUENCE IF NOT EXISTS``
 > * ``CREATE OR REPLACE VIEW``
@@ -80,8 +80,8 @@ $ docker-compose run --rm  application ./protected/yiic migrate --migrationPath=
 >Note 2: Occasionally, you may need to import database dumps and run the database migrations afterwards.
 > This will fail unless you run the following commands before the migrations in order to first drop existing constraints and indexes:
 > ```
-> $ docker-compose run --rm application ./protected/yiic custommigrations dropconstraints
-> $ docker-compose run --rm application ./protected/yiic custommigrations dropindexes
+> $ docker-compose run --rm application ./protected/yiic custommigrations dropconstraints 
+> $ docker-compose run --rm application ./protected/yiic custommigrations dropindexes 
 >```
 
 
@@ -95,9 +95,9 @@ $ docker-compose run --rm  application ./protected/yiic migrate --migrationPath=
   from your GitLab user settings so your local setup can access the secret
   variables
 
-The project can be configured using *deployment variables* managed in `.env`,
-*application variables* managed in the [docker-compose.yml](ops/deployment/docker-compose.yml)
-file and its overrides (`docker-compose.*.yml`). There is a second type of variables called secrets for passwords, api keys
+The project can be configured using *deployment variables* managed in `.env`, 
+*application variables* managed in the [docker-compose.yml](ops/deployment/docker-compose.yml) 
+file and its overrides (`docker-compose.*.yml`). There is a second type of variables called secrets for passwords, api keys 
 and tokens and they are stored as *secret variables* in `.secrets` for the application access.
 
 When using the ``up.sh`` script to setup the project, both `.env` and `.secrets` will be automatically generated.
@@ -121,7 +121,7 @@ The higher level are for variables that have the same value for most setups (e.g
 If there is a need to customise the value of a variable, we just need to define it at a lower level and that assigment will take precedence (e.g: Bob needs to use a different port for development url as the default port is used already on his computer).
 Variables that are specific to each developer should be defined only at the leaf level (a developer's fork)
 
-## Testing GigaDB
+## Testing GigaDB 
 
 Make sure the test container is built if it's the first time or if the Dockerfile and/or the ``.env`` file have changed to ensure the container uses the correct development files.
 
@@ -189,8 +189,8 @@ $ docker-compose run --rm test bin/behat --profile local --stop-on-failure featu
 ```
 
 ### Accessibility tests
-
 [Playwright](https://playwright.dev/docs/accessibility-testing) is used to run accessibility tests as e2e tests on the frontend. See `playwright/README.md`
+
 
 ## Troubleshooting
 
@@ -206,7 +206,7 @@ The database container now logs all SQL statements executed on the PostgreSQL
 database by the GigaDB website.
 
 The only pre-requisite is that a PORTAINER_BCRYPT variable is defined in the ``.env`` file.
-Look at the ``env-sample`` file for inline instructions on how to generate a correct value for
+Look at the ``env-sample`` file for inline instructions on how to generate a correct value for 
 your chosen password.
 
 On production environment, the variable will be exposed from GitLab Group variable.
@@ -219,7 +219,7 @@ To access the services logs, use the command below:
 $ docker-compose logs <service name>            # e.g: docker-compose logs web
 ```
 
-You can get information on the images, services and the processes running in
+You can get information on the images, services and the processes running in 
 them with these commands:
 
 ```
@@ -228,7 +228,7 @@ $ docker-compose ps
 $ docker-compose top
 ```
 
-To debug the configuration or the tests, you can drop into `bash` with both
+To debug the configuration or the tests, you can drop into `bash` with both 
 containers:
 
 ```
@@ -241,11 +241,11 @@ or:
 $ docker-compose run --rm test bash
 ```
 
-Both containers have access to the application source files, the Yii framework
-and Nginx site configuration (so they can be used to debug the running web
+Both containers have access to the application source files, the Yii framework 
+and Nginx site configuration (so they can be used to debug the running web 
 application too).
 
-The **test** container has also the PostgreSQL admin tools installed (pg\_dump,
+The **test** container has also the PostgreSQL admin tools installed (pg\_dump, 
 pg\_restore, psql), so it's a good place for debugging database issues. For
 example, to access the PostgreSQL database from the **test** container:
 
@@ -254,9 +254,9 @@ example, to access the PostgreSQL database from the **test** container:
 $ docker-compose run --rm test bash
 # Use psql in test container to connect to gigadb database in database container
 root@16b04afd18d5:/var/www# psql -h database -p 5432 -U gigadb gigadb
-```
+``` 
 
-The test database in the locally-deployed GigaDB application can be populated
+The test database in the locally-deployed GigaDB application can be populated 
 with production-like data as follows:
 
 ```
@@ -264,12 +264,12 @@ with production-like data as follows:
 $ docker-compose run --rm test bash
 # Access the postgres database using `vagrant` as the password
 bash-4.4# psql -h database -p 5432 -U gigadb postgres
-Password for user gigadb:
+Password for user gigadb: 
 psql (9.4.21)
 Type "help" for help.
 
 postgres=# select pg_terminate_backend(pg_stat_activity.pid) from pg_stat_activity where datname='gigadb';
- pg_terminate_backend
+ pg_terminate_backend 
 ----------------------
  t
  t
@@ -284,24 +284,24 @@ postgres=# create database gigadb owner gigadb;
 CREATE DATABASE
 postgres-# \q
 # Restore the `production_like.pgdmp` database
-root@9aece9101f03:/var/www# pg_restore -h database -p 5432 -U gigadb -d gigadb -v ./sql/production_like.pgdmp
+root@9aece9101f03:/var/www# pg_restore -h database -p 5432 -U gigadb -d gigadb -v ./sql/production_like.pgdmp 
 ```
 
 >**Note:**
->~~Only~~ The **test** and **application** containers have access to the
-**database** container. In addition, you can access the PostgreSQL RDBMS in the
+>~~Only~~ The **test** and **application** containers have access to the 
+**database** container. In addition, you can access the PostgreSQL RDBMS in the 
 database container via the local dockerhost on port 54321. For example, you can
-use [pgAdmin](https://www.pgadmin.org) to connect to the gigadb PostgreSQL
+use [pgAdmin](https://www.pgadmin.org) to connect to the gigadb PostgreSQL 
 database:
 
-**1.** Click on `Add New Server` and provide a `Name` for the connection in the
+**1.** Click on `Add New Server` and provide a `Name` for the connection in the 
 `General` tab.
 
-**2.** Click on the `Connection` tab and enter `localhost` as the `Host name/address`
-and `54321` as the `Port` value. The `Maintenance database` is `gigadb`,
+**2.** Click on the `Connection` tab and enter `localhost` as the `Host name/address` 
+and `54321` as the `Port` value. The `Maintenance database` is `gigadb`,  
 `username` is `gigadb`, and `password` is `vagrant`.
 
-For further investigation, check out the [docker-compose.yml](ops/deployment/docker-compose.yml)
+For further investigation, check out the [docker-compose.yml](ops/deployment/docker-compose.yml) 
 to see how the services are assembled and what scripts they run.
 
 ### Restore dev database
@@ -313,7 +313,7 @@ $ docker-compose run --rm test bash -c "pg_restore -h database -p 5432 -U gigadb
 
 ## Life cycle
 
-To regenerate the web application configuration files, *e.g.* because a variable
+To regenerate the web application configuration files, *e.g.* because a variable 
 is added or changed on GitLab or `.env`:
 
 ```
@@ -326,23 +326,23 @@ To restart, start or stop any of the services:
 $ docker-compose restart|start|stop <service name>	# e.g: docker-compose restart database
 ```
 
-To rebuild the local containers (**application** and **test**), e.g: because of
-changes made to the [Dockerfile](ops/packaging/Dockerfile) or because the base
+To rebuild the local containers (**application** and **test**), e.g: because of 
+changes made to the [Dockerfile](ops/packaging/Dockerfile) or because the base 
 image has been upgraded (see below):
 
 ```
 $ docker-compose build <service name>				# e.g: docker-compose build application
 ```
 
-To tear down all the services (the project data at location pointed at by
+To tear down all the services (the project data at location pointed at by 
 DATA\_SAVE\_PATH *deployment variable* are unaffected):
 
 ```
 $ docker-compose down
 ```
 
-To upgrade the images used by the services (including base images for local
-containers) to the latest version of a fixed tag, without restarting the
+To upgrade the images used by the services (including base images for local 
+containers) to the latest version of a fixed tag, without restarting the 
 services:
 
 ```
@@ -350,7 +350,7 @@ $ docker-compose pull
 ```
 
 >**Note**:
->To upgrade the core software to major revision, first change the version
+>To upgrade the core software to major revision, first change the version 
 *deployment variables* in `.env`.
 
 ## Generating the documentation
@@ -379,7 +379,7 @@ the documentation will be available at: (http://127.0.0.1:8000)
 ### PHPDocs
 
 
-To update the browsable API Docs (PHPDoc), run the command below and then commit
+To update the browsable API Docs (PHPDoc), run the command below and then commit 
 the changes:
 ```
 $ docker-compose run --rm test ./docs/make_phpdoc
