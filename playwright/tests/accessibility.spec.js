@@ -39,68 +39,35 @@ const ADMIN_PATHS = [
 ]
 
 
-PUBLIC_PATHS.forEach((path) => {
-  test.describe(`Page ${path}`, () => {
+const runAccessibilityTests = (paths, storageStatePath) => {
+  paths.forEach((path) => {
+    test.describe(`Page ${path}`, () => {
+      if (storageStatePath) {
+        test.use({ storageState: storageStatePath });
+      }
 
-    // NOTE: skipping general accessibility issues test as it will fail at least until a11y issues are fixed, so going for a more granular approach for now
-    test.skip('should not have any automatically detectable accessibility issues', async ({ page }) => {
-      await page.goto(path);
+      async function runColorContrastScan (page) {
+        await page.goto(path, { waitUntil: 'networkidle' });
+        const accessibilityScanResults = await new AxeBuilder({ page })
+          .withRules(['color-contrast'])
+          .exclude('.text-icon')
+          .exclude('.image-background')
+          .analyze();
 
-      const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
+        return accessibilityScanResults;
+      };
 
-      expect(accessibilityScanResults.violations).toEqual([]);
-    });
+      test('should not have any color contrast issues', async ({ page }) => {
+        const results = await runColorContrastScan(page);
 
-    test('should not have any color contrast issues', async ({ page }) => {
-      await page.goto(path, { waitUntil: 'networkidle' });
-
-      const accessibilityScanResults = await new AxeBuilder({ page })
-        .withRules(['color-contrast'])
-        .exclude('.text-icon')
-        .exclude('.image-background')
-        .analyze();
-
-      expect(accessibilityScanResults.violations).toEqual([]);
-      expect(accessibilityScanResults.incomplete.filter(item => item.id === 'color-contrast')).toEqual([])
-
-    });
-  });
-});
-
-USER_PATHS.forEach((path) => {
-  test.describe(`User page ${path}`, () => {
-    test.use({ storageState: '.auth/user.json' });
-
-    test('should not have any color contrast issues', async ({ page }) => {
-      await page.goto(path);
-
-      const accessibilityScanResults = await new AxeBuilder({ page })
-        .withRules(['color-contrast'])
-        .analyze();
-
-      console.log(accessibilityScanResults.incomplete)
-
-      expect(accessibilityScanResults.violations).toEqual([]);
-      expect(accessibilityScanResults.incomplete.some(item => item.id === 'color-contrast')).toBeFalsy()
-
+        // NOTE color contrast issues are not reported as violations but as incomplete checks, see https://github.com/dequelabs/axe-core/blob/master/doc/API.md#results-object
+        expect(results.violations).toEqual([]);
+        expect(results.incomplete.filter((item) => item.id === 'color-contrast')).toEqual([]);
+      });
     });
   });
-})
+}
 
-ADMIN_PATHS.forEach((path) => {
-  test.describe(`Admin page ${path}`, () => {
-    test.use({ storageState: '.auth/admin.json' });
-
-    test('should not have any color contrast issues', async ({ page }) => {
-      await page.goto(path);
-
-      const accessibilityScanResults = await new AxeBuilder({ page })
-        .withRules(['color-contrast'])
-        .analyze();
-
-      expect(accessibilityScanResults.violations).toEqual([]);
-      expect(accessibilityScanResults.incomplete.some(item => item.id === 'color-contrast')).toBeFalsy()
-
-    });
-  });
-})
+runAccessibilityTests(PUBLIC_PATHS);
+runAccessibilityTests(USER_PATHS, '.auth/user.json');
+runAccessibilityTests(ADMIN_PATHS, '.auth/admin.json');
