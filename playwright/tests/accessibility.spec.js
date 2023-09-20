@@ -2,6 +2,7 @@
 const { test, expect } = require('@playwright/test');
 const AxeBuilder = require('@axe-core/playwright').default;
 
+// NOTE the commented out paths have pending color contrast issues
 const PUBLIC_PATHS = [
   '/',
   '/dataset/100006',
