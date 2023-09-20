@@ -64,15 +64,13 @@ class AdminSampleController extends Controller
             $model->name = $_POST['Sample']['name'];
             $array = explode(":", $_POST['Sample']['species_id']);
             $tax_id = $array[0];
-            try {
+            if (!empty($tax_id)) {
                 $species = $this->findSpeciesRecord($tax_id, $model);
-            } catch (Exception $e) {
-                Yii::log($e->getMessage(), 'error');
-                if ($tax_id == '') {
-                    $model->addError('error', 'Species name is empty!');
-                } else {
-                    $model->addError('error', 'Species name ' . $tax_id . ' is not found!');
-                }
+            } else {
+                $model->addError('error', 'Taxon ID is empty!');
+            }
+            if (!$model->hasErrors()) {
+                $model->save();
             }
         }
         $this->render('create', array(
@@ -208,13 +206,13 @@ class AdminSampleController extends Controller
             if (strpos($_POST['Sample']['species_id'], ":") !== false) {
                 $array = explode(":", $_POST['Sample']['species_id']);
                 $tax_id = $array[0];
-                if (is_numeric($tax_id)) {
+                if (!empty($tax_id)) {
                     $species = $this->findSpeciesRecord($tax_id, $model);
                 } else {
-                    $model->addError("error", 'The species id should be numeric');
+                    $model->addError('error', 'Taxon ID is empty!');
                 }
             } else {
-                $model->addError("error", 'The input format is wrong, should be id:common_name');
+                $model->addError('error', 'The input format is wrong, should be tax_id:common_name');
             }
         }
 
@@ -323,11 +321,10 @@ class AdminSampleController extends Controller
         // delete first all the sample Attribute
         SampleAttribute::model()->deleteAllByAttributes(array('sample_id' => $model->id));
 
-        if (trim($model->attributesList)) {
+        if (!empty($model->attributesList) && trim($model->attributesList)) {
             // From a model we will clone
             $sampleAttribute = new SampleAttribute();
             $sampleAttribute->sample_id = $model->id;
-
             foreach (explode('",', $model->attributesList) as $attributes) {
                 $attributes = str_replace('"', '', $attributes);
                 $attributeData = explode('=', $attributes);
@@ -336,20 +333,26 @@ class AdminSampleController extends Controller
                     $attribute = Attribute::model()->findByAttributes(array('structured_comment_name' => trim($attributeData[0])));
                     if (!$attribute) {
                         $model->addError('error', 'Attribute name for the input ' . $attributeData[0]. "=" . $attributeData[1] .' is not valid - please select a valid attribute name!');
-                    }
-                    // Let's save the new sample attribute
-                    $sampleAttribute = clone $sampleAttribute;
-                    $sampleAttribute->value = trim($attributeData[1]);
-                    $sampleAttribute->attribute_id = $attribute->id;
-                    if (!$sampleAttribute->save()) {
-                        foreach ($sampleAttribute->getErrors() as $errors) {
-                            foreach ($errors as $errorMessage) {
-                                $model->addError('error', $errorMessage);
+                    } else {
+                        // Let's save the new sample attribute
+                        $sampleAttribute = clone $sampleAttribute;
+                        $sampleAttribute->value = trim($attributeData[1]);
+                        $sampleAttribute->attribute_id = $attribute->id;
+                        if (!$sampleAttribute->save()) {
+                            foreach ($sampleAttribute->getErrors() as $errors) {
+                                foreach ($errors as $errorMessage) {
+                                    $model->addError('error', $errorMessage);
+                                }
                             }
                         }
                     }
                 }
             }
+        } else {
+            $model->addError('error', 'Attributes list is empty!');
+        }
+        if (!$model->hasErrors()) {
+            $this->redirect(array('view', 'id' => $model->id));
         }
     }
 
@@ -362,15 +365,18 @@ class AdminSampleController extends Controller
      */
     private function findSpeciesRecord($tax_id, $model): ?CActiveRecord
     {
-        $species = Species::model()->findByAttributes(array('tax_id' => $tax_id));
-        if (!$species) {
-            $model->addError('error', 'Taxon ID ' . $tax_id . ' is not found!');
+        if (is_numeric($tax_id)) {
+            $species = Species::model()->findByAttributes(array('tax_id' => $tax_id));
+            if (!$species) {
+                $model->addError('error', 'Taxon ID ' . $tax_id . ' is not found!');
+            } else {
+                $model->species_id = $species->id;
+                $model->attributesList = $_POST['Sample']['attributesList'];
+                $this->updateSampleAttributes($model);
+            }
         } else {
-            $model->species_id = $species->id;
-            $model->attributesList = $_POST['Sample']['attributesList'];
-            $this->updateSampleAttributes($model);
+            $model->addError('error', 'Taxon ID ' . $tax_id . ' is not numeric!');
         }
-        $this->redirect(array('view', 'id' => $model->id));
         return $species;
     }
 }
