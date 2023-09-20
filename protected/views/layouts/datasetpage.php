@@ -54,6 +54,7 @@
 </head>
 
 <body>
+<a href="#wrap" class="skip-to-main-link">Skip to content</a>
 <header>
 
         <div class="container">
@@ -70,7 +71,7 @@
                 <a class="btn" href="/site/help"><?=Yii::t('app' , 'Help')?></a>
                 <?php if(Yii::app()->user->isGuest) { ?>
                 <a class="btn" href="/site/login"><?=Yii::t('app' , 'Login')?></a>
-                <a class="btn" href="/site/mapbrowse"><?=Yii::t('app' , "Browse Samples")?></a> 
+                <a class="btn" href="/site/mapbrowse"><?=Yii::t('app' , "Browse Samples")?></a>
 		<a class="btn" href="/user/create" id="btnCreateAccount" title="<?=Yii::t('app' , 'An account with GigaDB is required if you want to upload a dataset or be automatically notified of new content of interest to you')?>"><?=Yii::t('app' , 'Create account')?></a>
                 <?php } else {
 
