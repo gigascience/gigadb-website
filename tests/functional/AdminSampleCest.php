@@ -20,7 +20,7 @@ class AdminSampleCest
     }
 
     // tests
-    public function tryUpdateAttributeListWithOneNonExistAttribute(FunctionalTester $I)
+    public function tryUpdateSampleWithOneNonExistAttribute(FunctionalTester $I)
     {
         $I->amOnPage("/adminSample/update/id/432");
         $I->canSee("Update Sample 432");
@@ -41,7 +41,7 @@ class AdminSampleCest
         ]);
     }
 
-    public function tryUpdateAttributeListWithTwoNonExistAttribute(FunctionalTester $I)
+    public function tryUpdateSampleWithTwoNonExistAttribute(FunctionalTester $I)
     {
         $I->amOnPage("/adminSample/update/id/432");
         $I->canSee("Update Sample 432");
@@ -67,38 +67,38 @@ class AdminSampleCest
         ]);
     }
 
-    public function tryCreateAttributeListWithEmptySpeciesName(FunctionalTester $I)
+    public function tryCreateSampleWithEmptySTaxonId(FunctionalTester $I)
     {
         $I->amOnPage("/adminSample/create");
         $I->canSee("Create Sample");
         $I->fillField("Sample[species_id]", "");
         $I->click("Create");
         $I->canSee("Please fix the following input errors:");
-        $I->canSee("Species name is empty!");
+        $I->canSee("Taxon ID is empty!");
     }
-    public function tryCreateAttributeListWithNonExistSpeciesName(FunctionalTester $I)
+    public function tryCreateSampleWithNonNumericTaxonId(FunctionalTester $I)
     {
         $I->amOnPage("/adminSample/create");
         $I->canSee("Create Sample");
         $I->fillField("Sample[species_id]", "Human");
         $I->click("Create");
         $I->canSee("Please fix the following input errors:");
-        $I->canSee("Species name Human is not found!");
+        $I->canSee("Taxon ID Human is not numeric!");
     }
 
-    public function tryCreateAttributeListWithNonExistSpeciesId(FunctionalTester $I)
+    public function tryCreateSampleWithNonExistTaxonId(FunctionalTester $I)
     {
         $I->amOnPage("/adminSample/create");
         $I->canSee("Create Sample");
         $I->fillField("Sample[species_id]", "789123");
         $I->click("Create");
         $I->canSee("Please fix the following input errors:");
-        $I->canSee("Species id 789123 is not found!");
-        $I->dontSeeInDatabase("sample", [
-            "species_id" => "789123"
+        $I->canSee("Taxon ID 789123 is not found!");
+        $I->dontSeeInDatabase("species", [
+            "tax_id" => "789123"
         ]);
     }
-    public function tryCreateAttributeListWithOneNonExistAttribute(FunctionalTester $I)
+    public function tryCreateSampleWithOneNonExistAttribute(FunctionalTester $I)
     {
         $I->amOnPage("/adminSample/create");
         $I->canSee("Create Sample");
@@ -113,7 +113,7 @@ class AdminSampleCest
         ]);
     }
 
-    public function tryCreateAttributeListWithTwoNonExistAttribute(FunctionalTester $I)
+    public function tryCreateSampleWithTwoNonExistAttribute(FunctionalTester $I)
     {
         $I->amOnPage("/adminSample/create");
         $I->canSee("Create Sample");
@@ -130,6 +130,25 @@ class AdminSampleCest
         $I->dontSeeInDatabase("sample_attribute", [
             "sample_id" => "432",
             "value" => "rose"
+        ]);
+    }
+
+    public function tryCreateSampleWithExistAttribute(FunctionalTester $I)
+    {
+        $I->amOnPage("/adminSample/create");
+        $I->canSee("Create Sample");
+        $I->fillField("Sample[species_id]", "87676:Eucalyptus pauciflora");
+        $I->fillField("Sample[attributesList]", "sex=\"male\"");
+        $I->click("Create");
+        $I->canSeeInDatabase("sample", [
+            "id" => "433",
+            "species_id" => "100",
+            "name" => "SAMPLE:SRS188811"
+        ]);
+        $I->canSeeInDatabase("sample_attribute", [
+            "sample_id" => "433",
+            "attribute_id" => "200",
+            "value" => "male"
         ]);
     }
 }

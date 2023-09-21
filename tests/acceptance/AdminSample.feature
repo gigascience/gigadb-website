@@ -23,7 +23,27 @@ Feature: admin page for samples
     And I wait "1" seconds
     Then I should see "Please fix the following input errors:"
     And I should see "Attribute name for the input animal=\tiger\ is not valid - please select a valid attribute name!"
-    And I should see "The specified attribute id does not exist in the Attribute table."
+
+
+  @ok
+  Scenario: display error message for empty taxon id when update
+    Given I am on "/adminSample/update/id/432"
+    And I should see "lat_lon"
+    When I fill in the field of "name" "Sample[species_id]" with ":Foxtail millet"
+    And I press the button "Save"
+    And I wait "1" seconds
+    Then I should see "Please fix the following input errors:"
+    And I should see "Taxon ID is empty!"
+
+  @ok
+  Scenario: display input format error when update
+    Given I am on "/adminSample/update/id/432"
+    And I should see "lat_lon"
+    When I fill in the field of "name" "Sample[species_id]" with "4555=Foxtail millet"
+    And I press the button "Save"
+    And I wait "1" seconds
+    Then I should see "Please fix the following input errors:"
+    And I should see "The input format is wrong, should be tax_id:common_name"
 
   @ok
   Scenario: display 2 input error messages when update
@@ -35,37 +55,36 @@ Feature: admin page for samples
     Then I should see "Please fix the following input errors:"
     And I should see "Attribute name for the input animal=\tiger\ is not valid - please select a valid attribute name!"
     And I should see "Attribute name for the input plant=\rose\ is not valid - please select a valid attribute name!"
-    And I should see "The specified attribute id does not exist in the Attribute table."
 
   @ok
-  Scenario: display error message for not found species name when create
+  Scenario: display error message for empty taxon id when create
     Given I am on "/adminSample/create"
     And I should see "Create"
     When I fill in the field of "name" "Sample[species_id]" with ""
     And I press the button "Create"
     And I wait "1" seconds
     Then I should see "Please fix the following input errors:"
-    And I should see "Species name is empty!"
+    And I should see "Taxon ID is empty!"
 
   @ok
-  Scenario: display error message for non exist species name when create
+  Scenario: display error message for non numeric taxon id when create
     Given I am on "/adminSample/create"
     And I should see "Create"
     When I fill in the field of "name" "Sample[species_id]" with "Human"
     And I press the button "Create"
     And I wait "1" seconds
     Then I should see "Please fix the following input errors:"
-    And I should see "Species name Human is not found!"
+    And I should see "Taxon ID Human is not numeric!"
 
   @ok
-  Scenario: display error message for non exist species id when create
+  Scenario: display error message for non exist taxon id when create
     Given I am on "/adminSample/create"
     And I should see "Create"
     When I fill in the field of "name" "Sample[species_id]" with "789123"
     And I press the button "Create"
     And I wait "1" seconds
     Then I should see "Please fix the following input errors:"
-    And I should see "Species id 789123 is not found!"
+    And I should see "Taxon ID 789123 is not found!"
 
   @ok
   Scenario: display 1 input error message when create
@@ -77,8 +96,6 @@ Feature: admin page for samples
     And I wait "1" seconds
     Then I should see "Please fix the following input errors:"
     And I should see "Attribute name for the input animal=\tiger\ is not valid - please select a valid attribute name!"
-    And I should see "The specified sample id does not exist in the Sample table."
-    And I should see "The specified attribute id does not exist in the Attribute table."
 
   @ok
   Scenario: display 2 input error messages when create
@@ -91,19 +108,14 @@ Feature: admin page for samples
     Then I should see "Please fix the following input errors:"
     And I should see "Attribute name for the input animal=\tiger\ is not valid - please select a valid attribute name!"
     And I should see "Attribute name for the input plant=\rose\ is not valid - please select a valid attribute name!"
-    And I should see "The specified sample id does not exist in the Sample table."
-    And I should see "The specified attribute id does not exist in the Attribute table."
 
   @ok
-  Scenario: display error message for non exist species with attributes when create
+  Scenario: Create new sample with exist sample attribute
     Given I am on "/adminSample/create"
     And I should see "Create"
-    When I fill in the field of "name" "Sample[species_id]" with "789123:Human"
-    And I fill in the field of "name" "Sample[attributesList]" with "animal=\"tiger\""
+    When I fill in the field of "name" "Sample[species_id]" with "87676:Eucalyptus pauciflora"
+    And I fill in the field of "name" "Sample[attributesList]" with "sex=\"male\""
     And I press the button "Create"
     And I wait "1" seconds
-    Then I should see "Please fix the following input errors:"
-    And I should see "Species id 789123 is not found!"
-    And I should see "Attribute name for the input animal=\tiger\ is not valid - please select a valid attribute name!"
-    And I should see "The specified sample id does not exist in the Sample table."
-    And I should see "The specified attribute id does not exist in the Attribute table."
+    Then I should see "View Sample #433"
+    And I should see "male"
