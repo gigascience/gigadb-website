@@ -38,7 +38,7 @@ th, td {
                                     <li><a href="/site/guidegenomic">Genomic Dataset Checklist</a></li>
                                     <li><a href="/site/guideimaging">Imaging Dataset Checklist</a></li>
                                     <li><a href="/site/guidemetabolomic">Metabolomic and Lipidomic Dataset Checklist</a></li>
-                                    <li><a href="/site/guideepigenomic">Epigenomic Dataset Checklist</a></li> 
+                                    <li><a href="/site/guideepigenomic">Epigenomic Dataset Checklist</a></li>
                                     <li><a href="/site/guidemetagenomic">Metagenomic Dataset Checklist</a></li>
                                     <li><a href="/site/guidesoftware">Software Dataset Checklist</a></li>
                                 </ul>
@@ -48,7 +48,7 @@ th, td {
         <section>
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane active" id="general">
-                        <h4 style="color: #099242; margin-bottom: 10px;">Metabolomic and Lipidomic Dataset Checklist </h4>
+                        <h4 class="page-subtitle">Metabolomic and Lipidomic Dataset Checklist </h4>
                         <div class="subsection">
                             <p>All Metabolomics and Lipomics data must be deposited in a public repository that is part of the <a target="_blank" href="http://www.metabolomexchange.org">MetabolomeXchange</a>  (we recommend <a target="_blank" href="https://www.ebi.ac.uk/metabolights">Metabolights</a> database at <a target="_blank" href="http://www.ebi.ac.uk/">EBI</a>), before you submit to <i>GigaScience</i> or GigaDB. </p>
                             <p>In cases where sample metadata* are not fully consented for public release, e.g. patient information, you must first submit the non-public data/metadata to the Genome-Phenome Archive (<a href="http://ega-archive.org/">EGA</a>) to enable controlled access.</p>
@@ -381,7 +381,7 @@ th, td {
                             <br>
                             <p>* - Requirements are listed as R= Recommended, O= Optional. Note ^ denotes absolutely mandatory fields.</p>
                         </div>
-                    </div> 
+                    </div>
                 </div>
         </section>
 
@@ -395,11 +395,11 @@ $(document).ready(function () {
     if(location.hash != null && location.hash != ""){
         $('ul li').removeClass('active');
         $('div'+ '.tab-pane').removeClass('active');
-        var variableli = location.hash; 
+        var variableli = location.hash;
         $(location.hash).addClass('active');
         $(variableli.replace('#','#li')).addClass('active');
     }
-    
+
 });
 
 </script>

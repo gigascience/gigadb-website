@@ -4,7 +4,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
-- Fix #1310 and #1311: Copy readme files created by readme tool into the 
+- Feat #1361: Add general accessible landmarks to layouts
+- Feat #1363: Fix color contrast issues in pages with new layouts
+- Feat #1309: Implement batch processing functionality for readme tool
+- Feat #1356: Delete local bootstrap files and replace them with Bootstrap 2.0.4 from CDN
+- Feat #1334: add guest mode for freelancers to spin up local gigadb website without GitLab account
+- Fix #1310 and #1311: Copy readme files created by readme tool into the
   gigadb-datasets wasabi bucket.
 - Feat #1294: Added tool into files metadata console to update dataset FTP site
   and file location URLs.

@@ -62,11 +62,7 @@ docker-compose run --rm js bash -c "cd /var/www/ops/scripts/ && npm install"
 #docker-compose run --rm js
 
 # Start Chome web driver container services for acceptance testing
-if [[ $(uname -m) == 'arm64' ]]; then
-  docker-compose up -d chrome-arm
-else
-  docker-compose up -d chrome
-fi
+docker-compose up -d chrome
 
 # Install dependencies for the Beanstalkd workers
 docker-compose exec -T console bash -c 'cd /gigadb-apps/worker/file-worker/ && composer update'
