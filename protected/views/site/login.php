@@ -13,7 +13,7 @@ $this->breadcrumbs=array(
                 <li><a href="/">Home</a></li>
                 <li class="active">login</li>
             </ol>
-            <h4>Login</h4>
+            <h1 class="h4">Login</h1>
        </div>
    </section>
 	<div class="subsection row" style="margin-bottom: 130px;">

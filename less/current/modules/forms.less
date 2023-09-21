@@ -39,13 +39,14 @@ input[type="checkbox"] {
   display: inline-block;
 }
 
-.form-control,
-.form-control:hover,
-.form-control:focus {
+.form-control {
   border-color: @color-light-gray;
   box-shadow: none;
   color: @color-darker-gray;
   font-size: 13px;
+  &:focus {
+    outline: solid 2px @color-gigadb-green;
+  }
 }
 
 .carousel-doi {
