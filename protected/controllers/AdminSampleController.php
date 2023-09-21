@@ -66,11 +66,17 @@ class AdminSampleController extends Controller
             $tax_id = $array[0];
             if (!empty($tax_id)) {
                 $species = $this->findSpeciesRecord($tax_id, $model);
+                if ($species) {
+                    # save to create a new sample record with sample id which is needed for findingh sampleAttribute model
+                    if ($model->save()) {
+                        $this->updateSampleAttributes($model);
+                        if (!$model->hasErrors()) {
+                            $this->redirect(array('view', 'id' => $model->id));
+                        }
+                    }
+                }
             } else {
                 $model->addError('error', 'Taxon ID is empty!');
-            }
-            if (!$model->hasErrors()) {
-                $model->save();
             }
         }
         $this->render('create', array(
@@ -208,6 +214,10 @@ class AdminSampleController extends Controller
                 $tax_id = $array[0];
                 if (!empty($tax_id)) {
                     $species = $this->findSpeciesRecord($tax_id, $model);
+                    $this->updateSampleAttributes($model);
+                    if (!$model->hasErrors()) {
+                        $this->redirect(array('view', 'id' => $model->id));
+                    }
                 } else {
                     $model->addError('error', 'Taxon ID is empty!');
                 }
@@ -351,9 +361,6 @@ class AdminSampleController extends Controller
         } else {
             $model->addError('error', 'Attributes list is empty!');
         }
-        if (!$model->hasErrors()) {
-            $this->redirect(array('view', 'id' => $model->id));
-        }
     }
 
     /**
@@ -372,7 +379,6 @@ class AdminSampleController extends Controller
             } else {
                 $model->species_id = $species->id;
                 $model->attributesList = $_POST['Sample']['attributesList'];
-                $this->updateSampleAttributes($model);
             }
         } else {
             $model->addError('error', 'Taxon ID ' . $tax_id . ' is not numeric!');
