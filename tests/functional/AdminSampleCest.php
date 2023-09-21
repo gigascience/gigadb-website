@@ -67,6 +67,20 @@ class AdminSampleCest
         ]);
     }
 
+    public function tryUpdateSampleWithExistAttribute(FunctionalTester $I)
+    {
+        $I->amOnPage("/adminSample/update/id/432");
+        $I->canSee("Update Sample 432");
+        $I->canSee("lat_lon=\"38.0360,114.4698\"");
+        $I->fillField("Sample[attributesList]", "lat_lon=\"100.0,200.4\"");
+        $I->click("Save");
+        $I->canSee("lat_lon=\"100.0,200.4\"");
+        $I->canSeeInDatabase("sample_attribute", [
+            "sample_id" => "432",
+            "attribute_id" => "269",
+            "value" => "100.0,200.4"
+        ]);
+    }
     public function tryCreateSampleWithEmptySTaxonId(FunctionalTester $I)
     {
         $I->amOnPage("/adminSample/create");
