@@ -82,7 +82,7 @@
 					<?php echo $form->labelEx($model,'verifyCode'); ?>
 
 						<div style="width:100%">
-							<img style="width:200px;" src="<?php echo Yii::app()->captcha->output(); ?>">
+							<img style="width:200px;" src="<?php echo Yii::app()->captcha->output(); ?>" alt="Type the word in the image">
 						</div>
                                                 <br>
                                                 <br>
