@@ -229,28 +229,31 @@
     </div>
     <script src="https://hypothes.is/embed.js" async></script>
     <script>
-    document.addEventListener("DOMContentLoaded", function(event) { //This event is fired after deferred scripts are loaded
+    document.addEventListener("DOMContentLoaded", function(event) {
         $("#dataset-hint").popover();
-    });
 
-    var showAllDatasetTypes = false;
-    // NOTE: $(document).ready "only run once the page Document Object Model (DOM) is ready for JavaScript code to execute" so wrapping it inside "DOMContentLoaded" is unnecessary
-    $(document).ready(function toggleExpandContent() {
-        // .click() was deprecated in jQuery 3.3
-        $(".breadcrumb li button").on("click", function() {
-            var datasetTypes = $(".home-text-icon-list li:nth-child(n+13)");
-            datasetTypes.toggle();
-            showAllDatasetTypes = !showAllDatasetTypes
+        let showAllDatasetTypes = false;
+        const toggleableDatasetTypes = $("#datasetTypesList li:nth-child(n+13)");
 
-            if (showAllDatasetTypes) {
-                $(this).text('- less');
-                $(this).attr('aria-label', 'Show less dataset types')
-                $("#rss").height("500px");
-            } else {
-                $(this).text('+ more');
-                $(this).attr('aria-label', 'Show more dataset types')
-                $("#rss").height("300px");
-            }
+        $(document).ready(function toggleExpandContent() {
+            $("[aria-controls='datasetTypesList']").on("click", function() {
+                toggleableDatasetTypes.toggle(0, function() {
+                    if ($(this).is(':visible')) {
+                        $(this).css('display', 'inline-block');
+                    }
+                })
+                showAllDatasetTypes = !showAllDatasetTypes
+
+                if (showAllDatasetTypes) {
+                    $(this).text('- less');
+                    $(this).attr('aria-label', 'Show less dataset types')
+                    $("#rss").height("500px");
+                } else {
+                    $(this).text('+ more');
+                    $(this).attr('aria-label', 'Show more dataset types')
+                    $("#rss").height("300px");
+                }
+            });
         });
     });
-    </script>
+</script>
