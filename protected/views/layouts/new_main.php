@@ -71,7 +71,7 @@
                     </nav>
                     <div class="col-xs-7 clearfix top-bar-left">
                         <div class="search-bar clearfix">
-                            <form action="/search/new" method="GET" role="search">
+                            <form action="/search/new" method="GET" role="search" class="search-form">
                                 <?php
                                     $this->widget('application.components.DeferrableCJuiAutoComplete', array(
                                         'name' => 'keyword',
