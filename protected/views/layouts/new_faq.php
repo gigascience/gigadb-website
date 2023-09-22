@@ -72,7 +72,7 @@
                     </nav>
                     <div class="col-xs-7 clearfix top-bar-left">
                         <div class="search-bar clearfix">
-                            <form action="/search/new" method="GET" role="search" class="search-form">
+                            <form action="/search/new" method="GET" role="search" class="search-form" aria-label="Datasets">
                                 <?php
                                     $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
                                         'name' => 'keyword',
@@ -83,7 +83,7 @@
                                         'htmlOptions' => array(
                                             'aria-label'=>'Search GigaDB',
                                             'class' => 'search-input',
-                                            'placeholder'=>'e.g. Chicken, brain etc...',
+                                            'placeholder'=>'e.g. Chicken, brain, etc...',
                                         ),
                                     ));
                                     ?>
