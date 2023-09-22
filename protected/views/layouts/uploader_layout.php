@@ -43,7 +43,7 @@
                     <ul class="list-inline text-left base-top-account-bar">
                         <? if(Yii::app()->user->isGuest) { ?>
                             <li><a href="/site/login"><i class="fa fa-sign-in"></i> Login / Signup</a></li>
-                            <? } else { 
+                            <? } else {
 
                             $name = Yii::app()->user->getFirst_Name();
 
@@ -122,7 +122,7 @@
                         <li><a href="/">Home</a></li>
                         <li class="dropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                                    About&nbsp;<i class="fa fa-angle-down"></i>
+                                    About&nbsp;<i class="fa fa-angle-down" aria-hidden="true"></i>
                                 </a>
                             <ul class="dropdown-menu">
                                 <li><a href="/site/about">General</a></li>
@@ -133,7 +133,7 @@
                         </li>
                         <li class="dropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                                    Help&nbsp;<i class="fa fa-angle-down"></i>
+                                    Help&nbsp;<i class="fa fa-angle-down" aria-hidden="true"></i>
                                 </a>
                             <ul class="dropdown-menu">
                                 <li><a href="/site/help">Help</a></li>
