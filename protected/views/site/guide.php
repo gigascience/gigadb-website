@@ -85,13 +85,13 @@ th, td {
                                     </ol>
                                 </figcaption>
                             </figure>
-                            <p>When contacted by curators to process the GigaDB dataset you will be invited to:<br>
-                                -	Create a GigaDB user account<br>
-                                -	Upload your prepared data files* (if not already public)<br>
-                                *- see checklists below<br>
-                                -	Supply the appropriate metadata<br>
-                                -	Proofread and approve the GigaDB pre-publication dataset page<br>
-                            </p>
+                            <p>When contacted by curators to process the GigaDB dataset you will be invited to:</p>
+                            <ul class="content-text">
+                                <li>Create a GigaDB user account</li>
+                                <li>Upload your prepared data files if not already public (see checklists below)</li>
+                                <li>Supply the appropriate metadata</li>
+                                <li>Proofread and approve the GigaDB pre-publication dataset page</li>
+                            </ul>
                         </div>
 
                         <h2 class="page-subtitle h4">Required metadata</h2>
@@ -245,7 +245,7 @@ th, td {
                                             Attribute
                                         </th>
                                         <th style="text-align: center; width: 10%">
-                                            Requirement <sup>*<sup>
+                                            Requirement <sup aria-hidden="true">*<sup>
                                         </th>
                                         <th style="text-align: center; width: 60%">
                                             Description
