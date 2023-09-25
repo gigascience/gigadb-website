@@ -105,7 +105,7 @@ th, td {
                                             Item
                                         </th>
                                         <th style="text-align: center; width: 20%">
-                                            Imported directly from manuscript (y/n)
+                                            Imported directly from manuscript <span aria-hidden="true">(y/n)</span>
                                         </th>
                                         <th style="text-align: center; width: 60%">
                                             Description
@@ -116,7 +116,7 @@ th, td {
                                             Submitting author
                                         </td>
                                         <td>
-                                            y
+                                            <span aria-hidden="true">y</span><span class="sr-only">yes</span>
                                         </td>
                                         <td>
                                             First Name, Last Name, Email, Institution/Company, ORCID.
@@ -127,7 +127,7 @@ th, td {
                                             Author list
                                         </td>
                                         <td>
-                                            y
+                                            <span aria-hidden="true">y</span><span class="sr-only">yes</span>
                                         </td>
                                         <td>
                                             First Name, Last Name, ORCID
@@ -138,7 +138,7 @@ th, td {
                                             Dataset title
                                         </td>
                                         <td>
-                                            y
+                                            <span aria-hidden="true">y</span><span class="sr-only">yes</span>
                                         </td>
                                         <td>
                                             Manuscript title prefixed with “Supporting data for”
@@ -149,7 +149,7 @@ th, td {
                                             Dataset description
                                         </td>
                                         <td>
-                                            y
+                                            <span aria-hidden="true">y</span><span class="sr-only">yes</span>
                                         </td>
                                         <td>
                                             Manuscript abstract
@@ -160,7 +160,7 @@ th, td {
                                             Funding information
                                         </td>
                                         <td>
-                                            y
+                                            <span aria-hidden="true">y</span><span class="sr-only">yes</span>
                                         </td>
                                         <td>
                                             Funding body, program, award ID and awardee
@@ -171,7 +171,7 @@ th, td {
                                             Dataset type
                                         </td>
                                         <td>
-                                            n
+                                            <span aria-hidden="true">n</span><span class="sr-only">no</span>
                                         </td>
                                         <td>
                                             Selected from <a href="http://gigadb.org/site/help#vocabulary">controlled vocabulary</a>
@@ -182,7 +182,7 @@ th, td {
                                             Keywords
                                         </td>
                                         <td>
-                                            n
+                                            <span aria-hidden="true">n</span><span class="sr-only">no</span>
                                         </td>
                                         <td>
                                             Please list upto 5 keywords, separated by semicolons. All keywords are converted to lowercase.
@@ -193,7 +193,7 @@ th, td {
                                             Additional information links
                                         </td>
                                         <td>
-                                            n
+                                            <span aria-hidden="true">n</span><span class="sr-only">no</span>
                                         </td>
                                         <td>
                                             Any URLs to FTP servers or webpages associated with your dataset as semicolon separated lists
@@ -204,7 +204,7 @@ th, td {
                                             Thumbnail image
                                         </td>
                                         <td>
-                                            n
+                                            <span aria-hidden="true">n</span><span class="sr-only">no</span>
                                         </td>
                                         <td>
                                             An appropriate image to represent the dataset. Title, Credit, Source and License (CC0 or public domain only) details will be required.
@@ -215,7 +215,7 @@ th, td {
                                             External accessions
                                         </td>
                                         <td>
-                                            n
+                                            <span aria-hidden="true">n</span><span class="sr-only">no</span>
                                         </td>
                                         <td>
                                             If any data that you wish to publish in GigaDB has been submitted to to an external resource such as EBI or NCBI, please provide the accession(s) as a semicolon separated list in the format 'SRA:SRPXXXXXX' ; BioProject:PRJNAXXXXXX'
@@ -226,7 +226,7 @@ th, td {
                                             Protocols.io link
                                         </td>
                                         <td>
-                                            n
+                                            <span aria-hidden="true">n</span><span class="sr-only">no</span>
                                         </td>
                                         <td>
                                             Where authors provide their methods via <a target="_blank" href="https://protocols.io/">protocols.io</a> we can embed these in GigaDB datasets, please provide the published widget URL or DOI
@@ -371,7 +371,7 @@ th, td {
                                             File name
                                         </td>
                                         <td>
-                                            y
+                                            <span aria-hidden="true">y</span><span class="sr-only">yes</span>
                                         </td>
                                         <td>
                                             The exact name of the file including relative file path. Ideally it should be unique within the dataset. Filenames should only include the following characters a-z,A-Z,0-9,_,-,+,. Filenames should not include spaces, we recommend using the underscore (_) in place of spaces.
@@ -382,7 +382,7 @@ th, td {
                                             Description
                                         </td>
                                         <td>
-                                            y
+                                            <span aria-hidden="true">y</span><span class="sr-only">yes</span>
                                         </td>
                                         <td>
                                             Short human readable description of the file and its contents
@@ -393,7 +393,7 @@ th, td {
                                             Data type
                                         </td>
                                         <td>
-                                            y
+                                            <span aria-hidden="true">y</span><span class="sr-only">yes</span>
                                         </td>
                                         <td>
                                             The type of data in the file, selected from a <a href="http://gigadb.org/site/help#vocabulary">controlled vocabulary</a>
@@ -404,7 +404,7 @@ th, td {
                                             Format
                                         </td>
                                         <td>
-                                            y
+                                            <span aria-hidden="true">y</span><span class="sr-only">yes</span>
                                         </td>
                                         <td>
                                             Most common formats are automatically assigned by file extension, but can be updated manually if required.
@@ -415,7 +415,7 @@ th, td {
                                             MD5 #value
                                         </td>
                                         <td>
-                                            y
+                                            <span aria-hidden="true">y</span><span class="sr-only">yes</span>
                                         </td>
                                         <td>
                                             These are calculated automatically on our server and added to the database on submitters behalf.
@@ -426,7 +426,7 @@ th, td {
                                             File-Sample association
                                         </td>
                                         <td>
-                                            n
+                                            <span aria-hidden="true">n</span><span class="sr-only">no</span>
                                         </td>
                                         <td>
                                             If the sample is derived from a particular sample (in GigaDB) an explicit link can be made between sample(s) and file(s) by adding the Sample ID to the file attributes.
@@ -437,7 +437,7 @@ th, td {
                                             Additional attributes
                                         </td>
                                         <td>
-                                            n
+                                            <span aria-hidden="true">n</span><span class="sr-only">no</span>
                                         </td>
                                         <td>
                                             If files have metadata that should be included with them they can be added as attributes, the most common example is Licenses
