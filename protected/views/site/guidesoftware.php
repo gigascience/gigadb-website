@@ -2,18 +2,6 @@
 $this->pageTitle = 'GigaDB - Software Dataset checklists';
 
 ?>
-<style>
-    table {
-        width: 1138px;
-    }
-    th {
-        background-color: #D3D3D3;
-    }
-    th, td {
-        padding: 5px;
-        line-height: 2;
-    }
-</style>
 <div class="content">
     <div class ="container">
         <section class="page-title-section" style="margin-bottom: 10px;">
@@ -25,25 +13,9 @@ $this->pageTitle = 'GigaDB - Software Dataset checklists';
                 <h4>General Submission Guidelines</h4>
             </div>
         </section>
-        <section style="margin-bottom: 5px;">
-            <div style="display:inline-block;">
-                <ul class="nav nav-tabs nav-border-tabs" role="tablist" style="margin-top: 1px; margin-bottom: 1px">
-                    <li><a href="/site/guide" style="padding-left: 0px">General Submission Guidelines</a></li>
-                    <li class="dropdown active">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                            Datasets Checklists&nbsp;<i class="fa fa-angle-down"></i>
-                        </a>
-                        <ul class="dropdown-menu" style="margin-top: 5px;">
-                            <li><a href="/site/guidegenomic">Genomic Dataset Checklist</a></li>
-                            <li><a href="/site/guideimaging">Imaging Dataset Checklist</a></li>
-                            <li><a href="/site/guidemetabolomic">Metabolomic and Lipidomic Dataset Checklist</a></li>
-                            <li><a href="/site/guideepigenomic">Epigenomic Dataset Checklist</a></li>
-                            <li><a href="/site/guidemetagenomic">Metagenomic Dataset Checklist</a></li>
-                            <li><a href="/site/guidesoftware">Software Dataset Checklist</a></li>
-                        </ul>
-                    </li>
-            </div>
-        </section>
+        <?php
+            $this->widget('application.components.GuideNavigation');
+        ?>
         <section>
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane active" id="general">
@@ -55,18 +27,20 @@ $this->pageTitle = 'GigaDB - Software Dataset checklists';
                             <p>GigaScience journal expects all new software tools to be registered at <a href="https://scicrunch.org/">SciCrunch.org</a> - a database to register new software applications. You will be assigned an <a href="https://scicrunch.org/resources">RRID</a> which provides a persistent and unique identifier for referencing your research resource, which in turn will facilitate tracking, reproducibility and re-use of your tool, and should be included in the manuscript and dataset.</p>
                             <p>Where authors have demonstrated the utility of software/tools with example data, we would expect those data to be fully open and accessible in a stable international database with permanent IDs (PIDs). If the authors have generated the data themselves/own the data we can host it in GigaDB if required, otherwise links to the PIDs should be included in the dataset. The metadata to accompany example data would be expected to comply with the regular checklists for that particular data type (see other dataset type checklists).</p>
                             <div id='table_software_format' class="scrollbar">
-                                <table border="1" style="text-align: center;">
-                                    <tr>
-                                        <th style="text-align: center; width: 60%">
-                                            Item
-                                        </th>
-                                        <th style="text-align: center; width: 30%">
-                                            File format
-                                        </th>
-                                        <th style="text-align: center; width: 20%">
-                                            Check
-                                        </th>
-                                    </tr>
+                                <table border="1" class="guide-table">
+                                    <thead>
+                                        <tr>
+                                            <th class="col-60">
+                                                Item
+                                            </th>
+                                            <th class="col-30">
+                                                File format
+                                            </th>
+                                            <th class="col-20">
+                                                Check
+                                            </th>
+                                        </tr>
+                                    </thead>
                                     <tr>
                                         <td>
                                             Archive of software code (with OSI license)
@@ -132,24 +106,26 @@ $this->pageTitle = 'GigaDB - Software Dataset checklists';
                     <div class="subsection">
                         <p>Below is an example software dataset, you can see the final dataset of this example <a href="http://dx.doi.org/10.5524/100753">here</a>.</p>
                         <div id='table_software_dataset' class="scrollbar">
-                            <table border="1" style="text-align: center;">
-                                <tr>
-                                    <th style="text-align: center; width: 12.5%">
-                                        Item
-                                    </th>
-                                    <th style="text-align: center; width: 12.5%">
-                                        File Name
-                                    </th>
-                                    <th style="text-align: center; width: 50%">
-                                        Description
-                                    </th>
-                                    <th style="text-align: center; width: 12.5%">
-                                        Data Type
-                                    </th>
-                                    <th style="text-align: center; width: 12.5%">
-                                        File Format
-                                    </th>
-                                </tr>
+                            <table border="1" class="guide-table">
+                                <thead>
+                                    <tr>
+                                        <th class="col-12-5">
+                                            Item
+                                        </th>
+                                        <th class="col-12-5">
+                                            File Name
+                                        </th>
+                                        <th class="col-50">
+                                            Description
+                                        </th>
+                                        <th class="col-12-5">
+                                            Data Type
+                                        </th>
+                                        <th class="col-12-5">
+                                            File Format
+                                        </th>
+                                    </tr>
+                                </thead>
                                 <tr>
                                     <td>
                                         Software Code Archive

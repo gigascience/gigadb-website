@@ -3,18 +3,6 @@ $this->pageTitle = 'GigaDB - Imaging Dataset checklists';
 
 //echo $this->renderInternal('Yii::app()->basePath'.'/../files/html/about.html');
 ?>
-<style>
-table {
-    width: 1138px;
-}
-th {
-    background-color: #D3D3D3;
-}
-th, td {
-  padding: 5px;
-  line-height: 2;
-}
-</style>
 <div class="content">
     <div class="container">
         <section class="page-title-section" style="margin-bottom: 10px">
@@ -26,25 +14,9 @@ th, td {
                 <h4>General Submission Guidelines</h4>
             </div>
         </section>
-        <section style="margin-bottom: 5px;">
-                <div style="display:inline-block;">
-                     <ul class="nav nav-tabs nav-border-tabs" role="tablist" style="margin-top: 1px; margin-bottom: 1px">
-                            <li><a href="/site/guide" style="padding-left: 0px">General Submission Guidelines</a></li>
-                            <li class="dropdown active">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                                    Datasets Checklists&nbsp;<i class="fa fa-angle-down"></i>
-                                </a>
-                                <ul class="dropdown-menu" style="margin-top: 5px;">
-                                    <li><a href="/site/guidegenomic">Genomic Dataset Checklist</a></li>
-                                    <li><a href="/site/guideimaging">Imaging Dataset Checklist</a></li>
-                                    <li><a href="/site/guidemetabolomic">Metabolomic and Lipidomic Dataset Checklist</a></li>
-                                    <li><a href="/site/guideepigenomic">Epigenomic Dataset Checklist</a></li>
-                                    <li><a href="/site/guidemetagenomic">Metagenomic Dataset Checklist</a></li>
-                                    <li><a href="/site/guidesoftware">Software Dataset Checklist</a></li>
-                                </ul>
-                            </li>
-                </div>
-        </section>
+        <?php
+            $this->widget('application.components.GuideNavigation');
+        ?>
         <section>
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane active" id="general">
@@ -54,18 +26,20 @@ th, td {
                             </p>
                             <p>For imaging datasets we would expect to see many of the files listed in the table below, please note this list is not comprehensive and curators/reviewers may ask for additional/different files depending on the specific content of the manuscript.</p>
                             <div id='table_imaging_format' class="scrollbar">
-                                <table border="1" style="text-align: center;">
-                                    <tr>
-                                        <th style="text-align: center; width: 70%">
-                                            Item
-                                        </th>
-                                        <th style="text-align: center; width: 20%">
-                                            Suggested format
-                                        </th>
-                                        <th style="text-align: center; width: 10%">
-                                            Check
-                                        </th>
-                                    </tr>
+                                <table border="1" class="guide-table">
+                                    <thead>
+                                        <tr>
+                                            <th class="col-70">
+                                                Item
+                                            </th>
+                                            <th class="col-20">
+                                                Suggested format
+                                            </th>
+                                            <th class="col-10">
+                                                Check
+                                            </th>
+                                        </tr>
+                                    </thead>
                                     <tr>
                                         <td>
                                             3D volumetric image data
@@ -174,18 +148,20 @@ th, td {
                             <br>
                             <br>
                             <div id='table_imaging_attribute' class="scrollbar">
-                                <table border="1" style="text-align: center;">
-                                    <tr>
-                                        <th style="text-align: center; width: 70%">
-                                            Item
-                                        </th>
-                                        <th style="text-align: center; width: 20%">
-                                            Suggested format
-                                        </th>
-                                        <th style="text-align: center; width: 10%">
-                                            Check
-                                        </th>
-                                    </tr>
+                                <table border="1" class="guide-table">
+                                    <thead>
+                                        <tr>
+                                            <th class="col-70">
+                                                Item
+                                            </th>
+                                            <th class="col-20">
+                                                Suggested format
+                                            </th>
+                                            <th class="col-10">
+                                                Check
+                                            </th>
+                                        </tr>
+                                    </thead>
                                     <tr>
                                         <td>
                                             Bit-depth
@@ -228,18 +204,20 @@ th, td {
                             <br>
                             <br>
                             <div id='table_imaging_meta' class="scrollbar">
-                                <table border="1" style="text-align: center;">
-                                    <tr>
-                                        <th style="text-align: center; width: 30%">
-                                            Attribute
-                                        </th>
-                                        <th style="text-align: center; width: 10%">
-                                            Requirement <sup>*<sup>
-                                        </th>
-                                        <th style="text-align: center; width: 60%">
-                                            Description
-                                        </th>
-                                    </tr>
+                                <table border="1" class="guide-table">
+                                    <thead>
+                                        <tr>
+                                            <th class="col-30">
+                                                Attribute
+                                            </th>
+                                            <th class="col-10">
+                                                Requirement <sup>*<sup>
+                                            </th>
+                                            <th class="col-60">
+                                                Description
+                                            </th>
+                                        </tr>
+                                    </thead>
                                     <tr>
                                         <td>
                                             Sample name<sup>^</sup>
