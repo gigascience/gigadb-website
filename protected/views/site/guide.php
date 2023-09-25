@@ -17,6 +17,10 @@ $this->pageTitle = 'GigaDB - Submission Guidelines';
         </section>
         <section>
 
+        <?php
+            $this->widget('application.components.GuideNavigation',
+                            );
+        ?>
             <section style="margin-bottom: 5px;">
                 <div style="display:inline-block;">
                     <ul class="nav nav-tabs nav-border-tabs" style="margin-top: 1px; margin-bottom: 1px">
