@@ -7,6 +7,12 @@ class GuideNavigation extends CWidget {
         return ($controller === $controllerName && $action === $actionName);
     }
 
+    private function generateMenuItems(array $datasetLinks): string {
+        return implode("\n", array_map(function($label, $url) {
+            return CHtml::tag('li', [], CHtml::link($label, $url));
+        }, array_keys($datasetLinks), $datasetLinks));
+    }
+
     public function run() {
         $isActiveGeneral = $this->isActive('site', 'guide');
 
@@ -14,10 +20,8 @@ class GuideNavigation extends CWidget {
         echo CHtml::openTag('div', ['style' => 'display:inline-block;']);
         echo CHtml::openTag('ul', ['class' => 'nav nav-tabs nav-border-tabs', 'style' => 'margin-top: 1px; margin-bottom: 1px']);
 
-        // General Submission Guidelines
         echo CHtml::tag('li', ['class' => $isActiveGeneral ? 'active' : ''], CHtml::link('General Submission Guidelines', '/site/guide'));
 
-        // Datasets Checklists Dropdown
         echo CHtml::openTag('li', ['class' => 'dropdown' . (!$isActiveGeneral ? ' active' : '')]);
         echo CHtml::link('Datasets Checklists&nbsp;' . CHtml::tag('i', ['class' => 'fa fa-angle-down'], ''), '#', [
             'class' => 'dropdown-toggle',
@@ -38,13 +42,7 @@ class GuideNavigation extends CWidget {
             'Software Dataset Checklist' => 'guidesoftware'
         ];
 
-        $menuItems = array_map(function($label, $url) {
-            return CHtml::tag('li', [], CHtml::link($label, $url));
-        }, array_keys($datasetLinks), $datasetLinks);
-
-        $menuHtml = implode("\n", $menuItems);
-
-        echo $menuHtml;
+        echo $this->generateMenuItems($datasetLinks);
         echo CHtml::closeTag('ul');
 
         echo CHtml::closeTag('li');
