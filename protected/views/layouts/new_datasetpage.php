@@ -135,9 +135,11 @@
                         <ul class="nav nav-pills main-nav-bar text-right">
                             <li><a href="/">Home</a></li>
                             <li class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                <button class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="dropdown-toggle-label">
                                         About&nbsp;<i class="fa fa-angle-down" aria-hidden="true"></i>
-                                    </a>
+                                    </span>
+                                </button>
                                 <ul class="dropdown-menu">
                                     <li><a href="/site/about">General</a></li>
                                     <li><a href="/site/team">Our team</a></li>
@@ -147,9 +149,11 @@
                                 </ul>
                             </li>
                             <li class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                <button class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="dropdown-toggle-label">
                                         Help&nbsp;<i class="fa fa-angle-down" aria-hidden="true"></i>
-                                    </a>
+                                    </span>
+                                </button>
                                 <ul class="dropdown-menu">
                                     <li><a href="/site/help">Help</a></li>
                                     <li><a href="/site/faq">FAQ</a></li>
