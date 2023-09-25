@@ -36,6 +36,13 @@
   background-color: transparent;
 }
 
+.nav-tabs.nav-border-tabs > li.active > button {
+  cursor: pointer;
+  &[aria-expanded="true"] {
+    color: @color-true-white;
+  }
+}
+
 .nav-tabs.nav-border-tabs > li.open > :is(a,button):hover {
   color: @color-true-white;
 }
