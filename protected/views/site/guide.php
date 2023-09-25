@@ -253,10 +253,10 @@ th, td {
                                     </tr>
                                     <tr>
                                         <td>
-                                            Sample name<sup>^</sup>
+                                            Sample name<sup aria-hidden="true">^</sup><span class="sr-only">absolutely mandatory field</span>
                                         </td>
                                         <td>
-                                            R
+                                            <span aria-hidden="true">R</span><span class="sr-only">required</span>
                                         </td>
                                         <td>
                                             Use an alphanumeric string to uniquely identify each sample used in your study, you may use BioSample IDs if you have them.
@@ -267,7 +267,7 @@ th, td {
                                             Species tax ID
                                         </td>
                                         <td>
-                                            R
+                                            <span aria-hidden="true">R</span><span class="sr-only">required</span>
                                         </td>
                                         <td>
                                             Please enter the <a target="_blank" href="http://www.ncbi.nlm.nih.gov/Taxonomy">NCBI Taxonomy ID</a> for the species used in your study. NB this is mandatory for any sequenced samples.
@@ -275,10 +275,10 @@ th, td {
                                     </tr>
                                     <tr>
                                         <td>
-                                            Species name<sup>^</sup>
+                                            Species name<sup aria-hidden="true">^</sup><span class="sr-only">absolutely mandatory field</span>
                                         </td>
                                         <td>
-                                            R
+                                            <span aria-hidden="true">R</span><span class="sr-only">required</span>
                                         </td>
                                         <td>
                                             Please enter the bionomial (Genus species) name for the species of this sample
@@ -286,10 +286,10 @@ th, td {
                                     </tr>
                                     <tr>
                                         <td>
-                                            Description<sup>^</sup>
+                                            Description<sup aria-hidden="true">^</sup><span class="sr-only">absolutely mandatory field</span>
                                         </td>
                                         <td>
-                                            R
+                                            <span aria-hidden="true">R</span><span class="sr-only">required</span>
                                         </td>
                                         <td>
                                             Human readable description of sample, it should be unique within a dataset i.e. no two samples are identical so the description should reflect that.
@@ -300,7 +300,7 @@ th, td {
                                             Geographic location (country and/or sea,region)
                                         </td>
                                         <td>
-                                            R
+                                            <span aria-hidden="true">R</span><span class="sr-only">required</span>
                                         </td>
                                         <td>
                                             The geographical origin of the sample as defined by the country or sea name followed by specific region name. Country or sea names should be chosen from the <a target="_blank" href="http://www.insdc.org/country">INSDC country list</a>
@@ -311,7 +311,7 @@ th, td {
                                             Geographic location (latitude and longitude)
                                         </td>
                                         <td>
-                                            R
+                                            <span aria-hidden="true">R</span><span class="sr-only">required</span>
                                         </td>
                                         <td>
                                             The geographical origin of the sample as defined by latitude and longitude. The values should be reported in decimal degrees and on WGS84 system e.g. -69.576435, 91.883948
@@ -322,7 +322,7 @@ th, td {
                                             Broad-scale environmental context
                                         </td>
                                         <td>
-                                            R
+                                            <span aria-hidden="true">R</span><span class="sr-only">required</span>
                                         </td>
                                         <td>
                                             Please add one or more <a target="_blank" href="https://www.ebi.ac.uk/ols/ontologies/envo">ENVO terms</a> to describe the broad environment in which sampling occurred e.g. cliff [ENVO:00000087]
@@ -333,7 +333,7 @@ th, td {
                                             Local environmental context
                                         </td>
                                         <td>
-                                            R
+                                            <span aria-hidden="true">R</span><span class="sr-only">required</span>
                                         </td>
                                         <td>
                                             Please add one or more <a target="_blank" href="https://www.ebi.ac.uk/ols/ontologies/envo">ENVO terms</a> to describe the local environment in which sampling occurred as a semicolon separated list, e.g. digestive tract environment [ENVO:01001033]
@@ -343,7 +343,7 @@ th, td {
                                 </table>
                             </div>
                             <br>
-                            <p>* - Requirements are listed as R= Recommended, O= Optional. Note ^ denotes absolutely mandatory fields.</p>
+                            <p aria-hidden="true">* - Requirements are listed as R= Recommended, O= Optional. Note ^ denotes absolutely mandatory fields.</p>
                             <br>
                             <br>
                             <p>For all datasets we expect all data to be available from a stable public open access source and where appropriate we will link directly to external sources rather than duplicate data files. </p>
@@ -360,7 +360,7 @@ th, td {
                                             Item
                                         </th>
                                         <th style="text-align: center; width: 10%">
-                                            Mandatory (y/n)
+                                            Mandatory <span aria-hidden="true">(y/n)</span>
                                         </th>
                                         <th style="text-align: center; width: 70%">
                                             Description
