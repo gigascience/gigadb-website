@@ -3,18 +3,7 @@ $this->pageTitle = 'GigaDB - Submission Guidelines';
 
 //echo $this->renderInternal('Yii::app()->basePath'.'/../files/html/about.html');
 ?>
-<style>
-table {
-    width: 1138px;
-}
-th {
-    background-color: #D3D3D3;
-}
-th, td {
-  padding: 5px;
-  line-height: 2;
-}
-</style>
+
 <div class="content">
     <div class="container">
         <section class="page-title-section" style="margin-bottom: 10px">
