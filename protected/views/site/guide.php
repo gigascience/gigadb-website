@@ -456,12 +456,14 @@ th, td {
                             <br>
                             <p>Due to the nature of scientific publications the files that need to be provided are usually unique to the individual manuscript, however there are some commonalities that we have attempted to capture in a set of minimal checklists for the most common dataset types that we receive. These lists are to be treated as a guide only and there may be changes to them over time. </p>
                             <p>Please see the Dataset Type specific checklists for recommendations:</p>
-                            <p><a href="/site/guidegenomic">Genomic Dataset checklists</a></p>
-                            <p><a href="/site/guideimaging">Imaging Dataset checklists</a></p>
-                            <p><a href="/site/guidemetabolomic">Metabolomic and Lipidomic Dataset checklists</a></p>
-                            <p><a href="/site/guideepigenomic">Epigenomic Dataset checklists</a></p>
-                            <p><a href="/site/guidemetagenomic">Metagenomic Dataset checklists</a></p>
-                            <p><a href="/site/guidesoftware">Software Dataset checklists</a></p>
+                            <ul class="content-text">
+                                <li><a href="/site/guidegenomic">Genomic Dataset checklists</a></li>
+                                <li><a href="/site/guideimaging">Imaging Dataset checklists</a></li>
+                                <li><a href="/site/guidemetabolomic">Metabolomic and Lipidomic Dataset checklists</a></li>
+                                <li><a href="/site/guideepigenomic">Epigenomic Dataset checklists</a></li>
+                                <li><a href="/site/guidemetagenomic">Metagenomic Dataset checklists</a></li>
+                                <li><a href="/site/guidesoftware">Software Dataset checklists</a></li>
+                            </ul>
                         </div>
                         <p>If you have any questions, please contact us at <a href="mailto:database@gigasciencejournal.com">database@gigasciencejournal.com</a>.</p>
 
