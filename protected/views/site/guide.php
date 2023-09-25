@@ -23,7 +23,7 @@ th, td {
                     <li><a href="/">Home</a></li>
                     <li class="active">Guidelines</li>
                 </ol>
-                <h4>GigaDB - Submission Guidelines</h4>
+                <h1 class="h4">GigaDB - Submission Guidelines</h1>
             </div>
         </section>
         <section>
@@ -50,13 +50,13 @@ th, td {
             <section>
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane active" id="general">
-                        <h4 class="page-subtitle">General Submission Guidelines </h4>
+                        <h2 class="page-subtitle h4">General Submission Guidelines </h2>
                         <div class="subsection">
                             <p>GigaDB is a <a target="_blank" href="https://www.cngb.org/aboutUs.html?i18nlang=en_US">China National GeneBank</a> supported repository used to host data and tools associated with articles in <i>GigaScience</i>. As part of your manuscript submission and in line with the <a target="_blank" href="https://academic.oup.com/gigascience/pages/editorial_policies_and_reporting_standards">Reporting Standards</a> and <a target="_blank" href="http://doi.org/10.25504/fairsharing.prdtva">FAIRsharing guidelines for data deposition and formatting for papers submitted to <i>GigaScience</i></a> we will provide an associated GigaDB dataset to host the data and files required for transparency and reproducibility. GigaDB is an open-access database. As such, all data submitted to GigaDB must be fully consented for public release (for more information about our data policies, please see our <a href="/site/term">Terms of use</a> page).
                             </p>
                         </div>
 
-                        <h4 class="page-subtitle">Workflow</h4>
+                        <h2 class="page-subtitle h4">Workflow</h2>
                         <div class="subsection">
                             <p>The workflow diagram below details a standard submission process:</p>
                             <img src="/images/workflow.png" alt="Workflow"></img>
@@ -69,7 +69,7 @@ th, td {
                             </p>
                         </div>
 
-                        <h4 class="page-subtitle">Required metadata</h4>
+                        <h2 class="page-subtitle h4">Required metadata</h2>
                         <div class="subsection">
                             <p>For all datasets the following information will be required. Most of the details will be imported directly from the <i>GigaScience</i> manuscript submission, other details will be requested by the curators.</p>
                             <br>
