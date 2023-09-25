@@ -99,18 +99,20 @@ th, td {
                             <p>For all datasets the following information will be required. Most of the details will be imported directly from the <i>GigaScience</i> manuscript submission, other details will be requested by the curators.</p>
                             <br>
                             <div id="table_guide_submission" class="scrollbar">
-                                <table border="1" style="text-align: center;">
-                                    <tr>
-                                        <th style="text-align: center; width: 20%">
-                                            Item
-                                        </th>
-                                        <th style="text-align: center; width: 20%">
-                                            Imported directly from manuscript <span aria-hidden="true">(y/n)</span>
-                                        </th>
-                                        <th style="text-align: center; width: 60%">
-                                            Description
-                                        </th>
-                                    </tr>
+                                <table border="1" class="guide-table">
+                                    <thead>
+                                        <tr>
+                                            <th class="col-20">
+                                                Item
+                                            </th>
+                                            <th class="col-20">
+                                                Imported directly from manuscript <span aria-hidden="true">(y/n)</span>
+                                            </th>
+                                            <th class="col-60">
+                                                Description
+                                            </th>
+                                        </tr>
+                                    </thead>
                                     <tr>
                                         <td>
                                             Submitting author
@@ -239,18 +241,20 @@ th, td {
                             <p>Below is the list of attributes commonly associated with any biological sample. In addition to these we strongly encourage the inclusion of ALL appropriate attributes, and for specific types of data there are a number of standards that we encourage our users to adopt. Please see the Dataset Type specific checklists for recommendations.</p>
                             <br>
                             <div id="table_guide_attribute" class="scrollbar">
-                                <table border="1" style="text-align: center;">
-                                    <tr>
-                                        <th style="text-align: center; width: 30%">
-                                            Attribute
-                                        </th>
-                                        <th style="text-align: center; width: 10%">
-                                            Requirement <sup aria-hidden="true">*<sup>
-                                        </th>
-                                        <th style="text-align: center; width: 60%">
-                                            Description
-                                        </th>
-                                    </tr>
+                                <table border="1" class="guide-table">
+                                    <thead>
+                                        <tr>
+                                            <th class="col-30">
+                                                Attribute
+                                            </th>
+                                            <th class="col-10">
+                                                Requirement <sup aria-hidden="true">*<sup>
+                                            </th>
+                                            <th class="col-60">
+                                                Description
+                                            </th>
+                                        </tr>
+                                    </thead>
                                     <tr>
                                         <td>
                                             Sample name<sup aria-hidden="true">^</sup><span class="sr-only"> absolutely mandatory field</span>
@@ -354,18 +358,20 @@ th, td {
                             <br>
                             <br>
                             <div id="table_guide_details" class="scrollbar">
-                                <table border="1" style="text-align: center;">
-                                    <tr>
-                                        <th style="text-align: center; width: 20%">
-                                            Item
-                                        </th>
-                                        <th style="text-align: center; width: 10%">
-                                            Mandatory <span aria-hidden="true">(y/n)</span>
-                                        </th>
-                                        <th style="text-align: center; width: 70%">
-                                            Description
-                                        </th>
-                                    </tr>
+                                <table border="1" class="guide-table">
+                                    <thead>
+                                        <tr>
+                                            <th class="col-20">
+                                                Item
+                                            </th>
+                                            <th class="col-10">
+                                                Mandatory <span aria-hidden="true">(y/n)</span>
+                                            </th>
+                                            <th class="col-70">
+                                                Description
+                                            </th>
+                                        </tr>
+                                    </thead>
                                     <tr>
                                         <td>
                                             File name
