@@ -18,28 +18,8 @@ $this->pageTitle = 'GigaDB - Submission Guidelines';
         <section>
 
         <?php
-            $this->widget('application.components.GuideNavigation',
-                            );
+            $this->widget('application.components.GuideNavigation');
         ?>
-            <section style="margin-bottom: 5px;">
-                <div style="display:inline-block;">
-                    <ul class="nav nav-tabs nav-border-tabs" style="margin-top: 1px; margin-bottom: 1px">
-                            <li class="active"><a href="/site/guide">General Submission Guidelines</a></li>
-                            <li class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                                    Datasets Checklists&nbsp;<i class="fa fa-angle-down"></i>
-                                </a>
-                                <ul class="dropdown-menu" style="margin-top: 5px;">
-                                    <li><a href="/site/guidegenomic">Genomic Dataset Checklist</a></li>
-                                    <li><a href="/site/guideimaging">Imaging Dataset Checklist</a></li>
-                                    <li><a href="/site/guidemetabolomic">Metabolomic and Lipidomic Dataset Checklist</a></li>
-                                    <li><a href="/site/guideepigenomic">Epigenomic Dataset Checklist</a></li>
-                                    <li><a href="/site/guidemetagenomic">Metagenomic Dataset Checklist</a></li>
-                                    <li><a href="/site/guidesoftware">Software Dataset Checklist</a></li>
-                                </ul>
-                            </li>
-                </div>
-            </section>
             <section>
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane active" id="general">
