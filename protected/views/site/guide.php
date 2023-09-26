@@ -32,8 +32,8 @@ $this->pageTitle = 'GigaDB - Submission Guidelines';
                         <h2 class="page-subtitle h4">Workflow</h2>
                         <div class="subsection">
                             <p>The workflow diagram below details a standard submission process:</p>
-                            <figure role="group">
-                                <img src="/images/workflow.png" alt="Workflow diagram outlining the manuscript and data submission process for GigaScience, from initial submission to publication, described in detail below"></img>
+                            <figure>
+                                <img src="/images/workflow.png" alt="Workflow diagram of manuscript and data submission process for GigaScience, described in detail below"></img>
                                 <figcaption>
                                     <h3 class="h4">Workflow overview</h3>
                                     <p>This workflow diagram outlines the manuscript and data submission process for GigaScience. It covers the steps from initial manuscript submission to the eventual publication of the dataset.</p>

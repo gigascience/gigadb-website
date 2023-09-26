@@ -210,7 +210,7 @@ $this->pageTitle = 'GigaDB - Metagenomic Dataset checklists';
                             </div>
                             <br>
                             <br>
-                            <p>For metagenomic datasets we would expect to see sample metadata that complies with the <a href="http://gensc.org/">Genomic Standards Consortium</a> MIxS checklists, the most common features of which are summarised below. The complete list of pre-defined sample attributes are available <a href="/">here</a>, and it is possible to include bespoke attributes by communication with us.</p>
+                            <p>For metagenomic datasets we would expect to see sample metadata that complies with the <a href="http://gensc.org/">Genomic Standards Consortium</a> MIxS checklists, the most common features of which are summarised below. The complete list of pre-defined sample attributes are available in the <a href="/">GigaDB home page</a>, and it is possible to include bespoke attributes by communication with us.</p>
                             <br>
                             <br>
                             <div id='table_metagenomic_meta' class="scrollbar">

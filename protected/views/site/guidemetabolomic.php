@@ -81,7 +81,7 @@ $this->pageTitle = 'GigaDB - Metabolomic Dataset checklists';
                             </div>
                             <br>
                             <br>
-                            <p>Where we do host a dataset for metabolomics data, we may include the sample metadata in GigaDB to further assist discovery and reuse of these data. Metabolomic sample metadata is expected to be at least as comprehensive as that of transcriptomic datasets, below are some of the more common sample metadata attributes that we would expect to be made available for most metabolomics samples. The complete list of pre-defined sample attributes are available <a href="/">here</a>, and it is possible to include bespoke attributes by prior communication with us.</p>
+                            <p>Where we do host a dataset for metabolomics data, we may include the sample metadata in GigaDB to further assist discovery and reuse of these data. Metabolomic sample metadata is expected to be at least as comprehensive as that of transcriptomic datasets, below are some of the more common sample metadata attributes that we would expect to be made available for most metabolomics samples. The complete list of pre-defined sample attributes are available in the <a href="/">GigaDB home page</a>, and it is possible to include bespoke attributes by prior communication with us.</p>
                             <br>
                             <br>
                             <div id='table_metabolomic_meta' class="scrollbar">

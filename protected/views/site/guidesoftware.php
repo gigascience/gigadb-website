@@ -104,7 +104,7 @@ $this->pageTitle = 'GigaDB - Software Dataset checklists';
                 <div class="tab-pane active">
                     <h3 class="h5" style="padding-left: 1px">Example Software dataset</h3>
                     <div class="subsection">
-                        <p>Below is an example software dataset, you can see the final dataset of this example <a href="http://dx.doi.org/10.5524/100753">here</a>.</p>
+                        <p>Below is an example software dataset, you can see the final dataset of this example: <a href="http://dx.doi.org/10.5524/100753">example of published software dataset</a>.</p>
                         <div id='table_software_dataset' class="scrollbar">
                             <table border="1" class="guide-table">
                                 <thead>

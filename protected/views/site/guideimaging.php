@@ -200,7 +200,7 @@ $this->pageTitle = 'GigaDB - Imaging Dataset checklists';
                             <br>
                             <br>
                             <p>While there is no specific body providing guidelines for sampling metadata for Imaging datasets we would expect to see sample metadata that is as comprehensive as that of sequencing datasets, the most common attributes that we might expect are summarised below</p>
-                            <p>The complete list of pre-defined sample attributes are available <a href="/">here</a>, and it is possible to include bespoke attributes by communication with us.</p>
+                            <p>The complete list of pre-defined sample attributes are available in the <a href="/">GigaDB home page</a>, and it is possible to include bespoke attributes by communication with us.</p>
                             <br>
                             <br>
                             <div id='table_imaging_meta' class="scrollbar">

@@ -217,7 +217,7 @@ $this->pageTitle = 'GigaDB - Genomic Dataset checklists';
                             <br>
                             <p>For genomic and transcriptomic datasets we would expect to see sample metadata that complies with the <a target="_blank" href="http://gensc.org/">Genomic Standards Consortium</a> MIxS checklists, the most common features of which are summarised below.</p>
                             <p>For transcriptomic datasets we we would expect users to follow the well established <a target="_blank" href="https://doi.org/10.1038/ng1201-365">MIAME</a> (Minimum Information About a Microarray Experiment) and <a target="_blank" href="http://fged.org/projects/minseqe/">MINSEQE</a> (Minimum Information About a Next-generation Sequencing Experiment) guidelines outlining the minimum information that should be included when describing a microarray or sequencing studies.</p>
-                            <p>The complete list of pre-defined sample attributes are available <a href="/">here</a>, and it is possible to include bespoke attributes by communication with us.</p>
+                            <p>The complete list of pre-defined sample attributes are available in the <a href="/">GigaDB home page</a>, and it is possible to include bespoke attributes by communication with us.</p>
                             <br>
                             <br>
                             <div id='table_genomic_meta' class="scrollbar">
