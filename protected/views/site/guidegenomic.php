@@ -11,7 +11,7 @@ $this->pageTitle = 'GigaDB - Genomic Dataset checklists';
                     <li><a href="/">Home</a></li>
                     <li class="active">Guidelines</li>
                 </ol>
-                <h1 class="h4">General Submission Guidelines</h1>
+                <h1 class="h4">Genomic Dataset checklists</h1>
             </div>
         </section>
         <?php
