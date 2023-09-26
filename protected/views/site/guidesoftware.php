@@ -10,7 +10,7 @@ $this->pageTitle = 'GigaDB - Software Dataset checklists';
                     <li><a href="/">Home</a> </li>
                     <li class="active">Guidelines</li>
                 </ol>
-                <h4>General Submission Guidelines</h4>
+                <h1 class="h4">General Submission Guidelines</h1>
             </div>
         </section>
         <?php
@@ -18,10 +18,10 @@ $this->pageTitle = 'GigaDB - Software Dataset checklists';
         ?>
         <section>
                 <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane active" id="general">
-                        <h4 class="page-subtitle">Software Dataset Checklist </h4>
+                    <div class="tab-pane active">
+                        <h2 class="h4 page-subtitle">Software Dataset Checklist </h2>
                         <div class="subsection">
-                            <h5 style="padding-left: 1px">Minimal requirements</h5>
+                            <h3 class="h5" style="padding-left: 1px">Minimal requirements</h3>
                             <p>The minimal requirement for a GigaDB dataset associated with a manuscript describing software is that the source-code be made openly available under an <a href="https://web.archive.org/web/20160412003944/https://opensource.org/licenses">Open Source Initiative</a> approved licence. Most authors host their open-source projects in a GitHub repository, and as a standard procedure we would take a snapshot of the GitHub repository at the point of publication as a version of record to ensure the version as published is always available even when the GitHub repositories are updated. Note- All archival GitHub files are labeled with download date and a description suggesting users visit the current GitHub repository for the most recent updates.</p>
                             <p>In addition we encourage submission of your code to <a href="https://codeocean.com/">Code Ocean</a>, a cloud-based computational reproducibility platform. Once your code is published in Code Ocean, they will issue a DOI for it, which should be included in your GigaDB dataset.</p>
                             <p>GigaScience journal expects all new software tools to be registered at <a href="https://scicrunch.org/">SciCrunch.org</a> - a database to register new software applications. You will be assigned an <a href="https://scicrunch.org/resources">RRID</a> which provides a persistent and unique identifier for referencing your research resource, which in turn will facilitate tracking, reproducibility and re-use of your tool, and should be included in the manuscript and dataset.</p>
@@ -101,8 +101,8 @@ $this->pageTitle = 'GigaDB - Software Dataset checklists';
         </section>
         <section>
             <div class="tab-content">
-                <div role="tabpanel" class="tab-pane active" id="general">
-                    <h5 style="padding-left: 1px">Example Software dataset</h5>
+                <div class="tab-pane active">
+                    <h3 class="h5" style="padding-left: 1px">Example Software dataset</h3>
                     <div class="subsection">
                         <p>Below is an example software dataset, you can see the final dataset of this example <a href="http://dx.doi.org/10.5524/100753">here</a>.</p>
                         <div id='table_software_dataset' class="scrollbar">

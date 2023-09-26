@@ -11,7 +11,7 @@ $this->pageTitle = 'GigaDB - Metabolomic Dataset checklists';
                     <li><a href="/">Home</a></li>
                     <li class="active">Guidelines</li>
                 </ol>
-                <h4>General Submission Guidelines</h4>
+                <h1 class="h4">General Submission Guidelines</h1>
             </div>
         </section>
         <?php
@@ -19,8 +19,8 @@ $this->pageTitle = 'GigaDB - Metabolomic Dataset checklists';
         ?>
         <section>
                 <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane active" id="general">
-                        <h4 class="page-subtitle">Metabolomic and Lipidomic Dataset Checklist </h4>
+                    <div class="tab-pane active">
+                        <h2 class="h4 page-subtitle">Metabolomic and Lipidomic Dataset Checklist </h2>
                         <div class="subsection">
                             <p>All Metabolomics and Lipomics data must be deposited in a public repository that is part of the <a target="_blank" href="http://www.metabolomexchange.org">MetabolomeXchange</a>  (we recommend <a target="_blank" href="https://www.ebi.ac.uk/metabolights">Metabolights</a> database at <a target="_blank" href="http://www.ebi.ac.uk/">EBI</a>), before you submit to <i>GigaScience</i> or GigaDB. </p>
                             <p>In cases where sample metadata* are not fully consented for public release, e.g. patient information, you must first submit the non-public data/metadata to the Genome-Phenome Archive (<a href="http://ega-archive.org/">EGA</a>) to enable controlled access.</p>

@@ -22,7 +22,7 @@ $this->pageTitle = 'GigaDB - Submission Guidelines';
         ?>
             <section>
                 <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane active" id="general">
+                    <div class="tab-pane active">
                         <h2 class="page-subtitle h4">General Submission Guidelines </h2>
                         <div class="subsection">
                             <p>GigaDB is a <a target="_blank" href="https://www.cngb.org/aboutUs.html?i18nlang=en_US">China National GeneBank</a> supported repository used to host data and tools associated with articles in <i>GigaScience</i>. As part of your manuscript submission and in line with the <a target="_blank" href="https://academic.oup.com/gigascience/pages/editorial_policies_and_reporting_standards">Reporting Standards</a> and <a target="_blank" href="http://doi.org/10.25504/fairsharing.prdtva">FAIRsharing guidelines for data deposition and formatting for papers submitted to <i>GigaScience</i></a> we will provide an associated GigaDB dataset to host the data and files required for transparency and reproducibility. GigaDB is an open-access database. As such, all data submitted to GigaDB must be fully consented for public release (for more information about our data policies, please see our <a href="/site/term">Terms of use</a> page).

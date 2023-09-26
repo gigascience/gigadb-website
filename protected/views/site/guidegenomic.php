@@ -11,7 +11,7 @@ $this->pageTitle = 'GigaDB - Genomic Dataset checklists';
                     <li><a href="/">Home</a></li>
                     <li class="active">Guidelines</li>
                 </ol>
-                <h4>General Submission Guidelines</h4>
+                <h1 class="h4">General Submission Guidelines</h1>
             </div>
         </section>
         <?php
@@ -19,8 +19,8 @@ $this->pageTitle = 'GigaDB - Genomic Dataset checklists';
         ?>
         <section>
                 <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane active" id="general">
-                        <h4 class="page-subtitle">Genomic Dataset Checklist </h4>
+                    <div class="tab-pane active">
+                        <h2 class="h4 page-subtitle">Genomic Dataset Checklist </h2>
                         <div class="subsection">
                             <p>All sequence, assembly, variation, and RNA-seq data must be deposited in a public database at <a target="_blank" href="http://www.ncbi.nlm.nih.gov/">NCBI</a>, <a target="_blank" href="http://www.ebi.ac.uk/">EBI</a>, or <a target="_blank" href="http://www.ddbj.nig.ac.jp/">DDBJ</a> before you submit to <i>GigaScience</i> or GigaDB. In the cases where you would like GigaDB to host files associated with genomic data not fully consented for public release, you must first submit the non-public data to <a target="_blank" href="http://www.ncbi.nlm.nih.gov/gap/">dbGaP</a> or <a target="_blank" href="http://ega-archive.org/">EGA</a>.</p>
                             <p>For Genomic datasets we would expect to see many of the files listed in the table below, please note this list is not comprehensive and curators/reviewers may ask for additional/different files depending on the specific content of the manuscript.</p>

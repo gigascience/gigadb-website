@@ -11,7 +11,7 @@ $this->pageTitle = 'GigaDB - Epigenomic Dataset checklists';
                     <li><a href="/">Home</a></li>
                     <li class="active">Guidelines</li>
                 </ol>
-                <h4>General Submission Guidelines</h4>
+                <h1 class="h4">General Submission Guidelines</h1>
             </div>
         </section>
         <?php
@@ -19,8 +19,8 @@ $this->pageTitle = 'GigaDB - Epigenomic Dataset checklists';
         ?>
         <section>
                 <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane active" id="general">
-                        <h4 class="page-subtitle">Epigenomic Dataset Checklist </h4>
+                    <div class="tab-pane active">
+                        <h2 class="h4 page-subtitle">Epigenomic Dataset Checklist </h2>
                         <div class="subsection">
                             <p>For Epigenomic datasets we would expect to see many of the files listed in the table below, please note this list is not comprehensive and curators/reviewers may ask for additional/different files depending on the specific content of the manuscript.</p>
                             <div id='table_epigenomic_format' class="scrollbar">

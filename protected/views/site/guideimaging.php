@@ -11,7 +11,7 @@ $this->pageTitle = 'GigaDB - Imaging Dataset checklists';
                     <li><a href="/">Home</a></li>
                     <li class="active">Guidelines</li>
                 </ol>
-                <h4>General Submission Guidelines</h4>
+                <h1 class="h4">General Submission Guidelines</h1>
             </div>
         </section>
         <?php
@@ -19,8 +19,8 @@ $this->pageTitle = 'GigaDB - Imaging Dataset checklists';
         ?>
         <section>
                 <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane active" id="general">
-                        <h4 class="page-subtitle">Imaging Dataset Checklist </h4>
+                    <div class="tab-pane active">
+                        <h2 class="h4 page-subtitle">Imaging Dataset Checklist </h2>
                         <div class="subsection">
                             <p>All clinical imaging data must be fully anonymised including removal of any identifiable <a target="_blank" href="https://www.dicomlibrary.com/dicom/">DICOM</a> metadata from the image library files (there are several free tools designed to do this).
                             </p>

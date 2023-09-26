@@ -11,7 +11,7 @@ $this->pageTitle = 'GigaDB - Metagenomic Dataset checklists';
                     <li><a href="/">Home</a></li>
                     <li class="active">Guidelines</li>
                 </ol>
-                <h4>General Submission Guidelines</h4>
+                <h1 class="h4">General Submission Guidelines</h1>
             </div>
         </section>
         <?php
@@ -19,8 +19,8 @@ $this->pageTitle = 'GigaDB - Metagenomic Dataset checklists';
         ?>
         <section>
                 <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane active" id="general">
-                        <h4 class="page-subtitle">Metagenomic Dataset Checklist </h4>
+                    <div class="tab-pane active">
+                        <h2 class="h4 page-subtitle">Metagenomic Dataset Checklist </h2>
                         <div class="subsection">
                             <p>It should be noted that this section refers to Whole Genome Shotgun (WGS) metagenomics, as amplicon based microbiome studies are rarely accepted as <i>GigaScience</i> scale data. All raw sequence data must be deposited in a public database at <a target="_blank" href="http://www.ncbi.nlm.nih.gov/">NCBI</a>, <a target="_blank" href="http://www.ebi.ac.uk/">EBI</a>, or <a target="_blank" href="http://www.ddbj.nig.ac.jp/">DDBJ</a> before you submit to <i>GigaScience</i> or GigaDB. </p>
                             <p>Please note that where data is generated from Human environments e.g. faecal material, the authors are required to filter the sequence data for human sequence contamination before submission to the public archives, or if the human sequences are part of the study you must submit the data to <a target="_blank" href="http://www.ncbi.nlm.nih.gov/gap/">dbGaP</a> or <a target="_blank" href="http://ega-archive.org/">EGA</a>. Additionally, where identifiable metadata is used (e.g. age, sex, race, location etc) that is not specifically consented for public release the authors should submit that metadata to <a target="_blank" href="http://ega-archive.org/">EGA</a>.</p>
