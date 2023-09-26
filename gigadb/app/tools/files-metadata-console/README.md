@@ -322,6 +322,15 @@ gigadb=# select * from file where dataset_id = 629 and id = 287662;
 
 #### Staging and live environments
 
+To complete a thorough transformation of all dataset file location URLs, the 
+values of specific command-line parameters should be determined.
+
+1. Identify the DOI of the latest dataset whose data has been migrated to Wasabi.
+For example on Tue 26 Sep 2023, it was dataset 102456 for http://gigadb.org. The
+value for --stop parameter should therefore be 102457.
+2. Determine the list of DOIs that should be excluded from File location URL
+updated by consulting the [big dataset spreadsheet](https://docs.google.com/spreadsheets/d/13DVSESKMTewlv11Z7cVNPEBMo4lzQa4X_dB0OFc5N_Y/edit#gid=0).
+
 Drop database triggers otherwise tool will hang due to memory issues:
 ```
 # Log into bastion server using SSH
@@ -331,15 +340,20 @@ $ docker run --rm  --env-file ./db-env registry.gitlab.com/$GITLAB_PROJECT/produ
 $ docker run --rm  --env-file ./db-env registry.gitlab.com/$GITLAB_PROJECT/production_pgclient:$GIGADB_ENV -c 'drop trigger if exists dataset_finder_trigger on dataset RESTRICT'
 ```
 
-Execute tool in dry run mode to check the functionality is working:
+Execute tool (in batches of 50 datasets) in dry run mode to check the
+functionality is working:
 ```
-$ docker run --rm registry.gitlab.com/$GITLAB_PROJECT/production-files-metadata-console:$GIGADB_ENV ./yii update/urls --separator=/pub/ --exclude='100396,100446,100584,100747,100957,102311' --stop=200002 --next=3
+$ docker run --rm "registry.gitlab.com/$GITLAB_PROJECT/production-files-metadata-console:$GIGADB_ENV" ./yii update/urls --separator=/pub/ --stop=102457 --next=50 --exclude='100050,100115,100157,100242,100310,100396,100443,100608,100622,100707,100849,102425,102431,102440,102441'
 ```
 
-Execute tool until all datasets have had their file locations updated with Wasabi links:
+Execute tool until all datasets have had their file locations updated with 
+Wasabi links:
 ```
-$ docker run --rm registry.gitlab.com/$GITLAB_PROJECT/production-files-metadata-console:$GIGADB_ENV ./yii update/urls --separator=/pub/ --exclude='100396,100446,100584,100747,100957,102311' --stop=200002 --next=3 --apply
+$ docker run --rm "registry.gitlab.com/$GITLAB_PROJECT/production-files-metadata-console:$GIGADB_ENV" ./yii update/urls --separator=/pub/ --stop=102457 --next=50 --exclude='100050,100115,100157,100242,100310,100396,100443,100608,100622,100707,100849,102425,102431,102440,102441' --apply
 ```
+
+> The dataset file update process should take up to 1 hour and a half to 
+> transform production GigaDB data from start to finish.
 
 Re-create database triggers:
 ```
@@ -353,9 +367,12 @@ to dataset FTP site and file location URLs now in the database because of how
 the current GigaDB website caching functionality works. For this reason, the
 web application should be restarted to reset the cache on the Gitlab pipeline
 web console. This can be using the Pipelines page on the Gitlab web console by
-manually executing `*_stop_app` and `*_start_app` jobs.
+manually executing `*_stop_app` and `*_start_app` jobs. You should now be able
+to go to any GigaDB website page for a dataset that is not in the excluded list
+and see file links that point to Wasabi.
 
-Manually update file location URLs for dataset 100396
+Manually update file location URLs for those datasets containing too many files
+which will result in a memory error, e.g. dataset 100396
 ```
 $ docker run --rm  --env-file ./db-env registry.gitlab.com/$GITLAB_PROJECT/production_pgclient:$GIGADB_ENV -c 'Update file set location = REPLACE(location, 'https://ftp.cngb.org/pub/gigadb/pub/', 'https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/') where dataset_id = 629;'
 ```
