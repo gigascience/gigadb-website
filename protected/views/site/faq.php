@@ -172,7 +172,7 @@ $this->pageTitle='GigaDB - FAQ';
                                     <p>All data submissions should be approved before being started, please contact <a href="mailto:editorial@gigasciencejournal.com">editorial@gigasciencejournal.com</a> to discuss your article and associated data with our editors.Once approved, there are two possible routes to provide the metadata about your data:
                                     <ol>
                                         <li> use the online <a href="http://gigadb.org/dataset/upload">submission wizard</a> - this is a good option for datasets with few authors, and few files. The wizard currently does not have functionality to upload tabular information so everything must be typed in individually.</li>
-                                        <li> use the template spreadsheet (excel, but compatible with open office too) downloadable from <a href="http://www.google.com/url?q=http%3A%2F%2Fgigadb.org%2Ffiles%2FGigaDBUploadForm.xls&amp;sa=D&amp;sntz=1&amp;usg=AFrqEzf6cPyp-vGxxVTE9OEq2TPsJqU7fg">here </a>- This option is better where there are multiple authors and/or multiple files and/or samples. NB. the spreadsheet contains macros, but these are only to allow the forward and back buttons to work so can be disabled, you can just click the relevant tabs at the bottom of the spreadsheet.</li>
+                                        <li> use the template spreadsheet (excel, but compatible with open office too) downloadable from here: <a href="http://www.google.com/url?q=http%3A%2F%2Fgigadb.org%2Ffiles%2FGigaDBUploadForm.xls&amp;sa=D&amp;sntz=1&amp;usg=AFrqEzf6cPyp-vGxxVTE9OEq2TPsJqU7fg">Link to template excel file</a> - This option is better where there are multiple authors and/or multiple files and/or samples. NB. the spreadsheet contains macros, but these are only to allow the forward and back buttons to work so can be disabled, you can just click the relevant tabs at the bottom of the spreadsheet.</li>
                                     </ol>
                                     <p>For more details on submitting using the Spreadsheet please see here.</p>
                                 </div>
@@ -277,7 +277,8 @@ Files:
                             </div>
                             <div id="panel16" class="panel-collapse collapse" role="tabpanel">
                                 <div class="panel-body">
-                                    <p>There are currently no separate <u>d</u>ata <u>p</u>ublishing <u>c</u>harges (DPC's) for <em>GigaDB</em> as we currently do not accept data that is not accompanied by a <i>GigaScience </i>manuscript. All DPCs for <i>GigaScience </i>manuscripts are covered by the <u>a</u>rticle <u>p</u>ublishing <u>c</u>harges (APC's) of that manuscript (up to a terabyte automatically included, but contact us if you need more). For APCs of <i>GigaScience </i>manuscripts please see <a href="http://www.gigasciencejournal.com/about/apcfaq/howmuch">here</a>.</p>
+                                    <p>There are currently no separate <u>d</u>ata <u>p</u>ublishing <u>c</u>harges (DPC's) for <em>GigaDB</em> as we currently do not accept data that is not accompanied by a <i>GigaScience </i>manuscript. All DPCs for <i>GigaScience </i>manuscripts are covered by the <u>a</u>rticle <u>p</u>ublishing <u>c</u>harges (APC's) of that manuscript (up to a terabyte automatically included, but contact us if you need more). For APCs of <i>GigaScience </i>manuscripts please see in <a href="http://www.gigasciencejournal.com/about/apcfaq/howmuch">Gigascience journal pricing</a>.</p>
+                                        <!-- NOTE: this link is broken at the moment -->
                                 </div>
                             </div>
                         </div>
@@ -421,7 +422,8 @@ Files:
                             </div>
                             <div id="panel26" class="panel-collapse collapse" role="tabpanel">
                                 <div class="panel-body">
-                                    <p>There are currently no separate <u>d</u>ata <u>p</u>ublishing <u>c</u>harges (DPC's) for <em>GigaDB</em> as we currently do not accept data that is not accompanied by a <i>GigaScience </i>manuscript. All DPCs for <i>GigaScience </i>manuscripts are covered by the <u>a</u>rticle <u>p</u>ublishing <u>c</u>harges (APC's) of that manuscript (up to a terabyte automatically included, but contact us if you need more). For APCs of <i>GigaScience </i>manuscripts please see <a href="http://www.gigasciencejournal.com/about/apcfaq/howmuch">here</a>.</p>
+                                    <p>There are currently no separate <u>d</u>ata <u>p</u>ublishing <u>c</u>harges (DPC's) for <em>GigaDB</em> as we currently do not accept data that is not accompanied by a <i>GigaScience </i>manuscript. All DPCs for <i>GigaScience </i>manuscripts are covered by the <u>a</u>rticle <u>p</u>ublishing <u>c</u>harges (APC's) of that manuscript (up to a terabyte automatically included, but contact us if you need more). For APCs of <i>GigaScience </i>manuscripts please see in <a href="http://www.gigasciencejournal.com/about/apcfaq/howmuch">Gigascience journal pricing</a>.</p>
+                                        <!-- NOTE: This link is broken at the moment -->
                                 </div>
                             </div>
                         </div>
@@ -734,7 +736,7 @@ We will assess the specific case and remove/reduce the amount of metadata availa
                                 </div>
                                 <div id="panel47" class="panel-collapse collapse" role="tabpanel">
                                     <div class="panel-body">
-                                        <p>The submission of data to GigaDB is integrated with the submission of a manuscript to GigaScience, the general workflow followed is outlined <a href="/site/guide" target="_blank">here</a>. During the process you may track the progress in "<a href="/site/login#submitted" target="_blank">your datasets</a>" on your personal profile page in GigaDB. Each of your datasets will have one of the statuses listed below.
+                                        <p>The submission of data to GigaDB is integrated with the submission of a manuscript to GigaScience, the general workflow followed is outlined in the <a href="/site/guide" target="_blank">GigaDB Submission Guidelines</a>. During the process you may track the progress in "<a href="/site/login#submitted" target="_blank">your datasets</a>" on your personal profile page in GigaDB. Each of your datasets will have one of the statuses listed below.
                                         </p>
                                         <figure>
                                             <img src="../images/status_flow_2.png" alt="Diagram of dataset status lifecycle, see description below">
