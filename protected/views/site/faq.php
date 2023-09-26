@@ -743,7 +743,7 @@ We will assess the specific case and remove/reduce the amount of metadata availa
                                         <figure>
                                             <img src="../images/status_flow_2.png" alt="Diagram of dataset status lifecycle, see description below">
                                             <figcaption>
-                                                <p aria-hidden="true">Green steps are those carried out by Giga-staff, yellow are performed by Authors, Red indicates the end of the line for that dataset.
+                                                <p>Green steps are those carried out by Giga-staff, yellow are performed by Authors, Red indicates the end of the line for that dataset.
                                                 </p>
                                                 <h3 class="h5">Dataset status lifecycle</h3>
                                                 <dl>
