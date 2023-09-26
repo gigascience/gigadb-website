@@ -736,9 +736,55 @@ We will assess the specific case and remove/reduce the amount of metadata availa
                                     <div class="panel-body">
                                         <p>The submission of data to GigaDB is integrated with the submission of a manuscript to GigaScience, the general workflow followed is outlined <a href="/site/guide" target="_blank">here</a>. During the process you may track the progress in "<a href="/site/login#submitted" target="_blank">your datasets</a>" on your personal profile page in GigaDB. Each of your datasets will have one of the statuses listed below.
                                         </p>
-                                        <img src="../images/status_flow_2.png">
-                                        <p>Green steps are those carried out by Giga-staff, yellow are performed by Authors, Red indicates the end of the line for that dataset.
-                                        </p>
+                                        <figure>
+                                            <img src="../images/status_flow_2.png" alt="Diagram of dataset status lifecycle, see description below">
+                                            <figcaption>
+                                                <p aria-hidden="true">Green steps are those carried out by Giga-staff, yellow are performed by Authors, Red indicates the end of the line for that dataset.
+                                                </p>
+                                                <h3 class="h5">Dataset status lifecycle</h3>
+                                                <dl>
+                                                    <dt>1. Import From EM</dt>
+                                                    <dd>Carried out by Giga staff: Dataset metadata gets imported from manuscript submission system.</dd>
+
+                                                    <dt>2. User Started Incomplete</dt>
+                                                    <dd>Carried out by authors: Manual dataset submission started by user, but not yet submitted.</dd>
+
+                                                    <dt>3. Assigning FTP Box</dt>
+                                                    <dd>Carried out by Giga staff: Curator to provide private FTP login details for user to upload data files to.</dd>
+
+                                                    <dt>4. User Uploading Data</dt>
+                                                    <dd>Carried out by authors: Author is uploading data files to GigaDB private FTP area.</dd>
+
+                                                    <dt>5. Data Available For Review</dt>
+                                                    <dd>Carried out by Giga staff: Pending results of manuscript review.</dd>
+
+                                                    <dt>6. Submitted (Dataset)</dt>
+                                                    <dd>Carried out by Giga staff: Dataset has been submitted for curator review.</dd>
+
+                                                    <dt>7. Data Pending</dt>
+                                                    <dd>Carried out by authors: Authors are updating files and metadata at request of curators.</dd>
+
+                                                    <dt>8. Curation</dt>
+                                                    <dd>Carried out by Giga staff: Final curation checks are being made, and mock-up being made for author review.</dd>
+
+                                                    <dt>9. Author Review</dt>
+                                                    <dd>Carried out by authors: Dataset mock-up is complete, pending review by authors.</dd>
+
+                                                    <dt>10. Private</dt>
+                                                    <dd>Carried out by Giga staff: Dataset is complete and checked by authors, ready to be released.</dd>
+
+
+                                                    <dt>11. Published</dt>
+                                                    <dd>End of the line for that dataset: The dataset is now published. This status cannot be reversed.</dd>
+
+                                                    <dt>Rejected</dt>
+                                                    <dd>Related manuscript was rejected so no need for this dataset. Things of this status will be purged from the database on a regular basis.</dd>
+
+                                                    <dt>Not Required</dt>
+                                                    <dd>Associated manuscript has no data. Datasets of this status may be purged from the database.</dd>
+                                                </dl>
+                                            </figcaption>
+                                        </figure>
                                     </div>
                                 </div>
                             </div>
