@@ -522,11 +522,13 @@ Files:
                             <div id="panel33"  aria-labelledby="heading33" class="panel-collapse collapse" role="tabpanel">
                                 <div class="panel-body">
                                     <p>There are various reason why certain data values may need to not be included in the sample metadata, but you still want it to be compliant with particular Minimum Information standards such the GSC MIxS. To maintain compliance when there are missing values within the mandatory fields please use the following terms only:</p>
-                                    <p>Term - Definition</p>
-                                    <p><b>not applicable</b> - information is inappropriate to report, can indicate that the standard itself fails to model or represent the information appropriately</p>
-                                    <p><b>restricted access</b> - information exists but can not be released openly because of privacy concerns</p>
-                                    <p><b>not provided</b> - information is not available at the time of submission, a value may be provided at the later stage</p>
-                                    <p><b>not collected</b> - information was not collected and will therefore never be available</p>
+                                    <dl>
+                                        <div class="dl-item-wrapper"><dt>Term</dt><dd>Definition</dd></div>
+                                        <div class="dl-item-wrapper"><dt>not applicable</dt><dd>information is inappropriate to report, can indicate that the standard itself fails to model or represent the information appropriately</dd></div>
+                                        <div class="dl-item-wrapper"><dt>restricted access</dt><dd>information exists but can not be released openly because of privacy concerns</dd></div>
+                                        <div class="dl-item-wrapper"><dt>not provided</dt><dd>information is not available at the time of submission, a value may be provided at the later stage</dd></div>
+                                        <div class="dl-item-wrapper"><dt>not collected</dt><dd>information was not collected and will therefore never be available</dd></div>
+                                    </dl>
                                 </div>
                             </div>
                         </div>
