@@ -27,7 +27,7 @@ $this->pageTitle='GigaDB - FAQ';
                                     </a>
                                 </h2>
                             </div>
-                            <div id="panel01" aria-labelledby="heading01" class="panel-collapse collapse in" role="tabpanel" data-parent="#accordion">
+                            <div id="panel01" aria-labelledby="heading01" class="panel-collapse collapse" role="tabpanel" data-parent="#accordion">
                                 <div class="panel-body">
                                     <p><em>GigaDB</em> is the home for all data/files/tools/software associated with GigaScience manuscripts. <em>GigaDB</em> curators will ensure the information is complete and appropriately formatted, before cataloging and publishing. Submission of data to <em>GigaDB</em> complements but does not serve as a replacement for community approved public repositories, supporting data and source code should still be made publicly available in a suitable public repository. <em>GigaDB</em> can link any and all publicly deposited data together with additional files/tools that do not have a natural home in any other public repository. </p>
                                 </div>
@@ -799,10 +799,14 @@ We will assess the specific case and remove/reduce the amount of metadata availa
 
 <script type="text/javascript">
 $(document).ready(function () {
-    if(location.hash != null && location.hash != ""){
-        $('.collapse').removeClass('in');
-        $(location.hash + '.collapse').collapse('show');
+    let idToShow = "#panel01"
+
+    if (location.hash != null && location.hash != ""){
+        idToShow = location.hash
     }
+
+    $('.collapse').removeClass('in');
+    $(idToShow + '.collapse').collapse('show');
 });
 </script>
 
