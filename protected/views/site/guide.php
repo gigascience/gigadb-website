@@ -230,7 +230,7 @@ $this->pageTitle = 'GigaDB - Submission Guidelines';
                                     </thead>
                                     <tr>
                                         <td>
-                                            Sample name<sup aria-hidden="true">^</sup><span class="sr-only"> absolutely mandatory field</span>
+                                            Sample name<sup aria-hidden="true">^</sup><span class="sr-only">, absolutely mandatory field</span>
                                         </td>
                                         <td>
                                             <span aria-hidden="true">R</span><span class="sr-only">recommended</span>
@@ -252,7 +252,7 @@ $this->pageTitle = 'GigaDB - Submission Guidelines';
                                     </tr>
                                     <tr>
                                         <td>
-                                            Species name<sup aria-hidden="true">^</sup><span class="sr-only"> absolutely mandatory field</span>
+                                            Species name<sup aria-hidden="true">^</sup><span class="sr-only">, absolutely mandatory field</span>
                                         </td>
                                         <td>
                                             <span aria-hidden="true">R</span><span class="sr-only">recommended</span>
@@ -263,7 +263,7 @@ $this->pageTitle = 'GigaDB - Submission Guidelines';
                                     </tr>
                                     <tr>
                                         <td>
-                                            Description<sup aria-hidden="true">^</sup><span class="sr-only"> absolutely mandatory field</span>
+                                            Description<sup aria-hidden="true">^</sup><span class="sr-only">, absolutely mandatory field</span>
                                         </td>
                                         <td>
                                             <span aria-hidden="true">R</span><span class="sr-only">recommended</span>

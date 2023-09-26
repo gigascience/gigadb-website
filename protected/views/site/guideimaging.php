@@ -211,7 +211,7 @@ $this->pageTitle = 'GigaDB - Imaging Dataset checklists';
                                                 Attribute
                                             </th>
                                             <th class="col-10">
-                                                Requirement <sup>*<sup>
+                                                Requirement <sup aria-hidden="true">*<sup>
                                             </th>
                                             <th class="col-60">
                                                 Description
@@ -220,10 +220,10 @@ $this->pageTitle = 'GigaDB - Imaging Dataset checklists';
                                     </thead>
                                     <tr>
                                         <td>
-                                            Sample name<sup>^</sup>
+                                            Sample name<sup aria-hidden="true">^</sup><span class="sr-only">, absolutely mandatory field</span>
                                         </td>
                                         <td>
-                                            R
+                                            <span aria-hidden="true">R</span><span class="sr-only">recommended</span>
                                         </td>
                                         <td>
                                             Use an alphanumeric string to uniquely identify each sample used in your study, you may use BioSample IDs if you have them.
@@ -234,7 +234,7 @@ $this->pageTitle = 'GigaDB - Imaging Dataset checklists';
                                             Species tax ID
                                         </td>
                                         <td>
-                                            R
+                                            <span aria-hidden="true">R</span><span class="sr-only">recommended</span>
                                         </td>
                                         <td>
                                             Please enter the <a target="_blank" href="http://www.ncbi.nlm.nih.gov/Taxonomy">NCBI Taxonomy ID</a> for the species used in your study. NB this is mandatory for any sequenced samples.
@@ -242,10 +242,10 @@ $this->pageTitle = 'GigaDB - Imaging Dataset checklists';
                                     </tr>
                                     <tr>
                                         <td>
-                                            Species name<sup>^</sup>
+                                            Species name<sup aria-hidden="true">^</sup><span class="sr-only">, absolutely mandatory field</span>
                                         </td>
                                         <td>
-                                            R
+                                            <span aria-hidden="true">R</span><span class="sr-only">recommended</span>
                                         </td>
                                         <td>
                                             Please enter the bionomial (Genus species) name for the species of this sample
@@ -253,10 +253,10 @@ $this->pageTitle = 'GigaDB - Imaging Dataset checklists';
                                     </tr>
                                     <tr>
                                         <td>
-                                            Description<sup>^</sup>
+                                            Description<sup aria-hidden="true">^</sup><span class="sr-only">, absolutely mandatory field</span>
                                         </td>
                                         <td>
-                                            R
+                                            <span aria-hidden="true">R</span><span class="sr-only">recommended</span>
                                         </td>
                                         <td>
                                             Human readable description of sample, it should be unique within a dataset i.e. no two samples are identical so the description should reflect that.
@@ -267,7 +267,7 @@ $this->pageTitle = 'GigaDB - Imaging Dataset checklists';
                                             Geographic location (country and/or sea,region)
                                         </td>
                                         <td>
-                                            R
+                                            <span aria-hidden="true">R</span><span class="sr-only">recommended</span>
                                         </td>
                                         <td>
                                             The geographical origin of the sample as defined by the country or sea name followed by specific region name. Country or sea names should be chosen from the <a target="_blank" href="http://www.insdc.org/country">INSDC country list</a>
@@ -278,7 +278,7 @@ $this->pageTitle = 'GigaDB - Imaging Dataset checklists';
                                             Geographic location (latitude and longitude)
                                         </td>
                                         <td>
-                                            R
+                                            <span aria-hidden="true">R</span><span class="sr-only">recommended</span>
                                         </td>
                                         <td>
                                             The geographical origin of the sample as defined by latitude and longitude. The values should be reported in decimal degrees and on WGS84 system e.g. -69.576435, 91.883948
@@ -289,7 +289,7 @@ $this->pageTitle = 'GigaDB - Imaging Dataset checklists';
                                             Tissue type
                                         </td>
                                         <td>
-                                            R
+                                            <span aria-hidden="true">R</span><span class="sr-only">recommended</span>
                                         </td>
                                         <td>
                                             Please provide details of the type of tissue sampled, where possible values should be from an ontology such as <a target="_blank" href="http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=UBERON">UBERON</a> e.g."lung  [UBERON:0002048]"
@@ -300,7 +300,7 @@ $this->pageTitle = 'GigaDB - Imaging Dataset checklists';
                                             Cell type
                                         </td>
                                         <td>
-                                            R
+                                            <span aria-hidden="true">R</span><span class="sr-only">recommended</span>
                                         </td>
                                         <td>
                                             Cell type from which the sequence was obtained, where possible value(s) should be from an ontology such as <a target="_blank" href="https://www.ebi.ac.uk/ols/ontologies/bto">BREDNA</a>, e.g. "lung epithelium [BTO:0001653]"
@@ -311,7 +311,7 @@ $this->pageTitle = 'GigaDB - Imaging Dataset checklists';
                                             Isolate
                                         </td>
                                         <td>
-                                            R
+                                            <span aria-hidden="true">R</span><span class="sr-only">recommended</span>
                                         </td>
                                         <td>
                                             ID of individual isolate from which the sample was obtained
@@ -322,7 +322,7 @@ $this->pageTitle = 'GigaDB - Imaging Dataset checklists';
                                             Life stage
                                         </td>
                                         <td>
-                                            R
+                                            <span aria-hidden="true">R</span><span class="sr-only">recommended</span>
                                         </td>
                                         <td>
                                             Please provide one or more ontology terms to describe the life or developmental stage of the organism sampled. e.g. pupa [UBERON:0003143]
@@ -333,7 +333,7 @@ $this->pageTitle = 'GigaDB - Imaging Dataset checklists';
                                             Age
                                         </td>
                                         <td>
-                                            R
+                                            <span aria-hidden="true">R</span><span class="sr-only">recommended</span>
                                         </td>
                                         <td>
                                             Age of host or specimen at the time of sampling; relevant scale depends on species and study, e.g. could be seconds for amoebae or centuries for trees. Please include units. e.g. 5 days
@@ -344,7 +344,7 @@ $this->pageTitle = 'GigaDB - Imaging Dataset checklists';
                                             Sex
                                         </td>
                                         <td>
-                                            R
+                                            <span aria-hidden="true">R</span><span class="sr-only">recommended</span>
                                         </td>
                                         <td>
                                             Physical sex of the specimen sampled (or host), controlled vocabulary [male|female|neuter|hermaphrodite|not determined]
@@ -355,7 +355,7 @@ $this->pageTitle = 'GigaDB - Imaging Dataset checklists';
                                             Disease status
                                         </td>
                                         <td>
-                                            R
+                                            <span aria-hidden="true">R</span><span class="sr-only">recommended</span>
                                         </td>
                                         <td>
                                             List of diseases with which the host has been diagnosed, can include multiple diagnoses. The value of the field depends on host, for humans the terms should be chosen from DO (Disease Ontology), other hosts are free text. For DO terms, please see https://www.ebi.ac.uk/ols/ontologies/doid
@@ -366,7 +366,7 @@ $this->pageTitle = 'GigaDB - Imaging Dataset checklists';
                                             Sample source
                                         </td>
                                         <td>
-                                            R
+                                            <span aria-hidden="true">R</span><span class="sr-only">recommended</span>
                                         </td>
                                         <td>
                                             Additional information about where the sample originated from, e.g. CAMELYON16
@@ -377,7 +377,7 @@ $this->pageTitle = 'GigaDB - Imaging Dataset checklists';
                                             Sample storage location
                                         </td>
                                         <td>
-                                            R
+                                            <span aria-hidden="true">R</span><span class="sr-only">recommended</span>
                                         </td>
                                         <td>
                                             Location at which sample was stored, usually includes name of a specific freezer/room e.g. University Medical Center Utrecht, room B101
@@ -388,7 +388,7 @@ $this->pageTitle = 'GigaDB - Imaging Dataset checklists';
                                             Experiment type
                                         </td>
                                         <td>
-                                            R
+                                            <span aria-hidden="true">R</span><span class="sr-only">recommended</span>
                                         </td>
                                         <td>
                                             The name of the type of experiment performed, e.g. MS/MS, sequencing, DNA extraction, imaging, CT imaging etc.
@@ -399,7 +399,7 @@ $this->pageTitle = 'GigaDB - Imaging Dataset checklists';
                                             Experiment scanner
                                         </td>
                                         <td>
-                                            R
+                                            <span aria-hidden="true">R</span><span class="sr-only">recommended</span>
                                         </td>
                                         <td>
                                             Imaging experiment details, scanner name
@@ -410,7 +410,7 @@ $this->pageTitle = 'GigaDB - Imaging Dataset checklists';
                                             Experiment scan method
                                         </td>
                                         <td>
-                                            R
+                                            <span aria-hidden="true">R</span><span class="sr-only">recommended</span>
                                         </td>
                                         <td>
                                             Imaging experiment details, scan method
@@ -421,7 +421,7 @@ $this->pageTitle = 'GigaDB - Imaging Dataset checklists';
                                             Experiment scan parameters
                                         </td>
                                         <td>
-                                            R
+                                            <span aria-hidden="true">R</span><span class="sr-only">recommended</span>
                                         </td>
                                         <td>
                                             Imaging experiment details, scan parameters
@@ -432,7 +432,7 @@ $this->pageTitle = 'GigaDB - Imaging Dataset checklists';
                                             Experiment scan resolution
                                         </td>
                                         <td>
-                                            R
+                                            <span aria-hidden="true">R</span><span class="sr-only">recommended</span>
                                         </td>
                                         <td>
                                             Imaging experiment details, scan resolution (i.e. pixel / voxel resolution)
@@ -443,7 +443,7 @@ $this->pageTitle = 'GigaDB - Imaging Dataset checklists';
                                             Collection date
                                         </td>
                                         <td>
-                                            R
+                                            <span aria-hidden="true">R</span><span class="sr-only">recommended</span>
                                         </td>
                                         <td>
                                             The time of sampling, either as an instance (single point in time) or interval. In case no exact time is available, the date/time can be right truncated i.e. all of these are valid times: 2008-01-23T19:23:10+00:00; 2008-01-23T19:23:10; 2008-01-23; 2008-01; 2008; Except: 2008-01; 2008 all are ISO8601 compliant.
@@ -454,7 +454,7 @@ $this->pageTitle = 'GigaDB - Imaging Dataset checklists';
                                             Broad-scale environmental context
                                         </td>
                                         <td>
-                                            R
+                                            <span aria-hidden="true">R</span><span class="sr-only">recommended</span>
                                         </td>
                                         <td>
                                             Please add one or more <a target="_blank" href="https://www.ebi.ac.uk/ols/ontologies/envo">ENVO terms</a> to describe the broad environment in which sampling occurred e.g. cliff [ENVO:00000087]
@@ -465,7 +465,7 @@ $this->pageTitle = 'GigaDB - Imaging Dataset checklists';
                                             Local environmental context
                                         </td>
                                         <td>
-                                            R
+                                            <span aria-hidden="true">R</span><span class="sr-only">recommended</span>
                                         </td>
                                         <td>
                                             Please add one or more <a target="_blank" href="https://www.ebi.ac.uk/ols/ontologies/envo">ENVO terms</a> to describe the local environment in which sampling occurred as a semicolon separated list, e.g. digestive tract environment [ENVO:01001033]
@@ -476,7 +476,7 @@ $this->pageTitle = 'GigaDB - Imaging Dataset checklists';
                                             Amount or size of sample collected
                                         </td>
                                         <td>
-                                            R
+                                            <span aria-hidden="true">R</span><span class="sr-only">recommended</span>
                                         </td>
                                         <td>
                                             Amount or size of sample (volume, mass or area) that was collected. Please include units.
@@ -487,7 +487,7 @@ $this->pageTitle = 'GigaDB - Imaging Dataset checklists';
                                             Anatomical plane
                                         </td>
                                         <td>
-                                            R
+                                            <span aria-hidden="true">R</span><span class="sr-only">recommended</span>
                                         </td>
                                         <td>
                                             For section data and/or image stacks, please provide details of the anatomical plane (e.g. transverse, sagittal, coronal)
@@ -498,7 +498,7 @@ $this->pageTitle = 'GigaDB - Imaging Dataset checklists';
                                             Collected by
                                         </td>
                                         <td>
-                                            O
+                                            <span aria-hidden="true">O</span><span class="sr-only">optional</span>
                                         </td>
                                         <td>
                                             The name of the person(s) attributed with the collection of the wild specimen, uppercase the surname, e.g. CI HUNTER.
@@ -509,7 +509,7 @@ $this->pageTitle = 'GigaDB - Imaging Dataset checklists';
                                             Environmental medium
                                         </td>
                                         <td>
-                                            O
+                                            <span aria-hidden="true">O</span><span class="sr-only">optional</span>
                                         </td>
                                         <td>
                                             Please add one or more <a target="_blank" href="https://www.ebi.ac.uk/ols/ontologies/envo">ENVO terms</a> to describe the environmental medium of the sample e.g. fecal material [ENVO:00002003]
@@ -520,7 +520,7 @@ $this->pageTitle = 'GigaDB - Imaging Dataset checklists';
                                             Sample collection device or method
                                         </td>
                                         <td>
-                                            O
+                                            <span aria-hidden="true">O</span><span class="sr-only">optional</span>
                                         </td>
                                         <td>
                                             The method and/or device employed for collecting the sample.
@@ -531,7 +531,7 @@ $this->pageTitle = 'GigaDB - Imaging Dataset checklists';
                                             Sample material processing
                                         </td>
                                         <td>
-                                            O
+                                            <span aria-hidden="true">O</span><span class="sr-only">optional</span>
                                         </td>
                                         <td>
                                             A brief description of any processing applied to the sample during or after retrieving the sample from environment, or a link to the relevant protocol(s) performed. Where possible please use OBI (<a target="_blank" href="http://obi-ontology.org/">Ontology for Biomedical Investigations</a>) terms e.g. H&E slide staining [OBI:0002124]
@@ -540,7 +540,7 @@ $this->pageTitle = 'GigaDB - Imaging Dataset checklists';
                                 </table>
                             </div>
                             <br>
-                            <p>* - Requirements are listed as R= Recommended, O= Optional. Note ^ denotes absolutely mandatory fields.</p>
+                            <p aria-hidden="true">* - Requirements are listed as R= Recommended, O= Optional. Note ^ denotes absolutely mandatory fields.</p>
                         </div>
                     </div>
                 </div>
