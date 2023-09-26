@@ -6,7 +6,7 @@
         <li class="dropdown<?= !$isActiveGeneral ? ' active' : '' ?>">
             <button class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Datasets Checklists&nbsp;
-                <i class="fa fa-angle-down"></i>
+                <i class="fa fa-angle-down" aria-hidden="true"></i>
             </button>
             <ul class="dropdown-menu">
                 <?= $menuHtml ?>
