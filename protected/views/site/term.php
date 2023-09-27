@@ -10,23 +10,28 @@ $this->pageTitle = 'GigaDB - Terms of use';
                     <li><a href="/">Home</a></li>
                     <li class="active">Terms of use</li>
                 </ol>
-                <h1 class="h4">Terms of use</h1>
+                <h1 class="h4" id="pageTitle">Terms of use</h1>
             </div>
         </section>
 <section style="margin-bottom: 15px;">
     <div>
-        <ul class="nav nav-tabs nav-border-tabs" role="tablist">
-            <li id="lipolicies" role="presentation" class="active"><a href="#policies" aria-controls="policies" role="tab" data-toggle="tab">GigaDB User Policies</a></li>
-            <li id="lihosting" role="presentation"><a href="#hosting" aria-controls="hosting" role="tab" data-toggle="tab">Hosting Statement</a></li>
-            <li id="liprivacy" role="presentation" id="privacytab"><a href="#privacy" aria-controls="privacy" role="tab" data-toggle="tab">Privacy</a></li>
-            <li id="liinformation" role="presentation"><a href="#information" aria-controls="information" role="tab" data-toggle="tab">Collection of Web-traffic Information</a></li>
-            <li id="lipersonal" role="presentation"><a href="#personal" aria-controls="personal" role="tab" data-toggle="tab">Personal Data</a></li>
-        </ul>
+        <div class="tabs" role="tablist" aria-labelledby="pageTitle">
+            <button id="lipolicies" type="button" role="tab" aria-selected="false"
+            aria-controls="policies" data-toggle="tab">GigaDB User Policies</button>
+            <button id="lihosting" type="button" role="tab" aria-selected="false"
+            aria-controls="hosting" data-toggle="tab" tabindex="-1">Hosting Statement</button>
+            <button id="liprivacy" type="button" role="tab" aria-selected="false"
+            aria-controls="privacy" data-toggle="tab" tabindex="-1">Privacy</button>
+            <button id="liinformation" type="button" role="tab" aria-selected="false"
+            aria-controls="information" data-toggle="tab" tabindex="-1">Collection of Web-traffic Information</button>
+            <button id="lipersonal" type="button" role="tab" aria-selected="false"
+            aria-controls="personal" data-toggle="tab" tabindex="-1">Personal Data</button>
+        </div>
     </div>
 </section>
 <section>
     <div class="tab-content">
-        <div role="tabpanel" class="tab-pane active" id="policies">
+        <div role="tabpanel" class="tab-pane" id="policies" tabindex="0" aria-labelledby="lipolicies">
             <h2 class="h4 page-subtitle">General</h2>
             <div class="subsection">
                 <p>We have a commitment to Open Science by freely providing an online database, data and services
@@ -143,7 +148,7 @@ $this->pageTitle = 'GigaDB - Terms of use';
                 </p>
             </div>
         </div>
-        <div role="tabpanel", class="tab-pane" id="hosting">
+        <div role="tabpanel", class="tab-pane" id="hosting" tabindex="0" aria-labelledby="lihosting">
             <p>GigaScience, including GigaDB, was launched in 2012 in partnership with BGI. The stability of future hosting
                 of content is guaranteed and protected by the host organisations BGI - an international company with over
                 7,000 employees and data-centres in multiple countries - and China National GeneBank (CNGB) - a Shenzhen
@@ -179,7 +184,7 @@ $this->pageTitle = 'GigaDB - Terms of use';
                 <p>In the future we intend to move the GigaDB database and website to a cloud service provider. This will provide additional certified guarantees of stability and availability. </p>
             </div>
         </div>
-        <div role="tabpanel" class="tab-pane" id="privacy">
+        <div role="tabpanel" class="tab-pane" id="privacy" tabindex="0" aria-labelledby="liprivacy">
             <p><em>GigaDB</em> has implemented appropriate technical and organisational measures to ensure a level of
                 security which we deem appropriate, taking into account the categories of data we collect and the way we
                 process it.</p>
@@ -203,7 +208,7 @@ $this->pageTitle = 'GigaDB - Terms of use';
                 applicable laws, we may use your personal information to inform relevant third parties about the content
                 and your behaviour.</p>
         </div>
-        <div role="tabpanel" class="tab-pane" id="information">
+        <div role="tabpanel" class="tab-pane" id="information" tabindex="0" aria-labelledby="liinformation">
             <p><em>GigaDB</em> will record the visits to the website by using cookies and page tagging without
                 collecting any personal identifiable information of users. A cookie can be used to identify a computer,
                 it is not used to collect any personal information. In other words, it does not have the function of
@@ -212,7 +217,7 @@ $this->pageTitle = 'GigaDB - Terms of use';
                 You may choose to inactivate your browser’s cookies. If you inactivate the cookies, you will not be able
                 to use some of the functions of <em>GigaDB</em>.</p>
         </div>
-        <div role="tabpanel" class="tab-pane" id="personal">
+        <div role="tabpanel" class="tab-pane" id="personal" tabindex="0" aria-labelledby="lipersonal">
             <p>The Personal Data we may collect from you could include:</p>
             <ul class="content-text">
                 <li>Name</li>
@@ -273,16 +278,76 @@ $this->pageTitle = 'GigaDB - Terms of use';
 </div>
 <script type="text/javascript">
 
+    const tabSelector = '[role="tab"]'
+    const activeTabSelector = `${tabSelector}.active`;
+    const tabpanelSelector = '[role="tabpanel"]';
 
+    // Handle initial tab selection
     $(document).ready(function () {
-        if (location.hash != null && location.hash != "") {
-            $('ul li').removeClass('active');
-            $('div' + '.tab-pane').removeClass('active');
-            var variableli = location.hash;
-            $(location.hash).addClass('active');
-            $(variableli.replace('#', '#li')).addClass('active');
+        let defaultHash = '#policies'
+
+        if (location.hash && $(location.hash).is(tabpanelSelector)) {
+            defaultHash = location.hash;
         }
 
+        resetTabs();
+        $(defaultHash).addClass('active');
+        $(defaultHash.replace('#', '#li')).addClass('active').attr('tabindex', '0').attr('aria-selected','true');
     });
+
+    // Tab pattern implementation https://www.w3.org/WAI/ARIA/apg/patterns/tabs/
+    $(document).ready(function () {
+        const tabs = $(tabSelector)
+        // Initialize
+        $(tabSelector).attr('tabindex', '-1');
+        $(activeTabSelector).attr('tabindex', '0');
+
+        // Click event to handle tab switching
+        $(tabSelector).click(function () {
+            toggleTab($(this));
+        });
+
+        // Keyboard event to handle arrow keys, home and end
+        $(tabSelector).keydown(function (e) {
+            let target;
+            switch (e.key) {
+            case 'ArrowRight':
+                target = $(this).next(tabSelector).length ? $(this).next(tabSelector) : $(tabSelector).first();
+                break;
+            case 'ArrowLeft':
+                target = $(this).prev(tabSelector).length ? $(this).prev(tabSelector) : $(tabSelector).last();
+                break;
+            case 'Home':
+                e.preventDefault()
+                target = $(tabSelector).first();
+                break;
+            case 'End':
+                e.preventDefault()
+                target = $(tabSelector).last();
+                break;
+            default:
+                return;
+            }
+
+            toggleTab(target);
+        });
+
+
+
+        function toggleTab(tab) {
+            const tabId = tab.data('id');
+            const tabPanelId = tab.attr('aria-controls')
+
+            resetTabs()
+            tab.addClass('active').attr('tabindex', '0').attr('aria-selected','true').focus();
+            $(`#${tabPanelId}`).addClass('active');
+        }
+    });
+
+    function resetTabs() {
+        $(tabSelector).removeClass('active').attr('tabindex', '-1').attr('aria-selected','false');
+        $(tabpanelSelector).removeClass('active');
+    }
+
 
 </script>
