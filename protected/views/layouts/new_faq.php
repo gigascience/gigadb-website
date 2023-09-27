@@ -212,7 +212,7 @@
                          <img src="<?= Yii::app()->createAbsoluteUrl('/') . "/images/icons/id.png" ?>"/>&nbsp;&nbsp;<?= Yii::t('app', 'ORCID') ?>
                     </a>-->
             <a class="btn btnlog center giga-log" href="/site/login">
-                        <img src="/images/icons/giga.png"/>&nbsp;
+                        <img src="/images/icons/giga.png" alt="Login to GigaDB website"/>&nbsp;
                     </a>
         </div>
         <div class="content-btnlog">
