@@ -1,5 +1,5 @@
 <?php
-$this->pageTitle='GigaDB - About';
+$this->pageTitle='GigaDB - Advisory Board';
 
 //echo $this->renderInternal('Yii::app()->basePath'.'/../files/html/about.html');
 ?>
@@ -12,7 +12,7 @@ $this->pageTitle='GigaDB - About';
                             <li><a href="/">Home</a></li>
                             <li class="active">Advisory Board</li>
                         </ol>
-                        <h4>Advisory Board</h4>
+                        <h1 class="h4">Advisory Board</h1>
                     </div>
                 </section>
                 <div class="subsection">
@@ -23,23 +23,23 @@ $this->pageTitle='GigaDB - About';
                 <section>
                     <div class="row">
                         <div class="col-xs-2 advisory-img-block">
-                            <img src="/images/profile/Paul.png">
+                            <img alt="Dr Paul Flicek" src="/images/profile/Paul.png">
                             <p><a href="http://www.ebi.ac.uk/about/people/paul-flicek">Dr Paul Flicek</a></p>
                         </div>
                         <div class="col-xs-2 advisory-img-block">
-                            <img src="/images/profile/Carole.png">
+                            <img alt="Prof Carole Goble" src="/images/profile/Carole.png">
                             <p><a href="http://www.manchester.ac.uk/research/Carole.goble/">Prof Carole Goble</a></p>
                         </div>
                         <div class="col-xs-2 advisory-img-block">
-                            <img src="/images/profile/Paul.H.png">
+                            <img alt="Dr Paul Horton" src="/images/profile/Paul.H.png">
                             <p><a href="http://www.cbrc.jp/eng/intro/index.eng.html">Dr Paul Horton</a></p>
                         </div>
                         <div class="col-xs-2 advisory-img-block">
-                            <img src="/images/profile/Francis.png">
+                            <img alt="Dr B F Francis Ouellette" src="/images/profile/Francis.png">
                             <p><a href="http://oicr.on.ca/person/researcher/francis-ouellette">Dr B F Francis Ouellette</a></p>
                         </div>
                         <div class="col-xs-2 advisory-img-block" >
-                            <img src="/images/profile//ZhouXin.png">
+                            <img alt="Dr Xin Zhou" src="/images/profile//ZhouXin.png">
                             <p><a href="https://www.linkedin.com/profile/view?id=157662709&trk=nav_responsive_tab_profile_pic">Dr Xin Zhou</a></p>
                         </div>
                     </div>
