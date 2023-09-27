@@ -16,7 +16,7 @@ $this->pageTitle = 'GigaDB - Terms of use';
 <section style="margin-bottom: 15px;">
     <div>
         <div class="tabs" role="tablist" aria-labelledby="pageTitle">
-            <button id="lipolicies" type="button" role="tab" aria-selected="false"
+            <button id="lipolicies" type="button" role="tab" aria-selected="true"
             aria-controls="policies" data-toggle="tab">GigaDB User Policies</button>
             <button id="lihosting" type="button" role="tab" aria-selected="false"
             aria-controls="hosting" data-toggle="tab" tabindex="-1">Hosting Statement</button>
@@ -31,7 +31,7 @@ $this->pageTitle = 'GigaDB - Terms of use';
 </section>
 <section>
     <div class="tab-content">
-        <div role="tabpanel" class="tab-pane" id="policies" tabindex="0" aria-labelledby="lipolicies">
+        <div role="tabpanel" class="tab-pane active" id="policies" tabindex="0" aria-labelledby="lipolicies">
             <h2 class="h4 page-subtitle">General</h2>
             <div class="subsection">
                 <p>We have a commitment to Open Science by freely providing an online database, data and services
