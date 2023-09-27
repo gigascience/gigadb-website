@@ -27,15 +27,15 @@ $this->pageTitle='Forgotten password';
                 <? $form=$this->beginWidget('CActiveForm', array(
                     'id'=>'forgot-password-form',
                     'enableAjaxValidation'=>false,
-                    'htmlOptions'=>array('class'=>'form-horizontal')
+                    'htmlOptions'=>array('class'=>'form-horizontal forgot-password-form')
                 )) ?>
-                <div class="form-group">
-                    <?php echo $form->label($model, 'email', array('class' => 'col-xs-2 control-label')); ?>
-                    <div class="col-xs-8">
-                        <?php echo $form->textField($model, 'email', array('class' => 'form-control')); ?>
+                <div class="form-group forgot-password-group">
+                    <?php echo $form->label($model, 'email', array('class' => 'col-xs-2 control-label forgot-password-label')); ?>
+                    <div class="col-xs-8 forgot-password-input">
+                        <?php echo $form->emailField($model, 'email', array('class' => 'form-control forgot-password-input', 'required' => 'true')); ?>
                     </div>
                     <div class="col-xs-2">
-                        <?= CHtml::submitButton(Yii::t('app' , 'Reset'), array('class'=>'btn background-btn')) ?>
+                        <?= CHtml::submitButton(Yii::t('app' , 'Reset Password'), array('class'=>'btn background-btn forgot-password-btn')) ?>
                     </div>
                 </div>
                 <? $this->endWidget() ?>
