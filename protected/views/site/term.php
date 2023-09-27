@@ -10,7 +10,7 @@ $this->pageTitle = 'GigaDB - Terms of use';
                     <li><a href="/">Home</a></li>
                     <li class="active">Terms of use</li>
                 </ol>
-                <h4>Terms of use</h4>
+                <h1 class="h4">Terms of use</h1>
             </div>
         </section>
 <section style="margin-bottom: 15px;">
@@ -27,7 +27,7 @@ $this->pageTitle = 'GigaDB - Terms of use';
 <section>
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane active" id="policies">
-            <h4 class="page-subtitle">General</h4>
+            <h2 class="h4 page-subtitle">General</h2>
             <div class="subsection">
                 <p>We have a commitment to Open Science by freely providing an online database, data and services
                     relating to data contributed from biological and biomedical science experiments by authors and
@@ -57,7 +57,7 @@ $this->pageTitle = 'GigaDB - Terms of use';
                 <p>Any questions or comments concerning these Terms of Use can be addressed to the administrator via
                     emailing <a href="mailto:database@gigasciencejournal.com">database@gigasciencejournal.com</a>.</p>
             </div>
-            <h4 class="page-subtitle">GigaDB Services</h4>
+            <h2 class="h4 page-subtitle">GigaDB Services</h2>
             <div class="subsection">
                 <p>We provide these data in good faith, but make no warranty, expressed or implied, nor assume any legal
                     liability or responsibility for any purpose for which they are used.</p>
@@ -74,7 +74,7 @@ $this->pageTitle = 'GigaDB - Terms of use';
             </div>
 
 
-            <h4 class="page-subtitle">Depositor agreement</h4>
+            <h2 class="h4 page-subtitle">Depositor agreement</h2>
             <div class="subsection">
                 <p>As an Open Data repository, depositors must make sure everyone can legally reuse the data they
                     deposit and confirm that it is their own work. Co-authorship must be credited, and third party
@@ -89,7 +89,7 @@ $this->pageTitle = 'GigaDB - Terms of use';
                 </p>
             </div>
 
-            <h4 class="page-subtitle">A note about BGI Data</h4>
+            <h2 class="h4 page-subtitle">A note about BGI Data</h2>
             <div class="subsection">
                 <p>As one of the world’s largest biological data producers, the BGI’s goal is to maximize the use of its
                     data by providing it to the research community in a timely manner. At the same time, BGI recognizes
@@ -122,7 +122,7 @@ $this->pageTitle = 'GigaDB - Terms of use';
                     to provide the community with improved whole genome analyses and annotations.</p>
             </div>
 
-            <h4 class="page-subtitle">Human data</h4>
+            <h2 class="h4 page-subtitle">Human data</h2>
             <div class="subsection">
                 <p>Although all data is released under the most open licenses possible the user agrees to not use data
                     and/or metadata , alone or in combination with other data, to identify any individual or entity that
@@ -133,7 +133,7 @@ $this->pageTitle = 'GigaDB - Terms of use';
             </div>
 
 
-            <h4 class="page-subtitle">Disclaimer</h4>
+            <h2 class="h4 page-subtitle">Disclaimer</h2>
             <div class="subsection">
                 <p>Some of the data provided from external sources may be subject to third-party constraints. Users are
                     solely responsible for establishing the nature of and complying with any such intellectual property
@@ -157,7 +157,7 @@ $this->pageTitle = 'GigaDB - Terms of use';
                 the metadata database. The latter two parts are hosted together on a server physically located in Hong Kong,
                 whereas the data hosting server is located in Shenzhen, China.</p>
             <br>
-            <h4 class="page-subtitle">The GigaDB data repository (FTP server)</h4>
+            <h2 class="h4 page-subtitle">The GigaDB data repository (FTP server)</h2>
             <div class="subsection">
                 <p>GigaDB has two types of data hosting: (a) public open access; and (b) private FTP access. The open access public FTP server has security measures in place to prevent removal or modification of data hosted on the server. These measures are ensured by READ only access to data files. The private FTP server is administered by GigaDB staff and individual submitters are provided with login details to allow them to upload their data prior to publication. Those details are shared with editors, who then share them with the selected reviewers to enable the reviewers to access the data for the purpose of review. The login details grant access to the data of one manuscript/dataset, and the passwords are revoked after completion of the submission. At this point there are two options, namely: 1) the manuscript is accepted and the accompanying data are moved to the public server; or 2) the manuscript is rejected and the data are deleted.</p>
                 <p>Both private and public FTP servers that host GigaDB data are installed and maintained by Ali Cloud in the data center of China National GeneBank (CNGB) in Dapeng, Shenzhen. The physical security of the servers is guaranteed in terms of power supply, fire protection equipment and temperature/humidity control. There is a dedicated server room at CNGB and this area has CCTV monitoring and access control. Importantly, access to the server room and activities are recorded. Network security is maintained with a firewall that ensures that only data flows that comply with the security policy can pass through the firewall. This is an important measure to ensure the legality of data access. Host system security is maintained by identifying and restricting access to data through authorisation controls, and maintenance of sufficiently detailed logs are collected for auditors to audit and monitor.</p>
@@ -166,11 +166,11 @@ $this->pageTitle = 'GigaDB - Terms of use';
                 <p>GigaDB is also now a member of CLOCKSS (Controlled LOCKSS -"Lots of Copies Keep Stuff Safe"), ensuring all curated metadata, external links and documentation are preserved in the long term (see 3 below). In addition, we are exploring the feasibility and costs of CCLOCKS archiving the data files hosted on our FTP server as a longer term succession plan.</p>
                 <p>As an option to increase accessibility worldwide, we also are working with Complete Genomics - a subsidiary of BGI group of companies - to provide a mirror ftp server in California, USA which will be a further backup copy of the data.</p>
             </div>
-            <h4 class="page-subtitle">GigaDB.org website</h4>
+            <h2 class="h4 page-subtitle">GigaDB.org website</h2>
             <div class="subsection">
                 <p>The GigaDB.org website is currently hosted on and served from BGI-Hong Kong Co. Ltd (a subsidiary of BGI group of companies) located in Hong Kong. The Hong Kong data centre is maintained by BGI, who have been running it since 2010 to a very high standard in line with  ISO/IEC 27001 certification. The GigaDB source code is <a href="https://github.com/gigascience/gigadb-website">available in our GitHub repository</a> under an Open Source GPLv3 license. A Behavior-Driven Development process is now coupled with Test-Driven Development and unit testing techniques for developing the GigaDB application. We have also adopted Continuous Integration and Continuous Deployment approaches to automate checking of the GigaDB source code so that the application is not broken and that new functionality is made available in a timely manner on the website. In the future we intend to move the website to a cloud service provider in an effort to deliver certified guarantees of stability and availability.</p>
             </div>
-            <h4 class="page-subtitle">Metadata</h4>
+            <h2 class="h4 page-subtitle">Metadata</h2>
             <div class="subsection">
                 <p>All metadata collected by GigaDB is stored in a bespoke pSQL database. Only individual user information is kept private to comply with local and international data privacy laws. All GigaDB dataset metadata is openly available and as such has likely been duplicated in various archives and search engines (e.g. Google, utilising schema.org metadata) around the world. This offers greater discoverability for our datasets.</p>
                 <p>The pSQL database is hosted on the BGI-Hong Kong Co. Ltd servers in Hong Kong, with automatic nightly back-ups taken.</p>
