@@ -124,5 +124,5 @@ echo $new_host  >> ~/.ssh/known_hosts
 
 # Bootstrap playbook
 echo "Saving EC2 IP addresses to GitLab"
-env TF_KEY_NAME=private_ip ansible-playbook -i ../../inventories bootstrap_playbook.yml --tags="webapp_ips"
-ansible-playbook -i ../../inventories bootstrap_playbook.yml --tags="bastion_ips"
+env TF_KEY_NAME=private_ip ansible-playbook -i ../../inventories bootstrap_playbook.yml --tags="webapp_ips" --extra-vars="gigadb_env=$target_environment"
+ansible-playbook -i ../../inventories bootstrap_playbook.yml --tags="bastion_ips" --extra-vars="gigadb_env=$target_environment"
