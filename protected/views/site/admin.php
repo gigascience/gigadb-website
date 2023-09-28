@@ -67,7 +67,7 @@
 
                         <a class="btn background-btn" title="Manage GigaDB user accounts" href="/user/admin">Users</a>
 
-                        <a class="btn background-btn" title="Newsletter Subscribers" href="/user/newsletter">Newsletter Subscribers</a>
+                        <a class="btn background-btn" href="/user/newsletter">Newsletter Subscribers</a>
 
                         <a class="btn background-btn" title="Manage GigaDB news items to show on home page" href="/news/admin">News Items</a>
 
