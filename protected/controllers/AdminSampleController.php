@@ -342,7 +342,7 @@ class AdminSampleController extends Controller
                     // Get attribute model
                     $attribute = Attribute::model()->findByAttributes(array('structured_comment_name' => trim($attributeData[0])));
                     if (!$attribute) {
-                        $model->addError('error', 'Attribute name for the input ' . $attributeData[0]. "=" . $attributeData[1] .' is not valid - please select a valid attribute name!');
+                        $model->addError('error', 'Attribute name for the input ' . $attributeData[0] . "=" . $attributeData[1] . ' is not valid - please select a valid attribute name!');
                     } else {
                         // Let's save the new sample attribute
                         $sampleAttribute = clone $sampleAttribute;
