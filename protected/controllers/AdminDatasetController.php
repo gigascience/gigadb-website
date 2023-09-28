@@ -143,7 +143,7 @@ class AdminDatasetController extends Controller
     public function actionAdmin()
     {
 
-        $criteria=new CDbCriteria(array(                    
+        $criteria=new CDbCriteria(array(
             'order'=>'identifier asc',
         ));
 
@@ -157,7 +157,8 @@ class AdminDatasetController extends Controller
             $model->setAttributes($_GET['Dataset']);
         }
 
-        $this->layout = 'new_adminpage';
+        $this->layout = 'new_main';
+        $this->loadBaBbqPolyfills = true;
         $this->render('admin', array(
             'model'=>$model,
             'dataProvider'=>$model->search(),
@@ -190,8 +191,8 @@ class AdminDatasetController extends Controller
             "dryRunMode"=>false,
             ]);
         $datasetUpload = new DatasetUpload(
-            $fileUploadSrv->dataset, 
-            $fileUploadSrv, 
+            $fileUploadSrv->dataset,
+            $fileUploadSrv,
             Yii::$app->params['dataset_upload']
         );
 
@@ -219,7 +220,7 @@ class AdminDatasetController extends Controller
                         );
                         break;
                     default:
-                        $statusIsSet = true;                    
+                        $statusIsSet = true;
                 }
                 if ($statusIsSet) {
                     CurationLog::createlog($_POST['Dataset']['upload_status'], $id);
