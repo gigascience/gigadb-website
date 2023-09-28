@@ -121,3 +121,8 @@ ssh-keygen -R $webapp_ip
 ssh-keyscan -t ecdsa $bastion_ip >> ~/.ssh/known_hosts
 new_host=$(ssh -i $aws_ssh_key centos@$bastion_ip ssh-keyscan -t ecdsa $webapp_ip)
 echo $new_host  >> ~/.ssh/known_hosts
+
+# Bootstrap playbook
+echo "Saving EC2 IP addresses to GitLab"
+env TF_KEY_NAME=private_ip ansible-playbook -i ../../inventories bootstrap_playbook.yml --tags="webapp_ips"
+ansible-playbook -i ../../inventories bootstrap_playbook.yml --tags="bastion_ips"
