@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Fix #1102: Display error message when creating a sample object or updating an existing sample object with attribute not found in attribute table, and do not create/save it. Refactored container scanning jobs in gitlab pipeline.
 - Feat: #1376: Fix heading hierarchy in Contact Page, wrap address in `<address>` element
 - Feat #1361: Add general accessible landmarks to layouts
 - Feat #1363: Fix color contrast issues in pages with new layouts
