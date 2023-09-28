@@ -8,10 +8,10 @@
     ]);
     ?>
     <div class="row">
-        <div class="col-xs-8 col-xs-offset-2">
+        <div class="col-xs-10 col-xs-offset-1">
             <nav class="admin-nav row well" aria-label="admin">
                 <!-- Column 1 -->
-                <div class="col-md-4">
+                <div class="col-md-4 admin-nav-col-container">
                     <div class="well admin-nav-col">
                         <a class="btn background-btn" title="Access all DOIs to update/release" href="/adminDataset/admin">Datasets</a>
 
@@ -34,7 +34,7 @@
                 </div>
 
                 <!-- Column 2 -->
-                <div class="col-md-4">
+                <div class="col-md-4 admin-nav-col-container">
                     <div class="well admin-nav-col">
                         <a class="btn background-btn" title=" List all authors cited in GigaDB, update ORCID for authors" href="/adminAuthor/admin">Authors</a>
 
@@ -57,7 +57,7 @@
                 </div>
 
                 <!-- Column 3 -->
-                <div class="col-md-4">
+                <div class="col-md-4 admin-nav-col-container">
                     <div class="well admin-nav-col">
                         <a class="btn background-btn" title="Add/update types of datasets supported by GigaDB" href="/adminDatasetType/admin">Dataset Types</a>
 

@@ -1,7 +1,14 @@
 .admin-nav {
-  .admin-nav-col {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+  .admin-nav-col-container {
+    .admin-nav-col {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-width: fit-content;
+      a {
+        min-width: fit-content;
+        white-space: nowrap;
+      }
+    }
   }
 }
