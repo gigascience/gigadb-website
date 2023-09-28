@@ -73,7 +73,7 @@ $('.search-form form').submit(function(){
 			'id',
 			'identifier',
 			'manuscript_id',
-									'title',
+			'title',
 			// 'publisher',
 			// 'dataset_size',
 			// 'ftp_site',
@@ -82,13 +82,13 @@ $('.search-form form').submit(function(){
 			// 'excelfile_md5',
 			'publication_date',
 			// array('name'=> 'curator_id', 'value'=>'$data->getCuratorName()'),
-									'modification_date',
-					array(
-							'class'=>'CDataColumn',
-							'header' => "Upload Status",
-							'headerHtmlOptions'=>array('style'=>'width: 150px'),
-							'value'  => '$data->upload_status'
-					),
+			'modification_date',
+			array(
+				'class'=>'CDataColumn',
+				'header' => "Upload Status",
+				'headerHtmlOptions'=>array('style'=>'width: 150px'),
+				'value'  => '$data->upload_status'
+			),
 			array(
 				'class'=>'CButtonColumn',
 				'header' => "Actions",
