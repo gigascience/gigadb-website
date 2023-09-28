@@ -1,0 +1,24 @@
+---
+# Save terraform output in Gitlab variables
+
+- name: Save webapp IP addresses
+  hosts: name_gigadb_server_staging*:name_gigadb_server_live*
+  tags:
+    - webapp_ips
+  vars:
+    target_host: ""
+
+  roles:
+    - role: ../../roles/tf-output-to-gl-variables
+
+- name: Save bastion IP addresses
+  hosts: name_bastion_server_staging*:name_bastion_server_live*
+  tags:
+    - bastion_ips
+  vars:
+    target_host: "_bastion"
+
+  roles:
+    - role: ../../roles/tf-output-to-gl-variables
+
+
