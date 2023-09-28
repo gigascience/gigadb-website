@@ -28,6 +28,7 @@
                 <link rel="stylesheet" type="text/css" href="/css/current.css" />
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js" defer></script>
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+                <!-- Polyfills needed for 3.6.0/jquery.min.js and jquery.ba-bbq.min.js compatibility -->
                 <script src="https://code.jquery.com/jquery-migrate-3.3.2.min.js"></script>
                 <script>
 
