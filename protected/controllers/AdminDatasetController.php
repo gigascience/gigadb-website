@@ -157,6 +157,7 @@ class AdminDatasetController extends Controller
             $model->setAttributes($_GET['Dataset']);
         }
 
+        $this->layout = 'new_adminpage';
         $this->render('admin', array(
             'model'=>$model,
             'dataProvider'=>$model->search(),
