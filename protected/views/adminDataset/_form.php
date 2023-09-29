@@ -31,7 +31,7 @@ echo $form->hiddenField($model, "image_id");
 
 ?>
 <div class="col-xs-12 form well">
-    <div>
+    <div class="form-container">
         <p class="note">Fields with <span class="required">*</span> are required.</p>
         <?php if($model->hasErrors()): ?>
             <div class="alert alert-danger" role="alert">
@@ -42,10 +42,10 @@ echo $form->hiddenField($model, "image_id");
 
         <!--TODO: Adding 'style'=>'margin-top:*' to each div is just a temp styling fix, need further investigation on how to implement CSS styling properly.-->
 
-        <div class="container">
-
+        <div>
             <div class="row">
-                <div class="col-xs-5">
+                <!-- first column -->
+                <div class="col-xs-5 form-block-1">
                     <div class="form-group">
                         <?php echo $form->labelEx($model, 'submitter_id', array('class' => 'control-label col-xs-3')); ?>
                         <div class="col-xs-9">
@@ -96,7 +96,7 @@ echo $form->hiddenField($model, "image_id");
                         </div>
                     </div>
 
-                    <fieldset class="form-group">
+                    <fieldset>
                         <legend>Types</legend>
                         <!-- checkboxes -->
                         <div class="checkbox-group">
@@ -127,7 +127,8 @@ echo $form->hiddenField($model, "image_id");
                     </fieldset>
 
             </div>
-            <div class="col-xs-offset-1 col-xs-5">
+            <!-- second column -->
+            <div class="col-xs-offset-1 col-xs-5 form-block-2">
                 <div id="imageFields">
                     <div class="form-group">
                         <div id="imagePreviewWrapper" class="image-preview-wrapper">
@@ -215,63 +216,65 @@ echo $form->hiddenField($model, "image_id");
                             </div>
                         <?php } ?>
                     </div>
-                    <div class="form-group">
-                        <?php echo $form->labelEx($model->image, 'url', array(
-                            'class' => 'control-label col-xs-3 meta-fields',
-                        )); ?>
-                        <div class="col-xs-9">
-                            <?php echo $form->textField($model->image, 'url', array(
-                                'class' => 'meta-fields form-control',
+                    <div class="meta-fields-container">
+                        <div class="form-group">
+                            <?php echo $form->labelEx($model->image, 'url', array(
+                                'class' => 'control-label col-xs-3 meta-fields',
                             )); ?>
-                            <?php echo $form->error($model->image, 'url'); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->textField($model->image, 'url', array(
+                                    'class' => 'meta-fields form-control',
+                                )); ?>
+                                <?php echo $form->error($model->image, 'url'); ?>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <?php echo $form->labelEx($model->image, 'source', array(
-                            'class' => 'control-label col-xs-3 meta-fields',
-                        )); ?>
-                        <div class="col-xs-9">
-                            <?php echo $form->textField($model->image, 'source', array(
-                                'class' => 'meta-fields form-control',
+                        <div class="form-group">
+                            <?php echo $form->labelEx($model->image, 'source', array(
+                                'class' => 'control-label col-xs-3 meta-fields',
                             )); ?>
-                            <?php echo $form->error($model->image, 'source'); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->textField($model->image, 'source', array(
+                                    'class' => 'meta-fields form-control',
+                                )); ?>
+                                <?php echo $form->error($model->image, 'source'); ?>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <?php echo $form->labelEx($model->image, 'tag', array(
-                            'class' => 'control-label col-xs-3 meta-fields',
-                        )); ?>
-                        <div class="col-xs-9">
-                            <?php echo $form->textField($model->image, 'tag', array(
-                                'class' => 'meta-fields form-control',
+                        <div class="form-group">
+                            <?php echo $form->labelEx($model->image, 'tag', array(
+                                'class' => 'control-label col-xs-3 meta-fields',
                             )); ?>
-                            <?php echo $form->error($model->image, 'tag'); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->textField($model->image, 'tag', array(
+                                    'class' => 'meta-fields form-control',
+                                )); ?>
+                                <?php echo $form->error($model->image, 'tag'); ?>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <?php echo $form->labelEx($model->image, 'license', array(
-                            'class' => 'control-label col-xs-3 meta-fields',
-                        )); ?>
-                        <div class="col-xs-9">
-                            <?php echo $form->textField($model->image, 'license', array(
-                                'class' => 'meta-fields form-control',
+                        <div class="form-group">
+                            <?php echo $form->labelEx($model->image, 'license', array(
+                                'class' => 'control-label col-xs-3 meta-fields',
                             )); ?>
-                            <?php echo $form->error($model->image, 'license'); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->textField($model->image, 'license', array(
+                                    'class' => 'meta-fields form-control',
+                                )); ?>
+                                <?php echo $form->error($model->image, 'license'); ?>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <?php echo $form->labelEx($model->image, 'photographer', array(
-                            'class' => 'control-label col-xs-3 meta-fields',
-                        )); ?>
-                        <div class="col-xs-9">
-                            <?php echo $form->textField($model->image, 'photographer', array(
-                                'class' => 'meta-fields form-control',
+                        <div class="form-group">
+                            <?php echo $form->labelEx($model->image, 'photographer', array(
+                                'class' => 'control-label col-xs-3 meta-fields',
                             )); ?>
-                            <?php echo $form->error($model->image, 'photographer'); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->textField($model->image, 'photographer', array(
+                                    'class' => 'meta-fields form-control',
+                                )); ?>
+                                <?php echo $form->error($model->image, 'photographer'); ?>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -390,41 +393,42 @@ echo $form->hiddenField($model, "image_id");
 
         <div class="row">
 
-            <div class="col-xs-9">
-                <div>
-                    <?php echo $form->labelEx($model, 'dataset_size', array('label' => 'Dataset Size in Bytes')); ?>
-                    <div>
-                        <?php echo $form->textField($model, 'dataset_size', array('class' => 'col-xs-10', 'size' => 60, 'maxlength' => 300,)); ?>
+            <div class="col-xs-12 form-block-3">
+                <div class="form-group">
+                    <?php echo $form->labelEx($model, 'dataset_size', array('label' => 'Dataset Size in Bytes','class'=>'control-label col-xs-3')); ?>
+                    <div class='col-xs-7'>
+                        <?php echo $form->textField($model, 'dataset_size', array('class' => 'form-control', 'size' => 60, 'maxlength' => 300,)); ?>
                         <?php echo $form->error($model, 'dataset_size'); ?>
                     </div>
                 </div>
-                <div>
-                    <?php echo $form->labelEx($model, 'title', array()); ?>
-                    <div>
-                        <?php echo $form->textField($model, 'title', array('class' => 'col-xs-10', 'size' => 60, 'maxlength' => 300,)); ?>
+                <div class="form-group">
+                    <?php echo $form->labelEx($model, 'title', array('class'=>'control-label col-xs-3')); ?>
+                    <div class='col-xs-7'>
+                        <?php echo $form->textField($model, 'title', array('class' => 'form-control', 'size' => 60, 'maxlength' => 300,)); ?>
                         <?php echo $form->error($model, 'title'); ?>
                     </div>
                 </div>
 
-                <div>
-                    <?php echo $form->labelEx($model, 'description', array()); ?>
-                    <div>
-                        <?php echo $form->textArea($model, 'description', array('class' => 'col-xs-10', 'rows' => 8, 'cols' => 50,)); ?>
+                <div class="form-group">
+                    <?php echo $form->labelEx($model, 'description', array('class'=>'control-label col-xs-3')); ?>
+                    <div class='col-xs-7'>
+                        <?php echo $form->textArea($model, 'description', array('class' => 'form-control textarea-control', 'rows' => 8, 'cols' => 50,)); ?>
                         <?php echo $form->error($model, 'description'); ?>
                     </div>
                 </div>
 
-                <div>
-                    <?php echo CHtml::label('Keywords', 'keywords', array()); ?>
-                    <div>
-                        <?php echo CHtml::textField('keywords', '', array('class' => 'col-xs-10', 'size' => 60, 'maxlength' => 300)); ?>
+                <div class="form-group">
+                    <?php echo CHtml::label('Keywords', 'keywords', array('class'=>'control-label col-xs-3')); ?>
+                    <div class='col-xs-7'>
+                        <!-- NOTE this input is repositioned outside the viewport by teh tagEditor plugin but is still focusable, so the keyboard navigation is very confusing. Fixing this is not trivial, so warrants another ticket #1467 -->
+                        <?php echo CHtml::textField('keywords', '', array('class' => 'form-control', 'size' => 60, 'maxlength' => 300)); ?>
                     </div>
                 </div>
 
-                <div>
-                    <?php echo CHtml::label('URL to redirect', 'urltoredirect', array()); ?>
-                    <div>
-                        <?php echo CHtml::textField('urltoredirect', $model->getUrlToRedirectAttribute(), array('class' => 'col-xs-10', 'size' => 60, 'maxlength' => 300,)); ?>
+                <div class="form-group">
+                    <?php echo CHtml::label('URL to redirect', 'urltoredirect', array('class'=>'control-label col-xs-3')); ?>
+                    <div class='col-xs-7'>
+                        <?php echo CHtml::textField('urltoredirect', $model->getUrlToRedirectAttribute(), array('class' => 'form-control', 'size' => 60, 'maxlength' => 300,)); ?>
                     </div>
                 </div>
             </div>
@@ -442,11 +446,11 @@ echo $form->hiddenField($model, "image_id");
 </div>
 </div>
 
-<div class="col-xs-12">
-    <a href="<?= Yii::app()->createUrl('/adminDataset/admin') ?>" />Cancel</a>
+<div class="col-xs-12 form-control-btns">
+    <a class="btn background-btn-o" href="<?= Yii::app()->createUrl('/adminDataset/admin') ?>" />Cancel and go back</a>
     <?= CHtml::submitButton(
         $model->isNewRecord ? 'Create' : 'Save',
-        // array('class' => 'btn-green')
+        array('class' => 'btn background-btn submit-btn')
     ); ?>
     <?php if ("hidden" === $datasetPageSettings->getPageType() || "draft" === $datasetPageSettings->getPageType()) { ?>
         <a href="<?= Yii::app()->createUrl('/adminDataset/private/identifier/' . $model->identifier) ?>" />Create/Reset Private URL</a>

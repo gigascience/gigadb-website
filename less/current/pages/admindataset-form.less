@@ -1,13 +1,24 @@
 .admindataset-form {
+  // provisional classes that might be useful, delete during cleanup if not used
+  .form-container {
+  }
+  .form-block-1 {
+    margin-block: 16px;
+  }
+  .form-block-2 {
+    margin-block: 16px;
+  }
+  .form-block-3 {
+    margin-block: 16px;
+  }
   .form-group {
     margin-top: 10px;
-    // display: flex;
-    // flex-direction: row;
-    // align-items: center;
     .control-label {
       padding-block: 0;
       margin-block: 0;
-      // white-space: nowrap;
+    }
+    .textarea-control {
+      margin-top: -10px;
     }
     .form-control {
       &:focus {
@@ -65,5 +76,15 @@
   }
   .image-preview-wrapper {
     padding-bottom: 18px;
+  }
+  .form-control-btns {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 30px;
+    .submit-btn {
+      margin-top: 0;
+    }
   }
 }
