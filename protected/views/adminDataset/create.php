@@ -9,6 +9,5 @@
         ]
     ]);
     ?>
-  <div class="clear"></div>
   <?php echo $this->renderPartial('_form', array('model'=>$model,'datasetPageSettings' => $datasetPageSettings )); ?>
 </div>
