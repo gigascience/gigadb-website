@@ -33,7 +33,12 @@ echo $form->hiddenField($model, "image_id");
 <div class="col-xs-12 form well">
     <div>
         <p class="note">Fields with <span class="required">*</span> are required.</p>
-        <?php echo $form->errorSummary($model); ?>
+        <?php if($model->hasErrors()): ?>
+            <div class="alert alert-danger" role="alert">
+                <?php echo $form->errorSummary($model); ?>
+            </div>
+        <?php endif; ?>
+
 
         <!--TODO: Adding 'style'=>'margin-top:*' to each div is just a temp styling fix, need further investigation on how to implement CSS styling properly.-->
 

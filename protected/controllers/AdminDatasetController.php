@@ -136,6 +136,10 @@ class AdminDatasetController extends Controller
 
         $this->layout = 'new_main';
 
+        // toggle error for testing
+        // $dataset->addError('submitter_id', 'submitter_id error.');
+        // $dataset->addError('curator_id', 'curator_id error.');
+
         $this->render('create', array('model'=>$dataset,'datasetPageSettings' => $datasetPageSettings)) ;
     }
 
