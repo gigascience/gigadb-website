@@ -129,8 +129,8 @@ echo $form->hiddenField($model, "image_id");
             </div>
             <div class="col-xs-offset-1 col-xs-5">
                 <div id="imageFields">
-                    <div>
-                        <div>
+                    <div class="form-group">
+                        <div id="imagePreviewWrapper">
 
                             <?php
 
@@ -169,7 +169,7 @@ echo $form->hiddenField($model, "image_id");
                             echo CHtml::image("", "", array('id' => 'imagePreview'));
                             ?>
                         </div>
-                        <label for="image_upload_image">Image Status</label>
+                        <label for="image_upload_image" class="control-label col-xs-3">Image Status</label>
                         <?php if ($model->image && 0 != $model->image->id) { ?>
                             <div>
                                 <ul>
@@ -572,12 +572,14 @@ echo $form->hiddenField($model, "image_id");
     //Show image meta data, preview uploaded image in update page
     if (image.src != 'https://assets.gigadb-cdn.net/images/datasets/no_image.png') {
         $('.meta-fields').css('display', '');
+        const imgPrevWrapper = $('#imagePreviewWrapper')
+        imgPrevWrapper.css('display', 'none');
         document.getElementById("datasetImage").addEventListener('change', (event) => {
+            const preview = document.getElementById("imagePreview");
             if (event.target.files.length != 0) {
                 var src = URL.createObjectURL(event.target.files[0]);
-                var preview = document.getElementById("imagePreview");
                 preview.src = src;
-                preview.style.display = "block";
+                imgPrevWrapper.css('display', 'block');
                 $('.meta-fields').css('display', '');
                 $('#showImage').css('display', 'none');
                 $('#removeButton').css('display', 'none');
@@ -585,7 +587,8 @@ echo $form->hiddenField($model, "image_id");
                 $('.meta-fields').css('display', '');
                 $('#showImage').css('display', 'block');
                 $('#removeButton').css('display', '');
-                $('#imagePreview').css('display', 'none');
+                imgPrevWrapper.css('display', 'none');
+                preview.style.display = "none";
             }
         })
     };
