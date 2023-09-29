@@ -111,20 +111,20 @@ echo $form->hiddenField($model, "image_id");
                                     $checkedHtml = in_array($id, $checkedTypes, true) ? 'checked="checked"' : '';
                                     $checkboxId = "Dataset_$datasetType";
                                     ?>
-                                    <div class="checkbox-wrapper col-xs-1 col-xs-offset-1">
+                                    <div class="checkbox-wrapper col-xs-offset-1">
                                     <?php
                                     echo '<input class="" id="' . $checkboxId . '" type="checkbox" name="datasettypes[' . $id . ']" value="1"' . $checkedHtml . '/>';
                                     ?>
                                     </div>
                                     <?php
-                                        echo $form->labelEx($model, "$datasetType", array('class' => 'control-label checkbox-label col-xs-3'));
+                                        echo $form->labelEx($model, "$datasetType", array('class' => 'control-label checkbox-label'));
                                     ?>
                                 </div>
                             <?php
                             }
                             ?>
                         </div>
-            </fieldset>
+                    </fieldset>
 
             </div>
             <div class="col-xs-offset-1 col-xs-5">
