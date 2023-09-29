@@ -54,8 +54,15 @@ $('.search-form form').submit(function(){
 <?php } ?>
 
 <div class="container">
-	<h1 class="h4">Manage Datasets</h1>
-
+	<?php
+    $this->widget('application.components.TitleBreadcrumb', [
+        'pageTitle' => 'Manage Datasets',
+        'breadcrumbItems' => [
+						['label' => 'Datasets', 'href' => '/site/admin'],
+            ['isActive' => true, 'label' => 'Manage'],
+        ]
+    ]);
+    ?>
 	<p>
 	You may optionally enter a comparison operator (<b>&lt;</b>, <b>&lt;=</b>, <b>&gt;</b>, <b>&gt;=</b>, <b>&lt;&gt;</b>
 	or <b>=</b>) at the beginning of each of your search values to specify how the comparison should be done. Date should be exactly in this format: <b>yyyy-mm-dd</b>
