@@ -459,7 +459,7 @@ echo $form->hiddenField($model, "image_id");
         <?php } ?>
     <?php } elseif ("mockup" === $datasetPageSettings->getPageType()) {
         echo CHtml::link('Generate mockup for reviewers', '#', array(
-            // 'class' => 'btn btn-primary',
+            'class' => 'btn background-btn',
             'data-toggle' => "modal", 'data-target' => "#mockupCreation"
         ));
     }
