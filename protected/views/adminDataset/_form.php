@@ -275,13 +275,11 @@ echo $form->hiddenField($model, "image_id");
                         </div>
                     </div>
                 </div>
-                <fieldset class="form-group">
-                    <legend>
-                        Lorem
-                    </legend>
+                <fieldset aria-labelledby="doiLabel">
                     <div class="form-group row">
                         <?php echo $form->labelEx($model, 'identifier', array(
-                            'class'=>'control-label col-xs-3'
+                            'class'=>'control-label col-xs-3',
+                            'id'=>'doiLabel'
                         )); ?>
                         <div class="col-xs-7">
                             <?php echo $form->textField(
@@ -354,34 +352,34 @@ echo $form->hiddenField($model, "image_id");
 
                 </fieldset>
 
-                <div>
-                    <?php echo $form->labelEx($model, 'ftp_site', array()); ?>
-                    <div>
-                        <?php echo $form->textField($model, 'ftp_site', array('class' => 'col-xs-4', 'size' => 60, 'maxlength' => 200, 'disabled' => $model->upload_status == 'Published',)); ?>
+                <div class="form-group">
+                    <?php echo $form->labelEx($model, 'ftp_site', array('class'=>'control-label col-xs-3')); ?>
+                    <div class="col-xs-9">
+                        <?php echo $form->textField($model, 'ftp_site', array('class' => 'form-control', 'size' => 60, 'maxlength' => 200, 'disabled' => $model->upload_status == 'Published',)); ?>
                         <?php echo $form->error($model, 'ftp_site'); ?>
                     </div>
                 </div>
 
-                <div>
-                    <?php echo $form->labelEx($model, 'fairnuse', array()); ?>
-                    <div>
-                        <?php echo $form->textField($model, 'fairnuse', array('class' => 'col-xs-4 date',)); ?>
+                <div class="form-group">
+                    <?php echo $form->labelEx($model, 'fairnuse', array('class'=>'control-label col-xs-3')); ?>
+                    <div class="col-xs-9">
+                        <?php echo $form->textField($model, 'fairnuse', array('class' => 'form-control date',)); ?>
                         <?php echo $form->error($model, 'fairnuse'); ?>
                     </div>
                 </div>
 
-                <div>
-                    <?php echo $form->labelEx($model, 'publication_date', array()); ?>
-                    <div>
-                        <?php echo $form->textField($model, 'publication_date', array('class' => 'col-xs-4 date js-date-pub', 'disabled' => $model->upload_status == 'Published',)); ?>
+                <div class="form-group">
+                    <?php echo $form->labelEx($model, 'publication_date', array('class'=>'control-label col-xs-3')); ?>
+                    <div class="col-xs-9">
+                        <?php echo $form->textField($model, 'publication_date', array('class' => 'form-control date js-date-pub', 'disabled' => $model->upload_status == 'Published',)); ?>
                         <?php echo $form->error($model, 'publication_date'); ?>
                     </div>
                 </div>
 
-                <div>
-                    <?php echo $form->labelEx($model, 'modification_date', array()); ?>
-                    <div>
-                        <?php echo $form->textField($model, 'modification_date', array('class' => 'col-xs-4 date',)); ?>
+                <div class="form-group">
+                    <?php echo $form->labelEx($model, 'modification_date', array('class'=>'control-label col-xs-3')); ?>
+                    <div class="col-xs-9">
+                        <?php echo $form->textField($model, 'modification_date', array('class' => 'form-control date',)); ?>
                         <?php echo $form->error($model, 'modification_date'); ?>
                     </div>
                 </div>
