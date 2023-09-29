@@ -275,92 +275,84 @@ echo $form->hiddenField($model, "image_id");
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <fieldset>
-
-                        <div>
-                            <div class="col-xs-1">
-                                <?php echo $form->labelEx($model, 'identifier', array()); ?>
-                            </div>
-                            <div>
-                                <div class="col-xs-1">
-                                    <?php echo $form->textField(
-                                        $model,
-                                        'identifier',
-                                        array(
-                                            'size' => 32,
-                                            'maxlength' => 32,
-                                            'disabled' => $model->upload_status == 'Published',
-                                            'ajax' => array(
-                                                'type' => 'POST',
-                                                'url' => array('adminDataset/checkDOIExist'),
-                                                'dataType' => 'JSON',
-                                                'data' => array('doi' => 'js:$(this).val()'),
-                                                'success' => 'function(data){
-                                                        if(data.status){
-                                                            $("#Dataset_identifier").addClass("error");
-                                                        }else {
-                                                            $("#Dataset_identifier").removeClass("error");
-
-                                                        }
-                                                    }',
-                                            ),
-                                        ),
-                                    ); ?>
-                                    <?php echo $form->error($model, 'identifier'); ?>
-                                </div>
-
-                                <div class="col-xs-2">
-                                    <?php
-                                    $status_array = array('Submitted', 'UserStartedIncomplete', 'Curation');
-                                    echo CHtml::ajaxLink(
-                                        'Mint DOI',
-                                        Yii::app()->createUrl('/adminDataset/mint/'),
-                                        array(
-                                            'type' => 'POST',
-                                            'data' => array('doi' => 'js:$("#Dataset_identifier").val()'),
-                                            'dataType' => 'json',
-                                            'success' => 'js:function(output){
-                                                console.log(output);
-                                                if(output.status){
-                                                    $("#minting").html("new DOI successfully minted");
-
+                <fieldset class="form-group">
+                    <legend>
+                        Lorem
+                    </legend>
+                    <div class="form-group row">
+                        <?php echo $form->labelEx($model, 'identifier', array(
+                            'class'=>'control-label col-xs-3'
+                        )); ?>
+                        <div class="col-xs-7">
+                            <?php echo $form->textField(
+                                $model,
+                                'identifier',
+                                array(
+                                    'size' => 32,
+                                    'maxlength' => 32,
+                                    'disabled' => $model->upload_status == 'Published',
+                                    'class'=>'form-control',
+                                    'ajax' => array(
+                                        'type' => 'POST',
+                                        'url' => array('adminDataset/checkDOIExist'),
+                                        'dataType' => 'JSON',
+                                        'data' => array('doi' => 'js:$(this).val()'),
+                                        'success' => 'function(data){
+                                                if(data.status){
+                                                    $("#Dataset_identifier").addClass("error");
                                                 }else {
-                                                    $("#minting").html("error minting a DOI: "+ output.md_curl_status + ", " + output.doi_curl_status);
+                                                    $("#Dataset_identifier").removeClass("error");
+
                                                 }
-                                                $("#mint_doi_button").toggleClass("active");
                                             }',
-                                        ),
-                                        array(
-                                            // 'class' => 'btn btn-green',
-                                            'id' => 'mint_doi_button',
-                                            'disabled' => in_array($model->upload_status, $status_array),
-                                            // 'style' => 'width:40%; margin-top:-30px;',
-
-                                        )
-                                    );
-
-                                    ?>
-                                    <div id="minting"></div>
-
-                                    <?php
-                                    if ("Curation" === $model->upload_status) {
-                                        echo CHtml::link(
-                                            "Move files to public ftp",
-                                            "/adminDataset/moveFiles/doi/{$model->identifier}",
-                                            // ["class" => "btn btn-green btn-mini", "style" => "margin-left:2px;margin-top:2px;"]
-                                        );
-                                    }
-                                    ?>
-                                </div>
-
-                            </div>
+                                    ),
+                                ),
+                            ); ?>
+                            <?php echo $form->error($model, 'identifier'); ?>
                         </div>
+                        <div class="col-xs-2">
+                            <?php
+                            $status_array = array('Submitted', 'UserStartedIncomplete', 'Curation');
+                            echo CHtml::ajaxLink(
+                                'Mint DOI',
+                                Yii::app()->createUrl('/adminDataset/mint/'),
+                                array(
+                                    'type' => 'POST',
+                                    'data' => array('doi' => 'js:$("#Dataset_identifier").val()'),
+                                    'dataType' => 'json',
+                                    'success' => 'js:function(output){
+                                        console.log(output);
+                                        if(output.status){
+                                            $("#minting").html("new DOI successfully minted");
 
+                                        }else {
+                                            $("#minting").html("error minting a DOI: "+ output.md_curl_status + ", " + output.doi_curl_status);
+                                        }
+                                        $("#mint_doi_button").toggleClass("active");
+                                    }',
+                                ),
+                                array(
+                                    'class' => 'btn background-btn control-btn',
+                                    'id' => 'mint_doi_button',
+                                    'disabled' => in_array($model->upload_status, $status_array),
+                                )
+                            );
 
+                            ?>
 
-                    </fieldset>
-                </div>
+<?php
+                            if ("Curation" === $model->upload_status) {
+                                echo CHtml::link(
+                                    "Move files to public ftp",
+                                    "/adminDataset/moveFiles/doi/{$model->identifier}",
+                                );
+                            }
+                            ?>
+                        </div>
+                        <div id="minting" class="col-xs-offset-3 col-xs-9 control-msg"></div>
+                    </div>
+
+                </fieldset>
 
                 <div>
                     <?php echo $form->labelEx($model, 'ftp_site', array()); ?>
