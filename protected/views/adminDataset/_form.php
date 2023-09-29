@@ -130,7 +130,7 @@ echo $form->hiddenField($model, "image_id");
             <div class="col-xs-offset-1 col-xs-5">
                 <div id="imageFields">
                     <div class="form-group">
-                        <div id="imagePreviewWrapper">
+                        <div id="imagePreviewWrapper" class="image-preview-wrapper">
 
                             <?php
 
@@ -210,66 +210,66 @@ echo $form->hiddenField($model, "image_id");
                                 </ul>
                             </div>
                         <?php } else { ?>
-                            <div>
-                                <?php echo CHtml::fileField('datasetImage'); ?>
+                            <div class='col-xs-9'>
+                                <?php echo CHtml::fileField('datasetImage','',array('class'=>'form-control')); ?>
                             </div>
                         <?php } ?>
                     </div>
-                    <div>
+                    <div class="form-group">
                         <?php echo $form->labelEx($model->image, 'url', array(
-                            // 'class' => 'control-label meta-fields', 'style' => 'display:none'
+                            'class' => 'control-label col-xs-3 meta-fields',
                         )); ?>
-                        <div>
+                        <div class="col-xs-9">
                             <?php echo $form->textField($model->image, 'url', array(
-                                // 'class' => 'col-xs-4 meta-fields', 'style' => 'display:none;margin-top:-40px'
+                                'class' => 'meta-fields form-control',
                             )); ?>
                             <?php echo $form->error($model->image, 'url'); ?>
                         </div>
                     </div>
 
-                    <div>
+                    <div class="form-group">
                         <?php echo $form->labelEx($model->image, 'source', array(
-                            // 'class' => 'control-label meta-fields', 'style' => 'display:none'
+                            'class' => 'control-label col-xs-3 meta-fields',
                         )); ?>
-                        <div>
+                        <div class="col-xs-9">
                             <?php echo $form->textField($model->image, 'source', array(
-                                // 'class' => 'col-xs-4 meta-fields', 'style' => 'display:none;margin-top:-40px'
+                                'class' => 'meta-fields form-control',
                             )); ?>
                             <?php echo $form->error($model->image, 'source'); ?>
                         </div>
                     </div>
 
-                    <div>
+                    <div class="form-group">
                         <?php echo $form->labelEx($model->image, 'tag', array(
-                            // 'class' => 'control-label meta-fields', 'style' => 'display:none'
+                            'class' => 'control-label col-xs-3 meta-fields',
                         )); ?>
-                        <div>
+                        <div class="col-xs-9">
                             <?php echo $form->textField($model->image, 'tag', array(
-                                // 'class' => 'col-xs-4 meta-fields', 'style' => 'display:none;margin-top:-40px'
+                                'class' => 'meta-fields form-control',
                             )); ?>
                             <?php echo $form->error($model->image, 'tag'); ?>
                         </div>
                     </div>
 
-                    <div>
+                    <div class="form-group">
                         <?php echo $form->labelEx($model->image, 'license', array(
-                            // 'class' => 'control-label meta-fields', 'style' => 'display:none'
+                            'class' => 'control-label col-xs-3 meta-fields',
                         )); ?>
-                        <div>
+                        <div class="col-xs-9">
                             <?php echo $form->textField($model->image, 'license', array(
-                                // 'class' => 'col-xs-4 meta-fields', 'style' => 'display:none;margin-top:-40px'
+                                'class' => 'meta-fields form-control',
                             )); ?>
                             <?php echo $form->error($model->image, 'license'); ?>
                         </div>
                     </div>
 
-                    <div>
+                    <div class="form-group">
                         <?php echo $form->labelEx($model->image, 'photographer', array(
-                            // 'class' => 'control-label meta-fields', 'style' => 'display:none'
+                            'class' => 'control-label col-xs-3 meta-fields',
                         )); ?>
-                        <div>
+                        <div class="col-xs-9">
                             <?php echo $form->textField($model->image, 'photographer', array(
-                                // 'class' => 'col-xs-4 meta-fields', 'style' => 'display:none;margin-top:-40px'
+                                'class' => 'meta-fields form-control',
                             )); ?>
                             <?php echo $form->error($model->image, 'photographer'); ?>
                         </div>
@@ -568,10 +568,11 @@ echo $form->hiddenField($model, "image_id");
 
     var image = document.getElementById("showImage");
     var image_id = document.getElementById("Dataset_image_id").value;
+    const metaFields = $('.meta-fields');
 
     //Show image meta data, preview uploaded image in update page
     if (image.src != 'https://assets.gigadb-cdn.net/images/datasets/no_image.png') {
-        $('.meta-fields').css('display', '');
+        metaFields.css('display', '');
         const imgPrevWrapper = $('#imagePreviewWrapper')
         imgPrevWrapper.css('display', 'none');
         document.getElementById("datasetImage").addEventListener('change', (event) => {
@@ -580,11 +581,11 @@ echo $form->hiddenField($model, "image_id");
                 var src = URL.createObjectURL(event.target.files[0]);
                 preview.src = src;
                 imgPrevWrapper.css('display', 'block');
-                $('.meta-fields').css('display', '');
+                metaFields.css('display', '');
                 $('#showImage').css('display', 'none');
                 $('#removeButton').css('display', 'none');
             } else {
-                $('.meta-fields').css('display', '');
+                metaFields.css('display', '');
                 $('#showImage').css('display', 'block');
                 $('#removeButton').css('display', '');
                 imgPrevWrapper.css('display', 'none');
@@ -601,10 +602,10 @@ echo $form->hiddenField($model, "image_id");
             var preview = document.getElementById("imagePreview");
             preview.src = src;
             preview.style.display = "block";
-            $('.meta-fields').css('display', '');
+            metaFields.css('display', '');
             $('#showImage').css('display', 'none');
         } else {
-            $('.meta-fields').css('display', 'none');
+            metaFields.css('display', 'none');
             $('#showImage').css('display', 'block');
             $('#imagePreview').css('display', 'none');
         }
@@ -614,7 +615,8 @@ echo $form->hiddenField($model, "image_id");
     if ('' == image.src && 0 == document.getElementById("datasetImage").files.length) {
 
         if (0 == image_id || null == image_id) {
-            $('.meta-fields').css('display', 'none');
+            metaFields.css('display', 'none');
+            // metaFields.css('display', '');
         }
     }
 </script>
