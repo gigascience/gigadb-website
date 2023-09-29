@@ -3,6 +3,12 @@
 A deployment of the GigaDB website code in the `Upstream` Gitlab group to the
 `live` environment provides the website that is located at beta.gigadb.org.
 
+The terraform state file is stored remotely in gitlab using terraform `http` backend module,
+details of the implementation can be found at [here](https://docs.gitlab.com/ee/user/infrastructure/iac/terraform_state.html).
+As a result, the state file can be shared which allows multiple developers to provision the same existing infrastructure.
+One important thing to note is that the existing infrastructure can only be provisioned by 1 developer at a time, as the remote state file
+will be locked, this help to make sure that each developer only works on the most recent infrastructure.
+
 ## Prerequisites
 
 ### AWS IAM policies
@@ -201,6 +207,81 @@ $ cp <path_to>/pli888/gigadb-website/gigadb/app/tools/files-url-updater/sql/giga
 Before you are able to create a `live` deployment, you must first deploy a 
 `staging` environment.
 
+And you have to make sure that terraform state files exist in [gitlab terraform page](https://gitlab.com/gigascience/upstream/gigadb-website/-/terraform).
+You can even download the terraform state file to confirm the existing infrastructure, take a look at the following truncated staging terraform state file, which can be download at [here](https://gitlab.com/api/v4/projects/11385199/terraform/state/staging_infra/versions/144), as an example:
+```json
+{
+  "version": 4,
+  "terraform_version": "1.5.7",
+  "serial": 144,
+  "lineage": "ecb0abe7-59f5-e248-0ba2-e1974a61d4e7",
+  "outputs": {
+    "ec2_bastion_private_ip": {
+      "value": "10.99.0.82",
+      "type": "string"
+    },
+    "ec2_bastion_public_ip": {
+      "value": "18.166.89.134",
+      "type": "string"
+    },
+    "ec2_private_ip": {
+      "value": "10.99.0.108",
+      "type": "string"
+    },
+    "ec2_public_ip": {
+      "value": "16.162.16.165",
+      "type": "string"
+    },
+    "rds_instance_address": {
+      "value": "rds-server-staging-gigadb.cfkc0cbc20ii.ap-east-1.rds.amazonaws.com",
+      "type": "string"
+    },
+    "vpc_database_subnet_group": {
+      "value": "vpc-ap-east-1-staging-gigadb-gigadb",
+      "type": "string"
+    },
+    "vpc_id": {
+      "value": "vpc-053b1a524f5b825ab",
+      "type": "string"
+    }
+  },
+  "resources": [
+    {
+      "mode": "data",
+      "type": "aws_availability_zones",
+      "name": "available",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "all_availability_zones": null,
+            "exclude_names": null,
+            "exclude_zone_ids": null,
+            "filter": null,
+            "group_names": [
+              "ap-east-1"
+            ],
+            "id": "ap-east-1",
+            "names": [
+              "ap-east-1a",
+              "ap-east-1b",
+              "ap-east-1c"
+            ],
+            "state": "available",
+            "timeouts": null,
+            "zone_ids": [
+              "ape1-az1",
+              "ape1-az2",
+              "ape1-az3"
+            ]
+          },
+          "sensitive_attributes": []
+        }
+      ]
+    },
+```
+
 Change directory to the `envs` folder:
 ```
 $ cd ops/infrastructure/envs
@@ -213,6 +294,7 @@ $ cd staging
 
 Copy terraform files to `staging` environment:
 ```
+# this step will retrieve terraform state file from the gitlab
 $ ../../../scripts/tf_init.sh --project gigascience/upstream/gigadb-website --env staging
 
 You need to specify the path to the ssh private key to use to connect to the EC2 instance: 
@@ -228,10 +310,11 @@ You need to specify an AWS region:
 ap-east-1
 ```
 
-Use Gigadb AWS IAM user account to provision production staging server:
+And you should use Gigadb AWS IAM user account to provision production staging server:
 ```
-$ terraform plan
-$ terraform apply
+$ terraform show # will show all the existing resources, which should be the same as the terraform state file `staging_infra` from gitlab.
+$ terraform plan # terraform is idempotent and should not try to create new instances for already existing upstream staging, unless the new instance is expected to created.
+$ terraform apply # will make changes to the existing infrastructure and update the terraform state file, input `yest` if the changes are expected to make.
 $ terraform refresh
 ```
 
@@ -274,6 +357,13 @@ and run the staging build stage in your pipeline.
 
 ## Provision AWS infrastructure for `live` environment using Terraform and Ansible
 
+You have to make sure there is no error when deploying `staging` environment.
+Then, you need to follow the exact steps in the staging provision section and look into the details of
+`terrafor show` and `terraform plan` commands.
+
+And also, you can download the live terraform state file at [here](https://gitlab.com/api/v4/projects/11385199/terraform/state/live_infra/versions/76)
+for checking in the latter live deployment steps.
+
 Change directory to the `envs` folder:
 ```
 $ cd ops/infrastructure/envs
@@ -303,8 +393,9 @@ You need to specify a backup file created by the files-url-updater tool:
 
 Use Gigadb AWS IAM user account to provision production staging server:
 ```
-$ terraform plan
-$ terraform apply
+$ terraform show # will show all the existing resources, which should be the same as the terraform state file `live_infra` from gitlab.
+$ terraform plan # terraform is idempotent and should not try to create new instances for already existing upstream staging, unless the new instance is expected to created.
+$ terraform apply # will make changes to the existing infrastructure and update the terraform state file, input `yest` if the changes are expected to make.
 $ terraform refresh
 ```
 
