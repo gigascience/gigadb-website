@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1460: Update admin dashboard styles to modern look
 - Feat: #1376: Fix heading hierarchy in Contact Page, wrap address in `<address>` element
 - Feat #1361: Add general accessible landmarks to layouts
 - Feat #1363: Fix color contrast issues in pages with new layouts
