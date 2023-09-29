@@ -1,21 +1,4 @@
 .admindataset-form {
-  // clear: both;
-  // .a-form-group {
-  //   display: flex;
-  //   flex-direction: row;
-  //   align-items: center;
-  //   margin-top: 10px;
-  //   .a-control-label {
-  //     padding-block: 0;
-  //     margin-block: 0;
-  //   }
-  //   .a-form-control {
-  //     border-color: @color-light-gray;
-  //     box-shadow: none;
-  //     color: @color-darker-gray;
-  //     font-size: 13px;
-  //   }
-  // }
   .form-group {
     margin-top: 10px;
     .control-label {
@@ -23,10 +6,47 @@
       margin-block: 0;
     }
     .form-control {
-      // border-color: @color-light-gray;
-      // box-shadow: none;
-      // color: @color-darker-gray;
-      // font-size: 13px;
+      &:focus {
+        outline: 2px solid @color-gigadb-green;
+      }
+    }
+  }
+  fieldset {
+    legend {
+      font-size: @font-size-base;
+      padding-bottom: 4px;
+    }
+    .checkbox-group {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .form-checkbox-container {
+      display: flex;
+      align-items: center;
+      .checkbox-wrapper {
+        input[type="checkbox"] {
+          padding: 8px;
+          position: relative;
+          accent-color: @color-gigadb-green;
+          border-radius: 3px;
+          &:focus {
+            outline: none;
+            &::before {
+              content: "";
+              display: block;
+              position: absolute;
+              inset: -3px;
+              border: 2px solid @color-gigadb-green;
+              border-radius: 4px;
+              pointer-events: none;
+            }
+          }
+        }
+      }
+      .checkbox-label {
+        text-align: left;
+      }
     }
   }
 }

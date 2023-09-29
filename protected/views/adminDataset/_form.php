@@ -41,8 +41,8 @@ echo $form->hiddenField($model, "image_id");
 
             <div class="row">
                 <div class="col-xs-5">
-                    <div class="a-form-group form-group">
-                        <?php echo $form->labelEx($model, 'submitter_id', array('class' => 'a-control-label control-label col-xs-3')); ?>
+                    <div class="form-group">
+                        <?php echo $form->labelEx($model, 'submitter_id', array('class' => 'control-label col-xs-3')); ?>
                         <div class="col-xs-9">
                             <?php echo $form->dropDownList(
                                 $model,
@@ -54,32 +54,32 @@ echo $form->hiddenField($model, "image_id");
                                     'id',
                                     'email'
                                 ),
-                                array('class' => 'a-form-control form-control')
+                                array('class' => 'form-control')
                             );
                             ?>
                             <?php echo $form->error($model, 'submitter_id'); ?>
                         </div>
                     </div>
-                    <div class="a-form-group form-group">
-                        <?php echo $form->labelEx($model, 'curator_id', array('class' => 'a-control-label control-label col-xs-3')); ?>
+                    <div class="form-group">
+                        <?php echo $form->labelEx($model, 'curator_id', array('class' => 'control-label col-xs-3')); ?>
                         <div class="col-xs-9">
                             <?php
                             $criteria = new CDbCriteria;
                             $criteria->condition = 'role=\'admin\' and email like \'%gigasciencejournal.com\'';
                             ?>
-                            <?php echo $form->dropDownList($model, 'curator_id', CHtml::listData(User::model()->findAll($criteria), 'id', 'email'), array('prompt' => '','class' => 'a-form-control form-control')); ?>
+                            <?php echo $form->dropDownList($model, 'curator_id', CHtml::listData(User::model()->findAll($criteria), 'id', 'email'), array('prompt' => '', 'class' => 'form-control')); ?>
                             <?php echo $form->error($model, 'curator_id'); ?>
                         </div>
                     </div>
                     <div class="form-group">
-                        <?php echo $form->labelEx($model, 'manuscript_id', array('class'=>'control-label col-xs-3')); ?>
+                        <?php echo $form->labelEx($model, 'manuscript_id', array('class' => 'control-label col-xs-3')); ?>
                         <div class="col-xs-9">
-                            <?php echo $form->textField($model, 'manuscript_id', array('size' => 60, 'maxlength' => 200,'class'=>'form-control')); ?>
+                            <?php echo $form->textField($model, 'manuscript_id', array('size' => 60, 'maxlength' => 200, 'class' => 'form-control')); ?>
                             <?php echo $form->error($model, 'manuscript_id'); ?>
                         </div>
                     </div>
                     <div class="form-group">
-                        <?php echo $form->labelEx($model, 'upload_status', array('class'=>'control-label col-xs-3')); ?>
+                        <?php echo $form->labelEx($model, 'upload_status', array('class' => 'control-label col-xs-3')); ?>
                         <div class="col-xs-9">
                             <?php echo $form->dropDownList(
                                 $model,
@@ -91,42 +91,54 @@ echo $form->hiddenField($model, "image_id");
                         </div>
                     </div>
 
-                    <div>
-                        <fieldset>
-                            <legend>Types</legend>
+                    <fieldset class="form-group">
+                        <legend>Types</legend>
+                        <!-- checkboxes -->
+                        <div class="checkbox-group">
                             <?php
                             $datasetTypes = CHtml::listData(Type::model()->findAll(), 'id', 'name');
                             $checkedTypes = CHtml::listData($model->datasetTypes, 'id', 'id');
+
                             foreach ($datasetTypes as $id => $datasetType) {
-                                echo $form->labelEx($model, "$datasetType", array());
-                                $checkedHtml = in_array($id, $checkedTypes, true) ? 'checked="checked"' : '';
-                                $checkboxId = "Dataset_$datasetType";
-                                echo '<div>';
-                                echo '<input id="' . $checkboxId . '" type="checkbox" name="datasettypes[' . $id . ']" value="1"' . $checkedHtml . '/>';
-                                echo '</div>';
+                            ?>
+                                <div class="form-checkbox-container row">
+                                    <?php
+                                    $checkedHtml = in_array($id, $checkedTypes, true) ? 'checked="checked"' : '';
+                                    $checkboxId = "Dataset_$datasetType";
+                                    ?>
+                                    <div class="checkbox-wrapper col-xs-1 col-xs-offset-1">
+                                    <?php
+                                    echo '<input class="" id="' . $checkboxId . '" type="checkbox" name="datasettypes[' . $id . ']" value="1"' . $checkedHtml . '/>';
+                                    ?>
+                                    </div>
+                                    <?php
+                                        echo $form->labelEx($model, "$datasetType", array('class' => 'control-label checkbox-label col-xs-3'));
+                                    ?>
+                                </div>
+                            <?php
                             }
                             ?>
-                        </fieldset>
-                    </div>
+                        </div>
+            </fieldset>
 
-                </div>
-                <div class="col-xs-offset-1 col-xs-5">
-                    <div id="imageFields">
+            </div>
+            <div class="col-xs-offset-1 col-xs-5">
+                <div id="imageFields">
+                    <div>
                         <div>
-                            <div>
 
-                                <?php
+                            <?php
 
-                                if ($model->image && 0 !== $model->image_id && $model->image->isUrlValid()) {
+                            if ($model->image && 0 !== $model->image_id && $model->image->isUrlValid()) {
 
-                                    echo CHtml::ajaxButton(
-                                        '[x]',
-                                        Yii::app()->createUrl('/adminDataset/clearImageFile/'),
-                                        array(
-                                            'type' => 'POST',
-                                            'data' => array('doi' => 'js:$("#Dataset_identifier").val()'),
-                                            'dataType' => 'json',
-                                            'success' => 'js:function(output){
+                                echo CHtml::ajaxButton(
+                                    '[x]',
+                                    Yii::app()->createUrl('/adminDataset/clearImageFile/'),
+                                    array(
+                                        'type' => 'POST',
+                                        'data' => array('doi' => 'js:$("#Dataset_identifier").val()'),
+                                        'dataType' => 'json',
+                                        'success' => 'js:function(output){
                                                     console.log(output);
                                                     if(output.status){
                                                         $("#showImage").src = "";
@@ -137,34 +149,34 @@ echo $form->hiddenField($model, "image_id");
                                                         $("#removing").html("Failed clearing image file url");
                                                     }
                                                 }',
-                                        ),
-                                        array(
-                                            'id' => 'clearFileUrl',
-                                            'title' => 'Delete file',
-                                            'confirm' => 'Are you sure? This will take effect immediately',
-                                        )
-                                    );
-                                }
+                                    ),
+                                    array(
+                                        'id' => 'clearFileUrl',
+                                        'title' => 'Delete file',
+                                        'confirm' => 'Are you sure? This will take effect immediately',
+                                    )
+                                );
+                            }
 
-                                if ($model->image) {
-                                    echo CHtml::image($model->image->url, $model->image->isUrlValid() ? $model->image->tag : "", array('id' => 'showImage'));
-                                }
-                                echo CHtml::image("", "", array('id' => 'imagePreview'));
-                                ?>
-                            </div>
-                            <label for="image_upload_image">Image Status</label>
-                            <?php if ($model->image && 0 != $model->image->id) { ?>
-                                <div>
-                                    <ul>
-                                        <li><?php echo CHtml::fileField('datasetImage'); ?></li>
-                                        <li><?php echo CHtml::ajaxLink(
-                                                'Remove image record (file+metadata)',
-                                                Yii::app()->createUrl('/adminDataset/removeImage/'),
-                                                array(
-                                                    'type' => 'POST',
-                                                    'data' => array('doi' => 'js:$("#Dataset_identifier").val()'),
-                                                    'dataType' => 'json',
-                                                    'success' => 'js:function(output){
+                            if ($model->image) {
+                                echo CHtml::image($model->image->url, $model->image->isUrlValid() ? $model->image->tag : "", array('id' => 'showImage'));
+                            }
+                            echo CHtml::image("", "", array('id' => 'imagePreview'));
+                            ?>
+                        </div>
+                        <label for="image_upload_image">Image Status</label>
+                        <?php if ($model->image && 0 != $model->image->id) { ?>
+                            <div>
+                                <ul>
+                                    <li><?php echo CHtml::fileField('datasetImage'); ?></li>
+                                    <li><?php echo CHtml::ajaxLink(
+                                            'Remove image record (file+metadata)',
+                                            Yii::app()->createUrl('/adminDataset/removeImage/'),
+                                            array(
+                                                'type' => 'POST',
+                                                'data' => array('doi' => 'js:$("#Dataset_identifier").val()'),
+                                                'dataType' => 'json',
+                                                'success' => 'js:function(output){
                                                     console.log(output);
                                                     if(output.status){
                                                         $("#showImage").src = "https://assets.gigadb-cdn.net/images/datasets/no_image.png";
@@ -176,110 +188,110 @@ echo $form->hiddenField($model, "image_id");
                                                         $("#removing").html("Failed removing image");
                                                     }
                                                 }',
-                                                ),
-                                                array(
-                                                    // 'class' => 'btn btn-sm',
-                                                    'id' => 'removeButton',
-                                                    // 'style' => 'width:90%;font-size: smaller; font-weight: lighter;color: #fff ; background: #c12e2a',
-                                                    'title' => 'the dataset will be associated with the generic image record afterward',
-                                                    'confirm' => 'Are you sure? This will take effect immediately',
+                                            ),
+                                            array(
+                                                // 'class' => 'btn btn-sm',
+                                                'id' => 'removeButton',
+                                                // 'style' => 'width:90%;font-size: smaller; font-weight: lighter;color: #fff ; background: #c12e2a',
+                                                'title' => 'the dataset will be associated with the generic image record afterward',
+                                                'confirm' => 'Are you sure? This will take effect immediately',
 
-                                                )
-                                            );
-                                            ?></li>
-                                        <li>
-                                            <div id="removing"></div>
-                                        </li>
-                                    </ul>
-                                </div>
-                            <?php } else { ?>
-                                <div>
-                                    <?php echo CHtml::fileField('datasetImage'); ?>
-                                </div>
-                            <?php } ?>
-                        </div>
-                        <div>
-                            <?php echo $form->labelEx($model->image, 'url', array(
-                                // 'class' => 'control-label meta-fields', 'style' => 'display:none'
-                            )); ?>
-                            <div>
-                                <?php echo $form->textField($model->image, 'url', array(
-                                    // 'class' => 'col-xs-4 meta-fields', 'style' => 'display:none;margin-top:-40px'
-                                )); ?>
-                                <?php echo $form->error($model->image, 'url'); ?>
+                                            )
+                                        );
+                                        ?></li>
+                                    <li>
+                                        <div id="removing"></div>
+                                    </li>
+                                </ul>
                             </div>
-                        </div>
-
-                        <div>
-                            <?php echo $form->labelEx($model->image, 'source', array(
-                                // 'class' => 'control-label meta-fields', 'style' => 'display:none'
-                            )); ?>
+                        <?php } else { ?>
                             <div>
-                                <?php echo $form->textField($model->image, 'source', array(
-                                    // 'class' => 'col-xs-4 meta-fields', 'style' => 'display:none;margin-top:-40px'
-                                )); ?>
-                                <?php echo $form->error($model->image, 'source'); ?>
+                                <?php echo CHtml::fileField('datasetImage'); ?>
                             </div>
-                        </div>
-
+                        <?php } ?>
+                    </div>
+                    <div>
+                        <?php echo $form->labelEx($model->image, 'url', array(
+                            // 'class' => 'control-label meta-fields', 'style' => 'display:none'
+                        )); ?>
                         <div>
-                            <?php echo $form->labelEx($model->image, 'tag', array(
-                                // 'class' => 'control-label meta-fields', 'style' => 'display:none'
+                            <?php echo $form->textField($model->image, 'url', array(
+                                // 'class' => 'col-xs-4 meta-fields', 'style' => 'display:none;margin-top:-40px'
                             )); ?>
-                            <div>
-                                <?php echo $form->textField($model->image, 'tag', array(
-                                    // 'class' => 'col-xs-4 meta-fields', 'style' => 'display:none;margin-top:-40px'
-                                )); ?>
-                                <?php echo $form->error($model->image, 'tag'); ?>
-                            </div>
-                        </div>
-
-                        <div>
-                            <?php echo $form->labelEx($model->image, 'license', array(
-                                // 'class' => 'control-label meta-fields', 'style' => 'display:none'
-                            )); ?>
-                            <div>
-                                <?php echo $form->textField($model->image, 'license', array(
-                                    // 'class' => 'col-xs-4 meta-fields', 'style' => 'display:none;margin-top:-40px'
-                                )); ?>
-                                <?php echo $form->error($model->image, 'license'); ?>
-                            </div>
-                        </div>
-
-                        <div>
-                            <?php echo $form->labelEx($model->image, 'photographer', array(
-                                // 'class' => 'control-label meta-fields', 'style' => 'display:none'
-                            )); ?>
-                            <div>
-                                <?php echo $form->textField($model->image, 'photographer', array(
-                                    // 'class' => 'col-xs-4 meta-fields', 'style' => 'display:none;margin-top:-40px'
-                                )); ?>
-                                <?php echo $form->error($model->image, 'photographer'); ?>
-                            </div>
+                            <?php echo $form->error($model->image, 'url'); ?>
                         </div>
                     </div>
-                    <div class="row">
-                        <fieldset>
 
+                    <div>
+                        <?php echo $form->labelEx($model->image, 'source', array(
+                            // 'class' => 'control-label meta-fields', 'style' => 'display:none'
+                        )); ?>
+                        <div>
+                            <?php echo $form->textField($model->image, 'source', array(
+                                // 'class' => 'col-xs-4 meta-fields', 'style' => 'display:none;margin-top:-40px'
+                            )); ?>
+                            <?php echo $form->error($model->image, 'source'); ?>
+                        </div>
+                    </div>
+
+                    <div>
+                        <?php echo $form->labelEx($model->image, 'tag', array(
+                            // 'class' => 'control-label meta-fields', 'style' => 'display:none'
+                        )); ?>
+                        <div>
+                            <?php echo $form->textField($model->image, 'tag', array(
+                                // 'class' => 'col-xs-4 meta-fields', 'style' => 'display:none;margin-top:-40px'
+                            )); ?>
+                            <?php echo $form->error($model->image, 'tag'); ?>
+                        </div>
+                    </div>
+
+                    <div>
+                        <?php echo $form->labelEx($model->image, 'license', array(
+                            // 'class' => 'control-label meta-fields', 'style' => 'display:none'
+                        )); ?>
+                        <div>
+                            <?php echo $form->textField($model->image, 'license', array(
+                                // 'class' => 'col-xs-4 meta-fields', 'style' => 'display:none;margin-top:-40px'
+                            )); ?>
+                            <?php echo $form->error($model->image, 'license'); ?>
+                        </div>
+                    </div>
+
+                    <div>
+                        <?php echo $form->labelEx($model->image, 'photographer', array(
+                            // 'class' => 'control-label meta-fields', 'style' => 'display:none'
+                        )); ?>
+                        <div>
+                            <?php echo $form->textField($model->image, 'photographer', array(
+                                // 'class' => 'col-xs-4 meta-fields', 'style' => 'display:none;margin-top:-40px'
+                            )); ?>
+                            <?php echo $form->error($model->image, 'photographer'); ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <fieldset>
+
+                        <div>
+                            <div class="col-xs-1">
+                                <?php echo $form->labelEx($model, 'identifier', array()); ?>
+                            </div>
                             <div>
                                 <div class="col-xs-1">
-                                    <?php echo $form->labelEx($model, 'identifier', array()); ?>
-                                </div>
-                                <div>
-                                    <div class="col-xs-1">
-                                        <?php echo $form->textField(
-                                            $model,
-                                            'identifier',
-                                            array(
-                                                'size' => 32,
-                                                'maxlength' => 32,
-                                                'disabled' => $model->upload_status == 'Published',
-                                                'ajax' => array(
-                                                    'type' => 'POST',
-                                                    'url' => array('adminDataset/checkDOIExist'),
-                                                    'dataType' => 'JSON',
-                                                    'data' => array('doi' => 'js:$(this).val()'),
-                                                    'success' => 'function(data){
+                                    <?php echo $form->textField(
+                                        $model,
+                                        'identifier',
+                                        array(
+                                            'size' => 32,
+                                            'maxlength' => 32,
+                                            'disabled' => $model->upload_status == 'Published',
+                                            'ajax' => array(
+                                                'type' => 'POST',
+                                                'url' => array('adminDataset/checkDOIExist'),
+                                                'dataType' => 'JSON',
+                                                'data' => array('doi' => 'js:$(this).val()'),
+                                                'success' => 'function(data){
                                                         if(data.status){
                                                             $("#Dataset_identifier").addClass("error");
                                                         }else {
@@ -287,23 +299,23 @@ echo $form->hiddenField($model, "image_id");
 
                                                         }
                                                     }',
-                                                ),
                                             ),
-                                        ); ?>
-                                        <?php echo $form->error($model, 'identifier'); ?>
-                                    </div>
+                                        ),
+                                    ); ?>
+                                    <?php echo $form->error($model, 'identifier'); ?>
+                                </div>
 
-                                    <div class="col-xs-2">
-                                        <?php
-                                        $status_array = array('Submitted', 'UserStartedIncomplete', 'Curation');
-                                        echo CHtml::ajaxLink(
-                                            'Mint DOI',
-                                            Yii::app()->createUrl('/adminDataset/mint/'),
-                                            array(
-                                                'type' => 'POST',
-                                                'data' => array('doi' => 'js:$("#Dataset_identifier").val()'),
-                                                'dataType' => 'json',
-                                                'success' => 'js:function(output){
+                                <div class="col-xs-2">
+                                    <?php
+                                    $status_array = array('Submitted', 'UserStartedIncomplete', 'Curation');
+                                    echo CHtml::ajaxLink(
+                                        'Mint DOI',
+                                        Yii::app()->createUrl('/adminDataset/mint/'),
+                                        array(
+                                            'type' => 'POST',
+                                            'data' => array('doi' => 'js:$("#Dataset_identifier").val()'),
+                                            'dataType' => 'json',
+                                            'success' => 'js:function(output){
                                                 console.log(output);
                                                 if(output.status){
                                                     $("#minting").html("new DOI successfully minted");
@@ -313,126 +325,126 @@ echo $form->hiddenField($model, "image_id");
                                                 }
                                                 $("#mint_doi_button").toggleClass("active");
                                             }',
-                                            ),
-                                            array(
-                                                // 'class' => 'btn btn-green',
-                                                'id' => 'mint_doi_button',
-                                                'disabled' => in_array($model->upload_status, $status_array),
-                                                // 'style' => 'width:40%; margin-top:-30px;',
+                                        ),
+                                        array(
+                                            // 'class' => 'btn btn-green',
+                                            'id' => 'mint_doi_button',
+                                            'disabled' => in_array($model->upload_status, $status_array),
+                                            // 'style' => 'width:40%; margin-top:-30px;',
 
-                                            )
+                                        )
+                                    );
+
+                                    ?>
+                                    <div id="minting"></div>
+
+                                    <?php
+                                    if ("Curation" === $model->upload_status) {
+                                        echo CHtml::link(
+                                            "Move files to public ftp",
+                                            "/adminDataset/moveFiles/doi/{$model->identifier}",
+                                            // ["class" => "btn btn-green btn-mini", "style" => "margin-left:2px;margin-top:2px;"]
                                         );
-
-                                        ?>
-                                        <div id="minting"></div>
-
-                                        <?php
-                                        if ("Curation" === $model->upload_status) {
-                                            echo CHtml::link(
-                                                "Move files to public ftp",
-                                                "/adminDataset/moveFiles/doi/{$model->identifier}",
-                                                // ["class" => "btn btn-green btn-mini", "style" => "margin-left:2px;margin-top:2px;"]
-                                            );
-                                        }
-                                        ?>
-                                    </div>
-
+                                    }
+                                    ?>
                                 </div>
+
                             </div>
-
-
-
-                        </fieldset>
-                    </div>
-
-                    <div>
-                        <?php echo $form->labelEx($model, 'ftp_site', array()); ?>
-                        <div>
-                            <?php echo $form->textField($model, 'ftp_site', array('class' => 'col-xs-4', 'size' => 60, 'maxlength' => 200, 'disabled' => $model->upload_status == 'Published',)); ?>
-                            <?php echo $form->error($model, 'ftp_site'); ?>
                         </div>
-                    </div>
 
-                    <div>
-                        <?php echo $form->labelEx($model, 'fairnuse', array()); ?>
-                        <div>
-                            <?php echo $form->textField($model, 'fairnuse', array('class' => 'col-xs-4 date',)); ?>
-                            <?php echo $form->error($model, 'fairnuse'); ?>
-                        </div>
-                    </div>
 
-                    <div>
-                        <?php echo $form->labelEx($model, 'publication_date', array()); ?>
-                        <div>
-                            <?php echo $form->textField($model, 'publication_date', array('class' => 'col-xs-4 date js-date-pub', 'disabled' => $model->upload_status == 'Published',)); ?>
-                            <?php echo $form->error($model, 'publication_date'); ?>
-                        </div>
-                    </div>
 
-                    <div>
-                        <?php echo $form->labelEx($model, 'modification_date', array()); ?>
-                        <div>
-                            <?php echo $form->textField($model, 'modification_date', array('class' => 'col-xs-4 date',)); ?>
-                            <?php echo $form->error($model, 'modification_date'); ?>
-                        </div>
-                    </div>
-
+                    </fieldset>
                 </div>
 
-            </div> <!-- end of row of two columns -->
-
-            <div class="row">
-
-                <div class="col-xs-9">
+                <div>
+                    <?php echo $form->labelEx($model, 'ftp_site', array()); ?>
                     <div>
-                        <?php echo $form->labelEx($model, 'dataset_size', array('label' => 'Dataset Size in Bytes')); ?>
-                        <div>
-                            <?php echo $form->textField($model, 'dataset_size', array('class' => 'col-xs-10', 'size' => 60, 'maxlength' => 300,)); ?>
-                            <?php echo $form->error($model, 'dataset_size'); ?>
-                        </div>
-                    </div>
-                    <div>
-                        <?php echo $form->labelEx($model, 'title', array()); ?>
-                        <div>
-                            <?php echo $form->textField($model, 'title', array('class' => 'col-xs-10', 'size' => 60, 'maxlength' => 300,)); ?>
-                            <?php echo $form->error($model, 'title'); ?>
-                        </div>
-                    </div>
-
-                    <div>
-                        <?php echo $form->labelEx($model, 'description', array()); ?>
-                        <div>
-                            <?php echo $form->textArea($model, 'description', array('class' => 'col-xs-10', 'rows' => 8, 'cols' => 50,)); ?>
-                            <?php echo $form->error($model, 'description'); ?>
-                        </div>
-                    </div>
-
-                    <div>
-                        <?php echo CHtml::label('Keywords', 'keywords', array()); ?>
-                        <div>
-                            <?php echo CHtml::textField('keywords', '', array('class' => 'col-xs-10', 'size' => 60, 'maxlength' => 300)); ?>
-                        </div>
-                    </div>
-
-                    <div>
-                        <?php echo CHtml::label('URL to redirect', 'urltoredirect', array()); ?>
-                        <div>
-                            <?php echo CHtml::textField('urltoredirect', $model->getUrlToRedirectAttribute(), array('class' => 'col-xs-10', 'size' => 60, 'maxlength' => 300,)); ?>
-                        </div>
+                        <?php echo $form->textField($model, 'ftp_site', array('class' => 'col-xs-4', 'size' => 60, 'maxlength' => 200, 'disabled' => $model->upload_status == 'Published',)); ?>
+                        <?php echo $form->error($model, 'ftp_site'); ?>
                     </div>
                 </div>
-            </div> <!-- end of row of one column -->
 
-            <!-- <?php echo CHtml::link('Curation Log', $this->createAbsoluteUrl('curationlog/admin', array('id' => $model->id))); ?> -->
+                <div>
+                    <?php echo $form->labelEx($model, 'fairnuse', array()); ?>
+                    <div>
+                        <?php echo $form->textField($model, 'fairnuse', array('class' => 'col-xs-4 date',)); ?>
+                        <?php echo $form->error($model, 'fairnuse'); ?>
+                    </div>
+                </div>
 
-            <?php if (isset($dataset_id)) {
-                echo $this->renderPartial("curationLog", array('dataset_id' => $dataset_id, 'model' => $curationlog));
-            }
-            ?>
+                <div>
+                    <?php echo $form->labelEx($model, 'publication_date', array()); ?>
+                    <div>
+                        <?php echo $form->textField($model, 'publication_date', array('class' => 'col-xs-4 date js-date-pub', 'disabled' => $model->upload_status == 'Published',)); ?>
+                        <?php echo $form->error($model, 'publication_date'); ?>
+                    </div>
+                </div>
 
-        </div> <!-- end of container -->
+                <div>
+                    <?php echo $form->labelEx($model, 'modification_date', array()); ?>
+                    <div>
+                        <?php echo $form->textField($model, 'modification_date', array('class' => 'col-xs-4 date',)); ?>
+                        <?php echo $form->error($model, 'modification_date'); ?>
+                    </div>
+                </div>
 
-    </div>
+            </div>
+
+        </div> <!-- end of row of two columns -->
+
+        <div class="row">
+
+            <div class="col-xs-9">
+                <div>
+                    <?php echo $form->labelEx($model, 'dataset_size', array('label' => 'Dataset Size in Bytes')); ?>
+                    <div>
+                        <?php echo $form->textField($model, 'dataset_size', array('class' => 'col-xs-10', 'size' => 60, 'maxlength' => 300,)); ?>
+                        <?php echo $form->error($model, 'dataset_size'); ?>
+                    </div>
+                </div>
+                <div>
+                    <?php echo $form->labelEx($model, 'title', array()); ?>
+                    <div>
+                        <?php echo $form->textField($model, 'title', array('class' => 'col-xs-10', 'size' => 60, 'maxlength' => 300,)); ?>
+                        <?php echo $form->error($model, 'title'); ?>
+                    </div>
+                </div>
+
+                <div>
+                    <?php echo $form->labelEx($model, 'description', array()); ?>
+                    <div>
+                        <?php echo $form->textArea($model, 'description', array('class' => 'col-xs-10', 'rows' => 8, 'cols' => 50,)); ?>
+                        <?php echo $form->error($model, 'description'); ?>
+                    </div>
+                </div>
+
+                <div>
+                    <?php echo CHtml::label('Keywords', 'keywords', array()); ?>
+                    <div>
+                        <?php echo CHtml::textField('keywords', '', array('class' => 'col-xs-10', 'size' => 60, 'maxlength' => 300)); ?>
+                    </div>
+                </div>
+
+                <div>
+                    <?php echo CHtml::label('URL to redirect', 'urltoredirect', array()); ?>
+                    <div>
+                        <?php echo CHtml::textField('urltoredirect', $model->getUrlToRedirectAttribute(), array('class' => 'col-xs-10', 'size' => 60, 'maxlength' => 300,)); ?>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- end of row of one column -->
+
+        <!-- <?php echo CHtml::link('Curation Log', $this->createAbsoluteUrl('curationlog/admin', array('id' => $model->id))); ?> -->
+
+        <?php if (isset($dataset_id)) {
+            echo $this->renderPartial("curationLog", array('dataset_id' => $dataset_id, 'model' => $curationlog));
+        }
+        ?>
+
+    </div> <!-- end of container -->
+
+</div>
 </div>
 
 <div class="col-xs-12">
