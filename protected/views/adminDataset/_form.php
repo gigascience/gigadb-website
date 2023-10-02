@@ -100,7 +100,7 @@ echo $form->hiddenField($model, "image_id");
 
                     <div class="form-block-2">
                         <fieldset>
-                            <legend>Types</legend>
+                            <legend>Dataset Types</legend>
                             <!-- checkboxes -->
                             <div class="checkbox-group">
                                 <?php
