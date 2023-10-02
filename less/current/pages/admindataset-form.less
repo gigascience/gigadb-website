@@ -4,10 +4,6 @@
   .note {
     margin-bottom: 24px;
   }
-  // provisional classes that might be useful, delete during cleanup if not used
-  .form-container {
-    // margin-inline: 16px;
-  }
   .form-block-1 {
     margin-block: @block-spacing;
   }
@@ -31,6 +27,10 @@
     .control-label {
       padding-block: 0;
       margin-block: 0;
+      font-weight: bold;
+    }
+    .error {
+      color: @brand-danger-on-lighter-gray;
     }
     .textarea-control {
       margin-top: -10px;
@@ -54,6 +54,8 @@
     legend {
       font-size: @font-size-base;
       padding-bottom: 4px;
+      font-weight: bold;
+      color: @dark-gray-on-light-gray;
     }
     .checkbox-group {
       display: flex;
@@ -91,6 +93,12 @@
   }
   .image-preview-wrapper {
     padding-bottom: 18px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    .dataset-image {
+      width: 100px;
+    }
   }
   .form-control-btns {
     display: flex;
@@ -102,7 +110,18 @@
       margin-top: 0;
     }
   }
+  .tag-editor .placeholder {
+    color: @dark-gray-on-light-gray;
+  }
+  .errorMessage {
+    color: @brand-danger-on-lighter-gray;
+  }
 }
 .block-spacing {
   padding-block: 4px;
+}
+.clear-file-url-btn {
+  font-weight: bold;
+  margin-top: 0!important;
+  margin-left: 4px;
 }

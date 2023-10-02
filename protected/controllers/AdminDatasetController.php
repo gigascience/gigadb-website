@@ -136,9 +136,27 @@ class AdminDatasetController extends Controller
 
         $this->layout = 'new_main';
 
-        // toggle error for testing
+        // mock error for testing
         // $dataset->addError('submitter_id', 'submitter_id error.');
         // $dataset->addError('curator_id', 'curator_id error.');
+        // $dataset->addError('manuscript_id', 'manuscript_id error.');
+        // $dataset->addError('upload_status', 'upload_status error.');
+        // $dataset->image->addError('url', 'url error.');
+        // $dataset->image->addError('source', 'source error.');
+        // $dataset->image->addError('tag', 'tag error.');
+        // $dataset->image->addError('license', 'license error.');
+        // $dataset->image->addError('photographer', 'photographer error.');
+        // $dataset->addError('identifier', 'identifier error.');
+        // $dataset->addError('ftp_site', 'ftp_site error.');
+        // $dataset->addError('fairnuse', 'fairnuse error.');
+        // $dataset->addError('publication_date', 'publication_date error.');
+        // $dataset->addError('modification_date', 'modification_date error.');
+        // $dataset->addError('dataset_size', 'dataset_size error.');
+        // $dataset->addError('title', 'title error.');
+        // $dataset->addError('Image_url', 'Image_url error.');
+        // $dataset->addError('Image_source', 'Image_source error.');
+        // $dataset->addError('description', 'description error.');
+
 
         $this->render('create', array('model'=>$dataset,'datasetPageSettings' => $datasetPageSettings)) ;
     }
@@ -397,6 +415,28 @@ class AdminDatasetController extends Controller
                 Yii::log(print_r($model->getErrors(), true), 'error');
             }
         }
+
+        // mock errors for testing
+        // $model->addError('submitter_id', 'submitter_id error.');
+        // $model->addError('curator_id', 'curator_id error.');
+        // $model->addError('manuscript_id', 'manuscript_id error.');
+        // $model->addError('upload_status', 'upload_status error.');
+        // $model->image->addError('url', 'url error.');
+        // $model->image->addError('source', 'source error.');
+        // $model->image->addError('tag', 'tag error.');
+        // $model->image->addError('license', 'license error.');
+        // $model->image->addError('photographer', 'photographer error.');
+        // $model->addError('identifier', 'identifier error.');
+        // $model->addError('ftp_site', 'ftp_site error.');
+        // $model->addError('fairnuse', 'fairnuse error.');
+        // $model->addError('publication_date', 'publication_date error.');
+        // $model->addError('modification_date', 'modification_date error.');
+        // $model->addError('dataset_size', 'dataset_size error.');
+        // $model->addError('title', 'title error.');
+        // $model->addError('Image_url', 'Image_url error.');
+        // $model->addError('Image_source', 'Image_source error.');
+        // $model->addError('description', 'description error.');
+
 
         $this->layout = 'new_main';
         $this->render('update', array(

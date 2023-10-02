@@ -33,16 +33,18 @@ echo $form->hiddenField($model, "image_id");
 <div class="col-xs-12 form well">
     <div>
         <p class="note">Fields with <span class="required">*</span> are required.</p>
-        <?php if($model->hasErrors()): ?>
-            <div class="alert alert-danger" role="alert">
-                <?php echo $form->errorSummary($model); ?>
-            </div>
-        <?php endif; ?>
+        <div role="alert">
+            <?php if($model->hasErrors()): ?>
+                <div class="alert alert-danger">
+                    <?php echo $form->errorSummary($model); ?>
+                </div>
+            <?php endif; ?>
+        </div>
 
 
         <!--TODO: Adding 'style'=>'margin-top:*' to each div is just a temp styling fix, need further investigation on how to implement CSS styling properly.-->
 
-        <div class="form-container">
+        <div>
             <div class="row">
                 <!-- first column -->
                 <div class="col-xs-5">
@@ -60,10 +62,13 @@ echo $form->hiddenField($model, "image_id");
                                         'id',
                                         'email'
                                     ),
-                                    array('class' => 'form-control')
+                                    array(
+                                        'class' => 'form-control',
+                                        'aria-describedby' => $model->hasErrors('submitter_id') ? 'submitter_id_error' : '',
+                                    )
                                 );
                                 ?>
-                                <?php echo $form->error($model, 'submitter_id'); ?>
+                                <?php echo $form->error($model, 'submitter_id', array('id' => 'submitter_id_error')); ?>
                             </div>
                         </div>
                         <div class="form-group">
@@ -139,10 +144,17 @@ echo $form->hiddenField($model, "image_id");
 
                             <?php
 
+
+
+                            if ($model->image) {
+                                echo CHtml::image($model->image->url, $model->image->isUrlValid() ? $model->image->tag : "", array('id' => 'showImage', 'class' => 'dataset-image'));
+                            }
+                            echo CHtml::image("", "", array('id' => 'imagePreview', 'alt' => ''));
+
                             if ($model->image && 0 !== $model->image_id && $model->image->isUrlValid()) {
 
                                 echo CHtml::ajaxButton(
-                                    '[x]',
+                                    'X',
                                     Yii::app()->createUrl('/adminDataset/clearImageFile/'),
                                     array(
                                         'type' => 'POST',
@@ -158,22 +170,18 @@ echo $form->hiddenField($model, "image_id");
                                                     }else {
                                                         $("#removing").html("Failed clearing image file url");
                                                         $("#removing").addClass("block-spacing");
-                                                        $("#datasetImage).attr("aria-describedby", "removing")
+                                                        $("#datasetImage").attr("aria-describedby", "removing");
                                                     }
                                                 }',
                                     ),
                                     array(
                                         'id' => 'clearFileUrl',
+                                        'class' => 'clear-file-url-btn btn background-btn-o',
                                         'title' => 'Delete file',
                                         'confirm' => 'Are you sure? This will take effect immediately',
                                     )
                                 );
                             }
-
-                            if ($model->image) {
-                                echo CHtml::image($model->image->url, $model->image->isUrlValid() ? $model->image->tag : "", array('id' => 'showImage'));
-                            }
-                            echo CHtml::image("", "", array('id' => 'imagePreview'));
                             ?>
                         </div>
                         <?php if ($model->image && 0 != $model->image->id) { ?>
@@ -203,7 +211,7 @@ echo $form->hiddenField($model, "image_id");
                                                     }else {
                                                         $("#removing").html("Failed removing image");
                                                         $("#removing").addClass("block-spacing");
-                                                        $("#datasetImage).attr("aria-describedby", "removing")
+                                                        $("#datasetImage").attr("aria-describedby", "removing");
                                                     }
                                                 }',
                                             ),
@@ -594,20 +602,24 @@ echo $form->hiddenField($model, "image_id");
     const metaFieldsContainer = $('.meta-fields-container');
 
     //Show image meta data, preview uploaded image in update page
+    const imgPrevWrapper = $('#imagePreviewWrapper')
+
     if (image.src != 'https://assets.gigadb-cdn.net/images/datasets/no_image.png') {
         metaFields.css('display', '');
-        const imgPrevWrapper = $('#imagePreviewWrapper')
-        imgPrevWrapper.css('display', 'none');
+        imgPrevWrapper.css('display', 'flex');
+
         document.getElementById("datasetImage").addEventListener('change', (event) => {
             const preview = document.getElementById("imagePreview");
             if (event.target.files.length != 0) {
+                console.log('update page event.target.files.length != 0');
                 var src = URL.createObjectURL(event.target.files[0]);
                 preview.src = src;
-                imgPrevWrapper.css('display', 'block');
+                imgPrevWrapper.css('display', 'flex');
                 metaFields.css('display', '');
                 $('#showImage').css('display', 'none');
                 $('#removeButton').css('display', 'none');
             } else {
+                console.log('update page event.target.files.length == 0');
                 metaFields.css('display', '');
                 $('#showImage').css('display', 'block');
                 $('#removeButton').css('display', '');
@@ -621,18 +633,19 @@ echo $form->hiddenField($model, "image_id");
 
     document.getElementById("datasetImage").addEventListener('change', (event) => {
         if (event.target.files.length != 0) {
+            console.log('create page event.target.files.length != 0');
+            imgPrevWrapper.css('display', 'flex');
             var src = URL.createObjectURL(event.target.files[0]);
             var preview = document.getElementById("imagePreview");
             preview.src = src;
             preview.style.display = "block";
             metaFieldsContainer.removeClass('hidden');
             $('#showImage').css('display', 'none');
-            console.log('event.target.files.length != 0')
         } else {
+            console.log('create page event.target.files.length == 0');
             $('#showImage').css('display', 'block');
             $('#imagePreview').css('display', 'none');
             metaFieldsContainer.addClass('hidden');
-            console.log('event.target.files.length == 0')
         }
     });
 
@@ -640,8 +653,9 @@ echo $form->hiddenField($model, "image_id");
     if ('' == image.src && 0 == document.getElementById("datasetImage").files.length) {
 
         if (0 == image_id || null == image_id) {
-            metaFieldsContainer.addClass('hidden');
             console.log('0 == image_id || null == image_id')
+            imgPrevWrapper.css('display', 'none');
+            metaFieldsContainer.addClass('hidden');
         }
     }
 </script>
