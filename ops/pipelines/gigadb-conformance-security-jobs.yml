@@ -116,3 +116,13 @@ container_scanning:
     CS_SEVERITY_THRESHOLD: critical
     SECURE_LOG_LEVEL: 'info'
     CS_IMAGE: $IMAGES
+  rules:
+    - if: $CONTAINER_SCANNING_DISABLED == 'true' || $CONTAINER_SCANNING_DISABLED == '1'
+      when: never
+    - if: $CI_COMMIT_BRANCH &&
+          $CI_GITLAB_FIPS_MODE == "true" &&
+          $CS_ANALYZER_IMAGE !~ /-(fips|ubi)\z/
+      variables:
+        CS_IMAGE_SUFFIX: -fips
+    - if: $CI_COMMIT_BRANCH || $CI_COMMIT_TAG
+
