@@ -4,11 +4,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Fix #1416: Enable Gitlab tag pipeline and document release process
 - Feat #1362: Add "skip to main" link
 - Fix #1444: Make tideways build and deploy automatically for the production staging gigadb website
 - Docs #1421: Update production deployment SOP, investigate terraform state synchronisation issues and create troubleshooting guide for the deployment process
 - Feat #1460: Admin dashboard updated to same more modern look as the public side
-- Fix #1102: On sample admin form, save all valid sample attributes while showing errors for non-existent attributes- Feat #1460: Update admin dashboard styles to modern look
+- Fix #1102: On sample admin form, save all valid sample attributes while showing errors for non-existent attributes
 - Feat #1434: Setup playwright local environment for automated accessibility testing
 - Feat #1443: Make ansible playbooks can execute plays separately by adding tags
 - Fix #1428: Increase resilience of provisioning by extracting saving EC2 IP addresses as standalone bootstrap plays
