@@ -143,9 +143,6 @@ echo $form->hiddenField($model, "image_id");
                         <div id="imagePreviewWrapper" class="image-preview-wrapper">
 
                             <?php
-
-
-
                             if ($model->image) {
                                 echo CHtml::image($model->image->url, $model->image->isUrlValid() ? $model->image->tag : "", array('id' => 'showImage', 'class' => 'dataset-image'));
                             }
@@ -185,8 +182,7 @@ echo $form->hiddenField($model, "image_id");
                             ?>
                         </div>
                         <?php if ($model->image && 0 != $model->image->id) { ?>
-                            <fieldset>
-                                <legend>Image upload</legend>
+                            <fieldset aria-label="Image upload">
                                 <div class="form-group">
                                     <label for="datasetImage" class="control-label col-xs-3">Image Status</label>
                                     <div class="col-xs-9 block-spacing">
