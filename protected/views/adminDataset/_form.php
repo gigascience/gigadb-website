@@ -579,6 +579,7 @@ echo $form->hiddenField($model, "image_id");
     var image = document.getElementById("showImage");
     var image_id = document.getElementById("Dataset_image_id").value;
     const metaFields = $('.meta-fields');
+    const metaFieldsContainer = $('.meta-fields-container');
 
     //Show image meta data, preview uploaded image in update page
     if (image.src != 'https://assets.gigadb-cdn.net/images/datasets/no_image.png') {
@@ -612,12 +613,14 @@ echo $form->hiddenField($model, "image_id");
             var preview = document.getElementById("imagePreview");
             preview.src = src;
             preview.style.display = "block";
-            metaFields.css('display', '');
+            metaFieldsContainer.removeClass('hidden');
             $('#showImage').css('display', 'none');
+            console.log('event.target.files.length != 0')
         } else {
-            metaFields.css('display', 'none');
             $('#showImage').css('display', 'block');
             $('#imagePreview').css('display', 'none');
+            metaFieldsContainer.addClass('hidden');
+            console.log('event.target.files.length == 0')
         }
     });
 
@@ -625,8 +628,8 @@ echo $form->hiddenField($model, "image_id");
     if ('' == image.src && 0 == document.getElementById("datasetImage").files.length) {
 
         if (0 == image_id || null == image_id) {
-            metaFields.css('display', 'none');
-            // metaFields.css('display', '');
+            metaFieldsContainer.addClass('hidden');
+            console.log('0 == image_id || null == image_id')
         }
     }
 </script>
