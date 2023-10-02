@@ -134,7 +134,7 @@ echo $form->hiddenField($model, "image_id");
             <!-- second column -->
             <div class="col-xs-offset-1 col-xs-5">
                 <div id="imageFields" class="form-block-3">
-                    <div class="form-group">
+                    <div>
                         <div id="imagePreviewWrapper" class="image-preview-wrapper">
 
                             <?php
@@ -157,6 +157,8 @@ echo $form->hiddenField($model, "image_id");
                                                         window.location.reload();
                                                     }else {
                                                         $("#removing").html("Failed clearing image file url");
+                                                        $("#removing").addClass("block-spacing");
+                                                        $("#datasetImage).attr("aria-describedby", "removing")
                                                     }
                                                 }',
                                     ),
@@ -174,12 +176,16 @@ echo $form->hiddenField($model, "image_id");
                             echo CHtml::image("", "", array('id' => 'imagePreview'));
                             ?>
                         </div>
-                        <label for="image_upload_image" class="control-label col-xs-3">Image Status</label>
                         <?php if ($model->image && 0 != $model->image->id) { ?>
-                            <div>
-                                <ul>
-                                    <li><?php echo CHtml::fileField('datasetImage'); ?></li>
-                                    <li><?php echo CHtml::ajaxLink(
+                            <fieldset>
+                                <legend>Image upload</legend>
+                                <div class="form-group">
+                                    <label for="datasetImage" class="control-label col-xs-3">Image Status</label>
+                                    <div class="col-xs-9 block-spacing">
+                                        <?php echo CHtml::fileField('datasetImage','',array('class'=>'form-control')); ?>
+                                    </div>
+                                    <div class="col-xs-offset-3 col-xs-6 block-spacing">
+                                        <?php echo CHtml::ajaxLink(
                                             'Remove image record (file+metadata)',
                                             Yii::app()->createUrl('/adminDataset/removeImage/'),
                                             array(
@@ -196,11 +202,13 @@ echo $form->hiddenField($model, "image_id");
                                                         window.location.reload();
                                                     }else {
                                                         $("#removing").html("Failed removing image");
+                                                        $("#removing").addClass("block-spacing");
+                                                        $("#datasetImage).attr("aria-describedby", "removing")
                                                     }
                                                 }',
                                             ),
                                             array(
-                                                // 'class' => 'btn btn-sm',
+                                                'class' => 'btn btn-sm btn-danger',
                                                 'id' => 'removeButton',
                                                 // 'style' => 'width:90%;font-size: smaller; font-weight: lighter;color: #fff ; background: #c12e2a',
                                                 'title' => 'the dataset will be associated with the generic image record afterward',
@@ -208,15 +216,19 @@ echo $form->hiddenField($model, "image_id");
 
                                             )
                                         );
-                                        ?></li>
-                                    <li>
-                                        <div id="removing"></div>
-                                    </li>
-                                </ul>
-                            </div>
+                                        ?>
+                                    </div>
+                                    <div class="col-xs-offset-3 col-xs-9 control-msg">
+                                        <div id="removing" role="alert"></div>
+                                    </div>
+                                </div>
+                            </fieldset>
                         <?php } else { ?>
-                            <div class='col-xs-9'>
-                                <?php echo CHtml::fileField('datasetImage','',array('class'=>'form-control')); ?>
+                            <div class="form-group">
+                                <label for="datasetImage" class="control-label col-xs-3">Image Status</label>
+                                <div class='col-xs-9'>
+                                    <?php echo CHtml::fileField('datasetImage','',array('class'=>'form-control')); ?>
+                                </div>
                             </div>
                         <?php } ?>
                     </div>
