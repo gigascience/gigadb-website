@@ -5,7 +5,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## Unreleased
 
 - Feat #1368: Improve accessibility of About Page
-- Feat: #1376: Fix heading hierarchy in Contact Page, wrap address in `<address>` element
+- Feat #1374: Improve accessibility and use of semantic html of search results card
+
+- Fix #1449: Fix issue preventing deployment to live production environment bastion server
+- Fix #1102: Display error message when creating a sample object or updating an existing sample object with attribute not found in attribute table, and do not create/save it. Refactored container scanning jobs in gitlab pipeline.
+- Feat #1376: Fix heading hierarchy in Contact Page, wrap address in `<address>` element
 - Feat #1361: Add general accessible landmarks to layouts
 - Feat #1363: Fix color contrast issues in pages with new layouts
 - Feat #1309: Implement batch processing functionality for readme tool
