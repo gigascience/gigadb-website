@@ -58,6 +58,8 @@
 
 - name: Setup files-url-updater so to load latest DB backup in RDS daily
   hosts: name_bastion_server_staging*:name_bastion_server_live*
+  tags:
+    - files-url-updater
   vars:
     target_host: _bastion
 
@@ -124,6 +126,8 @@
 
 - name: Setup Excel to GigaDB tool
   hosts: name_bastion_server_staging*:name_bastion_server_live*
+  tags:
+    - excel-spreadsheet-uploader
 
   tasks:
     - name: Copy dataset upload tool shell script
@@ -175,6 +179,8 @@
 
 - name: Create setup for generating and uploading database dump files to S3
   hosts: name_bastion_server_staging*:name_bastion_server_live*
+  tags:
+    - setup-uploading-db-dump-to-s3
 
   tasks:
   - name: Create a /home/centos/.config/rclone directory
@@ -214,6 +220,8 @@
 
 - name: Setup Disk usage monitoring tool
   hosts: name_bastion_server_staging*:name_bastion_server_live*
+  tags:
+    - swatch_tool
 
   tasks:
     - name: Create the diskUsage monitoring script
@@ -281,6 +289,8 @@
 
 - name: Set up and configuration of rclone on bastion server
   hosts: name_bastion_server_staging*:name_bastion_server_live*
+  tags:
+    - rclone_tool
   
   tasks:
     - name: Install rclone
@@ -294,6 +304,8 @@
 
 - name: Load latest DB backup
   hosts: name_bastion_server_staging*:name_bastion_server_live*
+  tags:
+    - load_latest_db
 
   tasks:
   - name: Load latest database into this environment's RDS instance
