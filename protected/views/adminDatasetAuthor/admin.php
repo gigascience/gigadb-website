@@ -10,6 +10,10 @@
 	?>
 	<a href="/adminDatasetAuthor/create" class="btn background-btn">Add an author to a Dataset</a>
 
+	<div class="sr-only">
+		Column headers with links are sortable. Cells with a text input are used for filtering.
+	</div>
+
 	<?php $this->widget('zii.widgets.grid.CGridView', array(
 		'id'=>'dataset-author-grid',
 		'dataProvider'=>$model->search(),
