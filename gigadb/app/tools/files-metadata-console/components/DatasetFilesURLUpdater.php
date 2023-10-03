@@ -152,8 +152,9 @@ final class DatasetFilesURLUpdater extends Component
         $uriParts = parse_url(ltrim($dataset['ftp_site']));
         // Update ftp_site if it starts with ftp:// or contains ftp.cngb.org
         if ("ftp" === $uriParts['scheme'] || "ftp.cngb.org" === $uriParts['host']) {
-            $path = mb_split("/pub/", $uriParts['path'])[1];
-            $newFTPSite = $newFTPSitePrefix . $path;
+            $pathTokens = mb_split("/pub/", $uriParts['path']);
+            $lastPathToken = end($pathTokens);
+            $newFTPSite = $newFTPSitePrefix . $lastPathToken;
             if ($this->apply === true) {
                 $dataset->ftp_site = $newFTPSite;
                 if(!$dataset->save()) {
