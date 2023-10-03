@@ -9,7 +9,8 @@
 .pagination > li > span,
 .pagination > li > a {
   padding: 7px 15px;
-  color: @color-warm-black;
+  color: @dark-gray-on-white;
+  font-weight: bold;
   float: none;
   margin-left: -5px;
   display: block;
@@ -44,4 +45,9 @@
   width: 50px;
   box-shadow: none;
   border-color: @color-medium-gray;
+}
+
+.pagination > .disabled > a {
+  color: @dark-gray-on-white;
+  font-weight: normal;
 }
