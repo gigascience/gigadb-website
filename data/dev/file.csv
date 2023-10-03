@@ -68,3 +68,4 @@ id,dataset_id,name,location,extension,size,description,date_stamp,format_id,type
 95363,319,IMG_2770.jpg,https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100245/images/IMG_2770.jpg,jpg,179665,image of the GPS co-ordinates of the tree sampled for variegataA (TY-T0891),2016-11-01,44,141,variegataA,,3,
 95364,319,IMG_2771.jpg,https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100245/images/IMG_2771.jpg,jpg,2697775,photo of the HK government label on the tree sampled for purpureaA (TY-T0203),2016-11-01,44,141,purpureaA,,3,
 95365,319,IMG_2774.jpg,https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100245/images/IMG_2774.jpg,jpg,181615,image of the GPS co-ordinates of the tree sampled for purpureaA (TY-T0203),2016-11-01,44,141,purpureaA,,3,
+95366,2342,readme.txt,https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100935/readme.txt,txt,1089,,2016-11-01,1,1,,,1,
