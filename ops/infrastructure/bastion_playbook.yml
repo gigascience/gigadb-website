@@ -4,12 +4,12 @@
 
 
 - name: Fix Centos EOL issues
-  hosts: name_bastion_server_staging*:name_bastion_server_live*
+  hosts: name_bastion_server_{{gigadb_env}}*
   roles:
     - role: ../../roles/centos-eol-fix
 
 - name: Setup Fail2ban
-  hosts: name_bastion_server_staging*:name_bastion_server_live*
+  hosts: name_bastion_server_{{gigadb_env}}*
 
   tasks:
     - debug:
@@ -20,7 +20,7 @@
     - role: ../../roles/jail-ssh
 
 - name: Restore PostgreSQL database on RDS instance using pg_restore
-  hosts: name_bastion_server_staging*:name_bastion_server_live*
+  hosts: name_bastion_server_{{gigadb_env}}*
 
   tasks:
     - name: Disable postgresql module in AppStream
@@ -57,7 +57,7 @@
       when: backup_file
 
 - name: Setup files-url-updater so to load latest DB backup in RDS daily
-  hosts: name_bastion_server_staging*:name_bastion_server_live*
+  hosts: name_bastion_server_{{gigadb_env}}*
   tags:
     - files-url-updater
   vars:
@@ -125,7 +125,7 @@
     - role: ../../roles/docker-daemon-enable-start
 
 - name: Setup Excel to GigaDB tool
-  hosts: name_bastion_server_staging*:name_bastion_server_live*
+  hosts: name_bastion_server_{{gigadb_env}}*
   tags:
     - excel-spreadsheet-uploader
 
@@ -178,7 +178,7 @@
         line: "GITLAB_PROJECT={{ gitlab_project }}"
 
 - name: Create setup for generating and uploading database dump files to S3
-  hosts: name_bastion_server_staging*:name_bastion_server_live*
+  hosts: name_bastion_server_{{gigadb_env}}*
   tags:
     - setup-uploading-db-dump-to-s3
 
@@ -219,7 +219,7 @@
       state: "{{ upload_database_backup_to_S3_cronjob_state }}"
 
 - name: Setup Disk usage monitoring tool
-  hosts: name_bastion_server_staging*:name_bastion_server_live*
+  hosts: name_bastion_server_{{gigadb_env}}*
   tags:
     - swatch_tool
 
@@ -265,7 +265,7 @@
         job: "swatch -c swatch.conf -p ./diskUsage"
 
 - name: Setup create readme tool
-  hosts: name_bastion_server_staging*:name_bastion_server_live*
+  hosts: name_bastion_server_{{gigadb_env}}*
   tags:
     - readme_tool
 
@@ -288,7 +288,7 @@
         group: centos
 
 - name: Set up and configuration of rclone on bastion server
-  hosts: name_bastion_server_staging*:name_bastion_server_live*
+  hosts: name_bastion_server_{{gigadb_env}}*
   tags:
     - rclone_tool
   
@@ -303,7 +303,7 @@
         rclone_config_location: "/home/centos/.config/rclone/rclone.conf"
 
 - name: Load latest DB backup
-  hosts: name_bastion_server_staging*:name_bastion_server_live*
+  hosts: name_bastion_server_{{gigadb_env}}*
   tags:
     - load_latest_db
 
@@ -322,7 +322,7 @@
       msg: "reset database stderr : {{ reset_database_output.stderr }}"
 
 - name: Install node exporter
-  hosts: name_bastion_server_staging*:name_bastion_server_live*
+  hosts: name_bastion_server_{{gigadb_env}}*
   tags:
     - node-exporter
   roles:
