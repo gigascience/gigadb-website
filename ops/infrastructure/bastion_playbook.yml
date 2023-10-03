@@ -5,11 +5,16 @@
 
 - name: Fix Centos EOL issues
   hosts: name_bastion_server_{{gigadb_env}}*
+  tags:
+    - fix-centos-eol-issues
+
   roles:
     - role: ../../roles/centos-eol-fix
 
 - name: Setup Fail2ban
   hosts: name_bastion_server_{{gigadb_env}}*
+  tags:
+    - setup-fail2ban
 
   tasks:
     - debug:
@@ -21,6 +26,8 @@
 
 - name: Restore PostgreSQL database on RDS instance using pg_restore
   hosts: name_bastion_server_{{gigadb_env}}*
+  tags:
+    - restore-db-on-rds
 
   tasks:
     - name: Disable postgresql module in AppStream
