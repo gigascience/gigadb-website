@@ -228,7 +228,7 @@
 - name: Setup Disk usage monitoring tool
   hosts: name_bastion_server_{{gigadb_env}}*
   tags:
-    - swatch_tool
+    - swatch-tool
 
   tasks:
     - name: Create the diskUsage monitoring script
@@ -274,7 +274,7 @@
 - name: Setup create readme tool
   hosts: name_bastion_server_{{gigadb_env}}*
   tags:
-    - readme_tool
+    - readme-tool
 
   tasks:
     - name: Copy readme tool shell script
@@ -297,7 +297,7 @@
 - name: Set up and configuration of rclone on bastion server
   hosts: name_bastion_server_{{gigadb_env}}*
   tags:
-    - rclone_tool
+    - rclone-tool
   
   tasks:
     - name: Install rclone
@@ -312,7 +312,7 @@
 - name: Load latest DB backup
   hosts: name_bastion_server_{{gigadb_env}}*
   tags:
-    - load_latest_db
+    - load-latest-db
 
   tasks:
   - name: Load latest database into this environment's RDS instance
