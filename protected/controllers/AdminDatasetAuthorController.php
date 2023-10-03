@@ -284,6 +284,8 @@ class AdminDatasetAuthorController extends Controller
 		if(isset($_GET['DatasetAuthor']))
 			$model->setAttributes($_GET['DatasetAuthor']);
 
+        $this->loadBaBbqPolyfills = true;
+        $this->layout = '//layouts/new_column2';
 		$this->render('admin',array(
 			'model'=>$model,
 		));
