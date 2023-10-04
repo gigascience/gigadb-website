@@ -11,6 +11,18 @@ label {
 
 .form-group {
   margin-bottom: 20px;
+  &.has-error {
+    color: @brand-danger-on-white;
+    .control-label {
+      color: @brand-danger-on-white;
+    }
+    .form-control {
+      border-color: @brand-danger-on-white;
+    }
+    .help-block {
+      color: @brand-danger-on-white;
+    }
+  }
 }
 
 input[type="checkbox"] {
@@ -46,6 +58,11 @@ input[type="checkbox"] {
   box-shadow: none;
   color: @color-darker-gray;
   font-size: 13px;
+}
+
+.form-control:focus {
+  border-color: @color-gigadb-green-600;
+  box-shadow: inset 0 1px 1px fade(@color-gigadb-green, 7.5%), 0 0 6px fade(@color-gigadb-green-600, 50%);
 }
 
 .carousel-doi {
