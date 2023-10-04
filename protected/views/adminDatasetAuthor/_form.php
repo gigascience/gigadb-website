@@ -16,7 +16,6 @@
 		$this->widget('application.components.controls.DropdownField', [
 			'form' => $form,
 			'model' => $model,
-			'description' => 'Select a dataset to add an author to.',
 			'attributeName' => 'dataset_id',
 			'listDataOptions' => [
 				'data' => Util::getDois(),
