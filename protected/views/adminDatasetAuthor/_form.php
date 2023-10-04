@@ -1,43 +1,62 @@
-<div class="form">
+<div class="section form row">
 
-	<?php $form = $this->beginWidget('CActiveForm', array(
-		'id' => 'dataset-author-form',
-		'enableAjaxValidation' => false,
-	)); ?>
+	<div class="col-xs-offset-3 col-xs-6">
+		<?php $form = $this->beginWidget('CActiveForm', array(
+			'id' => 'dataset-author-form',
+			'enableAjaxValidation' => false,
+		)); ?>
 
-	<p class="note">Fields with <span class="required">*</span> are required.</p>
+		<p class="note">Fields with <span class="required">*</span> are required.</p>
 
-	<?php echo $form->errorSummary($model); ?>
-
-	<div class="control-group">
-		<?php echo $form->labelEx($model, 'dataset_id', array('class' => 'control-label')); ?>
-		<div class="controls">
-			<?= CHtml::activeDropDownList($model, 'dataset_id', CHtml::listData(Util::getDois(), 'id', 'identifier')); ?>
-			<?php echo $form->error($model, 'dataset_id'); ?>
+		<div class="alert alert-danger">
+			<?php echo $form->errorSummary($model); ?>
 		</div>
-	</div>
 
-	<div class="control-group">
-		<?php echo $form->labelEx($model, 'author_id', array('class' => 'control-label')); ?>
-		<div class="controls">
-			<?= CHtml::activeDropDownList($model, 'author_id', CHtml::listData(Author::model()->findAll(array('order' => 'surname')), 'id', 'fullAuthor')); ?>
-			<?php echo $form->error($model, 'author_id'); ?>
+		<?php
+		$this->widget('application.components.controls.DropdownField', [
+			'form' => $form,
+			'model' => $model,
+			'description' => 'Select a dataset to add an author to.',
+			'attributeName' => 'dataset_id',
+			'listDataOptions' => [
+				'data' => Util::getDois(),
+				'valueField' => 'id',
+				'textField' => 'identifier',
+			],
+		]);
+		?>
+
+		<?php
+		$this->widget('application.components.controls.DropdownField', [
+			'form' => $form,
+			'model' => $model,
+			'attributeName' => 'author_id',
+			'listDataOptions' => [
+				'data' => Author::model()->findAll(array('order' => 'surname')),
+				'valueField' => 'id',
+				'textField' => 'fullAuthor',
+			],
+		]);
+		?>
+
+		<?php
+		$this->widget('application.components.controls.TextField', [
+			'form' => $form,
+			'model' => $model,
+			'attributeName' => 'rank',
+			'inputOptions' => [
+				'required' => 'required',
+				'aria-required' => 'true',
+			],
+		]);
+		?>
+
+		<div class="pull-right">
+			<a href="/adminDatasetAuthor/admin" class="btn background-btn-o">Cancel</a>
+			<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => 'btn background-btn')); ?>
 		</div>
-	</div>
 
-	<div class="control-group">
-		<?php echo $form->labelEx($model, 'rank', array('class' => 'control-label')); ?>
-		<div class="controls">
-			<?= $form->textField($model, 'rank') ?>
-			<?php echo $form->error($model, 'author_id'); ?>
-		</div>
+		<?php $this->endWidget(); ?>
 	</div>
-
-	<div class="row buttons">
-		<a href="/adminDatasetAuthor/admin" class="btn background-btn-o">Cancel</a>
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => 'btn background-btn')); ?>
-	</div>
-
-	<?php $this->endWidget(); ?>
 
 </div><!-- form -->
