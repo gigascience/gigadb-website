@@ -8,9 +8,11 @@
 
 		<p class="note">Fields with <span class="required">*</span> are required.</p>
 
-		<div class="alert alert-danger">
-			<?php echo $form->errorSummary($model); ?>
-		</div>
+		<?php if ($model->hasErrors()): ?>
+			<div class="alert alert-danger">
+				<?php echo $form->errorSummary($model); ?>
+			</div>
+		<?php endif; ?>
 
 		<?php
 		$this->widget('application.components.controls.DropdownField', [
