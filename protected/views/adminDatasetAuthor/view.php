@@ -12,17 +12,26 @@
 		array('label' => 'Delete DatasetAuthor', 'url' => '#', 'linkOptions' => array('submit' => array('delete', 'id' => $model->id), 'confirm' => 'Are you sure you want to delete this item?')),
 		array('label' => 'Manage DatasetAuthor', 'url' => array('admin')),
 	);
+
+	$this->widget('TitleBreadcrumb', [
+		'pageTitle' => 'View DatasetAuthor #' . $model->id,
+		'breadcrumbItems' => [
+			['label' => 'Admin', 'href' => '/site/admin'],
+			['label' => 'Dataset Authors', 'href' => '/adminDatasetAuthor/admin'],
+			['isActive' => true, 'label' => 'View'],
+		]
+	]);
 	?>
 
-	<h1>View DatasetAuthor #<?php echo $model->id; ?></h1>
-
-	<?php $this->widget('zii.widgets.CDetailView', array(
-		'data' => $model,
-		'attributes' => array(
-			'id',
-			'dataset_id',
-			'author_id',
-		),
-	)); ?>
+	<section>
+		<?php $this->widget('zii.widgets.CDetailView', array(
+			'data' => $model,
+			'attributes' => array(
+				'id',
+				'dataset_id',
+				'author_id',
+			),
+		)); ?>
+	</section>
 
 </div>
