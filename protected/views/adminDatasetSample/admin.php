@@ -11,7 +11,7 @@
 
 	<a href="/adminDatasetSample/create" class="btn">Add a Sample to a Dataset</a>
 
-	<?php $this->widget('zii.widgets.grid.CGridView', array(
+	<?php $this->widget('CustomGridView', array(
 		'id' => 'dataset-sample-grid',
 		'ajaxUpdate' => false,
 		'dataProvider' => $model->search(),
