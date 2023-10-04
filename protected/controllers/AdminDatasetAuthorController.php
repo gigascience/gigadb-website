@@ -69,6 +69,7 @@ class AdminDatasetAuthorController extends Controller
 				$this->redirect(array('view','id'=>$model->id));
 		}
 
+        $this->layout = '//layouts/new_column2';
 		$this->render('create',array(
 			'model'=>$model,
 		));
@@ -499,7 +500,7 @@ class AdminDatasetAuthorController extends Controller
                         $criteria->addCondition('t.rank >= '.min($rank,$changeRank));
                         $criteria->addCondition('t.rank < '.max($rank,$changeRank));
                         $criteria->addCondition('t.dataset_id = '.$da->dataset_id);
-                        $das = DatasetAuthor::model()->findAll($criteria); 
+                        $das = DatasetAuthor::model()->findAll($criteria);
                         foreach($das as $updateDa) {
                             $updateDa->rank = $updateDa->rank + 1;
                         }
