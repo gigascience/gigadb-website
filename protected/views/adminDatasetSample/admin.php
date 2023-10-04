@@ -1,6 +1,6 @@
 <div class="container">
 	<?php
-	$this->widget('application.components.TitleBreadcrumb', [
+	$this->widget('TitleBreadcrumb', [
 		'pageTitle' => 'Manage Dataset - Samples',
 		'breadcrumbItems' => [
 			['label' => 'Admin', 'href' => '/site/admin'],
@@ -9,7 +9,11 @@
 	]);
 	?>
 
-	<a href="/adminDatasetSample/create" class="btn">Add a Sample to a Dataset</a>
+	<a href="/adminDatasetSample/create" class="btn background-btn">Add a Sample to a Dataset</a>
+
+	<div class="sr-only">
+		Column headers with links are sortable. Cells with a text input are used for filtering.
+	</div>
 
 	<?php $this->widget('CustomGridView', array(
 		'id' => 'dataset-sample-grid',
@@ -23,7 +27,9 @@
 			array('name' => 'sample_name', 'value' => '$data->sample->name'),
 			array('header' => 'Sample Attributes', 'type' => 'raw', 'value' => 'FormattedDatasetSamples::getDisplayAttr($data->sample->id,$data->sample->getSampleAttributeArrayMap())'),
 			array(
-				'class' => 'CButtonColumn',
+				'header'=>'Actions',
+				'class'=>'CButtonColumn',
+				'htmlOptions'=>array('width'=>'75')
 			),
 		),
 	)); ?>
