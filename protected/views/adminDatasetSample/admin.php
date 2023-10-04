@@ -1,21 +1,29 @@
 <div class="container">
-	<h1>Manage Dataset - Samples</h1>
+	<?php
+	$this->widget('application.components.TitleBreadcrumb', [
+		'pageTitle' => 'Manage Dataset - Samples',
+		'breadcrumbItems' => [
+			['label' => 'Admin', 'href' => '/site/admin'],
+			['isActive' => true, 'label' => 'Dataset Samples'],
+		]
+	]);
+	?>
 
 	<a href="/adminDatasetSample/create" class="btn">Add a Sample to a Dataset</a>
 
 	<?php $this->widget('zii.widgets.grid.CGridView', array(
-		'id'=>'dataset-sample-grid',
+		'id' => 'dataset-sample-grid',
 		'ajaxUpdate' => false,
-		'dataProvider'=>$model->search(),
-		'itemsCssClass'=>'table table-bordered',
-		'filter'=>$model,
-		'columns'=>array(
-			array('name'=> 'doi_search', 'value'=>'$data->dataset->identifier'),
+		'dataProvider' => $model->search(),
+		'itemsCssClass' => 'table table-bordered',
+		'filter' => $model,
+		'columns' => array(
+			array('name' => 'doi_search', 'value' => '$data->dataset->identifier'),
 			'sample_id',
-			array('name'=> 'sample_name', 'value'=>'$data->sample->name'),
-			array('header'=> 'Sample Attributes','type'=>'raw' ,'value'=>'FormattedDatasetSamples::getDisplayAttr($data->sample->id,$data->sample->getSampleAttributeArrayMap())'),
+			array('name' => 'sample_name', 'value' => '$data->sample->name'),
+			array('header' => 'Sample Attributes', 'type' => 'raw', 'value' => 'FormattedDatasetSamples::getDisplayAttr($data->sample->id,$data->sample->getSampleAttributeArrayMap())'),
 			array(
-				'class'=>'CButtonColumn',
+				'class' => 'CButtonColumn',
 			),
 		),
 	)); ?>

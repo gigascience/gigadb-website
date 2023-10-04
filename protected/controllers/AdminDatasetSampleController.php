@@ -348,6 +348,7 @@ class AdminDatasetSampleController extends Controller
 		if(isset($_GET['DatasetSample']))
 			$model->setAttributes($_GET['DatasetSample']);
 
+        $this->loadBaBbqPolyfills = true;
         $this->layout = '//layouts/new_column2';
 		$this->render('admin',array(
 			'model'=>$model,
