@@ -1,3 +1,4 @@
+<!-- Deprecated? -->
 <div class="content">
             <section class="image-background" style="background-image: url(../images/banner2.jpg);">
                 <div class="container">
