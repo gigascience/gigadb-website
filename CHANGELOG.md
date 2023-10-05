@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- feat #1434: Setup playwright local environment for automated accessibility testing
 - Feat #1487: Use modern styles in Admin View DatasetAuthor page
 - Feat #1485: Admin styles - Update styles of Manage Dataset Samples page
 - Feat #1482: Implement modern styles in admin Create DatasetAuthor Page
