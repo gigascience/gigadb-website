@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1375: Improve accessibility of dataset search pagination
 - Feat #1432: Improve semantics of breadcrumbs sections and other minor breadcrumb-related tweaks
 - Feat #1378: Improve accessibility of help page
 - Feat #1372: Fix accessibility issues related to search page headings and hero layout
