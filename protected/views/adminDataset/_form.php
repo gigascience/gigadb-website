@@ -34,15 +34,12 @@ echo $form->hiddenField($model, "image_id");
     <div>
         <p class="note">Fields with <span class="required">*</span> are required.</p>
         <div role="alert">
-            <?php if($model->hasErrors()): ?>
+            <?php if ($model->hasErrors()) : ?>
                 <div class="alert alert-danger">
                     <?php echo $form->errorSummary($model); ?>
                 </div>
             <?php endif; ?>
         </div>
-
-
-        <!--TODO: Adding 'style'=>'margin-top:*' to each div is just a temp styling fix, need further investigation on how to implement CSS styling properly.-->
 
         <div>
             <div class="row">
@@ -120,12 +117,12 @@ echo $form->hiddenField($model, "image_id");
                                         $checkboxId = "Dataset_$datasetType";
                                         ?>
                                         <div class="checkbox-wrapper col-xs-offset-1">
-                                        <?php
-                                        echo '<input class="" id="' . $checkboxId . '" type="checkbox" name="datasettypes[' . $id . ']" value="1"' . $checkedHtml . '/>';
-                                        ?>
+                                            <?php
+                                            echo '<input class="" id="' . $checkboxId . '" type="checkbox" name="datasettypes[' . $id . ']" value="1"' . $checkedHtml . '/>';
+                                            ?>
                                         </div>
                                         <?php
-                                            echo $form->labelEx($model, "$datasetType", array('class' => 'control-label checkbox-label'));
+                                        echo $form->labelEx($model, "$datasetType", array('class' => 'control-label checkbox-label'));
                                         ?>
                                     </div>
                                 <?php
@@ -135,29 +132,29 @@ echo $form->hiddenField($model, "image_id");
                         </fieldset>
                     </div>
 
-            </div>
-            <!-- second column -->
-            <div class="col-xs-offset-1 col-xs-5">
-                <div id="imageFields" class="form-block-3">
-                    <div>
-                        <div id="imagePreviewWrapper" class="image-preview-wrapper">
+                </div>
+                <!-- second column -->
+                <div class="col-xs-offset-1 col-xs-5">
+                    <div id="imageFields" class="form-block-3">
+                        <div>
+                            <div id="imagePreviewWrapper" class="image-preview-wrapper">
 
-                            <?php
-                            if ($model->image) {
-                                echo CHtml::image($model->image->url, $model->image->isUrlValid() ? $model->image->tag : "", array('id' => 'showImage', 'class' => 'dataset-image'));
-                            }
-                            echo CHtml::image("", "", array('id' => 'imagePreview', 'alt' => ''));
+                                <?php
+                                if ($model->image) {
+                                    echo CHtml::image($model->image->url, $model->image->isUrlValid() ? $model->image->tag : "", array('id' => 'showImage', 'class' => 'dataset-image'));
+                                }
+                                echo CHtml::image("", "", array('id' => 'imagePreview', 'alt' => ''));
 
-                            if ($model->image && 0 !== $model->image_id && $model->image->isUrlValid()) {
+                                if ($model->image && 0 !== $model->image_id && $model->image->isUrlValid()) {
 
-                                echo CHtml::ajaxButton(
-                                    'X',
-                                    Yii::app()->createUrl('/adminDataset/clearImageFile/'),
-                                    array(
-                                        'type' => 'POST',
-                                        'data' => array('doi' => 'js:$("#Dataset_identifier").val()'),
-                                        'dataType' => 'json',
-                                        'success' => 'js:function(output){
+                                    echo CHtml::ajaxButton(
+                                        'X',
+                                        Yii::app()->createUrl('/adminDataset/clearImageFile/'),
+                                        array(
+                                            'type' => 'POST',
+                                            'data' => array('doi' => 'js:$("#Dataset_identifier").val()'),
+                                            'dataType' => 'json',
+                                            'success' => 'js:function(output){
                                                     console.log(output);
                                                     if(output.status){
                                                         $("#showImage").src = "";
@@ -170,33 +167,33 @@ echo $form->hiddenField($model, "image_id");
                                                         $("#datasetImage").attr("aria-describedby", "removing");
                                                     }
                                                 }',
-                                    ),
-                                    array(
-                                        'id' => 'clearFileUrl',
-                                        'class' => 'clear-file-url-btn btn background-btn-o',
-                                        'title' => 'Delete file',
-                                        'confirm' => 'Are you sure? This will take effect immediately',
-                                    )
-                                );
-                            }
-                            ?>
-                        </div>
-                        <?php if ($model->image && 0 != $model->image->id) { ?>
-                            <fieldset aria-label="Image upload">
-                                <div class="form-group">
-                                    <label for="datasetImage" class="control-label col-xs-4">Image Status</label>
-                                    <div class="col-xs-8 block-spacing">
-                                        <?php echo CHtml::fileField('datasetImage','',array('class'=>'form-control')); ?>
-                                    </div>
-                                    <div class="col-xs-offset-4 col-xs-5 block-spacing">
-                                        <?php echo CHtml::ajaxLink(
-                                            'Remove image record (file+metadata)',
-                                            Yii::app()->createUrl('/adminDataset/removeImage/'),
-                                            array(
-                                                'type' => 'POST',
-                                                'data' => array('doi' => 'js:$("#Dataset_identifier").val()'),
-                                                'dataType' => 'json',
-                                                'success' => 'js:function(output){
+                                        ),
+                                        array(
+                                            'id' => 'clearFileUrl',
+                                            'class' => 'clear-file-url-btn btn background-btn-o',
+                                            'title' => 'Delete file',
+                                            'confirm' => 'Are you sure? This will take effect immediately',
+                                        )
+                                    );
+                                }
+                                ?>
+                            </div>
+                            <?php if ($model->image && 0 != $model->image->id) { ?>
+                                <fieldset aria-label="Image upload">
+                                    <div class="form-group">
+                                        <label for="datasetImage" class="control-label col-xs-4">Image Status</label>
+                                        <div class="col-xs-8 block-spacing">
+                                            <?php echo CHtml::fileField('datasetImage', '', array('class' => 'form-control')); ?>
+                                        </div>
+                                        <div class="col-xs-offset-4 col-xs-5 block-spacing">
+                                            <?php echo CHtml::ajaxLink(
+                                                'Remove image record (file+metadata)',
+                                                Yii::app()->createUrl('/adminDataset/removeImage/'),
+                                                array(
+                                                    'type' => 'POST',
+                                                    'data' => array('doi' => 'js:$("#Dataset_identifier").val()'),
+                                                    'dataType' => 'json',
+                                                    'success' => 'js:function(output){
                                                     console.log(output);
                                                     if(output.status){
                                                         $("#showImage").src = "https://assets.gigadb-cdn.net/images/datasets/no_image.png";
@@ -210,117 +207,116 @@ echo $form->hiddenField($model, "image_id");
                                                         $("#datasetImage").attr("aria-describedby", "removing");
                                                     }
                                                 }',
-                                            ),
-                                            array(
-                                                'class' => 'btn btn-sm btn-danger',
-                                                'id' => 'removeButton',
-                                                // 'style' => 'width:90%;font-size: smaller; font-weight: lighter;color: #fff ; background: #c12e2a',
-                                                'title' => 'the dataset will be associated with the generic image record afterward',
-                                                'confirm' => 'Are you sure? This will take effect immediately',
+                                                ),
+                                                array(
+                                                    'class' => 'btn btn-sm btn-danger',
+                                                    'id' => 'removeButton',
+                                                    'title' => 'the dataset will be associated with the generic image record afterward',
+                                                    'confirm' => 'Are you sure? This will take effect immediately',
 
-                                            )
-                                        );
-                                        ?>
+                                                )
+                                            );
+                                            ?>
+                                        </div>
+                                        <div class="col-xs-offset-4 col-xs-8 control-msg">
+                                            <div id="removing" role="alert"></div>
+                                        </div>
                                     </div>
-                                    <div class="col-xs-offset-4 col-xs-8 control-msg">
-                                        <div id="removing" role="alert"></div>
+                                </fieldset>
+                            <?php } else { ?>
+                                <div class="form-group">
+                                    <label for="datasetImage" class="control-label col-xs-4">Image Status</label>
+                                    <div class='col-xs-8'>
+                                        <?php echo CHtml::fileField('datasetImage', '', array('class' => 'form-control')); ?>
                                     </div>
                                 </div>
-                            </fieldset>
-                        <?php } else { ?>
+                            <?php } ?>
+                        </div>
+                        <div class="meta-fields-container">
                             <div class="form-group">
-                                <label for="datasetImage" class="control-label col-xs-4">Image Status</label>
-                                <div class='col-xs-8'>
-                                    <?php echo CHtml::fileField('datasetImage','',array('class'=>'form-control')); ?>
+                                <?php echo $form->labelEx($model->image, 'url', array(
+                                    'class' => 'control-label col-xs-4 meta-fields',
+                                )); ?>
+                                <div class="col-xs-8">
+                                    <?php echo $form->textField($model->image, 'url', array(
+                                        'class' => 'meta-fields form-control',
+                                    )); ?>
+                                    <?php echo $form->error($model->image, 'url'); ?>
                                 </div>
                             </div>
-                        <?php } ?>
-                    </div>
-                    <div class="meta-fields-container">
-                        <div class="form-group">
-                            <?php echo $form->labelEx($model->image, 'url', array(
-                                'class' => 'control-label col-xs-4 meta-fields',
-                            )); ?>
-                            <div class="col-xs-8">
-                                <?php echo $form->textField($model->image, 'url', array(
-                                    'class' => 'meta-fields form-control',
-                                )); ?>
-                                <?php echo $form->error($model->image, 'url'); ?>
-                            </div>
-                        </div>
 
-                        <div class="form-group">
-                            <?php echo $form->labelEx($model->image, 'source', array(
-                                'class' => 'control-label col-xs-4 meta-fields',
-                            )); ?>
-                            <div class="col-xs-8">
-                                <?php echo $form->textField($model->image, 'source', array(
-                                    'class' => 'meta-fields form-control',
+                            <div class="form-group">
+                                <?php echo $form->labelEx($model->image, 'source', array(
+                                    'class' => 'control-label col-xs-4 meta-fields',
                                 )); ?>
-                                <?php echo $form->error($model->image, 'source'); ?>
+                                <div class="col-xs-8">
+                                    <?php echo $form->textField($model->image, 'source', array(
+                                        'class' => 'meta-fields form-control',
+                                    )); ?>
+                                    <?php echo $form->error($model->image, 'source'); ?>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="form-group">
-                            <?php echo $form->labelEx($model->image, 'tag', array(
-                                'class' => 'control-label col-xs-4 meta-fields',
-                            )); ?>
-                            <div class="col-xs-8">
-                                <?php echo $form->textField($model->image, 'tag', array(
-                                    'class' => 'meta-fields form-control',
+                            <div class="form-group">
+                                <?php echo $form->labelEx($model->image, 'tag', array(
+                                    'class' => 'control-label col-xs-4 meta-fields',
                                 )); ?>
-                                <?php echo $form->error($model->image, 'tag'); ?>
+                                <div class="col-xs-8">
+                                    <?php echo $form->textField($model->image, 'tag', array(
+                                        'class' => 'meta-fields form-control',
+                                    )); ?>
+                                    <?php echo $form->error($model->image, 'tag'); ?>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="form-group">
-                            <?php echo $form->labelEx($model->image, 'license', array(
-                                'class' => 'control-label col-xs-4 meta-fields',
-                            )); ?>
-                            <div class="col-xs-8">
-                                <?php echo $form->textField($model->image, 'license', array(
-                                    'class' => 'meta-fields form-control',
+                            <div class="form-group">
+                                <?php echo $form->labelEx($model->image, 'license', array(
+                                    'class' => 'control-label col-xs-4 meta-fields',
                                 )); ?>
-                                <?php echo $form->error($model->image, 'license'); ?>
+                                <div class="col-xs-8">
+                                    <?php echo $form->textField($model->image, 'license', array(
+                                        'class' => 'meta-fields form-control',
+                                    )); ?>
+                                    <?php echo $form->error($model->image, 'license'); ?>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="form-group">
-                            <?php echo $form->labelEx($model->image, 'photographer', array(
-                                'class' => 'control-label col-xs-4 meta-fields',
-                            )); ?>
-                            <div class="col-xs-8">
-                                <?php echo $form->textField($model->image, 'photographer', array(
-                                    'class' => 'meta-fields form-control',
+                            <div class="form-group">
+                                <?php echo $form->labelEx($model->image, 'photographer', array(
+                                    'class' => 'control-label col-xs-4 meta-fields',
                                 )); ?>
-                                <?php echo $form->error($model->image, 'photographer'); ?>
+                                <div class="col-xs-8">
+                                    <?php echo $form->textField($model->image, 'photographer', array(
+                                        'class' => 'meta-fields form-control',
+                                    )); ?>
+                                    <?php echo $form->error($model->image, 'photographer'); ?>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <hr />
-                <div class="form-block-4">
-                    <fieldset aria-labelledby="doiLabel">
-                        <div class="form-group row">
-                            <?php echo $form->labelEx($model, 'identifier', array(
-                                'class'=>'control-label col-xs-4',
-                                'id'=>'doiLabel'
-                            )); ?>
-                            <div class="col-xs-6">
-                                <?php echo $form->textField(
-                                    $model,
-                                    'identifier',
-                                    array(
-                                        'size' => 32,
-                                        'maxlength' => 32,
-                                        'disabled' => $model->upload_status == 'Published',
-                                        'class'=>'form-control',
-                                        'ajax' => array(
-                                            'type' => 'POST',
-                                            'url' => array('adminDataset/checkDOIExist'),
-                                            'dataType' => 'JSON',
-                                            'data' => array('doi' => 'js:$(this).val()'),
-                                            'success' => 'function(data){
+                    <hr />
+                    <div class="form-block-4">
+                        <fieldset aria-labelledby="doiLabel">
+                            <div class="form-group row">
+                                <?php echo $form->labelEx($model, 'identifier', array(
+                                    'class' => 'control-label col-xs-4',
+                                    'id' => 'doiLabel'
+                                )); ?>
+                                <div class="col-xs-6">
+                                    <?php echo $form->textField(
+                                        $model,
+                                        'identifier',
+                                        array(
+                                            'size' => 32,
+                                            'maxlength' => 32,
+                                            'disabled' => $model->upload_status == 'Published',
+                                            'class' => 'form-control',
+                                            'ajax' => array(
+                                                'type' => 'POST',
+                                                'url' => array('adminDataset/checkDOIExist'),
+                                                'dataType' => 'JSON',
+                                                'data' => array('doi' => 'js:$(this).val()'),
+                                                'success' => 'function(data){
                                                     if(data.status){
                                                         $("#Dataset_identifier").addClass("error");
                                                     }else {
@@ -328,22 +324,22 @@ echo $form->hiddenField($model, "image_id");
 
                                                     }
                                                 }',
+                                            ),
                                         ),
-                                    ),
-                                ); ?>
-                                <?php echo $form->error($model, 'identifier'); ?>
-                            </div>
-                            <div class="col-xs-2">
-                                <?php
-                                $status_array = array('Submitted', 'UserStartedIncomplete', 'Curation');
-                                echo CHtml::ajaxLink(
-                                    'Mint DOI',
-                                    Yii::app()->createUrl('/adminDataset/mint/'),
-                                    array(
-                                        'type' => 'POST',
-                                        'data' => array('doi' => 'js:$("#Dataset_identifier").val()'),
-                                        'dataType' => 'json',
-                                        'success' => 'js:function(output){
+                                    ); ?>
+                                    <?php echo $form->error($model, 'identifier'); ?>
+                                </div>
+                                <div class="col-xs-2">
+                                    <?php
+                                    $status_array = array('Submitted', 'UserStartedIncomplete', 'Curation');
+                                    echo CHtml::ajaxLink(
+                                        'Mint DOI',
+                                        Yii::app()->createUrl('/adminDataset/mint/'),
+                                        array(
+                                            'type' => 'POST',
+                                            'data' => array('doi' => 'js:$("#Dataset_identifier").val()'),
+                                            'dataType' => 'json',
+                                            'success' => 'js:function(output){
                                             console.log(output);
                                             if(output.status){
                                                 $("#minting").html("new DOI successfully minted");
@@ -353,115 +349,115 @@ echo $form->hiddenField($model, "image_id");
                                             }
                                             $("#mint_doi_button").toggleClass("active");
                                         }',
-                                    ),
-                                    array(
-                                        'class' => 'btn background-btn control-btn',
-                                        'id' => 'mint_doi_button',
-                                        'disabled' => in_array($model->upload_status, $status_array),
-                                    )
-                                );
-
-                                ?>
-
-    <?php
-                                if ("Curation" === $model->upload_status) {
-                                    echo CHtml::link(
-                                        "Move files to public ftp",
-                                        "/adminDataset/moveFiles/doi/{$model->identifier}",
+                                        ),
+                                        array(
+                                            'class' => 'btn background-btn control-btn',
+                                            'id' => 'mint_doi_button',
+                                            'disabled' => in_array($model->upload_status, $status_array),
+                                        )
                                     );
-                                }
-                                ?>
+
+                                    ?>
+
+                                    <?php
+                                    if ("Curation" === $model->upload_status) {
+                                        echo CHtml::link(
+                                            "Move files to public ftp",
+                                            "/adminDataset/moveFiles/doi/{$model->identifier}",
+                                        );
+                                    }
+                                    ?>
+                                </div>
+                                <div id="minting" class="col-xs-offset-4 col-xs-8 control-msg"></div>
                             </div>
-                            <div id="minting" class="col-xs-offset-4 col-xs-8 control-msg"></div>
+
+                        </fieldset>
+
+                        <div class="form-group">
+                            <?php echo $form->labelEx($model, 'ftp_site', array('class' => 'control-label col-xs-4')); ?>
+                            <div class="col-xs-8">
+                                <?php echo $form->textField($model, 'ftp_site', array('class' => 'form-control', 'size' => 60, 'maxlength' => 200, 'disabled' => $model->upload_status == 'Published',)); ?>
+                                <?php echo $form->error($model, 'ftp_site'); ?>
+                            </div>
                         </div>
 
-                    </fieldset>
+                        <div class="form-group">
+                            <?php echo $form->labelEx($model, 'fairnuse', array('class' => 'control-label col-xs-4')); ?>
+                            <div class="col-xs-8">
+                                <?php echo $form->textField($model, 'fairnuse', array('class' => 'form-control date',)); ?>
+                                <?php echo $form->error($model, 'fairnuse'); ?>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <?php echo $form->labelEx($model, 'publication_date', array('class' => 'control-label col-xs-4')); ?>
+                            <div class="col-xs-8">
+                                <?php echo $form->textField($model, 'publication_date', array('class' => 'form-control date js-date-pub', 'disabled' => $model->upload_status == 'Published',)); ?>
+                                <?php echo $form->error($model, 'publication_date'); ?>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <?php echo $form->labelEx($model, 'modification_date', array('class' => 'control-label col-xs-4')); ?>
+                            <div class="col-xs-8">
+                                <?php echo $form->textField($model, 'modification_date', array('class' => 'form-control date',)); ?>
+                                <?php echo $form->error($model, 'modification_date'); ?>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div> <!-- end of row of two columns -->
+
+            <hr />
+
+            <div class="row form-block-5">
+
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <?php echo $form->labelEx($model, 'dataset_size', array('label' => 'Dataset Size in Bytes', 'class' => 'control-label col-xs-4')); ?>
+                        <div class='col-xs-6'>
+                            <?php echo $form->textField($model, 'dataset_size', array('class' => 'form-control', 'size' => 60, 'maxlength' => 300,)); ?>
+                            <?php echo $form->error($model, 'dataset_size'); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <?php echo $form->labelEx($model, 'title', array('class' => 'control-label col-xs-4')); ?>
+                        <div class='col-xs-6'>
+                            <?php echo $form->textField($model, 'title', array('class' => 'form-control', 'size' => 60, 'maxlength' => 300,)); ?>
+                            <?php echo $form->error($model, 'title'); ?>
+                        </div>
+                    </div>
 
                     <div class="form-group">
-                        <?php echo $form->labelEx($model, 'ftp_site', array('class'=>'control-label col-xs-4')); ?>
-                        <div class="col-xs-8">
-                            <?php echo $form->textField($model, 'ftp_site', array('class' => 'form-control', 'size' => 60, 'maxlength' => 200, 'disabled' => $model->upload_status == 'Published',)); ?>
-                            <?php echo $form->error($model, 'ftp_site'); ?>
+                        <?php echo $form->labelEx($model, 'description', array('class' => 'control-label col-xs-4')); ?>
+                        <div class='col-xs-6'>
+                            <?php echo $form->textArea($model, 'description', array('class' => 'form-control textarea-control', 'rows' => 8, 'cols' => 50,)); ?>
+                            <?php echo $form->error($model, 'description'); ?>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <?php echo $form->labelEx($model, 'fairnuse', array('class'=>'control-label col-xs-4')); ?>
-                        <div class="col-xs-8">
-                            <?php echo $form->textField($model, 'fairnuse', array('class' => 'form-control date',)); ?>
-                            <?php echo $form->error($model, 'fairnuse'); ?>
+                        <?php echo CHtml::label('Keywords', 'keywords', array('class' => 'control-label col-xs-4')); ?>
+                        <div class='col-xs-6'>
+                            <!-- NOTE this input is repositioned outside the viewport by teh tagEditor plugin but is still focusable, so the keyboard navigation is very confusing. Fixing this is not trivial, so warrants another ticket #1467 -->
+                            <?php echo CHtml::textField('keywords', '', array('class' => 'form-control', 'size' => 60, 'maxlength' => 300)); ?>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <?php echo $form->labelEx($model, 'publication_date', array('class'=>'control-label col-xs-4')); ?>
-                        <div class="col-xs-8">
-                            <?php echo $form->textField($model, 'publication_date', array('class' => 'form-control date js-date-pub', 'disabled' => $model->upload_status == 'Published',)); ?>
-                            <?php echo $form->error($model, 'publication_date'); ?>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <?php echo $form->labelEx($model, 'modification_date', array('class'=>'control-label col-xs-4')); ?>
-                        <div class="col-xs-8">
-                            <?php echo $form->textField($model, 'modification_date', array('class' => 'form-control date',)); ?>
-                            <?php echo $form->error($model, 'modification_date'); ?>
+                        <?php echo CHtml::label('URL to redirect', 'urltoredirect', array('class' => 'control-label col-xs-4')); ?>
+                        <div class='col-xs-6'>
+                            <?php echo CHtml::textField('urltoredirect', $model->getUrlToRedirectAttribute(), array('class' => 'form-control', 'size' => 60, 'maxlength' => 300,)); ?>
                         </div>
                     </div>
                 </div>
+            </div> <!-- end of row of one column -->
 
-            </div>
+            <!-- <?php echo CHtml::link('Curation Log', $this->createAbsoluteUrl('curationlog/admin', array('id' => $model->id))); ?> -->
 
-        </div> <!-- end of row of two columns -->
-
-        <hr />
-
-        <div class="row form-block-5">
-
-            <div class="col-xs-12">
-                <div class="form-group">
-                    <?php echo $form->labelEx($model, 'dataset_size', array('label' => 'Dataset Size in Bytes','class'=>'control-label col-xs-4')); ?>
-                    <div class='col-xs-6'>
-                        <?php echo $form->textField($model, 'dataset_size', array('class' => 'form-control', 'size' => 60, 'maxlength' => 300,)); ?>
-                        <?php echo $form->error($model, 'dataset_size'); ?>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <?php echo $form->labelEx($model, 'title', array('class'=>'control-label col-xs-4')); ?>
-                    <div class='col-xs-6'>
-                        <?php echo $form->textField($model, 'title', array('class' => 'form-control', 'size' => 60, 'maxlength' => 300,)); ?>
-                        <?php echo $form->error($model, 'title'); ?>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <?php echo $form->labelEx($model, 'description', array('class'=>'control-label col-xs-4')); ?>
-                    <div class='col-xs-6'>
-                        <?php echo $form->textArea($model, 'description', array('class' => 'form-control textarea-control', 'rows' => 8, 'cols' => 50,)); ?>
-                        <?php echo $form->error($model, 'description'); ?>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <?php echo CHtml::label('Keywords', 'keywords', array('class'=>'control-label col-xs-4')); ?>
-                    <div class='col-xs-6'>
-                        <!-- NOTE this input is repositioned outside the viewport by teh tagEditor plugin but is still focusable, so the keyboard navigation is very confusing. Fixing this is not trivial, so warrants another ticket #1467 -->
-                        <?php echo CHtml::textField('keywords', '', array('class' => 'form-control', 'size' => 60, 'maxlength' => 300)); ?>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <?php echo CHtml::label('URL to redirect', 'urltoredirect', array('class'=>'control-label col-xs-4')); ?>
-                    <div class='col-xs-6'>
-                        <?php echo CHtml::textField('urltoredirect', $model->getUrlToRedirectAttribute(), array('class' => 'form-control', 'size' => 60, 'maxlength' => 300,)); ?>
-                    </div>
-                </div>
-            </div>
-        </div> <!-- end of row of one column -->
-
-        <!-- <?php echo CHtml::link('Curation Log', $this->createAbsoluteUrl('curationlog/admin', array('id' => $model->id))); ?> -->
-
-        <?php if (isset($dataset_id)) {
+            <?php if (isset($dataset_id)) {
             ?>
                 <hr />
                 <div class="form-block-6">
@@ -473,9 +469,9 @@ echo $form->hiddenField($model, "image_id");
             }
             ?>
 
-    </div> <!-- end of container -->
+        </div> <!-- end of container -->
 
-</div>
+    </div>
 </div>
 
 <div class="col-xs-12 form-control-btns">
