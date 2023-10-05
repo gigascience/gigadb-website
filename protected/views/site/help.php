@@ -4,16 +4,17 @@ $this->pageTitle = 'GigaDB - Help';
 
 <div class="content">
     <div class="container">
-        <section class="page-title-section">
+        <div class="section page-title-section">
             <div class="page-title">
-                <ol class="breadcrumb pull-right">
-                    <li><a href="/">Home</a></li>
-                    <li><a href="about">About</a></li>
-                    <li class="active">Help</li>
-                </ol>
+                <nav aria-label="breadcrumbs">
+                    <ol class="breadcrumb pull-right">
+                        <li><a href="/">Home</a></li>
+                        <li class="active">Help</li>
+                    </ol>
+                </nav>
                 <h1 class="page-subtitle">Help</h1>
             </div>
-        </section>
+        </div>
         <div class="subsection">
             <p>The <a href="http://gigadb.org/" target="_blank"><span class="text-italic">GigaDB</span></a> website allows any user to browse, search, view datasets and access data files. If you want to submit a dataset, save searches or be alerted of new content of interest we request that you <a href="/user/create" target="_blank">create an account</a>.</p>
             <p>A 'Latest news' section will be visible to announce any updates or new features to the database and the RSS feed automatically announces each new dataset release.</p>
@@ -281,381 +282,381 @@ $this->pageTitle = 'GigaDB - Help';
                     </section>
                     <hr class="dashed">
                     <section aria-labelledby="fileformats" class="m-0">
-                    <h2 class="page-subtitle" id="fileformats">File formats</h2>
-                    <ol class="help-ol">
-                        <li><a href="#agp">AGP</a></li>
-                        <li><a href="#bam">BAM</a></li>
-                        <li><a href="#bigwig">BIGWIG</a></li>
-                        <li><a href="#chain">CHAIN</a></li>
-                        <li><a href="#contig">CONTIG</a></li>
-                        <li><a href="#excel">EXCEL</a></li>
-                        <li><a href="#fasta">FASTA</a></li>
-                        <li><a href="#fastq">FASTQ</a></li>
-                        <li><a href="#gff">GFF</a></li>
-                        <li><a href="#ipr">IPR</a></li>
-                        <li><a href="#kegg">KEGG</a></li>
-                        <li><a href="#maf">MAF</a></li>
-                        <li><a href="#net">NET</a></li>
-                        <li><a href="#pdf">PDF</a></li>
-                        <li><a href="#png">PNG</a></li>
-                        <li><a href="#qmap">QMAP</a></li>
-                        <li><a href="#qual">QUAL</a></li>
-                        <li><a href="#rpkm">RPKM</a></li>
-                        <li><a href="#sam">SAM</a></li>
-                        <li><a href="#tar">TAR</a></li>
-                        <li><a href="#text">TEXT</a></li>
-                        <li><a href="#vcf">VCF</a></li>
-                        <li><a href="#wego">WEGO</a></li>
-                        <li><a href="#wig">WIG</a></li>
-                        <li><a href="#unknown">UNKNOWN</a></li>
-                        <li><a href="#xml">XML</a></li>
-                    </ol>
+                        <h2 class="page-subtitle" id="fileformats">File formats</h2>
+                        <ol class="help-ol">
+                            <li><a href="#agp">AGP</a></li>
+                            <li><a href="#bam">BAM</a></li>
+                            <li><a href="#bigwig">BIGWIG</a></li>
+                            <li><a href="#chain">CHAIN</a></li>
+                            <li><a href="#contig">CONTIG</a></li>
+                            <li><a href="#excel">EXCEL</a></li>
+                            <li><a href="#fasta">FASTA</a></li>
+                            <li><a href="#fastq">FASTQ</a></li>
+                            <li><a href="#gff">GFF</a></li>
+                            <li><a href="#ipr">IPR</a></li>
+                            <li><a href="#kegg">KEGG</a></li>
+                            <li><a href="#maf">MAF</a></li>
+                            <li><a href="#net">NET</a></li>
+                            <li><a href="#pdf">PDF</a></li>
+                            <li><a href="#png">PNG</a></li>
+                            <li><a href="#qmap">QMAP</a></li>
+                            <li><a href="#qual">QUAL</a></li>
+                            <li><a href="#rpkm">RPKM</a></li>
+                            <li><a href="#sam">SAM</a></li>
+                            <li><a href="#tar">TAR</a></li>
+                            <li><a href="#text">TEXT</a></li>
+                            <li><a href="#vcf">VCF</a></li>
+                            <li><a href="#wego">WEGO</a></li>
+                            <li><a href="#wig">WIG</a></li>
+                            <li><a href="#unknown">UNKNOWN</a></li>
+                            <li><a href="#xml">XML</a></li>
+                        </ol>
 
-                    <!-- FILE FORMATS DL -->
+                        <!-- FILE FORMATS DL -->
 
-                    <dl class="help-description-list">
-                        <div class="help-definition-container">
-                            <dt id="agp">AGP <span class="dt-sidenote">(.agp)</span></dt>
-                            <dd>
+                        <dl class="help-description-list">
+                            <div class="help-definition-container">
+                                <dt id="agp">AGP <span class="dt-sidenote">(.agp)</span></dt>
+                                <dd>
 
-                                <p class="inline">
-                                    the Accessioned Golden Path (AGP) file describes the assembly of a
-                                    larger sequence object from smaller objects:
-                                </p>
-                                <pre>
+                                    <p class="inline">
+                                        the Accessioned Golden Path (AGP) file describes the assembly of a
+                                        larger sequence object from smaller objects:
+                                    </p>
+                                    <pre>
 chr1 1       1972671 0 W scaffold43  1 1972671 m
 chr1 1972672 3061819 1 W scaffold8   1 1089148 p
 chr1 3061820 3181505 2 W scaffold548 1 119686  m
 chr1 3181506 4176151 3 W scaffold313 1 994646  m</pre>
-                                <p>
-                                    The large object can be a contig, a scaffold (supercontig), or a
-                                    chromosome. See
-                                    <a href="http://www.ncbi.nlm.nih.gov/projects/genome/assembly/agp/AGP_Specification.shtml" target="_blank">AGP Specification v2.0</a>
-                                </p>
-                            </dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt id="bam">BAM <span class="dt-sidenote">(.bam)</span></dt>
-                            <dd>
+                                    <p>
+                                        The large object can be a contig, a scaffold (supercontig), or a
+                                        chromosome. See
+                                        <a href="http://www.ncbi.nlm.nih.gov/projects/genome/assembly/agp/AGP_Specification.shtml" target="_blank">AGP Specification v2.0</a>
+                                    </p>
+                                </dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt id="bam">BAM <span class="dt-sidenote">(.bam)</span></dt>
+                                <dd>
 
-                                <p class="inline">
-                                    the
-                                    <a href="http://genome.sph.umich.edu/wiki/BAM" target="_blank">Binary Alignment/Map (BAM) format</a>
-                                    is the compressed binary version of the Sequence Alignment/Map (SAM)
-                                    format, a compact and index-able representation of nucleotide sequence
-                                    alignments.
-                                </p>
-                            </dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt id="bigwig">BIGWIG <span class="dt-sidenote">(.bw)</span></dt>
-                            <dd>
+                                    <p class="inline">
+                                        the
+                                        <a href="http://genome.sph.umich.edu/wiki/BAM" target="_blank">Binary Alignment/Map (BAM) format</a>
+                                        is the compressed binary version of the Sequence Alignment/Map (SAM)
+                                        format, a compact and index-able representation of nucleotide sequence
+                                        alignments.
+                                    </p>
+                                </dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt id="bigwig">BIGWIG <span class="dt-sidenote">(.bw)</span></dt>
+                                <dd>
 
-                                <p class="inline">
-                                    the
-                                    <a href="http://genome.ucsc.edu/goldenPath/help/bigWig.html" target="_blank">BIGWIG format</a>
-                                    is for storing dense, continuous data (such as GC percent, probability
-                                    scores, and transcriptome data) that will be displayed in the UCSC
-                                    Genome Browser as a graph. BIGWIG files are created initially from
-                                    wiggle (WIG) type files, using the program wigToBigWig.
-                                </p>
-                            </dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt id="chain">CHAIN <span class="dt-sidenote">(.chain)</span></dt>
-                            <dd>
+                                    <p class="inline">
+                                        the
+                                        <a href="http://genome.ucsc.edu/goldenPath/help/bigWig.html" target="_blank">BIGWIG format</a>
+                                        is for storing dense, continuous data (such as GC percent, probability
+                                        scores, and transcriptome data) that will be displayed in the UCSC
+                                        Genome Browser as a graph. BIGWIG files are created initially from
+                                        wiggle (WIG) type files, using the program wigToBigWig.
+                                    </p>
+                                </dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt id="chain">CHAIN <span class="dt-sidenote">(.chain)</span></dt>
+                                <dd>
 
-                                <p class="inline">
-                                    the
-                                    <a href="http://genome.ucsc.edu/goldenPath/help/chain.html" target="_blank">CHAIN format</a>
-                                    describes a pairwise alignment that allow gaps in both sequences
-                                    simultaneously and is used by the UCSC Genome Browser.
-                                </p>
-                            </dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt id="contig">CONTIG <span class="dt-sidenote">(.contig)</span></dt>
-                            <dd>
+                                    <p class="inline">
+                                        the
+                                        <a href="http://genome.ucsc.edu/goldenPath/help/chain.html" target="_blank">CHAIN format</a>
+                                        describes a pairwise alignment that allow gaps in both sequences
+                                        simultaneously and is used by the UCSC Genome Browser.
+                                    </p>
+                                </dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt id="contig">CONTIG <span class="dt-sidenote">(.contig)</span></dt>
+                                <dd>
 
-                                <p class="inline">
-                                    the
-                                    <a href="http://soap.genomics.org.cn/soapdenovo.html" target="_blank">CONTIG format</a>
-                                    is a direct output from the SOAPdenovo alignment program:
-                                </p>
-                                <pre>
+                                    <p class="inline">
+                                        the
+                                        <a href="http://soap.genomics.org.cn/soapdenovo.html" target="_blank">CONTIG format</a>
+                                        is a direct output from the SOAPdenovo alignment program:
+                                    </p>
+                                    <pre>
 &gt;1 length 32 cvg_0.0_tip_0
 GAGAACGGCGAAGCCTGCTCGGGCCCGTTATA
 &gt;3 length 32 cvg_23.0_tip_0
 TAGCAGCGATTTGATCAAACTCAATCTTACCG
 &gt;5 length 32 cvg_40.0_tip_0
 GGTAAGATTGAGTTTGATCAAATCGCTGCTAT</pre>
-                            </dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt id="excel">EXCEL <span class="dt-sidenote">(.xls, .xlsx)</span></dt>
-                            <dd>
+                                </dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt id="excel">EXCEL <span class="dt-sidenote">(.xls, .xlsx)</span></dt>
+                                <dd>
 
-                                <p class="inline">Microsoft office spreadsheet files</p>
-                            </dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt id="fasta">
-                                FASTA
-                                <span class="dt-sidenote">(.fasta, .fa, .seq, .cds, .pep, .scafseq [SOAPdenovo output file -
-                                    sequence of each scaffold])</span>
-                            </dt>
-                            <dd>
+                                    <p class="inline">Microsoft office spreadsheet files</p>
+                                </dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt id="fasta">
+                                    FASTA
+                                    <span class="dt-sidenote">(.fasta, .fa, .seq, .cds, .pep, .scafseq [SOAPdenovo output file -
+                                        sequence of each scaffold])</span>
+                                </dt>
+                                <dd>
 
-                                <p class="inline">
-                                    <a href="http://www.ebi.ac.uk/help/formats.html#fasta" target="_blank">FASTA</a>
-                                    is a text-based format for representing either nucleotide sequences or
-                                    peptide sequences.
-                                </p>
-                            </dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt id="fastq">FASTQ <span class="dt-sidenote">(.fq, .fastq)</span></dt>
-                            <dd>
+                                    <p class="inline">
+                                        <a href="http://www.ebi.ac.uk/help/formats.html#fasta" target="_blank">FASTA</a>
+                                        is a text-based format for representing either nucleotide sequences or
+                                        peptide sequences.
+                                    </p>
+                                </dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt id="fastq">FASTQ <span class="dt-sidenote">(.fq, .fastq)</span></dt>
+                                <dd>
 
-                                <p class="inline">
-                                    the
-                                    <a href="http://maq.sourceforge.net/fastq.shtml" target="_blank">FASTQ format</a>
-                                    stores sequences (usually nucleotide sequence) and Phred qualities in a
-                                    single file.
-                                </p>
-                            </dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt id="gff">GFF <span class="dt-sidenote">(.gff)</span></dt>
-                            <dd>
+                                    <p class="inline">
+                                        the
+                                        <a href="http://maq.sourceforge.net/fastq.shtml" target="_blank">FASTQ format</a>
+                                        stores sequences (usually nucleotide sequence) and Phred qualities in a
+                                        single file.
+                                    </p>
+                                </dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt id="gff">GFF <span class="dt-sidenote">(.gff)</span></dt>
+                                <dd>
 
-                                <p class="inline">
-                                    The
-                                    <a href="http://www.sanger.ac.uk/resources/software/gff/" target="_blank">General Feature Format (GFF)</a>
-                                    is used for describing genes and other features of DNA, RNA and protein
-                                    sequences.
-                                </p>
-                            </dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt id="ipr">IPR <span class="dt-sidenote">(.ipr)</span></dt>
-                            <dd>
+                                    <p class="inline">
+                                        The
+                                        <a href="http://www.sanger.ac.uk/resources/software/gff/" target="_blank">General Feature Format (GFF)</a>
+                                        is used for describing genes and other features of DNA, RNA and protein
+                                        sequences.
+                                    </p>
+                                </dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt id="ipr">IPR <span class="dt-sidenote">(.ipr)</span></dt>
+                                <dd>
 
-                                <p class="inline">
-                                    the
-                                    <a href="http://wego.genomics.org.cn/cgi-bin/wego/Documents.pl" target="_blank">Web Gene Ontology (WEGO) Annotation format</a>
-                                    consists of the protein ID, followed by column(s) that are the IPR (<a href="http://www.ebi.ac.uk/interpro/" target="_blank">InterPro</a>) ID(s):
-                                </p>
-                                <pre>
+                                    <p class="inline">
+                                        the
+                                        <a href="http://wego.genomics.org.cn/cgi-bin/wego/Documents.pl" target="_blank">Web Gene Ontology (WEGO) Annotation format</a>
+                                        consists of the protein ID, followed by column(s) that are the IPR (<a href="http://www.ebi.ac.uk/interpro/" target="_blank">InterPro</a>) ID(s):
+                                    </p>
+                                    <pre>
 CR_ENSP00000334840
 CR_ENSMMUP00000018123 IPR000504 IPR003954
 CR_ENSP00000333725    IPR001781 IPR015880 IPR007087 IPR001909</pre>
-                                <p>
-                                    See
-                                    <a href="http://www.ncbi.nlm.nih.gov/pubmed/16845012?dopt=Abstract" target="_blank">WEGO: a web tool for plotting GO annotations</a>
-                                </p>
-                            </dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt id="kegg">KEGG <span class="dt-sidenote">(.kegg)</span></dt>
-                            <dd>
+                                    <p>
+                                        See
+                                        <a href="http://www.ncbi.nlm.nih.gov/pubmed/16845012?dopt=Abstract" target="_blank">WEGO: a web tool for plotting GO annotations</a>
+                                    </p>
+                                </dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt id="kegg">KEGG <span class="dt-sidenote">(.kegg)</span></dt>
+                                <dd>
 
-                                <p class="inline">
-                                    the
-                                    <a href="http://wego.genomics.org.cn/cgi-bin/wego/Documents.pl" target="_blank">Web Gene Ontology (WEGO) Annotation format</a>
-                                    consists of the protein ID, followed by column(s) that are the
-                                    <a href="http://www.genome.jp/kegg/" target="_blank">KEGG</a> (Kyoto
-                                    Encyclopedia of Genes and Genomes) ID(s):
-                                </p>
-                                <pre>
+                                    <p class="inline">
+                                        the
+                                        <a href="http://wego.genomics.org.cn/cgi-bin/wego/Documents.pl" target="_blank">Web Gene Ontology (WEGO) Annotation format</a>
+                                        consists of the protein ID, followed by column(s) that are the
+                                        <a href="http://www.genome.jp/kegg/" target="_blank">KEGG</a> (Kyoto
+                                        Encyclopedia of Genes and Genomes) ID(s):
+                                    </p>
+                                    <pre>
 CR_ENSMMUP00000031408 ko03010
 CR_ENSP00000364815    ko00970 ko00290
 CR_ENSP00000414605    ko05146 ko04510 ko04512</pre>
-                                <p>
-                                    See
-                                    <a href="http://www.ncbi.nlm.nih.gov/pubmed/16845012?dopt=Abstract" target="_blank">WEGO: a web tool for plotting GO annotations</a>
-                                </p>
-                            </dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt id="maf">MAF <span class="dt-sidenote">(.maf)</span></dt>
-                            <dd>
+                                    <p>
+                                        See
+                                        <a href="http://www.ncbi.nlm.nih.gov/pubmed/16845012?dopt=Abstract" target="_blank">WEGO: a web tool for plotting GO annotations</a>
+                                    </p>
+                                </dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt id="maf">MAF <span class="dt-sidenote">(.maf)</span></dt>
+                                <dd>
 
-                                <p class="inline">
-                                    the
-                                    <a href="http://genome.ucsc.edu/FAQ/FAQformat.html#format5" target="_blank">Multiple Alignment Format (MAF)</a>
-                                    stores a series of multiple alignments at the DNA level between entire
-                                    genomes.
-                                </p>
-                            </dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt id="net">NET <span class="dt-sidenote">(.net)</span></dt>
-                            <dd>
+                                    <p class="inline">
+                                        the
+                                        <a href="http://genome.ucsc.edu/FAQ/FAQformat.html#format5" target="_blank">Multiple Alignment Format (MAF)</a>
+                                        stores a series of multiple alignments at the DNA level between entire
+                                        genomes.
+                                    </p>
+                                </dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt id="net">NET <span class="dt-sidenote">(.net)</span></dt>
+                                <dd>
 
-                                <p class="inline">
-                                    the
-                                    <a href="http://genome.ucsc.edu/goldenPath/help/net.html" target="_blank">NET file format</a>
-                                    is used to describe the axtNet data that underlie the net alignment
-                                    annotations in the UCSC Genome Browser.
-                                </p>
-                            </dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt id="pdf">PDF <span class="dt-sidenote">(.pdf)</span></dt>
-                            <dd>
+                                    <p class="inline">
+                                        the
+                                        <a href="http://genome.ucsc.edu/goldenPath/help/net.html" target="_blank">NET file format</a>
+                                        is used to describe the axtNet data that underlie the net alignment
+                                        annotations in the UCSC Genome Browser.
+                                    </p>
+                                </dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt id="pdf">PDF <span class="dt-sidenote">(.pdf)</span></dt>
+                                <dd>
 
-                                <p class="inline">portable document format</p>
-                            </dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt id="png">PNG <span class="dt-sidenote">(.png)</span></dt>
-                            <dd>
+                                    <p class="inline">portable document format</p>
+                                </dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt id="png">PNG <span class="dt-sidenote">(.png)</span></dt>
+                                <dd>
 
-                                <p class="inline">portable network graphics</p>
-                            </dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt id="qmap">QMAP <span class="dt-sidenote">(.qmap)</span></dt>
-                            <dd>
+                                    <p class="inline">portable network graphics</p>
+                                </dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt id="qmap">QMAP <span class="dt-sidenote">(.qmap)</span></dt>
+                                <dd>
 
-                                <p class="inline">
-                                    <a href="http://yh.genomics.org.cn/Format%20of%20qmap%20file.txt" target="_blank">QMAP</a>
-                                    files are generated for methylation data from an internal
-                                    <a href="http://www.genomics.cn/en" target="_blank">BGI</a> pipeline.
-                                </p>
-                            </dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt id="qual">QUAL <span class="dt-sidenote">(.qual)</span></dt>
-                            <dd>
+                                    <p class="inline">
+                                        <a href="http://yh.genomics.org.cn/Format%20of%20qmap%20file.txt" target="_blank">QMAP</a>
+                                        files are generated for methylation data from an internal
+                                        <a href="http://www.genomics.cn/en" target="_blank">BGI</a> pipeline.
+                                    </p>
+                                </dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt id="qual">QUAL <span class="dt-sidenote">(.qual)</span></dt>
+                                <dd>
 
-                                <p class="inline">
-                                    the
-                                    <a href="http://www.broadinstitute.org/crd/wiki/index.php/Qual" target="_blank">QUAL file format</a>
-                                    represents base quality score file for NextGen data (similar in format
-                                    to fasta).
-                                </p>
-                            </dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt id="rpkm">RPKM <span class="dt-sidenote">(.rpkm)</span></dt>
-                            <dd>
+                                    <p class="inline">
+                                        the
+                                        <a href="http://www.broadinstitute.org/crd/wiki/index.php/Qual" target="_blank">QUAL file format</a>
+                                        represents base quality score file for NextGen data (similar in format
+                                        to fasta).
+                                    </p>
+                                </dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt id="rpkm">RPKM <span class="dt-sidenote">(.rpkm)</span></dt>
+                                <dd>
 
-                                <p class="inline">
-                                    Gene expression levels are calculated by
-                                    <a href="http://sourceforge.net/apps/mediawiki/seqgene/index.php?title=SeqGene#.rpkm:_expression_estimates_generated_by_rpkm.py" target="_blank">Reads Per Kilobase per Million (RPKM) mapped reads</a>
-                                    eg 1kb transcript with 1000 alignments in a sample of 10 million reads
-                                    (out of which 8 million reads can be mapped) will have RPKM = 1000/(1 *
-                                    8) = 125:
-                                </p>
-                                <pre>
+                                    <p class="inline">
+                                        Gene expression levels are calculated by
+                                        <a href="http://sourceforge.net/apps/mediawiki/seqgene/index.php?title=SeqGene#.rpkm:_expression_estimates_generated_by_rpkm.py" target="_blank">Reads Per Kilobase per Million (RPKM) mapped reads</a>
+                                        eg 1kb transcript with 1000 alignments in a sample of 10 million reads
+                                        (out of which 8 million reads can be mapped) will have RPKM = 1000/(1 *
+                                        8) = 125:
+                                    </p>
+                                    <pre>
 ENSP00000379387 15.5651433366423 6002951 289 3093
 ENSP00000349977 24.7483107230444 6002951 398 2679
 ENSP00000368887 24.6477413647837 6002951 174 1176</pre>
-                            </dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt id="sam">SAM <span class="dt-sidenote">(.sam)</span></dt>
-                            <dd>
+                                </dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt id="sam">SAM <span class="dt-sidenote">(.sam)</span></dt>
+                                <dd>
 
-                                <p class="inline">
-                                    the
-                                    <a href="http://genome.sph.umich.edu/wiki/SAM" target="_blank">Sequence Alignment/Map (SAM) format</a>
-                                    is a TAB-delimited text format consisting of a header section, which is
-                                    optional, and an alignment section. Most often it is generated as a
-                                    human readable version of its sister
-                                    <a href="http://gigadb.org/site/help#bam" target="_blank">BAM</a>
-                                    format, which stores the same data in a compressed, indexed, binary
-                                    form. Currently, most SAM format data is output from aligners that read
-                                    <a href="http://gigadb.org/site/help#fastq" target="_blank">FASTQ</a>
-                                    files and assign the sequences to a position with respect to a known
-                                    reference genome. In the future, SAM will also be used to archive
-                                    unaligned sequence data generated directly from sequencing machines. See
-                                    <a href="http://www.ncbi.nlm.nih.gov/pmc/articles/PMC2723002/" target="_blank">The Sequence Alignment/Map format and SAMtools</a>
-                                </p>
-                            </dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt id="tar">TAR <span class="dt-sidenote">(.tar)</span></dt>
-                            <dd>
+                                    <p class="inline">
+                                        the
+                                        <a href="http://genome.sph.umich.edu/wiki/SAM" target="_blank">Sequence Alignment/Map (SAM) format</a>
+                                        is a TAB-delimited text format consisting of a header section, which is
+                                        optional, and an alignment section. Most often it is generated as a
+                                        human readable version of its sister
+                                        <a href="http://gigadb.org/site/help#bam" target="_blank">BAM</a>
+                                        format, which stores the same data in a compressed, indexed, binary
+                                        form. Currently, most SAM format data is output from aligners that read
+                                        <a href="http://gigadb.org/site/help#fastq" target="_blank">FASTQ</a>
+                                        files and assign the sequences to a position with respect to a known
+                                        reference genome. In the future, SAM will also be used to archive
+                                        unaligned sequence data generated directly from sequencing machines. See
+                                        <a href="http://www.ncbi.nlm.nih.gov/pmc/articles/PMC2723002/" target="_blank">The Sequence Alignment/Map format and SAMtools</a>
+                                    </p>
+                                </dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt id="tar">TAR <span class="dt-sidenote">(.tar)</span></dt>
+                                <dd>
 
-                                <p class="inline">an archive containing other files</p>
-                            </dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt id="text">
-                                TEXT <span class="dt-sidenote">(.doc, .readme, .text, .txt)</span>
-                            </dt>
-                            <dd>
+                                    <p class="inline">an archive containing other files</p>
+                                </dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt id="text">
+                                    TEXT <span class="dt-sidenote">(.doc, .readme, .text, .txt)</span>
+                                </dt>
+                                <dd>
 
-                                <p class="inline">a text file</p>
-                            </dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt id="vcf">VCF <span class="dt-sidenote">(.vcf)</span></dt>
-                            <dd>
+                                    <p class="inline">a text file</p>
+                                </dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt id="vcf">VCF <span class="dt-sidenote">(.vcf)</span></dt>
+                                <dd>
 
-                                <p class="inline">
-                                    the
-                                    <a href="http://www.1000genomes.org/wiki/Analysis/Variant%20Call%20Format/vcf-variant-call-format-version-40" target="_blank">Variant Call Format (VCF)</a>
-                                    is a text file format for representing eg SNPs, InDels, CNVs, SVs,
-                                    microsatellites, genotypes.
-                                </p>
-                            </dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt id="wego">WEGO <span class="dt-sidenote">(.wego)</span></dt>
-                            <dd>
+                                    <p class="inline">
+                                        the
+                                        <a href="http://www.1000genomes.org/wiki/Analysis/Variant%20Call%20Format/vcf-variant-call-format-version-40" target="_blank">Variant Call Format (VCF)</a>
+                                        is a text file format for representing eg SNPs, InDels, CNVs, SVs,
+                                        microsatellites, genotypes.
+                                    </p>
+                                </dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt id="wego">WEGO <span class="dt-sidenote">(.wego)</span></dt>
+                                <dd>
 
-                                <p class="inline">
-                                    the
-                                    <a href="http://wego.genomics.org.cn/cgi-bin/wego/Documents.pl" target="_blank">Web Gene Ontology (WEGO) Annotation format</a>
-                                    consists of the protein ID, followed by column(s) that are the
-                                    <a href="http://www.geneontology.org/" target="_blank">GO</a> ID(s):
-                                </p>
-                                <pre>
+                                    <p class="inline">
+                                        the
+                                        <a href="http://wego.genomics.org.cn/cgi-bin/wego/Documents.pl" target="_blank">Web Gene Ontology (WEGO) Annotation format</a>
+                                        consists of the protein ID, followed by column(s) that are the
+                                        <a href="http://www.geneontology.org/" target="_blank">GO</a> ID(s):
+                                    </p>
+                                    <pre>
 Bmb015379_2_IPR001092
 Bmb003749_1_IPR006329 GO:0009168 GO:0003876
 Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242&lt;</pre>
-                                <p>
-                                    See
-                                    <a href="http://www.ncbi.nlm.nih.gov/pubmed/16845012?dopt=Abstract" target="_blank">WEGO: a web tool for plotting GO annotations</a>
-                                </p>
-                            </dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt id="wig">WIG <span class="dt-sidenote">(.wig)</span></dt>
-                            <dd>
+                                    <p>
+                                        See
+                                        <a href="http://www.ncbi.nlm.nih.gov/pubmed/16845012?dopt=Abstract" target="_blank">WEGO: a web tool for plotting GO annotations</a>
+                                    </p>
+                                </dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt id="wig">WIG <span class="dt-sidenote">(.wig)</span></dt>
+                                <dd>
 
-                                <p class="inline">
-                                    the output file from
-                                    <a href="http://tophat.cbcb.umd.edu/" target="_blank">TopHat</a> is a
-                                    <a href="http://genome.ucsc.edu/goldenPath/help/wiggle.html" target="_blank">UCSC wigglegram</a>
-                                    of alignment coverage.
-                                </p>
-                            </dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt id="unknown">UNKNOWN</dt>
-                            <dd>
+                                    <p class="inline">
+                                        the output file from
+                                        <a href="http://tophat.cbcb.umd.edu/" target="_blank">TopHat</a> is a
+                                        <a href="http://genome.ucsc.edu/goldenPath/help/wiggle.html" target="_blank">UCSC wigglegram</a>
+                                        of alignment coverage.
+                                    </p>
+                                </dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt id="unknown">UNKNOWN</dt>
+                                <dd>
 
-                                <p class="inline">any file format not in this list</p>
-                            </dd>
-                        </div>
-                        <div class="help-definition-container">
-                            <dt id="xml">XML <span class="dt-sidenote">(.xml)</span></dt>
-                            <dd>
+                                    <p class="inline">any file format not in this list</p>
+                                </dd>
+                            </div>
+                            <div class="help-definition-container">
+                                <dt id="xml">XML <span class="dt-sidenote">(.xml)</span></dt>
+                                <dd>
 
-                                <p class="inline">
-                                    <a href="http://www.w3schools.com/xml/" target="_blank">eXtensible Markup Language</a>
-                                </p>
-                            </dd>
-                        </div>
-                    </dl>
+                                    <p class="inline">
+                                        <a href="http://www.w3schools.com/xml/" target="_blank">eXtensible Markup Language</a>
+                                    </p>
+                                </dd>
+                            </div>
+                        </dl>
 
 
-                    <!-- ENDOF FILE FORMATS DL -->
+                        <!-- ENDOF FILE FORMATS DL -->
 
                     </section>
 
@@ -896,11 +897,11 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242&lt;</pre>
 
                     <hr class="dashed">
                     <section aria-labelledby="cliTitle" class="m-0">
-                    <h2 class="page-subtitle" id="cliTitle">Command line usage</h2>
-                    <p>You can also use the curl commands on the command line to retrieve metadata, e.g.:</p>
-                    <pre><code>curl <a href="http://gigadb.org/api/dataset?doi=100051" target="_blank" rel="noopener noreferrer">http://gigadb.org/api/dataset?doi=100051</a></code></pre>
-                    <p>If you want to check whether a search will work you can use the <code>-I</code> flag:</p>
-                    <pre><code>curl -I <a href="http://gigadb.org/api/dataset?doi=100051" target="_blank" rel="noopener noreferrer">http://gigadb.org/api/dataset?doi=100051</a>
+                        <h2 class="page-subtitle" id="cliTitle">Command line usage</h2>
+                        <p>You can also use the curl commands on the command line to retrieve metadata, e.g.:</p>
+                        <pre><code>curl <a href="http://gigadb.org/api/dataset?doi=100051" target="_blank" rel="noopener noreferrer">http://gigadb.org/api/dataset?doi=100051</a></code></pre>
+                        <p>If you want to check whether a search will work you can use the <code>-I</code> flag:</p>
+                        <pre><code>curl -I <a href="http://gigadb.org/api/dataset?doi=100051" target="_blank" rel="noopener noreferrer">http://gigadb.org/api/dataset?doi=100051</a>
 # HTTP/1.1 200 OK
 # or
 # HTTP/1.1 404 Not Found / HTTP/1.1 500 Internal server error</code></pre>

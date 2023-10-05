@@ -17,13 +17,13 @@
       if ( null != $user_command ) {
       	$claimed_author = Author::model()->findByPk($user_command->actionable_id);
       	$message = "This user has a pending claim on author ". $claimed_author->getDisplayName() ;
-      	$validate_link = CHtml::link('Validate', 
+      	$validate_link = CHtml::link('Validate',
                                     array('AdminUserCommand/validate', 'id' => $user_command->id),
                                     array('class' => 'btn'));
-      	$reject_link = CHtml::link('Reject', 
+      	$reject_link = CHtml::link('Reject',
                                     array('AdminUserCommand/reject', 'id' => $user_command->id),
                                     array('class' => 'btn'));
-      	$author_link = CHtml::link('Author info', 
+      	$author_link = CHtml::link('Author info',
                                     array('AdminAuthor/view', 'id' => $user_command->actionable_id),
                                     array('class' => 'btn'));
 ?>
@@ -39,11 +39,11 @@
 <?php
       }
       else if ( null ==  $linked_author) {
-          echo CHtml::link('Link this user to an author', 
+          echo CHtml::link('Link this user to an author',
                                     array('adminAuthor/prepareUserLink', 'user_id'=>$model->id),
-                                    array('class' => 'btn')); 
+                                    array('class' => 'btn'));
       }else {
-      	$unlink_link =  CHtml::link('Unlink author', 
+      	$unlink_link =  CHtml::link('Unlink author',
                                     array('AdminAuthor/unlinkUser', 'id' => $linked_author->id, 'user_id'=>$model->id),
                                     array('class' => 'btn'));
 ?>
@@ -56,19 +56,21 @@
       }
     }
 ?>
- 	
+
         <div class="container">
-              <section class="page-title-section">
+              <div class="section page-title-section">
                 <div class="page-title">
-                    <ol class="breadcrumb pull-right">
-                        <li><a href="/">Home</a></li>
-                        <li class="active">Personal details</li>
-                    </ol>
+                    <nav aria-label="breadcrumbs">
+											<ol class="breadcrumb pull-right">
+													<li><a href="/">Home</a></li>
+													<li class="active">Personal details</li>
+											</ol>
+										</nav>
                     <h4>Registration</h4>
                 </div>
-            </section>
+            </div>
         <div class="subsection" style="margin-bottom: 130px;">
-	
+
 		<div class="clear"></div>
 		<?php if ($model->isNewRecord) {?>
 		<p><?=Yii::t('app' , 'GigaScience appreciates your interest in the GigaDB project. With a GigaDB account, you can submit new datasets to the database. Also, GigaDB can automatically notify you of new content which matches your interests. Please fill out the following information and register to enjoy the benefits of GigaDB membership!')?></p>
@@ -146,17 +148,17 @@
 				</div>
                                 <div class="form-group">
                                     <label class="col-xs-3 control-label"><?=Yii::t('app' , 'Mailing list')?></label>
-                                   
-				    <div class="col-xs-9">				    	
+
+				    <div class="col-xs-9">
                                          <?php echo $form->checkbox($model,'newsletter'); ?>
 				    </div>
                                     <div class="col-xs-9">
-                                        <p>Please tick here to join the GigaDB mailing list to receive news, updates and quarterly newsletters about GigaDB</p>   
+                                        <p>Please tick here to join the GigaDB mailing list to receive news, updates and quarterly newsletters about GigaDB</p>
                                     </div>
                                  </div>
                                 <div class="form-group">
-                                    <?= $form->labelEx($model,'terms', array('class'=>'col-xs-3 control-label')) ?>              
-				    <div class="col-xs-9">				    	
+                                    <?= $form->labelEx($model,'terms', array('class'=>'col-xs-3 control-label')) ?>
+				    <div class="col-xs-9">
                                          <?php echo $form->checkbox($model,'terms'); ?>
                                          <font color="red"><?= $form->error($model,'terms') ?></font>
 				    </div>
@@ -164,23 +166,23 @@
                                      <p>Please tick here to confirm you have read and understood our <a href="/site/term#policies">Terms of use</a> and <a href="/site/term#privacy">Privacy Policy</a></p>
                                     </div>
                                  </div>
-                                
+
 
 
 			<? if ($model->isNewRecord) { ?>
-			<div class="form-group">		
-					<?php echo $form->labelEx($model,'verifyCode', array('class'=>'col-xs-3 control-label')); ?>		
-			        <div class="col-xs-9">				
-						<div style="width:100%">	
+			<div class="form-group">
+					<?php echo $form->labelEx($model,'verifyCode', array('class'=>'col-xs-3 control-label')); ?>
+			        <div class="col-xs-9">
+						<div style="width:100%">
 							<img style="width:200px;" src="<?php echo Yii::app()->captcha->output(); ?>">
 						</div>
                                     <br>
                                     <br>
-						<?php echo $form->textField($model,'verifyCode',array('class'=>'form-control')); ?>	
+						<?php echo $form->textField($model,'verifyCode',array('class'=>'form-control')); ?>
 						<div class="hint">Please enter the letters as they are shown in the image above.
 						<br/>Letters are case-sensitive.</div>
-						<?php echo $form->error($model, 'verifyCode'); ?>					
-						</div>		
+						<?php echo $form->error($model, 'verifyCode'); ?>
+						</div>
 			    </div>
 			<? } ?>
                         <hr>
@@ -189,18 +191,18 @@
                             </div>
                         <? $this->endWidget() ?>
 		</div><!--well-->
-		
 
 
-	<?php 
+
+	<?php
 		$path = "images/tempcaptcha/".$text.".png";
 		$files = glob('images/tempcaptcha/*');
-		foreach($files as $file){ 
+		foreach($files as $file){
 		  if (is_file($file))
 		  	if ($file != $path)
-		  		 unlink($file); 
+		  		 unlink($file);
 		}
-	?>	
+	?>
 	</div><!--span8-->
     </div><!-- user-form -->
 </div>

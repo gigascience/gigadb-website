@@ -25,15 +25,17 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
         <? } ?>
                     <div class="content">
                         <div class="container">
-                            <section class="page-title-section">
+                            <div class="section page-title-section">
                                 <div class="page-title">
-                                    <ol class="breadcrumb pull-right">
-                                        <li><a href="/">Home</a></li>
-                                        <li class="active">Your profile</li>
-                                    </ol>
+                                    <nav aria-label="breadcrumbs">
+                                        <ol class="breadcrumb pull-right">
+                                            <li><a href="/">Home</a></li>
+                                            <li class="active">Your profile</li>
+                                        </ol>
+                                    </nav>
                                     <h4>Your profile page</h4>
                                 </div>
-                            </section>
+                            </div>
                             <section>
                                 <div style="padding-top: 1px;">
                                     <ul class="nav nav-tabs nav-border-tabs" role="tablist">
@@ -206,7 +208,7 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
 var url = document.location.toString();
 if (url.match('#')) {
     $('.nav-tabs a[href="#' + url.split('#')[1] + '"]').tab('show');
-} 
+}
 
 // Change hash for page-reload
 $('.nav-tabs a').on('shown.bs.tab', function (e) {

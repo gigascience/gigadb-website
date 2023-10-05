@@ -7,12 +7,14 @@ $this->pageTitle = 'GigaDB - About';
 <div class="clear"></div>
 <div class="content">
     <div class="container">
-        <div class="page-title-container">
+        <div class="section page-title-section">
             <div class="page-title">
-                <ol class="breadcrumb pull-right">
-                    <li><a href="/">Home</a></li>
-                    <li class="active">General information</li>
-                </ol>
+                <nav aria-label="breadcrumbs">
+                    <ol class="breadcrumb pull-right">
+                        <li><a href="/">Home</a></li>
+                        <li class="active">General information</li>
+                    </ol>
+                </nav>
                 <h1 class="page-heading" id="aboutSectionTitle">General information</h1>
             </div>
         </div>
@@ -22,32 +24,23 @@ $this->pageTitle = 'GigaDB - About';
         <section aria-labelledby="aboutSectionTitle">
             <h2 class="page-subtitle">Database: <em>GigaDB</em></h2>
             <p><a href="/site/index" target="_blank"><em>GigaDB</em></a> is a data repository supporting scientific
-                publications in the Life/Biomedical Sciences domain. <a href="/site/index"
-                                                                        target="_blank"><em>GigaDB</em></a> organises
+                publications in the Life/Biomedical Sciences domain. <a href="/site/index" target="_blank"><em>GigaDB</em></a> organises
                 and curates data from individually publishable units into datasets, which are provided openly and in as
-                FAIR manner as possible for the global research community. Originally <a href="/site/index"
-                                                                                         target="_blank"><em>GigaDB</em></a>
-                primarily served as a repository to host data and tools associated with articles in <a
-                        href="http://www.gigasciencejournal.com/" target="_blank"><em>GigaScience</em></a>; however, it
-                is now accepting datasets that are not associated with <a href="http://www.gigasciencejournal.com/"
-                                                                          target="_blank"><em>GigaScience</em></a>
-                articles (see <a href="/site/index" target="_blank"><em>GigaDB</em></a> Submission Criteria below). <a
-                        href="/site/index" target="_blank"><em>GigaDB</em></a> defines a dataset as a group of files
+                FAIR manner as possible for the global research community. Originally <a href="/site/index" target="_blank"><em>GigaDB</em></a>
+                primarily served as a repository to host data and tools associated with articles in <a href="http://www.gigasciencejournal.com/" target="_blank"><em>GigaScience</em></a>; however, it
+                is now accepting datasets that are not associated with <a href="http://www.gigasciencejournal.com/" target="_blank"><em>GigaScience</em></a>
+                articles (see <a href="/site/index" target="_blank"><em>GigaDB</em></a> Submission Criteria below). <a href="/site/index" target="_blank"><em>GigaDB</em></a> defines a dataset as a group of files
                 (e.g., sequencing data, analyses, imaging files, software programs) that are related to and support an
                 article or study. Through our association with <a href="http://www.datacite.org/">DataCite</a>, each
-                dataset in <a href="/site/index" target="_blank"><em>GigaDB</em></a> will be assigned a <a
-                        href="http://www.doi.org/">DOI</a> that can be used as a standard citation for future use of
-                these data in other articles by the authors and other researchers. Datasets in <a href="/site/index"
-                                                                                                  target="_blank"><em>GigaDB</em></a>
+                dataset in <a href="/site/index" target="_blank"><em>GigaDB</em></a> will be assigned a <a href="http://www.doi.org/">DOI</a> that can be used as a standard citation for future use of
+                these data in other articles by the authors and other researchers. Datasets in <a href="/site/index" target="_blank"><em>GigaDB</em></a>
                 all require a title that is specific to the dataset, an author list, and an abstract that provides
                 information specific to the data included within the set. We encourage detailed information about the
                 data we host to be submitted by their creators in ISA-Tab, a format used by the BioSharing and ISA
                 Commons communities that we work with to maintain the highest data and metadata standards in our
-                journal. To maximize its utility to the research community, all datasets in <a href="/site/index"
-                                                                                               target="_blank"><em>GigaDB</em></a>
+                journal. To maximize its utility to the research community, all datasets in <a href="/site/index" target="_blank"><em>GigaDB</em></a>
                 are placed under a <a href="http://creativecommons.org/publicdomain/zero/1.0/">CC0 waiver</a> (for more
-                information on the issues surrounding CC0 and data see <a
-                        href="http://dx.doi.org/10.1186/1756-0500-5-494">Hrynaszkiewicz and Cockerill, 2012</a>).</p>
+                information on the issues surrounding CC0 and data see <a href="http://dx.doi.org/10.1186/1756-0500-5-494">Hrynaszkiewicz and Cockerill, 2012</a>).</p>
             <hr>
             <h2 class="page-subtitle"><em>GigaDB</em> Submission Criteria</h2>
             <p><a href="/site/index" target="_blank"><em>GigaDB</em></a> has also been accepting submission of datasets
@@ -56,20 +49,15 @@ $this->pageTitle = 'GigaDB - About';
                 the authors will be required to make the data available under a CC0 license (except where ethically
                 inappropriate, e.g. personal data). In order to complete the dataset review and curation process <em>GigaDB</em>
                 staff will require full access to the pre-publication manuscript. Authors and other journals interested
-                in this option should contact the <em>GigaScience</em> team via <a
-                        href="mailto:database@gigasciencejournal.com">database@gigasciencejournal.com</a>.</p>
+                in this option should contact the <em>GigaScience</em> team via <a href="mailto:database@gigasciencejournal.com">database@gigasciencejournal.com</a>.</p>
             <hr>
             <h2 class="page-subtitle">Journal: <em>GigaScience</em></h2>
             <p><a href="http://www.gigasciencejournal.com/" target="_blank"><em>GigaScience</em></a> is an online,
-                open-access journal that includes, as part of its publishing activities, the database <a
-                        href="/site/index" target="_blank"><em>GigaDB</em></a>. <a
-                        href="http://www.gigasciencejournal.com/" target="_blank"><em>GigaScience</em></a> is
-                co-published in collaboration between <a href="http://www.genomics.cn/">BGI</a> and <a
-                        href="https://academic.oup.com/gigascience">Oxford University Press</a>, to meet the needs of a
+                open-access journal that includes, as part of its publishing activities, the database <a href="/site/index" target="_blank"><em>GigaDB</em></a>. <a href="http://www.gigasciencejournal.com/" target="_blank"><em>GigaScience</em></a> is
+                co-published in collaboration between <a href="http://www.genomics.cn/">BGI</a> and <a href="https://academic.oup.com/gigascience">Oxford University Press</a>, to meet the needs of a
                 new generation of biological and biomedical research as it enters the era of “big-data.” The journal’s
                 scope covers studies from the entire spectrum of the life sciences that produce and use large-scale data
-                as the center of their work. Data from these articles are hosted in <a href="/site/index"
-                                                                                       target="_blank"><em>GigaDB</em></a>,
+                as the center of their work. Data from these articles are hosted in <a href="/site/index" target="_blank"><em>GigaDB</em></a>,
                 from where they can be cited to provide a direct link between the study and the data supporting it, as
                 well as access to relevant tools for reproducing or reusing these data. The journal also publishes
                 commentaries and reviews to provide a forum for discussions surrounding best practices and issues in
@@ -79,16 +67,13 @@ $this->pageTitle = 'GigaDB - About';
             <h2 class="page-subtitle">Indexing</h2>
             <p><a href="/site/index" target="_blank"><em>GigaDB</em></a> has been included in several external indexing
                 systems including <a href="https://toolbox.google.com/datasetsearch">Google Dataset Search</a> (via
-                schema.org markup), the <a href="http://search.datacite.org/ui/">DataCite search engine</a>, NCBI <a
-                        href="https://datamed.org/">DataMed</a>, the <a
-                        href="http://wokinfo.com/products_tools/multidisciplinary/dci/">Data Citation Index (DCI)</a>,
+                schema.org markup), the <a href="http://search.datacite.org/ui/">DataCite search engine</a>, NCBI <a href="https://datamed.org/">DataMed</a>, the <a href="http://wokinfo.com/products_tools/multidisciplinary/dci/">Data Citation Index (DCI)</a>,
                 and Repositive to aid data discovery. <em>GigaDB</em> pushes dataset metadata to DataCite every time a
                 DOI is minted, this is exposed and accessible via their <a href="http://oai.datacite.org/">metadata
                     store</a> through the Open Archives Initiative Protocol for Metadata Harvesting (OAI-PMH). The
                 records for the datasets, which include authors, institutions, keywords, citations and other metadata,
                 are connected to related peer-reviewed literature indexed in their Web of Knowledge database. In
-                addition, <em>GigaDB</em> is listed in <a href="https://fairsharing.org/">FAIRsharing</a>, <a
-                        href="http://re3data.org/">Re3Data.org</a> and other database catalogues to ensure we reach as
+                addition, <em>GigaDB</em> is listed in <a href="https://fairsharing.org/">FAIRsharing</a>, <a href="http://re3data.org/">Re3Data.org</a> and other database catalogues to ensure we reach as
                 wide an audience as possible.</p>
             <div>
                 <h3 class="sr-only">External Indexing Systems</h3>
@@ -134,4 +119,3 @@ $this->pageTitle = 'GigaDB - About';
         </section>
     </div>
 </div>
-

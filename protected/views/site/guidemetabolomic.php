@@ -5,15 +5,17 @@ $this->pageTitle = 'GigaDB - Metabolomic Dataset checklists';
 ?>
 <div class="content">
     <div class="container">
-        <section class="page-title-section" style="margin-bottom: 10px">
+        <div class="section page-title-section guides-title-section">
             <div class="page-title">
-                <ol class="breadcrumb pull-right">
-                    <li><a href="/">Home</a></li>
-                    <li class="active">Guidelines</li>
-                </ol>
+                <nav aria-label="breadcrumbs">
+                    <ol class="breadcrumb pull-right">
+                        <li><a href="/">Home</a></li>
+                        <li class="active">Guidelines</li>
+                    </ol>
+                </nav>
                 <h1 class="h4">Metabolomic and Lipidomic Dataset checklists</h1>
             </div>
-        </section>
+        </div>
         <?php
         $this->widget('application.components.GuideNavigation');
         ?>

@@ -1,10 +1,14 @@
 <div class="content">
     <div class="container">
-        <section>
-            <div class="page-title">
-                <h4>Our team</h4>
-            </div>
-        </section>
+        <div class="page-title">
+            <nav aria-label="breadcrumbs">
+                <ol class="breadcrumb pull-right">
+                    <li><a href="/">Home</a></li>
+                    <li class="active">Team</li>
+                </ol>
+            </nav>
+            <h4>Our team</h4>
+        </div>
         <section>
             <div class="row" style="margin: 0px -8px;">
                 <table class="table member-table">
