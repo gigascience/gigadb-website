@@ -1,4 +1,4 @@
-<div class="filter-your-result">Filter your result</div>
+<h2 class="filter-your-result">Filter your result</h2>
 
 <form id="filter_form" method="GET">
 <input type="hidden" name="keyword" value="<?= $model->keyword ?>"/>
@@ -6,7 +6,7 @@
 <!-- FILTERS FOR DATASETS -->
     <div id="dataset_filter">
         <div class="filter">
-            <h4 class='heading'><?=Yii::t('app' , 'Type')?></h4>
+            <div class='h4 heading'><?=Yii::t('app' , 'Type')?></div>
             <div id="result_type" class='filter-content' style="<?= $model->type ? 'display:block;': 'display:none;'?>">
                 <button class="btn btn_filter" id="btn_type"><? if(empty($model->type)) echo Yii::t('app' , 'Enable All'); else echo Yii::t('app' , 'Disable'); ?></button>
                 <div class="options <? if(empty($model->type)) echo 'disabled'; ?> ">
