@@ -62,7 +62,11 @@ input[type="checkbox"] {
 
 .form-control:focus {
   border-color: @color-gigadb-green-600;
-  box-shadow: inset 0 1px 1px fade(@color-gigadb-green, 7.5%), 0 0 6px fade(@color-gigadb-green-600, 50%);
+  box-shadow: inset 0 1px 1px fade(@color-gigadb-green, 7.5%),
+    0 0 6px fade(@color-gigadb-green-600, 50%);
+  // Alt focus style
+  // outline: 2px solid @color-gigadb-green;
+  // outline-offset: 1px;
 }
 
 .carousel-doi {
@@ -85,13 +89,19 @@ input[type="checkbox"] {
   opacity: 1;
   text-decoration: none;
   background: #a5cc7e;
-  background: -webkit-gradient(linear,0 0,0 bottom,from(#a5cc7e),to(#6ea23a));
-  background: -webkit-linear-gradient(#a5cc7e,#6ea23a);
-  background: -moz-linear-gradient(#a5cc7e,#6ea23a);
-  background: -ms-linear-gradient(#a5cc7e,#6ea23a);
-  background: -o-linear-gradient(#a5cc7e,#6ea23a);
-  background: linear-gradient(#a5cc7e,#6ea23a);
-  -pie-background: linear-gradient(#a5cc7e,#6ea23a);
+  background: -webkit-gradient(
+    linear,
+    0 0,
+    0 bottom,
+    from(#a5cc7e),
+    to(#6ea23a)
+  );
+  background: -webkit-linear-gradient(#a5cc7e, #6ea23a);
+  background: -moz-linear-gradient(#a5cc7e, #6ea23a);
+  background: -ms-linear-gradient(#a5cc7e, #6ea23a);
+  background: -o-linear-gradient(#a5cc7e, #6ea23a);
+  background: linear-gradient(#a5cc7e, #6ea23a);
+  -pie-background: linear-gradient(#a5cc7e, #6ea23a);
   behavior: url(/css/PIE.htc);
 }
 .form-search {
@@ -100,13 +110,19 @@ input[type="checkbox"] {
 .form-search.well {
   text-align: center;
   background: @color-patina-green;
-  background: -webkit-gradient(linear,0 0,0 bottom,from(@color-patina-green),to(@color-dark-green));
-  background: -webkit-linear-gradient(@color-patina-green,@color-dark-green);
-  background: -moz-linear-gradient(@color-patina-green,@color-dark-green);
-  background: -ms-linear-gradient(@color-patina-green,@color-dark-green);
-  background: -o-linear-gradient(@color-patina-green,@color-dark-green);
-  background: linear-gradient(@color-patina-green,@color-dark-green);
-  -pie-background: linear-gradient(@color-patina-green,@color-dark-green);
+  background: -webkit-gradient(
+    linear,
+    0 0,
+    0 bottom,
+    from(@color-patina-green),
+    to(@color-dark-green)
+  );
+  background: -webkit-linear-gradient(@color-patina-green, @color-dark-green);
+  background: -moz-linear-gradient(@color-patina-green, @color-dark-green);
+  background: -ms-linear-gradient(@color-patina-green, @color-dark-green);
+  background: -o-linear-gradient(@color-patina-green, @color-dark-green);
+  background: linear-gradient(@color-patina-green, @color-dark-green);
+  -pie-background: linear-gradient(@color-patina-green, @color-dark-green);
   behavior: url(/css/PIE.htc);
 }
 .form-search.well .btn-green {
