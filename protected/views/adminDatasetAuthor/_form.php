@@ -1,6 +1,6 @@
 <div class="section form row">
 
-	<div class="col-xs-offset-3 col-xs-6">
+	<div class="col-md-offset-3 col-md-6">
 		<?php $form = $this->beginWidget('CActiveForm', array(
 			'id' => 'dataset-author-form',
 			'enableAjaxValidation' => false,
@@ -8,7 +8,7 @@
 
 		<p class="note">Fields with <span class="required">*</span> are required.</p>
 
-		<?php if ($model->hasErrors()): ?>
+		<?php if ($model->hasErrors()) : ?>
 			<div class="alert alert-danger">
 				<?php echo $form->errorSummary($model); ?>
 			</div>
