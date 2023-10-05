@@ -70,7 +70,27 @@
                                             <? } ?>
                         </ul>
                     </nav>
-                    <div class="col-xs-7 clearfix">
+                    <div class="col-xs-7 clearfix top-bar-left">
+                        <div class="search-bar clearfix">
+                            <form action="/search/new" method="GET" role="search" class="search-form" aria-label="Datasets">
+                                <?php
+                                    $this->widget('application.components.DeferrableCJuiAutoComplete', array(
+                                        'name' => 'keyword',
+                                        'source' => array_values(array()),
+                                        'options' => array(
+                                            'minLength' => '2',
+                                        ),
+                                        'htmlOptions' => array(
+                                            'aria-label'=>'Search GigaDB',
+                                            'class' => 'search-input',
+                                            'placeholder'=>'e.g. Chicken, brain, etc...',
+                                        ),
+                                    ));
+                                    ?>
+                                    <button class="btn-search" type="submit"><span class="fa fa-search"><span class="visually-hidden">Search</span></span>
+                                    </button>
+                            </form>
+                        </div>
                         <ul class="share-zone clearfix">
                             <li>
                                 <a class="fa fa-facebook" style="text-decoration: none;" href="http://facebook.com/GigaScience" title="GigaScience on Facebook" aria-label="GigaScience on Facebook"></a>
@@ -88,26 +108,6 @@
                                 <a class="fa fa-rss" style="text-decoration: none;" href="http://gigasciencejournal.com/blog/" title="Gigascience Blog" aria-label="GigaScience Blog"></a>
                             </li>
                         </ul>
-                        <div class="search-bar clearfix">
-                            <form action="/search/new" method="GET" role="search">
-                                <?php
-                                    $this->widget('application.components.DeferrableCJuiAutoComplete', array(
-                                        'name' => 'keyword',
-                                        'source' => array_values(array()),
-                                        'options' => array(
-                                            'minLength' => '2',
-                                        ),
-                                        'htmlOptions' => array(
-                                            'title'=>'Search GigaDB',
-                                            'class' => 'search-input',
-                                            'placeholder'=>'e.g. Chicken, brain etc...',
-                                        ),
-                                    ));
-                                    ?>
-                                    <button class="btn-search" type="submit"><span class="fa fa-search"><span class="visually-hidden">Search</span></span>
-                                    </button>
-                            </form>
-                        </div>
                     </div>
                 </div>
             </div>

@@ -15,6 +15,16 @@
 .base-top-bar .list-inline li {
   padding: 10px 20px 10px 0px;
 }
+.base-top-bar .top-bar-left {
+  display: flex;
+  justify-content: flex-end;
+}
+@media (max-width: 992px) {
+  .base-top-bar .top-bar-left .search-bar {
+    position: absolute;
+    top: 38px;
+  }
+}
 .list-inline.base-top-social-bar > li > a {
   line-height: 20px;
   text-decoration: none;
