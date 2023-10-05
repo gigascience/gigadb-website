@@ -12,14 +12,7 @@ will be locked, this help to make sure that each developer only works on the mos
 ## Prerequisites
 
 ### AWS IAM policies
-
-The `Gigadb` user needs the same AWS IAM policy permissions for accessing EC2, 
-RDS and S3 services as the developers. This can be checked by viewing the AWS 
-[IAM dashboard](https://us-east-1.console.aws.amazon.com/iamv2/home?region=us-east-1#/home).
-The `Gigadb` user has been added to the `Applications` IAM group. This group
-has the same permissions as those used by the developers.
-
-> :warning: **You'll need your AWS admin user account to access the IAM console**
+[Click to see how to check IAM policies](AWS_SETUP.md#verify-aws-iam-policies)
 
 ### Elastic IP addresses for staging and live environments
 
@@ -53,72 +46,7 @@ for the `beta` Host with a value equal to the `eip-gigadb-live-gigadb` elastic
 IP address. There will also be an entry for the `staging` Host too.
 
 ### Set up credentials for accessing AWS resources
-
-> :warning: **Mistakes can happen with interchanging between AWS configurations below**
-
-1. Save `id-rsa-aws-hk-gigadb.pem` available from [cnhk-infra CI/CD variables page](https://gitlab.com/gigascience/cnhk-infra/-/settings/ci_cd) into your `~/.ssh` directory.
-2. Create a `known_hosts` file in `~/.ssh` if it does not already exist
-```
-$ touch ~/.ssh/known_hosts
-```
-3. Copy your `~/.aws/config` file into a new file:
-```
-$ cd ~/.aws
-$ cp config config.ap-northeast-1
-# Use this if you are based in France
-$ cp config config.eu-west-3
-```
-3. Create an AWS config file to use for deploying to staging or 
-beta.gigadb.org:
-```
-$ vi config.upstream
-# The contents of config.upstream:
-[default]
-region=ap-east-1
-output=json
-
-[profile Gigadb]
-region=ap-east-1
-output=json
-```
-4. The staging and beta.gigadb.org websites are deployed in the ap-east-1 Hong
-Kong regions. You will need to copy `config.upstream` to a new `config` file to
-do this:
-```
-$ cp config.upstream config
-```
-> :warning: **You will need to overwrite the upstream `config` file with `config.ap-northeast-1` when returning to your development work**
-
-5. Copy your `~/.aws/credentials` file into a new file:
-```
-$ cp credentials credentials.ap-northeast-1
-# Use this if you are based in France
-$ cp credentials credentials.eu-west-3
-```
-
-6. Create an AWS credentials file for deploying to staging or beta.gigadb.org:
-```
-$ vi credentials.upstream
-# The contents of credentials.upstream:
-[default]
-aws_access_key_id=<aws_access_key_id for Gigadb user>
-aws_secret_access_key=<aws_secret_access_key for Gigadb user>
-
-[Gigadb]
-aws_access_key_id=<aws_access_key_id for Gigadb user>
-aws_secret_access_key=<aws_secret_access_key for Gigadb user>
-```
-7. Overwrite your current credentials file with the contents of 
-`credentials.upstream`:
-```
-$ cp credentials.upstream credentials
-```
-> :warning: **You will need to overwrite the upstream `credentials` file with `credentials.ap-northeast-1` when returning to your development work**
-
-Another option is to create a new `Gigadb` user account in your operating system
-and only setting up the `Gigadb` AWS user configuration in it. This means you
-will use this `Gigadb` operating system user for managing deployments to 
-staging and beta.gigadb.org.
+[Click to see how to setup credentials](AWS_SETUP.md#set-up-credentials-for-accessing-aws-resources)
 
 ### Tools
 
@@ -208,79 +136,8 @@ Before you are able to create a `live` deployment, you must first deploy a
 `staging` environment.
 
 And you have to make sure that terraform state files exist in [gitlab terraform page](https://gitlab.com/gigascience/upstream/gigadb-website/-/terraform).
-You can even download the terraform state file to confirm the existing infrastructure, take a look at the following truncated staging terraform state file, which can be download at [here](https://gitlab.com/api/v4/projects/11385199/terraform/state/staging_infra/versions/144), as an example:
-```json
-{
-  "version": 4,
-  "terraform_version": "1.5.7",
-  "serial": 144,
-  "lineage": "ecb0abe7-59f5-e248-0ba2-e1974a61d4e7",
-  "outputs": {
-    "ec2_bastion_private_ip": {
-      "value": "10.99.0.82",
-      "type": "string"
-    },
-    "ec2_bastion_public_ip": {
-      "value": "18.166.89.134",
-      "type": "string"
-    },
-    "ec2_private_ip": {
-      "value": "10.99.0.108",
-      "type": "string"
-    },
-    "ec2_public_ip": {
-      "value": "16.162.16.165",
-      "type": "string"
-    },
-    "rds_instance_address": {
-      "value": "rds-server-staging-gigadb.cfkc0cbc20ii.ap-east-1.rds.amazonaws.com",
-      "type": "string"
-    },
-    "vpc_database_subnet_group": {
-      "value": "vpc-ap-east-1-staging-gigadb-gigadb",
-      "type": "string"
-    },
-    "vpc_id": {
-      "value": "vpc-053b1a524f5b825ab",
-      "type": "string"
-    }
-  },
-  "resources": [
-    {
-      "mode": "data",
-      "type": "aws_availability_zones",
-      "name": "available",
-      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
-      "instances": [
-        {
-          "schema_version": 0,
-          "attributes": {
-            "all_availability_zones": null,
-            "exclude_names": null,
-            "exclude_zone_ids": null,
-            "filter": null,
-            "group_names": [
-              "ap-east-1"
-            ],
-            "id": "ap-east-1",
-            "names": [
-              "ap-east-1a",
-              "ap-east-1b",
-              "ap-east-1c"
-            ],
-            "state": "available",
-            "timeouts": null,
-            "zone_ids": [
-              "ape1-az1",
-              "ape1-az2",
-              "ape1-az3"
-            ]
-          },
-          "sensitive_attributes": []
-        }
-      ]
-    },
-```
+You can click to download the [shared Terraform state for Upstream's staging environment](https://gitlab.com/api/v4/projects/11385199/terraform/state/staging_infra/versions/144)
+for checking in the latter staging deployment steps
 
 Change directory to the `envs` folder:
 ```
@@ -313,7 +170,7 @@ ap-east-1
 And you should use Gigadb AWS IAM user account to provision production staging server:
 ```
 $ terraform show # will show all the existing resources, which should be the same as the terraform state file `staging_infra` from gitlab.
-$ terraform plan # terraform is idempotent and should not try to create new instances for already existing upstream staging, unless the new instance is expected to created.
+$ terraform plan # terraform is idempotent and should not try to create new instances for already existing upstream staging, unless the new instance is expected to create.
 $ terraform apply # will make changes to the existing infrastructure and update the terraform state file, input `yest` if the changes are expected to make.
 $ terraform refresh
 ```
@@ -361,7 +218,7 @@ You have to make sure there is no error when deploying `staging` environment.
 Then, you need to follow the exact steps in the staging provision section and look into the details of
 `terrafor show` and `terraform plan` commands.
 
-And also, you can download the live terraform state file at [here](https://gitlab.com/api/v4/projects/11385199/terraform/state/live_infra/versions/76)
+And also, you can click to download the [shared Terraform state for Upstream's live environment](https://gitlab.com/api/v4/projects/11385199/terraform/state/live_infra/versions/76)
 for checking in the latter live deployment steps.
 
 Change directory to the `envs` folder:
@@ -394,7 +251,7 @@ You need to specify a backup file created by the files-url-updater tool:
 Use Gigadb AWS IAM user account to provision production staging server:
 ```
 $ terraform show # will show all the existing resources, which should be the same as the terraform state file `live_infra` from gitlab.
-$ terraform plan # terraform is idempotent and should not try to create new instances for already existing upstream staging, unless the new instance is expected to created.
+$ terraform plan # terraform is idempotent and should not try to create new instances for already existing upstream staging, unless the new instance is expected to create.
 $ terraform apply # will make changes to the existing infrastructure and update the terraform state file, input `yest` if the changes are expected to make.
 $ terraform refresh
 ```
