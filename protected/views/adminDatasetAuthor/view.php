@@ -31,6 +31,9 @@
 				'dataset_id',
 				'author_id',
 			),
+			'htmlOptions' => array('class' => 'table table-striped table-bordered dataset-view-table'),
+			'itemCssClass' => array('odd', 'even'),
+			'itemTemplate' => '<tr class="{class}"><th scope="row">{label}</th><td>{value}</td></tr>',
 		)); ?>
 	</section>
 
