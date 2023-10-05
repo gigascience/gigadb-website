@@ -1,0 +1,32 @@
+.tabs[role="tablist"] {
+  border-bottom: 1px solid @color-light-gray;
+  button[role="tab"] {
+    margin-bottom: -1px;
+    padding: 8px 12px;
+    margin-right: 2px;
+    line-height: 18px;
+    font-size: 13px;
+    border: 1px solid transparent;
+    border-top-width: 2px;
+    border-radius: 0;
+    text-decoration: none;
+    color: @color-darker-gray;
+    background-color: @color-true-white;
+    border-bottom-color: @color-light-gray;
+    &[aria-selected="true"] {
+      border: 1px solid @color-light-gray;
+      border-top: 2px solid @color-gigadb-green;
+      border-bottom-color: @color-true-white;
+      border-bottom-width: 2px;
+      color: @color-warm-black;
+      text-decoration: none;
+      background-color: transparent;
+    }
+  }
+}
+.tab-content [role="tabpanel"] {
+  display: none;
+  &.active {
+    display: block;
+  }
+}
