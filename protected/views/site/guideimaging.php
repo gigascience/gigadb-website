@@ -27,7 +27,7 @@ th, td {
             </div>
         </section>
         <section style="margin-bottom: 5px;">
-                <div style="display:inline-block;">
+                <div class="inline-block">
                      <ul class="nav nav-tabs nav-border-tabs" role="tablist" style="margin-top: 1px; margin-bottom: 1px">
                             <li><a href="/site/guide" style="padding-left: 0px">General Submission Guidelines</a></li>
                             <li class="dropdown active">

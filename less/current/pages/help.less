@@ -1,3 +1,58 @@
+.tabpanel-subtitle {
+  color: @dark-gray-on-white;
+  line-height: 22px;
+  margin: 0;
+  font-size: @font-size-base;
+}
+
+.help-search-result {
+  margin-bottom: 20px;
+  .help-search-result-item {
+    border-top: 1px solid @color-light-gray;
+    display: flex;
+    :is(dt,dd) {
+      padding: 8px;
+      color: @dark-gray-on-white;
+      line-height: 22px;
+      margin-bottom: 5px
+    }
+    dt {
+      font-weight: 500;
+      flex: 0 0 50px;
+    }
+  }
+}
+
+.help-description-list {
+  .help-definition-container {
+    color: @color-warm-black;
+    line-height: 22px;
+    margin-bottom: 5px;
+    dt, dd {
+      display: inline;
+    }
+    dt .dt-sidenote {
+      color: @dark-gray-on-white;
+      font-weight: 500;
+    }
+    dt::after {
+      font-weight: 500;
+      content: " - ";
+    }
+    dd pre {
+      margin-top: 5px;
+    }
+  }
+}
+
+.help-ol {
+  padding-left: 22px;
+}
+
+.help-examples-list {
+  padding-left: 22px;
+}
+
 .help .media-object {
   width: auto;
 }

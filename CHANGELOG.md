@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1378: Improve accessibility of help page
 - Feat #1372: Fix accessibility issues related to search page headings and hero layout
 - Feat #1371: Essential accessibility fixes on dataset page
 - Feat #1367: Improve accessibility of dataset type and metric sections in homepage
