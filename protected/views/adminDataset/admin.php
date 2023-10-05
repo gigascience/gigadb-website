@@ -53,71 +53,81 @@ $('.search-form form').submit(function(){
 	</div>
 <?php } ?>
 
-<h1>Manage Datasets</h1>
+<div class="container">
+	<?php
+    $this->widget('application.components.TitleBreadcrumb', [
+        'pageTitle' => 'Manage Datasets',
+        'breadcrumbItems' => [
+						['label' => 'Datasets', 'href' => '/site/admin'],
+            ['isActive' => true, 'label' => 'Manage'],
+        ]
+    ]);
+    ?>
+	<p>
+	You may optionally enter a comparison operator (<b>&lt;</b>, <b>&lt;=</b>, <b>&gt;</b>, <b>&gt;=</b>, <b>&lt;&gt;</b>
+	or <b>=</b>) at the beginning of each of your search values to specify how the comparison should be done. Date should be exactly in this format: <b>yyyy-mm-dd</b>
+	</p>
 
-<p>
-You may optionally enter a comparison operator (<b>&lt;</b>, <b>&lt;=</b>, <b>&gt;</b>, <b>&gt;=</b>, <b>&lt;&gt;</b>
-or <b>=</b>) at the beginning of each of your search values to specify how the comparison should be done. Date should be exactly in this format: <b>yyyy-mm-dd</b>
-</p>
+	<a href="/adminDataset/create" class="btn background-btn">Create Dataset</a>
 
-<a href="/adminDataset/create" class="btn">Create Dataset</a>
-
-<?php $this->widget('zii.widgets.grid.CGridView', array(
-	'id'=>'dataset-grid',
-	'dataProvider'=>$dataProvider,
-	'itemsCssClass'=>"table table-bordered table-fixed",
-	'rowCssClassExpression' => '"dataset-".$data["identifier"]',
-	'filter'=>$model,
-	'columns'=>array(
-		'id',
-		'identifier',
-		'manuscript_id',
-                'title',
-		// 'publisher',
-		// 'dataset_size',
-		// 'ftp_site',
-		// 'upload_status',
-		// 'excelfile',
-		// 'excelfile_md5',
-		'publication_date',
-		// array('name'=> 'curator_id', 'value'=>'$data->getCuratorName()'),
-                'modification_date',
-        array(
-            'class'=>'CDataColumn',
-            'header' => "Upload Status",
-            'headerHtmlOptions'=>array('style'=>'width: 150px'),
-            'value'  => '$data->upload_status'
-        ),
-		array(
-			'class'=>'CButtonColumn',
-			'header' => "Actions",
-			'headerHtmlOptions'=>array('style'=>'width: 100px'),
-			'template' => '{view}{update}{dropbox}{delete}',
-            'buttons'=>array(
-                'view' => array(
-	                	'imageUrl'=>Yii::app()->request->baseUrl.'/images/view_new.png',
-                        'url' => 'Yii::app()->createUrl("dataset/view" , array("id" => $data->identifier))',
-	                	'options'=>array("title"=>"View Dataset", "style" => "margin:2px;"),
-                        ),
-                'update' => array(
-	                	'imageUrl'=>Yii::app()->request->baseUrl.'/images/update_new.png',
-	                	'options'=>array("title"=>"Update Dataset", "style" => "margin:2px;"),
-                        ),
-                'delete' => array(
-	                	'imageUrl'=>Yii::app()->request->baseUrl.'/images/delete_new.png',
-	                	'options'=>array("title"=>"Delete Dataset", "style" => "margin:2px;"),	                	
-                        ),
-                'dropbox' => array(
-	                	'imageUrl'=>Yii::app()->request->baseUrl.'/images/dropbox.png',
-                		'url' => 'Yii::app()->createUrl("adminDataset/assignFTPBox" , array("id" => $data->identifier))',
-                		'options'=>array('title'=>'New Dropbox for this dataset',"style" => "margin:2px;"),
-                		'label' => 'New Dropbox for this dataset',
-                		'visible' => '"AssigningFTPbox" === $data->upload_status'
-                	)
-                ),
+	<?php $this->widget('zii.widgets.grid.CGridView', array(
+		'id'=>'dataset-grid',
+		'dataProvider'=>$dataProvider,
+		'itemsCssClass'=>"table table-bordered table-fixed",
+		'rowCssClassExpression' => '"dataset-".$data["identifier"]',
+		'filter'=>$model,
+		'columns'=>array(
+			'id',
+			'identifier',
+			'manuscript_id',
+			'title',
+			// 'publisher',
+			// 'dataset_size',
+			// 'ftp_site',
+			// 'upload_status',
+			// 'excelfile',
+			// 'excelfile_md5',
+			'publication_date',
+			// array('name'=> 'curator_id', 'value'=>'$data->getCuratorName()'),
+			'modification_date',
+			array(
+				'class'=>'CDataColumn',
+				'header' => "Upload Status",
+				'headerHtmlOptions'=>array('style'=>'width: 150px'),
+				'value'  => '$data->upload_status'
+			),
+			array(
+				'class'=>'CButtonColumn',
+				'header' => "Actions",
+				'headerHtmlOptions'=>array('style'=>'width: 100px'),
+				'template' => '{view}{update}{dropbox}{delete}',
+							'buttons'=>array(
+									'view' => array(
+											'imageUrl'=>Yii::app()->request->baseUrl.'/images/view_new.png',
+													'url' => 'Yii::app()->createUrl("dataset/view" , array("id" => $data->identifier))',
+											'options'=>array("title"=>"View Dataset", "style" => "margin:2px;"),
+													),
+									'update' => array(
+											'imageUrl'=>Yii::app()->request->baseUrl.'/images/update_new.png',
+											'options'=>array("title"=>"Update Dataset", "style" => "margin:2px;"),
+													),
+									'delete' => array(
+											'imageUrl'=>Yii::app()->request->baseUrl.'/images/delete_new.png',
+											'options'=>array("title"=>"Delete Dataset", "style" => "margin:2px;"),
+													),
+									'dropbox' => array(
+											'imageUrl'=>Yii::app()->request->baseUrl.'/images/dropbox.png',
+											'url' => 'Yii::app()->createUrl("adminDataset/assignFTPBox" , array("id" => $data->identifier))',
+											'options'=>array('title'=>'New Dropbox for this dataset',"style" => "margin:2px;"),
+											'label' => 'New Dropbox for this dataset',
+											'visible' => '"AssigningFTPbox" === $data->upload_status'
+										)
+									),
+			),
 		),
-	),
-)); ?>
+	)); ?>
+
+</div>
 
 <?php if( Yii::app()->session["filedrop_id_".Yii::app()->user->id]) { ?>
 
