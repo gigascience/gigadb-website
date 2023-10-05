@@ -73,7 +73,7 @@ $('.search-form form').submit(function(){
 	<?php $this->widget('zii.widgets.grid.CGridView', array(
 		'id'=>'dataset-grid',
 		'dataProvider'=>$dataProvider,
-		'itemsCssClass'=>"table table-bordered table-fixed",
+		'itemsCssClass'=>"table table-bordered table-fixed dataset-table",
 		'rowCssClassExpression' => '"dataset-".$data["identifier"]',
 		'filter'=>$model,
 		'columns'=>array(
@@ -99,30 +99,52 @@ $('.search-form form').submit(function(){
 			array(
 				'class'=>'CButtonColumn',
 				'header' => "Actions",
-				'headerHtmlOptions'=>array('style'=>'width: 100px'),
+				'headerHtmlOptions'=>array('style'=>'width: 120px'),
 				'template' => '{view}{update}{dropbox}{delete}',
-							'buttons'=>array(
-									'view' => array(
-											'imageUrl'=>Yii::app()->request->baseUrl.'/images/view_new.png',
-													'url' => 'Yii::app()->createUrl("dataset/view" , array("id" => $data->identifier))',
-											'options'=>array("title"=>"View Dataset", "style" => "margin:2px;"),
-													),
-									'update' => array(
-											'imageUrl'=>Yii::app()->request->baseUrl.'/images/update_new.png',
-											'options'=>array("title"=>"Update Dataset", "style" => "margin:2px;"),
-													),
-									'delete' => array(
-											'imageUrl'=>Yii::app()->request->baseUrl.'/images/delete_new.png',
-											'options'=>array("title"=>"Delete Dataset", "style" => "margin:2px;"),
-													),
-									'dropbox' => array(
-											'imageUrl'=>Yii::app()->request->baseUrl.'/images/dropbox.png',
-											'url' => 'Yii::app()->createUrl("adminDataset/assignFTPBox" , array("id" => $data->identifier))',
-											'options'=>array('title'=>'New Dropbox for this dataset',"style" => "margin:2px;"),
-											'label' => 'New Dropbox for this dataset',
-											'visible' => '"AssigningFTPbox" === $data->upload_status'
-										)
-									),
+				'buttons' => array(
+					'view' => array(
+						'imageUrl' => false,
+						'url' => 'Yii::app()->createUrl("dataset/view" , array("id" => $data->identifier))',
+						'label' => '',
+						'options' => array(
+							"title" => "View Dataset",
+							"class" => "fa fa-eye fa-lg icon icon-view",
+							"aria-label" => "View Dataset"
+						),
+					),
+					'update' => array(
+						'imageUrl' => false,
+						'label' => '',
+						'options' => array(
+							"title" => "Update Dataset",
+							"class" => "fa fa-pencil fa-lg icon icon-update",
+							"aria-label" => "Update Dataset"
+						),
+					),
+
+					'delete' => array(
+						'imageUrl' => false,
+						'label' => '',
+						'options' => array(
+							"title" => "Delete Dataset",
+							"class" => "fa fa-trash fa-lg icon icon-delete",
+							"aria-label" => "Delete Dataset"
+						),
+					),
+
+					'dropbox' => array(
+						'imageUrl' => false,
+						'url' => 'Yii::app()->createUrl("adminDataset/assignFTPBox" , array("id" => $data->identifier))',
+						'label' => '',
+						'visible' => '"AssigningFTPbox" === $data->upload_status',
+						'options' => array(
+							'title' => 'New Dropbox for this dataset',
+							"class" => "fa fa-inbox fa-lg icon icon-dropbox",
+							"aria-label" => "New Dropbox for this dataset"
+						),
+					)
+
+				),
 			),
 		),
 	)); ?>
