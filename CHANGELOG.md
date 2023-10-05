@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1367: Improve accessibility of dataset type and metric sections in homepage
 - Feat #1366: Enhance text over image contrast in hero banner
 - Feat #1384: Improve accessibility of login page: input focus state, form errors, aria labels, required
 - Feat #1368: Improve accessibility of About Page
