@@ -22,7 +22,7 @@ Feature: filter tables on admin page
   Scenario: Dataset authors table
     Given I am on "/adminDatasetAuthor/admin"
     When I fill in the field of "name" "DatasetAuthor[doi_search]" with "100006"
-    And I press return on the element "(//input)[1]"
+    And I press return on the element "(//input)[2]"
     And I wait "1" seconds
     Then I should see "Zhang, Guojie"
     And I should not see "100020"

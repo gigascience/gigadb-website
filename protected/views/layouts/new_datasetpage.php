@@ -35,6 +35,77 @@
                 <link rel="stylesheet" type="text/css" href="/css/current.css" />
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" defer></script>
+                <?php if (isset($this->loadBaBbqPolyfills) && $this->loadBaBbqPolyfills) { ?>
+                    <!-- Polyfills needed for 3.6.0/jquery.min.js and jquery.ba-bbq.min.js compatibility -->
+                    <script src="https://code.jquery.com/jquery-migrate-3.3.2.min.js"></script>
+                    <script>
+
+// Limit scope pollution from any deprecated API
+(function() {
+
+var matched, browser;
+
+// Use of jQuery.browser is frowned upon.
+// More details: http://api.jquery.com/jQuery.browser
+// jQuery.uaMatch maintained for back-compat
+jQuery.uaMatch = function( ua ) {
+    ua = ua.toLowerCase();
+
+    var match = /(chrome)[ \/]([\w.]+)/.exec( ua ) ||
+        /(webkit)[ \/]([\w.]+)/.exec( ua ) ||
+        /(opera)(?:.*version|)[ \/]([\w.]+)/.exec( ua ) ||
+        /(msie) ([\w.]+)/.exec( ua ) ||
+        ua.indexOf("compatible") < 0 && /(mozilla)(?:.*? rv:([\w.]+)|)/.exec( ua ) ||
+        [];
+
+    return {
+        browser: match[ 1 ] || "",
+        version: match[ 2 ] || "0"
+    };
+};
+
+matched = jQuery.uaMatch( navigator.userAgent );
+browser = {};
+
+if ( matched.browser ) {
+    browser[ matched.browser ] = true;
+    browser.version = matched.version;
+}
+
+// Chrome is Webkit, but Webkit is also Safari.
+if ( browser.chrome ) {
+    browser.webkit = true;
+} else if ( browser.webkit ) {
+    browser.safari = true;
+}
+
+jQuery.browser = browser;
+
+jQuery.sub = function() {
+    function jQuerySub( selector, context ) {
+        return new jQuerySub.fn.init( selector, context );
+    }
+    jQuery.extend( true, jQuerySub, this );
+    jQuerySub.superclass = this;
+    jQuerySub.fn = jQuerySub.prototype = this();
+    jQuerySub.fn.constructor = jQuerySub;
+    jQuerySub.sub = this.sub;
+    jQuerySub.fn.init = function init( selector, context ) {
+        if ( context && context instanceof jQuery && !(context instanceof jQuerySub) ) {
+            context = jQuerySub( context );
+        }
+
+        return jQuery.fn.init.call( this, selector, context, rootjQuerySub );
+    };
+    jQuerySub.fn.init.prototype = jQuerySub.fn;
+    var rootjQuerySub = jQuerySub(document);
+    return jQuerySub;
+};
+
+})();
+                    </script>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.ba-bbq/1.2.1/jquery.ba-bbq.min.js" defer></script>
+                <?php } ?>
                 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" defer></script>
                 <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" defer></script>
                 <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js" defer></script>
