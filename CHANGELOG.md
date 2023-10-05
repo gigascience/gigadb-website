@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1485: Admin styles - Update styles of Manage Dataset Samples page
 - Feat #1482: Implement modern styles in admin Create DatasetAuthor Page
 - Feat #1474: Admin styles - Update styles of Manage Dataset Authors page
 - Feat #1465: Update adminDataset/create and adminDataset/update pages styles to modern look

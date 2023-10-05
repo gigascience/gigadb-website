@@ -46,7 +46,7 @@ class AdminDatasetSampleController extends Controller
 	public function actionView($id)
 	{
             $model=$this->loadModel($id);
-            
+
             $this->render('view',array(
 			'model'=>$model,
 		));
@@ -124,7 +124,7 @@ class AdminDatasetSampleController extends Controller
             }
             //-1 means it doesn't exit in our database
             if ($model->tax_id != -1) {
-                
+
                 $species = Species::model()->findByAttributes(array('tax_id' => $tax_id));
                  $species_id = $species->id;
             } else {
@@ -138,14 +138,14 @@ class AdminDatasetSampleController extends Controller
                     else {
                         //insert a new species record
                         $model->addError('comment', 'The species you input is not in our database, please
-                            input 0:new organism and contact 
+                            input 0:new organism and contact
                         <a href=&quot;mailto:database@gigasciencejournal.com&quot;>database@gigasciencejournal.com</a>.');
                        //ac $model = new DatasetSample;
                         return false;
                     }
                 }
             }
-            //2) insert sample 
+            //2) insert sample
             $sample = new Sample;
             $sample->species_id = $species_id;
             $sample->code = $model->code;
@@ -156,13 +156,13 @@ class AdminDatasetSampleController extends Controller
                 return false;
             }
             $sample_id = $sample->id;
-           
 
-            //3) insert dataset_sample 
+
+            //3) insert dataset_sample
 
             $model->sample_id = $sample_id;
             $model->dataset_id = $dataset_id;
-            
+
             if (!$model->save()) {
                 $model->addError('keyword', 'Dataset_Sample is not stored!');
                 return false;
@@ -185,7 +185,7 @@ class AdminDatasetSampleController extends Controller
         $model = new DatasetSample;
         $model->dataset_id = 1;
         //$model->
-        //update 
+        //update
         if (!isset($_SESSION['samples']))
             $_SESSION['samples'] = array();
 
@@ -217,7 +217,7 @@ class AdminDatasetSampleController extends Controller
           //  var_dump( $model->code, $model->attribute);
 
             $id = 0;
-            
+
             if(strpos($name,'SAMPLE') == 0)
             {
                 $attribute_temp=null;
@@ -227,8 +227,8 @@ class AdminDatasetSampleController extends Controller
                 if($temp[0]=='SAMPLE')
                 {
                     $xmlpath=  'http://www.ebi.ac.uk/ena/data/view/'."$temp[1]".'&display=xml';
-                    $allfile= simplexml_load_file($xmlpath);                 
-                    
+                    $allfile= simplexml_load_file($xmlpath);
+
                    foreach ($allfile->SAMPLE->SAMPLE_ATTRIBUTES->SAMPLE_ATTRIBUTE as $child)
                 {
                     if($child->TAG=='Sample type'||$child->TAG=='Time of sample collection'||$child->TAG=='Habitat'||$child->TAG=='Sample extracted from')
@@ -246,19 +246,19 @@ class AdminDatasetSampleController extends Controller
                             $species1.=$child->VALUE.",";
                         if($child->TAG=='COMMON_NAME')
                             $species1.=$child->VALUE;
-                           
+
                     }
-                   
-                      
+
+
                 }
                      $attrs=$attribute_temp;
                     // $species=$species1;
                      $model->attribute = $attrs;
                     // $model->tax_id=$tax_id1;
-                     
-               
+
+
             }
-         
+
 
             if ($this->storeSample($model, $id)) {
 
@@ -348,6 +348,8 @@ class AdminDatasetSampleController extends Controller
 		if(isset($_GET['DatasetSample']))
 			$model->setAttributes($_GET['DatasetSample']);
 
+        $this->loadBaBbqPolyfills = true;
+        $this->layout = '//layouts/new_column2';
 		$this->render('admin',array(
 			'model'=>$model,
 		));
@@ -457,7 +459,7 @@ class AdminDatasetSampleController extends Controller
         }
 
         public function actionAddSampleAttr() {
-            if(isset($_POST['sample_id']) && isset($_POST['attr_id']) 
+            if(isset($_POST['sample_id']) && isset($_POST['attr_id'])
                 && isset($_POST['attr_value']) && isset($_POST['attr_unit'])) {
 
                 if(strlen($_POST['attr_id']) < 3) {
@@ -530,7 +532,7 @@ class AdminDatasetSampleController extends Controller
                 $criteria = new CDbCriteria;
                 $criteria->addSearchCondition('attribute_name', $_GET['term']);
                 $attrs = Attribute::model()->findAll($criteria);
-                
+
                 foreach($attrs as $attr) {
                     $result[$attr->attribute_name] = $attr->attribute_name;
                 }
