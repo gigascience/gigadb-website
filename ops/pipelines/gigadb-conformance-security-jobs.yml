@@ -97,22 +97,28 @@ spotbugs-sast:
   variables:
     SAST_DISABLED: "true"
 
-.scanner_matrix:
-  parallel:
-    matrix:
-      - SCANNER: ["trivy"]
-        IMAGES: [
-          "registry.gitlab.com/$CI_PROJECT_PATH/production_web:staging",
-          "registry.gitlab.com/$CI_PROJECT_PATH/production_app:staging",
-          "registry.gitlab.com/$CI_PROJECT_PATH/production_web:live",
-          "registry.gitlab.com/$CI_PROJECT_PATH/production_app:live"
-        ]
-
 container_scanning:
   stage: conformance and security
-  extends:
-    - .scanner_matrix
   variables:
+    DOCKER_IMAGE: registry.gitlab.com/security-products/container-scanning:4
     CS_SEVERITY_THRESHOLD: critical
-    SECURE_LOG_LEVEL: 'info'
-    CS_IMAGE: $IMAGES
+
+container_scanning-web_staging:
+  extends: container_scanning
+  variables:
+    DOCKER_IMAGE: registry.gitlab.com/$CI_PROJECT_PATH/production_web:staging
+
+container_scanning-app_staging:
+  extends: container_scanning
+  variables:
+    DOCKER_IMAGE: registry.gitlab.com/$CI_PROJECT_PATH/production_app:staging
+
+container_scanning-web_live:
+  extends: container_scanning
+  variables:
+    DOCKER_IMAGE: registry.gitlab.com/$CI_PROJECT_PATH/production_web:live
+
+container_scanning-app_live:
+  extends: container_scanning
+  variables:
+    DOCKER_IMAGE: registry.gitlab.com/$CI_PROJECT_PATH/production_app:live

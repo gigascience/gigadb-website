@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1465: Update adminDataset/create and adminDataset/update pages styles to modern look
 - Feat #1462: Update adminDataset/admin page styles to modern look
 - Feat #1460: Update admin dashboard styles to modern look
 - Feat #1375: Improve accessibility of dataset search pagination
