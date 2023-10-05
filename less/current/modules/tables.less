@@ -95,7 +95,8 @@ table.submitted-table > tbody > tr > td:nth-child(9) > a:first-child {
     background-color: @color-light-gray;
     color: @color-warm-black;
   }
-  th, td {
+  th,
+  td {
     padding: 5px;
     line-height: 2;
   }
@@ -133,5 +134,17 @@ table.submitted-table > tbody > tr > td:nth-child(9) > a:first-child {
         width: 90%;
       }
     }
+  }
+}
+table.dataset-view-table > tbody > tr {
+  th,
+  td {
+    padding-inline: 16px;
+  }
+  th {
+    min-width: 200px;
+    width: 1%;
+    white-space: nowrap;
+    text-align: right;
   }
 }
