@@ -152,9 +152,15 @@ table.dataset-view-table > tbody > tr {
 .dataset-table {
   .button-column {
     .icon {
+      padding: 2px;
+      border-radius: 3px;
+      &:focus {
+        outline: none;
+        box-shadow: 0 0 0 2px @color-gigadb-green-600;
+      }
       display: inline-block;
-      margin-inline: 3px;
-      margin-bottom: 8px;
+      margin-inline: 2px;
+      margin-bottom: 6px;
     }
     .icon-view,
     .icon-update,
