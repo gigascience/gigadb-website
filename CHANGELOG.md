@@ -4,8 +4,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1487: Use modern styles in Admin View DatasetAuthor page
 - Feat #1374: Improve accessibility and use of semantic html of search results card
-
 - Fix #1449: Fix issue preventing deployment to live production environment bastion server
 - Fix #1102: Display error message when creating a sample object or updating an existing sample object with attribute not found in attribute table, and do not create/save it. Refactored container scanning jobs in gitlab pipeline.
 - Feat #1376: Fix heading hierarchy in Contact Page, wrap address in `<address>` element
