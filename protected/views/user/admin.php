@@ -14,6 +14,14 @@
   </p>
 </div>
 
+<?php
+Yii::app()->clientScript->registerScript('customize-close-button', '
+  $(document).on("dialogopen", "#controls", function(event, ui) {
+    $(".ui-dialog-titlebar-close", $(this).parent()).html("<i class=\'fa fa-close fa-lg\'></i>");
+  });
+');
+?>
+
 <?php $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
   'id' => 'controls',
   // additional javascript options for the dialog plugin
@@ -26,21 +34,19 @@
 
 ?>
 
-<h3>Basic Operations</h3>
-<a href="#" class="btn btn-active" title="view" onclick="goto_userview();">View</a>
-<a href="#" class="btn btn-active" title="update" onclick="goto_userupdate();">Update</a>
-<a href="#" class="btn btn-active delete" title="delete" onclick="goto_userdelete();">Delete</a>
+<h2 class="h5">Basic Operations</h2>
+<a href="#" class="btn background-btn-o" title="view" onclick="goto_userview();">View</a>
+<a href="#" class="btn background-btn-o" title="update" onclick="goto_userupdate();">Update</a>
+<a href="#" class="btn danger-btn-o delete" title="delete" onclick="goto_userdelete();">Delete</a>
 
-<h3>Advanced Operations</h3>
-<a href="#" class="btn btn-active delete" title="link" onclick="goto_userlinkauthor();">Link this user to an author</a>
+<h2 class="h5">Advanced Operations</h2>
+<a href="#" class="btn background-btn-o" title="link" onclick="goto_userlinkauthor();">Link this user to an author</a>
 
 
 <div id="status"></div>
 
 <?
-
 $this->endWidget('zii.widgets.jui.CJuiDialog');
-
 ?>
 
 <?php $this->widget('CustomGridView', array(
