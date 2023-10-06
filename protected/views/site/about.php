@@ -7,20 +7,20 @@ $this->pageTitle = 'GigaDB - About';
 <div class="clear"></div>
 <div class="content">
     <div class="container">
-        <section class="page-title-section">
+        <div class="page-title-container">
             <div class="page-title">
                 <ol class="breadcrumb pull-right">
                     <li><a href="/">Home</a></li>
                     <li class="active">General information</li>
                 </ol>
-                <h4>General information</h4>
+                <h1 class="page-heading" id="aboutSectionTitle">General information</h1>
             </div>
-        </section>
-        <div class="subsection">
-            <img src="../images/new_interface_image/about.png">
         </div>
-        <section>
-            <h4 class="about-title">Database: <em>GigaDB</em></h4>
+        <div class="subsection">
+            <img src="../images/new_interface_image/about.png" alt="Photo of the GigaDB team">
+        </div>
+        <section aria-labelledby="aboutSectionTitle">
+            <h2 class="page-subtitle">Database: <em>GigaDB</em></h2>
             <p><a href="/site/index" target="_blank"><em>GigaDB</em></a> is a data repository supporting scientific
                 publications in the Life/Biomedical Sciences domain. <a href="/site/index"
                                                                         target="_blank"><em>GigaDB</em></a> organises
@@ -49,7 +49,7 @@ $this->pageTitle = 'GigaDB - About';
                 information on the issues surrounding CC0 and data see <a
                         href="http://dx.doi.org/10.1186/1756-0500-5-494">Hrynaszkiewicz and Cockerill, 2012</a>).</p>
             <hr>
-            <h4 class="about-title"><em>GigaDB</em> Submission Criteria</h4>
+            <h2 class="page-subtitle"><em>GigaDB</em> Submission Criteria</h2>
             <p><a href="/site/index" target="_blank"><em>GigaDB</em></a> has also been accepting submission of datasets
                 associated with Open Access publications, and is currently working to scale this out with other
                 publishers. As with all current datasets in <a href="/site/index" target="_blank"><em>GigaDB</em></a>
@@ -59,7 +59,7 @@ $this->pageTitle = 'GigaDB - About';
                 in this option should contact the <em>GigaScience</em> team via <a
                         href="mailto:database@gigasciencejournal.com">database@gigasciencejournal.com</a>.</p>
             <hr>
-            <h4 class="about-title">Journal: <em>GigaScience</em></h4>
+            <h2 class="page-subtitle">Journal: <em>GigaScience</em></h2>
             <p><a href="http://www.gigasciencejournal.com/" target="_blank"><em>GigaScience</em></a> is an online,
                 open-access journal that includes, as part of its publishing activities, the database <a
                         href="/site/index" target="_blank"><em>GigaDB</em></a>. <a
@@ -76,7 +76,7 @@ $this->pageTitle = 'GigaDB - About';
                 handling large-scale data. See <a href="http://www.gigasciencejournal.com/">http://www.gigasciencejournal.com/</a>
                 for additional information about the journal and prospective article submission.</p>
             <hr>
-            <h4 class="about-title">Indexing</h4>
+            <h2 class="page-subtitle">Indexing</h2>
             <p><a href="/site/index" target="_blank"><em>GigaDB</em></a> has been included in several external indexing
                 systems including <a href="https://toolbox.google.com/datasetsearch">Google Dataset Search</a> (via
                 schema.org markup), the <a href="http://search.datacite.org/ui/">DataCite search engine</a>, NCBI <a
@@ -90,23 +90,47 @@ $this->pageTitle = 'GigaDB - About';
                 addition, <em>GigaDB</em> is listed in <a href="https://fairsharing.org/">FAIRsharing</a>, <a
                         href="http://re3data.org/">Re3Data.org</a> and other database catalogues to ensure we reach as
                 wide an audience as possible.</p>
-        </section>
-        <section>
-            <table class="table text-center about-partner-table">
-                <tbody>
-                <tr>
-                    <td><a href="http://www.datacite.org/"><img src="/images/DataCite_header_final1_1.png"></a></td>
-                    <td><a href="http://isa-tools.org/"><img src="/images/isa.jpg"></a></td>
-                    <td><a href="https://fairsharing.org"><img src="/images/fairshare.png"></a></td>
-                    <td><a href="http://wokinfo.com/products_tools/multidisciplinary/dci/"><img
-                                    src="/images/data_citation.png"></a></td>
-                    <td><a href="http://Re3Data.org"><img src="/images/re3data.png"></a></td>
-                    <td><a href="https://repositive.io/"><img src="/images/repositive.png"></a></td>
-                    <td><a href="https://datamed.org/"><img src="/images/datamed.png"></a></td>
-                </tr>
-                </tbody>
-            </table>
-            <p>This website’s content and logo has been published under the Creative Commons CC0 license</p>
+            <div>
+                <h3 class="sr-only">External Indexing Systems</h3>
+                <ul class="logo-list list-unstyled">
+                    <li>
+                        <a href="http://www.datacite.org/" aria-label="Visit DataCite website">
+                            <img src="/images/DataCite_header_final1_1.png" alt="DataCite logo" class="img-responsive logo-list-img">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://isa-tools.org/" aria-label="Visit ISA Tools website">
+                            <img src="/images/isa.jpg" alt="ISA Tools logo" class="img-responsive logo-list-img">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://fairsharing.org" aria-label="Visit Fairsharing website">
+                            <img src="/images/fairshare.png" alt="Fairsharing logo" class="img-responsive logo-list-img">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://wokinfo.com/products_tools/multidisciplinary/dci/" aria-label="Visit Clarivate Analytics website">
+                            <img src="/images/data_citation.png" alt="Data Citation Index logo" class="img-responsive logo-list-img">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://Re3Data.org" aria-label="Visit Re3Data website">
+                            <img src="/images/re3data.png" alt="Re3Data logo" class="img-responsive logo-list-img">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://repositive.io/" aria-label="Visit Repositive website">
+                            <img src="/images/repositive.png" alt="Repositive logo" class="img-responsive logo-list-img">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://datamed.org/" aria-label="Visit DataMed website">
+                            <img src="/images/datamed.png" alt="DataMed logo" class="img-responsive logo-list-img">
+                        </a>
+                    </li>
+                </ul>
+                <p class="mt-4">This website's content and logo has been published under the Creative Commons CC0 license</p>
+            </div>
         </section>
     </div>
 </div>
