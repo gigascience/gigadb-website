@@ -60,7 +60,7 @@
   display: block;
   width: 20px;
   height: 20px;
-  background-image: url("/images/download-icon.png");
+  background-image: url('/images/download-icon.png');
   margin-left: auto;
   margin-right: auto;
 }
@@ -70,19 +70,13 @@
 
 .btn-green {
   background: @color-lighter-gray;
-  background: -webkit-gradient(
-    linear,
-    0 0,
-    0 bottom,
-    from(@color-lighter-gray),
-    to(#dddddd)
-  );
-  background: -webkit-linear-gradient(@color-lighter-gray, #dddddd);
-  background: -moz-linear-gradient(@color-lighter-gray, #dddddd);
-  background: -ms-linear-gradient(@color-lighter-gray, #dddddd);
-  background: -o-linear-gradient(@color-lighter-gray, #dddddd);
-  background: linear-gradient(@color-lighter-gray, #dddddd);
-  -pie-background: linear-gradient(@color-lighter-gray, #dddddd);
+  background: -webkit-gradient(linear,0 0,0 bottom,from(@color-lighter-gray),to(#dddddd));
+  background: -webkit-linear-gradient(@color-lighter-gray,#dddddd);
+  background: -moz-linear-gradient(@color-lighter-gray,#dddddd);
+  background: -ms-linear-gradient(@color-lighter-gray,#dddddd);
+  background: -o-linear-gradient(@color-lighter-gray,#dddddd);
+  background: linear-gradient(@color-lighter-gray,#dddddd);
+  -pie-background: linear-gradient(@color-lighter-gray,#dddddd);
   behavior: url(/css/PIE.htc);
   font-weight: bold;
   border: 0;
@@ -102,42 +96,20 @@
   *line-height: 20px;
   color: @color-warm-black;
   text-align: center;
-  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+  text-shadow: 0 1px 1px rgba(255,255,255,0.75);
   vertical-align: middle;
   cursor: pointer;
   background-color: @color-lighter-gray;
-  background-image: -moz-linear-gradient(
-    top,
-    @color-true-white,
-    @color-light-gray
-  );
-  background-image: -ms-linear-gradient(
-    top,
-    @color-true-white,
-    @color-light-gray
-  );
-  background-image: -webkit-gradient(
-    linear,
-    0 0,
-    0 100%,
-    from(@color-true-white),
-    to(@color-light-gray)
-  );
-  background-image: -webkit-linear-gradient(
-    top,
-    @color-true-white,
-    @color-light-gray
-  );
-  background-image: -o-linear-gradient(
-    top,
-    @color-true-white,
-    @color-light-gray
-  );
-  background-image: linear-gradient(top, @color-true-white, @color-light-gray);
+  background-image: -moz-linear-gradient(top,@color-true-white,@color-light-gray);
+  background-image: -ms-linear-gradient(top,@color-true-white,@color-light-gray);
+  background-image: -webkit-gradient(linear,0 0,0 100%,from(@color-true-white),to(@color-light-gray));
+  background-image: -webkit-linear-gradient(top,@color-true-white,@color-light-gray);
+  background-image: -o-linear-gradient(top,@color-true-white,@color-light-gray);
+  background-image: linear-gradient(top,@color-true-white,@color-light-gray);
   background-repeat: repeat-x;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='@color-true-whitefff', endColorstr='@color-light-gray', GradientType=0);
   border-color: @color-light-gray @color-light-gray @color-medium-gray;
-  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  border-color: rgba(0,0,0,0.1) rgba(0,0,0,0.1) rgba(0,0,0,0.25);
   *background-color: @color-light-gray;
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
   border: 1px solid #ccc;
@@ -146,34 +118,25 @@
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
-  *margin-left: 0.3em;
-  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2),
-    0 1px 2px rgba(0, 0, 0, 0.05);
-  -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2),
-    0 1px 2px rgba(0, 0, 0, 0.05);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2),
-    0 1px 2px rgba(0, 0, 0, 0.05);
+  *margin-left: .3em;
+  -webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05);
+  -moz-box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05);
   border-color: #ccc;
-  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  border-color: rgba(0,0,0,0.1) rgba(0,0,0,0.1) rgba(0,0,0,0.25);
   color: @color-true-white;
   border: 0;
   background: #a5cc7e;
-  background: -webkit-gradient(
-    linear,
-    0 0,
-    0 bottom,
-    from(#a5cc7e),
-    to(#6ea23a)
-  );
-  background: -webkit-linear-gradient(#a5cc7e, #6ea23a);
-  background: -moz-linear-gradient(#a5cc7e, #6ea23a);
-  background: -ms-linear-gradient(#a5cc7e, #6ea23a);
-  background: -o-linear-gradient(#a5cc7e, #6ea23a);
-  background: linear-gradient(#a5cc7e, #6ea23a);
-  -pie-background: linear-gradient(#a5cc7e, #6ea23a);
+  background: -webkit-gradient(linear,0 0,0 bottom,from(#a5cc7e),to(#6ea23a));
+  background: -webkit-linear-gradient(#a5cc7e,#6ea23a);
+  background: -moz-linear-gradient(#a5cc7e,#6ea23a);
+  background: -ms-linear-gradient(#a5cc7e,#6ea23a);
+  background: -o-linear-gradient(#a5cc7e,#6ea23a);
+  background: linear-gradient(#a5cc7e,#6ea23a);
+  -pie-background: linear-gradient(#a5cc7e,#6ea23a);
   behavior: url(/css/PIE.htc);
   text-decoration: none;
-  text-shadow: none !important;
+  text-shadow: none ! important;
   box-shadow: 0 0 0;
   position: relative;
   z-index: 1;
@@ -197,19 +160,13 @@
   text-decoration: none;
   color: @color-true-white;
   background: @color-patina-green;
-  background: -webkit-gradient(
-    linear,
-    0 0,
-    0 bottom,
-    from(@color-patina-green),
-    to(@color-dark-green)
-  );
-  background: -webkit-linear-gradient(@color-patina-green, @color-dark-green);
-  background: -moz-linear-gradient(@color-patina-green, @color-dark-green);
-  background: -ms-linear-gradient(@color-patina-green, @color-dark-green);
-  background: -o-linear-gradient(@color-patina-green, @color-dark-green);
-  background: linear-gradient(@color-patina-green, @color-dark-green);
-  -pie-background: linear-gradient(@color-patina-green, @color-dark-green);
+  background: -webkit-gradient(linear,0 0,0 bottom,from(@color-patina-green),to(@color-dark-green));
+  background: -webkit-linear-gradient(@color-patina-green,@color-dark-green);
+  background: -moz-linear-gradient(@color-patina-green,@color-dark-green);
+  background: -ms-linear-gradient(@color-patina-green,@color-dark-green);
+  background: -o-linear-gradient(@color-patina-green,@color-dark-green);
+  background: linear-gradient(@color-patina-green,@color-dark-green);
+  -pie-background: linear-gradient(@color-patina-green,@color-dark-green);
   behavior: url(/css/PIE.htc);
 }
 
@@ -225,42 +182,29 @@
   opacity: 1;
   text-decoration: none;
   background: #a5cc7e;
-  background: -webkit-gradient(
-    linear,
-    0 0,
-    0 bottom,
-    from(#a5cc7e),
-    to(#6ea23a)
-  );
-  background: -webkit-linear-gradient(#a5cc7e, #6ea23a);
-  background: -moz-linear-gradient(#a5cc7e, #6ea23a);
-  background: -ms-linear-gradient(#a5cc7e, #6ea23a);
-  background: -o-linear-gradient(#a5cc7e, #6ea23a);
-  background: linear-gradient(#a5cc7e, #6ea23a);
-  -pie-background: linear-gradient(#a5cc7e, #6ea23a);
+  background: -webkit-gradient(linear,0 0,0 bottom,from(#a5cc7e),to(#6ea23a));
+  background: -webkit-linear-gradient(#a5cc7e,#6ea23a);
+  background: -moz-linear-gradient(#a5cc7e,#6ea23a);
+  background: -ms-linear-gradient(#a5cc7e,#6ea23a);
+  background: -o-linear-gradient(#a5cc7e,#6ea23a);
+  background: linear-gradient(#a5cc7e,#6ea23a);
+  -pie-background: linear-gradient(#a5cc7e,#6ea23a);
   behavior: url(/css/PIE.htc);
   padding-top: 4px !important;
   padding-bottom: 2px !important;
 }
 .gigadb-arrow-button:hover {
   background: @color-patina-green;
-  background: -webkit-gradient(
-    linear,
-    0 0,
-    0 bottom,
-    from(@color-patina-green),
-    to(@color-dark-green)
-  );
-  background: -webkit-linear-gradient(@color-patina-green, @color-dark-green);
-  background: -moz-linear-gradient(@color-patina-green, @color-dark-green);
-  background: -ms-linear-gradient(@color-patina-green, @color-dark-green);
-  background: -o-linear-gradient(@color-patina-green, @color-dark-green);
-  background: linear-gradient(@color-patina-green, @color-dark-green);
-  -pie-background: linear-gradient(@color-patina-green, @color-dark-green);
+  background: -webkit-gradient(linear,0 0,0 bottom,from(@color-patina-green),to(@color-dark-green));
+  background: -webkit-linear-gradient(@color-patina-green,@color-dark-green);
+  background: -moz-linear-gradient(@color-patina-green,@color-dark-green);
+  background: -ms-linear-gradient(@color-patina-green,@color-dark-green);
+  background: -o-linear-gradient(@color-patina-green,@color-dark-green);
+  background: linear-gradient(@color-patina-green,@color-dark-green);
+  -pie-background: linear-gradient(@color-patina-green,@color-dark-green);
 }
 
-.fixed-btn-left,
-.fixed-btn-right {
+.fixed-btn-left, .fixed-btn-right{
   width: 60px;
   height: 60px;
   font-size: 60px;
@@ -270,16 +214,16 @@
   top: 50%;
   cursor: pointer;
 }
-.fixed-btn-left {
+.fixed-btn-left{
   left: 50%;
   margin-left: -630px;
 }
-.fixed-btn-right {
+.fixed-btn-right{
   right: 50%;
   margin-right: -630px;
 }
 .fixed-btn-left:hover,
-.fixed-btn-right:hover {
+.fixed-btn-right:hover{
   color: @color-gigadb-green;
 }
 
@@ -289,5 +233,5 @@
   padding: 4px 6px 3px 6px;
   text-decoration: none;
   background-color: Transparent;
-  outline: none;
+  outline:none;
 }
