@@ -234,6 +234,7 @@ class UserController extends Controller
             $model->setAttributes($_GET['User']);
 
         $this->layout = '//layouts/new_column1';
+        $this->loadBaBbqPolyfills = true;
         $this->render('admin', array(
             'model' => $model,
         ));
