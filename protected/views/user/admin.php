@@ -82,6 +82,7 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
     ),
     array(
       'class' => 'CButtonColumn',
+      'header' => 'Actions',
       'headerHtmlOptions' => array('style' => 'min-width:120px;'),
     ),
   ),
