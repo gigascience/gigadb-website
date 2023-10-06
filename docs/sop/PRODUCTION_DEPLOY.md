@@ -187,13 +187,27 @@ $ ansible-galaxy install -r ../../../infrastructure/requirements.yml
 
 Provision RDS via bastion server:
 ```
-$ OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories bastion_playbook.yml
+$ env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories bastion_playbook.yml --extra-vars="gigadb_env=staging"
 ```
 
 Provision web application server:
 ```
-$ TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories webapp_playbook.yml
+$ env TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories webapp_playbook.yml --extra-vars="gigadb_env=staging"
 ```
+
+Additional features for executing ansible playbooks:
+```
+# display all availale plays
+$ env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES TF_KEY_NAME=private_ip ansible-playbook -i ../../inventories bastion_playbook.yml --extra-vars="gigadb_env=staging" --list-tags
+$ env TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories webapp_playbook.yml --extra-vars="gigadb_env=staging" --list-tags
+# execute selected plays
+$ env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories bastion_playbook.yml --extra-vars="gigadb_env=staging" --tags files-url-updater,rclone-tool
+$ env TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories webapp_playbook.yml --extra-vars="gigadb_env=staging" --tags setup-docker-ce
+# skip selected plays
+$ env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories bastion_playbook.yml -e "backupDate=latest" --extra-vars="gigadb_env=staging" --skip-tags fix-centos-eol-issues,setup-fail2ban,setup-docker-ce,restore-db-on-rds,load-latest-db
+$ env TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories webapp_playbook.yml --extra-vars="gigadb_env=staging" --skip-tags fix-centos-eol-issues,setup-fail2ban
+```
+
 
 ## Deploy to staging.gigadb.org using CI/CD pipeline
 
@@ -208,9 +222,9 @@ expand the Protected branches section for the gigadb-website project.
 ### Procedure
 
 1. Go to [Gitlab Upstream pipeline page](https://gitlab.com/gigascience/upstream/gigadb-website/-/pipelines)
-and run the staging build stage in your pipeline.
+and run all the jobs in the staging build stage in your pipeline, including but are not limited to `build_staging`, `TidewaysBuildStaging`.
 
-2. Next, run the staging deploy stage in your pipeline
+2. Next, run all the jobs in the staging deploy stage in your pipeline, including but are not limited to `sd_gigadb`, `TidewaysDeployStaging`.
 
 ## Provision AWS infrastructure for `live` environment using Terraform and Ansible
 
@@ -263,17 +277,17 @@ $ ../../../scripts/ansible_init.sh --env live
 
 Provision RDS via bastion server:
 ```
-$ OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories bastion_playbook.yml
+$ env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories bastion_playbook.yml --extra-vars="gigadb_env=staging"
 ```
 
 Enable cronjob for periodically resetting the database:
 ```
-$ OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories bastion_playbook.yml -e "reset_database_cronjob_state=present"
+$ env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories bastion_playbook.yml -e "reset_database_cronjob_state=present" --extra-vars="gigadb_env=staging"
 ```
 
 Enable cronjob for periodically creating a database dump and storing it in S3:
 ```
-$ OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories bastion_playbook.yml -e "upload_database_backup_to_S3_cronjob_state=present"
+$ env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories bastion_playbook.yml -e "upload_database_backup_to_S3_cronjob_state=present" --extra-vars="gigadb_env=staging"
 ```
 
 To confirm the cron jobs have been created, log in with ssh on bastion, and run 
@@ -289,12 +303,25 @@ $ ssh -i ~/.ssh/id-rsa-aws-hk-gigadb.pem centos@<bastion public ip>
 
 Provision web application server:
 ```
-$ TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories webapp_playbook.yml
+$ TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories webapp_playbook.yml --extra-vars="gigadb_env=staging"
+```
+
+Additional features for executing ansible playbooks:
+```
+# display all availale plays
+$ env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES TF_KEY_NAME=private_ip ansible-playbook -i ../../inventories bastion_playbook.yml --extra-vars="gigadb_env=live" --list-tags
+$ env TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories webapp_playbook.yml --extra-vars="gigadb_env=live" --list-tags
+# execute selected plays
+$ env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories bastion_playbook.yml --extra-vars="gigadb_env=live" --tags files-url-updater,rclone-tool
+$ env TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories webapp_playbook.yml --extra-vars="gigadb_env=live" --tags setup-docker-ce
+# skip selected plays
+$ env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories bastion_playbook.yml -e "backupDate=latest" --extra-vars="gigadb_env=live" --skip-tags fix-centos-eol-issues,setup-fail2ban,setup-docker-ce,restore-db-on-rds,load-latest-db
+$ env TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories webapp_playbook.yml --extra-vars="gigadb_env=live" --skip-tags fix-centos-eol-issues,setup-fail2ban
 ```
 
 ## Deploy to beta.gigadb.org using CI/CD pipeline
 
 1. Go to [Gitlab Upstream pipeline page](https://gitlab.com/gigascience/upstream/gigadb-website/-/pipelines)
-and run the live build stage in your pipeline.
+and run all the jobs in the live build stage in your pipeline, including but are not limited to `build_live`, `TidewaysBuildLive`.
 
-2. Next, run the live deploy stage in your pipeline
+2. Next, run all the jobs in the live deploy stage in your pipeline, including but are not limited to `ld_gigadb`, `TidewaysDeployLive`.
