@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1491: Admin styles - Style user admin page
 - Fix #1483: Fix URL creation for ftp_site field in dataset table when using files metadata console tool
 - Feat #1374: Improve accessibility and use of semantic html of search results card
 - Fix #1449: Fix issue preventing deployment to live production environment bastion server
