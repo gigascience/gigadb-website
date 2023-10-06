@@ -17,7 +17,9 @@
 <?php
 Yii::app()->clientScript->registerScript('customize-close-button', '
   $(document).on("dialogopen", "#controls", function(event, ui) {
-    $(".ui-dialog-titlebar-close", $(this).parent()).html("<i class=\'fa fa-close fa-lg\'></i>");
+    var closeButton = $(".ui-dialog-titlebar-close", $(this).parent());
+    closeButton.html("<i class=\'fa fa-close fa-lg\'></i>");
+    closeButton.attr("aria-label", "Close Dialog");
   });
 ');
 ?>
