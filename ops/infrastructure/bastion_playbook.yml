@@ -24,6 +24,24 @@
     - role: ../../roles/fail2ban
     - role: ../../roles/jail-ssh
 
+- name: Setup Docker CE
+  hosts: name_bastion_server_{{gigadb_env}}*
+  tags:
+    - setup-docker-ce
+  vars:
+    target_host: _bastion
+
+  roles:
+    - role: ../../roles/docker-install
+    - role: role-secure-docker-daemon
+      dds_host: "{{ ec2_bastion_public_ip }}"
+      dds_server_cert_path: /etc/docker
+      dds_restart_docker: no
+      dds_client_cert_path: /home/centos/.docker
+    - role: ../../roles/docker-postinstall
+    - role: ../../roles/docker-daemon-enable-start
+
+
 - name: Restore PostgreSQL database on RDS instance using pg_restore
   hosts: name_bastion_server_{{gigadb_env}}*
   tags:
@@ -120,16 +138,6 @@
         owner: root
         group: root
         mode: 0644
-
-  roles:
-    - role: ../../roles/docker-install
-    - role: role-secure-docker-daemon
-      dds_host: "{{ ec2_bastion_public_ip }}"
-      dds_server_cert_path: /etc/docker
-      dds_restart_docker: no
-      dds_client_cert_path: /home/centos/.docker
-    - role: ../../roles/docker-postinstall
-    - role: ../../roles/docker-daemon-enable-start
 
 - name: Setup Excel to GigaDB tool
   hosts: name_bastion_server_{{gigadb_env}}*
