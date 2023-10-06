@@ -42,7 +42,7 @@
 
   ?>
 
-  <?php $this->widget('zii.widgets.grid.CGridView', array(
+  <?php $this->widget('CustomGridView', array(
     'id' => 'news-grid',
     'dataProvider' => $model->search(),
     'filter' => $model, // turn on/off filtering
