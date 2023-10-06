@@ -37,6 +37,7 @@ cp ../../webapp_playbook.yml .
 cp ../../bastion_playbook.yml .
 cp ../../users_playbook.yml .
 cp ../../monitoring_playbook.yml .
+cp ../../bootstrap_playbook.yml .
 
 # Update Gitlab gigadb_db_host variable with RDS instance address from terraform-inventory
 rds_inst_addr=$(../../inventories/terraform-inventory.sh --list ./ | jq -r '.all.vars.rds_instance_address')
@@ -121,3 +122,8 @@ ssh-keygen -R $webapp_ip
 ssh-keyscan -t ecdsa $bastion_ip >> ~/.ssh/known_hosts
 new_host=$(ssh -i $aws_ssh_key centos@$bastion_ip ssh-keyscan -t ecdsa $webapp_ip)
 echo $new_host  >> ~/.ssh/known_hosts
+
+# Bootstrap playbook
+echo "Saving EC2 IP addresses to GitLab"
+env TF_KEY_NAME=private_ip ansible-playbook -i ../../inventories bootstrap_playbook.yml --tags="webapp_ips" --extra-vars="gigadb_env=$target_environment"
+ansible-playbook -i ../../inventories bootstrap_playbook.yml --tags="bastion_ips" --extra-vars="gigadb_env=$target_environment"
