@@ -58,6 +58,11 @@ variables:
 
 image: docker:$DOCKER_VERSION
 
+.tag_only:
+  rules:
+    - if: $CI_COMMIT_TAG
+
+
 include:
   - template: Security/SAST.gitlab-ci.yml
   - template: Security/Container-Scanning.gitlab-ci.yml
@@ -140,7 +145,9 @@ sd_warmcache:
 ld_gigadb:
   variables:
     GIGADB_ENV: "live"
-  extends: .deploy
+  extends: 
+    - .tag_only
+    - .deploy
   stage: live deploy
   tags:
     - $GITLAB_USER_LOGIN
@@ -149,8 +156,6 @@ ld_gigadb:
     name: "live"
     deployment_tier: production
     url: $REMOTE_HOME_URL
-  rules:
-    - if: $CI_COMMIT_TAG
 
 ld_warmcache:
   variables:

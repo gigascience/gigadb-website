@@ -254,7 +254,9 @@ build_staging:
 build_live:
   variables:
     GIGADB_ENV: "live"
-  extends: .pb_gigadb
+  extends: 
+    - .tag_only
+    - .pb_gigadb
   stage: live build
   tags:
     - $GITLAB_USER_LOGIN
@@ -264,5 +266,3 @@ build_live:
     name: "live"
     deployment_tier: production
     url: $REMOTE_HOME_URL
-  rules:
-    - if: $CI_COMMIT_TAG
