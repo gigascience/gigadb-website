@@ -18,16 +18,16 @@ Where `x` is major version increase with breaking changes, user training, major 
 Deployment to the live production environment should always come from a release, so that we can assert and track with absolute certainty what set of features is currently on live production environment from a technical perspective (git tags) and business perspective (CHANGELOG).
 
 
-What goes into a release should be decided during the weekly Sprint Status meeting when curators are present.
+What goes into a release should be decided during the weekly Sprint Status meeting when curators are present, using the CHANGELOG as working document.
 We should have a recurring slot in that meeting to talk about what's going to be in next release, and when we do it. 
 
 
 ## Make a new release
 
-1. When a new release is decided, select the commit hash of the `develop` branch that we want to cut a new release from
-2. In CHANGELOG.md, pick features from the `Unreleased` section from the bottom of the pile up to the one that match the commit hash from previous step
-3. The selected features should be moved from that section into the new `x.y.z` section
-4. We don't have to move the entire pile of features of the `Unreleased` section into the new `x.y.z`, in which case the remainder of features (those at the top of the pile) that weren't selected stay in the `Unreleased` section
+1. When a new release is decided, select the commit hash in the `develop` branch up to which we want to cut the new release.
+2. In the CHANGELOG, pick the features from the `Unreleased` section from the bottom of the pile up to the one that match the commit hash from previous step.
+3. The selected features should be moved from that section into a new `x.y.z` section where `x.y.z` is a [semantic versioning](https://semver.org) based increment to the previous version.
+4. The remainder of unreleased features (those at the top of the pile), if any, stay in the `Unreleased` section.
 5. Create a new git "annotated tag" (not the lightweight  tag) as shown below:
 
 ```
