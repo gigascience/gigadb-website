@@ -112,6 +112,7 @@ FilesUrlsUpdaterDeployStaging:
 
 FilesUrlsUpdaterBuildLive:
   stage: live build
+  extends: .tag_only
   variables:
     LOCAL_COMPOSE: "docker-compose -f ./docker-compose.production.yml"
     REPO_NAME: $CI_PROJECT_NAME
@@ -151,6 +152,7 @@ FilesUrlsUpdaterBuildLive:
 
 FilesUrlsUpdaterDeployLive:
   stage: live deploy
+  extends: .tag_only
   variables:
     GIGADB_ENV: live
     REMOTE_WEBAPP_DOCKER: "$remote_public_ip:2376"

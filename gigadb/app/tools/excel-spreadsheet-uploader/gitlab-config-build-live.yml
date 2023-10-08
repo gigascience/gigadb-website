@@ -1,6 +1,7 @@
 
 XLSUploaderBuildLive:
   stage: live build
+  extends: .tag_only
   variables:
     COMPOSE_FILE: docker-compose.yml
     REPO_NAME: $CI_PROJECT_NAME

@@ -1,6 +1,7 @@
 
 ReadmeGeneratorBuildLive:
   stage: live build
+  extends: .tag_only
   variables:
     LOCAL_COMPOSE: "docker-compose -f ./docker-compose.production.yml"
     REPO_NAME: $CI_PROJECT_NAME
