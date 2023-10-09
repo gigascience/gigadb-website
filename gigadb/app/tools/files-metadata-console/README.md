@@ -143,7 +143,14 @@ and see file links that point to Wasabi.
 
 Some datasets have been excluded from having their File location URLs updated
 because they contain too many files for the files metadata console tool to 
-process. You can identify these datasets using the big datasets spreadsheet as 
+process. These datasets need to be manually updated using SQL commands. We begin
+by starting a database transaction so that each manual dataset update is 
+contained within a unit of work:
+```
+$ docker run --rm  --env-file ./db-env registry.gitlab.com/$GITLAB_PROJECT/production_pgclient:$GIGADB_ENV -c "BEGIN TRANSACTION;"
+```
+
+You can identify these datasets using the big datasets spreadsheet as 
 they will need to be manually updated. You can confirm these datasets have not 
 been updated by cross-referencing them with the DOIs listed by this SQL command:
 ```
@@ -190,6 +197,11 @@ $ docker run --rm  --env-file ./db-env registry.gitlab.com/$GITLAB_PROJECT/produ
  https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/10.5524/100001_101000/100310/mapDamage/14Oral_mapDamage_results/mapDamage_Oral_043/dnacomp_genome.csv
  https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/10.5524/100001_101000/100310/mapDamage/14Oral_mapDamage_results/mapDamage_Oral_042/Stats_out_MCMC_iter_summ_stat.csv
 (5 rows)
+```
+
+Finally, we commit the dataset changes and end the database transaction:
+```
+$ docker run --rm  --env-file ./db-env registry.gitlab.com/$GITLAB_PROJECT/production_pgclient:$GIGADB_ENV -c "COMMIT TRANSACTION;"
 ```
 
 ## Running unit and functional tests in files metadata console tool
