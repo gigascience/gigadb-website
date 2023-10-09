@@ -183,7 +183,7 @@ echo $form->hiddenField($model, "image_id");
                                     <div class="form-group">
                                         <label for="datasetImage" class="control-label col-xs-4">Image Status</label>
                                         <div class="col-xs-8 block-spacing">
-                                            <?php echo CHtml::fileField('datasetImage', '', array('class' => 'form-control')); ?>
+                                            <?php echo CHtml::fileField('datasetImage', '', array('class' => 'form-control', 'aria-controls' => 'metaFieldsSection')); ?>
                                         </div>
                                         <div class="col-xs-offset-4 col-xs-5 block-spacing">
                                             <?php echo CHtml::ajaxLink(
@@ -227,12 +227,13 @@ echo $form->hiddenField($model, "image_id");
                                 <div class="form-group">
                                     <label for="datasetImage" class="control-label col-xs-4">Image Status</label>
                                     <div class='col-xs-8'>
-                                        <?php echo CHtml::fileField('datasetImage', '', array('class' => 'form-control')); ?>
+                                        <?php echo CHtml::fileField('datasetImage', '', array('class' => 'form-control', 'aria-controls' => 'metaFieldsSection')); ?>
                                     </div>
                                 </div>
                             <?php } ?>
                         </div>
-                        <div class="meta-fields-container">
+                        <fieldset id="metaFieldsSection" class="meta-fields-container" aria-hidden="true">
+                            <legend>Image metafields</legend>
                             <div class="form-group">
                                 <?php echo $form->labelEx($model->image, 'url', array(
                                     'class' => 'control-label col-xs-4 meta-fields',
@@ -292,7 +293,8 @@ echo $form->hiddenField($model, "image_id");
                                     <?php echo $form->error($model->image, 'photographer'); ?>
                                 </div>
                             </div>
-                        </div>
+                        </fieldset>
+                        <div id="metaFieldsLiveRegion" aria-live="polite" class="sr-only"></div>
                     </div>
                     <hr />
                     <div class="form-block-4">
@@ -592,9 +594,20 @@ echo $form->hiddenField($model, "image_id");
     var image_id = document.getElementById("Dataset_image_id").value;
     const metaFields = $('.meta-fields');
     const metaFieldsContainer = $('.meta-fields-container');
+    const metaFieldsLiveRegion = $('#metaFieldsLiveRegion');
+    const hiddenText = 'Image metafields are now hidden.'
+    const shownText = 'Image metafields are now displayed.'
+
+    // delay is used to prevent screen reader from reading the text too early therefore losing spotlight to page title announcement
+    function updateMetaFieldsLiveRegion(text, delay = 1000) {
+        setTimeout(() => {
+            metaFieldsLiveRegion.text(text);
+        }, delay);
+    }
 
     //Show image meta data, preview uploaded image in update page
     const imgPrevWrapper = $('#imagePreviewWrapper')
+
 
     if (image.src != 'https://assets.gigadb-cdn.net/images/datasets/no_image.png') {
         metaFields.css('display', '');
@@ -608,11 +621,13 @@ echo $form->hiddenField($model, "image_id");
                 preview.src = src;
                 imgPrevWrapper.css('display', 'flex');
                 metaFields.css('display', '');
+                updateMetaFieldsLiveRegion(shownText);
                 $('#showImage').css('display', 'none');
                 $('#removeButton').css('display', 'none');
             } else {
                 console.log('update page event.target.files.length == 0');
                 metaFields.css('display', '');
+                updateMetaFieldsLiveRegion(hiddenText);
                 $('#showImage').css('display', 'block');
                 $('#removeButton').css('display', '');
                 imgPrevWrapper.css('display', 'none');
@@ -632,22 +647,31 @@ echo $form->hiddenField($model, "image_id");
             preview.src = src;
             preview.style.display = "block";
             metaFieldsContainer.removeClass('hidden');
+            metaFieldsContainer.attr('aria-hidden', 'false');
+            updateMetaFieldsLiveRegion(shownText);
             $('#showImage').css('display', 'none');
         } else {
             console.log('create page event.target.files.length == 0');
             $('#showImage').css('display', 'block');
             $('#imagePreview').css('display', 'none');
             metaFieldsContainer.addClass('hidden');
+            metaFieldsContainer.attr('aria-hidden', 'true');
+            updateMetaFieldsLiveRegion(hiddenText);
         }
     });
 
     // if no image loaded and no image selected for upload, don't show metadata fields (unless there is a custom image associated with the dataset)
     if ('' == image.src && 0 == document.getElementById("datasetImage").files.length) {
-
         if (0 == image_id || null == image_id) {
             console.log('0 == image_id || null == image_id')
             imgPrevWrapper.css('display', 'none');
             metaFieldsContainer.addClass('hidden');
+            metaFieldsContainer.attr('aria-hidden', 'true');
+            metaFieldsLiveRegion.text(hiddenText);
+        } else {
+            console.log('0 != image_id && null != image_id')
+            metaFieldsContainer.attr('aria-hidden', 'false');
+            metaFieldsLiveRegion.text(shownText);
         }
     }
 </script>

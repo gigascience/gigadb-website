@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1471: Improve Accessibility for Conditional Form Inputs Based on "Image Status"
 - Feat #1474: Admin styles - Update styles of Manage Dataset Authors page
 - Fix #1428: Increase resilience of provisioning by extracting saving EC2 IP addresses as standalone bootstrap plays
 - Feat #1491: Admin styles - Style user admin page
