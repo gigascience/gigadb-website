@@ -158,4 +158,17 @@ class CuratorSteps extends \Codeception\Actor
         $this->I->clickWithLeftButton(['css' => '#urltoredirect']);
         $this->I->waitForText($keyword, 5, ".tag-editor-tag");
     }
+
+    /**
+     * @Then I should application version
+     * @see https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string
+     */
+     public function iShouldApplicationVersion()
+     {
+        $versionText = $this->I->grabTextFrom("/html/body/header/div/div/ul/li[5]/a");
+        $this->I->assertStringContainsString("Version: ", $versionText);
+        $semVerPattern = "/^Version: v(?P<major>0|[1-9]\d*)\.(?P<minor>0|[1-9]\d*)\.(?P<patch>0|[1-9]\d*)(?:-(?P<prerelease>(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+(?P<buildmetadata>[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/";
+        $this->I->assertRegExp($semVerPattern,$versionText);
+     }
+
 }
