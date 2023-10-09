@@ -34,12 +34,12 @@ We should have a recurring slot in that meeting to talk about what's going to be
 ```
 $ cd gigascience/gigadb-website # this is the checkout of the official gigadb-website repository, not your fork
 $ git checkout develop
-$ git tag  -a vx.y.z <commit hash after committing the changelog changes> -m "new release x.y.z"
+$ git tag  -as vx.y.z <commit hash after committing the changelog changes> -m "new release x.y.z"
 $ git push origin vx.y.z
 ```
 6. Write the new version in the VERSION file:
 ```
-$ echo "x.y.z" > VERSION
+$ echo "vx.y.z" > VERSION
 ```
 
 >**Note 1**: Only code owners should perform this task
