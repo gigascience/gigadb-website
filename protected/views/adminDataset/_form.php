@@ -227,12 +227,12 @@ echo $form->hiddenField($model, "image_id");
                                 <div class="form-group">
                                     <label for="datasetImage" class="control-label col-xs-4">Image Status</label>
                                     <div class='col-xs-8'>
-                                        <?php echo CHtml::fileField('datasetImage', '', array('class' => 'form-control')); ?>
+                                        <?php echo CHtml::fileField('datasetImage', '', array('class' => 'form-control', 'aria-controls' => 'metaFieldsSection')); ?>
                                     </div>
                                 </div>
                             <?php } ?>
                         </div>
-                        <div class="meta-fields-container">
+                        <div id="metaFieldsSection" class="meta-fields-container" aria-hidden="true">
                             <div class="form-group">
                                 <?php echo $form->labelEx($model->image, 'url', array(
                                     'class' => 'control-label col-xs-4 meta-fields',
@@ -632,12 +632,14 @@ echo $form->hiddenField($model, "image_id");
             preview.src = src;
             preview.style.display = "block";
             metaFieldsContainer.removeClass('hidden');
+            metaFieldsContainer.attr('aria-hidden', 'false');
             $('#showImage').css('display', 'none');
         } else {
             console.log('create page event.target.files.length == 0');
             $('#showImage').css('display', 'block');
             $('#imagePreview').css('display', 'none');
             metaFieldsContainer.addClass('hidden');
+            metaFieldsContainer.attr('aria-hidden', 'true');
         }
     });
 
