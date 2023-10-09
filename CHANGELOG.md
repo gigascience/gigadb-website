@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1491: Admin styles - Style user admin page
 - Feat #1481: Improve appearance of dataset form action buttons
 - feat #1434: Setup playwright local environment for automated accessibility testing
 - Feat #1487: Use modern styles in Admin View DatasetAuthor page

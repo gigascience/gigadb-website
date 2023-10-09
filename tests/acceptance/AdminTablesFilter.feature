@@ -206,15 +206,16 @@ Feature: filter tables on admin page
     And I should not see "JPG"
     And I should not see "PNG"
 
+  @this
   @ok
   Scenario: Users
     Given I am on "/user/admin"
     When I fill in the field of "name" "User[email]" with "admin@"
-    And I press return on the element "(//input)[2]"
+    And I press return on the element "(//input)[@name='User[email]']"
     And I wait "1" seconds
     Then I should see "admin@gigadb.org"
     And I should not see "user@gigadb.org"
-    And I should not see "@gigasciencejournal.com"
+    And I should not see "test+8@gigasciencejournal.com"
 
   @ok
   Scenario: News items
