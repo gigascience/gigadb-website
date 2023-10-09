@@ -293,6 +293,7 @@ echo $form->hiddenField($model, "image_id");
                                 </div>
                             </div>
                         </div>
+                        <div id="metaFieldsLiveRegion" aria-live="polite" class="sr-only"></div>
                     </div>
                     <hr />
                     <div class="form-block-4">
@@ -592,9 +593,20 @@ echo $form->hiddenField($model, "image_id");
     var image_id = document.getElementById("Dataset_image_id").value;
     const metaFields = $('.meta-fields');
     const metaFieldsContainer = $('.meta-fields-container');
+    const metaFieldsLiveRegion = $('#metaFieldsLiveRegion');
+    const hiddenText = 'Image metafields are now hidden.'
+    const shownText = 'Image metafields are now displayed.'
+
+    // delay is used to prevent screen reader from reading the text too early therefore losing spotlight to page title announcement
+    function updateMetaFieldsLiveRegion(text, delay = 1000) {
+        setTimeout(() => {
+            metaFieldsLiveRegion.text(text);
+        }, delay);
+    }
 
     //Show image meta data, preview uploaded image in update page
     const imgPrevWrapper = $('#imagePreviewWrapper')
+
 
     if (image.src != 'https://assets.gigadb-cdn.net/images/datasets/no_image.png') {
         metaFields.css('display', '');
@@ -633,6 +645,7 @@ echo $form->hiddenField($model, "image_id");
             preview.style.display = "block";
             metaFieldsContainer.removeClass('hidden');
             metaFieldsContainer.attr('aria-hidden', 'false');
+            updateMetaFieldsLiveRegion(shownText);
             $('#showImage').css('display', 'none');
         } else {
             console.log('create page event.target.files.length == 0');
@@ -640,6 +653,7 @@ echo $form->hiddenField($model, "image_id");
             $('#imagePreview').css('display', 'none');
             metaFieldsContainer.addClass('hidden');
             metaFieldsContainer.attr('aria-hidden', 'true');
+            updateMetaFieldsLiveRegion(hiddenText);
         }
     });
 
@@ -650,6 +664,8 @@ echo $form->hiddenField($model, "image_id");
             console.log('0 == image_id || null == image_id')
             imgPrevWrapper.css('display', 'none');
             metaFieldsContainer.addClass('hidden');
+            metaFieldsContainer.attr('aria-hidden', 'true');
+            metaFieldsLiveRegion.text(hiddenText);
         }
     }
 </script>
