@@ -1,13 +1,8 @@
 <?
 $this->pageTitle = 'GigaDB - Contact Us';
-$this->pageTitle = 'GigaDB - Contact Us';
 ?>
 
-
 <? if (Yii::app()->user->hasFlash('contact')) { ?>
-    <div class="flash-success alert alert-success">
-        <?= Yii::app()->user->getFlash('contact'); ?>
-    </div>
     <div class="flash-success alert alert-success">
         <?= Yii::app()->user->getFlash('contact'); ?>
     </div>
@@ -42,8 +37,6 @@ $this->pageTitle = 'GigaDB - Contact Us';
                             <p>For more information or questions regarding submitting data to GigaDB, please contact us at: <a href="mailto:database@gigasciencejournal.com" target="_blank">database@gigasciencejournal.com</a>.</p>
                             <p>Fields with <span>*</span> are required.</p>
                         </div>
-
-
 
                         <? $form = $this->beginWidget('CActiveForm', array('htmlOptions' => array('class' => 'form contact-form'))); ?>
                         <div class="col-xs-7">
@@ -109,11 +102,6 @@ $this->pageTitle = 'GigaDB - Contact Us';
                             </div>
                         </div>
 
-
-
-
-
-
                         <div class="span8 offset2"><?= CHtml::submitButton('Submit', array('class' => 'btn background-btn')); ?></div>
 
                         <? $this->endWidget(); ?>
@@ -139,6 +127,4 @@ $this->pageTitle = 'GigaDB - Contact Us';
 
         </div>
     </div>
-
-
 <? } ?>
