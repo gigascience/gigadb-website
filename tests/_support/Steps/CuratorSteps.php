@@ -160,7 +160,7 @@ class CuratorSteps extends \Codeception\Actor
     }
 
     /**
-     * @Then I should application version
+     * @Then I should see the application version
      * @see https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string
      */
      public function iShouldApplicationVersion()

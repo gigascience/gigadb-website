@@ -10,7 +10,7 @@ Feature: admin Dashboard
   @ok
   Scenario: the currently deployed version of GigaDB is shown on the admin dashboard
     When I am on "/site/admin"
-    Then I should application version
+    Then I should see the application version
     And I should see a link "" to "https://raw.githubusercontent.com/gigascience/gigadb-website/develop/CHANGELOG.md"
 
 
