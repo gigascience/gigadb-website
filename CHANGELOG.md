@@ -34,10 +34,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Feat #580: Provision monitoring infrastructure with Prometheus and Grafana
 - Feat #1282: Upgraded yii1.1 version to `1.1.28`, yii2 version to `2.0.48.1`, postgreSQL engine version to `14.8`, postgreSQL client version to `14`
 
-## v3.1.0
+## v3.1.0 - 2017-01-18
 
 - for historical record
 
-## v3.0.0
+## v3.0.0 - 2016-05-12
 
 - for historical record

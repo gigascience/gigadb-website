@@ -20,26 +20,44 @@ Deployment to the live production environment should always come from a release,
 
 What goes into a release should be decided during the weekly Sprint Status meeting when curators are present, using the CHANGELOG as working document.
 We should have a recurring slot in that meeting to talk about what's going to be in next release, and when we do it. 
+The output of this meeting is an updated CHANGELOG.md, committed directly to the `develop` branch that describes the new release following the following template:
+```
+ ## v3.1.0 - 
+                                                                                                                      
+  - Feat: feature 1
+  - Fix: fix 1
+  - Feat: feature 1
+
+```
+
+>**Note 1**: In the CHANGELOG, pick the features from the `Unreleased` section from the bottom of the pile up to the one that match the commit hash from previous step.
+>**Note 2**: The selected features should be moved from that section into a new `x.y.z` section where `x.y.z` is a [semantic versioning](https://semver.org) based increment to the previous version.
+>**Note 3**: The remainder of unreleased features (those at the top of the pile), if any, stay in the `Unreleased` section.
+>**Note 4**: No date is specified for the release, that will be done in step 2 of the next section (but ensure the rightmost `-` in the header is there for easy amendment by release script)
 
 
 ## Make a new release
 
-0. Prerequisite: you have a checkout of gigascience/gigadb-website with the `.env` file for deploying to Upstream
-1. When a new release is decided, select the commit hash in the `develop` branch up to which we want to cut the new release.
-2. In the CHANGELOG, pick the features from the `Unreleased` section from the bottom of the pile up to the one that match the commit hash from previous step.
-3. The selected features should be moved from that section into a new `x.y.z` section where `x.y.z` is a [semantic versioning](https://semver.org) based increment to the previous version.
-4. The remainder of unreleased features (those at the top of the pile), if any, stay in the `Unreleased` section.
-5. Create a new git "annotated tag" (not the lightweight  tag) as shown below:
-
+0. Prerequisite: you have a checkout of gigascience/gigadb-website's `develop` branch and CHANGELOG.md has been updated with new release `x.y.z`
 ```
 $ cd gigascience/gigadb-website # this is the checkout of the official gigadb-website repository, not your fork
 $ git checkout develop
-$ git tag  -as vx.y.z <commit hash after committing the changelog changes> -m "new release x.y.z"
+$ grep X.Y.Z CHANGELOG.md
+## vX.Y.Z - 
+```
+1. Identify the commit hash in the `develop` branch up to which we want to cut the new release.
+2. In the CHANGELOG, add the current date to the release header `## vX.Y.Z -` in the format `YYYY-MM-DD` 
+3. Write the new version in the VERSION file (replace existing previous version)
+4. Commit the changes to CHANGELOG.md and VERSION to the repo locally
+5. Create a new git "annotated tag" (not the lightweight  tag) as shown below:
+
+```
+$ git tag -as vx.y.z <commit hash after committing the changes> -m "new release x.y.z"
+```
+6. This is the last step, make sure it's done at the very end. Push to the remote repo the local changes to the git repository
+```
+$ git push origin 
 $ git push origin vx.y.z
-```
-6. Write the new version in the VERSION file:
-```
-$ echo "vx.y.z" > VERSION
 ```
 
 >**Note 1**: Only code owners should perform this task
@@ -58,6 +76,9 @@ GnuPG can be downloaded here: https://gnupg.org/download
 Alternatively, the not-free tool https://gpgtools.org for macOS will also work as it installs gnupg command line tool.  
 Even though its main purpose is to be used with emails, it has a nice GUI for managing the keys from gnugpg.
 
+## Automation
+
+The step 2 to 5 can be peformed in one go using the script `ops/scripts/make_release`
 
 ## Gitlab pipeline for tag
 
