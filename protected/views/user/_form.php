@@ -93,7 +93,7 @@
 						'enableAjaxValidation' => false,
 						'htmlOptions' => array('class' => 'form-horizontal')
 					)) ?>
- 				<div class="form-group has-error">
+ 				<div class="form-group">
  					<?= $form->labelEx($model, 'email', array('class' => 'col-xs-3 control-label')) ?>
  					<div class="col-xs-9">
  						<?= $form->textField($model, 'email', array('class' => 'form-control')) ?>
