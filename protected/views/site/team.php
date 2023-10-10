@@ -11,7 +11,7 @@
                 <h1 class="h4" id="teamPageTitle">Our team</h1>
             </div>
         </section>
-        <section class="container" aria-describedby="teamPageTitle">
+        <section aria-describedby="teamPageTitle">
             <div class="team-grid">
                 <article class="team-card">
                     <img src="../images/team/chunts.jpg" alt="Chris Hunter's portrait">
@@ -74,7 +74,7 @@
                         </h2>
                         <p>Hans is Assistant Editor at GigaScience and also writes for Laborjournal. Many years ago, Hans did research in evolutionary and developmental biology. He clipped fish fins and handled a laser beam to shoot at reproductive organs of worms. Now in safe distance from any lab bench, he works on various science communication projects.</p>
                     </div>
-                    <button class="btn toggle-more">Show More</button>
+                    <button class="btn toggle-more" aria-expanded="false">Show More</button>
                 </article>
                 <article class="team-card">
                     <img src="../images/team/nicole.png" alt="Nicole Nogoy's portrait">
@@ -84,7 +84,7 @@
                         </h2>
                         <p>Nicole has a PhD in Natural Sciences (Cardiovascular Molecular Medicine) from the University of Goettingen, Germany and obtained her BSc Hons in Biochemistry & Molecular Biology and Physiology from Victoria University of Wellington, New Zealand. Nicole has over a decade of experience in the STM publishing industry – most notably having launched and been Managing Editor of Genome Medicine, as well as the Commissioning Editor of several review journals for the Future Science Group. Nicole is now Editor with GigaScience having joined the team in 2012. She is also an Open Science, Open Data and reproducible research advocate.</p>
                     </div>
-                    <button class="btn toggle-more">Show More</button>
+                    <button class="btn toggle-more" aria-expanded="false">Show More</button>
                 </article>
                 <article class="team-card">
                     <img src="../images/team/peter.png" alt="Peter Li's portrait">
@@ -111,7 +111,7 @@
                         </h2>
                         <p>Executive Editor for GigaScience journal. Having worked in Open Access publishing for over a decade, his before that worked as a cancer molecular biologist in London and Lyon. Based in the Hong Kong office, as a self-proclaimed data nerd, outside of his day job he is Executive Committee member for Open Data Hong Kong and runs citizen science projects such as Citizenscience.Asia and the Bauhinia Genome project. Also teaching Data Management at HKU.</p>
                     </div>
-                    <button class="btn toggle-more">Show More</button>
+                    <button class="btn toggle-more" aria-expanded="false">Show More</button>
                 </article>
                 <article class="team-card">
                     <img src="../images/team/hongfang.png" alt="HongFang Zhang's portrait">
@@ -150,7 +150,7 @@
                         </h2>
                         <p>Laurie received a BSc and MSc from Stanford University in 1986, and a PhD in Biochemistry and Molecular Biology from the University of Chicago in 1991. During her graduate work, she published a novel, A Spell of Deceit, with Del Rey Books. She completed a postdoctoral fellowship at the University of Colorado at Boulder then left the bench in 1995 to work as Assistant Editor at Nature Genetics. In 1997, she moved to Cold Spring Harbor Laboratory to become the founding Editor of Genome Research and Managing Editor of Learning & Memory. In 2006, she served as the Director for the Broad Institute Museum during its incipient year. In addition to her GigaScience role, she carries out manuscript writing seminars and owns the USA-based company Goodman Writing & Editing, which provides high-level editing of scientific manuscripts and grants, with a specialty in editing manuscripts from non-native English speakers.</p>
                     </div>
-                    <button class="btn toggle-more">Show More</button>
+                    <button class="btn toggle-more" aria-expanded="false">Show More</button>
                 </article>
 
             </div>
@@ -170,9 +170,11 @@
             if (content.hasClass('collapsed')) {
                 content.removeClass('collapsed');
                 $(this).text('Show Less');
+                $(this).attr('aria-expanded', 'true');
             } else {
                 content.addClass('collapsed');
                 $(this).text('Show More');
+                $(this).attr('aria-expanded', 'false');
             }
         });
     });
