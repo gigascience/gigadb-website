@@ -1,0 +1,58 @@
+.team-grid {
+  margin-inline: -15px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  @media (min-width: 576px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (min-width: 992px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  @media (min-width: 1200px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .team-card {
+    background-color: @color-lighter-gray;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    img {
+      width: 100%;
+      height: 400px;
+      @media (min-width: 576px) {
+        height: 300px;
+      }
+      @media (min-width: 992px) {
+        height: 270px;
+      }
+      object-fit: cover;
+    }
+    .team-content {
+      padding: 15px;
+      flex-grow: 1;
+      h2 {
+        font-size: 18px;
+        margin-block: 10px;
+      }
+      .member-role {
+        display: block;
+        margin-top: 12px;
+        font-size: 13px;
+        color: @warm-black-on-lighter-gray;
+      }
+    }
+    .collapsed {
+      max-height: 16.5rem;
+      overflow: hidden;
+    }
+    .toggle-more {
+      margin-top: 4px;
+      color: @gigadb-green-on-lighter-gray;
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
+  }
+}
