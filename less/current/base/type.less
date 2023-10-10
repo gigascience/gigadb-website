@@ -12,7 +12,7 @@ h4 {
 h4, .h4 { font-size: @font-size-h4; }
 
 .text-danger {
-  color: @color-brand-danger;
+  color: @brand-danger-on-white;
 }
 
 // Body text
@@ -22,6 +22,15 @@ p {
   color: @color-darker-gray;
   line-height: 22px;
   margin-bottom: 5px
+}
+
+// Text utils
+// -------------------------
+
+.truncate-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 // Lists
@@ -34,7 +43,7 @@ ol, ul.content-text {
 }
 ol > li,
 ul.content-text > li {
-  color: @color-dark-gray;
+  color: @dark-gray-on-white;
   line-height: 22px;
 }
 

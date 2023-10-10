@@ -129,6 +129,7 @@ services:
       - ${APPLICATION}/fuw/app/common/config/bootstrap.sql:/docker-entrypoint-initdb.d/3-fuw.sql
       - ${APPLICATION}/ops/configuration/postgresql-conf/pg_hba.conf:/etc/postgresql/pg_hba.conf
     command: postgres -c 'hba_file=/etc/postgresql/pg_hba.conf' -c 'stats_temp_directory=/tmp' -c 'log_statement=none' -c 'log_min_duration_statement=1000ms'
+    stop_grace_period: 120s
     networks:
       - db-tier
 
@@ -333,22 +334,6 @@ services:
     extra_hosts:
       - "gigadb.test:172.16.238.10"
       - "fuw-admin-api:172.16.238.10"      
-    environment: # to run headless, set false and comment out port 5900 above and make sure to pass --headless arg in acceptance.suite.yml
-      START_XVFB: "false"
-
-  chrome-arm:
-    <<: *logging
-    image: seleniarm/standalone-chromium:latest
-    shm_size: '1gb' # to avoid a known issue
-    ports:
-      # - "5900:5900" #for VNC access
-      - "4444:4444" #for webdriver access
-    networks:
-      web-tier:
-        ipv4_address: 172.16.238.11
-    extra_hosts:
-      - "gigadb.test:172.16.238.10"
-      - "fuw-admin-api:172.16.238.10"
     environment: # to run headless, set false and comment out port 5900 above and make sure to pass --headless arg in acceptance.suite.yml
       START_XVFB: "false"
 

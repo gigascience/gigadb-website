@@ -1,3 +1,4 @@
+@ok-can-offline
 Feature: Change password
   As an author
   I want a form to change my password

@@ -25,14 +25,23 @@
   padding-bottom: 10px;
 }
 
+.page-title-container {
+  margin-bottom: 20px;
+}
 .page-title {
   border-bottom: 1px solid @color-light-gray;
   margin-top: 20px;
 }
-.page-title > h4 {
-  font-size: 18px;
+// NOTE need to keep h4 selector until all pages are refactored
+.page-title > :is(.page-heading,h4) {
+  font-size: @font-size-page-title;
   line-height: 1;
   display: inline-block;
   color: @color-true-black;
   margin: 0px 0px 10px;
+}
+.page-subtitle {
+  color: @darker-gray-on-white;
+  font-size: @font-size-page-subtitle;
+  margin: 20px 0px 10px;
 }
