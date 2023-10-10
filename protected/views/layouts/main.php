@@ -130,25 +130,25 @@
                      <img src="<?= Yii::app()->createAbsoluteUrl('/') .  "/images/icons/id.png" ?>"/>&nbsp;&nbsp;<?=Yii::t('app' , 'ORCID')?>
                 </a>-->
                 <a class="btn btnlog center giga-log" href="/site/login">
-                     <img src="/images/icons/giga.png"/>&nbsp;
+                     <img src="/images/icons/giga.png" alt="Login to GigaDB website"/>&nbsp;
                 </a>
              </div>
-             <div class="content-btnlog">
-                 <a class="btn btnlog facebook-log" href="/opauth/facebook">
-                     <img src="/images/icons/fb.png"/>&nbsp;&nbsp;<?=Yii::t('app' , 'Facebook')?>
-                 </a>
+            <div class="content-btnlog">
+                <a class="btn btnlog facebook-log" href="/opauth/facebook">
+                    <img src="/images/icons/fb.png" alt="Login with Facebook"/>&nbsp;&nbsp;<?=Yii::t('app' , 'Facebook')?>
+                </a>
                 <a class="btn btnlog google-log" href="/opauth/google">
-                     <img src="/images/icons/google.png"/>&nbsp;&nbsp;<?=Yii::t('app' , 'Google')?>
+                        <img src="/images/icons/google.png" alt="Login with Google" />&nbsp;&nbsp;<?=Yii::t('app' , 'Google')?>
                 </a>
-             </div>
-             <div class="content-btnlog">
+            </div>
+            <div class="content-btnlog">
                 <a class="btn btnlog twitter-log" href="/opauth/twitter">
-                     <img src="/images/icons/twi.png"/>&nbsp;&nbsp;<?=Yii::t('app' , 'Twitter')?>
+                    <img src="/images/icons/twi.png" alt="Login with twitter"/>&nbsp;&nbsp;<?=Yii::t('app' , 'Twitter')?>
                 </a>
                 <a class="btn btnlog linkedin-log" href="/opauth/linkedin">
-                    <img src="/images/icons/in.png"/>&nbsp;&nbsp;<?=Yii::t('app' , 'LinkedIn')?>
+                    <img src="/images/icons/in.png" alt="Login with LinkedIn"/>&nbsp;&nbsp;<?=Yii::t('app' , 'LinkedIn')?>
                 </a>
-             </div>
+            </div>
         </div>
 
      <?php endif ?>
