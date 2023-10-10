@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1369: Improve accessibility and layout of team page
 - Fix #1428: Increase resilience of provisioning by extracting saving EC2 IP addresses as standalone bootstrap plays
 - Feat #1368: Improve accessibility of About Page
 - Fix #1483: Fix URL creation for ftp_site field in dataset table when using files metadata console tool
