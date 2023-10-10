@@ -1,7 +1,7 @@
-# SOP: Deploying to beta.gigadb.org
+# SOP: Deploying to gigadb.org
 
 A deployment of the GigaDB website code in the `Upstream` Gitlab group to the
-`live` environment provides the website that is located at beta.gigadb.org.
+`live` environment provides the website that is located at gigadb.org.
 
 The terraform state file is stored remotely in gitlab using terraform `http` backend module,
 details of the implementation can be found at [here](https://docs.gitlab.com/ee/user/infrastructure/iac/terraform_state.html).
@@ -16,7 +16,7 @@ will be locked, this help to make sure that each developer only works on the mos
 
 ### Elastic IP addresses for staging and live environments
 
-Both the staging.gigadb.org and beta.gigadb.org domain names have been allocated
+Both the staging.gigadb.org and gigadb.org domain names have been allocated
 with AWS elastic IP addresses in the ap-east-1 region. You can check the current 
 elastic IP addresses pointing in the AWS EC2 console:
 
@@ -27,9 +27,9 @@ to get the password for the `Gigadb` AWS IAM user.
 4. Check there is an `eip-gigadb-live-gigadb` and an `eip-gigadb-staging-gigadb` 
 elastic IP address.
 
-### Domain name resolution to staging.gigadb.org and beta.gigadb.org
+### Domain name resolution to staging.gigadb.org and gigadb.org
 
-Resolution to staging and beta.gigadb.org with the above elastic IP addresses 
+Resolution to staging and gigadb.org with the above elastic IP addresses 
 require DNS A records. Check these records have been created in Alibaba Cloud 
 console:
 
@@ -42,7 +42,7 @@ the Google Authenticator app.
 4. Once logged into the console, go to the Domain Names page
 5. You will see an entry for `gigadb.org` domain - click on this
 6. You will now see the `DNS Settings gigadb.org` page. There should be an entry
-for the `beta` Host with a value equal to the `eip-gigadb-live-gigadb` elastic 
+for the Host with a value equal to the `eip-gigadb-live-gigadb` elastic 
 IP address. There will also be an entry for the `staging` Host too.
 
 ### Set up credentials for accessing AWS resources
@@ -319,7 +319,7 @@ $ env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventor
 $ env TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories webapp_playbook.yml --extra-vars="gigadb_env=live" --skip-tags fix-centos-eol-issues,setup-fail2ban
 ```
 
-## Deploy to beta.gigadb.org using CI/CD pipeline
+## Deploy to gigadb.org using CI/CD pipeline
 
 1. Go to [Gitlab Upstream pipeline page](https://gitlab.com/gigascience/upstream/gigadb-website/-/pipelines)
 and run all the jobs in the live build stage in your pipeline, including but are not limited to `build_live`, `TidewaysBuildLive`.
