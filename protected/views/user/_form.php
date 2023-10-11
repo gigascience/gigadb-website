@@ -188,7 +188,7 @@
  						<div id="preferred_link-error"><?= $form->error($model, 'preferred_link', array('class' => 'control-error help-block')) ?></div>
  					</div>
  				</div>
- 				<div class="form-group">
+ 				<div class="form-group checkbox-group">
  					<label class="col-xs-3 control-label" for="User_newsletter"><?= Yii::t('app', 'Mailing list') ?></label>
  					<div class="col-xs-9">
  						<?php echo $form->checkbox($model, 'newsletter', array('aria-describedby' => 'newsletter-desc')); ?>
@@ -197,7 +197,7 @@
  						<p>Please tick here to join the GigaDB mailing list to receive news, updates and quarterly newsletters about GigaDB</p>
  					</div>
  				</div>
- 				<div class="form-group">
+ 				<div class="form-group checkbox-group">
  					<?= $form->labelEx($model, 'terms', array('class' => 'col-xs-3 control-label')) ?>
  					<div class="col-xs-9">
  						<?php echo $form->checkbox($model, 'terms', array('aria-describedby' => $model->hasErrors('terms') ? 'terms-error terms-desc' : 'terms-desc')); ?>
@@ -213,7 +213,7 @@
  						<?php echo $form->labelEx($model, 'verifyCode', array('class' => 'col-xs-3 control-label')); ?>
  						<div class="col-xs-9">
  							<div style="width:100%">
- 								<img style="width:200px;" src="<?php echo Yii::app()->captcha->output(); ?>">
+ 								<img style="width:200px;" src="<?php echo Yii::app()->captcha->output(); ?>" alt="Type the word in the image">
  							</div>
  							<br>
  							<br>
