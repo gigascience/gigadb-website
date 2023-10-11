@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- feat #1434: Setup playwright local environment for automated accessibility testing
 - Feat #1387: Improve accessibility and layout of create user page
 - Feat #1369: Improve accessibility and layout of team page
 - Feat #1471: Improve Accessibility for Conditional Form Inputs Based on "Image Status"
