@@ -616,7 +616,6 @@ echo $form->hiddenField($model, "image_id");
         document.getElementById("datasetImage").addEventListener('change', (event) => {
             const preview = document.getElementById("imagePreview");
             if (event.target.files.length != 0) {
-                console.log('update page event.target.files.length != 0');
                 var src = URL.createObjectURL(event.target.files[0]);
                 preview.src = src;
                 imgPrevWrapper.css('display', 'flex');
@@ -625,7 +624,6 @@ echo $form->hiddenField($model, "image_id");
                 $('#showImage').css('display', 'none');
                 $('#removeButton').css('display', 'none');
             } else {
-                console.log('update page event.target.files.length == 0');
                 metaFields.css('display', '');
                 updateMetaFieldsLiveRegion(hiddenText);
                 $('#showImage').css('display', 'block');
@@ -640,7 +638,6 @@ echo $form->hiddenField($model, "image_id");
 
     document.getElementById("datasetImage").addEventListener('change', (event) => {
         if (event.target.files.length != 0) {
-            console.log('create page event.target.files.length != 0');
             imgPrevWrapper.css('display', 'flex');
             var src = URL.createObjectURL(event.target.files[0]);
             var preview = document.getElementById("imagePreview");
@@ -651,7 +648,6 @@ echo $form->hiddenField($model, "image_id");
             updateMetaFieldsLiveRegion(shownText);
             $('#showImage').css('display', 'none');
         } else {
-            console.log('create page event.target.files.length == 0');
             $('#showImage').css('display', 'block');
             $('#imagePreview').css('display', 'none');
             metaFieldsContainer.addClass('hidden');
@@ -663,7 +659,6 @@ echo $form->hiddenField($model, "image_id");
     // if no image loaded and no image selected for upload, don't show metadata fields (unless there is a custom image associated with the dataset)
     if ('' == image.src && 0 == document.getElementById("datasetImage").files.length) {
         if (0 == image_id || null == image_id) {
-            console.log('0 == image_id || null == image_id')
             imgPrevWrapper.css('display', 'none');
             metaFieldsContainer.addClass('hidden');
             metaFieldsContainer.attr('aria-hidden', 'true');
