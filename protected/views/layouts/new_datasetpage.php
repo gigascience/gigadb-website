@@ -27,7 +27,6 @@
                 <link rel="stylesheet" type="text/css" href="/fonts/open_sans/v13/open_sans.css">
                 <link rel="stylesheet" type="text/css" href="/fonts/pt_sans/v8/pt_sans.css">
                 <link rel="stylesheet" type="text/css" href="/fonts/lato/v11/lato.css">
-                <!-- <link rel="stylesheet" type="text/css" href="/css/common.css" /> -->
                 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css" />
                 <!-- Disable datatables.css whilst fixing CSS problems -->
                 <!-- <link rel="stylesheet" type="text/css" href="/css/datatables.css" /> -->
