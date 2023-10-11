@@ -149,27 +149,34 @@ table.dataset-view-table > tbody > tr {
   }
 }
 
-.dataset-table {
-  .button-column {
-    .icon {
-      padding: 2px;
-      border-radius: 3px;
-      &:focus {
-        outline: none;
-        box-shadow: 0 0 0 2px @color-gigadb-green-600;
-      }
-      display: inline-block;
-      margin-inline: 2px;
-      margin-bottom: 6px;
+.button-column {
+  .icon-wrapper {
+    display: flex;
+    justify-content: center;
+  }
+  .icon {
+    transition: transform 0.2s;
+    padding: 2px;
+    border-radius: 3px;
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px @color-gigadb-green-600;
     }
-    .icon-view,
-    .icon-update,
-    .icon-dropbox {
-      color: @color-gigadb-green-600;
+    display: inline-block;
+    margin-inline: 2px;
+    margin-bottom: 6px;
+    &:hover {
+      transform: scale(1.2);
     }
-    .icon-delete {
-      color: @color-brand-danger-400;
-    }
+  }
+  .icon-view,
+  .icon-update,
+  .icon-dropbox,
+  .icon-download {
+    color: @color-gigadb-green-600;
+  }
+  .icon-delete {
+    color: @color-brand-danger-400;
   }
 }
 
