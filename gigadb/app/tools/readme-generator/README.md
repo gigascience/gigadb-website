@@ -346,16 +346,6 @@ $ ./createReadme.sh --doi 100142 --outdir /app/readmeFiles --wasabi --apply
 You can confirm that the presence of the new readme file in the 100142 directory
 using the Wasabi web console by checking the gigadb-datasets/staging bucket.
 
-There is a batch mode for the script which can be used by providing the 
-`--batch` flag followed by a number to denote the number of datasets to be
-processed. For example, to process DOIs 100141, 100142, 100143:
-```
-$ ./createReadme.sh --doi 100141 --outdir /app/readmeFiles --wasabi --batch 3
-```
-
-You will be able to see in the latest log file in the logs directory that 3
-readme files have been created and copied into Wasabi in dry-run mode.
-
 To copy the readme file to the live data directory, use the `--use-live-data`
 and `--apply` flags:
 ```
@@ -365,3 +355,27 @@ $ ./createReadme.sh --doi 100142 --outdir /app/readmeFiles --wasabi --use-live-d
 Now check the directory for dataset 100142 in relevant location in
 gigadb-datasets/live bucket in Wasabi.
 
+There is a batch mode for the script which can be used by providing the
+`--batch` flag followed by a number to denote the number of datasets to be
+processed. For example, to process DOIs 100141, 100142, 100143:
+```
+$ ./createReadme.sh --doi 100141 --outdir /app/readmeFiles --wasabi --batch 3 --apply
+```
+
+You will be able to see in the latest log file in the logs directory that 3
+readme files have been created and copied into Wasabi in dry-run mode. To
+continue batch-generation of readme files, you need to make a note of the DOI of
+the last dataset whose readme file was created then use the following DOI in the
+next batch command, for example:
+```
+# Because the previous batch command created readme files for 100141, 100142, 100143
+$ ./createReadme.sh --doi 100144 --outdir /app/readmeFiles --wasabi --batch 3 --apply
+```
+
+N.B. Regenerating the readme files for all datasets which numbered ~2320 in
+October 2023 will take approximately 20 hours.
+
+## Troubleshooting
+
+If batch creation of readme files starts to slow down, you might be able to
+improve this problem by running `docker system prune`.
