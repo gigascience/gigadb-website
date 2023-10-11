@@ -10,8 +10,10 @@ class BaseInput extends CWidget
   public $labelOptions;
   public $errorOptions;
   public $groupOptions;
+  public $inputWrapperOptions;
 
-  protected function hasError() {
+  protected function hasError()
+  {
     return $this->model->hasErrors($this->attributeName);
   }
 
@@ -71,9 +73,11 @@ class BaseInput extends CWidget
 
     echo CHtml::openTag('div', $this->groupOptions);
     $this->renderLabel();
+    echo CHtml::openTag('div', array('class' => $this->inputWrapperOptions));
     $inputClosure();
     $this->renderDescription();
     $this->renderError();
+    echo CHtml::closeTag('div');
     echo CHtml::closeTag('div');
   }
 }

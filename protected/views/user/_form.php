@@ -87,92 +87,122 @@
 				?>
  			<?php Yii::app()->captcha->generate(); ?>
  			<p>Fields with <span class="symbol">*</span> are required.</p>
- 			<div class="create-div">
+ 			<div class="col-md-offset-2 col-md-8 well">
  				<? $form = $this->beginWidget('CActiveForm', array(
 						'id' => 'user-form',
 						'enableAjaxValidation' => false,
-						'htmlOptions' => array('class' => 'form-horizontal')
+						'htmlOptions' => array('class' => 'form-horizontal create-user-form')
 					)) ?>
- 				<div class="form-group">
- 					<?= $form->labelEx($model, 'email', array('class' => 'col-xs-3 control-label')) ?>
- 					<div class="col-xs-9">
- 						<?= $form->textField($model, 'email', array('class' => 'form-control')) ?>
- 						<font color="red"><?= $form->error($model, 'email') ?></font>
- 					</div>
- 				</div>
 
- 				<div class="form-group">
- 					<?= $form->labelEx($model, 'first_name', array('class' => 'col-xs-3 control-label')) ?>
- 					<div class="col-xs-9">
- 						<?= $form->textField($model, 'first_name', array('class' => 'form-control')) ?>
- 						<font color="red"><?= $form->error($model, 'first_name') ?></font>
- 					</div>
- 				</div>
+ 				<?php
+					$this->widget('application.components.controls.TextField', [
+						'form' => $form,
+						'model' => $model,
+						'labelOptions' => [
+							'class' => 'col-xs-3',
+						],
+						'inputWrapperOptions' => 'col-xs-9',
+						'attributeName' => 'email',
+						'inputOptions' => [
+							'required' => 'required',
+						],
+					]);
+					$this->widget('application.components.controls.TextField', [
+						'form' => $form,
+						'model' => $model,
+						'labelOptions' => [
+							'class' => 'col-xs-3',
+						],
+						'inputWrapperOptions' => 'col-xs-9',
+						'attributeName' => 'first_name',
+						'inputOptions' => [
+							'required' => 'required',
+						],
+					]);
+					$this->widget('application.components.controls.TextField', [
+						'form' => $form,
+						'model' => $model,
+						'labelOptions' => [
+							'class' => 'col-xs-3',
+						],
+						'inputWrapperOptions' => 'col-xs-9',
+						'attributeName' => 'last_name',
+						'inputOptions' => [
+							'required' => 'required',
+						],
+					]);
+					$this->widget('application.components.controls.PasswordField', [
+						'form' => $form,
+						'model' => $model,
+						'labelOptions' => [
+							'class' => 'col-xs-3',
+						],
+						'inputWrapperOptions' => 'col-xs-9',
+						'attributeName' => 'password',
+						'inputOptions' => [
+							'required' => 'required',
+						],
+					]);
+					$this->widget('application.components.controls.PasswordField', [
+						'form' => $form,
+						'model' => $model,
+						'labelOptions' => [
+							'class' => 'col-xs-3',
+						],
+						'inputWrapperOptions' => 'col-xs-9',
+						'attributeName' => 'password_repeat',
+						'inputOptions' => [
+							'required' => 'required',
+						],
+					]);
+					?>
 
- 				<div class="form-group">
- 					<?= $form->labelEx($model, 'last_name', array('class' => 'col-xs-3 control-label')) ?>
- 					<div class="col-xs-9">
- 						<?= $form->textField($model, 'last_name', array('class' => 'form-control')) ?>
- 						<font color="red"><?= $form->error($model, 'last_name') ?></font>
- 					</div>
- 				</div>
 
- 				<div class="form-group">
- 					<?= $form->labelEx($model, 'password', array('class' => 'col-xs-3 control-label')) ?>
- 					<div class="col-xs-9">
- 						<?= $form->passwordField($model, 'password', array('class' => 'form-control')) ?>
- 						<font color="red"><?= $form->error($model, 'password') ?></font>
- 					</div>
- 				</div>
-
- 				<div class="form-group">
- 					<?= $form->labelEx($model, 'password_repeat', array('class' => 'col-xs-3 control-label')) ?>
- 					<div class="col-xs-9">
- 						<?= $form->passwordField($model, 'password_repeat', array('class' => 'form-control')) ?>
- 						<font color="red"><?= $form->error($model, 'password_repeat') ?></font>
- 					</div>
- 				</div>
  				<? if (Yii::app()->user->checkAccess('admin')) { ?>
  					<div class="form-group">
  						<?= $form->labelEx($model, 'role', array('class' => 'col-xs-3 control-label')) ?>
  						<div class="col-xs-9">
- 							<?= $form->dropDownList($model, 'role', array('user' => 'user', 'admin' => 'admin', 'class' => 'dropdown-menu')) ?>
- 							<font color="red"><?= $form->error($model, 'role') ?></font>
+ 							<?= $form->dropDownList($model, 'role', array('user' => 'user', 'admin' => 'admin'), array('class' => 'form-control', 'aria-describedby' => $model->hasErrors('role') ? 'role-error' : '')) ?>
+ 							<div id="role-error"><?= $form->error($model, 'role', array('class' => 'control-error help-block')) ?></div>
  						</div>
  					</div>
  				<? } ?>
- 				<div class="form-group">
- 					<?= $form->labelEx($model, 'affiliation', array('class' => 'col-xs-3 control-label')) ?>
- 					<div class="col-xs-9">
- 						<?= $form->textField($model, 'affiliation', array('class' => 'form-control')) ?>
- 						<font color="red"><?= $form->error($model, 'affiliation') ?></font>
- 					</div>
- 				</div>
+ 				<?php
+					$this->widget('application.components.controls.TextField', [
+						'form' => $form,
+						'model' => $model,
+						'labelOptions' => [
+							'class' => 'col-xs-3',
+						],
+						'inputWrapperOptions' => 'col-xs-9',
+						'attributeName' => 'affiliation',
+						'inputOptions' => [
+							'required' => 'required',
+						],
+					]);
+					?>
  				<div class="form-group">
  					<?= $form->labelEx($model, 'preferred_link', array('class' => 'col-xs-3 control-label')) ?>
  					<div class="col-xs-9">
- 						<?= CHtml::activeDropDownList($model, 'preferred_link', User::$linkouts, array()) ?>
- 						<font color="red"><?= $form->error($model, 'preferred_link') ?></font>
+ 						<?= CHtml::activeDropDownList($model, 'preferred_link', User::$linkouts, array('class' => 'form-control', 'aria-describedby' => $model->hasErrors('preferred_link') ? 'preferred_link-error' : '')) ?>
+ 						<div id="preferred_link-error"><?= $form->error($model, 'preferred_link', array('class' => 'control-error help-block')) ?></div>
  					</div>
  				</div>
  				<div class="form-group">
- 					<label class="col-xs-3 control-label"><?= Yii::t('app', 'Mailing list') ?></label>
-
+ 					<label class="col-xs-3 control-label" for="User_newsletter"><?= Yii::t('app', 'Mailing list') ?></label>
  					<div class="col-xs-9">
- 						<?php echo $form->checkbox($model, 'newsletter'); ?>
+ 						<?php echo $form->checkbox($model, 'newsletter', array('aria-describedby' => 'newsletter-desc')); ?>
  					</div>
- 					<div class="col-xs-9">
+ 					<div class="col-xs-9" id="newsletter-desc">
  						<p>Please tick here to join the GigaDB mailing list to receive news, updates and quarterly newsletters about GigaDB</p>
  					</div>
  				</div>
  				<div class="form-group">
  					<?= $form->labelEx($model, 'terms', array('class' => 'col-xs-3 control-label')) ?>
  					<div class="col-xs-9">
- 						<?php echo $form->checkbox($model, 'terms'); ?>
- 						<font color="red"><?= $form->error($model, 'terms') ?></font>
- 					</div>
- 					<div class="col-xs-9">
- 						<p>Please tick here to confirm you have read and understood our <a href="/site/term#policies">Terms of use</a> and <a href="/site/term#privacy">Privacy Policy</a></p>
+ 						<?php echo $form->checkbox($model, 'terms', array('aria-describedby' => $model->hasErrors('terms') ? 'terms-error terms-desc' : 'terms-desc')); ?>
+ 						<div id="terms-error"><?= $form->error($model, 'terms', array('class' => 'control-error help-block')) ?></div>
+ 						<p id="terms-desc">Please tick here to confirm you have read and understood our <a href="/site/term#policies">Terms of use</a> and <a href="/site/term#privacy">Privacy Policy</a></p>
  					</div>
  				</div>
 
@@ -187,18 +217,21 @@
  							</div>
  							<br>
  							<br>
- 							<?php echo $form->textField($model, 'verifyCode', array('class' => 'form-control')); ?>
- 							<div class="hint">Please enter the letters as they are shown in the image above.
+ 							<?php echo $form->textField($model, 'verifyCode', array('class' => 'form-control', 'aria-describedby' => $model->hasErrors('verifyCode') ? 'verifyCode-error verifyCode-desc' : 'verifyCode-desc')); ?>
+ 							<div id="verifyCode-desc" class="hint control-description help-block">Please enter the letters as they are shown in the image above.
  								<br />Letters are case-sensitive.
  							</div>
- 							<?php echo $form->error($model, 'verifyCode'); ?>
+ 							<div id="verifyCode-error">
+ 								<?php echo $form->error($model, 'verifyCode', array('class' => 'control-error help-block')); ?>
+ 							</div>
  						</div>
  					</div>
  				<? } ?>
  				<hr>
- 				<div class="button-div">
- 					<?= CHtml::submitButton($model->isNewRecord ? Yii::t('app', 'Register') : 'Save', array('class' => 'btn background-btn')) ?>
+ 				<div class="pull-right">
+ 					<?= CHtml::submitButton($model->isNewRecord ? Yii::t('app', 'Register') : 'Save', array('class' => 'btn background-btn create-user-submit-btn')) ?>
  				</div>
+ 				<div class="clearfix"></div>
  				<? $this->endWidget() ?>
  			</div><!--well-->
 
