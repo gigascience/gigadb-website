@@ -1,4 +1,4 @@
-@ok-can-offline
+@ok-needs-secrets
 Feature: admin Dashboard
   as a curator
   I want to access and admin dashboard
