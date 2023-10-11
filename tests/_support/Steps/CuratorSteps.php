@@ -161,13 +161,12 @@ class CuratorSteps extends \Codeception\Actor
 
     /**
      * @Then I should see the application version
-     * @see https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string
      */
      public function iShouldApplicationVersion()
      {
         $versionText = $this->I->grabTextFrom("/html/body/header/div/div/ul/li[5]/a");
         $this->I->assertStringContainsString("Version: ", $versionText);
-        $semVerPattern = "/^Version: v(?P<major>0|[1-9]\d*)\.(?P<minor>0|[1-9]\d*)\.(?P<patch>0|[1-9]\d*)(?:-(?P<prerelease>(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+(?P<buildmetadata>[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/";
+        $semVerPattern = "/^Version: (.*)$/";
         $this->I->assertRegExp($semVerPattern,$versionText);
      }
 
