@@ -6,13 +6,17 @@
     <!-- FILTERS FOR DATASETS -->
     <div id="dataset_filter">
         <div class="filter">
-            <button class='h4 heading toggle-btn js-toggle-btn' type="button" aria-expanded="true" aria-controls="result_type"><?= Yii::t('app', 'Type') ?> <i class="fa fa-caret-up js-caret-type" aria-hidden="true"></i></button>
+            <button class='h4 heading toggle-btn js-toggle-btn' type="button" aria-expanded="true" aria-controls="result_type"><span id="filterLabelType">Filter by <?= Yii::t('app', 'Type') ?></span> <i class="fa fa-caret-up js-caret-type" aria-hidden="true"></i></button>
             <div id="result_type" class='filter-content js-filter-content' style="<?= $model->type ? 'display:block;' : 'display:none;' ?>">
-                <button class="btn btn-default btn-filter js-btn-filter" id="btn_type"><? if (empty($model->type)) echo Yii::t('app', 'Enable All');
-                                                                else echo Yii::t('app', 'Disable'); ?></button>
-                <div class="options <? if (empty($model->type)) echo 'disabled'; ?> ">
-                    <? echo CHtml::checkBoxList("type", $model->type, array('dataset' => 'Dataset', 'sample' => 'Sample', 'file' => 'File'), array('class' => 'type')); ?>
-                </div>
+                <fieldset aria-labelledby="filterLabelType">
+                    <button class="btn btn-default btn-filter js-btn-filter" id="btn_type">
+                        <? if (empty($model->type)) echo Yii::t('app', 'Enable All');
+                        else echo Yii::t('app', 'Disable'); ?>
+                    </button>
+                    <div class="options <? if (empty($model->type)) echo 'disabled'; ?> ">
+                        <? echo CHtml::checkBoxList("type", $model->type, array('dataset' => 'Dataset', 'sample' => 'Sample', 'file' => 'File'), array('class' => 'type')); ?>
+                    </div>
+                </fieldset>
             </div>
         </div>
 
