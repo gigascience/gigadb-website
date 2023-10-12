@@ -1,9 +1,9 @@
-
 # GigaDB Changelog
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
+- Docs #1421: Update production deployment SOP and create troubleshooting guide for the deployment process
 - Docs #1421: Update more information on terraform usage and how to check the existing infrastructure is matched with the resources in terraform state stored in GitLab for the upstream deployment
 - Feat #1460: Admin dashboard updated to same more modern look as the public side
 - Fix #1102: On sample admin form, save all valid sample attributes while showing errors for non-existent attributes- Feat #1460: Update admin dashboard styles to modern look
