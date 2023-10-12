@@ -2,8 +2,26 @@
 
 This page provides solution for the problems when deploying the production GigaDB Website.
 
+### How to check the servers' status
 
-### How to login the webapp server visa ssh
+The status of GigaDB servers can be checked from the UptimeRobot [Dashboard](https://stats.uptimerobot.com/LGVQXSkN1y). 
+The setup of UptimeRobot page can refer to this [doc](../UPTIME_STATUS_PAGE.md).
+
+### How to access GigaDB Website Tideways dashboard
+
+[Tideways](https://tideways.com/) is used to monitor, profile and track exceptions of GigaDB Website.
+After login [Tideways](https://app.tideways.io/login) with the credentials for `tech@gigasciencejournal.com`, you would see a dashboard of `Gigadb` organization with a service monitoring the staging and live of `gigascience/upstream/gigadb-website`.
+
+### How to access GigaDB Website Grafana dashboard
+
+The system resources and performance of GigaDB servers are monitored by [Prometheus](https://prometheus.io/) and [Grafana](https://grafana.com/),
+these two tools work together to detect and alert about possible errors, eg. disk full, low memory utilization.
+
+Here is the grafana [dashboard](http://monitoring.gigadb.host:3000/login), the login credentials can be obtained from [here](https://gitlab.com/groups/gigascience/-/settings/ci_cd).
+
+Before you try to reach the grafana dashboard, your computer's IP has to be first  added into the security group of the monitoring instance in the AWS [dashboard](https://ap-east-1.console.aws.amazon.com/ec2/home?region=ap-east-1#Home:)
+
+### How to login the webapp server via ssh
 
 The webapp server can only be accessed through the bastion server for security reason, details as below:
 ```
@@ -234,5 +252,23 @@ Terraform has been successfully initialized!
 ```
 ### What to do if Ansible playbook execution fails
 
+1. Make sure `ansible` is installed,  and here is the [installation guide](https://docs.ansible.com/ansible/latest/installation_guide/index.html).
+2. Make sure the third party Ansible roles are installed, run the following cmd to force overwriting an existing role if not sure:
+```
+$ ansible-galaxy install --force -r ../../../infrastructure/requirements.yml
+```
+
+
 ### What if Ansible playbook cannot find host IP addresses
+
+1. Make sure `terraform output` can produce bastion server IP and webapp server IP and the `terraform-inventory.sh` is working:
+```
+$ ../../inventories/terraform-inventory.sh --list
+```
+The terraform inventory script would look into the terraform state and should be able to output the resources information in a json format. 
+2. Make sure the IPs have been added to the local `~/.ssh/known_hosts` file using:
+```
+$ ../../../scripts/ansible_init.sh --env live
+```
+
 

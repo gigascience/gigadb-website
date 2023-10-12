@@ -9,6 +9,8 @@ As a result, the state file can be shared which allows multiple developers to pr
 One important thing to note is that the existing infrastructure can only be provisioned by 1 developer at a time, as the remote state file
 will be locked, this help to make sure that each developer only works on the most recent infrastructure.
 
+If you have any problem during the deployment process, please first check the [troubleshooting guide](PRODUCTION_TROUBLESHOOT.md).
+
 ## Prerequisites
 
 ### AWS IAM policies
@@ -195,6 +197,11 @@ Provision web application server:
 $ env TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories webapp_playbook.yml --extra-vars="gigadb_env=staging"
 ```
 
+Provision monitoring server:
+```
+$ env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories monitoring_playbook.yml
+```
+
 Additional features for executing ansible playbooks:
 ```
 # display all availale plays
@@ -275,6 +282,11 @@ Copy ansible files into `live` environment:
 $ ../../../scripts/ansible_init.sh --env live
 ```
 
+Install third party Ansible roles:
+```
+$ ansible-galaxy install -r ../../../infrastructure/requirements.yml
+```
+
 Provision RDS via bastion server:
 ```
 $ env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories bastion_playbook.yml --extra-vars="gigadb_env=staging"
@@ -304,6 +316,11 @@ $ ssh -i ~/.ssh/id-rsa-aws-hk-gigadb.pem centos@<bastion public ip>
 Provision web application server:
 ```
 $ TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories webapp_playbook.yml --extra-vars="gigadb_env=staging"
+```
+
+Provision monitoring server:
+```
+$ env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories monitoring_playbook.yml
 ```
 
 Additional features for executing ansible playbooks:
