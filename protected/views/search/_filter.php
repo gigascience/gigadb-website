@@ -1,4 +1,4 @@
-<h2 class="filter-your-result">Filter your result</h2>
+<h2 class="filters-title">Filter your result</h2>
 
 <form id="filter_form" method="GET">
 <input type="hidden" name="keyword" value="<?= $model->keyword ?>"/>
@@ -6,7 +6,7 @@
 <!-- FILTERS FOR DATASETS -->
     <div id="dataset_filter">
         <div class="filter">
-            <div class='h4 heading'><?=Yii::t('app' , 'Type')?></div>
+            <div class='h4 heading toggle-btn'><?=Yii::t('app' , 'Type')?></div>
             <div id="result_type" class='filter-content' style="<?= $model->type ? 'display:block;': 'display:none;'?>">
                 <button class="btn btn_filter" id="btn_type"><? if(empty($model->type)) echo Yii::t('app' , 'Enable All'); else echo Yii::t('app' , 'Disable'); ?></button>
                 <div class="options <? if(empty($model->type)) echo 'disabled'; ?> ">
@@ -25,7 +25,7 @@
 
 
     <?php
-        echo CHtml::submitButton(Yii::t('app' ,'Apply Filter'), array('class'=>'span2 btn-green filter'));
+        echo CHtml::submitButton(Yii::t('app' ,'Apply Filter'), array('class'=>'btn background-btn filter'));
         echo CHtml::endForm();
     ?>
 

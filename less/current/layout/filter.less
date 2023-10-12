@@ -2,27 +2,20 @@
   float: left;
   margin-left: 20px;
 }
-.filter-your-result {
+.filters-title {
   font-size: 18px;
   font-weight: bold;
-  color: #6ea23a;
+  color: @gigadb-green-on-white;
   margin-top: 0;
   margin-bottom: 20px !important;
 }
 .filter {
   margin-bottom: 10px;
 }
-.filter :is(h4,.h4) {
-  background: #a5cc7e;
-  background: -webkit-gradient(linear,0 0,0 bottom,from(#a5cc7e),to(#6ea23a));
-  background: -webkit-linear-gradient(#a5cc7e,#6ea23a);
-  background: -moz-linear-gradient(#a5cc7e,#6ea23a);
-  background: -ms-linear-gradient(#a5cc7e,#6ea23a);
-  background: -o-linear-gradient(#a5cc7e,#6ea23a);
-  background: linear-gradient(#a5cc7e,#6ea23a);
-  -pie-background: linear-gradient(#a5cc7e,#6ea23a);
+.filter .toggle-btn {
+  background: @color-gigadb-green;
   behavior: url(/css/PIE.htc);
-  color: @color-true-white;
+  color: @white-on-gigadb-green;
   line-height: 2em;
   text-align: center;
   margin-bottom: -2px;
@@ -65,7 +58,7 @@
 }
 .filter .disabled label,
 .filter .disabled input {
-  color: #8A8A8A;
+  color: #8a8a8a;
 }
 .filter button.btn {
   border-left: 1px solid @color-medium-gray;
