@@ -14,7 +14,12 @@
                         else echo Yii::t('app', 'Disable'); ?>
                     </button>
                     <div class="options <? if (empty($model->type)) echo 'disabled'; ?> ">
-                        <? echo CHtml::checkBoxList("type", $model->type, array('dataset' => 'Dataset', 'sample' => 'Sample', 'file' => 'File'), array('class' => 'type')); ?>
+                        <? echo CHtml::checkBoxList(
+                            "type",
+                            $model->type,
+                            array('dataset' => 'Dataset', 'sample' => 'Sample', 'file' => 'File'),
+                            array('class' => 'type', 'template' => '<div class="filter-checkbox">{input}{label}</div>')
+                        ); ?>
                     </div>
                 </fieldset>
             </div>
