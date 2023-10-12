@@ -1,3 +1,4 @@
+# TODO Renaming this test to run first, otherwise it fails. Need to figure out why and fix.
 @ok-can-offline
 Feature: main search function
   As a website user
