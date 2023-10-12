@@ -31,7 +31,7 @@ elastic IP address.
 
 ### Domain name resolution to staging.gigadb.org and gigadb.org
 
-Resolution to staging and gigadb.org with the above elastic IP addresses 
+Resolution to staging and live gigadb.org with the above elastic IP addresses 
 require DNS A records. Check these records have been created in Alibaba Cloud 
 console:
 
