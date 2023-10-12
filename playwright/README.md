@@ -3,15 +3,14 @@
 ## Run tests locally
 
 - First, make sure project is running locally on [http://gigadb.gigasciencejournal.com:9170](http://gigadb.gigasciencejournal.com:9170)
-- Have `pnpm` installed: [https://pnpm.io/installation](https://pnpm.io/installation)
 
 ```sh
 # cd to this folder
 cd playwright
 # install deps
-pnpm i
+npm i
 # Run all tests
-pnpm test
+npm test
 ```
 
 - Alternative: for VSCODE users, the [official Playwright VSCODE extension](https://playwright.dev/docs/getting-started-vscode) is recommended
