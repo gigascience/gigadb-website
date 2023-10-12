@@ -16,6 +16,7 @@ After login [Tideways](https://app.tideways.io/login) with the credentials for `
 
 The system resources and performance of GigaDB servers are monitored by [Prometheus](https://prometheus.io/) and [Grafana](https://grafana.com/),
 these two tools work together to detect and alert about possible errors, eg. disk full, low memory utilization.
+The details of GigaDB monitoring system implementation, please refer to this [doc](MONITORING.md).
 
 Here is the grafana [dashboard](http://monitoring.gigadb.host:3000/login), the login credentials can be obtained from [here](https://gitlab.com/groups/gigascience/-/settings/ci_cd).
 
