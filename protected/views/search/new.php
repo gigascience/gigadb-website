@@ -18,7 +18,7 @@
                 <div class="row">
 
                     <div class="col-xs-4 search-filter-sidebar">
-                        <h4 class="search-result-title">Search result for <span><i><?php echo $model->keyword ?></i></span></h4>
+                        <h4 class="search-result-title">Search result for <span class="search-result-keyword"><i><?php echo $model->keyword ?></i></span></h4>
                           <p><?php $this->renderPartial('_range', array(
                                     'total_dataset'=>$datasets['total'],
                                     'page'=>$page,
