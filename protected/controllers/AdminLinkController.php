@@ -242,6 +242,8 @@ class AdminLinkController extends Controller
 		if(isset($_GET['Link']))
 			$model->setAttributes($_GET['Link']);
 
+		$this->layout = 'new_main';
+		$this->loadBaBbqPolyfills = true;
 		$this->render('admin',array(
 			'model'=>$model,
 		));
