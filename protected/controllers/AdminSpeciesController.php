@@ -135,6 +135,8 @@ class AdminSpeciesController extends Controller
 		if(isset($_GET['Species']))
 			$model->setAttributes($_GET['Species']);
 
+		$this->layout = 'new_main';
+		$this->loadBaBbqPolyfills = true;
 		$this->render('admin',array(
 			'model'=>$model,
 		));
