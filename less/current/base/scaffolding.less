@@ -2,7 +2,8 @@
 // Scaffolding
 // --------------------------------------------------
 
-html, body {
+html,
+body {
   font-size: @font-size-base;
   font-family: @font-family-base;
   line-height: @line-height-base;
@@ -97,25 +98,26 @@ a.btn:focus {
   background-color: transparent !important;
 }
 
-.clearfix::before, .clearfix::after {
-  content:"";
+.clearfix::before,
+.clearfix::after {
+  content: "";
   display: table;
   clear: both;
 }
 
 .clearfix {
-  zoom: 1;   /*兼容IE6/7*/
+  zoom: 1; /*兼容IE6/7*/
 }
 
-body{
-  position:relative;
+body {
+  position: relative;
 }
 
 .page_box {
   color: @color-gigadb-green;
   background: @color-true-white;
   border: solid 1px @color-gigadb-green;
-  outline:none;
+  outline: none;
 }
 
 //input {
@@ -129,7 +131,7 @@ body{
 
 .well {
   background-color: @color-lighter-gray;
-  a {
+  a:not(.btn) {
     color: @gigadb-green-on-lighter-gray;
   }
   .help-block {
