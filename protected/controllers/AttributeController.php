@@ -138,6 +138,8 @@ class AttributeController extends Controller
 		if(isset($_GET['Attribute']))
 			$model->setAttributes($_GET['Attribute']);
 
+		$this->layout = 'new_main';
+		$this->loadBaBbqPolyfills = true;
 		$this->render('admin',array(
 			'model'=>$model,
 		));
