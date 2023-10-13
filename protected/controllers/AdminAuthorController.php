@@ -310,6 +310,8 @@ class AdminAuthorController extends Controller
 		if(isset($_GET['Author']))
 			$model->setAttributes($_GET['Author']);
 
+		$this->layout = 'new_main';
+		$this->loadBaBbqPolyfills = true;
 		$this->render('admin',array(
 			'model'=>$model,
 		));
