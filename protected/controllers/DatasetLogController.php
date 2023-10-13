@@ -128,6 +128,8 @@ class DatasetLogController extends Controller
 		if(isset($_GET['DatasetLog']))
 			$model->setAttributes($_GET['DatasetLog']);
 
+		$this->layout = 'new_main';
+		$this->loadBaBbqPolyfills = true;
 		$this->render('admin',array(
 			'model'=>$model,
 		));
