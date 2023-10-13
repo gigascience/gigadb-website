@@ -135,6 +135,8 @@ class AdminPublisherController extends Controller
 		if(isset($_GET['Publisher']))
 			$model->setAttributes($_GET['Publisher']);
 
+		$this->layout = 'new_main';
+		$this->loadBaBbqPolyfills = true;
 		$this->render('admin',array(
 			'model'=>$model,
 		));
