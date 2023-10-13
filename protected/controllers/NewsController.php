@@ -139,6 +139,8 @@ class NewsController extends Controller
 		if(isset($_GET['News']))
 			$model->setAttributes($_GET['News']);
 
+		$this->layout = 'new_main';
+		$this->loadBaBbqPolyfills = true;
 		$this->render('admin',array(
 			'model'=>$model,
 		));
