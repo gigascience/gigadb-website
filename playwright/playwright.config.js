@@ -38,10 +38,10 @@ module.exports = defineConfig({
       name: 'setup',
       testMatch: /.*\.setup\.js/
     },
-    // {
-    //   name: 'chromium',
-    //   use: { ...devices['Desktop Chrome'] },
-    // },
+    {
+      name: 'chromium',
+      use: { ...devices['Desktop Chrome'] },
+    },
 
     {
       name: 'firefox',
