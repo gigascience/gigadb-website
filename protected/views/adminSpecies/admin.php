@@ -2,10 +2,10 @@
 
 	<?php
 	$this->widget('TitleBreadcrumb', [
-		'pageTitle' => 'Manage Files',
+		'pageTitle' => 'Manage Species',
 		'breadcrumbItems' => [
 			['label' => 'Datasets', 'href' => '/site/admin'],
-			['isActive' => true, 'label' => 'Manage Species'],
+			['isActive' => true, 'label' => 'Manage'],
 		]
 	]);
 	?>

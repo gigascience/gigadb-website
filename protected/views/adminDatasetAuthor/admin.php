@@ -4,7 +4,7 @@
 		'pageTitle' => 'Manage Dataset - Authors',
 		'breadcrumbItems' => [
 			['label' => 'Admin', 'href' => '/site/admin'],
-			['isActive' => true, 'label' => 'Dataset:Authors'],
+			['isActive' => true, 'label' => 'Manage'],
 		]
 	]);
 	?>

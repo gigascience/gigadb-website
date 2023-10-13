@@ -2,10 +2,10 @@
 
 	<?php
 	$this->widget('application.components.TitleBreadcrumb', [
-		'pageTitle' => 'Manage Files',
+		'pageTitle' => 'Manage Links',
 		'breadcrumbItems' => [
 			['label' => 'Datasets', 'href' => '/site/admin'],
-			['isActive' => true, 'label' => 'Manage Links'],
+			['isActive' => true, 'label' => 'Manage'],
 		]
 	]);
 	?>

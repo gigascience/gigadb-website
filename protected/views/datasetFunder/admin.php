@@ -1,10 +1,10 @@
 <div class="container">
 	<?php
 	$this->widget('TitleBreadcrumb', [
-		'pageTitle' => 'Manage Files',
+		'pageTitle' => 'Manage Dataset Funders',
 		'breadcrumbItems' => [
 			['label' => 'Datasets', 'href' => '/site/admin'],
-			['isActive' => true, 'label' => 'Manage Dataset Funders'],
+			['isActive' => true, 'label' => 'Manage'],
 		]
 	]);
 	?>
