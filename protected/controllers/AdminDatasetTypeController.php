@@ -135,6 +135,8 @@ class AdminDatasetTypeController extends Controller
 		if(isset($_GET['Type']))
 			$model->setAttributes($_GET['Type']);
 
+		$this->layout = 'new_main';
+		$this->loadBaBbqPolyfills = true;
 		$this->render('admin',array(
 			'model'=>$model,
 		));
