@@ -178,6 +178,8 @@ class DatasetFunderController extends Controller
 		if(isset($_GET['DatasetFunder']))
 			$model->setAttributes($_GET['DatasetFunder'],true);
 
+		$this->layout = 'new_main';
+		$this->loadBaBbqPolyfills = true;
 		$this->render('admin',array(
 			'model'=>$model,
 		));
