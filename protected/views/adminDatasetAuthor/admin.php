@@ -24,11 +24,7 @@
 			array('name' => 'author_name_search', 'value' => '$data->author->name'),
 			array('name' => 'orcid_search', 'value' => '$data->author->orcid', 'htmlOptions' => array('width' => '200')),
 			array('name' => 'rank_search', 'value' => '$data->rank', 'htmlOptions' => array('width' => '100')),
-			array(
-				'header' => 'Actions',
-				'class' => 'CButtonColumn',
-				'htmlOptions' => array('width' => '75')
-			),
+			CustomGridView::getDefaultActionButtonsConfig()
 		),
 	)); ?>
 

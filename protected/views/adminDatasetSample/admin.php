@@ -26,11 +26,7 @@
 			'sample_id',
 			array('name' => 'sample_name', 'value' => '$data->sample->name'),
 			array('header' => 'Sample Attributes', 'type' => 'raw', 'value' => 'FormattedDatasetSamples::getDisplayAttr($data->sample->id,$data->sample->getSampleAttributeArrayMap())'),
-			array(
-				'header' => 'Actions',
-				'class' => 'CButtonColumn',
-				'htmlOptions' => array('width' => '75')
-			),
+			CustomGridView::getDefaultActionButtonsConfig()
 		),
 	)); ?>
 
