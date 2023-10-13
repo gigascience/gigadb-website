@@ -23,39 +23,43 @@
 		$origin_author = Author::model()->findByPk(Yii::app()->session['merge_author']);
 	}
 	?>
-	<div class="clear"></div>
 	<?php if (null != $user) { ?>
 		<?php
 		$existing_link = Author::findAttachedAuthorByUserId($user->id);
 		if (null == $existing_link) {
 		?>
-			<div class="alert alert-info">
+			<div class="alert alert-info alert-flex">
+				<span>
+					Click on a row to proceed with linking that author with user <? echo $user->first_name . " " . $user->last_name ?>
+				</span>
 				<?php echo CHtml::link('&times;', array(
 					'adminAuthor/prepareUserLink',
 					'user_id' => $user->id, 'abort' => 'yes'
-				), array('class' => 'close', 'data-dismiss' => 'alert')); ?>
-				Click on a row to proceed with linking that author with user <? echo $user->first_name . " " . $user->last_name ?></div>
+				), array('class' => 'close close-btn', 'data-dismiss' => 'alert', 'aria-label' => 'close')); ?>
+			</div>
 		<? } else { ?>
-			<div class="alert alert-warning">
+			<div class="alert alert-warning alert-flex">
+				<span>
+					The user <? echo $user->first_name . " " . $user->last_name ?> is already associated to author <? echo $existing_link->getDisplayName() . " (" . $existing_link->id . ")" ?>
+				</span>
 				<?php echo CHtml::link('&times;', array(
 					'adminAuthor/prepareUserLink',
 					'user_id' => $user->id, 'abort' => 'yes'
-				), array('class' => 'close', 'data-dismiss' => 'alert')); ?>
-				The user <? echo $user->first_name . " " . $user->last_name ?> is already associated to author <? echo $existing_link->getDisplayName() . " (" . $existing_link->id . ")" ?>
+				), array('class' => 'close close-btn', 'data-dismiss' => 'alert', 'aria-label' => 'close')); ?>
 			</div>
 		<? } ?>
 	<? } ?>
 
 	<?php
-
 	if (!empty($origin_author)) {
-		echo "<div class=\"alert alert-info\">";
+		echo "<div class=\"alert alert-info alert-flex\">";
+
+		echo "<span>Click on a row to proceed with merging that author with author {$origin_author->getDisplayName()}</span>";
+
 		echo CHtml::link('&times;', array(
 			'adminAuthor/prepareAuthorMerge',
 			'origin_author_id' => $origin_author->id, 'abort' => 'yes'
-		), array('class' => 'close', 'data-dismiss' => 'alert'));
-
-		echo "Click on a row to proceed with merging that author with author {$origin_author->getDisplayName()}";
+		), array('class' => 'close close-btn', 'data-dismiss' => 'alert', 'aria-label' => 'close'));
 
 		echo "</div>";
 	}
@@ -127,8 +131,8 @@
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h4 class="modal-title">Confirm linking this author to the user?</h4>
+				<button type="button" class="close modal-close-btn" data-dismiss="modal" aria-label="close">&times;</button>
+				<h2 class="h4 modal-title">Confirm linking this author to the user?</h2>
 			</div>
 			<?php if (!empty($user)) { ?>
 				<div class="modal-body">
@@ -174,13 +178,13 @@
 						</tbody>
 					</table>
 				</div>
-				<div class="modal-footer">
+				<div class="modal-footer modal-footer-flex">
 					<a href="#" class="btn btn-active" title="link" onclick="link_to_author();">Link user <? echo $user->first_name . " " . $user->last_name ?> to that author</a>
 					<?php echo CHtml::link('Abort and clear selected user', array(
 						'adminAuthor/prepareUserLink',
 						'user_id' => $user->id, 'abort' => 'yes'
 					), array('class' => 'btn btn-active')); ?>
-					<a type="button" class="btn close" data-dismiss="modal" aria-hidden="true">Close</a>
+					<button class="btn modal-close-btn" data-dismiss="modal" aria-label="close">Close</button>
 				</div>
 			<? } ?>
 		</div>
