@@ -249,6 +249,8 @@ class AdminRelationController extends Controller
 		if(isset($_GET['Relation']))
 			$model->setAttributes($_GET['Relation']);
 
+        $this->layout = 'new_main';
+        $this->loadBaBbqPolyfills = true;
 		$this->render('admin',array(
 			'model'=>$model,
 		));

@@ -1,19 +1,65 @@
+<div class="container">
 
-<h1>Manage Relations</h1>
+    <?php
+    $this->widget('TitleBreadcrumb', [
+        'pageTitle' => 'Manage Relations',
+        'breadcrumbItems' => [
+            ['label' => 'Datasets', 'href' => '/site/admin'],
+            ['isActive' => true, 'label' => 'Manage'],
+        ]
+    ]);
+    ?>
 
-<a href="/adminRelation/create" class="btn">Create A New Relation</a>
-
-<?php $this->widget('zii.widgets.grid.CGridView', array(
-    'id'=>'relation-grid',
-    'dataProvider'=>$model->search(),
-    'itemsCssClass'=>'table table-bordered',
-    'filter'=>$model,
-    'columns'=>array(
-        array('name'=> 'doi_search', 'value'=>'$data->dataset->identifier'),
-        'related_doi',
-        array('name'=> 'relationship_name', 'value'=>'$data->relationship->name'),
-        array(
-            'class'=>'CButtonColumn',
+    <div class="mb-10">
+        <a href="/adminRelation/create" class="btn background-btn">Create A New Relation</a>
+    </div>
+    <p>
+        Column headers with links are sortable. Cells with a text input are used for filtering.
+    </p>
+    <?php $this->widget('CustomGridView', array(
+        'id' => 'relation-grid',
+        'dataProvider' => $model->search(),
+        'itemsCssClass' => 'table table-bordered',
+        'filter' => $model,
+        'columns' => array(
+            array('name' => 'doi_search', 'value' => '$data->dataset->identifier', 'headerHtmlOptions' => array('style' => 'width: 120px')),
+            'related_doi',
+            array('name' => 'relationship_name', 'value' => '$data->relationship->name'),
+            array(
+                'class' => 'CButtonColumn',
+                'header' => "Actions",
+                'headerHtmlOptions' => array('style' => 'width: 120px'),
+                'template' => '{view}{update}{delete}',
+                'buttons' => array(
+                    'view' => array(
+                        'imageUrl' => false,
+                        'label' => '',
+                        'options' => array(
+                            "title" => "View",
+                            "class" => "fa fa-eye fa-lg icon icon-view",
+                            "aria-label" => "View"
+                        ),
+                    ),
+                    'update' => array(
+                        'imageUrl' => false,
+                        'label' => '',
+                        'options' => array(
+                            "title" => "Update",
+                            "class" => "fa fa-pencil fa-lg icon icon-update",
+                            "aria-label" => "Update"
+                        ),
+                    ),
+                    'delete' => array(
+                        'imageUrl' => false,
+                        'label' => '',
+                        'options' => array(
+                            "title" => "Delete",
+                            "class" => "fa fa-trash fa-lg icon icon-delete",
+                            "aria-label" => "Delete"
+                        ),
+                    ),
+                ),
+            ),
         ),
-    ),
-)); ?>
+    )); ?>
+</div>
