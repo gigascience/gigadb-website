@@ -4,7 +4,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+
 - Feat #1443: Make ansible playbooks can execute plays separately by adding tags
+- Fix #1428: Increase resilience of provisioning by extracting saving EC2 IP addresses as standalone bootstrap plays
+- Feat #1368: Improve accessibility of About Page
 - Fix #1483: Fix URL creation for ftp_site field in dataset table when using files metadata console tool
 - Feat #1374: Improve accessibility and use of semantic html of search results card
 - Fix #1449: Fix issue preventing deployment to live production environment bastion server
