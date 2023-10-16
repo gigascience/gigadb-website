@@ -1,35 +1,51 @@
-<div class="form">
+<div class="section form row">
 
-<?php $form=$this->beginWidget('CActiveForm', array(
-	'id'=>'dataset-sample-form',
-	'enableAjaxValidation'=>false,
-)); ?>
+	<div class="col-md-offset-3 col-md-6">
+		<?php $form = $this->beginWidget('CActiveForm', array(
+			'id' => 'dataset-sample-form',
+			'enableAjaxValidation' => false,
+		)); ?>
 
-	<p class="note">Fields with <span class="required">*</span> are required.</p>
+		<p class="note">Fields with <span class="required">*</span> are required.</p>
 
-	<?php echo $form->errorSummary($model); ?>
+		<?php if ($model->hasErrors()) : ?>
+			<div class="alert alert-danger">
+				<?php echo $form->errorSummary($model); ?>
+			</div>
+		<?php endif; ?>
 
-	<div class="control-group">
-		<?php echo $form->labelEx($model,'dataset_id',array('class'=>'control-label')); ?>
-				<div class="controls">
-        <?= CHtml::activeDropDownList($model,'dataset_id',CHtml::listData(Util::getDois(),'id','identifier')); ?>
-		<?php echo $form->error($model,'dataset_id'); ?>
-				</div>
+		<?php
+		$this->widget('application.components.controls.DropdownField', [
+			'form' => $form,
+			'model' => $model,
+			'attributeName' => 'dataset_id',
+			'listDataOptions' => [
+				'data' => Util::getDois(),
+				'valueField' => 'id',
+				'textField' => 'identifier',
+			],
+		]);
+		?>
+
+		<?php
+		$this->widget('application.components.controls.DropdownField', [
+			'form' => $form,
+			'model' => $model,
+			'attributeName' => 'sample_id',
+			'listDataOptions' => [
+				'data' => Sample::model()->findAll(array('limit' => 10000, 'order' => 'id DESC')),
+				'valueField' => 'id',
+				'textField' => 'id',
+			],
+		]);
+		?>
+
+		<div class="pull-right">
+			<a href="/adminDatasetSample/admin" class="btn background-btn-o">Cancel</a>
+			<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => 'btn background-btn')); ?>
+		</div>
+
+		<?php $this->endWidget(); ?>
 	</div>
 
-	<div class="control-group">
-		<?php echo $form->labelEx($model,'sample_id',array('class'=>'control-label')); ?>
-				<div class="controls">
-        <?= CHtml::activeDropDownList($model,'sample_id',CHtml::listData(Sample::model()->findAll(array('limit' => 10000,'order'=>'id DESC')),'id','id')); ?>
-		<?php echo $form->error($model,'sample_id'); ?>
-				</div>
-	</div>
-
-	<div class="row buttons">
-        <a href="/adminDatasetSample/admin" class="btn">Cancel</a>
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save',array('class'=>'btn')); ?>
-	</div>
-
-<?php $this->endWidget(); ?>
-
-</div><!-- form -->
+</div>
