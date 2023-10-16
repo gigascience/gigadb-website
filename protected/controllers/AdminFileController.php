@@ -547,6 +547,8 @@ class AdminFileController extends Controller
     {
         $model = new Folder;
         $buff = array();
+        $this->layout = 'new_datasetpage';
+
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
