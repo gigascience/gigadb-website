@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## Unreleased
 
 
+- Feat #1434: Setup playwright local environment for automated accessibility testing
 - Feat #1443: Make ansible playbooks can execute plays separately by adding tags
 - Fix #1428: Increase resilience of provisioning by extracting saving EC2 IP addresses as standalone bootstrap plays
 - Feat #1368: Improve accessibility of About Page
