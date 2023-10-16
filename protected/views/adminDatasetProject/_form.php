@@ -1,35 +1,55 @@
-<div class="form">
+<div class="section form row">
 
-<?php $form=$this->beginWidget('CActiveForm', array(
-	'id'=>'dataset-project-form',
-	'enableAjaxValidation'=>false,
-)); ?>
+	<div class="col-md-offset-3 col-md-6">
+		<?php $form = $this->beginWidget('CActiveForm', array(
+			'id' => 'dataset-project-form',
+			'enableAjaxValidation' => false,
+		)); ?>
 
-	<p class="note">Fields with <span class="required">*</span> are required.</p>
+		<?php if ($model->hasErrors()) : ?>
+			<div class="alert alert-danger">
+				<?php echo $form->errorSummary($model); ?>
+			</div>
+		<?php endif; ?>
 
-	<?php echo $form->errorSummary($model); ?>
+		<?php
+		$this->widget('application.components.controls.DropdownField', [
+			'form' => $form,
+			'model' => $model,
+			'attributeName' => 'dataset_id',
+			'listDataOptions' => [
+				'data' => Util::getDois(),
+				'valueField' => 'id',
+				'textField' => 'identifier',
+			],
+			'inputOptions' => [
+				'required' => true,
+			],
+		]);
+		?>
 
-	<div class="control-group">
-		<?php echo $form->labelEx($model,'dataset_id',array('class'=>'control-label')); ?>
-				<div class="controls">
-        <?= CHtml::activeDropDownList($model,'dataset_id',CHtml::listData(Util::getDois(),'id','identifier')); ?>
-		<?php echo $form->error($model,'dataset_id'); ?>
-				</div>
+		<?php
+		$this->widget('application.components.controls.DropdownField', [
+			'form' => $form,
+			'model' => $model,
+			'attributeName' => 'project_id',
+			'listDataOptions' => [
+				'data' => Project::model()->findAll(),
+				'valueField' => 'id',
+				'textField' => 'name',
+			],
+			'inputOptions' => [
+				'required' => true,
+			],
+		]);
+		?>
+
+		<div class="pull-right">
+			<a href="/adminDatasetProject/admin" class="btn background-btn-o">Cancel</a>
+			<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => 'btn background-btn')); ?>
+		</div>
+
+		<?php $this->endWidget(); ?>
 	</div>
 
-	<div class="control-group">
-		<?php echo $form->labelEx($model,'project_id',array('class'=>'control-label')); ?>
-				<div class="controls">
-        <?= CHtml::activeDropDownList($model,'project_id',CHtml::listData(Project::model()->findAll(),'id','name')); ?>
-		<?php echo $form->error($model,'project_id'); ?>
-				</div>
-	</div>
-
-	<div class="row buttons">
-        <a href="/adminDatasetProject/admin" class="btn">Cancel</a>
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save',array('class'=>'btn')); ?>
-	</div>
-
-<?php $this->endWidget(); ?>
-
-</div><!-- form -->
+</div>
