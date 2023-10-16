@@ -206,6 +206,8 @@ class AdminDatasetProjectController extends Controller
 		if(isset($_GET['DatasetProject']))
 			$model->setAttributes($_GET['DatasetProject']);
 
+		$this->layout = 'new_main';
+		$this->loadBaBbqPolyfills = true;
 		$this->render('admin',array(
 			'model'=>$model,
 		));

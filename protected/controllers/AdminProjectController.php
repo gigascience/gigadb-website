@@ -135,6 +135,8 @@ class AdminProjectController extends Controller
 		if(isset($_GET['Project']))
 			$model->setAttributes($_GET['Project']);
 
+		$this->layout = 'new_main';
+		$this->loadBaBbqPolyfills = true;
 		$this->render('admin',array(
 			'model'=>$model,
 		));

@@ -319,6 +319,8 @@ class AdminSampleController extends Controller
 			$model->setAttributes($attrs, true);
 		}
 
+        $this->layout = 'new_main';
+		$this->loadBaBbqPolyfills = true;
 		$this->render('admin',array(
 			'model'=>$model,
 		));

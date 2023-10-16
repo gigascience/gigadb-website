@@ -138,6 +138,8 @@ class FunderController extends Controller
 		if(isset($_GET['Funder']))
 			$model->setAttributes($_GET['Funder']);
 
+		$this->layout = 'new_main';
+		$this->loadBaBbqPolyfills = true;
 		$this->render('admin',array(
 			'model'=>$model,
 		));

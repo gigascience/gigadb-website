@@ -137,6 +137,8 @@ class AdminLinkPrefixController extends Controller
         if(isset($_GET['Prefix']))
             $model->setAttributes($_GET['Prefix']);
 
+        $this->layout = 'new_main';
+        $this->loadBaBbqPolyfills = true;
         $this->render('admin',array(
             'model'=>$model,
         ));

@@ -533,6 +533,8 @@ class AdminFileController extends Controller
         if (isset($_GET['File']))
             $model->attributes = $_GET['File'];
 
+        $this->layout = 'new_main';
+        $this->loadBaBbqPolyfills = true;
         $this->render('admin', array(
             'model' => $model,
         ));

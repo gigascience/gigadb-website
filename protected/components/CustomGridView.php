@@ -10,6 +10,7 @@
  * $this->widget('CustomGridView', array(
  *   'dataProvider' => $dataProvider,
  *   // other options here...
+ *   CustomGridView::getDefaultActionButtonsConfig()
  * ));
  * ```
  *
@@ -19,22 +20,63 @@
 
 Yii::import('zii.widgets.grid.CGridView');
 
-class CustomGridView extends CGridView {
+class CustomGridView extends CGridView
+{
 
-    public function init() {
-        $this->pager = array_merge(
-            $this->pager,
-            array(
-                'header' => '',
-                'htmlOptions' => array('class' => 'pagination'),
-            )
-        );
+  public static function getDefaultActionButtonsConfig()
+  {
+    return array(
+      'class' => 'CButtonColumn',
+      'header' => "Actions",
+      'headerHtmlOptions' => array('style' => 'width: 100px'),
+      'template' => '{view}{update}{delete}',
+      'buttons' => array(
+        'view' => array(
+          'imageUrl' => false,
+          'label' => '',
+          'options' => array(
+            "title" => "View",
+            "class" => "fa fa-eye fa-lg icon icon-view",
+            "aria-label" => "View"
+          ),
+        ),
+        'update' => array(
+          'imageUrl' => false,
+          'label' => '',
+          'options' => array(
+            "title" => "Update",
+            "class" => "fa fa-pencil fa-lg icon icon-update",
+            "aria-label" => "Update"
+          ),
+        ),
+        'delete' => array(
+          'imageUrl' => false,
+          'label' => '',
+          'options' => array(
+            "title" => "Delete",
+            "class" => "fa fa-trash fa-lg icon icon-delete",
+            "aria-label" => "Delete"
+          ),
+        ),
+      ),
+    );
+  }
 
-        $this->pagerCssClass = 'pagination-container';
+  public function init()
+  {
+    $this->pager = array_merge(
+      $this->pager,
+      array(
+        'header' => '',
+        'htmlOptions' => array('class' => 'pagination'),
+      )
+    );
 
-        parent::init();
+    $this->pagerCssClass = 'pagination-container';
 
-        Yii::app()->clientScript->registerScript('pagination-adjustment', '
+    parent::init();
+
+    Yii::app()->clientScript->registerScript('pagination-adjustment', '
           if (typeof jQuery !== "undefined") {
             function adjustPagination() {
               $(".pagination > li > a").removeClass("first-visible");
@@ -51,5 +93,5 @@ class CustomGridView extends CGridView {
             });
           }
         ', CClientScript::POS_END);
-    }
+  }
 }

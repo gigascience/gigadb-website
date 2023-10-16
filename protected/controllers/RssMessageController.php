@@ -140,6 +140,8 @@ class RssMessageController extends Controller
 		if(isset($_GET['RssMessage']))
 			$model->setAttributes($_GET['RssMessage']);
 
+		$this->layout = 'new_main';
+		$this->loadBaBbqPolyfills = true;
 		$this->render('admin',array(
 			'model'=>$model,
 		));

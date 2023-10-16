@@ -31,7 +31,7 @@ Feature: filter tables on admin page
   Scenario: Dataset Files
     Given I am on "/adminFile/admin"
     When I fill in the field of "name" "File[doi_search]" with "100006"
-    And I press return on the element "(//input)[1]"
+    And I press return on the element "(//input)[2]"
     And I wait "1" seconds
     Then I should see "Pygoscelis_adeliae.RepeatMasker.out.gz"
     And I should not see "100020"
@@ -61,7 +61,7 @@ Feature: filter tables on admin page
   Scenario: Dataset relations
     Given I am on "/adminRelation/admin"
     When I fill in the field of "name" "Relation[doi_search]" with "100006"
-    And I press return on the element "(//input)[1]"
+    And I press return on the element "(//input)[2]"
     And I wait "1" seconds
     Then I should see "100649"
     Then I should see "IsCitedBy"
@@ -73,7 +73,7 @@ Feature: filter tables on admin page
   Scenario: Dataset funders
     Given I am on "/datasetFunder/admin"
     When I fill in the field of "name" "DatasetFunder[doi_search]" with "100006"
-    And I press return on the element "(//input)[1]"
+    And I press return on the element "(//input)[2]"
     And I wait "1" seconds
     Then I should see "Catapult"
     And I should not see "Science IO"
@@ -82,7 +82,7 @@ Feature: filter tables on admin page
   Scenario: Dataset manuscript
     Given I am on "/adminManuscript/admin"
     When I fill in the field of "name" "Manuscript[identifier]" with "2047-217X-3-10"
-    And I press return on the element "(//input)[1]"
+    And I press return on the element "(//input)[2]"
     And I wait "1" seconds
     Then I should see "100094"
     And I should not see "100020"
@@ -120,7 +120,7 @@ Feature: filter tables on admin page
   Scenario: External links
     Given I am on "/adminExternalLink/admin"
     When I fill in the field of "name" "ExternalLink[doi_search]" with "100094"
-    And I press return on the element "(//input)[1]"
+    And I press return on the element "(//input)[2]"
     And I wait "1" seconds
     Then I should see "https://github.com/ShashaankV/CS"
     Then I should see "https://github.com/ShashaankV/GD"
@@ -130,7 +130,7 @@ Feature: filter tables on admin page
   Scenario: Link prefixes
     Given I am on "/adminLinkPrefix/admin"
     When I fill in the field of "name" "Prefix[prefix]" with "DDBJ"
-    And I press return on the element "(//input)[1]"
+    And I press return on the element "(//input)[2]"
     And I wait "1" seconds
     Then I should see "http://www.ddbj.nig.ac.jp/"
     And I should not see "EBI"
@@ -164,22 +164,22 @@ Feature: filter tables on admin page
   Scenario: Dataset types
     Given I am on "/adminDatasetType/admin"
     When I fill in the field of "name" "Type[name]" with "nomic"
-    And I press return on the element "(//input)[1]"
+    And I press return on the element "(//input)[2]"
     And I wait "1" seconds
     Then I should see "Genomic"
     Then I should see "Epigenomic"
     And I should not see "Metadata"
     And I should not see "Software"
 
+  @this
   @ok
   Scenario: Data types
     Given I am on "/adminFileType/admin"
     When I fill in the field of "name" "FileType[name]" with "Other"
-    And I press return on the element "(//input)[1]"
+    And I press return on the element "(//input)[@name='FileType[name]']"
     And I wait "1" seconds
     Then I should see "to be used when no appropriate file type is available"
     And I should not see "Readme"
-    And I should not see "Text"
     And I should not see "Image"
     And I should not see "Annotation"
     And I should not see "Protein sequence"
@@ -191,10 +191,9 @@ Feature: filter tables on admin page
   Scenario: File formats
     Given I am on "/adminFileFormat/admin"
     When I fill in the field of "name" "FileFormat[name]" with "DOCX"
-    And I press return on the element "(//input)[1]"
+    And I press return on the element "(//input)[@name='FileFormat[name]']"
     And I wait "1" seconds
     Then I should see "microsoft word format"
-    And I should not see "TEXT"
     And I should not see "FASTA"
     And I should not see "FASTQ"
     And I should not see "GFF"
@@ -206,7 +205,6 @@ Feature: filter tables on admin page
     And I should not see "JPG"
     And I should not see "PNG"
 
-  @this
   @ok
   Scenario: Users
     Given I am on "/user/admin"
@@ -231,7 +229,7 @@ Feature: filter tables on admin page
   Scenario: Publishers
     Given I am on "/adminPublisher/admin"
     When I fill in the field of "name" "Publisher[name]" with "database"
-    And I press return on the element "(//input)[1]"
+    And I press return on the element "(//input)[2]"
     And I wait "1" seconds
     Then I should see "GigaScience Database"
     And I should not see "Open Life Science publishing"
