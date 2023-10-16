@@ -1,4 +1,14 @@
+<div class="container">
+  <?php
+  $this->widget('application.components.TitleBreadcrumb', [
+    'pageTitle' => 'Update DatasetAuthor' . $model->id,
+    'breadcrumbItems' => [
+      ['label' => 'Admin', 'href' => '/site/admin'],
+      ['label' => 'Manage', 'href' => '/adminDatasetAuthor/admin'],
+      ['isActive' => true, 'label' => 'Update'],
+    ]
+  ]);
+  ?>
 
-<h1>Update DatasetAuthor <?php echo $model->id; ?></h1>
-
-<?php echo $this->renderPartial('_form', array('model'=>$model)); ?>
+  <?php echo $this->renderPartial('_form', array('model' => $model)); ?>
+</div>
