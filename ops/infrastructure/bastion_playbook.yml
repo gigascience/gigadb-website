@@ -4,12 +4,17 @@
 
 
 - name: Fix Centos EOL issues
-  hosts: name_bastion_server_staging*:name_bastion_server_live*
+  hosts: name_bastion_server_{{gigadb_env}}*
+  tags:
+    - fix-centos-eol-issues
+
   roles:
     - role: ../../roles/centos-eol-fix
 
 - name: Setup Fail2ban
-  hosts: name_bastion_server_staging*:name_bastion_server_live*
+  hosts: name_bastion_server_{{gigadb_env}}*
+  tags:
+    - setup-fail2ban
 
   tasks:
     - debug:
@@ -19,8 +24,28 @@
     - role: ../../roles/fail2ban
     - role: ../../roles/jail-ssh
 
+- name: Setup Docker CE
+  hosts: name_bastion_server_{{gigadb_env}}*
+  tags:
+    - setup-docker-ce
+  vars:
+    target_host: _bastion
+
+  roles:
+    - role: ../../roles/docker-install
+    - role: role-secure-docker-daemon
+      dds_host: "{{ ec2_bastion_public_ip }}"
+      dds_server_cert_path: /etc/docker
+      dds_restart_docker: no
+      dds_client_cert_path: /home/centos/.docker
+    - role: ../../roles/docker-postinstall
+    - role: ../../roles/docker-daemon-enable-start
+
+
 - name: Restore PostgreSQL database on RDS instance using pg_restore
-  hosts: name_bastion_server_staging*:name_bastion_server_live*
+  hosts: name_bastion_server_{{gigadb_env}}*
+  tags:
+    - restore-db-on-rds
 
   tasks:
     - name: Disable postgresql module in AppStream
@@ -57,7 +82,9 @@
       when: backup_file
 
 - name: Setup files-url-updater so to load latest DB backup in RDS daily
-  hosts: name_bastion_server_staging*:name_bastion_server_live*
+  hosts: name_bastion_server_{{gigadb_env}}*
+  tags:
+    - files-url-updater
   vars:
     target_host: _bastion
 
@@ -112,18 +139,10 @@
         group: root
         mode: 0644
 
-  roles:
-    - role: ../../roles/docker-install
-    - role: role-secure-docker-daemon
-      dds_host: "{{ ec2_bastion_public_ip }}"
-      dds_server_cert_path: /etc/docker
-      dds_restart_docker: no
-      dds_client_cert_path: /home/centos/.docker
-    - role: ../../roles/docker-postinstall
-    - role: ../../roles/docker-daemon-enable-start
-
 - name: Setup Excel to GigaDB tool
-  hosts: name_bastion_server_staging*:name_bastion_server_live*
+  hosts: name_bastion_server_{{gigadb_env}}*
+  tags:
+    - excel-spreadsheet-uploader
 
   tasks:
     - name: Copy dataset upload tool shell script
@@ -174,7 +193,9 @@
         line: "GITLAB_PROJECT={{ gitlab_project }}"
 
 - name: Create setup for generating and uploading database dump files to S3
-  hosts: name_bastion_server_staging*:name_bastion_server_live*
+  hosts: name_bastion_server_{{gigadb_env}}*
+  tags:
+    - setup-uploading-db-dump-to-s3
 
   tasks:
   - name: Create a /home/centos/.config/rclone directory
@@ -213,7 +234,9 @@
       state: "{{ upload_database_backup_to_S3_cronjob_state }}"
 
 - name: Setup Disk usage monitoring tool
-  hosts: name_bastion_server_staging*:name_bastion_server_live*
+  hosts: name_bastion_server_{{gigadb_env}}*
+  tags:
+    - swatch-tool
 
   tasks:
     - name: Create the diskUsage monitoring script
@@ -257,9 +280,9 @@
         job: "swatch -c swatch.conf -p ./diskUsage"
 
 - name: Setup create readme tool
-  hosts: name_bastion_server_staging*:name_bastion_server_live*
+  hosts: name_bastion_server_{{gigadb_env}}*
   tags:
-    - readme_tool
+    - readme-tool
 
   tasks:
     - name: Copy readme tool shell script
@@ -280,7 +303,9 @@
         group: centos
 
 - name: Set up and configuration of rclone on bastion server
-  hosts: name_bastion_server_staging*:name_bastion_server_live*
+  hosts: name_bastion_server_{{gigadb_env}}*
+  tags:
+    - rclone-tool
   
   tasks:
     - name: Install rclone
@@ -293,7 +318,9 @@
         rclone_config_location: "/home/centos/.config/rclone/rclone.conf"
 
 - name: Load latest DB backup
-  hosts: name_bastion_server_staging*:name_bastion_server_live*
+  hosts: name_bastion_server_{{gigadb_env}}*
+  tags:
+    - load-latest-db
 
   tasks:
   - name: Load latest database into this environment's RDS instance
@@ -310,7 +337,7 @@
       msg: "reset database stderr : {{ reset_database_output.stderr }}"
 
 - name: Install node exporter
-  hosts: name_bastion_server_staging*:name_bastion_server_live*
+  hosts: name_bastion_server_{{gigadb_env}}*
   tags:
     - node-exporter
   roles:
