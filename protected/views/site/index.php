@@ -18,7 +18,7 @@
             <div class="row">
                 <div class="col-xs-8">
                     <div class="underline-title">
-                        <button class="pull-right btn btn-link toggle-dataset-types-btn" aria-controls="datasetTypesList" aria-label="Show more dataset types">+ more</button>
+                        <button class="pull-right btn toggle-dataset-types-btn" aria-controls="datasetTypesList" aria-label="Show more dataset types">+ more</button>
                         <div>
                             <h2 class="heading">Dataset types</h2>
                         </div>

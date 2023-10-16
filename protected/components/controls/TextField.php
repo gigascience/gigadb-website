@@ -11,6 +11,7 @@
  *  'description' => 'Enter your username.',
  *  'inputOptions' => array(
  *      'placeholder' => 'Username',
+ *      'required' => true,
  *  ),
  *  'labelOptions' => array(
  *      'class' => 'custom-label-class', // Additional class

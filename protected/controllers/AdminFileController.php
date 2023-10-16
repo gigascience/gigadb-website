@@ -140,6 +140,7 @@ class AdminFileController extends Controller
             }
         }
 
+        $this->layout = 'new_datasetpage';
         $this->render('create', array(
             'model' => $model,
         ));
@@ -442,6 +443,7 @@ class AdminFileController extends Controller
             }
         }
 
+        $this->layout = 'new_datasetpage';
         $this->render('update', array(
             'model' => $model,
             'attribute' => $attribute
