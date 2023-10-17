@@ -28,16 +28,11 @@
 				'required' => true,
 			],
 		]);
-		?>
-
-		<!-- TODO: Style checkbox -->
-		<div class="form-group checkbox checkbox-green">
-			<?php echo $form->checkBox($model, 'is_primary', array('aria-describedby' => $model->hasErrors('is_primary') ? 'errorIsPrimary' : '')); ?>
-			<?php echo $form->labelEx($model, 'is_primary', array('class' => 'control-label')); ?>
-			<?php echo $form->error($model, 'is_primary', array('id' => 'errorIsPrimary', 'class' => 'help-block')); ?>
-		</div>
-
-		<?php
+		$this->widget('application.components.controls.CheckBoxField', [
+			'form' => $form,
+			'model' => $model,
+			'attributeName' => 'is_primary',
+		]);
 		$this->widget('application.components.controls.TextField', [
 			'form' => $form,
 			'model' => $model,
