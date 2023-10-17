@@ -53,7 +53,7 @@ class BaseInput extends CWidget
 
   protected function renderError()
   {
-    echo CHtml::openTag('div', array_merge(['id' => $this->attributeName . '-error'], $this->errorOptions));
+    echo CHtml::openTag('div', array_merge(['id' => $this->attributeName . '-error', 'role' => 'alert'], $this->errorOptions));
     if ($this->hasError()) {
       echo $this->form->error($this->model, $this->attributeName);
     }

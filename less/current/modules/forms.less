@@ -2,6 +2,8 @@
 // Forms
 // --------------------------------------------------
 
+// TODO: Styles in this file should be simplified and consolidated and code repetition removed
+
 label {
   font-weight: normal;
   font-size: 13px;
@@ -22,6 +24,51 @@ label {
     .help-block {
       color: @brand-danger-on-white;
     }
+  }
+}
+
+// TODO: these more general styles might allow to remove some duplicate checkbox styles
+.form-group.checkbox {
+  .control-label {
+    min-height: 14px;
+  }
+  input[type="checkbox"] {
+    margin-top: 0;
+    position: relative;
+    accent-color: @color-gigadb-green;
+    border-radius: 3px;
+    &:focus {
+      outline: none;
+      border-color: @color-gigadb-green-600;
+      box-shadow: inset 0 1px 1px fade(@color-gigadb-green, 7.5%),
+        0 0 6px fade(@color-gigadb-green-600, 50%);
+      &::before {
+        content: "";
+        display: block;
+        position: absolute;
+        inset: -3px;
+        border-width: 1px;
+        border-style: solid;
+        border-color: @color-gigadb-green;
+        border-radius: 4px;
+        pointer-events: none;
+      }
+    }
+  }
+
+  &.has-error input[type="checkbox"] {
+    &:focus {
+      border-color: @brand-danger-on-white;
+      box-shadow: inset 0 1px 1px fade(@brand-danger-on-white, 7.5%),
+        0 0 6px fade(@brand-danger-on-white, 50%);
+      &::before {
+        border-color: @brand-danger-on-white;
+      }
+    }
+  }
+  .help-block {
+    margin-top: 2px;
+    margin-left: 44px;
   }
 }
 
@@ -51,7 +98,8 @@ input[type="checkbox"] {
   display: inline-block;
 }
 .checkbox > input[type="checkbox"]:focus + label::before {
-  box-shadow: @color-true-white 0px 0px 0px 1px, @color-gigadb-green 0px 0px 0px 3px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+  box-shadow: @color-true-white 0px 0px 0px 1px,
+    @color-gigadb-green 0px 0px 0px 3px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
 }
 .checkbox.checkbox-green > input[type="checkbox"] {
   accent-color: @color-gigadb-green;
@@ -76,14 +124,15 @@ input[type="checkbox"] {
   color: @color-darker-gray;
   font-size: 13px;
   &:focus {
-    border-color: @color-light-gray;
     box-shadow: none;
-    outline: solid 2px @color-gigadb-green;
+    outline: 1px solid @color-gigadb-green;
+    border-color: @color-gigadb-green-600;
+    box-shadow: inset 0 1px 1px fade(@color-gigadb-green, 7.5%),
+      0 0 6px fade(@color-gigadb-green-600, 50%);
+    // Alt focus style
+    // outline: 2px solid @color-gigadb-green;
+    // outline-offset: 1px;
   }
-}
-
-.form-control:focus {
-  outline: 2px solid @color-gigadb-green;
 }
 
 .form-group {
@@ -93,13 +142,17 @@ input[type="checkbox"] {
   }
 }
 
-.form-control:focus {
-  border-color: @color-gigadb-green-600;
-  box-shadow: inset 0 1px 1px fade(@color-gigadb-green, 7.5%),
-    0 0 6px fade(@color-gigadb-green-600, 50%);
-  // Alt focus style
-  // outline: 2px solid @color-gigadb-green;
-  // outline-offset: 1px;
+.form-error {
+  padding-top: 5px;
+  color: @brand-danger-on-lighter-gray;
+}
+
+fieldset {
+  legend {
+    padding-bottom: 4px;
+    font-size: 13px;
+    color: @color-darker-gray;
+  }
 }
 
 .carousel-doi {
@@ -195,17 +248,4 @@ input[type="checkbox"] {
   *display: inline;
   *zoom: 1;
   margin-top: -30px;
-}
-
-.form-error {
-  padding-top: 5px;
-  color: @brand-danger-on-lighter-gray;
-}
-
-fieldset {
-  legend {
-    padding-bottom: 4px;
-    font-size: 13px;
-    color: @color-darker-gray;
-  }
 }
