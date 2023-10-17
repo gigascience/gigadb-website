@@ -45,7 +45,7 @@
 		?>
 
 		<div class="pull-right">
-			<a href="admin" class="btn background-btn-o">Cancel</a>
+			<a href="/adminLink/admin" class="btn background-btn-o">Cancel</a>
 			<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => 'btn background-btn')); ?>
 		</div>
 
