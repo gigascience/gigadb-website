@@ -1,116 +1,116 @@
-<div class="row">
-	<div class="span8 offset2 form well">
-		<div class="clear"></div>
-<div class="form">
+<div class="section form row">
 
-<?php $form=$this->beginWidget('CActiveForm', array(
-	'id'=>'author-form',
-	'enableAjaxValidation'=>false,
-	'htmlOptions'=>array('class'=>'form-horizontal')
-)); ?>
+	<div class="col-md-offset-3 col-md-6">
+		<?php $form = $this->beginWidget('CActiveForm', array(
+			'id' => 'author-form',
+			'enableAjaxValidation' => false,
+		)); ?>
 
-	<p class="note">Fields with <span class="required">*</span> are required.</p>
+		<p class="note">Fields with <span class="required">*</span> are required.</p>
 
-	<?php echo $form->errorSummary($model); ?>
+		<?php if ($model->hasErrors()) : ?>
+			<div class="alert alert-danger">
+				<?php echo $form->errorSummary($model); ?>
+			</div>
+		<?php endif; ?>
 
-	<div class="control-group">
-		<?php echo $form->labelEx($model,'surname',array('class'=>'control-label')); ?>
-				<div class="controls">
-		<?php echo $form->textField($model,'surname',array('size'=>60,'maxlength'=>255)); ?>
-		<?php echo $form->error($model,'surname'); ?>
+		<?php
+		$this->widget('application.components.controls.TextField', [
+			'form' => $form,
+			'model' => $model,
+			'attributeName' => 'surname',
+			'inputOptions' => [
+				'required' => true,
+				'maxlength' => 255
+			],
+		]);
+
+		$this->widget('application.components.controls.TextField', [
+			'form' => $form,
+			'model' => $model,
+			'attributeName' => 'first_name',
+			'inputOptions' => [
+				'maxlength' => 255
+			],
+		]);
+		$this->widget('application.components.controls.TextField', [
+			'form' => $form,
+			'model' => $model,
+			'attributeName' => 'middle_name',
+			'inputOptions' => [
+				'maxlength' => 255
+			],
+		]);
+		$this->widget('application.components.controls.TextField', [
+			'form' => $form,
+			'model' => $model,
+			'attributeName' => 'custom_name',
+			'inputOptions' => [
+				'maxlength' => 255
+			],
+		]);
+		$this->widget('application.components.controls.TextField', [
+			'form' => $form,
+			'model' => $model,
+			'attributeName' => 'orcid',
+			'inputOptions' => [
+				'maxlength' => 128
+			],
+		]);
+		$this->widget('application.components.controls.TextField', [
+			'form' => $form,
+			'model' => $model,
+			'attributeName' => 'gigadb_user_id',
+			'inputOptions' => [
+				'maxlength' => 128
+			],
+		]);
+		?>
+
+		<div class="merge-author-info">
+			<?php
+			$identical_authors = $model->getIdenticalAuthors();
+			if (!empty($identical_authors)) {
+			?>
+				<div class="alert alert-gigadb-info">
+					this author is merged with author(s):
+					<ul class="list-unstyled">
+						<?php
+						foreach ($identical_authors as $author_id) {
+							$author = Author::model()->findByPk($author_id);
+							echo "<li>" . $author->getAuthorDetails() . "</li>";
+						}
+						?>
+					</ul>
+
 				</div>
-	</div>
 
-    <div class="control-group">
-        <?php echo $form->labelEx($model,'first_name',array('class'=>'control-label')); ?>
-        <div class="controls">
-            <?php echo $form->textField($model,'first_name',array('size'=>60,'maxlength'=>255)); ?>
-            <?php echo $form->error($model,'first_name'); ?>
-        </div>
-    </div>
+			<?php	} ?>
 
-    <div class="control-group">
-        <?php echo $form->labelEx($model,'middle_name',array('class'=>'control-label')); ?>
-        <div class="controls">
-            <?php echo $form->textField($model,'middle_name',array('size'=>60,'maxlength'=>255)); ?>
-            <?php echo $form->error($model,'middle_name'); ?>
-        </div>
-    </div>
-    <div class="control-group">
-	    <?php echo $form->labelEx($model,'custom_name',array('class'=>'control-label')); ?>
-        <div class="controls">
-            <?php echo $form->textField($model,'custom_name',array('size'=>60,'maxlength'=>255)); ?>
-            <?php echo $form->error($model,'custom_name'); ?>
-        </div>
-    </div>
-
-	<div class="control-group">
-		<?php echo $form->labelEx($model,'orcid',array('class'=>'control-label')); ?>
-				<div class="controls">
-		<?php echo $form->textField($model,'orcid',array('size'=>60,'maxlength'=>128)); ?>
-		<?php echo $form->error($model,'orcid'); ?>
-				</div>
-	</div>
-
-	<div class="control-group">
-		<?php echo $form->labelEx($model,'gigadb_user_id',array('class'=>'control-label')); ?>
-				<div class="controls">
-		<?php echo $form->textField($model,'gigadb_user_id',array('size'=>60,'maxlength'=>128)); ?>
-		<?php echo $form->error($model,'gigadb_user_id'); ?>
-				</div>
-	</div>
-
-    <?php /*
-	<div class="control-group">
-		<?php echo $form->labelEx($model,'rank',array('class'=>'control-label')); ?>
-				<div class="controls">
-		<?php echo $form->textField($model,'rank'); ?>
-		<?php echo $form->error($model,'rank'); ?>
-				</div>
-	</div> */?>
-
-	<div class="merge_info well">
-<?php
-		$identical_authors = $model->getIdenticalAuthors() ;
-		if( !empty($identical_authors) ) {
-?>
-		<div class="alert alert-info">
-		this author is merged with author(s):
-		<ul class="unstyled">
-<?php
-			foreach ($identical_authors as $author_id) {
-				$author = Author::model()->findByPk($author_id);
-				echo "<li>".$author->getAuthorDetails()."</li>";
+			<?php
+			if (!empty($identical_authors)) {
+				echo CHtml::link(
+					'Unmerge author from those authors',
+					array('adminAuthor/unmerge', 'id' => $model->id),
+					array('class' => 'btn btn-link')
+				);
 			}
-?>
-		</ul>
-
+			?>
 		</div>
 
-<?php	} ?>
+		<div class="pull-right">
+			<?php
+			echo CHtml::link(
+				'Merge with an author',
+				array('adminAuthor/prepareAuthorMerge', 'origin_author_id' => $model->id),
+				array('class' => 'btn background-btn-o')
+			);
+			?>
+			<a href="/adminAuthor/admin" class="btn background-btn-o">Cancel</a>
+			<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => 'btn background-btn')); ?>
+		</div>
 
-<?php
-		if( !empty($identical_authors) ) { 
-			echo CHtml::link('Unmerge author from those authors',
-                                    array('adminAuthor/unmerge', 'id'=>$model->id),
-                                    array('class' => 'btn'));
-		}
-?>
-</div>
-
-
-	<div class="pull-right">
-        <?php 
-			echo CHtml::link('Merge with an author',
-                                    array('adminAuthor/prepareAuthorMerge', 'origin_author_id'=>$model->id),
-                                    array('class' => 'btn'));
-        ?>
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save',array('class'=>'btn')); ?>
-        <a href="/adminAuthor/admin" class="btn">Cancel</a>
+		<?php $this->endWidget(); ?>
 	</div>
 
-<?php $this->endWidget(); ?>
-
-</div><!-- form -->
-    </div>
 </div>
