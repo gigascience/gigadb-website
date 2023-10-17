@@ -1,44 +1,47 @@
-<div class="form">
+<div class="section form row">
 
-<?php $form=$this->beginWidget('CActiveForm', array(
-	'id'=>'funder-form',
-	'enableAjaxValidation'=>false,
-	'htmlOptions'=>array('class'=>'form'),
-)); ?>
+	<div class="col-md-offset-3 col-md-6">
+		<?php $form = $this->beginWidget('CActiveForm', array(
+			'id' => 'funder-form',
+			'enableAjaxValidation' => false,
+		)); ?>
 
-	<p class="note">Fields with <span class="required">*</span> are required.</p>
+		<p class="note">Fields with <span class="required">*</span> are required.</p>
 
-	<?php echo $form->errorSummary($model); ?>
+		<?php if ($model->hasErrors()) : ?>
+			<div class="alert alert-danger">
+				<?php echo $form->errorSummary($model); ?>
+			</div>
+		<?php endif; ?>
 
-	<div class="control-group">
-		<?php echo $form->labelEx($model,'uri', array('class'=>'control-label')); ?>
-		<div class="controls">
-			<?php echo $form->textField($model,'uri',array()); ?>
-			<?php echo $form->error($model,'uri'); ?>
+		<?php
+		$this->widget('application.components.controls.TextField', [
+			'form' => $form,
+			'model' => $model,
+			'attributeName' => 'uri',
+			'inputOptions' => [
+				'required' => true,
+			],
+		]);
+		$this->widget('application.components.controls.TextField', [
+			'form' => $form,
+			'model' => $model,
+			'attributeName' => 'primary_name_display',
+
+		]);
+		$this->widget('application.components.controls.TextField', [
+			'form' => $form,
+			'model' => $model,
+			'attributeName' => 'country',
+		]);
+		?>
+
+		<div class="pull-right">
+			<a href="/funder/admin" class="btn background-btn-o">Cancel</a>
+			<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => 'btn background-btn')); ?>
 		</div>
+
+		<?php $this->endWidget(); ?>
 	</div>
 
-	<div class="control-group">
-		<?php echo $form->labelEx($model,'primary_name_display', array('class'=>'control-label')); ?>
-		<div class="controls">
-			<?php echo $form->textField($model,'primary_name_display',array()); ?>
-			<?php echo $form->error($model,'primary_name_display'); ?>
-		</div>
-	</div>
-
-	<div class="control-group">
-		<?php echo $form->labelEx($model,'country', array('class'=>'control-label')); ?>
-		<div class="controls">
-			<?php echo $form->textField($model,'country',array()); ?>
-			<?php echo $form->error($model,'country'); ?>
-		</div>
-	</div>
-
-	<div class="row buttons">
-		<a href="/funder/admin" class="btn">Cancel</a>
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class'=>'btn')); ?>
-	</div>
-
-<?php $this->endWidget(); ?>
-
-</div><!-- form -->
+</div>
