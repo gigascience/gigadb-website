@@ -25,6 +25,29 @@
     owner: centos
     group: centos
 
+- name: check if public key exists in GitLab CI environment variable
+  ansible.builtin.uri:
+    url: "{{ gitlab_url }}/variables/{{ newuser }}_bastion_public_key?filter%5benvironment_scope%5d={{ gigadb_environment }}"
+    headers:
+      PRIVATE-TOKEN: "{{ gitlab_private_token }}"
+    body_format: json
+    status_code:
+      - 200
+      - 404
+  register: public_key_in_gitlab
+
+- name:
+  debug:
+    msg: "{{ public_key_in_gitlab.status }}"
+
+- name: check if public key exists in bastion server
+  ansible.builtin.stat:
+    path: "/home/centos/{{ newuser }}.keys/id_ssh_rsa.pub"
+  register: public_key_in_bastion
+
+- name:
+  debug:
+    msg: "{{ public_key_in_bastion.stat.exists }}"
 
 - name: generate private/public key pair
   community.crypto.openssh_keypair:
@@ -32,6 +55,9 @@
     owner: centos
   register: pk
 
+- name:
+  debug:
+    msg: "{{ pk }}"
 
 - name: Add curator to sudoers
   ansible.builtin.lineinfile:
@@ -49,6 +75,26 @@
     owner: "{{ newuser }}"
     group: "{{ newuser }}"
     mode: g-rw,o-rw
+
+- name: save ssh public key to GitLab CI environment variable (first time)
+  ansible.builtin.uri:
+    url: "{{ gitlab_url }}/variables"
+    method: POST
+    headers:
+      PRIVATE-TOKEN: "{{ gitlab_private_token }}"
+    body_format: json
+    body:
+      key: "{{ newuser }}_bastion_public_key"
+      value: "{{ pk.public_key }} "
+      environment_scope: "{{ gigadb_environment }}"
+    status_code:
+      - 201
+      - 400
+  register: save_pk_to_gitlab
+
+- name:
+  debug:
+    msg: "{{ save_pk_to_gitlab.status }}"
 
 - name: downloading the private key
   ansible.builtin.fetch:
