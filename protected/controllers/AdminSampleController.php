@@ -96,6 +96,8 @@ class AdminSampleController extends Controller
                         $this->redirect(array('view','id'=>$model->id));
                     }
 		}
+
+		$this->layout = 'new_datasetpage';
 		$this->render('create',array(
 			'model'=>$model,
 		));
@@ -270,6 +272,8 @@ class AdminSampleController extends Controller
                             $model->species_id.=",";
                         $model->species_id.= $specie->scientific_name;
                     }
+
+		    $this->layout = 'new_datasetpage';
             $this->render('update',array(
                 'model' => $model,
                 'specie' => $specie,
