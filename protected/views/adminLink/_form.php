@@ -2,7 +2,7 @@
 
 	<div class="col-md-offset-3 col-md-6">
 		<?php $form = $this->beginWidget('CActiveForm', array(
-			'id' => 'XXX',
+			'id' => 'link-form',
 			'enableAjaxValidation' => false,
 		)); ?>
 
