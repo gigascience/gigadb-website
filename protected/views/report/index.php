@@ -1,45 +1,58 @@
-<div class="row">
-    <div class="span10 offset1">
-        <div class="chart" id="chart_div" style="width: 600px; height: 400px">
+<div class="container">
+    <?php
+    $this->widget('TitleBreadcrumb', [
+        'pageTitle' => 'Report',
+        'breadcrumbItems' => [
+            ['label' => 'Admin', 'href' => '/site/admin'],
+            ['isActive' => true, 'label' => 'Report'],
+        ]
+    ]);
+    ?>
+
+    <div class="section form row">
+
+        <!-- NOTE leaving follow as comment as it seems related to missing scripts -->
+        <!-- <div class="chart" id="chart_div" style="width: 600px; height: 400px">
         </div>
-        <div class="setting">
-            <form class="form form-horizontal" method="POST">
-                <div class="control-group">
-                    <label class="control-lable">Start Date</label>
-                    <div class="controls">
-                        <?= CHtml::textField('Report[start_date]', isset($args['start_date'])?$args['start_date']: '', array('class'=>'date'))?>
-                    </div>
+        <div class="setting"></div> -->
+
+        <div class="col-md-offset-3 col-md-6">
+            <form class="form" method="POST">
+                <div class="form-group">
+                    <label class="control-label" for="Report_start_date">Start Date</label>
+                    <?= CHtml::textField('Report[start_date]', isset($args['start_date']) ? $args['start_date'] : '', array('class' => 'date form-control')) ?>
                 </div>
-                <div class="control-group">
-                    <label class="control-lable">End Date</label>
-                    <div class="controls">
-                        <?= CHtml::textField('Report[end_date]', isset($args['end_date'])?$args['end_date']: '', array('class'=>'date'))?>
-                    </div>
+                <div class="form-group">
+                    <label class="control-label" for="Report_end_date">End Date</label>
+                    <?= CHtml::textField('Report[end_date]', isset($args['end_date']) ? $args['end_date'] : '', array('class' => 'date form-control')) ?>
                 </div>
-                <div class="control-group">
-                    <label class="control-lable">Display for DOI</label>
-                    <div class="controls">
-                        <?php echo CHtml::dropDownList('Report[ids][]', empty($selectDois)? 'all' : $selectDois, $dois, 
-							array( 'class'=>'js-multi', 'multiple'=>'multiple', 'data-placeholder'=>Yii::t('app','Select DOIs'))
-							); ?>
-                    </div>
+                <div class="form-group">
+                    <label class="control-label" for="Report_ids">Display for DOI</label>
+                    <?php echo CHtml::dropDownList(
+                        'Report[ids][]',
+                        empty($selectDois) ? 'all' : $selectDois,
+                        $dois,
+                        array('class' => 'js-multi form-control', 'multiple' => 'multiple', 'data-placeholder' => Yii::t('app', 'Select DOIs'))
+                    ); ?>
                 </div>
-                <div class="control-group">
-                    <div class="controls">
-                        <input type="submit" class="btn" name="report" value="View" />
-                    </div>
+                <div class="pull-right">
+                    <input type="submit" class="btn background-btn" name="report" value="View" />
                 </div>
             </form>
         </div>
     </div>
 </div>
+
 <?php
+// NOTE there are a number of missing scripts here
 $clientScript = Yii::app()->clientScript;
 $clientScript->registerCssFile('/css/chosen.min.css');
+// NOTE /js/chosen.jquery.min.js not found
 $clientScript->registerScriptFile('/js/chosen.jquery.min.js', CClientScript::POS_END);
 
 
 $register_script = <<<EO_SCRIPT
+// NOTE chosen is not a function
 $(".js-multi").chosen({
 	max_selected_options: 10,
 	no_results_text: "DOIs not found",
@@ -55,13 +68,21 @@ $(".js-multi").bind("chosen:maxselected", function() {
 EO_SCRIPT;
 $clientScript->registerScript('register_script', $register_script, CClientScript::POS_READY);
 ?>
-    <script>
-    $('.date').datepicker({ dateFormat: "yy-mm-dd" });
-    </script>
-    <script type="text/javascript" src="/js/jsapi.js"></script>
-    <script type="text/javascript">
+<script>
+    $(document).ready(function() {
+        $('.date').datepicker({
+            dateFormat: "yy-mm-dd"
+        });
+    });
+</script>
+<!-- NOTE /js/jsapi.js not found -->
+<script type="text/javascript" src="/js/jsapi.js"></script>
+<script type="text/javascript">
     // Load the Visualization API and the piechart package.
-    google.load('visualization', '1.0', { 'packages': ['corechart'] });
+    // NOTE Google is not defined
+    google.load('visualization', '1.0', {
+        'packages': ['corechart']
+    });
 
     // Set a callback to run when the Google Visualization API is loaded.
     google.setOnLoadCallback(drawChart);
@@ -145,4 +166,4 @@ $clientScript->registerScript('register_script', $register_script, CClientScript
             }
         });
     }
-    </script>
+</script>
