@@ -65,6 +65,26 @@ variable "utc_restore_time" {
   default = null
 }
 
+variable "web_ec2_type" {
+  type = string
+  description = "EC2 type for webapp server"
+  default = null
+}
+
+variable "bastion_ec2_type" {
+  type = string
+  description = "EC2 type for bastion server"
+  default = null
+}
+
+variable "rds_ec2_type" {
+  type = string
+  description = "EC2 type for RDS server"
+  default = null
+}
+
+
+
 data "external" "callerUserName" {
   program = ["${path.module}/getIAMUserNameToJSON.sh"]
 }
@@ -178,7 +198,7 @@ output "vpc_database_subnet_group" {
   value = module.vpc.database_subnet_group
 }
 
-# EC2 instance for hosting Docker Host
+# EC2 instance for hosting the web server 
 module "ec2_dockerhost" {
   source = "../../modules/aws-instance"
 
@@ -191,6 +211,7 @@ module "ec2_dockerhost" {
   # Locate Dockerhost EC2 instance in public subnet so users can access website
   # container app
   public_subnet_id = module.vpc.public_subnets[0]
+  web_ec2_type = var.web_ec2_type
 }
 
 output "ec2_public_ip" {
@@ -213,6 +234,7 @@ module "ec2_bastion" {
   # Bastion instance goes into a public subnet for developer access
   vpc_id = module.vpc.vpc_id
   public_subnet_id = module.vpc.public_subnets[0]
+  bastion_ec2_type = var.bastion_ec2_type
 }
 
 output "ec2_bastion_private_ip" {
@@ -247,6 +269,8 @@ module "rds" {
 
   # Security group rule required to allow port 5432 connections from private IP
   # of bastion server and ec2_dockerhost instance.
+
+  rds_ec2_type = var.rds_ec2_type
 }
 
 output "rds_instance_address" {

@@ -47,7 +47,7 @@ module "db" {
   engine_version            = "14.8"
   family                    = "postgres14"  # DB parameter group
   major_engine_version      = "14"          # DB option group
-  instance_class            = "db.t3.micro"
+  instance_class            = "db.${var.rds_ec2_type}"
   allocated_storage         = 16
   deletion_protection       = false
   maintenance_window        = "Mon:00:00-Mon:03:00"

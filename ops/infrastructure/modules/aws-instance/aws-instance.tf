@@ -89,7 +89,7 @@ data "aws_ami" "centos" {
 
 resource "aws_instance" "docker_host" {
   ami = data.aws_ami.centos.id
-  instance_type = "t3.small"
+  instance_type = "${var.web_ec2_type}"
   vpc_security_group_ids = [aws_security_group.docker_host_sg.id]
   key_name = var.key_name
   subnet_id = var.public_subnet_id
