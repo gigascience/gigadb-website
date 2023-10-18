@@ -8,37 +8,43 @@ if [ -f .init_env_vars ];then
   source .init_env_vars
 fi
 
+call_str="$0 $*"
+
 while [[ $# -gt 0 ]]; do
     case "$1" in
     --project)
         has_project=true
         gitlab_project=$2
-        shift
+        shift 2
         ;;
     --ssh-key)
         has_ssh_key=true
         aws_ssh_key=$2
-        shift
+        shift 2
         ;;
     --env)
         has_env=true
         target_environment=$2
-        shift
+        shift 2
         ;;
     --backup-file)
         has_backup_file=true
         backup_file=$2
         shift
         ;;
+    --region)
+        AWS_REGION=$2
+        shift 2
+        ;;
     --restore-backup)
         has_restore_backup=true
         ;;
     *)
-        echo "Invalid option: $1"
+        echo "Invalid option: $1 in"
+        echo $call_str
         exit 1  ## Could be optional.
         ;;
     esac
-    shift
 done
 
 # Ensure variables are not empty
@@ -102,6 +108,7 @@ echo "GITLAB_PRIVATE_TOKEN=$GITLAB_PRIVATE_TOKEN" >> .init_env_vars
 echo "aws_ssh_key=$aws_ssh_key" >> .init_env_vars
 echo "deployment_target=$target_environment" >> .init_env_vars
 echo "backup_file=$backup_file" >> .init_env_vars
+echo "AWS_REGION=$AWS_REGION" >> .init_env_vars
 
 # Update terraform.tfvars file with values from GitLab so Terraform can configure RDS instance
 gigadb_db_database=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$PROJECT_VARIABLES_URL/gigadb_db_database?filter%5benvironment_scope%5d=$target_environment" | jq -r .value)
@@ -129,5 +136,4 @@ terraform init \
           -backend-config="lock_method=POST" \
           -backend-config="unlock_method=DELETE" \
           -backend-config="retry_wait_min=5"
-
 
