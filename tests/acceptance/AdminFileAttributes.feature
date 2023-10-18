@@ -61,7 +61,6 @@ Feature: A curator can manage file attributes in admin file update page
     Then I am on "/adminFile/view/id/13973"
     And I should not see "File Attribute"
 
-  @this
   # TODO: this test should be fixed by #1507
   # @ok @javascript @published
   # Scenario: File attribute deletion is recorded in History tab
