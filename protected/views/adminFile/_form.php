@@ -110,7 +110,7 @@
 
         <?php if (!$model->isNewRecord) { ?>
             <div class="control-group">
-                <button type="button" class="btn background-btn-o js-btn-attr" aria-expanded="false" aria-controls="newAttrForm"><span class="js-btn-attr-label">Show New Attribute Fields</span> <i class="fa fa-caret-down js-caret-type" aria-hidden="true"></i></button>
+                <button type="button" class="btn background-btn-o js-btn-attr" aria-expanded="false" aria-controls="newAttrForm" data-test="new-attr-btn"><span class="js-btn-attr-label">Show New Attribute Fields</span> <i class="fa fa-caret-down js-caret-type" aria-hidden="true"></i></button>
                 <br />
                 <fieldset id="newAttrForm" class="js-new-attr mt-10 row" aria-label="New attribute fields" style="display:none;">
                     <div class="col-xs-5">
@@ -193,8 +193,8 @@
                                     </td>
                                     <td>
                                         <div class="action-btns">
-                                            <button class="btn btn-link btn-edit js-edit" data="<?= $fa->id ?>">Edit</button>
-                                            <button class="btn btn-link js-delete" name="delete_file_attr" data="<?= $fa->id ?>">Delete</button>
+                                            <button class="btn btn-link btn-edit js-edit" data-test="edit-attr-btn" data="<?= $fa->id ?>">Edit</button>
+                                            <button class="btn btn-link js-delete" name="delete_file_attr" data-test="delete-attr-btn" data="<?= $fa->id ?>">Delete</button>
                                         </div>
                                     </td>
                                 </tr>
