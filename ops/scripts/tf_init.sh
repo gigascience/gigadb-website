@@ -2,6 +2,11 @@
 
 set -e
 
+# default for EC2 types
+web_ec2_type="t3.micro"
+bastion_ec2_type="t3.micro"
+rds_ec2_type="t3.micro"
+
 source ../../../../.env
 
 if [ -f .init_env_vars ];then
@@ -34,6 +39,18 @@ while [[ $# -gt 0 ]]; do
         ;;
     --region)
         AWS_REGION=$2
+        shift 2
+        ;;
+    --web-ec2-type)
+        web_ec2_type=$2
+        shift 2
+        ;;
+    --bastion-ec2-type)
+        bastion_ec2_type=$2
+        shift 2
+        ;;
+    --rds-ec2-type)
+        rds_ec2_type=$2
         shift 2
         ;;
     --restore-backup)
@@ -101,6 +118,9 @@ key_name=$(echo $aws_ssh_key | rev | cut -d"/" -f 1 | rev | cut -d"." -f 1)
 echo "deployment_target = \"$target_environment\"" > terraform.tfvars
 echo "key_name = \"$key_name\"" >> terraform.tfvars
 echo "aws_region = \"$AWS_REGION\"" >> terraform.tfvars
+echo "web_ec2_type = \"$web_ec2_type\"" >> terraform.tfvars
+echo "bastion_ec2_type = \"$bastion_ec2_type\"" >> terraform.tfvars
+echo "rds_ec2_type = \"$rds_ec2_type\"" >> terraform.tfvars
 # create an environment variable file for this script and for ansible_init.sh
 echo "gitlab_project=$gitlab_project" > .init_env_vars
 echo "GITLAB_USERNAME=$GITLAB_USERNAME" >> .init_env_vars
@@ -109,6 +129,9 @@ echo "aws_ssh_key=$aws_ssh_key" >> .init_env_vars
 echo "deployment_target=$target_environment" >> .init_env_vars
 echo "backup_file=$backup_file" >> .init_env_vars
 echo "AWS_REGION=$AWS_REGION" >> .init_env_vars
+echo "web_ec2_type=$web_ec2_type" >> .init_env_vars
+echo "bastion_ec2_type=$bastion_ec2_type" >> .init_env_vars
+echo "rds_ec2_type=$rds_ec2_type" >> .init_env_vars
 
 # Update terraform.tfvars file with values from GitLab so Terraform can configure RDS instance
 gigadb_db_database=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$PROJECT_VARIABLES_URL/gigadb_db_database?filter%5benvironment_scope%5d=$target_environment" | jq -r .value)
