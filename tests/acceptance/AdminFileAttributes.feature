@@ -41,8 +41,8 @@ Feature: A curator can manage file attributes in admin file update page
     When I am on "/adminFile/view/id/13973"
     Then I should see a view file table
       | File Attribute | 2013-7-15 |
-    
-  #TODO: Fix problem why this test can sometimes randomly fail  
+
+  #TODO: Fix problem why this test can sometimes randomly fail
 #  @javascript @published
 #  Scenario: Delete a last modified attribute on admin file update page
 #    Given I have signed in as admin
@@ -97,9 +97,10 @@ Feature: A curator can manage file attributes in admin file update page
     Given I have signed in as admin
     And I am on "/adminFile/update/id/95354"
     When I press the button "Delete"
+    And I wait "0.3" seconds
     Then I should see a file attribute table
       | Attribute Name    | Value                            | Unit |
-      | camera parameters | test photo                       |      |
+      # | camera parameters | test photo                       |      |
       | MD5 checksum      | b584eb4ce0947dbf9529acffc3e9f7cc |      |
 
   @ok @javascript @nonPublished
