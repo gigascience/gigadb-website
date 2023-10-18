@@ -36,8 +36,7 @@
       - 404
   register: public_key_in_gitlab
 
-- name:
-  debug:
+- debug:
     msg: "{{ public_key_in_gitlab.status }}"
 
 - name: check if public key exists in bastion server
@@ -45,8 +44,7 @@
     path: "/home/{{ newuser }}/.ssh/authorized_keys"
   register: public_key_in_bastion
 
-- name:
-  debug:
+- debug:
     msg: "{{ public_key_in_bastion.stat.exists }}"
 
 - name: generate private/public key pair
@@ -54,11 +52,17 @@
     path: "/home/centos/{{ newuser }}.keys/id_ssh_rsa"
     owner: centos
   register: pk
-  when: public_key_in_bastion.stat.exists == false and public_key_in_gitlab.status == 404
+  when: (public_key_in_bastion.stat.exists == false and public_key_in_gitlab.status == 404)
 
-- name:
-  debug:
+- debug:
     msg: "{{ pk }}"
+
+- name: downloading the private key
+  ansible.builtin.fetch:
+    src: "/home/centos/{{ newuser }}.keys/id_ssh_rsa"
+    dest: "output/privkeys-{{ inventory_hostname }}/{{ newuser }}"
+    flat: yes
+  when: pk.changed == true
 
 - name: Add curator to sudoers
   ansible.builtin.lineinfile:
@@ -87,13 +91,13 @@
     body_format: json
     body:
       key: "{{ newuser }}_bastion_public_key"
-      value: "{{ pk.public_key }} "
+      value: "{{ pk.public_key }}"
       environment_scope: "{{ gigadb_environment }}"
     status_code:
       - 201
       - 400
   register: save_pk_to_gitlab
-  when: public_key_in_gitlab.status == 404
+  when: (pk.changed == true and public_key_in_gitlab.status == 404)
 
 - name: download pubic key from GitLab CI environment variable
   ansible.builtin.uri:
@@ -115,14 +119,7 @@
     owner: "{{ newuser }}"
     group: "{{ newuser }}"
     mode: g-rw,o-rw
-  when: public_key_from_gl.status == 200
-
-- name: downloading the private key
-  ansible.builtin.fetch:
-    src: "/home/centos/{{ newuser }}.keys/id_ssh_rsa"
-    dest: "output/privkeys-{{ inventory_hostname }}/{{ newuser }}"
-    flat: yes
-  when: pk.changed == true
+  when: (public_key_in_bastion.stat.exists == false and public_key_in_gitlab.status == 200)
 
 - name: Restart systemd sshd service
   command: systemctl restart sshd.service
