@@ -1,4 +1,19 @@
 <?php
+
+/**
+ * Example usage:
+ *
+ *  $this->widget('application.components.controls.CheckBoxField', [
+ *    'form' => $form, // required
+ *    'model' => $model, // required
+ *    'attributeName' => 'is_primary', // required
+ *    'groupOptions' => ['class' => 'my-custom-class'], // optional
+ *    'checkboxOptions' => ['class' => 'my-checkbox-class'], // optional
+ *    'labelOptions' => ['class' => 'my-label-class'], // optional
+ *    'errorOptions' => ['class' => 'my-error-class'], // optional
+ *  ]);
+ */
+
 class CheckBoxField extends CWidget
 {
   public $form;

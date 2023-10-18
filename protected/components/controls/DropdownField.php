@@ -8,7 +8,7 @@
  * 	$this->widget('application.components.controls.DropdownField', [
  *		'form' => $form,
  *		'model' => $model,
- *		'attributeName' => 'dataset_id',
+ *		'attributeName' => 'custom_dataset',
  *		'dataset' => $datasets,
  *		'inputOptions' => [
  *			'required' => true,
