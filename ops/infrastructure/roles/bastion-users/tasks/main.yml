@@ -95,38 +95,27 @@
   register: save_pk_to_gitlab
   when: public_key_in_gitlab.status == 404
 
-#- name:
-#  debug:
-#    msg: "{{ save_pk_to_gitlab.status }}"
-
-#- name: get public key from GitLab CI environment variable to authorized keys
-#  ansible.builtin.uri:
-#    url: "{{ gitlab_url }}/variables/{{ newuser }}_bastion_public_key?filter%5benvironment_scope%5d={{ gigadb_environment }}"
-#    method: GET
-#    dest: "/home/{{ newuser }}/.ssh/authorized_keys"
-#    owner: "{{ newuser }}"
-#    group: "{{ newuser }}"
-#    mode: g-rw,o-rw
-#    headers:
-#      PRIVATE-TOKEN: "{{ gitlab_private_token }}"
-#    status_code:
-#      - 200
-#      - 400
-#  register: get_pk_from_gitlab
-#  when: (public_key_in_bastion.stat.exists == false and public_key_in_gitlab.status == 200)
-#
-#- name:
-#  debug:
-#    msg: "{{ get_pk_from_gitlab.status }}"
-- name: get public key from GitLab CI environment variable to authorized keys
-  shell: 'curl -s --header PRIVATE-TOKEN: "{{ gitlab_private_token }}" "{{ gitlab_url }}/variables/{{ newuser }}_bastion_public_key?filter%5benvironment_scope%5d={{ gigadb_environment }}" | jq -r .value'
-  register: gitlab_pk_value
+- name: download pubic key from GitLab CI environment variable
+  ansible.builtin.uri:
+    url: "{{ gitlab_url }}/variables/{{ newuser }}_bastion_public_key?filter%5benvironment_scope%5d={{ gigadb_environment }}"
+    method: GET
+    headers:
+      PRIVATE-TOKEN: "{{ gitlab_private_token }}"
+    body_format: json
+    status_code:
+      - 200
+      - 400
+  register: public_key_from_gl
   when: (public_key_in_bastion.stat.exists == false and public_key_in_gitlab.status == 200)
 
-- name:
-  debug:
-    msg: "{{ gitlab_pk_value }}"
-
+- name: copy public key from gitlab to authorized file
+  ansible.builtin.copy:
+    content: "{{ public_key_from_gl.json.value  }}"
+    dest: "/home/{{ newuser }}/.ssh/authorized_keys"
+    owner: "{{ newuser }}"
+    group: "{{ newuser }}"
+    mode: g-rw,o-rw
+  when: public_key_from_gl.status == 200
 
 - name: downloading the private key
   ansible.builtin.fetch:
