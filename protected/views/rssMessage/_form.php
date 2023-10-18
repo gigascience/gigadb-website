@@ -1,37 +1,53 @@
-<div class="row">
-    <div class="span8 offset2 form well">
-        <div class="clear"></div>
-        <div class="form">
-            <?php $form=$this->beginWidget('CActiveForm', array(
-	'id'=>'rss-message-form',
-	'enableAjaxValidation'=>false,
-	'htmlOptions'=>array('class'=>'form-horizontal')
-)); ?>
-            <p class="note">Fields with <span class="required">*</span> are required.</p>
-            <?php echo $form->errorSummary($model); ?>
-            <div class="control-group">
-                <?php echo $form->labelEx($model,'message' ,array('class'=>'control-label') ); ?>
-                <div class="controls">
-                    <?php echo $form->textField($model,'message',array('size'=>60,'maxlength'=>128)); ?>
-                    <?php echo $form->error($model,'message'); ?>
-                </div>
+<div class="section form row">
+
+    <div class="col-md-offset-3 col-md-6">
+        <?php $form = $this->beginWidget('CActiveForm', array(
+            'id' => 'rss-message-form',
+            'enableAjaxValidation' => false,
+        )); ?>
+
+        <p class="note">Fields with <span class="required">*</span> are required.</p>
+
+        <?php if ($model->hasErrors()) : ?>
+            <div class="alert alert-danger">
+                <?php echo $form->errorSummary($model); ?>
             </div>
-            <div class="control-group">
-                <?php echo $form->labelEx($model,'publication_date' ,array('class'=>'control-label') ); ?>
-                <div class="controls">
-                    <?php echo $form->textField($model,'publication_date',array('class'=>'date')); ?>
-                    <?php echo $form->error($model,'publication_date'); ?>
-                </div>
-            </div>
-            <div class="pull-right">
-                <a href="/rssMessage/admin" class="btn">Cancel</a>
-                <?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save',array('class'=>'btn')); ?>
-            </div>
-            <?php $this->endWidget(); ?>
+        <?php endif; ?>
+
+        <?php
+        $this->widget('application.components.controls.TextField', [
+            'form' => $form,
+            'model' => $model,
+            'attributeName' => 'message',
+            'inputOptions' => [
+                'required' => true,
+                'maxlength' => 128
+            ],
+        ]);
+        $this->widget('application.components.controls.TextField', [
+            'form' => $form,
+            'model' => $model,
+            'attributeName' => 'publication_date',
+            'inputOptions' => [
+                'required' => true,
+                'class' => 'date'
+            ],
+        ]);
+        ?>
+
+        <div class="pull-right">
+            <a href="/rssMessage/admin" class="btn background-btn-o">Cancel</a>
+            <?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => 'btn background-btn')); ?>
         </div>
-        <!-- form -->
-        <script>
-        $('.date').datepicker();
-        </script>
+
+        <?php $this->endWidget(); ?>
     </div>
+
 </div>
+
+
+<script>
+    $(document).ready(function() {
+        $('.date').datepicker();
+    })
+</script>
