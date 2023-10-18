@@ -238,8 +238,6 @@
             });
         })
 
-        // Handle add attribute
-
         // Handle attribute edit
         $('.js-edit').click(function(e) {
             e.preventDefault();
