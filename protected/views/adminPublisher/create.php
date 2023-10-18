@@ -1,15 +1,14 @@
-<?php
-$this->breadcrumbs=array(
-	'Publishers'=>array('index'),
-	'Create',
-);
+<div class="container">
+	<?php
+	$this->widget('TitleBreadcrumb', [
+		'pageTitle' => 'Create Publisher',
+		'breadcrumbItems' => [
+			['label' => 'Admin', 'href' => '/site/admin'],
+			['label' => 'Manage', 'href' => 'admin'],
+			['isActive' => true, 'label' => 'Create'],
+		]
+	]);
+	?>
 
-$this->menu=array(
-	array('label'=>'List Publisher', 'url'=>array('index')),
-	array('label'=>'Manage Publisher', 'url'=>array('admin')),
-);
-?>
-
-<h1>Create Publisher</h1>
-
-<?php echo $this->renderPartial('_form', array('model'=>$model)); ?>
+	<?php echo $this->renderPartial('_form', array('model' => $model)); ?>
+</div>

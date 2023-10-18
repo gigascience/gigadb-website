@@ -1,41 +1,46 @@
-<div class="row">
-	<div class="span8 offset2 form well">
-		<div class="clear"></div>
-		<div class="form">
+<div class="section form row">
 
-		<?php $form=$this->beginWidget('CActiveForm', array(
-			'id'=>'publisher-form',
-			'enableAjaxValidation'=>false,
-			'htmlOptions'=>array('class'=>'form-horizontal')
+	<div class="col-md-offset-3 col-md-6">
+		<?php $form = $this->beginWidget('CActiveForm', array(
+			'id' => 'publisher-form',
+			'enableAjaxValidation' => false,
 		)); ?>
 
-			<p class="note">Fields with <span class="required">*</span> are required.</p>
+		<p class="note">Fields with <span class="required">*</span> are required.</p>
 
-			<?php echo $form->errorSummary($model); ?>
-
-			<div class="control-group">
-				<?php echo $form->labelEx($model,'name',array('class'=>'control-label')); ?>
-				<div class="controls">
-				<?php echo $form->textField($model,'name',array('size'=>45,'maxlength'=>45)); ?>
-				<?php echo $form->error($model,'name'); ?>
-				</div>
+		<?php if ($model->hasErrors()) : ?>
+			<div class="alert alert-danger">
+				<?php echo $form->errorSummary($model); ?>
 			</div>
+		<?php endif; ?>
 
-			<div class="control-group">
-				<?php echo $form->labelEx($model,'description',array('class'=>'control-label')); ?>
-				<div class="controls">
-				<?php echo $form->textArea($model,'description',array('rows'=>6, 'cols'=>50)); ?>
-				<?php echo $form->error($model,'description'); ?>
-				</div>
-			</div>
+		<?php
+		$this->widget('application.components.controls.TextField', [
+			'form' => $form,
+			'model' => $model,
+			'attributeName' => 'name',
+			'inputOptions' => [
+				'required' => true,
+				'maxlength' => 45
+			],
+		]);
+		$this->widget('application.components.controls.TextArea', [
+			'form' => $form,
+			'model' => $model,
+			'attributeName' => 'description',
+			'inputOptions' => [
+				'rows' => 6,
+				'cols' => 50
+			],
+		]);
+		?>
 
-			<div class="pull-right">
-        <a href="/adminPublisher/admin" class="btn">Cancel</a>
-				<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save',array('class'=>'btn')); ?>
-			</div>
+		<div class="pull-right">
+			<a href="/adminPublisher/admin" class="btn background-btn-o">Cancel</a>
+			<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => 'btn background-btn')); ?>
+		</div>
 
 		<?php $this->endWidget(); ?>
-
-		</div><!-- form -->
 	</div>
+
 </div>
