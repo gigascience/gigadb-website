@@ -90,6 +90,33 @@ if [ -z $AWS_REGION ];then
   read -p "You need to specify an AWS region: " AWS_REGION
 fi
 
+# Output values and ask for confirmation
+
+echo ""
+echo "Current directory: $(pwd)"
+echo "Project: $gitlab_project"
+echo "Environment: $target_environment"
+echo "Region: $AWS_REGION"
+echo "GitLab User: $GITLAB_USERNAME"
+echo "Web EC2 Type: $web_ec2_type"
+echo "Bastion EC2 Type: $bastion_ec2_type"
+echo "RDS EC2 Type: $rds_ec2_type"
+echo ""
+
+read -p "Do you want to continue (y/n)?" choice
+case "$choice" in 
+  y|Y ) 
+    echo "yes"
+    ;;
+  n|N ) 
+    echo "no"
+    exit 0
+    ;;
+  * ) 
+    echo "invalid"
+    ;;
+esac
+
 # RDS backup restoration requires null restore_to_point_in_time variable in
 # terraform.tf to be overridden with real config code block in override.tf
 if [ "$has_restore_backup" = true ];then
