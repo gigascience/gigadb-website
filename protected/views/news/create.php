@@ -1,11 +1,13 @@
-<h2>Create A News Item For The Home Page</h2>
-<div class="clear"></div>
-
-<? if (Yii::app()->user->checkAccess('admin')) { ?>
-<div class="actionBar">
-[<?= CHtml::link('Manage News', array('admin')) ?>]
+<div class="container">
+  <?php
+  $this->widget('TitleBreadcrumb', [
+    'pageTitle' => 'Create A News Item For The Home Page',
+    'breadcrumbItems' => [
+      ['label' => 'Admin', 'href' => '/site/admin'],
+      ['label' => 'Manage', 'href' => 'admin'],
+      ['isActive' => true, 'label' => 'Create'],
+    ]
+  ]);
+  ?>
+  <?php echo $this->renderPartial('_form', array('model' => $model)); ?>
 </div>
-<? } ?>
-
-<?php echo $this->renderPartial('_form', array('model'=>$model)); ?>
-

@@ -290,12 +290,20 @@
 .btn-link {
   background-color: transparent;
   color: @dark-gray-on-white;
-  font-size: 14px;
-  font-weight: bold;
+  padding: 0;
+  text-decoration: underline;
+  color: @link-color;
+  &:hover {
+    color: @link-color-hover;
+  }
 }
 .btn-danger {
   background-color: @color-brand-danger-650;
   &:hover {
     background-color: @color-brand-danger-800;
   }
+}
+.action-btns {
+  display: flex;
+  gap: 32px;
 }

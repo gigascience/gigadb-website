@@ -72,7 +72,7 @@ class AdminDatasetAuthorController extends Controller
                 $this->redirect(array('view', 'id' => $model->id));
         }
 
-        $this->layout = '//layouts/new_column2';
+        $this->layout = 'new_datasetpage';
         $this->render('create', array(
             'model' => $model,
         ));
@@ -221,6 +221,7 @@ class AdminDatasetAuthorController extends Controller
                 $this->redirect(array('view', 'id' => $model->id));
         }
 
+        $this->layout = 'new_datasetpage';
         $this->render('update', array(
             'model' => $model,
         ));

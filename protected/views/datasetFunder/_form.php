@@ -1,62 +1,73 @@
-<div class="form">
+<div class="section form row">
 
-<?php $form=$this->beginWidget('CActiveForm', array(
-	'id'=>'dataset-funder-form',
-	'enableAjaxValidation'=>false,
-	'htmlOptions'=>array('class'=>'form'),
-)); ?>
+	<div class="col-md-offset-3 col-md-6">
+		<?php $form = $this->beginWidget('CActiveForm', array(
+			'id' => 'dataset-funder-form',
+			'enableAjaxValidation' => false,
+		)); ?>
 
-	<p class="note">Fields with <span class="required">*</span> are required.</p>
+		<p class="note">Fields with <span class="required">*</span> are required.</p>
 
-	<?php //echo $form->errorSummary($model); ?>
+		<?php if ($model->hasErrors()) : ?>
+			<div class="alert alert-danger">
+				<?php echo $form->errorSummary($model); ?>
+			</div>
+		<?php endif; ?>
 
-    <!--TODO: Adding style="flex-direction: column;" to each div is just a temp styling fix, need further investigation on how to implement CSS styling properly.-->
+		<?php
+		$this->widget('application.components.controls.DropdownField', [
+			'form' => $form,
+			'model' => $model,
+			'attributeName' => 'dataset_id',
+			'dataset' => $datasets,
+			'inputOptions' => [
+				'required' => true,
+			],
+		]);
+		$this->widget('application.components.controls.DropdownField', [
+			'form' => $form,
+			'model' => $model,
+			'attributeName' => 'funder_id',
+			'dataset' => $funders,
+			'inputOptions' => [
+				'required' => true,
+			],
+		]);
+		$this->widget('application.components.controls.TextArea', [
+			'form' => $form,
+			'model' => $model,
+			'attributeName' => 'grant_award',
+			'inputOptions' => [
+				'rows' => 6,
+				'cols' => 50
+			],
+		]);
+		$this->widget('application.components.controls.TextArea', [
+			'form' => $form,
+			'model' => $model,
+			'attributeName' => 'awardee',
+			'inputOptions' => [
+				'rows' => 6,
+				'cols' => 50
+			],
+		]);
+		$this->widget('application.components.controls.TextArea', [
+			'form' => $form,
+			'model' => $model,
+			'attributeName' => 'comments',
+			'inputOptions' => [
+				'rows' => 6,
+				'cols' => 50
+			],
+		]);
+		?>
 
-	<div class="control-group">
-		<?php echo $form->labelEx($model,'dataset_id', array('class'=>'control-label')); ?>
-		<div class="controls" style="flex-direction: column;">
-			<?php echo CHtml::activeDropDownList($model,'dataset_id', $datasets); ?>
-			<?php echo $form->error($model,'dataset_id'); ?>
+		<div class="pull-right">
+			<a href="/datasetFunder/admin" class="btn background-btn-o">Cancel</a>
+			<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => 'btn background-btn')); ?>
 		</div>
+
+		<?php $this->endWidget(); ?>
 	</div>
 
-	<div class="control-group">
-		<?php echo $form->labelEx($model,'funder_id', array('class'=>'control-label')); ?>
-		<div class="controls" style="flex-direction: column;">
-			<?php echo CHtml::activeDropDownList($model,'funder_id', $funders); ?>
-			<?php echo $form->error($model,'funder_id'); ?>
-		</div>
-	</div>
-
-	<div class="control-group">
-		<?php echo $form->labelEx($model,'grant_award', array('class'=>'control-label')); ?>
-		<div class="controls" style="flex-direction: column;">
-			<?php echo $form->textArea($model,'grant_award',array('rows'=>6, 'cols'=>50)); ?>
-			<?php echo $form->error($model,'grant_award'); ?>
-		</div>
-	</div>
-        
-        <div class="control-group">
-		<?php echo $form->labelEx($model,'awardee', array('class'=>'control-label')); ?>
-		<div class="controls" style="flex-direction: column;">
-			<?php echo $form->textArea($model,'awardee',array('rows'=>6, 'cols'=>50)); ?>
-			<?php echo $form->error($model,'awardee'); ?>
-		</div>
-	</div>
-
-	<div class="control-group">
-		<?php echo $form->labelEx($model,'comments', array('class'=>'control-label')); ?>
-		<div class="controls" style="flex-direction: column;">
-			<?php echo $form->textArea($model,'comments',array('rows'=>6, 'cols'=>50)); ?>
-			<?php echo $form->error($model,'comments'); ?>
-		</div>
-	</div>
-
-	<div class="row buttons">
-		<a href="/datasetFunder/admin" class="btn">Cancel</a>
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class'=>'btn')); ?>
-	</div>
-
-<?php $this->endWidget(); ?>
-
-</div><!-- form -->
+</div>

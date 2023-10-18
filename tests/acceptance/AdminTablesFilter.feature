@@ -171,7 +171,6 @@ Feature: filter tables on admin page
     And I should not see "Metadata"
     And I should not see "Software"
 
-  @this
   @ok
   Scenario: Data types
     Given I am on "/adminFileType/admin"

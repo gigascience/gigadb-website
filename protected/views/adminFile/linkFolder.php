@@ -1,79 +1,91 @@
+<div class="container">
+	<?php
+	$this->widget('TitleBreadcrumb', [
+		'pageTitle' => 'Link Temp File Folder',
+		'breadcrumbItems' => [
+			['label' => 'Admin', 'href' => '/site/admin'],
+			['label' => 'Manage', 'href' => '/adminFile/admin'],
+			['isActive' => true, 'label' => 'Link Temp File Folder'],
+		]
+	]);
+	?>
+	<div class="section form row">
 
-<h1>Link Temp File Folder</h1>
-<? if (Yii::app()->user->checkAccess('admin')) { ?>
-<div class="actionBar">
-[<?= CHtml::link('Manage Files', array('admin')) ?>]
-</div>
-<? } ?>
-<div class="row">
-	<div class="span8 offset2 form well">
-		<div class="clear"></div>
-		<div class="form">
-<div class="form">
+		<div class="col-md-offset-3 col-md-6">
+			<?php $form = $this->beginWidget('CActiveForm', array(
+				'id' => 'file-form',
+				'enableAjaxValidation' => false,
+			)); ?>
 
-<?php $form=$this->beginWidget('CActiveForm', array(
-	'id'=>'file-form',
-	'enableAjaxValidation'=>false,
-	'htmlOptions'=>array('class'=>'form-horizontal')
-)); ?>
+			<p class="note">Fields with <span class="required">*</span> are required.</p>
 
-	<p class="note">Fields with <span class="required">*</span> are required.</p>
-
-	<?php echo $form->errorSummary($model); ?>
-
-	<div class="control-group">
-		<?php echo $form->labelEx($model,'dataset_id',array('class'=>'control-label')); ?>
-				<div class="controls">
-        <?= CHtml::activeDropDownList($model,'dataset_id',CHtml::listData(Dataset::model()->findAll("1=1 order by identifier desc"),'id','identifier')); ?>
-		<?php echo $form->error($model,'dataset_id'); ?>
+			<?php if ($model->hasErrors()) : ?>
+				<div class="alert alert-danger">
+					<?php echo $form->errorSummary($model); ?>
 				</div>
-	</div>
+			<?php endif; ?>
 
-	<div class="control-group">
-		<?php echo $form->labelEx($model,'folder_name',array('class'=>'control-label')); ?>
-				
-            <a class="myHint" data-content="input the detailed ftp address, for example<br/>
-               aspera.gigadb.org"></a>                  
-                      <div class="controls">              
-		<?php echo $form->textField($model,'folder_name',array('size'=>60,'maxlength'=>100)); ?>
-                      
-		<?php echo $form->error($model,'folder_name'); ?>
-				</div>
-	</div>
-        
-        <div class="control-group">
-		<?php echo $form->labelEx($model,'username',array('class'=>'control-label')); ?>
-	 <div class="controls">              
-		
-                 <?php echo $form->textField($model,'username',array('size'=>60,'maxlength'=>100)); ?>   
-                   
-		<?php echo $form->error($model,'username'); ?>
-         </div>
-        </div>
-        
-               <div class="control-group">
-		<?php echo $form->labelEx($model,'password',array('class'=>'control-label')); ?>
-	 <div class="controls">              
-		
-                 <?php echo $form->passwordField($model,'password',array('size'=>60,'maxlength'=>100)); ?>   
-                   
-		<?php echo $form->error($model,'password'); ?>
-         </div>
-        </div>
 
-	<div class="pull-right">
-        <a href="/adminFile/admin" class="btn">Cancel</a>
-		<?php echo CHtml::submitButton('Link',array('class'=>'btn')); ?>
-	</div>
- <?php $this->endWidget(); ?>
+			<?php
+			$this->widget('application.components.controls.DropdownField', [
+				'form' => $form,
+				'model' => $model,
+				'attributeName' => 'dataset_id',
+				'listDataOptions' => [
+					'data' => Dataset::model()->findAll("1=1 order by identifier desc"),
+					'valueField' => 'id',
+					'textField' => 'identifier',
+				],
+			]);
+			?>
 
-    
-</div><!-- form -->
+
+			<?php
+			$this->widget('application.components.controls.TextField', [
+				'form' => $form,
+				'model' => $model,
+				'attributeName' => 'folder_name',
+				'description' => 'input the detailed ftp address, for example: aspera.gigadb.org',
+				'inputOptions' => [
+					'required' => 'required',
+					'aria-required' => 'true',
+					'maxlength' => 100
+				],
+			]);
+			?>
+
+			<?php
+			$this->widget('application.components.controls.TextField', [
+				'form' => $form,
+				'model' => $model,
+				'attributeName' => 'username',
+				'inputOptions' => [
+					'required' => 'required',
+					'aria-required' => 'true',
+					'maxlength' => 100
+				],
+			]);
+			?>
+
+			<?php
+			$this->widget('application.components.controls.PasswordField', [
+				'form' => $form,
+				'model' => $model,
+				'attributeName' => 'password',
+				'inputOptions' => [
+					'required' => 'required',
+					'aria-required' => 'true',
+					'maxlength' => 100
+				],
+			]);
+			?>
+
+			<div class="pull-right">
+				<a href="/adminFile/admin" class="btn background-btn-o">Cancel</a>
+				<?php echo CHtml::submitButton('Link', array('class' => 'btn background-btn')); ?>
+			</div>
+			<?php $this->endWidget(); ?>
+
+		</div>
 	</div>
 </div>
-
-    
-<script>
-$('.date').datepicker();
- $(".myHint").popover();
-</script>

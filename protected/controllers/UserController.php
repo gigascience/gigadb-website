@@ -166,6 +166,7 @@ class UserController extends Controller {
             }
         }
         $user->password = $user->password_repeat = '';
+        $this->layout = 'new_main';
         $this->render('update', array('model'=>$user));
 
     }

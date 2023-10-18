@@ -1,18 +1,20 @@
 <?php
 
+
 /**
  * Usage:
  *
  * Full example:
- *  $this->widget('application.components.controls.PasswordField', [
+ *  $this->widget('application.components.controls.TextArea', [
  *    'form' => $form, // required
  *    'model' => $model, // required
- *    'attributeName' => 'password', // required
- *    'description' => 'This is a password field.', // optional
+ *    'attributeName' => 'description', // required
+ *    'description' => 'This is a description field.', // optional
  *    'inputOptions' => [
  *      'class' => 'my-input-class',
- *      'placeholder' => 'Enter your password',
  *      'required' => true, // this will set aria-required to true
+ *      'rows' => 6,
+ *      'cols' => 50
  *    ], // optional
  *    'labelOptions' => ['class' => 'my-label-class'], // optional
  *    'errorOptions' => ['class' => 'my-error-class'], // optional
@@ -23,12 +25,12 @@
 
 Yii::import('application.components.controls.BaseInput');
 
-class PasswordField extends BaseInput
+class TextArea extends BaseInput
 {
   public function run()
   {
     $this->renderControlGroup(function () {
-      echo $this->form->passwordField($this->model, $this->attributeName, $this->inputOptions);
+      echo $this->form->textArea($this->model, $this->attributeName, $this->inputOptions);
     });
   }
 }

@@ -1,9 +1,15 @@
+<div class="container">
+  <?php
+  $this->widget('TitleBreadcrumb', [
+    'pageTitle' => 'Create Sample',
+    'breadcrumbItems' => [
+      ['label' => 'Admin', 'href' => '/site/admin'],
+      ['label' => 'Manage', 'href' => 'admin'],
+      ['isActive' => true, 'label' => 'Create'],
+    ]
+  ]);
+  ?>
 
-<h1>Create Sample</h1>
-<? if (Yii::app()->user->checkAccess('admin')) { ?>
-<div class="actionBar">
-[<?= CHtml::link('Manage Samples', array('admin')) ?>]
+  <?php echo $this->renderPartial('_form', array('model' => $model)); ?>
+
 </div>
-<? } ?>
-
-<?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

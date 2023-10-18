@@ -1,25 +1,14 @@
-<?php
-$this->breadcrumbs=array(
-	'Prefix'=>array('index'),
-	$model->prefix=>array('view','id'=>$model->id),
-	'Update',
-);
+<div class="container">
+	<?php
+	$this->widget('TitleBreadcrumb', [
+		'pageTitle' => 'Update Prefix ' . $model->id,
+		'breadcrumbItems' => [
+			['label' => 'Admin', 'href' => '/site/admin'],
+			['label' => 'Manage', 'href' => '/adminLinkPrefix/admin'],
+			['isActive' => true, 'label' => 'Update'],
+		]
+	]);
+	?>
 
-$this->menu=array(
-	array('label'=>'List Prefix', 'url'=>array('index')),
-	array('label'=>'Create Prefix', 'url'=>array('create')),
-	array('label'=>'View Prefix', 'url'=>array('view', 'id'=>$model->id)),
-	array('label'=>'Manage Prefix', 'url'=>array('admin')),
-);
-
-//$this->widget('zii.widgets.CBreadcrumbs', array(
-//    'links'=>$this->breadcrumbs,
-//));
-
-?>
-
-
-
-<h1>Update Prefix <?php echo $model->id; ?></h1>
-
-<?php echo $this->renderPartial('_form', array('model'=>$model)); ?>
+	<?php echo $this->renderPartial('_form', array('model' => $model)); ?>
+</div>

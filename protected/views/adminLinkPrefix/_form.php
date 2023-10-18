@@ -1,42 +1,56 @@
-<div class="row">
-    <div class="span8 offset2 form well">
-        <div class="clear"></div>
-        <div class="form">
-            <div class="form">
-                <?php $form=$this->beginWidget('CActiveForm', array(
-	'id'=>'prefix-form',
-	'enableAjaxValidation'=>false,
-	'htmlOptions'=>array('class'=>'form-horizontal')
-)); ?>
-                <p class="note">Fields with <span class="required">*</span> are required.</p>
+<div class="section form row">
+
+    <div class="col-md-offset-3 col-md-6">
+        <?php $form = $this->beginWidget('CActiveForm', array(
+            'id' => 'prefix-form',
+            'enableAjaxValidation' => false,
+        )); ?>
+
+        <p class="note">Fields with <span class="required">*</span> are required.</p>
+
+        <?php if ($model->hasErrors()) : ?>
+            <div class="alert alert-danger">
                 <?php echo $form->errorSummary($model); ?>
-                <div class="control-group">
-                    <?php echo $form->labelEx($model,'prefix',array('class'=>'control-label')); ?>
-                    <div class="controls">
-                        <?php echo $form->textField($model,'prefix',array('size'=>20,'maxlength'=>20)); ?>
-                        <?php echo $form->error($model,'prefix'); ?>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <?php echo $form->labelEx($model,'source',array('class'=>'control-label')); ?>
-                    <div class="controls">
-                        <?php echo CHtml::activeDropDownList($model,'source', array('EBI'=>'EBI', 'NCBI'=>'NCBI', 'DDBJ'=>'DDBJ'))?>
-                        <?php echo $form->error($model,'source'); ?>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <?php echo $form->labelEx($model,'url',array('class'=>'control-label')); ?>
-                    <div class="controls">
-                        <?php echo $form->textArea($model,'url',array('rows'=>3, 'cols'=>50)); ?>
-                        <?php echo $form->error($model,'url'); ?>
-                    </div>
-                </div>
-                <div class="pull-right">
-                    <a href="/adminLinkPrefix/admin" class="btn">Cancel</a>
-                    <?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save',array('class'=>'btn')); ?>
-                </div>
-                <?php $this->endWidget(); ?>
             </div>
-            <!-- form -->
+        <?php endif; ?>
+
+
+        <?php
+        $this->widget('application.components.controls.TextField', [
+            'form' => $form,
+            'model' => $model,
+            'attributeName' => 'prefix',
+            'inputOptions' => [
+                'required' => true,
+                'maxlength' => 20
+            ],
+        ]);
+        $this->widget('application.components.controls.DropdownField', [
+            'form' => $form,
+            'model' => $model,
+            'attributeName' => 'source',
+            'dataset' => array('EBI' => 'EBI', 'NCBI' => 'NCBI', 'DDBJ' => 'DDBJ'),
+            'inputOptions' => [
+                'required' => true,
+            ],
+        ]);
+        $this->widget('application.components.controls.TextArea', [
+            'form' => $form,
+            'model' => $model,
+            'attributeName' => 'url',
+            'inputOptions' => [
+                'rows' => 3,
+                'cols' => 50
+            ],
+        ]);
+        ?>
+
+        <div class="pull-right">
+            <a href="/adminLinkPrefix/admin" class="btn background-btn-o">Cancel</a>
+            <?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => 'btn background-btn')); ?>
         </div>
+
+        <?php $this->endWidget(); ?>
     </div>
+
+</div>

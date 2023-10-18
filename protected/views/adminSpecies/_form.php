@@ -1,57 +1,63 @@
-<div class="row">
-	<div class="span8 offset2 form well">
-		<div class="clear"></div>
-<div class="form">
+<div class="section form row">
 
-<?php $form=$this->beginWidget('CActiveForm', array(
-	'id'=>'species-form',
-	'enableAjaxValidation'=>false,
-	'htmlOptions'=>array('class'=>'form-horizontal')
-)); ?>
+	<div class="col-md-offset-3 col-md-6">
+		<?php $form = $this->beginWidget('CActiveForm', array(
+			'id' => 'species-form',
+			'enableAjaxValidation' => false,
+		)); ?>
 
-	<p class="note">Fields with <span class="required">*</span> are required.</p>
+		<p class="note">Fields with <span class="required">*</span> are required.</p>
 
-	<?php echo $form->errorSummary($model); ?>
+		<?php if ($model->hasErrors()) : ?>
+			<div class="alert alert-danger">
+				<?php echo $form->errorSummary($model); ?>
+			</div>
+		<?php endif; ?>
 
-	<div class="control-group">
-		<?php echo $form->labelEx($model,'tax_id',array('class'=>'control-label')); ?>
-				<div class="controls">
-		<?php echo $form->textField($model,'tax_id'); ?>
-		<?php echo $form->error($model,'tax_id'); ?>
-                </div>
+		<?php
+		$this->widget('application.components.controls.TextField', [
+			'form' => $form,
+			'model' => $model,
+			'attributeName' => 'tax_id',
+			'inputOptions' => [
+				'required' => true,
+			],
+		]);
+		$this->widget('application.components.controls.TextField', [
+			'form' => $form,
+			'model' => $model,
+			'attributeName' => 'common_name',
+			'inputOptions' => [
+				'required' => true,
+				'maxlength' => 64
+			],
+		]);
+		$this->widget('application.components.controls.TextField', [
+			'form' => $form,
+			'model' => $model,
+			'attributeName' => 'genbank_name',
+			'inputOptions' => [
+				'required' => true,
+				'maxlength' => 128
+			],
+		]);
+		$this->widget('application.components.controls.TextField', [
+			'form' => $form,
+			'model' => $model,
+			'attributeName' => 'scientific_name',
+			'inputOptions' => [
+				'required' => true,
+				'maxlength' => 128
+			],
+		]);
+		?>
+
+		<div class="pull-right">
+			<a href="/adminSpecies/admin" class="btn background-btn-o">Cancel</a>
+			<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => 'btn background-btn')); ?>
+		</div>
+
+		<?php $this->endWidget(); ?>
 	</div>
 
-	<div class="control-group">
-		<?php echo $form->labelEx($model,'common_name',array('class'=>'control-label')); ?>
-				<div class="controls">
-		<?php echo $form->textField($model,'common_name',array('size'=>60,'maxlength'=>64)); ?>
-		<?php echo $form->error($model,'common_name'); ?>
-                </div>
-	</div>
-
-	<div class="control-group">
-		<?php echo $form->labelEx($model,'genbank_name',array('class'=>'control-label')); ?>
-				<div class="controls">
-		<?php echo $form->textField($model,'genbank_name',array('size'=>60,'maxlength'=>128)); ?>
-		<?php echo $form->error($model,'genbank_name'); ?>
-                </div>
-	</div>
-
-	<div class="control-group">
-		<?php echo $form->labelEx($model,'scientific_name',array('class'=>'control-label')); ?>
-				<div class="controls">
-		<?php echo $form->textField($model,'scientific_name',array('size'=>60,'maxlength'=>128)); ?>
-		<?php echo $form->error($model,'scientific_name'); ?>
-                </div>
-	</div>
-
-	<div class="pull-right">
-        <a href="/adminSpecies/admin" class="btn">Cancel</a>
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save',array('class'=>'btn')); ?>
-	</div>
-
-<?php $this->endWidget(); ?>
-
-</div><!-- form -->
-    </div>
 </div>

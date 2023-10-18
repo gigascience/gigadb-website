@@ -1,4 +1,13 @@
-<a href="/attribute/admin">Back</a>
-<h1>Create Attribute</h1>
-
-<?php echo $this->renderPartial('_form', array('model'=>$model)); ?>
+<div class="container">
+  <?php
+  $this->widget('TitleBreadcrumb', [
+    'pageTitle' => 'Create Attribute',
+    'breadcrumbItems' => [
+      ['label' => 'Admin', 'href' => '/site/admin'],
+      ['label' => 'Manage', 'href' => 'admin'],
+      ['isActive' => true, 'label' => 'Create'],
+    ]
+  ]);
+  ?>
+  <?php echo $this->renderPartial('_form', array('model' => $model)); ?>
+</div>
