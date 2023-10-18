@@ -1,53 +1,69 @@
-<div class="row">
-    <div class="span8 offset2 form well">
-        <div class="clear"></div>
-        <div class="form">
-            <div class="form">
-                <?php $form=$this->beginWidget('CActiveForm', array(
-			'id'=>'news-form',
-			'enableAjaxValidation'=>false,
-			'htmlOptions'=>array('class'=>'form-horizontal')
-		)); ?>
-                <p class="note">Fields with <span class="required">*</span> are required.</p>
+<div class="section form row">
+
+    <div class="col-md-offset-3 col-md-6">
+        <?php $form = $this->beginWidget('CActiveForm', array(
+            'id' => 'news-form',
+            'enableAjaxValidation' => false,
+        )); ?>
+
+        <p class="note">Fields with <span class="required">*</span> are required.</p>
+
+        <?php if ($model->hasErrors()) : ?>
+            <div class="alert alert-danger">
                 <?php echo $form->errorSummary($model); ?>
-                <div class="control-group">
-                    <?php echo $form->labelEx($model,'title',array('class'=>'control-label')); ?>
-                    <div class="controls">
-                        <?php echo $form->textField($model,'title',array('size'=>60,'maxlength'=>200)); ?>
-                        <?php echo $form->error($model,'title'); ?>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <?php echo $form->labelEx($model,'body',array('class'=>'control-label')); ?>
-                    <div class="controls">
-                        <?php echo $form->textArea($model,'body',array('rows'=>6, 'cols'=>50)); ?>
-                        <?php echo $form->error($model,'body'); ?>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <?php echo $form->labelEx($model,'start_date',array('class'=>'control-label')); ?>
-                    <div class="controls">
-                        <?php echo $form->textField($model,'start_date',array('class'=>'date')); ?>
-                        <?php echo $form->error($model,'start_date'); ?>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <?php echo $form->labelEx($model,'end_date',array('class'=>'control-label')); ?>
-                    <div class="controls">
-                        <?php echo $form->textField($model,'end_date',array('class'=>'date')); ?>
-                        <?php echo $form->error($model,'end_date'); ?>
-                    </div>
-                </div>
-                <div class="pull-right">
-                    <a href="/news/admin" class="btn">Cancel</a>
-                    <?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save',array('class'=>'btn')); ?>
-                </div>
-                <div class="clear"></div>
-                <?php $this->endWidget(); ?>
             </div>
-            <!-- form -->
-            <script>
-            $('.date').datepicker();
-            </script>
+        <?php endif; ?>
+
+        <?php
+        $this->widget('application.components.controls.TextField', [
+            'form' => $form,
+            'model' => $model,
+            'attributeName' => 'title',
+            'inputOptions' => [
+                'required' => true,
+                'maxlength' => 200
+            ],
+        ]);
+        $this->widget('application.components.controls.TextArea', [
+            'form' => $form,
+            'model' => $model,
+            'attributeName' => 'body',
+            'inputOptions' => [
+                'rows' => 6,
+                'cols' => 50
+            ],
+        ]);
+        $this->widget('application.components.controls.TextField', [
+            'form' => $form,
+            'model' => $model,
+            'attributeName' => 'start_date',
+            'inputOptions' => [
+                'required' => true,
+                'class' => 'date'
+            ],
+        ]);
+        $this->widget('application.components.controls.TextField', [
+            'form' => $form,
+            'model' => $model,
+            'attributeName' => 'end_date',
+            'inputOptions' => [
+                'required' => true,
+                'class' => 'date'
+            ],
+        ]);
+        ?>
+
+        <div class="pull-right">
+            <a href="/news/admin" class="btn background-btn-o">Cancel</a>
+            <?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => 'btn background-btn')); ?>
         </div>
+
+        <?php $this->endWidget(); ?>
     </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('.date').datepicker();
+    })
+</script>
