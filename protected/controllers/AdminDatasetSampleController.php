@@ -47,6 +47,7 @@ class AdminDatasetSampleController extends Controller
 	{
             $model=$this->loadModel($id);
 
+		    $this->layout = 'new_datasetpage';
             $this->render('view',array(
 			'model'=>$model,
 		));
