@@ -6,11 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Feat #1502: Update all admin pages with grid view Dataset tables with old style to modern style
 - Feat #1498: Search page - Improve styles and accessibility of search filters
-- feat #1434: Setup playwright local environment for automated accessibility testing
+- Feat #1434: Setup playwright local environment for automated accessibility testing
 - Feat #1387: Improve accessibility and layout of create user page
 - Feat #1369: Improve accessibility and layout of team page
 - Feat #1471: Improve Accessibility for Conditional Form Inputs Based on "Image Status"
 - Feat #1474: Admin styles - Update styles of Manage Dataset Authors page
+- Feat #1443: Make ansible playbooks can execute plays separately by adding tags
 - Fix #1428: Increase resilience of provisioning by extracting saving EC2 IP addresses as standalone bootstrap plays
 - Feat #1491: Admin styles - Style user admin page
 - Feat #1481: Improve appearance of dataset form action buttons
