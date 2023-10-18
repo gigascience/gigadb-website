@@ -1,4 +1,4 @@
- <div class="content">
+ <div class="content col-md-offset-2 col-md-8">
 
  	<?php
 		foreach (Yii::app()->user->getFlashes() as $key => $message) {
@@ -11,30 +11,33 @@
 
 		?>
 
- 	<div class="clear"></div>
  	<?php
 		if (!$model->isNewRecord) {
 			if (null != $user_command) {
+				echo CHtml::openTag('div', array('class' => 'subsection'));
 				$claimed_author = Author::model()->findByPk($user_command->actionable_id);
 				$message = "This user has a pending claim on author " . $claimed_author->getDisplayName();
 				$validate_link = CHtml::link(
 					'Validate',
 					array('AdminUserCommand/validate', 'id' => $user_command->id),
-					array('class' => 'btn')
+					array('class' => 'btn background-btn')
 				);
 				$reject_link = CHtml::link(
 					'Reject',
 					array('AdminUserCommand/reject', 'id' => $user_command->id),
-					array('class' => 'btn')
+					array('class' => 'btn background-btn-o')
 				);
 				$author_link = CHtml::link(
 					'Author info',
 					array('AdminAuthor/view', 'id' => $user_command->actionable_id),
-					array('class' => 'btn')
+					array('class' => 'btn background-btn-o')
 				);
+				echo CHtml::closeTag('div');
 		?>
- 			<div class="alert alert-info">
- 				<? echo $message ?>
+ 			<div class="alert alert-gigadb-info">
+ 				<div class="mb-10">
+ 					<? echo $message ?>
+ 				</div>
  				<div class="btn-toolbar">
  					<? echo $validate_link ?>
  					<? echo $reject_link ?>
@@ -44,19 +47,26 @@
 
  		<?php
 			} else if (null ==  $linked_author) {
+				echo CHtml::openTag('div', array('class' => 'mb-10'));
 				echo CHtml::link(
 					'Link this user to an author',
 					array('adminAuthor/prepareUserLink', 'user_id' => $model->id),
-					array('class' => 'btn')
+					array('class' => 'btn background-btn')
 				);
+				echo CHtml::closeTag('div');
 			} else {
+				echo CHtml::openTag('div', array('class' => 'mb-10'));
 				$unlink_link =  CHtml::link(
 					'Unlink author',
 					array('AdminAuthor/unlinkUser', 'id' => $linked_author->id, 'user_id' => $model->id),
-					array('class' => 'btn')
+					array('class' => 'btn background-btn')
 				);
+				echo CHtml::closeTag('div');
 			?>
- 			<div class="alert">This user is linked to author: <? echo $linked_author->getDisplayName() ?> (<? echo $linked_author->id ?>)
+ 			<div class="alert alert-gigadb-info">
+ 				<div class="mb-10">
+ 					This user is linked to author: <? echo $linked_author->getDisplayName() ?> (<? echo $linked_author->id ?>)
+ 				</div>
  				<div class="btn-toolbar">
  					<? echo $unlink_link ?>
  				</div>
@@ -66,33 +76,23 @@
 		}
 		?>
 
- 	<div class="container">
- 		<div class="section page-title-section">
- 			<div class="page-title">
- 				<nav aria-label="breadcrumbs">
- 					<ol class="breadcrumb pull-right">
- 						<li><a href="/">Home</a></li>
- 						<li class="active">Personal details</li>
- 					</ol>
- 				</nav>
- 				<h4>Registration</h4>
- 			</div>
- 		</div>
- 		<div class="subsection" style="margin-bottom: 130px;">
-
- 			<div class="clear"></div>
- 			<?php if ($model->isNewRecord) { ?>
- 				<p><?= Yii::t('app', 'GigaScience appreciates your interest in the GigaDB project. With a GigaDB account, you can submit new datasets to the database. Also, GigaDB can automatically notify you of new content which matches your interests. Please fill out the following information and register to enjoy the benefits of GigaDB membership!') ?></p>
+ 	<div>
+ 		<div class="subsection">
+ 			<?php
+				$isAdmin = Yii::app()->user->checkAccess('manageUsers');
+				if ($model->isNewRecord && !$isAdmin) { ?>
+ 				<p class="mb-10"><?= Yii::t('app', 'GigaScience appreciates your interest in the GigaDB project. With a GigaDB account, you can submit new datasets to the database. Also, GigaDB can automatically notify you of new content which matches your interests. Please fill out the following information and register to enjoy the benefits of GigaDB membership!') ?></p>
  			<? }
 				?>
  			<?php Yii::app()->captcha->generate(); ?>
- 			<p>Fields with <span class="symbol">*</span> are required.</p>
- 			<div class="col-md-offset-2 col-md-8 well">
+ 			<div class="well">
  				<? $form = $this->beginWidget('CActiveForm', array(
 						'id' => 'user-form',
 						'enableAjaxValidation' => false,
 						'htmlOptions' => array('class' => 'form-horizontal create-user-form')
 					)) ?>
+
+ 				<p class="mb-10">Fields with <span class="symbol">*</span> are required.</p>
 
  				<?php
 					$this->widget('application.components.controls.TextField', [
@@ -246,6 +246,6 @@
 							unlink($file);
 				}
 				?>
- 		</div><!--span8-->
+ 		</div>
  	</div><!-- user-form -->
  </div>
