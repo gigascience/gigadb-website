@@ -126,8 +126,7 @@
                             ],
                             'inputOptions' => array(
                                 'empty' => 'Select name',
-                                'class' => 'attr-form',
-                                'required' => true,
+                                'class' => 'attr-form js-new-attr-name',
                             )
                         ]);
                         ?>
@@ -139,7 +138,6 @@
                             'model' => $attribute,
                             'attributeName' => 'value',
                             'inputOptions' => [
-                                'required' => true,
                                 'class' => 'attr-form'
                             ],
                         ]);
@@ -219,30 +217,35 @@
         $('.js-date').datepicker({
             'dateFormat': 'yy-mm-dd'
         });
+
+        // Handle new attribute dropdown button
         $('.js-btn-attr').click(function(e) {
+            e.preventDefault();
+
             const caret = $(this).children(".js-caret-type");
             const label = $(this).children(".js-btn-attr-label");
+            const newAttrNameInput = $(".js-new-attr-name");
+            const isExpanded = $(this).attr("aria-expanded") == "true";
 
-            e.preventDefault();
             $('.js-new-attr').toggle();
-
-            if ($(this).attr("aria-expanded") == "true") {
-                $(this).attr("aria-expanded", "false");
-                caret.removeClass("fa-caret-up");
-                caret.addClass("fa-caret-down");
-                label.text("Show New Attribute Fields");
-            } else {
-                $(this).attr("aria-expanded", "true");
-                caret.removeClass("fa-caret-down");
-                caret.addClass("fa-caret-up");
-                label.text("Hide New Attribute Fields");
-            }
+            $(this).attr("aria-expanded", !isExpanded);
+            caret.toggleClass("fa-caret-up fa-caret-down");
+            label.text(isExpanded ? "Show New Attribute Fields" : "Hide New Attribute Fields");
+            // NOTE: toggling the required attributes from the input on and off so that client-side validation is not triggered when the fields are hidden
+            newAttrNameInput.attr({
+                "required": !isExpanded,
+                "aria-required": (!isExpanded).toString()
+            });
         })
+
+        // Handle add attribute
+
+        // Handle attribute edit
         $('.js-edit').click(function(e) {
             e.preventDefault();
-            id = $(this).attr('data');
+            const id = $(this).attr('data');
 
-            row = $('.row-edit-' + id);
+            const row = $('.row-edit-' + id);
             if (id) {
                 $.post('/adminFile/editAttr', {
                     'id': id
@@ -255,11 +258,12 @@
             }
         })
 
+        // Handle attribute delete
         // Based on the tests "Delete a keyword attribute on admin file update page" and "Delete camera parameters attribute and save, then check for File Attribute Value on admin file view page", unsure whether this is working as expected, i.e. delete attribute only when "save" button is pressed
         $('.js-delete').click(function(e) {
             e.preventDefault();
-            id = $(this).attr('data');
-            row = $('.row-edit-' + id);
+            const id = $(this).attr('data');
+            const row = $('.row-edit-' + id);
             if (id) {
                 $.post('/adminFile/deleteFileAttribute', {
                     'id': id
