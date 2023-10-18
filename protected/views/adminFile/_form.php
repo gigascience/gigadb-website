@@ -257,7 +257,6 @@
         })
 
         // Handle attribute delete
-        // Based on the tests "Delete a keyword attribute on admin file update page" and "Delete camera parameters attribute and save, then check for File Attribute Value on admin file view page", unsure whether this is working as expected, i.e. delete attribute only when "save" button is pressed
         $('.js-delete').click(function(e) {
             e.preventDefault();
             const id = $(this).attr('data');
