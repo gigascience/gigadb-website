@@ -42,6 +42,8 @@ class DatasetLogController extends Controller
 	 */
 	public function actionView()
 	{
+		$this->layout = 'new_datasetpage';
+
 		if(isset($_GET['id'])) {
 			$this->render('view',array(
 				'model'=>$this->loadModel($_GET['id']),
