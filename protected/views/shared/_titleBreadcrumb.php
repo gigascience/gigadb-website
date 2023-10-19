@@ -3,6 +3,6 @@
         <ol class="breadcrumb pull-right">
             <?= $breadcrumbHtml ?>
         </ol>
-        <h1 class="h4"><?= $pageTitle ?></h1>
+        <?php echo CHtml::tag($pageTitleLevel, ['class' => 'h4'], $pageTitle); ?>
     </div>
 </section>
