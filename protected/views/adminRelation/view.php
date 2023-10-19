@@ -1,26 +1,26 @@
-<?php
-$this->breadcrumbs=array(
-	'Relations'=>array('index'),
-	$model->id,
-);
+<div class="container">
+	<?php
+	$this->widget('TitleBreadcrumb', [
+		'pageTitle' => 'View Relation #' . $model->id,
+		'breadcrumbItems' => [
+			['label' => 'Admin', 'href' => '/site/admin'],
+			['label' => 'Manage', 'href' => '/adminRelation/admin'],
+			['isActive' => true, 'label' => 'View'],
+		]
+	]);
+	?>
 
-$this->menu=array(
-	array('label'=>'List Relation', 'url'=>array('index')),
-	array('label'=>'Create Relation', 'url'=>array('create')),
-	array('label'=>'Update Relation', 'url'=>array('update', 'id'=>$model->id)),
-	array('label'=>'Delete Relation', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
-	array('label'=>'Manage Relation', 'url'=>array('admin')),
-);
-?>
+	<?php $this->widget('zii.widgets.CDetailView', array(
+		'data' => $model,
+		'attributes' => array(
+			'id',
+			'dataset_id',
+			'related_doi',
+			//'relationship',
+		),
+		'htmlOptions' => array('class' => 'table table-striped table-bordered dataset-view-table'),
+		'itemCssClass' => array('odd', 'even'),
+		'itemTemplate' => '<tr class="{class}"><th scope="row">{label}</th><td>{value}</td></tr>'
+	)); ?>
 
-<h1>View Relation #<?php echo $model->id; ?></h1>
-
-<?php $this->widget('zii.widgets.CDetailView', array(
-	'data'=>$model,
-	'attributes'=>array(
-		'id',
-		'dataset_id',
-		'related_doi',
-		//'relationship',
-	),
-)); ?>
+</div>
