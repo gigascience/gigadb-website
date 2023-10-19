@@ -46,6 +46,7 @@ class RssMessageController extends Controller
 	 */
 	public function actionView($id)
 	{
+		$this->layout = 'new_datasetpage';
 		$this->render('view',array(
 			'model'=>$this->loadModel($id),
 		));
