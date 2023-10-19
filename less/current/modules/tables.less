@@ -137,15 +137,23 @@ table.submitted-table > tbody > tr > td:nth-child(9) > a:first-child {
   }
 }
 table.dataset-view-table > tbody > tr {
+  &.odd {
+    background-color: @color-lighter-gray;
+  }
   th,
   td {
     padding-inline: 16px;
+    color: @warm-black-on-lighter-gray;
   }
   th {
     min-width: 200px;
     width: 1%;
     white-space: nowrap;
     text-align: right;
+  }
+  td .null {
+    font-style: italic;
+    color: @gray-on-lighter-gray;
   }
 }
 
