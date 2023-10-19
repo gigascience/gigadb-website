@@ -1,26 +1,24 @@
-<?php
-$this->breadcrumbs=array(
-	'Publishers'=>array('index'),
-	$model->name,
-);
+<div class="container">
+	<?php
+	$this->widget('TitleBreadcrumb', [
+		'pageTitle' => 'View Publisher #' . $model->id,
+		'breadcrumbItems' => [
+			['label' => 'Admin', 'href' => '/site/admin'],
+			['label' => 'Manage', 'href' => '/adminPublisher/admin'],
+			['isActive' => true, 'label' => 'View'],
+		]
+	]);
 
-$this->menu=array(
-	array('label'=>'List Publisher', 'url'=>array('index')),
-	array('label'=>'Create Publisher', 'url'=>array('create')),
-	array('label'=>'Update Publisher', 'url'=>array('update', 'id'=>$model->id)),
-	array('label'=>'Delete Publisher', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
-	array('label'=>'Manage Publisher', 'url'=>array('admin')),
-);
-?>
+	$this->widget('zii.widgets.CDetailView', array(
+		'data' => $model,
+		'attributes' => array(
+			'id',
+			'name',
+			'description',
+		),
+		'htmlOptions' => array('class' => 'table table-striped table-bordered dataset-view-table'),
+		'itemCssClass' => array('odd', 'even'),
+		'itemTemplate' => '<tr class="{class}"><th scope="row">{label}</th><td>{value}</td></tr>'
+	)); ?>
 
-<h1>View Publisher #<?php echo $model->id; ?></h1>
-<a href='/adminPublisher/admin'>[Manage Publishers]</a>
-
-<?php $this->widget('zii.widgets.CDetailView', array(
-	'data'=>$model,
-	'attributes'=>array(
-		'id',
-		'name',
-		'description',
-	),
-)); ?>
+</div>
