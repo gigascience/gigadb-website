@@ -59,7 +59,7 @@ while [[ $# -gt 0 ]]; do
     *)
         echo "Invalid option: $1 in"
         echo $call_str
-        exit 1  ## Could be optional.
+        exit 1
         ;;
     esac
 done
