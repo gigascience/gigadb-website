@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1512: Update all admin view pages from old style to modern style
 - Fix #1507: Fix attribute related fields in adminFile form
 - Feat #1505: Update all admin pages with create and update forms with old style to modern style
 - Feat #1502: Update all admin pages with grid view Dataset tables with old style to modern style
