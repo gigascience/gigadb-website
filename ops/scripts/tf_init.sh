@@ -113,7 +113,8 @@ case "$choice" in
     exit 0
     ;;
   * ) 
-    echo "invalid"
+    echo "Invalid choice"
+    exit 1
     ;;
 esac
 
