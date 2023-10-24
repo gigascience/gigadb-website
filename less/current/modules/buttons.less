@@ -27,16 +27,21 @@
     outline: solid 2px @color-gigadb-green;
   }
 }
-.background-btn-o,
-.background-btn-o:focus,
-.background-btn-o:hover {
+.background-btn-o {
   color: @color-gigadb-green;
   background: @color-true-white;
   border: 1px @color-gigadb-green solid;
 }
-.background-btn-o:hover {
-  color: @color-true-white;
-  background: @color-gigadb-green;
+.background-btn-o {
+  &:hover {
+    color: @color-true-white;
+    background: @color-gigadb-green;
+  }
+  &:focus {
+    color: @color-gigadb-green;
+    outline-offset: 2px;
+    outline: solid 2px @color-gigadb-green;
+  }
 }
 
 .danger-btn-o {
@@ -47,6 +52,16 @@
     color: @color-true-white;
     background: @brand-danger-on-white;
   }
+  &:focus {
+    color: @brand-danger-on-white;
+    outline-offset: 2px;
+    outline: solid 2px @brand-danger-on-white;
+  }
+}
+
+.btns-row {
+  display: flex;
+  gap: 12px;
 }
 
 // Looks like this is not used in GigaDB so commented out
