@@ -59,10 +59,11 @@ The details of TLS setup can refer to the [TLS doc](../TLS.md). Currently, the L
 # login webapp server
 $ ssh -i path/to/id-rsa-aws-hk-gigadb.pem -o ProxyCommand='ssh -i ~path/to/id-rsa-aws-hk-gigadb.pem -W %h:%p centos@$ec2_bastion_public_ip' centos@$ec2_private_ip
 $ docker ps -a
-CONTAINER ID   IMAGE                                                                         COMMAND                  CREATED       STATUS       PORTS                                                                                            NAMES
-de1945448b44   portainer/portainer-ce:latest                                                 "/portainer -H unix:…"   13 days ago   Up 13 days   0.0.0.0:8000->8000/tcp, :::8000->8000/tcp, 9443/tcp, 0.0.0.0:9009->9000/tcp, :::9009->9000/tcp   gigadb-website_portainer_1
-95b70997ce2a   registry.gitlab.com/gigascience/upstream/gigadb-website/production_web:live   "/docker-entrypoint.…"   13 days ago   Up 13 days   0.0.0.0:80->80/tcp, :::80->80/tcp, 0.0.0.0:443->443/tcp, :::443->443/tcp                         gigadb-website_web_1
-d55b8bc1d82f   registry.gitlab.com/gigascience/upstream/gigadb-website/production_app:live   "docker-php-entrypoi…"   13 days ago   Up 13 days   9000/tcp, 9135/tcp                        
+CONTAINER ID   IMAGE                                                                                     COMMAND                  CREATED      STATUS      PORTS                                                                                            NAMES
+2798970abde7   registry.gitlab.com/gigascience/upstream/gigadb-website/production_tideways-daemon:live   "tideways-daemon --h…"   6 days ago   Up 6 days   9135/tcp                                                                                         gigadb-website_tideways-daemon_1
+3c0f5e74354d   portainer/portainer-ce:latest                                                             "/portainer -H unix:…"   6 days ago   Up 6 days   0.0.0.0:8000->8000/tcp, :::8000->8000/tcp, 9443/tcp, 0.0.0.0:9009->9000/tcp, :::9009->9000/tcp   gigadb-website_portainer_1
+29818e4c5880   registry.gitlab.com/gigascience/upstream/gigadb-website/production_web:live               "/docker-entrypoint.…"   6 days ago   Up 6 days   0.0.0.0:80->80/tcp, :::80->80/tcp, 0.0.0.0:443->443/tcp, :::443->443/tcp                         gigadb-website_web_1
+e8a6f6681587   registry.gitlab.com/gigascience/upstream/gigadb-website/production_app:live               "docker-php-entrypoi…"   6 days ago   Up 6 days   9000/tcp, 9135/tcp                                                                               gigadb-website_application_1                    
 $ docker exec gigadb-website_web_1 ls -l /etc/letsencrypt
 total 4
 drwx------    3 root     root            42 Sep 26 16:04 accounts
