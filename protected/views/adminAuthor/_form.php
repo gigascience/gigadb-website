@@ -98,7 +98,7 @@
 			?>
 		</div>
 
-		<div class="pull-right">
+		<div class="pull-right btns-row">
 			<?php
 			echo CHtml::link(
 				'Merge with an author',

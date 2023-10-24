@@ -202,7 +202,7 @@
                 <?php } ?>
             </div>
         <?php } ?>
-        <div class="pull-right">
+        <div class="pull-right btns-row">
             <a href="/adminFile/admin" class="btn background-btn-o">Cancel</a>
             <?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => 'btn background-btn')); ?>
         </div>
