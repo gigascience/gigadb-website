@@ -30,37 +30,37 @@
                                 <legend class="table-settings-form-label col-xs-12">Columns to display:</legend>
 
                                 <div class="col-xs-6">
-                                    <div class="checkbox checkbox-green">
+                                    <div class="checkbox">
                                         <input id="description" type="checkbox" name="setting[]" value="description" <?= (in_array("description", $setting)) ? "checked" : "" ?> />
                                         <label for="description"><?= Yii::t('app', 'File Description') ?></label>
                                     </div>
-                                    <div class="checkbox checkbox-green">
+                                    <div class="checkbox">
                                         <input id="sample_id" type="checkbox" name="setting[]" value="sample_id" <?= (in_array("sample_id", $setting)) ? "checked" : "" ?> />
                                         <label for="sample_id"><?= Yii::t('app', 'Sample ID') ?></label>
                                     </div>
-                                    <div class="checkbox checkbox-green">
+                                    <div class="checkbox">
                                         <input id="type_id" type="checkbox" name="setting[]" value="type_id" <?= (in_array("type_id", $setting)) ? "checked" : "" ?> />
                                         <label for="type_id"><?= Yii::t('app', 'Data Type') ?></label>
                                     </div>
-                                    <div class="checkbox checkbox-green">
+                                    <div class="checkbox">
                                         <input id="format_id" type="checkbox" name="setting[]" value="format_id" <?= (in_array("format_id", $setting)) ? "checked" : "" ?> />
                                         <label for="format_id"><?= Yii::t('app', 'File Format') ?></label>
                                     </div>
                                 </div>
                                 <div class="col-xs-6">
-                                    <div class="checkbox checkbox-green">
+                                    <div class="checkbox">
                                         <input id="size" type="checkbox" name="setting[]" value="size" <?= (in_array("size", $setting)) ? "checked" : "" ?> />
                                         <label for="size"><?= Yii::t('app', 'Size') ?></label>
                                     </div>
-                                    <div class="checkbox checkbox-green">
+                                    <div class="checkbox">
                                         <input id="date_stamp" type="checkbox" name="setting[]" value="date_stamp" <?= (in_array("date_stamp", $setting)) ? "checked" : "" ?> />
                                         <label for="date_stamp"><?= Yii::t('app', 'Release Date') ?></label>
                                     </div>
-                                    <div class="checkbox checkbox-green">
+                                    <div class="checkbox">
                                         <input id="location" type="checkbox" name="setting[]" value="location" <?= (in_array("location", $setting)) ? "checked" : "" ?> />
                                         <label for="location"><?= Yii::t('app', 'Download Link') ?></label>
                                     </div>
-                                    <div class="checkbox checkbox-green">
+                                    <div class="checkbox">
                                         <input id="attribute" type="checkbox" name="setting[]" value="attribute" <?= (in_array("attribute", $setting)) ? "checked" : "" ?> />
                                         <label for="attribute"><?= Yii::t('app', 'File Attributes') ?></label>
                                     </div>

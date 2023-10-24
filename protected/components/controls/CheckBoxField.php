@@ -37,7 +37,7 @@ class CheckBoxField extends CWidget
   public function run()
   {
     $errorId = $this->attributeName . '-error';
-    $this->groupOptions['class'] = $this->mergeCssClasses($this->groupOptions, 'form-group checkbox checkbox-green' . ($this->hasError() ? ' has-error' : ''));
+    $this->groupOptions['class'] = $this->mergeCssClasses($this->groupOptions, 'form-group checkbox' . ($this->hasError() ? ' has-error' : ''));
     $this->labelOptions['class'] = $this->mergeCssClasses($this->labelOptions, 'control-label');
     $this->errorOptions['class'] = $this->mergeCssClasses($this->errorOptions, 'help-block');
     $this->errorOptions['id'] = $errorId;

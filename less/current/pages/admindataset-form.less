@@ -52,43 +52,8 @@
   }
   fieldset {
     legend {
-      font-size: @font-size-base;
-      padding-bottom: 4px;
       font-weight: bold;
       color: @dark-gray-on-light-gray;
-    }
-    .checkbox-group {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-    .form-checkbox-container {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      .checkbox-wrapper {
-        input[type="checkbox"] {
-          padding: 8px;
-          position: relative;
-          accent-color: @color-gigadb-green;
-          border-radius: 3px;
-          &:focus {
-            outline: none;
-            &::before {
-              content: "";
-              display: block;
-              position: absolute;
-              inset: -3px;
-              border: 2px solid @color-gigadb-green;
-              border-radius: 4px;
-              pointer-events: none;
-            }
-          }
-        }
-      }
-      .checkbox-label {
-        text-align: left;
-      }
     }
   }
   .image-preview-wrapper {
@@ -122,6 +87,6 @@
 }
 .clear-file-url-btn {
   font-weight: bold;
-  margin-top: 0!important;
+  margin-top: 0 !important;
   margin-left: 4px;
 }

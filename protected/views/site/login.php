@@ -59,11 +59,9 @@ $this->breadcrumbs = array(
                         </div>
                     </div>
                     <div class="form-group">
-                        <div class="col-xs-9 login-form-checkbox">
-                            <div class="checkbox">
-                                <?= $form->checkBox($model, 'rememberMe') ?>
-                                <?= $form->label($model, 'rememberMe', array('disabled' => "disabled")) ?>
-                            </div>
+                        <div class="col-xs-9 form-inverted-checkbox">
+                            <?= $form->checkBox($model, 'rememberMe') ?>
+                            <?= $form->label($model, 'rememberMe', array('disabled' => "disabled")) ?>
                         </div>
                     </div>
                     <hr aria-hidden="true">
