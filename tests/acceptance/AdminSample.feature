@@ -16,13 +16,16 @@ Feature: admin page for samples
 
   @ok
   Scenario: display 1 input error message when update
-    Given I am on "/adminSample/update/id/432"
+    Given I am on "/adminSample/update/id/154"
     And I should see "lat_lon"
-    When I fill in the field of "name" "Sample[attributesList]" with "animal=\"tiger\""
+    When I fill in the field of "name" "Sample[attributesList]" with "source_mat_id=\"David Lambert & BGI\",est_genome_size=\"1.32\",alternative_names=\"PYGAD\",animal=\"tiger\""
     And I press the button "Save"
     And I wait "1" seconds
     Then I should see "Please fix the following input errors:"
     And I should see "Attribute name for the input animal=\tiger\ is not valid - please select a valid attribute name!"
+    And I should see "David Lambert"
+    And I should see "1.32"
+    And I should see "PYGAD"
 
 
   @ok
