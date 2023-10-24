@@ -52,10 +52,19 @@ IP address. There will also be an entry for the `staging` Host too.
 
 ### Tools
 
-ensure gnu-tar is installed on the system you will be running the provisioning script:
+Before running the provisioning scripts, make sure the following tools have been installed:
 ```
-$ brew install gnu-tar
+Docker
+Terraform 
+Ansible
+terraform-inventory
+jq
+gnu-tar
 ```
+
+** For macOS (and Linux) users, the tools can be installed using [Homebrew](https://formulae.brew.sh/).
+** For more details on the tool's usages, installation, please refer to their official document.
+
 
 ## Deployment procedure
 
@@ -105,7 +114,7 @@ $ git fetch origin
 $ git rebase origin/develop
 ```
 
-Check you can deploy GigaDB in your `dev` environment:
+Check you can spin up GigaDB `develop` branch in your `dev` environment:
 ```
 # Create .env file
 $ cp ops/configuration/variables/env-sample .env
@@ -146,8 +155,9 @@ Change directory to the `envs` folder:
 $ cd ops/infrastructure/envs
 ```
 
-Change directory to the `staging` folder:
+Create directory `staging` directory if not existing already:
 ```
+$ mkdir staging
 $ cd staging
 ```
 
@@ -156,17 +166,13 @@ Copy terraform files to `staging` environment:
 # this step will retrieve terraform state file from the gitlab
 $ ../../../scripts/tf_init.sh --project gigascience/upstream/gigadb-website --env staging
 
-You need to specify the path to the ssh private key to use to connect to the EC2 instance: 
-~/.ssh/id-rsa-aws-hk-gigadb.pem
+You need to specify the path to the ssh private key to use to connect to the EC2 instance: </path/to/id-rsa-aws-hk-gigadb.pem>
 
-You need to specify your GitLab username:
-pli888 | rija | kencho51
+You need to specify your GitLab username: <user input>
 
-You need to specify a backup file created by the files-url-updater tool:
-../../../../gigadb/app/tools/files-url-updater/sql/gigadbv3_20210929_v9.3.25.backup
+You need to specify a backup file created by the files-url-updater tool: </path/to/giagdbv3_*_v9.3.5.backup> (optional)
 
-You need to specify an AWS region:
-ap-east-1
+You need to specify an AWS region: ap-east-1
 ```
 
 And you should use Gigadb AWS IAM user account to provision production staging server:
@@ -204,7 +210,7 @@ $ env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventor
 
 Additional features for executing ansible playbooks:
 ```
-# display all availale plays
+# display all available plays
 $ env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES TF_KEY_NAME=private_ip ansible-playbook -i ../../inventories bastion_playbook.yml --extra-vars="gigadb_env=staging" --list-tags
 $ env TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories webapp_playbook.yml --extra-vars="gigadb_env=staging" --list-tags
 # execute selected plays
@@ -225,6 +231,8 @@ in the `Upstream` group in order to run manual jobs such as `build_staging` in
 the CI/CD pipeline otherwise you will see a `You are not authorised to run this
 manual job` message. To see who can push/merge, go to repository settings and 
 expand the Protected branches section for the gigadb-website project.
+
+** On staging, build and deploy are automated, and all the build and deploy jobs can be rerun if necessary.
 
 ### Procedure
 
@@ -247,8 +255,9 @@ Change directory to the `envs` folder:
 $ cd ops/infrastructure/envs
 ```
 
-Change directory to the `live` directory:
+Create directory `live` directory if not existing already:
 ```
+$ mkdir live
 $ cd live
 ```
 
@@ -256,17 +265,13 @@ Copy terraform files to `live` environment:
 ```
 $ ../../../scripts/tf_init.sh --project gigascience/upstream/gigadb-website --env live
 
-You need to specify an AWS region:
-ap-east-1
+You need to specify the path to the ssh private key to use to connect to the EC2 instance: </path/to/id-rsa-aws-hk-gigadb.pem>
 
-You need to specify the path to the ssh private key to use to connect to the EC2 instance: 
-~/.ssh/id-rsa-aws-hk-gigadb.pem
+You need to specify your GitLab username: <user input>
 
-You need to specify your GitLab username:
-pli888 | rijam | kencho51
+You need to specify a backup file created by the files-url-updater tool: </path/to/giagdbv3_*_v9.3.5.backup> (optional)
 
-You need to specify a backup file created by the files-url-updater tool:
-../../../../gigadb/app/tools/files-url-updater/sql/gigadbv3_20210929_v9.3.25.backup
+You need to specify an AWS region: ap-east-1
 ```
 
 Use Gigadb AWS IAM user account to provision production staging server:
@@ -289,17 +294,17 @@ $ ansible-galaxy install -r ../../../infrastructure/requirements.yml
 
 Provision RDS via bastion server:
 ```
-$ env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories bastion_playbook.yml --extra-vars="gigadb_env=staging"
+$ env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories bastion_playbook.yml --extra-vars="gigadb_env=live"
 ```
 
 Enable cronjob for periodically resetting the database:
 ```
-$ env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories bastion_playbook.yml -e "reset_database_cronjob_state=present" --extra-vars="gigadb_env=staging"
+$ env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories bastion_playbook.yml -e "reset_database_cronjob_state=present" --extra-vars="gigadb_env=live"
 ```
 
 Enable cronjob for periodically creating a database dump and storing it in S3:
 ```
-$ env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories bastion_playbook.yml -e "upload_database_backup_to_S3_cronjob_state=present" --extra-vars="gigadb_env=staging"
+$ env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories bastion_playbook.yml -e "upload_database_backup_to_S3_cronjob_state=present" --extra-vars="gigadb_env=live"
 ```
 
 To confirm the cron jobs have been created, log in with ssh on bastion, and run 
@@ -315,7 +320,7 @@ $ ssh -i ~/.ssh/id-rsa-aws-hk-gigadb.pem centos@<bastion public ip>
 
 Provision web application server:
 ```
-$ TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories webapp_playbook.yml --extra-vars="gigadb_env=staging"
+$ TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories webapp_playbook.yml --extra-vars="gigadb_env=live"
 ```
 
 Provision monitoring server:
@@ -325,7 +330,7 @@ $ env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventor
 
 Additional features for executing ansible playbooks:
 ```
-# display all availale plays
+# display all available plays
 $ env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES TF_KEY_NAME=private_ip ansible-playbook -i ../../inventories bastion_playbook.yml --extra-vars="gigadb_env=live" --list-tags
 $ env TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories webapp_playbook.yml --extra-vars="gigadb_env=live" --list-tags
 # execute selected plays

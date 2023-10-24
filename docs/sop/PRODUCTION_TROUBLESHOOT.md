@@ -22,6 +22,12 @@ Here is the grafana [dashboard](http://monitoring.gigadb.host:3000/login), the l
 
 Before you try to reach the grafana dashboard, your computer's IP has to be first  added into the security group of the monitoring instance in the AWS [dashboard](https://ap-east-1.console.aws.amazon.com/ec2/home?region=ap-east-1#Home:)
 
+### How to manage the containers for deploying GigaDB Website?
+
+The production containers can be managed through the live [portainer dashboard](https://portainer.gigadb.org/) or the staging [portainer dashboard](https://portainer.staging.gigadb.org/).
+The login credentials can be found at the gitlab variable page.
+The details of portainer can be found at [here](https://github.com/portainer/portainer).
+
 ### How to login the webapp server via ssh
 
 The webapp server can only be accessed through the bastion server for security reason, details as below:
@@ -68,14 +74,14 @@ drwxr-xr-x    5 root     root            43 Sep 26 16:04 renewal-hooks
 $ docker exec gigadb-website_web_1 ls -1l /etc/letsencrypt/live
 total 4
 -rw-r--r--    1 root     root           740 Sep 26 16:04 README
-drwxr-xr-x    2 root     root            93 Sep 26 16:04 beta.gigadb.org
-$ docker exec gigadb-website_web_1 ls -1l /etc/letsencrypt/live/beta.gigadb.org
+drwxr-xr-x    2 root     root            93 Sep 26 16:04 gigadb.org
+$ docker exec gigadb-website_web_1 ls -1l /etc/letsencrypt/live/gigadb.org
 total 4
 -rw-r--r--    1 root     root           692 Sep 26 16:04 README
-lrwxrwxrwx    1 root     root            39 Sep 26 16:04 cert.pem -> ../../archive/beta.gigadb.org/cert1.pem
-lrwxrwxrwx    1 root     root            40 Sep 26 16:04 chain.pem -> ../../archive/beta.gigadb.org/chain1.pem
-lrwxrwxrwx    1 root     root            44 Sep 26 16:04 fullchain.pem -> ../../archive/beta.gigadb.org/fullchain1.pem
-lrwxrwxrwx    1 root     root            42 Sep 26 16:04 privkey.pem -> ../../archive/beta.gigadb.org/privkey1.pem
+lrwxrwxrwx    1 root     root            39 Sep 26 16:04 cert.pem -> ../../archive/gigadb.org/cert1.pem
+lrwxrwxrwx    1 root     root            40 Sep 26 16:04 chain.pem -> ../../archive/gigadb.org/chain1.pem
+lrwxrwxrwx    1 root     root            44 Sep 26 16:04 fullchain.pem -> ../../archive/gigadb.org/fullchain1.pem
+lrwxrwxrwx    1 root     root            42 Sep 26 16:04 privkey.pem -> ../../archive/gigadb.org/privkey1.pem
 $ docker volume ls
 DRIVER    VOLUME NAME
 local     gigadb-website_assets

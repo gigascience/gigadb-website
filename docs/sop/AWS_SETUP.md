@@ -8,6 +8,10 @@ has the same permissions as those used by the developers.
 
 > :warning: **You'll need your AWS admin user account to access the IAM console**
 
+### Tools
+
+Ensure `AWS CLI` has been installed, [click](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) to see more details.
+
 ### Set up credentials for accessing AWS resources
 
 > :warning: **Mistakes can happen with interchanging between AWS configurations below**
