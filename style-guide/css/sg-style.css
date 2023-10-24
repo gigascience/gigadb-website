@@ -15,8 +15,8 @@
 *:before,
 *:after {
   -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
-          box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 body {
@@ -58,6 +58,8 @@ body {
   padding-left: 1rem;
   padding-right: 16px; /* For older browsers */
   padding-right: 1rem;
+  height: 100vh;
+  overflow-y: auto;
 }
 
 .js .sg-sidebar {
@@ -65,10 +67,10 @@ body {
   position: absolute;
   top: -100%;
   -webkit-transition: opacity 0.6s ease-out;
-     -moz-transition: opacity 0.6s ease-out;
-      -ms-transition: opacity 0.6s ease-out;
-       -o-transition: opacity 0.6s ease-out;
-          transition: opacity 0.6s ease-out;
+  -moz-transition: opacity 0.6s ease-out;
+  -ms-transition: opacity 0.6s ease-out;
+  -o-transition: opacity 0.6s ease-out;
+  transition: opacity 0.6s ease-out;
 }
 
 .js.nav-is-active .sg-sidebar {
@@ -84,7 +86,7 @@ body {
     float: left;
     font-size: 100%;
     opacity: 1;
-    position: absolute;
+    position: fixed;
     top: 0;
     width: 25%;
   }
@@ -110,10 +112,10 @@ body {
 .sg-section:before,
 .sg-section:after,
 .sg-markup-controls:before,
-.sg-markup-controls:after{
-  content:"";
-  display:table;
-  line-height:0
+.sg-markup-controls:after {
+  content: "";
+  display: table;
+  line-height: 0;
 }
 
 .sg-container:after,
@@ -155,8 +157,9 @@ body {
 .sg-font1,
 .sg-logo,
 .sg-about p,
-.sg-color-value  {
-  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+.sg-color-value {
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue",
+    Helvetica, Arial, "Lucida Grande", sans-serif;
   font-weight: 400;
 }
 
@@ -168,9 +171,10 @@ body {
 .sg-h2,
 .sg-h3,
 .sg-color-name,
-.sg-font-list dt  {
-  font-family: "HelveticaNeue-Medium", "Helvetica Neue Medium", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-   font-weight: 500;
+.sg-font-list dt {
+  font-family: "HelveticaNeue-Medium", "Helvetica Neue Medium", "Helvetica Neue",
+    Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-weight: 500;
 }
 
 /* Branding
@@ -206,7 +210,7 @@ body {
 .sg-nav-toggle {
   background-color: #000;
   border-radius: 5px;
-  border: 1px solid #7C7C7C;
+  border: 1px solid #7c7c7c;
   color: #fff;
   float: right;
   font-size: 16px;
@@ -214,11 +218,11 @@ body {
   padding: 5px 8px; /* For older browsers */
   padding: 0.3125rem 0.5rem;
   text-decoration: none;
-  -webkit-transition: all .15s ease-in;
-     -moz-transition: all .15s ease-in;
-      -ms-transition: all .15s ease-in;
-       -o-transition: all .15s ease-in;
-          transition: all .15s ease-in;
+  -webkit-transition: all 0.15s ease-in;
+  -moz-transition: all 0.15s ease-in;
+  -ms-transition: all 0.15s ease-in;
+  -o-transition: all 0.15s ease-in;
+  transition: all 0.15s ease-in;
 }
 
 .sg-nav-toggle:hover {
@@ -239,7 +243,7 @@ body {
 }
 
 .sg-nav-group li {
-  margin-bottom: .5em;
+  margin-bottom: 0.5em;
 }
 
 .sg-nav-group a,
@@ -248,14 +252,14 @@ body {
   color: #fff;
   display: block;
   font-size: 1.2em;
-  padding: .35em 0 .35em .5em;
+  padding: 0.35em 0 0.35em 0.5em;
   text-decoration: none;
   text-transform: capitalize;
-  -webkit-transition: all .15s ease-in;
-     -moz-transition: all .15s ease-in;
-      -ms-transition: all .15s ease-in;
-       -o-transition: all .15s ease-in;
-          transition: all .15s ease-in;
+  -webkit-transition: all 0.15s ease-in;
+  -moz-transition: all 0.15s ease-in;
+  -ms-transition: all 0.15s ease-in;
+  -o-transition: all 0.15s ease-in;
+  transition: all 0.15s ease-in;
 }
 
 .sg-nav-group a:hover,
@@ -284,15 +288,15 @@ body {
 
 .sg-h1 {
   font-size: 2em;
-  padding-bottom: .2em;
+  padding-bottom: 0.2em;
   text-transform: capitalize;
 }
 
 .sg-h2 {
   border-bottom: 1px solid #ddd;
   font-size: 1.75em;
-  margin-bottom: .75em;
-  padding-bottom: .2em;
+  margin-bottom: 0.75em;
+  padding-bottom: 0.2em;
   text-transform: capitalize;
 }
 
@@ -304,7 +308,6 @@ body {
   font-size: 1.1em;
 }
 
-
 /* Buttons
 ---------------------------------------------------------------------------- */
 .sg-btn {
@@ -314,7 +317,7 @@ body {
   float: left;
   font-size: 16px; /* For older browsers */
   font-size: 1rem;
-  padding: .5em .9em;
+  padding: 0.5em 0.9em;
   text-decoration: none;
 }
 
@@ -346,9 +349,9 @@ body {
   z-index: 1;
 }
 
-.sg-btn--select-active:hover:after{
+.sg-btn--select-active:hover:after {
   background: #111; /* For older browsers */
-  background: rgba(0,0,0,.8);
+  background: rgba(0, 0, 0, 0.8);
   border-radius: 5px;
   color: #fff;
   content: "Selected code ready to be copied";
@@ -364,7 +367,7 @@ body {
   z-index: 98;
 }
 
-.sg-btn--select-active:hover:before{
+.sg-btn--select-active:hover:before {
   border-color: transparent transparent #111 transparent;
   border-style: solid;
   border-width: 0 10px 10px 10px;
@@ -398,11 +401,11 @@ body {
 
 .sg-color-name {
   font-size: 1.2em; /* Test this with 1.1 em */
-  padding: .5em 0;
+  padding: 0.5em 0;
 }
 
 .sg-color-value {
-  font-size: 1.2em;  /* Test this with 1.1 em */
+  font-size: 1.2em; /* Test this with 1.1 em */
 }
 
 @media only screen and (min-width: 375px) {
@@ -421,7 +424,7 @@ body {
   .sg-color-swatch {
     padding-top: 60%; /* Used to set height of color swatch */
   }
- }
+}
 
 @media only screen and (min-width: 760px) {
   .sg-color {
@@ -450,24 +453,23 @@ body {
 
 .sg-font-list dt {
   display: block;
-  padding-bottom: .25em;
+  padding-bottom: 0.25em;
 }
 
 .sg-font-list dd {
   border-bottom: 1px solid #ddd;
   display: block;
-  margin-bottom: .75em;
+  margin-bottom: 0.75em;
   margin-left: 0;
-  padding-bottom: .75em;
+  padding-bottom: 0.75em;
 }
 
 @media only screen and (min-width: 760px) {
   .sg-font-list dt {
     float: left;
-    padding-right: .25em;
+    padding-right: 0.25em;
   }
 }
-
 
 /* Markup
 ---------------------------------------------------------------------------- */
@@ -486,11 +488,11 @@ body {
 
 .sg-source pre {
   background: #333;
-  border-radius: .5em;
+  border-radius: 0.5em;
   border: 1px solid #ddd;
   color: #fff;
   overflow-x: scroll;
-  padding: .5em .3em;
+  padding: 0.5em 0.3em;
 }
 
 .sg-source pre code {
@@ -505,10 +507,10 @@ body {
   top: -100%;
   width: 1px;
   -webkit-transition: opacity 0.6s ease-out;
-     -moz-transition: opacity 0.6s ease-out;
-      -ms-transition: opacity 0.6s ease-out;
-       -o-transition: opacity 0.6s ease-out;
-          transition: opacity 0.6s ease-out;
+  -moz-transition: opacity 0.6s ease-out;
+  -ms-transition: opacity 0.6s ease-out;
+  -o-transition: opacity 0.6s ease-out;
+  transition: opacity 0.6s ease-out;
 }
 
 /* Show source code blocks when active or JS is not enabled */

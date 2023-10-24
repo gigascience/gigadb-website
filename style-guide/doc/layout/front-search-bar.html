@@ -1,37 +1,52 @@
 <section class="image-background">
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-10 col-xs-offset-1 text-center">
-                <h1 class="home-search-bar-title">GIGADB DATASETS</h1>
-                <p class="home-search-bar-subtitle">GigaDB contains
-                    4 discoverable, trackable, and citable datasets that have been assigned DOIs and are available for public download and use.</p>
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-10 col-xs-offset-1 text-center">
+        <h1 class="home-search-bar-title">GIGADB DATASETS</h1>
+        <p class="home-search-bar-subtitle">
+          GigaDB contains 4 discoverable, trackable, and citable datasets that
+          have been assigned DOIs and are available for public download and use.
+        </p>
 
+        <form
+          class="form"
+          onsubmit="return validateForm(this);"
+          action="/search/new"
+          method="GET"
+        >
+          <div class="form-group home-search-bar-group">
+            <div class="input-group search-bar-group">
+              <input
+                title="Search GigaDB"
+                class="form-control"
+                placeholder="e.g. Chicken, brain etc..."
+                id="keyword"
+                type="text"
+                name="keyword"
+              />
+              <script type="text/javascript">
+                /*<![CDATA[*/
+                document.addEventListener("DOMContentLoaded", function (event) {
+                  jQuery("#keyword").autocomplete({
+                    minLength: "2",
+                    source: [],
+                  });
+                });
 
-                <form class="form" onsubmit="return validateForm(this);" action="/search/new" method="GET">
-                    <div class="form-group home-search-bar-group">
-                        <div class="input-group search-bar-group">
+                /*]]>*/
+              </script>
+              <span class="input-group-btn">
+                <button class="btn background-btn" type="submit">
+                  <i class="fa fa-search"></i> Search
+                </button>
+              </span>
+            </div>
+          </div>
 
-                            <input title="Search GigaDB" class="form-control" placeholder="e.g. Chicken, brain etc..." id="keyword" type="text" name="keyword" /><script type="text/javascript">
-                            /*<![CDATA[*/
-                            document.addEventListener('DOMContentLoaded', function(event) {
-                                jQuery('#keyword').autocomplete({'minLength':'2','source':[]});
-                            });
-
-                            /*]]>*/
-                        </script>
-                            <span class="input-group-btn">
-       <button class="btn background-btn" type="submit">
-                                                <i class="fa fa-search"></i> Search
-                                            </button>
-    </span>
-
-                        </div>
-                    </div>
-
-                    <!--
+          <!--
                     <a data-toggle="modal" href="#how-to-use-advanced-search" class="hint advanced-search-hint"></a> -->
-
-                </form>    <!--
+        </form>
+        <!--
     <div class="modal hide fade" id="how-to-use-advanced-search">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">×</button>
@@ -80,50 +95,46 @@ The full meaning of this search is:
     </div>
     -->
 
+        <script>
+          // function submitForm(myform){
+          //     var strJson= JSON.stringify($(myform).serializeObject());
 
+          //     var url=window.location.protocol+"//"+window.location.hostname+(window.location.port ? ':'+window.location.port: '')+$(myform).attr("action");
 
+          //     window.location = url+"?criteria=" + strJson;
+          //     return false;
 
-                <script>
-                    // function submitForm(myform){
-                    //     var strJson= JSON.stringify($(myform).serializeObject());
+          // }
+          document.addEventListener("DOMContentLoaded", function (event) {
+            //This event is fired after deferred scripts are loaded
 
-                    //     var url=window.location.protocol+"//"+window.location.hostname+(window.location.port ? ':'+window.location.port: '')+$(myform).attr("action");
+            function validateForm(myform) {
+              if (myform.keyword.value.length == 0) {
+                alert("Keyword can not be blank");
+                return false;
+              }
 
-                    //     window.location = url+"?criteria=" + strJson;
-                    //     return false;
+              return true;
+            }
 
-                    // }
-                    document.addEventListener("DOMContentLoaded", function(event) { //This event is fired after deferred scripts are loaded
-
-                        function validateForm(myform){
-                            if(myform.keyword.value.length==0) {
-                                alert("Keyword can not be blank");
-                                return false;
-                            }
-
-                            return true;
-
-                        }
-
-                        $.fn.serializeObject = function()
-                        {
-                            var o = {};
-                            var a = this.serializeArray();
-                            $.each(a, function() {
-                                if (o[this.name] !== undefined) {
-                                    if (!o[this.name].push) {
-                                        o[this.name] = [o[this.name]];
-                                    }
-                                    o[this.name].push(this.value || '');
-                                } else {
-                                    o[this.name] = this.value || '';
-                                }
-                            });
-                            return o;
-                        };
-                    });
-                </script>
-            </div>
-        </div>
+            $.fn.serializeObject = function () {
+              var o = {};
+              var a = this.serializeArray();
+              $.each(a, function () {
+                if (o[this.name] !== undefined) {
+                  if (!o[this.name].push) {
+                    o[this.name] = [o[this.name]];
+                  }
+                  o[this.name].push(this.value || "");
+                } else {
+                  o[this.name] = this.value || "";
+                }
+              });
+              return o;
+            };
+          });
+        </script>
+      </div>
     </div>
+  </div>
 </section>

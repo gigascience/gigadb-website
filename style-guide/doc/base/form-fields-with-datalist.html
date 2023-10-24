@@ -3,7 +3,13 @@
     <legend>Form Fields With Datalist</legend>
     <div>
       <label for="text-input-datalist">Text input with datalist</label>
-      <input id="text-input-datalist" type="text" value="" list="fav-color" placeholder="Type your favorite color" />
+      <input
+        id="text-input-datalist"
+        type="text"
+        value=""
+        list="fav-color"
+        placeholder="Type your favorite color"
+      />
       <datalist id="fav-color">
         <option value="Red">Red</option>
         <option value="Orange">Orange</option>
@@ -15,7 +21,14 @@
     </div>
     <div>
       <label for="range-input-datalist">Range input with datalist</label>
-      <input id="range-input-datalist" type="range" value="0" min="0" max="100" list="number" />
+      <input
+        id="range-input-datalist"
+        type="range"
+        value="0"
+        min="0"
+        max="100"
+        list="number"
+      />
       <output>0</output>
       <datalist id="number">
         <option>25</option>
@@ -23,16 +36,23 @@
         <option>75</option>
       </datalist>
       <script>
-      if (document.querySelector) {
-        document.querySelector('#range-input-datalist').onchange = function(e) {
-          e.target.nextElementSibling.innerText = e.target.value;
+        if (document.querySelector) {
+          document.querySelector("#range-input-datalist").onchange = function (
+            e,
+          ) {
+            e.target.nextElementSibling.innerText = e.target.value;
+          };
         }
-      }
-    </script>
+      </script>
     </div>
     <div>
       <label for="color-input-datalist">Color input with datalist</label>
-      <input id="color-input-datalist" type="color" value="#000000" list="color" />
+      <input
+        id="color-input-datalist"
+        type="color"
+        value="#000000"
+        list="color"
+      />
       <datalist id="color">
         <option>#ff0000</option>
         <option>#0000ff</option>
@@ -61,8 +81,14 @@
       </datalist>
     </div>
     <div>
-      <label for="datetime-local-input-datalist">Datetime-local input with datalist</label>
-      <input id="datetime-local-input-datalist" type="datetime-local" list="datetime-locals" />
+      <label for="datetime-local-input-datalist"
+        >Datetime-local input with datalist</label
+      >
+      <input
+        id="datetime-local-input-datalist"
+        type="datetime-local"
+        list="datetime-locals"
+      />
       <datalist id="datetime-locals">
         <option label="Santa Visit">2012-12-24T23:59</option>
         <option label="Chrismas party">2012-12-25T18:00</option>
@@ -92,5 +118,5 @@
       </datalist>
     </div>
   </fieldset>
-  <input type="submit" value="Submit form">
+  <input type="submit" value="Submit form" />
 </form>
