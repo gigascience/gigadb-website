@@ -214,7 +214,7 @@ echo $form->hiddenField($model, "image_id");
                                             );
                                             ?>
                                         </div>
-                                        <div class="col-xs-offset-4 col-xs-8 control-msg">
+                                        <div class="col-xs-offset-4 col-xs-8">
                                             <div id="removing" role="alert"></div>
                                         </div>
                                     </div>
@@ -295,7 +295,7 @@ echo $form->hiddenField($model, "image_id");
                     <hr />
                     <div class="form-block-4">
                         <fieldset aria-labelledby="doiLabel">
-                            <div class="form-group row">
+                            <div class="form-group row" id="doiFormGroup">
                                 <?php echo $form->labelEx($model, 'identifier', array(
                                     'class' => 'control-label col-xs-4',
                                     'id' => 'doiLabel'
@@ -319,7 +319,6 @@ echo $form->hiddenField($model, "image_id");
                                                         $("#Dataset_identifier").addClass("error");
                                                     }else {
                                                         $("#Dataset_identifier").removeClass("error");
-
                                                     }
                                                 }',
                                             ),
@@ -349,7 +348,7 @@ echo $form->hiddenField($model, "image_id");
                                         }',
                                         ),
                                         array(
-                                            'class' => 'btn background-btn control-btn',
+                                            'class' => 'btn background-btn',
                                             'id' => 'mint_doi_button',
                                             'disabled' => in_array($model->upload_status, $status_array),
                                         )
@@ -366,7 +365,7 @@ echo $form->hiddenField($model, "image_id");
                                     }
                                     ?>
                                 </div>
-                                <div id="minting" class="col-xs-offset-4 col-xs-8 control-msg"></div>
+                                <div id="minting" class="col-xs-offset-4 col-xs-8"></div>
                             </div>
 
                         </fieldset>
@@ -431,7 +430,7 @@ echo $form->hiddenField($model, "image_id");
                     <div class="form-group">
                         <?php echo $form->labelEx($model, 'description', array('class' => 'control-label col-xs-4')); ?>
                         <div class='col-xs-6'>
-                            <?php echo $form->textArea($model, 'description', array('class' => 'form-control textarea-control', 'rows' => 8, 'cols' => 50,)); ?>
+                            <?php echo $form->textArea($model, 'description', array('class' => 'form-control', 'rows' => 8, 'cols' => 50,)); ?>
                             <?php echo $form->error($model, 'description'); ?>
                         </div>
                     </div>
