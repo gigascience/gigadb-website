@@ -27,6 +27,16 @@ Feature: admin page for samples
     And I should see "1.32"
     And I should see "PYGAD"
 
+  @ok
+  Scenario: show the original attribute when update
+    Given I am on "/adminSample/update/id/154"
+    And I should see "lat_lon"
+    And I press the button "Save"
+    And I wait "1" seconds
+    And I should see "David Lambert"
+    And I should see "1.32"
+    And I should see "PYGAD"
+
 
   @ok
   Scenario: display error message for empty taxon id when update

@@ -333,9 +333,9 @@ class AdminSampleController extends Controller
 
         if (!empty($model->attributesList) && trim($model->attributesList)) {
             // From a model we will clone
-            $sampleAttribute = new SampleAttribute();
-            $sampleAttribute->sample_id = $model->id;
             foreach (explode('",', $model->attributesList) as $attributes) {
+                $sampleAttribute = new SampleAttribute();
+                $sampleAttribute->sample_id = $model->id;
                 $attributes = str_replace('"', '', $attributes);
                 $attributeData = explode('=', $attributes);
                 if (count($attributeData) == 2) {
@@ -345,10 +345,9 @@ class AdminSampleController extends Controller
                         $model->addError('error', 'Attribute name for the input ' . $attributeData[0] . "=" . $attributeData[1] . ' is not valid - please select a valid attribute name!');
                     } else {
                         // Let's save the new sample attribute
-                        $sampleAttribute = clone $sampleAttribute;
                         $sampleAttribute->value = trim($attributeData[1]);
                         $sampleAttribute->attribute_id = $attribute->id;
-                        if (!$sampleAttribute->save()) {
+                        if (!$sampleAttribute->save(true)) {
                             foreach ($sampleAttribute->getErrors() as $errors) {
                                 foreach ($errors as $errorMessage) {
                                     $model->addError('error', $errorMessage);
