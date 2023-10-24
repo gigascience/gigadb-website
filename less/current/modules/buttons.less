@@ -11,9 +11,7 @@
   margin: 2px;
 }
 
-.background-btn,
-.background-btn:focus,
-.background-btn:hover {
+.background-btn {
   color: @white-on-gigadb-green;
   background: @color-gigadb-green;
   border: 1px @color-gigadb-green solid;
@@ -22,6 +20,11 @@
   &:hover {
     color: @white-on-gigadb-green;
     background: @color-gigadb-green-800;
+  }
+  &:focus {
+    color: @white-on-gigadb-green;
+    outline-offset: 2px;
+    outline: solid 2px @color-gigadb-green;
   }
 }
 .background-btn-o,
@@ -306,4 +309,8 @@
 .action-btns {
   display: flex;
   gap: 32px;
+}
+
+.create-user-submit-btn {
+  margin-top: 0 !important;
 }
