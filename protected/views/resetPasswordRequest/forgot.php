@@ -34,7 +34,7 @@ $this->pageTitle='Forgotten password';
                 <div class="form-group forgot-password-group">
                     <?php echo $form->label($model, 'email', array('class' => 'col-xs-2 control-label forgot-password-label')); ?>
                     <div class="col-xs-8 forgot-password-input">
-                        <?php echo $form->emailField($model, 'email', array('class' => 'form-control forgot-password-input', 'required' => 'true')); ?>
+                        <?php echo $form->emailField($model, 'email', array('class' => 'form-control', 'required' => 'true')); ?>
                     </div>
                     <div class="col-xs-2">
                         <?= CHtml::submitButton(Yii::t('app' , 'Reset Password'), array('class'=>'btn background-btn forgot-password-btn')) ?>

@@ -37,7 +37,18 @@
 }
 .home-search-bar-group {
   margin: 0px 0px 45px;
+  input.form-control {
+    border-top-right-radius: 0!important;
+    border-bottom-right-radius: 0!important;
+    transition: box-shadow 0s ease;
+    &:focus {
+      outline: 3px solid black!important;
+      outline: 3px solid @color-gigadb-green!important;
+      box-shadow: 0 0 5px 3px #ffffff!important;
+    }
+  }
 }
+
 
 .visually-hidden {
   border: 0;
