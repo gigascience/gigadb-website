@@ -33,14 +33,14 @@
   border: 1px @color-gigadb-green solid;
 }
 .background-btn-o {
-  &:hover {
-    color: @color-true-white;
-    background: @color-gigadb-green;
-  }
   &:focus {
     color: @color-gigadb-green;
     outline-offset: 2px;
     outline: solid 2px @color-gigadb-green;
+  }
+  &:hover {
+    color: @color-true-white;
+    background: @color-gigadb-green;
   }
 }
 
@@ -61,7 +61,14 @@
 
 .btns-row {
   display: flex;
-  gap: 12px;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.btns-col {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 // Looks like this is not used in GigaDB so commented out

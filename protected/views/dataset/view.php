@@ -110,7 +110,7 @@ $sampleDataProvider = $samples->getDataProvider();
                     </p>
                 </div>
             </div>
-            <div class="subsection">
+            <div class="subsection btns-row">
                 <span class="content-popup" <?= $email != '' ? '' : 'data-content="Please login to contact submitter"' ?> data-original-title="">
                     <a class="btn background-btn background-btn-o <?= $email != '' ? '' : 'notlogged' ?>" <?= $email != '' ? 'href="mailto:' . $email . '"' : 'href="#"' ?>>
                         Contact Submitter
@@ -135,18 +135,15 @@ $sampleDataProvider = $samples->getDataProvider();
                                 <?php echo CHtml::beginForm('/userCommand/claim', 'GET'); ?>
                                 <div class="modal-body text-center">
                                     <?php if (count($model->authors) > 0) { ?>
-                                        <table>
+                                        <div class="btns-row">
                                             <?php foreach ($model->authors as $author) { ?>
-                                                <tr>
-                                                    <td>
-                                                        <a href="#" class="btn btn-green btn-block claim-button" data-author-id="<?= $author->id ?>" id="claim_button_<?= $author->id ?>">
-                                                            <?= $author->first_name . ' ' . $author->middle_name . ' ' . $author->surname ?>
-                                                        </a>
-                                                    </td>
-                                                    <td><? echo $author->orcid ? " (orcid id:" . $author->orcid . ")" : "" ?> </td>
-                                                </tr>
+                                                <a href="#" role="button" class="btn btn-link js-claim-button" data-author-id="<?= $author->id ?>"
+                                                    id="claim_button_<?= $author->id ?>">
+                                                <?= $author->first_name . ' ' . $author->middle_name . ' ' . $author->surname ?>
+                                                </a>
+                                                <span><? echo $author->orcid ? " (orcid id:" . $author->orcid . ")" : "" ?></span>
                                             <? } ?>
-                                        </table>
+                                        </div>
                                     <? } ?>
                                 </div>
                                 <div class="modal-footer">
@@ -154,7 +151,6 @@ $sampleDataProvider = $samples->getDataProvider();
                                     <input type="hidden" id="dataset_id" name="dataset_id" value="<? echo $model->id ?>" />
                                     <a href="#" id="cancel_button" class="btn btn-danger">Cancel current claim</a>
                                 </div>
-                                </form>
                             </div>
                         </div>
                     </div>
@@ -242,7 +238,7 @@ $sampleDataProvider = $samples->getDataProvider();
                         </p>
                     <?php } ?>
 
-                <?php } //if (count($accessions) > 0) 
+                <?php } //if (count($accessions) > 0)
                 ?>
 
                 <?php $projects = $connections->getProjects();
@@ -805,7 +801,7 @@ $sampleDataProvider = $samples->getDataProvider();
                 return false;
             });
 
-            $('.claim-button').on('click', function(event) {
+            $('.js-claim-button').on('click', function(event) {
                 var author_id = this.getAttribute("data-author-id");
                 jQuery.ajax({
                     'type': 'GET',
