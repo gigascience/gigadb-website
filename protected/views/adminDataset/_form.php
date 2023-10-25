@@ -205,7 +205,7 @@ echo $form->hiddenField($model, "image_id");
                                                 }',
                                                 ),
                                                 array(
-                                                    'class' => 'btn btn-sm btn-danger',
+                                                    'class' => 'btn btn-sm danger-btn',
                                                     'id' => 'removeButton',
                                                     'title' => 'the dataset will be associated with the generic image record afterward',
                                                     'confirm' => 'Are you sure? This will take effect immediately',

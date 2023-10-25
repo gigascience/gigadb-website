@@ -44,18 +44,32 @@
   }
 }
 
+.danger-btn {
+  color: @color-true-white;
+  background-color: @color-brand-danger-650;
+  &:focus {
+    color: @color-true-white;
+    outline-offset: 2px;
+    outline: solid 2px @color-brand-danger-650;
+  }
+  &:hover {
+    color: @color-true-white;
+    background-color: @color-brand-danger-800;
+  }
+}
+
 .danger-btn-o {
   color: @brand-danger-on-white;
   background: @color-true-white;
   border: 1px @brand-danger-on-white solid;
-  &:hover {
-    color: @color-true-white;
-    background: @brand-danger-on-white;
-  }
   &:focus {
     color: @brand-danger-on-white;
     outline-offset: 2px;
     outline: solid 2px @brand-danger-on-white;
+  }
+  &:hover {
+    color: @color-true-white;
+    background: @brand-danger-on-white;
   }
 }
 
@@ -322,12 +336,7 @@
     color: @link-color-hover;
   }
 }
-.btn-danger {
-  background-color: @color-brand-danger-650;
-  &:hover {
-    background-color: @color-brand-danger-800;
-  }
-}
+
 .action-btns {
   display: flex;
   gap: 32px;
