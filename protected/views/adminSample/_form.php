@@ -51,7 +51,7 @@
         <div class="control-group">
             <?php echo $form->labelEx($model,'attributesList',array('class'=>'control-label')); ?>
             <div class="controls">
-                <textarea name="Sample[attributesList]"><?= $model->getAttributesList(true) ?></textarea>
+                <textarea name="Sample[attributesList]"><?php echo $model->attributesList ? $model->attributesList :  $model->getAttributesList(true) ?></textarea>
                 <?php echo $form->error($model,'attributesList'); ?>
             </div>
         </div>
