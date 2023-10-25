@@ -84,6 +84,7 @@
                                         'htmlOptions' => array(
                                             'aria-label'=>'Search GigaDB',
                                             'class' => 'search-input',
+                                            'id' => 'searchInput',
                                             'placeholder'=>'e.g. Chicken, brain, etc...',
                                         ),
                                     ));

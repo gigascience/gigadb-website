@@ -10,9 +10,9 @@
 
    <div class="form-group home-search-bar-group">
        <div class="input-group search-bar-group">
-    
-    <?php        
-               
+
+    <?php
+
         $this->widget('application.components.DeferrableCJuiAutoComplete', array(
             'name'=>'keyword',
             //'source'=>array('ac1', 'ac2', 'ac3'),
@@ -29,7 +29,7 @@
                                  ),
             ));
         ?>
-    
+
      <span class="input-group-btn">
        <button class="btn background-btn" type="submit">
                                                 <i class="fa fa-search"></i> Search
