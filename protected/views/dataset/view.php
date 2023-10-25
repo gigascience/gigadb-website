@@ -112,13 +112,13 @@ $sampleDataProvider = $samples->getDataProvider();
             </div>
             <div class="subsection btns-row">
                 <span class="content-popup" <?= $email != '' ? '' : 'data-content="Please login to contact submitter"' ?> data-original-title="">
-                    <a class="btn background-btn background-btn-o <?= $email != '' ? '' : 'notlogged' ?>" <?= $email != '' ? 'href="mailto:' . $email . '"' : 'href="#"' ?>>
+                    <a class="btn background-btn-o <?= $email != '' ? '' : 'notlogged' ?>" <?= $email != '' ? 'href="mailto:' . $email . '"' : 'href="#"' ?>>
                         Contact Submitter
                     </a>
                 </span>
                 <? if (!Yii::app()->user->isGuest && null == Author::findAttachedAuthorByUserId(Yii::app()->user->id)) { ?>
                     <span title="click to claim the dataset and link your user account to an author" data-toggle="tooltip" data-placement="bottom">
-                        <a href="#myModal" role="button" class="btn background-btn background-btn-o" data-toggle="modal">
+                        <a href="#myModal" role="button" class="btn background-btn-o" data-toggle="modal">
                             Your dataset?
                         </a>
                     </span>
