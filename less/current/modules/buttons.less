@@ -337,6 +337,21 @@
   }
 }
 
+.inactive-btn-o {
+  color: @dark-gray-on-white;
+  background: @color-true-white;
+  border: 1px @dark-gray-on-white solid;
+  &:focus {
+    color: @dark-gray-on-white;
+    outline-offset: 2px;
+    outline: solid 2px @dark-gray-on-white;
+  }
+  &:hover {
+    color: @color-true-white;
+    background: @dark-gray-on-white;
+  }
+}
+
 .action-btns {
   display: flex;
   gap: 32px;

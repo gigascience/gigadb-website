@@ -112,7 +112,7 @@ $sampleDataProvider = $samples->getDataProvider();
             </div>
             <div class="subsection btns-row">
                 <span class="content-popup" <?= $email != '' ? '' : 'data-content="Please login to contact submitter"' ?> data-original-title="">
-                    <a class="btn background-btn-o <?= $email != '' ? '' : 'notlogged' ?>" <?= $email != '' ? 'href="mailto:' . $email . '"' : 'href="#"' ?>>
+                    <a class="btn <?= $email != '' ? 'background-btn-o' : 'inactive-btn-o' ?>" <?= $email != '' ? 'href="mailto:' . $email . '"' : 'href="#"' ?>>
                         Contact Submitter
                     </a>
                 </span>
