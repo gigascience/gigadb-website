@@ -147,9 +147,11 @@ $sampleDataProvider = $samples->getDataProvider();
                                     <? } ?>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="reset" class="btn btn-inverse" data-dismiss="modal" aria-hidden="true">Close</button>
-                                    <input type="hidden" id="dataset_id" name="dataset_id" value="<? echo $model->id ?>" />
-                                    <a href="#" id="cancel_button" class="btn btn-danger">Cancel current claim</a>
+                                    <div class="btns-row pull-right">
+                                        <button type="reset" class="btn btn-inverse" data-dismiss="modal" aria-hidden="true">Close</button>
+                                        <input type="hidden" id="dataset_id" name="dataset_id" value="<? echo $model->id ?>" />
+                                        <a href="#" id="cancel_button" class="btn danger-btn">Cancel current claim</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
