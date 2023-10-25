@@ -101,6 +101,7 @@
       left: -90px;*/
 }
 
+// Deprecated style
 .btn-green {
   background: @color-lighter-gray;
   background: -webkit-gradient(
@@ -246,6 +247,7 @@
   behavior: url(/css/PIE.htc);
 }
 
+// Deprecated style
 .gigadb-arrow-button {
   font-size: 28px !important;
   line-height: 20px !important;
@@ -297,11 +299,14 @@
   width: 60px;
   height: 60px;
   font-size: 60px;
-  color: @color-patina-green;
+  color: @color-gigadb-green;
   text-align: center;
   position: fixed;
   top: 50%;
   cursor: pointer;
+  &:hover {
+  color: @color-gigadb-green-800;
+  }
 }
 .fixed-btn-left {
   left: 50%;
@@ -310,10 +315,6 @@
 .fixed-btn-right {
   right: 50%;
   margin-right: -630px;
-}
-.fixed-btn-left:hover,
-.fixed-btn-right:hover {
-  color: @color-gigadb-green;
 }
 
 .btn_click {
@@ -341,6 +342,6 @@
   gap: 32px;
 }
 
-.create-user-submit-btn {
+.submit-btn {
   margin-top: 0 !important;
 }

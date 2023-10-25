@@ -229,7 +229,7 @@
  				<? } ?>
  				<hr>
  				<div class="pull-right">
- 					<?= CHtml::submitButton($model->isNewRecord ? Yii::t('app', 'Register') : 'Save', array('class' => 'btn background-btn create-user-submit-btn')) ?>
+ 					<?= CHtml::submitButton($model->isNewRecord ? Yii::t('app', 'Register') : 'Save', array('class' => 'btn background-btn submit-btn')) ?>
  				</div>
  				<div class="clearfix"></div>
  				<? $this->endWidget() ?>

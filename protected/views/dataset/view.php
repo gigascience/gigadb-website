@@ -406,7 +406,7 @@ $sampleDataProvider = $samples->getDataProvider();
                                         'pages' => $fileDataProvider->getPagination(),
                                     ));
                                 ?>
-                                    <button class="btn_click" onclick="goToPage()"><strong>Go to page</strong></button>
+                                    <button class="btn background-btn-o" onclick="goToPage()"><strong>Go to page</strong></button>
                                     <input type="number" id="pageNumber" class="page_box" onkeypress="detectEnterKeyPress()">
                                     <a class="color-background"><strong> of <?php echo $fileDataProvider->getPagination()->getPageCount() ?></strong></a>
                                 <?php } ?>
