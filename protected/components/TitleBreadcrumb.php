@@ -35,36 +35,36 @@
  */
 class TitleBreadcrumb extends CWidget
 {
-  public $pageTitle;
-  public $breadcrumbItems = [];
-  const ACTIVE_CLASS = 'active';
+    public $pageTitle;
+    public $breadcrumbItems = [];
+    private const ACTIVE_CLASS = 'active';
 
-  private function generateBreadcrumbItems(): string
-  {
-    return implode("\n", array_map(function ($item) {
-      $isActive = $item['isActive'] ?? false;
-      $label = $item['label'];
-      $href = $item['href'] ?? '#';
+    private function generateBreadcrumbItems(): string
+    {
+        return implode("\n", array_map(function ($item) {
+            $isActive = $item['isActive'] ?? false;
+            $label = $item['label'];
+            $href = $item['href'] ?? '#';
 
-      if ($isActive) {
-        return CHtml::tag('li', ['class' => self::ACTIVE_CLASS], $label);
-      }
+            if ($isActive) {
+                return CHtml::tag('li', ['class' => self::ACTIVE_CLASS], $label);
+            }
 
-      return CHtml::tag('li', [], CHtml::link($label, $href));
-    }, $this->breadcrumbItems));
-  }
-
-  public function run()
-  {
-    if (empty($this->pageTitle)) {
-      throw new CException('pageTitle must be set.');
+            return CHtml::tag('li', [], CHtml::link($label, $href));
+        }, $this->breadcrumbItems));
     }
 
-    $breadcrumbHtml = $this->generateBreadcrumbItems();
+    public function run()
+    {
+        if (empty($this->pageTitle)) {
+            throw new CException('pageTitle must be set.');
+        }
 
-    Yii::app()->controller->renderPartial('//shared/_titleBreadcrumb', [
-      'pageTitle' => $this->pageTitle,
-      'breadcrumbHtml' => $breadcrumbHtml
-    ]);
-  }
+        $breadcrumbHtml = $this->generateBreadcrumbItems();
+
+        Yii::app()->controller->renderPartial('//shared/_titleBreadcrumb', [
+            'pageTitle' => $this->pageTitle,
+            'breadcrumbHtml' => $breadcrumbHtml
+        ]);
+    }
 }
