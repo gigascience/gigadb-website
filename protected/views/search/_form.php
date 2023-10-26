@@ -7,10 +7,10 @@
 
     <?php echo CHtml::beginForm('/search/new', 'GET', array('class' => 'form', 'onsubmit' => 'return validateForm(this);', 'role' => 'search')); ?>
     <?php echo CHtml::errorSummary($model); ?>
-    
+
     <div class="form-group home-search-bar-group">
         <div class="input-group search-bar-group">
-    
+
             <?php
 
             $this->widget('application.components.DeferrableCJuiAutoComplete', array(
@@ -29,11 +29,11 @@
                 ),
             ));
             ?>
-    
+
             <span class="input-group-btn">
-                <button class="btn background-btn" type="submit"><i class="fa fa-search"></i>Search</button>
+                <button class="btn background-btn" type="submit"><i class="fa fa-search"></i> Search</button>
             </span>
-    
+
         </div>
     </div>
 
