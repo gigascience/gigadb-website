@@ -55,7 +55,7 @@ $('.search-form form').submit(function(){
 
 <div class="container">
 	<?php
-    $this->widget('application.components.TitleBreadcrumb', [
+    $this->widget('TitleBreadcrumb', [
         'pageTitle' => 'Manage Datasets',
         'breadcrumbItems' => [
 						['label' => 'Admin', 'href' => '/site/admin'],

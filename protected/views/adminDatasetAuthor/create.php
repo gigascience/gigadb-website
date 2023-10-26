@@ -1,6 +1,6 @@
 <div class="container">
 	<?php
-	$this->widget('application.components.TitleBreadcrumb', [
+	$this->widget('TitleBreadcrumb', [
 		'pageTitle' => 'Create DatasetAuthor',
 		'breadcrumbItems' => [
 			['label' => 'Admin', 'href' => '/site/admin'],
