@@ -8,7 +8,7 @@
  * Usage Example:
  *
  * ```php
- * $this->widget('application.components.TitleBreadcrumb', [
+ * $this->widget('TitleBreadcrumb', [
  *     'pageTitle' => 'Your Page Title',
  *     'breadcrumbItems' => [
  *         ['isActive' => true, 'label' => 'Admin'],
