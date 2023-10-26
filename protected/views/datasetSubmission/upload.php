@@ -1,18 +1,6 @@
 <div class="container">
 
 <?php
-if (isset($_GET['status'])) {
-    if ($_GET['status'] == 'successful') {
-        echo 'success';
-    } elseif ($_GET['status'] == 'failed') {
-        echo 'Error';
-    }
-} elseif (isset($study)) {
-    echo 'request accepted';
-} else {
-    echo 'Dataset Upload';
-}
-
 $this->widget('TitleBreadcrumb', [
     'pageTitle' => 'Dataset Upload',
     'breadcrumbItems' => [
