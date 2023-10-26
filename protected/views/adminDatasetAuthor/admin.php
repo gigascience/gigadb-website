@@ -8,11 +8,14 @@
 		]
 	]);
 	?>
-	<a href="/adminDatasetAuthor/create" class="btn background-btn">Add an author to a Dataset</a>
 
-	<div class="sr-only">
+	<div class="mb-10">
+    <a href="/adminDatasetAuthor/create" class="btn background-btn">Add an author to a Dataset</a>
+  </div>
+
+	<p>
 		Column headers with links are sortable. Cells with a text input are used for filtering.
-	</div>
+	</p>
 
 	<?php $this->widget('CustomGridView', array(
 		'id' => 'dataset-author-grid',

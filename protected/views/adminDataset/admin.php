@@ -68,7 +68,13 @@ $('.search-form form').submit(function(){
 	or <b>=</b>) at the beginning of each of your search values to specify how the comparison should be done. Date should be exactly in this format: <b>yyyy-mm-dd</b>
 	</p>
 
-	<a href="/adminDataset/create" class="btn background-btn">Create Dataset</a>
+  <div class="mb-10">
+	  <a href="/adminDataset/create" class="btn background-btn">Create Dataset</a>
+  </div>
+
+	<p>
+		Column headers with links are sortable. Cells with a text input are used for filtering.
+	</p>
 
 	<?php $this->widget('zii.widgets.grid.CGridView', array(
 		'id'=>'dataset-grid',

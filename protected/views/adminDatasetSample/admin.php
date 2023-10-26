@@ -8,12 +8,13 @@
 		]
 	]);
 	?>
+	<div class="mb-10">
+	  <a href="/adminDatasetSample/create" class="btn background-btn">Add a Sample to a Dataset</a>
+  </div>
 
-	<a href="/adminDatasetSample/create" class="btn background-btn">Add a Sample to a Dataset</a>
-
-	<div class="sr-only">
+	<p>
 		Column headers with links are sortable. Cells with a text input are used for filtering.
-	</div>
+	</p>
 
 	<?php $this->widget('CustomGridView', array(
 		'id' => 'dataset-sample-grid',
