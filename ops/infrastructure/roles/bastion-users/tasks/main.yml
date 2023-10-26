@@ -97,27 +97,28 @@
   register: save_pk_to_gitlab
   when: (pk.changed == true and public_key_in_gitlab.status == 404)
 
-- name: copy ssh public key (for existing user)
-  slurp:
-    src: "/home/{{ newuser }}/.ssh/authorized_keys"
-  register: existing_public_key
-  when: public_key_in_bastion.stat.exists == true
+- name: copy ssh public key and save it to GitLab CI environment variable (for existing user)
+  block:
+    - name: copy ssh public key
+      slurp:
+        src: "/home/{{ newuser }}/.ssh/authorized_keys"
+      register: existing_public_key
 
-- name: save ssh public key to GitLab CI environment variable (for existing user)
-  ansible.builtin.uri:
-    url: "{{ gitlab_url }}/variables"
-    method: POST
-    headers:
-      PRIVATE-TOKEN: "{{ gitlab_private_token }}"
-    body_format: json
-    body:
-      key: "{{ newuser }}_bastion_public_key"
-      value: "{{ existing_public_key['content'] | b64decode}}"
-      environment_scope: "{{ gigadb_environment }}"
-    status_code:
-      - 201
-      - 400
-  register: save_pk_to_gitlab
+    - name: save ssh public key to GitLab CI environment variable
+      ansible.builtin.uri:
+        url: "{{ gitlab_url }}/variables"
+        method: POST
+        headers:
+          PRIVATE-TOKEN: "{{ gitlab_private_token }}"
+        body_format: json
+        body:
+          key: "{{ newuser }}_bastion_public_key"
+          value: "{{ existing_public_key['content'] | b64decode}}"
+          environment_scope: "{{ gigadb_environment }}"
+        status_code:
+          - 201
+          - 400
+      register: save_pk_to_gitlab
   when: (public_key_in_bastion.stat.exists == true and public_key_in_gitlab.status == 404)
 
 - name: download pubic key from GitLab CI environment variable and copy it to authorized file
