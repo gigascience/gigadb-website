@@ -100,3 +100,7 @@ output "bastion_public_ip" {
   description = "EC2 bastion instance public IP address"
   value = aws_instance.bastion.public_ip
 }
+
+output "instance_type" {
+  value = aws_instance.bastion.instance_type
+}

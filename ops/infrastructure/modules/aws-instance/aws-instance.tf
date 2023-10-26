@@ -129,3 +129,7 @@ output "instance_ip_addr" {
 output "instance_public_ip_addr" {
   value = aws_instance.docker_host.public_ip
 }
+
+output "instance_type" {
+  value = aws_instance.docker_host.instance_type
+}

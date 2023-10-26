@@ -222,6 +222,10 @@ output "ec2_private_ip" {
   value = module.ec2_dockerhost.instance_ip_addr
 }
 
+output "web_ec2_type" {
+  value = module.ec2_dockerhost.instance_type
+}
+
 # EC2 instance for bastion server to access RDS for PostgreSQL admin
 module "ec2_bastion" {
   source = "../../modules/bastion-aws-instance"
@@ -244,6 +248,10 @@ output "ec2_bastion_private_ip" {
 output "ec2_bastion_public_ip" {
   description = "Public IP address of the EC2 bastion instance"
   value = module.ec2_bastion.bastion_public_ip
+}
+
+output "bastion_ec2_type" {
+  value = module.ec2_bastion.instance_type
 }
 
 # RDS instance for hosting GigaDB's PostgreSQL database
