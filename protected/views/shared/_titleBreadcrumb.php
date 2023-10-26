@@ -1,8 +1,10 @@
 <section class="page-title-section">
     <div class="page-title">
-        <ol class="breadcrumb pull-right">
-            <?= $breadcrumbHtml ?>
-        </ol>
+        <nav aria-label="breadcrumbs">
+          <ol class="breadcrumb pull-right">
+              <?= $breadcrumbHtml ?>
+          </ol>
+        </nav>
         <?php echo CHtml::tag($pageTitleLevel, ['class' => 'h4'], $pageTitle); ?>
     </div>
 </section>

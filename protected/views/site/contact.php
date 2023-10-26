@@ -11,17 +11,15 @@ $this->pageTitle = 'GigaDB - Contact Us';
 ?>
     <div class="content">
         <div class="container">
-            <div class="section page-title-section">
-                <div class="page-title">
-                    <nav aria-label="breadcrumbs">
-                        <ol class="breadcrumb pull-right">
-                            <li><a href="/">Home</a></li>
-                            <li class="active">Contact</li>
-                        </ol>
-                    </nav>
-                    <h1 class="h4">Contact</h1>
-                </div>
-            </div>
+          <?php
+            $this->widget('TitleBreadcrumb', [
+              'pageTitle' => 'Contact',
+              'breadcrumbItems' => [
+                ['label' => 'Home', 'href' => '/'],
+                ['isActive' => true, 'label' => 'Contact'],
+              ]
+            ]);
+            ?>
             <div class="subsection">
                 <img src="../images/new_interface_image/shekmun_map.png" alt="Map highlighting the GigaDB location on 1 On Kwan Street in Sha Tin, Hong Kong">
             </div>

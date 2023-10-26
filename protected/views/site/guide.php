@@ -6,19 +6,16 @@ $this->pageTitle = 'GigaDB - Submission Guidelines';
 
 <div class="content">
     <div class="container">
-        <div class="section page-title-section guides-title-section">
-            <div class="page-title">
-                <nav aria-label="breadcrumbs">
-                    <ol class="breadcrumb pull-right">
-                        <li><a href="/">Home</a></li>
-                        <li class="active">Guidelines</li>
-                    </ol>
-                </nav>
-                <h1 class="h4">GigaDB - Submission Guidelines</h1>
-            </div>
-        </div>
+    <?php
+        $this->widget('TitleBreadcrumb', [
+          'pageTitle' => 'GigaDB - Submission Guidelines',
+          'breadcrumbItems' => [
+            ['label' => 'Home', 'href' => '/'],
+            ['isActive' => true, 'label' => 'Guidelines'],
+          ]
+        ]);
+        ?>
         <section>
-
             <?php
             $this->widget('application.components.GuideNavigation');
             ?>

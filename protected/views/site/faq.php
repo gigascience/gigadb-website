@@ -7,18 +7,15 @@ $this->pageTitle = 'GigaDB - FAQ';
 <div class="clear"></div>
 <div class="content">
     <div class="container">
-        <div class="section page-title-section">
-            <div class="page-title">
-                <nav aria-label="breadcrumbs">
-                    <ol class="breadcrumb pull-right">
-                        <li><a href="/">Home</a></li>
-                        <li class="active">FAQ</li>
-                    </ol>
-                </nav>
-                <h1 class="h4">FAQ</h1>
-            </div>
-        </div>
-
+      <?php
+        $this->widget('TitleBreadcrumb', [
+          'pageTitle' => 'FAQ',
+          'breadcrumbItems' => [
+            ['label' => 'Home', 'href' => '/'],
+            ['isActive' => true, 'label' => 'FAQ'],
+          ]
+        ]);
+        ?>
         <section>
             <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                 <div class="panel panel-default">

@@ -3,17 +3,15 @@ $this->pageTitle='Forgotten password';
 ?>
 <div class="content">
     <div class="container">
-        <div class="section page-title-section">
-            <div class="page-title">
-                <nav aria-label="breadcrumbs">
-                    <ol class="breadcrumb pull-right">
-                        <li><a href="/">Home</a></li>
-                        <li class="active">Forgot</li>
-                    </ol>
-                </nav>
-                <h4>Forgotten password</h4>
-            </div>
-        </div>
+      <?php
+        $this->widget('TitleBreadcrumb', [
+          'pageTitle' => 'Forgotten password',
+          'breadcrumbItems' => [
+            ['label' => 'Home', 'href' => '/'],
+            ['isActive' => true, 'label' => 'Forgot'],
+          ]
+        ]);
+        ?>
     <div class="subsection row" style="margin-bottom: 130px;">
         <div class="col-xs-12">
             <?php if(Yii::app()->user->hasFlash('fail-reset-password')): ?>

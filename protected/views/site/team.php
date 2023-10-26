@@ -1,16 +1,14 @@
 <div class="content">
     <div class="container">
-        <section>
-            <div class="page-title">
-                <nav aria-label="breadcrumbs">
-                    <ol class="breadcrumb pull-right">
-                        <li><a href="/">Home</a></li>
-                        <li class="active">Team</li>
-                    </ol>
-                </nav>
-                <h1 class="h4" id="teamPageTitle">Our team</h1>
-            </div>
-        </section>
+      <?php
+        $this->widget('TitleBreadcrumb', [
+          'pageTitle' => 'Our team',
+          'breadcrumbItems' => [
+            ['label' => 'Home', 'href' => '/'],
+            ['isActive' => true, 'label' => 'Team'],
+          ]
+        ]);
+        ?>
         <section aria-describedby="teamPageTitle">
             <div class="team-grid">
                 <article class="team-card">
