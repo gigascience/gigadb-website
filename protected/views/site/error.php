@@ -1,7 +1,7 @@
 <div class="container">
   <?php
   $this->widget('TitleBreadcrumb', [
-    'pageTitle' => 'Error' . $code,
+    'pageTitle' => 'Error ' . $code,
     'breadcrumbItems' => [
       ['label' => 'Home', 'href' => '/'],
       ['isActive' => true, 'label' => 'Error']
