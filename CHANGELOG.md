@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1519: Use new layout and styles in remaining pages that should have them
 - Feat #1515: Coalesce redundant module styles to global styles
 - Feat #1512: Update all admin view pages from old style to modern style
 - Fix #1507: Fix attribute related fields in adminFile form
