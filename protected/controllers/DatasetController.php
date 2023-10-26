@@ -141,6 +141,7 @@ class DatasetController extends Controller
 
         // Different rendering based on page type (invalid, hidden, public)
         if ("invalid" === $datasetPageSettings->getPageType()) {
+            $this->layout = 'new_datasetpage';
             $this->render('invalid', array('model' => new Dataset('search'), 'keyword' => $id, 'general_search' => 1));
         } elseif ("hidden" === $datasetPageSettings->getPageType()) {
             // Page private ? Disable robot to index
