@@ -58,7 +58,7 @@ $('.search-form form').submit(function(){
     $this->widget('application.components.TitleBreadcrumb', [
         'pageTitle' => 'Manage Datasets',
         'breadcrumbItems' => [
-						['label' => 'Datasets', 'href' => '/site/admin'],
+						['label' => 'Admin', 'href' => '/site/admin'],
             ['isActive' => true, 'label' => 'Manage'],
         ]
     ]);

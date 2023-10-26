@@ -3,7 +3,7 @@
     $this->widget('application.components.TitleBreadcrumb', [
         'pageTitle' => 'Update Dataset '.$model->identifier,
         'breadcrumbItems' => [
-            ['label' => 'Datasets', 'href' => '/site/admin'],
+            ['label' => 'Admin', 'href' => '/site/admin'],
             ['href' => '/adminDataset/admin', 'label' => 'Manage'],
             ['isActive' => true, 'label' => 'Update'],
         ]

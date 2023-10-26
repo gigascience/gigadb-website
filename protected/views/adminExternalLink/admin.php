@@ -3,8 +3,8 @@
 	$this->widget('TitleBreadcrumb', [
 		'pageTitle' => 'Manage External Links',
 		'breadcrumbItems' => [
-			['label' => 'Datasets', 'href' => '/site/admin'],
-			['isActive' => true, 'label' => 'Manage External Links'],
+			['label' => 'Admin', 'href' => '/site/admin'],
+			['isActive' => true, 'label' => 'Manage'],
 		]
 	]);
 	?>

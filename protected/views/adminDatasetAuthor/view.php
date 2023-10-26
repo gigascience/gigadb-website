@@ -17,7 +17,7 @@
 		'pageTitle' => 'View DatasetAuthor #' . $model->id,
 		'breadcrumbItems' => [
 			['label' => 'Admin', 'href' => '/site/admin'],
-			['label' => 'Dataset Authors', 'href' => '/adminDatasetAuthor/admin'],
+			['label' => 'Manage', 'href' => '/adminDatasetAuthor/admin'],
 			['isActive' => true, 'label' => 'View'],
 		]
 	]);

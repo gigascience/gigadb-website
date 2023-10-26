@@ -3,7 +3,7 @@
 	$this->widget('TitleBreadcrumb', [
 		'pageTitle' => 'Manage Projects',
 		'breadcrumbItems' => [
-			['label' => 'Datasets', 'href' => '/site/admin'],
+			['label' => 'Admin', 'href' => '/site/admin'],
 			['isActive' => true, 'label' => 'Manage'],
 		]
 	]);
