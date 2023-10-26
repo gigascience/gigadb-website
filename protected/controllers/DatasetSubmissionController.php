@@ -92,6 +92,7 @@ EO_MAIL;
                 return;
             }
         }
+        $this->layout = 'new_datasetpage';
         $this->render('upload');
     }
 
