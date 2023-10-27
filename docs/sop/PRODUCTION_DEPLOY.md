@@ -203,11 +203,6 @@ Provision web application server:
 $ env TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories webapp_playbook.yml --extra-vars="gigadb_env=staging"
 ```
 
-Provision monitoring server:
-```
-$ env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories monitoring_playbook.yml
-```
-
 Additional features for executing ansible playbooks:
 ```
 # display all available plays
@@ -321,11 +316,6 @@ $ ssh -i ~/.ssh/id-rsa-aws-hk-gigadb.pem centos@<bastion public ip>
 Provision web application server:
 ```
 $ TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories webapp_playbook.yml --extra-vars="gigadb_env=live"
-```
-
-Provision monitoring server:
-```
-$ env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories monitoring_playbook.yml
 ```
 
 Additional features for executing ansible playbooks:
