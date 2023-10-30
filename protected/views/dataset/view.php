@@ -300,6 +300,9 @@ $sampleDataProvider = $samples->getDataProvider();
 
 
                 <div class="tab-content">
+                <p>
+                  Click on a table column to sort the results.
+                </p>
 
                     <?php if (count($model->samples) > 0) {
                     ?>
