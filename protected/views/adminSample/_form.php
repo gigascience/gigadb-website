@@ -46,7 +46,7 @@
         </div>
 
         <?php
-        $model->attributesList = $model->getAttributesList(true); // this sets the default text content of the textarea
+        $model->attributesList = $model->attributesList ? $model->attributesList :  $model->getAttributesList(true); // this sets the default text content of the textarea
         $this->widget('application.components.controls.TextArea', [
             'form' => $form,
             'model' => $model,
