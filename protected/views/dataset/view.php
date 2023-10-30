@@ -300,14 +300,15 @@ $sampleDataProvider = $samples->getDataProvider();
 
 
                 <div class="tab-content">
-                <p>
-                  Click on a table column to sort the results.
-                </p>
 
                     <?php if (count($model->samples) > 0) {
                     ?>
 
                         <div role="tabpanel" class="tab-pane active" id="sample">
+
+                            <p class="pull-left">
+                              Click on a table column to sort the results.
+                            </p>
                             <a id="samples_table_settings" class="btn btn-default pull-right" data-toggle="modal" data-target="#samples_settings" href="#"><span class="glyphicon glyphicon-adjust"></span>Table Settings</a>
                             <table id="samples_table" class="table table-striped table-bordered" style="width:100%">
                                 <thead>
@@ -356,6 +357,9 @@ $sampleDataProvider = $samples->getDataProvider();
                             <?php } else { ?>
                                 <div role="tabpanel" class="tab-pane active" id="files">
                                 <?php   } ?>
+                                <p class="pull-left">
+                                  Click on a table column to sort the results.
+                                </p>
                                 <a id="files_table_settings" class="btn btn-default pull-right" data-toggle="modal" data-target="#files_settings" href="#"><span class="glyphicon glyphicon-adjust"></span>Table Settings</a>
                                 <br>
                                 <br>
