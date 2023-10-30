@@ -1,17 +1,15 @@
 
 <div class="content">
     <div class="container">
-        <div class="section page-title-section">
-            <div class="page-title">
-                <nav aria-label="breadcrumbs">
-                    <ol class="breadcrumb pull-right">
-                        <li><a href="/">Home</a></li>
-                        <li class="active">Change Password</li>
-                    </ol>
-                </nav>
-                <h4><?= Yii::t('app', 'Change Password') ?></h4>
-            </div>
-        </div>
+    <?php
+        $this->widget('TitleBreadcrumb', [
+          'pageTitle' => Yii::t('app', 'Change Password'),
+          'breadcrumbItems' => [
+            ['label' => 'Home', 'href' => '/'],
+            ['isActive' => true, 'label' => 'Change Password'],
+          ]
+        ]);
+        ?>
     </div>
 </div>
 

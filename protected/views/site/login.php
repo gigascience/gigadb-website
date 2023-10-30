@@ -7,17 +7,16 @@ $this->breadcrumbs = array(
 
 <section>
     <div class="container" id="login">
-        <div class="section page-title-section">
-            <div class="page-title">
-                <nav aria-label="breadcrumbs">
-                    <ol class="breadcrumb pull-right">
-                        <li><a href="/">Home</a></li>
-                        <li class="active">Login</li>
-                    </ol>
-                </nav>
-                <h1 class="h4">Login</h1>
-            </div>
-        </div>
+      <?php
+        $this->widget('TitleBreadcrumb', [
+          'pageTitle' => 'Login',
+          'breadcrumbItems' => [
+            ['label' => 'Home', 'href' => '/'],
+            ['isActive' => true, 'label' => 'Login'],
+          ]
+        ]);
+        ?>
+
         <div class="subsection row" style="margin-bottom: 130px;">
             <div class="col-xs-12">
                 <?php if (Yii::app()->user->hasFlash('success-reset-password')) : ?>

@@ -25,17 +25,15 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
         <? } ?>
                     <div class="content">
                         <div class="container">
-                            <div class="section page-title-section">
-                                <div class="page-title">
-                                    <nav aria-label="breadcrumbs">
-                                        <ol class="breadcrumb pull-right">
-                                            <li><a href="/">Home</a></li>
-                                            <li class="active">Your profile</li>
-                                        </ol>
-                                    </nav>
-                                    <h4>Your profile page</h4>
-                                </div>
-                            </div>
+                          <?php
+                            $this->widget('TitleBreadcrumb', [
+                              'pageTitle' => 'Your profile page',
+                              'breadcrumbItems' => [
+                                ['label' => 'Home', 'href' => '/'],
+                                ['isActive' => true, 'label' => 'Your profile'],
+                              ]
+                            ]);
+                            ?>
                             <section>
                                 <div style="padding-top: 1px;">
                                     <ul class="nav nav-tabs nav-border-tabs" role="tablist">

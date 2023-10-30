@@ -5,18 +5,14 @@ $this->pageTitle = 'GigaDB - Metagenomic Dataset checklists';
 ?>
 <div class="content">
     <div class="container">
-        <div class="section page-title-section guides-title-section">
-            <div class="page-title">
-                <nav aria-label="breadcrumbs">
-                    <ol class="breadcrumb pull-right">
-                        <li><a href="/">Home</a></li>
-                        <li class="active">Guidelines</li>
-                    </ol>
-                </nav>
-                <h1 class="h4">Metagenomic Dataset checklists</h1>
-            </div>
-        </div>
-        <?php
+      <?php
+        $this->widget('TitleBreadcrumb', [
+          'pageTitle' => 'Metagenomic Dataset checklists',
+          'breadcrumbItems' => [
+            ['label' => 'Home', 'href' => '/'],
+            ['isActive' => true, 'label' => 'Guidelines'],
+          ]
+        ]);
         $this->widget('application.components.GuideNavigation');
         ?>
         <section>

@@ -1,9 +1,9 @@
 <div class="container">
   <?php
-    $this->widget('application.components.TitleBreadcrumb', [
+    $this->widget('TitleBreadcrumb', [
         'pageTitle' => 'Create Dataset',
         'breadcrumbItems' => [
-            ['label' => 'Datasets', 'href' => '/site/admin'],
+            ['label' => 'Admin', 'href' => '/site/admin'],
             ['href' => 'admin', 'label' => 'Manage'],
             ['isActive' => true, 'label' => 'Create'],
         ]

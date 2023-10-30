@@ -4,17 +4,15 @@ $this->pageTitle = 'GigaDB - Terms of use';
 ?>
 <div class="content">
     <div class="container">
-        <div class="section page-title-section">
-            <div class="page-title">
-                <nav aria-label="breadcrumbs">
-                    <ol class="breadcrumb pull-right">
-                        <li><a href="/">Home</a></li>
-                        <li class="active">Terms of use</li>
-                    </ol>
-                </nav>
-                <h1 class="h4" id="pageTitle">Terms of use</h1>
-            </div>
-        </div>
+      <?php
+        $this->widget('TitleBreadcrumb', [
+          'pageTitle' => 'Terms of use',
+          'breadcrumbItems' => [
+            ['label' => 'Home', 'href' => '/'],
+            ['isActive' => true, 'label' => 'Terms of use'],
+          ]
+        ]);
+        ?>
         <section style="margin-bottom: 15px;">
             <div>
                 <div class="tabs" role="tablist" aria-labelledby="pageTitle">

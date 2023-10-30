@@ -7,17 +7,15 @@ $this->pageTitle = 'GigaDB - About';
 <div class="clear"></div>
 <div class="content">
     <div class="container">
-        <div class="section page-title-section">
-            <div class="page-title">
-                <nav aria-label="breadcrumbs">
-                    <ol class="breadcrumb pull-right">
-                        <li><a href="/">Home</a></li>
-                        <li class="active">General information</li>
-                    </ol>
-                </nav>
-                <h1 class="page-heading" id="aboutSectionTitle">General information</h1>
-            </div>
-        </div>
+      <?php
+        $this->widget('TitleBreadcrumb', [
+          'pageTitle' => 'General information',
+          'breadcrumbItems' => [
+            ['label' => 'Home', 'href' => '/'],
+            ['isActive' => true, 'label' => 'General information'],
+          ]
+        ]);
+        ?>
         <div class="subsection">
             <img src="../images/new_interface_image/about.png" alt="Photo of the GigaDB team">
         </div>

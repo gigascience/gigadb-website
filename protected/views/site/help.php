@@ -4,17 +4,15 @@ $this->pageTitle = 'GigaDB - Help';
 
 <div class="content">
     <div class="container">
-        <div class="section page-title-section">
-            <div class="page-title">
-                <nav aria-label="breadcrumbs">
-                    <ol class="breadcrumb pull-right">
-                        <li><a href="/">Home</a></li>
-                        <li class="active">Help</li>
-                    </ol>
-                </nav>
-                <h1 class="page-subtitle">Help</h1>
-            </div>
-        </div>
+      <?php
+        $this->widget('TitleBreadcrumb', [
+          'pageTitle' => 'Help',
+          'breadcrumbItems' => [
+            ['label' => 'Home', 'href' => '/'],
+            ['isActive' => true, 'label' => 'Help'],
+          ]
+        ]);
+        ?>
         <div class="subsection">
             <p>The <a href="http://gigadb.org/" target="_blank"><span class="text-italic">GigaDB</span></a> website allows any user to browse, search, view datasets and access data files. If you want to submit a dataset, save searches or be alerted of new content of interest we request that you <a href="/user/create" target="_blank">create an account</a>.</p>
             <p>A 'Latest news' section will be visible to announce any updates or new features to the database and the RSS feed automatically announces each new dataset release.</p>
