@@ -187,13 +187,18 @@ $sampleDataProvider = $samples->getDataProvider();
                 $publications = $connections->getPublications();
                 if (!empty($publications)) { ?>
                     <h3 class="h5"><strong><?= Yii::t('app', 'Read the peer-reviewed publication(s):') ?></strong></h3>
-                    <p>
+                    <ul class="list-unstyled citation-list">
                         <? foreach ($publications as $publication) {
+                          ?>
+                          <li>
+                          <?
                             echo $publication['citation'] . $publication['pmurl'];
-                            echo "<br/>";
+                          ?>
+                          </li>
+                          <?
                         }
                         ?>
-                    </p>
+                    </ul>
                 <?php } ?>
 
                 <?php
