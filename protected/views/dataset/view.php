@@ -45,12 +45,12 @@ $sampleDataProvider = $samples->getDataProvider();
                         <p><?= $mainSection->getReleaseDetails()['authors'] ?> (<?= $mainSection->getReleaseDetails()['release_year'] ?>): <?= $mainSection->getReleaseDetails()['dataset_title'] . ' ' . ($mainSection->getReleaseDetails()['publisher'] ?? '<span class="label label-danger">NO PUBLISHER SET</span>') . '. '; ?><a href="https://doi.org/10.5524/<?php echo $model->identifier; ?>">https://doi.org/10.5524/<?php echo $model->identifier; ?></a></p>
                         <div id="dataset-block-wrapper">
                             <div id="badge-div">
-                                <a class="doi-badge" href="#"><span class="badge">DOI</span><span class="badge">10.5524/<?php echo $model->identifier; ?></span></a>
+                                <span class="doi-badge"><span class="badge">DOI</span><span class="badge">10.5524/<?php echo $model->identifier; ?></span></span>
                             </div>
                             <?php if ($model->upload_status == 'Published') { ?>
                                 <div id="dropdown-div">
                                     <div class="dropdown-box">
-                                        <button id="CiteDataset" class="drop-citation-btn dropdown-toggle" type="button" data-toggle="dropdown">Cite Dataset<span class="caret"></span></button>
+                                        <button id="CiteDataset" class="btn background-btn drop-citation-btn dropdown-toggle" type="button" data-toggle="dropdown">Cite Dataset <span class="caret"></span></button>
                                         <?php
                                         $url = 'https://data.datacite.org/text/x-bibliography/10.5524/' . $model->identifier;
                                         try {
@@ -74,9 +74,9 @@ $sampleDataProvider = $samples->getDataProvider();
                                             </script>
                                         <?php } ?>
                                         <ul class="dropdown-menu" aria-labelledby="CiteDataset">
-                                            <li><a id="Text" onclick="showText()" target="_blank">Text</a></li>
-                                            <li><a id="citeRis" href='https://data.datacite.org/application/x-research-info-systems/10.5524/<?php echo $model->identifier; ?>' target="_self">RIS</a></li>
-                                            <li><a id="citeBibTeX" href='https://data.datacite.org/application/x-bibtex/10.5524/<?php echo $model->identifier; ?>' target="_self">BibTeX</a></li>
+                                            <li><a id="Text" onclick="showText()" target="_blank" href="#">Text</a></li>
+                                            <li><a id="citeRis" href='https://data.datacite.org/application/x-research-info-systems/10.5524/<?php echo $model->identifier; ?>' target="_self" aria-label="Download RIS file">RIS</a></li>
+                                            <li><a id="citeBibTeX" href='https://data.datacite.org/application/x-bibtex/10.5524/<?php echo $model->identifier; ?>' target="_self" aria-label="Download bibtex file">BibTeX</a></li>
                                         </ul>
                                     </div>
                                 </div>
