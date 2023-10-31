@@ -45,12 +45,12 @@ $sampleDataProvider = $samples->getDataProvider();
                         <p><?= $mainSection->getReleaseDetails()['authors'] ?> (<?= $mainSection->getReleaseDetails()['release_year'] ?>): <?= $mainSection->getReleaseDetails()['dataset_title'] . ' ' . ($mainSection->getReleaseDetails()['publisher'] ?? '<span class="label label-danger">NO PUBLISHER SET</span>') . '. '; ?><a href="https://doi.org/10.5524/<?php echo $model->identifier; ?>">https://doi.org/10.5524/<?php echo $model->identifier; ?></a></p>
                         <div id="dataset-block-wrapper">
                             <div id="badge-div">
-                                <a class="doi-badge" href="#"><span class="badge">DOI</span><span class="badge">10.5524/<?php echo $model->identifier; ?></span></a>
+                                <span class="doi-badge"><span class="badge">DOI</span><span class="badge">10.5524/<?php echo $model->identifier; ?></span></span>
                             </div>
                             <?php if ($model->upload_status == 'Published') { ?>
                                 <div id="dropdown-div">
                                     <div class="dropdown-box">
-                                        <button id="CiteDataset" class="drop-citation-btn dropdown-toggle" type="button" data-toggle="dropdown">Cite Dataset<span class="caret"></span></button>
+                                        <button id="CiteDataset" class="btn background-btn drop-citation-btn dropdown-toggle" type="button" data-toggle="dropdown">Cite Dataset <span class="caret"></span></button>
                                         <?php
                                         $url = 'https://data.datacite.org/text/x-bibliography/10.5524/' . $model->identifier;
                                         try {
@@ -74,9 +74,9 @@ $sampleDataProvider = $samples->getDataProvider();
                                             </script>
                                         <?php } ?>
                                         <ul class="dropdown-menu" aria-labelledby="CiteDataset">
-                                            <li><a id="Text" onclick="showText()" target="_blank">Text</a></li>
-                                            <li><a id="citeRis" href='https://data.datacite.org/application/x-research-info-systems/10.5524/<?php echo $model->identifier; ?>' target="_self">RIS</a></li>
-                                            <li><a id="citeBibTeX" href='https://data.datacite.org/application/x-bibtex/10.5524/<?php echo $model->identifier; ?>' target="_self">BibTeX</a></li>
+                                            <li><a role="link" id="Text" onclick="showText()" target="_blank" tabindex="0" aria-label="Text (opens in a new tab)">Text</a></li>
+                                            <li><a id="citeRis" href='https://data.datacite.org/application/x-research-info-systems/10.5524/<?php echo $model->identifier; ?>' target="_self" aria-label="Download RIS file">RIS</a></li>
+                                            <li><a id="citeBibTeX" href='https://data.datacite.org/application/x-bibtex/10.5524/<?php echo $model->identifier; ?>' target="_self" aria-label="Download bibtex file">BibTeX</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -128,7 +128,7 @@ $sampleDataProvider = $samples->getDataProvider();
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                    <h4 class="modal-title" id="myModalLabel">Select an author to link to your Gigadb User ID</h4>
+                                    <h2 class="modal-title h4" id="myModalLabel">Select an author to link to your Gigadb User ID</h2>
                                     <div id="message"></div>
                                     <div id="advice"></div>
                                 </div>
@@ -153,6 +153,7 @@ $sampleDataProvider = $samples->getDataProvider();
                                         <a href="#" id="cancel_button" class="btn danger-btn">Cancel current claim</a>
                                     </div>
                                 </div>
+                                <?php echo CHtml::endForm(); ?>
                             </div>
                         </div>
                     </div>
@@ -187,13 +188,18 @@ $sampleDataProvider = $samples->getDataProvider();
                 $publications = $connections->getPublications();
                 if (!empty($publications)) { ?>
                     <h3 class="h5"><strong><?= Yii::t('app', 'Read the peer-reviewed publication(s):') ?></strong></h3>
-                    <p>
+                    <ul class="list-unstyled citation-list">
                         <? foreach ($publications as $publication) {
+                          ?>
+                          <li>
+                          <?
                             echo $publication['citation'] . $publication['pmurl'];
-                            echo "<br/>";
+                          ?>
+                          </li>
+                          <?
                         }
                         ?>
-                    </p>
+                    </ul>
                 <?php } ?>
 
                 <?php
@@ -305,6 +311,10 @@ $sampleDataProvider = $samples->getDataProvider();
                     ?>
 
                         <div role="tabpanel" class="tab-pane active" id="sample">
+
+                            <p class="pull-left">
+                              Click on a table column to sort the results.
+                            </p>
                             <a id="samples_table_settings" class="btn btn-default pull-right" data-toggle="modal" data-target="#samples_settings" href="#"><span class="glyphicon glyphicon-adjust"></span>Table Settings</a>
                             <table id="samples_table" class="table table-striped table-bordered" style="width:100%">
                                 <thead>
@@ -353,6 +363,9 @@ $sampleDataProvider = $samples->getDataProvider();
                             <?php } else { ?>
                                 <div role="tabpanel" class="tab-pane active" id="files">
                                 <?php   } ?>
+                                <p class="pull-left">
+                                  Click on a table column to sort the results.
+                                </p>
                                 <a id="files_table_settings" class="btn btn-default pull-right" data-toggle="modal" data-target="#files_settings" href="#"><span class="glyphicon glyphicon-adjust"></span>Table Settings</a>
                                 <br>
                                 <br>
@@ -398,21 +411,30 @@ $sampleDataProvider = $samples->getDataProvider();
                                         <?php } ?>
                                     </tbody>
                                 </table>
-                                <?php
 
+                                <div class="table-footer">
+                                <?php
                                 if ($filesPerPage <> $totalNbFiles) {
+                                  ?>
+                                  <div class="pagination-wrapper">
+                                  <?
                                     $this->widget('SiteLinkPager', array(
                                         'id' => 'files-pager',
                                         'pages' => $fileDataProvider->getPagination(),
                                     ));
                                 ?>
-                                    <button class="btn background-btn-o" onclick="goToPage()"><strong>Go to page</strong></button>
-                                    <input type="number" id="pageNumber" class="page_box" onkeypress="detectEnterKeyPress()">
-                                    <a class="color-background"><strong> of <?php echo $fileDataProvider->getPagination()->getPageCount() ?></strong></a>
+                                <div class="page-selector">
+                                <button class="btn background-btn-o" onclick="goToPage()">Go to page</button>
+                                <input type="number" id="pageNumber" class="page_box" onkeypress="detectEnterKeyPress()" min="1" max="<?= $fileDataProvider->getPagination()->getPageCount() ?>" aria-label="Enter page number">
+                                <span class="page-selector-label"> of <?php echo $fileDataProvider->getPagination()->getPageCount() ?></span>
+                                </div>
+                                </div>
                                 <?php } ?>
                                 <div class="pull-right">
                                     <div class="summary">Displaying <?php echo $filesPerPage ?> files of <?php echo $totalNbFiles ?></div>
                                 </div>
+                                </div>
+
                                 </div>
                             <?php } ?>
 
@@ -514,8 +536,8 @@ $sampleDataProvider = $samples->getDataProvider();
 
     <div class="clear"></div>
 
-    <a href="/dataset/<?php echo $previous_doi ?>" title="Previous dataset"><span class="fa fa-angle-left fixed-btn-left"></span></a>
-    <a href="/dataset/<?php echo $next_doi ?>" title="Next dataset"><span class="fa fa-angle-right fixed-btn-right"></span></a>
+    <a href="/dataset/<?php echo $previous_doi ?>" class="fixed-btn-left" title="Previous dataset" aria-label="Previous dataset"><span class="fa fa-angle-left"></span></a>
+    <a href="/dataset/<?php echo $next_doi ?>" title="Next dataset" class="fixed-btn-right" aria-label="Next dataset"><span class="fa fa-angle-right"></span></a>
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script>
@@ -764,7 +786,7 @@ $sampleDataProvider = $samples->getDataProvider();
         });
     </script>
     <script src="https://hypothes.is/embed.js" async></script>
-    <script type="text/javascript">
+    <script           >
         document.addEventListener("DOMContentLoaded", function(event) { //This event is fired after deferred scripts are loaded
             $(".js-desc").click(function(e) {
                 e.preventDefault();
@@ -835,6 +857,17 @@ $sampleDataProvider = $samples->getDataProvider();
         });
     </script>
     <script>
+      function handleInitPagination() {
+          let currentPageNumber = 1;
+
+          const match = window.location.pathname.match(/Files_page\/(\d+)/);
+          if (match && match[1]) {
+              currentPageNumber = parseInt(match[1], 10);
+          }
+
+          $('#pageNumber').val(currentPageNumber);
+      }
+
         function goToPage() {
             var targetPageNumber = document.getElementById('pageNumber').value;
             var pageID = <?php echo $model->identifier ?>;
@@ -861,8 +894,20 @@ $sampleDataProvider = $samples->getDataProvider();
 
         function detectEnterKeyPress() {
             if (event.which === 13 || event.keyCode === 13 || event.key === "Enter") {
-                console.log("Enter is pressed");
-                return goToPage();
+                goToPage();
             }
         }
+
+      function handlePaginationCssClasses() {
+        $("ul.yiiPager li.first-visible").removeClass("first-visible");
+        $("ul.yiiPager li:not(.hidden)").first().addClass("first-visible");
+        $("ul.yiiPager li.last-visible").removeClass("last-visible");
+        $("ul.yiiPager li:not(.hidden)").last().addClass("last-visible");
+      }
+
+      $(document).ready(function() {
+        handleInitPagination()
+        handlePaginationCssClasses()
+      });
+
     </script>

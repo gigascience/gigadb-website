@@ -78,6 +78,10 @@
   flex-wrap: wrap;
 }
 
+.btns-row-end {
+  justify-content: flex-end;
+}
+
 .btns-col {
   display: flex;
   flex-direction: column;
@@ -280,7 +284,7 @@
 .fixed-btn-left,
 .fixed-btn-right {
   width: 60px;
-  height: 60px;
+  height: min(60px, fit-content);
   font-size: 60px;
   color: @color-gigadb-green;
   text-align: center;

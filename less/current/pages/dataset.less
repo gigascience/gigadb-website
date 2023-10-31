@@ -100,6 +100,7 @@ p.dataset-release-date-text {
   position: absolute;
 }
 .drop-citation-btn {
+  padding: 3px;
   width: 110px;
   color: @white-on-gigadb-green;
   font-size: 13px;
@@ -107,18 +108,10 @@ p.dataset-release-date-text {
   border: none;
   cursor: pointer;
   background-color: @color-gigadb-green;
-  padding: 5px 10px;
   border-radius: 4px 4px 4px 4px;
   display: inline-block;
   position: relative;
   text-decoration: none;
-}
-.drop-citation-btn:hover {
-  color: @white-on-gigadb-green;
-  text-decoration: none;
-}
-.drop-citation-btn:focus {
-  outline: none;
 }
 #dropdown-div ul {
   list-style: none;
@@ -132,3 +125,11 @@ p.dataset-release-date-text {
   cursor: pointer;
 }
 #dropdown-div li a:hover {background-color: #F3FAF6;}
+
+.citation-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  color: @dark-gray-on-white;
+  line-height: 1.3;
+}
