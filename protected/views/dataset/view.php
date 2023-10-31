@@ -128,7 +128,7 @@ $sampleDataProvider = $samples->getDataProvider();
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                    <h4 class="modal-title" id="myModalLabel">Select an author to link to your Gigadb User ID</h4>
+                                    <h2 class="modal-title h4" id="myModalLabel">Select an author to link to your Gigadb User ID</h2>
                                     <div id="message"></div>
                                     <div id="advice"></div>
                                 </div>
@@ -425,7 +425,7 @@ $sampleDataProvider = $samples->getDataProvider();
                                 ?>
                                 <div class="page-selector">
                                 <button class="btn background-btn-o" onclick="goToPage()">Go to page</button>
-                                <input type="number" id="pageNumber" class="page_box" onkeypress="detectEnterKeyPress()" min="1" max="<?= $fileDataProvider->getPagination()->getPageCount() ?>">
+                                <input type="number" id="pageNumber" class="page_box" onkeypress="detectEnterKeyPress()" min="1" max="<?= $fileDataProvider->getPagination()->getPageCount() ?>" aria-label="Enter page number">
                                 <span class="page-selector-label"> of <?php echo $fileDataProvider->getPagination()->getPageCount() ?></span>
                                 </div>
                                 </div>
