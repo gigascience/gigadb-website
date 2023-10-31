@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1523: Use TitleBreadcrumb component in all pages that need it
 - Feat #1521: Make table description visible in all admin pages
 - Feat #1519: Use new layout and styles in remaining pages that should have them
 - Feat #1515: Coalesce redundant module styles to global styles
