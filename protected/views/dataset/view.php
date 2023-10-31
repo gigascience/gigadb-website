@@ -153,6 +153,7 @@ $sampleDataProvider = $samples->getDataProvider();
                                         <a href="#" id="cancel_button" class="btn danger-btn">Cancel current claim</a>
                                     </div>
                                 </div>
+                                <?php echo CHtml::endForm(); ?>
                             </div>
                         </div>
                     </div>
@@ -410,21 +411,30 @@ $sampleDataProvider = $samples->getDataProvider();
                                         <?php } ?>
                                     </tbody>
                                 </table>
-                                <?php
 
+                                <div class="table-footer">
+                                <?php
                                 if ($filesPerPage <> $totalNbFiles) {
+                                  ?>
+                                  <div class="pagination-wrapper">
+                                  <?
                                     $this->widget('SiteLinkPager', array(
                                         'id' => 'files-pager',
                                         'pages' => $fileDataProvider->getPagination(),
                                     ));
                                 ?>
-                                    <button class="btn background-btn-o" onclick="goToPage()"><strong>Go to page</strong></button>
-                                    <input type="number" id="pageNumber" class="page_box" onkeypress="detectEnterKeyPress()">
-                                    <a class="color-background"><strong> of <?php echo $fileDataProvider->getPagination()->getPageCount() ?></strong></a>
+                                <div class="page-selector">
+                                <button class="btn background-btn-o" onclick="goToPage()">Go to page</button>
+                                <input type="number" id="pageNumber" class="page_box" onkeypress="detectEnterKeyPress()" min="1" max="<?= $fileDataProvider->getPagination()->getPageCount() ?>">
+                                <span class="page-selector-label"> of <?php echo $fileDataProvider->getPagination()->getPageCount() ?></span>
+                                </div>
+                                </div>
                                 <?php } ?>
                                 <div class="pull-right">
                                     <div class="summary">Displaying <?php echo $filesPerPage ?> files of <?php echo $totalNbFiles ?></div>
                                 </div>
+                                </div>
+
                                 </div>
                             <?php } ?>
 
@@ -776,7 +786,7 @@ $sampleDataProvider = $samples->getDataProvider();
         });
     </script>
     <script src="https://hypothes.is/embed.js" async></script>
-    <script type="text/javascript">
+    <script           >
         document.addEventListener("DOMContentLoaded", function(event) { //This event is fired after deferred scripts are loaded
             $(".js-desc").click(function(e) {
                 e.preventDefault();
@@ -873,8 +883,20 @@ $sampleDataProvider = $samples->getDataProvider();
 
         function detectEnterKeyPress() {
             if (event.which === 13 || event.keyCode === 13 || event.key === "Enter") {
-                console.log("Enter is pressed");
-                return goToPage();
+                goToPage();
             }
         }
+    </script>
+    <script>
+      function handlePaginationCssClasses() {
+        $("ul.yiiPager li.first-visible").removeClass("first-visible");
+        $("ul.yiiPager li:not(.hidden)").first().addClass("first-visible");
+        $("ul.yiiPager li.last-visible").removeClass("last-visible");
+        $("ul.yiiPager li:not(.hidden)").last().addClass("last-visible");
+      }
+
+      $(document).ready(function() {
+        handlePaginationCssClasses()
+      });
+
     </script>
