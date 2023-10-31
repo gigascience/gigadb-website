@@ -188,6 +188,10 @@ You can specify the line number in a feature file where the text of a scenario s
 $ docker-compose run --rm test bin/behat --profile local --stop-on-failure features/dataset-admin.feature:76
 ```
 
+### Accessibility tests
+[Playwright](https://playwright.dev/docs/accessibility-testing) is used to run accessibility tests as e2e tests on the frontend. See `playwright/README.md`
+
+
 ## Troubleshooting
 
 ### using Portainer

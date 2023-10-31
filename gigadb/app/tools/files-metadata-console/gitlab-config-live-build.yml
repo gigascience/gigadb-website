@@ -1,6 +1,6 @@
 FilesMetadataConsoleBuildLive:
   variables:
-    GIGADB_ENV: "staging"
+    GIGADB_ENV: "live"
     YII_DEBUG: "true"
   stage: live build
   tags:
