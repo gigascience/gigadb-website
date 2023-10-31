@@ -220,7 +220,7 @@
                             <div class="text-icon text-icon-o text-icon-lg">
                                 <img src="/images/new_interface_image/datasets.svg" alt="">
                             </div>
-                            <h3 class="heading"><span class="sr-only">Number of datasets </span><? echo $count ?></h3>
+                            <h3 class="heading" aria-label="Number of datasets: <?= $count ?>"><?= $count ?></h3>
                             <div aria-hidden="true" class="content">Datasets</div>
                         </div>
                     </div>
@@ -229,9 +229,9 @@
                             <div class="text-icon text-icon-o text-icon-lg">
                                 <img src="/images/new_interface_image/samples.svg" alt="">
                             </div>
-                            <h3 class="heading"><span class="sr-only">Number of samples </span><? echo $count_sample ?></h3>
-                            <div aria-hidden="true" class="content">
-                            <span>
+                            <h3 class="heading" aria-label="Number of samples: <?= $count_sample ?>"><?= $count_sample ?></h3>
+                            <div class="content">
+                            <span aria-hidden="true">
                             Samples
                             </span>
                             (<a href="/site/mapbrowse">See map</a>)
@@ -243,7 +243,7 @@
                             <div class="text-icon text-icon-o text-icon-lg">
                                 <img src="/images/new_interface_image/files.svg" alt="">
                             </div>
-                            <h3 class="heading"><span class="sr-only">Number of files </span><? echo $count_file ?></h3>
+                            <h3 class="heading" aria-label="Number of files: <?= $count_file ?>"><?= $count_file ?></h3>
                             <div aria-hidden="true" class="content">Files</div>
                         </div>
                     </div>
@@ -252,7 +252,7 @@
                             <div class="text-icon text-icon-o text-icon-lg">
                                 <img src="/images/new_interface_image/volume.svg" alt="">
                             </div>
-                            <h3 class="heading"><span class="sr-only">Total Volume of Data </span>31</h3>
+                            <h3 class="heading" aria-label="Total Volume of Data: 31 terabytes">31</h3>
                             <div aria-hidden="true" class="content">Data volume(TB)</div>
                         </div>
                     </div>
