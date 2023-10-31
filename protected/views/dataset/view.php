@@ -74,7 +74,7 @@ $sampleDataProvider = $samples->getDataProvider();
                                             </script>
                                         <?php } ?>
                                         <ul class="dropdown-menu" aria-labelledby="CiteDataset">
-                                            <li><a id="Text" onclick="showText()" target="_blank" href="#">Text</a></li>
+                                            <li><a role="link" id="Text" onclick="showText()" target="_blank" tabindex="0" aria-label="Text (opens in a new tab)">Text</a></li>
                                             <li><a id="citeRis" href='https://data.datacite.org/application/x-research-info-systems/10.5524/<?php echo $model->identifier; ?>' target="_self" aria-label="Download RIS file">RIS</a></li>
                                             <li><a id="citeBibTeX" href='https://data.datacite.org/application/x-bibtex/10.5524/<?php echo $model->identifier; ?>' target="_self" aria-label="Download bibtex file">BibTeX</a></li>
                                         </ul>
