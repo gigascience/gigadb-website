@@ -225,12 +225,17 @@
                         </div>
                     </div>
                     <div class="col-xs-3">
-                        <div class="home-color-background-block" onclick="window.location='/site/mapbrowse';">
+                        <div class="home-color-background-block">
                             <div class="text-icon text-icon-o text-icon-lg">
                                 <img src="/images/new_interface_image/samples.svg" alt="">
                             </div>
                             <h3 class="heading"><span class="sr-only">Number of samples </span><? echo $count_sample ?></h3>
-                            <div aria-hidden="true" class="content">Samples</div>
+                            <div aria-hidden="true" class="content">
+                            <span>
+                            Samples
+                            </span>
+                            (<a href="/site/mapbrowse">See map</a>)
+                            </div>
                         </div>
                     </div>
                     <div class="col-xs-3">
