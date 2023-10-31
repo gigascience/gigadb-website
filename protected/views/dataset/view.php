@@ -857,6 +857,17 @@ $sampleDataProvider = $samples->getDataProvider();
         });
     </script>
     <script>
+      function handleInitPagination() {
+          let currentPageNumber = 1;
+
+          const match = window.location.pathname.match(/Files_page\/(\d+)/);
+          if (match && match[1]) {
+              currentPageNumber = parseInt(match[1], 10);
+          }
+
+          $('#pageNumber').val(currentPageNumber);
+      }
+
         function goToPage() {
             var targetPageNumber = document.getElementById('pageNumber').value;
             var pageID = <?php echo $model->identifier ?>;
@@ -886,8 +897,7 @@ $sampleDataProvider = $samples->getDataProvider();
                 goToPage();
             }
         }
-    </script>
-    <script>
+
       function handlePaginationCssClasses() {
         $("ul.yiiPager li.first-visible").removeClass("first-visible");
         $("ul.yiiPager li:not(.hidden)").first().addClass("first-visible");
@@ -896,6 +906,7 @@ $sampleDataProvider = $samples->getDataProvider();
       }
 
       $(document).ready(function() {
+        handleInitPagination()
         handlePaginationCssClasses()
       });
 
