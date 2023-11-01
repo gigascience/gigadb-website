@@ -107,10 +107,12 @@ $this->pageTitle = 'GigaDB - Help';
                     <p>Optional information includes sample attributes (these are automatically populated in <em>Giga</em>DB if an <a href="http://www.ncbi.nlm.nih.gov/biosample" target="_blank">NCBI BioSample ID</a> is provided).</p>
                     <h2 class="h5">Files</h2>
                     <p>Required information includes a file name or path relative to your home directory and <a href="http://gigadb.org/site/help#filetype" target="_blank">file type</a> (selected from a controlled vocabulary list). A readme file must be provided.</p>
-                    <p>Please note;<br>
-                        -Filenames should be unique. <br>
-                        -Filenames should not include spaces. We recommend using the underscore (_) in place of spaces in the filenames.<br>
-                        -Filenames should only include the following characters a-z,A-Z,0-9,_,-,+,. </p>
+                    <p>Please note:</p>
+                    <ul class="content-text">
+                      <li class="mb-5">Filenames should be unique.</li>
+                      <li class="mb-5">Filenames should not include spaces. We recommend using the underscore (_) in place of spaces in the filenames.</li>
+                      <li class="mb-5">Filenames should only include the following characters a-z,A-Z,0-9,_,-,+,.</li>
+                    </ul>
                     <p>Optional information includes a file description and a sample ID or name.</p>
                     <p><strong>Step 3</strong> - confirm you have read our <a href="http://gigadb.org/site/term/" target="_blank">Terms of use</a> page and upload the completed Excel template file.</p>
                     <p>You can expect a response from the <a href="http://gigadb.org/" target="_blank"><em>Giga</em>DB</a> team within 5 days to verify the information in your submission and to arrange upload of your files to our FTP site.</p>
