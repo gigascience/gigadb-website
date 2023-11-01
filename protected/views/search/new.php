@@ -46,7 +46,7 @@
                                  )) ?>
                          </div>
                         <div class="row1">
-                            <nav class="span9 offset3" style="margin-left: 50px;height:72px;" role="navigation" aria-label="Pagination Navigation">
+                            <nav class="span9 offset3" style="margin-left: 50px;height:72px;" aria-label="Pagination Navigation">
                               <ul id="search-pg" class="pagination-sm" style="margin: auto;width: 100%"></ul>
                             </nav>
                         </div>
