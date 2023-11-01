@@ -18,7 +18,7 @@
                             "type",
                             $model->type,
                             array('dataset' => 'Dataset', 'sample' => 'Sample', 'file' => 'File'),
-                            array('class' => 'type', 'template' => '<div class="filter-checkbox">{input}{label}</div>')
+                            array('class' => 'type', 'template' => '<div class="filter-checkbox">{input}{label}</div>', 'separator' => '')
                         ); ?>
                     </div>
                 </fieldset>
