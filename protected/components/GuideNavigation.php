@@ -1,19 +1,27 @@
 <?php
-class GuideNavigation extends CWidget {
+class GuideNavigation extends CWidget
+{
 
-    private function isActive($controllerName, $actionName) {
+    private function isActive($controllerName, $actionName)
+    {
         $controller = Yii::app()->controller->id;
         $action = Yii::app()->controller->action->id;
         return ($controller === $controllerName && $action === $actionName);
     }
 
-    private function generateMenuItems(array $datasetLinks): string {
-        return implode("\n", array_map(function($label, $url) {
-            return CHtml::tag('li', [], CHtml::link($label, $url));
+    private function generateMenuItems(array $datasetLinks): string
+    {
+        return implode("\n", array_map(function ($label, $url) {
+            $isActiveItem = $this->isActive("site", $url);
+            $class = $isActiveItem ? 'active-item' : '';
+            $ariaCurrent = $isActiveItem ? ['aria-current' => 'page'] : [];
+
+            return CHtml::tag('li', ['class' => $class], CHtml::link($label, $url, $ariaCurrent));
         }, array_keys($datasetLinks), $datasetLinks));
     }
 
-    public function run() {
+    public function run()
+    {
         $isActiveGeneral = $this->isActive('site', 'guide');
 
         $datasetLinks = [
@@ -33,4 +41,3 @@ class GuideNavigation extends CWidget {
         ]);
     }
 }
-?>

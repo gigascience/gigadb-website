@@ -13,7 +13,7 @@ $this->pageTitle = 'GigaDB - Metagenomic Dataset checklists';
             ['isActive' => true, 'label' => 'Guidelines'],
           ]
         ]);
-        $this->widget('application.components.GuideNavigation');
+        $this->widget('GuideNavigation');
         ?>
         <section>
             <div class="tab-content">

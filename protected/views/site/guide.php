@@ -17,7 +17,7 @@ $this->pageTitle = 'GigaDB - Submission Guidelines';
         ?>
         <section>
             <?php
-            $this->widget('application.components.GuideNavigation');
+            $this->widget('GuideNavigation');
             ?>
             <section>
                 <div class="tab-content">

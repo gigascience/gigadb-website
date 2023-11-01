@@ -14,7 +14,7 @@ $this->pageTitle = 'GigaDB - Metabolomic Dataset checklists';
           ]
         ]);
 
-        $this->widget('application.components.GuideNavigation');
+        $this->widget('GuideNavigation');
         ?>
         <section>
             <div class="tab-content">

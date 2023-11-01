@@ -14,7 +14,7 @@ $this->pageTitle = 'GigaDB - Genomic Dataset checklists';
           ]
         ]);
 
-        $this->widget('application.components.GuideNavigation');
+        $this->widget('GuideNavigation');
         ?>
         <section>
             <div class="tab-content">
