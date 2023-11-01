@@ -33,12 +33,15 @@ $this->pageTitle = 'GigaDB - Contact Us';
                         </div>
                         <div class="subsection">
                             <p>For more information or questions regarding submitting data to GigaDB, please contact us at: <a href="mailto:database@gigasciencejournal.com" target="_blank">database@gigasciencejournal.com</a>.</p>
-                            <p>Fields with <span>*</span> are required.</p>
+                            <p aria-hidden="true">Fields with <span>*</span> are required.</p>
                         </div>
 
                         <? $form = $this->beginWidget('CActiveForm', array('htmlOptions' => array('class' => 'form contact-form'))); ?>
                         <div class="col-xs-7">
                             <div class="form-group">
+                                <?php
+                                CHtml::$afterRequiredLabel = '<span aria-hidden="true"> *</span>';
+                                ?>
                                 <?= $form->labelEx($model, 'name', array('class' => 'control-label')); ?>
                                 <?= $form->textField($model, 'name', array('class' => 'form-control', 'required' => true, 'aria-required' => 'true', 'aria-describedby' => $model->hasErrors('name') ? 'nameError' : null)); ?>
                                 <div id="nameError">
