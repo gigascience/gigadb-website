@@ -39,7 +39,7 @@ $this->breadcrumbs = array(
                             Email Address<span class="required" aria-hidden="true">*</span>
                         </label>
                         <div class="col-xs-9">
-                            <?= $form->textField($model, 'username', array('size' => 50, 'class' => 'form-control', 'aria-describedby' => 'usernameError', 'required' => true)) ?>
+                            <?= $form->textField($model, 'username', array('size' => 50, 'class' => 'form-control', 'aria-describedby' => $model->getError('username') ? 'usernameError' : '', 'required' => true)) ?>
                             <div role="alert">
                                 <?php echo $form->error($model, 'username', array('class' => 'form-error', 'id' => 'usernameError')); ?>
                             </div>
@@ -51,7 +51,7 @@ $this->breadcrumbs = array(
                             Password<span class="required" aria-hidden="true">*</span>
                         </label>
                         <div class="col-xs-9">
-                            <?= $form->passwordField($model, 'password', array('size' => 50, 'class' => 'form-control', 'aria-describedby' => 'passwordError', 'required' => true)) ?>
+                            <?= $form->passwordField($model, 'password', array('size' => 50, 'class' => 'form-control', 'aria-describedby' => $model->getError('password') ? 'passwordError' : '', 'required' => true)) ?>
                             <div role="alert">
                                 <?php echo $form->error($model, 'password', array('class' => 'form-error', 'id' => 'passwordError')); ?>
                             </div>
