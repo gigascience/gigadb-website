@@ -6,7 +6,7 @@
     <!-- FILTERS FOR DATASETS -->
     <div id="dataset_filter">
         <div class="filter">
-            <button class='h4 heading toggle-btn js-toggle-btn' type="button" aria-expanded="true" aria-controls="result_type"><span id="filterLabelType">Filter by <?= Yii::t('app', 'Type') ?></span> <i class="fa fa-caret-up js-caret-type" aria-hidden="true"></i></button>
+            <button class='btn background-btn h4 heading toggle-btn js-toggle-btn' type="button" aria-expanded="true" aria-controls="result_type"><span id="filterLabelType">Filter by <?= Yii::t('app', 'Type') ?></span> <i class="fa fa-caret-up js-caret-type" aria-hidden="true"></i></button>
             <div id="result_type" class='filter-content js-filter-content' style="<?= $model->type ? 'display:block;' : 'display:none;' ?>">
                 <fieldset aria-labelledby="filterLabelType">
                     <button class="btn btn-default btn-filter js-btn-filter" id="btn_type">
