@@ -78,7 +78,7 @@ $this->pageTitle = 'GigaDB - Submission Guidelines';
                                                 Item
                                             </th>
                                             <th class="col-20">
-                                                Imported directly from manuscript <span aria-hidden="true">(y/n)</span><span class="sr-only">(Yes or no)</span>
+                                                Imported directly from manuscript<span aria-hidden="true"> (y/n)</span>
                                             </th>
                                             <th class="col-60">
                                                 Description
@@ -337,7 +337,7 @@ $this->pageTitle = 'GigaDB - Submission Guidelines';
                                                 Item
                                             </th>
                                             <th class="col-10">
-                                                Mandatory <span aria-hidden="true">(y/n)</span><span class="sr-only">(Yes or no)</span>
+                                                Mandatory<span aria-hidden="true"> (y/n)</span>
                                             </th>
                                             <th class="col-70">
                                                 Description
