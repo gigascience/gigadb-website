@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1537: Fix outstanding accessibility issues in search page
 - Feat #1535: Fix outstanding accessibility issues in home page
 - Feat #1525: Fix outstanding accessibility and design issues in dataset page
 - Feat #1523: Use TitleBreadcrumb component in all pages that need it
