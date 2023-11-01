@@ -90,77 +90,57 @@ document.addEventListener("DOMContentLoaded", function(event) { //This event is 
 });
 </script>
 
+
+<!-- NOTE this type of pagination is used only here so there's no need to make it reusable -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.2/jquery.twbsPagination.min.js" defer></script>
 <script>
-document.addEventListener("DOMContentLoaded", function(event) { //This event is fired after deferred scripts are loaded
-  $("#search-pg").twbsPagination({
-        totalPages: <?php echo $total_page ?>,
-        visiblePages: 5,
-        onPageClick: function (event, page) {
-            url = document.URL;
-            $.post(url, {'page': page}, function(result) {
-                if(result.success) {
-                    $('#filter').html(result.filter);
-                    $('#result').html(result.result);
-                    $('#range').html(result.range);
+    document.addEventListener("DOMContentLoaded", function(event) { //This event is fired after deferred scripts are loaded
+        $("#search-pg").twbsPagination({
+            totalPages: <?php echo $total_page ?>,
+            visiblePages: 5,
+            onPageClick: function(event, page) {
+                url = document.URL;
+                $.post(url, {
+                    'page': page
+                }, function(result) {
+                    if (result.success) {
+                        $('#filter').html(result.filter);
+                        $('#result').html(result.result);
+                        $('#range').html(result.range);
+                    }
+                }, 'json');
+
+                handlePaginationAccessibility()
+
+                function handlePaginationAccessibility() {
+                    $('#search-pg li a').each(function(index, element) {
+                        const pageNum = $(element).text();
+                        const isCurrent = (pageNum === page.toString());
+
+                        $(element).attr('aria-label', getLabel());
+                        $(element).attr('aria-current', isCurrent ? 'page' : undefined);
+
+                        if ($(element).parent().hasClass('disabled')) {
+                            $(element).attr('aria-disabled', true);
+                        } else {
+                            $(element).removeAttr('aria-disabled');
+                        }
+
+                        function getLabel() {
+                            const isPageNum = !!parseInt(pageNum);
+
+                            if (isCurrent) {
+                                return `Current Page, Page ${pageNum}`;
+                            } else if (isPageNum) {
+                                return `Go to Page ${pageNum}`;
+                            } else {
+                                return `Go to ${pageNum} Page`;
+                            }
+                        }
+                    });
                 }
-
-            });
-
-            if (window.location.hash == "#result_files") {
-                $("#myTab a[href='#result_files']").tab("show");
-                $("#file_filter").show();
-                $("#dataset_filter").hide();
-
             }
         });
-    </script>
 
-    <!-- NOTE this type of pagination is used only here so there's no need to make it reusable -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.2/jquery.twbsPagination.min.js" defer></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function(event) { //This event is fired after deferred scripts are loaded
-            $("#search-pg").twbsPagination({
-                totalPages: <?php echo $total_page ?>,
-                visiblePages: 5,
-                onPageClick: function(event, page) {
-                    url = document.URL;
-                    $.post(url, {
-                        'page': page
-                    }, function(result) {
-                        if (result.success) {
-                            $('#filter').html(result.filter);
-                            $('#result').html(result.result);
-                            $('#range').html(result.range);
-                        }
-                    }, 'json');
-
-                    handlePaginationAccessibility()
-
-                    function handlePaginationAccessibility() {
-                        $('#search-pg li a').each(function(index, element) {
-                            const pageNum = $(element).text();
-                            const isCurrent = (pageNum === page.toString());
-
-
-                            $(element).attr('aria-label', getLabel());
-                            $(element).attr('aria-current', isCurrent ? 'page' : undefined);
-
-                            function getLabel() {
-                                const isPageNum = !!parseInt(pageNum);
-
-                                if (isCurrent) {
-                                    return `Current Page, Page ${pageNum}`;
-                                } else if (isPageNum) {
-                                    return `Go to Page ${pageNum}`;
-                                } else {
-                                    return `Go to ${pageNum} Page`;
-                                }
-                            }
-                        });
-                    }
-                }
-            });
-
-        });
-    </script>
+    });
+</script>
