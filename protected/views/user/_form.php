@@ -81,7 +81,8 @@
  			<?php
 				$isAdmin = Yii::app()->user->checkAccess('manageUsers');
 				if ($model->isNewRecord && !$isAdmin) { ?>
- 				<p class="mb-10"><?= Yii::t('app', 'GigaScience appreciates your interest in the GigaDB project. With a GigaDB account, you can submit new datasets to the database. Also, GigaDB can automatically notify you of new content which matches your interests. Please fill out the following information and register to enjoy the benefits of GigaDB membership!') ?></p>
+ 				<p><?= Yii::t('app', 'GigaScience appreciates your interest in the GigaDB project. With a GigaDB account, you can submit new datasets to the database. Also, GigaDB can automatically notify you of new content which matches your interests. Please fill out the following information and register to enjoy the benefits of GigaDB membership!') ?></p>
+        <p class="mb-10">For more information or assistance, please contact us at: <a href="mailto:database@gigasciencejournal.com" target="_blank">database@gigasciencejournal.com</a>.</p>
  			<? }
 				?>
  			<?php Yii::app()->captcha->generate(); ?>
