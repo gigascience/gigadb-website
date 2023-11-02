@@ -164,7 +164,7 @@ class CuratorSteps extends \Codeception\Actor
      */
      public function iShouldApplicationVersion()
      {
-        $versionText = $this->I->grabTextFrom("/html/body/header/div/div/ul/li[5]/a");
+        $versionText = $this->I->grabTextFrom("/html/body/footer/div/div/div[2]/ul/li/a");
         $this->I->assertStringContainsString("Version: ", $versionText);
         $semVerPattern = "/^Version: (.*)$/";
         $this->I->assertRegExp($semVerPattern,$versionText);
