@@ -93,7 +93,6 @@
 						'htmlOptions' => array('class' => 'form-horizontal create-user-form')
 					)) ?>
 
-
  				<p class="mb-10" aria-hidden="true">Fields with <span class="symbol">*</span> are required.</p>
 
         <?php
@@ -203,12 +202,12 @@
  						<p>Please tick here to join the GigaDB mailing list to receive news, updates and quarterly newsletters about GigaDB</p>
  					</div>
  				</div>
- 				<div class="form-group checkbox-horizontal">
+ 				<div class="form-group checkbox-horizontal <?= $model->hasErrors('terms') ? 'has-error' : '' ?>">
  					<?= $form->labelEx($model, 'terms', array('class' => 'col-xs-3 control-label')) ?>
  					<div class="col-xs-9">
  						<?php echo $form->checkbox($model, 'terms', array('aria-describedby' => $model->hasErrors('terms') ? 'terms-error terms-desc' : 'terms-desc', 'required' => true, 'aria-required' => 'true')); ?>
  						<div id="terms-error"><?= $form->error($model, 'terms', array('class' => 'control-error help-block')) ?></div>
- 						<p id="terms-desc">Please tick here to confirm you have read and understood our <a href="/site/term#policies">Terms of use</a> and <a href="/site/term#privacy">Privacy Policy</a></p>
+ 						<p id="terms-desc" class="help-block">Please tick here to confirm you have read and understood our <a href="/site/term#policies">Terms of use</a> and <a href="/site/term#privacy">Privacy Policy</a></p>
  					</div>
  				</div>
 
