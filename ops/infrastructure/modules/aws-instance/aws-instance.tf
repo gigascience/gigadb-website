@@ -96,7 +96,7 @@ resource "aws_instance" "docker_host" {
 
   tags = {
     Name = "gigadb_server_${var.deployment_target}_${var.owner}",
-    System = "t3_micro-centos8",
+    System = "${var.web_ec2_type}_centos_stream8",
   }
 
   root_block_device {

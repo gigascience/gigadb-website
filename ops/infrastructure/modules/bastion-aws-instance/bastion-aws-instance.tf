@@ -65,7 +65,7 @@ resource "aws_instance" "bastion" {
 
   tags = {
     Name = "bastion_server_${var.deployment_target}_${var.owner}",
-    System = "t3_micro-centos8",
+    System = "${var.bastion_ec2_type}_centos_stream8",
   }
 
   root_block_device {
