@@ -9,7 +9,7 @@
           ]
         ]);
         ?>
-        <section aria-describedby="teamPageTitle">
+        <div>
             <div class="team-grid">
                 <article class="team-card">
                     <img src="../images/team/chunts.jpg" alt="Chris Hunter's portrait">
@@ -155,7 +155,7 @@
 
             <div class="row">
             </div>
-        </section>
+        </div>
     </div>
 </div>
 
