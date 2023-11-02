@@ -37,7 +37,10 @@ const PUBLIC_PATHS = [
   '/site/forgot',
   '/site/thanks',
   '/site/create',
-  // 'site/mapbrowse',
+  {
+    path: 'site/mapbrowse',
+    disabledElements: ['#map']
+  }
 ];
 
 const USER_PATHS = [
