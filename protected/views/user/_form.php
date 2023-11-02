@@ -95,6 +95,12 @@
 
  				<p class="mb-10" aria-hidden="true">Fields with <span class="symbol">*</span> are required.</p>
 
+         <?php if ($model->hasErrors()) : ?>
+            <div class="alert alert-danger">
+                <?php echo $form->errorSummary($model); ?>
+            </div>
+        <?php endif; ?>
+
         <?php
           CHtml::$afterRequiredLabel = '<span aria-hidden="true"> *</span>';
         ?>
