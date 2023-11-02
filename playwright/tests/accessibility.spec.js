@@ -36,7 +36,7 @@ const PUBLIC_PATHS = [
   '/site/login',
   '/site/forgot',
   '/site/thanks',
-  // '/site/create',
+  '/site/create',
   // 'site/mapbrowse',
 ];
 
