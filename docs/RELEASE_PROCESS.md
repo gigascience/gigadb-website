@@ -1,6 +1,46 @@
 # Releases How-To
 
+## Merging Pull requests (PR)
+
+* Click "Merge Pull Request" (after ensuring that the "Create a merge commit" is selected in the drop-down)
+* Copy the first-from-the-top new entry in the modified CHANGELOG.md from the PR, and append it without the issue number to the left of the Merge title field preserving the "Merge pull request #dddd" part of the default text but surrounding it with parenthesis
+* Copy the content under "This is a pull request for the following functionalities:" from the first section of the PR in the Merge message field
+* Add the issue number (including the hash symbol) in the Merge message field prefixed with "Refs:".
+* Click on "Confirm merge"
+
+>**Note**: In the rare eventually a PR is associated with more than one issue, add all the issue numbers after a "Refs:" prefix in the Merge message field.
+
 ## CHANGELOG.md
+
+### Formatting
+
+Each line of the file must correspond to a pull request (PR) to the `develop` branch of https://github.com/gigascience/gigadb-website.
+New lines are added at the top.
+Each line starts with a two-part prefix, the first part can be one of "Feat" or "Fix".
+It is then followed, as second part of the prefix by the Github issue number for which the PR is created for.
+After the prefix and a colon separator, there should be a human readable short summary of the added-value(s) of the PR.
+
+```
+- Feat #45: Add a new methods to do some old things
+```
+
+As PRs are supposed to be small, most of the time a PR is only associated to one issue.
+However, in the rare case a PR is associated with several Github issues, there should one line for each issue
+
+```
+- Feat #48: The contact form's captcha is now accessible
+- Feat #47: The new user registration form's captcha is now accessible
+```
+
+It's also possible that it takes more one PR over time to resolve a given Github issue.
+In that case, a prefix with the same Github issue will appears for multiple lines
+
+```
+- Feat #301: Fix correctly the validation for some models 
+...
+- Feat #306: The new user registration form's captcha is now accessible
+- Feat #301: Fix the validation for some models
+```
 
 ### Unreleased section
 
@@ -23,9 +63,9 @@ The output of this meeting is an updated CHANGELOG.md, committed directly to the
 ```
  ## v3.1.0  
                                                                                                                       
-  - Feat: feature 1
-  - Fix: fix 1
-  - Feat: feature 1
+  - Feat #1235: feature 2
+  - Fix #1234: fix 1
+  - Feat #1232: feature 1
 
 ```
 
