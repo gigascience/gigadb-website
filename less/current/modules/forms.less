@@ -108,6 +108,35 @@ input[type="checkbox"] {
   }
 }
 
+.well {
+  .form-group {
+    margin-bottom: 20px;
+    &.has-error {
+      color: @brand-danger-on-lighter-gray;
+      .control-label {
+        color: @brand-danger-on-lighter-gray;
+      }
+      .form-control {
+        border-color: @brand-danger-on-white;
+      }
+      .help-block {
+        color: @brand-danger-on-lighter-gray;
+        a {
+          color: @brand-danger-on-lighter-gray!important;
+          &:hover {
+            color: @color-brand-danger-900!important;
+          }
+        }
+      }
+    }
+    // Used in /adminDataset/create
+    .errorMessage {
+      margin-top: 2px;
+      color: @brand-danger-on-lighter-gray;
+    }
+  }
+}
+
 .form-group.checkbox {
   .control-label {
     min-height: 14px;
