@@ -96,17 +96,16 @@ to the `.secrets` file and are listed
 All these GitLab CI/CD environment variables are referred to in the 
 `gitlab-ci.yml` file or used in the CI/CD pipeline.
 
-Variable Name | Value
-------------- | -----
-ANALYTICS_CLIENT_EMAIL | somevalue
-ANALYTICS_CLIENT_ID | somevalue
-ANALYTICS_PRIVATE_KEY | somevalue
-COVERALLS_REPO_TOKEN | somevalue
-FORK | somevalue
-MAILCHIMP_API_KEY | somevalue
-MAILCHIMP_LIST_ID | somevalue
-MAILCHIMP_TEST_EMAIL | somevalue
-
+| Variable Name          | Value     |
+|------------------------|-----------|
+| ANALYTICS_CLIENT_EMAIL | somevalue |
+| ANALYTICS_CLIENT_ID    | somevalue |
+| ANALYTICS_PRIVATE_KEY  | somevalue |
+| COVERALLS_REPO_TOKEN   | somevalue |
+| FORK                   | somevalue |
+| MAILCHIMP_API_KEY      | somevalue |
+| MAILCHIMP_LIST_ID      | somevalue |
+| MAILCHIMP_TEST_EMAIL   | somevalue |
 
 ### Executing a Continuous Integration run
  
@@ -216,12 +215,12 @@ The following variables can be configured as Gitlab Variables (or in .env) like 
 but as they already have default values, one needs to change their values only if want
 to depart from the default.
 
-| Key | Role | Default on Dev/CI | Default on Staging | Default on Live |
-| ---  | --- | -- | --- | --- | 
-| YII_DEBUG | enable debug mode for extra logging | true | true | false
-| YII_TRACE_LEVEL | how many lines of context for log entries | 3 | 0 | 0 | 
-| DISABLE_CACHE | whether to disable caching of DB queries | false | false | false |
-| SEARCH_RESULT_LIMIT | Nb. of results per page | 10 | 10 | 10 |
+| Key                 | Role                                      | Default on Dev/CI | Default on Staging | Default on Live |
+|---------------------|-------------------------------------------|-------------------|--------------------|-----------------| 
+| YII_DEBUG           | enable debug mode for extra logging       | true              | true               | false           |
+| YII_TRACE_LEVEL     | how many lines of context for log entries | 3                 | 0                  | 0               | 
+| DISABLE_CACHE       | whether to disable caching of DB queries  | false             | false              | false           |
+| SEARCH_RESULT_LIMIT | Nb. of results per page                   | 10                | 10                 | 10              |
 
 >Note: the value of each of the first three variables has impact on website performances. 
 > The default values for the live environment offer the maximum performance. 
