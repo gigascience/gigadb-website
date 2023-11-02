@@ -56,6 +56,10 @@ while [[ $# -gt 0 ]]; do
     --restore-backup)
         has_restore_backup=true
         ;;
+    --help)
+        echo "Usage: tf_init.sh [--project <project name>] [--ssh-key <path to private SSH key>] [--env <staging|live>] [--region <AWS region>] [--backup-file <path to custom backup file to use to boostrap RDS>] [--web-ec2-type <EC2 instance type for web server>] [--bastion-ec2-type <EC2 instance type for bastion server>] [--rds-ec2-type <DB instance class>] [--restore-backup] | --help"
+        exit 0
+        ;;
     *)
         echo "Invalid option: $1 in"
         echo $call_str
