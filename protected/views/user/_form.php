@@ -93,7 +93,12 @@
 						'htmlOptions' => array('class' => 'form-horizontal create-user-form')
 					)) ?>
 
- 				<p class="mb-10">Fields with <span class="symbol">*</span> are required.</p>
+
+ 				<p class="mb-10" aria-hidden="true">Fields with <span class="symbol">*</span> are required.</p>
+
+        <?php
+          CHtml::$afterRequiredLabel = '<span aria-hidden="true"> *</span>';
+        ?>
 
  				<?php
 					$this->widget('application.components.controls.TextField', [
@@ -201,7 +206,7 @@
  				<div class="form-group checkbox-horizontal">
  					<?= $form->labelEx($model, 'terms', array('class' => 'col-xs-3 control-label')) ?>
  					<div class="col-xs-9">
- 						<?php echo $form->checkbox($model, 'terms', array('aria-describedby' => $model->hasErrors('terms') ? 'terms-error terms-desc' : 'terms-desc')); ?>
+ 						<?php echo $form->checkbox($model, 'terms', array('aria-describedby' => $model->hasErrors('terms') ? 'terms-error terms-desc' : 'terms-desc', 'required' => true, 'aria-required' => 'true')); ?>
  						<div id="terms-error"><?= $form->error($model, 'terms', array('class' => 'control-error help-block')) ?></div>
  						<p id="terms-desc">Please tick here to confirm you have read and understood our <a href="/site/term#policies">Terms of use</a> and <a href="/site/term#privacy">Privacy Policy</a></p>
  					</div>
