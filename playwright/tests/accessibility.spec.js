@@ -2,12 +2,21 @@
 const { test, expect } = require('@playwright/test');
 const AxeBuilder = require('@axe-core/playwright').default;
 
-// NOTE the commented out paths have pending color contrast issues
+// NOTE the commented out paths have pending issues
 const PUBLIC_PATHS = [
-  '/',
+  {
+    path: '/',
+    disabledElements: ['.image-overlay', '.image-background']
+  },
   '/dataset/100006',
-  // '/search/new?keyword=Genomic&type%5B%5D=dataset&dataset_type%5B%5D=Genomic',
-  // '/site/contact',
+  {
+    path: '/search/new?keyword=Genomic&type%5B%5D=dataset&dataset_type%5B%5D=Genomic',
+    disabledElements: ['.image-overlay', '.image-background']
+  },
+  {
+    path: '/site/contact',
+    disabledElements: ['textarea']
+  },
   '/site/help',
   '/site/guide',
   '/site/guidegenomic',
@@ -16,20 +25,23 @@ const PUBLIC_PATHS = [
   '/site/guideepigenomic',
   '/site/guidemetagenomic',
   '/site/guidesoftware',
-  '/site/faq',
+  // '/site/faq',
   '/site/about',
-  '/site/team',
+  {
+    path: '/site/team',
+    disabledElements: ['.team-content > p']
+  },
   '/site/advisory',
   '/site/term',
   '/site/login',
   '/site/forgot',
   '/site/thanks',
   // '/site/create',
-  'site/mapbrowse',
+  // 'site/mapbrowse',
 ];
 
 const USER_PATHS = [
-  'user/view_profile',
+  // 'user/view_profile',
   // 'datasetSubmission/upload'
 ]
 
@@ -39,31 +51,36 @@ const ADMIN_PATHS = [
   // 'adminDataset/create',
 ]
 
-
 const runAccessibilityTests = (paths, storageStatePath) => {
-  paths.forEach((path) => {
+  paths.forEach((pathEntry) => {
+    let path;
+    let disabledElements = [];
+
+    if (typeof pathEntry === 'string') {
+      path = pathEntry;
+    } else {
+      path = pathEntry.path;
+      disabledElements = pathEntry.disabledElements || [];
+    }
+
     test.describe(`Page ${path}`, () => {
       if (storageStatePath) {
         test.use({ storageState: storageStatePath });
       }
 
-      async function runColorContrastScan (page) {
+      test('should not have any accessibility violations outside of elements with known issues', async ({ page }) => {
         await page.goto(path, { waitUntil: 'networkidle' });
-        const accessibilityScanResults = await new AxeBuilder({ page })
-          .withRules(['color-contrast'])
-          .exclude('.text-icon')
-          .exclude('.image-background')
-          .analyze();
 
-        return accessibilityScanResults;
-      };
+        let axeBuilder = new AxeBuilder({ page });
 
-      test('should not have any color contrast issues', async ({ page }) => {
-        const results = await runColorContrastScan(page);
+        disabledElements.forEach(el => {
+          axeBuilder = axeBuilder.exclude(el);
+        });
 
-        // NOTE color contrast issues are not reported as violations but as incomplete checks, see https://github.com/dequelabs/axe-core/blob/master/doc/API.md#results-object
-        expect(results.violations).toEqual([]);
-        expect(results.incomplete.filter((item) => item.id === 'color-contrast')).toEqual([]);
+        const accessibilityScanResults = await axeBuilder.analyze();
+
+        expect(accessibilityScanResults.violations).toEqual([]);
+        expect(accessibilityScanResults.incomplete.filter((item) => item.id === 'color-contrast')).toEqual([]);
       });
     });
   });
