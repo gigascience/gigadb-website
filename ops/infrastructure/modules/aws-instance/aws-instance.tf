@@ -101,6 +101,7 @@ resource "aws_instance" "docker_host" {
 
   root_block_device {
     delete_on_termination = "true"
+    volume_size = 30
   }
 
   volume_tags = {
