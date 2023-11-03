@@ -48,6 +48,7 @@ class BaseInput extends CWidget
 
   protected function renderLabel()
   {
+    CHtml::$afterRequiredLabel = '<span aria-hidden="true"> *</span>';
     echo $this->form->labelEx($this->model, $this->attributeName, $this->labelOptions);
   }
 
