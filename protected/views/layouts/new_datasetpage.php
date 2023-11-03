@@ -46,7 +46,8 @@
 </head>
 
 <body>
-   <header>
+    <a href="#maincontent" class="skip-to-main-link">Skip to main content</a>
+    <header>
         <div class="base-top-bar">
             <div class="container">
                 <div class="row">
@@ -163,8 +164,8 @@
                 </div>
             </div>
         </div>
-   </header>
-    <main>
+    </header>
+    <main id="maincontent">
         <?php echo $content; ?>
     </main>
     <footer class="base-footer-bar">

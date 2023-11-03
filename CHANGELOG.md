@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1362: Add "skip to main" link
 - Fix #1444: Make tideways build and deploy automatically for the production staging gigadb website
 - Docs #1421: Update production deployment SOP, investigate terraform state synchronisation issues and create troubleshooting guide for the deployment process
 - Feat #1460: Admin dashboard updated to same more modern look as the public side

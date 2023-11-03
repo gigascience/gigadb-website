@@ -1001,3 +1001,21 @@ a.myHint {
   width: 100%;
   padding: 1em;
 }
+
+// Skip to main link
+a.skip-to-main-link {
+  position: absolute;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+  background-color: @color-gigadb-green;
+  color: @color-true-white;
+}
+
+a.skip-to-main-link:focus {
+  z-index: 999;
+  padding: 16px;
+  overflow: visible;
+  clip: auto;
+	outline: 2px solid @color-true-black;
+  outline-offset: -2px;
+}
