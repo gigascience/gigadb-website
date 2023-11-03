@@ -17,7 +17,7 @@
  *    'labelOptions' => ['class' => 'my-label-class'], // optional
  *    'errorOptions' => ['class' => 'my-error-class'], // optional
  *    'groupOptions' => ['class' => 'my-group-class'], // optional
- *    'inputWrapperOptions' => ['class' => 'my-wrapper-class'] // optional, used mainly in conjunction with form-horizontal
+ *    'inputWrapperOptions' => 'my-wrapper-class' // optional, used mainly in conjunction with form-horizontal
  *  ]);
  */
 
