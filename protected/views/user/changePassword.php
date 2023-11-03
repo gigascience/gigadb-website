@@ -54,14 +54,14 @@
                         <div class="form-group checkbox-horizontal">
                           <label class="col-xs-5 control-label" for="newsletter"><?= Yii::t('app', 'Mailing list') ?></label>
                           <div class="col-xs-5">
-                            <?php echo $form->checkbox($model, 'newsletter', array('id' => 'newsletter')); ?>
-                            <p>Please tick here to join the GigaDB mailing list to receive news, updates and quarterly newsletters about GigaDB</p>
+                            <?php echo $form->checkbox($model, 'newsletter', array('id' => 'ChangePasswordForm_newsletter', 'aria-describedby' => 'newsletterHint')); ?>
+                            <p id="newsletterHint">Please tick here to join the GigaDB mailing list to receive news, updates and quarterly newsletters about GigaDB</p>
                           </div>
                         </div>
 
                         <div class="form-group checkbox-horizontal <?= $model->hasErrors('terms') ? 'has-error' : '' ?>">
                           <?= $form->label($model, 'terms', array('class' => 'col-xs-5 control-label')) ?>
-                          <div class="col-xs-7">
+                          <div class="col-xs-5">
                             <?php echo $form->checkbox($model, 'terms', array('required' => true, 'aria-required' => 'true', 'aria-describedby' => 'termsHint' . ($model->hasErrors('terms') ? ' termsError' : ''))); ?>
                             <div id="termsError" role="alert">
                               <?php echo $form->error($model, 'terms', array('class' => 'control-error help-block')); ?>
