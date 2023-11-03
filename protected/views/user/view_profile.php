@@ -35,18 +35,16 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
                           ]);
                           ?>
                             <section>
-                                <div style="padding-top: 1px;">
-                                    <ul class="nav nav-tabs nav-border-tabs" role="tablist">
-                                        <li role="presentation" class="active"><a href="#edit" aria-controls="edit" role="tab" data-toggle="tab">Personal details</a></li>
-                                        <li role="presentation"><a href="#submitted" aria-controls="submitted" role="tab" data-toggle="tab">Your Uploaded Datasets</a></li>
-                                        <li role="presentation"><a href="#authored" aria-controls="authored" role="tab" data-toggle="tab">Your Authored Datasets</a></li>
-                                        <li role="presentation"><a href="#saved" aria-controls="saved" role="tab" data-toggle="tab">Your Saved Search</a></li>
-                                    </ul>
-                                </div>
+                              <div class="tabs" role="tablist">
+                                  <a id="liedit" class="active" href="#edit" aria-controls="edit" role="tab" aria-selected="true" data-toggle="tab">Personal details</a>
+                                  <a id="lisubmitted" href="#submitted" aria-controls="submitted" role="tab" aria-selected="false" tabindex="-1" data-toggle="tab">Your Uploaded Datasets</a>
+                                  <a id="liauthored" href="#authored" aria-controls="authored" role="tab" aria-selected="false" tabindex="-1" data-toggle="tab">Your Authored Datasets</a>
+                                  <a id="lisaved" href="#saved" aria-controls="saved" role="tab" aria-selected="false" tabindex="-1" data-toggle="tab">Your Saved Search</a>
+                              </div>
                             </section>
                             <section>
                                 <div class="tab-content">
-                                    <div role="tabpanel" class="tab-pane active" id="edit">
+                                    <div role="tabpanel" class="tab-pane" id="edit">
                                         <div class="row">
                                             <div class="col-xs-8 col-xs-offset-2">
                                                 <div class="form well user-profile-box">
@@ -244,3 +242,75 @@ $('.nav-tabs a').on('shown.bs.tab', function (e) {
 })
                     });
                     </script>
+
+
+<script type="text/javascript">
+    const tabSelector = '[role="tab"]'
+    const activeTabSelector = `${tabSelector}.active`;
+    const tabpanelSelector = '[role="tabpanel"]';
+
+    // Handle initial tab selection
+    $(document).ready(function() {
+        let defaultHash = '#edit'
+
+        if (location.hash && $(location.hash).is(tabpanelSelector)) {
+            defaultHash = location.hash;
+        }
+
+        resetTabs();
+        $(defaultHash).addClass('active');
+        $(defaultHash.replace('#', '#li')).addClass('active').attr('tabindex', '0').attr('aria-selected', 'true');
+    });
+
+    // Tab pattern implementation https://www.w3.org/WAI/ARIA/apg/patterns/tabs/
+    $(document).ready(function() {
+        const tabs = $(tabSelector)
+        $(tabSelector).attr('tabindex', '-1');
+        $(activeTabSelector).attr('tabindex', '0');
+
+        $(tabSelector).click(function() {
+            toggleTab($(this));
+        });
+
+        $(tabSelector).keydown(function(e) {
+            let target;
+            switch (e.key) {
+                case 'ArrowRight':
+                    target = $(this).next(tabSelector).length ? $(this).next(tabSelector) : $(tabSelector).first();
+                    toggleTab(target);
+                    break;
+                case 'ArrowLeft':
+                    target = $(this).prev(tabSelector).length ? $(this).prev(tabSelector) : $(tabSelector).last();
+                    toggleTab(target);
+                    break;
+                case 'Home':
+                    e.preventDefault()
+                    target = $(tabSelector).first();
+                    toggleTab(target);
+                    break;
+                case 'End':
+                    e.preventDefault()
+                    target = $(tabSelector).last();
+                    toggleTab(target);
+                    break;
+                default:
+                    return;
+            }
+        });
+
+        function toggleTab(tab,) {
+            const tabId = tab.data('id');
+            const tabPanelId = tab.attr('aria-controls')
+
+            resetTabs()
+            tab.addClass('active').attr('tabindex', '0').attr('aria-selected', 'true').focus();
+            $(`#${tabPanelId}`).addClass('active');
+            window.history.pushState(null, null, `#${tabPanelId}`);
+        }
+    });
+
+    function resetTabs() {
+        $(tabSelector).removeClass('active').attr('tabindex', '-1').attr('aria-selected', 'false');
+        $(tabpanelSelector).removeClass('active');
+    }
+</script>
