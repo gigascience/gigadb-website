@@ -64,12 +64,12 @@
         owner: centos
       register: pk
 
-    - name: download public key
+    - name: download private key
       ansible.builtin.fetch:
         src: "/home/centos/{{ newuser }}.keys/id_ssh_rsa"
         dest: "output/privkeys-{{ inventory_hostname }}/{{ newuser }}"
         flat: yes
-      when: pk.changed == true
+      when: pk.failed == false
 
     - name: Add public key to authorized keys
       ansible.builtin.copy:
@@ -95,7 +95,7 @@
       - 201
       - 400
   register: save_pk_to_gitlab
-  when: (pk.changed == true and public_key_in_gitlab.status == 404)
+  when: public_key_in_gitlab.status == 404
 
 - name: copy ssh public key and save it to GitLab CI environment variable (for existing user)
   block:
