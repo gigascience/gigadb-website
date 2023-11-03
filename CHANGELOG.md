@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1546: Fix outstanding accessibility issues in view profile page
 - Feat #1544: Improve accessibility of map browse page
 - feat #1542: Fix outstanding accessibility issues in create user page
 - Feat #1539: Fix outstanding small scope accessibility issues and minor layout tweaks in public inner pages
