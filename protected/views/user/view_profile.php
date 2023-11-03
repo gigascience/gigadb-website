@@ -144,7 +144,7 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
                                                       <div class="form-group checkbox-horizontal <?= $model->hasErrors('newsletter') ? 'has-error' : '' ?>">
                                                         <?= $form->label($model, 'newsletter', array('class' => 'col-xs-5 control-label')) ?>
                                                         <div class="col-xs-7">
-                                                          <?php echo $form->checkbox($model, 'newsletter', array('aria-describedby' => 'newsletterError')); ?>
+                                                          <?php echo $form->checkbox($model, 'newsletter', array('aria-describedby' => $model->hasErrors('newsletter') ? 'newsletterError' : '')); ?>
                                                         </div>
                                                         <div class="col-xs-7" id="newsletterError" role="alert">
                                                           <?php echo $form->error($model, 'newsletter', array('class' => 'control-error help-block')); ?>
