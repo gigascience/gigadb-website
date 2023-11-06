@@ -68,36 +68,6 @@
             </nav>
 
         </div>
-        </td>
-        </tr>
-        </table>
 
     </div>
-</div>
-</td>
-</tr>
-</table>
-
-</div>
-</div>
-</td>
-</tr>
-</table>
-
-</div>
-</div>
-</td>
-</tr>
-</table>
-
-</div>
-</div>
-</td>
-</tr>
-</table>
-
-</div>
-</div>
-</div>
-
 </div>
