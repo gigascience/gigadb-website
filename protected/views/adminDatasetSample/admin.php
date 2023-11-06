@@ -34,14 +34,17 @@
 	<?php
 	$clientScript = Yii::app()->clientScript;
 	$register_script = <<<EO_SCRIPT
-			jQuery(".js-desc").click(function(e) {
-					e.preventDefault();
-					id = $(this).attr('data');
-					jQuery(this).hide();
-					jQuery('.js-short-'+id).toggle();
-					jQuery('.js-long-'+id).toggle();
-			})
-	EO_SCRIPT;
+      jQuery(".js-desc").click(function(e) {
+        const isExpanded = $(this).attr('aria-expanded') === 'true';
+        e.preventDefault();
+        id = $(this).attr('data');
+        $(this).attr('aria-label', isExpanded ? 'show less' : 'show more');
+        $(this).attr('aria-expanded', !isExpanded);
+        jQuery(this).hide();
+        jQuery('.js-short-'+id).toggle();
+        jQuery('.js-long-'+id).toggle();
+      })
+  EO_SCRIPT;
 	$clientScript->registerScript('register_script', $register_script, CClientScript::POS_READY);
 	?>
 
