@@ -329,7 +329,7 @@ echo $form->hiddenField($model, "image_id");
                                 <div class="col-xs-2">
                                     <?php
                                     $status_array = array('Submitted', 'UserStartedIncomplete', 'Curation');
-                                    echo CHtml::ajaxLink(
+                                    echo CHtml::ajaxButton(
                                         'Mint DOI',
                                         Yii::app()->createUrl('/adminDataset/mint/'),
                                         array(
@@ -339,16 +339,18 @@ echo $form->hiddenField($model, "image_id");
                                             'success' => 'js:function(output){
                                             console.log(output);
                                             if(output.status){
+                                                $("#minting").removeClass("errorMessage");
                                                 $("#minting").html("new DOI successfully minted");
 
                                             }else {
+                                                $("#minting").addClass("errorMessage");
                                                 $("#minting").html("error minting a DOI: "+ output.md_curl_status + ", " + output.doi_curl_status);
                                             }
                                             $("#mint_doi_button").toggleClass("active");
                                         }',
                                         ),
                                         array(
-                                            'class' => 'btn background-btn',
+                                            'class' => 'btn background-btn m-0',
                                             'id' => 'mint_doi_button',
                                             'disabled' => in_array($model->upload_status, $status_array),
                                         )
@@ -365,7 +367,7 @@ echo $form->hiddenField($model, "image_id");
                                     }
                                     ?>
                                 </div>
-                                <div id="minting" class="col-xs-offset-4 col-xs-8"></div>
+                                <div id="minting" class="col-xs-offset-4 col-xs-8" role="alert"></div>
                             </div>
 
                         </fieldset>
