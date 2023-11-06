@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## v4.0.0 - 2023-11-06 - 9c012f7b
 
+- Feat #1365: Improve accessibility of header
 - Fix #1416: Enable Gitlab tag pipeline and document release process
 - Feat #1362: Add "skip to main" link
 - Fix #1444: Make tideways build and deploy automatically for the production staging gigadb website
