@@ -170,4 +170,20 @@ class CuratorSteps extends \Codeception\Actor
         $this->I->assertRegExp($semVerPattern,$versionText);
      }
 
+    /**
+     * @Given I make an update to the non-public dataset :arg1's :arg2 in the admin pages
+     */
+    public function iMakeAnUpdateToTheNonpublicDatasetsInTheAdminPages($arg1, $arg2)
+    {
+        throw new \PHPUnit\Framework\IncompleteTestError("Step `I make an update to the non-public dataset :arg1's :arg2 in the admin pages` is not defined");
+    }
+
+    /**
+     * @Then I can see the changes to the :arg1 displayed
+     */
+    public function iCanSeeTheChangesToTheDisplayed($arg1)
+    {
+        throw new \PHPUnit\Framework\IncompleteTestError("Step `I can see the changes to the :arg1 displayed` is not defined");
+    }
+
 }
