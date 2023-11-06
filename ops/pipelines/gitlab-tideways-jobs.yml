@@ -24,7 +24,6 @@
   environment:
     name: $DEPLOYMENT_ENV
     url: $REMOTE_HOME_URL
-  when: manual
   artifacts:
     when: on_failure
     expire_in: 1 week
@@ -55,6 +54,7 @@ TidewaysBuildLive:
     name: "live"
     deployment_tier: production
     url: $REMOTE_HOME_URL
+  when: manual
 
 .deploy_tideways:
   variables:
@@ -94,7 +94,6 @@ TidewaysBuildLive:
   environment:
     name: $DEPLOYMENT_ENV
     url: $REMOTE_HOME_URL
-  when: manual
   artifacts:
     when: on_failure
     expire_in: 1 week
@@ -124,3 +123,4 @@ TidewaysDeployLive:
   environment:
     name: "live"
     url: $REMOTE_HOME_URL
+  when: manual

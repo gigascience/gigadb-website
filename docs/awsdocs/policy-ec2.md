@@ -67,6 +67,8 @@ when using the AWS management console.
                         "t3.micro",
                         "t3a.small",
                         "t3.small",
+                        "t3.medium",
+                        "t3.large"
                     ]
                 }
             }

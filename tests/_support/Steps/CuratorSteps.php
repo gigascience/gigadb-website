@@ -158,4 +158,16 @@ class CuratorSteps extends \Codeception\Actor
         $this->I->clickWithLeftButton(['css' => '#urltoredirect']);
         $this->I->waitForText($keyword, 5, ".tag-editor-tag");
     }
+
+    /**
+     * @Then I should see the application version
+     */
+     public function iShouldApplicationVersion()
+     {
+        $versionText = $this->I->grabTextFrom("/html/body/footer/div/div/div[2]/ul/li/a");
+        $this->I->assertStringContainsString("Version: ", $versionText);
+        $semVerPattern = "/^Version: (.*)$/";
+        $this->I->assertRegExp($semVerPattern,$versionText);
+     }
+
 }

@@ -1,6 +1,7 @@
 
 XLSUploaderDeployLive:
   stage: live deploy
+  extends: .tag_only
   variables:
     TARGET_ENV: live
     REMOTE_WEBAPP_DOCKER: "$remote_public_ip:2376"
