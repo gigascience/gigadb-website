@@ -159,6 +159,7 @@ table.dataset-view-table > tbody > tr {
 }
 
 .button-column {
+  min-width: 100px;
   .icon-wrapper {
     display: flex;
     justify-content: center;
@@ -189,8 +190,12 @@ table.dataset-view-table > tbody > tr {
   }
 }
 
-.dataset-table-wide {
-  margin-inline: 32px;
+.dataset-table-wide-container {
+  overflow-x: auto;
+  .dataset-table-wide {
+    margin-bottom: 0;
+  }
+  margin-bottom: 20px;
 }
 
 .table-attr {

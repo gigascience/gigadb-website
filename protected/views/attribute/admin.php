@@ -14,24 +14,24 @@
 	<p>
 		Column headers with links are sortable. Cells with a text input are used for filtering.
 	</p>
-</div>
-
-<?php $this->widget('CustomGridView', array(
-	'id' => 'attribute-grid',
-	'dataProvider' => $model->search(),
-	'itemsCssClass' => 'table table-bordered dataset-table-wide',
-	'filter' => $model,
-	'columns' => array(
-		'id',
-		'attribute_name',
-		'definition',
-		'model',
-		'structured_comment_name',
-		'value_syntax',
-		'allowed_units',
+  <?php $this->widget('CustomGridView', array(
+    'id' => 'attribute-grid',
+    'dataProvider' => $model->search(),
+    'itemsCssClass' => 'table table-bordered dataset-table-wide',
+    'filter' => $model,
+    'template' => '<div class="dataset-table-wide-container">{items}</div>{pager}',
+    'columns' => array(
+      'id',
+      'attribute_name',
+      'definition',
+      'model',
+      'structured_comment_name',
+      'value_syntax',
+      'allowed_units',
 		'occurance',
 		'ontology_link',
 		'note',
 		CustomGridView::getDefaultActionButtonsConfig()
 	),
 )); ?>
+</div>
