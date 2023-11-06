@@ -46,28 +46,25 @@ echo $form->hiddenField($model, "image_id");
                 <!-- first column -->
                 <div class="col-xs-5">
                     <div class="form-block-1">
-                        <div class="form-group">
-                            <?php echo $form->labelEx($model, 'submitter_id', array('class' => 'control-label col-xs-4')); ?>
-                            <div class="col-xs-8">
-                                <?php echo $form->dropDownList(
-                                    $model,
-                                    'submitter_id',
-                                    CHtml::listData(
-                                        User::model()->findAll(
-                                            array('order' => 'email ASC')
-                                        ),
-                                        'id',
-                                        'email'
-                                    ),
-                                    array(
-                                        'class' => 'form-control',
-                                        'aria-describedby' => $model->hasErrors('submitter_id') ? 'submitter_id_error' : '',
-                                    )
-                                );
-                                ?>
-                                <?php echo $form->error($model, 'submitter_id', array('id' => 'submitter_id_error')); ?>
-                            </div>
-                        </div>
+                      <?php
+                        $this->widget('application.components.controls.DropdownField', [
+                          'form' => $form,
+                          'model' => $model,
+                          'attributeName' => 'submitter_id',
+                          'listDataOptions' => [
+                              'data' => User::model()->findAll(
+                                  array('order' => 'email ASC')
+                              ),
+                              'valueField' => 'id',
+                              'textField' => 'email',
+                          ],
+                          'labelOptions' => ['class' => 'col-xs-4'],
+                          'inputWrapperOptions' => 'col-xs-8',
+                          'inputOptions' => [
+                              'required' => true,
+                          ]
+                        ]);
+                        ?>
                         <div class="form-group">
                             <?php echo $form->labelEx($model, 'curator_id', array('class' => 'control-label col-xs-4')); ?>
                             <div class="col-xs-8">
