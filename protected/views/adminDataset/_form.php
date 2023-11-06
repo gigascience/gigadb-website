@@ -497,7 +497,7 @@ echo $form->hiddenField($model, "image_id");
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h2 class="modal-title">Generate unique and time-limited mockup url for reviewers</h2>
+                <h2 class="modal-title" id="generateMockup">Generate unique and time-limited mockup url for reviewers</h2>
             </div>
             <?php echo CHtml::beginForm("/adminDataset/mockup/id/" . $model->id, "POST", ["id" => "mockupform"]); ?>
             <div class="modal-body">
