@@ -45,7 +45,8 @@ const PUBLIC_PATHS = [
 
 const USER_PATHS = [
   'user/view_profile',
-  // 'datasetSubmission/upload'
+  'datasetSubmission/upload',
+  'user/changePassword'
 ]
 
 const ADMIN_PATHS = [
