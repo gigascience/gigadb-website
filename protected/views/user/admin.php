@@ -37,9 +37,11 @@ Yii::app()->clientScript->registerScript('customize-close-button', '
 ?>
 
 <h2 class="h5">Basic Operations</h2>
-<a href="#" class="btn background-btn-o" title="view" onclick="goto_userview();">View</a>
-<a href="#" class="btn background-btn-o" title="update" onclick="goto_userupdate();">Update</a>
-<a href="#" class="btn danger-btn-o delete" title="delete" onclick="goto_userdelete();">Delete</a>
+<div class="btns-row">
+  <a href="#" class="btn background-btn-o" title="view" onclick="goto_userview();">View</a>
+  <a href="#" class="btn background-btn-o" title="update" onclick="goto_userupdate();">Update</a>
+  <a href="#" class="btn danger-btn-o delete" title="delete" onclick="goto_userdelete();">Delete</a>
+</div>
 
 <h2 class="h5">Advanced Operations</h2>
 <a href="#" class="btn background-btn-o" title="link" onclick="goto_userlinkauthor();">Link this user to an author</a>
