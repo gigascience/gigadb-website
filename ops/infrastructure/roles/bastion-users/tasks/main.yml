@@ -56,13 +56,16 @@
 - debug:
     msg: "{{ public_key_in_bastion.stat.exists }}"
 
-- name: generate private/public key pair and download public key
+- name: generate private/public key pair and download private key
   block:
     - name: generate key pair
       community.crypto.openssh_keypair:
         path: "/home/centos/{{ newuser }}.keys/id_ssh_rsa"
         owner: centos
       register: pk
+
+    - debug:
+        msg: "{{ pk }}"
 
     - name: download private key
       ansible.builtin.fetch:
@@ -78,24 +81,26 @@
         owner: "{{ newuser }}"
         group: "{{ newuser }}"
         mode: g-rw,o-rw
-  when: (public_key_in_bastion.stat.exists == false and public_key_in_gitlab.status == 404)
 
-- name: save ssh public key to GitLab CI environment variable (for newly created user)
-  ansible.builtin.uri:
-    url: "{{ gitlab_url }}/variables"
-    method: POST
-    headers:
-      PRIVATE-TOKEN: "{{ gitlab_private_token }}"
-    body_format: json
-    body:
-      key: "{{ newuser }}_bastion_public_key"
-      value: "{{ pk.public_key }}"
-      environment_scope: "{{ gigadb_environment }}"
-    status_code:
-      - 201
-      - 400
-  register: save_pk_to_gitlab
-  when: public_key_in_gitlab.status == 404
+    - name: save ssh public key to GitLab CI environment variable (for newly created user)
+      ansible.builtin.uri:
+        url: "{{ gitlab_url }}/variables"
+        method: POST
+        headers:
+          PRIVATE-TOKEN: "{{ gitlab_private_token }}"
+        body_format: json
+        body:
+          key: "{{ newuser }}_bastion_public_key"
+          value: "{{ pk.public_key }}"
+          environment_scope: "{{ gigadb_environment }}"
+        status_code:
+          - 201
+          - 400
+      register: save_pk_to_gitlab
+
+    - debug:
+        msg: "{{ save_pk_to_gitlab.status }}"
+  when: (public_key_in_bastion.stat.exists == false and public_key_in_gitlab.status == 404)
 
 - name: copy ssh public key and save it to GitLab CI environment variable (for existing user)
   block:
@@ -119,6 +124,9 @@
           - 201
           - 400
       register: save_pk_to_gitlab
+
+    - debug:
+        msg: "{{ save_pk_to_gitlab.status }}"
   when: (public_key_in_bastion.stat.exists == true and public_key_in_gitlab.status == 404)
 
 - name: download pubic key from GitLab CI environment variable and copy it to authorized file
