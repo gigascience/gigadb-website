@@ -37,16 +37,16 @@ Yii::app()->clientScript->registerScript('customize-close-button', '
 
 <h2 class="h5">Basic Operations</h2>
 <div class="btns-row">
-  <a href="#" class="btn background-btn-o" title="view" onclick="goto_userview();">View</a>
-  <a href="#" class="btn background-btn-o" title="update" onclick="goto_userupdate();">Update</a>
-  <a href="#" class="btn danger-btn-o delete" title="delete" onclick="goto_userdelete();">Delete</a>
+  <button class="btn background-btn-o" title="view" onclick="goto_userview();">View</button>
+  <button class="btn background-btn-o" title="update" onclick="goto_userupdate();">Update</button>
+  <button class="btn danger-btn-o delete" title="delete" onclick="goto_userdelete();">Delete</button>
 </div>
 
 <h2 class="h5">Advanced Operations</h2>
-<a href="#" class="btn background-btn-o" title="link" onclick="goto_userlinkauthor();">Link this user to an author</a>
+<button class="btn background-btn-o" title="link" onclick="goto_userlinkauthor();">Link this user to an author</button>
 
 
-<div id="status"></div>
+<div id="status" class="mt-10"></div>
 
 <?
 $this->endWidget('zii.widgets.jui.CJuiDialog');
@@ -143,6 +143,10 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
           .append("user successfully deactivated.")
           .append("Refresh the page to see the changes.");
       },
+      error: function(data) {
+        $("#status").addClass("alert alert-danger")
+          .append("user deactivation failed.")
+      }
     });
   }
 
