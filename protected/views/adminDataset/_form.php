@@ -472,7 +472,7 @@ echo $form->hiddenField($model, "image_id");
 </div>
 
 <div class="col-xs-12 form-control-btns">
-    <a class="btn background-btn-o" href="<?= Yii::app()->createUrl('/adminDataset/admin') ?>" />Cancel and go back</a>
+    <a class="btn background-btn-o" href="<?= Yii::app()->createUrl('/adminDataset/admin') ?>">Cancel and go back</a>
     <?= CHtml::submitButton(
         $model->isNewRecord ? 'Create' : 'Save',
         array('class' => 'btn background-btn submit-btn')
