@@ -100,11 +100,13 @@
 
 		<div class="pull-right btns-row">
 			<?php
-			echo CHtml::link(
-				'Merge with an author',
-				array('adminAuthor/prepareAuthorMerge', 'origin_author_id' => $model->id),
-				array('class' => 'btn background-btn-o')
-			);
+      if ($model->id) {
+        echo CHtml::link(
+          'Merge with an author',
+          array('adminAuthor/prepareAuthorMerge', 'origin_author_id' => $model->id),
+          array('class' => 'btn background-btn-o')
+        );
+      }
 			?>
 			<a href="/adminAuthor/admin" class="btn background-btn-o">Cancel</a>
 			<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => 'btn background-btn')); ?>
