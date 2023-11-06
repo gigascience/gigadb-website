@@ -20,11 +20,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Feat #1505: Update all admin pages with create and update forms with old style to modern style
 - Feat #1502: Update all admin pages with grid view Dataset tables with old style to modern style
 - Feat #1498: Search page - Improve styles and accessibility of search filters
+
+
+## v4.0.0 - 2023-11-06 - 9c012f7b
+
+- Fix #1416: Enable Gitlab tag pipeline and document release process
 - Feat #1362: Add "skip to main" link
 - Fix #1444: Make tideways build and deploy automatically for the production staging gigadb website
 - Docs #1421: Update production deployment SOP, investigate terraform state synchronisation issues and create troubleshooting guide for the deployment process
 - Feat #1460: Admin dashboard updated to same more modern look as the public side
-- Fix #1102: On sample admin form, save all valid sample attributes while showing errors for non-existent attributes- Feat #1460: Update admin dashboard styles to modern look
+- Fix #1102: On sample admin form, save all valid sample attributes while showing errors for non-existent attributes
 - Feat #1434: Setup playwright local environment for automated accessibility testing
 - Feat #1387: Improve accessibility and layout of create user page
 - Feat #1369: Improve accessibility and layout of team page
@@ -70,3 +75,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Fix #1338: Enable persistent IP address using EIP for bastion hosts on AWS deployments
 - Feat #580: Provision monitoring infrastructure with Prometheus and Grafana
 - Feat #1282: Upgraded yii1.1 version to `1.1.28`, yii2 version to `2.0.48.1`, postgreSQL engine version to `14.8`, postgreSQL client version to `14`
+
+## v3.1.0 - 2017-01-18 - 83f9cf8
+
+- for historical record
+
+## v3.0.0 - 2016-05-12 - 5d89e0f
+
+- for historical record

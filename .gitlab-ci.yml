@@ -58,6 +58,11 @@ variables:
 
 image: docker:$DOCKER_VERSION
 
+.tag_only:
+  rules:
+    - if: $CI_COMMIT_TAG
+
+
 include:
   - template: Security/SAST.gitlab-ci.yml
   - template: Security/Container-Scanning.gitlab-ci.yml
@@ -105,7 +110,7 @@ before_script:
   - '[[ $CI_JOB_NAME != *sast* ]] && [[ $CI_JOB_NAME != container_scanning* ]] && env | grep "^CI_" > $APPLICATION/.ci_env'
   - '[[ $CI_JOB_NAME != *sast* ]] && [[ $CI_JOB_NAME != container_scanning* ]] && env | grep -v "SAST" | grep -v "^DOCKER" | grep -v "^CI" | grep -v "^LOCAL_COMPOSE" | grep -v "^GITLAB" | grep -v "==" | grep -E "^[a-zA-Z0-9_]+=.+" | grep -viE "(password|email|tester|secret|key|user|app_id|client_id|token|tls)" > $APPLICATION/.env'
   - '[[ $CI_JOB_NAME != *sast* ]] && [[ $CI_JOB_NAME != container_scanning* ]] && env | grep -v "SAST" | grep -v "^DOCKER" | grep -v "^CI" | grep -v "^LOCAL_COMPOSE" | grep -v "^GITLAB" | grep -v "==" | grep -E "^[a-zA-Z0-9_]+=.+" | grep -v "ANALYTICS_PRIVATE_KEY" | grep -viE "tls" | grep -iE "(password|email|tester|secret|key|user|app_id|client_id|token)" > $APPLICATION/.secrets'
-  - '[[ $CI_JOB_NAME != *sast* ]] && [[ $CI_JOB_NAME != container_scanning* ]] && time apk add --no-cache py-pip bash curl jq'
+  - '[[ $CI_JOB_NAME != *sast* ]] && [[ $CI_JOB_NAME != container_scanning* ]] && time apk add --no-cache py-pip bash curl jq git'
   # Pin docker-compose version to stop installation error
   - '[[ $CI_JOB_NAME != *sast* ]] && [[ $CI_JOB_NAME != container_scanning* ]] && time pip install docker-compose~=1.23.0'
 
@@ -140,7 +145,9 @@ sd_warmcache:
 ld_gigadb:
   variables:
     GIGADB_ENV: "live"
-  extends: .deploy
+  extends: 
+    - .tag_only
+    - .deploy
   stage: live deploy
   tags:
     - $GITLAB_USER_LOGIN
@@ -164,3 +171,5 @@ ld_warmcache:
   environment:
     name: "live"
     url: $REMOTE_HOME_URL
+  rules:
+    - if: $CI_COMMIT_TAG

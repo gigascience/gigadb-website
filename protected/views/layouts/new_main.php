@@ -232,12 +232,17 @@ jQuery.sub = function() {
     <footer class="base-footer-bar">
         <div class="container">
             <div class="row">
-                <div class="col-xs-6">
+                <div class="col-xs-4">
                     <ul class="list-inline base-footer-logo-bar">
                         <li><a href="http://gigasciencepress.com/"><img src="/images/new_interface_image/gigascience_white.png" alt="Go to GigaScience Journal web site"></a></li>
                     </ul>
                 </div>
-                <div class="col-xs-6 text-right">
+                <div class="col-xs-4">
+                    <ul class="base-footer-email">
+                        <li><a href="https://raw.githubusercontent.com/gigascience/gigadb-website/develop/CHANGELOG.md"><?php echo Yii::t('app' , 'Version: ' . Yii::app()->params["app_version"]) ?></a></li>
+                    </ul>
+                </div>
+                <div class="col-xs-4 text-right">
                     <p class="base-footer-email"><a href="/site/contact"><i class="fa fa-envelope"></i> database@gigasciencejournal.com</a></p>
                     <ul class="list-inline base-footer-social-bar">
                         <li>

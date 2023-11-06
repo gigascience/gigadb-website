@@ -254,7 +254,9 @@ build_staging:
 build_live:
   variables:
     GIGADB_ENV: "live"
-  extends: .pb_gigadb
+  extends: 
+    - .tag_only
+    - .pb_gigadb
   stage: live build
   tags:
     - $GITLAB_USER_LOGIN
