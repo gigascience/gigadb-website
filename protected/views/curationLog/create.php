@@ -4,16 +4,15 @@
     'pageTitle' => 'Create Curation Log',
     'breadcrumbItems' => [
       ['label' => 'Admin', 'href' => '/site/admin'],
+      ['href' => '/adminDataset/admin', 'label' => 'Manage'],
+      ['label' => 'Dataset', 'href' => $this->createAbsoluteUrl(
+          'adminDataset/update',
+          $this->getActionParams('id'),
+      )],
       ['isActive' => true, 'label' => 'Create'],
     ]
   ]);
     ?>
-
-  <?php if (Yii::app()->user->checkAccess('admin') === true) { ?>
-    <div class="actionBar">
-    <?php CHtml::link('Manage Logs', ['admin']); ?>
-    </div>
-  <?php } ?>
 
   <?php
     echo $this->renderPartial(
@@ -24,6 +23,5 @@
         ]
     );
     ?>
-
 
 </div>
