@@ -50,9 +50,16 @@ const USER_PATHS = [
 ]
 
 const ADMIN_PATHS = [
-  // 'site/admin',
-  // 'adminDataset/admin',
-  // 'adminDataset/create',
+  'site/admin',
+  'adminDataset/admin',
+  {
+    path: 'adminDataset/admin',
+    disabledElements: ['table input']
+  },
+  {
+    path: 'adminDataset/create',
+    disabledElements: ['textarea']
+  }
 ]
 
 const runAccessibilityTests = (paths, storageStatePath) => {
