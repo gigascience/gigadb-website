@@ -7,7 +7,7 @@ $dataset = Dataset::model()->find('id=:dataset_id', [':dataset_id' => $dataset_i
 
 <?php
 $this->widget(
-    'zii.widgets.grid.CGridView',
+    'CustomGridView',
     [
         'id'            => 'dataset-grid',
         'dataProvider'  => $model,
@@ -21,11 +21,41 @@ $this->widget(
             'last_modified_by',
             [
                 'class'   => 'CButtonColumn',
-                'buttons' => [
-                    'view'   => ['url' => 'Yii::app()->createUrl("curationLog/view", ["id" => $data->id])'],
-                    'update' => ['url' => 'Yii::app()->createUrl("curationLog/update", ["id" => $data->id])'],
-                    'delete' => ['url' => 'Yii::app()->createUrl("curationLog/delete", ["id" => $data->id])'],
-                ],
+                'header' => "Actions",
+                'headerHtmlOptions' => array('style' => 'width: 100px'),
+                'template' => '{view}{update}{delete}',
+                'buttons' => array(
+                  'view' => array(
+                    'imageUrl' => false,
+                    'url' => 'Yii::app()->createUrl("curationLog/view", ["id" => $data->id])',
+                    'label' => '',
+                    'options' => array(
+                      "title" => "View",
+                      "class" => "fa fa-eye fa-lg icon icon-view",
+                      "aria-label" => "View"
+                    ),
+                  ),
+                  'update' => array(
+                    'imageUrl' => false,
+                    'url' => 'Yii::app()->createUrl("curationLog/update", ["id" => $data->id])',
+                    'label' => '',
+                    'options' => array(
+                      "title" => "Update",
+                      "class" => "fa fa-pencil fa-lg icon icon-update",
+                      "aria-label" => "Update"
+                    ),
+                  ),
+                  'delete' => array(
+                    'imageUrl' => false,
+                    'url' => 'Yii::app()->createUrl("curationLog/delete", ["id" => $data->id])',
+                    'label' => '',
+                    'options' => array(
+                      "title" => "Delete",
+                      "class" => "fa fa-trash fa-lg icon icon-delete",
+                      "aria-label" => "Delete"
+                    ),
+                  ),
+                ),
             ],
         ],
     ]
