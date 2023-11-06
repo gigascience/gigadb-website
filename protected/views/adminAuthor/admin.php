@@ -28,7 +28,7 @@
 		$existing_link = Author::findAttachedAuthorByUserId($user->id);
 		if (null == $existing_link) {
 		?>
-			<div class="alert alert-info alert-flex">
+			<div class="alert alert-gigadb-info alert-flex">
 				<span>
 					Click on a row to proceed with linking that author with user <? echo $user->first_name . " " . $user->last_name ?>
 				</span>
@@ -52,7 +52,7 @@
 
 	<?php
 	if (!empty($origin_author)) {
-		echo "<div class=\"alert alert-info alert-flex\">";
+		echo "<div class=\"alert alert-gigadb-info alert-flex\">";
 
 		echo "<span>Click on a row to proceed with merging that author with author {$origin_author->getDisplayName()}</span>";
 
