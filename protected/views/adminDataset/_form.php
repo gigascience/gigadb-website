@@ -167,7 +167,7 @@ echo $form->hiddenField($model, "image_id");
                                         array(
                                             'id' => 'clearFileUrl',
                                             'class' => 'clear-file-url-btn btn background-btn-o',
-                                            'title' => 'Delete file',
+                                            'aria-label' => 'Delete image file',
                                             'confirm' => 'Are you sure? This will take effect immediately',
                                         )
                                     );
