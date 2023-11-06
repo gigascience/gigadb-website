@@ -113,6 +113,9 @@ echo $form->hiddenField($model, "image_id");
                                 ?>
                                     <div class="from-group checkbox-horizontal">
                                         <?php
+                                        $checkedHtml = in_array($id, $checkedTypes, true) ? 'checked="checked"' : '';
+                                        $checkboxId = "Dataset_$datasetType";
+
                                         echo $form->labelEx($model, "$datasetType", array('class' => 'col-md-4 control-label'));
                                         ?>
                                         <div class="col-md-8 col-xs-1">
