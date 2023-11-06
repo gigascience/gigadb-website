@@ -38,7 +38,8 @@
                 <li class="<? if(Yii::app()->controller->action->id=='index') echo "active"; ?>"><a href="/site/index"><?=Yii::t('app' , 'Home')?></a>|</li>
                 <li class="<? if(Yii::app()->controller->action->id=='about') echo "active"; ?>"><a href="/site/about"><?=Yii::t('app' , 'About')?></a>|</li>
                 <li class="<? if(Yii::app()->controller->action->id=='contact') echo "active"; ?>"><a href="/site/contact"><?=Yii::t('app' , 'Contact')?></a>|</li>
-                <li class="<? if(Yii::app()->controller->action->id=='term') echo "active"; ?>"><a href="/site/term"><?=Yii::t('app' , 'Terms of use')?></a></li>
+                <li class="<? if(Yii::app()->controller->action->id=='term') echo "active"; ?>"><a href="/site/term"><?=Yii::t('app' , 'Terms of use')?></a>|</li>
+                <li class="inactive app-version"><a href="https://raw.githubusercontent.com/gigascience/gigadb-website/develop/CHANGELOG.md"><?php echo Yii::t('app' , 'Version: ' . Yii::app()->params["app_version"]) ?></a></li>
                 </ul>
             </div>
             <p>

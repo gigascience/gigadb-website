@@ -27,6 +27,9 @@ if ! [ -f  ./.env ];then
   rm .env.bak
 fi
 
+# write down application version
+git describe --always > VERSION
+
 # Configure the container services
 docker-compose run --rm config
 docker-compose run --rm fuw-config
