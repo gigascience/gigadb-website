@@ -504,7 +504,7 @@ echo $form->hiddenField($model, "image_id");
             <?php echo CHtml::beginForm("/adminDataset/mockup/id/" . $model->id, "POST", ["id" => "mockupform"]); ?>
             <div class="modal-body">
                 <label for="reviewerEmail">Reviewer's email</label>
-                <input type="text" name="revieweremail" class="form-control" />
+                <input type="text" name="revieweremail" id="reviewerEmail" class="form-control" />
                 <div class="btn-group" data-toggle="buttons">
                     <label class="btn btn-primary active">
                         <input type="radio" name="monthsofvalidity" id="nbMonths1" value="1" autocomplete="off" checked>1 month
