@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1553: Fix small scope accessibility and layout issues in admin pages
 - Feat #1550: Fix outstanding accessibility and layout issues in change password page
 - Feat #1546: Fix outstanding accessibility issues in view profile page
 - Feat #1544: Improve accessibility of map browse page
