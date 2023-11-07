@@ -16,7 +16,7 @@ Feature: A curator opens the mockup page
     Then I am on "/dataset/200070/token/ImP3Bbu7ytRSfYFh"
     And I can see the changes to the "dataset metadata" displayed
 
-  @wip
+
   Scenario: Sample metadata changes
     Given sample "154" is associated with dataset "2000070"
     And I am on "/dataset/200070/token/ImP3Bbu7ytRSfYFh"
@@ -26,8 +26,11 @@ Feature: A curator opens the mockup page
     Then I am on "/dataset/200070/token/ImP3Bbu7ytRSfYFh"
     And I can see the changes to the "sample metadata" displayed
 
+  @wip
   Scenario: File metadata changes
-    Given I make an update to the non-public dataset "200070"'s "file metadata" in the admin pages
+    Given file "95366" is associated with dataset "2000070"
+    And I am on "/dataset/200070/token/ImP3Bbu7ytRSfYFh"
+    And I make an update to the non-public dataset "200070"'s "file metadata" in the admin pages
     When I am on "/adminDataset/update/id/668"
     And I follow "Open Private URL"
     Then I am on "/dataset/200070/token/ImP3Bbu7ytRSfYFh"

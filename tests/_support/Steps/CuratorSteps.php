@@ -183,6 +183,9 @@ class CuratorSteps extends \Codeception\Actor
             case "sample metadata":
                 $this->I->updateInDatabase('sample_attribute', ['value' => 'value from automated tests'],['sample_id' => 154,'attribute_id' => 376 ]);
                 break;
+            case "file metadata":
+                $this->I->updateInDatabase('file', ['description' => 'description from automated tests'],['id' => 95366]);
+                break;
             default:
                 throw new \PHPUnit\Framework\IncompleteTestError("Step `I make an update to the non-public dataset :arg1's :arg2 in the admin pages` is not defined");
         }
@@ -198,6 +201,14 @@ class CuratorSteps extends \Codeception\Actor
     }
 
     /**
+     * @Given file :file_id is associated with dataset :doi
+     */
+    public function fileIsAssociatedWithDataset($file_id, $doi)
+    {
+        $dataset_id = $this->I->grabFromDatabase('dataset', 'id', array('identifier' => '200070'));
+        $this->I->updateInDatabase('file', ['dataset_id' => $dataset_id],['id' => $file_id]);
+    }
+    /**
      * @Then I can see the changes to the :changeType displayed
      */
     public function iCanSeeTheChangesToTheDisplayed($changeType)
@@ -209,6 +220,9 @@ class CuratorSteps extends \Codeception\Actor
             case "sample metadata":
                 $this->I->cantSee("1.32");
                 $this->I->canSee("value from automated tests");
+                break;
+            case "file metadata":
+                $this->I->canSee("description from automated tests");
                 break;
             default:
                 throw new \PHPUnit\Framework\IncompleteTestError("Step `I can see the changes to the :arg1 displayed` is not defined");
