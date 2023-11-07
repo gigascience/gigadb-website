@@ -171,19 +171,33 @@ class CuratorSteps extends \Codeception\Actor
      }
 
     /**
-     * @Given I make an update to the non-public dataset :arg1's :arg2 in the admin pages
+     * @Given I make an update to the non-public dataset :doi's :changeType in the admin pages
      */
-    public function iMakeAnUpdateToTheNonpublicDatasetsInTheAdminPages($arg1, $arg2)
+    public function iMakeAnUpdateToTheNonpublicDatasetsInTheAdminPages($doi, $changeType)
     {
-        throw new \PHPUnit\Framework\IncompleteTestError("Step `I make an update to the non-public dataset :arg1's :arg2 in the admin pages` is not defined");
+        $dataset_id = $this->I->grabFromDatabase('dataset', 'id', array('identifier' => $doi));
+        switch ($changeType) {
+            case "dataset metadata":
+                $this->I->updateInDatabase('dataset', ['description' => "lorem ipsum from automated tests"], ['id' => $dataset_id]);
+                break;
+            default:
+                throw new \PHPUnit\Framework\IncompleteTestError("Step `I make an update to the non-public dataset :arg1's :arg2 in the admin pages` is not defined");
+        }
     }
 
     /**
-     * @Then I can see the changes to the :arg1 displayed
+     * @Then I can see the changes to the :changeType displayed
      */
-    public function iCanSeeTheChangesToTheDisplayed($arg1)
+    public function iCanSeeTheChangesToTheDisplayed($changeType)
     {
-        throw new \PHPUnit\Framework\IncompleteTestError("Step `I can see the changes to the :arg1 displayed` is not defined");
+        switch ($changeType) {
+            case "dataset metadata":
+                $this->I->canSee("lorem ipsum from automated tests");
+                break;
+            default:
+                throw new \PHPUnit\Framework\IncompleteTestError("Step `I can see the changes to the :arg1 displayed` is not defined");
+        }
+
     }
 
 }
