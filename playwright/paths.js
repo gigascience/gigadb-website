@@ -266,13 +266,13 @@ const ADMIN_PATHS = [
   {
     path: 'adminDataset/create',
     disabledElements: ['textarea'],
-    tags: [1553]
+    tags: [1553, 1558]
   },
-  // {
-  //   path: 'adminDataset/update/id/5',
-  //   disabledElements: ['textarea'],
-  //   tags: [1553]
-  // },
+  {
+    path: 'adminDataset/update/id/5',
+    disabledElements: ['textarea'],
+    tags: [1553, 1558]
+  },
   {
     path: 'curationLog/view/id/4',
     disabledElements: [],

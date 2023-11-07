@@ -240,7 +240,7 @@ echo $form->hiddenField($model, "image_id");
                                 </div>
                             <?php } ?>
                         </div>
-                        <fieldset id="metaFieldsSection" class="meta-fields-container" aria-hidden="true">
+                        <fieldset id="metaFieldsSection" class="meta-fields-container">
                             <legend>Image metafields</legend>
                             <?php
                               $this->widget('application.components.controls.TextField', [
@@ -686,15 +686,13 @@ echo $form->hiddenField($model, "image_id");
             var preview = document.getElementById("imagePreview");
             preview.src = src;
             preview.style.display = "block";
-            metaFieldsContainer.removeClass('hidden');
-            metaFieldsContainer.attr('aria-hidden', 'false');
+            metaFieldsContainer.show();
             updateMetaFieldsLiveRegion(shownText);
             $('#showImage').css('display', 'none');
         } else {
             $('#showImage').css('display', 'block');
             $('#imagePreview').css('display', 'none');
-            metaFieldsContainer.addClass('hidden');
-            metaFieldsContainer.attr('aria-hidden', 'true');
+            metaFieldsContainer.hide();
             updateMetaFieldsLiveRegion(hiddenText);
         }
     });
@@ -703,12 +701,10 @@ echo $form->hiddenField($model, "image_id");
     if ('' == image.src && 0 == document.getElementById("datasetImage").files.length) {
         if (0 == image_id || null == image_id) {
             imgPrevWrapper.css('display', 'none');
-            metaFieldsContainer.addClass('hidden');
-            metaFieldsContainer.attr('aria-hidden', 'true');
+            metaFieldsContainer.hide();
             metaFieldsLiveRegion.text(hiddenText);
         } else {
             console.log('0 != image_id && null != image_id')
-            metaFieldsContainer.attr('aria-hidden', 'false');
             metaFieldsLiveRegion.text(shownText);
         }
     }
