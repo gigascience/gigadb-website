@@ -1,11 +1,27 @@
 // @ts-check
 const { defineConfig, devices } = require('@playwright/test');
+const TAG = require('./tags');
 
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
  */
 // require('dotenv').config();
+
+const browsers = [
+  TAG.CHROMIUM && {
+    name: 'chromium',
+    use: { ...devices['Desktop Chrome'] },
+  },
+  TAG.FIREFOX && {
+    name: 'firefox',
+    use: { ...devices['Desktop Firefox'] },
+  },
+  TAG.WEBKIT && {
+    name: 'webkit',
+    use: { ...devices['Desktop Safari'] },
+  },
+].filter(Boolean)
 
 /**
  * @see https://playwright.dev/docs/test-configuration
@@ -38,20 +54,10 @@ module.exports = defineConfig({
       name: 'setup',
       testMatch: /.*\.setup\.js/
     },
-    {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
-    },
 
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
 
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
-    },
+    ...browsers,
+
 
     /* Test against mobile viewports. */
     // {
