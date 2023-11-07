@@ -21,7 +21,7 @@ $this->pageTitle = 'GigaDB - FAQ';
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading01">
-                            <button data-toggle="collapse" data-parent="#accordion" href="#panel01" aria-expanded="false" aria-controls="panel01">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel01" aria-expanded="false" aria-controls="panel01">
                                 What is <em>GigaDB</em>?
                             </button>
                         </h2>
@@ -35,7 +35,7 @@ $this->pageTitle = 'GigaDB - FAQ';
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading02">
-                            <button data-toggle="collapse" data-parent="#accordion" href="#panel02" aria-expanded="false" aria-controls="panel02">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel02" aria-expanded="false" aria-controls="panel02">
                                 What journals are integrated with <em>GigaDB</em>?
                             </button>
                         </h2>
@@ -49,7 +49,7 @@ $this->pageTitle = 'GigaDB - FAQ';
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading03">
-                            <button data-toggle="collapse" data-parent="#accordion" href="#panel03" aria-expanded="false" aria-controls="panel03">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel03" aria-expanded="false" aria-controls="panel03">
                                 Why use <em>GigaDB</em>?
                             </button>
                         </h2>
@@ -63,7 +63,7 @@ $this->pageTitle = 'GigaDB - FAQ';
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading04">
-                            <button data-toggle="collapse" data-parent="#accordion" href="#panel04" aria-expanded="false" aria-controls="panel04">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel04" aria-expanded="false" aria-controls="panel04">
                                 What kinds of data does <em>GigaDB</em> accept?
                             </button>
                         </h2>
@@ -77,7 +77,7 @@ $this->pageTitle = 'GigaDB - FAQ';
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading05">
-                            <button data-toggle="collapse" data-parent="#accordion" href="#panel05" aria-expanded="false" aria-controls="panel05">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel05" aria-expanded="false" aria-controls="panel05">
                                 My research is on human subjects. Can I archive my data in <em>GigaDB</em>?
                             </button>
                         </h2>
@@ -91,7 +91,7 @@ $this->pageTitle = 'GigaDB - FAQ';
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading06">
-                            <button data-toggle="collapse" data-parent="#accordion" href="#panel06" aria-expanded="false" aria-controls="panel06">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel06" aria-expanded="false" aria-controls="panel06">
                                 In what file format(s) should I submit my data?
                             </button>
                         </h2>
@@ -105,7 +105,7 @@ $this->pageTitle = 'GigaDB - FAQ';
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading07">
-                            <button data-toggle="collapse" data-parent="#accordion" href="#panel07" aria-expanded="false" aria-controls="panel07">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel07" aria-expanded="false" aria-controls="panel07">
                                 When should I submit my data?
                             </button>
                         </h2>
@@ -119,7 +119,7 @@ $this->pageTitle = 'GigaDB - FAQ';
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading08">
-                            <button data-toggle="collapse" data-parent="#accordion" href="#panel08" aria-expanded="false" aria-controls="panel08">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel08" aria-expanded="false" aria-controls="panel08">
                                 How can I modify files I have submitted to <em>GigaDB</em> while my article is in review?
                             </button>
                         </h2>
@@ -133,7 +133,7 @@ $this->pageTitle = 'GigaDB - FAQ';
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading09">
-                            <button data-toggle="collapse" data-parent="#accordion" href="#panel09" aria-expanded="false" aria-controls="panel09">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel09" aria-expanded="false" aria-controls="panel09">
                                 What should I prepare before submission?
                             </button>
                         </h2>
@@ -147,7 +147,7 @@ $this->pageTitle = 'GigaDB - FAQ';
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading10">
-                            <button data-toggle="collapse" data-parent="#accordion" href="#panel10" aria-expanded="false" aria-controls="panel10">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel10" aria-expanded="false" aria-controls="panel10">
                                 How can I make my data submission as accessible and reusable as possible?
                             </button>
                         </h2>
@@ -161,7 +161,7 @@ $this->pageTitle = 'GigaDB - FAQ';
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading11">
-                            <button data-toggle="collapse" data-parent="#accordion" href="#panel11" aria-expanded="false" aria-controls="panel11">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel11" aria-expanded="false" aria-controls="panel11">
                                 How do I submit data?
                             </button>
                         </h2>
@@ -180,7 +180,7 @@ $this->pageTitle = 'GigaDB - FAQ';
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading12">
-                            <button data-toggle="collapse" data-parent="#accordion" href="#panel12" aria-expanded="false" aria-controls="panel12">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel12" aria-expanded="false" aria-controls="panel12">
                                 How do I write a ReadMe file?
                             </button>
                         </h2>
@@ -217,7 +217,7 @@ Files:
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading13">
-                            <button data-toggle="collapse" data-parent="#accordion" href="#panel13" aria-expanded="false" aria-controls="panel13">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel13" aria-expanded="false" aria-controls="panel13">
                                 How do I cite the data in my manuscript?
                             </button>
                         </h2>
@@ -231,7 +231,7 @@ Files:
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading14">
-                            <button data-toggle="collapse" data-parent="#accordion" href="#panel14" aria-expanded="false" aria-controls="panel14">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel14" aria-expanded="false" aria-controls="panel14">
                                 Are there any problems with publishing my final research paper AFTER publishing the data in GigaScience?
                             </button>
                         </h2>
@@ -252,7 +252,7 @@ Files:
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading15">
-                            <button data-toggle="collapse" data-parent="#accordion" href="#panel15" aria-expanded="false" aria-controls="panel15">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel15" aria-expanded="false" aria-controls="panel15">
                                 Do I have the option to embargo release of my data?
                             </button>
                         </h2>
@@ -269,7 +269,7 @@ Files:
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading16">
-                            <button data-toggle="collapse" data-parent="#accordion" href="#panel16" aria-expanded="false" aria-controls="panel16">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel16" aria-expanded="false" aria-controls="panel16">
                                 How much does it cost?
                             </button>
                         </h2>
@@ -284,7 +284,7 @@ Files:
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading17">
-                            <button data-toggle="collapse" data-parent="#accordion" href="#panel17" aria-expanded="false" aria-controls="panel17">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel17" aria-expanded="false" aria-controls="panel17">
                                 Do I have to pay to download or use the data?
                             </button>
                         </h2>
@@ -298,7 +298,7 @@ Files:
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading18">
-                            <button data-toggle="collapse" data-parent="#accordion" href="#panel18" aria-expanded="false" aria-controls="panel18">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel18" aria-expanded="false" aria-controls="panel18">
                                 How do I download a large dataset with my slow internet connection?
                             </button>
                         </h2>
@@ -316,7 +316,7 @@ Files:
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading19">
-                            <button data-toggle="collapse" data-parent="#accordion" href="#panel19" aria-expanded="false" aria-controls="panel19">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel19" aria-expanded="false" aria-controls="panel19">
                                 How do I cite data from <em>GigaDB</em>?
                             </button>
                         </h2>
@@ -330,7 +330,7 @@ Files:
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading20">
-                            <button data-toggle="collapse" data-parent="#accordion" href="#panel20" aria-expanded="false" aria-controls="panel20">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel20" aria-expanded="false" aria-controls="panel20">
                                 How do I download information to my citation management software?
                             </button>
                         </h2>
@@ -344,7 +344,7 @@ Files:
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading21">
-                            <button data-toggle="collapse" data-parent="#accordion" href="#panel21" aria-expanded="false" aria-controls="panel21">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel21" aria-expanded="false" aria-controls="panel21">
                                 What is a dataset?
                             </button>
                         </h2>
@@ -358,7 +358,7 @@ Files:
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading22">
-                            <button data-toggle="collapse" data-parent="#accordion" href="#panel22" aria-expanded="false" aria-controls="panel22">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel22" aria-expanded="false" aria-controls="panel22">
                                 Does my journal work with <em>GigaDB</em> and how?
                             </button>
                         </h2>
@@ -372,7 +372,7 @@ Files:
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading23">
-                            <button data-toggle="collapse" data-parent="#accordion" href="#panel23" aria-expanded="false" aria-controls="panel23">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel23" aria-expanded="false" aria-controls="panel23">
                                 What is a <em>GigaDB</em> DOI?
                             </button>
                         </h2>
@@ -386,7 +386,7 @@ Files:
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading24">
-                            <button data-toggle="collapse" data-parent="#accordion" href="#panel24" aria-expanded="false" aria-controls="panel24">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel24" aria-expanded="false" aria-controls="panel24">
                                 Why does <em>GigaDB</em> use Creative Commons Zero?
                             </button>
                         </h2>
@@ -400,7 +400,7 @@ Files:
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading25">
-                            <button data-toggle="collapse" data-parent="#accordion" href="#panel25" aria-expanded="false" aria-controls="panel25">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel25" aria-expanded="false" aria-controls="panel25">
                                 Can the <em>GigaDB</em> repository help me prepare a data management plan?
                             </button>
                         </h2>
@@ -414,7 +414,7 @@ Files:
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading26">
-                            <button data-toggle="collapse" data-parent="#accordion" href="#panel26" aria-expanded="false" aria-controls="panel26">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel26" aria-expanded="false" aria-controls="panel26">
                                 What are the charges for submitting data?
                             </button>
                         </h2>
@@ -429,7 +429,7 @@ Files:
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading27">
-                            <button data-toggle="collapse" data-parent="#accordion" href="#panel27" aria-expanded="false" aria-controls="panel27">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel27" aria-expanded="false" aria-controls="panel27">
                                 Why is submission to <em>GigaDB</em> not closely integrated with submission to GigaScience?
                             </button>
                         </h2>
@@ -443,7 +443,7 @@ Files:
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading28">
-                            <button data-toggle="collapse" data-parent="#accordion" href="#panel28" aria-expanded="false" aria-controls="panel28">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel28" aria-expanded="false" aria-controls="panel28">
                                 How are datasets in <em>GigaDB</em> backed up?
                             </button>
                         </h2>
@@ -457,7 +457,7 @@ Files:
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading29">
-                            <button data-toggle="collapse" data-parent="#accordion" href="#panel29" aria-expanded="false" aria-controls="panel29">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel29" aria-expanded="false" aria-controls="panel29">
                                 What happens to data after it is submitted?
                             </button>
                         </h2>
@@ -471,7 +471,7 @@ Files:
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading30">
-                            <button data-toggle="collapse" data-parent="#accordion" href="#panel30" aria-expanded="false" aria-controls="panel30">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel30" aria-expanded="false" aria-controls="panel30">
                                 Can I see how often my dataset is being used and downloaded?
                             </button>
                         </h2>
@@ -485,7 +485,7 @@ Files:
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading31">
-                            <button data-toggle="collapse" data-parent="#accordion" href="#panel31" aria-expanded="false" aria-controls="panel31">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel31" aria-expanded="false" aria-controls="panel31">
                                 How may data from <em>GigaDB</em> be reused?
                             </button>
                         </h2>
@@ -499,7 +499,7 @@ Files:
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading32">
-                            <button data-toggle="collapse" data-parent="#accordion" href="#panel32" aria-expanded="false" aria-controls="panel32">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel32" aria-expanded="false" aria-controls="panel32">
                                 What is Hypothes.is?
                             </button>
                         </h2>
@@ -513,7 +513,7 @@ Files:
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading33">
-                            <button data-toggle="collapse" data-parent="#accordion" href="#panel33" aria-expanded="false" aria-controls="panel33">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel33" aria-expanded="false" aria-controls="panel33">
                                 How do I report missing values in my metadata?
                             </button>
                         </h2>
@@ -549,7 +549,7 @@ Files:
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading34">
-                            <button data-toggle="collapse" data-parent="#accordion" href="#panel34" aria-expanded="false" aria-controls="panel34">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel34" aria-expanded="false" aria-controls="panel34">
                                 Why do you request so many sample attributes?
                             </button>
                         </h2>
@@ -563,7 +563,7 @@ Files:
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading35">
-                            <button data-toggle="collapse" data-parent="#accordion" href="#panel35" aria-expanded="false" aria-controls="panel35">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel35" aria-expanded="false" aria-controls="panel35">
                                 Why is the directory structure missing from the file table view on my dataset page?
                             </button>
                         </h2>
@@ -577,7 +577,7 @@ Files:
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading36">
-                            <button data-toggle="collapse" data-parent="#accordion" href="#panel36" aria-expanded="false" aria-controls="panel36">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel36" aria-expanded="false" aria-controls="panel36">
                                 What should I do if I accidentally identify an individual from anonymized human (meta)data within a dataset?
                             </button>
                         </h2>
@@ -592,7 +592,7 @@ Files:
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading37">
-                            <button data-toggle="collapse" data-parent="#accordion" href="#panel37" aria-expanded="false" aria-controls="panel37">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel37" aria-expanded="false" aria-controls="panel37">
                                 What curation do you carry out?
                             </button>
                         </h2>
@@ -606,7 +606,7 @@ Files:
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading38">
-                            <button data-toggle="collapse" data-parent="#accordion" href="#panel38" aria-expanded="false" aria-controls="panel38">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel38" aria-expanded="false" aria-controls="panel38">
                                 What procedures are in place to ensure data integrity?
                             </button>
                         </h2>
@@ -621,7 +621,7 @@ Files:
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading39">
-                            <button data-toggle="collapse" data-parent="#accordion" href="#panel39" aria-expanded="false" aria-controls="panel39">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel39" aria-expanded="false" aria-controls="panel39">
                                 What data storage procedures do you follow?
                             </button>
                         </h2>
@@ -635,7 +635,7 @@ Files:
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading40">
-                            <button data-toggle="collapse" data-parent="#accordion" href="#panel40" aria-expanded="false" aria-controls="panel40">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel40" aria-expanded="false" aria-controls="panel40">
                                 What's the relationship between <i>GigaScience</i> and <em>GigaDB</em>?
                             </button>
                         </h2>
@@ -656,7 +656,7 @@ Files:
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading41">
-                            <button data-toggle="collapse" data-parent="#accordion" href="#panel41" aria-expanded="false" aria-controls="panel41">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel41" aria-expanded="false" aria-controls="panel41">
                                 What is the long term preservation plan for <em>GigaDB</em>?
                             </button>
                         </h2>
@@ -670,7 +670,7 @@ Files:
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading42">
-                            <button data-toggle="collapse" data-parent="#accordion" href="#panel42" aria-expanded="false" aria-controls="panel42">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel42" aria-expanded="false" aria-controls="panel42">
                                 What metadata do you collect?
                             </button>
                         </h2>
@@ -685,7 +685,7 @@ Files:
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading43">
-                            <button data-toggle="collapse" data-parent="#accordion" href="#panel43" aria-expanded="false" aria-controls="panel43">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel43" aria-expanded="false" aria-controls="panel43">
                                 Does <em>GigaDB</em> use community-supported Open Source software?
                             </button>
                         </h2>
@@ -700,7 +700,7 @@ Files:
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading44">
-                            <button data-toggle="collapse" data-parent="#accordion" href="#panel44" aria-expanded="false" aria-controls="panel44">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel44" aria-expanded="false" aria-controls="panel44">
                                 Do you allow comments, moderation or annotation of dataset entries?
                             </button>
                         </h2>
@@ -715,7 +715,7 @@ Files:
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading45">
-                            <button data-toggle="collapse" data-parent="#accordion" href="#panel45" aria-expanded="false" aria-controls="panel45">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel45" aria-expanded="false" aria-controls="panel45">
                                 Which BUSCO genome completeness files should I include in my dataset?
                             </button>
                         </h2>
@@ -730,7 +730,7 @@ Files:
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading46">
-                            <button data-toggle="collapse" data-parent="#accordion" href="#panel46" aria-expanded="false" aria-controls="panel46">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel46" aria-expanded="false" aria-controls="panel46">
                                 Which prefix (decimal or binary) is used for file size display?
                             </button>
                         </h2>
@@ -745,7 +745,7 @@ Files:
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading47">
-                            <button data-toggle="collapse" data-parent="#accordion" href="#panel47" aria-expanded="false" aria-controls="panel47">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel47" aria-expanded="false" aria-controls="panel47">
                                 What does my dataset status mean?
                             </button>
                         </h2>
