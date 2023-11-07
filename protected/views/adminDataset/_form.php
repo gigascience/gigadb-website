@@ -65,7 +65,7 @@ echo $form->hiddenField($model, "image_id");
                           ]
                         ]);
                         ?>
-                        <div class="form-group">
+                        <div class="form-group <?php echo $form->error($model, 'curator_id') ? 'has-error' : '' ?>">
                             <?php echo $form->labelEx($model, 'curator_id', array('class' => 'control-label col-xs-4')); ?>
                             <div class="col-xs-8">
                                 <?php
@@ -73,17 +73,27 @@ echo $form->hiddenField($model, "image_id");
                                 $criteria->condition = 'role=\'admin\' and email like \'%gigasciencejournal.com\'';
                                 ?>
                                 <?php echo $form->dropDownList($model, 'curator_id', CHtml::listData(User::model()->findAll($criteria), 'id', 'email'), array('prompt' => '', 'class' => 'form-control')); ?>
-                                <?php echo $form->error($model, 'curator_id'); ?>
+                                <div role="alert" class="help-block">
+                                  <?php echo $form->error($model, 'curator_id'); ?>
+                                </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <?php echo $form->labelEx($model, 'manuscript_id', array('class' => 'control-label col-xs-4')); ?>
-                            <div class="col-xs-8">
-                                <?php echo $form->textField($model, 'manuscript_id', array('size' => 60, 'maxlength' => 200, 'class' => 'form-control')); ?>
-                                <?php echo $form->error($model, 'manuscript_id'); ?>
-                            </div>
-                        </div>
-                        <div class="form-group">
+
+                        <?php
+
+                        $this->widget('application.components.controls.TextField', [
+                          'form' => $form,
+                          'model' => $model,
+                          'attributeName' => 'manuscript_id',
+                          'labelOptions' => ['class' => 'col-xs-4'],
+                          'inputWrapperOptions' => 'col-xs-8',
+                          'inputOptions' => [
+                            'maxlength' => 200
+                          ],
+                        ]);
+                        ?>
+
+                        <div class="form-group <?php echo $form->error($model, 'upload_status') ? 'has-error' : '' ?>">
                             <?php echo $form->labelEx($model, 'upload_status', array('class' => 'control-label col-xs-4')); ?>
                             <div class="col-xs-8">
                                 <?php echo $form->dropDownList(
@@ -92,7 +102,9 @@ echo $form->hiddenField($model, "image_id");
                                     Dataset::$availableStatusList,
                                     array('class' => 'js-pub form-control', 'disabled' => $model->upload_status == 'Published',)
                                 ); ?>
+                                <div role="alert" class="help-block">
                                 <?php echo $form->error($model, 'upload_status'); ?>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -230,72 +242,69 @@ echo $form->hiddenField($model, "image_id");
                         </div>
                         <fieldset id="metaFieldsSection" class="meta-fields-container" aria-hidden="true">
                             <legend>Image metafields</legend>
-                            <div class="form-group">
-                                <?php echo $form->labelEx($model->image, 'url', array(
-                                    'class' => 'control-label col-xs-4 meta-fields',
-                                )); ?>
-                                <div class="col-xs-8">
-                                    <?php echo $form->textField($model->image, 'url', array(
-                                        'class' => 'meta-fields form-control',
-                                    )); ?>
-                                    <?php echo $form->error($model->image, 'url'); ?>
-                                </div>
-                            </div>
+                            <?php
+                              $this->widget('application.components.controls.TextField', [
+                                'form' => $form,
+                                'model' => $model->image,
+                                'attributeName' => 'url',
+                                'labelOptions' => ['class' => 'col-xs-4'],
+                                'inputWrapperOptions' => 'col-xs-8',
+                                'inputOptions' => [
+                                  'class' => 'meta-fields'
+                                ],
+                              ]);
+                              $this->widget('application.components.controls.TextField', [
+                                'form' => $form,
+                                'model' => $model->image,
+                                'attributeName' => 'source',
+                                'labelOptions' => ['class' => 'col-xs-4'],
+                                'inputWrapperOptions' => 'col-xs-8',
+                                'inputOptions' => [
+                                  'required' => true,
+                                  'class' => 'meta-fields'
+                                ],
+                              ]);
+                              $this->widget('application.components.controls.TextField', [
+                                'form' => $form,
+                                'model' => $model->image,
+                                'attributeName' => 'tag',
+                                'labelOptions' => ['class' => 'col-xs-4'],
+                                'inputWrapperOptions' => 'col-xs-8',
+                                'inputOptions' => [
+                                  'class' => 'meta-fields'
+                                ],
+                              ]);
+                              $this->widget('application.components.controls.TextField', [
+                                'form' => $form,
+                                'model' => $model->image,
+                                'attributeName' => 'license',
+                                'labelOptions' => ['class' => 'col-xs-4'],
+                                'inputWrapperOptions' => 'col-xs-8',
+                                'inputOptions' => [
+                                  'required' => true,
+                                  'class' => 'meta-fields'
+                                ],
+                              ]);
+                              $this->widget('application.components.controls.TextField', [
+                                'form' => $form,
+                                'model' => $model->image,
+                                'attributeName' => 'photographer',
+                                'labelOptions' => ['class' => 'col-xs-4'],
+                                'inputWrapperOptions' => 'col-xs-8',
+                                'inputOptions' => [
+                                  'required' => true,
+                                  'class' => 'meta-fields'
+                                ],
+                              ]);
 
-                            <div class="form-group">
-                                <?php echo $form->labelEx($model->image, 'source', array(
-                                    'class' => 'control-label col-xs-4 meta-fields',
-                                )); ?>
-                                <div class="col-xs-8">
-                                    <?php echo $form->textField($model->image, 'source', array(
-                                        'class' => 'meta-fields form-control',
-                                    )); ?>
-                                    <?php echo $form->error($model->image, 'source'); ?>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <?php echo $form->labelEx($model->image, 'tag', array(
-                                    'class' => 'control-label col-xs-4 meta-fields',
-                                )); ?>
-                                <div class="col-xs-8">
-                                    <?php echo $form->textField($model->image, 'tag', array(
-                                        'class' => 'meta-fields form-control',
-                                    )); ?>
-                                    <?php echo $form->error($model->image, 'tag'); ?>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <?php echo $form->labelEx($model->image, 'license', array(
-                                    'class' => 'control-label col-xs-4 meta-fields',
-                                )); ?>
-                                <div class="col-xs-8">
-                                    <?php echo $form->textField($model->image, 'license', array(
-                                        'class' => 'meta-fields form-control',
-                                    )); ?>
-                                    <?php echo $form->error($model->image, 'license'); ?>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <?php echo $form->labelEx($model->image, 'photographer', array(
-                                    'class' => 'control-label col-xs-4 meta-fields',
-                                )); ?>
-                                <div class="col-xs-8">
-                                    <?php echo $form->textField($model->image, 'photographer', array(
-                                        'class' => 'meta-fields form-control',
-                                    )); ?>
-                                    <?php echo $form->error($model->image, 'photographer'); ?>
-                                </div>
-                            </div>
+                              ?>
                         </fieldset>
                         <div id="metaFieldsLiveRegion" aria-live="polite" class="sr-only"></div>
                     </div>
                     <hr />
                     <div class="form-block-4">
                         <fieldset aria-labelledby="doiLabel">
-                            <div class="form-group row" id="doiFormGroup">
+                            <div class="form-group row <?php echo $form->error($model, 'identifier') ? 'has-error' : ''; ?>" id="doiFormGroup">
                                 <?php echo $form->labelEx($model, 'identifier', array(
                                     'class' => 'control-label col-xs-4',
                                     'id' => 'doiLabel'
@@ -305,6 +314,8 @@ echo $form->hiddenField($model, "image_id");
                                         $model,
                                         'identifier',
                                         array(
+                                            'required' => 'required',
+                                            'aria-required' => 'true',
                                             'size' => 32,
                                             'maxlength' => 32,
                                             'disabled' => $model->upload_status == 'Published',
@@ -324,7 +335,9 @@ echo $form->hiddenField($model, "image_id");
                                             ),
                                         ),
                                     ); ?>
+                                    <div class="help-block" role="alert">
                                     <?php echo $form->error($model, 'identifier'); ?>
+                                  </div>
                                 </div>
                                 <div class="col-xs-2">
                                     <?php
@@ -372,37 +385,54 @@ echo $form->hiddenField($model, "image_id");
 
                         </fieldset>
 
-                        <div class="form-group">
-                            <?php echo $form->labelEx($model, 'ftp_site', array('class' => 'control-label col-xs-4')); ?>
-                            <div class="col-xs-8">
-                                <?php echo $form->textField($model, 'ftp_site', array('class' => 'form-control', 'size' => 60, 'maxlength' => 200, 'disabled' => $model->upload_status == 'Published',)); ?>
-                                <?php echo $form->error($model, 'ftp_site'); ?>
-                            </div>
-                        </div>
+                        <?php
+                          $this->widget('application.components.controls.TextField', [
+                            'form' => $form,
+                            'model' => $model,
+                            'attributeName' => 'ftp_site',
+                            'labelOptions' => ['class' => 'col-xs-4'],
+                            'inputWrapperOptions' => 'col-xs-8',
+                            'inputOptions' => [
+                              'required' => true,
+                              'maxlength' => 200,
+                              'disabled' => $model->upload_status == 'Published'
+                            ],
+                          ]);
 
-                        <div class="form-group">
-                            <?php echo $form->labelEx($model, 'fairnuse', array('class' => 'control-label col-xs-4')); ?>
-                            <div class="col-xs-8">
-                                <?php echo $form->textField($model, 'fairnuse', array('class' => 'form-control date',)); ?>
-                                <?php echo $form->error($model, 'fairnuse'); ?>
-                            </div>
-                        </div>
+                          $this->widget('application.components.controls.TextField', [
+                            'form' => $form,
+                            'model' => $model,
+                            'attributeName' => 'fairnuse',
+                            'labelOptions' => ['class' => 'col-xs-4'],
+                            'inputWrapperOptions' => 'col-xs-8',
+                            'inputOptions' => [
+                              'class' => 'date'
+                            ],
+                          ]);
 
-                        <div class="form-group">
-                            <?php echo $form->labelEx($model, 'publication_date', array('class' => 'control-label col-xs-4')); ?>
-                            <div class="col-xs-8">
-                                <?php echo $form->textField($model, 'publication_date', array('class' => 'form-control date js-date-pub', 'disabled' => $model->upload_status == 'Published',)); ?>
-                                <?php echo $form->error($model, 'publication_date'); ?>
-                            </div>
-                        </div>
+                          $this->widget('application.components.controls.TextField', [
+                            'form' => $form,
+                            'model' => $model,
+                            'attributeName' => 'publication_date',
+                            'labelOptions' => ['class' => 'col-xs-4'],
+                            'inputWrapperOptions' => 'col-xs-8',
+                            'inputOptions' => [
+                              'class' => 'date js-date-pub',
+                              'disabled' => $model->upload_status == 'Published'
+                            ],
+                          ]);
 
-                        <div class="form-group">
-                            <?php echo $form->labelEx($model, 'modification_date', array('class' => 'control-label col-xs-4')); ?>
-                            <div class="col-xs-8">
-                                <?php echo $form->textField($model, 'modification_date', array('class' => 'form-control date',)); ?>
-                                <?php echo $form->error($model, 'modification_date'); ?>
-                            </div>
-                        </div>
+                          $this->widget('application.components.controls.TextField', [
+                            'form' => $form,
+                            'model' => $model,
+                            'attributeName' => 'modification_date',
+                            'labelOptions' => ['class' => 'col-xs-4'],
+                            'inputWrapperOptions' => 'col-xs-8',
+                            'inputOptions' => [
+                              'class' => 'date'
+                            ],
+                          ]);
+                        ?>
                     </div>
 
                 </div>
@@ -414,28 +444,44 @@ echo $form->hiddenField($model, "image_id");
             <div class="row form-block-5">
 
                 <div class="col-xs-12">
-                    <div class="form-group">
-                        <?php echo $form->labelEx($model, 'dataset_size', array('label' => 'Dataset Size in Bytes', 'class' => 'control-label col-xs-4')); ?>
-                        <div class='col-xs-6'>
-                            <?php echo $form->textField($model, 'dataset_size', array('class' => 'form-control', 'size' => 60, 'maxlength' => 300,)); ?>
-                            <?php echo $form->error($model, 'dataset_size'); ?>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <?php echo $form->labelEx($model, 'title', array('class' => 'control-label col-xs-4')); ?>
-                        <div class='col-xs-6'>
-                            <?php echo $form->textField($model, 'title', array('class' => 'form-control', 'size' => 60, 'maxlength' => 300,)); ?>
-                            <?php echo $form->error($model, 'title'); ?>
-                        </div>
-                    </div>
 
-                    <div class="form-group">
-                        <?php echo $form->labelEx($model, 'description', array('class' => 'control-label col-xs-4')); ?>
-                        <div class='col-xs-6'>
-                            <?php echo $form->textArea($model, 'description', array('class' => 'form-control', 'rows' => 8, 'cols' => 50,)); ?>
-                            <?php echo $form->error($model, 'description'); ?>
-                        </div>
-                    </div>
+                <?php
+                  $this->widget('application.components.controls.TextField', [
+                    'form' => $form,
+                    'model' => $model,
+                    'attributeName' => 'dataset_size',
+                    'labelOptions' => ['class' => 'col-xs-4'],
+                    'inputWrapperOptions' => 'col-xs-6',
+                    'inputOptions' => [
+                      'required' => true,
+                      'size' => 60,
+                      'maxlength' => 300
+                    ],
+                  ]);
+                  $this->widget('application.components.controls.TextField', [
+                    'form' => $form,
+                    'model' => $model,
+                    'attributeName' => 'title',
+                    'labelOptions' => ['class' => 'col-xs-4'],
+                    'inputWrapperOptions' => 'col-xs-6',
+                    'inputOptions' => [
+                      'required' => true,
+                      'size' => 60,
+                      'maxlength' => 300
+                    ],
+                  ]);
+                  $this->widget('application.components.controls.TextArea', [
+                    'form' => $form,
+                    'model' => $model,
+                    'attributeName' => 'description',
+                    'labelOptions' => ['class' => 'col-xs-4'],
+                    'inputWrapperOptions' => 'col-xs-6',
+                    'inputOptions' => [
+                        'rows' => 8,
+                        'cols' => 50
+                    ],
+                  ]);
+                ?>
 
                     <div class="form-group">
                         <?php echo CHtml::label('Keywords', 'keywords', array('class' => 'control-label col-xs-4')); ?>
