@@ -186,6 +186,9 @@ class CuratorSteps extends \Codeception\Actor
             case "file metadata":
                 $this->I->updateInDatabase('file', ['description' => 'description from automated tests'],['id' => 95366]);
                 break;
+            case "author metadata":
+                $this->I->haveInDatabase('dataset_author', ['dataset_id' => $dataset_id,'author_id' => 3325, 'rank' => 1]);
+                break;
             default:
                 throw new \PHPUnit\Framework\IncompleteTestError("Step `I make an update to the non-public dataset :arg1's :arg2 in the admin pages` is not defined");
         }
@@ -223,6 +226,9 @@ class CuratorSteps extends \Codeception\Actor
                 break;
             case "file metadata":
                 $this->I->canSee("description from automated tests");
+                break;
+            case "author metadata":
+                $this->I->canSee("Zhang");
                 break;
             default:
                 throw new \PHPUnit\Framework\IncompleteTestError("Step `I can see the changes to the :arg1 displayed` is not defined");
