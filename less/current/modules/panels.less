@@ -11,11 +11,11 @@
 .panel-default > .panel-heading + .panel-collapse > .panel-body {
   border-top-color: @color-light-gray;
 }
-.panel-title > .small, .panel-title > .small > a, .panel-title > a, .panel-title > small, .panel-title > small > a {
+.panel-title > .small, .panel-title > .small > button, .panel-title > button, .panel-title > small, .panel-title > small > button {
   color: @color-warm-black;
   text-decoration: none;
 }
-.panel-title > :is(a,button) {
+.panel-title > button {
   padding: 0px 20px 0px 40px;
   display: block;
   height: 44px;
@@ -25,7 +25,7 @@
   width: 100%;
   text-align: left;
 }
-.panel-title > :is(a,button)::before {
+.panel-title > button::before {
   content: "\f0fe";
   font-family: FontAwesome;
   font-size: 16px;
@@ -33,7 +33,7 @@
   margin-left: -20px;
   margin-right: 3px;
 }
-.panel-title > :is(a,button)[aria-expanded="true"]::before {
+.panel-title > button[aria-expanded="true"]::before {
   content: "\f146";
   font-family: FontAwesome;
 }
