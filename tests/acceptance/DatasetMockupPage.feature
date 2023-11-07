@@ -1,4 +1,4 @@
-@issue-1528 @wip
+@issue-1528
 Feature: A curator opens the mockup page
   As a curator
   I want to see my changes appear in the pre-publication view of the dataset page
@@ -8,6 +8,7 @@ Feature: A curator opens the mockup page
     Given I have signed in as admin
     And I am on "/dataset/200070/token/ImP3Bbu7ytRSfYFh"
 
+
   Scenario: Dataset metadata changes
     Given I make an update to the non-public dataset "200070"'s "dataset metadata" in the admin pages
     When I am on "/adminDataset/update/id/668"
@@ -15,8 +16,11 @@ Feature: A curator opens the mockup page
     Then I am on "/dataset/200070/token/ImP3Bbu7ytRSfYFh"
     And I can see the changes to the "dataset metadata" displayed
 
+  @wip
   Scenario: Sample metadata changes
-    Given I make an update to the non-public dataset "200070"'s "sample metadata" in the admin pages
+    Given sample "154" is associated with dataset "2000070"
+    And I am on "/dataset/200070/token/ImP3Bbu7ytRSfYFh"
+    And I make an update to the non-public dataset "200070"'s "sample metadata" in the admin pages
     When I am on "/adminDataset/update/id/668"
     And I follow "Open Private URL"
     Then I am on "/dataset/200070/token/ImP3Bbu7ytRSfYFh"

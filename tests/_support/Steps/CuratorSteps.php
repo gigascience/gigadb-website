@@ -180,9 +180,21 @@ class CuratorSteps extends \Codeception\Actor
             case "dataset metadata":
                 $this->I->updateInDatabase('dataset', ['description' => "lorem ipsum from automated tests"], ['id' => $dataset_id]);
                 break;
+            case "sample metadata":
+                $this->I->updateInDatabase('sample_attribute', ['value' => 'value from automated tests'],['sample_id' => 154,'attribute_id' => 376 ]);
+                break;
             default:
                 throw new \PHPUnit\Framework\IncompleteTestError("Step `I make an update to the non-public dataset :arg1's :arg2 in the admin pages` is not defined");
         }
+    }
+
+    /**
+     * @Given sample :sample_id is associated with dataset :doi
+     */
+    public function sampleIsAssociatedWithDataset($sample_id, $doi)
+    {
+        $dataset_id = $this->I->grabFromDatabase('dataset', 'id', array('identifier' => '200070'));
+        $this->I->haveInDatabase('dataset_sample', ['dataset_id' => $dataset_id,'sample_id' => $sample_id ]);
     }
 
     /**
@@ -193,6 +205,10 @@ class CuratorSteps extends \Codeception\Actor
         switch ($changeType) {
             case "dataset metadata":
                 $this->I->canSee("lorem ipsum from automated tests");
+                break;
+            case "sample metadata":
+                $this->I->cantSee("1.32");
+                $this->I->canSee("value from automated tests");
                 break;
             default:
                 throw new \PHPUnit\Framework\IncompleteTestError("Step `I can see the changes to the :arg1 displayed` is not defined");
