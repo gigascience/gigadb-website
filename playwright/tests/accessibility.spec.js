@@ -15,7 +15,7 @@ const runAccessibilityTests = (paths, storageStatePath) => {
       path = pathEntry;
     } else {
       path = pathEntry.path;
-      disabledElements = pathEntry.disabledElements || [];
+      disabledElements = TAG.SKIP_DISABLED_ELEMENTS ? (pathEntry.disabledElements || []) : [];
       tags = pathEntry.tags || [];
     }
 

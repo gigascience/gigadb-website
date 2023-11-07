@@ -1,8 +1,9 @@
 // Set tags to true / false to run different subsets of tests
 const TAG = {
-  // run all tests, regardless of any other tags
+  // run ALL tests, regardless of any other tags
   RUN_ALL: false,
   //
+  // include or exclude tests for specific browsers
   CHROMIUM: true,
   FIREFOX: true,
   WEBKIT: true,
@@ -15,6 +16,8 @@ const TAG = {
   // include or exclude specific tags
   DEFAULT: false, // should tag-less tests run?
   1553: true,
+  //
+  SKIP_DISABLED_ELEMENTS: true,
 }
 
 module.exports = TAG
