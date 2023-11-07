@@ -20,7 +20,10 @@ const PUBLIC_PATHS = [
   '/site/guideepigenomic',
   '/site/guidemetagenomic',
   '/site/guidesoftware',
-  '/site/faq',
+  {
+    path: '/site/faq',
+    tags: [1556]
+  },
   '/site/about',
   {
     path: '/site/team',

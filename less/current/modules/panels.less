@@ -15,13 +15,17 @@
   color: @color-warm-black;
   text-decoration: none;
 }
-.panel-title > a {
+.panel-title > :is(a,button) {
   padding: 0px 20px 0px 40px;
   display: block;
   height: 44px;
   line-height: 44px;
+  border: none;
+  background-color: transparent;
+  width: 100%;
+  text-align: left;
 }
-.panel-title > a::before {
+.panel-title > :is(a,button)::before {
   content: "\f0fe";
   font-family: FontAwesome;
   font-size: 16px;
@@ -29,7 +33,7 @@
   margin-left: -20px;
   margin-right: 3px;
 }
-.panel-title > a[aria-expanded="true"]::before {
+.panel-title > :is(a,button)[aria-expanded="true"]::before {
   content: "\f146";
   font-family: FontAwesome;
 }
