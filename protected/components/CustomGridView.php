@@ -72,26 +72,17 @@ class CustomGridView extends CGridView
       )
     );
 
+    if (!isset($this->afterAjaxUpdate)) {
+      $this->afterAjaxUpdate = 'afterAjaxUpdate';
+    }
+
+
     $this->pagerCssClass = 'pagination-container';
 
+    $jsFile = Yii::getPathOfAlias('application.js.custom-grid-view') . '.js';
+    $jsUrl = Yii::app()->assetManager->publish($jsFile);
+    Yii::app()->clientScript->registerScriptFile($jsUrl, CClientScript::POS_END);
+
     parent::init();
-
-    Yii::app()->clientScript->registerScript('pagination-adjustment', '
-          if (typeof jQuery !== "undefined") {
-            function adjustPagination() {
-              $(".pagination > li > a").removeClass("first-visible");
-              $(".pagination > li > a").removeClass("last-visible");
-              $(".pagination > li:not(.hidden)").first().children("a").addClass("first-visible");
-              $(".pagination > li:not(.hidden)").last().children("a").addClass("last-visible");
-            }
-
-            adjustPagination();
-
-            // run every time pagination triggers
-            $(document).ajaxComplete(function() {
-              adjustPagination();
-            });
-          }
-        ', CClientScript::POS_END);
   }
 }
