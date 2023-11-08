@@ -90,47 +90,46 @@ function setLastFocused(grid, name) {
   $(document).data(`${grid.attr('id')}-lastFocused`, name);
 }
 
-function setupGridView()
-{
+function setupGridView() {
+  // handle filtering focus
   $(document).on("change", ".grid-view tr.filters input", function() {
     const grid = $(this).closest('.grid-view');
-
     setLastFocused(grid, this.name);
+  });
+
+  // handle sorting focus
+  $(document).on("click", ".grid-view th a.sort-link", function() {
+    const grid = $(this).closest('.grid-view');
+    const headerId = $(this).closest('th').attr('id');
+    setLastFocused(grid, headerId);
   });
 }
 
-function afterAjaxUpdate(id)
-{
+function afterAjaxUpdate(id) {
   const grid = $(`#${id}`);
-  const lastFocused = getLastFocused(grid)
+  const lastFocused = getLastFocused(grid);
 
-  if (!lastFocused) {
-    return
+  if (lastFocused) {
+    const focusedElement = $(`[name="${lastFocused}"]`, grid).length ? $(`[name="${lastFocused}"]`, grid) : $(`#${lastFocused} a.sort-link`, grid);
+
+    if (focusedElement.length) {
+      if (focusedElement.is('input[type="text"]')) {
+        focusedElement.cursorEnd();
+      } else {
+        focusedElement.focus();
+      }
+    }
   }
 
-  const focusedElement = $(`[name="${lastFocused}"]`, grid);
-
-  if (!focusedElement) {
-    return
-  }
-
-  if (focusedElement.get(0).tagName == 'INPUT' && focusedElement.attr('type') == 'text') {
-    focusedElement.cursorEnd();
-  } else {
-    focusedElement.focus();
-  }
-
-  setupGridView(grid);
+  setupGridView();
 }
 
-jQuery.fn.cursorEnd = function()
-{
-  return this.each(function(){
-    if(this.setSelectionRange) {
+jQuery.fn.cursorEnd = function() {
+  return this.each(function() {
+    if (this.setSelectionRange) {
       this.focus();
       this.setSelectionRange(this.value.length, this.value.length);
-    }
-    else if (this.createTextRange) {
+    } else if (this.createTextRange) {
       const range = this.createTextRange();
       range.collapse(true);
       range.moveEnd('character', this.value.length);
@@ -139,7 +138,7 @@ jQuery.fn.cursorEnd = function()
     }
     return false;
   });
-}
+};
 
 </script>
 
