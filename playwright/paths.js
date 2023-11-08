@@ -54,104 +54,102 @@ const ADMIN_PATHS = [
   },
   {
     path: 'adminDatasetAuthor/admin',
-    tags: []
+    tags: [1564]
   },
   {
     path: 'adminDatasetSample/admin',
-    disabledElements: ['table input'],
-    tags: [1553]
+    tags: [1553, 1564]
   },
   {
     path: 'adminFile/admin',
-    tags: []
+    tags: [1564]
   },
   {
     path: 'adminDatasetProject/admin',
-    tags: []
+    tags: [1564]
   },
   {
     path: 'adminLink/admin',
-    tags: []
+    tags: [1564]
   },
   {
     path: 'adminRelation/admin',
-    tags: []
+    tags: [1564]
   },
   {
     path: 'datasetFunder/admin',
-    tags: []
+    tags: [1564]
   },
   {
     path: 'adminManuscript/admin',
-    tags: []
+    tags: [1564]
   },
   {
     path: 'adminAuthor/admin',
-    disabledElements: ['table input'],
-    tags: [1553]
+    tags: [1553, 1564]
   },
   {
     path: 'adminSample/admin',
-    tags: []
+    tags: [1564]
   },
   {
     path: 'adminSpecies/admin',
-    tags: []
+    tags: [1564]
   },
   {
     path: 'adminProject/admin',
-    tags: []
+    tags: [1564]
   },
   {
     path: 'adminExternalLink/admin',
-    tags: []
+    tags: [1564]
   },
   {
     path: 'adminLinkPrefix/admin',
-    tags: []
+    tags: [1564]
   },
   {
     path: 'funder/admin',
-    tags: []
+    tags: [1564]
   },
   {
     path: 'adminDatasetType/admin',
-    tags: []
+    tags: [1564]
   },
   {
     path: 'adminFileType/admin',
-    tags: []
+    tags: [1564]
   },
   {
     path: 'adminFileFormat/admin',
-    tags: []
+    tags: [1564]
   },
   {
     path: 'news/admin',
-    tags: []
+    tags: [1564]
   },
   {
     path: 'rssMessage/admin',
-    tags: []
+    tags: [1564]
   },
 
   {
     path: 'adminPublisher/admin',
-    tags: []
+    tags: [1564]
   },
   {
     path: 'datasetLog/admin',
-    tags: []
+    tags: [1564]
   },
   {
     path: 'attribute/admin',
-    disabledElements: ['table input', 'td'],
-    tags: [1553]
+    disabledElements: ['td'],
+    tags: [1553, 1564]
   },
   {
     path: 'user/admin',
-    disabledElements: ['table input', 'td'],
-    tags: [1553]
+    disabledElements: ['td'],
+    tags: [1553, 1564]
   },
   {
     path: 'adminDatasetAuthor/create',
@@ -260,8 +258,7 @@ const ADMIN_PATHS = [
   },
   {
     path: 'adminDataset/admin',
-    disabledElements: ['table input'],
-    tags: [1553]
+    tags: [1553, 1564]
   },
   {
     path: 'adminDataset/create',

@@ -17,7 +17,8 @@ const TAG = {
   DEFAULT: false, // should tag-less tests run?
   1553: false,
   1556: false,
-  1558: true,
+  1558: false,
+  1564: true,
   //
   SKIP_DISABLED_ELEMENTS: true,
 }
