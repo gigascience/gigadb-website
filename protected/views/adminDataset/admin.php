@@ -76,8 +76,76 @@ $('.search-form form').submit(function(){
 		Column headers with links are sortable. Cells with a text input are used for filtering.
 	</p>
 
+  <script>
+  // Keep focus on filtering, source: https://www.yiiframework.com/wiki/309/cgridview-keep-focus-on-the-control-after-filtering
+$(function(){
+  setupGridView();
+});
+
+function getLastFocused(grid) {
+  return $(document).data(`${grid.attr('id')}-lastFocused`);
+}
+
+function setLastFocused(grid, name) {
+  $(document).data(`${grid.attr('id')}-lastFocused`, name);
+}
+
+function setupGridView()
+{
+  $(document).on("change", ".grid-view tr.filters input", function() {
+    const grid = $(this).closest('.grid-view');
+
+    setLastFocused(grid, this.name);
+  });
+}
+
+function afterAjaxUpdate(id)
+{
+  const grid = $(`#${id}`);
+  const lastFocused = getLastFocused(grid)
+
+  if (!lastFocused) {
+    return
+  }
+
+  const focusedElement = $(`[name="${lastFocused}"]`, grid);
+
+  if (!focusedElement) {
+    return
+  }
+
+  if (focusedElement.get(0).tagName == 'INPUT' && focusedElement.attr('type') == 'text') {
+    focusedElement.cursorEnd();
+  } else {
+    focusedElement.focus();
+  }
+
+  setupGridView(grid);
+}
+
+jQuery.fn.cursorEnd = function()
+{
+  return this.each(function(){
+    if(this.setSelectionRange) {
+      this.focus();
+      this.setSelectionRange(this.value.length, this.value.length);
+    }
+    else if (this.createTextRange) {
+      const range = this.createTextRange();
+      range.collapse(true);
+      range.moveEnd('character', this.value.length);
+      range.moveStart('character', this.value.length);
+      range.select();
+    }
+    return false;
+  });
+}
+
+</script>
+
 	<?php $this->widget('zii.widgets.grid.CGridView', array(
 		'id'=>'dataset-grid',
+    'afterAjaxUpdate' => 'afterAjaxUpdate',
 		'dataProvider'=>$dataProvider,
 		'itemsCssClass'=>"table table-bordered table-fixed dataset-table",
 		'rowCssClassExpression' => '"dataset-".$data["identifier"]',
