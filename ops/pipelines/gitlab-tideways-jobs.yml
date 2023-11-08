@@ -46,7 +46,9 @@ TidewaysBuildLive:
   stage: live build
   variables:
     GIGADB_ENV: "live"
-  extends: .pb_tideways
+  extends:
+    - .tag_only
+    - .pb_tideways
   tags:
     - $GITLAB_USER_LOGIN
   needs: ["build_live"]
@@ -116,7 +118,9 @@ TidewaysDeployLive:
   stage: live deploy
   variables:
     GIGADB_ENV: "live"
-  extends: .deploy_tideways
+  extends:
+    - .tag_only
+    - .deploy_tideways
   tags:
     - $GITLAB_USER_LOGIN
   needs: ["ld_gigadb","TidewaysBuildLive"]
