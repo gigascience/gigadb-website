@@ -77,7 +77,7 @@ $('.search-form form').submit(function(){
 	</p>
 
   <script>
-  // Keep focus on filtering, source: https://www.yiiframework.com/wiki/309/cgridview-keep-focus-on-the-control-after-filtering
+  // Adapted from source: https://www.yiiframework.com/wiki/309/cgridview-keep-focus-on-the-control-after-filtering
 $(function(){
   setupGridView();
 });
@@ -91,22 +91,41 @@ function setLastFocused(grid, name) {
 }
 
 function setupGridView() {
-  // handle filtering focus
+  // setup filtering focus
   $(document).on("change", ".grid-view tr.filters input", function() {
     const grid = $(this).closest('.grid-view');
+
     setLastFocused(grid, this.name);
   });
 
-  // handle sorting focus
+  // setup sorting focus
   $(document).on("click", ".grid-view th a.sort-link", function() {
     const grid = $(this).closest('.grid-view');
     const headerId = $(this).closest('th').attr('id');
+
     setLastFocused(grid, headerId);
   });
 }
 
-function afterAjaxUpdate(id) {
-  const grid = $(`#${id}`);
+function handleSorting(grid) {
+  if (!grid) {
+    return
+  }
+
+  $(grid).find('th').attr('aria-sort', 'none');
+  const sortedColumn = $(grid).find('.sort-link.asc, .sort-link.desc');
+
+  if (sortedColumn.length) {
+    const sortOrder = sortedColumn.hasClass('asc') ? 'ascending' : 'descending';
+    sortedColumn.closest('th').attr('aria-sort', sortOrder);
+  }
+}
+
+function handleFocus(grid) {
+  if (!grid) {
+    return
+  }
+
   const lastFocused = getLastFocused(grid);
 
   if (lastFocused) {
@@ -120,7 +139,13 @@ function afterAjaxUpdate(id) {
       }
     }
   }
+}
 
+function afterAjaxUpdate(id) {
+  const grid = $(`#${id}`);
+
+  handleSorting(grid);
+  handleFocus(grid);
   setupGridView();
 }
 
