@@ -190,6 +190,26 @@ table.dataset-view-table > tbody > tr {
   }
 }
 
+.dataset-table {
+  th {
+    .sort-link.desc {
+      &:after {
+        content: "▼";
+      }
+    }
+    .sort-link.asc {
+      &:after {
+        content: "▲";
+      }
+    }
+    .sort-link:not(.asc):not(.desc) {
+      &:after {
+        content: "♢";
+      }
+    }
+  }
+}
+
 .dataset-table-wide-container {
   overflow-x: auto;
   .dataset-table-wide {
