@@ -105,6 +105,15 @@ function setupGridView() {
 
     setLastFocused(grid, headerId);
   });
+
+    // set filter input labels
+  $('.grid-view thead tr th a.sort-link').each(function() {
+    const $input = $('.grid-view tr.filters input');
+
+    if ($input.length) {
+      $input.attr('aria-label', 'filter');
+    }
+  });
 }
 
 function handleSorting(grid) {
@@ -165,9 +174,10 @@ jQuery.fn.cursorEnd = function() {
   });
 };
 
+
 </script>
 
-	<?php $this->widget('zii.widgets.grid.CGridView', array(
+	<?php $this->widget('CustomGridView', array(
 		'id'=>'dataset-grid',
     'afterAjaxUpdate' => 'afterAjaxUpdate',
 		'dataProvider'=>$dataProvider,
