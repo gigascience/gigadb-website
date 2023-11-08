@@ -36,6 +36,7 @@ class DatasetPageAssembly extends yii\base\Component
     private $_dataset;
     private $_searchForm;
     private $_fileUploadService;
+    private $_skip_cache;
 
 
     public function __construct(Dataset $dataset, CApplication $app, FileUploadService $srv, $config = [])
@@ -44,6 +45,8 @@ class DatasetPageAssembly extends yii\base\Component
         $this->_app = $app;
         $this->_fileUploadService = $srv;
         $this->_cacheDependency = new CDbCacheDependency();
+        $this->_skip_cache = (bool)$config['skip_cache'];
+
     }
 
     /**
@@ -52,11 +55,12 @@ class DatasetPageAssembly extends yii\base\Component
      * @param Dataset $d Dataset instance to pass to the instanciated Page assembly
      * @param CApplication $app Yii web application from which to access cache and database
      * @param FileUploadService $srv GigaDB client to File Upload Wizard API
+     * @param ?array $config Additional options to configure teh assembly (only 'skip_cache' for now)
      * @return DatasetPageAssembly  a new instance of DatasetAssembly
      */
-    public static function assemble(Dataset $d, CApplication $app, FileUploadService $srv): DatasetPageAssembly
+    public static function assemble(Dataset $d, CApplication $app, FileUploadService $srv, array $config = null): DatasetPageAssembly
     {
-        return new DatasetPageAssembly($d, $app, $srv);
+        return new DatasetPageAssembly($d, $app, $srv, $config);
     }
 
     /**
@@ -75,16 +79,26 @@ class DatasetPageAssembly extends yii\base\Component
      */
     public function setDatasetSubmitter(): DatasetPageAssembly
     {
-        $this->_submitter = $datasetSubmitter = new AuthorisedDatasetSubmitter(
-            $this->_app->user,
-            new CachedDatasetSubmitter(
-                $this->_app->cache,
-                $this->_cacheDependency,
-                new StoredDatasetSubmitter(
+        switch($this->_skip_cache) {
+            case true:
+                $dataSource = new StoredDatasetSubmitter(
                     $this->_dataset->id,
                     $this->_app->db
-                )
-            )
+                );
+                break;
+            default:
+                $dataSource = new CachedDatasetSubmitter(
+                    $this->_app->cache,
+                    $this->_cacheDependency,
+                    new StoredDatasetSubmitter(
+                        $this->_dataset->id,
+                        $this->_app->db
+                    )
+                );
+        }
+        $this->_submitter = $datasetSubmitter = new AuthorisedDatasetSubmitter(
+            $this->_app->user,
+            $dataSource
         );
         return $this;
     }
@@ -105,17 +119,28 @@ class DatasetPageAssembly extends yii\base\Component
      */
     public function setDatasetAccessions(): DatasetPageAssembly
     {
-        $this->_accessions = new FormattedDatasetAccessions(
-            new AuthorisedDatasetAccessions(
-                $this->_app->user,
-                new CachedDatasetAccessions(
+        switch($this->_skip_cache) {
+            case true:
+                $dataSource = new StoredDatasetAccessions(
+                    $this->_dataset->id,
+                    $this->_app->db
+                );
+                break;
+            default:
+                $dataSource = new CachedDatasetAccessions(
                     $this->_app->cache,
                     $this->_cacheDependency,
                     new StoredDatasetAccessions(
                         $this->_dataset->id,
                         $this->_app->db
                     )
-                )
+                );
+        }
+
+        $this->_accessions = new FormattedDatasetAccessions(
+            new AuthorisedDatasetAccessions(
+                $this->_app->user,
+                $dataSource
             ),
             'target="_blank"'
         );
@@ -140,15 +165,26 @@ class DatasetPageAssembly extends yii\base\Component
      */
     public function setDatasetMainSection(): DatasetPageAssembly
     {
-        $this->_mainSection = new FormattedDatasetMainSection(
-            new CachedDatasetMainSection(
-                $this->_app->cache,
-                $this->_cacheDependency,
-                new StoredDatasetMainSection(
+        switch($this->_skip_cache) {
+            case true:
+                $dataSource = new StoredDatasetMainSection(
                     $this->_dataset->id,
                     $this->_app->db
-                )
-            )
+                );
+                break;
+            default:
+                $dataSource = new CachedDatasetMainSection(
+                    $this->_app->cache,
+                    $this->_cacheDependency,
+                    new StoredDatasetMainSection(
+                        $this->_dataset->id,
+                        $this->_app->db
+                    )
+                );
+        }
+
+        $this->_mainSection = new FormattedDatasetMainSection(
+            $dataSource
         );
         return $this;
     }
@@ -169,17 +205,29 @@ class DatasetPageAssembly extends yii\base\Component
      */
     public function setDatasetConnections(): DatasetPageAssembly
     {
-        $this->_connections = new FormattedDatasetConnections(
-            $this->_app->getController(),
-            new CachedDatasetConnections(
-                $this->_app->getCache(),
-                $this->_cacheDependency,
-                new StoredDatasetConnections(
+        switch($this->_skip_cache) {
+            case true:
+                $dataSource = new StoredDatasetConnections(
                     $this->_dataset->id,
                     $this->_app->getDb(),
                     new \GuzzleHttp\Client()
-                )
-            )
+                );
+                break;
+            default:
+                $dataSource = new CachedDatasetConnections(
+                    $this->_app->getCache(),
+                    $this->_cacheDependency,
+                    new StoredDatasetConnections(
+                        $this->_dataset->id,
+                        $this->_app->getDb(),
+                        new \GuzzleHttp\Client()
+                    )
+                );
+        }
+
+        $this->_connections = new FormattedDatasetConnections(
+            $this->_app->getController(),
+            $dataSource
         );
         return $this;
     }
@@ -200,15 +248,26 @@ class DatasetPageAssembly extends yii\base\Component
      */
     public function setDatasetExternalLinks(): DatasetPageAssembly
     {
-        $this->_externalLinks = new FormattedDatasetExternalLinks(
-            new CachedDatasetExternalLinks(
-                $this->_app->cache,
-                $this->_cacheDependency,
-                new StoredDatasetExternalLinks(
+        switch($this->_skip_cache) {
+            case true:
+                $dataSource = new StoredDatasetExternalLinks(
                     $this->_dataset->id,
                     $this->_app->db
-                )
-            )
+                );
+                break;
+            default:
+                $dataSource = new CachedDatasetExternalLinks(
+                    $this->_app->cache,
+                    $this->_cacheDependency,
+                    new StoredDatasetExternalLinks(
+                        $this->_dataset->id,
+                        $this->_app->db
+                    )
+                );
+        }
+
+        $this->_externalLinks = new FormattedDatasetExternalLinks(
+            $dataSource
         );
         return $this;
     }
@@ -250,13 +309,21 @@ class DatasetPageAssembly extends yii\base\Component
                 Yii::log("setDatasetFiles second parameter is incorrect. Expects 'stored' or 'resourced', got '$source'", "error");
         }
 
+        switch($this->_skip_cache) {
+            case true:
+                $dataSource = $datasetFiles;
+                break;
+            default:
+                $dataSource = new CachedDatasetFiles(
+                    $this->_app->cache,
+                    $this->_cacheDependency,
+                    $datasetFiles
+                );
+        }
+
         $this->_files = new FormattedDatasetFiles(
             $pageSize,
-            new CachedDatasetFiles(
-                $this->_app->cache,
-                $this->_cacheDependency,
-                $datasetFiles
-            )
+            $dataSource
         );
         return $this;
     }
@@ -278,16 +345,27 @@ class DatasetPageAssembly extends yii\base\Component
      */
     public function setDatasetSamples(int $pageSize): DatasetPageAssembly
     {
-        $this->_samples = new FormattedDatasetSamples(
-            $pageSize,
-            new CachedDatasetSamples(
-                $this->_app->cache,
-                $this->_cacheDependency,
-                new StoredDatasetSamples(
+        switch($this->_skip_cache) {
+            case true:
+                $dataSource = new StoredDatasetSamples(
                     $this->_dataset->id,
                     $this->_app->db
-                )
-            )
+                );
+                break;
+            default:
+                $dataSource = new CachedDatasetSamples(
+                    $this->_app->cache,
+                    $this->_cacheDependency,
+                    new StoredDatasetSamples(
+                        $this->_dataset->id,
+                        $this->_app->db
+                    )
+                );
+        }
+
+        $this->_samples = new FormattedDatasetSamples(
+            $pageSize,
+            $dataSource
         );
         return $this;
     }

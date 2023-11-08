@@ -221,8 +221,8 @@ class CuratorSteps extends \Codeception\Actor
                 $this->I->canSee("lorem ipsum from automated tests");
                 break;
             case "sample metadata":
-                $this->I->cantSee("1.32");
-                $this->I->canSee("value from automated tests");
+                $this->I->cantSeeInSource("1.32");
+                $this->I->canSeeInSource("value from automated tests");
                 break;
             case "file metadata":
                 $this->I->canSee("description from automated tests");
