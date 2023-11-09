@@ -159,11 +159,11 @@
 
 <!-- Modal -->
 <div id="author_merge" class="modal fade">
-	<div class="modal-dialog" role="document">
+	<div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="authorMergeDialogTitle">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h4 class="modal-title">Confirm merging these two authors?</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-label="close dialog">&times;</button>
+				<h4 class="modal-title" id="authorMergeDialogTitle">Confirm merging these two authors?</h4>
 			</div>
 			<div class="modal-body">
 
@@ -213,13 +213,13 @@
 						</tbody>
 					</table>
 			</div>
-			<div class="modal-footer">
-				<a href="#" class="btn btn-active" title="link" onclick="merge_authors();">Yes, merge authors</a>
+			<div class="modal-footer btns-row btns-row-end">
+				<button type="button" class="btn background-btn" title="link" onclick="merge_authors();">Yes, merge authors</button>
 				<?php echo CHtml::link('No, abort and clear session', array(
 						'adminAuthor/prepareAuthorMerge',
 						'origin_author_id' => $origin_author->id, 'abort' => 'yes'
-					), array('class' => 'btn btn-active')); ?>
-				<a type="button" class="btn close" data-dismiss="modal" aria-hidden="true">Close</a>
+					), array('class' => 'btn background-btn-o')); ?>
+				<button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Close</button>
 			</div>
 		</div>
 	</div>
@@ -325,6 +325,7 @@
 
 <script>
 	$('#author_merge').on('shown.bs.modal', function() {
+    $('#myInput').focus()
 		makeRequest();
 	});
 
