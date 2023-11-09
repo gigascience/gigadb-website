@@ -159,7 +159,7 @@
 
 <!-- Modal -->
 <div id="author_merge" class="modal fade">
-	<div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="authorMergeDialogTitle">
+	<div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="authorMergeDialogTitle" tabindex="-1" id="authorMergeDialog">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="close dialog">&times;</button>
@@ -219,7 +219,7 @@
 						'adminAuthor/prepareAuthorMerge',
 						'origin_author_id' => $origin_author->id, 'abort' => 'yes'
 					), array('class' => 'btn background-btn-o')); ?>
-				<button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Close</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 			</div>
 		</div>
 	</div>
@@ -237,7 +237,14 @@
 			echo "want_dialog = 'author_merge';";
 		}
 		?>
+
 		var author_line = document.getElementById(author_id);
+
+    // Prevent bug where clicking twice the same row errors out
+    if (!author_line) {
+      return false;
+    }
+
 		var author_surname = author_line.getAttribute("data-author-surname");
 
 		switch (want_dialog) {
@@ -325,11 +332,42 @@
 
 <script>
 	$('#author_merge').on('shown.bs.modal', function() {
-    $('#myInput').focus()
+    lastFocusedElement = document.activeElement;
+
+    $('#authorMergeDialog').focus();
+    trapFocus($(this));
 		makeRequest();
 	});
 
 	$('#author_merge').on('hidden', function() {
 		$("#merge_status").removeAttr("class").empty();
+    $(this).off('keydown');
+    if (lastFocusedElement) {
+        lastFocusedElement.focus();
+    }
 	});
+
+  function trapFocus(element) {
+    const focusableElements = element.find('a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, object, embed, [tabindex="0"], [contenteditable]').filter(':visible');
+    const firstFocusableElement = focusableElements[0];
+    const lastFocusableElement = focusableElements[focusableElements.length - 1];
+
+    element.on('keydown', function(e) {
+        if (e.key === 'Tab' || e.code === 'Tab') {
+            if ( e.shiftKey ) {
+                // focus prev
+                if (document.activeElement === firstFocusableElement) {
+                    lastFocusableElement.focus();
+                    e.preventDefault();
+                }
+            } else {
+                // focus next
+                if (document.activeElement === lastFocusableElement) {
+                    firstFocusableElement.focus();
+                    e.preventDefault();
+                }
+            }
+        }
+    });
+}
 </script>
