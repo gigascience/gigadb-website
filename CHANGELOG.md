@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1566: Parse adminDataset table title content as sanitized html
 - Feat #1564: Improve accessibility of sortable and filterable tables
 - Feat #1558: Update adminDataset form with custom field components
 - Feat #1556: Refactor FAQ page to use accordion pattern
