@@ -207,7 +207,6 @@ COPY ./sql /var/www/sql/
 COPY ./index.php /var/www/index.php
 COPY fuw/app/common/models/Upload.php /app/common/models/
 COPY fuw/app/backend/models/FiledropAccount.php /app/backend/models/
-COPY ./VERSION /var/www/
 
 ARG TARGET_PHP_VERSION=7.0
 COPY ops/configuration/php-conf/php-production.ini /usr/local/etc/php/php.ini

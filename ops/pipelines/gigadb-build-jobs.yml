@@ -164,7 +164,6 @@ b_gigadb:
     - time docker-compose run --rm config
     - time docker-compose run --rm application composer install -a --no-dev
     - docker-compose run --rm less
-    - git describe --always > VERSION
 #    - docker-compose run --rm fuw-config
 #    - docker-compose run --rm console bash -c "cd /app && composer install -a --no-dev"
 #    - docker-compose run --rm console bash -c 'cd /gigadb-apps/worker/file-worker/ && composer install -a --no-dev'
