@@ -72,7 +72,56 @@
 		Column headers with links are sortable. Cells with a text input are used for filtering.
 	</p>
 
-	<?php $this->widget('CustomGridView', array(
+	<?php
+    $actionButtons = array(
+        'view' => array(
+            'imageUrl' => false,
+            'label' => '',
+            'options' => array(
+                "title" => "View",
+                "class" => "fa fa-eye fa-lg icon icon-view",
+                "aria-label" => "View"
+            ),
+        ),
+        'update' => array(
+            'imageUrl' => false,
+            'label' => '',
+            'options' => array(
+                "title" => "Update",
+                "class" => "fa fa-pencil fa-lg icon icon-update",
+                "aria-label" => "Update"
+            ),
+        ),
+        'delete' => array(
+            'imageUrl' => false,
+            'label' => '',
+            'options' => array(
+                "title" => "Delete",
+                "class" => "fa fa-trash fa-lg icon icon-delete",
+                "aria-label" => "Delete"
+            ),
+        ),
+    );
+    $template = '{view}{update}{delete}';
+    $headerStyle = 'width: 100px';
+
+    if (!empty($origin_author)) {
+      $actionButtons['merge_authors'] = array(
+        'imageUrl' => false,
+        'label' => '',
+        'options' => array(
+            "title" => "Merge authors",
+            "class" => "fa fa-link fa-lg icon icon-merge",
+            "aria-label" => "Merge authors",
+            "role" => "button",
+        ),
+        "click" => "handleMergeClick",
+      );
+      $template = '{view}{update}{delete}{merge_authors}';
+      $headerStyle = 'width: 120px';
+    }
+
+    $this->widget('CustomGridView', array(
 		'id' => 'author-grid',
 		'dataProvider' => $model->search(),
 		'itemsCssClass' => 'table table-bordered',
@@ -86,7 +135,13 @@
 			'orcid',
 			//'rank',
 			array('name' => 'dois_search', 'value' => '$data->listOfDataset', 'headerHtmlOptions' => array('style' => 'width: 120px')),
-			CustomGridView::getDefaultActionButtonsConfig()
+			array(
+        'class' => 'CButtonColumn',
+        'header' => "Actions",
+        'headerHtmlOptions' => array('style' => $headerStyle),
+        'template' => $template,
+        'buttons' => $actionButtons,
+      )
 		),
 	)); ?>
 
@@ -174,7 +229,7 @@
 					<table id="author_compare" class="table table-condensed table-striped table-hover table-bordered">
 						<thead>
 							<tr>
-								<th>&nbsp;</th>
+								<td>&nbsp;</td>
 								<th>Author to merge</th>
 								<th>Author to be merged with</th>
 							</tr>
@@ -228,6 +283,10 @@
 <? } ?>
 
 <script>
+  function handleMergeClick(e) {
+    const authorId = String($(e.target).closest('tr').attr('id'));
+    open_controls(authorId);
+  }
 	function open_controls(author_id) {
 		var want_dialog = null;
 		<?php
@@ -339,7 +398,7 @@
 		makeRequest();
 	});
 
-	$('#author_merge').on('hidden', function() {
+	$('#author_merge').on('hidden.bs.modal', function() {
 		$("#merge_status").removeAttr("class").empty();
     $(this).off('keydown');
     if (lastFocusedElement) {
