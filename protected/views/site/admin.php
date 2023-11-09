@@ -17,7 +17,7 @@
 
                 <li><a class="btn background-btn" title="Manage sample:DOI associations" href="/adminDatasetSample/admin">Dataset:Samples</a></li>
 
-                <li><a class="btn background-btn" title="Add/update all Files and manage their attributes" tilte="Add/update all Files and manage their attributes" href="/adminFile/</li>admin">Dataset:Files</a>
+                <li><a class="btn background-btn" title="Add/update all Files and manage their attributes" href="/adminFile/admin">Dataset:Files</a>
 
                 <li><a class="btn background-btn" title="Manage links from datasets to external project pages" href="/adminDatasetProject/admin">Dataset:Project links</a></li>
 
@@ -27,7 +27,7 @@
 
                 <li><a class="btn background-btn" title="Manage DOI:Funder" href="/datasetFunder/admin">Dataset:Funder</a></li>
 
-                <li><a class="btn background-btn" href="/adminManuscript/admin" title="Add/update links to manuscriptions citing our DOIs" tilte="Add/update links to manuscriptions citing our DOIs">Dataset:Manuscript</a></li>
+                <li><a class="btn background-btn" href="/adminManuscript/admin" title="Add/update links to manuscripts citing our DOIs">Dataset:Manuscript</a></li>
 
                 <li><a class="btn background-btn" title=" List all authors cited in GigaDB, update ORCID for authors" href="/adminAuthor/admin">Authors</a></li>
 
