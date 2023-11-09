@@ -15,6 +15,14 @@
  * ```
  *
  * Note: This class assumes jQuery is loaded. It uses AJAX to refresh the pagination state.
+ *
+ * To htmlPurify specific columns, e.g.:
+ *       array(
+ *      'name' => 'title',
+ *      'type' => 'raw',
+ *      'value' => 'Yii::app()->controller->widget("CHtmlPurifier")->purify($data->title)',
+ *      ),
+ *
  */
 
 
