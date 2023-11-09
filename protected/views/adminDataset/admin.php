@@ -87,7 +87,11 @@ $('.search-form form').submit(function(){
 			'id',
 			'identifier',
 			'manuscript_id',
-			'title',
+      array(
+        'name' => 'title',
+        'type' => 'raw',
+        'value' => 'Yii::app()->controller->widget("CHtmlPurifier")->purify($data->title)',
+        ),
 			// 'publisher',
 			// 'dataset_size',
 			// 'ftp_site',
