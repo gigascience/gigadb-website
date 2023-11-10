@@ -398,39 +398,35 @@ echo $form->hiddenField($model, "image_id");
                               'disabled' => $model->upload_status == 'Published'
                             ],
                           ]);
-
-                          $this->widget('application.components.controls.TextField', [
+                          $this->widget('application.components.controls.DateField', [
                             'form' => $form,
                             'model' => $model,
                             'attributeName' => 'fairnuse',
                             'labelOptions' => ['class' => 'col-xs-4'],
                             'inputWrapperOptions' => 'col-xs-8',
                             'inputOptions' => [
-                              'class' => 'date'
+                              'type' => 'date',
                             ],
                           ]);
 
-                          $this->widget('application.components.controls.TextField', [
+                          $this->widget('application.components.controls.DateField', [
                             'form' => $form,
                             'model' => $model,
                             'attributeName' => 'publication_date',
                             'labelOptions' => ['class' => 'col-xs-4'],
                             'inputWrapperOptions' => 'col-xs-8',
                             'inputOptions' => [
-                              'class' => 'date js-date-pub',
+                              'class' => 'js-date-pub',
                               'disabled' => $model->upload_status == 'Published'
                             ],
                           ]);
 
-                          $this->widget('application.components.controls.TextField', [
+                          $this->widget('application.components.controls.DateField', [
                             'form' => $form,
                             'model' => $model,
                             'attributeName' => 'modification_date',
                             'labelOptions' => ['class' => 'col-xs-4'],
-                            'inputWrapperOptions' => 'col-xs-8',
-                            'inputOptions' => [
-                              'class' => 'date'
-                            ],
+                            'inputWrapperOptions' => 'col-xs-8'
                           ]);
                         ?>
                     </div>
@@ -584,11 +580,6 @@ echo $form->hiddenField($model, "image_id");
                 d.getFullYear() + '-' + ("0" + (d.getMonth() + 1)).slice(-2) + '-' + ("0" + d.getDate()).slice(-2)
             );
         }
-
-        //$("#myModal").modal();
-        $('.date').datepicker({
-            'dateFormat': 'yy-mm-dd'
-        });
 
         // On Published show modal if date != date today
         $('.js-pub').on('change', function(e) {
