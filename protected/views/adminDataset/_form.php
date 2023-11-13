@@ -404,9 +404,6 @@ echo $form->hiddenField($model, "image_id");
                             'attributeName' => 'fairnuse',
                             'labelOptions' => ['class' => 'col-xs-4'],
                             'inputWrapperOptions' => 'col-xs-8',
-                            'inputOptions' => [
-                              'type' => 'date',
-                            ],
                           ]);
 
                           $this->widget('application.components.controls.DateField', [
