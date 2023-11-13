@@ -11,7 +11,7 @@
 
     <div class="section form row">
 
-        <!-- NOTE leaving follow as comment as it seems related to missing scripts -->
+        <!-- NOTE leaving following code as comment as it seems related to missing scripts -->
         <!-- <div class="chart" id="chart_div" style="width: 600px; height: 400px">
         </div>
         <div class="setting"></div> -->
