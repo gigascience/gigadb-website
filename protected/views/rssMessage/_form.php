@@ -24,13 +24,12 @@
                 'maxlength' => 128
             ],
         ]);
-        $this->widget('application.components.controls.TextField', [
+        $this->widget('application.components.controls.DateField', [
             'form' => $form,
             'model' => $model,
             'attributeName' => 'publication_date',
             'inputOptions' => [
                 'required' => true,
-                'class' => 'date'
             ],
         ]);
         ?>
@@ -44,10 +43,3 @@
     </div>
 
 </div>
-
-
-<script>
-    $(document).ready(function() {
-        $('.date').datepicker();
-    })
-</script>
