@@ -20,11 +20,11 @@
             <form class="form" method="POST">
                 <div class="form-group">
                     <label class="control-label" for="Report_start_date">Start Date</label>
-                    <?= CHtml::textField('Report[start_date]', isset($args['start_date']) ? $args['start_date'] : '', array('class' => 'date form-control')) ?>
+                    <?= CHtml::dateField('Report[start_date]', isset($args['start_date']) ? $args['start_date'] : '', array('class' => 'form-control')) ?>
                 </div>
                 <div class="form-group">
                     <label class="control-label" for="Report_end_date">End Date</label>
-                    <?= CHtml::textField('Report[end_date]', isset($args['end_date']) ? $args['end_date'] : '', array('class' => 'date form-control')) ?>
+                    <?= CHtml::dateField('Report[end_date]', isset($args['end_date']) ? $args['end_date'] : '', array('class' => 'form-control')) ?>
                 </div>
                 <div class="form-group">
                     <label class="control-label" for="Report_ids">Display for DOI</label>
@@ -68,13 +68,6 @@ $(".js-multi").bind("chosen:maxselected", function() {
 EO_SCRIPT;
 $clientScript->registerScript('register_script', $register_script, CClientScript::POS_READY);
 ?>
-<script>
-    $(document).ready(function() {
-        $('.date').datepicker({
-            dateFormat: "yy-mm-dd"
-        });
-    });
-</script>
 <!-- NOTE /js/jsapi.js not found -->
 <script type="text/javascript" src="/js/jsapi.js"></script>
 <script type="text/javascript">
