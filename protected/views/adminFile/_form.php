@@ -73,13 +73,10 @@
                 'cols' => 50
             ],
         ]);
-        $this->widget('application.components.controls.TextField', [
+        $this->widget('application.components.controls.DateField', [
             'form' => $form,
             'model' => $model,
             'attributeName' => 'date_stamp',
-            'inputOptions' => [
-                'class' => 'js-date',
-            ],
         ]);
         $this->widget('application.components.controls.DropdownField', [
             'form' => $form,
@@ -214,10 +211,6 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
-        $('.js-date').datepicker({
-            'dateFormat': 'yy-mm-dd'
-        });
-
         // Handle new attribute dropdown button
         $('.js-btn-attr').click(function(e) {
             e.preventDefault();
