@@ -33,22 +33,20 @@
                 'cols' => 50
             ],
         ]);
-        $this->widget('application.components.controls.TextField', [
+        $this->widget('application.components.controls.DateField', [
             'form' => $form,
             'model' => $model,
             'attributeName' => 'start_date',
             'inputOptions' => [
                 'required' => true,
-                'class' => 'date'
             ],
         ]);
-        $this->widget('application.components.controls.TextField', [
+        $this->widget('application.components.controls.DateField', [
             'form' => $form,
             'model' => $model,
             'attributeName' => 'end_date',
             'inputOptions' => [
                 'required' => true,
-                'class' => 'date'
             ],
         ]);
         ?>
@@ -61,9 +59,3 @@
         <?php $this->endWidget(); ?>
     </div>
 </div>
-
-<script>
-    $(document).ready(function() {
-        $('.date').datepicker();
-    })
-</script>
