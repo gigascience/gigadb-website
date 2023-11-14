@@ -44,7 +44,7 @@ Feature: A curator opens the mockup page
     Then I am on "/dataset/200070/token/ImP3Bbu7ytRSfYFh"
     And I can see the changes to the "author metadata" displayed
 
-  @ok
+  @ok @release-year
   Scenario: Check for updating the release year
     Given I am on "/dataset/200070/token/ImP3Bbu7ytRSfYFh"
     And I should not see "Zhang G (2020)"
