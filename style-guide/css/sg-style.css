@@ -558,3 +558,21 @@ body {
 .sg-a11y-block h3, .sg-a11y-block p {
   color: inherit;
 }
+
+.sg-fixed-btns-container {
+  position: relative;
+  width: 100%;
+  margin-inline: 20px;
+  height: 100px;
+  margin-top: -40px;
+}
+.sg-fixed-btns-container .fixed-btn-left {
+  position: absolute;
+  left: 0;
+  margin-left: 20px;
+}
+.sg-fixed-btns-container .fixed-btn-right {
+  position: absolute;
+  right: 0;
+  margin-right: 20px;
+}
