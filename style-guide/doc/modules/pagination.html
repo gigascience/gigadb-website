@@ -1,32 +1,26 @@
-<ul id="files-pager" class="yiiPager">
-  <li class="first hidden">
-    <a href="/dataset/view/id/100020/Files_page/1"> << First </a>
-  </li>
-  <li class="previous hidden">
-    <a href="/dataset/view/id/100020/Files_page/1"> < Previous </a>
-  </li>
-  <li class="page selected">
-    <a href="/dataset/view/id/100020/Files_page/1">1</a>
-  </li>
-  <li class="page">
-    <a href="/dataset/view/id/100020/Files_page/2">2</a>
-  </li>
-  <li class="next">
-    <a href="/dataset/view/id/100020/Files_page/2">Next ></a>
-  </li>
-  <li class="last">
-    <a href="/dataset/view/id/100020/Files_page/2">Last >></a>
-  </li>
-</ul>
-<button class="btn_click" onclick="goToPage()">
-  <strong>Go to page</strong>
-</button>
-<input
-  type="number"
-  id="pageNumber"
-  class="page_box"
-  onkeypress="detectEnterKeyPress()"
-/>
-<a class="color-background">
-  <strong> of 2</strong>
-</a>
+<div class="pagination-wrapper">
+  <ul id="files-pager" class="yiiPager">
+    <li class="first first-visible"><a href="#">&lt;&lt; First</a></li>
+    <li class="previous"><a href="#">&lt; Previous</a></li>
+    <li class="page"><a href="#">1</a></li>
+    <li class="page selected"><a href="#">2</a></li>
+    <li class="page"><a href="#">3</a></li>
+    <li class="next"><a href="#">Next &gt;</a></li>
+    <li class="last last-visible"><a href="#">Last &gt;&gt;</a></li>
+  </ul>
+  <div class="page-selector">
+    <button class="btn background-btn-o" onclick="goToPage()">
+      Go to page
+    </button>
+    <input
+      type="number"
+      id="pageNumber"
+      class="page_box"
+      onkeypress="detectEnterKeyPress()"
+      min="1"
+      max="2"
+      aria-label="Enter page number"
+    />
+    <span class="page-selector-label"> of 3</span>
+  </div>
+</div>
