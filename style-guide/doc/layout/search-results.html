@@ -1,447 +1,84 @@
 <div class="container">
   <div class="row">
     <div class="col-xs-4 search-filter-sidebar">
-      <h4 class="search-result-title">
-        Search result for <span><i>millet</i></span>
-      </h4>
+      <h2 class="search-result-title">
+        Search result for
+        <span class="search-result-keyword"><i>Software</i></span>
+      </h2>
       <p></p>
-      <p>
-        Showing
-        <strong>1 - 1 of 1</strong> datasets
-      </p>
+      <p>Showing <strong>1 - 1 of 1</strong> datasets</p>
       <p></p>
 
       <div>
-        <div class="filter-your-result">Filter your result</div>
-        <!--
-                <a data-toggle="modal" href="#how-to-use-filters" class="btn filter">How to use filters</a>
-                <div class="modal hide fade" id="how-to-use-filters">
-                  <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">×</button>
-                    <h3>How to use filters</h3>
-                  </div>
-                  <div class="modal-body">
-                    <p>To see all search results for your keywords, leave all these filters disabled or disable a filter if it is already enabled. If you want to hide some results based on some criteria, choose the filter for your criteria, and select the options that match what you want to see. Search results that are not defined for a filter will show only if the filter is disabled (default).</p>
-                  </div>
-                  <div class="modal-footer">
-                    <a href="#" class="btn" data-dismiss="modal">Close</a>
-                  </div>
-                </div>-->
+        <h2 class="filters-title">Filter your result</h2>
         <form id="filter_form" method="GET">
-          <input type="hidden" name="keyword" value="millet" />
-
-          <!-- FILTERS FOR DATASETS -->
+          <input type="hidden" name="keyword" value="Software" />
           <div id="dataset_filter">
             <div class="filter">
-              <h4 class="heading">Type</h4>
-              <div class="filter-content" style="display: none">
-                <button class="btn btn_filter" id="btn_type">Enable All</button>
-                <div class="options disabled">
-                  <span id="type"
-                    ><input
-                      class="type"
-                      value="dataset"
-                      id="type_0"
-                      type="checkbox"
-                      name="type[]"
-                    />
-                    <label for="type_0">Dataset</label><br /><input
-                      class="type"
-                      value="sample"
-                      id="type_1"
-                      type="checkbox"
-                      name="type[]"
-                    />
-                    <label for="type_1">Sample</label><br /><input
-                      class="type"
-                      value="file"
-                      id="type_2"
-                      type="checkbox"
-                      name="type[]"
-                    />
-                    <label for="type_2">File</label></span
+              <button
+                class="btn background-btn h4 heading toggle-btn js-toggle-btn"
+                type="button"
+                aria-expanded="true"
+                aria-controls="result_type"
+              >
+                <span id="filterLabelType">Filter by Type</span>
+                <i class="fa fa-caret-up js-caret-type" aria-hidden="true"></i>
+              </button>
+              <div
+                id="result_type"
+                class="filter-content js-filter-content"
+                style="display: block"
+              >
+                <fieldset aria-labelledby="filterLabelType">
+                  <button
+                    class="btn btn-default btn-filter js-btn-filter"
+                    id="btn_type"
                   >
-                </div>
-              </div>
-            </div>
-
-            <div class="filter">
-              <h4 class="heading">Common Name</h4>
-              <div class="filter-content" style="display: none">
-                <button class="btn btn_filter" id="btn_common_name">
-                  Enable All
-                </button>
-                <div class="options disabled">
-                  <span id="common_name"
-                    ><input
-                      class="common_name"
-                      value="Foxtail millet"
-                      id="common_name_0"
-                      type="checkbox"
-                      name="common_name[]"
-                    />
-                    <label for="common_name_0">Foxtail millet</label></span
-                  >
-                </div>
-              </div>
-            </div>
-            <div class="filter">
-              <h4 class="heading">Dataset Type</h4>
-              <div class="filter-content" style="display: none">
-                <button class="btn btn_filter" id="btn_dataset_type">
-                  Enable All
-                </button>
-                <div class="options disabled">
-                  <span id="dataset_type"
-                    ><input
-                      class="dataset_type"
-                      value="1"
-                      id="dataset_type_0"
-                      type="checkbox"
-                      name="dataset_type[]"
-                    />
-                    <label for="dataset_type_0">Epigenomic</label></span
-                  >
-                </div>
-              </div>
-            </div>
-
-            <div class="filter">
-              <h4 class="heading">Project</h4>
-              <div class="filter-content" style="display: none">
-                <button class="btn btn_filter" id="btn_project">
-                  Enable All
-                </button>
-                <div class="options disabled">
-                  <span id="project"></span>
-                </div>
-              </div>
-            </div>
-            <div class="filter">
-              <h4 class="heading">External Link Types</h4>
-              <div class="filter-content" style="display: none">
-                <button class="btn btn_filter" id="btn_link">Enable All</button>
-                <div class="options disabled">
-                  <span id="external_link_type"
-                    ><input
-                      class="external_link_type"
-                      value="Genome browser"
-                      id="external_link_type_0"
-                      type="checkbox"
-                      name="external_link_type[]"
-                    />
-                    <label for="external_link_type_0"
-                      >Genome browser</label
-                    ></span
-                  >
-                </div>
-              </div>
-            </div>
-
-            <div class="filter">
-              <h4 class="heading">Publication Date</h4>
-              <div class="filter-content" style="display: none">
-                <button class="btn btn_filter" id="btn_publication_date">
-                  Enable
-                </button>
-                <div class="options disabled">
-                  <label>From</label
-                  ><input
-                    class="date hasDatepicker"
-                    placeholder="dd-mm-yyyy"
-                    type="text"
-                    value=""
-                    name="pubdate_from"
-                    id="pubdate_from"
-                  />
-                  <div style="clear: both"></div>
-                  <label>To</label>
-                  <input
-                    class="date hasDatepicker"
-                    placeholder="dd-mm-yyyy"
-                    type="text"
-                    value=""
-                    name="pubdate_to"
-                    id="pubdate_to"
-                  />
-                  <div style="clear: both"></div>
-                </div>
+                    Disable
+                  </button>
+                  <div class="options">
+                    <span id="type"
+                      ><div class="filter-checkbox">
+                        <input
+                          class="type"
+                          value="dataset"
+                          id="type_0"
+                          checked="checked"
+                          type="checkbox"
+                          name="type[]"
+                        /><label for="type_0">Dataset</label>
+                      </div>
+                      <div class="filter-checkbox">
+                        <input
+                          class="type"
+                          value="sample"
+                          id="type_1"
+                          type="checkbox"
+                          name="type[]"
+                        /><label for="type_1">Sample</label>
+                      </div>
+                      <div class="filter-checkbox">
+                        <input
+                          class="type"
+                          value="file"
+                          id="type_2"
+                          type="checkbox"
+                          name="type[]"
+                        /><label for="type_2">File</label>
+                      </div></span
+                    >
+                  </div>
+                </fieldset>
               </div>
             </div>
           </div>
-
-          <!-- FILTERS FOR FILES -->
-
-          <div id="file_filter">
-            <div class="filter">
-              <h4 class="heading">File Type</h4>
-              <div class="filter-content" style="display: none">
-                <button class="btn btn_filter" id="btn_file_type">
-                  Enable All
-                </button>
-                <div class="options disabled">
-                  <span id="file_type"
-                    ><input
-                      class="file_type"
-                      value="Coding sequence"
-                      id="file_type_0"
-                      type="checkbox"
-                      name="file_type[]"
-                    />
-                    <label for="file_type_0">Coding sequence</label><br /><input
-                      class="file_type"
-                      value="Protein sequence"
-                      id="file_type_1"
-                      type="checkbox"
-                      name="file_type[]"
-                    />
-                    <label for="file_type_1">Protein sequence</label
-                    ><br /><input
-                      class="file_type"
-                      value="Annotation"
-                      id="file_type_2"
-                      type="checkbox"
-                      name="file_type[]"
-                    />
-                    <label for="file_type_2">Annotation</label><br /><input
-                      class="file_type"
-                      value="Sequence assembly"
-                      id="file_type_3"
-                      type="checkbox"
-                      name="file_type[]"
-                    />
-                    <label for="file_type_3">Sequence assembly</label></span
-                  >
-                </div>
-              </div>
-            </div>
-            <div class="filter">
-              <h4 class="heading">File Format</h4>
-              <div class="filter-content" style="display: none">
-                <button class="btn btn_filter" id="btn_file_format">
-                  Enable All
-                </button>
-                <div class="options disabled">
-                  <span id="file_format"
-                    ><input
-                      class="file_format"
-                      value="FASTA"
-                      id="file_format_0"
-                      type="checkbox"
-                      name="file_format[]"
-                    />
-                    <label for="file_format_0">FASTA</label><br /><input
-                      class="file_format"
-                      value="GFF"
-                      id="file_format_1"
-                      type="checkbox"
-                      name="file_format[]"
-                    />
-                    <label for="file_format_1">GFF</label><br /><input
-                      class="file_format"
-                      value="AGP"
-                      id="file_format_2"
-                      type="checkbox"
-                      name="file_format[]"
-                    />
-                    <label for="file_format_2">AGP</label></span
-                  >
-                </div>
-              </div>
-            </div>
-            <div class="filter">
-              <h4 class="heading">File Size</h4>
-              <div class="filter-content" style="display: none">
-                <button class="btn btn_filter" id="btn_release_date">
-                  Enable
-                </button>
-                <div class="options disabled">
-                  <label>From</label>
-                  <input
-                    class="size"
-                    type="text"
-                    value=""
-                    name="size_from"
-                    id="size_from"
-                  /><select
-                    class="unit"
-                    name="size_from_unit"
-                    id="size_from_unit"
-                  >
-                    <option value="1">KB</option>
-                    <option value="2">MB</option>
-                    <option value="3">GB</option>
-                    <option value="4">TB</option>
-                  </select>
-                  <div style="clear: both"></div>
-                  <label>To</label>
-                  <input
-                    class="size"
-                    type="text"
-                    value=""
-                    name="size_to"
-                    id="size_to"
-                  /><select class="unit" name="size_to_unit" id="size_to_unit">
-                    <option value="1">KB</option>
-                    <option value="2">MB</option>
-                    <option value="3">GB</option>
-                    <option value="4">TB</option>
-                  </select>
-                  <div style="clear: both"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-
           <input
-            class="span2 btn-green filter"
+            class="btn background-btn filter apply-filter-btn"
             type="submit"
             name="yt0"
-            value="Apply Filters"
+            value="Apply Filter"
           />
         </form>
-        <script>
-          document.addEventListener("DOMContentLoaded", function (event) {
-            //This event is fired after deferred scripts are loaded
-            $(function () {
-              //$(".filter-content").hide();
-              //toggle the componenet with class msg_body
-              $(".heading").click(function () {
-                $(this).next(".filter-content").slideToggle(500);
-              });
-              /*$('#filter_form input:checkbox').click(function(){
-                                document.forms['filter_form'].submit();
-                            });*/
-            });
-
-            submitFilter = function () {
-              var action = $(this).attr("action");
-              var tab = $("#filter_tab").val();
-              if (tab != "" && action.indexOf("#") == -1) {
-                action = action + tab;
-              }
-              $(this).attr("action", action);
-              $(this).submit();
-              return false;
-            };
-
-            $(function () {
-              $(".date, .size").focus(function () {
-                $(this).parent().removeClass("disabled");
-              });
-              $(".date, .size").focusout(function () {
-                $(this)
-                  .parent()
-                  .children("input")
-                  .each(function (index, ele) {
-                    if ($(ele).val() != "") {
-                      $(this).parent().removeClass("disabled");
-                      return false;
-                    }
-                    $(this).parent().addClass("disabled");
-                  });
-              });
-              $(".date, .size").change(function () {
-                $(this)
-                  .parent()
-                  .children("input")
-                  .each(function (index, ele) {
-                    if ($(ele).val() != "") {
-                      $(this).parent().removeClass("disabled");
-                      $(this).parent().parent().find("button").html("Disable");
-                      return false;
-                    }
-                    $(this).parent().parent().find("button").html("Enable");
-                    $(this).parent().addClass("disabled");
-                  });
-              });
-
-              $(".date").datepicker({ dateFormat: "dd-mm-yy" });
-
-              $(".btn_filter").click(function () {
-                var action = $(this).html();
-                var alt = "";
-                if ($(this).next().has("input:text").length == 0) {
-                  alt = "Enable All";
-                } else {
-                  alt = "Enable";
-                }
-
-                var status;
-                if (action == "Disable") {
-                  $(this).html(alt);
-                  status = false;
-                  $(this).next().addClass("disabled");
-                } else {
-                  $(this).html("Disable");
-                  status = true;
-                  $(this).next().removeClass("disabled");
-                }
-                $(this).next().find(":checkbox").attr("checked", status);
-                $(this).next().find(":text").attr("value", "");
-                document.forms["filter_form"].submit(submitFilter);
-                return false;
-              });
-
-              $("input:checkbox").click(function (e) {
-                var disable = true;
-                $(this)
-                  .parent()
-                  .children("input:checkbox")
-                  .each(function (index, ele) {
-                    if ($(ele).attr("checked")) {
-                      $(ele)
-                        .parent()
-                        .parent()
-                        .parent()
-                        .children("button")
-                        .html("Disable");
-                      $(ele).parent().parent().removeClass("disabled");
-                      disable = false;
-                    }
-                  });
-                if (disable) {
-                  $(this)
-                    .parent()
-                    .parent()
-                    .parent()
-                    .children("button")
-                    .html("Enable All");
-                  $(this).parent().parent().addClass("disabled");
-                }
-                //document.forms['filter_form'].submit(submitFilter);
-              });
-            });
-
-            $("#filter_form").submit(submitFilter);
-            //$('#filter_form').submit(function() {
-            //    var action=$(this).attr("action");
-            //    var tab=$("#filter_tab").val();
-            //    if(tab!="" && action.indexOf("#") ==-1){
-            //        action=action+tab;
-            //    }
-            //    $(this).attr("action",action);
-            //    $(this).submit();
-            //    return false;
-            //});
-
-            $.fn.serializeObject = function () {
-              var o = {};
-              var a = this.serializeArray();
-              $.each(a, function () {
-                if (o[this.name] !== undefined) {
-                  if (!o[this.name].push) {
-                    o[this.name] = [o[this.name]];
-                  }
-                  o[this.name].push(this.value || "");
-                } else {
-                  o[this.name] = this.value || "";
-                }
-              });
-              return o;
-            };
-          });
-        </script>
       </div>
     </div>
 
