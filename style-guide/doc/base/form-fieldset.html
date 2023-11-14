@@ -1,10 +1,14 @@
-<form>
-  <fieldset>
+<form class="row">
+  <fieldset class="col-md-6">
     <legend>Fieldset with legend</legend>
     <p>
-      <label for="fieldset-text-input1">Text Input</label>
-      <input id="fieldset-text-input1" type="text" />
+      <div class="form-group">
+        <label for="fieldset-text-input1" class="control-label">Text Input</label>
+        <input id="fieldset-text-input1" type="text" class="form-control" />
+      </div>
     </p>
   </fieldset>
-  <input type="submit" value="Submit form" />
+  <div class="col-xs-12">
+    <input class="btn background-btn" type="submit" value="Submit form" />
+  </div>
 </form>

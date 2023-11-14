@@ -56,6 +56,9 @@
             <li>
                 <a href="#sg-fontStacks">Fonts</a>
             </li>
+            <li>
+                <a href="#sg-contrast">Color Contrast</a>
+            </li>
         </ul>
 
         <?php listFilesInFolder('doc'); ?>
@@ -395,7 +398,7 @@
             </div><!--/.sg-info-->
 
             <div class="sg-section">
-              <h2 class="sg-h2">Color contrast</h2>
+              <h2 class="sg-h2" id="sg-contrast">Color contrast</h2>
               <p>The following color combinations have sufficient color contrast and are used in the site. <a href="https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html#dfn-contrast-ratio">Contrast ratio</a> is included for reference.<p>
               <div class="sg-a11y-section">
                 <!-- on white -->
@@ -459,6 +462,7 @@
                   <p>Commodo non quis mollit nulla quis minim. Ut dolore veniam est duis do aliquip. Id incididunt labore duis minim irure ad amet eu velit.</p>
                 </div>
               </div>
+              <div class="sg-markup-controls"><a class="sg-btn--top" href="#top">Back to Top</a></div>
             </div>
 
             <?php renderFilesInFolder('doc'); ?>

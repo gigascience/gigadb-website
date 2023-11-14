@@ -92,3 +92,7 @@ var SGB = window.SGB || {};
     queryAll(".sg-btn--select").on("click", SGB.selectSourceCode);
   }
 })(this, SGB);
+
+document.addEventListener("DOMContentLoaded", function () {
+  $('.js-datepicker').datepicker();
+})

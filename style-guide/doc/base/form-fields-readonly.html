@@ -1,26 +1,26 @@
-<form>
-  <fieldset>
+<form class="row">
+  <fieldset class="col-md-6">
     <legend>Readonly Form Fields</legend>
-    <div>
-      <label for="text-input-readonly">Readonly text input</label>
-      <input
+    <div class="form-group">
+      <label class="control-label" for="text-input-readonly">Readonly text input</label>
+      <input class="form-control"
         id="text-input-readonly"
         type="text"
         value="Readonly text input"
         readonly
       />
     </div>
-    <div>
-      <label for="color-input-readonly">Readonly color input</label>
-      <input id="color-input-readonly" type="color" value="#000000" readonly />
+    <div class="form-group">
+      <label class="control-label" for="color-input-readonly">Readonly color input</label>
+      <input class="form-control" id="color-input-readonly" type="color" value="#000000" readonly />
     </div>
-    <div>
-      <label for="range-input-readonly">Readonly range input</label>
-      <input id="range-input-readonly" type="range" readonly />
+    <div class="form-group">
+      <label class="control-label" for="range-input-readonly">Readonly range input</label>
+      <input class="form-control" id="range-input-readonly" type="range" readonly />
     </div>
-    <div>
-      <label for="number-input-readonly">Readonly number input</label>
-      <input
+    <div class="form-group">
+      <label class="control-label" for="number-input-readonly">Readonly number input</label>
+      <input class="form-control"
         id="number-input-readonly"
         type="number"
         value="5"
@@ -29,12 +29,14 @@
         readonly
       />
     </div>
-    <div>
-      <label for="textarea-readonly">Readonly textarea</label>
-      <textarea id="textarea-readonly" cols="30" rows="5" readonly>
+    <div class="form-group">
+      <label class="control-label" for="textarea-readonly">Readonly textarea</label>
+      <textarea class="form-control" id="textarea-readonly" cols="30" rows="5" readonly>
 Textarea text</textarea
       >
     </div>
   </fieldset>
-  <input type="submit" value="Submit form" />
+  <div class="col-xs-12">
+    <input class="btn background-btn" type="submit" value="Submit form" readonly />
+  </div>
 </form>
