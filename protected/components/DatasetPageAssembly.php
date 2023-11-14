@@ -55,7 +55,7 @@ class DatasetPageAssembly extends yii\base\Component
      * @param Dataset $d Dataset instance to pass to the instanciated Page assembly
      * @param CApplication $app Yii web application from which to access cache and database
      * @param FileUploadService $srv GigaDB client to File Upload Wizard API
-     * @param ?array $config Additional options to configure teh assembly (only 'skip_cache' for now)
+     * @param ?array $config Additional options to configure the assembly (only 'skip_cache' for now)
      * @return DatasetPageAssembly  a new instance of DatasetAssembly
      */
     public static function assemble(Dataset $d, CApplication $app, FileUploadService $srv, array $config = null): DatasetPageAssembly
