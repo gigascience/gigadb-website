@@ -538,3 +538,23 @@ body {
   width: 100%;
   z-index: 100;
 }
+
+.sg-a11y-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 1rem;
+}
+
+.sg-a11y-block {
+  border: 1px solid #ddd;
+  width: 90%;
+  padding: 1rem;
+}
+.sg-a11y-block h3 {
+  font-size: 16px;
+  margin-bottom: 1em;
+  margin-top: 0;
+}
+.sg-a11y-block h3, .sg-a11y-block p {
+  color: inherit;
+}
