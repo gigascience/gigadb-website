@@ -96,7 +96,7 @@
                     </div><!--/.sg-color-grid-->
                 </div>
                 <div class="sg-colors sg-section">
-                  <h2 id="sg-colors" class="sg-h2">Tints</h2>
+                  <h2  class="sg-h2">Tints</h2>
                 <?php
                 $colors = [
                   'gigadb-green' => [
@@ -201,7 +201,7 @@
                 </div>
                 <!-- Manually add your UI colors here. -->
                 <div class="sg-colors sg-section">
-                    <h2 id="sg-colors" class="sg-h2">Neutral Colors</h2>
+                    <h2  class="sg-h2">Neutral Colors</h2>
                     <div class="sg-color-grid">
                         <div class="sg-color">
                             <div class="sg-color-swatch"
@@ -264,7 +264,7 @@
                     </div>
                 </div>
                 <div class="sg-colors sg-section">
-                    <h2 id="sg-colors" class="sg-h2">Utility Colors</h2>
+                    <h2  class="sg-h2">Utility Colors</h2>
                     <div class="sg-color-grid">
                         <div class="sg-color">
                             <div class="sg-color-swatch"

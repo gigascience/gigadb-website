@@ -65,7 +65,7 @@ $this->breadcrumbs = array(
                     </div>
                     <hr aria-hidden="true">
                     <div class="button-div">
-                        <?= CHtml::submitButton(Yii::t('app', 'Login'), array('class' => 'btn background-btn', 'style' => 'width:236px;hight:40px;float:center;')) ?>
+                        <?= CHtml::submitButton(Yii::t('app', 'Login'), array('class' => 'btn background-btn', 'style' => 'width:236px;')) ?>
                     </div>
                     <? $this->endWidget() ?>
                     <div class="login-links">
