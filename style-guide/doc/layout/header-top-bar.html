@@ -1,7 +1,7 @@
 <div class="base-top-bar">
   <div class="container">
     <div class="row">
-      <div class="col-xs-5">
+      <nav aria-label="account" class="col-xs-5">
         <ul class="list-inline text-left base-top-account-bar">
           <li>
             <a href="/site/login"
@@ -9,8 +9,40 @@
             >
           </li>
         </ul>
-      </div>
-      <div class="col-xs-7 clearfix">
+      </nav>
+      <div class="col-xs-7 clearfix top-bar-left">
+        <div class="search-bar clearfix">
+          <form
+            action="/search/new"
+            method="GET"
+            role="search"
+            class="search-form"
+            aria-label="Datasets"
+          >
+            <input
+              aria-label="Search GigaDB"
+              class="search-input ui-autocomplete-input"
+              placeholder="e.g. Chicken, brain, etc..."
+              id="keyword"
+              type="text"
+              name="keyword"
+              autocomplete="off"
+            />
+            <script type="text/javascript">
+              /*<![CDATA[*/
+              document.addEventListener("DOMContentLoaded", function (event) {
+                jQuery("#keyword").autocomplete({ minLength: "2", source: [] });
+              });
+
+              /*]]>*/
+            </script>
+            <button class="btn-search" type="submit">
+              <span class="fa fa-search"
+                ><span class="visually-hidden">Search</span></span
+              >
+            </button>
+          </form>
+        </div>
         <ul class="share-zone clearfix">
           <li>
             <a
@@ -58,31 +90,6 @@
             ></a>
           </li>
         </ul>
-        <div class="search-bar clearfix">
-          <form action="/search/new" method="GET">
-            <input
-              title="Search GigaDB"
-              class="search-input"
-              placeholder="e.g. Chicken, brain etc..."
-              id="keyword"
-              type="text"
-              name="keyword"
-            />
-            <script type="text/javascript">
-              /*<![CDATA[*/
-              document.addEventListener("DOMContentLoaded", function (event) {
-                jQuery("#keyword").autocomplete({ minLength: "2", source: [] });
-              });
-
-              /*]]>*/
-            </script>
-            <button class="btn-search" type="submit">
-              <span class="fa fa-search"
-                ><span class="visually-hidden">Search</span></span
-              >
-            </button>
-          </form>
-        </div>
       </div>
     </div>
   </div>

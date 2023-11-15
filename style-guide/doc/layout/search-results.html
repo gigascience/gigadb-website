@@ -1,9 +1,9 @@
-<div class="container">
+<div class="container" id="searchResults">
   <div class="row">
     <div class="col-xs-4 search-filter-sidebar">
       <h2 class="search-result-title">
         Search result for
-        <span class="search-result-keyword"><i>Software</i></span>
+        <span class="search-result-keyword"><i>foxtail</i></span>
       </h2>
       <p></p>
       <p>Showing <strong>1 - 1 of 1</strong> datasets</p>
@@ -11,8 +11,11 @@
 
       <div>
         <h2 class="filters-title">Filter your result</h2>
+
         <form id="filter_form" method="GET">
-          <input type="hidden" name="keyword" value="Software" />
+          <input type="hidden" name="keyword" value="foxtail" />
+
+          <!-- FILTERS FOR DATASETS -->
           <div id="dataset_filter">
             <div class="filter">
               <button
@@ -27,23 +30,22 @@
               <div
                 id="result_type"
                 class="filter-content js-filter-content"
-                style="display: block"
+                style=""
               >
                 <fieldset aria-labelledby="filterLabelType">
                   <button
                     class="btn btn-default btn-filter js-btn-filter"
                     id="btn_type"
                   >
-                    Disable
+                    Enable All
                   </button>
-                  <div class="options">
+                  <div class="options disabled">
                     <span id="type"
                       ><div class="filter-checkbox">
                         <input
                           class="type"
                           value="dataset"
                           id="type_0"
-                          checked="checked"
                           type="checkbox"
                           name="type[]"
                         /><label for="type_0">Dataset</label>
@@ -72,6 +74,11 @@
               </div>
             </div>
           </div>
+
+          <!-- FILTERS FOR FILES -->
+
+          <div id="file_filter"></div>
+
           <input
             class="btn background-btn filter apply-filter-btn"
             type="submit"
@@ -79,358 +86,486 @@
             value="Apply Filter"
           />
         </form>
+        <script>
+          document.addEventListener("DOMContentLoaded", function (event) {
+            //This event is fired after deferred scripts are loaded
+            $(function () {
+              $("#searchResults #result_type").show();
+              //toggle the componenet with class msg_body
+              $("#searchResults .js-toggle-btn").click(function () {
+                const caret = $(this).children(".js-caret-type");
+                if ($(this).attr("aria-expanded") == "true") {
+                  $(this).attr("aria-expanded", "false");
+                  caret.removeClass("fa-caret-up");
+                  caret.addClass("fa-caret-down");
+                } else {
+                  $(this).attr("aria-expanded", "true");
+                  caret.removeClass("fa-caret-down");
+                  caret.addClass("fa-caret-up");
+                }
+
+                $(this).next(".js-filter-content").slideToggle(300);
+              });
+            });
+
+            submitFilter = function () {
+              var action = $(this).attr("action");
+              var tab = $("#searchResults #filter_tab").val();
+              if (tab != "" && action.indexOf("#") == -1) {
+                action = action + tab;
+              }
+              $(this).attr("action", action);
+              $(this).submit();
+              return false;
+            };
+
+            $(function () {
+              $("#searchResults .js-btn-filter").click(function () {
+                var action = $(this).html();
+                var alt = "";
+                if ($(this).next().has("input:text").length == 0) {
+                  alt = "Enable All";
+                } else {
+                  alt = "Enable";
+                }
+
+                var status;
+                if (action == "Disable") {
+                  $(this).html(alt);
+                  status = false;
+                  $(this).next().addClass("disabled");
+                } else {
+                  $(this).html("Disable");
+                  status = true;
+                  $(this).next().removeClass("disabled");
+                }
+                $(this).next().find(":checkbox").attr("checked", status);
+                $(this).next().find(":text").attr("value", "");
+                document.forms["filter_form"].submit(submitFilter);
+                return false;
+              });
+
+              $("#searchResults input:checkbox").click(function (e) {
+                var disable = true;
+                $(this)
+                  .parent()
+                  .children("input:checkbox")
+                  .each(function (index, ele) {
+                    if ($(ele).attr("checked")) {
+                      $(ele)
+                        .parent()
+                        .parent()
+                        .parent()
+                        .children("button")
+                        .html("Disable");
+                      $(ele).parent().parent().removeClass("disabled");
+                      disable = false;
+                    }
+                  });
+                if (disable) {
+                  $(this)
+                    .parent()
+                    .parent()
+                    .parent()
+                    .children("button")
+                    .html("Enable All");
+                  $(this).parent().parent().addClass("disabled");
+                }
+              });
+            });
+
+            $("#searchResults #filter_form").submit(submitFilter);
+          });
+        </script>
       </div>
     </div>
 
     <div class="col-xs-8">
       <div class="span9 result" id="result">
         <div class="tab-content">
-          <div class="search-result-container">
+          <div class="search-result-card">
             <!--Dataset section-->
-            <div class="row1">
-              <div
-                class="span1"
-                style="
-                  margin-left: 40px;
-                  margin-top: 10px;
-                  height: 30px;
-                  width: 40px;
-                "
-              >
+            <div class="search-result-row">
+              <div class="search-result-icon-container">
                 <div
-                  class="text-icon text-icon-sm text-icon-blue"
-                  style="margin-right: 0px"
+                  class="text-icon text-icon-sm text-icon-blue search-result-icon"
+                  aria-hidden="true"
                 >
                   G
                 </div>
+                <span class="sr-only">Dataset</span>
               </div>
-              <div class="span8 main-content" style="float: right">
-                <ul class="nav nav-tabs nav-stacked result-cell">
-                  <li>
-                    <a
-                      data-content="Foxtail millet (&amp;lt;em&amp;gt;Setaria italica&amp;lt;/em&amp;gt;) (2n&amp;#x3D;18), is an annual grass grown both as cereal crop (grain production) and as forage food.  It is primarily grown in temperate, subtropical and tropical areas.  With approximately 6,000 varieties, millet is one member of the Panicoideae (grasses subfamily), which includes maize (&amp;lt;em&amp;gt;Zea mays&amp;lt;/em&amp;gt;), sorghum (&amp;lt;em&amp;gt;Sorghum bicolor&amp;lt;/em&amp;gt;), and sugar cane (&amp;lt;em&amp;gt;Saccharum officinarum&amp;lt;/em&amp;gt;).  It is a nutritious dietary staple, containing starch, proteins, and a number of vitamins and minerals, such as calcium, iron, and sodium.  It feeds nearly one-third of the world population with main daily-calories intake, and is especially prevalent in dry climates or soil-poor regions that are not suited for the cultivation of many other crops.  Millet is self-pollinating, has a short lifecycle, is small in stature, and has a small genome size; all of these useful attributes make it an invaluable functional genomics model system, and an excellent reference genome to aid in the sequencing of other larger grasses genomes."
-                      class="result-main-link left content-popup"
-                      href="http://gigadb.gigasciencejournal.com:9170/dataset/100020"
-                      >Genome data from foxtail millet (&lt;em&gt;Setaria
-                      italica&lt;/em&gt;).</a
-                    >
-                  </li>
-                  <li>
-                    <strong>
+              <div class="search-result-content">
+                <h3 class="search-result-title">
+                  <a
+                    data-content="Foxtail millet (<em>Setaria italica</em>) (2n=18), is an annual grass grown both as cereal crop (grain production) and as forage food.  It is primarily grown in temperate, subtropical and tropical areas.  With approximately 6,000 varieties, millet is one member of the Panicoideae (grasses subfamily), which includes maize (<em>Zea mays</em>), sorghum (<em>Sorghum bicolor</em>), and sugar cane (<em>Saccharum officinarum</em>).  It is a nutritious dietary staple, containing starch, proteins, and a number of vitamins and minerals, such as calcium, iron, and sodium.  It feeds nearly one-third of the world population with main daily-calories intake, and is especially prevalent in dry climates or soil-poor regions that are not suited for the cultivation of many other crops.  Millet is self-pollinating, has a short lifecycle, is small in stature, and has a small genome size; all of these useful attributes make it an invaluable functional genomics model system, and an excellent reference genome to aid in the sequencing of other larger grasses genomes."
+                    class="search-result-link content-popup"
+                    href="#"
+                    >Genome data from foxtail millet (<em>Setaria italica</em
+                    >).</a
+                  >
+                </h3>
+                <!-- HACK to render a list of links for authors, since the model directly returns a sequence of links as a string -->
+                <div class="search-result-subcontent">
+                  <ul class="search-result-list search-result-author-list">
+                    <li>
                       <a
                         class="result-sub-links"
-                        href="/search/new?keyword=Liu X&amp;author_id=3168"
+                        href="/search/new?keyword=Liu,X&amp;author_id=3168"
                         >Liu X</a
-                      >;
+                      >;&nbsp;
+                    </li>
+                    <li>
                       <a
                         class="result-sub-links"
-                        href="/search/new?keyword=Quan Z&amp;author_id=651"
+                        href="/search/new?keyword=Quan,Z&amp;author_id=651"
                         >Quan Z</a
-                      >;
+                      >;&nbsp;
+                    </li>
+                    <li>
                       <a
                         class="result-sub-links"
-                        href="/search/new?keyword=Cheng S&amp;author_id=3031"
+                        href="/search/new?keyword=Cheng,S&amp;author_id=3031"
                         >Cheng S</a
-                      >;
+                      >;&nbsp;
+                    </li>
+                    <li>
                       <a
                         class="result-sub-links"
-                        href="/search/new?keyword=Xu X&amp;author_id=3295"
+                        href="/search/new?keyword=Xu,X&amp;author_id=3295"
                         >Xu X</a
-                      >;
+                      >;&nbsp;
+                    </li>
+                    <li>
                       <a
                         class="result-sub-links"
-                        href="/search/new?keyword=Pan S&amp;author_id=3203"
+                        href="/search/new?keyword=Pan,S&amp;author_id=3203"
                         >Pan S</a
-                      >;
+                      >;&nbsp;
+                    </li>
+                    <li>
                       <a
                         class="result-sub-links"
-                        href="/search/new?keyword=Zeng P&amp;author_id=3320"
+                        href="/search/new?keyword=Zeng,P&amp;author_id=3320"
                         >Zeng P</a
-                      >;
+                      >;&nbsp;
+                    </li>
+                    <li>
                       <a
                         class="result-sub-links"
-                        href="/search/new?keyword=Xie M&amp;author_id=3289"
+                        href="/search/new?keyword=Xie,M&amp;author_id=3289"
                         >Xie M</a
-                      >;
+                      >;&nbsp;
+                    </li>
+                    <li>
                       <a
                         class="result-sub-links"
-                        href="/search/new?keyword=Yue Z&amp;author_id=3316"
+                        href="/search/new?keyword=Yue,Z&amp;author_id=3316"
                         >Yue Z</a
-                      >;
+                      >;&nbsp;
+                    </li>
+                    <li>
                       <a
                         class="result-sub-links"
-                        href="/search/new?keyword=Zhan D&amp;author_id=3321"
+                        href="/search/new?keyword=Zhan,D&amp;author_id=3321"
                         >Zhan D</a
-                      >;
+                      >;&nbsp;
+                    </li>
+                    <li>
                       <a
                         class="result-sub-links"
-                        href="/search/new?keyword=Li Y&amp;author_id=3173"
+                        href="/search/new?keyword=Li,Y&amp;author_id=3173"
                         >Li Y</a
-                      >;
+                      >;&nbsp;
+                    </li>
+                    <li>
                       <a
                         class="result-sub-links"
-                        href="/search/new?keyword=Wang J&amp;author_id=14"
+                        href="/search/new?keyword=Wang,J&amp;author_id=14"
                         >Wang J</a
-                      >;
+                      >;&nbsp;
+                    </li>
+                    <li>
                       <a
                         class="result-sub-links"
-                        href="/search/new?keyword=Zhao Z&amp;author_id=659"
+                        href="/search/new?keyword=Zhao,Z&amp;author_id=659"
                         >Zhao Z</a
-                      >;
+                      >;&nbsp;
+                    </li>
+                    <li>
                       <a
                         class="result-sub-links"
-                        href="/search/new?keyword=Zhang G&amp;author_id=3324"
+                        href="/search/new?keyword=Zhang,G&amp;author_id=3324"
                         >Zhang G</a
                       >
-                    </strong>
-                  </li>
-                  <li class="searchID">DOI:10.5524/100020</li>
-                </ul>
+                    </li>
+                  </ul>
+                </div>
+                <div>DOI:10.5524/100020</div>
               </div>
             </div>
 
-            <!--Sample section-->
-            <div class="row1">
-              <div
-                class="span1"
-                style="
-                  margin-left: 40px;
-                  margin-top: 10px;
-                  height: 30px;
-                  width: 40px;
-                "
-              >
-                <div
-                  class="text-icon text-icon-sm text-icon-green"
-                  style="margin-right: 0px"
-                >
-                  S
+            <ul class="search-result-list">
+              <!--Sample section-->
+              <li class="search-result-row">
+                <div class="search-result-icon-container">
+                  <div
+                    class="text-icon text-icon-sm text-icon-green search-result-icon"
+                    aria-hidden="true"
+                  >
+                    S
+                  </div>
+                  <span class="sr-only">Sample</span>
                 </div>
-              </div>
-              <div class="span8 main-content" style="float: right">
-                <ul class="nav nav-tabs nav-stacked result-cell">
-                  <li>
-                    <a
-                      class="result-main-link"
-                      href="http://gigadb.gigasciencejournal.com:9170/dataset/100020"
+                <div class="search-result-content">
+                  <h3 class="search-result-title">
+                    <a class="search-result-link" href="#"
                       >Zhang gu</a
                     >
-                  </li>
-                  <li>
-                    <strong>
-                      Foxtail millet NCBI taxonomy :
-                      <a
-                        class="result-sub-links"
-                        target="_blank"
-                        href="http://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?mode=Info&amp;id=4555"
-                      >
-                        4555
-                      </a>
-                    </strong>
-                  </li>
-                  <li class="searchID">
+                  </h3>
+                  <div class="search-result-subcontent">
+                    Foxtail millet NCBI taxonomy :
                     <a
-                      class="result-sub-links"
-                      href="http://gigadb.gigasciencejournal.com:9170/dataset/100020"
+                      class="search-result-link"
+                      target="_blank"
+                      href="http://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?mode=Info&amp;id=4555"
+                    >
+                      4555
+                    </a>
+                  </div>
+                  <div class="search-result-subcontent">
+                    <a class="search-result-link" href="#"
                       >DOI:10.5524/100020</a
                     >
-                  </li>
-                </ul>
-              </div>
-            </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
             <!--Download File list-->
-            <div class="row1 file-container">
-              <div
-                class="span1"
-                style="
-                  margin-left: 40px;
-                  margin-top: 10px;
-                  height: 30px;
-                  width: 40px;
-                "
-              >
-                <div
-                  class="text-icon text-icon-sm text-icon-yellow"
-                  style="margin-right: 0px"
-                >
-                  F
+            <ul class="search-result-list">
+              <li class="search-result-row">
+                <div class="search-result-icon-container">
+                  <div
+                    class="text-icon text-icon-sm text-icon-yellow search-result-icon"
+                    aria-hidden="true"
+                  >
+                    F
+                  </div>
+                  <span class="sr-only">File</span>
                 </div>
-              </div>
-              <div class="span3 file-name">
-                <a
-                  href="ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100020/Millet_scaffoldVersion2.3.fa.gz"
-                  >Millet_scaffoldVersi...</a
-                >
-              </div>
-              <div class="span2 file-type">Sequence assembly</div>
-              <div class="span2 file-size">109.37 MiB</div>
-              <div class="span1 file-checkbox"><input type="checkbox" /></div>
-            </div>
-            <div class="row1 file-container">
-              <div
-                class="span1"
-                style="
-                  margin-left: 40px;
-                  margin-top: 10px;
-                  height: 30px;
-                  width: 40px;
-                "
-              >
-                <div
-                  class="text-icon text-icon-sm text-icon-yellow"
-                  style="margin-right: 0px"
-                >
-                  F
+                <div class="search-result-content file-content row">
+                  <div class="col-xs-5 file-name truncate-text">
+                    <a
+                      class="file-link"
+                      href="https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100020/Millet.fa.glean.cds.v3.gz"
+                      aria-label="Millet.fa.glean.cds.v3.gz file"
+                      >Millet.fa.glean.cds.v3.gz</a
+                    >
+                  </div>
+                  <div class="col-xs-3 file-type">Coding sequence</div>
+                  <div class="col-xs-3 file-size">13.10 MiB</div>
                 </div>
-              </div>
-              <div class="span3 file-name">
-                <a
-                  href="ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100020/millet.chr.version2.3.fa.gz"
-                  >millet.chr.version2....</a
-                >
-              </div>
-              <div class="span2 file-type">Sequence assembly</div>
-              <div class="span2 file-size">109.92 MiB</div>
-              <div class="span1 file-checkbox"><input type="checkbox" /></div>
-            </div>
-            <div class="row1 file-container">
-              <div
-                class="span1"
-                style="
-                  margin-left: 40px;
-                  margin-top: 10px;
-                  height: 30px;
-                  width: 40px;
-                "
-              >
-                <div
-                  class="text-icon text-icon-sm text-icon-yellow"
-                  style="margin-right: 0px"
-                >
-                  F
+              </li>
+              <li class="search-result-row">
+                <div class="search-result-icon-container">
+                  <div
+                    class="text-icon text-icon-sm text-icon-yellow search-result-icon"
+                    aria-hidden="true"
+                  >
+                    F
+                  </div>
+                  <span class="sr-only">File</span>
                 </div>
-              </div>
-              <div class="span3 file-name">
-                <a
-                  href="ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100020/millet.version2.agp"
-                  >millet.version2.agp</a
-                >
-              </div>
-              <div class="span2 file-type">Sequence assembly</div>
-              <div class="span2 file-size">31.42 KiB</div>
-              <div class="span1 file-checkbox"><input type="checkbox" /></div>
-            </div>
-            <div class="row1 file-container">
-              <div
-                class="span1"
-                style="
-                  margin-left: 40px;
-                  margin-top: 10px;
-                  height: 30px;
-                  width: 40px;
-                "
-              >
-                <div
-                  class="text-icon text-icon-sm text-icon-yellow"
-                  style="margin-right: 0px"
-                >
-                  F
+                <div class="search-result-content file-content row">
+                  <div class="col-xs-5 file-name truncate-text">
+                    <a
+                      class="file-link"
+                      href="https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100020/Millet.fa.glean.pep.v3.gz"
+                      aria-label="Millet.fa.glean.pep.v3.gz file"
+                      >Millet.fa.glean.pep.v3.gz</a
+                    >
+                  </div>
+                  <div class="col-xs-3 file-type">Protein sequence</div>
+                  <div class="col-xs-3 file-size">8.50 MiB</div>
                 </div>
-              </div>
-              <div class="span3 file-name">
-                <a
-                  href="ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100020/Millet.fa.glean.cds.v3.gz"
-                  >Millet.fa.glean.cds....</a
-                >
-              </div>
-              <div class="span2 file-type">Coding sequence</div>
-              <div class="span2 file-size">13.10 MiB</div>
-              <div class="span1 file-checkbox"><input type="checkbox" /></div>
-            </div>
-            <div class="row1 file-container">
-              <div
-                class="span1"
-                style="
-                  margin-left: 40px;
-                  margin-top: 10px;
-                  height: 30px;
-                  width: 40px;
-                "
-              >
-                <div
-                  class="text-icon text-icon-sm text-icon-yellow"
-                  style="margin-right: 0px"
-                >
-                  F
+              </li>
+              <li class="search-result-row">
+                <div class="search-result-icon-container">
+                  <div
+                    class="text-icon text-icon-sm text-icon-yellow search-result-icon"
+                    aria-hidden="true"
+                  >
+                    F
+                  </div>
+                  <span class="sr-only">File</span>
                 </div>
-              </div>
-              <div class="span3 file-name">
-                <a
-                  href="ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100020/Millet.fa.glean.pep.v3.gz"
-                  >Millet.fa.glean.pep....</a
-                >
-              </div>
-              <div class="span2 file-type">Protein sequence</div>
-              <div class="span2 file-size">8.50 MiB</div>
-              <div class="span1 file-checkbox"><input type="checkbox" /></div>
-            </div>
-            <div class="row1 file-container">
-              <div
-                class="span1"
-                style="
-                  margin-left: 40px;
-                  margin-top: 10px;
-                  height: 30px;
-                  width: 40px;
-                "
-              >
-                <div
-                  class="text-icon text-icon-sm text-icon-yellow"
-                  style="margin-right: 0px"
-                >
-                  F
+                <div class="search-result-content file-content row">
+                  <div class="col-xs-5 file-name truncate-text">
+                    <a
+                      class="file-link"
+                      href="https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100020/millet.version2.agp"
+                      aria-label="millet.version2.agp file"
+                      >millet.version2.agp</a
+                    >
+                  </div>
+                  <div class="col-xs-3 file-type">Sequence assembly</div>
+                  <div class="col-xs-3 file-size">31.42 KiB</div>
                 </div>
-              </div>
-              <div class="span3 file-name">
-                <a
-                  href="ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100020/Millet.fa.glean.v3.gff"
-                  >Millet.fa.glean.v3.g...</a
-                >
-              </div>
-              <div class="span2 file-type">Annotation</div>
-              <div class="span2 file-size">14.04 MiB</div>
-              <div class="span1 file-checkbox"><input type="checkbox" /></div>
-            </div>
+              </li>
+              <li class="search-result-row">
+                <div class="search-result-icon-container">
+                  <div
+                    class="text-icon text-icon-sm text-icon-yellow search-result-icon"
+                    aria-hidden="true"
+                  >
+                    F
+                  </div>
+                  <span class="sr-only">File</span>
+                </div>
+                <div class="search-result-content file-content row">
+                  <div class="col-xs-5 file-name truncate-text">
+                    <a
+                      class="file-link"
+                      href="https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100020/millet.chr.version2.3.fa.gz"
+                      aria-label="millet.chr.version2.3.fa.gz file"
+                      >millet.chr.version2.3.fa.gz</a
+                    >
+                  </div>
+                  <div class="col-xs-3 file-type">Sequence assembly</div>
+                  <div class="col-xs-3 file-size">109.92 MiB</div>
+                </div>
+              </li>
+              <li class="search-result-row">
+                <div class="search-result-icon-container">
+                  <div
+                    class="text-icon text-icon-sm text-icon-yellow search-result-icon"
+                    aria-hidden="true"
+                  >
+                    F
+                  </div>
+                  <span class="sr-only">File</span>
+                </div>
+                <div class="search-result-content file-content row">
+                  <div class="col-xs-5 file-name truncate-text">
+                    <a
+                      class="file-link"
+                      href="https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100020/Millet.fa.glean.v3.gff"
+                      aria-label="Millet.fa.glean.v3.gff file"
+                      >Millet.fa.glean.v3.gff</a
+                    >
+                  </div>
+                  <div class="col-xs-3 file-type">Annotation</div>
+                  <div class="col-xs-3 file-size">14.04 MiB</div>
+                </div>
+              </li>
+              <li class="search-result-row">
+                <div class="search-result-icon-container">
+                  <div
+                    class="text-icon text-icon-sm text-icon-yellow search-result-icon"
+                    aria-hidden="true"
+                  >
+                    F
+                  </div>
+                  <span class="sr-only">File</span>
+                </div>
+                <div class="search-result-content file-content row">
+                  <div class="col-xs-5 file-name truncate-text">
+                    <a
+                      class="file-link"
+                      href="https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100020/readme.txt"
+                      aria-label="readme.txt file"
+                      >readme.txt</a
+                    >
+                  </div>
+                  <div class="col-xs-3 file-type">Readme</div>
+                  <div class="col-xs-3 file-size">526 B</div>
+                </div>
+              </li>
+              <li class="search-result-row">
+                <div class="search-result-icon-container">
+                  <div
+                    class="text-icon text-icon-sm text-icon-yellow search-result-icon"
+                    aria-hidden="true"
+                  >
+                    F
+                  </div>
+                  <span class="sr-only">File</span>
+                </div>
+                <div class="search-result-content file-content row">
+                  <div class="col-xs-5 file-name truncate-text">
+                    <a
+                      class="file-link"
+                      href="https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100020/Millet_scaffoldVersion2.3.fa.gz"
+                      aria-label="Millet_scaffoldVersion2.3.fa.gz file"
+                      >Millet_scaffoldVersion2.3.fa.gz</a
+                    >
+                  </div>
+                  <div class="col-xs-3 file-type">Sequence assembly</div>
+                  <div class="col-xs-3 file-size">109.37 MiB</div>
+                </div>
+              </li>
+            </ul>
           </div>
-
-          <div style="clear: both"></div>
-          <br />
         </div>
       </div>
       <div class="row1">
-        <div class="span9 offset3" style="margin-left: 50px; height: 72px">
+        <nav
+          class="span9 offset3"
+          style="margin-left: 50px; height: 72px"
+          aria-label="Pagination Navigation"
+        >
           <ul
             id="search-pg"
             class="pagination-sm pagination"
             style="margin: auto; width: 100%"
           >
             <li class="page-item first disabled">
-              <a href="#" class="page-link">First</a>
+              <a
+                href="#"
+                class="page-link"
+                aria-label="Go to First Page"
+                aria-disabled="true"
+                >First</a
+              >
             </li>
             <li class="page-item prev disabled">
-              <a href="#" class="page-link">Previous</a>
+              <a
+                href="#"
+                class="page-link"
+                aria-label="Go to Previous Page"
+                aria-disabled="true"
+                >Previous</a
+              >
             </li>
             <li class="page-item active">
-              <a href="#" class="page-link">1</a>
+              <a
+                href="#"
+                class="page-link"
+                aria-label="Current Page, Page 1"
+                aria-current="page"
+                >1</a
+              >
             </li>
             <li class="page-item next disabled">
-              <a href="#" class="page-link">Next</a>
+              <a
+                href="#"
+                class="page-link"
+                aria-label="Go to Next Page"
+                aria-disabled="true"
+                >Next</a
+              >
             </li>
             <li class="page-item last disabled">
-              <a href="#" class="page-link">Last</a>
+              <a
+                href="#"
+                class="page-link"
+                aria-label="Go to Last Page"
+                aria-disabled="true"
+                >Last</a
+              >
             </li>
           </ul>
-        </div>
+        </nav>
       </div>
     </div>
   </div>
