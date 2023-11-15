@@ -403,61 +403,61 @@
               <p>The following color combinations have sufficient color contrast and are used in the site. <a href="https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html#dfn-contrast-ratio">Contrast ratio</a> is included for reference.<p>
               <div class="sg-a11y-section">
                 <!-- on white -->
-                <div class="sg-a11y-block" style="background-color: #08893e; color: #ffffff;">
+                <div class="sg-a11y-block" style="color: #08893e; background-color: #ffffff;">
                   <h3>@gigadb-green-on-white</h3>
                   <p>@color-true-white on @color-gigadb-green-750 (4.51)</p>
                   <p>Commodo non quis mollit nulla quis minim. Ut dolore veniam est duis do aliquip. Id incididunt labore duis minim irure ad amet eu velit.</p>
                 </div>
-                <div class="sg-a11y-block" style="background-color: #eb0000; color: #ffffff;">
+                <div class="sg-a11y-block" style="color: #eb0000; background-color: #ffffff;">
                   <h3>@brand-danger-on-white</h3>
                   <p>@color-true-white on @color-brand-danger-650 (4.63)</p>
                   <p>Commodo non quis mollit nulla quis minim. Ut dolore veniam est duis do aliquip. Id incididunt labore duis minim irure ad amet eu velit.</p>
                 </div>
-                <div class="sg-a11y-block" style="background-color: #656565; color: #ffffff;">
+                <div class="sg-a11y-block" style="color: #656565; background-color: #ffffff;">
                   <h3>@dark-gray-on-white</h3>
                   <p>@color-true-white on @color-darker-gray (5.83)</p>
                   <p>Commodo non quis mollit nulla quis minim. Ut dolore veniam est duis do aliquip. Id incididunt labore duis minim irure ad amet eu velit.</p>
                 </div>
-                <div class="sg-a11y-block" style="background-color: #333333; color: #ffffff;">
+                <div class="sg-a11y-block" style="color: #333333; background-color: #ffffff;">
                   <h3>@darker-gray-on-white / @warm-black-on-white</h3>
                   <p>@color-true-white on @color-warm-black (12.63)</p>
                   <p>Commodo non quis mollit nulla quis minim. Ut dolore veniam est duis do aliquip. Id incididunt labore duis minim irure ad amet eu velit.</p>
                 </div>
                 <!-- on lighter-gray -->
-                <div class="sg-a11y-block" style="background-color: #0d6e36; color: #f8f8f8;">
+                <div class="sg-a11y-block" style="color: #0d6e36; background-color: #f8f8f8;">
                   <h3>@gigadb-green-on-lighter-gray</h3>
                   <p>@color-lighter-gray on @color-gigadb-green-800 (5.99)</p>
                   <p>Commodo non quis mollit nulla quis minim. Ut dolore veniam est duis do aliquip. Id incididunt labore duis minim irure ad amet eu velit.</p>
                 </div>
-                <div class="sg-a11y-block" style="background-color: #656565; color: #f8f8f8;">
+                <div class="sg-a11y-block" style="color: #656565; background-color: #f8f8f8;">
                   <h3>@gray-on-lighter-gray</h3>
                   <p>@color-lighter-gray on @color-darker-gray (5.49)</p>
                   <p>Commodo non quis mollit nulla quis minim. Ut dolore veniam est duis do aliquip. Id incididunt labore duis minim irure ad amet eu velit.</p>
                 </div>
-                <div class="sg-a11y-block" style="background-color: #333333; color: #f8f8f8;">
+                <div class="sg-a11y-block" style="color: #333333; background-color: #f8f8f8;">
                   <h3>@warm-black-on-lighter-gray</h3>
                   <p>@color-lighter-gray on @color-warm-black (11.90)</p>
                   <p>Commodo non quis mollit nulla quis minim. Ut dolore veniam est duis do aliquip. Id incididunt labore duis minim irure ad amet eu velit.</p>
                 </div>
-                <div class="sg-a11y-block" style="background-color: #c80d0d; color: #f8f8f8;">
+                <div class="sg-a11y-block" style="color: #c80d0d; background-color: #f8f8f8;">
                   <h3>@brand-danger-on-lighter-gray</h3>
                   <p>@color-lighter-gray on @color-brand-danger-700 (5.62)</p>
                   <p>Commodo non quis mollit nulla quis minim. Ut dolore veniam est duis do aliquip. Id incididunt labore duis minim irure ad amet eu velit.</p>
                 </div>
                 <!-- on light gray -->
-                <div class="sg-a11y-block" style="background-color: #656565; color: #e5e5e5;">
+                <div class="sg-a11y-block" style="color: #656565; background-color: #e5e5e5;">
                   <h3>@dark-gray-on-light-gray</h3>
                   <p>@color-light-gray on @color-darker-gray (4.63)</p>
                   <p>Commodo non quis mollit nulla quis minim. Ut dolore veniam est duis do aliquip. Id incididunt labore duis minim irure ad amet eu velit.</p>
                 </div>
                 <!-- on gigadb-green -->
-                <div class="sg-a11y-block" style="background-color: #ffffff; color: #08893e;">
+                <div class="sg-a11y-block" style="color: #ffffff; background-color: #08893e;">
                   <h3>@white-on-gigadb-green</h3>
                   <p>@color-gigadb-green-750 on @color-true-white (4.51)</p>
                   <p>Commodo non quis mollit nulla quis minim. Ut dolore veniam est duis do aliquip. Id incididunt labore duis minim irure ad amet eu velit.</p>
                 </div>
                 <!-- on warm-black -->
-                <div class="sg-a11y-block" style="background-color: #333333; color: #cccccc;">
+                <div class="sg-a11y-block" style="color: #333333; background-color: #cccccc;">
                   <h3>@gray-on-warm-black</h3>
                   <p>@color-medium-gray on @color-warm-black (7.87)</p>
                   <p>Commodo non quis mollit nulla quis minim. Ut dolore veniam est duis do aliquip. Id incididunt labore duis minim irure ad amet eu velit.</p>
