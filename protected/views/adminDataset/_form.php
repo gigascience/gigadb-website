@@ -480,7 +480,7 @@ echo $form->hiddenField($model, "image_id");
                         <?php echo CHtml::label('Keywords', 'keywords', array('class' => 'control-label col-xs-4')); ?>
                         <div class='col-xs-6'>
                             <!-- NOTE this input is repositioned outside the viewport by teh tagEditor plugin but is still focusable, so the keyboard navigation is very confusing. Fixing this is not trivial, so warrants another ticket #1467 -->
-                            <?php echo CHtml::textField('keywords', '', array('class' => 'form-control', 'size' => 60, 'maxlength' => 300)); ?>
+                            <?php echo CHtml::textArea('keywords', '', array('class' => 'form-control', 'size' => 60, 'maxlength' => 300)); ?>
                         </div>
                     </div>
 
@@ -611,7 +611,7 @@ echo $form->hiddenField($model, "image_id");
         initialTags: existingTags,
         delimiter: ',',
         /* comma */
-        placeholder: 'Enter keywords (separated by commas) ...'
+        placeholder: 'Enter keywords (separated by commas) ...',
     });
 
     $(function() {
@@ -719,3 +719,12 @@ echo $form->hiddenField($model, "image_id");
   </div>
 </div>
 -->
+
+
+<script>
+$(document).ready(function() {
+  document.addEventListener('focus', function() {
+    console.log(document.activeElement);
+  })
+})
+</script>
