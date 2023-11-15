@@ -495,6 +495,9 @@
             $(this).toggleClass('active');
         });
     });
+    $('a[href="#"]').click(function(e) {
+      e.preventDefault();
+    });
   })
 </script>
 </body>
