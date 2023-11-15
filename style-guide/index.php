@@ -473,47 +473,6 @@
 <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" defer></script>
 <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tag-editor/1.0.20/jquery.tag-editor.min.js" defer></script>
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    // Prevent scrolling to top on # links
-    $('a[href="#"]').click(function(e) {
-      e.preventDefault();
-    });
-    // multicolumn-dataset-edit-form
-    $('#keywords').tagEditor({
-        initialTags: [],
-        delimiter: ',',
-        placeholder: 'Enter keywords (separated by commas) ...'
-    });
-    $(function() {
-        $('#mint_doi_button').click(function() {
-            $('#minting').html('minting under way, please wait');
-            $(this).toggleClass('active');
-        });
-    });
-    // attribute-fields
-    $(".js-btn-attr").click(function (e) {
-      e.preventDefault();
-
-      const caret = $(this).children(".js-caret-type");
-      const label = $(this).children(".js-btn-attr-label");
-      const newAttrNameInput = $(".js-new-attr-name");
-      const isExpanded = $(this).attr("aria-expanded") == "true";
-
-      $(".js-new-attr").toggle();
-      $(this).attr("aria-expanded", !isExpanded);
-      caret.toggleClass("fa-caret-up fa-caret-down");
-      label.text(
-        isExpanded ? "Show New Attribute Fields" : "Hide New Attribute Fields"
-      );
-      newAttrNameInput.attr({
-        required: !isExpanded,
-        "aria-required": (!isExpanded).toString(),
-      });
-    });
-
-  })
-</script>
 </body>
 </html>
 
