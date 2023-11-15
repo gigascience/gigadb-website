@@ -25,6 +25,7 @@
     <link rel="stylesheet" type="text/css" href="../fonts/lato/v11/lato.css">
     <link rel="stylesheet" href="../css/current.css">
     <link rel="stylesheet" type="text/css" href="/assets/d86acd89/gridview/styles.css">
+    <link rel="stylesheet" type="text/css" href="/css/jquery.tag-editor.css">
 
     <!-- prism Syntax Highlighting Styles -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.22.0/themes/prism.min.css">
@@ -479,6 +480,23 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" defer></script>
 <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" defer></script>
 <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tag-editor/1.0.20/jquery.tag-editor.min.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    $('#keywords').tagEditor({
+        initialTags: [],
+        delimiter: ',',
+        placeholder: 'Enter keywords (separated by commas) ...'
+    });
+
+    $(function() {
+        $('#mint_doi_button').click(function() {
+            $('#minting').html('minting under way, please wait');
+            $(this).toggleClass('active');
+        });
+    });
+  })
+</script>
 </body>
 </html>
 
