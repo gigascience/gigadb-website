@@ -405,61 +405,61 @@
                 <!-- on white -->
                 <div class="sg-a11y-block" style="color: #08893e; background-color: #ffffff;">
                   <h3>@gigadb-green-on-white</h3>
-                  <p>@color-true-white on @color-gigadb-green-750 (4.51)</p>
+                  <p>@color-gigadb-green-750 on @color-true-white (4.51)</p>
                   <p>Commodo non quis mollit nulla quis minim. Ut dolore veniam est duis do aliquip. Id incididunt labore duis minim irure ad amet eu velit.</p>
                 </div>
                 <div class="sg-a11y-block" style="color: #eb0000; background-color: #ffffff;">
                   <h3>@brand-danger-on-white</h3>
-                  <p>@color-true-white on @color-brand-danger-650 (4.63)</p>
+                  <p>@color-brand-danger-650 on @color-true-white (4.63)</p>
                   <p>Commodo non quis mollit nulla quis minim. Ut dolore veniam est duis do aliquip. Id incididunt labore duis minim irure ad amet eu velit.</p>
                 </div>
                 <div class="sg-a11y-block" style="color: #656565; background-color: #ffffff;">
                   <h3>@dark-gray-on-white</h3>
-                  <p>@color-true-white on @color-darker-gray (5.83)</p>
+                  <p>@color-darker-gray on @color-true-white (5.83)</p>
                   <p>Commodo non quis mollit nulla quis minim. Ut dolore veniam est duis do aliquip. Id incididunt labore duis minim irure ad amet eu velit.</p>
                 </div>
                 <div class="sg-a11y-block" style="color: #333333; background-color: #ffffff;">
                   <h3>@darker-gray-on-white / @warm-black-on-white</h3>
-                  <p>@color-true-white on @color-warm-black (12.63)</p>
+                  <p>@color-warm-black on @color-true-white (12.63)</p>
                   <p>Commodo non quis mollit nulla quis minim. Ut dolore veniam est duis do aliquip. Id incididunt labore duis minim irure ad amet eu velit.</p>
                 </div>
                 <!-- on lighter-gray -->
                 <div class="sg-a11y-block" style="color: #0d6e36; background-color: #f8f8f8;">
                   <h3>@gigadb-green-on-lighter-gray</h3>
-                  <p>@color-lighter-gray on @color-gigadb-green-800 (5.99)</p>
+                  <p>@color-gigadb-green-800 on @color-lighter-gray (5.99)</p>
                   <p>Commodo non quis mollit nulla quis minim. Ut dolore veniam est duis do aliquip. Id incididunt labore duis minim irure ad amet eu velit.</p>
                 </div>
                 <div class="sg-a11y-block" style="color: #656565; background-color: #f8f8f8;">
                   <h3>@gray-on-lighter-gray</h3>
-                  <p>@color-lighter-gray on @color-darker-gray (5.49)</p>
+                  <p>@color-darker-gray on @color-lighter-gray (5.49)</p>
                   <p>Commodo non quis mollit nulla quis minim. Ut dolore veniam est duis do aliquip. Id incididunt labore duis minim irure ad amet eu velit.</p>
                 </div>
                 <div class="sg-a11y-block" style="color: #333333; background-color: #f8f8f8;">
                   <h3>@warm-black-on-lighter-gray</h3>
-                  <p>@color-lighter-gray on @color-warm-black (11.90)</p>
+                  <p>@color-warm-black on @color-lighter-gray (11.90)</p>
                   <p>Commodo non quis mollit nulla quis minim. Ut dolore veniam est duis do aliquip. Id incididunt labore duis minim irure ad amet eu velit.</p>
                 </div>
                 <div class="sg-a11y-block" style="color: #c80d0d; background-color: #f8f8f8;">
                   <h3>@brand-danger-on-lighter-gray</h3>
-                  <p>@color-lighter-gray on @color-brand-danger-700 (5.62)</p>
+                  <p>@color-brand-danger-700 on @color-lighter-gray (5.62)</p>
                   <p>Commodo non quis mollit nulla quis minim. Ut dolore veniam est duis do aliquip. Id incididunt labore duis minim irure ad amet eu velit.</p>
                 </div>
                 <!-- on light gray -->
                 <div class="sg-a11y-block" style="color: #656565; background-color: #e5e5e5;">
                   <h3>@dark-gray-on-light-gray</h3>
-                  <p>@color-light-gray on @color-darker-gray (4.63)</p>
+                  <p>@color-darker-gray on @color-light-gray (4.63)</p>
                   <p>Commodo non quis mollit nulla quis minim. Ut dolore veniam est duis do aliquip. Id incididunt labore duis minim irure ad amet eu velit.</p>
                 </div>
                 <!-- on gigadb-green -->
                 <div class="sg-a11y-block" style="color: #ffffff; background-color: #08893e;">
                   <h3>@white-on-gigadb-green</h3>
-                  <p>@color-gigadb-green-750 on @color-true-white (4.51)</p>
+                  <p>@color-true-white on @color-gigadb-green-750 (4.51)</p>
                   <p>Commodo non quis mollit nulla quis minim. Ut dolore veniam est duis do aliquip. Id incididunt labore duis minim irure ad amet eu velit.</p>
                 </div>
                 <!-- on warm-black -->
                 <div class="sg-a11y-block" style="color: #333333; background-color: #cccccc;">
                   <h3>@gray-on-warm-black</h3>
-                  <p>@color-medium-gray on @color-warm-black (7.87)</p>
+                  <p>@color-warm-black on @color-medium-gray (7.87)</p>
                   <p>Commodo non quis mollit nulla quis minim. Ut dolore veniam est duis do aliquip. Id incididunt labore duis minim irure ad amet eu velit.</p>
                 </div>
               </div>
