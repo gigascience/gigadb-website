@@ -381,7 +381,7 @@ class AdminDatasetController extends Controller
                         $this->redirect('/dataset/' . $model->identifier);
                         break;
                     case "hidden":
-                        $this->redirect(array('/dataset/view/id/' . $model->identifier.'/token/'.$model->token));
+                        $this->redirect(array('/adminDataset/update/id/' . $model->id));
                         break;
                 }
 
