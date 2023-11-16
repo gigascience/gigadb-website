@@ -12,6 +12,7 @@ $this->widget(
         'id'            => 'dataset-grid',
         'dataProvider'  => $model,
         'itemsCssClass' => 'table table-bordered',
+        'enableSorting'  => false,
         'columns'       => [
             'creation_date',
             'created_by',
