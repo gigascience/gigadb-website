@@ -29,6 +29,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Feat #1505: Update all admin pages with create and update forms with old style to modern style
 - Feat #1502: Update all admin pages with grid view Dataset tables with old style to modern style
 - Feat #1498: Search page - Improve styles and accessibility of search filters
+- Feat #1365: Improve accessibility of header
 
 
 ## v4.0.0 - 2023-11-06 - 9c012f7b
