@@ -5,6 +5,8 @@ set -e
 # Treat unset or null variables as an error and exit
 set -u
 
+source .secrets
+
 PATH=/usr/local/bin:$PATH
 export PATH
 
@@ -12,15 +14,7 @@ export PATH
 # is located
 APP_SOURCE=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
-# Set these environmental variables to override them,
-# but they have safe defaults.
-PGHOST=database
-PGPORT=5432
-PGDATABASE=gigadb
-PGUSER=gigadb
-PGPASSWORD=vagrant
-
-EXECUTE_SQL="docker-compose run -T files-metadata-console psql -X -U ${PGUSER} -h ${PGHOST} -d ${PGDATABASE} --set ON_ERROR_STOP=on --set AUTOCOMMIT=off"
+EXECUTE_SQL="docker-compose run -T files-metadata-console psql -X -U ${GIGADB_USER} -h ${GIGADB_HOST} -d ${GIGADB_DB} --set ON_ERROR_STOP=on --set AUTOCOMMIT=off"
 
 #######################################
 # Set up logging
