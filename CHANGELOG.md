@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Fix #1562: Make live tideways jobs only available in the tagged GitLab pipeline
 - Feat #1365: Improve accessibility of header
 
 
