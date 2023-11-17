@@ -20,7 +20,7 @@ PGDATABASE=gigadb
 PGUSER=gigadb
 PGPASSWORD=vagrant
 
-EXECUTE_SQL="docker-compose run -T test psql -X -U ${PGUSER} -h ${PGHOST} -d ${PGDATABASE} --set ON_ERROR_STOP=on --set AUTOCOMMIT=off"
+EXECUTE_SQL="docker-compose run -T files-metadata-console psql -X -U ${PGUSER} -h ${PGHOST} -d ${PGDATABASE} --set ON_ERROR_STOP=on --set AUTOCOMMIT=off"
 
 #######################################
 # Set up logging
