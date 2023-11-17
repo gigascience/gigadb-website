@@ -31,8 +31,9 @@ function set_up_logging() {
   touch "${LOGFILE}"
 }
 
-# Process dataset table
 $EXECUTE_SQL <<SQL
+-- #### Process dataset table ####
+
 -- Temporary table will contain datasets that have 'ftp' in its ftp_site link
 CREATE TEMPORARY TABLE dataset_changes AS
 SELECT
@@ -97,13 +98,10 @@ BEGIN
 END
 \$$;
 
--- This transaction will only commit if previous check passes
-COMMIT;
-SQL
+-- #### Process file table ####
 
-# Process file table
-$EXECUTE_SQL <<SQL
--- Temporary table will contain files that have 'ftp' in its ftp_site link
+-- Temporary table will contain files that have 'parrot.genomics.cn',
+-- 'climb.genomics.cn' and 'ftp.cngb.org 'in its location link
 CREATE TEMPORARY TABLE file_changes AS
 SELECT
   id,
@@ -170,6 +168,6 @@ BEGIN
 END
 \$$;
 
--- This transaction will only commit if previous check passes
+-- This transaction will only commit if previous checks passes
 COMMIT;
 SQL
