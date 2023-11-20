@@ -5,8 +5,6 @@ set -e
 # Treat unset or null variables as an error and exit
 set -u
 
-source .secrets
-
 PATH=/usr/local/bin:$PATH
 export PATH
 
@@ -14,7 +12,17 @@ export PATH
 # is located
 APP_SOURCE=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
-EXECUTE_SQL="docker-compose run -T files-metadata-console psql -X -U ${GIGADB_USER} -h ${GIGADB_HOST} -d ${GIGADB_DB} --set ON_ERROR_STOP=on --set AUTOCOMMIT=off"
+# Conditional to execute SQL commands on staging or live environment
+if [[ $(uname -n) =~ compute ]];then
+  source .env
+  export PGPASSWORD=${PGPASSWORD}
+  # Make use of psql installed on bastion server
+  EXECUTE_SQL="psql -X -U ${PGUSER} -h ${PGHOST} -d ${PGDATABASE} --set ON_ERROR_STOP=on --set AUTOCOMMIT=off"
+else
+  # We are in dev environment
+  source .secrets
+  EXECUTE_SQL="docker-compose run -T files-metadata-console psql -X -U ${GIGADB_USER} -h ${GIGADB_HOST} -d ${GIGADB_DB} --set ON_ERROR_STOP=on --set AUTOCOMMIT=off"
+fi
 
 #######################################
 # Set up logging
