@@ -102,7 +102,6 @@ WHERE
 
 -- Assert that all rows in temporary table were copied into dataset table
 SET vars.bucketdir to :'bucketdir';
-SHOW vars.bucketdir;
 DO \$$
 DECLARE
   bucketdir_value TEXT := current_setting('vars.bucketdir');
@@ -127,11 +126,11 @@ SELECT
 FROM
   file
 WHERE
-  location LIKE '%parrot.genomics.cn%'
+  location LIKE '%' || :'ftp_site_parrot' || '%'
 OR
-  location LIKE '%climb.genomics.cn%'
+  location LIKE '%' || :'ftp_site_climb' || '%'
 OR
-  location LIKE '%ftp.cngb.org%'
+  location LIKE '%' || :'ftp_site_cngb' || '%'
 ORDER BY
   dataset_id ASC;
 
@@ -139,22 +138,22 @@ ORDER BY
 UPDATE
   file_changes
 SET location = REPLACE(
-  location, 'https://ftp.cngb.org/pub/gigadb/pub/',
-  'https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/'
+  location, :'ftp_site_cngb',
+  :'bucketdir'
 );
 
 UPDATE
   file_changes
 SET location = REPLACE(
-  location, 'ftp://parrot.genomics.cn/gigadb/pub/',
-  'https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/'
+  location, :'ftp_site_parrot',
+  :'bucketdir'
 );
 
 UPDATE
   file_changes
 SET location = REPLACE(
-  location, 'ftp://climb.genomics.cn/pub/',
-  'https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/'
+  location, :'ftp_site_climb',
+  :'bucketdir'
 );
 
 -- Copy URLs from temporary table into dataset table's ftp_site column
@@ -174,13 +173,15 @@ WHERE
   file.id=subquery.id;
 
 -- Assert that all rows in temporary table were copied into file table
+SET vars.bucketdir to :'bucketdir';
 DO \$$
-DECLARE  
+DECLARE
+  bucketdir_value TEXT := current_setting('vars.bucketdir');
   expected_row_changes integer;
   actual_row_changes integer;
 BEGIN
   SELECT COUNT(*) INTO expected_row_changes FROM file_changes;
-  SELECT COUNT(*) INTO actual_row_changes FROM file WHERE location LIKE '%https://s3.ap-northeast-1.wasabisys.com%';
+  SELECT COUNT(*) INTO actual_row_changes FROM file WHERE location LIKE '%' || bucketdir_value || '%';
   ASSERT actual_row_changes = expected_row_changes, 'No. of row changes in file table does not equal no. of rows in file_changes table!';
 END
 \$$;
