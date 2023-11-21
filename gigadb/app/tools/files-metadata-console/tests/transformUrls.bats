@@ -12,8 +12,7 @@ setup () {
 # Tests if the link in ftp_site column for dataset id 8 has been updated into a
 # Wasabi link
 @test "transform dataset and file URLs" {
-  echo 'Running test' >&3
-  scripts/updateFileUrls.sh
+  scripts/updateUrls.sh
   out=$(docker-compose run -T files-metadata-console psql -X -U gigadb -h database -d gigadb -c 'SELECT ftp_site FROM dataset WHERE id = 8;')
   if [[ "$out" != *" https://s3.ap-northeast-1.wasabisys.com"* ]]; then
     echo "ftp_site URL for dataset id 8 was not transformed into Wasabi link" >&3
