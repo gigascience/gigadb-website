@@ -36,7 +36,7 @@
 
 - name: check if public key exists in GitLab CI environment variable
   ansible.builtin.uri:
-    url: "{{ gitlab_url }}/variables/{{ newuser }}_bastion_public_key?filter%5benvironment_scope%5d={{ gigadb_environment }}"
+    url: "{{ gitlab_url }}/variables/bastion_authorized_keys_{{ newuser }}?filter%5benvironment_scope%5d={{ gigadb_environment }}"
     headers:
       PRIVATE-TOKEN: "{{ gitlab_private_token }}"
     body_format: json
@@ -90,7 +90,7 @@
           PRIVATE-TOKEN: "{{ gitlab_private_token }}"
         body_format: json
         body:
-          key: "{{ newuser }}_bastion_public_key"
+          key: "bastion_authorized_keys_{{ newuser }}"
           value: "{{ pk.public_key }}"
           environment_scope: "{{ gigadb_environment }}"
         status_code:
@@ -117,7 +117,7 @@
           PRIVATE-TOKEN: "{{ gitlab_private_token }}"
         body_format: json
         body:
-          key: "{{ newuser }}_bastion_public_key"
+          key: "bastion_authorized_keys_{{ newuser }}"
           value: "{{ existing_public_key['content'] | b64decode}}"
           environment_scope: "{{ gigadb_environment }}"
         status_code:
@@ -133,7 +133,7 @@
   block:
     - name: get public key
       ansible.builtin.uri:
-        url: "{{ gitlab_url }}/variables/{{ newuser }}_bastion_public_key?filter%5benvironment_scope%5d={{ gigadb_environment }}"
+        url: "{{ gitlab_url }}/variables/bastion_authorized_keys_{{ newuser }}?filter%5benvironment_scope%5d={{ gigadb_environment }}"
         method: GET
         headers:
           PRIVATE-TOKEN: "{{ gitlab_private_token }}"
