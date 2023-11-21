@@ -12,16 +12,22 @@ export PATH
 # is located
 APP_SOURCE=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
+export WASABI_SERVICE_URL="s3.ap-northeast-1.wasabisys.com"
+export DESTINATION_BUCKET_DIRECTORY="https://${WASABI_SERVICE_URL}/gigadb-datasets/live/pub"
+export FTP_SITE_CNGB="https://ftp.cngb.org/pub/gigadb/pub"
+export FTP_SITE_PARROT="ftp://parrot.genomics.cn/gigadb/pub"
+export FTP_SITE_CLIMB="ftp://climb.genomics.cn/pub"
+
 # Conditional to execute SQL commands on staging or live environment
 if [[ $(uname -n) =~ compute ]];then
   source .env
   export PGPASSWORD=${PGPASSWORD}
   # Make use of psql installed on bastion server
-  EXECUTE_SQL="psql -X -U ${PGUSER} -h ${PGHOST} -d ${PGDATABASE} --set ON_ERROR_STOP=on --set AUTOCOMMIT=off"
+  EXECUTE_SQL="psql -X -U ${PGUSER} -h ${PGHOST} -d ${PGDATABASE} --set ON_ERROR_STOP=on --set AUTOCOMMIT=off --set bucketdir=${DESTINATION_BUCKET_DIRECTORY} --set ftp_site_cngb=${FTP_SITE_CNGB} --set ftp_site_parrot=${FTP_SITE_PARROT} --set ftp_site_climb=${FTP_SITE_CLIMB}"
 else
   # We are in dev environment
   source .secrets
-  EXECUTE_SQL="docker-compose run -T files-metadata-console psql -X -U ${GIGADB_USER} -h ${GIGADB_HOST} -d ${GIGADB_DB} --set ON_ERROR_STOP=on --set AUTOCOMMIT=off"
+  EXECUTE_SQL="docker-compose run -T files-metadata-console psql -X -U ${GIGADB_USER} -h ${GIGADB_HOST} -d ${GIGADB_DB} --set ON_ERROR_STOP=on --set AUTOCOMMIT=off --set bucketdir=${DESTINATION_BUCKET_DIRECTORY} --set ftp_site_cngb=${FTP_SITE_CNGB} --set ftp_site_parrot=${FTP_SITE_PARROT} --set ftp_site_climb=${FTP_SITE_CLIMB}"
 fi
 
 #######################################
@@ -60,22 +66,22 @@ UPDATE
   dataset_changes
 SET
   ftp_site = REPLACE(
-    ftp_site, 'https://ftp.cngb.org/pub/gigadb/pub',
-    'https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub'
+    ftp_site, :'ftp_site_cngb',
+    :'bucketdir'
   );
 
 UPDATE
   dataset_changes
 SET ftp_site = REPLACE(
-      ftp_site, 'ftp://parrot.genomics.cn/gigadb/pub', 
-      'https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub'
+    ftp_site, :'ftp_site_parrot',
+    :'bucketdir'
     );
 
 UPDATE
   dataset_changes
 SET ftp_site = REPLACE(
-    ftp_site, 'ftp://climb.genomics.cn/pub', 
-    'https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub'
+    ftp_site, :'ftp_site_climb',
+    :'bucketdir'
   );
 
 -- Copy URLs from temporary table into dataset table's ftp_site column
@@ -95,13 +101,16 @@ WHERE
   dataset.identifier = subquery.identifier;
 
 -- Assert that all rows in temporary table were copied into dataset table
+SET vars.bucketdir to :'bucketdir';
+SHOW vars.bucketdir;
 DO \$$
-DECLARE  
+DECLARE
+  bucketdir_value TEXT := current_setting('vars.bucketdir');
   expected_row_changes integer;
   actual_row_changes integer;
 BEGIN
   SELECT COUNT(*) INTO expected_row_changes FROM dataset_changes;
-  SELECT COUNT(*) INTO actual_row_changes FROM dataset WHERE ftp_site LIKE '%https://s3.ap-northeast-1.wasabisys.com%';
+  SELECT COUNT(*) INTO actual_row_changes FROM dataset WHERE ftp_site LIKE '%' || bucketdir_value || '%';
   ASSERT actual_row_changes = expected_row_changes, 'No. of row changes in dataset table does not equal no. of rows in dataset_changes table!';
 END
 \$$;
