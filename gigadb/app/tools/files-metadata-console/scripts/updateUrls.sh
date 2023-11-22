@@ -27,7 +27,7 @@ else
 fi
 
 $EXECUTE_SQL <<SQL
--- #### Process dataset table ####
+\echo Processing dataset table...
 
 -- Temporary table will contain datasets that have 'ftp' in its ftp_site link
 CREATE TEMPORARY TABLE dataset_changes AS
@@ -41,8 +41,8 @@ WHERE
   ftp_site LIKE '%ftp%'
 ORDER BY
   identifier ASC;
+\echo Created dataset_changes temporary table 
 
--- Transform URLs in ftp_site column
 UPDATE
   dataset_changes
 SET
@@ -64,8 +64,8 @@ SET ftp_site = REPLACE(
     ftp_site, :'ftp_site_climb',
     :'bucketdir'
   );
+\echo Transformed URLs in ftp_site column in temp table
 
--- Copy URLs from temporary table into dataset table's ftp_site column
 UPDATE 
   dataset 
 SET 
@@ -80,8 +80,8 @@ FROM
   ) AS subquery 
 WHERE 
   dataset.identifier = subquery.identifier;
+\echo Copied URLs from temporary table into dataset table ftp_site column
 
--- Assert that all rows in temporary table were copied into dataset table
 SET vars.bucketdir to :'bucketdir';
 DO \$$
 DECLARE
@@ -94,8 +94,9 @@ BEGIN
   ASSERT actual_row_changes = expected_row_changes, 'No. of row changes in dataset table does not equal no. of rows in dataset_changes table!';
 END
 \$$;
+\echo Asserted that all rows in temporary table were copied into dataset table
 
--- #### Process file table ####
+\echo Processing file table...
 
 -- Temporary table will contain files that have 'parrot.genomics.cn',
 -- 'climb.genomics.cn' and 'ftp.cngb.org 'in its location link
@@ -114,8 +115,8 @@ OR
   location LIKE '%' || :'ftp_site_cngb' || '%'
 ORDER BY
   dataset_id ASC;
+\echo Created dataset_changes temporary table 
 
--- Transform URLs in location column
 UPDATE
   file_changes
 SET location = REPLACE(
@@ -136,8 +137,8 @@ SET location = REPLACE(
   location, :'ftp_site_climb',
   :'bucketdir'
 );
+\echo Transformed URLs in location column in temp table
 
--- Copy URLs from temporary table into dataset table's ftp_site column
 UPDATE
   file
 SET
@@ -152,8 +153,8 @@ FROM
   ) AS subquery
 WHERE
   file.id=subquery.id;
+\echo Copied URLs from temporary table into dataset table ftp_site column
 
--- Assert that all rows in temporary table were copied into file table
 SET vars.bucketdir to :'bucketdir';
 DO \$$
 DECLARE
@@ -166,7 +167,9 @@ BEGIN
   ASSERT actual_row_changes = expected_row_changes, 'No. of row changes in file table does not equal no. of rows in file_changes table!';
 END
 \$$;
+\echo Asserted that all rows in temporary table were copied into file table
 
 -- This transaction will only commit if all PSQL commands passes
 COMMIT;
+\echo All SQL commands were successfully committed in database transaction!
 SQL
