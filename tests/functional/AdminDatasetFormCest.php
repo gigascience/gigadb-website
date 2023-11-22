@@ -67,4 +67,49 @@ class AdminDatasetFormCest
             'description' => 'Test description'
         ]);
     }
+
+    public function tryToSaveChangesForPublicDataset(FunctionalTester $I)
+    {
+        $I->amOnPage('/adminDataset/update/id/8');
+        $I->canSee('Published');
+        $I->cantSee('Open Private URL');
+        $I->seeElement('input', ['name' => 'Dataset[dataset_size]', 'type' => 'text', 'value' => '755815424']);
+        $I->seeElement('input', ['name' => 'Dataset[title]', 'type' => 'text', 'value' => 'Genomic data from Adelie penguin (<em>Pygoscelis adeliae</em>). ']);
+        $I->fillField('Dataset[dataset_size]', '1024');
+        $I->fillField('Dataset[title]', 'Test title');
+        $I->click('Save');
+        $I->seeInCurrentUrl('/dataset/100006');
+        $I->canSee('Test title');
+        $I->canSeeInDatabase('dataset', [
+            'dataset_size' => 1024,
+            'title' => 'Test title'
+        ]);
+        $I->cantSeeInDatabase('dataset', [
+            'dataset_size' => '755815424',
+            'title' => 'Genomic data from Adelie penguin (<em>Pygoscelis adeliae</em>). '
+        ]);
+    }
+
+    public function tryToCancelChangesForPublicDataset(FunctionalTester $I)
+    {
+        $I->amOnPage('/adminDataset/update/id/8');
+        $I->canSee('Published');
+        $I->cantSee('Open Private URL');
+        $I->seeElement('input', ['name' => 'Dataset[dataset_size]', 'type' => 'text', 'value' => '755815424']);
+        $I->seeElement('input', ['name' => 'Dataset[title]', 'type' => 'text', 'value' => 'Genomic data from Adelie penguin (<em>Pygoscelis adeliae</em>). ']);
+        $I->fillField('Dataset[dataset_size]', '1024');
+        $I->fillField('Dataset[title]', 'Test title');
+        # Use the CSS locator for the "Cancel" button
+        $I->click('a.btn[href="/adminDataset/admin"]');
+        $I->seeInCurrentUrl('/adminDataset/admin');
+        $I->see('Manage Datasets');
+        $I->canSeeInDatabase('dataset', [
+            'dataset_size' => 755815424,
+            'title' => 'Genomic data from Adelie penguin (<em>Pygoscelis adeliae</em>). '
+        ]);
+        $I->cantSeeInDatabase('dataset', [
+            'dataset_size' => '1024',
+            'title' => 'Test title'
+        ]);
+    }
 }
