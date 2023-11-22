@@ -1,7 +1,5 @@
 <?php
 
-use Codeception\Util\Locator;
-
 /**
  *
  * generated with:
@@ -56,9 +54,10 @@ class AdminDatasetFormCest
         $I->canSee('well now, how to describe nothing in particular?');
         $I->fillField('Dataset[dataset_size]', '1024');
         $I->fillField('Dataset[description]', 'Test description');
-        $I->click(Locator::find('a', ['href' => '/adminDataset/admin', 'class' => 'btn']));
+        # Use the CSS locator for the "Cancel" button
+        $I->click('a.btn[href="/adminDataset/admin"]');
         $I->seeInCurrentUrl('/adminDataset/admin');
-        $I->see("Manage Datasets");
+        $I->see('Manage Datasets');
         $I->canSeeInDatabase('dataset', [
             'dataset_size' => 32,
             'description' => 'well now, how to describe nothing in particular?'
