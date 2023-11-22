@@ -8,10 +8,6 @@ set -u
 PATH=/usr/local/bin:$PATH
 export PATH
 
-# Allow all scripts to base themselves from directory where backup script 
-# is located
-APP_SOURCE=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-
 export WASABI_SERVICE_URL="s3.ap-northeast-1.wasabisys.com"
 export DESTINATION_BUCKET_DIRECTORY="https://${WASABI_SERVICE_URL}/gigadb-datasets/live/pub"
 export FTP_SITE_CNGB="https://ftp.cngb.org/pub/gigadb/pub"
@@ -29,21 +25,6 @@ else
   source .secrets
   EXECUTE_SQL="docker-compose run -T files-metadata-console psql -X -U ${GIGADB_USER} -h ${GIGADB_HOST} -d ${GIGADB_DB} --set ON_ERROR_STOP=on --set AUTOCOMMIT=off --set bucketdir=${DESTINATION_BUCKET_DIRECTORY} --set ftp_site_cngb=${FTP_SITE_CNGB} --set ftp_site_parrot=${FTP_SITE_PARROT} --set ftp_site_climb=${FTP_SITE_CLIMB}"
 fi
-
-#######################################
-# Set up logging
-# Globals:
-#   LOGDIR
-#   APP_SOURCE
-# Arguments:
-#   None
-#######################################
-function set_up_logging() {
-  LOGDIR="$APP_SOURCE/logs"
-  LOGFILE="$LOGDIR/update_urls_$(date +'%Y%m%d_%H%M%S').log"
-  mkdir -p "${LOGDIR}"
-  touch "${LOGFILE}"
-}
 
 $EXECUTE_SQL <<SQL
 -- #### Process dataset table ####
@@ -105,8 +86,8 @@ SET vars.bucketdir to :'bucketdir';
 DO \$$
 DECLARE
   bucketdir_value TEXT := current_setting('vars.bucketdir');
-  expected_row_changes integer;
-  actual_row_changes integer;
+  expected_row_changes INTEGER;
+  actual_row_changes INTEGER;
 BEGIN
   SELECT COUNT(*) INTO expected_row_changes FROM dataset_changes;
   SELECT COUNT(*) INTO actual_row_changes FROM dataset WHERE ftp_site LIKE '%' || bucketdir_value || '%';
@@ -177,8 +158,8 @@ SET vars.bucketdir to :'bucketdir';
 DO \$$
 DECLARE
   bucketdir_value TEXT := current_setting('vars.bucketdir');
-  expected_row_changes integer;
-  actual_row_changes integer;
+  expected_row_changes INTEGER;
+  actual_row_changes INTEGER;
 BEGIN
   SELECT COUNT(*) INTO expected_row_changes FROM file_changes;
   SELECT COUNT(*) INTO actual_row_changes FROM file WHERE location LIKE '%' || bucketdir_value || '%';
@@ -186,6 +167,6 @@ BEGIN
 END
 \$$;
 
--- This transaction will only commit if previous checks passes
+-- This transaction will only commit if all PSQL commands passes
 COMMIT;
 SQL
