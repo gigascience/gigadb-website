@@ -229,18 +229,3 @@ $ docker-compose run --rm files-metadata-console ./vendor/codeception/codeceptio
 
 $ docker-compose run --rm files-metadata-console ./vendor/codeception/codeception/codecept run --debug tests/functional/ReplaceFileUrlSubstringWithPrefixCest:^tryExcludingDOIsFromFileUrlChanges$
 ```
-
-## Running bats tests
-
-Ensure you have `bats` installed (e.g: on macOS, you could do `brew install bats-core`
-or `port install bats-core`). Then run:
-```
-# Ensure you are in gigadb/app/tools/readme-generator directory
-$ bats tests
- ✓ create readme file
- ✓ check does not create readme with invalid doi and exits
- ✓ create one readme file using batch mode
- ✓ create two readme files using batch mode
-
-4 tests, 0 failures
-```
