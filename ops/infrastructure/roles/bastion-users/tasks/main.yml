@@ -129,7 +129,7 @@
         msg: "{{ save_pk_to_gitlab.status }}"
   when: (public_key_in_bastion.stat.exists == true and public_key_in_gitlab.status == 404)
 
-- name: download pubic key from GitLab CI environment variable and copy it to authorized file
+- name: download public key from GitLab CI environment variable and copy it to authorized file
   block:
     - name: get public key
       ansible.builtin.uri:
