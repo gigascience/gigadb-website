@@ -150,7 +150,7 @@ Feature: filter tables on admin page
   @ok
   Scenario: Attribute
     Given I am on "/attribute/admin"
-    When I fill in the field of "name" "Attribute[attribute_name]" with "location"
+    When I fill in the field of "name" "Attributes[attribute_name]" with "location"
     And I press return on the element "(//input)[2]"
     And I wait "1" seconds
     Then I should see "Geographic"

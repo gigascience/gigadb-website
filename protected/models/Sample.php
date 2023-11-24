@@ -88,7 +88,7 @@ class Sample extends CActiveRecord
             'datasetSamples' => array(self::HAS_MANY, 'DatasetSample', 'sample_id'),
             'datasets' => array(self::MANY_MANY, 'Dataset', 'dataset_sample(dataset_id,sample_id)'),
             'sampleAttributes' => array(self::HAS_MANY, 'SampleAttribute', 'sample_id', 'order' => 'id asc'),
-            'attributes' => array(self::HAS_MANY, 'Attribute', array('id' => 'attribute_id'), 'through' => 'sampleAttributes'),
+            'attributes' => array(self::HAS_MANY, 'Attributes', array('id' => 'attribute_id'), 'through' => 'sampleAttributes'),
             'alternativeIdentifiers' => array(self::HAS_MANY, 'AlternativeIdentifiers', 'sample_id'),
         );
     }

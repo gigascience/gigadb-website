@@ -15,13 +15,13 @@
  * @property string $ontology_link
  * @property string $note
  */
-class Attribute extends CActiveRecord
+class Attributes extends CActiveRecord
 {
     const FUP = 'Fairly Use Policy';
         const AUTO_ATTRIBUTE = "'file_size', 'num_amino_acids', 'num_nucleotides', 'num_words', 'num_lines', 'num_rows', 'num_columns'";
     /**
      * Returns the static model of the specified AR class.
-     * @return Attribute the static model class
+     * @return Attributes the static model class
      */
     public static function model($className = __CLASS__)
     {
@@ -121,7 +121,7 @@ class Attribute extends CActiveRecord
 
         $criteria->compare('note', $this->note, true);
 
-        return new CActiveDataProvider('Attribute', array(
+        return new CActiveDataProvider('Attributes', array(
             'criteria' => $criteria,
         ));
     }
