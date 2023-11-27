@@ -311,7 +311,7 @@ then execute the `user_playbook` for the user:
 ```
 which will generate a new pair of ssh keys, the new private key will then be sent to the user, while the public key will be pushed to the the gitlab variable page and also the bastion server.
 
-### What if a user still cannot connect to the bastion server even they have a valid private key file in their computer and the corresponding public key in the baston server
+### What if a user still cannot connect to the bastion server even they have a valid private key file in their computer and the corresponding public key in the bastion server
 
 This may be because the sshd service in the bastion server has not been started properly, tech team will:
 ```
