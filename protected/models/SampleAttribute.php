@@ -59,7 +59,7 @@ class SampleAttribute extends CActiveRecord
      */
     public function validateAttributeId($attribute, $param)
     {
-        $attributeModel = Attribute::model()->findByPk($this->attribute_id);
+        $attributeModel = Attributes::model()->findByPk($this->attribute_id);
         if ($attributeModel === null) {
             $this->addError('attribute_id', 'The specified attribute id does not exist in the Attribute table.');
         }
@@ -88,7 +88,7 @@ class SampleAttribute extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'attribute' => array(self::BELONGS_TO, 'Attribute', 'attribute_id'),
+			'attribute' => array(self::BELONGS_TO, 'Attributes', 'attribute_id'),
 			'sample' => array(self::BELONGS_TO, 'Sample', 'sample_id'),
 			'unit' => array(self::BELONGS_TO, 'Unit', 'unit_id'),
 		);
@@ -102,7 +102,7 @@ class SampleAttribute extends CActiveRecord
 		return array(
 			'id' => 'Id',
 			'sample_id' => 'Sample',
-			'attribute_id' => 'Attribute',
+			'attribute_id' => 'Attributes',
 			'value' => 'Value',
 			'unit_id' => 'Unit',
 		);

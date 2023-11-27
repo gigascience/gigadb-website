@@ -11,7 +11,7 @@ class ResourcedDatasetFilesTest extends CDbTestCase
     protected $fixtures = array( //careful, the order matters here because of foreign key constraints
         'species' => 'Species',
         'datasets' => 'Dataset',
-        'attributes' => 'Attribute',
+        'attributes' => 'Attributes',
         'file_formats' => 'FileFormat',
         'file_types' => 'FileType',
         'files' => 'File',

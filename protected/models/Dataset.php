@@ -137,12 +137,12 @@ class Dataset extends CActiveRecord
             'funders' =>array(self::HAS_MANY, 'Funder', 'dataset_funder(dataset_id, funder_id)'),
             'datasetLogs'=>array(self::HAS_MANY, 'DatasetLog', 'dataset_id'),
             'datasetAttributes' => array(self::HAS_MANY, 'DatasetAttributes', 'dataset_id'),
-            'attributes' => array(self::MANY_MANY, 'Attribute', 'dataset_attributes(dataset_id, attribute_id)'),
+            'attributes' => array(self::MANY_MANY, 'Attributes', 'dataset_attributes(dataset_id, attribute_id)'),
         );
     }
 
     public function getPolicy() {
-        $att = Attribute::model()->findByAttributes(array('attribute_name'=>Attribute::FUP));
+        $att = Attributes::model()->findByAttributes(array('attribute_name'=>Attributes::FUP));
         if(!$att)
             return null;
         return DatasetAttributes::model()->findByAttributes(array('dataset_id'=>$this->id, 'attribute_id'=>$att->id));
@@ -429,7 +429,7 @@ class Dataset extends CActiveRecord
     }
 
     public function getSemanticKeywords() {
-        $sKeywordAttr = Attribute::model()->findByAttributes(array('attribute_name'=>'keyword'));
+        $sKeywordAttr = Attributes::model()->findByAttributes(array('attribute_name'=>'keyword'));
 
         $sk = DatasetAttributes::model()->findAllByAttributes(array('dataset_id'=>$this->id,'attribute_id'=>$sKeywordAttr->id));
 
@@ -445,7 +445,7 @@ class Dataset extends CActiveRecord
 
         $criteria = new CDbCriteria(array('order'=>'id ASC'));
 
-        $urlToRedirectAttr = Attribute::model()->findByAttributes(array('attribute_name'=>'urltoredirect'));
+        $urlToRedirectAttr = Attributes::model()->findByAttributes(array('attribute_name'=>'urltoredirect'));
 
         $urlToRedirectDatasetAttribute = DatasetAttributes::model()->findByAttributes(array('dataset_id'=>$this->id,'attribute_id'=>$urlToRedirectAttr->id), $criteria);
 

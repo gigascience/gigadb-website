@@ -4,7 +4,7 @@ class SampleTest extends CDbTestCase
 {
     protected $fixtures = array(
         'samples' => 'Sample',
-        'attributes' => 'Attribute',
+        'attributes' => 'Attributes',
         'sample_attribute' => 'SampleAttribute',
     );
 

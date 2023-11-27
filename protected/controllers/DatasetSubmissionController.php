@@ -791,13 +791,13 @@ EO_MAIL;
             }
 
             # load attributes
-            $keywordsAttr = Attribute::model()->findByAttributes(array('attribute_name'=>'PX_keywords'));
-            $sppAttr = Attribute::model()->findByAttributes(array('attribute_name'=>'PX_sample_processing_protocol'));
-            $dppAttr = Attribute::model()->findByAttributes(array('attribute_name'=>'PX_data_processing_protocol'));
-            $expTypeAttr = Attribute::model()->findByAttributes(array('attribute_name'=>'PX_experiment_type'));
-            $instrumentAttr = Attribute::model()->findByAttributes(array('attribute_name'=>'PX_instrument'));
-            $quantificationAttr = Attribute::model()->findByAttributes(array('attribute_name'=>'PX_quantification'));
-            $modificationAttr = Attribute::model()->findByAttributes(array('attribute_name'=>'PX_modification'));
+            $keywordsAttr = Attributes::model()->findByAttributes(array('attribute_name'=>'PX_keywords'));
+            $sppAttr = Attributes::model()->findByAttributes(array('attribute_name'=>'PX_sample_processing_protocol'));
+            $dppAttr = Attributes::model()->findByAttributes(array('attribute_name'=>'PX_data_processing_protocol'));
+            $expTypeAttr = Attributes::model()->findByAttributes(array('attribute_name'=>'PX_experiment_type'));
+            $instrumentAttr = Attributes::model()->findByAttributes(array('attribute_name'=>'PX_instrument'));
+            $quantificationAttr = Attributes::model()->findByAttributes(array('attribute_name'=>'PX_quantification'));
+            $modificationAttr = Attributes::model()->findByAttributes(array('attribute_name'=>'PX_modification'));
 
             if (!$keywordsAttr or !$sppAttr or !$dppAttr or !$expTypeAttr or !$instrumentAttr or !$quantificationAttr or !$modificationAttr) {
                 Yii::app()->user->setFlash('keyword', "Attr cannot be found.");

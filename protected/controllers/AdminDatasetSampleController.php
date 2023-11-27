@@ -472,10 +472,10 @@ class AdminDatasetSampleController extends Controller
                 }
 
                 // try to find attribute, if not found, create a new one
-               $attr = Attribute::model()->findByAttributes(array('attribute_name'=>$_POST['attr_id']));
+               $attr = Attributes::model()->findByAttributes(array('attribute_name'=>$_POST['attr_id']));
                if(!$attr) {
                     #create new attribute
-                    $attr = new Attribute;
+                    $attr = new Attributes;
                     $attr->attribute_name = $_POST['attr_id'];
                     $attr->save(false);
                }
@@ -529,7 +529,7 @@ class AdminDatasetSampleController extends Controller
             if (isset($_GET['term'])) {
                 $criteria = new CDbCriteria;
                 $criteria->addSearchCondition('attribute_name', $_GET['term']);
-                $attrs = Attribute::model()->findAll($criteria);
+                $attrs = Attributes::model()->findAll($criteria);
                 
                 foreach($attrs as $attr) {
                     $result[$attr->attribute_name] = $attr->attribute_name;

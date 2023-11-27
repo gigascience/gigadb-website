@@ -168,7 +168,7 @@ foreach($dataset_attributes as $dataset_attribute)
 {
     if(isset($dataset_attribute->value) && $dataset_attribute->value!=""){
     $xml.="<attribute>";
-    $datasetattribute=Attribute::model()->findByAttributes(array('id'=>$dataset_attribute->attribute_id));
+    $datasetattribute=Attributes::model()->findByAttributes(array('id'=>$dataset_attribute->attribute_id));
     if(isset($datasetattribute)){
     $xml.="<key>$datasetattribute->attribute_name</key>";
     }else{
@@ -231,7 +231,7 @@ if($datasetid1 == $datasetid)
     $xml.="<sample_attributes>";
     $sa_attributes=  SampleAttribute::model()->findAllByAttributes(array('sample_id'=>$sample->id));
     foreach($sa_attributes as $sa_attribute){
-        $saattribute=  Attribute::model()->findByAttributes(array('id'=>$sa_attribute->attribute_id));
+        $saattribute=  Attributes::model()->findByAttributes(array('id'=>$sa_attribute->attribute_id));
         $xml.="<attribute>";
         $xml.="<key>$saattribute->attribute_name</key>";
         $xml.="<value>$sa_attribute->value</value>";
@@ -283,7 +283,7 @@ $xml.="<file_attributes>";
 $fileattributes=$file->fileAttributes;
 foreach($fileattributes as $fileattribute){
     $xml.="<attribute id=\"$fileattribute->id\">";
-    $file_att=  Attribute::model()->findByAttributes(array('id'=>$fileattribute->attribute_id));
+    $file_att=  Attributes::model()->findByAttributes(array('id'=>$fileattribute->attribute_id));
     $xml.="<key>$file_att->attribute_name</key>";
     $xml.="<value>$fileattribute->value</value>";
     $file_unit=  Unit::model()->findByAttributes(array('id'=>$fileattribute->unit_id));
@@ -352,7 +352,7 @@ foreach($sample->datasets as $dataset)
     $xml.="<sample_attributes>";
     $sa_attributes=  SampleAttribute::model()->findAllByAttributes(array('sample_id'=>$sample->id));
     foreach($sa_attributes as $sa_attribute){
-        $saattribute=  Attribute::model()->findByAttributes(array('id'=>$sa_attribute->attribute_id));
+        $saattribute=  Attributes::model()->findByAttributes(array('id'=>$sa_attribute->attribute_id));
         $xml.="<attribute>";
         $xml.="<key>$saattribute->attribute_name</key>";
         $xml.="<value>$sa_attribute->value</value>";
@@ -402,7 +402,7 @@ $xml.="<file_attributes>";
 $fileattributes=$file->fileAttributes;
 foreach($fileattributes as $fileattribute){
     $xml.="<attribute id=\"$fileattribute->id\">";
-    $file_att=  Attribute::model()->findByAttributes(array('id'=>$fileattribute->attribute_id));
+    $file_att=  Attributes::model()->findByAttributes(array('id'=>$fileattribute->attribute_id));
     $xml.="<key id=\"$file_att->id\">$file_att->name</key>";
     $xml.="<value>$fileattribute->value</value>";
     $file_unit=  Unit::model()->findByAttributes(array('id'=>$fileattribute->unit_id));
