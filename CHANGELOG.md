@@ -4,6 +4,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+## v4.0.2 - 2023-11-27 - cba0ca7a
+
 - Fix #1528: Do not use caching on mockup pages
 
 ## v4.0.1 - 2023-11-20 - 57129850
