@@ -4,7 +4,7 @@
 # To be effective, ensure the two lines below are placed before we load Yii.php
 define('YII_DEBUG',$YII_DEBUG);
 define('YII_TRACE_LEVEL',$YII_TRACE_LEVEL);
-define('DISABLE_CACHE',$DISABLE_CACHE);
+define('DISABLE_CACHE',false);
 
 # Load the modified root class for Yii1.1/Yii2.0
 $yii=dirname(__FILE__).'/protected/components/Yii.php';

@@ -2,12 +2,16 @@
 # build a Centos server running a secure Docker CE install
 
 - name: Fix Centos EOL issues
-  hosts: name_gigadb_server_staging*:name_gigadb_server_live*
+  hosts: name_gigadb_server_{{gigadb_env}}*
+  tags:
+    - fix-centos-eol-issues
   roles:
     - role: ../../roles/centos-eol-fix
 
 - name: Setup Fail2ban
-  hosts: name_gigadb_server_staging*:name_gigadb_server_live*
+  hosts: name_gigadb_server_{{gigadb_env}}*
+  tags:
+    - setup-fail2ban
 
   tasks:
     - debug:
@@ -18,10 +22,11 @@
     - role: ../../roles/jail-ssh
 
 - name: Setup Docker CE
-  hosts: name_gigadb_server_staging*:name_gigadb_server_live*
+  hosts: name_gigadb_server_{{gigadb_env}}*
+  tags:
+    - setup-docker-ce
   vars:
     target_host: ""
-
 
   roles:
     - role: ../../roles/docker-install
@@ -35,7 +40,7 @@
     - role: ../../roles/fuw
 
 - name: Install node exporter
-  hosts: name_gigadb_server_staging*:name_gigadb_server_live*
+  hosts: name_gigadb_server_{{gigadb_env}}*
   tags:
     - node-exporter
   roles:

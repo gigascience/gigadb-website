@@ -11,7 +11,7 @@
  * @property string $units_id
  *
  * The followings are the available model relations:
- * @property Attribute $attribute
+ * @property Attributes $attribute
  * @property Dataset $dataset
  * @property Unit $units
  * @property integer $image_id
@@ -65,7 +65,7 @@ class DatasetAttributes extends CActiveRecord
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
-            'attribute' => array(self::BELONGS_TO, 'Attribute', 'attribute_id'),
+            'attribute' => array(self::BELONGS_TO, 'Attributes', 'attribute_id'),
             'dataset' => array(self::BELONGS_TO, 'Dataset', 'dataset_id'),
             'units' => array(self::BELONGS_TO, 'Unit', 'units_id'),
             'image' => array(self::BELONGS_TO, 'Images', 'image_id'),
@@ -80,7 +80,7 @@ class DatasetAttributes extends CActiveRecord
         return array(
             'id' => 'ID',
             'dataset_id' => 'Dataset',
-            'attribute_id' => 'Attribute',
+            'attribute_id' => 'Attributes',
             'value' => 'Value',
             'units_id' => 'Units',
             'image_id' => 'Image',
