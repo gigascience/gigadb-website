@@ -162,7 +162,7 @@ foreach($dataset_attributes as $dataset_attribute)
 {
     if(isset($dataset_attribute->value) && $dataset_attribute->value!=""){
     $xml.="   <attribute>\n";
-    $datasetattribute=Attribute::model()->findByAttributes(array('id'=>$dataset_attribute->attribute_id));
+    $datasetattribute=Attributes::model()->findByAttributes(array('id'=>$dataset_attribute->attribute_id));
     if(isset($datasetattribute)){
     $xml.="    <key>$datasetattribute->attribute_name</key>\n";
     }else{
@@ -216,7 +216,7 @@ foreach($samples as $sample){
     $xml.="   <sample_attributes>\n";
     $sa_attributes=  SampleAttribute::model()->findAllByAttributes(array('sample_id'=>$sample->id));
     foreach($sa_attributes as $sa_attribute){
-        $saattribute=  Attribute::model()->findByAttributes(array('id'=>$sa_attribute->attribute_id));
+        $saattribute=  Attributes::model()->findByAttributes(array('id'=>$sa_attribute->attribute_id));
         $xml.="    <attribute>\n";
         $xml.="     <key>$saattribute->attribute_name</key>\n";
         $xml.="     <value>$sa_attribute->value</value>\n";
@@ -270,7 +270,7 @@ $xml.="   <file_attributes>\n";
 $fileattributes=$file->fileAttributes;
 foreach($fileattributes as $fileattribute){
     $xml.="   <attribute>\n";
-    $file_att=  Attribute::model()->findByAttributes(array('id'=>$fileattribute->attribute_id));
+    $file_att=  Attributes::model()->findByAttributes(array('id'=>$fileattribute->attribute_id));
     $xml.="    <key>$file_att->attribute_name</key>\n";
     $xml.="    <value>$fileattribute->value</value>\n";
     $file_unit=  Unit::model()->findByAttributes(array('id'=>$fileattribute->unit_id));

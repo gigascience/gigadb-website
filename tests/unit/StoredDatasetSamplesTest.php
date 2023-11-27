@@ -10,7 +10,7 @@ class StoredDatasetSamplesTest extends CDbTestCase
 	protected $fixtures=array( //careful, the order matters here because of foreign key constraints
         'species'=>'Species',
         'datasets'=>'Dataset',
-        'attributes'=>'Attribute',
+        'attributes'=>'Attributes',
         'samples'=>'Sample',
         'dataset_samples'=>'DatasetSample',
         'sample_attribute'=>'SampleAttribute',

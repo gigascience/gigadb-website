@@ -352,7 +352,7 @@ class AdminDatasetController extends Controller
 
                 // retrieve existing redirect
                 $criteria = new CDbCriteria(array('order'=>'id ASC'));
-                $urlToRedirectAttr = Attribute::model()->findByAttributes(array('attribute_name'=>'urltoredirect'));
+                $urlToRedirectAttr = Attributes::model()->findByAttributes(array('attribute_name'=>'urltoredirect'));
                 $urlToRedirectDatasetAttribute = datasetAttributes::model()->findByAttributes(array('dataset_id'=>$id,'attribute_id'=>$urlToRedirectAttr->id), $criteria);
 
                 // saving url to redirect as a dataset attribute

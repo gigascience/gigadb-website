@@ -12,7 +12,6 @@
         "yiisoft/yii2-swiftmailer": "~2.1.0",
         "phpmailer/phpmailer": "^6.0",
         "gabrielelana/byte-units": "^0.5",
-        "google/apiclient": "~v2.2.2",
         "suin/php-rss-writer": "^1.6",
          "leafo/lessphp": "^v0.5.0",
          "opauth/opauth": "^0.4.5",

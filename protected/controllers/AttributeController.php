@@ -59,14 +59,14 @@ class AttributeController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new Attribute;
+		$model=new Attributes;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Attribute']))
+		if(isset($_POST['Attributes']))
 		{
-			$model->attributes=$_POST['Attribute'];
+			$model->attributes=$_POST['Attributes'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -88,9 +88,9 @@ class AttributeController extends Controller
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Attribute']))
+		if(isset($_POST['Attributes']))
 		{
-			$model->attributes=$_POST['Attribute'];
+			$model->attributes=$_POST['Attributes'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -125,7 +125,7 @@ class AttributeController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('Attribute');
+		$dataProvider=new CActiveDataProvider('Attributes');
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));
@@ -136,10 +136,10 @@ class AttributeController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new Attribute('search');
+		$model=new Attributes('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Attribute']))
-			$model->setAttributes($_GET['Attribute']);
+		if(isset($_GET['Attributes']))
+			$model->setAttributes($_GET['Attributes']);
 
 		$this->layout = 'new_main';
 		$this->loadBaBbqPolyfills = true;
@@ -157,7 +157,7 @@ class AttributeController extends Controller
 		if($this->_model===null)
 		{
 			if(isset($_GET['id']))
-				$this->_model=Attribute::model()->findbyPk($_GET['id']);
+				$this->_model=Attributes::model()->findbyPk($_GET['id']);
 			if($this->_model===null)
 				throw new CHttpException(404,'The requested page does not exist.');
 		}

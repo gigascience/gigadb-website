@@ -11,7 +11,7 @@ class StoredDatasetMainSectionTest extends CDbTestCase
 {
     protected $fixtures = array( //careful, the order matters here because of foreign key constraints
         'publishers' => 'Publisher',
-        'attribute' => 'Attribute',
+        'attribute' => 'Attributes',
         'datasets' => 'Dataset',
         'types' => 'Type',
         'dataset_types' => 'DatasetType',

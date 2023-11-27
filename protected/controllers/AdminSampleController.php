@@ -341,7 +341,7 @@ class AdminSampleController extends Controller
                 $attributeData = explode('=', $attributes);
                 if (count($attributeData) == 2) {
                     // Get attribute model
-                    $attribute = Attribute::model()->findByAttributes(array('structured_comment_name' => trim($attributeData[0])));
+                    $attribute = Attributes::model()->findByAttributes(array('structured_comment_name' => trim($attributeData[0])));
                     if (!$attribute) {
                         $model->addError('error', 'Attribute name for the input ' . $attributeData[0] . "=" . $attributeData[1] . ' is not valid - please select a valid attribute name!');
                     } else {

@@ -117,7 +117,7 @@
                             'model' => $attribute,
                             'attributeName' => 'attribute_id',
                             'listDataOptions' => [
-                                'data' => Attribute::model()->findAll(),
+                                'data' => Attributes::model()->findAll(),
                                 'valueField' => 'id',
                                 'textField' => 'attribute_name',
                             ],

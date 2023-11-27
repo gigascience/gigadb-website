@@ -892,7 +892,7 @@ EO_MAIL;
             $criteria->addCondition('file_id = ' . $file->id);
             $fileAttributes = FileAttributes::model()->findAll($criteria);
             foreach ($fileAttributes as $fileAttribute) {
-                if (strpos(Attribute::AUTO_ATTRIBUTE, $fileAttribute->attribute->structured_comment_name)) {
+                if (strpos(Attributes::AUTO_ATTRIBUTE, $fileAttribute->attribute->structured_comment_name)) {
                     $fileAttribute->delete();
                 }
             }
@@ -917,14 +917,14 @@ EO_MAIL;
                 
                 // Number of Amino Acids
                 $numberAminoAcids = clone $fileAttribute;
-                $attribute = Attribute::model()->findByAttributes(array('structured_comment_name' => 'num_amino_acids'));
+                $attribute = Attributes::model()->findByAttributes(array('structured_comment_name' => 'num_amino_acids'));
                 $numberAminoAcids->attribute_id = $attribute->id;
                 $numberAminoAcids->value = $aminoAcids;
                 $numberAminoAcids->save();
 
                 // Number of nucleotides
                 $numberNucleotides = clone $fileAttribute;
-                $attribute = Attribute::model()->findByAttributes(array('structured_comment_name' => 'num_nucleotides'));
+                $attribute = Attributes::model()->findByAttributes(array('structured_comment_name' => 'num_nucleotides'));
                 $numberNucleotides->value = $nucleotides;
                 $numberNucleotides->attribute_id = $attribute->id;
                 $numberNucleotides->save();
@@ -965,14 +965,14 @@ EO_MAIL;
 
                 // Number of words
                 $numberWords = clone $fileAttribute;
-                $attribute = Attribute::model()->findByAttributes(array('structured_comment_name' => 'num_words'));
+                $attribute = Attributes::model()->findByAttributes(array('structured_comment_name' => 'num_words'));
                 $numberWords->attribute_id = $attribute->id;
                 $numberWords->value = $numberOfWords;
                 $numberWords->save();
 
                 // Number of lines
                 $numberLines = clone $fileAttribute;
-                $attribute = Attribute::model()->findByAttributes(array('structured_comment_name' => 'num_lines'));
+                $attribute = Attributes::model()->findByAttributes(array('structured_comment_name' => 'num_lines'));
                 $numberLines->attribute_id = $attribute->id;
                 $numberLines->value = $numberOfLines;
                 $numberLines->save();
@@ -1006,14 +1006,14 @@ EO_MAIL;
                 }
                 // Number of rows
                 $numberRows = clone $fileAttribute;
-                $attribute = Attribute::model()->findByAttributes(array('structured_comment_name' => 'num_rows'));
+                $attribute = Attributes::model()->findByAttributes(array('structured_comment_name' => 'num_rows'));
                 $numberRows->attribute_id = $attribute->id;
                 $numberRows->value = $rows;
                 $numberRows->save();
 
                 // Number of columns
                 $numberColumns = clone $fileAttribute;
-                $attribute = Attribute::model()->findByAttributes(array('structured_comment_name' => 'num_columns'));
+                $attribute = Attributes::model()->findByAttributes(array('structured_comment_name' => 'num_columns'));
                 $numberColumns->value = $columns;
                 $numberColumns->attribute_id = $attribute->id;
                 $numberColumns->save();

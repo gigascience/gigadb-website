@@ -71,27 +71,27 @@ class Sample extends CActiveRecord
 		);
 	}
 
-	/**
-	 * @return array relational rules.
-	 */
-	public function relations()
-	{
-		// NOTE: you may need to adjust the relation name and the related
-		// class name for the relations automatically generated below.
-		return array(
-			//'files' => array(self::HAS_MANY, 'File', 'sample_id'),
-			'species' => array(self::BELONGS_TO, 'Species', 'species_id'),
-			'submitted' => array(self::BELONGS_TO, 'GigadbUser', 'submitted_id'),
-			'sampleRels' => array(self::HAS_MANY, 'SampleRel', 'sample_id'),
-			'sampleExperiments' => array(self::HAS_MANY, 'SampleExperiment', 'sample_id'),
-			'fileSamples' => array(self::HAS_MANY, 'FileSample', 'sample_id'),
-			'datasetSamples' => array(self::HAS_MANY, 'DatasetSample', 'sample_id'),
-			'datasets' => array(self::MANY_MANY, 'Dataset', 'dataset_sample(dataset_id,sample_id)'),
-			'sampleAttributes' => array(self::HAS_MANY, 'SampleAttribute', 'sample_id', 'order'=>'id asc'),
-			'attributes' => array(self::HAS_MANY, 'Attribute', array('id' => 'attribute_id'), 'through' => 'sampleAttributes'),
-			'alternativeIdentifiers' => array(self::HAS_MANY, 'AlternativeIdentifiers', 'sample_id'),
-		);
-	}
+    /**
+     * @return array relational rules.
+     */
+    public function relations()
+    {
+        // NOTE: you may need to adjust the relation name and the related
+        // class name for the relations automatically generated below.
+        return array(
+            //'files' => array(self::HAS_MANY, 'File', 'sample_id'),
+            'species' => array(self::BELONGS_TO, 'Species', 'species_id'),
+            'submitted' => array(self::BELONGS_TO, 'GigadbUser', 'submitted_id'),
+            'sampleRels' => array(self::HAS_MANY, 'SampleRel', 'sample_id'),
+            'sampleExperiments' => array(self::HAS_MANY, 'SampleExperiment', 'sample_id'),
+            'fileSamples' => array(self::HAS_MANY, 'FileSample', 'sample_id'),
+            'datasetSamples' => array(self::HAS_MANY, 'DatasetSample', 'sample_id'),
+            'datasets' => array(self::MANY_MANY, 'Dataset', 'dataset_sample(dataset_id,sample_id)'),
+            'sampleAttributes' => array(self::HAS_MANY, 'SampleAttribute', 'sample_id', 'order' => 'id asc'),
+            'attributes' => array(self::HAS_MANY, 'Attributes', array('id' => 'attribute_id'), 'through' => 'sampleAttributes'),
+            'alternativeIdentifiers' => array(self::HAS_MANY, 'AlternativeIdentifiers', 'sample_id'),
+        );
+    }
 
 	/**
 	 * @return array customized attribute labels (name=>label)
@@ -277,7 +277,7 @@ EO_SQL;
 
 		// Concat all attribute=value
 		foreach ($sampleAttributes as $sampleAttribute) {
-			$string .= $sampleAttribute['structured_comment_name'] 
+			$string .= $sampleAttribute['structured_comment_name']
 					. '="' . $sampleAttribute['value'] . '"<br/>';
 		}
 
