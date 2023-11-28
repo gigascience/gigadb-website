@@ -108,7 +108,7 @@ class DatasetController extends Controller
 
             $this->metaData['description'] = $assembly->getDataset()->description;
 
-            $urlToRedirect = "";//trim($assembly->getDataset()->getUrlToRedirectAttribute());
+            $urlToRedirect = trim($assembly->getDataset()->getUrlToRedirectAttribute());
             $currentAbsoluteFullUrl = Yii::app()->request->getBaseUrl(true) . Yii::app()->request->url ;
 
             if ($urlToRedirect && $currentAbsoluteFullUrl == $urlToRedirect) {
