@@ -82,10 +82,10 @@ WHERE
   dataset.identifier = subquery.identifier;
 \echo Copied URLs from temporary table into dataset table ftp_site column
 
-SET vars.bucketdir to :'bucketdir';
+SET gigasci.bucketdir to :'bucketdir';
 DO \$$
 DECLARE
-  bucketdir_value TEXT := current_setting('vars.bucketdir');
+  bucketdir_value TEXT := current_setting('gigasci.bucketdir');
   expected_row_changes INTEGER;
   actual_row_changes INTEGER;
 BEGIN
@@ -155,10 +155,10 @@ WHERE
   file.id=subquery.id;
 \echo Copied URLs from temporary table into file table location column
 
-SET vars.bucketdir to :'bucketdir';
+SET gigasci.bucketdir to :'bucketdir';
 DO \$$
 DECLARE
-  bucketdir_value TEXT := current_setting('vars.bucketdir');
+  bucketdir_value TEXT := current_setting('gigasci.bucketdir');
   expected_row_changes INTEGER;
   actual_row_changes INTEGER;
 BEGIN
