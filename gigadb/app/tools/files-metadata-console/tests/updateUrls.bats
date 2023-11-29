@@ -9,6 +9,13 @@ setup () {
     fi
 }
 
+teardown () {  
+    echo "Resetting dev database..." >&3
+    cd ../../../../  
+    ./ops/scripts/setup_devdb.sh dev  
+    cd gigadb/app/tools/files-metadata-console || exit
+}
+
 # Tests if the link in ftp_site column for dataset id 8 has been updated into a
 # Wasabi link
 @test "transform dataset and file URLs" {
