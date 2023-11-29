@@ -115,7 +115,7 @@ OR
   location LIKE '%' || :'ftp_site_cngb' || '%'
 ORDER BY
   dataset_id ASC;
-\echo Created dataset_changes temporary table 
+\echo Created file_changes temporary table 
 
 UPDATE
   file_changes
@@ -153,7 +153,7 @@ FROM
   ) AS subquery
 WHERE
   file.id=subquery.id;
-\echo Copied URLs from temporary table into dataset table ftp_site column
+\echo Copied URLs from temporary table into file table location column
 
 SET vars.bucketdir to :'bucketdir';
 DO \$$
