@@ -1,8 +1,9 @@
-@block-spacing: 32px;
+@block-spacing: 16px;
 
 .admindataset-form {
   .note {
-    margin-bottom: 24px;
+    color: @color-true-black;
+    margin-bottom: 12px;
   }
   .form-block-1 {
     margin-block: @block-spacing;
@@ -23,14 +24,25 @@
     margin-block: @block-spacing;
   }
   .form-group {
+    margin-bottom: 10px;
     .error {
       color: @brand-danger-on-lighter-gray;
+    }
+    .control-label {
+      color: @color-true-black;
+      font-weight: bold;
     }
   }
   fieldset {
     legend {
       font-weight: bold;
-      color: @dark-gray-on-light-gray;
+      color: @color-true-black;
+    }
+    .checkbox-group {
+      gap: 8px;
+    }
+    .control-label {
+      color: @color-true-black;
     }
   }
   .image-preview-wrapper {
