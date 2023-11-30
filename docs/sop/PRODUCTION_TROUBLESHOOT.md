@@ -279,4 +279,87 @@ The terraform inventory script would look into the terraform state and should be
 $ ../../../scripts/ansible_init.sh --env live
 ```
 
+### How to create a new user account in the bastion server
 
+If a user wants to execute tools, eg. readme generate, excel spreadsheet uploader, etc in the bastion server, a user account with appropriate permission has to be created first.
+The creation can be achieved as below:
+```
+% cd /gigadb-website/ops/infrastructure/envs/live
+# make sure bastion server is up and running
+% terraform output
+# execute the user playbook to create a user account
+% ansible-playbook -i ../../inventories users_playbook.yml -e "newuser=$user" --extra-vars="gigadb_env=live"
+# check if bastion_public_key_$user (live) exists in the upstream gitlab variables page
+# the private key will be saved as /output/privkeys-$bastion-ip/$user
+# update the permission of the private key
+% chmod 500 output/privkeys-$bastion-ip/$user
+# connect to the bastion server
+% ssh -i output/privkeys-$bastion-ip/$user $user@$bastion-ip
+```
+
+### What if a user has accidentally deleted (or corrupted) their .ssh/authorized_keys
+
+Please contact tech team if a user suspects that the /home/$user/.ssh/authorized_keys has accidentally deleted or corrupted, tech team can help to retrieve it from the [upstream gitlab variable page](https://gitlab.com/gigascience/upstream/gigadb-website/-/settings/ci_cd) after logging in 
+and put it back to the bastion server as /home/$user/.ssh/authorized_keys, while the authorized keys in gitlab would be in the form of bastion_public_key_$user. 
+
+### What if a user has lost their private keys (or they are compromised)
+
+Please contact tech team if a user has lost their private keys, tech team will first delete the existing /home/$user/.ssh/authorized_keys in the bastion server and also in the [upstream gitlab variable page](https://gitlab.com/gigascience/upstream/gigadb-website/-/settings/ci_cd), 
+then execute the `user_playbook` for the user:
+```
+% ansible-playbook -i ../../inventories users_playbook.yml -e "newuser=$user" --extra-vars="gigadb_env=live"
+```
+which will generate a new pair of ssh keys, the new private key will then be sent to the user, while the public key will be pushed to the the gitlab variable page and also the bastion server.
+
+### What if a user still cannot connect to the bastion server even they have a valid private key file in their computer and the corresponding public key in the bastion server
+
+This may be because the sshd service in the bastion server has not been started properly, tech team will:
+```
+# login bastion server as a centos user
+% ssh -i /path/to/id-rsa-aws-hk-gigadb.pem centos@$bastion-ip
+# restart the sshd service
+systemctl restart sshd.service
+```
+
+### How to convert ssh private key format from pem to ppk for a Window user
+
+Mostly, Windows users will use PuTTY to connect with the remote server, and the connection requires a ssh private key in ppk format.
+The format conversion can be done as below:
+```
+# install putty to make puttygen tool available on MacOS, if not
+% brew install putty
+# make sure puttygen is available
+% puttygen --version
+puttygen: Release 0.79
+Build platform: 64-bit Unix
+Compiler: clang 14.0.3 (clang-1403.0.22.14.1)
+Source commit: b10059fc922aeb9343a55a409ea01740061d2440
+# go to the location for storing the private key, for example
+% cd gigadb-website/ops/infrastructure/envs/live
+# make sure the private key is available
+% ls -l output/privkeys-$bastion-ip/
+total 8
+-r-x------@ 1 kencho  staff  3357 Nov 29 13:58 $user
+# convert the format from pem to ppk
+% puttygen $user -o $user.ppk
+ % ls -l output/privkeys-$bastion-ip/
+total 16
+-r-x------@ 1 kencho  staff  3357 Nov 29 13:58 $user
+-rw-------@ 1 kencho  staff  2659 Nov 30 13:06 $user.ppk
+```
+
+Then the $user.ppk can be sent to the user for the server connection. 
+
+### How to connect to the bastion server for a Windows user
+
+Assuming PuTTY is installed by the user, details can be found at [here](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html), and the user has received the private key from the tech team.
+
+Then user can connect to the bastion server with the given private key as below:
+```
+1. Open PuTTY programme
+2. Enter the remote server Host Name or IP address under "Session".
+3. Navigate to "Connection" > "SSH" > "Auth".
+4. Click "Browse..." under "Authentication parameters" / "Private key file for authentication".
+5. Locate the $user.ppk private key and click "Open".
+6. Finally, click "Open" again to log into the remote server with key pair authentication.
+```
