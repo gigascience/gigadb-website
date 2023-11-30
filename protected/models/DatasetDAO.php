@@ -6,7 +6,7 @@
  *
  * @uses DatasetAttributesFactory.php
  * @uses DatasetAttributes.php
- * @uses Attribute.php
+ * @uses Attributes.php
  *
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
@@ -62,7 +62,7 @@ class DatasetDAO extends yii\base\BaseObject
 	 */
 	public function removeKeywordsFromDatabaseForDatasetId($dataset_id)
 	{
-		$keyword_attribute = Attribute::model()->findByAttributes(array('attribute_name'=>'keyword'));
+		$keyword_attribute = Attributes::model()->findByAttributes(array('attribute_name'=>'keyword'));
 
 		$datasetAttributes = DatasetAttributes::model()->findAllByAttributes(
 								array('dataset_id'=>$dataset_id,'attribute_id'=>$keyword_attribute->id)
@@ -82,7 +82,7 @@ class DatasetDAO extends yii\base\BaseObject
 	 */
 	public function addKeywordsToDatabaseForDatasetIdAndString($dataset_id, $post_keywords_string)
 	{
-		$keyword_attribute = Attribute::model()->findByAttributes(array('attribute_name'=>'keyword'));
+		$keyword_attribute = Attributes::model()->findByAttributes(array('attribute_name'=>'keyword'));
 		$keywords_array = array_filter(explode(',', $post_keywords_string));
 
 		foreach ($keywords_array as $keyword) {

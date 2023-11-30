@@ -11,7 +11,7 @@
  * @property string $unit_id
  *
  * The followings are the available model relations:
- * @property Attribute $attribute
+ * @property Attributes $attribute
  * @property File $file
  * @property Unit $unit
  */
@@ -62,7 +62,7 @@ class FileAttributes extends CActiveRecord
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
-            'attribute' => array(self::BELONGS_TO, 'Attribute', 'attribute_id'),
+            'attribute' => array(self::BELONGS_TO, 'Attributes', 'attribute_id'),
             'file' => array(self::BELONGS_TO, 'File', 'file_id'),
             'unit' => array(self::BELONGS_TO, 'Unit', 'unit_id'),
         );
@@ -76,7 +76,7 @@ class FileAttributes extends CActiveRecord
         return array(
             'id' => 'ID',
             'file_id' => 'File',
-            'attribute_id' => 'Attribute',
+            'attribute_id' => 'Attributes',
             'value' => 'Value',
             'unit_id' => 'Unit',
         );

@@ -88,8 +88,12 @@ class DatasetController extends Controller
         }
 
         // Assembling page components and page settings
+        $assemblyConfig = [];
         if ("invalid" !== $datasetPageSettings->getPageType()) {
-            $assembly = DatasetPageAssembly::assemble($model, Yii::app(), $srv);
+            if (preg_match("/dataset\/$id\/token/",$_SERVER['REQUEST_URI'])) {
+                $assemblyConfig = ['skip_cache' => true] ;
+            }
+            $assembly = DatasetPageAssembly::assemble($model, Yii::app(), $srv, $assemblyConfig);
             $assembly->setDatasetSubmitter()
                 ->setDatasetAccessions()
                 ->setDatasetMainSection()

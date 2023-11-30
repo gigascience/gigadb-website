@@ -281,6 +281,26 @@
   height: 34px;
   color: @dark-gray-on-light-gray;
   text-decoration: none !important;
+
+}
+.main-nav-bar li button.dropdown-toggle {
+  height: 34px;
+  color: @dark-gray-on-light-gray;
+  text-decoration: none !important;
+  background-color: transparent;
+  border-radius: 5px;
+  border: none;
+  padding: 8px 12px;
+  margin: 2px 2px 0 0;
+  outline-offset: -2px;
+  &:hover, &:focus {
+    background-color: @color-light-gray;
+  }
+  .dropdown-toggle-label {
+    // NOTE: adjust label positioning with respect to other non-button nav-bar elements
+    display: inline-block;
+    margin-bottom: 3px;
+  }
 }
 .main-nav-bar li .dropdown-menu{
   box-sizing: border-box;
@@ -290,6 +310,9 @@
   border-top-color: @color-gigadb-green;
   margin-top: 32px;
   padding: 15px;
+}
+.main-nav-bar li .dropdown-toggle:focus {
+  outline: 2px solid @color-true-black;
 }
 .main-nav-bar li .dropdown-menu li{
   height: 20px;

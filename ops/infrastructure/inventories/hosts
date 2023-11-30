@@ -14,6 +14,8 @@ grafana_contact_smtp_password = "{{ lookup('ini', 'grafana_contact_smtp_password
 grafana_contact_smtp_from_address =  "{{ lookup('ini', 'grafana_contact_smtp_from_address type=properties file=ansible.properties') }}"
 grafana_contact_smtp_from_name = "{{ lookup('ini', 'grafana_contact_smtp_from_name type=properties file=ansible.properties') }}"
 
+[type_aws_instance]
+
 [type_aws_instance:vars]
 
 gitlab_url = "https://gitlab.com/api/v4/projects/{{ lookup('ini', 'gitlab_project type=properties file=ansible.properties') | urlencode | regex_replace('/','%2F') }}"
