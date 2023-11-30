@@ -321,9 +321,38 @@ This may be because the sshd service in the bastion server has not been started 
 systemctl restart sshd.service
 ```
 
+### How to convert ssh private key format from pem to ppk for a Window user
+
+Mostly, Windows users will use PuTTY to connect with the remote server, and the connection requires a ssh private key in ppk format.
+The format conversion can be done as below:
+```
+# install putty to make puttygen tool available on MacOS, if not
+% brew install putty
+# make sure puttygen is available
+% puttygen --version
+puttygen: Release 0.79
+Build platform: 64-bit Unix
+Compiler: clang 14.0.3 (clang-1403.0.22.14.1)
+Source commit: b10059fc922aeb9343a55a409ea01740061d2440
+# go to the location for storing the private key, for example
+% cd gigadb-website/ops/infrastructure/envs/live
+# make sure the private key is available
+% ls -l output/privkeys-$bastion-ip/
+total 8
+-r-x------@ 1 kencho  staff  3357 Nov 29 13:58 $user
+# convert the format from pem to ppk
+% puttygen $user -o $user.ppk
+ % ls -l output/privkeys-$bastion-ip/
+total 16
+-r-x------@ 1 kencho  staff  3357 Nov 29 13:58 $user
+-rw-------@ 1 kencho  staff  2659 Nov 30 13:06 $user.ppk
+```
+
+Then the $user.ppk can be sent to the user for the server connection. 
+
 ### How to connect to the bastion server for a Windows user
 
-Assuming PuTTY is installed, details can be found at [here](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html), and the user has received the private key from the tech team.
+Assuming PuTTY is installed by the user, details can be found at [here](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html), and the user has received the private key from the tech team.
 
 Then user can connect to the bastion server with the given private key as below:
 ```
@@ -331,6 +360,6 @@ Then user can connect to the bastion server with the given private key as below:
 2. Enter the remote server Host Name or IP address under "Session".
 3. Navigate to "Connection" > "SSH" > "Auth".
 4. Click "Browse..." under "Authentication parameters" / "Private key file for authentication".
-5. Locate the $user private key and click "Open".
+5. Locate the $user.ppk private key and click "Open".
 6. Finally, click "Open" again to log into the remote server with key pair authentication.
 ```
