@@ -301,9 +301,10 @@ echo $form->hiddenField($model, "image_id");
                         </fieldset>
                         <div id="metaFieldsLiveRegion" aria-live="polite" class="sr-only"></div>
                     </div>
-                    <hr />
+                    <!-- <hr /> -->
                     <div class="form-block-4">
-                        <fieldset aria-labelledby="doiLabel">
+                        <fieldset>
+                            <legend>Dataset metafields</legend>
                             <div class="form-group row <?php echo $form->error($model, 'identifier') ? 'has-error' : ''; ?>" id="doiFormGroup">
                                 <?php echo $form->labelEx($model, 'identifier', array(
                                     'class' => 'control-label col-xs-4',
