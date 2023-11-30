@@ -1,7 +1,7 @@
 # Update the dataset spreadsheet template
 
 Below are instructions for safely making changes to the dataset spreadsheet template.
-For more  information about that document's usage, check the corresponding [Giganet user guide](https://sites.google.com/gigasciencejournal.com/giganet/gigadb/curation/excel-submission-sheet-guidelines)
+For more  information about that document's usage, check the corresponding [Giganet user guide](https://sites.google.com/gigasciencejournal.com/giganet/gigadb/curation/spreadsheet-upload-scripts)
 
 1. Ensure you have a personal [fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo) of https://github.com/gigascience/gigadb-website
 
