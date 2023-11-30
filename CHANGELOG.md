@@ -30,6 +30,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Feat #1505: Update all admin pages with create and update forms with old style to modern style
 - Feat #1502: Update all admin pages with grid view Dataset tables with old style to modern style
 - Feat #1498: Search page - Improve styles and accessibility of search filters
+- Fix #1561: show app version in footer on AWS deployment
+- Feat #1420: Save bastion user's public key to gitlab variable page
+- Feat #1456: Fix footer positioning to viewport bottom
+- Feat #1423: Create bash script to update dataset and file links to Wasabi URLs
 
 ## v4.0.2 - 2023-11-27 - cba0ca7a
 

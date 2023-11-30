@@ -302,6 +302,21 @@
         owner: centos
         group: centos
 
+- name: Setup files metadata console tool
+  hosts: name_bastion_server_{{gigadb_env}}*
+  tags:
+    - files-metadata-tool
+
+  tasks:
+    # Used to transform dataset ftp_site and file location URLs
+    - name: Copy shell script
+      ansible.builtin.copy:
+        src: "../../../../gigadb/app/tools/files-metadata-console/scripts/updateUrls.sh"
+        dest: /home/centos/updateUrls.sh
+        owner: centos
+        group: centos
+        mode: a+x
+
 - name: Set up and configuration of rclone on bastion server
   hosts: name_bastion_server_{{gigadb_env}}*
   tags:
