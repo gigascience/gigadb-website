@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1420: Save bastion user's public key to gitlab variable page
 - Feat #1456: Fix footer positioning to viewport bottom
 - Feat #1423: Create bash script to update dataset and file links to Wasabi URLs
 
