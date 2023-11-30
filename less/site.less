@@ -18,6 +18,16 @@ body, input, button, select, textarea, a,p{
 body{
 	//background: url(/images/container-bg.png) repeat-x 0 100px;
 }
+// Always stick footer to bottom of viewport
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  footer {
+    margin-top: auto;
+    overflow: hidden;
+  }
+}
 a{
 	color:@link;
 	text-decoration:underline;
