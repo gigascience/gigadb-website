@@ -301,7 +301,6 @@ echo $form->hiddenField($model, "image_id");
                         </fieldset>
                         <div id="metaFieldsLiveRegion" aria-live="polite" class="sr-only"></div>
                     </div>
-                    <!-- <hr /> -->
                     <div class="form-block-4">
                         <fieldset>
                             <legend>Dataset metafields</legend>
@@ -384,7 +383,6 @@ echo $form->hiddenField($model, "image_id");
                                 <div id="minting" class="col-xs-offset-4 col-xs-8" role="alert"></div>
                             </div>
 
-                        </fieldset>
 
                         <?php
                           $this->widget('application.components.controls.TextField', [
@@ -427,6 +425,8 @@ echo $form->hiddenField($model, "image_id");
                             'inputWrapperOptions' => 'col-xs-8'
                           ]);
                         ?>
+
+                      </fieldset>
                     </div>
 
                 </div>
