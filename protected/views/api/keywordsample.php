@@ -38,7 +38,7 @@ foreach($samples as $sample){
     $xml.="<sample_attributes>";
     $sa_attributes=  SampleAttribute::model()->findAllByAttributes(array('sample_id'=>$sample->id));
     foreach($sa_attributes as $sa_attribute){
-        $saattribute=  Attribute::model()->findByAttributes(array('id'=>$sa_attribute->attribute_id));
+        $saattribute=  Attributes::model()->findByAttributes(array('id'=>$sa_attribute->attribute_id));
         $xml.="<attribute>";
         $xml.="<key>$saattribute->attribute_name</key>";
         $xml.="<value>$sa_attribute->value</value>";

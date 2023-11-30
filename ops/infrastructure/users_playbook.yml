@@ -2,6 +2,6 @@
 # Create users on bastion server
 
 - name: Create an additional user on bastion for curators team
-  hosts: name_bastion_server_staging*:name_bastion_server_live*
+  hosts: name_bastion_server_{{gigadb_env}}*
   roles:
     - role: ../../roles/bastion-users

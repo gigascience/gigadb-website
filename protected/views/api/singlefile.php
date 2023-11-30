@@ -32,7 +32,7 @@ $xml.="<file_attributes>";
 $fileattributes=$file->fileAttributes;
 foreach($fileattributes as $fileattribute){
     $xml.="<attribute>";
-    $file_att=  Attribute::model()->findByAttributes(array('id'=>$fileattribute->attribute_id));
+    $file_att=  Attributes::model()->findByAttributes(array('id'=>$fileattribute->attribute_id));
     $xml.="<key>$file_att->attribute_name</key>";
     $xml.="<value>$fileattribute->value</value>";
     $file_unit=  Unit::model()->findByAttributes(array('id'=>$fileattribute->unit_id));
