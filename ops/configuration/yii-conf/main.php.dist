@@ -201,6 +201,7 @@ return CMap::mergeArray(array(
         'display_date_format' => "%gggggggd-%m-%Y",
         'display_short_date_format' => "%d-%m",
         'language' => 'en' ,
+        'app_version' => '${APP_VERSION}' ,
         'languages' => array('en' => 'EN', 'zh_tw' => 'TW'),
 
         // For creating URLs to dataset files

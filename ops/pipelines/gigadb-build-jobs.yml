@@ -161,6 +161,7 @@ b_gigadb:
 #    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/fuw-worker:latest || true
 #    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/gigadb-worker:latest || true
     # Generate configuration files and vendors libraries before baking an immutable image
+    - git describe --always | tee VERSION
     - time docker-compose run --rm config
     - time docker-compose run --rm application composer install -a --no-dev
     - docker-compose run --rm less
@@ -254,7 +255,9 @@ build_staging:
 build_live:
   variables:
     GIGADB_ENV: "live"
-  extends: .pb_gigadb
+  extends: 
+    - .tag_only
+    - .pb_gigadb
   stage: live build
   tags:
     - $GITLAB_USER_LOGIN

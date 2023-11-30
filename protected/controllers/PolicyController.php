@@ -34,10 +34,10 @@ class PolicyController extends CController {
 
 	public function actionCreate() {
 		$model = new DatasetAttributes;
-		$att = Attribute::model()->findByAttributes(array('attribute_name'=> Attribute::FUP));
+		$att = Attributes::model()->findByAttributes(array('attribute_name'=> Attributes::FUP));
 		if(!$att) {
-			$att = new Attribute;
-			$att->attribute_name = Attribute::FUP;
+			$att = new Attributes;
+			$att->attribute_name = Attributes::FUP;
 			$att->definition = '';
 			$att->save();
 		}

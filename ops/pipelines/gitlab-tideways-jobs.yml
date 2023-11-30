@@ -24,7 +24,6 @@
   environment:
     name: $DEPLOYMENT_ENV
     url: $REMOTE_HOME_URL
-  when: manual
   artifacts:
     when: on_failure
     expire_in: 1 week
@@ -47,7 +46,8 @@ TidewaysBuildLive:
   stage: live build
   variables:
     GIGADB_ENV: "live"
-  extends: .pb_tideways
+  extends:
+    - .pb_tideways
   tags:
     - $GITLAB_USER_LOGIN
   needs: ["build_live"]
@@ -55,6 +55,9 @@ TidewaysBuildLive:
     name: "live"
     deployment_tier: production
     url: $REMOTE_HOME_URL
+  when: manual
+  rules:
+    - if: $CI_COMMIT_TAG
 
 .deploy_tideways:
   variables:
@@ -94,7 +97,6 @@ TidewaysBuildLive:
   environment:
     name: $DEPLOYMENT_ENV
     url: $REMOTE_HOME_URL
-  when: manual
   artifacts:
     when: on_failure
     expire_in: 1 week
@@ -117,10 +119,14 @@ TidewaysDeployLive:
   stage: live deploy
   variables:
     GIGADB_ENV: "live"
-  extends: .deploy_tideways
+  extends:
+    - .deploy_tideways
   tags:
     - $GITLAB_USER_LOGIN
   needs: ["ld_gigadb","TidewaysBuildLive"]
   environment:
     name: "live"
     url: $REMOTE_HOME_URL
+  when: manual
+  rules:
+    - if: $CI_COMMIT_TAG
