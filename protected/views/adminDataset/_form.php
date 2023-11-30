@@ -444,8 +444,8 @@ echo $form->hiddenField($model, "image_id");
                     'form' => $form,
                     'model' => $model,
                     'attributeName' => 'dataset_size',
-                    'labelOptions' => ['class' => 'col-xs-4'],
-                    'inputWrapperOptions' => 'col-xs-6',
+                    'labelOptions' => ['class' => 'col-xs-2'],
+                    'inputWrapperOptions' => 'input-wrapper col-xs-6',
                     'inputOptions' => [
                       'required' => true,
                       'size' => 60,
@@ -457,7 +457,7 @@ echo $form->hiddenField($model, "image_id");
                     'model' => $model,
                     'attributeName' => 'title',
                     'labelOptions' => ['class' => 'col-xs-4'],
-                    'inputWrapperOptions' => 'col-xs-6',
+                    'inputWrapperOptions' => 'input-wrapper col-xs-6',
                     'inputOptions' => [
                       'required' => true,
                       'size' => 60,
@@ -469,7 +469,7 @@ echo $form->hiddenField($model, "image_id");
                     'model' => $model,
                     'attributeName' => 'description',
                     'labelOptions' => ['class' => 'col-xs-4'],
-                    'inputWrapperOptions' => 'col-xs-6',
+                    'inputWrapperOptions' => 'input-wrapper col-xs-6',
                     'inputOptions' => [
                         'rows' => 8,
                         'cols' => 50
@@ -479,7 +479,7 @@ echo $form->hiddenField($model, "image_id");
 
                     <div class="form-group">
                         <?php echo CHtml::label('Keywords', 'keywords', array('class' => 'control-label col-xs-4')); ?>
-                        <div class='col-xs-6'>
+                        <div class='col-xs-6 input-wrapper'>
                             <!-- NOTE this input is repositioned outside the viewport by teh tagEditor plugin but is still focusable, so the keyboard navigation is very confusing. Fixing this is not trivial, so warrants another ticket #1467 -->
                             <?php echo CHtml::textArea('keywords', '', array('class' => 'form-control', 'size' => 60, 'maxlength' => 300)); ?>
                         </div>
@@ -487,7 +487,7 @@ echo $form->hiddenField($model, "image_id");
 
                     <div class="form-group">
                         <?php echo CHtml::label('URL to redirect', 'urltoredirect', array('class' => 'control-label col-xs-4')); ?>
-                        <div class='col-xs-6'>
+                        <div class='col-xs-6 input-wrapper '>
                             <?php echo CHtml::textField('urltoredirect', $model->getUrlToRedirectAttribute(), array('class' => 'form-control', 'size' => 60, 'maxlength' => 300,)); ?>
                         </div>
                     </div>
