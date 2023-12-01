@@ -3,52 +3,39 @@
 Below are instructions for safely making changes to the dataset spreadsheet template.
 For more  information about that document's usage, check the corresponding [Giganet user guide](https://sites.google.com/gigasciencejournal.com/giganet/gigadb/curation/spreadsheet-upload-scripts)
 
-1. Ensure you have a personal [fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo) of https://github.com/gigascience/gigadb-website
+>note: It's fine to keep past file-name encoded versions of the template for compatbility with already circulating documents, but going forward, [Do not encode some kind of version in the file name](https://carpentries-incubator.github.io/git-novice-branch-pr/01-basics/), as Git is already versioned, and [it's easy](https://github.com/gigascience/gigadb-website/commits/develop/gigadb/app/tools/excel-spreadsheet-uploader/template) accessing previous versions of the file. So adding some kind of version in the file name will confuse everyone who need interacting with only the latest version of that file and defeats the purpose of storing this file in Git in the first place
 
-2. Clone your fork of the gigadb-website repository
+## Using Github Desktop
 
-```
-$ git clone https://github.com/<your GitHub username>/gigadb-website
-```
+1. Assuming you have already cloned Gigascience's gigadb-website Github project in Github Desktop
+2. Open Github Desktop, and ensure that:
+    * The `gigadb-website` project is selected as the "Current repository` in the toolbar
+    * The `develop` branch is selected as the "Current branch" in the toolbar
+    * Click "Fetch origin" to ensure you have the latest state of the truth from the server
+    * The "Changes" column on the left should be empty
+3. Identify where Github Desktop has clone the repository on your computer and navigate to it.
+4. On your computer, make the change you want to the file in `gigadb/app/tools/excel-spreadsheet-uploader/template`
+5. Then return to Github Desktop, you should see that the "Changes" column on the left is not empty and reflects the changes your made
+6. Create a new branch by clicking on the drop-down menu right of "Current branch" in the toolbar
+7. Click on "New branch", choose a meaningful name (e.g: incorrect-doi-hint), and click "Create branch"
+8. Then make sure that out of the two options shown, you select "Bring my changes to (name of the branch just created)"
+9. Click "Switch branch", "Current branch" in the toolbar should now show the name of the just created branch
+10. It is time to commit the changes by adding a summary and description to the commit message form at the bottom left, and then click "commit to (name of the just created branch)"
+11. The main pane will show a list of what to do next. Choose the top one (already highlighted) "Publish your branch" by clicking the "Publish branch" button
+12. The top option in the main pane is highlighted and says "Preview the pull request from you current branch", and has a button "Preview Pull Request" that you click
+13. a preview pane will pop up, check that it says:
+    *  "commit into base:develop from (name of the branch you have created)
+    *  the main pane contain the change you want to publish and be reviewed
+    *  At the bottom left, it should have a green tick "Able to merge"
+14. If all good, you can click "Create Pull Request"
+15. Your web browser will open on a new Pull request form on the Gigascience's gigadb-website repository
+16. Fill in the form as instructed inline
+17. Click on "Create Pull Request" (if instead you see "Draft Pull Request", click the drop-down menu to bring the other option)
+18. in the "Projects" section in the right-hand sidebar, add the pull request to the current sprint project
 
-3. Change to the directory where the template is: 
 
-```
-$ cd gigadb-website/gigadb/app/tools/excel-spreadsheet-uploader/template/
-```
 
-4. At present, there should only be two files in that directory, this `UPDATE_INSTRUCTIONS.md` file and the dataset spreadsheet template
-
-5. If you need to make a change, create a new branch
-
-```
-$ git checkout -b <meaningful name with no spaces/special characters>
-```
-
-6. Now, feel free to make the changes you feel is necessary to that file.
-
->note: [Do not encode some kind of version in the file name](https://carpentries-incubator.github.io/git-novice-branch-pr/01-basics/), as Git is already versioned, and [it's easy](https://github.com/gigascience/gigadb-website/commits/develop/gigadb/app/tools/excel-spreadsheet-uploader/template) accessing previous versions of the file. So adding some kind of version in the file name will confuse everyone who need interacting with only the latest version of that file and defeats the purpose of storing this file in Git in the first place
-
-7. Stage and commit the change locally (you may want to have multiple rounds of that step)
-
-```
-$ git add .
-$ git commit -m "description of the changes"
-```
-
-8. When you are ready to share the changes, you can push them to the remote repository
-
-```
-$ git push --set-upstream origin
-```
-
-9. Now you can create [a pull request](https://carpentries-incubator.github.io/git-novice-branch-pr/10-pull-requests/) that will notify the tech team that a change need to be reviewed and merged in the codebase
-
-Navigate to your fork on Github and switch to the branch `<meaningful name with no spaces/special characters>`, click on the `Contribute` drop-down menu and press the "Open pull request",
-Then fill in the form as guided and save it. 
-The developers will be notified of the pull request and will schedule its reviewing.
-
-10. Reviewing
+## Reviewing
 
 During the reviewing, comments may be exchange on the pull requests directly between reviewers and author.
 
