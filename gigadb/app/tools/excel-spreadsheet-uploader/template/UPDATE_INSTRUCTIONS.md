@@ -41,6 +41,6 @@ During the reviewing, comments may be exchange on the pull requests directly bet
 
 If additional changes to the spreadsheet are necessary, a number of rounds of steps 6, 7 and 8 are to be performed again. When the pull request has been approved by two members of the tech team, it will be merged to the codebase
 
-11. Merging and sharing with the users
+## Merging and sharing with the users
 
-The developers will merge the pull request and will send a general email announcing the change with description and instructions for downloading the file.
+When two developers have approved the pull request, We will merge the pull request and will send a general email announcing the change with description and instructions for downloading the file.
