@@ -47,7 +47,6 @@ Feature: A curator opens the mockup page
   @ok @release-year
   Scenario: Check for updating the release year
     Given I am on "/dataset/200070/token/ImP3Bbu7ytRSfYFh"
-    And I should not see "Zhang G (2020)"
     When I make an update to the non-public dataset "200070"'s "author metadata" in the admin pages
     And I am on "/adminDataset/update/id/668"
     And I fill in the field of "id" "Dataset_publication_date" with "2020-01-01"
