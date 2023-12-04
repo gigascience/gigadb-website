@@ -4,6 +4,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+## v4.0.3 - 2023-12-04 - c2869d0
+
 - Fix #1561: show app version in footer on AWS deployment
 - Feat #1420: Save bastion user's public key to gitlab variable page
 - Feat #1456: Fix footer positioning to viewport bottom
