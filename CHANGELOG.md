@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## Unreleased
 
 - Feat #1259: Document how to update dataset spreadsheet template
+- Feat #1530: Implement scenario for checking the updated values in the mockup page
 
 ## v4.0.3 - 2023-12-04 - c2869d0
 
