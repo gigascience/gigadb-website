@@ -23,8 +23,8 @@ For more  information about that document's usage, check the corresponding [Giga
 10. It is time to commit the changes by adding a summary and description to the commit message form at the bottom left, and then click "commit to (name of the just created branch)"
 11. The main pane will show a list of what to do next. Choose the top one (already highlighted) "Publish your branch" by clicking the "Publish branch" button
 12. The top option in the main pane is highlighted and says "Preview the pull request from you current branch", and has a button "Preview Pull Request" that you click
-13. A preview pane will pop up, check that it says:
-    *  "commit into base:develop from (name of the branch you have created)
+13. A preview pane will pop up, check that:
+    *  it says "commit into base:develop from (name of the branch with your changes)"
     *  the main pane contain the change you want to publish and be reviewed
     *  At the bottom left, it should have a green tick "Able to merge"
 14. If all good, you can click "Create Pull Request"
@@ -37,10 +37,10 @@ For more  information about that document's usage, check the corresponding [Giga
 
 ## Reviewing
 
-During the reviewing, comments may be exchange on the pull requests directly between reviewers and author.
+During the reviewing, comments may be exchanged on the pull requests directly between reviewers and author.
 
 If additional changes to the spreadsheet are necessary, a number of rounds of steps 9, 10 and 11 are to be performed again. When the pull request has been approved by two members of the tech team, it will be merged to the codebase
 
 ## Merging and sharing with the users
 
-When two developers have approved the pull request, We will merge the pull request and will send a general email announcing the change with description and instructions for downloading the file.
+When two developers have approved the pull request, we will merge the pull request and will send a general email announcing the change with description and instructions for downloading the file.
