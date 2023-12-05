@@ -23,7 +23,7 @@ For more  information about that document's usage, check the corresponding [Giga
 10. It is time to commit the changes by adding a summary and description to the commit message form at the bottom left, and then click "commit to (name of the just created branch)"
 11. The main pane will show a list of what to do next. Choose the top one (already highlighted) "Publish your branch" by clicking the "Publish branch" button
 12. The top option in the main pane is highlighted and says "Preview the pull request from you current branch", and has a button "Preview Pull Request" that you click
-13. a preview pane will pop up, check that it says:
+13. A preview pane will pop up, check that it says:
     *  "commit into base:develop from (name of the branch you have created)
     *  the main pane contain the change you want to publish and be reviewed
     *  At the bottom left, it should have a green tick "Able to merge"
@@ -31,7 +31,7 @@ For more  information about that document's usage, check the corresponding [Giga
 15. Your web browser will open on a new Pull request form on the Gigascience's gigadb-website repository
 16. Fill in the form as instructed inline
 17. Click on "Create Pull Request" (if instead you see "Draft Pull Request", click the drop-down menu to bring the other option)
-18. in the "Projects" section in the right-hand sidebar, add the pull request to the current sprint project
+18. In the "Projects" section in the right-hand sidebar, add the pull request to the current sprint project
 
 
 
