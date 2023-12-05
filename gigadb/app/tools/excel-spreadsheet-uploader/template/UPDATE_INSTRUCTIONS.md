@@ -17,9 +17,9 @@ For more  information about that document's usage, check the corresponding [Giga
 4. On your computer, make the change you want to the file in `gigadb/app/tools/excel-spreadsheet-uploader/template`
 5. Then return to Github Desktop, you should see that the "Changes" column on the left is not empty and reflects the changes your made
 6. Create a new branch by clicking on the drop-down menu right of "Current branch" in the toolbar
-7. Click on "New branch", choose a meaningful name (e.g: incorrect-doi-hint), and click "Create branch"
+7. Click on "New branch", choose a meaningful name (e.g: fix-doi-hint), and click "Create branch"
 8. Then make sure that out of the two options shown, you select "Bring my changes to (name of the branch just created)"
-9. Click "Switch branch", "Current branch" in the toolbar should now show the name of the just created branch
+9. Click "Switch branch", "Current branch" in the toolbar should now show the name of the branch with your changes
 10. It is time to commit the changes by adding a summary and description to the commit message form at the bottom left, and then click "commit to (name of the just created branch)"
 11. The main pane will show a list of what to do next. Choose the top one (already highlighted) "Publish your branch" by clicking the "Publish branch" button
 12. The top option in the main pane is highlighted and says "Preview the pull request from you current branch", and has a button "Preview Pull Request" that you click
@@ -39,7 +39,7 @@ For more  information about that document's usage, check the corresponding [Giga
 
 During the reviewing, comments may be exchange on the pull requests directly between reviewers and author.
 
-If additional changes to the spreadsheet are necessary, a number of rounds of steps 6, 7 and 8 are to be performed again. When the pull request has been approved by two members of the tech team, it will be merged to the codebase
+If additional changes to the spreadsheet are necessary, a number of rounds of steps 9, 10 and 11 are to be performed again. When the pull request has been approved by two members of the tech team, it will be merged to the codebase
 
 ## Merging and sharing with the users
 
