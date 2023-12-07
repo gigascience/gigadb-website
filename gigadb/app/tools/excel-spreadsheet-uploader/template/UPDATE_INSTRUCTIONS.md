@@ -31,7 +31,7 @@ For more  information about that document's usage, check the corresponding [Giga
 15. Your web browser will open on a new Pull request form on the Gigascience's gigadb-website repository
 16. Fill in the form as instructed inline
 17. Click on "Create Pull Request" (if instead you see "Draft Pull Request", click the drop-down menu to bring the other option)
-18. In the "Projects" section in the right-hand sidebar, add the pull request to the current sprint project
+18. Add the pull request to the current sprint project by pasting its link into a new note in the Tasks To Do column. Sprint projects are listed in [Projects (classic)](https://github.com/orgs/gigascience/projects?type=classic). Then slide the note in the "👆 Reviewing required" section
 
 
 
