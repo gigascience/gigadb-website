@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1586: Make terraform always look for the latest CentOS Stream 8 x86_64 AMI
 - Feat #1530: Implement scenario for checking the updated values in the mockup page
 
 ## v4.0.3 - 2023-12-04 - c2869d0
