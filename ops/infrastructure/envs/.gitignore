@@ -1,4 +1,4 @@
-           # Ignore everything inside staging or live dirs
-           *
-           # Except this file
-           !.gitignore
+# Ignore everything inside staging or live dirs
+*
+# Except this file
+!.gitignore
