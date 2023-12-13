@@ -372,8 +372,8 @@ class AdminDatasetController extends Controller
                     }
                 }
 
-
-                switch($datasetPageSettings->getPageType()) {
+                Yii::app()->user->setFlash('success', 'Update successfully!');
+                switch ($datasetPageSettings->getPageType()) {
                     case "draft":
                         $this->redirect('/adminDataset/admin/');
                         break;
@@ -386,6 +386,7 @@ class AdminDatasetController extends Controller
                 }
 
             } else {
+                Yii::app()->user->setFlash('error', 'Fail to update!');
                 Yii::log(print_r($model->getErrors(), true), 'error');
             }
         }

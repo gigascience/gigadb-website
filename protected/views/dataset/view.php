@@ -13,6 +13,18 @@ $sampleDataProvider = $samples->getDataProvider() ;
 </div>
 <?php } ?>
 
+<?php if ($flashSuccess = Yii::app()->user->getFlash('success')): ?>
+    <div class="alert alert-success" role="alert">
+        <?= $flashSuccess ?>
+    </div>
+<?php endif; ?>
+
+<?php if ($flashError = Yii::app()->user->getFlash('error')): ?>
+    <div class="alert alert-danger" role="alert">
+        <?= $flashError ?>
+    </div>
+<?php endif; ?>
+
 <?php $this->renderPartial('_sample_setting', array('columns' => $columns, 'pageSize' => $sampleDataProvider->getPagination()->getPageSize() )); ?>
 <?php $this->renderPartial('_files_setting', array('setting' => $setting, 'pageSize' => $fileDataProvider->getPagination()->getPageSize()));?>
 
