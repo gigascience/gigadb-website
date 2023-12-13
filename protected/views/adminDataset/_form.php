@@ -1,14 +1,14 @@
-<?php if ($flashSuccess = Yii::app()->user->getFlash('updateSuccess')): ?>
+<?php if ($flashSuccess = Yii::app()->user->getFlash('updateSuccess')) { ?>
     <div class="alert alert-success" role="alert">
         <?= $flashSuccess ?>
     </div>
-<?php endif; ?>
+<?php } ?>
 
-<?php if ($flashError = Yii::app()->user->getFlash('updateError')): ?>
+<?php if ($flashError = Yii::app()->user->getFlash('updateError')) { ?>
     <div class="alert alert-danger" role="alert">
         <?= $flashError ?>
     </div>
-<?php endif; ?>
+<?php } ?>
 
 <?php
 $cs = Yii::app()->getClientScript();
