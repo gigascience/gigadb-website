@@ -334,7 +334,7 @@ Feature: form to update dataset details
     And I should not see "Status changed to Published"
 
 
-  @wip @flashmessage
+  @ok @flashmessage
   Scenario: Display success message when updating published dataset
     Given I am on "/adminDataset/update/id/22"
     And I should see "Published"
