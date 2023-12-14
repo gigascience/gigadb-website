@@ -174,6 +174,9 @@ class FiledropAccount extends \yii\db\ActiveRecord
      */
     function createDirectories(string $doi): bool
     {
+        if (file_exists("/var/incoming/ftp/$doi"))
+            return true;
+
         return mkdir("/var/incoming/ftp/$doi", 0770)
                 && chmod("/var/incoming/ftp/$doi", 0770)//to bypass umask
                 && mkdir("/var/repo/$doi", 0755)
