@@ -372,7 +372,7 @@ class AdminDatasetController extends Controller
                     }
                 }
 
-                Yii::app()->user->setFlash('updateSuccess', 'Update successfully!');
+                Yii::app()->user->setFlash('updateSuccess', 'Updated successfully!');
                 switch ($datasetPageSettings->getPageType()) {
                     case "draft":
                         $this->redirect('/adminDataset/admin/');

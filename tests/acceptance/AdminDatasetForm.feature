@@ -350,7 +350,7 @@ Feature: form to update dataset details
     When I fill in the field of "name" "Dataset[dataset_size]" with "1024"
     And I press the button "Save"
     Then I should be on "/adminDataset/update/id/668"
-    And I should see "Update successfully!"
+    And I should see "Updated successfully!"
 
   @ok @flashmessage
   Scenario: Display error message when updating private dataset
