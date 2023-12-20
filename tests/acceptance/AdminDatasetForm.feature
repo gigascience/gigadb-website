@@ -333,16 +333,6 @@ Feature: form to update dataset details
     Then I am on "/adminDataset/update/id/22"
     And I should not see "Status changed to Published"
 
-
-  @ok @flashmessage
-  Scenario: Display success message when updating published dataset
-    Given I am on "/adminDataset/update/id/22"
-    And I should see "Published"
-    When I fill in the field of "name" "Dataset[dataset_size]" with "1024"
-    And I press the button "Save"
-    Then I should be on "/dataset/100020"
-    And I should see "Update successfully!"
-
   @ok @flashmessage
   Scenario: Display error message when updating published dataset
     Given I am on "/adminDataset/update/id/22"

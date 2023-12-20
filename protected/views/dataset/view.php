@@ -12,19 +12,6 @@ $sampleDataProvider = $samples->getDataProvider() ;
     <?php echo Yii::app()->user->getFlash('mockupMode'); ?>
 </div>
 <?php } ?>
-
-<?php if ($flashSuccess = Yii::app()->user->getFlash('updateSuccess')) { ?>
-    <div class="alert alert-success" role="alert">
-        <?= $flashSuccess ?>
-    </div>
-<?php } ?>
-
-<?php if ($flashError = Yii::app()->user->getFlash('updateError')) { ?>
-    <div class="alert alert-danger" role="alert">
-        <?= $flashError ?>
-    </div>
-<?php } ?>
-
 <?php $this->renderPartial('_sample_setting', array('columns' => $columns, 'pageSize' => $sampleDataProvider->getPagination()->getPageSize() )); ?>
 <?php $this->renderPartial('_files_setting', array('setting' => $setting, 'pageSize' => $fileDataProvider->getPagination()->getPageSize()));?>
 
