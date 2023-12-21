@@ -30,6 +30,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Feat #1505: Update all admin pages with create and update forms with old style to modern style
 - Feat #1502: Update all admin pages with grid view Dataset tables with old style to modern style
 - Feat #1498: Search page - Improve styles and accessibility of search filters
+- Feat #1259: Document how to update dataset spreadsheet template
+
+## v4.0.4 - 2023-12-11 - 4c91cfc
+
+- Feat #1586: Make terraform always look for the latest CentOS Stream 8 x86_64 AMI
+- Feat #1530: Implement scenario for checking the updated values in the mockup page
+
+## v4.0.3 - 2023-12-04 - c2869d0
+
+- Feat #1259: Document how to update dataset spreadsheet template
+
+## v4.0.4 - 2023-12-11 - 4c91cfc
+
+- Feat #1586: Make terraform always look for the latest CentOS Stream 8 x86_64 AMI
+- Feat #1530: Implement scenario for checking the updated values in the mockup page
+
+## v4.0.3 - 2023-12-04 - c2869d0
+
 - Fix #1561: show app version in footer on AWS deployment
 - Feat #1420: Save bastion user's public key to gitlab variable page
 - Feat #1456: Fix footer positioning to viewport bottom
