@@ -4,6 +4,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Fix #1591: Hide the remove image record button and show loading icon after submit
+
 ## v4.1.0 - 2024-01-24 - d0495bee
 
 - Fix #1654: Fix AdminDatasetForm acceptance tests
