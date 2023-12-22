@@ -109,6 +109,13 @@ return CMap::mergeArray(array(
             'class'     => 'application.components.AttributeService',
         ),
 
+        'featureFlag' => array(
+            'class'     => 'application.components.FeatureFlagService',
+            'fflagUrl' => '${FFLAG_API_URL}',
+            'fflagAppName' => '${GIGADB_ENV}',
+            'fflagInstanceId' => '${FFLAG_ID}',
+        ),
+
         'newsAndFeedsService' => array(
             'class'     => 'application.components.NewsAndFeedsService',
         ),

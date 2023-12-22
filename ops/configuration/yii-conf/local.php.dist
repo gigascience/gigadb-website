@@ -66,8 +66,5 @@ return array(
         // For creating URLs to dataset files
         'ftp_connection_url' => '${FTP_CONNECTION_URL}',
 
-        // For Unleashed based Gitlab feature flags,
-        'fflag_api_url' => '${FFLAG_API_URL}',
-        'fflag_instance_id' => '${FFLAG_ID}',
     ),
 );
