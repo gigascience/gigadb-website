@@ -32,7 +32,8 @@
          "symfony/http-client": "v5.4.31",
          "nyholm/psr7": "1.8.1",
          "unleash/client": "v1.1.173",
-         "cache/filesystem-adapter": "^1.2.0"
+         "cache/filesystem-adapter": "^1.2.0",
+         "kriswallsmith/buzz": "^1.2.1"
     },
     "require-dev": {
         "behat/behat": "^3.5",
