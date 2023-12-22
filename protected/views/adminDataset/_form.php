@@ -10,6 +10,12 @@
     </div>
 <?php } ?>
 
+<?php if ($flashSuccess = Yii::app()->user->getFlash('removeSuccess')) { ?>
+    <div class="alert alert-success" role="alert">
+        <?= $flashSuccess ?>
+    </div>
+<?php } ?>
+
 <?php
 $cs = Yii::app()->getClientScript();
 $cssCoreUrl = $cs->getCoreScriptUrl();

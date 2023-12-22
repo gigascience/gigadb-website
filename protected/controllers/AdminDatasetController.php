@@ -454,10 +454,13 @@ class AdminDatasetController extends Controller
             $model->image_id = Image::GENERIC_IMAGE_ID;
             if ($model->save()) {
                 try {
-                    if ( Image::model()->findByPk($oldImageID)->delete() )
+                    sleep(5);
+                    if (Image::model()->findByPk($oldImageID)->delete()) {
                         $result['status'] = true;
-                    else
+                        Yii::app()->user->setFlash('removeSuccess', 'Image records removed successfully!');
+                    } else {
                         Yii::log("Failed deleting image record $oldImageID", "error");
+                    }
                 } catch (CDbException $e) {
                     Yii::log($e->getMessage(),"error");
                 }
