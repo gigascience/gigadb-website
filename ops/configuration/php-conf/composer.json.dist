@@ -28,7 +28,10 @@
          "creocoder/yii2-flysystem": "~0.9.0",
          "ramsey/uuid": "~3.9.0",
          "neam/yii-streamlog": "^1.0.0",
-         "gregwar/captcha": "^1.1.9"
+         "gregwar/captcha": "^1.1.9",
+         "symfony/http-client": "v5.4.31",
+         "nyholm/psr7": "1.8.1",
+         "unleash/client": "v1.1.173"
     },
     "require-dev": {
         "behat/behat": "^3.5",
