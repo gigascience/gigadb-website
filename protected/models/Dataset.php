@@ -28,36 +28,24 @@ class Dataset extends CActiveRecord
     public $union;
     public $types;
 
-    public static $statusList = array('ImportFromEM'=>'ImportFromEM',
-                         'UserStartedIncomplete'=>'UserStartedIncomplete',
-                         'Rejected'=>'Rejected',
-                         'Not required'=>'Not required',
-                         'AssigningFTPbox'=>'AssigningFTPbox',
-                         'UserUploadingData'=>'UserUploadingData',
-                         'DataAvailableForReview'=>'DataAvailableForReview',
-                         'Submitted'=>'Submitted',
-                         'DataPending'=>'DataPending',
-                         'Curation'=>'Curation',
-                         'AuthorReview'=>'AuthorReview',
-                         'Private'=>'Private',
-                         'Published' =>'Published',
-                         );
-
-    public static $availableStatusList = array('ImportFromEM'=>'ImportFromEM',
+    public const ORIGINAL_UPLOAD_STATUS_LIST = [
+        'ImportFromEM'=>'ImportFromEM',
         'UserStartedIncomplete'=>'UserStartedIncomplete',
         'Rejected'=>'Rejected',
         'Not required'=>'Not required',
-        'AssigningFTPbox'=>'AssigningFTPbox',
-        'UserUploadingData'=>'UserUploadingData',
-        'DataAvailableForReview'=>'DataAvailableForReview',
         'Submitted'=>'Submitted',
-        'DataPending'=>'DataPending',
         'Curation'=>'Curation',
         'AuthorReview'=>'AuthorReview',
         'Private'=>'Private',
         'Published' =>'Published',
-        'Incomplete' =>'Incomplete',
-    );
+    ];
+
+    public const FUW_UPLOAD_STATUS_LIST = [
+        'AssigningFTPbox'=>'AssigningFTPbox',
+        'UserUploadingData'=>'UserUploadingData',
+        'DataAvailableForReview'=>'DataAvailableForReview',
+        'DataPending'=>'DataPending',
+    ];
 
     /*
      * List of Many To Many RelationShip
@@ -617,5 +605,12 @@ class Dataset extends CActiveRecord
     public function getUuid(): string
     {
         return Uuid::uuid5(Uuid::NAMESPACE_URL, self::NAMESPACE."/id/".$this->id);
+    }
+
+    public function getAvailableStatusList(): array
+    {
+        if (Yii::app()->featureFlag->isEnabled("fuw"))
+            return CMap::mergeArray(self::ORIGINAL_UPLOAD_STATUS_LIST,self::FUW_UPLOAD_STATUS_LIST);
+        return self::ORIGINAL_UPLOAD_STATUS_LIST;
     }
 }
