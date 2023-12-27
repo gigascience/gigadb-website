@@ -376,6 +376,7 @@ services:
       - ${DATA_SAVE_PATH}/fuw/incoming/ftp:/var/incoming/ftp
       - ${DATA_SAVE_PATH}/fuw/repo:/var/repo
       - ${DATA_SAVE_PATH}/fuw/credentials:/var/private
+      - ${DATA_SAVE_PATH}/pure-ftpd/passwd:/etc/pure-ftpd/passwd
     depends_on:
       - database
       - console
