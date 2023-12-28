@@ -4,6 +4,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Fix #1527: Make the postUpload script use the image `production-files-metadata-console:production_environment` in the staging and live environments
+
 ## v4.1.0 - 2024-01-24 - d0495bee
 
 - Fix #1654: Fix AdminDatasetForm acceptance tests
