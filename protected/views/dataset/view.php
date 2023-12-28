@@ -637,7 +637,7 @@ document.addEventListener("DOMContentLoaded", function(event) { //This event is 
 
         $('#files_table').DataTable({
             "initComplete": function () {
-                $("#files_table").wrap("<div style='overflow:auto; width:100%; position:relative;'></div>");
+                $("#files_table").wrap("<div id='dataset-datatables-wrapper'></div>");
             },
             "paging":   false,
             "ordering": true,
