@@ -4,6 +4,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+## v4.0.5 - 2024-01-02 - d4deab10
+
 - Feat #1595: Update total volume of data on home page
 - Fix #1529: Reload the same admin form page after save for private dataset
 - Feat #1259: Document how to update dataset spreadsheet template
