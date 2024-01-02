@@ -48,7 +48,6 @@ class FilesCommand extends CConsoleCommand
 
             # Download and parse dataset md5 file
             $url = $this->findDatasetMd5FileUrl($dataset);
-            echo "Processing $url".PHP_EOL;
             $contents = DownloadService::downloadFile($url);
             $lines = explode("\n", $contents);
             foreach ($lines as $line) {
@@ -95,6 +94,7 @@ class FilesCommand extends CConsoleCommand
         foreach ($dataset::RANGES as $range) {
             $url = Yii::app()->params['ftp_connection_url']."/pub/gigadb/pub/10.5524/$range/$doi/$doi.md5";
             // Check URL resolves to a real file
+            echo "Processing $url" . PHP_EOL;
             $file_exists = DownloadService::fileExists($url);
             if ($file_exists)
                 return $url;
