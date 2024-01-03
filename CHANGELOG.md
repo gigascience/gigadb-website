@@ -12,7 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Fix #1529: Reload the same admin form page after save for private dataset
 - Feat #1259: Document how to update dataset spreadsheet template
 
-## v4.0.4 - 2023-12-11 - 4c91cfc
+## v4.0.4 - 2023-12-11 - 4c91cfc - live since 2024-12-19
 
 - Feat #1586: Make terraform always look for the latest CentOS Stream 8 x86_64 AMI
 - Feat #1530: Implement scenario for checking the updated values in the mockup page
