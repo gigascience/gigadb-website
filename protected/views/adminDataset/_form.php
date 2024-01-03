@@ -1,20 +1,23 @@
-<?
-if(Yii::app()->user->hasFlash('saveSuccess'))
-    echo Yii::app()->user->getFlash('saveSuccess');
+<?php if ($flashSuccess = Yii::app()->user->getFlash('updateSuccess')) { ?>
+    <div class="alert alert-success" role="alert">
+        <?= $flashSuccess ?>
+    </div>
+<?php } ?>
 
+<?php if ($flashError = Yii::app()->user->getFlash('updateError')) { ?>
+    <div class="alert alert-danger" role="alert">
+        <?= $flashError ?>
+    </div>
+<?php } ?>
 
+<?php
 $cs = Yii::app()->getClientScript();
 $cssCoreUrl = $cs->getCoreScriptUrl();
 
 $cs->registerCssFile($cssCoreUrl . '/jui/css/base/jquery-ui.css');
 $cs->registerCssFile('/css/jquery.tag-editor.css');
-
 ?>
-<?php if (Yii::app()->user->hasFlash('error')) { ?>
-    <div class="alert alert-danger" role="alert">
-        <?php echo Yii::app()->user->getFlash('error'); ?>
-    </div>
-<? } ?>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/caret/1.0.0/jquery.caret.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tag-editor/1.0.20/jquery.tag-editor.min.js"></script>
 

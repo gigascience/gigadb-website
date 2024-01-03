@@ -332,3 +332,32 @@ Feature: form to update dataset details
     And I wait "2" seconds
     Then I am on "/adminDataset/update/id/22"
     And I should not see "Status changed to Published"
+
+  @ok @flashmessage
+  Scenario: Display error message when updating published dataset
+    Given I am on "/adminDataset/update/id/22"
+    And I should see "Published"
+    When I fill in the field of "name" "Dataset[dataset_size]" with "lorem ipsum"
+    And I press the button "Save"
+    Then I should be on "/adminDataset/update/id/22"
+    And I should see "Fail to update!"
+    And I should see "Dataset Size must be a number."
+
+  @ok @flashmessage
+  Scenario: Display success message when updating private dataset
+    Given I am on "/adminDataset/update/id/668"
+    And I should see "Private"
+    When I fill in the field of "name" "Dataset[dataset_size]" with "1024"
+    And I press the button "Save"
+    Then I should be on "/adminDataset/update/id/668"
+    And I should see "Updated successfully!"
+
+  @ok @flashmessage
+  Scenario: Display error message when updating private dataset
+    Given I am on "/adminDataset/update/id/668"
+    And I should see "Private"
+    When I fill in the field of "name" "Dataset[dataset_size]" with "lorem ipsum"
+    And I press the button "Save"
+    Then I should be on "/adminDataset/update/id/668"
+    And I should see "Fail to update!"
+    And I should see "Dataset Size must be a number."
