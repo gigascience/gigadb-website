@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1367: Improve accessibility of dataset type and metric sections in homepage
 - Feat #1384: Improve accessibility of login page: input focus state, form errors, aria labels, required
 
 ## v4.0.5 - 2024-01-02 - d4deab10
