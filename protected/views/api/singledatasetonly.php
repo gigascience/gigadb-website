@@ -162,7 +162,7 @@ foreach($dataset_attributes as $dataset_attribute)
 {
     if(isset($dataset_attribute->value) && $dataset_attribute->value!=""){
     $xml.="<attribute>";
-    $datasetattribute=Attribute::model()->findByAttributes(array('id'=>$dataset_attribute->attribute_id));
+    $datasetattribute=Attributes::model()->findByAttributes(array('id'=>$dataset_attribute->attribute_id));
     if(isset($datasetattribute)){
     $xml.="<key>$datasetattribute->attribute_name</key>";
     }else{

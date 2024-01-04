@@ -11,7 +11,7 @@
  * @property string $units_id
  *
  * The followings are the available model relations:
- * @property Attribute $attribute
+ * @property Attributes $attribute
  * @property Experiment $exp
  * @property Unit $units
  */
@@ -60,7 +60,7 @@ class ExpAttributes extends CActiveRecord
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
-            'attribute' => array(self::BELONGS_TO, 'Attribute', 'attribute_id'),
+            'attribute' => array(self::BELONGS_TO, 'Attributes', 'attribute_id'),
             'exp' => array(self::BELONGS_TO, 'Experiment', 'exp_id'),
             'units' => array(self::BELONGS_TO, 'Unit', 'units_id'),
         );
@@ -74,7 +74,7 @@ class ExpAttributes extends CActiveRecord
         return array(
             'id' => 'ID',
             'exp_id' => 'Exp',
-            'attribute_id' => 'Attribute',
+            'attribute_id' => 'Attributes',
             'value' => 'Value',
             'units_id' => 'Units',
         );

@@ -44,7 +44,7 @@ data "aws_ami" "centos" {
 
   filter {
     name   = "name"
-    values = ["CentOS Stream 8 x86_64 20230530"]
+    values = ["CentOS Stream 8 x86_64 *"]
   }
 
   filter {
@@ -58,18 +58,19 @@ data "aws_ami" "centos" {
 resource "aws_instance" "bastion" {
   ami = data.aws_ami.centos.id
   associate_public_ip_address = true
-  instance_type = "t3.micro"
+  instance_type = "${var.bastion_ec2_type}"
   vpc_security_group_ids = [aws_security_group.bastion_sg.id]
   key_name = var.key_name
   subnet_id = var.public_subnet_id
 
   tags = {
     Name = "bastion_server_${var.deployment_target}_${var.owner}",
-    System = "t3_micro-centos8",
+    System = "${var.bastion_ec2_type}_centos_stream8",
   }
 
   root_block_device {
     delete_on_termination = "true"
+    volume_size = 30
   }
 
   volume_tags = {
@@ -99,4 +100,8 @@ output "bastion_private_ip" {
 output "bastion_public_ip" {
   description = "EC2 bastion instance public IP address"
   value = aws_instance.bastion.public_ip
+}
+
+output "instance_type" {
+  value = aws_instance.bastion.instance_type
 }

@@ -12,7 +12,6 @@ $sampleDataProvider = $samples->getDataProvider() ;
     <?php echo Yii::app()->user->getFlash('mockupMode'); ?>
 </div>
 <?php } ?>
-
 <?php $this->renderPartial('_sample_setting', array('columns' => $columns, 'pageSize' => $sampleDataProvider->getPagination()->getPageSize() )); ?>
 <?php $this->renderPartial('_files_setting', array('setting' => $setting, 'pageSize' => $fileDataProvider->getPagination()->getPageSize()));?>
 

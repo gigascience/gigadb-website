@@ -349,7 +349,7 @@ class AdminDatasetController extends Controller
 
                 // retrieve existing redirect
                 $criteria = new CDbCriteria(array('order'=>'id ASC'));
-                $urlToRedirectAttr = Attribute::model()->findByAttributes(array('attribute_name'=>'urltoredirect'));
+                $urlToRedirectAttr = Attributes::model()->findByAttributes(array('attribute_name'=>'urltoredirect'));
                 $urlToRedirectDatasetAttribute = datasetAttributes::model()->findByAttributes(array('dataset_id'=>$id,'attribute_id'=>$urlToRedirectAttr->id), $criteria);
 
                 // saving url to redirect as a dataset attribute
@@ -372,8 +372,8 @@ class AdminDatasetController extends Controller
                     }
                 }
 
-
-                switch($datasetPageSettings->getPageType()) {
+                Yii::app()->user->setFlash('updateSuccess', 'Updated successfully!');
+                switch ($datasetPageSettings->getPageType()) {
                     case "draft":
                         $this->redirect('/adminDataset/admin/');
                         break;
@@ -381,11 +381,12 @@ class AdminDatasetController extends Controller
                         $this->redirect('/dataset/' . $model->identifier);
                         break;
                     case "hidden":
-                        $this->redirect(array('/dataset/view/id/' . $model->identifier.'/token/'.$model->token));
+                        $this->redirect(array('/adminDataset/update/id/' . $model->id));
                         break;
                 }
 
             } else {
+                Yii::app()->user->setFlash('updateError', 'Fail to update!');
                 Yii::log(print_r($model->getErrors(), true), 'error');
             }
         }

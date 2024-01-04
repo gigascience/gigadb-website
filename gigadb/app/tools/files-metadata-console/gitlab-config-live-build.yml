@@ -1,11 +1,12 @@
 FilesMetadataConsoleBuildLive:
   variables:
-    GIGADB_ENV: "staging"
+    GIGADB_ENV: "live"
     YII_DEBUG: "true"
   stage: live build
   tags:
     - $GITLAB_USER_LOGIN
   needs: ["FilesMetaDataConsoleDeployStaging"]
+  extends: .tag_only
   when: manual
   environment:
     name: "live"

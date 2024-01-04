@@ -109,3 +109,6 @@ php-conf/appconfig.ini
 
 # config
 params-local.php
+
+# release related artefacts
+VERSION

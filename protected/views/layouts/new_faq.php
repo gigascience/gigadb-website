@@ -36,6 +36,7 @@
 </head>
 
 <body>
+    <a href="#maincontent" class="skip-to-main-link">Skip to main content</a>
     <header>
         <div class="base-top-bar">
             <div class="container">
@@ -122,9 +123,11 @@
                         <ul class="nav nav-pills main-nav-bar text-right">
                             <li><a href="/">Home</a></li>
                             <li class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                                        About&nbsp;<i class="fa fa-angle-down"></i>
-                                    </a>
+                                <button class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="dropdown-toggle-label">
+                                        About&nbsp;<i class="fa fa-angle-down" aria-hidden="true"></i>
+                                    </span>
+                                </button>
                                 <ul class="dropdown-menu">
                                     <li><a href="/site/about">General</a></li>
                                     <li><a href="/site/team">Our team</a></li>
@@ -134,9 +137,11 @@
                                 </ul>
                             </li>
                             <li class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                                        Help&nbsp;<i class="fa fa-angle-down"></i>
-                                    </a>
+                                <button class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="dropdown-toggle-label">
+                                        Help&nbsp;<i class="fa fa-angle-down" aria-hidden="true"></i>
+                                    </span>
+                                </button>
                                 <ul class="dropdown-menu">
                                     <li><a href="/site/help">Help</a></li>
                                     <li><a href="/site/faq">FAQ</a></li>
@@ -151,7 +156,7 @@
             </div>
         </div>
     </header>
-    <main>
+    <main id="maincontent">
         <?php echo $content; ?>
     </main>
     <footer class="base-footer-bar">

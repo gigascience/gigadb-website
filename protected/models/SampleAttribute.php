@@ -44,8 +44,41 @@ class SampleAttribute extends CActiveRecord
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, sample_id, attribute_id, value, unit_id', 'safe', 'on'=>'search'),
+            array('attribute_id', 'validateAttributeId'),
+            array('sample_id', 'validateSampleId'),
 		);
 	}
+
+
+    /**
+     * Custom validator to check if the attribute id can be found in attribute table
+     *
+     * @param $attribute
+     * @param $param
+     * @return void
+     */
+    public function validateAttributeId($attribute, $param)
+    {
+        $attributeModel = Attributes::model()->findByPk($this->attribute_id);
+        if ($attributeModel === null) {
+            $this->addError('attribute_id', 'The specified attribute id does not exist in the Attribute table.');
+        }
+    }
+
+    /**
+     * Custom validator to check if the sample id can be found in sample table
+     *
+     * @param $attribute
+     * @param $param
+     * @return void
+     */
+    public function validateSampleId($attribute, $param)
+    {
+        $sampleModel = Sample::model()->findByPk($this->sample_id);
+        if ($sampleModel === null) {
+            $this->addError('sample_id', 'The specified sample id does not exist in the Sample table.');
+        }
+    }
 
 	/**
 	 * @return array relational rules.
@@ -55,7 +88,7 @@ class SampleAttribute extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'attribute' => array(self::BELONGS_TO, 'Attribute', 'attribute_id'),
+			'attribute' => array(self::BELONGS_TO, 'Attributes', 'attribute_id'),
 			'sample' => array(self::BELONGS_TO, 'Sample', 'sample_id'),
 			'unit' => array(self::BELONGS_TO, 'Unit', 'unit_id'),
 		);
@@ -69,7 +102,7 @@ class SampleAttribute extends CActiveRecord
 		return array(
 			'id' => 'Id',
 			'sample_id' => 'Sample',
-			'attribute_id' => 'Attribute',
+			'attribute_id' => 'Attributes',
 			'value' => 'Value',
 			'unit_id' => 'Unit',
 		);

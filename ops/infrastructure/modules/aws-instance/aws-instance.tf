@@ -76,7 +76,7 @@ data "aws_ami" "centos" {
 
   filter {
     name   = "name"
-    values = ["CentOS Stream 8 x86_64 20230530"]
+    values = ["CentOS Stream 8 x86_64 *"]
   }
 
   filter {
@@ -89,18 +89,19 @@ data "aws_ami" "centos" {
 
 resource "aws_instance" "docker_host" {
   ami = data.aws_ami.centos.id
-  instance_type = "t3.small"
+  instance_type = "${var.web_ec2_type}"
   vpc_security_group_ids = [aws_security_group.docker_host_sg.id]
   key_name = var.key_name
   subnet_id = var.public_subnet_id
 
   tags = {
     Name = "gigadb_server_${var.deployment_target}_${var.owner}",
-    System = "t3_micro-centos8",
+    System = "${var.web_ec2_type}_centos_stream8",
   }
 
   root_block_device {
     delete_on_termination = "true"
+    volume_size = 30
   }
 
   volume_tags = {
@@ -128,4 +129,8 @@ output "instance_ip_addr" {
 
 output "instance_public_ip_addr" {
   value = aws_instance.docker_host.public_ip
+}
+
+output "instance_type" {
+  value = aws_instance.docker_host.instance_type
 }

@@ -11,7 +11,7 @@
 
 	<p class="note">Fields with <span class="required">*</span> are required.</p>
 
-	<?php echo $form->errorSummary($model); ?>
+	<?php echo $form->errorSummary($model, null, null, array('class' => "alert alert-danger")); ?>
 
 	<div class="control-group">
 		<?php echo $form->labelEx($model,'species_id',array('class'=>'control-label')); ?>
@@ -33,7 +33,7 @@
                             'minLength' => '2',
                         ),
                         'htmlOptions' => array(
-                            'placeholder' => 'name',
+                            'placeholder' => 'Taxon ID',
                             'size' => 'auto',
                             //'value' => $specie->tax_id .':'. $specie->scientific_name,
                         ),
@@ -51,7 +51,7 @@
         <div class="control-group">
             <?php echo $form->labelEx($model,'attributesList',array('class'=>'control-label')); ?>
             <div class="controls">
-                <textarea name="Sample[attributesList]"><?= $model->getAttributesList(true) ?></textarea>
+                <textarea name="Sample[attributesList]"><?php echo $model->attributesList ? $model->attributesList :  $model->getAttributesList(true) ?></textarea>
                 <?php echo $form->error($model,'attributesList'); ?>
             </div>
         </div>
