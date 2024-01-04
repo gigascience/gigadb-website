@@ -218,7 +218,7 @@
                                     <div class="home-color-background-block">
                                         <div class="text-icon text-icon-o text-icon-lg">
                                             <img src="/images/new_interface_image/volume.svg" alt=""></div>
-                                        <h3 class="heading"><span class="sr-only">Total Volume of Data </span>31</h3>
+                                        <h3 class="heading"><span class="sr-only">Total Volume of Data </span>65</h3>
                                         <div aria-hidden="true" class="content">Data volume(TB)</div>
                                     </div>
                                 </div>
