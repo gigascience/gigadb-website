@@ -39,13 +39,16 @@ input[type="checkbox"] {
   display: inline-block;
 }
 
-.form-control,
-.form-control:hover,
-.form-control:focus {
+.form-control {
   border-color: @color-light-gray;
   box-shadow: none;
   color: @color-darker-gray;
   font-size: 13px;
+  &:focus {
+    border-color: @color-light-gray;
+    box-shadow: none;
+    outline: solid 2px @color-gigadb-green;
+  }
 }
 
 .carousel-doi {
@@ -129,4 +132,9 @@ input[type="checkbox"] {
   *display: inline;
   *zoom: 1;
   margin-top: -30px;
+}
+
+.form-error {
+  padding-top: 5px;
+  color: @brand-danger-on-lighter-gray;
 }
