@@ -252,7 +252,7 @@
                             <div class="text-icon text-icon-o text-icon-lg">
                                 <img src="/images/new_interface_image/volume.svg" alt="">
                             </div>
-                            <h3 class="heading" aria-label="Total Volume of Data: 31 terabytes">31</h3>
+                            <h3 class="heading" aria-label="Total Volume of Data: 65 terabytes">65</h3>
                             <div aria-hidden="true" class="content">Data volume(TB)</div>
                         </div>
                     </div>

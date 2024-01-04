@@ -375,8 +375,8 @@ class AdminDatasetController extends Controller
                     }
                 }
 
-
-                switch($datasetPageSettings->getPageType()) {
+                Yii::app()->user->setFlash('updateSuccess', 'Updated successfully!');
+                switch ($datasetPageSettings->getPageType()) {
                     case "draft":
                         $this->redirect('/adminDataset/admin/');
                         break;
@@ -384,11 +384,12 @@ class AdminDatasetController extends Controller
                         $this->redirect('/dataset/' . $model->identifier);
                         break;
                     case "hidden":
-                        $this->redirect(array('/dataset/view/id/' . $model->identifier.'/token/'.$model->token));
+                        $this->redirect(array('/adminDataset/update/id/' . $model->id));
                         break;
                 }
 
             } else {
+                Yii::app()->user->setFlash('updateError', 'Fail to update!');
                 Yii::log(print_r($model->getErrors(), true), 'error');
             }
         }
