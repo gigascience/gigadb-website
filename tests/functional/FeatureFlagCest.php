@@ -25,9 +25,8 @@ class featureFlagCest
 
     public function _before(FunctionalTester $I): void
     {
-        \Codeception\Util\Autoload::addNamespace('',__DIR__."/../../protected/components");
         $this->config = require(__DIR__."/../../protected/config/main.php");
-        $this->featureFlag = new featureFlagService();
+        $this->featureFlag = new FeatureFlagService();
         $this->featureFlag->setCacheTtl(0); //otherwise functionality under test is not exercised after first test
     }
 
