@@ -36,16 +36,8 @@ class DatasetTest extends CDbTestCase
 
     function testGetAvailableStatusList()
     {
-        $ffconfig = require(__DIR__."/../../protected/config/main.php");
-        $featureFlag = new featureFlagService();
-        $featureFlag->setCacheTtl(0);
-        $featureFlag->setFflagUrl($ffconfig['components']['featureFlag']['fflagUrl']);
-        $featureFlag->setFflagAppName($ffconfig['components']['featureFlag']['fflagAppName']);
-        $featureFlag->setFflagInstanceId($ffconfig['components']['featureFlag']['fflagInstanceId']);
-        $featureFlag->init();
-
         $result = Dataset::getAvailableStatusList();
-        if ($featureFlag->isEnabled("fuw")) {
+        if (Yii::app()->featureFlag->isEnabled("fuw")) {
             codecept_debug("*** FUW is enabled ***");
             $this->assertCount(count(Dataset::ORIGINAL_UPLOAD_STATUS_LIST)+count(Dataset::FUW_UPLOAD_STATUS_LIST), $result);
             $this->assertTrue(array_diff(Dataset::ORIGINAL_UPLOAD_STATUS_LIST, $result) === []);
