@@ -4,6 +4,8 @@ const PUBLIC_PATHS = [
     disabledElements: ['.image-overlay', '.image-background']
   },
   '/dataset/100006',
+  '/dataset/100245',
+  '/dataset/100056',
   {
     path: '/search/new?keyword=Genomic&type%5B%5D=dataset&dataset_type%5B%5D=Genomic',
     disabledElements: ['.image-overlay', '.image-background']
