@@ -1,7 +1,7 @@
 // Set tags to true / false to run different subsets of tests
 const TAG = {
   // run ALL tests, regardless of any other tags
-  RUN_ALL: false,
+  RUN_ALL: true,
   //
   // include or exclude tests for specific browsers
   CHROMIUM: true,
@@ -18,7 +18,7 @@ const TAG = {
   1553: false,
   1556: false,
   1558: false,
-  1564: true,
+  1564: false,
   //
   SKIP_DISABLED_ELEMENTS: true,
 }
