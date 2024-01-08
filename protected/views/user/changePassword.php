@@ -52,7 +52,7 @@
                         ?>
 
                         <div class="form-group checkbox-horizontal">
-                          <label class="col-xs-5 control-label" for="newsletter"><?= Yii::t('app', 'Mailing list') ?></label>
+                          <label class="col-xs-5 control-label" for="ChangePasswordForm_newsletter"><?= Yii::t('app', 'Mailing list') ?></label>
                           <div class="col-xs-5">
                             <?php echo $form->checkbox($model, 'newsletter', array('id' => 'ChangePasswordForm_newsletter', 'aria-describedby' => 'newsletterHint')); ?>
                             <p id="newsletterHint">Please tick here to join the GigaDB mailing list to receive news, updates and quarterly newsletters about GigaDB</p>
