@@ -165,6 +165,7 @@ const ADMIN_PATHS = [
   },
   {
     path: 'adminFile/create',
+    disabledElements: ['textarea'], // avoid false color contrast issues
     tags: []
   },
   {
@@ -177,6 +178,7 @@ const ADMIN_PATHS = [
   },
   {
     path: 'datasetFunder/create',
+    disabledElements: ['textarea'], // avoid false color contrast issues
     tags: []
   },
   {
@@ -189,6 +191,7 @@ const ADMIN_PATHS = [
   },
   {
     path: 'adminSample/create',
+    disabledElements: ['textarea'], // avoid false color contrast issues
     tags: []
   },
   {
@@ -205,6 +208,7 @@ const ADMIN_PATHS = [
   },
   {
     path: 'adminLinkPrefix/create',
+    disabledElements: ['textarea'], // avoid false color contrast issues
     tags: []
   },
   {
@@ -222,18 +226,22 @@ const ADMIN_PATHS = [
   },
   {
     path: 'adminDatasetType/create',
+    disabledElements: ['textarea'], // avoid false color contrast issues
     tags: []
   },
   {
     path: 'adminFileType/create',
+    disabledElements: ['textarea'], // avoid false color contrast issues
     tags: []
   },
   {
     path: 'adminFileFormat/create',
+    disabledElements: ['textarea'], // avoid false color contrast issues
     tags: []
   },
   {
     path: 'news/create',
+    disabledElements: ['textarea'], // avoid false color contrast issues
     tags: []
   },
   {
@@ -242,14 +250,17 @@ const ADMIN_PATHS = [
   },
   {
     path: 'adminPublisher/create',
+    disabledElements: ['textarea'], // avoid false color contrast issues
     tags: []
   },
   {
     path: 'datasetLog/create',
+    disabledElements: ['textarea'], // avoid false color contrast issues
     tags: []
   },
   {
     path: 'curationLog/create/id/5',
+    disabledElements: ['textarea'], // avoid false color contrast issues
     tags: []
   },
   {
@@ -397,7 +408,7 @@ const ADMIN_PATHS = [
   },
   {
     path: 'dataset/view/id/100039',
-    disabledElements: [],
+    disabledElements: ['.image-overlay', '.image-background'],
     tags: []
   }
 ]

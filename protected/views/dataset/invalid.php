@@ -14,8 +14,11 @@
                              <p class="home-search-bar-subtitle"> Your search for "<?echo $keyword ?>" did not match anything in our database, please try a
                                  different term. </p>
                                     <? } else {?>
-                             <p class="home-search-bar-subtitle">    The DOI <? echo $keyword ?> cannot be displayed. <br/>
+                                      <div class="home-search-bar-subtitle">
+                            <h1 class="h2">The DOI <? echo $keyword ?> cannot be displayed</h1>
+                            <p class="home-search-bar-subtitle">
                                      If you found reference to this DOI in a publication, please <b>Let us know.</b></p>
+                                     <div>
 
                                      <? } ?>
                             <? $this->renderPartial('/search/_form',array('model'=>$model,'search_result'=>null)); ?>
