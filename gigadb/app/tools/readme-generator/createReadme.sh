@@ -77,8 +77,12 @@ done
 #   None
 #######################################
 function set_up_logging() {
-  LOGDIR="$APP_SOURCE/logs"
-  LOGFILE="$LOGDIR/readme_${doi}_$(date +'%Y%m%d_%H%M%S').log"
+  if [[ $(uname -n) =~ compute ]];then
+    LOGDIR="/home/centos/uploadLogs"
+  else
+    LOGDIR="$APP_SOURCE/logs"
+  fi
+  LOGFILE="$LOGDIR/readme_${doi}_$(date +'%Y%m%d').log"
   mkdir -p "${LOGDIR}"
   touch "${LOGFILE}"
 }
