@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Feat #1384: Improve accessibility of login page: input focus state, form errors, aria labels, required
 
-## v4.0.5 - 2024-01-02 - d4deab10 - live since 2024-12-19
+## v4.0.5 - 2024-01-02 - d4deab10 - live since 2024-1-9
 
 - Feat #1595: Update total volume of data on home page
 - Fix #1529: Reload the same admin form page after save for private dataset
