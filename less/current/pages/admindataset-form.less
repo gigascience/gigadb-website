@@ -1,8 +1,12 @@
-@block-spacing: 32px;
+@block-spacing: 16px;
 
 .admindataset-form {
   .note {
-    margin-bottom: 24px;
+    color: @color-true-black;
+    margin-bottom: 12px;
+  }
+  hr {
+    margin-block : 10px;
   }
   .form-block-1 {
     margin-block: @block-spacing;
@@ -18,19 +22,53 @@
   }
   .form-block-5 {
     margin-block: @block-spacing;
+    // Absolute width values so that there is vertical alignment with fields in blocks 1 and 4
+    .control-label {
+      width: 157px;
+    }
+    .input-wrapper {
+      width: 879px;
+    }
+    @media (max-width: 1199px) {
+      .control-label {
+        width: 130px;
+        max-width: 20%;
+      }
+      .input-wrapper {
+        width: 722px;
+        max-width: 80%;
+      }
+    }
   }
   .form-block-6 {
     margin-block: @block-spacing;
   }
   .form-group {
+    margin-bottom: 10px;
     .error {
       color: @brand-danger-on-lighter-gray;
+    }
+    .control-label {
+      color: @color-true-black;
+      font-weight: bold;
+    }
+    .help-block {
+      color: @color-true-black;
     }
   }
   fieldset {
     legend {
       font-weight: bold;
-      color: @dark-gray-on-light-gray;
+      color: @color-true-black;
+    }
+    .checkbox-group {
+      gap: 6px;
+      .checkbox-horizontal {
+        .control-label {
+          color: @color-true-black;
+          margin-bottom: 4px;
+        }
+      }
     }
   }
   .image-preview-wrapper {

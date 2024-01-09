@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1584: Improve layout and color contrast of admin dataset form
 - Fix #1572: Remove sorting from curator log table
 - Feat #1573: Improve accessibility of keywords input in adminDataset create form
 - Feat #1359: Update style guide with new public and admin styles
