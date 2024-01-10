@@ -8,9 +8,9 @@ display_help() {
     echo ""
     echo "Options:"
     echo "  --doi <value>           Specify the DOI value"
-    echo "  --wasabi                Copy the readme file to wasabi bucket in dry-run mode"
-    echo "  --apply                 Copy the readme file to wasabi non live bucket"
-    echo "  --use-live-data         Copy the readme file to wasabi live bucket"
+    echo "  --wasabi                (Optional) Copy the readme file to wasabi bucket in dry-run mode"
+    echo "  --apply                 (Optional) Copy the readme file to wasabi non live bucket"
+    echo "  --use-live-data         (Optional) Copy the readme file to wasabi live bucket"
     echo "  -h, --help              Display this help message"
     echo ""
 }
