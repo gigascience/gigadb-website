@@ -2,6 +2,19 @@
 
 set -e
 
+# Display the help message
+display_help() {
+    echo "Usage: $0 [OPTIONS]"
+    echo ""
+    echo "Options:"
+    echo "  --doi <value>           Specify the DOI value"
+    echo "  --wasabi                Copy the readme file to wasabi bucket in dry-run mode"
+    echo "  --apply                 Copy the readme file to wasabi non live bucket"
+    echo "  --use-live-data         Copy the readme file to wasabi live bucket"
+    echo "  -h, --help              Display this help message"
+    echo ""
+}
+
 PATH=/usr/local/bin:$PATH
 export PATH
 
@@ -22,6 +35,10 @@ while [[ $# -gt 0 ]]; do
       ;;
     --use-live-data)
       options+=("--use-live-data")
+      ;;
+    -h|--help)
+      display_help
+      exit 0
       ;;
     *)
       echo "Invalid option: $1"
@@ -73,7 +90,7 @@ if [[ $(uname -n) =~ compute ]];then
   echo -e "$updateMD5ChecksumEndMessage"
 
   echo -e "$createReadMeFileStartMessage"
-  sudo /home/centos/createReadme.sh --doi "$DOI" --outdir $outputDir "${options[@]}" | tee "$outputDir/readme-$DOI.txt"
+  sudo /home/centos/createReadme.sh --doi "$DOI" --outdir /app/readmeFiles "${options[@]}" | tee "$outputDir/readme-$DOI.txt"
   echo -e "$createReadMeFileEndMessage"
 
   if [[ $userOutputDir != "$outputDir" && -n "$(ls -A $outputDir)" ]];then
