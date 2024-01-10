@@ -20,12 +20,28 @@ $(function () {
   setupGridView();
 });
 
+let tabbed = 0 // 1 = tab forward, -1 = tab backward, 0 = no tab
+
 function getLastFocused(grid) {
   return $(document).data(`${grid.attr('id')}-lastFocused`);
 }
 
 function setLastFocused(grid, name) {
   $(document).data(`${grid.attr('id')}-lastFocused`, name);
+}
+
+function getTabbableSibling(el, prev) {
+  const tabbableEls = $( ":tabbable" ) // requires jQuery UI
+
+  const currentIndex = tabbableEls.index(el);
+
+  const siblingIndex = prev ? currentIndex - 1 : currentIndex + 1;
+
+  if (siblingIndex >= 0 && siblingIndex < tabbableEls.length) {
+    return tabbableEls.eq(siblingIndex);
+  }
+
+  return prev ? tabbableEls.last() : tabbableEls.first();
 }
 
 function setupGridView() {
@@ -52,6 +68,23 @@ function setupGridView() {
       $input.attr('aria-label', 'filter');
     }
   });
+
+  // handle tab
+  $(document).on("keydown", ".grid-view tr.filters input", function (event) {
+    if (event.key === 'Tab') {
+      if (event.shiftKey) {
+        tabbed = -1
+      } else {
+        tabbed = 1
+      }
+    }
+  });
+
+  $(document).on("keyup", ".grid-view tr.filters input", function (event) {
+    if (event.key === 'Tab') {
+      tabbed = 0
+    }
+  });
 }
 
 function handleSorting(grid) {
@@ -76,7 +109,13 @@ function handleFocus(grid) {
   const lastFocused = getLastFocused(grid);
 
   if (lastFocused) {
-    const focusedElement = $(`[name="${lastFocused}"]`, grid).length ? $(`[name="${lastFocused}"]`, grid) : $(`#${lastFocused} a.sort-link`, grid);
+    let focusedElement = $(`[name="${lastFocused}"]`, grid).length ? $(`[name="${lastFocused}"]`, grid) : $(`#${lastFocused} a.sort-link`, grid);
+
+    if (tabbed === 1) {
+      focusedElement = getTabbableSibling(focusedElement, false);
+    } else if (tabbed === -1) {
+      focusedElement = getTabbableSibling(focusedElement, true);
+    }
 
     if (focusedElement.length) {
       if (focusedElement.is('input[type="text"]')) {
