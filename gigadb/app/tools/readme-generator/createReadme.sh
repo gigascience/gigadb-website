@@ -82,7 +82,7 @@ function set_up_logging() {
   else
     LOGDIR="$APP_SOURCE/logs"
   fi
-  LOGFILE="$LOGDIR/readme_${doi}_$(date +'%Y%m%d').log"
+  LOGFILE="$LOGDIR/readme-${doi}-$(date +'%Y%m%d').log"
   mkdir -p "${LOGDIR}"
   touch "${LOGFILE}"
 }
