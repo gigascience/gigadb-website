@@ -56,6 +56,7 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
   'id' => 'news-grid',
   'dataProvider' => $model->search(),
   'filter' => $model, // turn on/off filtering
+  'rowHtmlOptionsExpression' => 'array("data-userid" => $data->id)',
   'itemsCssClass' => 'table table-bordered dataset-table-wide',
   'template' => '<div class="dataset-table-wide-container">{items}</div>{pager}',
   'selectionChanged' => "function(id){open_controls($.fn.yiiGridView.getSelection(id));}",
@@ -82,7 +83,52 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
       'name' => 'newsletter',
       'value' => '$data->renderNewsletter()',
     ),
-    CustomGridView::getDefaultActionButtonsConfig()
+    array(
+      'class' => 'CButtonColumn',
+      'header' => "Actions",
+      'headerHtmlOptions' => array('style' => 'min-width: 120px'),
+      'template' => '{view}{update}{manage}{delete}',
+      'buttons' => array(
+        'view' => array(
+            'imageUrl' => false,
+            'label' => '',
+            'options' => array(
+                "title" => "View",
+                "class" => "fa fa-eye fa-lg icon icon-view",
+                "aria-label" => "View"
+            ),
+        ),
+        'update' => array(
+            'imageUrl' => false,
+            'label' => '',
+            'options' => array(
+                "title" => "Update",
+                "class" => "fa fa-pencil fa-lg icon icon-update",
+                "aria-label" => "Update"
+            ),
+        ),
+        'delete' => array(
+            'imageUrl' => false,
+            'label' => '',
+            'options' => array(
+                "title" => "Delete",
+                "class" => "fa fa-trash fa-lg icon icon-delete",
+                "aria-label" => "Delete"
+            ),
+        ),
+        'manage' => array(
+          'imageUrl' => false,
+        'label' => '',
+        'options' => array(
+            "title" => "Merge authors",
+            "class" => "fa fa-wrench fa-lg icon icon-manage",
+            "aria-label" => "Merge authors",
+            "role" => "button",
+        ),
+        "click" => "handleManageClick"
+        )
+    ),
+    )
   ),
 )); ?>
 
@@ -90,7 +136,13 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
 
 
 <script>
+  function handleManageClick(e) {
+    const userId = String($(e.target).closest('tr').attr('data-userid'));
+    open_controls(userId)
+  }
+
   function open_controls(user_id) {
+    console.log(user_id)
     $("#controls").data('user_id', user_id);
     $("#controls").dialog("option", "title", "Manage User Id: " + user_id);
     $("#controls").dialog("open");
