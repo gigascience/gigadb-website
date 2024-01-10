@@ -72,7 +72,7 @@
             $(function() {
 
                 $('.js-btn-filter').click(function() {
-                    var action = $(this).html();
+                    var action = $(this).html().trim();
                     var alt = "";
                     if ($(this).next().has("input:text").length == 0) {
                         alt = "Enable All";
