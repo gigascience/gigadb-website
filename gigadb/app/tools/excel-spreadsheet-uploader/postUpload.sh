@@ -5,7 +5,31 @@ set -e
 PATH=/usr/local/bin:$PATH
 export PATH
 
-DOI=$1
+# Prepare options for createReadme.sh command
+options=()
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --doi)
+      DOI=$2
+      shift
+      ;;
+    --wasabi)
+      options+=("--wasabi")
+      ;;
+    --apply)
+      options+=("--apply")
+      ;;
+    --use-live-data)
+      options+=("--use-live-data")
+      ;;
+    *)
+      echo "Invalid option: $1"
+      exit 1  ## Could be optional.
+      ;;
+  esac
+  shift
+done
 
 currentPath=$(pwd)
 userOutputDir="$currentPath/uploadDir"
@@ -49,7 +73,7 @@ if [[ $(uname -n) =~ compute ]];then
   echo -e "$updateMD5ChecksumEndMessage"
 
   echo -e "$createReadMeFileStartMessage"
-  docker run --rm -v /home/centos/readmeFiles:/app/readmeFiles "registry.gitlab.com/$GITLAB_PROJECT/production_tool:$GIGADB_ENV" /app/yii readme/create --doi "$DOI" | tee "$outputDir/readme-$DOI.txt"
+  sudo /home/centos/createReadme.sh --doi "$DOI" --outdir $outputDir "${options[@]}" | tee "$outputDir/readme-$DOI.txt"
   echo -e "$createReadMeFileEndMessage"
 
   if [[ $userOutputDir != "$outputDir" && -n "$(ls -A $outputDir)" ]];then
@@ -77,7 +101,7 @@ else
 
   echo -e "$createReadMeFileStartMessage"
   cd ../readme-generator
-  docker-compose run --rm tool /app/yii readme/create --doi "$DOI" | tee "$outputDir/readme-$DOI.txt"
+  ./createReadme.sh --doi "$DOI" --outdir /home/curators "${options[@]}" | tee "$outputDir/readme-$DOI.txt"
   echo -e "$createReadMeFileEndMessage"
 fi
 
