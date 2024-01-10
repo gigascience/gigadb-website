@@ -110,11 +110,14 @@ function handleFocus(grid) {
 
   if (lastFocused) {
     let focusedElement = $(`[name="${lastFocused}"]`, grid).length ? $(`[name="${lastFocused}"]`, grid) : $(`#${lastFocused} a.sort-link`, grid);
+    const isFilter = focusedElement.closest('tr').hasClass('filters');
 
-    if (tabbed === 1) {
-      focusedElement = getTabbableSibling(focusedElement, false);
-    } else if (tabbed === -1) {
-      focusedElement = getTabbableSibling(focusedElement, true);
+    if (isFilter) {
+      if (tabbed === 1) {
+        focusedElement = getTabbableSibling(focusedElement, false);
+      } else if (tabbed === -1) {
+        focusedElement = getTabbableSibling(focusedElement, true);
+      }
     }
 
     if (focusedElement.length) {
