@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Fix #1527: Make the postUpload script use the image `production-files-metadata-console:production_environment` in the staging and live environments
 - Feat #1384: Improve accessibility of login page: input focus state, form errors, aria labels, required
 
 ## v4.0.5 - 2024-01-02 - d4deab10 - live since 2024-1-9

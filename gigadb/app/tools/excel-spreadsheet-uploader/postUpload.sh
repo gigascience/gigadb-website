@@ -2,10 +2,51 @@
 
 set -e
 
+# Display the help message
+display_help() {
+    echo "Usage: $0 [Options]"
+    echo ""
+    echo "Options:"
+    echo "  --doi <value>           Specify the DOI value"
+    echo "  --wasabi                (Optional) Copy the readme file to wasabi bucket in dry-run mode"
+    echo "  --apply                 (Optional) Copy the readme file to wasabi non live bucket"
+    echo "  --use-live-data         (Optional) Copy the readme file to wasabi live bucket"
+    echo "  -h, --help              Display this help message"
+    echo ""
+}
+
 PATH=/usr/local/bin:$PATH
 export PATH
 
-DOI=$1
+# Prepare options for createReadme.sh command
+options=()
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --doi)
+      DOI=$2
+      shift
+      ;;
+    --wasabi)
+      options+=("--wasabi")
+      ;;
+    --apply)
+      options+=("--apply")
+      ;;
+    --use-live-data)
+      options+=("--use-live-data")
+      ;;
+    -h|--help)
+      display_help
+      exit 0
+      ;;
+    *)
+      echo "Invalid option: $1"
+      exit 1  ## Could be optional.
+      ;;
+  esac
+  shift
+done
 
 currentPath=$(pwd)
 userOutputDir="$currentPath/uploadDir"
@@ -17,7 +58,7 @@ else
 fi
 
 if [ -z "$DOI" ];then
-  echo -e "Usage: ./postUpload.sh <DOI>\n"
+  display_help
   exit 1;
 fi
 
@@ -37,11 +78,11 @@ if [[ $(uname -n) =~ compute ]];then
   . /home/centos/.bash_profile
 
   echo -e "$updateFileSizeStartMessage"
-  docker run --rm "registry.gitlab.com/$GITLAB_PROJECT/production-files-metadata-console:latest" ./yii update/file-size --doi="$DOI" | tee "$outputDir/updating-file-size-$DOI.txt"
+  docker run --rm "registry.gitlab.com/$GITLAB_PROJECT/production-files-metadata-console:$GIGADB_ENV" ./yii update/file-size --doi="$DOI" | tee "$outputDir/updating-file-size-$DOI.txt"
   echo -e "$updateFileSizeEndMessage"
 
   echo -e "$checkValidUrlsStartMessage"
-  docker run --rm "registry.gitlab.com/$GITLAB_PROJECT/production-files-metadata-console:latest" ./yii check/valid-urls --doi="$DOI" | tee "$outputDir/invalid-urls-$DOI.txt"
+  docker run --rm "registry.gitlab.com/$GITLAB_PROJECT/production-files-metadata-console:$GIGADB_ENV" ./yii check/valid-urls --doi="$DOI" | tee "$outputDir/invalid-urls-$DOI.txt"
   echo -e "$checkValidUrlsEndMessage"
 
   echo -e "$updateMD5ChecksumStartMessage"
@@ -49,7 +90,7 @@ if [[ $(uname -n) =~ compute ]];then
   echo -e "$updateMD5ChecksumEndMessage"
 
   echo -e "$createReadMeFileStartMessage"
-  docker run --rm -v /home/centos/readmeFiles:/app/readmeFiles "registry.gitlab.com/$GITLAB_PROJECT/production_tool:$GIGADB_ENV" /app/yii readme/create --doi "$DOI" | tee "$outputDir/readme-$DOI.txt"
+  sudo /home/centos/createReadme.sh --doi "$DOI" --outdir /app/readmeFiles "${options[@]}" | tee "$outputDir/readme-$DOI.txt"
   echo -e "$createReadMeFileEndMessage"
 
   if [[ $userOutputDir != "$outputDir" && -n "$(ls -A $outputDir)" ]];then
@@ -77,7 +118,7 @@ else
 
   echo -e "$createReadMeFileStartMessage"
   cd ../readme-generator
-  docker-compose run --rm tool /app/yii readme/create --doi "$DOI" | tee "$outputDir/readme-$DOI.txt"
+  ./createReadme.sh --doi "$DOI" --outdir /home/curators "${options[@]}" | tee "$outputDir/readme-$DOI.txt"
   echo -e "$createReadMeFileEndMessage"
 fi
 
