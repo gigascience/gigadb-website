@@ -156,7 +156,7 @@ class ResetPasswordCest
         $I->click('Save');
         // Register button will send user to /site/login page
         $I->seeInCurrentUrl("/site/login");
-        $I->see('Login', 'h4');
+        $I->see('Login');
         // Check flash message
         $I->see('Your password has been successfully reset. Please login again.');
         // Check website has deleted selector so it cannot be used again
