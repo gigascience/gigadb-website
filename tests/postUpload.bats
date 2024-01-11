@@ -3,7 +3,7 @@
 teardown () {
     echo "executing teardown code"
     FILES="gigadb/app/tools/readme-generator/runtime/curators/readme_100020.txt
-    gigadb/app/tools/readme-generator/logs/readme_100020_$(date +'%Y%m%d').log"
+    gigadb/app/tools/readme-generator/logs/readme-100020-$(date +'%Y%m%d').log"
 
     for file in $FILES
         do
@@ -43,5 +43,5 @@ teardown () {
     # Check readme file has been created
     [ -f gigadb/app/tools/readme-generator/runtime/curators/readme_100020.txt ]
      # check rclone log has been created
-    [ -f gigadb/app/tools/readme-generator/logs/readme_100020_$(date +'%Y%m%d').log ]
+    [ -f gigadb/app/tools/readme-generator/logs/readme-100020-$(date +'%Y%m%d').log ]
 }

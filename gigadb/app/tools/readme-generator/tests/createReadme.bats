@@ -5,9 +5,9 @@ teardown () {
     FILES="runtime/curators/readme_100142.txt
     runtime/curators/readme_100006.txt
     runtime/curators/readme_100020.txt
-    logs/readme_100005_$(date +'%Y%m%d').log
-    logs/readme_100006_$(date +'%Y%m%d').log
-    logs/readme_100142_$(date +'%Y%m%d').log"
+    logs/readme-100005-$(date +'%Y%m%d').log
+    logs/readme-100006-$(date +'%Y%m%d').log
+    logs/readme-100142-$(date +'%Y%m%d').log"
 
     for file in $FILES
     do
@@ -23,7 +23,7 @@ teardown () {
     # Check readme file has been created
     [ -f runtime/curators/readme_100142.txt ]
     # check rclone log has been created
-    [ -f logs/readme_100142_$(date +'%Y%m%d').log ]
+    [ -f logs/readme-100142-$(date +'%Y%m%d').log ]
 }
 
 @test "check does not create readme with invalid doi and exits" {
