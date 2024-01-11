@@ -4,7 +4,7 @@ set -e
 
 # Display the help message
 display_help() {
-    echo "Usage: $0 [OPTIONS]"
+    echo "Usage: $0 [Options]"
     echo ""
     echo "Options:"
     echo "  --doi <value>           Specify the DOI value"
@@ -58,7 +58,7 @@ else
 fi
 
 if [ -z "$DOI" ];then
-  echo -e "Usage: ./postUpload.sh <DOI>\n"
+  display_help
   exit 1;
 fi
 
