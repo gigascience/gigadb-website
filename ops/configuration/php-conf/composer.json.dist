@@ -5,7 +5,7 @@
     "homepage": "http://gigadb.org",
     "license": "GPL-3.0-or-later",
     "require": {
-        "php": "7.3.33",
+        "php": "7.4.33",
         "yidas/yii2-composer-bower-skip": "~2.0.13",
         "yiisoft/yii": "~${YII_VERSION}",
         "yiisoft/yii2": "~${YII2_VERSION}",
@@ -28,7 +28,12 @@
          "creocoder/yii2-flysystem": "~0.9.0",
          "ramsey/uuid": "~3.9.0",
          "neam/yii-streamlog": "^1.0.0",
-         "gregwar/captcha": "^1.1.9"
+         "gregwar/captcha": "^1.1.9",
+         "symfony/http-client": "v5.4.31",
+         "nyholm/psr7": "1.8.1",
+         "unleash/client": "v1.1.173",
+         "cache/filesystem-adapter": "^1.2.0",
+         "kriswallsmith/buzz": "^1.2.1"
     },
     "require-dev": {
         "behat/behat": "^3.5",
@@ -58,7 +63,7 @@
     "config": {
         "bin-dir": "bin",
         "platform": {
-            "php": "7.3.33"
+            "php": "7.4.33"
         },
         "allow-plugins": {
                     "yiisoft/yii2-composer": true

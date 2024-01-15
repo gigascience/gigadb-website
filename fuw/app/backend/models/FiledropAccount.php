@@ -174,6 +174,9 @@ class FiledropAccount extends \yii\db\ActiveRecord
      */
     function createDirectories(string $doi): bool
     {
+        if (file_exists("/var/incoming/ftp/$doi"))
+            return true;
+
         return mkdir("/var/incoming/ftp/$doi", 0770)
                 && chmod("/var/incoming/ftp/$doi", 0770)//to bypass umask
                 && mkdir("/var/repo/$doi", 0755)
@@ -233,6 +236,10 @@ class FiledropAccount extends \yii\db\ActiveRecord
      */
     public function makeToken(string $doi, string $fileName): bool
     {
+        if (Yii::$app->fs->has("private/$doi/".$fileName)) {
+            Yii::warning("!! Doing nothing, already exists: private/$doi/".$fileName);
+            return true;
+        }
         $token = Yii::$app->security->generateRandomString(16);
         return Yii::$app->fs->put(
                         "private/$doi/".$fileName,
@@ -252,6 +259,10 @@ class FiledropAccount extends \yii\db\ActiveRecord
     {
         $status = true ;
 
+        $uploaderExists = shell_exec("grep uploader-$doi /etc/pure-ftpd/passwd/pureftpd.passwd");
+        $downloaderExists = shell_exec("grep downloader-$doi /etc/pure-ftpd/passwd/pureftpd.passwd");
+        if ($uploaderExists || $downloaderExists)
+            Yii::warning("!! FTP account already exists");
         $dryRunModeArray = ["bash","-c","pwd"] ;
         $uploaderCommandArray = ["bash","-c","/usr/bin/pure-pw useradd uploader-$doi -f /etc/pure-ftpd/passwd/pureftpd.passwd -m -u uploader -d /home/uploader/$doi  < /var/private/$doi/uploader_token.txt"] ;
 
@@ -262,11 +273,13 @@ class FiledropAccount extends \yii\db\ActiveRecord
             $dryRunModeRsp = $dockerManager->loadAndRunCommand("ftpd", $dryRunModeArray);
         }
         else {
-            $upload_response = $dockerManager->loadAndRunCommand("ftpd", $uploaderCommandArray);
-            $download_response = $dockerManager->loadAndRunCommand("ftpd", $downloaderCommandArray);
+            if (!$uploaderExists)
+                $upload_response = $dockerManager->loadAndRunCommand("ftpd", $uploaderCommandArray);
+            if (!$downloaderExists)
+                $download_response = $dockerManager->loadAndRunCommand("ftpd", $downloaderCommandArray);
         }
 
-        if (null === $upload_response || null === $download_response) {
+        if ((!$uploaderExists && null === $upload_response) || (!$downloaderExists && null === $download_response)) {
             return false;
         }
         return $status;
@@ -401,6 +414,7 @@ class FiledropAccount extends \yii\db\ActiveRecord
                     $this->setStatus(self::STATUS_ACTIVE);
                     return true;
                 }
+                Yii::error("!!! Either 'prepared' ($prepared) or 'ftpd_status' ($ftpd_status) has returned false");
                 return false;
             }
             else if ( self::STATUS_TERMINATED === $this->getStatus() ) {

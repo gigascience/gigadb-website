@@ -72,7 +72,7 @@ echo $form->hiddenField($model, "image_id");
                     <div class="control-group">
                         <?php echo $form->labelEx($model,'upload_status',array('class'=>'control-label')); ?>
                         <div class="controls">
-                            <?php echo $form->dropDownList($model,'upload_status',Dataset::$availableStatusList,
+                            <?php echo $form->dropDownList($model,'upload_status',Dataset::getAvailableStatusList(),
                                 array('class'=>'js-pub', 'disabled'=>$model->upload_status == 'Published','style'=>'margin-top:-40px')); ?>
                             <?php echo $form->error($model,'upload_status'); ?>
                         </div>

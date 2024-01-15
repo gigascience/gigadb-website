@@ -1,0 +1,274 @@
+Source Sector,Year,Anuual Greenhouse Gas Emissions (Mt CO2-eq.)
+Energy Supply,1990,22.73372768
+Energy Supply,1995,26.75569909
+Energy Supply,1998,25.78861098
+Energy Supply,1999,23.35671956
+Energy Supply,2000,26.2831721
+Energy Supply,2001,25.61400844
+Energy Supply,2002,23.53545257
+Energy Supply,2003,23.70647606
+Energy Supply,2004,21.92646666
+Energy Supply,2005,20.77266015
+Energy Supply,2006,24.65548234
+Energy Supply,2007,21.40825367
+Energy Supply,2008,20.07860545
+Energy Supply,2009,18.68694094
+Energy Supply,2010,20.88647137
+Energy Supply,2011,17.02158705
+Energy Supply,2012,17.41930234
+Energy Supply,2013,15.96598139
+Energy Supply,2014,13.86234903
+Energy Supply,2015,12.21861147
+Energy Supply,2016,7.159352393
+Transport (including International Aviation and Shipping),1990,14.76126583
+Transport (including International Aviation and Shipping),1995,15.71168781
+Transport (including International Aviation and Shipping),1998,16.35111246
+Transport (including International Aviation and Shipping),1999,16.27744347
+Transport (including International Aviation and Shipping),2000,15.57499851
+Transport (including International Aviation and Shipping),2001,15.41971811
+Transport (including International Aviation and Shipping),2002,15.77736859
+Transport (including International Aviation and Shipping),2003,15.55685329
+Transport (including International Aviation and Shipping),2004,15.65928932
+Transport (including International Aviation and Shipping),2005,15.83751074
+Transport (including International Aviation and Shipping),2006,15.82360655
+Transport (including International Aviation and Shipping),2007,16.13763676
+Transport (including International Aviation and Shipping),2008,15.53916399
+Transport (including International Aviation and Shipping),2009,14.85717268
+Transport (including International Aviation and Shipping),2010,14.3374741
+Transport (including International Aviation and Shipping),2011,13.92337392
+Transport (including International Aviation and Shipping),2012,13.67127268
+Transport (including International Aviation and Shipping),2013,13.55842413
+Transport (including International Aviation and Shipping),2014,13.76550031
+Transport (including International Aviation and Shipping),2015,14.07769135
+Transport (including International Aviation and Shipping),2016,14.39727256
+Transport (excluding IA&S),1990,13.46019878
+Transport (excluding IA&S),1995,14.23602577
+Transport (excluding IA&S),1998,14.62089394
+Transport (excluding IA&S),1999,14.71500448
+Transport (excluding IA&S),2000,14.16517486
+Transport (excluding IA&S),2001,13.88747051
+Transport (excluding IA&S),2002,14.4021919
+Transport (excluding IA&S),2003,14.24211182
+Transport (excluding IA&S),2004,14.1680234
+Transport (excluding IA&S),2005,14.236862
+Transport (excluding IA&S),2006,14.13600185
+Transport (excluding IA&S),2007,14.39945853
+Transport (excluding IA&S),2008,13.76661634
+Transport (excluding IA&S),2009,13.23278608
+Transport (excluding IA&S),2010,12.91173006
+Transport (excluding IA&S),2011,12.37591627
+Transport (excluding IA&S),2012,12.21584523
+Transport (excluding IA&S),2013,12.02723468
+Transport (excluding IA&S),2014,12.15102589
+Transport (excluding IA&S),2015,12.37939695
+Transport (excluding IA&S),2016,12.57942653
+International Aviation and Shipping (IA&S),1990,1.301067055
+International Aviation and Shipping (IA&S),1995,1.475662038
+International Aviation and Shipping (IA&S),1998,1.730218522
+International Aviation and Shipping (IA&S),1999,1.56243899
+International Aviation and Shipping (IA&S),2000,1.409823643
+International Aviation and Shipping (IA&S),2001,1.532247596
+International Aviation and Shipping (IA&S),2002,1.375176692
+International Aviation and Shipping (IA&S),2003,1.314741467
+International Aviation and Shipping (IA&S),2004,1.491265914
+International Aviation and Shipping (IA&S),2005,1.600648739
+International Aviation and Shipping (IA&S),2006,1.687604701
+International Aviation and Shipping (IA&S),2007,1.738178228
+International Aviation and Shipping (IA&S),2008,1.772547647
+International Aviation and Shipping (IA&S),2009,1.624386607
+International Aviation and Shipping (IA&S),2010,1.425744044
+International Aviation and Shipping (IA&S),2011,1.54745765
+International Aviation and Shipping (IA&S),2012,1.455427444
+International Aviation and Shipping (IA&S),2013,1.531189448
+International Aviation and Shipping (IA&S),2014,1.614474423
+International Aviation and Shipping (IA&S),2015,1.698294407
+International Aviation and Shipping (IA&S),2016,1.817846031
+Agriculture and Related Land Use,1990,13.91760714
+Agriculture and Related Land Use,1995,14.13338563
+Agriculture and Related Land Use,1998,14.02439822
+Agriculture and Related Land Use,1999,13.91150175
+Agriculture and Related Land Use,2000,13.67706718
+Agriculture and Related Land Use,2001,13.2321106
+Agriculture and Related Land Use,2002,12.88219089
+Agriculture and Related Land Use,2003,12.97123441
+Agriculture and Related Land Use,2004,12.53697217
+Agriculture and Related Land Use,2005,12.28595865
+Agriculture and Related Land Use,2006,11.91842016
+Agriculture and Related Land Use,2007,11.90422498
+Agriculture and Related Land Use,2008,11.24230581
+Agriculture and Related Land Use,2009,11.17453535
+Agriculture and Related Land Use,2010,11.11564848
+Agriculture and Related Land Use,2011,10.71328102
+Agriculture and Related Land Use,2012,10.51407476
+Agriculture and Related Land Use,2013,10.42889915
+Agriculture and Related Land Use,2014,10.4458706
+Agriculture and Related Land Use,2015,10.16090232
+Agriculture and Related Land Use,2016,10.04905286
+Business and Industrial process,1990,14.39867866
+Business and Industrial process,1995,11.18361799
+Business and Industrial process,1998,11.16286554
+Business and Industrial process,1999,11.38677778
+Business and Industrial process,2000,11.29489948
+Business and Industrial process,2001,11.60387143
+Business and Industrial process,2002,10.78784793
+Business and Industrial process,2003,10.99233914
+Business and Industrial process,2004,10.93663812
+Business and Industrial process,2005,10.56271743
+Business and Industrial process,2006,10.29555872
+Business and Industrial process,2007,9.94787898
+Business and Industrial process,2008,10.44011955
+Business and Industrial process,2009,9.212970243
+Business and Industrial process,2010,9.419196524
+Business and Industrial process,2011,9.109260811
+Business and Industrial process,2012,9.002199573
+Business and Industrial process,2013,9.185229428
+Business and Industrial process,2014,8.670951233
+Business and Industrial process,2015,8.668783513
+Business and Industrial process,2016,8.56959346
+Residential,1990,8.002474454
+Residential,1995,7.843106935
+Residential,1998,8.067813664
+Residential,1999,7.958271042
+Residential,2000,7.818573924
+Residential,2001,8.316579986
+Residential,2002,7.61084468
+Residential,2003,7.606268906
+Residential,2004,7.765078887
+Residential,2005,7.708354199
+Residential,2006,7.50300687
+Residential,2007,7.266413964
+Residential,2008,7.471506513
+Residential,2009,7.180210885
+Residential,2010,8.013535738
+Residential,2011,6.487329874
+Residential,2012,7.027330477
+Residential,2013,7.066100948
+Residential,2014,5.939297637
+Residential,2015,6.111750932
+Residential,2016,6.315866349
+Waste Management,1990,6.028898949
+Waste Management,1995,6.232293049
+Waste Management,1998,6.074240014
+Waste Management,1999,5.841250714
+Waste Management,2000,5.717962776
+Waste Management,2001,5.383855735
+Waste Management,2002,5.195605485
+Waste Management,2003,5.064769333
+Waste Management,2004,4.442156901
+Waste Management,2005,4.040151612
+Waste Management,2006,3.625365017
+Waste Management,2007,3.248972634
+Waste Management,2008,3.098372893
+Waste Management,2009,2.775842097
+Waste Management,2010,2.537611189
+Waste Management,2011,2.402716347
+Waste Management,2012,2.055262299
+Waste Management,2013,1.453081547
+Waste Management,2014,1.469343746
+Waste Management,2015,1.725837913
+Waste Management,2016,1.641793332
+Other sources - total,1990,3.580106077
+Other sources - total,1995,3.677022167
+Other sources - total,1998,3.632917454
+Other sources - total,1999,3.622620336
+Other sources - total,2000,3.498953595
+Other sources - total,2001,3.524424004
+Other sources - total,2002,3.295379297
+Other sources - total,2003,3.35261871
+Other sources - total,2004,3.558052855
+Other sources - total,2005,3.507513841
+Other sources - total,2006,3.20194651
+Other sources - total,2007,3.143214323
+Other sources - total,2008,3.195083073
+Other sources - total,2009,3.061338097
+Other sources - total,2010,3.207936102
+Other sources - total,2011,2.971741361
+Other sources - total,2012,3.087367385
+Other sources - total,2013,3.126196422
+Other sources - total,2014,2.902733805
+Other sources - total,2015,2.932931771
+Other sources - total,2016,3.104678253
+Other sources - Development,1990,1.891505623
+Other sources - Development,1995,1.869772773
+Other sources - Development,1998,1.861674024
+Other sources - Development,1999,1.873226875
+Other sources - Development,2000,1.85321424
+Other sources - Development,2001,1.84036402
+Other sources - Development,2002,1.862306007
+Other sources - Development,2003,1.924563791
+Other sources - Development,2004,2.00466404
+Other sources - Development,2005,1.980093807
+Other sources - Development,2006,1.822552234
+Other sources - Development,2007,1.863090186
+Other sources - Development,2008,1.862644578
+Other sources - Development,2009,1.866349765
+Other sources - Development,2010,1.930916608
+Other sources - Development,2011,1.914795459
+Other sources - Development,2012,1.893604344
+Other sources - Development,2013,1.927436667
+Other sources - Development,2014,1.879752246
+Other sources - Development,2015,1.872343756
+Other sources - Development,2016,2.023804405
+Other sources - Public Sector Buildings,1990,1.688600454
+Other sources - Public Sector Buildings,1995,1.807249394
+Other sources - Public Sector Buildings,1998,1.77124343
+Other sources - Public Sector Buildings,1999,1.749393461
+Other sources - Public Sector Buildings,2000,1.645739355
+Other sources - Public Sector Buildings,2001,1.684059984
+Other sources - Public Sector Buildings,2002,1.43307329
+Other sources - Public Sector Buildings,2003,1.428054919
+Other sources - Public Sector Buildings,2004,1.553388815
+Other sources - Public Sector Buildings,2005,1.527420034
+Other sources - Public Sector Buildings,2006,1.379394276
+Other sources - Public Sector Buildings,2007,1.280124137
+Other sources - Public Sector Buildings,2008,1.332438496
+Other sources - Public Sector Buildings,2009,1.194988331
+Other sources - Public Sector Buildings,2010,1.277019494
+Other sources - Public Sector Buildings,2011,1.056945902
+Other sources - Public Sector Buildings,2012,1.193763041
+Other sources - Public Sector Buildings,2013,1.198759756
+Other sources - Public Sector Buildings,2014,1.022981558
+Other sources - Public Sector Buildings,2015,1.060588015
+Other sources - Public Sector Buildings,2016,1.080873848
+Forestry,1990,-7.826927898
+Forestry,1995,-9.984140743
+Forestry,1998,-10.94960677
+Forestry,1999,-11.45129523
+Forestry,2000,-11.87516472
+Forestry,2001,-11.78246296
+Forestry,2002,-12.05793857
+Forestry,2003,-12.63461107
+Forestry,2004,-12.7013586
+Forestry,2005,-12.60264033
+Forestry,2006,-12.69774891
+Forestry,2007,-13.11083869
+Forestry,2008,-12.42126391
+Forestry,2009,-12.73154288
+Forestry,2010,-13.69467725
+Forestry,2011,-13.46636844
+Forestry,2012,-11.3199414
+Forestry,2013,-12.38963396
+Forestry,2014,-12.69656902
+Forestry,2015,-12.89069334
+Forestry,2016,-12.66335042
+Total greenhouse gas emissions,1990,75.59583089
+Total greenhouse gas emissions,1995,75.55267193
+Total greenhouse gas emissions,1998,74.15235157
+Total greenhouse gas emissions,1999,70.90328943
+Total greenhouse gas emissions,2000,71.99046284
+Total greenhouse gas emissions,2001,71.31210534
+Total greenhouse gas emissions,2002,67.02675087
+Total greenhouse gas emissions,2003,66.61594879
+Total greenhouse gas emissions,2004,64.1232963
+Total greenhouse gas emissions,2005,62.1122263
+Total greenhouse gas emissions,2006,64.32563724
+Total greenhouse gas emissions,2007,59.94575662
+Total greenhouse gas emissions,2008,58.64389338
+Total greenhouse gas emissions,2009,54.21746741
+Total greenhouse gas emissions,2010,55.82319625
+Total greenhouse gas emissions,2011,49.16292195
+Total greenhouse gas emissions,2012,51.4568681
+Total greenhouse gas emissions,2013,48.39427905
+Total greenhouse gas emissions,2014,44.35947734
+Total greenhouse gas emissions,2015,43.00581593
+Total greenhouse gas emissions,2016,38.57425879

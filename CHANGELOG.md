@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #588: Re-enable the old, initial work on File Upload Wizard behind a new Gitlab-based feature flag
 - Feat #1384: Improve accessibility of login page: input focus state, form errors, aria labels, required
 
 ## v4.0.5 - 2024-01-02 - d4deab10 - live since 2024-1-9
