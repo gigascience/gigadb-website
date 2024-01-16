@@ -90,7 +90,7 @@
                                 <div class="search-result-content file-content row">
                                     <div class="col-xs-5 file-name truncate-text"><a class="file-link" href="<?php echo $file['location'] ?>" aria-label="<?= $file['name'] . ' file' ?>"><?php echo $file['name'] ?></a></div>
                                     <div class="col-xs-3 file-type"><?php echo $file['file_type'] ?></div>
-                                    <div class="col-xs-3 file-size"><?php echo CHtml::encode(File::specifySizeUnits($file['size'], null, 2)) ?></div>
+                                    <div class="col-xs-3 file-size"><?php echo CHtml::encode(UnitHelper::specifySizeUnits($file['size'], null, 2)) ?></div>
                                 </div>
                             </li>
                         <?php } ?>
