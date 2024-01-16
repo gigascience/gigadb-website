@@ -1,35 +1,44 @@
 <?php
 
-class FileTest extends CDbTestCase
+class FileTest extends \Codeception\Test\Unit
 {
-    protected $fixtures = array(
-        'files' => 'File',
-    );
+    /**
+     * @var File model
+     */
+    private $systemUnderTest;
+
+    /**
+     * Create a new File object for every test
+     */
+    protected function _before()
+    {
+        $this->systemUnderTest = new File();
+        $this->systemUnderTest->size = "1322123045";
+    }
 
     /**
      * @dataProvider sizeFormatsProvider
      */
     public function testItShouldReturnSizeWithFormat($unit, $precision, $expectation)
     {
-        $system_under_test = $this->files(0);
-
-        $this->assertEquals($expectation, $system_under_test->getSizeWithFormat($unit, $precision));
+        $result = $this->systemUnderTest->getSizeWithFormat($unit, $precision);
+        $this->assertEquals($expectation, $result);
     }
 
     public function testItShouldReturnSizeWithFormatAndNoArguments()
     {
-        $system_under_test = $this->files(0);
+        $result = $this->systemUnderTest->getSizeWithFormat();
 
         $expectation = "1.32 GB";
-        $this->assertEquals($expectation, $system_under_test->getSizeWithFormat());
+        $this->assertEquals($expectation, $result);
     }
 
     public function testItShouldReturnZeroByteWhenSizeNegative()
     {
-        $system_under_test = $this->files(1);
-
+        $this->systemUnderTest->size = "-1";
+        $result = $this->systemUnderTest->getSizeWithFormat();
         $expectation = "-1";
-        $this->assertEquals($expectation, $system_under_test->getSizeWithFormat());
+        $this->assertEquals($expectation, $result);
     }
 
     /**
