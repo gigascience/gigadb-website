@@ -20,7 +20,7 @@ class FileTest extends CDbTestCase
     {
         $system_under_test = $this->files(0);
 
-        $expectation = "1.23 GiB";
+        $expectation = "1.32 GB";
         $this->assertEquals($expectation, $system_under_test->getSizeWithFormat());
     }
 
@@ -32,26 +32,32 @@ class FileTest extends CDbTestCase
         $this->assertEquals($expectation, $system_under_test->getSizeWithFormat());
     }
 
+    /**
+     * This method is a data provider that returns an array of test cases for the testItShouldReturnSizeWithFormat method.
+     * The test cases are in the format ["kB", 3, "1291135.786 kB"],
+     * where the first element is the format, the second element is the precision,
+     * and the third element is the expected result.
+     */
     public function sizeFormatsProvider()
     {
         return [
-            ["KiB",3, "1291135.786 KiB"],
-            ["MiB",2, "1260.87 MiB"],
-            ["GiB",2, "1.23 GiB"],
-            ["TiB",5, "0.00120 TiB"],
+            ["kB",3, "1322123.045 kB"],
+            ["MB",2, "1322.12 MB"],
+            ["GB",2, "1.32 GB"],
+            ["TB",5, "0.00132 TB"],
             ["B",2, "1322123045 B"],
-            ["KiB",9, "1291135.786132812 KiB"],
-            ["MiB",9, "1260.874791145 MiB"],
-            ["GiB",9, "1.231323038 GiB"],
-            ["TiB",9, "0.001202464 TiB"],
+            ["kB",9, "1322123.045000000 kB"],
+            ["MB",9, "1322.123045000 MB"],
+            ["GB",9, "1.322123045 GB"],
+            ["TB",9, "0.001322123 TB"],
             ["B",9, "1322123045 B"],
-            [null,null, "1.23 GiB"],
-            ["KiB",null, "1291135.79 KiB"],
-            ["MiB",null, "1260.87 MiB"],
-            ["GiB",null, "1.23 GiB"],
-            ["TiB",null, "0.00 TiB"],
+            [null,null, "1.32 GB"],
+            ["kB",null, "1322123.04 kB"],
+            ["MB",null, "1322.12 MB"],
+            ["GB",null, "1.32 GB"],
+            ["TB",null, "0.00 TB"],
             ["B",null, "1322123045 B"],
-            [null,9, "1.231323038 GiB"],
+            [null,9, "1.322123045 GB"],
         ];
     }
 }

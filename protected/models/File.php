@@ -239,7 +239,7 @@ class File extends CActiveRecord
      * It's extracted out of getSizeWithFormat so the functionality can be used in other contexts as well.
      *
      * @param int $bytes size in bytes to format/convert
-     * @param string $unit unit to convert to. KiB, MiB, GiB, TiB, B or null
+     * @param string $unit unit to convert to. kB, MB, GB, TB, B or null
      * @param int $precision number of decimals after the dot
      * @return string formatted size
      * @todo move this function in a Helper class as it's not specific ot the File model class
@@ -252,7 +252,7 @@ class File extends CActiveRecord
 		if ( null == $precision ) {
 			$precision = 2;
 		}
-		$metric = new ByteUnits\Binary($bytes);
+		$metric = new ByteUnits\Metric($bytes);
 		$formatted_size = $metric->format("$unit/$precision"," ");
 		return $formatted_size ;
 	}
@@ -260,12 +260,12 @@ class File extends CActiveRecord
 	/**
 	 * return the size of the file formatted for display using Binary notation
 	 *
-	 * @param string $unit KiB, MiB, GiB, TiB, B or null
+	 * @param string $unit kB, MB, GB, TB, B or null
 	 * @param int $precision number of decimals after the dot
 	 *
 	 * @return string formatted size
 	 *
-	 * @uses ByteUnits\Binary
+	 * @uses ByteUnits\Metric
 	 **/
 	public function getSizeWithFormat($unit = null, $precision = 2)
 	{
