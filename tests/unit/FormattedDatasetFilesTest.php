@@ -113,7 +113,7 @@ class FormattedDatasetFilesTest extends CTestCase
                             ),
                             'download_count' => 0,
                             'nameHtml' => "<div title=\"just readme\"><a href=\"ftp://foo.bar\" target='_blank'>readme.txt</a></div>",
-                            'sizeUnit' => '1.23 GiB',
+                            'sizeUnit' => '1.32 GB',
                             'attrDesc' => "keyword: some value<br>number of lines: 155<br>",
                         ),
                         array(
@@ -179,7 +179,7 @@ class FormattedDatasetFilesTest extends CTestCase
                             ),
                             'download_count' => 0,
                             'nameHtml' => "<div title=\"just readme\"><a href=\"ftp://foo.bar\" target='_blank'>readme.txt</a></div>",
-                            'sizeUnit' => '1.23 GiB',
+                            'sizeUnit' => '1.32 GB',
                             'attrDesc' => "keyword: some value<br>number of lines: 155<br>",
                         ),
                         array(
