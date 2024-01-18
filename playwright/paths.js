@@ -224,6 +224,7 @@ const ADMIN_PATHS = [
   },
   {
     path: 'report/index',
+    disabledElements: ['select'], // avoid false color contrast issues
     tags: []
   },
   {
