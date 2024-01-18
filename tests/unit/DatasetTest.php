@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Test non getter/setter methods from the Dataset model class
+ *
+ * How to run:
+ * docker-compose run --rm test ./vendor/codeception/codeception/codecept run --debug unit DatasetTest
+ *
+ */
 class DatasetTest extends CDbTestCase
 {
     protected $fixtures = array(
@@ -25,5 +32,21 @@ class DatasetTest extends CDbTestCase
     {
         $this->assertEquals("", $this->datasets(0)->getCuratorName(), "No curator, so empty string returned on getCuratorName()");
         $this->assertEquals("Joe Bloggs", $this->datasets(1)->getCuratorName(), "Full name returned on getCuratorName()");
+    }
+
+    function testGetAvailableStatusList()
+    {
+        $result = Dataset::getAvailableStatusList();
+        if (Yii::app()->featureFlag->isEnabled("fuw")) {
+            codecept_debug("*** FUW is enabled ***");
+            $this->assertCount(count(Dataset::ORIGINAL_UPLOAD_STATUS_LIST)+count(Dataset::FUW_UPLOAD_STATUS_LIST), $result);
+            $this->assertTrue(array_diff(Dataset::ORIGINAL_UPLOAD_STATUS_LIST, $result) === []);
+            $this->assertTrue(array_diff(Dataset::FUW_UPLOAD_STATUS_LIST, $result) === []);
+        }
+        else {
+            codecept_debug("*** FUW is NOT enabled ***");
+            $this->assertCount(count(Dataset::ORIGINAL_UPLOAD_STATUS_LIST), $result);
+            $this->assertTrue(array_diff(Dataset::ORIGINAL_UPLOAD_STATUS_LIST, $result) === []);
+        }
     }
 }

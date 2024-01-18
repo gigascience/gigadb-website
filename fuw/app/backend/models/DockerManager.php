@@ -159,7 +159,7 @@ class DockerManager extends yii\base\BaseObject
     public function loadAndRunCommand(string $service, array $commandArray): ?object
     {
 
-        $container = $this->getContainer("/${service}_1/");
+        $container = $this->getContainer("/${service}-1/");
 
         $execConfig = $this->makePostBodyFor("execConfig", $commandArray);
 
@@ -184,7 +184,7 @@ class DockerManager extends yii\base\BaseObject
      */
     public function restartContainer(string $service): void
     {
-        $container = $this->getContainer("/${service}_1/");
+        $container = $this->getContainer("/${service}-1/");
 
         $result =  $this->getClient()->containerRestart( $container->getNames()[0] );
     }

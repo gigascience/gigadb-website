@@ -157,7 +157,7 @@ services:
     environment:
       YII_PATH: ${YII_PATH}
       YII2_PATH: ${YII2_PATH}
-    image: php:7.3.33-alpine3.15
+    image: php:7.4.33-alpine3.15
     volumes:
       - ${APPLICATION}/:/var/www
     command: sh -c "/var/www/protected/yiic lesscompiler"
@@ -274,6 +274,8 @@ services:
       dockerfile: ../packaging/VueDev-Dockerfile
       args:
         - NODE_VERSION=$NODE_VERSION
+    environment: # TODO: the variable below is for testing purpose, never use this as solution to the openssl issue on production
+      NODE_OPTIONS: "--openssl-legacy-provider"
     volumes:
       - ${APPLICATION}/:/var/www
     shm_size: '1gb' # to avoid a known issue
@@ -374,6 +376,7 @@ services:
       - ${DATA_SAVE_PATH}/fuw/incoming/ftp:/var/incoming/ftp
       - ${DATA_SAVE_PATH}/fuw/repo:/var/repo
       - ${DATA_SAVE_PATH}/fuw/credentials:/var/private
+      - ${DATA_SAVE_PATH}/pure-ftpd/passwd:/etc/pure-ftpd/passwd
     depends_on:
       - database
       - console
@@ -665,6 +668,8 @@ services:
       - ${APPLICATION}/:/var/www
     networks:
       - db-tier
+    ports:
+      - "11300:11300"
     expose:
       - "11300"
 

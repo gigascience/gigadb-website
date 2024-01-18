@@ -35,9 +35,7 @@
                     </div>
                 </aside>
             </div>
-            <footer>
                 <pager identifier="<?= $identifier ?>" <?php echo "uploads-exist=\"$uploadsCount\"" ?>/>
-            </footer>
         </article>
     </div>
 </div>

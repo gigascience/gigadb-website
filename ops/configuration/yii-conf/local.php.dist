@@ -65,5 +65,6 @@ return array(
         
         // For creating URLs to dataset files
         'ftp_connection_url' => '${FTP_CONNECTION_URL}',
+
     ),
 );
