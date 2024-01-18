@@ -46,38 +46,69 @@ echo $form->hiddenField($model, "image_id");
 
         <div>
             <div class="row">
-                <div class="span4">
-                    <div class="control-group">
-                        <?php echo $form->labelEx($model,'submitter_id',array('class'=>'control-label')); ?>
-                        <div class="controls">
-                            <?php echo $form->dropDownList($model,'submitter_id',CHtml::listData(User::model()->findAll(array('order'=>'email ASC')),'id','email'),array('style'=>'margin-top:-40px')); ?>
-                            <?php echo $form->error($model,'submitter_id'); ?>
+                <!-- first column -->
+                <div class="col-xs-5">
+                    <div class="form-block-1">
+                      <?php
+                        $this->widget('application.components.controls.DropdownField', [
+                          'form' => $form,
+                          'model' => $model,
+                          'attributeName' => 'submitter_id',
+                          'listDataOptions' => [
+                              'data' => User::model()->findAll(
+                                  array('order' => 'email ASC')
+                              ),
+                              'valueField' => 'id',
+                              'textField' => 'email',
+                          ],
+                          'labelOptions' => ['class' => 'col-xs-4'],
+                          'inputWrapperOptions' => 'col-xs-8',
+                          'inputOptions' => [
+                              'required' => true,
+                          ]
+                        ]);
+                        ?>
+                        <div class="form-group <?php echo $form->error($model, 'curator_id') ? 'has-error' : '' ?>">
+                            <?php echo $form->labelEx($model, 'curator_id', array('class' => 'control-label col-xs-4')); ?>
+                            <div class="col-xs-8">
+                                <?php
+                                $criteria = new CDbCriteria;
+                                $criteria->condition = 'role=\'admin\' and email like \'%gigasciencejournal.com\'';
+                                ?>
+                                <?php echo $form->dropDownList($model, 'curator_id', CHtml::listData(User::model()->findAll($criteria), 'id', 'email'), array('prompt' => '', 'class' => 'form-control')); ?>
+                                <div role="alert" class="help-block">
+                                  <?php echo $form->error($model, 'curator_id'); ?>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="control-group">
-                        <?php echo $form->labelEx($model,'curator_id',array('class'=>'control-label')); ?>
-                        <div class="controls">
-                            <?php
-                            $criteria = new CDbCriteria;
-                            $criteria->condition='role=\'admin\' and email like \'%gigasciencejournal.com\'';
-                            ?>
-                            <?php echo $form->dropDownList($model,'curator_id',CHtml::listData(User::model()->findAll($criteria),'id','email'),array('prompt'=>'','style'=>'margin-top:-40px')); ?>
-                            <?php echo $form->error($model,'curator_id'); ?>
-                        </div>
-                    </div>
-                     <div class="control-group">
-                        <?php echo $form->labelEx($model,'manuscript_id',array('class'=>'control-label')); ?>
-                        <div class="controls">
-                            <?php echo $form->textField($model,'manuscript_id',array('size'=>60,'maxlength'=>200,'style'=>'margin-top:-40px')); ?>
-                            <?php echo $form->error($model,'manuscript_id'); ?>
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <?php echo $form->labelEx($model,'upload_status',array('class'=>'control-label')); ?>
-                        <div class="controls">
-                            <?php echo $form->dropDownList($model,'upload_status',Dataset::getAvailableStatusList(),
-                                array('class'=>'js-pub', 'disabled'=>$model->upload_status == 'Published','style'=>'margin-top:-40px')); ?>
-                            <?php echo $form->error($model,'upload_status'); ?>
+
+                        <?php
+
+                        $this->widget('application.components.controls.TextField', [
+                          'form' => $form,
+                          'model' => $model,
+                          'attributeName' => 'manuscript_id',
+                          'labelOptions' => ['class' => 'col-xs-4'],
+                          'inputWrapperOptions' => 'col-xs-8',
+                          'inputOptions' => [
+                            'maxlength' => 200
+                          ],
+                        ]);
+                        ?>
+
+                        <div class="form-group <?php echo $form->error($model, 'upload_status') ? 'has-error' : '' ?>">
+                            <?php echo $form->labelEx($model, 'upload_status', array('class' => 'control-label col-xs-4')); ?>
+                            <div class="col-xs-8">
+                                <?php echo $form->dropDownList(
+                                    $model,
+                                    'upload_status',
+                                    Dataset::getAvailableStatusList(),
+                                    array('class' => 'js-pub form-control', 'disabled' => $model->upload_status == 'Published',)
+                                ); ?>
+                                <div role="alert" class="help-block">
+                                <?php echo $form->error($model, 'upload_status'); ?>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
