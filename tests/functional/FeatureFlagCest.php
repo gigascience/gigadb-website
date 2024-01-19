@@ -30,7 +30,10 @@ class featureFlagCest
         $this->featureFlag->setCacheTtl(0); //otherwise functionality under test is not exercised after first test
     }
 
-    // tests
+    /**
+     * @skip as failing in CI if the feature flag is turned off in gitlab
+     * TODO
+     */
     public function tryCheckIsEnabledForEnvEnabled(FunctionalTester $I): void
     {
         $this->featureFlag->setFflagUrl($this->config['components']['featureFlag']['fflagUrl']);
@@ -41,7 +44,10 @@ class featureFlagCest
         $I->assertTrue($this->featureFlag->isEnabled("fuw"));
     }
 
-    // tests
+    /**
+     * @skip as failing in CI if the feature flag is turned on in gitlab
+     * TODO
+     */
     public function tryCheckIsNotEnabledForEnvNotEnabled(FunctionalTester $I): void
     {
         $this->featureFlag->setFflagUrl($this->config['components']['featureFlag']['fflagUrl']);
