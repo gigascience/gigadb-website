@@ -22,4 +22,5 @@ npm test
 ## Troubleshooting
 
 - The time it takes to run tests can vary, if some unsuspecting tests timeout consistently, try to increase the timeout value in `playwright/playwright.config.js`
+- If tests suddenly fail for no apparent reason, one possible cause is the need to recompile styles. Try to run `docker-compose run --rm less` and then run the tests again
 - Docs for local debugging of failing tests: [https://playwright.dev/docs/debug](https://playwright.dev/docs/debug)
