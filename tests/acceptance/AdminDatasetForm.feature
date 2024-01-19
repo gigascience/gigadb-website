@@ -247,34 +247,34 @@ Feature: form to update dataset details
   @ok @datasetimage
   Scenario: Delete dataset's existing custom image file (but not the image metadata)
     When I am on "/adminDataset/update/id/700"
-    And I press the button "[x]"
+    And I press the button "X"
     And I confirm to "Are you sure? This will take effect immediately"
     And I wait "1" seconds
-    Then I should see "Image URL"
+    Then I should see "URL"
     And I should see "Source"
     And I should see "Tag"
     And I should see "License"
     And I should see "Photographer"
     And I should see an image located in ""
-    And I should not see "[x]"
+    And I should not see an input button "X"
     And I should see "Remove image"
 
-  @ok @datasetimage
+  @ok @datasetimage @this
   Scenario: Delete an image's file and then remove the image record
     When I am on "/adminDataset/update/id/5"
-    And I press the button "[x]"
+    And I press the button "X"
     And I confirm to "Are you sure? This will take effect immediately"
     And I wait "2" seconds
     And I follow "Remove image"
     And I confirm to "Are you sure? This will take effect immediately"
     And I wait "1" seconds
-    Then I should not see "Image URL"
-    And I should not see "Image Source"
-    And I should not see "Image Tag"
-    And I should not see "Image License"
-    And I should not see "Image Photographer"
+    Then I should not see "URL"
+    And I should not see "Source"
+    And I should not see "Tag"
+    And I should not see "License"
+    And I should not see "Photographer"
     And I should see an image located in "/images/datasets/no_image.png"
-    And I should not see "[x]"
+    And I should not see an input button "X"
 
   @ok
   Scenario: can save keywords on update
