@@ -208,6 +208,7 @@ echo $form->hiddenField($model, "image_id");
                                                     console.log(output);
                                                     if(output.status){
                                                         $("#showImage").src = "https://assets.gigadb-cdn.net/images/datasets/no_image.png";
+                                                        $("#showImage").alt = "Default placeholder image";
                                                         $(".meta-fields").css("display", "none");
                                                         $("#showImage").css("display", "none");
                                                         $("#removeButton").css("display", "none");
@@ -626,6 +627,9 @@ echo $form->hiddenField($model, "image_id");
     });
 
     var image = document.getElementById("showImage");
+    if (image.src.match('images/datasets/no_image.png')) {
+      image.alt = "Default placeholder image"
+    }
     var image_id = document.getElementById("Dataset_image_id").value;
     const metaFields = $('.meta-fields');
     const metaFieldsContainer = $('.meta-fields-container');

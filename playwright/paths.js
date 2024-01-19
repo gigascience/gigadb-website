@@ -280,6 +280,11 @@ const ADMIN_PATHS = [
     tags: [1553, 1558]
   },
   {
+    path: 'adminDataset/update/id/8',
+    disabledElements: ['textarea'],
+    tags: []
+  },
+  {
     path: 'adminDataset/update/id/5',
     disabledElements: ['textarea'],
     tags: [1553, 1558]
