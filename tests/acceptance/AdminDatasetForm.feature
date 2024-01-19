@@ -259,7 +259,7 @@ Feature: form to update dataset details
     And I should not see an input button "X"
     And I should see "Remove image"
 
-  @ok @datasetimage @this
+  @ok @datasetimage
   Scenario: Delete an image's file and then remove the image record
     When I am on "/adminDataset/update/id/5"
     And I press the button "X"
