@@ -15,6 +15,26 @@ npm test
 
 - Alternative: for VSCODE users, the [official Playwright VSCODE extension](https://playwright.dev/docs/getting-started-vscode) is recommended
 
+## Run tests using Docker
+
+Run single test
+```
+$ docker-compose run --rm playwright npm run test sanity.spec.js
+> e2e@1.0.0 test
+> npx playwright test sanity.spec.js
+Running 3 tests using 1 worker
+  3 passed (23.6s)
+```
+
+Run all tests
+```
+$ docker-compose run --rm playwright npm run test
+> e2e@1.0.0 test
+> npx playwright test
+Running 71 tests using 1 worker
+  71 passed (3.3m)
+```
+
 ## Troubleshooting
 
 - The time it takes to run tests can vary, if some unsuspecting tests timeout consistently, try to increase the timeout value in `playwright/playwright.config.js`
