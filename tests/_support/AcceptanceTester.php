@@ -247,6 +247,14 @@ class AcceptanceTester extends \Codeception\Actor
     }
 
     /**
+     * @Then I should see an image field :field with text :value
+     */
+    public function iShuldSeeAnImageFieldWithText($field, $value)
+    {
+        $this->seeElement('input', ['name' => "Image[$field]", 'type' => "text", 'value' => "$value"]);
+    }
+
+    /**
      * @Then I should see an image :image is linked to :expectedUrl
      */
     public function iShouldSeeAnImageIsLinkedTo($image, $expectedUrl)
