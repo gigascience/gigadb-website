@@ -54,7 +54,7 @@
 
     - rpm_key:
         state: present
-        key: https://download.postgresql.org/pub/repos/yum/RPM-GPG-KEY-PGDG
+        key: https://download.postgresql.org/pub/repos/yum/keys/PGDG-RPM-GPG-KEY-RHEL
 
     - name: Install PostgreSQL repo
       become: yes
