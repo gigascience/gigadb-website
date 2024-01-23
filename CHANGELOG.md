@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Fix #1654: Fix AdminDatasetForm acceptance tests
 - Feat #1569: Display horizontal scroll bar in dataset files table when required
 - Fix #1645: Fix failing ResetPasswordCest for FUW
 - Feat #588: Re-enable the old, initial work on File Upload Wizard behind a new Gitlab-based feature flag

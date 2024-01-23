@@ -178,7 +178,7 @@ Feature: form to update dataset details
     And I fill in the field of "name" "Dataset[ftp_site]" with "ftp://test"
     And I press the button "Create"
     And I wait "1" seconds
-    Then I am on "/adminDataset/update/id/2343"
+    Then I am on "/adminDataset/update/id/2741"
     And I should see "AuthorReview"
     And I should see "123789"
     And I should see "Create/Reset Private URL"
@@ -197,7 +197,7 @@ Feature: form to update dataset details
     And I fill in the field of "name" "Dataset[ftp_site]" with "ftp://test"
     And I press the button "Create"
     And I wait "1" seconds
-    And I am on "/adminDataset/update/id/2343"
+    And I am on "/adminDataset/update/id/2741"
     And I follow "Open Private URL"
     And I wait "1" seconds
     Then I should see current url contains "/dataset/123789/token/"
