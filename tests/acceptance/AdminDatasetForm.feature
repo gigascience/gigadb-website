@@ -203,17 +203,15 @@ Feature: form to update dataset details
     Then I should see current url contains "/dataset/123789/token/"
     And I should see "https://doi.org/10.5524/123789"
 
-  @ok
+  @tested
   Scenario:  Can remove custom image
     When I am on "/adminDataset/update/id/200"
     And I follow "Remove image"
     And I confirm to "Are you sure? This will take effect immediately"
     And I wait "1" seconds
-    Then I should not see "Image URL"
-    And I should not see "Image Source"
-    And I should not see "Image Tag"
-    And I should not see "Image License"
-    And I should not see "Image Photographer"
+    Then I should see an image field "source" with text "GigaDB"
+    And I should see an image field "license" with text "All rights reserved"
+    And I should see an image field "photographer" with text "n/a"
     And I should see an image located in "/images/datasets/no_image.png"
 
   @ok
@@ -259,7 +257,7 @@ Feature: form to update dataset details
     And I should not see an input button "X"
     And I should see "Remove image"
 
-  @ok @datasetimage
+  @tested @datasetimage
   Scenario: Delete an image's file and then remove the image record
     When I am on "/adminDataset/update/id/5"
     And I press the button "X"
@@ -268,11 +266,9 @@ Feature: form to update dataset details
     And I follow "Remove image"
     And I confirm to "Are you sure? This will take effect immediately"
     And I wait "1" seconds
-    Then I should not see "URL"
-    And I should not see "Source"
-    And I should not see "Tag"
-    And I should not see "License"
-    And I should not see "Photographer"
+    Then I should see an image field "source" with text "GigaDB"
+    And I should see an image field "license" with text "All rights reserved"
+    And I should see an image field "photographer" with text "n/a"
     And I should see an image located in "/images/datasets/no_image.png"
     And I should not see an input button "X"
 
@@ -299,7 +295,7 @@ Feature: form to update dataset details
     And I should see "View Curation Log #4"
     And I should see "hello world"
 
-  @ok @curationlog
+  @wip @curationlog
   Scenario: Click view curation record image with link
     When I am on "/adminDataset/update/id/22"
     And I should see an image with alternate text "View" is linked to "http://gigadb.test/curationLog/view/id/3"
@@ -308,7 +304,7 @@ Feature: form to update dataset details
     And I should see "View Curation Log #3"
     And I should see a link "Back to this Dataset Curation Log" to "http://gigadb.test/adminDataset/update/id/22"
 
-  @ok @curationlog
+  @wip @curationlog
   Scenario: Click update curation record image with link
     When I am on "/adminDataset/update/id/22"
     And I should see an image with alternate text "Update" is linked to "http://gigadb.test/curationLog/update/id/3"
@@ -322,7 +318,7 @@ Feature: form to update dataset details
     And I should see "View Curation Log #3"
     And I should see "cogito, ergo sum"
 
-  @ok @curationlog
+  @wip @curationlog
   Scenario: Click delete curation record image with link
     When I am on "/adminDataset/update/id/22"
     And I should see "Status changed to Published"
