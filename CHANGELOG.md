@@ -4,6 +4,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+## v4.1.0 - 2024-01-24 - d0495bee
+
 - Fix #1654: Fix AdminDatasetForm acceptance tests
 - Feat #1569: Display horizontal scroll bar in dataset files table when required
 - Fix #1645: Fix failing ResetPasswordCest for FUW
