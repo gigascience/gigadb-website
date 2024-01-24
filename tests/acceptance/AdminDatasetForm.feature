@@ -295,20 +295,20 @@ Feature: form to update dataset details
     And I should see "View Curation Log #4"
     And I should see "hello world"
 
-  @wip @curationlog
+  @ok @curationlog
   Scenario: Click view curation record image with link
     When I am on "/adminDataset/update/id/22"
-    And I should see an image with alternate text "View" is linked to "http://gigadb.test/curationLog/view/id/3"
-    And I click on image with alternate text "View"
+    And I should see a curation log action "View" is linked to "http://gigadb.test/curationLog/view/id/3"
+    And I click on curation log action "View"
     Then I am on "/curationLog/view/id/3"
     And I should see "View Curation Log #3"
     And I should see a link "Back to this Dataset Curation Log" to "http://gigadb.test/adminDataset/update/id/22"
 
-  @wip @curationlog
+  @ok @curationlog
   Scenario: Click update curation record image with link
     When I am on "/adminDataset/update/id/22"
-    And I should see an image with alternate text "Update" is linked to "http://gigadb.test/curationLog/update/id/3"
-    And I click on image with alternate text "Update"
+    And  I should see a curation log action "Update" is linked to "http://gigadb.test/curationLog/update/id/3"
+    And I click on curation log action "Update"
     Then I am on "/curationLog/update/id/3"
     And I should see "Update Curation Log 3"
     And I fill in the field of "name" "CurationLog[comments]" with "cogito, ergo sum"
@@ -322,8 +322,8 @@ Feature: form to update dataset details
   Scenario: Click delete curation record image with link
     When I am on "/adminDataset/update/id/22"
     And I should see "Status changed to Published"
-    And I should see an image with alternate text "Delete" is linked to "http://gigadb.test/curationLog/delete/id/3"
-    And I click on image with alternate text "Delete"
+    And I should see a curation log action "Delete" is linked to "http://gigadb.test/curationLog/delete/id/3"
+    And I click on curation log action "Delete"
     And I confirm to "Are you sure you want to delete this item?"
     And I wait "2" seconds
     Then I am on "/adminDataset/update/id/22"

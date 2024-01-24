@@ -265,27 +265,22 @@ class AcceptanceTester extends \Codeception\Actor
     }
 
     /**
-     * @Then I should see an image with alternate text :alt is linked to :expectedUrl
+     * @Then I should see a curation log action :action is linked to :expectedUrl
      */
-    public function iShouldSeeAnImageWithAlternateTextIsLinkedTo($alt, $expectedUrl)
+    public function iShouldSeeACurationLogActionIsLinkedTo($action, $expectedUrl)
     {
-        $this->seeElement("//img[@alt='$alt']");
-        $actualUrl = $this->grabAttributeFrom("//img[@alt='$alt']/parent::*", "href");
+        $this->seeElement("//a[@title='$action']");
+        $actualUrl = $this->grabAttributeFrom("//a[@title='$action']", "href");
         $this->assertEquals($expectedUrl, $actualUrl);
     }
 
     /**
-     * Open a link provided by an image with alternate text attribute
-     * 
-     * Beware that a web page may have multiple linked images each with alt
-     * attribute.
-     * 
-     * @Then I click on image with alternate text :alt
+     * @Then I click on curation log action :action
      */
-    public function iClickOnImageWithAlternateText($alt)
+    public function iClickOnCurationLogAction($action)
     {
-        $this->seeElement("//img[@alt='$alt']");
-        $this->click($alt);
+        $this->seeElement("//a[@title='$action']");
+        $this->click($action);
     }
 
     /**
