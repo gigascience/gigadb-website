@@ -296,7 +296,7 @@ Feature: form to update dataset details
     And I should see "hello world"
 
   @ok @curationlog
-  Scenario: Click view curation record image with link
+  Scenario: Click view curation record with link
     When I am on "/adminDataset/update/id/22"
     And I should see a curation log action "View" is linked to "http://gigadb.test/curationLog/view/id/3"
     And I click on curation log action "View"
@@ -305,7 +305,7 @@ Feature: form to update dataset details
     And I should see a link "Back to this Dataset Curation Log" to "http://gigadb.test/adminDataset/update/id/22"
 
   @ok @curationlog
-  Scenario: Click update curation record image with link
+  Scenario: Click update curation record with link
     When I am on "/adminDataset/update/id/22"
     And  I should see a curation log action "Update" is linked to "http://gigadb.test/curationLog/update/id/3"
     And I click on curation log action "Update"
@@ -319,7 +319,7 @@ Feature: form to update dataset details
     And I should see "cogito, ergo sum"
 
   @wip @curationlog
-  Scenario: Click delete curation record image with link
+  Scenario: Click delete curation record with link
     When I am on "/adminDataset/update/id/22"
     And I should see "Status changed to Published"
     And I should see a curation log action "Delete" is linked to "http://gigadb.test/curationLog/delete/id/3"
