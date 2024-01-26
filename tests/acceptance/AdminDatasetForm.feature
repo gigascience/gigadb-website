@@ -204,23 +204,26 @@ Feature: form to update dataset details
     And I should see "https://doi.org/10.5524/123789"
 
   @ok
-  Scenario:  Can remove custom image
+  Scenario:  Can remove custom image and display loading message
     When I am on "/adminDataset/update/id/200"
     And I follow "Remove image"
     And I confirm to "Are you sure? This will take effect immediately"
-    And I wait "1" seconds
-    Then I should not see "Image URL"
+    And I should see "Please wait, removing image records..."
+    Then I wait "10" seconds
+    And I should not see "Image URL"
     And I should not see "Image Source"
     And I should not see "Image Tag"
     And I should not see "Image License"
     And I should not see "Image Photographer"
     And I should see an image located in "/images/datasets/no_image.png"
+    And I should see "Image records removed successfully!"
 
   @ok
   Scenario: Can remove custom image and immediately upload a new image
     When I am on "/adminDataset/update/id/22"
     And I follow "Remove image"
     And I confirm to "Are you sure? This will take effect immediately"
+    And I should see "Please wait, removing image records..."
     And I wait "1" seconds
     And I attach the file "bgi_logo_new.png" to the file input element "datasetImage"
     And I wait "1" seconds
@@ -267,7 +270,8 @@ Feature: form to update dataset details
     And I wait "2" seconds
     And I follow "Remove image"
     And I confirm to "Are you sure? This will take effect immediately"
-    And I wait "1" seconds
+    And I should see "Please wait, removing image records..."
+    And I wait "10" seconds
     Then I should not see "Image URL"
     And I should not see "Image Source"
     And I should not see "Image Tag"
