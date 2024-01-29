@@ -1,5 +1,12 @@
-
-<h2>Manage Curation Log</h2>
+<?php
+$this->widget('TitleBreadcrumb', [
+    'pageTitle' => 'Manage Curation Log',
+    'breadcrumbItems' => [
+        ['label' => 'Admin', 'href' => '/site/admin'],
+        ['isActive' => true, 'label' => 'Manage'],
+    ]
+]);
+?>
 <br>
 <div class="clear"></div>
 <?php
@@ -12,6 +19,7 @@ $this->widget(
         'columns'       => [
             'id',
             'dataset_id',
+            array('name' => 'doi', 'value' => '$data->dataset->identifier'),
             'creation_date',
             'created_by',
             'action',
