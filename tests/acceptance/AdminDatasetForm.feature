@@ -203,7 +203,7 @@ Feature: form to update dataset details
     Then I should see current url contains "/dataset/123789/token/"
     And I should see "https://doi.org/10.5524/123789"
 
-  @tested
+  @ok
   Scenario:  Can remove custom image
     When I am on "/adminDataset/update/id/200"
     And I follow "Remove image"
