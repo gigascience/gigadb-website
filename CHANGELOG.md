@@ -4,9 +4,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+## v4.1.1 - 2024-01-30 - 7bb35726
+
 - Fix #1527: Make the postUpload script use the image `production-files-metadata-console:production_environment` in the staging and live environments
 
-## v4.1.0 - 2024-01-24 - d0495bee
+## v4.1.0 - 2024-01-24 - d0495bee - live since 2024-1-26
 
 - Fix #1654: Fix AdminDatasetForm acceptance tests
 - Feat #1569: Display horizontal scroll bar in dataset files table when required
