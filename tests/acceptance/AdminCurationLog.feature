@@ -7,7 +7,7 @@ Feature: Manage curation log
     Given I have signed in as admin
 
   @ok
-  Scenario: Curation log form loading with all necessary fields
+  Scenario: curation log form loading with all necessary fields
     Given I am on "curationlog/admin"
     Then I should see "Manage Curation Log"
     And I should see "Status changed to Published"
@@ -15,7 +15,7 @@ Feature: Manage curation log
     And I should see "Status changed to Request"
 
   @ok
-  Scenario: Click view curation record with link
+  Scenario: view curation record
     When I am on "curationlog/admin"
     And I should see a curation log action "View" is linked to "http://gigadb.test/curationlog/view/id/3"
     And I click on curation log action "View"
@@ -24,7 +24,7 @@ Feature: Manage curation log
     And I should see a link "Back to this Dataset Curation Log" to "http://gigadb.test/adminDataset/update/id/22"
 
   @ok
-  Scenario: Click update curation record with link
+  Scenario: update curation record
     When I am on "curationlog/admin"
     And  I should see a curation log action "Update" is linked to "http://gigadb.test/curationlog/update/id/3"
     And I click on curation log action "Update"
@@ -38,7 +38,7 @@ Feature: Manage curation log
     And I should see "cogito, ergo sum"
 
   @ok
-  Scenario: Click delete curation record with link
+  Scenario: delete curation record
     When I am on "curationlog/admin"
     And I should see "Status changed to Published"
     And I should see a curation log action "Delete" is linked to "http://gigadb.test/curationlog/delete/id/3"
