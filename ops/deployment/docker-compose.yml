@@ -239,6 +239,19 @@ services:
       - "fuw-public-api:172.16.238.10"
     command: bash -c "pwd"
 
+  playwright:
+    build:
+      context: ../../playwright
+      dockerfile: ./Dockerfile
+    working_dir: /var/www/playwright
+    volumes:
+      - ${APPLICATION}/:/var/www
+    shm_size: '1gb' # to avoid a known issue
+    networks:
+      - web-tier
+    extra_hosts:
+      - "gigadb.test:172.16.238.10"
+
   codecept:
     build:
       context: ..

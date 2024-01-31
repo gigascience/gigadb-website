@@ -663,43 +663,29 @@ $sampleDataProvider = $samples->getDataProvider();
                 });
 
 
-                $('#files_table').DataTable({
-                    "paging": false,
-                    "ordering": true,
-                    "info": false,
-                    "searching": false,
-                    "lengthChange": false,
-                    "pageLength": <?= $fileDataProvider->getPagination()->getPageSize() ?>,
-                    "pagingType": "simple_numbers",
-                    "columns": [{
-                            "visible": <?= in_array('name', $setting) ? 'true' : 'false' ?>
-                        },
-                        {
-                            "visible": <?= in_array('description', $setting) ? 'true' : 'false' ?>
-                        },
-                        {
-                            "visible": <?= in_array('sample_id', $setting) ? 'true' : 'false' ?>
-                        },
-                        {
-                            "visible": <?= in_array('type_id', $setting) ? 'true' : 'false' ?>
-                        },
-                        {
-                            "visible": <?= in_array('format_id', $setting) ? 'true' : 'false' ?>
-                        },
-                        {
-                            "visible": <?= in_array('size', $setting) ? 'true' : 'false' ?>
-                        },
-                        {
-                            "visible": <?= in_array('date_stamp', $setting) ? 'true' : 'false' ?>
-                        },
-                        {
-                            "visible": <?= in_array('attribute', $setting) ? 'true' : 'false' ?>
-                        },
-                        {
-                            "visible": <?= in_array('location', $setting) ? 'true' : 'false' ?>
-                        },
-                    ]
-                });
+        $('#files_table').DataTable({
+            "initComplete": function () {
+                $("#files_table").wrap("<div class='dataset-datatables-wrapper'></div>");
+            },
+            "paging":   false,
+            "ordering": true,
+            "info":     false,
+            "searching": false,
+            "lengthChange": false,
+            "pageLength": <?=$fileDataProvider->getPagination()->getPageSize() ?>,
+            "pagingType": "simple_numbers",
+            "columns": [
+                { "visible": <?= in_array('name', $setting) ? 'true' : 'false' ?> },
+                { "visible": <?= in_array('description', $setting) ? 'true' : 'false' ?> },
+                { "visible": <?= in_array('sample_id', $setting) ? 'true' : 'false' ?> },
+                { "visible": <?= in_array('type_id', $setting) ? 'true' : 'false' ?> },
+                { "visible": <?= in_array('format_id', $setting) ? 'true' : 'false' ?> },
+                { "visible": <?= in_array('size', $setting) ? 'true' : 'false' ?> },
+                { "visible": <?= in_array('date_stamp', $setting) ? 'true' : 'false' ?> },
+                { "visible": <?= in_array('attribute', $setting) ? 'true' : 'false' ?> },
+                { "visible": <?= in_array('location', $setting) ? 'true' : 'false' ?> },
+              ]
+        } );
 
             });
             /* ----------------------------------- */
