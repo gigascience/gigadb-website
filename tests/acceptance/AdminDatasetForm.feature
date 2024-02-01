@@ -361,3 +361,34 @@ Feature: form to update dataset details
     Then I should be on "/adminDataset/update/id/668"
     And I should see "Fail to update!"
     And I should see "Dataset Size must be a number."
+
+  @ok @dataset-status
+  Scenario Outline: Check dataset page with statuses is not publicly visible
+    Given I am on "/adminDataset/update/id/5"
+    And I select <status> from the field "Dataset_upload_status"
+    And I press the button "Save"
+    And I am on "/dataset/100039"
+    Then I should see "The DOI 100039 cannot be displayed."
+    And I should not see "Genomic data of the Puerto Rican Parrot"
+    Examples:
+      | status                   |
+      | "ImportFromEM"           |
+      | "UserStartedIncomplete"  |
+      | "Rejected"               |
+      | "Not required"           |
+      | "Submitted"              |
+      | "Curation"               |
+      | "AuthorReview"           |
+      | "Private"                |
+      | "AssigningFTPbox"        |
+      | "UserUploadingData"      |
+      | "DataAvailableForReview" |
+      | "DataPending"            |
+
+  @ok @dataset-status
+  Scenario: Check dataset page with Published status is publicly visible
+    Given I am on "/adminDataset/update/id/5"
+    And I select "Published" from the field "Dataset_upload_status"
+    And I press the button "Save"
+    And I am on "/dataset/100039"
+    Then I should see "Genomic data of the Puerto Rican Parrot"
