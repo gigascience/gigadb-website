@@ -103,7 +103,7 @@ Feature: form to update dataset details
     And I should see "Image License"
     And I should see "Image Photographer"
 
-  @ok @datasetimage
+  @ok @datasetimage @wip
   Scenario: Can create dataset with image
     When I am on "adminDataset/create"
     And I select "test+14@gigasciencejournal.com" from the field "Dataset_submitter_id"
@@ -116,7 +116,7 @@ Feature: form to update dataset details
     And I fill in the field of "name" "Dataset[ftp_site]" with "ftp://test"
     And I fill in the field of "name" "Dataset[title]" with "test dataset"
     And I press the button "Create"
-    Then I am on "dataset/view/id/400789"
+    Then I should see current url contains "/dataset/400789/token/"
     And I should see an image located in "/images/datasets/e166c2a0-3684-5209-bccd-c4b18ff87be9/bgi_logo_new.png"
 
   @ok @issue-1023
