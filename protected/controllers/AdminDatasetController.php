@@ -395,6 +395,7 @@ class AdminDatasetController extends Controller
         }
 
         $this->layout = 'new_main';
+        $this->loadBaBbqPolyfills = true;
         $this->render('update', array(
             'model' => $model,
             'datasetPageSettings' => $datasetPageSettings,
