@@ -318,7 +318,7 @@ Feature: form to update dataset details
     And I should see "View Curation Log #3"
     And I should see "cogito, ergo sum"
 
-  @skip @curationlog
+  @wip @curationlog
   Scenario: Click delete curation record with link
     When I am on "/adminDataset/update/id/22"
     And I should see "Status changed to Published"
