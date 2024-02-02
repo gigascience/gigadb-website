@@ -142,7 +142,15 @@ class AcceptanceTester extends \Codeception\Actor
      */
     public function iShouldSeeADisabledSubmitButton($value)
     {
-        $this->seeElement(Locator::find('input', ['type' => 'submit', 'value' => $value, 'disabled' => 'disabled']));
+        $this->seeElement('input', ['type' => 'submit', 'value' => $value, 'aria-disabled' => 'true']);
+    }
+
+    /**
+     * @Then I should see a disabled file input for :file
+     */
+    public function iShouldSeeADisbledFileInputFor($file)
+    {
+        $this->seeElement('input', ['type' => 'file', 'name' => $file, 'aria-disabled' => 'true']);
     }
 
     /**
