@@ -103,7 +103,7 @@ Feature: form to update dataset details
     And I should see "Image License"
     And I should see "Image Photographer"
 
-  @ok @datasetimage @wip
+  @ok @datasetimage
   Scenario: Can create dataset with image
     When I am on "adminDataset/create"
     And I select "test+14@gigasciencejournal.com" from the field "Dataset_submitter_id"
@@ -384,6 +384,15 @@ Feature: form to update dataset details
       | "UserUploadingData"      |
       | "DataAvailableForReview" |
       | "DataPending"            |
+
+  @ok @dataset-status
+  Scenario: Check dataset page with Curation status can be viewed using private URL
+    Given I am on "/adminDataset/update/id/5"
+    And I select "Curation" from the field "Dataset_upload_status"
+    And I press the button "Save"
+    And I am on "/adminDataset/private/identifier/100039"
+    Then I should see current url contains "/dataset/100039/token/"
+    And I should see "Genomic data of the Puerto Rican Parrot"
 
   @ok @dataset-status
   Scenario: Check dataset page with Published status is publicly visible
