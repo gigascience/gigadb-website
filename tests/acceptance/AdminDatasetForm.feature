@@ -257,7 +257,7 @@ Feature: form to update dataset details
     And I should not see an input button "X"
     And I should see "Remove image"
 
-  @tested @datasetimage
+  @ok @datasetimage
   Scenario: Delete an image's file and then remove the image record
     When I am on "/adminDataset/update/id/5"
     And I press the button "X"
@@ -318,7 +318,7 @@ Feature: form to update dataset details
     And I should see "View Curation Log #3"
     And I should see "cogito, ergo sum"
 
-  @wip @curationlog
+  @ok @curationlog
   Scenario: Click delete curation record with link
     When I am on "/adminDataset/update/id/22"
     And I should see "Status changed to Published"
