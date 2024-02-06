@@ -4,6 +4,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Fix #1660: Ensure dataset pages that are not published are not publicly visible
+
 ## v4.1.1 - 2024-01-30 - 7bb35726
 
 - Fix #1527: Make the postUpload script use the image `production-files-metadata-console:production_environment` in the staging and live environments
