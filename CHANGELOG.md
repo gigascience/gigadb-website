@@ -4,13 +4,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+## v4.1.2 - 2024-02-07 - 9a421a2c
+
 - Fix #1660: Ensure dataset pages that are not published are not publicly visible
 
-## v4.1.1 - 2024-01-30 - 7bb35726
+## v4.1.1 - 2024-01-30 - 7bb35726 - live since 2024-02-01
 
 - Fix #1527: Make the postUpload script use the image `production-files-metadata-console:production_environment` in the staging and live environments
 
-## v4.1.0 - 2024-01-24 - d0495bee - live since 2024-1-26
+## v4.1.0 - 2024-01-24 - d0495bee - live since 2024-01-26
 
 - Fix #1654: Fix AdminDatasetForm acceptance tests
 - Feat #1569: Display horizontal scroll bar in dataset files table when required
@@ -18,7 +20,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Feat #588: Re-enable the old, initial work on File Upload Wizard behind a new Gitlab-based feature flag
 - Feat #1384: Improve accessibility of login page: input focus state, form errors, aria labels, required
 
-## v4.0.5 - 2024-01-02 - d4deab10 - live since 2024-1-9
+## v4.0.5 - 2024-01-02 - d4deab10 - live since 2024-01-09
 
 - Feat #1595: Update total volume of data on home page
 - Fix #1529: Reload the same admin form page after save for private dataset
