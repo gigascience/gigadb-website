@@ -1,21 +1,21 @@
 <template>
   <div>
     <form name="new-attribute-form">
-      <label class='control-label'>
+      <label class="control-label" for="new-attr-name-field">
         Name:
         <input v-model="name" type="text" id="new-attr-name-field" name="name" />
       </label>
-      <label class='control-label'>
+      <label class="control-label" for="new-attr-value-field">
         Value:
         <input v-model="value" type="text" id="new-attr-value-field" name="value" />
       </label>
-      <label class='control-label'>
+      <label class="control-label" for="new-attr-unit-field">
         Unit:
         <input v-model="unit" type="text" id="new-attr-unit-field" name="unit" />
       </label>
-      <button v-on:click="addNewAttribute" class="btn btn-success btn-small" id="add-new-attribute">Add</button>
+      <button @click="addNewAttribute" class="btn btn-success btn-small" id="add-new-attribute">Add</button>
     </form>
-    <el-table :data="attributes" height="250" style="width: 90%">
+    <el-table class="attr-table" :data="attributes" height="250">
       <el-table-column prop="name" label="Name">
       </el-table-column>
       <el-table-column prop="value" label="Value">
@@ -23,19 +23,30 @@
       <el-table-column prop="unit" label="Unit">
       </el-table-column>
       <el-table-column fixed="right" width="45">
-        <template slot-scope="scope">
+        <template v-slot="scope">
           <el-button type="danger" icon="el-icon-delete" size="small"
-            v-on:click.prevent="removeAttribute(scope.$index, attributes)" circle>
+            @click.prevent="removeAttribute(scope.$index)" circle>
           </el-button>
         </template>
       </el-table-column>
     </el-table>
   </div>
 </template>
-<style></style>
+
+<style scoped>
+.attr-table {
+  width: 90%;
+}
+</style>
+
 <script>
 export default {
-  props: ['fileAttributes'],
+  props: {
+    fileAttributes: {
+      type: Array,
+      default: () => []
+    }
+  },
   data: function () {
     return {
       name: '',
@@ -52,8 +63,8 @@ export default {
       this.value = ''
       this.unit = ''
     },
-    removeAttribute(index, rows) {
-      rows.splice(index, 1);
+    removeAttribute(index) {
+      this.attributes.splice(index, 1);
       console.log("remove attribute at " + index)
     }
   }
