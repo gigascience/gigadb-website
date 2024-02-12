@@ -35,7 +35,7 @@
                     />
                 </section>
                 <footer>
-                    <pager identifier="<?php echo $identifier; ?>" />
+                    <page-navigation identifier="<?php echo $identifier; ?>" />
                 </footer>
             <?php echo CHtml::endForm(); ?>
         </article>
