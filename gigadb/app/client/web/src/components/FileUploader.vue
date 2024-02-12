@@ -1,30 +1,35 @@
 <template>
   <div id="uppy" class="uploader">
-    <form id="dataset-metadata-form">
-      <input id="dataset" type="hidden" v-bind:value="identifier">
+    <form class="uppy-dataset-metadata-form">
+      <input id="dataset" type="hidden" :value="identifier">
     </form>
-    <div class="drag-drop-area"></div>
+    <div class="uppy-drag-drop-area"></div>
   </div>
 </template>
-<style></style>
+
 <script>
 import Uppy from '@uppy/core/lib/Uppy.js';
 import Dashboard from '@uppy/dashboard'
 import Form from '@uppy/form'
 import Tus from '@uppy/tus'
 import { Checksum } from '../plugins/uppy-checksum.js'
-
 import { eventBus } from '../index.js'
 
 export default {
-  props: ["identifier", "endpoint", "events"],
+  props: {
+    identifier: {
+      type: String,
+    },
+    endpoint: {
+      type: String,
+    }
+  },
   data: function () {
     return {
-      uppy: ''
+      uppy: null
     }
   },
   mounted: function () {
-
     this.$nextTick(function () {
       eventBus.$emit("stage-changed", "uploading")
     })
@@ -37,7 +42,7 @@ export default {
       inline: true,
       width: 750,
       height: 450,
-      target: '.drag-drop-area',
+      target: '.uppy-drag-drop-area',
       hideAfterFinish: true,
       showProgressDetails: true,
       hideUploadButton: false,
@@ -52,7 +57,7 @@ export default {
       locale: {}
     })
     this.uppy.use(Form, {
-      target: "#dataset-metadata-form",
+      target: ".uppy-dataset-metadata-form",
       getMetaFromForm: true,
       addResultToForm: false,
       triggerUploadOnSubmit: false,
