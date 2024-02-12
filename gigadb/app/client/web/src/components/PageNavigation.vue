@@ -7,10 +7,6 @@
       <button class="btn background-btn complete complete-btn" type="submit">Complete and return to Your Uploaded
         Datasets page</button>
     </div>
-    <!-- <div v-else>
-      stage: {{ stage }}
-      metadataComplete: {{ metadataComplete }}
-    </div> -->
   </nav>
 </template>
 
@@ -47,18 +43,14 @@ export default {
     }
   },
   mounted: function () {
-    const vm = this //see https://stackoverflow.com/a/47148828/6518111
     eventBus.$on('stage-changed', (stage) => {
-      vm.stage = stage
-      // console.log('Pager, stage changed to ' + vm.stage)
+      this.stage = stage
     })
-    eventBus.$on('complete', function (result) {
-      vm.uploadsComplete = true
-      // console.log('Pager, uploadsComplete set to true')
+    eventBus.$on('complete', () => {
+      this.uploadsComplete = true
     })
-    eventBus.$on('metadata-ready-status', function (status) {
-      vm.metadataComplete = status
-      // console.log('Pager, metadataComplete set to ' + vm.metadataComplete)
+    eventBus.$on('metadata-ready-status', (status) => {
+      this.metadataComplete = status
     })
   }
 }
