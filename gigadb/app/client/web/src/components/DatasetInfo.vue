@@ -1,16 +1,16 @@
 <template>
   <h4>
-    GigaDB: {{ stage }} for the dataset {{ identifier }}
+    GigaDB: Uploading files for the dataset {{ identifier }}
   </h4>
 </template>
-<style></style>
+
 <script>
 export default {
-  props: ['identifier'],
-  data: function () {
-    return {
-      stage: "Uploading files",
+  props: {
+    identifier: {
+      type: String,
+      required: true,
     }
-  },
+  }
 }
 </script>
