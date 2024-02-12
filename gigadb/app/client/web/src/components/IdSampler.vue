@@ -7,14 +7,17 @@
       ref="saveSampleInput" size="mini" @keydown.enter.native.stop="handleInputConfirm" @blur="handleInputConfirm">
     </el-input>
     <el-button v-else class="button-new-sample" size="small" @click="showInput">+ New Sample</el-button>
-    <button type="button" v-on:click.prevent="saveSamples" class="btn btn-success btn-small"
-      id="save-samples">Save</button>
+    <button type="button" @click.prevent="saveSamples" class="btn btn-success btn-small" id="save-samples">Save</button>
   </div>
 </template>
+
 <script>
-import { eventBus } from '../index.js'
 export default {
-  props: ['collection'],
+  props: {
+    collection: {
+      type: String
+    }
+  },
   data() {
     return {
       samplesString: this.collection || "",
@@ -57,7 +60,8 @@ export default {
   },
 }
 </script>
-<style>
+
+<style scoped>
 .el-tag+.el-tag {
   margin-left: 10px;
 }
