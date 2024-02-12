@@ -16,16 +16,16 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(upload, index) in uploadedFiles">
-            <td><span data-toggle='tooltip' data-placement='bottom' v-bind:title="'md5:' + upload.initial_md5">{{
+          <tr v-for="(upload, index) in uploadedFiles" :key="upload.id">
+            <td><span data-toggle="tooltip" data-placement="bottom" :title="`md5:${upload.initial_md5}`">{{
               upload.name }}</span>
-              <input type="hidden" v-bind:name="'Upload[' + upload.id + '][name]'" v-bind:value="upload.name">
+              <input type="hidden" :name="`Upload[${upload.id}][name]`" :value="upload.name">
             </td>
             <td>
               <div class="form-group">
-                <select v-model="upload.datatype" v-bind:name="'Upload[' + upload.id + '][datatype]'"
-                  v-bind:id="'upload-' + (index + 1) + '-datatype'" v-on:change="fieldHasChanged(index, $event)">
-                  <option v-for="datatype in dataTypes">{{ datatype }}</option>
+                <select v-model="upload.datatype" :name="`Upload[${upload.id}][datatype]`"
+                  :id="`upload-${(index + 1)}-datatype`" @change="fieldHasChanged(index, $event)">
+                  <option v-for="datatype in dataTypes" :key="datatype">{{ datatype }}</option>
                 </select>
               </div>
             </td>
@@ -35,24 +35,24 @@
               <div class="form-group required">
                 <label class='control-label'>
                   <input v-model="upload.description" class="form-control" type="text"
-                    v-bind:name="'Upload[' + upload.id + '][description]'" v-bind:id="'upload-' + (index + 1) + '-description'"
-                    v-on:input="fieldHasChanged(index, $event)" required>
+                    :name="`Upload[${upload.id}][description]`" :id="`upload-${(index + 1)}-description`"
+                    @input="fieldHasChanged(index, $event)" required>
                 </label>
               </div>
             </td>
             <td>
-              <input type="hidden" v-bind:name="'Upload[' + upload.id + '][sample_ids]'"
-                v-bind:id="'upload-' + (index + 1) + '-sample_ids'" v-bind:value="upload.sample_ids">
-              <el-button v-bind:id="'upload-' + (index + 1) + '-tag'" v-on:click="toggleAttrDrawer(index, upload.id)"
-                type="info" v-bind:class="'btn btn-green btn-small attribute-button ' + upload.name">
+              <input type="hidden" :name="`Upload[${upload.id}][sample_ids]`" :id="`upload-${index + 1}-sample_ids`"
+                :value="upload.sample_ids">
+              <el-button :id="`upload-${index + 1}-tag`" @click="toggleAttrDrawer(index, upload.id)" type="info"
+                :class="`btn btn-green btn-small attribute-button ${upload.name}`">
                 Attributes
               </el-button>
-              <el-button v-bind:id="'upload-' + (index + 1) + '-sample'" v-on:click="toggleSampleDrawer(index, upload.id)"
-                type="info" v-bind:class="'btn btn-green btn-small sample-button ' + upload.name">
+              <el-button :id="`upload-${index + 1}-sample`" @click="toggleSampleDrawer(index, upload.id)" type="info"
+                :class="`btn btn-green btn-small sample-button ${upload.name}`">
                 Sample IDs
               </el-button>
-              <el-button v-bind:id="'upload-' + (index + 1) + '-delete'" v-bind:class="'delete-button-' + index" type="danger"
-                icon="el-icon-delete" v-on:click="deleteUpload(index, upload.id)" circle></el-button>
+              <el-button :id="`upload-${index + 1}-delete`" :class="`delete-button-${index}`" type="danger"
+                icon="el-icon-delete" @click="deleteUpload(index, upload.id)" circle></el-button>
             </td>
           </tr>
         </tbody>
@@ -71,25 +71,24 @@
         ignored).</p>
       <div class="row">
         <div class="col-md-8">
-          <form id="bulkUploadForm" method="post" enctype="multipart/form-data" class="form-horizontal well"
-            style="padding:5em;">
-
+          <form id="bulkUploadForm" method="post" enctype="multipart/form-data"
+            class="form-horizontal well form-bulk-upload">
             <div class="form-group">
               <label for="bulkmetadata">Select a spreadsheet:</label>
               <input type="file" id="bulkmetadata" name="bulkmetadata" accept=".csv, .tsv">
             </div>
-            <button class="btn btn-green btn-small">Upload metadata from spreadsheet</button>
+            <button class="btn btn-green btn-small" type="submit">Upload metadata from spreadsheet</button>
           </form>
         </div>
         <div class="col-md-4">
-          <div class="panel panel-success" style="margin:1em;width:100%">
+          <div class="panel panel-success panel-tips">
             <div class="panel-heading">
               <h4 class="panel-title">Tips</h4>
             </div>
             <div class="panel-body">
               <p> In order for the metadata to be parsed correctly there are a couple of requirements to follow when
                 preparing the spreadsheet:
-
+              </p>
               <ul>
                 <li> Ensure the first row is a header with the name with the columns (you can copy the text into the
                   spreadsheet):
@@ -107,7 +106,7 @@
                 <li> After uploading the spreadsheet, you can still tweak the metadata in the table above</li>
               </ul>
 
-              Here is an example of a valid spreadsheet to illustrate these requirements:</p>
+              <p>Here is an example of a valid spreadsheet to illustrate these requirements:</p>
               <ul>
                 <li><a href="/files/examples/bulk-data-upload-example.csv">bulk-data-upload-example.csv</a></li>
               </ul>
@@ -119,12 +118,12 @@
 
 
     <div v-if="uploadedFiles.length > 0">
-      <el-drawer v-bind:title="'Add attributes to file: ' + uploadedFiles[drawerIndex].name" v-bind:visible.sync="attrPanel"
-        v-bind:with-header="true" ref="attrPanel" :before-close="handleAttrClose" destroy-on-close>
+      <el-drawer :title="`Add attributes to file: ${uploadedFiles[drawerIndex].name}`" :visible.sync="attrPanel"
+        :with-header="true" ref="attrPanel" :before-close="handleAttrClose" destroy-on-close>
         <span>
-          <attribute-specifier id="attributes-form" v-bind:fileAttributes="fileAttributes[selectedUpload]" />
+          <attribute-specifier id="attributes-form" :fileAttributes="fileAttributes[selectedUpload]" />
         </span>
-        <div class="panel panel-success" style="margin:1em;width:90%">
+        <div class="panel panel-success panel-drawer-tips">
           <div class="panel-heading">
             <h4 class="panel-title">Tips</h4>
           </div>
@@ -142,13 +141,13 @@
           </div>
         </div>
       </el-drawer>
-      <el-drawer v-bind:title="'Add samples to file: ' + uploadedFiles[drawerIndex].name" v-bind:visible.sync="samplePanel"
-        v-bind:with-header="true" ref="samplesPanel" destroy-on-close>
+      <el-drawer :title="`Add samples to file: ${uploadedFiles[drawerIndex].name}`" :visible.sync="samplePanel"
+        :with-header="true" ref="samplesPanel" destroy-on-close>
         <span>
-          <id-sampler id="samples-form" v-bind:collection="uploadedFiles[drawerIndex].sample_ids"
-            v-on:new-samples-input="setSampleIds(drawerIndex, $event)" />
+          <id-sampler id="samples-form" :collection="uploadedFiles[drawerIndex].sample_ids"
+            @new-samples-input="setSampleIds(drawerIndex, $event)" />
         </span>
-        <div class="panel panel-success" style="margin:1em;width:90%">
+        <div class="panel panel-success panel-drawer-tips">
           <div class="panel-heading">
             <h4 class="panel-title">Tips</h4>
           </div>
@@ -173,33 +172,65 @@
         </div>
       </el-drawer>
     </div>
-    <input v-for="(uploadId, index) in filesToDelete" type="hidden" v-bind:name="'DeleteList[' + index + ']'"
-      v-bind:value="uploadId" />
+    <input v-for="(uploadId, index) in filesToDelete" :key="uploadId" type="hidden" :name="`DeleteList[${index}]`"
+      :value="uploadId" />
 
     <div v-for="(attributes, uid) in fileAttributes">
       <div v-for="(attr, idx) in attributes">
-        <input type="hidden" v-bind:name="'Attributes[' + uid + '][Attributes][' + idx + '][name]'" v-bind:value="attr['name']" />
-        <input type="hidden" v-bind:name="'Attributes[' + uid + '][Attributes][' + idx + '][value]'"
-          v-bind:value="attr['value']" />
-        <input type="hidden" v-bind:name="'Attributes[' + uid + '][Attributes][' + idx + '][unit]'" v-bind:value="attr['unit']" />
+        <input type="hidden" :name="`Attributes[${uid}][Attributes][${idx}][name]`" :value="attr['name']" />
+        <input type="hidden" :name="`Attributes[${uid}][Attributes][${idx}][value]`" :value="attr['value']" />
+        <input type="hidden" :name="`Attributes[${uid}][Attributes][${idx}][unit]`" :value="attr['unit']" />
       </div>
     </div>
 
   </div>
-</div></template>
-<style>
+</template>
+
+<style scoped>
+.form-bulk-upload {
+  padding: 5em;
+}
+
+.panel-tips {
+  margin: 1em;
+  width: 100%
+}
+
+.panel-drawer-tips {
+  margin: 1em;
+  width: 90%
+}
+
 .form-group.required .control-label:after {
   content: "*";
   color: red;
 }
 </style>
+
 <script>
 import { eventBus } from '../index.js'
 import AttributeSpecifier from './AttributeSpecifier.vue'
 import IdSampler from './IdSampler.vue'
 
 export default {
-  props: ['identifier', 'token', 'uploads', 'attributes', 'filetypes'],
+  components: {
+    "attribute-specifier": AttributeSpecifier,
+    "id-sampler": IdSampler,
+  },
+  props: {
+    identifier: { type: String }, // Unused?
+    token: { type: String }, // Unused?
+    uploads: {
+      type: Array,
+      default: () => []
+    },
+    attributes: {
+      type: Object
+    },
+    filetypes: {
+      type: Object
+    }
+  },
   data: function () {
     return {
       uploadedFiles: this.uploads || [],
@@ -213,6 +244,11 @@ export default {
       selectedUpload: -1,
     }
   },
+  computed: {
+    isMetadataComplete: function() {
+      return this.metaComplete.length === this.uploadedFiles.length
+    }
+  },
   methods: {
     fieldHasChanged(uploadIndex, event) {
       if (this.uploadedFiles[uploadIndex].datatype != undefined && this.uploadedFiles[uploadIndex].datatype.length > 0 && this.uploadedFiles[uploadIndex].description != undefined && this.uploadedFiles[uploadIndex].description.length > 0) {
@@ -224,14 +260,11 @@ export default {
         eventBus.$emit('metadata-ready-status', false)
       }
 
-      if (this.isMetadataComplete()) {
+      if (this.isMetadataComplete) {
         eventBus.$emit('metadata-ready-status', true)
       } else {
         eventBus.$emit('metadata-ready-status', false)
       }
-    },
-    isMetadataComplete() {
-      return this.metaComplete.length === this.uploadedFiles.length
     },
     checkFieldsState() {
       for (var uploadIndex = 0; uploadIndex < this.uploadedFiles.length; uploadIndex++) {
@@ -241,7 +274,7 @@ export default {
         }
       }
 
-      if (this.isMetadataComplete()) {
+      if (this.isMetadataComplete) {
         // console.log(`Emitting metadata-ready-status`)
         eventBus.$emit('metadata-ready-status', true)
       } else {
@@ -278,22 +311,18 @@ export default {
       done()
     }
   },
-  beforeDestroy: function () {
-    console.log("before destroy")
-    delete this.uploadedfiles
-  },
-  destroyed: function () {
-    console.log("after destroy")
-  },
   mounted: function () {
     this.$nextTick(function () {
       eventBus.$emit("stage-changed", "annotating")
       this.checkFieldsState()
     })
   },
-  components: {
-    "attribute-specifier": AttributeSpecifier,
-    "id-sampler": IdSampler,
+  beforeDestroy: function () {
+    console.log("before destroy")
+    delete this.uploadedfiles
+  },
+  destroyed: function () {
+    console.log("after destroy")
   }
 }
 </script>
