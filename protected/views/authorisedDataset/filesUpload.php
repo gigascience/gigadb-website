@@ -27,7 +27,7 @@
                                 <li>You can upload files from your computer by dragging them to the area on the left.</li>
                                 <li>Once uploads are marked as "Complete", a "Next" button will appear at the bottom. You can click it to proceed to the next stage (annotating the files).</li>
                             </ul>
-                            <p>For more information about the allowed file types, please see the following links:</p>
+                            <p>For more information about expected files and their formats for given types of datasets, please see the following links:</p>
                             <ul>
                                 <li><a target="_blank" href="http://gigadb.org/site/guidegenomic">Genomic & Transcriptomic datasets</a></li>
                                 <li><a target="_blank" href="http://gigadb.org/site/guideepigenomic">Epigenomic datasets</a></li>
