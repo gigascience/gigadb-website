@@ -14,26 +14,33 @@
             </header>
             <div>
                 <section class="span6">
-                    <uploader identifier="<?= $identifier ?>" endpoint="<?php echo $tusd_path ?>" />
+                    <file-uploader identifier="<?= $identifier ?>" endpoint="<?php echo $tusd_path ?>" />
                 </section>
                 <aside class="span4">
                     <div class="panel panel-success" style="margin:3em;width:100%">
                         <div class="panel-heading">
                             <h4 class="panel-title">Tips</h4>
                         </div>
-                      <div class="panel-body">
-                        <p>
-                        <ul>
-                        <li>This is the first step for submitting files associated to the dataset.</li>
-                        <li>You can upload files from your computer by dragging them to the area on the left.</li>
-                        <li>Once uploads are marked as "Complete", a "Next" button will appear at the bottom. You can click it to proceed to the next stage (annotating the files).</li>
-                        </ul>
-                        </p>
-                      </div>
+                        <div class="panel-body">
+                            <ul>
+                                <li>This is the first step for submitting files associated to the dataset.</li>
+                                <li>You can upload files from your computer by dragging them to the area on the left.</li>
+                                <li>Once uploads are marked as "Complete", a "Next" button will appear at the bottom. You can click it to proceed to the next stage (annotating the files).</li>
+                            </ul>
+                            <p>For more information about expected files and their formats for given types of datasets, please see the following links:</p>
+                            <ul>
+                                <li><a target="_blank" href="http://gigadb.org/site/guidegenomic">Genomic & Transcriptomic datasets</a></li>
+                                <li><a target="_blank" href="http://gigadb.org/site/guideepigenomic">Epigenomic datasets</a></li>
+                                <li><a target="_blank" href="http://gigadb.org/site/guidemetagenomic">Metagenomic datasets</a></li>
+                                <li><a target="_blank" href="http://gigadb.org/site/guideimaging">Imaging datasets</a></li>
+                                <li><a target="_blank" href="http://gigadb.org/site/guidemetabolomic">Metabolomic & Proteomic datasets</a></li>
+                                <li><a target="_blank" href="http://gigadb.org/site/guidesoftware">Software datasets</a></li>
+                            </ul>
+                        </div>
                     </div>
                 </aside>
             </div>
-                <pager identifier="<?= $identifier ?>" <?php echo "uploads-exist=\"$uploadsCount\"" ?>/>
+                <page-navigation identifier="<?= $identifier ?>" <?php echo "uploads-exist=\"$uploadsCount\"" ?>/>
         </article>
     </div>
 </div>
