@@ -1,5 +1,7 @@
 <?php
 
+use Aws\Exception\AwsException;
+use Aws\Sts\StsClient;
 use Facebook\WebDriver\WebDriverKeys;
 use Codeception\Util\Locator;
 
@@ -26,6 +28,12 @@ use Codeception\Util\Locator;
 class AcceptanceTester extends \Codeception\Actor
 {
     use _generated\AcceptanceTesterActions;
+
+    /** @const url of cnhk-infra variables  */
+    public const MISC_VARIABLES_URL = "https://gitlab.com/api/v4/projects/gigascience%2Fcnhk-infra/variables";
+
+    /** @const url of Forks variables  */
+    public const FORKS_VARIABLES_URL = "https://gitlab.com/api/v4/groups/3501869/variables" ;
 
    /**
     * Define custom actions here
@@ -368,5 +376,163 @@ class AcceptanceTester extends \Codeception\Actor
     public function iShouldNotSeeAnInputButton($button)
     {
         $this->dontSeeElement('input', ['type' => "button", 'value' => $button]);
+    }
+
+    /**
+     * @Given I configure rclone with a :accountType account
+     *
+     *  - first retrieve the test access keys and secret keys from Gitlab variables
+     *  - then, generate an Rclone configuration file from a Twig template, interpolating the variables from previous steps
+     *  - finally, assert that the configuration has been generated correctly
+     *
+     * @param $accountType
+     */
+    public function iConfigureRcloneWithAAccount($accountType)
+    {
+        switch ($accountType) {
+            case "Developer":
+                $accessKeyToRetrieve = "CODECEPTDEV_WASABI_ACCESS_KEY_ID";
+                $secretKeyToRetrieve = "CODECEPTDEV_WASABI_SECRET_ACCESS_KEY";
+                break;
+            case "Curator":
+                $accessKeyToRetrieve = "CODECEPTCUR_WASABI_ACCESS_KEY_ID";
+                $secretKeyToRetrieve = "CODECEPTCUR_WASABI_SECRET_ACCESS_KEY";
+                break;
+            case "Migration user":
+                $accessKeyToRetrieve = "MIGRATION_ALT_WASABI_ACCESS_KEY_ID";
+                $secretKeyToRetrieve = "MIGRATION_ALT_WASABI_SECRET_ACCESS_KEY";
+                break;
+            case "Test curator":
+                $accessKeyToRetrieve = "TEST_CODECEPTCUR_WASABI_ACCESS_KEY_ID";
+                $secretKeyToRetrieve = "TEST_CODECEPTCUR_WASABI_SECRET_ACCESS_KEY";
+                break;
+        }
+
+        list($accessKeyId, $secretKey) = $this->getWasabiCredentials(
+            self::FORKS_VARIABLES_URL,
+            $accessKeyToRetrieve,
+            $secretKeyToRetrieve
+        );
+
+        $this->renderRcloneConfig($accessKeyId, $secretKey);
+
+        $this->assertFileExists("/project/tests/_output/developer.conf");
+    }
+
+    /**
+     * @param string $variablesEndpoint
+     * @param string $accessKeyVariableName
+     * @param string $secretKeyVariableName
+     * @return array
+     */
+    public function getWasabiCredentials(string $variablesEndpoint = self::MISC_VARIABLES_URL, string $accessKeyVariableName = "wasabi_group_developer_test_access_key_id", string $secretKeyVariableName = "wasabi_group_developer_test_secret_access_key"): array
+    {
+        $client = new \GuzzleHttp\Client();
+        try {
+            $response = $client->get("$variablesEndpoint/$accessKeyVariableName", [
+                'headers' => [
+                    'PRIVATE-TOKEN' => getenv("GITLAB_PRIVATE_TOKEN")
+                ],
+            ]);
+            $accessKeyId = json_decode($response->getBody(), true)["value"];
+            $response = $client->get("$variablesEndpoint/$secretKeyVariableName", [
+                'headers' => [
+                    'PRIVATE-TOKEN' => getenv("GITLAB_PRIVATE_TOKEN")
+                ],
+            ]);
+            $secretKey = json_decode($response->getBody(), true)["value"];
+        } catch (\GuzzleHttp\Exception\GuzzleException $e) {
+            codecept_debug($e->getMessage());
+        }
+        return array($accessKeyId, $secretKey);
+    }
+
+    /**
+     * @param $accessKeyId
+     * @param $secretKey
+     * @return void
+     */
+    public function renderRcloneConfig($accessKeyId, $secretKey, $sessionToken = null): void
+    {
+        $loader = new \Twig\Loader\FilesystemLoader('/project/tests/_data/RcloneConfigs');
+        $twig = new \Twig\Environment($loader);
+        try {
+            file_put_contents(
+                "/project/tests/_output/developer.conf",
+                $twig->render('developer.conf.twig', [
+                    'wasabi_group_developer_test_access_key_id' => $accessKeyId,
+                    'wasabi_group_developer_test_secret_access_key' => $secretKey,
+                    'wasabi_group_developer_test_session_token' => $sessionToken,
+                ]),
+            );
+        } catch (\Twig\Error\LoaderError | \Twig\Error\RuntimeError | \Twig\Error\SyntaxError $e) {
+            codecept_debug($e->getMessage());
+        }
+    }
+
+    /**
+     * @Given I assume the Admin role
+     */
+    public function iAssumeTheAdminRole()
+    {
+        $roleToAssumeArn = 'arn:aws:iam::100000166496:role/Admin';
+
+        list($accessKeyId, $secretKey) = $this->getWasabiCredentials();
+
+        /**
+         * Assume Role
+         *
+         * This code expects that you have AWS credentials set up per:
+         * https://docs.aws.amazon.com/sdk-for-php/v3/developer-guide/guide_credentials.html
+         */
+        $client = new StsClient([
+            'endpoint' => 'https://sts.wasabisys.com',
+            'region' => 'us-east-1',
+            'version' => '2011-06-15',
+            'credentials' => [
+                'key'    => $accessKeyId,
+                'secret' => $secretKey,
+            ],
+        ]);
+
+
+        try {
+            $result = $client->assumeRole([
+                'RoleArn' => $roleToAssumeArn,
+                'RoleSessionName' => 'codeceptsession'
+            ]);
+            // output AssumedRole credentials, you can use these credentials
+            // to initiate a new AWS Service client with the IAM Role's permissions
+            $this->renderRcloneConfig($result['Credentials']['AccessKeyId'], $result['Credentials']['SecretAccessKey'], $result['Credentials']['SessionToken']);
+        } catch (AwsException $e) {
+            // output error message if fails
+            codecept_debug($e->getMessage());
+        }
+    }
+
+    /**
+     * @When I run the command to create bucket :bucket
+     */
+    public function iRunTheCommandToCreateBucket($bucket)
+    {
+        shell_exec("rclone --config=/project/tests/_output/developer.conf mkdir wasabiTest:$bucket");
+    }
+
+    /**
+     * @Then I should see the bucket :bucket
+     */
+    public function iShouldSeeTheBuckets($bucket)
+    {
+        $output = shell_exec("rclone --config=/project/tests/_output/developer.conf lsd wasabiTest:");
+        $this->assertTrue(str_contains($output, " -1 " . $bucket));
+    }
+
+    /**
+     * @Then I cannot delete the bucket :bucket
+     */
+    public function iRunTheCommandToDeleteBucket($bucket)
+    {
+        system("rclone --config=/project/tests/_output/developer.conf purge wasabiTest:$bucket", $status);
+        $this->assertNotEquals(0, $status);
     }
 }
