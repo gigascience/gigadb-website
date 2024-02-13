@@ -71,6 +71,7 @@
         ignored).</p>
       <div class="row">
         <div class="col-md-8">
+          <!-- WARN this form is nested inside another form -->
           <form id="bulkUploadForm" method="post" enctype="multipart/form-data"
             class="form-horizontal well form-bulk-upload">
             <div class="form-group">
@@ -244,12 +245,11 @@ export default {
       selectedUpload: -1,
     }
   },
-  computed: {
-    isMetadataComplete: function () {
-      return this.metaComplete.length === this.uploadedFiles.length
-    }
-  },
   methods: {
+    // WARN: cannot turn into computed prop because Vue is not reactive to changes in array elements (metaComplete)
+    isMetadataComplete() {
+      return this.metaComplete.length === this.uploadedFiles.length
+    },
     fieldHasChanged(uploadIndex) {
       if (this.uploadedFiles[uploadIndex].datatype != undefined && this.uploadedFiles[uploadIndex].datatype.length > 0 && this.uploadedFiles[uploadIndex].description != undefined && this.uploadedFiles[uploadIndex].description.length > 0) {
         this.metaComplete[uploadIndex] = true
@@ -260,7 +260,7 @@ export default {
         eventBus.$emit('metadata-ready-status', false)
       }
 
-      if (this.isMetadataComplete) {
+      if (this.isMetadataComplete()) {
         eventBus.$emit('metadata-ready-status', true)
       } else {
         eventBus.$emit('metadata-ready-status', false)
@@ -274,7 +274,7 @@ export default {
         }
       }
 
-      if (this.isMetadataComplete) {
+      if (this.isMetadataComplete()) {
         // console.log(`Emitting metadata-ready-status`)
         eventBus.$emit('metadata-ready-status', true)
       } else {

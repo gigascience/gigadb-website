@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- WARN this form is nested inside another form -->
     <form name="new-attribute-form">
       <label class="control-label" for="new-attr-name-field">
         Name:
