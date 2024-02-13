@@ -47,10 +47,11 @@
                 :class="`btn btn-green btn-small attribute-button ${upload.name}`">
                 Attributes
               </el-button>
-              <el-button :id="`upload-${index + 1}-sample`" @click="toggleSampleDrawer(index, upload.id)" type="info"
+              <!-- Sample ID button -->
+              <!-- <el-button :id="`upload-${index + 1}-sample`" @click="toggleSampleDrawer(index, upload.id)" type="info"
                 :class="`btn btn-green btn-small sample-button ${upload.name}`">
                 Sample IDs
-              </el-button>
+              </el-button> -->
               <el-button :id="`upload-${index + 1}-delete`" :class="`delete-button-${index}`" type="danger"
                 icon="el-icon-delete" @click="deleteUpload(index, upload.id)" circle></el-button>
             </td>
@@ -142,7 +143,8 @@
           </div>
         </div>
       </el-drawer>
-      <el-drawer :title="`Add samples to file: ${uploadedFiles[drawerIndex].name}`" :visible.sync="samplePanel"
+      <!-- Sample ID drawer -->
+      <!-- <el-drawer :title="`Add samples to file: ${uploadedFiles[drawerIndex].name}`" :visible.sync="samplePanel"
         :with-header="true" ref="samplesPanel" destroy-on-close>
         <span>
           <id-sampler id="samples-form" :collection="uploadedFiles[drawerIndex].sample_ids"
@@ -171,7 +173,7 @@
             </ul>
           </div>
         </div>
-      </el-drawer>
+      </el-drawer> -->
     </div>
     <input v-for="(uploadId, index) in filesToDelete" :key="uploadId" type="hidden" :name="`DeleteList[${index}]`"
       :value="uploadId" />
@@ -287,23 +289,26 @@ export default {
       this.selectedUpload = uploadId
       this.attrPanel = !this.attrPanel
     },
-    toggleSampleDrawer(uploadIndex, uploadId) {
-      this.drawerIndex = uploadIndex
-      this.selectedUpload = uploadId
-      this.samplePanel = !this.samplePanel
-      // console.log(`Toogling sample drawer: ${this.samplePanel}`)
-    },
     deleteUpload(uploadIndex, uploadId) {
       this.uploadedFiles.splice(uploadIndex, 1)
       this.filesToDelete.push(uploadId)
     },
-    setSampleIds(uploadIndex, samples) {
-      if (samples) {
-        this.uploadedFiles[uploadIndex].sample_ids = samples.join(',')
-        // console.log(`Assigned sample_ids ${this.uploadedFiles[uploadIndex].sample_ids}`)
-      }
-      this.toggleSampleDrawer(uploadIndex, this.selectedUpload)
-    },
+
+    // Sample ID methods:
+    // toggleSampleDrawer(uploadIndex, uploadId) {
+    //   this.drawerIndex = uploadIndex
+    //   this.selectedUpload = uploadId
+    //   this.samplePanel = !this.samplePanel
+    //   // console.log(`Toogling sample drawer: ${this.samplePanel}`)
+    // },
+    // setSampleIds(uploadIndex, samples) {
+    //   if (samples) {
+    //     this.uploadedFiles[uploadIndex].sample_ids = samples.join(',')
+    //     // console.log(`Assigned sample_ids ${this.uploadedFiles[uploadIndex].sample_ids}`)
+    //   }
+    //   this.toggleSampleDrawer(uploadIndex, this.selectedUpload)
+    // },
+
     handleAttrClose(done) {
       console.log("Closing Attributes panel")
       console.log(JSON.stringify(this.fileAttributes))
