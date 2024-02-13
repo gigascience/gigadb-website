@@ -175,8 +175,8 @@
     <input v-for="(uploadId, index) in filesToDelete" :key="uploadId" type="hidden" :name="`DeleteList[${index}]`"
       :value="uploadId" />
 
-    <div v-for="(attributes, uid) in fileAttributes">
-      <div v-for="(attr, idx) in attributes">
+    <div v-for="(attributes, uid) in fileAttributes" :key="uid">
+      <div v-for="(attr, idx) in attributes" :key="idx">
         <input type="hidden" :name="`Attributes[${uid}][Attributes][${idx}][name]`" :value="attr['name']" />
         <input type="hidden" :name="`Attributes[${uid}][Attributes][${idx}][value]`" :value="attr['value']" />
         <input type="hidden" :name="`Attributes[${uid}][Attributes][${idx}][unit]`" :value="attr['unit']" />
