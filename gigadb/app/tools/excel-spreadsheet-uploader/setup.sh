@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 # Make an environment file
 if [[ ! -f .env ]];then
   cp ./env-default .env
