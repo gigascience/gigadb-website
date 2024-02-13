@@ -47,7 +47,7 @@
                 :class="`btn btn-green btn-small attribute-button ${upload.name}`">
                 Attributes
               </el-button>
-              <!-- Sample ID button -->
+              <!-- NOTE fuw-sample-ids Sample ID button -->
               <!-- <el-button :id="`upload-${index + 1}-sample`" @click="toggleSampleDrawer(index, upload.id)" type="info"
                 :class="`btn btn-green btn-small sample-button ${upload.name}`">
                 Sample IDs
@@ -144,7 +144,7 @@
           </div>
         </div>
       </el-drawer>
-      <!-- Sample ID drawer -->
+      <!-- NOTE fuw-sample-ids Sample ID drawer -->
       <!-- <el-drawer :title="`Add samples to file: ${uploadedFiles[drawerIndex].name}`" :visible.sync="samplePanel"
         :with-header="true" ref="samplesPanel" destroy-on-close>
         <span>
