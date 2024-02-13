@@ -24,7 +24,7 @@ class EMReportJob extends \yii\base\BaseObject implements \yii\queue\JobInterfac
     }
 
     /**
-     * Create manuscript instances from the queue content and save then to the manuscript table
+     * Create manuscript instances from the queue content and save them to the manuscript table
      *
      * @param string $content
      * @param string $reportFileName

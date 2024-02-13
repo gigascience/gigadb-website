@@ -54,3 +54,4 @@ phpunit.phar
 #ignored because generated from template
 console/tests/acceptance.suite.yml
 console/tests/functional.suite.yml
+common/tests/unit.suite.yml
