@@ -16,7 +16,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(upload, index) in uploadedFiles" :key="upload.id">
+          <tr v-for="(upload, index) in uploadedFiles" :key="`${upload.id}-uploadedfiles`">
             <td><span data-toggle="tooltip" data-placement="bottom" :title="`md5:${upload.initial_md5}`">{{
               upload.name }}</span>
               <input type="hidden" :name="`Upload[${upload.id}][name]`" :value="upload.name">
@@ -25,7 +25,7 @@
               <div class="form-group">
                 <select v-model="upload.datatype" :name="`Upload[${upload.id}][datatype]`"
                   :id="`upload-${(index + 1)}-datatype`" @change="fieldHasChanged(index, $event)">
-                  <option v-for="datatype in dataTypes" :key="datatype">{{ datatype }}</option>
+                  <option v-for="datatype in dataTypes" :key="`${datatype}-datatype`">{{ datatype }}</option>
                 </select>
               </div>
             </td>
@@ -176,11 +176,11 @@
         </div>
       </el-drawer> -->
     </div>
-    <input v-for="(uploadId, index) in filesToDelete" :key="uploadId" type="hidden" :name="`DeleteList[${index}]`"
+    <input v-for="(uploadId, index) in filesToDelete" :key="`${uploadId}-filesToDelete`" type="hidden" :name="`DeleteList[${index}]`"
       :value="uploadId" />
 
-    <div v-for="(attributes, uid) in fileAttributes" :key="uid">
-      <div v-for="(attr, idx) in attributes" :key="idx">
+    <div v-for="(attributes, uid) in fileAttributes" :key="`${uid}-fileAttrs`">
+      <div v-for="(attr, idx) in attributes" :key="`${idx}-fileAttr`">
         <input type="hidden" :name="`Attributes[${uid}][Attributes][${idx}][name]`" :value="attr['name']" />
         <input type="hidden" :name="`Attributes[${uid}][Attributes][${idx}][value]`" :value="attr['value']" />
         <input type="hidden" :name="`Attributes[${uid}][Attributes][${idx}][unit]`" :value="attr['unit']" />
