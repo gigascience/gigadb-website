@@ -95,11 +95,12 @@
                 <li> Ensure the first row is a header with the name with the columns (you can copy the text into the
                   spreadsheet):
                   <ul>
+                    <!-- NOTE fuw-sample-ids uncomment code below -->
                     <li> TSV:
-                      <pre>File Name    Data Type   File Format     Description     Sample IDs  Attribute 1     Attribute 2     Attribute 3     Attribute 4     Attribute 5</pre>
+                      <pre>File Name    Data Type   File Format     Description   <!--  Sample IDs --> Attribute 1     Attribute 2     Attribute 3     Attribute 4     Attribute 5</pre>
                     </li>
                     <li> CSV:
-                      <pre>File Name, Data Type, File Format, Description, Sample IDs, Attribute 1, Attribute 2, Attribute 3, Attribute 4, Attribute 5</pre>
+                      <pre>File Name, Data Type, File Format, Description,<!-- Sample IDs,--> Attribute 1, Attribute 2, Attribute 3, Attribute 4, Attribute 5</pre>
                     </li>
                   </ul>
                 </li>
