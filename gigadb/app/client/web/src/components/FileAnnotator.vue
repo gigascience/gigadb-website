@@ -245,36 +245,35 @@ export default {
       selectedUpload: -1,
     }
   },
-  methods: {
-    // WARN: cannot turn into computed prop because Vue is not reactive to changes in array elements (metaComplete)
-    isMetadataComplete() {
+  computed: {
+    isMetadataComplete: function() {
       return this.metaComplete.length === this.uploadedFiles.length
-    },
+    }
+  },
+  methods: {
     fieldHasChanged(uploadIndex) {
       if (this.uploadedFiles[uploadIndex].datatype != undefined && this.uploadedFiles[uploadIndex].datatype.length > 0 && this.uploadedFiles[uploadIndex].description != undefined && this.uploadedFiles[uploadIndex].description.length > 0) {
-        this.metaComplete[uploadIndex] = true
+        this.metaComplete.includes(uploadIndex) || this.metaComplete.push(uploadIndex)
       } else {
-        this.metaComplete = this.metaComplete.filter(
-          (x, i) => i !== uploadIndex
-        )
+        this.metaComplete = this.metaComplete.filter(val => val !== uploadIndex)
         eventBus.$emit('metadata-ready-status', false)
       }
 
-      if (this.isMetadataComplete()) {
+      if (this.isMetadataComplete) {
         eventBus.$emit('metadata-ready-status', true)
       } else {
         eventBus.$emit('metadata-ready-status', false)
       }
     },
     checkFieldsState() {
-      for (var uploadIndex = 0; uploadIndex < this.uploadedFiles.length; uploadIndex++) {
+      for (let uploadIndex = 0; uploadIndex < this.uploadedFiles.length; uploadIndex++) {
         if (this.uploadedFiles[uploadIndex].datatype != undefined && this.uploadedFiles[uploadIndex].datatype.length > 0 && this.uploadedFiles[uploadIndex].description != undefined && this.uploadedFiles[uploadIndex].description.length > 0) {
-          this.metaComplete[uploadIndex] = true
+          this.metaComplete.includes(uploadIndex) || this.metaComplete.push(uploadIndex)
           // console.log(`all fields complete for upload ${uploadIndex}`)
         }
       }
 
-      if (this.isMetadataComplete()) {
+      if (this.isMetadataComplete) {
         // console.log(`Emitting metadata-ready-status`)
         eventBus.$emit('metadata-ready-status', true)
       } else {
