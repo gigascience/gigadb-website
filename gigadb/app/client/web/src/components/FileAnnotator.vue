@@ -16,7 +16,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(upload, index) in uploadedFiles" :key="upload.id">
+          <tr v-for="(upload, index) in uploadedFiles" :key="`${upload.id}-uploadedfiles`">
             <td><span data-toggle="tooltip" data-placement="bottom" :title="`md5:${upload.initial_md5}`">{{
               upload.name }}</span>
               <input type="hidden" :name="`Upload[${upload.id}][name]`" :value="upload.name">
@@ -25,7 +25,7 @@
               <div class="form-group">
                 <select v-model="upload.datatype" :name="`Upload[${upload.id}][datatype]`"
                   :id="`upload-${(index + 1)}-datatype`" @change="fieldHasChanged(index, $event)">
-                  <option v-for="datatype in dataTypes" :key="datatype">{{ datatype }}</option>
+                  <option v-for="datatype in dataTypes" :key="`${datatype}-datatype`">{{ datatype }}</option>
                 </select>
               </div>
             </td>
@@ -47,7 +47,7 @@
                 :class="`btn btn-green btn-small attribute-button ${upload.name}`">
                 Attributes
               </el-button>
-              <!-- Sample ID button -->
+              <!-- NOTE fuw-sample-ids Sample ID button -->
               <!-- <el-button :id="`upload-${index + 1}-sample`" @click="toggleSampleDrawer(index, upload.id)" type="info"
                 :class="`btn btn-green btn-small sample-button ${upload.name}`">
                 Sample IDs
@@ -95,11 +95,12 @@
                 <li> Ensure the first row is a header with the name with the columns (you can copy the text into the
                   spreadsheet):
                   <ul>
+                    <!-- NOTE fuw-sample-ids uncomment code below -->
                     <li> TSV:
-                      <pre>File Name    Data Type   File Format     Description     Sample IDs  Attribute 1     Attribute 2     Attribute 3     Attribute 4     Attribute 5</pre>
+                      <pre>File Name    Data Type   File Format     Description   <!--  Sample IDs --> Attribute 1     Attribute 2     Attribute 3     Attribute 4     Attribute 5</pre>
                     </li>
                     <li> CSV:
-                      <pre>File Name, Data Type, File Format, Description, Sample IDs, Attribute 1, Attribute 2, Attribute 3, Attribute 4, Attribute 5</pre>
+                      <pre>File Name, Data Type, File Format, Description,<!-- Sample IDs,--> Attribute 1, Attribute 2, Attribute 3, Attribute 4, Attribute 5</pre>
                     </li>
                   </ul>
                 </li>
@@ -143,7 +144,7 @@
           </div>
         </div>
       </el-drawer>
-      <!-- Sample ID drawer -->
+      <!-- NOTE fuw-sample-ids Sample ID drawer -->
       <!-- <el-drawer :title="`Add samples to file: ${uploadedFiles[drawerIndex].name}`" :visible.sync="samplePanel"
         :with-header="true" ref="samplesPanel" destroy-on-close>
         <span>
@@ -175,11 +176,11 @@
         </div>
       </el-drawer> -->
     </div>
-    <input v-for="(uploadId, index) in filesToDelete" :key="uploadId" type="hidden" :name="`DeleteList[${index}]`"
+    <input v-for="(uploadId, index) in filesToDelete" :key="`${uploadId}-filesToDelete`" type="hidden" :name="`DeleteList[${index}]`"
       :value="uploadId" />
 
-    <div v-for="(attributes, uid) in fileAttributes" :key="uid">
-      <div v-for="(attr, idx) in attributes" :key="idx">
+    <div v-for="(attributes, uid) in fileAttributes" :key="`${uid}-fileAttrs`">
+      <div v-for="(attr, idx) in attributes" :key="`${idx}-fileAttr`">
         <input type="hidden" :name="`Attributes[${uid}][Attributes][${idx}][name]`" :value="attr['name']" />
         <input type="hidden" :name="`Attributes[${uid}][Attributes][${idx}][value]`" :value="attr['value']" />
         <input type="hidden" :name="`Attributes[${uid}][Attributes][${idx}][unit]`" :value="attr['unit']" />

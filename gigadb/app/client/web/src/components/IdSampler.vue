@@ -1,6 +1,6 @@
 <template>
   <div id="sampler">
-    <el-tag :key="sample" v-for="sample in samples" closable :disable-transitions="false" @close="handleClose(sample)">
+    <el-tag :key="`${sample}-sample`" v-for="sample in samples" closable :disable-transitions="false" @close="handleClose(sample)">
       {{ sample }}
     </el-tag>
     <el-input id="new-sample-field" class="input-new-sample" v-if="inputVisible" v-model="inputValue"
