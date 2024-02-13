@@ -245,12 +245,12 @@ export default {
     }
   },
   computed: {
-    isMetadataComplete: function() {
+    isMetadataComplete: function () {
       return this.metaComplete.length === this.uploadedFiles.length
     }
   },
   methods: {
-    fieldHasChanged(uploadIndex, event) {
+    fieldHasChanged(uploadIndex) {
       if (this.uploadedFiles[uploadIndex].datatype != undefined && this.uploadedFiles[uploadIndex].datatype.length > 0 && this.uploadedFiles[uploadIndex].description != undefined && this.uploadedFiles[uploadIndex].description.length > 0) {
         this.metaComplete[uploadIndex] = true
       } else {

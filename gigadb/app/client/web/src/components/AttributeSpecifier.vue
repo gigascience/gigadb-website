@@ -24,8 +24,7 @@
       </el-table-column>
       <el-table-column fixed="right" width="45">
         <template v-slot="{ $index }">
-          <el-button type="danger" icon="el-icon-delete" size="small"
-            @click.prevent="removeAttribute($index)" circle>
+          <el-button type="danger" icon="el-icon-delete" size="small" @click.prevent="removeAttribute($index)" circle>
           </el-button>
         </template>
       </el-table-column>
