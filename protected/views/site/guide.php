@@ -45,6 +45,7 @@ $this->pageTitle = 'GigaDB - Submission Guidelines';
                                         <li>Decision: If no, no further GigaDB involvement. If yes, continue.</li>
                                         <li>Is data available to peer reviewers?</li>
                                         <li>Decision: If no, provide authors with private FTP login, then authors upload all data files to GigaDB private FTP area and continue. If yes, continue.</li>
+                                        <li>Editors send manuscript and private FTP login details to reviewers</li>
                                         <li>Does manuscript pass review?</li>
                                         <li>Decision: If no, either reject or author makes revisions to manuscript and/or data in FTP server, and continue. If yes, continue.</li>
                                         <li>Is all data available?</li>
