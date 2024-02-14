@@ -1,4 +1,4 @@
-<section class="page-title-section">
+<div class="section page-title-section">
     <div class="page-title">
         <nav aria-label="breadcrumbs">
           <ol class="breadcrumb pull-right">
@@ -7,4 +7,4 @@
         </nav>
         <?php echo CHtml::tag($pageTitleLevel, ['class' => 'h4'], $pageTitle); ?>
     </div>
-</section>
+</div>

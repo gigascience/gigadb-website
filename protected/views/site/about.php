@@ -19,7 +19,7 @@ $this->pageTitle = 'GigaDB - About';
         <div class="subsection">
             <img src="../images/new_interface_image/about.png" alt="Photo of the GigaDB team">
         </div>
-        <section aria-labelledby="aboutSectionTitle">
+        <div class="section">
             <h2 class="page-subtitle">Database: <em>GigaDB</em></h2>
             <p><a href="/site/index" target="_blank"><em>GigaDB</em></a> is a data repository supporting scientific
                 publications in the Life/Biomedical Sciences domain. <a href="/site/index" target="_blank"><em>GigaDB</em></a> organises
@@ -114,6 +114,6 @@ $this->pageTitle = 'GigaDB - About';
                 </ul>
                 <p class="mt-4">This website's content and logo has been published under the Creative Commons CC0 license</p>
             </div>
-        </section>
+        </div>
     </div>
 </div>
