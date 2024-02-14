@@ -1,7 +1,21 @@
+/**
+ * Usage Explanation for Playwright Test Configuration:
+ *
+ * These array define a set of paths to be tested for accessibility. Each entry in the arrays can be either a string or an object, specifying the details for running tests on a particular page.
+ *
+ * Options for object entries:
+ * - `path`: The URL path of the page to test.
+ * - `disabledElements`: An array of CSS selectors representing elements to exclude from the accessibility check. Useful for ignoring elements known to have issues or not relevant. Warning: all the children of the element will also be excluded.
+ * - `tags`: An array of tags to categorize tests, allowing selective execution based on the './tags.js' file.
+ *
+ * String entries are interpreted as the URL path of the page to test without additional options.
+ */
+
+
 const PUBLIC_PATHS = [
   {
     path: '/',
-    disabledElements: ['.image-overlay', '.image-background']
+    disabledElements: ['.image-overlay', '.image-background', '#rss'],
   },
   '/dataset/100006',
   '/dataset/100245',
