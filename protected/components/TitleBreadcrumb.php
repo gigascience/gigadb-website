@@ -36,6 +36,7 @@
 class TitleBreadcrumb extends CWidget
 {
   public $pageTitle;
+  public $pageTitleId;
   public $breadcrumbItems = [];
   public $pageTitleLevel = 'h1';
   private const ACTIVE_CLASS = 'active';
@@ -64,6 +65,7 @@ class TitleBreadcrumb extends CWidget
         $breadcrumbHtml = $this->generateBreadcrumbItems();
 
     Yii::app()->controller->renderPartial('//shared/_titleBreadcrumb', [
+      'pageTitleId' => $this->pageTitleId,
       'pageTitle' => $this->pageTitle,
       'breadcrumbHtml' => $breadcrumbHtml,
       'pageTitleLevel' => $this->pageTitleLevel

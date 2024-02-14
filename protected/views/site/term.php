@@ -7,6 +7,7 @@ $this->pageTitle = 'GigaDB - Terms of use';
       <?php
         $this->widget('TitleBreadcrumb', [
           'pageTitle' => 'Terms of use',
+          'pageTitleId' => 'pageTitle',
           'breadcrumbItems' => [
             ['label' => 'Home', 'href' => '/'],
             ['isActive' => true, 'label' => 'Terms of use'],

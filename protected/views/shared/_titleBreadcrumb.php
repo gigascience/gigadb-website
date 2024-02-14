@@ -5,6 +5,6 @@
               <?= $breadcrumbHtml ?>
           </ol>
         </nav>
-        <?php echo CHtml::tag($pageTitleLevel, ['class' => 'h4'], $pageTitle); ?>
+        <?php echo CHtml::tag($pageTitleLevel, ['class' => 'h4', 'id' => $pageTitleId], $pageTitle); ?>
     </div>
 </div>
