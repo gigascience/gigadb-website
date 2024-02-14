@@ -111,7 +111,7 @@
         'label' => '',
         'options' => array(
             "title" => "Merge authors",
-            "class" => "fa fa-link fa-lg icon icon-merge",
+            "class" => "fa fa-compress fa-lg icon icon-merge",
             "aria-label" => "Merge authors",
             "role" => "button",
         ),
