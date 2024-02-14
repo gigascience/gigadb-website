@@ -54,7 +54,7 @@
 	if (!empty($origin_author)) {
 		echo "<div class=\"alert alert-gigadb-info alert-flex\">";
 
-		echo "<span>Click on a row to proceed with merging that author with author {$origin_author->getDisplayName()}</span>";
+		echo "<span>Click on a row or on the <span class=\"fa fa-compress fa-lg\" ></span> button to proceed with merging that author with author {$origin_author->getDisplayName()}</span>";
 
 		echo CHtml::link('&times;', array(
 			'adminAuthor/prepareAuthorMerge',
