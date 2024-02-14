@@ -116,7 +116,7 @@ Feature: form to update dataset details
     And I fill in the field of "name" "Dataset[ftp_site]" with "ftp://test"
     And I fill in the field of "name" "Dataset[title]" with "test dataset"
     And I press the button "Create"
-    Then I am on "dataset/view/id/400789"
+    Then I should see current url contains "/dataset/400789/token/"
     And I should see an image located in "/images/datasets/e166c2a0-3684-5209-bccd-c4b18ff87be9/bgi_logo_new.png"
 
   @ok @issue-1023
@@ -361,3 +361,43 @@ Feature: form to update dataset details
     Then I should be on "/adminDataset/update/id/668"
     And I should see "Fail to update!"
     And I should see "Dataset Size must be a number."
+
+  @ok @dataset-status
+  Scenario Outline: Check dataset page with statuses is not publicly visible
+    Given I am on "/adminDataset/update/id/5"
+    And I select <status> from the field "Dataset_upload_status"
+    And I press the button "Save"
+    And I am on "/dataset/100039"
+    Then I should see "The DOI 100039 cannot be displayed."
+    And I should not see "Genomic data of the Puerto Rican Parrot"
+    Examples:
+      | status                   |
+      | "ImportFromEM"           |
+      | "UserStartedIncomplete"  |
+      | "Rejected"               |
+      | "Not required"           |
+      | "Submitted"              |
+      | "Curation"               |
+      | "AuthorReview"           |
+      | "Private"                |
+      | "AssigningFTPbox"        |
+      | "UserUploadingData"      |
+      | "DataAvailableForReview" |
+      | "DataPending"            |
+
+  @ok @dataset-status
+  Scenario: Check dataset page with Curation status can be viewed using private URL
+    Given I am on "/adminDataset/update/id/5"
+    And I select "Curation" from the field "Dataset_upload_status"
+    And I press the button "Save"
+    And I am on "/adminDataset/private/identifier/100039"
+    Then I should see current url contains "/dataset/100039/token/"
+    And I should see "Genomic data of the Puerto Rican Parrot"
+
+  @ok @dataset-status
+  Scenario: Check dataset page with Published status is publicly visible
+    Given I am on "/adminDataset/update/id/5"
+    And I select "Published" from the field "Dataset_upload_status"
+    And I press the button "Save"
+    And I am on "/dataset/100039"
+    Then I should see "Genomic data of the Puerto Rican Parrot"
