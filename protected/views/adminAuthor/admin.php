@@ -30,7 +30,7 @@
 		?>
 			<div class="alert alert-gigadb-info alert-flex">
 				<span>
-					Click on a row to proceed with linking that author with user <? echo $user->first_name . " " . $user->last_name ?>
+					Click on a row or on the <span class="fa fa-link fa-lg" ></span> button to proceed with linking that author with user <? echo $user->first_name . " " . $user->last_name ?>
 				</span>
 				<?php echo CHtml::link('&times;', array(
 					'adminAuthor/prepareUserLink',
@@ -50,20 +50,14 @@
 		<? } ?>
 	<? } ?>
 
-	<?php
-	if (!empty($origin_author)) {
-		echo "<div class=\"alert alert-gigadb-info alert-flex\">";
+  <?php if (!empty($origin_author)) { ?>
+    <div class="alert alert-gigadb-info alert-flex">
+    <span>Click on a row or on the <span class="fa fa-compress fa-lg" ></span> button to proceed with merging that author with author <?php echo $origin_author->getDisplayName(); ?></span>
 
-		echo "<span>Click on a row or on the <span class=\"fa fa-compress fa-lg\" ></span> button to proceed with merging that author with author {$origin_author->getDisplayName()}</span>";
+    <?php echo CHtml::link('&times;', array('adminAuthor/prepareAuthorMerge', 'origin_author_id' => $origin_author->id, 'abort' => 'yes'), array('class' => 'close close-btn', 'data-dismiss' => 'alert', 'aria-label' => 'close')); ?>
 
-		echo CHtml::link('&times;', array(
-			'adminAuthor/prepareAuthorMerge',
-			'origin_author_id' => $origin_author->id, 'abort' => 'yes'
-		), array('class' => 'close close-btn', 'data-dismiss' => 'alert', 'aria-label' => 'close'));
-
-		echo "</div>";
-	}
-	?>
+    </div>
+  <?php } ?>
 
 	<div class="mb-10">
 		<a href="/adminAuthor/create" class="btn background-btn">Create a new author</a>
@@ -115,9 +109,25 @@
             "aria-label" => "Merge authors",
             "role" => "button",
         ),
-        "click" => "handleMergeClick",
+        "click" => "handleLinkOrMergeClick",
       );
       $template = '{view}{update}{delete}{merge_authors}';
+      $headerStyle = 'width: 120px';
+    }
+
+    if (null != $user) {
+      $actionButtons['link_user'] = array(
+        'imageUrl' => false,
+        'label' => '',
+        'options' => array(
+            "title" => "Link user ot this author",
+            "class" => "fa fa-link fa-lg icon icon-link",
+            "aria-label" => "Link user to this author",
+            "role" => "button",
+        ),
+        "click" => "handleLinkOrMergeClick",
+      );
+      $template = '{view}{update}{delete}{link_user}';
       $headerStyle = 'width: 120px';
     }
 
@@ -283,7 +293,7 @@
 <? } ?>
 
 <script>
-  function handleMergeClick(e) {
+  function handleLinkOrMergeClick(e) {
     const authorId = String($(e.target).closest('tr').attr('id'));
     open_controls(authorId);
   }
