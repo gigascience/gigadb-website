@@ -1,7 +1,7 @@
 <div class="container">
 	<?php
 	$this->widget('TitleBreadcrumb', [
-		'pageTitle' => 'Update File' . $model->id,
+		'pageTitle' => 'Update File ' . $model->id,
 		'breadcrumbItems' => [
 			['label' => 'Admin', 'href' => '/site/admin'],
 			['label' => 'Manage', 'href' => '/adminFile/admin'],
