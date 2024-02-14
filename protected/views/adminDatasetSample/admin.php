@@ -17,8 +17,7 @@
 	</p>
 
 	<?php $this->widget('CustomGridView', array(
-		'id' => 'dataset-sample-grid',
-		'ajaxUpdate' => false,
+    'id' => 'dataset-sample-grid',
 		'dataProvider' => $model->search(),
 		'itemsCssClass' => 'table table-bordered',
 		'filter' => $model,
