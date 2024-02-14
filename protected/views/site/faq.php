@@ -276,8 +276,7 @@ Files:
                     </div>
                     <div id="panel16" aria-labelledby="heading16" class="panel-collapse collapse">
                         <div class="panel-body">
-                            <p>There are currently no separate Data Publishing Charges (<abbr>DPCs</abbr>) for <em>GigaDB</em> as we currently do not accept data that is not accompanied by a <em>GigaScience</em> manuscript. All <abbr title="Data Publishing Charges">DPCs</abbr> for <em>GigaScience</em> manuscripts are covered by the Article Publishing Charges (<abbr>APCs</abbr>) of that manuscript (up to a terabyte automatically included, but contact us if you need more). For <abbr title="Article Publishing Charges">APCs</abbr> of <em>GigaScience</em> manuscripts please see in <a href="http://www.gigasciencejournal.com/about/apcfaq/howmuch">Gigascience journal pricing</a>.</p>
-                            <!-- NOTE: this link is broken at the moment -->
+                            <p>There are currently no separate Data Publishing Charges (<abbr>DPCs</abbr>) for <em>GigaDB</em> as we currently do not accept data that is not accompanied by a <em>GigaScience</em> manuscript. All <abbr title="Data Publishing Charges">DPCs</abbr> for <em>GigaScience</em> manuscripts are covered by the Article Publishing Charges (<abbr>APCs</abbr>) of that manuscript (up to a terabyte automatically included, but contact us if you need more). For <abbr title="Article Publishing Charges">APCs</abbr> of <em>GigaScience</em> manuscripts please see in <a href="https://academic.oup.com/gigascience/pages/charges_licensing_and_self_archiving">Gigascience journal pricing</a>.</p>
                         </div>
                     </div>
                 </div>
@@ -421,8 +420,7 @@ Files:
                     </div>
                     <div id="panel26" aria-labelledby="heading26" class="panel-collapse collapse">
                         <div class="panel-body">
-                            <p>There are currently no separateData Publishing Charges (<abbr>DPCs</abbr>) for <em>GigaDB</em> as we currently do not accept data that is not accompanied by a <i>GigaScience </i>manuscript. All <abbr title="Data Publishing Charges">DPCs</abbr> for <i>GigaScience </i>manuscripts are covered by the Article Publishing Charges (<abbr>APCs</abbr>) of that manuscript (up to a terabyte automatically included, but contact us if you need more). For <abbr title="Article Publishing Charges">APCs</abbr> of <i>GigaScience </i>manuscripts please see in <a href="http://www.gigasciencejournal.com/about/apcfaq/howmuch">Gigascience journal pricing</a>.</p>
-                            <!-- NOTE: This link is broken at the moment -->
+                            <p>There are currently no separateData Publishing Charges (<abbr>DPCs</abbr>) for <em>GigaDB</em> as we currently do not accept data that is not accompanied by a <i>GigaScience </i>manuscript. All <abbr title="Data Publishing Charges">DPCs</abbr> for <i>GigaScience </i>manuscripts are covered by the Article Publishing Charges (<abbr>APCs</abbr>) of that manuscript (up to a terabyte automatically included, but contact us if you need more). For <abbr title="Article Publishing Charges">APCs</abbr> of <i>GigaScience </i>manuscripts please see in <a href="https://academic.oup.com/gigascience/pages/charges_licensing_and_self_archiving">Gigascience journal pricing</a>.</p>
                         </div>
                     </div>
                 </div>
