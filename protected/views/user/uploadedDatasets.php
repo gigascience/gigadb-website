@@ -1,5 +1,12 @@
 <section>
     <div class="table-responsive">
+      <div class="mb-20">
+        <ul class="list-unstyled content-text p-0">
+          <li><span class="text-bold">Update dataset</span>: Update the metadata of the dataset.</li>
+          <li><span class="text-bold">Delete dataset</span>: Delete the dataset and all its files.</li>
+          <li><span class="text-bold">Upload files</span>: Upload files to the dataset, delete the existing files or edit their metadata.</li>
+        </ul>
+      </div>
     <table class="table table-bordered submitted-table" id="list">
         <thead>
             <tr>
