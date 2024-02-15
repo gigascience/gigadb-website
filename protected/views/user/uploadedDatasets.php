@@ -80,11 +80,13 @@
                                 <td>
                                     <? if ($data[$i]->upload_status !='Published' && $data[$i]->upload_status!='AuthorReview' && $data[$i]->upload_status!='Private'){ ?>
                                         <div>
-                                            <a class="update btn btn-transparent" title="Update" href=<? echo "/datasetSubmission/datasetManagement/id/" . $data[$i]->id ?> >Update</a>
-                                            <button class="js-delete-dataset btn btn-transparent" did="<?=$data[$i]->id?>" title="Delete">
-                                       Delete</button>
+                                            <a class="update btn btn-transparent" href=<? echo "/datasetSubmission/datasetManagement/id/" . $data[$i]->id ?> >Update<br />dataset</a>
+                                            <button class="js-delete-dataset btn btn-transparent" did="<?=$data[$i]->id?>">
+                                       Delete<br />dataset</button>
                                             <?php if ($data[$i]->upload_status === "UserUploadingData" || $data[$i]->upload_status === "DataPending") {
-                                            echo CHtml::link('Upload Files', array('/authorisedDataset/uploadFiles', 'id'=>$data[$i]->identifier), array('class' => 'upload btn btn-transparent'));
+                                              ?>
+                                              <a class="upload btn btn-transparent" href="/authorisedDataset/uploadFiles/id/<?php echo $data[$i]->identifier; ?>">Upload<br />Files</a>
+                                              <?php
                                             } ?>
                                         </div>
                                     <? } ?>
