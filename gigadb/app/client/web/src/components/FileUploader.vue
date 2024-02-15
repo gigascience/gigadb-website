@@ -15,6 +15,9 @@ import Tus from '@uppy/tus'
 import { Checksum } from '../plugins/uppy-checksum.js'
 import { eventBus } from '../index.js'
 
+import '@uppy/core/dist/style.min.css';
+import '@uppy/dashboard/dist/style.min.css';
+
 export default {
   props: {
     identifier: {
