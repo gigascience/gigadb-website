@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1626: FUW - Update node version to the latest recommended to avoid openssl hack. Minimize dependency vulnerabilities.
 - Feat #1627: FUW - Migrate to Uppy version 2
 - Feat #1629: FUW - Upgrade Element UI to latest version
 - Feat #1624: FUW - Migrate to Vue 2.7
