@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1629: FUW - Upgrade Element UI to latest version
 - Feat #1624: FUW - Migrate to Vue 2.7
 
 ## v4.1.2 - 2024-02-07 - 9a421a2c
