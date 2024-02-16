@@ -767,7 +767,7 @@ echo $form->hiddenField($model, "image_id");
 const defaultDataPendingEmailBody = `
 Dear author,
 
-The curators have change the upload status for the dataset with DOI {{ identifier }}.
+The curators have changed the upload status for the dataset with DOI {{ identifier }}.
 It is now set to "DataPending" which indicates that some files are missing.`;
 
 // if editor switched upload status to "data pending", a modal prompts to customize email body to send to author
