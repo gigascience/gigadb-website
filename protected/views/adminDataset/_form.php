@@ -538,18 +538,17 @@ echo $form->hiddenField($model, "image_id");
 
 </div>
 
-// TODO clean up modal styles and a11y
-<div class="modal fade" id="customizeEmailModal" tabindex="-1" role="dialog" aria-labelledby="customizeEmailModalTitle">
-  <div class="modal-dialog" role="document">
+<div class="modal fade email-modal" id="customizeEmailModal" tabindex="-1" role="dialog" aria-labelledby="customizeEmailModalTitle" aria-modal="true">
+  <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="customizeEmailModalTitle">Customize user email</h4>
+        <h2 class="h4 modal-title" id="customizeEmailModalTitle">Customize email sent to the author</h2>
       </div>
       <div class="modal-body">
         <div class="form-group m-0">
-          <label class="control-label" for="Dataset_emailBody">Email body</label>
-          <div class="control-description help-block">Customize email sent to user. Placeholders allowed: {{ identifier }}</div>
+          <label class="control-label" for="Dataset_emailBody">Email message</label>
+          <p class="help-block" id="Dataset_emailBody_Description">Write the email message to be sent to the author. Use the placeholder <code>{{ identifier }}</code> to automatically include the dataset's DOI.</p>
           <textarea
             rows="8"
             cols="50"
@@ -558,13 +557,14 @@ echo $form->hiddenField($model, "image_id");
             id="Dataset_emailBody"
             required
             aria-required="true"
+            aria-describedby="Dataset_emailBody_Description"
           ></textarea>
-          <button type="button" class="btn btn-link" onclick="setDefaultEmailBody()">Reset to default value</button>
+          <button type="button" class="btn btn-link" onclick="setDefaultEmailBody()">Reset to default email template</button>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn background-btn-o" data-dismiss="modal">Close</button>
-        <button id="customizeEmailModalSubmitBtn" class="btn background-btn">Save changes</button>
+        <button type="button" class="btn background-btn-o" data-dismiss="modal">Cancel</button>
+        <button id="customizeEmailModalSubmitBtn" class="btn background-btn">Save and send email</button>
       </div>
     </div>
   </div>
@@ -763,7 +763,7 @@ echo $form->hiddenField($model, "image_id");
 
 
 <script>
-// this text is the same as files/templates/DataPending.twig
+// this text is copied from the local files/templates/DataPending.twig, it needs to be updated to the production template
 const defaultDataPendingEmailBody = `
 Dear author,
 
@@ -782,7 +782,7 @@ $(document).ready(function() {
     const didSelectDataPending = initialUploadStatus !== currentUploadStatus && currentUploadStatus === 'DataPending';
     const didSubmitFromModal = submitButton.attr('id') === 'customizeEmailModalSubmitBtn';
 
-    if (didSelectDataPending && didSubmitFromModal) {
+    if (didSelectDataPending && !didSubmitFromModal) {
       $('#customizeEmailModal').modal({
         backdrop: 'static',
         keyboard: false,
@@ -796,4 +796,15 @@ function setDefaultEmailBody() {
   $("#Dataset_emailBody").val(defaultDataPendingEmailBody);
 }
 
+</script>
+<?php
+$jsFile = Yii::getPathOfAlias('application.js.trap-focus') . '.js';
+$jsUrl = Yii::app()->assetManager->publish($jsFile);
+Yii::app()->clientScript->registerScriptFile($jsUrl, CClientScript::POS_END);
+?>
+
+<script>
+$('#customizeEmailModal').on('shown.bs.modal', function() {
+  trapFocus($(this));
+});
 </script>
