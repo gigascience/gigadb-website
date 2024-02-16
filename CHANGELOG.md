@@ -4,6 +4,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1610: FUW - Disable Sample IDs panel
+- Feat: FUW - Apply formatting, minor refactoring, clean up and best practices to Vue code
+- Feat #1626: FUW - Update node version to the latest recommended to avoid openssl hack. Minimize dependency vulnerabilities.
+- Feat #1627: FUW - Migrate to Uppy version 2
+- Feat #1629: FUW - Upgrade Element UI to latest version
+- Feat #1624: FUW - Migrate to Vue 2.7
+
 ## v4.1.2 - 2024-02-07 - 9a421a2c
 
 - Fix #1660: Ensure dataset pages that are not published are not publicly visible
