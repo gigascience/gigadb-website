@@ -521,7 +521,7 @@ echo $form->hiddenField($model, "image_id");
     <a class="btn background-btn-o" href="<?= Yii::app()->createUrl('/adminDataset/admin') ?>">Cancel and go back</a>
     <?= CHtml::submitButton(
         $model->isNewRecord ? 'Create' : 'Save',
-        array('class' => 'btn background-btn submit-btn')
+        array('class' => 'btn background-btn submit-btn', 'id' => 'datasetFormSaveButton')
     ); ?>
     <?php if ("hidden" === $datasetPageSettings->getPageType() || "draft" === $datasetPageSettings->getPageType()) { ?>
         <a href="<?= Yii::app()->createUrl('/adminDataset/private/identifier/' . $model->identifier) ?>" />Create/Reset Private URL</a>
@@ -804,7 +804,11 @@ Yii::app()->clientScript->registerScriptFile($jsUrl, CClientScript::POS_END);
 ?>
 
 <script>
-$('#customizeEmailModal').on('shown.bs.modal', function() {
+$('#customizeEmailModal').on('shown.bs.modal', function(e) {
   trapFocus($(this));
+});
+
+$('#customizeEmailModal').on('hidden.bs.modal', function() {
+  $('#datasetFormSaveButton').focus(); // hardcoded button that triggers the modal to return focus
 });
 </script>
