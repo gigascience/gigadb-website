@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat: FUW - Review and clean up uppy-related code
 - Feat #1607: FUW - Update the tips section of the data uploader to include relevant links to guides
 - Feat #1610: FUW - Disable Sample IDs panel
 - Feat: FUW - Apply formatting, minor refactoring, clean up and best practices to Vue code
