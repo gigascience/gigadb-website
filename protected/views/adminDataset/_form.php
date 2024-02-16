@@ -103,7 +103,7 @@ echo $form->hiddenField($model, "image_id");
                                     $model,
                                     'upload_status',
                                     Dataset::getAvailableStatusList(),
-                                    array('class' => 'js-pub form-control', 'disabled' => $model->upload_status == 'Published',)
+                                    array('class' => 'js-pub form-control', 'disabled' => $model->upload_status == 'Published', 'data-initial-value' => $model->upload_status )
                                 ); ?>
                                 <div role="alert" class="help-block">
                                 <?php echo $form->error($model, 'upload_status'); ?>
@@ -537,6 +537,39 @@ echo $form->hiddenField($model, "image_id");
     ?>
 
 </div>
+
+// TODO clean up modal styles and a11y
+<div class="modal fade" id="customizeEmailModal" tabindex="-1" role="dialog" aria-labelledby="customizeEmailModalTitle">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="customizeEmailModalTitle">Customize user email</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group m-0">
+          <label class="control-label" for="Dataset_emailBody">Email body</label>
+          <div class="control-description help-block">Customize email sent to user. Placeholders allowed: {{ identifier }}</div>
+          <textarea
+            rows="8"
+            cols="50"
+            class="form-control"
+            name="Dataset[emailBody]"
+            id="Dataset_emailBody"
+            required
+            aria-required="true"
+          ></textarea>
+          <button type="button" class="btn btn-link" onclick="setDefaultEmailBody()">Reset to default value</button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn background-btn-o" data-dismiss="modal">Close</button>
+        <button id="customizeEmailModalSubmitBtn" class="btn background-btn">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <?php $this->endWidget(); ?>
 <div class="modal fade" id="mockupCreation" tabindex="-1" role="dialog" aria-labelledby="generateMockup">
     <div class="modal-dialog" role="document">
@@ -569,7 +602,7 @@ echo $form->hiddenField($model, "image_id");
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-<script type="text/javascript">
+<script>
     $(function() {
 
         var publication_date = $('.js-date-pub');
@@ -730,9 +763,37 @@ echo $form->hiddenField($model, "image_id");
 
 
 <script>
+// this text is the same as files/templates/DataPending.twig
+const defaultDataPendingEmailBody = `
+Dear author,
+
+The curators have change the upload status for the dataset with DOI {{ identifier }}.
+It is now set to "DataPending" which indicates that some files are missing.`;
+
+// if editor switched upload status to "data pending", a modal prompts to customize email body to send to author
 $(document).ready(function() {
-  document.addEventListener('focus', function() {
-    console.log(document.activeElement);
+  $("#Dataset_emailBody").val(defaultDataPendingEmailBody);
+
+  $("#dataset-form").on("submit", function(e) {
+    const uploadStatusInput = $("#Dataset_upload_status")
+    const initialUploadStatus = uploadStatusInput.attr('data-initial-value');
+    const currentUploadStatus = uploadStatusInput.val();
+    const submitButton = $(':focus');
+    const didSelectDataPending = initialUploadStatus !== currentUploadStatus && currentUploadStatus === 'DataPending';
+    const didSubmitFromModal = submitButton.attr('id') === 'customizeEmailModalSubmitBtn';
+
+    if (didSelectDataPending && didSubmitFromModal) {
+      $('#customizeEmailModal').modal({
+        backdrop: 'static',
+        keyboard: false,
+      });
+      e.preventDefault();
+    }
   })
 })
+
+function setDefaultEmailBody() {
+  $("#Dataset_emailBody").val(defaultDataPendingEmailBody);
+}
+
 </script>
