@@ -18,16 +18,16 @@ Vue.use(DataTables)
 
 export const eventBus = new Vue()
 
-import DatasetInfoComponent from './components/DatasetInfoComponent.vue'
-import UploaderComponent from './components/UploaderComponent.vue'
-import PagerComponent from './components/PagerComponent.vue'
-import AnnotatorComponent from './components/AnnotatorComponent.vue'
+import DatasetInfo from './components/DatasetInfo.vue'
+import FileUploader from './components/FileUploader.vue'
+import PageNavigation from './components/PageNavigation.vue'
+import FileAnnotator from './components/FileAnnotator.vue'
 new Vue({
-	el: '#gigadb-fuw',
-	components: {
-		'dataset-info': DatasetInfoComponent,
-		'uploader': UploaderComponent,
-		'pager': PagerComponent,
-		'annotator': AnnotatorComponent,
-	}
+  el: '#gigadb-fuw',
+  components: {
+    'dataset-info': DatasetInfo,
+    'file-uploader': FileUploader,
+    'page-navigation': PageNavigation,
+    'file-annotator': FileAnnotator,
+  }
 })

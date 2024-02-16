@@ -1,12 +1,12 @@
 import Vue from 'vue'
 import { shallowMount } from '@vue/test-utils'
-import UploaderComponent from '../src/components/UploaderComponent.vue'
+import FileUploader from '../src/components/FileUploader.vue'
 
 import fileData from './helper/base64image.txt' //base64 of CC0_pixel.jpg, use raw-loader
 import {eventBus} from '../src/index.js'
 
 const factory = function(options = {}, values = {}) {
-    return shallowMount(UploaderComponent, {
+    return shallowMount(FileUploader, {
         ...options,
         data() {
             return {
@@ -118,6 +118,6 @@ describe('Uploader component event handler', function() {
         return renderedComponent.vm.uppy.upload().then((result) => {
             expect(checksumDone).toEqual('MD5 checksum for my-file.txt done')
             expect(renderedComponent.vm.uppy.getFiles()[0].meta.checksum).toEqual(checksum)
-        })  
+        })
     })
 })

@@ -1,11 +1,11 @@
 import Vue from 'vue'
 import { shallowMount } from '@vue/test-utils'
-import PagerComponent from '../src/components/PagerComponent.vue'
+import PageNavigation from '../src/components/PageNavigation.vue'
 
 import {eventBus} from '../src/index.js'
 
 const factory = function(options = {}, values = {}) {
-    return shallowMount(PagerComponent, {
+    return shallowMount(PageNavigation, {
         ...options,
         data() {
             return {

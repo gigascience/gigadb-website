@@ -1,17 +1,16 @@
 import Vue from 'vue'
 import { mount } from '@vue/test-utils'
-import { eventBus } from '../src/index.js'
 
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import ElTag from 'element-ui/lib/tag'
 
+import IdSampler from '../src/components/IdSampler.vue'
+
 Vue.use(ElementUI)
 
-import SamplerComponent from '../src/components/SamplerComponent.vue'
-
 const factory = function(options = {}, values = {}) {
-    return mount(SamplerComponent, { //we need mount as we need to render sub components
+    return mount(IdSampler, { //we need mount as we need to render sub components
         ...options,
         data() {
             return {

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import { enableAutoDestroy, mount } from '@vue/test-utils'
-import AnnotatorComponent from '../src/components/AnnotatorComponent.vue'
+import FileAnnotator from '../src/components/FileAnnotator.vue'
 
 import { eventBus } from '../src/index.js'
 import testdata from './helper/db.json'
@@ -8,7 +8,7 @@ import completedata from './helper/complete.json'
 
 const { uploads } = testdata
 const factory = function(options = {}, values = {}) {
-    return mount(AnnotatorComponent, {
+    return mount(FileAnnotator, {
         ...options,
         data() {
             return {
@@ -208,7 +208,7 @@ describe('Annotator component', function() {
                 expect( wrapper.find('input[name="DeleteList[0]"]') ).toBeDefined()
                 expect( wrapper.find('input[name="DeleteList[1]"]') ).toBeDefined()
             })
-        })        
+        })
     })
 })
 
@@ -251,7 +251,7 @@ describe("Annotator component's Attributes button", function () {
         wrapper.findAll(".attribute-button").at(0).trigger("click")
         return Vue.nextTick().then(function() {
             expect(wrapper.vm.$refs.attrPanel.title).toBe("Add attributes to file: TheProof.csv")
-        })        
+        })
     })
 
     it('should set cursor to clicked upload index and upload Id', function() {
@@ -320,7 +320,7 @@ describe("Annotator component's Samples button", function () {
         wrapper.findAll(".sample-button").at(0).trigger("click")
         return Vue.nextTick().then(function() {
             expect(wrapper.vm.$refs.samplesPanel.title).toBe("Add samples to file: TheProof.csv")
-        })        
+        })
     })
 
     it('should set cursor to clicked upload index and upload Id', function() {
@@ -376,7 +376,7 @@ describe("Annotator component's bulk upload form and instructions", function () 
         fileInput.element.files = dT.files
         // wrapper.find("#bulkUploadForm button").trigger("click")
         expect(fileInput.element.files.length).toBe(1)
-        expect(wrapper.find("#bulkUploadForm button").exists()).toBe(true)   
+        expect(wrapper.find("#bulkUploadForm button").exists()).toBe(true)
 
     })
 })

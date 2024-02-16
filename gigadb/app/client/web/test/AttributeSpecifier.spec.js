@@ -1,12 +1,9 @@
 import Vue from 'vue'
 import { mount } from '@vue/test-utils'
-import { eventBus } from '../src/index.js'
-import testdata from './helper/db.json'
-import SpecifierComponent from '../src/components/SpecifierComponent.vue'
+import AttributeSpecifier from '../src/components/AttributeSpecifier.vue'
 
-const { uploads } = testdata
 const factory = function(options = {}, values = {}) {
-    return mount(SpecifierComponent, { //we need mount as we need to render sub components
+    return mount(AttributeSpecifier, { //we need mount as we need to render sub components
         ...options,
         data() {
             return {
