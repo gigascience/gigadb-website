@@ -42,7 +42,7 @@ $('.search-form form').submit(function(){
   	<div class="panel-body controls btns-row">
 <?php
 
-	echo CHtml::link('Customize instructions','#', array('class' => 'btn background-btn-o', 'data-toggle' => "modal", 'data-target' => "#editInstructions"));
+	echo CHtml::button('Customize instructions', array('class' => 'btn background-btn-o', 'data-toggle' => "modal", 'data-target' => "#editInstructions", "id" => "buttonShowEditInstructions"));
 
 	echo CHtml::link('Send instructions by email',
 		                array('adminDataset/sendInstructions', 'id'=>$doi, 'fid'=>$fid),
@@ -164,61 +164,86 @@ $('.search-form form').submit(function(){
 
 <?php if( Yii::app()->session["filedrop_id_".Yii::app()->user->id]) { ?>
 
-<div class="modal fade" id="editInstructions" tabindex="-1" role="dialog" aria-labelledby="customizeInstructions">
-  <div class="modal-dialog" role="document">
+<div class="modal fade" id="editInstructions" tabindex="-1" role="dialog" aria-labelledby="customizeInstructionsTitle">
+  <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Customise upload instructions</h4>
+        <h2 class="h4 modal-title" id="customizeInstructionsTitle">Customise upload instructions</h2>
       </div>
       <div class="modal-body">
-        <form id="instructionsForm">
-        	<label for="instructions" class="control-label">Instructions</label>
-        	<textarea id="instructions" name="instructions"
-      class="form-control" rows="6" cols="120" tabindex="0">
-			</textarea>
+        <form id="instructionsForm" class="mb-20">
+          <label for="instructions" class="control-label">Instructions</label>
+          <textarea id="instructions" name="instructions" class="form-control" rows="6" cols="120" required aria-required="true"></textarea>
         </form>
-        <div class="panel panel-success" style="margin:1em;width:100%">
-                        <div class="panel-heading">
-                            <h4 class="panel-title">Tips</h4>
-                        </div>
-                        <div class="panel-body">
-                        	Clicking the "Save changes" button won't send the email yet.
-                        	You will still need to click on "Send instructions by email" to do so.
-                        </div>
+        <div class="panel panel-success">
+          <div class="panel-heading">
+            <h3 class="h5 panel-title">Tips</h3>
+          </div>
+          <div class="panel-body">
+            <p>
+            Clicking the "Save changes" button won't send the email yet.
+            You will still need to click on "Send instructions by email" to do so.
+            </p>
+          </div>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <a id="saveLink" href="#" class="btn btn-primary" alt="Save changes" >Save changes</a>
+        <button type="button" class="btn background-btn-o" data-dismiss="modal">Close</button>
+        <button onclick="saveInstructions()" id="saveLink" class="btn background-btn">Save changes</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 <script>
-document.addEventListener("DOMContentLoaded", function(event) {//after deferred scripts loaded
+const modalId = '#editInstructions';
+const focusKey = 'lastFocusedElementIdAdminDataset';
+const storage = sessionStorage;
 
-	// $('#editInstructions').on('hidden.bs.modal', function (e) {
-	//   console.log("Hidden!");
-	// });
-	$('#editInstructions').on('shown.bs.modal', function (e) {
-	  document.querySelector("#instructions").focus();
-	});
-	// document.querySelector("#editInstructions").addEventListener("shown.bs.modal", function (event) {
-	// 	console.log("Shown!");
-	// 	document.querySelector("#instructions").focus();
-	// });
-	document.querySelector("#saveLink").addEventListener("click", function(event) {
-		event.preventDefault();
-		<?php
-			echo 'var doi = "'.$doi.'";';
-			echo 'var fid = "'.$fid.'";';
-		?>
-		var myForm = document.getElementById('instructionsForm') ;
-		myForm.method = 'post';
-		myForm.action = "/adminDataset/saveInstructions/id/"+doi+"/fid/" +fid ;
-		myForm.submit();
-	});
+$(document).ready(function(event) {
+  handleRestoreFocus()
+
+  $(modalId).on('shown.bs.modal', function (e) {
+    trapFocus($(this));
+    $("#instructions").focus();
+  });
 });
+
+function saveInstructions(event) {
+  // NOTE save in browser storage, the id of the element to return focus to after closing modal, because modal triggers POST request that refreshes the page
+  storage.setItem(focusKey, '#buttonShowEditInstructions');
+    <?php
+      echo 'const doi = "' . $doi . '";';
+      echo 'const fid = "' . $fid . '";';
+    ?>
+
+  $(modalId).modal('hide');
+
+  const instructionsForm = document.getElementById('instructionsForm');
+  instructionsForm.method = 'post';
+  instructionsForm.action = `/adminDataset/saveInstructions/id/${doi}/fid/${fid}`;
+  instructionsForm.requestSubmit();
+}
+
+function handleRestoreFocus() {
+  const idToFocus = storage.getItem(focusKey);
+
+  if (idToFocus) {
+    const elementToFocus = $(idToFocus);
+
+    if (elementToFocus) {
+      elementToFocus.focus();
+    }
+  }
+
+  storage.removeItem(focusKey);
+}
 </script>
 <?php } ?>
+
+
+<?php
+$jsFile = Yii::getPathOfAlias('application.js.trap-focus') . '.js';
+$jsUrl = Yii::app()->assetManager->publish($jsFile);
+Yii::app()->clientScript->registerScriptFile($jsUrl, CClientScript::POS_END);
+?>
