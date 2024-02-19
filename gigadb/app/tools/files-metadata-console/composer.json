@@ -40,6 +40,10 @@
         },
         "allow-plugins": {
             "yiisoft/yii2-composer": true
+        },
+        "platform": {
+            "php": "8.2.7",
+            "ext-something": "1"
         }
     },
     "scripts": {
