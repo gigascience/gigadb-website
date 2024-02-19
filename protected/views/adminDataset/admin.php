@@ -37,16 +37,16 @@ $('.search-form form').submit(function(){
 <?php if( Yii::app()->session["filedrop_id_".Yii::app()->user->id]) {
 	[$doi, $fid] = Yii::app()->session["filedrop_id_".Yii::app()->user->id];
 ?>
-	<div class="button-panel panel" role="alert">
-		<div class="panel-heading header alert-success">A new drop box has been created for the dataset <?php  echo $doi ?>.</div>
-  	<div class="panel-body controls">
+	<div class="panel panel-success" role="alert">
+		<div class="panel-heading header">A new drop box has been created for the dataset <?php  echo $doi ?>.</div>
+  	<div class="panel-body controls btns-row">
 <?php
 
-	echo CHtml::link('Customize instructions','#', array('class' => 'btn btn-primary', 'data-toggle' => "modal", 'data-target' => "#editInstructions"));
+	echo CHtml::link('Customize instructions','#', array('class' => 'btn background-btn-o', 'data-toggle' => "modal", 'data-target' => "#editInstructions"));
 
 	echo CHtml::link('Send instructions by email',
 		                array('adminDataset/sendInstructions', 'id'=>$doi, 'fid'=>$fid),
-                        array('class' => 'btn btn-primary')
+                        array('class' => 'btn background-btn')
                     );
 ?>
 	</div>
