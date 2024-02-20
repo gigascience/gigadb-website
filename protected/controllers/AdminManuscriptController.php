@@ -42,6 +42,7 @@ class AdminManuscriptController extends Controller
 	 */
 	public function actionView($id)
 	{
+		$this->layout = 'new_datasetpage';
 		$this->render('view',array(
 			'model'=>$this->loadModel($id),
 		));
@@ -65,6 +66,7 @@ class AdminManuscriptController extends Controller
 				$this->redirect(array('view','id'=>$model->id));
 		}
 
+		$this->layout = 'new_datasetpage';
 		$this->render('create',array(
 			'model'=>$model,
 		));
@@ -89,6 +91,7 @@ class AdminManuscriptController extends Controller
 				$this->redirect(array('view','id'=>$model->id));
 		}
 
+		$this->layout = 'new_datasetpage';
 		$this->render('update',array(
 			'model'=>$model,
 		));
@@ -135,6 +138,8 @@ class AdminManuscriptController extends Controller
 		if(isset($_GET['Manuscript']))
 			$model->setAttributes($_GET['Manuscript']);
 
+		$this->layout = 'new_main';
+		$this->loadBaBbqPolyfills = true;
 		$this->render('admin',array(
 			'model'=>$model,
 		));

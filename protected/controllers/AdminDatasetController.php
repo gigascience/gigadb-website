@@ -55,6 +55,14 @@ class AdminDatasetController extends Controller
         );
     }
 
+    private function processTemplateString(string $inputString, array $vars): string {
+        foreach ($vars as $key => $value) {
+            $pattern = "/{{\s*" . preg_quote($key, '/') . "\s*}}/";
+            $inputString = preg_replace($pattern, $value, $inputString);
+        }
+        return $inputString;
+    }
+
 	/**
 	 * Manage creation of new dataset object from a form
 	 *
@@ -134,6 +142,7 @@ class AdminDatasetController extends Controller
 
         }
 
+        $this->layout = 'new_main';
         $this->render('create', array('model'=>$dataset,'datasetPageSettings' => $datasetPageSettings)) ;
     }
 
@@ -143,7 +152,7 @@ class AdminDatasetController extends Controller
     public function actionAdmin()
     {
 
-        $criteria=new CDbCriteria(array(                    
+        $criteria=new CDbCriteria(array(
             'order'=>'identifier asc',
         ));
 
@@ -157,6 +166,8 @@ class AdminDatasetController extends Controller
             $model->setAttributes($_GET['Dataset']);
         }
 
+        $this->layout = 'new_main';
+        $this->loadBaBbqPolyfills = true;
         $this->render('admin', array(
             'model'=>$model,
             'dataProvider'=>$model->search(),
@@ -170,6 +181,7 @@ class AdminDatasetController extends Controller
      */
     public function actionUpdate($id)
     {
+
         $model = $this->loadModel($id);
 
         // setting DatasetUpload, the busisness object for File uploading
@@ -189,8 +201,8 @@ class AdminDatasetController extends Controller
             "dryRunMode"=>false,
             ]);
         $datasetUpload = new DatasetUpload(
-            $fileUploadSrv->dataset, 
-            $fileUploadSrv, 
+            $fileUploadSrv->dataset,
+            $fileUploadSrv,
             Yii::$app->params['dataset_upload']
         );
 
@@ -205,7 +217,7 @@ class AdminDatasetController extends Controller
         if (isset($_POST['Dataset'])) {
             if (isset($_POST['Dataset']['upload_status']) && $_POST['Dataset']['upload_status'] != $model->upload_status) {
                 $statusIsSet = false;
-                switch( $_POST['Dataset']['upload_status'] )
+                switch ($_POST['Dataset']['upload_status'])
                 {
                     case "Submitted":
                         $contentToSend = $datasetUpload->renderNotificationEmailBody("Submitted");
@@ -213,12 +225,20 @@ class AdminDatasetController extends Controller
                         break;
                     case "DataPending":
                         $contentToSend = $datasetUpload->renderNotificationEmailBody("DataPending");
+
+                        // If formdata has a defined custom email body, user it instead of the twig template
+                        if (isset($_POST['Dataset']['emailBody']) && $_POST['Dataset']['emailBody'] != '') {
+                            $contentToSend = $this->processTemplateString($_POST['Dataset']['emailBody'], [
+                              "identifier" => $model->identifier
+                          ]);
+                        }
+
                         $statusIsSet = $datasetUpload->setStatusToDataPending(
                             $contentToSend, $model->submitter->email
                         );
                         break;
                     default:
-                        $statusIsSet = true;                    
+                        $statusIsSet = true;
                 }
                 if ($statusIsSet) {
                     CurationLog::createlog($_POST['Dataset']['upload_status'], $id);
@@ -391,6 +411,8 @@ class AdminDatasetController extends Controller
             }
         }
 
+        $this->layout = 'new_main';
+        $this->loadBaBbqPolyfills = true;
         $this->render('update', array(
             'model' => $model,
             'datasetPageSettings' => $datasetPageSettings,

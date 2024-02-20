@@ -67,7 +67,7 @@ class CuratorSteps extends \Codeception\Actor
      */
     public function iShouldSeeDeleteFileAttributeLinkButton()
     {
-        $actualButton = $this->I->grabTextFrom("//a[contains(@class, 'btn js-delete')]");
+        $actualButton = $this->I->grabTextFrom("//button[contains(@data-test, 'delete-attr-btn')]");
         $this->I->assertEquals($actualButton, "Delete");
     }
 
@@ -88,7 +88,7 @@ class CuratorSteps extends \Codeception\Actor
      */
     public function iShouldSeeEditFileAttributeLinkButton()
     {
-        $actualButton = $this->I->grabTextFrom("//a[contains(@class, 'btn btn-edit js-edit')]");
+        $actualButton = $this->I->grabTextFrom("//button[contains(@data-test, 'edit-attr-btn')]");
         $this->I->assertEquals($actualButton, "Edit");
     }
 
@@ -99,8 +99,8 @@ class CuratorSteps extends \Codeception\Actor
      */
     public function iShouldSeeCreateNewFileAttributeLinkButton()
     {
-        $actualButton = $this->I->grabTextFrom("//a[contains(@class, 'btn btn-attr')]");
-        $this->I->assertEquals($actualButton, "New Attribute");
+        $actualButton = $this->I->grabTextFrom("//button[contains(@data-test, 'new-attr-btn')]");
+        $this->I->assertEquals($actualButton, "Show New Attribute Fields");
     }
 
     /**

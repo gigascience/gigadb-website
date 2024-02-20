@@ -9,7 +9,7 @@
   border-bottom-color: @color-light-gray;
 }
 
-.nav-tabs.nav-border-tabs > li > a {
+.nav-tabs.nav-border-tabs > li > :is(a,button) {
   border: 1px solid transparent;
   border-top-width: 2px;
   border-radius: 0;
@@ -27,7 +27,7 @@
   }
 }
 
-.nav-tabs.nav-border-tabs > li.active > a {
+.nav-tabs.nav-border-tabs > li.active > :is(a,button) {
   border: 1px solid @color-light-gray;
   border-top: 2px solid @color-gigadb-green;
   border-bottom-color: @color-true-white;
@@ -36,7 +36,14 @@
   background-color: transparent;
 }
 
-.nav-tabs.nav-border-tabs > li.open > a:hover {
+.nav-tabs.nav-border-tabs > li.active > button {
+  cursor: pointer;
+  &[aria-expanded="true"] {
+    color: @color-true-white;
+  }
+}
+
+.nav-tabs.nav-border-tabs > li.open > :is(a,button):hover {
   color: @color-true-white;
 }
 
@@ -52,7 +59,7 @@
 .nav > li > a {
   display: block;
 }
-.nav > li > a:hover {
+.nav > li > :is(a,button):hover {
   text-decoration: none;
   background-color: @color-light-gray;
 }
@@ -123,7 +130,7 @@
 .nav-pills > li {
   float: left;
 }
-.nav-tabs > li > a,
+.nav-tabs > li > :is(a,button),
 .nav-pills > li > a {
   padding-right: 12px;
   padding-left: 12px;
@@ -136,7 +143,7 @@
 .nav-tabs > li {
   margin-bottom: -1px;
 }
-.nav-tabs > li > a {
+.nav-tabs > li > :is(a,button) {
   padding-top: 8px;
   padding-bottom: 8px;
   line-height: 18px;
@@ -145,11 +152,11 @@
   -moz-border-radius: 4px 4px 0 0;
   border-radius: 4px 4px 0 0;
 }
-.nav-tabs > li > a:hover {
+.nav-tabs > li > :is(a,button):hover {
   border-color: @color-light-gray @color-light-gray @color-medium-gray;
 }
-.nav-tabs > .active > a,
-.nav-tabs > .active > a:hover {
+.nav-tabs > .active > :is(a,button),
+.nav-tabs > .active > :is(a,button):hover {
   color: #555;
   background-color: @color-true-white;
   border: 1px solid @color-medium-gray;
@@ -359,4 +366,14 @@
 }
 .scrollbar::-webkit-scrollbar-thumb {
   background: @color-dark-gray;
+}
+
+.guide-nav {
+  margin-bottom: 5px;
+  & > ul {
+    margin-block: 1px;
+  }
+  .dropdown-menu {
+    margin-top: 5px;
+  }
 }

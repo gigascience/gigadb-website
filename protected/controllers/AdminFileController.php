@@ -50,6 +50,7 @@ class AdminFileController extends Controller
      */
     public function actionView($id)
     {
+	    $this->layout = 'new_datasetpage';
         $this->render('view',array(
             'model'=>$this->loadModel($id),
         ));
@@ -140,6 +141,7 @@ class AdminFileController extends Controller
             }
         }
 
+        $this->layout = 'new_datasetpage';
         $this->render('create', array(
             'model' => $model,
         ));
@@ -442,6 +444,7 @@ class AdminFileController extends Controller
             }
         }
 
+        $this->layout = 'new_datasetpage';
         $this->render('update', array(
             'model' => $model,
             'attribute' => $attribute
@@ -533,6 +536,8 @@ class AdminFileController extends Controller
         if (isset($_GET['File']))
             $model->attributes = $_GET['File'];
 
+        $this->layout = 'new_main';
+        $this->loadBaBbqPolyfills = true;
         $this->render('admin', array(
             'model' => $model,
         ));
@@ -545,6 +550,8 @@ class AdminFileController extends Controller
     {
         $model = new Folder;
         $buff = array();
+        $this->layout = 'new_datasetpage';
+
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 

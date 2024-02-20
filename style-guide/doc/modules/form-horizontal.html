@@ -1,0 +1,56 @@
+<form class="form-horizontal">
+  <div class="form-group">
+    <label for="exampleInputName3" class="col-xs-3 control-label"> Name </label>
+    <div class="col-xs-9">
+      <input
+        type="text"
+        class="form-control"
+        id="exampleInputName3"
+        placeholder="Name"
+        required
+        aria-required="true"
+        aria-describedby="exampleInputName3HelpBlock"
+      />
+      <div class="help-block" id="exampleInputName3HelpBlock">
+        This is a description
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="formTextarea3" class="col-xs-3 control-label">Message</label>
+    <div class="col-xs-9">
+      <textarea
+        class="form-control"
+        id="formTextarea3"
+        id="story"
+        name="story"
+        rows="5"
+        cols="33"
+        aria-describedby="formTextarea3HelpBlock"
+      >
+Write your message</textarea
+      >
+      <div class="help-block" id="formTextarea3HelpBlock">
+        This is a description
+      </div>
+    </div>
+  </div>
+  <div class="form-group checkbox-horizontal">
+    <label class="col-xs-3 control-label" for="formInputCheckbox2"
+      >Confirm selection</label
+    >
+    <div class="col-xs-9">
+      <input
+        aria-describedby="formCheckboxHelpBlock"
+        name="User[newsletter]"
+        id="formInputCheckbox2"
+        value="1"
+        type="checkbox"
+      />
+    </div>
+    <div class="col-xs-9 help-block" id="formCheckboxHelpBlock">
+      <div>This is a description</div>
+    </div>
+  </div>
+  <button class="btn background-btn" type="submit">Submit</button>
+</form>

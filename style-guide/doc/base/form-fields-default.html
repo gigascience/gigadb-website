@@ -1,40 +1,161 @@
-<form>
-  <fieldset>
+<form class="row">
+  <fieldset class="col-md-6">
     <legend>Form Fields</legend>
-    <div><label for="text-input">Text input</label> <input id="text-input" type="text"></div>
-    <div><label for="text-input-placeholder">Text input with placeholder</label> <input id="text-input-placeholder" type="text" placeholder="I'm placeholder text"></div>
-    <div><label for="readonly-input">Readonly input</label> <input id="readonly-input" type="text" value="Read only text input" readonly></div>
-    <div><label for="disabled-input">Disabled input</label> <input id="disabled-input" type="text" value="Disabled text input" disabled></div>
-    <div><label for="required-input">Required input <span class="required">*</span></label> <input id="required-input" type="text" required aria-required="true"></div>
-    <div><label for="email-input">Email input</label> <input id="email-input" type="email"></div>
-    <div><label for="search-input">Search input</label> <input id="search-input" type="search"></div>
-    <div><label for="speech-input">Speech recognition input</label> <input id="speech-input" type="text" name="speech" x-webkit-speech=""></div>
-    <div><label for="tel-input">Tel input</label> <input id="tel-input" type="tel"></div>
-    <div><label for="url-input">URL input</label> <input id="url-input" type="url" placeholder="http://"></div>
-    <div><label for="password-input">Password input</label> <input id="password-input" type="password" value="password"></div>
-    <div><label for="select-field">Select field</label> <select id="select-field"><option selected="selected">Option 01</option><option>Option 02</option></select></div>
-    <div><label for="multiple-select-field">Multiple select field</label><select id="multiple-select-field" multiple size="5"><option>Option 1</option><option>Option 2</option><option>Option 3</option><option>Option 4</option><option>Option 5</option><option>Option 6</option><option>Option 7</option><option>Option 8</option><option>Option 9</option><option>Option 10</option></select></div>
-    <div><label for="radio-input"><input id="radio-input" type="radio" name="rad"> Radio input</label></div>
-    <div><label for="checkbox-input"><input id="checkbox-input" type="checkbox"> Checkbox input</label></div>
-    <div><label for="file-input">File input</label> <input id="file-input" type="file"></div>
-    <div><label for="textarea">Textarea</label> <textarea id="textarea" cols="30" rows="5" >Textarea text</textarea></div>
-    <div><label for="color-input">Color input</label> <input id="color-input" type="color" value="#000000"></div>
-    <div><label for="number-input">Number input</label> <input id="number-input" type="number" value="5" min="0" max="10"></div>
-    <div><label for="range-input">Range input</label> <input id="range-input" type="range" value="0" min="0" max="100"> <output>0</output>
-    <script>
-      if (document.querySelector) {
-        document.querySelector('#range-input').onchange = function(e) {
-          e.target.nextElementSibling.innerText = e.target.value;
-        }
-      }
-    </script>
+    <div class="form-group">
+      <label class="control-label" for="text-input">Text input</label>
+      <input class="form-control" id="text-input" type="text" />
     </div>
-    <div><label for="date-input">Date input</label> <input id="date-input" type="date"></div>
-    <div><label for="month-input">Month input</label> <input id="month-input" type="month"></div>
-    <div><label for="week-input">Week input</label> <input id="week-input" type="week"></div>
-    <div><label for="time-input">Time input</label> <input id="time-input" type="time"></div>
-    <div><label for="datetime-input">Datetime input</label> <input id="datetime-input" type="datetime"></div>
-    <div><label for="datetime-local-input">Datetime-local input</label> <input id="datetime-local-input" type="datetime-local"></div>
+    <div class="form-group">
+      <label class="control-label" for="text-input-placeholder">Text input with placeholder</label>
+      <input class="form-control"
+        id="text-input-placeholder"
+        type="text"
+        placeholder="I'm placeholder text"
+      />
+    </div>
+    <div class="form-group">
+      <label class="control-label" for="readonly-input">Readonly input</label>
+      <input class="form-control"
+        id="readonly-input"
+        type="text"
+        value="Read only text input"
+        readonly
+      />
+    </div>
+    <div class="form-group">
+      <label class="control-label" for="disabled-input">Disabled input</label>
+      <input class="form-control"
+        id="disabled-input"
+        type="text"
+        value="Disabled text input"
+        disabled
+      />
+    </div>
+    <div class="form-group">
+      <label class="control-label" for="required-input"
+        >Required input <span class="required">*</span></label
+      >
+      <input class="form-control" id="required-input" type="text" required aria-required="true" />
+    </div>
+    <div class="form-group">
+      <label class="control-label" for="email-input">Email input</label>
+      <input class="form-control" id="email-input" type="email" />
+    </div>
+    <div class="form-group">
+      <label class="control-label" for="search-input">Search input</label>
+      <input class="form-control" id="search-input" type="search" />
+    </div>
+    <div class="form-group">
+      <label class="control-label" for="speech-input">Speech recognition input</label>
+      <input class="form-control" id="speech-input" type="text" name="speech" x-webkit-speech="" />
+    </div>
+    <div class="form-group">
+      <label class="control-label" for="tel-input">Tel input</label>
+      <input class="form-control" id="tel-input" type="tel" />
+    </div>
+    <div class="form-group">
+      <label class="control-label" for="url-input">URL input</label>
+      <input class="form-control" id="url-input" type="url" placeholder="http://" />
+    </div>
+    <div class="form-group">
+      <label class="control-label" for="password-input">Password input</label>
+      <input class="form-control" id="password-input" type="password" value="password" />
+    </div>
+    <div class="form-group">
+      <label class="control-label" for="select-field">Select field</label>
+      <select id="select-field" class="form-control">
+        <option selected="selected">Option 01</option>
+        <option>Option 02</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="control-label" for="multiple-select-field">Multiple select field</label
+      ><select class="form-control" id="multiple-select-field" multiple size="5">
+        <option>Option 1</option>
+        <option>Option 2</option>
+        <option>Option 3</option>
+        <option>Option 4</option>
+        <option>Option 5</option>
+        <option>Option 6</option>
+        <option>Option 7</option>
+        <option>Option 8</option>
+        <option>Option 9</option>
+        <option>Option 10</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="control-label" for="radio-input"
+        ><input id="radio-input" type="radio" name="rad" /> Radio input</label
+      >
+    </div>
+    <div class="form-group checkbox">
+      <input
+        name="Link[is_primary]"
+        id="Link_is_primary1"
+        value="1"
+        type="checkbox"
+      />
+      <label class="control-label" for="Link_is_primary1">Is Primary</label>
+      <div class="help-block">This is a description</div>
+    </div>
+    <div class="form-group">
+      <label class="control-label" for="file-input">File input</label>
+      <input class="form-control" id="file-input" type="file" />
+    </div>
+    <div class="form-group">
+      <label class="control-label" for="textarea">Textarea</label>
+      <textarea class="form-control" id="textarea" cols="30" rows="5">Textarea text</textarea>
+    </div>
+    <div class="form-group">
+      <label class="control-label" for="color-input">Color input</label>
+      <input class="form-control" id="color-input" type="color" value="#000000" />
+    </div>
+    <div class="form-group">
+      <label class="control-label" for="number-input">Number input</label>
+      <input class="form-control" id="number-input" type="number" value="5" min="0" max="10" />
+    </div>
+    <div class="form-group">
+      <label class="control-label" for="range-input">Range input</label>
+      <input class="form-control" id="range-input" type="range" value="0" min="0" max="100" />
+      <output>0</output>
+      <script>
+        if (document.querySelector) {
+          document.querySelector("#range-input").onchange = function (e) {
+            e.target.nextElementSibling.innerText = e.target.value;
+          };
+        }
+      </script>
+    </div>
+    <div class="form-group">
+      <label class="control-label" for="date-input">Date input</label>
+      <input class="form-control" id="date-input" type="date" />
+    </div>
+    <div class="form-group">
+      <label class="control-label" for="date-input">Datepicker</label>
+      <input class="form-control js-datepicker" id="datepicker" />
+    </div>
+    <div class="form-group">
+      <label class="control-label" for="month-input">Month input</label>
+      <input class="form-control" id="month-input" type="month" />
+    </div>
+    <div class="form-group">
+      <label class="control-label" for="week-input">Week input</label>
+      <input class="form-control" id="week-input" type="week" />
+    </div>
+    <div class="form-group">
+      <label class="control-label" for="time-input">Time input</label>
+      <input class="form-control" id="time-input" type="time" />
+    </div>
+    <div class="form-group">
+      <label class="control-label" for="datetime-input">Datetime input</label>
+      <input class="form-control" id="datetime-input" type="datetime" />
+    </div>
+    <div class="form-group">
+      <label class="control-label" for="datetime-local-input">Datetime-local input</label>
+      <input class="form-control" id="datetime-local-input" type="datetime-local" />
+    </div>
   </fieldset>
-  <input type="submit" value="Submit form">
+  <div class="col-xs-12">
+    <input class="btn background-btn" type="submit" value="Submit form" />
+  </div>
 </form>

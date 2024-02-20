@@ -4,11 +4,13 @@
         <article class="container">
             <header class="page-title-section">
                 <div class="page-title">
-                    <ol class="breadcrumb pull-right">
-                        <li><a href="/">Home</a></li>
-                        <li><a href="/user/view_profile#submitted">Your profile</a></li>
-                        <li class="active">Step 1/2: Upload files</li>
-                    </ol>
+                    <nav aria-label="breadcrumbs">
+                        <ol class="breadcrumb pull-right">
+                            <li><a href="/">Home</a></li>
+                            <li><a href="/user/view_profile#submitted">Your profile</a></li>
+                            <li class="active">Step 1/2: Upload files</li>
+                        </ol>
+                    </nav>
                     <dataset-info identifier="<?= $identifier ?>" />
                 </div>
             </header>
