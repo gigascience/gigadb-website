@@ -1,9 +1,17 @@
+<div class="container">
 
-<h1>Create File</h1>
-<? if (Yii::app()->user->checkAccess('admin')) { ?>
-<div class="actionBar">
-[<?= CHtml::link('Manage Files', array('admin')) ?>]
+  <?php
+  $this->widget('TitleBreadcrumb', [
+    'pageTitle' => 'Create File',
+    'breadcrumbItems' => [
+      ['label' => 'Admin', 'href' => '/site/admin'],
+      ['label' => 'Manage', 'href' => '/adminFile/admin'],
+      ['isActive' => true, 'label' => 'Create'],
+    ]
+  ]);
+
+  ?>
+
+  <?php echo $this->renderPartial('_form', array('model' => $model)); ?>
+
 </div>
-<? } ?>
-
-<?php echo $this->renderPartial('_form', array('model'=>$model)); ?>
