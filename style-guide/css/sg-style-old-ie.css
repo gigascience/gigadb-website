@@ -31,7 +31,6 @@
   width: 75%;
 }
 
-
 .sg-logo-initials {
   display: none;
 }
@@ -40,16 +39,13 @@
   display: inline;
 }
 
-
 .sg-nav-toggle {
   display: none;
 }
 
-
 .sg-enhanced .sg-btn--select {
   display: block;
 }
-
 
 .sg-color-grid {
   margin: 0 -2.5%;
@@ -67,7 +63,6 @@
   padding-top: 60%; /* Used to set height of color swatch */
 }
 
-
 .sg-color {
   margin-left: 1.5%;
   margin-right: 1.5%;
@@ -80,5 +75,5 @@
 
 .sg-font-list dt {
   float: left;
-  padding-right: .25em;
+  padding-right: 0.25em;
 }

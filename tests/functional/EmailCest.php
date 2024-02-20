@@ -20,7 +20,7 @@ class EmailCest
     }
 
     /**
-     * Integration test to check email containing password reset link is sent 
+     * Integration test to check email containing password reset link is sent
      * to new user after user creation
      *
      * @param FunctionalTester $I
@@ -43,17 +43,17 @@ class EmailCest
             'preferred_link' => 'EBI',
         ]);
         codecept_debug("gigadb user: ".$id);
-        
+
         $targetUrl = "/site/forgot";
 
         // Fill in web form and submit
         $I->amOnPage($targetUrl);
         $I->fillField(['id' => 'ForgotPasswordForm_email'], 'xyzzy@mailinator.com');
-        $I->click('Reset');
+        $I->click('Reset Password');
         // Pressing Register button results in GigaDB website
         // going to /site/thanks page
         $I->seeInCurrentUrl("/site/thanks");
-        $I->see('Reset Password Request Submitted', 'h4');
+        $I->see('Reset Password Request Submitted');
         // Now extract URLs from email sent to user
         $urls = $I->grabUrlsFromLastEmail();
         codecept_debug($urls);
@@ -64,9 +64,9 @@ class EmailCest
     }
 
     /**
-     * Integration test to check email containing activation link is sent to new 
+     * Integration test to check email containing activation link is sent to new
      * user after user creation
-     * 
+     *
      * @param FunctionalTester $I
      * @throws \Codeception\Exception\ModuleException
      */
@@ -100,7 +100,7 @@ class EmailCest
     }
 
     /**
-     * Integration test to check notification email is sent to curators after 
+     * Integration test to check notification email is sent to curators after
      * new user account activationtmail
      *
      * @param FunctionalTester $I

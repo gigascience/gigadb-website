@@ -83,11 +83,11 @@ class Image extends CActiveRecord
     {
         return array(
             'id' => 'ID',
-            'tag' => 'Image Tag',
-            'url' => 'Image URL',
-            'license' => 'Image License',
-            'photographer' => 'Image Photographer',
-            'source' => 'Image Source',
+            'tag' => 'Tag',
+            'url' => 'URL',
+            'license' => 'License',
+            'photographer' => 'Photographer',
+            'source' => 'Source',
             'image_upload' => 'Upload Image',
         );
     }

@@ -1,11 +1,16 @@
+<div class="container">
 
-<h2>Create RSS Message</h2>
-<div class="clear"></div>
+  <?php
+  $this->widget('TitleBreadcrumb', [
+    'pageTitle' => 'Create RSS Message',
+    'breadcrumbItems' => [
+      ['label' => 'Admin', 'href' => '/site/admin'],
+      ['label' => 'Manage', 'href' => 'admin'],
+      ['isActive' => true, 'label' => 'Create'],
+    ]
+  ]);
+  ?>
 
-<? if (Yii::app()->user->checkAccess('admin')) { ?>
-<div class="actionBar">
-[<?= CHtml::link('Manage RSS Messages', array('admin')) ?>]
+  <?php echo $this->renderPartial('_form', array('model' => $model)); ?>
+
 </div>
-<? } ?>
-
-<?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

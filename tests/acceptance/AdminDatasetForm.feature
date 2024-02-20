@@ -18,13 +18,13 @@ Feature: form to update dataset details
     And I should see "Software"
     And I should see "Genomic"
     And I should see "Metadata"
-    And I should see "Dataset Size in Bytes *"
-    And I should see "Image Status"
-    And I should see "Image URL"
-    And I should see "Image Source *"
-    And I should see "Image Tag"
-    And I should see "Image License *"
-    And I should see "Image Photographer *"
+    And I should see "Dataset Size *"
+    And I should see "Status"
+    And I should see "URL"
+    And I should see "Source *"
+    And I should see "Tag"
+    And I should see "License *"
+    And I should see "Photographer *"
     And I should see "DOI *"
     And I should see "Ftp Site *"
     And I should see "Fair Use Policy"
@@ -44,11 +44,11 @@ Feature: form to update dataset details
     When I am on "/adminDataset/update/id/144"
     And I attach the file "bgi_logo_new.png" to the file input element "datasetImage"
     Then I should see an image located in "blob:http://gigadb.test/"
-    And I should see "Image URL"
-    And I should see "Image Source"
-    And I should see "Image Tag"
-    And I should see "Image License"
-    And I should see "Image Photographer"
+    And I should see "URL"
+    And I should see "Source"
+    And I should see "Tag"
+    And I should see "License"
+    And I should see "Photographer"
 
   @ok @datasetimage
   Scenario: Can save image to no image dataset update page
@@ -63,11 +63,11 @@ Feature: form to update dataset details
     When I am on "/adminDataset/update/id/8"
     Then I should see an image located in "https://assets.gigadb-cdn.net/live/images/datasets/images/data/cropped/100006_Pygoscelis_adeliae.jpg"
     And I should see "Remove image"
-    And I should see "Image URL"
-    And I should see "Image Source"
-    And I should see "Image Tag"
-    And I should see "Image License"
-    And I should see "Image Photographer"
+    And I should see "URL"
+    And I should see "Source"
+    And I should see "Tag"
+    And I should see "License"
+    And I should see "Photographer"
 
   @ok @datasetimage
   Scenario: Can preview uploaded image and display image meta data fields update page
@@ -75,11 +75,11 @@ Feature: form to update dataset details
     And I attach the file "bgi_logo_new.png" to the file input element "datasetImage"
     Then I should see an image located in "blob:http://gigadb.test/"
     And I should not see "Remove image"
-    And I should see "Image URL"
-    And I should see "Image Source"
-    And I should see "Image Tag"
-    And I should see "Image License"
-    And I should see "Image Photographer"
+    And I should see "URL"
+    And I should see "Source"
+    And I should see "Tag"
+    And I should see "License"
+    And I should see "Photographer"
 
   @ok @datasetimage
   Scenario: No meta image data fields when no image is loaded in create page
@@ -97,11 +97,11 @@ Feature: form to update dataset details
     When I am on "adminDataset/create"
     And I attach the file "bgi_logo_new.png" to the file input element "datasetImage"
     Then I should see an image located in "blob:http://gigadb.test/"
-    And I should see "Image URL"
-    And I should see "Image Source"
-    And I should see "Image Tag"
-    And I should see "Image License"
-    And I should see "Image Photographer"
+    And I should see "URL"
+    And I should see "Source"
+    And I should see "Tag"
+    And I should see "License"
+    And I should see "Photographer"
 
   @ok @datasetimage
   Scenario: Can create dataset with image
@@ -129,7 +129,7 @@ Feature: form to update dataset details
   @ok @issue-1023
   Scenario: An incomplete dataset page cannot be visited publicly
     When I am on "/dataset/100039/"
-    Then I should see "The DOI 100039 cannot be displayed. "
+    Then I should see "The DOI 100039 cannot be displayed"
 
   @ok @issue-1023
   Scenario: Can create/reset private url
@@ -226,11 +226,11 @@ Feature: form to update dataset details
     And I wait "1" seconds
     Then I should see an image located in "blob:http://gigadb.test/"
     And I should not see "Remove image"
-    And I should see "Image URL"
-    And I should see "Image Source"
-    And I should see "Image Tag"
-    And I should see "Image License"
-    And I should see "Image Photographer"
+    And I should see "URL"
+    And I should see "Source"
+    And I should see "Tag"
+    And I should see "License"
+    And I should see "Photographer"
 
 
   @ok @datasetimage
@@ -238,43 +238,43 @@ Feature: form to update dataset details
     When I am on "/adminDataset/update/id/668"
     Then I should see an image located in ""
     And I should see "Remove image"
-    And I should see "Image URL"
-    And I should see "Image Source"
-    And I should see "Image Tag"
-    And I should see "Image License"
-    And I should see "Image Photographer"
+    And I should see "URL"
+    And I should see "Source"
+    And I should see "Tag"
+    And I should see "License"
+    And I should see "Photographer"
 
   @ok @datasetimage
   Scenario: Delete dataset's existing custom image file (but not the image metadata)
     When I am on "/adminDataset/update/id/700"
-    And I press the button "[x]"
+    And I press the button "X"
     And I confirm to "Are you sure? This will take effect immediately"
     And I wait "1" seconds
-    Then I should see "Image URL"
-    And I should see "Image Source"
-    And I should see "Image Tag"
-    And I should see "Image License"
-    And I should see "Image Photographer"
+    Then I should see "URL"
+    And I should see "Source"
+    And I should see "Tag"
+    And I should see "License"
+    And I should see "Photographer"
     And I should see an image located in ""
-    And I should not see "[x]"
+    And I should not see an input button "X"
     And I should see "Remove image"
 
   @ok @datasetimage
   Scenario: Delete an image's file and then remove the image record
     When I am on "/adminDataset/update/id/5"
-    And I press the button "[x]"
+    And I press the button "X"
     And I confirm to "Are you sure? This will take effect immediately"
     And I wait "2" seconds
     And I follow "Remove image"
     And I confirm to "Are you sure? This will take effect immediately"
     And I wait "1" seconds
-    Then I should not see "Image URL"
-    And I should not see "Image Source"
-    And I should not see "Image Tag"
-    And I should not see "Image License"
-    And I should not see "Image Photographer"
+    Then I should not see "URL"
+    And I should not see "Source"
+    And I should not see "Tag"
+    And I should not see "License"
+    And I should not see "Photographer"
     And I should see an image located in "/images/datasets/no_image.png"
-    And I should not see "[x]"
+    And I should not see an input button "X"
 
   @ok
   Scenario: can save keywords on update

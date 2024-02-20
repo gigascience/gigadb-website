@@ -1,27 +1,27 @@
-<?php
-$this->breadcrumbs=array(
-	'Species'=>array('index'),
-	$model->id,
-);
+<div class="container">
+	<?php
+	$this->widget('TitleBreadcrumb', [
+		'pageTitle' => 'View Species #' . $model->id,
+		'breadcrumbItems' => [
+			['label' => 'Admin', 'href' => '/site/admin'],
+			['label' => 'Manage', 'href' => '/adminSpecies/admin'],
+			['isActive' => true, 'label' => 'View'],
+		]
+	]);
 
-$this->menu=array(
-	array('label'=>'List Species', 'url'=>array('index')),
-	array('label'=>'Create Species', 'url'=>array('create')),
-	array('label'=>'Update Species', 'url'=>array('update', 'id'=>$model->id)),
-	array('label'=>'Delete Species', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
-	array('label'=>'Manage Species', 'url'=>array('admin')),
-);
-?>
+	$this->widget('zii.widgets.CDetailView', array(
+		'data' => $model,
+		'attributes' => array(
+			'id',
+			'tax_id',
+			'common_name',
+			'genbank_name',
+			'scientific_name',
+		),
+		'htmlOptions' => array('class' => 'table table-striped table-bordered dataset-view-table'),
+		'itemCssClass' => array('odd', 'even'),
+		'itemTemplate' => '<tr class="{class}"><th scope="row">{label}</th><td>{value}</td></tr>'
+	));
+	?>
 
-<h1>View Species #<?php echo $model->id; ?></h1>
-
-<?php $this->widget('zii.widgets.CDetailView', array(
-	'data'=>$model,
-	'attributes'=>array(
-		'id',
-		'tax_id',
-		'common_name',
-		'genbank_name',
-		'scientific_name',
-	),
-)); ?>
+</div>

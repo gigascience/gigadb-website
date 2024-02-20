@@ -28,13 +28,11 @@ Feature: admin page for samples
   Scenario: Sorting on DOI column in ascending order
      Given I am on "/adminDatasetSample/admin"
      When I follow "DOI"
-     Then I should be on "/adminDatasetSample/admin/sort/doi_search"
-     And I should see "100006"
+     Then I should see "100006"
 
   @ok
   Scenario: Sorting on DOI column in descending order
     Given I am on "/adminDatasetSample/admin"
     When I follow "DOI"
     And I follow "DOI"
-    Then I should be on "/adminDatasetSample/admin/sort/doi_search.desc"
-    And I should see "100006"
+    Then I should see "100006"

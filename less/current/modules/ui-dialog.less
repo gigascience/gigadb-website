@@ -1,0 +1,25 @@
+.ui-dialog {
+  box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.1);
+  .ui-dialog-titlebar {
+    background-color: @color-lighter-gray;
+    .ui-dialog-titlebar-close {
+      display: flex;
+    }
+    .ui-dialog-title {
+      padding-block: 6px;
+      font-weight: normal;
+    }
+  }
+  .btn:not(.delete) {
+    color: @color-gigadb-green;
+    &:hover {
+      color: @color-true-white;
+    }
+  }
+  .btn.delete {
+    color: @brand-danger-on-white;
+    &:hover {
+      color: @color-true-white;
+    }
+  }
+}
