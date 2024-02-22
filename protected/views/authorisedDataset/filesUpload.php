@@ -2,24 +2,22 @@
 <div class="content">
     <div id="gigadb-fuw">
         <article class="container">
-            <header class="page-title-section">
-                <div class="page-title">
-                    <nav aria-label="breadcrumbs">
-                        <ol class="breadcrumb pull-right">
-                            <li><a href="/">Home</a></li>
-                            <li><a href="/user/view_profile#submitted">Your profile</a></li>
-                            <li class="active">Step 1/2: Upload files</li>
-                        </ol>
-                    </nav>
-                    <dataset-info identifier="<?= $identifier ?>" />
-                </div>
-            </header>
-            <div>
-                <section class="span6">
+        <?php
+        $this->widget('TitleBreadcrumb', [
+          'pageTitle' => 'GigaDB: Uploading files for the dataset ' . $identifier,
+          'breadcrumbItems' => [
+            ['label' => 'Home', 'href' => '/'],
+            ['label' => 'Your profile', 'href' => '/user/view_profile#submitted'],
+            ['isActive' => true, 'label' => 'Step 1/2: Upload files'],
+          ]
+        ]);
+        ?>
+            <div class="row">
+                <section class="col-xs-12 col-md-8" aria-label="file uploader">
                     <file-uploader identifier="<?= $identifier ?>" endpoint="<?php echo $tusd_path ?>" />
                 </section>
-                <aside class="span4">
-                    <div class="panel panel-success" style="margin:3em;width:100%">
+                <aside class="col-xs-12 col-md-4">
+                    <div class="panel panel-success tips-panel">
                         <div class="panel-heading">
                             <h4 class="panel-title">Tips</h4>
                         </div>

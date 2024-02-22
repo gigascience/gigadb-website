@@ -1,5 +1,5 @@
 <template>
-  <div id="uppy" class="uploader">
+  <div id="uppy">
     <form class="uppy-dataset-metadata-form">
       <input id="dataset" type="hidden" :value="identifier">
     </form>
