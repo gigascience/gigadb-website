@@ -100,3 +100,31 @@
 .profile-panel label {
   color: @color-warm-black;
 }
+.panel.tips-panel {
+  border: none;
+  .panel-heading {
+    color: @color-gigadb-green-800;
+    background-color: @color-gigadb-green-50;
+    border: 1px solid;
+    border-color: @color-gigadb-green-500;
+  }
+  .panel-body {
+    border-radius: 0 0 4px 4px;
+    border: 1px solid;
+    border-top: none;
+    border-color: @color-medium-gray;
+    color: @color-darker-gray;
+    line-height: 1.2;
+    ul {
+      padding-left: 20px;
+      & > li {
+        margin-bottom: 5px;
+        line-height: 1.2;
+      }
+    }
+    p {
+      margin-bottom: 10px;
+      line-height: 1.2;
+    }
+  }
+}

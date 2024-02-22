@@ -17,7 +17,7 @@
                     <file-uploader identifier="<?= $identifier ?>" endpoint="<?php echo $tusd_path ?>" />
                 </section>
                 <aside class="col-xs-12 col-md-4">
-                    <div class="panel panel-success tips-panel">
+                    <div class="panel tips-panel">
                         <div class="panel-heading">
                             <h4 class="panel-title">Tips</h4>
                         </div>
