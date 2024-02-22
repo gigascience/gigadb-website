@@ -380,4 +380,12 @@ class AcceptanceTester extends \Codeception\Actor
     {
         $this->dontSeeElement('input', ['type' => "button", 'value' => $button]);
     }
+
+    /**
+     * @Then I should see the table is sorted by column :column in the :order order
+     */
+    public function iShouldSeeTheTableIsSortedByColumn($column, $order)
+    {
+        $this->seeElement('a', ['class' => "sort-link $order", 'text' => $column]);
+    }
 }
