@@ -364,7 +364,7 @@ Feature: form to update dataset details
     And I select <status> from the field "Dataset_upload_status"
     And I press the button "Save"
     And I am on "/dataset/100039"
-    Then I should see "The DOI 100039 cannot be displayed."
+    Then I should see "The DOI 100039 cannot be displayed"
     And I should not see "Genomic data of the Puerto Rican Parrot"
     Examples:
       | status                   |
