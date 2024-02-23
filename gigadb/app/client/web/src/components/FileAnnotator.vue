@@ -1,9 +1,9 @@
 <template>
-  <div class="container">
-    <p>Please, use this table to annotate the files you've just uploaded with metadata. Once you're done with mandatory
+  <div>
+    <p class="mb-20">Please, use this table to annotate the files you've just uploaded with metadata. Once you're done with mandatory
       fields (Data Type and Description) for all files, a "Complete and return to Your Uploaded Datasets page" button will
       appear at the bottom of the page. You must click it to effect your file submission.</p>
-    <div class="row">
+    <div>
       <table class="table table-striped table-bordered">
         <thead>
           <tr>
@@ -62,7 +62,7 @@
 
 
     <aside>
-      <p>If you have many files, you may wish to prepare the information in a spreadsheet and upload that using the form
+      <p class="mb-20">If you have many files, you may wish to prepare the information in a spreadsheet and upload that using the form
         below. The metadata table above will be overwritten to reflect the content of the spreadsheet.
 
         The uploader will only parse CSV and TSV files. Do not try to upload in other formats.
@@ -79,11 +79,11 @@
               <label for="bulkmetadata">Select a spreadsheet:</label>
               <input type="file" id="bulkmetadata" name="bulkmetadata" accept=".csv, .tsv">
             </div>
-            <button class="btn btn-green btn-small" type="submit">Upload metadata from spreadsheet</button>
+            <button class="btn background-btn" type="submit">Upload metadata from spreadsheet</button>
           </form>
         </div>
         <div class="col-md-4">
-          <div class="panel panel-success panel-tips">
+          <div class="panel tips-panel">
             <div class="panel-heading">
               <h4 class="panel-title">Tips</h4>
             </div>

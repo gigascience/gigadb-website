@@ -32,18 +32,22 @@
               ],
             ]);
             ?>
-            <?php echo CHtml::beginForm(); ?>
-                <section class="row">
-                    <file-annotator identifier="<?php echo $identifier ?>"
-                        :uploads='<?php echo json_encode($uploads) ?>'
-                        :filetypes='<?php echo $filetypes ?>'
-                        :attributes='<?php echo json_encode($attributes, JSON_HEX_APOS | JSON_HEX_QUOT) ?>'
-                    />
-                </section>
-                <footer>
-                    <page-navigation identifier="<?php echo $identifier; ?>" />
-                </footer>
-            <?php echo CHtml::endForm(); ?>
+            <div class="row">
+              <div class="col-xs-12">
+                <?php echo CHtml::beginForm(); ?>
+                    <section>
+                        <file-annotator identifier="<?php echo $identifier ?>"
+                            :uploads='<?php echo json_encode($uploads) ?>'
+                            :filetypes='<?php echo $filetypes ?>'
+                            :attributes='<?php echo json_encode($attributes, JSON_HEX_APOS | JSON_HEX_QUOT) ?>'
+                        />
+                    </section>
+                    <footer>
+                        <page-navigation identifier="<?php echo $identifier; ?>" />
+                    </footer>
+                <?php echo CHtml::endForm(); ?>
+              </div>
+            </div>
         </article>
     </div>
 </div>
