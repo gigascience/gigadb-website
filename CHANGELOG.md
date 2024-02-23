@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1624: FUW - Migrate to Vue 2.7
 - Feat #1334: Improve accessibility of public and admin pages, revamp admin pages styles, sync style guide with updated styles
 
 ## v4.1.2 - 2024-02-07 - 9a421a2c
