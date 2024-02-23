@@ -1,34 +1,38 @@
 <?php
 ?>
-<div class="content">
+<div class="content files-annotate">
     <div id="gigadb-fuw">
         <article class="container">
-            <aside class="card" style="padding-top:0.5em">
-                <?php if (Yii::app()->user->hasFlash('filesAnnotate')) { ?>
-                    <div class="alert alert-success" role="alert">
-                        <?php echo Yii::app()->user->getFlash('filesAnnotate'); ?>
-                    </div>
-                <? } ?>
-                <?php if (Yii::app()->user->hasFlash('filesAnnotateErrors')) { ?>
-                    <div class="alert alert-danger" role="alert">
-                        <?php echo Yii::app()->user->getFlash('filesAnnotateErrors'); ?>
-                    </div>
-                <? } ?>
-            </aside>
+            <?php
+            if (Yii::app()->user->hasFlash('filesAnnotate') || Yii::app()->user->hasFlash('filesAnnotateErrors')) {
+                ?>
+              <aside class="card" style="padding-top:0.5em">
+                  <?php if (Yii::app()->user->hasFlash('filesAnnotate')) { ?>
+                      <div class="alert alert-success" role="alert">
+                          <?php echo Yii::app()->user->getFlash('filesAnnotate'); ?>
+                      </div>
+                  <?php } ?>
+                  <?php if (Yii::app()->user->hasFlash('filesAnnotateErrors')) { ?>
+                      <div class="alert alert-danger" role="alert">
+                          <?php echo Yii::app()->user->getFlash('filesAnnotateErrors'); ?>
+                      </div>
+                  <?php } ?>
+              </aside>
+                <?php
+            }
+            ?>
+            <?php
+            $this->widget('TitleBreadcrumb', [
+              'pageTitle' => 'GigaDB: Uploading files for the dataset ' . $identifier,
+              'breadcrumbItems' => [
+                ['label' => 'Home', 'href' => '/'],
+                ['label' => 'Your profile', 'href' => '/user/view_profile#submitted'],
+                ['label' => 'Step 1/2: Upload files', 'href' => '/authorisedDataset/uploadFiles/id/' . $identifier],
+                ['isActive' => true, 'label' => 'Step 2/2: Annotate files'],
+              ],
+            ]);
+            ?>
             <?php echo CHtml::beginForm(); ?>
-                <header class="page-title-section">
-                    <div class="page-title">
-                        <nav aria-label="breadcrumbs">
-                            <ol class="breadcrumb pull-right">
-                                <li><a href="/">Home</a></li>
-                                <li><a href="/user/view_profile#submitted">Your profile</a></li>
-                                <li><a href="/authorisedDataset/uploadFiles/id/<?php echo $identifier; ?>">Step 1/2: Upload files</a></li>
-                                <li class="active">Step 2/2: Annotate files</li>
-                            </ol>
-                        </nav>
-                        <dataset-info identifier="<?php echo $identifier; ?>" />
-                    </div>
-                </header>
                 <section class="row">
                     <file-annotator identifier="<?php echo $identifier ?>"
                         :uploads='<?php echo json_encode($uploads) ?>'
