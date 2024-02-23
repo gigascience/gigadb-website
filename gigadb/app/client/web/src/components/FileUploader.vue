@@ -7,6 +7,19 @@
   </div>
 </template>
 
+<style lang="less" scoped>
+@color-gigadb-green: #08893e;
+
+.uppy-drag-drop-area::v-deep {
+  .uppy-Dashboard-browse {
+    color: @color-gigadb-green;
+    &:hover, &:focus {
+      border-bottom: 1px solid @color-gigadb-green;
+    }
+  }
+}
+</style>
+
 <script>
 import Uppy from '@uppy/core/lib/Uppy.js';
 import Dashboard from '@uppy/dashboard'
