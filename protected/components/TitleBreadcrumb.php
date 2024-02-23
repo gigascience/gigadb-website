@@ -39,6 +39,7 @@ class TitleBreadcrumb extends CWidget
   public $pageTitleId;
   public $breadcrumbItems = [];
   public $pageTitleLevel = 'h1';
+  public $navLabel = 'breadcrumbs';
   private const ACTIVE_CLASS = 'active';
 
     private function generateBreadcrumbItems(): string
@@ -68,7 +69,8 @@ class TitleBreadcrumb extends CWidget
       'pageTitleId' => $this->pageTitleId,
       'pageTitle' => $this->pageTitle,
       'breadcrumbHtml' => $breadcrumbHtml,
-      'pageTitleLevel' => $this->pageTitleLevel
+      'pageTitleLevel' => $this->pageTitleLevel,
+      'navLabel' => $this->navLabel,
     ]);
   }
 }

@@ -1,26 +1,21 @@
 <template>
-  <nav class="text-right">
-    <div
-      class="button-div"
-      v-if="stage === 'uploading' && (uploadsComplete === true || (!isNaN(numUploadsExist) && numUploadsExist > 0))"
-    >
+  <div :class="{'text-right': showCompleteBtn}">
+    <div v-if="showNextBtn">
       <a :href="annotationUrl" class="btn background-btn nav-link">Next (Metadata Form)</a>
     </div>
-    <div v-if="stage === 'annotating' && metadataComplete === true">
+    <div v-if="showCompleteBtn">
       <button class="btn background-btn complete complete-btn" type="submit">
         Complete and return to Your Uploaded
         Datasets page
       </button>
     </div>
-  </nav>
+  </div>
 </template>
 
 <style scoped>
 .nav-link {
-  margin: 5px;
-  width: 30%;
+  width: 100%;
 }
-
 .complete-btn {
   margin: 5px;
 }
@@ -51,6 +46,12 @@ export default {
     numUploadsExist() {
       return Number(this.uploadsExist);
     },
+    showCompleteBtn() {
+      return this.stage === "annotating" && this.metadataComplete === true;
+    },
+    showNextBtn() {
+      return this.stage === 'uploading' && (this.uploadsComplete === true || (!isNaN(this.numUploadsExist) && this.numUploadsExist > 0))
+    }
   },
   mounted: function () {
     eventBus.$on("stage-changed", (stage) => {
