@@ -42,9 +42,6 @@
                             :attributes='<?php echo json_encode($attributes, JSON_HEX_APOS | JSON_HEX_QUOT) ?>'
                         />
                     </section>
-                    <footer>
-                        <page-navigation identifier="<?php echo $identifier; ?>" />
-                    </footer>
                 <?php echo CHtml::endForm(); ?>
               </div>
             </div>

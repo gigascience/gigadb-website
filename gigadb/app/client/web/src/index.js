@@ -19,13 +19,13 @@ Vue.use(DataTables)
 export const eventBus = new Vue()
 
 import FileUploader from './components/FileUploader.vue'
-import PageNavigation from './components/PageNavigation.vue'
 import FileAnnotator from './components/FileAnnotator.vue'
+import FileUploaderNextLink from './components/FileUploaderNextLink.vue'
 new Vue({
   el: '#gigadb-fuw',
   components: {
     'file-uploader': FileUploader,
-    'page-navigation': PageNavigation,
     'file-annotator': FileAnnotator,
+    'file-uploader-next-link': FileUploaderNextLink
   }
 })

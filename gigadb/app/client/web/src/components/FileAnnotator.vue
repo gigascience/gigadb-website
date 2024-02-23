@@ -1,8 +1,8 @@
 <template>
   <div>
     <p class="mb-20">Please, use this table to annotate the files you've just uploaded with metadata. Once you're done with mandatory
-      fields (Data Type and Description) for all files, a "Complete and return to Your Uploaded Datasets page" button will
-      appear at the bottom of the page. You must click it to effect your file submission.</p>
+      fields (Data Type and Description) for all files, the "Complete and return to Your Uploaded Datasets page" button will
+      be enabled at the bottom of the page. You must click it to effect your file submission.</p>
     <div>
       <table class="table table-striped table-bordered">
         <thead>
@@ -186,7 +186,7 @@
         <input type="hidden" :name="`Attributes[${uid}][Attributes][${idx}][unit]`" :value="attr['unit']" />
       </div>
     </div>
-
+    <file-annotator-submit-button :disabled="!isMetadataComplete" />
   </div>
 </template>
 
@@ -215,11 +215,13 @@
 import { eventBus } from '../index.js'
 import AttributeSpecifier from './AttributeSpecifier.vue'
 import IdSampler from './IdSampler.vue'
+import FileAnnotatorSubmitButton from './FileAnnotatorSubmitButton.vue'
 
 export default {
   components: {
     "attribute-specifier": AttributeSpecifier,
     "id-sampler": IdSampler,
+    "file-annotator-submit-button": FileAnnotatorSubmitButton
   },
   props: {
     identifier: { type: String }, // Unused?
@@ -259,13 +261,6 @@ export default {
         this.metaComplete.includes(uploadIndex) || this.metaComplete.push(uploadIndex)
       } else {
         this.metaComplete = this.metaComplete.filter(val => val !== uploadIndex)
-        eventBus.$emit('metadata-ready-status', false)
-      }
-
-      if (this.isMetadataComplete) {
-        eventBus.$emit('metadata-ready-status', true)
-      } else {
-        eventBus.$emit('metadata-ready-status', false)
       }
     },
     checkFieldsState() {
@@ -274,13 +269,6 @@ export default {
           this.metaComplete.includes(uploadIndex) || this.metaComplete.push(uploadIndex)
           // console.log(`all fields complete for upload ${uploadIndex}`)
         }
-      }
-
-      if (this.isMetadataComplete) {
-        // console.log(`Emitting metadata-ready-status`)
-        eventBus.$emit('metadata-ready-status', true)
-      } else {
-        eventBus.$emit('metadata-ready-status', false)
       }
     },
     toggleAttrDrawer(uploadIndex, uploadId) {
@@ -318,7 +306,6 @@ export default {
   },
   mounted: function () {
     this.$nextTick(function () {
-      eventBus.$emit("stage-changed", "annotating")
       this.checkFieldsState()
     })
   },

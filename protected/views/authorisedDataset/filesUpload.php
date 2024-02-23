@@ -26,7 +26,7 @@
                               <ul>
                                   <li>This is the first step for submitting files associated to the dataset.</li>
                                   <li>You can upload files from your computer by dragging them to the area on the left.</li>
-                                  <li>Once uploads are marked as "Complete", a "Next" button will appear at the bottom. You can click it to proceed to the next stage (annotating the files).</li>
+                                  <li>Once uploads are marked as "Complete", the "Next" button at the bottom will be enabled. You can click it to proceed to the next stage (annotating the files).</li>
                               </ul>
                               <p>For more information about expected files and their formats for given types of datasets, please see the following links:</p>
                               <ul>
@@ -40,7 +40,7 @@
                           </div>
                       </div>
                   </aside>
-                  <page-navigation
+                  <file-uploader-next-link
                       identifier="<?= $identifier ?>"
                       uploads-exist="<?= $uploadsCount ?>"
                   />

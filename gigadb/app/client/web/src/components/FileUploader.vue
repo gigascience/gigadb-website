@@ -173,10 +173,6 @@ export default {
     }
   },
   mounted: function () {
-    this.$nextTick(function () {
-      eventBus.$emit("stage-changed", "uploading")
-    })
-
     this.uppy = new Uppy({
       autoProceed: false,
       debug: false,

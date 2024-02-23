@@ -335,6 +335,22 @@
   }
 }
 
+.disabled-btn {
+  color: @color-true-white;
+  background: @dark-gray-on-white;
+  font-weight: bold;
+  cursor: not-allowed;
+  &:hover {
+    color: @color-true-white;
+    background: @dark-gray-on-white;
+  }
+  &:focus {
+    color: @color-true-white;
+    outline-offset: 2px;
+    outline: solid 2px @dark-gray-on-white;
+  }
+}
+
 .inactive-btn-o {
   color: @dark-gray-on-white;
   background: @color-true-white;
