@@ -46,6 +46,7 @@ class RssMessageController extends Controller
 	 */
 	public function actionView($id)
 	{
+		$this->layout = 'new_datasetpage';
 		$this->render('view',array(
 			'model'=>$this->loadModel($id),
 		));
@@ -70,6 +71,7 @@ class RssMessageController extends Controller
 				$this->redirect(array('view','id'=>$model->id));
 		}
 
+		$this->layout = 'new_datasetpage';
 		$this->render('create',array(
 			'model'=>$model,
 		));
@@ -94,6 +96,7 @@ class RssMessageController extends Controller
 				$this->redirect(array('view','id'=>$model->id));
 		}
 
+		$this->layout = 'new_datasetpage';
 		$this->render('update',array(
 			'model'=>$model,
 		));
@@ -140,6 +143,8 @@ class RssMessageController extends Controller
 		if(isset($_GET['RssMessage']))
 			$model->setAttributes($_GET['RssMessage']);
 
+		$this->layout = 'new_main';
+		$this->loadBaBbqPolyfills = true;
 		$this->render('admin',array(
 			'model'=>$model,
 		));

@@ -1,14 +1,20 @@
-<h2>Update User <?=$model->id?></h2>
-<div class="clear"></div>
-<? if (Yii::app()->user->checkAccess('admin')) { ?>
-<div class="actionBar">
-[<?= CHtml::link('Manage Users', array('admin')) ?>]
+<div class="container">
+	<?php
+	$isAdmin = Yii::app()->user->checkAccess('manageUsers');
+
+	$this->widget('TitleBreadcrumb', [
+		'pageTitle' => 'Update User ' . $model->id,
+		'breadcrumbItems' => [
+			['label' => 'Admin', 'href' => '/site/admin'],
+			['label' => 'Manage', 'href' => '/user/admin'],
+			['isActive' => true, 'label' => 'Update'],
+		]
+	]);
+	?>
+
+	<?= $this->renderPartial('_form', array(
+		'model' => $model,
+		'scenario' => 'update',
+		'update' => true
+	)) ?>
 </div>
-<? } ?>
-
-
-<?= $this->renderPartial('_form', array(
-	'model'=>$model,
-    'scenario'=>'update',
-	'update'=>true
-)) ?>

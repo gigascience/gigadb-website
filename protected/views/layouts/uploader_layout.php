@@ -69,7 +69,27 @@
                                         <? } ?>
                     </ul>
                 </div>
-                <div class="col-xs-7 clearfix">
+                <div class="col-xs-7 clearfix top-bar-left">
+                    <div class="search-bar clearfix">
+                        <form action="/search/new" method="GET" role="search" class="search-form" aria-label="Datasets">
+                            <?php
+                                $this->widget('application.components.DeferrableCJuiAutoComplete', array(
+                                    'name' => 'keyword',
+                                    'source' => array_values(array()),
+                                    'options' => array(
+                                        'minLength' => '2',
+                                    ),
+                                    'htmlOptions' => array(
+                                        'aria-label'=>'Search GigaDB',
+                                        'class' => 'search-input',
+                                        'placeholder'=>'e.g. Chicken, brain, etc...',
+                                    ),
+                                ));
+                                ?>
+                                <button class="btn-search" type="submit"><span class="fa fa-search"><span class="visually-hidden">Search</span></span>
+                                </button>
+                        </form>
+                    </div>
                     <ul class="share-zone clearfix">
                         <li>
                             <a class="fa fa-facebook" style="text-decoration: none;" href="http://facebook.com/GigaScience" title="GigaScience on Facebook" aria-label="GigaScience on Facebook"></a>
@@ -87,26 +107,6 @@
                             <a class="fa fa-rss" style="text-decoration: none;" href="http://gigasciencejournal.com/blog/" title="Gigascience Blog" aria-label="GigaScience Blog"></a>
                         </li>
                     </ul>
-                    <div class="search-bar clearfix">
-                        <form action="/search/new" method="GET" role="search">
-                            <?php
-                                $this->widget('application.components.DeferrableCJuiAutoComplete', array(
-                                    'name' => 'keyword',
-                                    'source' => array_values(array()),
-                                    'options' => array(
-                                        'minLength' => '2',
-                                    ),
-                                    'htmlOptions' => array(
-                                        'title'=>'Search GigaDB',
-                                        'class' => 'search-input',
-                                        'placeholder'=>'e.g. Chicken, brain etc...',
-                                    ),
-                                ));
-                                ?>
-                                <button class="btn-search" type="submit"><span class="fa fa-search"><span class="visually-hidden">Search</span></span>
-                                </button>
-                        </form>
-                    </div>
                 </div>
             </div>
         </div>
@@ -216,19 +216,19 @@
         </div>
         <div class="content-btnlog">
             <a class="btn btnlog facebook-log" href="/opauth/facebook">
-                        <img src="/images/icons/fb.png"/>&nbsp;&nbsp;<?= Yii::t('app', 'Facebook') ?>
-                    </a>
+                <img src="/images/icons/fb.png" alt="Login with Facebook"/>&nbsp;&nbsp;<?=Yii::t('app' , 'Facebook')?>
+            </a>
             <a class="btn btnlog google-log" href="/opauth/google">
-                        <img src="/images/icons/google.png"/>&nbsp;&nbsp;<?= Yii::t('app', 'Google') ?>
-                    </a>
+                <img src="/images/icons/google.png" alt="Login with Google" />&nbsp;&nbsp;<?=Yii::t('app' , 'Google')?>
+            </a>
         </div>
         <div class="content-btnlog">
             <a class="btn btnlog twitter-log" href="/opauth/twitter">
-                        <img src="/images/icons/twi.png"/>&nbsp;&nbsp;<?= Yii::t('app', 'Twitter') ?>
-                    </a>
+                    <img src="/images/icons/twi.png" alt="Login with twitter"/>&nbsp;&nbsp;<?=Yii::t('app' , 'Twitter')?>
+            </a>
             <a class="btn btnlog linkedin-log" href="/opauth/linkedin">
-                        <img src="/images/icons/in.png"/>&nbsp;&nbsp;<?= Yii::t('app', 'LinkedIn') ?>
-                    </a>
+                <img src="/images/icons/in.png" alt="Login with LinkedIn"/>&nbsp;&nbsp;<?=Yii::t('app' , 'LinkedIn')?>
+            </a>
         </div>
     </div>
     <?php endif ?>

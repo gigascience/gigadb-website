@@ -3,15 +3,15 @@ $this->pageTitle='Reset password';
 ?>
 <div class="content">
     <div class="container">
-        <section class="page-title-section">
-            <div class="page-title">
-                <ol class="breadcrumb pull-right">
-                    <li><a href="/">Home</a></li>
-                    <li class="active">Reset Password</li>
-                </ol>
-                <h4><?= Yii::t('app', 'Reset Password') ?></h4>
-            </div>
-        </section>
+      <?php
+        $this->widget('TitleBreadcrumb', [
+          'pageTitle' => Yii::t('app', 'Reset Password'),
+          'breadcrumbItems' => [
+            ['label' => 'Home', 'href' => '/'],
+            ['isActive' => true, 'label' => 'Reset Password'],
+          ]
+        ]);
+        ?>
     </div>
 </div>
 

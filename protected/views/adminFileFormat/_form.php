@@ -1,31 +1,46 @@
-<div class="form">
+<div class="section form row">
 
-<?php $form=$this->beginWidget('CActiveForm', array(
-	'id'=>'file-format-form',
-	'enableAjaxValidation'=>false,
-)); ?>
+  <div class="col-md-offset-3 col-md-6">
+    <?php $form = $this->beginWidget('CActiveForm', array(
+      'id' => 'file-format-form',
+      'enableAjaxValidation' => false,
+    )); ?>
 
-	<p class="note">Fields with <span class="required">*</span> are required.</p>
+    <p class="note">Fields with <span class="required">*</span> are required.</p>
 
-	<?php echo $form->errorSummary($model); ?>
+    <?php if ($model->hasErrors()) : ?>
+        <div class="alert alert-danger">
+          <?php echo $form->errorSummary($model); ?>
+        </div>
+    <?php endif; ?>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'name'); ?>
-		<?php echo $form->textField($model,'name',array('size'=>10,'maxlength'=>10)); ?>
-		<?php echo $form->error($model,'name'); ?>
-	</div>
+    <?php
+    $this->widget('application.components.controls.TextField', [
+      'form' => $form,
+      'model' => $model,
+      'attributeName' => 'name',
+      'inputOptions' => [
+        'required' => true,
+        'maxlength' => 10
+      ],
+    ]);
+    $this->widget('application.components.controls.TextArea', [
+      'form' => $form,
+      'model' => $model,
+      'attributeName' => 'description',
+      'inputOptions' => [
+        'rows' => 6,
+        'cols' => 50
+      ],
+    ]);
+    ?>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'description'); ?>
-		<?php echo $form->textArea($model,'description',array('rows'=>6, 'cols'=>50)); ?>
-		<?php echo $form->error($model,'description'); ?>
-	</div>
+    <div class="pull-right btns-row">
+      <a href="/adminFileFormat/admin" class="btn background-btn-o">Cancel</a>
+      <?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => 'btn background-btn')); ?>
+    </div>
 
-	<div class="row buttons">
-        <a href="/adminFileFormat/admin" class="btn">Cancel</a>
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save' , array('class' => 'btn-green')); ?>
-	</div>
+    <?php $this->endWidget(); ?>
+  </div>
 
-<?php $this->endWidget(); ?>
-
-</div><!-- form -->
+</div>

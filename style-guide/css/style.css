@@ -1,11 +1,13 @@
- body {
+body {
   font-family: "HelveticaNeue", "Helvetica", Arial, sans-serif;
 }
 
-img, svg, video, audio {
+img,
+svg,
+video,
+audio {
   max-width: 100%;
 }
-
 
 /* -------------------------------------------------------------------------
  Alerts
@@ -19,8 +21,8 @@ img, svg, video, audio {
 .alert {
   border: 1px solid #fbeed5;
   -webkit-border-radius: 4px;
-     -moz-border-radius: 4px;
-          border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
   margin-bottom: 20px;
   padding: 8px 35px 8px 14px;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
@@ -50,8 +52,6 @@ img, svg, video, audio {
   color: #2f7090;
 }
 
-
-
 /* -------------------------------------------------------------------------
  Breadcrumbs
 ---------------------------------------------------------------------------- */
@@ -63,8 +63,8 @@ img, svg, video, audio {
  */
 .breadcrumb {
   -webkit-border-radius: 4px;
-     -moz-border-radius: 4px;
-          border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
   list-style: none;
   margin: 0 0 20px;
   padding: 8px 15px;

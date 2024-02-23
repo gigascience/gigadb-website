@@ -1,15 +1,14 @@
-<?php
-$this->breadcrumbs=array(
-	'Dataset Samples'=>array('index'),
-	'Create',
-);
+<div class="container">
+	<?php
+	$this->widget('TitleBreadcrumb', [
+		'pageTitle' => 'Create DatasetSample',
+		'breadcrumbItems' => [
+			['label' => 'Admin', 'href' => '/site/admin'],
+			['label' => 'Manage', 'href' => '/adminDatasetSample/admin'],
+			['isActive' => true, 'label' => 'Create'],
+		]
+	]);
+	?>
 
-$this->menu=array(
-	array('label'=>'List DatasetSample', 'url'=>array('index')),
-	array('label'=>'Manage DatasetSample', 'url'=>array('admin')),
-);
-?>
-
-<h1>Create DatasetSample</h1>
-
-<?php echo $this->renderPartial('_form', array('model'=>$model)); ?>
+	<?php echo $this->renderPartial('_form', array('model' => $model)); ?>
+</div>

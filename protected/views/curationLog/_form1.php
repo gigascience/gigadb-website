@@ -1,51 +1,67 @@
-<div class="row">
-    <div class="span10 offset1 form well">
-        <?php
-        $form = $this->beginWidget(
-            'CActiveForm',
-            [
-                'id'                   => 'file-form',
-                'enableAjaxValidation' => false,
-                'htmlOptions'          => ['class' => 'form-horizontal'],
-            ]
-        );
-        ?>
-        <p class="note">Fields with <span class="required">*</span> are required.</p>
-        <?php echo $form->errorSummary($model); ?>
-        <div class="control-group">
-            <?php echo $form->labelEx($model, 'action', ['class' => 'control-label']); ?>
-            <div class="controls">
-                <?php
-                $data = [
-                    'Comment'                     => 'Comment',
-                    'Curator assigned, ChrisA'    => 'Curator assigned, ChrisA',
-                    'Curator assigned, MaryAnn'   => 'Curator assigned, MaryAnn',
-                    'Curator assigned, Chris'     => 'Curator assigned, Chris',
-                    'Curator assigned, Jesse'     => 'Curator assigned, Jesse',
-                    'Status changed to Request'   => 'Status changed to Request',
-                    'Status changed to Uploaded'  => 'Status changed to Uploaded',
-                    'Status changed to Published' => 'Status changed to Published',
-                ]
-                ?>
-                <?php echo $form->dropDownList($model, 'action', $data, ['class' => 'span4']); ?>
-                <?php echo $form->error($model, 'action'); ?>
-            </div>
+<div class="section form row">
+
+  <div class="col-md-offset-3 col-md-6">
+  <?php
+  $form = $this->beginWidget(
+    'CActiveForm',
+    [
+      'id' => 'file-form',
+      'enableAjaxValidation' => false,
+    ]
+  );
+  ?>
+
+    <p class="note">Fields with <span class="required">*</span> are required.</p>
+
+    <?php if ($model->hasErrors()): ?>
+        <div class="alert alert-danger">
+          <?php echo $form->errorSummary($model); ?>
         </div>
-        <div class="control-group">
-            <?php echo $form->labelEx($model, 'comments', ['class' => 'control-label']); ?>
-            <div class="controls">
-                <?php echo $form->textArea($model, 'comments', ['rows' => 6, 'cols' => 50]); ?>
-                <?php echo $form->error($model, 'comments'); ?>
-            </div>
-        </div>
-        <div class="pull-right">
-            <a href="/adminDataset/update/id/<?php echo $dataset_id; ?>" class="btn">Cancel</a>
-            <?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', ['class' => 'btn']); ?>
-        </div>
-        <?php $this->endWidget(); ?>
+    <?php endif; ?>
+
+
+<?php
+$this->widget('application.components.controls.DropdownField', [
+  'form' => $form,
+  'model' => $model,
+  'attributeName' => 'action',
+  'dataset' => [
+    'Comment' => 'Comment',
+    'Curator assigned, ChrisA' => 'Curator assigned, ChrisA',
+    'Curator assigned, MaryAnn' => 'Curator assigned, MaryAnn',
+    'Curator assigned, Chris' => 'Curator assigned, Chris',
+    'Curator assigned, Jesse' => 'Curator assigned, Jesse',
+    'Status changed to Request' => 'Status changed to Request',
+    'Status changed to Uploaded' => 'Status changed to Uploaded',
+    'Status changed to Published' => 'Status changed to Published',
+  ],
+  'inputOptions' => [
+    'required' => true,
+  ],
+]);
+
+$this->widget('application.components.controls.TextArea', [
+  'form' => $form,
+  'model' => $model,
+  'attributeName' => 'comments',
+  'inputOptions' => [
+    'rows' => 6,
+    'cols' => 50
+  ],
+]);
+?>
+
+    <div class="pull-right btns-row">
+      <a href="/adminDataset/update/id/<?php echo $dataset_id; ?>" class="btn background-btn-o">Cancel</a>
+      <?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => 'btn background-btn')); ?>
     </div>
-    <!-- form -->
+
+    <?php $this->endWidget(); ?>
+  </div>
+
 </div>
+
+
 <script type="text/javascript">
 $('.date').datepicker({ 'dateFormat': 'yy-mm-dd' });
 $('.btn-attr').click(function(e) {
