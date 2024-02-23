@@ -179,7 +179,8 @@ class DatasetUpload extends yii\base\BaseObject
             'Data Type' => 'datatype',
             'File Format' => 'extension',
             'Description' => 'description',
-            'Sample IDs' => 'sample_ids',
+            // NOTE fuw-sample-ids
+            // 'Sample IDs' => 'sample_ids',
             'Attribute 1' => 'attr1',
             'Attribute 2' => 'attr2',
             'Attribute 3' => 'attr3',
