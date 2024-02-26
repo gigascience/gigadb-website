@@ -42,6 +42,7 @@ else
   docker-compose run --rm pg_client -c 'drop trigger if exists sample_finder_trigger on sample RESTRICT'
   docker-compose run --rm pg_client -c 'drop trigger if exists dataset_finder_trigger on dataset RESTRICT'
 
+  echo -e 'RUN EXCEL SPREADSHEET TOOL'
   docker-compose run --rm uploader ./run.sh
 
   docker-compose run --rm pg_client -c 'create trigger file_finder_trigger after insert or update or delete or truncate on file for each statement execute procedure refresh_file_finder()'
@@ -50,7 +51,7 @@ else
 
   # Check uploadDir is empty in dev environment
   if [ -n "$(ls -A "${currentPath}"/uploadDir)" ];then
-    echo -e "${RED}Spreadsheet cannot be uploaded, please check logs!${NO_COLOR}"
+    echo -e "${RED}Failed to upload spreadsheet, please check logs!${NO_COLOR}"
 
     # Identify line number with "End error"
     error_line_number=$(awk '/End error/{ print NR; exit }' logs/java.log)
