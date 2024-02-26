@@ -3,6 +3,10 @@
 PATH=/usr/local/bin:$PATH
 export PATH
 
+# Colours for text output
+RED='\033[0;31m'
+NO_COLOR='\033[0m'
+
 currentPath=$(pwd)
 if [[ $(uname -n) =~ compute ]];then
   uploadDir=${1:-"$currentPath/uploadDir"}
@@ -25,7 +29,7 @@ if [[ $(uname -n) =~ compute ]];then
   docker run --rm  --env-file ./db-env registry.gitlab.com/$GITLAB_PROJECT/production_pgclient:$GIGADB_ENV -c 'create trigger dataset_finder_trigger after insert or update or delete or truncate on dataset for each statement execute procedure refresh_dataset_finder()'
 
   if [[ -n "$(ls -A /home/centos/uploadDir)" ]];then
-    echo "Spreadsheet cannot not be uploaded, please check the logs!"
+    echo -e "${RED}Spreadsheet cannot be uploaded, please check logs!${NO_COLOR}"
     mv /home/centos/uploadDir/* "$uploadDir/"
   fi
 
@@ -43,6 +47,17 @@ else
   docker-compose run --rm pg_client -c 'create trigger file_finder_trigger after insert or update or delete or truncate on file for each statement execute procedure refresh_file_finder()'
   docker-compose run --rm pg_client -c 'create trigger sample_finder_trigger after insert or update or delete or truncate on sample for each statement execute procedure refresh_sample_finder()'
   docker-compose run --rm pg_client -c 'create trigger dataset_finder_trigger after insert or update or delete or truncate on dataset for each statement execute procedure refresh_dataset_finder()'
+
+  # Check uploadDir is empty in dev environment
+  if [ -n "$(ls -A "${currentPath}"/uploadDir)" ];then
+    echo -e "${RED}Spreadsheet cannot be uploaded, please check logs!${NO_COLOR}"
+
+    # Identify line number with "End error"
+    error_line_number=$(awk '/End error/{ print NR; exit }' logs/java.log)
+    OUT=$(tail -n +"${error_line_number}" logs/java.log)
+    echo "${OUT}" | grep --color -E 'ERROR|Detail'
+  fi
+
 fi
 
 
