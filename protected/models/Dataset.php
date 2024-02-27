@@ -607,7 +607,7 @@ class Dataset extends CActiveRecord
         return Uuid::uuid5(Uuid::NAMESPACE_URL, self::NAMESPACE."/id/".$this->id);
     }
 
-    public function getAvailableStatusList(): array
+    public static function getAvailableStatusList(): array
     {
         if (Yii::app()->featureFlag->isEnabled("fuw"))
             return CMap::mergeArray(self::ORIGINAL_UPLOAD_STATUS_LIST,self::FUW_UPLOAD_STATUS_LIST);
