@@ -202,7 +202,7 @@ services:
     environment:
       YII_PATH: ${YII_PATH}
       YII2_PATH: ${YII2_PATH}
-    image: php:7.4.33-alpine3.15
+    image: php:8.2.16-alpine3.19
     volumes:
       - ${APPLICATION}/:/var/www
     command: sh -c "/var/www/protected/yiic lesscompiler"
