@@ -7,24 +7,24 @@
       <table class="table table-striped table-bordered">
         <thead>
           <tr>
-            <th>File Name</th>
-            <th>Data Type</th>
-            <th>Format</th>
-            <th>Size</th>
-            <th>Description</th>
-            <th>Actions</th>
+            <th scope="col">File Name</th>
+            <th scope="col" id="dataTypeTh">Data Type</th>
+            <th scope="col">Format</th>
+            <th scope="col">Size</th>
+            <th scope="col" id="descriptionTh">Description</th>
+            <th scope="col">Actions</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="(upload, index) in uploadedFiles" :key="`${upload.id}-uploadedfiles`">
-            <td><span data-toggle="tooltip" data-placement="bottom" :title="`md5:${upload.initial_md5}`">{{
+            <td><span :id="`${upload.id}File`" data-toggle="tooltip" data-placement="bottom" :title="`md5:${upload.initial_md5}`">{{
               upload.name }}</span>
               <input type="hidden" :name="`Upload[${upload.id}][name]`" :value="upload.name">
             </td>
             <td>
               <div class="form-group">
                 <select v-model="upload.datatype" :name="`Upload[${upload.id}][datatype]`"
-                  :id="`upload-${(index + 1)}-datatype`" @change="fieldHasChanged(index, $event)">
+                  :id="`upload-${(index + 1)}-datatype`" @change="fieldHasChanged(index, $event)" :aria-labelledy="`${upload.id}File dataTypeTh`">
                   <option v-for="datatype in dataTypes" :key="`${datatype}-datatype`">{{ datatype }}</option>
                 </select>
               </div>
@@ -33,11 +33,9 @@
             <td>{{ upload.size }}</td>
             <td>
               <div class="form-group required">
-                <label class='control-label'>
                   <input v-model="upload.description" class="form-control" type="text"
                     :name="`Upload[${upload.id}][description]`" :id="`upload-${(index + 1)}-description`"
-                    @input="fieldHasChanged(index, $event)" required>
-                </label>
+                    @input="fieldHasChanged(index, $event)" required :aria-labelledy="`${upload.id}File descriptionTh`">
               </div>
             </td>
             <td>
