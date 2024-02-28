@@ -22,9 +22,13 @@
               <input type="hidden" :name="`Upload[${upload.id}][name]`" :value="upload.name">
             </td>
             <td>
-              <div class="form-group">
-                <select v-model="upload.datatype" :name="`Upload[${upload.id}][datatype]`"
-                  :id="`upload-${(index + 1)}-datatype`" @change="fieldHasChanged(index, $event)" :aria-labelledy="`${upload.id}File dataTypeTh`">
+              <div class="form-group m-0">
+                <select
+                  v-model="upload.datatype"
+                  :name="`Upload[${upload.id}][datatype]`"
+                  :id="`upload-${(index + 1)}-datatype`" @change="fieldHasChanged(index, $event)" :aria-labelledy="`${upload.id}File dataTypeTh`"
+                  class="form-control td-content"
+                >
                   <option v-for="datatype in dataTypes" :key="`${datatype}-datatype`">{{ datatype }}</option>
                 </select>
               </div>
@@ -32,26 +36,35 @@
             <td>{{ upload.extension }}</td>
             <td>{{ upload.size }}</td>
             <td>
-              <div class="form-group required">
-                  <input v-model="upload.description" class="form-control" type="text"
+              <div class="form-group m-0">
+                  <input
+                    v-model="upload.description"
+                    class="form-control td-content"
+                    type="text"
                     :name="`Upload[${upload.id}][description]`" :id="`upload-${(index + 1)}-description`"
-                    @input="fieldHasChanged(index, $event)" required :aria-labelledy="`${upload.id}File descriptionTh`">
+                    @input="fieldHasChanged(index, $event)"
+                    required
+                    aria-required="true"
+                    :aria-labelledy="`${upload.id}File descriptionTh`"
+                  >
               </div>
             </td>
             <td>
               <input type="hidden" :name="`Upload[${upload.id}][sample_ids]`" :id="`upload-${index + 1}-sample_ids`"
                 :value="upload.sample_ids">
-              <el-button :id="`upload-${index + 1}-tag`" @click="toggleAttrDrawer(index, upload.id)" type="info"
-                :class="`btn btn-green btn-small attribute-button ${upload.name}`">
-                Attributes
-              </el-button>
-              <!-- NOTE fuw-sample-ids Sample ID button -->
-              <!-- <el-button :id="`upload-${index + 1}-sample`" @click="toggleSampleDrawer(index, upload.id)" type="info"
-                :class="`btn btn-green btn-small sample-button ${upload.name}`">
-                Sample IDs
-              </el-button> -->
-              <el-button :id="`upload-${index + 1}-delete`" :class="`delete-button-${index}`" type="danger"
-                icon="el-icon-delete" @click="deleteUpload(index, upload.id)" circle></el-button>
+              <div class="btns-row btns-row-center m-0">
+                <el-button :id="`upload-${index + 1}-tag`" @click="toggleAttrDrawer(index, upload.id)" type="info"
+                  :class="`attribute-button ${upload.name}`">
+                  View attributes
+                </el-button>
+                <!-- NOTE fuw-sample-ids Sample ID button -->
+                <!-- <el-button :id="`upload-${index + 1}-sample`" @click="toggleSampleDrawer(index, upload.id)" type="info"
+                  :class="`btn btn-green btn-small sample-button ${upload.name}`">
+                  Sample IDs
+                </el-button> -->
+                <el-button :id="`upload-${index + 1}-delete`" :class="`delete-button-${index}`" type="danger"
+                  icon="el-icon-delete" @click="deleteUpload(index, upload.id)" circle :aria-label="`delete file ${upload.name}`"></el-button>
+              </div>
             </td>
           </tr>
         </tbody>
@@ -207,10 +220,13 @@
   content: "*";
   color: red;
 }
+
+.td-content {
+  height: 39px;
+}
 </style>
 
 <script>
-import { eventBus } from '../index.js'
 import AttributeSpecifier from './AttributeSpecifier.vue'
 import IdSampler from './IdSampler.vue'
 import FileAnnotatorSubmitButton from './FileAnnotatorSubmitButton.vue'
