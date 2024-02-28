@@ -1,78 +1,84 @@
 <?
-$this->pageTitle='GigaDB - Map Browse';
+$this->pageTitle = 'GigaDB - Map Browse';
 ?>
-<div class="mapcontainer" id="map"></div> 
+
+<div class="container">
+
+<?php
+$this->widget('TitleBreadcrumb', [
+  'pageTitle' => 'Map Browse',
+  'breadcrumbItems' => [
+    ['label' => 'Home', 'href' => '/'],
+    ['isActive' => true, 'label' => 'Map Browse'],
+  ]
+]);
+?>
+</div>
+
+
+<div class="mapcontainer" id="map" tabindex="0"></div>
+<div class="btns-row mt-10 mb-10 ml-10">
+  <button id="zoom-out" class="btn background-btn-o">Zoom out</button>
+  <button id="zoom-in" class="btn background-btn-o">Zoom in</button>
+</div>
 <div id="popup" class="popup">
   <a href="/" id="popup-closer">Close</a>
   <div id="popup-content"></div>
 </div>
 
-<style>
-	div.mapcontainer#map{height:400px;width:100%;}
-  .popup {
-  background-color:#FFF;
-  border: 1px solid #CCC;
-  padding: 0.1em 1em 0.5em 0.5em;
-  max-height:200px;
-  overflow-y:auto;
-  }
-</style>
 
-
-<script src="https://openlayers.org/en/v4.6.5/build/ol.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/ol@v8.1.0/dist/ol.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@v8.1.0/ol.css">
 
 <script>
   var geojson_features = {"type":"FeatureCollection",
                   "features":[
 <?php
-  $locationsLength = count($locations);
-  if ($locationsLength > 0) {
-    $i=1;  
-    foreach ($locations as $location) {
-        $i++;
-        if($i>50000)
-        {
-            break 1;
-        }
-        $locationValue = $location["value"];  
-        $locationValue = preg_replace('/\s+/', '', $locationValue);   
-        $formatCheck = preg_match('/-?[0-9]*[.][0-9]*[,]-?[0-9]*[.][0-9]*/',$locationValue);
-        if (!$formatCheck==1){
-          continue;
-        }     
-        $val = explode(',', $locationValue); 
-        if(strpos($val[0],'.') == false || !is_numeric($val[0])){
-            continue;
-        }
-        if(strpos($val[1],'.') == false || !is_numeric($val[1])){
-            continue;
-        }
-        if($val[1]>180 || $val[1] < -180)
-        {
-            continue;
-        }
-        if($val[0]>85.05112878 || $val[0] < -85.05112878)
-        {
-            continue;
-        }
-        $location["sciname"]=str_replace(",","",$location["sciname"]);
-       
-   
-?>
-                    {"type":"Feature",
-                      "properties":{
-                        "Sample ID": <?php echo $location["sampleid"]; ?>,
-                        "Scientific name": <?php echo '"'. trim($location["sciname"]) .'"' ; ?>,
-                        "Dataset": <?php echo trim($location["identifier"]); ?>
-                        },
-                        "geometry":{
-                          "type":"Point",
-                          "coordinates":[<?php echo trim($val[1]); ?>,<?php echo trim($val[0]); ?>]
-                        }
-                      },
-<?php
+$locationsLength = count($locations);
+if ($locationsLength > 0) {
+  $i = 1;
+  foreach ($locations as $location) {
+    $i++;
+    if ($i > 50000) {
+      break 1;
+    }
+    $locationValue = $location["value"];
+    $locationValue = preg_replace('/\s+/', '', $locationValue);
+    $formatCheck = preg_match('/-?[0-9]*[.][0-9]*[,]-?[0-9]*[.][0-9]*/', $locationValue);
+    if (!$formatCheck == 1) {
+      continue;
+    }
+    $val = explode(',', $locationValue);
+    if (strpos($val[0], '.') == false || !is_numeric($val[0])) {
+      continue;
+    }
+    if (strpos($val[1], '.') == false || !is_numeric($val[1])) {
+      continue;
+    }
+    if ($val[1] > 180 || $val[1] < -180) {
+      continue;
+    }
+    if ($val[0] > 85.05112878 || $val[0] < -85.05112878) {
+      continue;
+    }
+    $location["sciname"] = str_replace(",", "", $location["sciname"]);
+
+
+    ?>
+                        {"type":"Feature",
+                          "properties":{
+                            "Sample ID": <?php echo $location["sampleid"]; ?>,
+                            "Scientific name": <?php echo '"' . trim($location["sciname"]) . '"'; ?>,
+                            "Dataset": <?php echo trim($location["identifier"]); ?>
+                            },
+                            "geometry":{
+                              "type":"Point",
+                              "coordinates":[<?php echo trim($val[1]); ?>,<?php echo trim($val[0]); ?>]
+                            }
+                          },
+    <?php
   }
-  }
+}
 ?>
                     ]
                   }
@@ -83,7 +89,7 @@ $this->pageTitle='GigaDB - Map Browse';
   var source = new ol.source.Vector({
       features: (new ol.format.GeoJSON()).readFeatures(geojson_features, { featureProjection: 'EPSG:3857' })
   });
-      
+
   var clusterSource = new ol.source.Cluster({
     distance: 10,
     source: source
@@ -128,6 +134,19 @@ $this->pageTitle='GigaDB - Map Browse';
       zoom: 2
     })
   });
+
+  document.getElementById('zoom-out').onclick = function () {
+    const view = map.getView();
+    const zoom = view.getZoom();
+    view.setZoom(zoom - 1);
+  };
+
+  document.getElementById('zoom-in').onclick = function () {
+    const view = map.getView();
+    const zoom = view.getZoom();
+    view.setZoom(zoom + 1);
+  };
+
   function elem_id(id) {
     return document.getElementById(id);
   }
@@ -168,7 +187,7 @@ $this->pageTitle='GigaDB - Map Browse';
               console.log(coord);
               olpopup.setPosition(coord);
           } else {
-              console.log("11111");  
+              console.log("11111");
               olpopup.setPosition(undefined);
           }
       });

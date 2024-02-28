@@ -5,39 +5,37 @@
         </div>
     <? } ?>
 
-    <?php echo CHtml::beginForm('/search/new','GET',array('class'=>'form','onsubmit'=>'return validateForm(this);','role'=>'search')); ?>
+    <?php echo CHtml::beginForm('/search/new', 'GET', array('class' => 'form', 'onsubmit' => 'return validateForm(this);', 'role' => 'search')); ?>
     <?php echo CHtml::errorSummary($model); ?>
 
-   <div class="form-group home-search-bar-group">
-       <div class="input-group search-bar-group">
-    
-    <?php        
-               
-        $this->widget('application.components.DeferrableCJuiAutoComplete', array(
-            'name'=>'keyword',
-            //'source'=>array('ac1', 'ac2', 'ac3'),
-            // 'source'=> array_values($dataset->getListTitles()),
-            'source'=> array_values(array()),
-            // additional javascript options for the autocomplete plugin
-            'options'=>array(
-                             'minLength'=>'2',
-                             ),
-            'htmlOptions'=>array(
-                                'title'=>'Search GigaDB',
-                                 'class'=>'form-control',
-                                 'placeholder'=>'e.g. Chicken, brain etc...',
-                                 ),
-            ));
-        ?>
-    
-     <span class="input-group-btn">
-       <button class="btn background-btn" type="submit">
-                                                <i class="fa fa-search"></i> Search
-                                            </button>
-    </span>
+    <div class="form-group home-search-bar-group">
+        <div class="input-group search-bar-group">
 
-  </div>
-</div>
+            <?php
+
+            $this->widget('application.components.DeferrableCJuiAutoComplete', array(
+                'name' => 'keyword',
+                //'source'=>array('ac1', 'ac2', 'ac3'),
+                // 'source'=> array_values($dataset->getListTitles()),
+                'source' => array_values(array()),
+                // additional javascript options for the autocomplete plugin
+                'options' => array(
+                    'minLength' => '2',
+                ),
+                'htmlOptions' => array(
+                    'aria-label' => 'Search GigaDB',
+                    'class' => 'form-control',
+                    'placeholder' => 'e.g. Chicken, brain, etc...',
+                ),
+            ));
+            ?>
+
+            <span class="input-group-btn">
+                <button class="btn background-btn" type="submit"><i class="fa fa-search"></i> Search</button>
+            </span>
+
+        </div>
+    </div>
 
     <!--
     <a data-toggle="modal" href="#how-to-use-advanced-search" class="hint advanced-search-hint"></a> -->

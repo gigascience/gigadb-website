@@ -1,5 +1,6 @@
+<!-- Deprecated? -->
 <div class="content">
-            <section class="image-background" style="background-image: url(../images/banner2.jpg);">
+            <section class="image-background">
                 <div class="container">
                 <section class="image-background">
                 <div class="container">
@@ -7,9 +8,9 @@
                         <div class="col-xs-10 col-xs-offset-1 text-center">
                             <h1 class="home-search-bar-title">GIGADB DATASETS</h1>
                             <p class="home-search-bar-subtitle">GigaDB contains <? echo $count ?> discoverable, trackable, and citable datasets that have been assigned DOIs and are available for public download and use.</p>
-                           
+
                             <? $this->renderPartial('_search', array('model' => $model))?>
-                                  
+
                         </div>
                     </div>
                 </div>
@@ -25,7 +26,7 @@
                                     'page'=>$page,
                                     'limit'=>$limit
                               ));?> </p>
-                          
+
                            <div>
                                 <? $this->renderPartial("_filter", array(
                                           'model' => $model,
@@ -37,7 +38,7 @@
                                           'list_common_names' => $list_common_names
                                              )) ?>
                             </div>
-                        
+
                     <div class="col-xs-8">
                         <div class="span9 result" id="result">
         <!--<span class='pull-right'><?= Yii::t('app', 'Selected all files') ?> <input type="checkbox" class="select-all"/></span> -->
@@ -54,8 +55,8 @@
                               <ul id="search-pg" class="pagination-sm"></ul>
                             </div>
                         </div>
-                        
-                        
+
+
                     </div>
                 </div>
             </div>
@@ -97,7 +98,7 @@
         visiblePages: 5,
         onPageClick: function (event, page) {
             url = document.URL;
-            $.post(url, {'page': page}, function(result) {                
+            $.post(url, {'page': page}, function(result) {
                 if(result.success) {
                     $('#filter').html(result.filter);
                     $('#result').html(result.result);

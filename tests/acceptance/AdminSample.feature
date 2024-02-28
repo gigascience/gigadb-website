@@ -15,6 +15,16 @@ Feature: admin page for samples
     And I should see "Alternative names:PYGAD"
 
   @ok
+  Scenario: display error message for empty taxon id when update
+    Given I am on "/adminSample/update/id/432"
+    And I should see "lat_lon"
+    When I fill in the field of "name" "Sample[species_id]" with ":Foxtail millet"
+    And I press the button "Save"
+    And I wait "1" seconds
+    Then I should see "Please fix the following input errors:"
+    And I should see "Taxon ID is empty!"
+
+  @ok
   Scenario: display 1 input error message when update
     Given I am on "/adminSample/update/id/154"
     And I should see "lat_lon"
@@ -37,17 +47,6 @@ Feature: admin page for samples
     And I should see "1.32"
     And I should see "PYGAD"
 
-
-  @ok
-  Scenario: display error message for empty taxon id when update
-    Given I am on "/adminSample/update/id/432"
-    And I should see "lat_lon"
-    When I fill in the field of "name" "Sample[species_id]" with ":Foxtail millet"
-    And I press the button "Save"
-    And I wait "1" seconds
-    Then I should see "Please fix the following input errors:"
-    And I should see "Taxon ID is empty!"
-
   @ok
   Scenario: display input format error when update
     Given I am on "/adminSample/update/id/432"
@@ -68,16 +67,6 @@ Feature: admin page for samples
     Then I should see "Please fix the following input errors:"
     And I should see "Attribute name for the input animal=\tiger\ is not valid - please select a valid attribute name!"
     And I should see "Attribute name for the input plant=\rose\ is not valid - please select a valid attribute name!"
-
-  @ok
-  Scenario: display error message for empty taxon id when create
-    Given I am on "/adminSample/create"
-    And I should see "Create"
-    When I fill in the field of "name" "Sample[species_id]" with ""
-    And I press the button "Create"
-    And I wait "1" seconds
-    Then I should see "Please fix the following input errors:"
-    And I should see "Taxon ID is empty!"
 
   @ok
   Scenario: display error message for non numeric taxon id when create

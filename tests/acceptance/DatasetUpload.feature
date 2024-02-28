@@ -23,7 +23,8 @@ Scenario: Upload dataset metadata with an Excel spreadsheet
   Then I should see "Your GigaDB submission has been received and is currently under review."
   And I should see a link "Back to upload new dataset" to "/datasetSubmission/upload"
 
-@ok
+# Skipping this test because disabled attr was removed from button and instead browser client side validation is used to prevent submitting form with empty fields
+@skip
 Scenario: Ensure submit button is disabled after checking terms checkbox
   Given I sign in as a user
   And I am on "/datasetSubmission/upload"

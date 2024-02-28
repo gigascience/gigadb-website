@@ -8,7 +8,7 @@
  * Usage Example:
  *
  * ```php
- * $this->widget('application.components.TitleBreadcrumb', [
+ * $this->widget('TitleBreadcrumb', [
  *     'pageTitle' => 'Your Page Title',
  *     'breadcrumbItems' => [
  *         ['isActive' => true, 'label' => 'Admin'],
@@ -35,9 +35,11 @@
  */
 class TitleBreadcrumb extends CWidget
 {
-    public $pageTitle;
-    public $breadcrumbItems = [];
-    private const ACTIVE_CLASS = 'active';
+  public $pageTitle;
+  public $pageTitleId;
+  public $breadcrumbItems = [];
+  public $pageTitleLevel = 'h1';
+  private const ACTIVE_CLASS = 'active';
 
     private function generateBreadcrumbItems(): string
     {
@@ -62,9 +64,11 @@ class TitleBreadcrumb extends CWidget
 
         $breadcrumbHtml = $this->generateBreadcrumbItems();
 
-        Yii::app()->controller->renderPartial('//shared/_titleBreadcrumb', [
-            'pageTitle' => $this->pageTitle,
-            'breadcrumbHtml' => $breadcrumbHtml
-        ]);
-    }
+    Yii::app()->controller->renderPartial('//shared/_titleBreadcrumb', [
+      'pageTitleId' => $this->pageTitleId,
+      'pageTitle' => $this->pageTitle,
+      'breadcrumbHtml' => $breadcrumbHtml,
+      'pageTitleLevel' => $this->pageTitleLevel
+    ]);
+  }
 }

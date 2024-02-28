@@ -117,7 +117,7 @@ class FormattedDatasetSamples extends DatasetComponents implements DatasetSample
             $display = "<span class=\"js-short-$sample_id\">$shortDesc</span>
         		<span class=\"js-long-$sample_id\" style=\"display: none;\">$fullDesc</span>";
             if ($shortDesc) {
-                    $display .= "<a href='#' class='js-desc' data='$sample_id'>+</a>";
+                    $display .= "<button class='js-desc btn btn-link' data='$sample_id' aria-label='show more' aria-expanded='false' aria-controls='js-long-$sample_id'>+</button>";
             }
         } elseif ($num <= 3 && $num > 0) {
             $display = "<span class=\"js-long-$sample_id\">$fullDesc</span>";

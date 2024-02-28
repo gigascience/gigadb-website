@@ -1,4 +1,4 @@
-<?php 
+<?php
 ?>
 <div class="content">
     <div id="gigadb-fuw">
@@ -18,20 +18,22 @@
             <?php echo CHtml::beginForm(); ?>
                 <header class="page-title-section">
                     <div class="page-title">
-                        <ol class="breadcrumb pull-right">
-                            <li><a href="/">Home</a></li>
-                            <li><a href="/user/view_profile#submitted">Your profile</a></li>
-                            <li><a href="/authorisedDataset/uploadFiles/id/<?php echo $identifier; ?>">Step 1/2: Upload files</a></li>
-                            <li class="active">Step 2/2: Annotate files</li>
-                        </ol>
+                        <nav aria-label="breadcrumbs">
+                            <ol class="breadcrumb pull-right">
+                                <li><a href="/">Home</a></li>
+                                <li><a href="/user/view_profile#submitted">Your profile</a></li>
+                                <li><a href="/authorisedDataset/uploadFiles/id/<?php echo $identifier; ?>">Step 1/2: Upload files</a></li>
+                                <li class="active">Step 2/2: Annotate files</li>
+                            </ol>
+                        </nav>
                         <dataset-info identifier="<?php echo $identifier; ?>" />
                     </div>
                 </header>
                 <section class="row">
-                    <annotator identifier="<?php echo $identifier ?>" 
-                                v-bind:uploads='<?php echo json_encode($uploads) ?>' 
+                    <annotator identifier="<?php echo $identifier ?>"
+                                v-bind:uploads='<?php echo json_encode($uploads) ?>'
                                 v-bind:filetypes='<?php echo $filetypes ?>'
-                                v-bind:attributes='<?php echo json_encode($attributes, JSON_HEX_APOS|JSON_HEX_QUOT) ?>' 
+                                v-bind:attributes='<?php echo json_encode($attributes, JSON_HEX_APOS|JSON_HEX_QUOT) ?>'
                     />
                 </section>
                 <footer>
