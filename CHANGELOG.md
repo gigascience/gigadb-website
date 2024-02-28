@@ -4,6 +4,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1629: FUW - Upgrade Element UI to latest version
+
 ## v4.2.0 - 2024-02-27 - 017ba8f58
 
 - Fix #1659: Remove dependency on abandoned inter-container-communication project and fix broken tests
