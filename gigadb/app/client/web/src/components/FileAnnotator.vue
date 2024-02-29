@@ -132,29 +132,35 @@
 
 
     <div v-if="uploadedFiles.length > 0">
-      <el-drawer :title="`Add attributes to file: ${uploadedFiles[drawerIndex].name}`" :visible.sync="attrPanel"
-        :with-header="true" ref="attrPanel" :before-close="handleAttrClose" destroy-on-close>
-        <span>
-          <attribute-specifier id="attributes-form" :fileAttributes="fileAttributes[selectedUpload]" />
-        </span>
-        <div class="panel panel-success panel-drawer-tips">
-          <div class="panel-heading">
-            <h4 class="panel-title">Tips</h4>
-          </div>
-          <div class="panel-body">
-            <ul>
-              <li>The name and unit must be already existing in GigaDB.
-                If there is a typo or they don't exist, they will just be ignored upon finalising
-                the process.</li>
+      <accessible-drawer
+        :title="`Add attributes to file: ${uploadedFiles[drawerIndex].name}`"
+        :visible.sync="attrPanel"
+        :with-header="true"
+        :before-close="handleAttrClose"
+        destroy-on-close
+      >
+          <span>
+            <attribute-specifier id="attributes-form" :fileAttributes="fileAttributes[selectedUpload]" />
+          </span>
+          <div class="panel panel-success panel-drawer-tips">
+            <div class="panel-heading">
+              <h4 class="panel-title">Tips</h4>
+            </div>
+            <div class="panel-body">
+              <ul>
+                <li>The name and unit must be already existing in GigaDB.
+                  If there is a typo or they don't exist, they will just be ignored upon finalising
+                  the process.</li>
 
-              <li>You can alternate adding and removing any number of file attributes in this panel with editing the
-                metadata in the table on the main form. Your selection won't be lost.</li>
+                <li>You can alternate adding and removing any number of file attributes in this panel with editing the
+                  metadata in the table on the main form. Your selection won't be lost.</li>
 
-              <li>If you leave/reload the web page, the entries made in the panel will be lost.</li>
-            </ul>
-          </div>
+                <li>If you leave/reload the web page, the entries made in the panel will be lost.</li>
+              </ul>
+            </div>
         </div>
-      </el-drawer>
+      </accessible-drawer>
+
       <!-- NOTE fuw-sample-ids Sample ID drawer -->
       <!-- <el-drawer :title="`Add samples to file: ${uploadedFiles[drawerIndex].name}`" :visible.sync="samplePanel"
         :with-header="true" ref="samplesPanel" destroy-on-close>
@@ -230,12 +236,14 @@
 import AttributeSpecifier from './AttributeSpecifier.vue'
 import IdSampler from './IdSampler.vue'
 import FileAnnotatorSubmitButton from './FileAnnotatorSubmitButton.vue'
+import AccessibleDrawer from './AccessibleDrawer.vue'
 
 export default {
   components: {
     "attribute-specifier": AttributeSpecifier,
     "id-sampler": IdSampler,
-    "file-annotator-submit-button": FileAnnotatorSubmitButton
+    "file-annotator-submit-button": FileAnnotatorSubmitButton,
+    "accessible-drawer": AccessibleDrawer
   },
   props: {
     identifier: { type: String }, // Unused?
@@ -262,6 +270,7 @@ export default {
       samplePanel: false,
       drawerIndex: 0,
       selectedUpload: -1,
+      showTrapFocus: false
     }
   },
   computed: {
@@ -270,6 +279,9 @@ export default {
     }
   },
   methods: {
+    toggleTrapFocus() {
+      this.showTrapFocus = !this.showTrapFocus
+    },
     fieldHasChanged(uploadIndex) {
       if (this.uploadedFiles[uploadIndex].datatype != undefined && this.uploadedFiles[uploadIndex].datatype.length > 0 && this.uploadedFiles[uploadIndex].description != undefined && this.uploadedFiles[uploadIndex].description.length > 0) {
         this.metaComplete.includes(uploadIndex) || this.metaComplete.push(uploadIndex)
