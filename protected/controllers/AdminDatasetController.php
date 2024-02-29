@@ -485,8 +485,8 @@ class AdminDatasetController extends Controller
         $result['status'] = false;
         $status_array = array('Submitted', 'UserStartedIncomplete', 'Curation');
 
-        $mds_metadata_url="https://mds.datacite.org/metadata";
-        $mds_doi_url="https://mds.datacite.org/doi";
+        $mds_metadata_url="https://mds.test.datacite.org/metadata";
+        $mds_doi_url="https://mds.test.datacite.org/doi";
 
         $mds_username = Yii::app()->params['mds_username'];
         $mds_password = Yii::app()->params['mds_password'];
@@ -505,7 +505,7 @@ class AdminDatasetController extends Controller
             if ($dataset && ! in_array($dataset->upload_status, $status_array)) {
                 $xml_data = $dataset->toXML();
                 $ch= curl_init();
-                curl_setopt($ch, CURLOPT_URL, $mds_metadata_url);
+                curl_setopt($ch, CURLOPT_URL, $mds_metadata_url . '/' . $mds_prefix . '/' . $doi);
                 curl_setopt($ch, CURLOPT_POST, 1);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
                 curl_setopt($ch, CURLOPT_POSTFIELDS, "$xml_data");
@@ -518,15 +518,15 @@ class AdminDatasetController extends Controller
                 curl_close($ch) ;
             }
 
-            if ($dataset && $result['md_curl_status'] == 201) {
-                $doi_data = "doi=".$mds_prefix."/".$doi."\n"."url=http://gigadb.org/dataset/".$dataset->identifier ;
+            if ($dataset && $result['md_curl_status'] == 201) { # make sure the metadata has been registered first
+                $doi_data = "doi=".$mds_prefix."/".$doi."\n"."url=http://gigadb.org/dataset/";
                 $result['doi_data']  = $doi_data;
                 $ch2= curl_init();
-                curl_setopt($ch2, CURLOPT_URL, $mds_doi_url);
-                curl_setopt($ch2, CURLOPT_POST, 1);
+                curl_setopt($ch2, CURLOPT_URL, $mds_doi_url. '/' . $mds_prefix . '/' . $doi);
+                curl_setopt($ch2, CURLOPT_CUSTOMREQUEST, "PUT");
                 curl_setopt($ch2, CURLOPT_RETURNTRANSFER, 1);
                 curl_setopt($ch2, CURLOPT_POSTFIELDS, $doi_data);
-                curl_setopt($ch2, CURLOPT_HTTPHEADER, array('Content-Type:application/xml;charset=UTF-8'));
+                curl_setopt($ch2, CURLOPT_HTTPHEADER, array('Content-Type:text/plain;charset=UTF-8'));
                 curl_setopt($ch2, CURLOPT_USERPWD, $mds_username . ":" . $mds_password);
                 $curl_response = curl_exec($ch2);
                 $result['doi_curl_response'] = $curl_response;
