@@ -134,21 +134,23 @@
           <span>
             <attribute-specifier id="attributes-form" :fileAttributes="fileAttributes[selectedUpload]" />
           </span>
-          <div class="panel panel-success panel-drawer-tips">
-            <div class="panel-heading">
-              <h4 class="panel-title">Tips</h4>
-            </div>
-            <div class="panel-body">
-              <ul>
-                <li>The name and unit must be already existing in GigaDB.
-                  If there is a typo or they don't exist, they will just be ignored upon finalising
-                  the process.</li>
+          <div class="container-fluid">
+            <div class="panel tips-panel panel-drawer-tips">
+              <div class="panel-heading">
+                <h3 class="h4 panel-title">Tips</h3>
+              </div>
+              <div class="panel-body">
+                <ul>
+                  <li>The name and unit must be already existing in GigaDB.
+                    If there is a typo or they don't exist, they will just be ignored upon finalising
+                    the process.</li>
 
-                <li>You can alternate adding and removing any number of file attributes in this panel with editing the
-                  metadata in the table on the main form. Your selection won't be lost.</li>
+                  <li>You can alternate adding and removing any number of file attributes in this panel with editing the
+                    metadata in the table on the main form. Your selection won't be lost.</li>
 
-                <li>If you leave/reload the web page, the entries made in the panel will be lost.</li>
-              </ul>
+                  <li>If you leave/reload the web page, the entries made in the panel will be lost.</li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
@@ -211,8 +213,7 @@
 }
 
 .panel-drawer-tips {
-  margin: 1em;
-  width: 90%
+  margin-top: 1em;
 }
 
 .form-group.required .control-label:after {
@@ -263,8 +264,7 @@ export default {
       fileAttributes: this.attributes || [],
       filesToDelete: [],
       metaComplete: [],
-      dataTypes: Object.keys(this.filetypes),
-      attrPanel: true,
+      attrPanel: false,
       samplePanel: false,
       drawerIndex: 0,
       selectedUpload: -1,
@@ -274,12 +274,12 @@ export default {
   computed: {
     isMetadataComplete: function () {
       return this.metaComplete.length === this.uploadedFiles.length
+    },
+    dataTypes: function () {
+      return Object.keys(this.filetypes)
     }
   },
   methods: {
-    toggleTrapFocus() {
-      this.showTrapFocus = !this.showTrapFocus
-    },
     fieldHasChanged(uploadIndex) {
       if (this.uploadedFiles[uploadIndex].datatype != undefined && this.uploadedFiles[uploadIndex].datatype.length > 0 && this.uploadedFiles[uploadIndex].description != undefined && this.uploadedFiles[uploadIndex].description.length > 0) {
         this.metaComplete.includes(uploadIndex) || this.metaComplete.push(uploadIndex)

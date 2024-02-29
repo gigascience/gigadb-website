@@ -2,11 +2,10 @@ This component has the same API as the `el-drawer` component (https://element.el
 
 <template>
   <focus-trap v-if="localVisible">
-    <el-drawer
-      v-bind="$attrs"
-      v-on="$listeners"
-      :visible.sync="localVisible"
-    >
+    <el-drawer v-bind="$attrs" v-on="$listeners" :visible.sync="localVisible">
+      <template v-slot:title>
+        <h2 v-if="title" class="h4">{{ title }}</h2>
+      </template>
       <slot></slot>
     </el-drawer>
   </focus-trap>
@@ -21,7 +20,14 @@ export default {
     FocusTrap,
   },
   props: {
-    visible: Boolean,
+    visible: {
+      type: Boolean,
+      required: true
+    },
+    title: {
+      type: String,
+      required: true
+    },
   },
   data() {
     return {

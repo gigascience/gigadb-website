@@ -25,16 +25,23 @@
       />
       <button @click="addNewAttribute" class="btn background-btn btn-small pull-right add-new-attribute" id="add-new-attribute" aria-label="Add attribute">Add</button>
     </fieldset>
-    <el-table class="attr-table" :data="attributes" height="250">
+    <el-table class="attr-table" :data="attributes">
       <el-table-column prop="name" label="Name">
       </el-table-column>
       <el-table-column prop="value" label="Value">
       </el-table-column>
       <el-table-column prop="unit" label="Unit">
       </el-table-column>
-      <el-table-column fixed="right" width="45">
+      <el-table-column fixed="right" label="Actions">
         <template v-slot="{ $index }">
-          <el-button type="danger" icon="el-icon-delete" size="small" @click.prevent="removeAttribute($index)" circle>
+          <el-button
+            type="danger"
+            icon="el-icon-delete"
+            size="mini"
+            circle
+            @click.prevent="removeAttribute($index)"
+            :aria-label="`Remove attribute ${attributes[$index].name}`"
+          >
           </el-button>
         </template>
       </el-table-column>
@@ -42,18 +49,21 @@
   </div>
 </template>
 
-<style scoped>
-.attr-table {
-  width: 90%;
-}
+<style lang="less" scoped>
 .add-new-attribute {
   margin-bottom: 5px;
   min-width: 80px;
+}
+.attr-table::v-deep {
+  .cell {
+    overflow: visible;
+  }
 }
 </style>
 
 <script>
 import InputField from './InputField.vue';
+
 export default {
   components: {
     'input-field': InputField
