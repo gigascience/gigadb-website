@@ -1,21 +1,30 @@
 <template>
-  <div>
-    <!-- WARN this form is nested inside another form -->
-    <form name="new-attribute-form">
-      <label class="control-label" for="new-attr-name-field">
-        Name:
-        <input v-model="name" type="text" id="new-attr-name-field" name="name" />
-      </label>
-      <label class="control-label" for="new-attr-value-field">
-        Value:
-        <input v-model="value" type="text" id="new-attr-value-field" name="value" />
-      </label>
-      <label class="control-label" for="new-attr-unit-field">
-        Unit:
-        <input v-model="unit" type="text" id="new-attr-unit-field" name="unit" />
-      </label>
-      <button @click="addNewAttribute" class="btn btn-success btn-small" id="add-new-attribute">Add</button>
-    </form>
+  <div class="container-fluid">
+    <fieldset>
+      <legend>Add a new attribute</legend>
+      <input-field
+        label="Name"
+        :modelValue="name"
+        id="new-attr-name-field"
+        name="name"
+        @update:modelValue="name = $event"
+      />
+      <input-field
+        label="Value"
+        :modelValue="value"
+        id="new-attr-name-field"
+        name="name"
+        @update:modelValue="value = $event"
+      />
+      <input-field
+        label="Unit"
+        :modelValue="unit"
+        id="new-attr-name-field"
+        name="name"
+        @update:modelValue="unit = $event"
+      />
+      <button @click="addNewAttribute" class="btn background-btn btn-small pull-right add-new-attribute" id="add-new-attribute" aria-label="Add attribute">Add</button>
+    </fieldset>
     <el-table class="attr-table" :data="attributes" height="250">
       <el-table-column prop="name" label="Name">
       </el-table-column>
@@ -37,10 +46,18 @@
 .attr-table {
   width: 90%;
 }
+.add-new-attribute {
+  margin-bottom: 5px;
+  min-width: 80px;
+}
 </style>
 
 <script>
+import InputField from './InputField.vue';
 export default {
+  components: {
+    'input-field': InputField
+  },
   props: {
     fileAttributes: {
       type: Array,

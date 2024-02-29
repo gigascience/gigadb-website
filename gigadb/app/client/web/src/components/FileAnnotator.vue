@@ -1,7 +1,9 @@
 <template>
   <div>
-    <p class="mb-20">Please, use this table to annotate the files you've just uploaded with metadata. Once you're done with mandatory
-      fields (Data Type and Description) for all files, the "Complete and return to Your Uploaded Datasets page" button will
+    <p class="mb-20">Please, use this table to annotate the files you've just uploaded with metadata. Once you're done
+      with mandatory
+      fields (Data Type and Description) for all files, the "Complete and return to Your Uploaded Datasets page" button
+      will
       be enabled at the bottom of the page. You must click it to effect your file submission.</p>
     <div>
       <table class="table table-striped table-bordered">
@@ -17,18 +19,16 @@
         </thead>
         <tbody>
           <tr v-for="(upload, index) in uploadedFiles" :key="`${upload.id}-uploadedfiles`">
-            <td><span :id="`${upload.id}File`" data-toggle="tooltip" data-placement="bottom" :title="`md5:${upload.initial_md5}`">{{
-              upload.name }}</span>
+            <td><span :id="`${upload.id}File`" data-toggle="tooltip" data-placement="bottom"
+                :title="`md5:${upload.initial_md5}`">{{
+                  upload.name }}</span>
               <input type="hidden" :name="`Upload[${upload.id}][name]`" :value="upload.name">
             </td>
             <td>
               <div class="form-group m-0">
-                <select
-                  v-model="upload.datatype"
-                  :name="`Upload[${upload.id}][datatype]`"
-                  :id="`upload-${(index + 1)}-datatype`" @change="fieldHasChanged(index, $event)" :aria-labelledy="`${upload.id}File dataTypeTh`"
-                  class="form-control td-content"
-                >
+                <select v-model="upload.datatype" :name="`Upload[${upload.id}][datatype]`"
+                  :id="`upload-${(index + 1)}-datatype`" @change="fieldHasChanged(index, $event)"
+                  :aria-labelledy="`${upload.id}File dataTypeTh`" class="form-control td-content">
                   <option v-for="datatype in dataTypes" :key="`${datatype}-datatype`">{{ datatype }}</option>
                 </select>
               </div>
@@ -37,16 +37,10 @@
             <td>{{ upload.size }}</td>
             <td>
               <div class="form-group m-0">
-                  <input
-                    v-model="upload.description"
-                    class="form-control td-content"
-                    type="text"
-                    :name="`Upload[${upload.id}][description]`" :id="`upload-${(index + 1)}-description`"
-                    @input="fieldHasChanged(index, $event)"
-                    required
-                    aria-required="true"
-                    :aria-labelledy="`${upload.id}File descriptionTh`"
-                  >
+                <input v-model="upload.description" class="form-control td-content" type="text"
+                  :name="`Upload[${upload.id}][description]`" :id="`upload-${(index + 1)}-description`"
+                  @input="fieldHasChanged(index, $event)" required aria-required="true"
+                  :aria-labelledy="`${upload.id}File descriptionTh`">
               </div>
             </td>
             <td>
@@ -63,7 +57,8 @@
                   Sample IDs
                 </el-button> -->
                 <el-button :id="`upload-${index + 1}-delete`" :class="`delete-button-${index}`" type="danger"
-                  icon="el-icon-delete" @click="deleteUpload(index, upload.id)" circle :aria-label="`delete file ${upload.name}`"></el-button>
+                  icon="el-icon-delete" @click="deleteUpload(index, upload.id)" circle
+                  :aria-label="`delete file ${upload.name}`"></el-button>
               </div>
             </td>
           </tr>
@@ -73,7 +68,8 @@
 
 
     <aside>
-      <p class="mb-20">If you have many files, you may wish to prepare the information in a spreadsheet and upload that using the form
+      <p class="mb-20">If you have many files, you may wish to prepare the information in a spreadsheet and upload that
+        using the form
         below. The metadata table above will be overwritten to reflect the content of the spreadsheet.
 
         The uploader will only parse CSV and TSV files. Do not try to upload in other formats.
@@ -132,13 +128,9 @@
 
 
     <div v-if="uploadedFiles.length > 0">
-      <accessible-drawer
-        :title="`Add attributes to file: ${uploadedFiles[drawerIndex].name}`"
-        :visible.sync="attrPanel"
-        :with-header="true"
-        :before-close="handleAttrClose"
-        destroy-on-close
-      >
+      <accessible-drawer :title="`Add attributes to file: ${uploadedFiles[drawerIndex].name}`" :visible.sync="attrPanel"
+        :with-header="true" :before-close="handleAttrClose" destroy-on-close>
+        <div class="attributes-drawer-body">
           <span>
             <attribute-specifier id="attributes-form" :fileAttributes="fileAttributes[selectedUpload]" />
           </span>
@@ -158,6 +150,7 @@
                 <li>If you leave/reload the web page, the entries made in the panel will be lost.</li>
               </ul>
             </div>
+          </div>
         </div>
       </accessible-drawer>
 
@@ -193,8 +186,8 @@
         </div>
       </el-drawer> -->
     </div>
-    <input v-for="(uploadId, index) in filesToDelete" :key="`${uploadId}-filesToDelete`" type="hidden" :name="`DeleteList[${index}]`"
-      :value="uploadId" />
+    <input v-for="(uploadId, index) in filesToDelete" :key="`${uploadId}-filesToDelete`" type="hidden"
+      :name="`DeleteList[${index}]`" :value="uploadId" />
 
     <div v-for="(attributes, uid) in fileAttributes" :key="`${uid}-fileAttrs`">
       <div v-for="(attr, idx) in attributes" :key="`${idx}-fileAttr`">
@@ -229,6 +222,11 @@
 
 .td-content {
   height: 39px;
+}
+
+.attributes-drawer-body {
+  margin-top: 5px;
+  padding-inline: 10px;
 }
 </style>
 
@@ -266,7 +264,7 @@ export default {
       filesToDelete: [],
       metaComplete: [],
       dataTypes: Object.keys(this.filetypes),
-      attrPanel: false,
+      attrPanel: true,
       samplePanel: false,
       drawerIndex: 0,
       selectedUpload: -1,
@@ -274,7 +272,7 @@ export default {
     }
   },
   computed: {
-    isMetadataComplete: function() {
+    isMetadataComplete: function () {
       return this.metaComplete.length === this.uploadedFiles.length
     }
   },
