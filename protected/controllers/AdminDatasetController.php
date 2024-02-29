@@ -485,8 +485,8 @@ class AdminDatasetController extends Controller
         $result['status'] = false;
         $status_array = array('Submitted', 'UserStartedIncomplete', 'Curation');
 
-        $mds_metadata_url="https://mds.test.datacite.org/metadata";
-        $mds_doi_url="https://mds.test.datacite.org/doi";
+        $mds_metadata_url= Yii::app()->params['mds_metadata_url'];
+        $mds_doi_url= Yii::app()->params['mds_doi_url'];
 
         $mds_username = Yii::app()->params['mds_username'];
         $mds_password = Yii::app()->params['mds_password'];
