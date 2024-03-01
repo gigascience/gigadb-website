@@ -482,7 +482,6 @@ class AdminDatasetController extends Controller
      */
     public function actionMint()
     {
-        $result['status'] = false;
         $status_array = array('Submitted', 'UserStartedIncomplete', 'Curation');
 
         $mds_metadata_url= Yii::app()->params['mds_metadata_url'];
@@ -502,23 +501,40 @@ class AdminDatasetController extends Controller
             $doi = trim($doi);
             $dataset = Dataset::model()->find("identifier=?", array($doi));
 
-            if ($dataset && ! in_array($dataset->upload_status, $status_array)) {
+            if ($dataset && ! in_array($dataset->upload_status, $status_array) ) {
+                $checkMeta = curl_init();
+                curl_setopt($checkMeta, CURLOPT_URL, $mds_metadata_url . '/' . $mds_prefix . '/' . $doi);
+                curl_setopt($checkMeta, CURLOPT_RETURNTRANSFER, 1);
+                curl_setopt($checkMeta, CURLOPT_USERPWD, $mds_username . ":" . $mds_password);
+                $checkMetaResponse = curl_exec($checkMeta);
+                $result['metadata_response'] = $checkMetaResponse;
+                $result['metadata_status'] = curl_getinfo($checkMeta, CURLINFO_HTTP_CODE);
+                curl_close($checkMeta);
+
+                $checkDoi = curl_init();
+                curl_setopt($checkDoi, CURLOPT_URL, $mds_doi_url. '/' . $mds_prefix . '/' . $doi);
+                curl_setopt($checkDoi, CURLOPT_RETURNTRANSFER, 1);
+                curl_setopt($checkDoi, CURLOPT_USERPWD, $mds_username . ":" . $mds_password);
+                $checkDoiResponse = curl_exec($checkDoi);
+                $result['doi_response'] = $checkDoiResponse;
+                $result['doi_status'] = curl_getinfo($checkDoi, CURLINFO_HTTP_CODE);
+                curl_close($checkDoi);
+            }
+
+            if ( $result['metadata_status'] == 404 && $result['doi_status'] ==  404 ) {
                 $xml_data = $dataset->toXML();
                 $ch= curl_init();
                 curl_setopt($ch, CURLOPT_URL, $mds_metadata_url . '/' . $mds_prefix . '/' . $doi);
-                curl_setopt($ch, CURLOPT_POST, 1);
+                curl_setopt($ch, CURLOPT_PUT, 1);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
                 curl_setopt($ch, CURLOPT_POSTFIELDS, "$xml_data");
                 curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/xml;charset=UTF-8'));
                 curl_setopt($ch, CURLOPT_USERPWD, $mds_username . ":" . $mds_password);
                 $curl_response = curl_exec($ch);
                 $result['md_curl_response'] = $curl_response;
-                $info1 = curl_getinfo($ch);
-                $result['md_curl_status'] = $info1['http_code'];
+                $result['md_curl_status'] = curl_getinfo($ch, CURLINFO_HTTP_CODE);
                 curl_close($ch) ;
-            }
 
-            if ($dataset && $result['md_curl_status'] == 201) { # make sure the metadata has been registered first
                 $doi_data = "doi=".$mds_prefix."/".$doi."\n"."url=http://gigadb.org/dataset/".$doi;
                 $result['doi_data']  = $doi_data;
                 $ch2= curl_init();
@@ -530,13 +546,8 @@ class AdminDatasetController extends Controller
                 curl_setopt($ch2, CURLOPT_USERPWD, $mds_username . ":" . $mds_password);
                 $curl_response = curl_exec($ch2);
                 $result['doi_curl_response'] = $curl_response;
-                $info2 = curl_getinfo($ch2);
-                $result['doi_curl_status'] = $info2['http_code'];
+                $result['doi_curl_status'] = curl_getinfo($ch2, CURLINFO_HTTP_CODE);
                 curl_close($ch2) ;
-            }
-
-            if (isset($result['doi_curl_status']) && $result['doi_curl_status'] == 201) {
-                $result['status'] = true;
             }
         }
 
