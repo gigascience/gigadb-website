@@ -17,7 +17,7 @@ $this->pageTitle = 'GigaDB - FAQ';
         ]);
         ?>
         <section>
-          <div class="panel-group" id="accordion">
+          <div class="panel-group accordion" id="accordion">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading01">

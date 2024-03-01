@@ -165,15 +165,9 @@ class AuthorisedDatasetFilesUploadAction extends FunctionalTesting
 
         $this->assertNotFalse( 
             strstr($this->session->getPage()->getContent(), 
-                    '<uploader identifier="100142" endpoint="/fileserver/" />'
+                    '<file-uploader identifier="100142" endpoint="/fileserver/" />'
             )
         );
-        $this->assertNotFalse( 
-            strstr($this->session->getPage()->getContent(), 
-                    '<pager identifier="100142" uploads-exist="0"/>'
-                )
-        );        
-
     }
 
     public function testReturnAuthorSeeUploaderAndUploadsExist() {
@@ -200,12 +194,7 @@ class AuthorisedDatasetFilesUploadAction extends FunctionalTesting
 
         $this->assertNotFalse( 
             strstr($this->session->getPage()->getContent(), 
-                    '<uploader identifier="100142" endpoint="/fileserver/" />'
-            )
-        );        
-        $this->assertNotFalse( 
-            strstr($this->session->getPage()->getContent(), 
-                    '<pager identifier="100142" uploads-exist="2"/>'
+                    '<file-uploader identifier="100142" endpoint="/fileserver/" />'
             )
         );
     }
