@@ -355,10 +355,12 @@ echo $form->hiddenField($model, "image_id");
                                             'dataType' => 'json',
                                             'success' => 'js:function(output){
                                             console.log(output);
-                                            if(output.status){
+                                            if (output.metadata_status == 200 && output.doi_status == 200) {
+                                                $("#minting").addClass("infoMessage");
+                                                $("#minting").html("This DOI exists in datacite already, no need to mint.");
+                                            } else if (output.md_curl_status == 201 && output.doi_curl_status == 201) {
                                                 $("#minting").removeClass("errorMessage");
                                                 $("#minting").html("new DOI successfully minted");
-
                                             }else {
                                                 $("#minting").addClass("errorMessage");
                                                 $("#minting").html("error minting a DOI: "+ output.md_curl_status + ", " + output.doi_curl_status);
