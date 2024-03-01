@@ -9,12 +9,12 @@
         be enabled at the bottom of the page. You must click it to effect your file submission.</p>
       <p>Required fields are followed by <span aria-label="required">*</span>.</p>
     </div>
-    <div>
+    <form method="post" class="mb-20">
       <table class="table table-striped table-bordered">
         <thead>
           <tr>
             <th scope="col">File Name</th>
-            <th scope="col" id="dataTypeTh">Data Type</th>
+            <th scope="col" id="dataTypeTh">Data Type<span aria-label="required">*</span></th>
             <th scope="col">Format</th>
             <th scope="col">Size</th>
             <th scope="col" id="descriptionTh">Description<span aria-label="required">*</span></th>
@@ -32,7 +32,8 @@
               <div class="form-group m-0">
                 <select v-model="upload.datatype" :name="`Upload[${upload.id}][datatype]`"
                   :id="`upload-${(index + 1)}-datatype`" @change="fieldHasChanged(index, $event)"
-                  :aria-labelledby="`${upload.id}File dataTypeTh`" class="form-control td-content">
+                  :aria-labelledby="`${upload.id}File dataTypeTh`" class="form-control td-content" required
+                  aria-required="true">
                   <option v-for="datatype in dataTypes" :key="`${datatype}-datatype`">{{ datatype }}</option>
                 </select>
               </div>
@@ -68,7 +69,18 @@
           </tr>
         </tbody>
       </table>
-    </div>
+      <input v-for="(uploadId, index) in filesToDelete" :key="`${uploadId}-filesToDelete`" type="hidden"
+        :name="`DeleteList[${index}]`" :value="uploadId" />
+
+      <div v-for="(attributes, uid) in fileAttributes" :key="`${uid}-fileAttrs`">
+        <div v-for="(attr, idx) in attributes" :key="`${idx}-fileAttr`">
+          <input type="hidden" :name="`Attributes[${uid}][Attributes][${idx}][name]`" :value="attr['name']" />
+          <input type="hidden" :name="`Attributes[${uid}][Attributes][${idx}][value]`" :value="attr['value']" />
+          <input type="hidden" :name="`Attributes[${uid}][Attributes][${idx}][unit]`" :value="attr['unit']" />
+        </div>
+      </div>
+      <file-annotator-submit-button :disabled="!isMetadataComplete" />
+    </form>
 
 
     <aside>
@@ -76,7 +88,8 @@
         using the form
         below. The metadata table above will be overwritten to reflect the content of the spreadsheet.
 
-        The uploader will only parse CSV and TSV files. Do not try to upload in other formats.
+        The uploader will only parse <abbr title="comma separated values">CSV</abbr> and <abbr
+          title="tab separate values">TSV</abbr> files. Do not try to upload in other formats.
 
         With this method of bulk metadata upload, you can also associate references to existing samples and to up to
         five
@@ -154,17 +167,6 @@
         </div>
       </el-drawer> -->
     </div>
-    <input v-for="(uploadId, index) in filesToDelete" :key="`${uploadId}-filesToDelete`" type="hidden"
-      :name="`DeleteList[${index}]`" :value="uploadId" />
-
-    <div v-for="(attributes, uid) in fileAttributes" :key="`${uid}-fileAttrs`">
-      <div v-for="(attr, idx) in attributes" :key="`${idx}-fileAttr`">
-        <input type="hidden" :name="`Attributes[${uid}][Attributes][${idx}][name]`" :value="attr['name']" />
-        <input type="hidden" :name="`Attributes[${uid}][Attributes][${idx}][value]`" :value="attr['value']" />
-        <input type="hidden" :name="`Attributes[${uid}][Attributes][${idx}][unit]`" :value="attr['unit']" />
-      </div>
-    </div>
-    <file-annotator-submit-button :disabled="!isMetadataComplete" />
   </div>
 </template>
 

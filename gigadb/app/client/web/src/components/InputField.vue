@@ -1,17 +1,27 @@
 <template>
-  <div class="form-group row">
+  <div class="form-group row" :class="[error && 'has-error']">
     <label :for="_uid" class="col-sm-2 control-label">
-      {{ label }}:
+      {{ label }}<span v-if="required" aria-label="required" class="required">*</span>:
     </label>
     <div class="col-sm-10">
       <input
+        v-bind="$attrs"
+        :required="required"
+        :aria-required="required"
         :id="_uid"
         :name="name"
         v-model="inputValue"
         class="form-control"
         :type="type"
         @input="$emit('update:modelValue', inputValue)"
+        :aria-describedby="error && `${_uid}-error`"
+        ref="inputRef"
       />
+      <div :id="`${_uid}-error`" :class="[error && 'control-error help-block']" role="alert">
+        <span v-if="error">
+          {{ error }}
+        </span>
+      </div>
     </div>
   </div>
 </template>
@@ -42,6 +52,14 @@ export default {
       type: String,
       default: 'text',
     },
+    error: {
+      type: String,
+      default: '',
+    },
+    required: {
+      type: Boolean,
+      default: false,
+    }
   },
   data() {
     return {
@@ -53,5 +71,10 @@ export default {
       this.inputValue = newValue;
     },
   },
+  methods: {
+    focus() {
+      this.$refs.inputRef.focus();
+    }
+  }
 };
 </script>
