@@ -259,29 +259,29 @@ class FiledropAccount extends \yii\db\ActiveRecord
     {
         $status = true ;
 
-        $uploaderExists = shell_exec("grep uploader-$doi /etc/pure-ftpd/passwd/pureftpd.passwd");
-        $downloaderExists = shell_exec("grep downloader-$doi /etc/pure-ftpd/passwd/pureftpd.passwd");
-        if ($uploaderExists || $downloaderExists)
-            Yii::warning("!! FTP account already exists");
-        $dryRunModeArray = ["bash","-c","pwd"] ;
-        $uploaderCommandArray = ["bash","-c","/usr/bin/pure-pw useradd uploader-$doi -f /etc/pure-ftpd/passwd/pureftpd.passwd -m -u uploader -d /home/uploader/$doi  < /var/private/$doi/uploader_token.txt"] ;
-
-        $downloaderCommandArray = ["bash","-c","/usr/bin/pure-pw useradd downloader-$doi -f /etc/pure-ftpd/passwd/pureftpd.passwd -m -u downloader -d /home/downloader/$doi  < /var/private/$doi/downloader_token.txt"] ;
-
-
-        if ($this->dryRunMode) {
-            $dryRunModeRsp = $dockerManager->loadAndRunCommand("ftpd", $dryRunModeArray);
-        }
-        else {
-            if (!$uploaderExists)
-                $upload_response = $dockerManager->loadAndRunCommand("ftpd", $uploaderCommandArray);
-            if (!$downloaderExists)
-                $download_response = $dockerManager->loadAndRunCommand("ftpd", $downloaderCommandArray);
-        }
-
-        if ((!$uploaderExists && null === $upload_response) || (!$downloaderExists && null === $download_response)) {
-            return false;
-        }
+//        $uploaderExists = shell_exec("grep uploader-$doi /etc/pure-ftpd/passwd/pureftpd.passwd");
+//        $downloaderExists = shell_exec("grep downloader-$doi /etc/pure-ftpd/passwd/pureftpd.passwd");
+//        if ($uploaderExists || $downloaderExists)
+//            Yii::warning("!! FTP account already exists");
+//        $dryRunModeArray = ["bash","-c","pwd"] ;
+//        $uploaderCommandArray = ["bash","-c","/usr/bin/pure-pw useradd uploader-$doi -f /etc/pure-ftpd/passwd/pureftpd.passwd -m -u uploader -d /home/uploader/$doi  < /var/private/$doi/uploader_token.txt"] ;
+//
+//        $downloaderCommandArray = ["bash","-c","/usr/bin/pure-pw useradd downloader-$doi -f /etc/pure-ftpd/passwd/pureftpd.passwd -m -u downloader -d /home/downloader/$doi  < /var/private/$doi/downloader_token.txt"] ;
+//
+//
+//        if ($this->dryRunMode) {
+//            $dryRunModeRsp = $dockerManager->loadAndRunCommand("ftpd", $dryRunModeArray);
+//        }
+//        else {
+//            if (!$uploaderExists)
+//                $upload_response = $dockerManager->loadAndRunCommand("ftpd", $uploaderCommandArray);
+//            if (!$downloaderExists)
+//                $download_response = $dockerManager->loadAndRunCommand("ftpd", $downloaderCommandArray);
+//        }
+//
+//        if ((!$uploaderExists && null === $upload_response) || (!$downloaderExists && null === $download_response)) {
+//            return false;
+//        }
         return $status;
     }
 
@@ -297,16 +297,16 @@ class FiledropAccount extends \yii\db\ActiveRecord
     {
         $status = true;
 
-        $uploaderCommandArray = ["bash","-c","/usr/bin/pure-pw userdel uploader-$doi -f /etc/pure-ftpd/passwd/pureftpd.passwd -m"] ;
-
-        $downloaderCommandArray = ["bash","-c","/usr/bin/pure-pw userdel downloader-$doi -f /etc/pure-ftpd/passwd/pureftpd.passwd -m"] ;
-
-        $upload_response = $dockerManager->loadAndRunCommand("ftpd", $uploaderCommandArray);
-        $download_response = $dockerManager->loadAndRunCommand("ftpd", $downloaderCommandArray);
-
-        if (null === $upload_response || null === $download_response) {
-            return false;
-        }
+//        $uploaderCommandArray = ["bash","-c","/usr/bin/pure-pw userdel uploader-$doi -f /etc/pure-ftpd/passwd/pureftpd.passwd -m"] ;
+//
+//        $downloaderCommandArray = ["bash","-c","/usr/bin/pure-pw userdel downloader-$doi -f /etc/pure-ftpd/passwd/pureftpd.passwd -m"] ;
+//
+//        $upload_response = $dockerManager->loadAndRunCommand("ftpd", $uploaderCommandArray);
+//        $download_response = $dockerManager->loadAndRunCommand("ftpd", $downloaderCommandArray);
+//
+//        if (null === $upload_response || null === $download_response) {
+//            return false;
+//        }
         return $status;
     }
 
@@ -340,18 +340,19 @@ class FiledropAccount extends \yii\db\ActiveRecord
     function checkFTPAccount(\backend\models\DockerManager $dockerManager, string $doi): string
     {
 
+        $response = true;
 
-        $command = ["bash","-c","cat /etc/pure-ftpd/passwd/pureftpd.passwd | grep $doi"] ;
-
-        $stream = $dockerManager->loadAndRunCommand("ftpd", $command);
-
-
-        $response = '';
-        $stream->onStdout(function ($stdout) use (&$response): void {
-            $response .= $response;
-        });
-
-        $stream->wait();
+//        $command = ["bash","-c","cat /etc/pure-ftpd/passwd/pureftpd.passwd | grep $doi"] ;
+//
+//        $stream = $dockerManager->loadAndRunCommand("ftpd", $command);
+//
+//
+//        $response = '';
+//        $stream->onStdout(function ($stdout) use (&$response): void {
+//            $response .= $response;
+//        });
+//
+//        $stream->wait();
 
         return $response;
     }

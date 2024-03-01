@@ -1,7 +1,7 @@
 const { test, expect } = require('@playwright/test');
 
 test('Can scroll horizontally in File table', async ({ page }) => {
-    await page.goto('http://gigadb.test/dataset/102484');
+    await page.goto('/dataset/102484');
 
     // Check File Name column name in File table is visible
     const filename_column_header = page.locator('xpath=//*[@id="files_table"]/thead/tr/th[1]');

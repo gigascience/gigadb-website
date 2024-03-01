@@ -9,45 +9,217 @@ label {
   margin-bottom: 10px;
 }
 
-.form-group {
-  margin-bottom: 20px;
+// Base input styles
+input, select, textarea {
+  border: 1px solid @color-medium-gray;
+  border-radius: 4px;
+  background-color: @color-true-white;
 }
-
-input[type="checkbox"] {
-  width: auto;
-}
-.checkbox input[type="checkbox"] {
-  opacity: 0;
-  margin-right: 5px;
-}
-.checkbox > input[type="checkbox"] + label::before {
-  content: "\f096";
-  font-size: 16px;
-  font-family: FontAwesome;
-  color: @color-light-gray;
-  position: absolute;
-  left: 0;
-  display: inline-block;
-}
-.checkbox > input[type="checkbox"]:checked + label::before {
-  content: "\f14a";
-  font-size: 16px;
-  font-family: FontAwesome;
-  color: @color-gigadb-green;
-  position: absolute;
-  left: 0;
-  display: inline-block;
-}
-
-.form-control {
-  border-color: @color-light-gray;
+input:not([type="submit"]):not([type="button"]), select, textarea, .form-control {
   box-shadow: none;
+  border-color: @color-medium-gray;
   color: @color-darker-gray;
   font-size: 13px;
+  margin: 0;
   &:focus {
-    border-color: @color-light-gray;
     box-shadow: none;
-    outline: solid 2px @color-gigadb-green;
+    outline: 1px solid @color-gigadb-green;
+    border-color: @color-gigadb-green-600;
+    box-shadow: inset 0 1px 1px fade(@color-gigadb-green, 7.5%),
+      0 0 6px fade(@color-gigadb-green-600, 50%);
+  }
+}
+
+// Base checkbox styles
+input[type="checkbox"] {
+  width: auto;
+  margin-top: 0;
+  position: relative;
+  accent-color: @color-gigadb-green;
+  &:focus {
+    outline: none;
+    box-shadow: inset 0 1px 1px fade(@color-gigadb-green, 7.5%),
+      0 0 6px fade(@color-gigadb-green-600, 50%);
+    &::before {
+      display: block;
+      position: absolute;
+      content: "";
+      inset: -3px;
+      border-width: 1px;
+      border-style: solid;
+      border-color: @color-gigadb-green;
+      border-radius: 4px;
+      pointer-events: none;
+    }
+  }
+}
+
+// NOTE: In Firefox, the above styles for input[type="checkbox"] don't work, so we use an alternative approach
+@-moz-document url-prefix() {
+  input[type="checkbox"]:focus {
+    outline: 2px solid @color-gigadb-green;
+  }
+}
+
+.form-group {
+  .help-block {
+    margin-top: 0px;
+    margin-bottom: 5px;
+  }
+}
+
+.form-group.has-error .form-control:focus {
+  box-shadow: none;
+  outline: 1px solid @brand-danger-on-white!important;
+  border-color: @color-brand-danger-600;
+  box-shadow: inset 0 1px 1px fade(@brand-danger-on-white, 7.5%),
+    0 0 6px fade(@color-brand-danger-600, 50%);
+}
+
+.has-error input[type="checkbox"] {
+  accent-color: @brand-danger-on-white;
+  &:focus {
+    outline: none;
+    accent-color: @brand-danger-on-white;
+    border-color: @brand-danger-on-white;
+    box-shadow: inset 0 1px 1px fade(@brand-danger-on-white, 7.5%),
+      0 0 6px fade(@brand-danger-on-white, 50%);
+    &::before {
+      border-color: @brand-danger-on-white;
+    }
+  }
+}
+
+.form-group {
+  margin-bottom: 20px;
+  &.has-error {
+    color: @brand-danger-on-white;
+    .control-label {
+      color: @brand-danger-on-white;
+    }
+    .form-control {
+      border-color: @brand-danger-on-white;
+    }
+    .help-block {
+      color: @brand-danger-on-white;
+      a {
+        color: @brand-danger-on-white!important;
+        &:hover {
+          color: @color-brand-danger-800!important;
+        }
+      }
+    }
+  }
+  // Used in /adminDataset/create
+  .errorMessage {
+    margin-top: 2px;
+    color: @brand-danger-on-white;
+  }
+}
+
+.well {
+  .form-group {
+    margin-bottom: 20px;
+    &.has-error {
+      color: @brand-danger-on-lighter-gray;
+      .control-label {
+        color: @brand-danger-on-lighter-gray;
+      }
+      .form-control {
+        border-color: @brand-danger-on-white;
+      }
+      .help-block {
+        color: @brand-danger-on-lighter-gray;
+        a {
+          color: @brand-danger-on-lighter-gray!important;
+          &:hover {
+            color: @color-brand-danger-900!important;
+          }
+        }
+      }
+    }
+    // Used in /adminDataset/create
+    .errorMessage {
+      margin-top: 2px;
+      color: @brand-danger-on-lighter-gray;
+    }
+  }
+}
+
+.form-group.checkbox {
+  .control-label {
+    min-height: 14px;
+    margin-left: 41px;
+    padding-left: 0;
+  }
+  input[type="checkbox"] {
+    margin-left: 0;
+  }
+  .help-block {
+    margin-top: 2px;
+    margin-left: 41px;
+  }
+}
+
+@-moz-document url-prefix() {
+  .has-error input[type="checkbox"]:focus {
+    outline: 2px solid @brand-danger-on-white;
+  }
+}
+
+.form-horizontal {
+  .form-control {
+    margin-top: 0;
+  }
+  .checkbox-horizontal {
+    .control-label {
+      padding-top: 0;
+      margin-bottom: 10px;
+    }
+  }
+  .form-group {
+    .form-control {
+      margin-top: 0;
+    }
+    &.checkbox {
+      .control-label {
+        padding-top: 0;
+        margin-bottom: 10px;
+      }
+    }
+  }
+}
+
+.form-inverted-checkbox {
+  display: flex;
+  width: 100%;
+  margin-bottom: 10px;
+  input[type="checkbox"] {
+    margin: 0 0 0 90px;
+    padding-top: 0px;
+  }
+  label {
+    margin-left: 25px;
+    padding-top: 0px;
+    margin-bottom: 0;
+  }
+}
+
+.form-error {
+  padding-top: 5px;
+  color: @brand-danger-on-lighter-gray;
+}
+
+fieldset {
+  legend {
+    padding-bottom: 4px;
+    font-size: @font-size-base;
+    color: @dark-gray-on-white;
+  }
+  .checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
   }
 }
 
@@ -71,13 +243,19 @@ input[type="checkbox"] {
   opacity: 1;
   text-decoration: none;
   background: #a5cc7e;
-  background: -webkit-gradient(linear,0 0,0 bottom,from(#a5cc7e),to(#6ea23a));
-  background: -webkit-linear-gradient(#a5cc7e,#6ea23a);
-  background: -moz-linear-gradient(#a5cc7e,#6ea23a);
-  background: -ms-linear-gradient(#a5cc7e,#6ea23a);
-  background: -o-linear-gradient(#a5cc7e,#6ea23a);
-  background: linear-gradient(#a5cc7e,#6ea23a);
-  -pie-background: linear-gradient(#a5cc7e,#6ea23a);
+  background: -webkit-gradient(
+    linear,
+    0 0,
+    0 bottom,
+    from(#a5cc7e),
+    to(#6ea23a)
+  );
+  background: -webkit-linear-gradient(#a5cc7e, #6ea23a);
+  background: -moz-linear-gradient(#a5cc7e, #6ea23a);
+  background: -ms-linear-gradient(#a5cc7e, #6ea23a);
+  background: -o-linear-gradient(#a5cc7e, #6ea23a);
+  background: linear-gradient(#a5cc7e, #6ea23a);
+  -pie-background: linear-gradient(#a5cc7e, #6ea23a);
   behavior: url(/css/PIE.htc);
 }
 .form-search {
@@ -86,13 +264,19 @@ input[type="checkbox"] {
 .form-search.well {
   text-align: center;
   background: @color-patina-green;
-  background: -webkit-gradient(linear,0 0,0 bottom,from(@color-patina-green),to(@color-dark-green));
-  background: -webkit-linear-gradient(@color-patina-green,@color-dark-green);
-  background: -moz-linear-gradient(@color-patina-green,@color-dark-green);
-  background: -ms-linear-gradient(@color-patina-green,@color-dark-green);
-  background: -o-linear-gradient(@color-patina-green,@color-dark-green);
-  background: linear-gradient(@color-patina-green,@color-dark-green);
-  -pie-background: linear-gradient(@color-patina-green,@color-dark-green);
+  background: -webkit-gradient(
+    linear,
+    0 0,
+    0 bottom,
+    from(@color-patina-green),
+    to(@color-dark-green)
+  );
+  background: -webkit-linear-gradient(@color-patina-green, @color-dark-green);
+  background: -moz-linear-gradient(@color-patina-green, @color-dark-green);
+  background: -ms-linear-gradient(@color-patina-green, @color-dark-green);
+  background: -o-linear-gradient(@color-patina-green, @color-dark-green);
+  background: linear-gradient(@color-patina-green, @color-dark-green);
+  -pie-background: linear-gradient(@color-patina-green, @color-dark-green);
   behavior: url(/css/PIE.htc);
 }
 .form-search.well .btn-green {
@@ -132,9 +316,4 @@ input[type="checkbox"] {
   *display: inline;
   *zoom: 1;
   margin-top: -30px;
-}
-
-.form-error {
-  padding-top: 5px;
-  color: @brand-danger-on-lighter-gray;
 }

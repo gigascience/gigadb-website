@@ -25,7 +25,7 @@ Feature: a user visit the dataset page
     And I follow "Files"
     Then I should see "Next >"
     Then I should see "Go to page"
-    
+
   @ok @issue-877
   Scenario: The google scholar link is working
     When I am on "/dataset/100094"
@@ -47,14 +47,14 @@ Feature: a user visit the dataset page
     Given I have not signed in
     When I am on "/dataset/200070"
     And I should not see "well now, how to describe nothing in particular?"
-    Then I should see "The DOI 200070 cannot be displayed."
+    Then I should see "The DOI 200070 cannot be displayed"
 
   @ok
   Scenario: Private dataset accessible through mockup url
     Given I have not signed in
     When I am on "/dataset/200070/token/ImP3Bbu7ytRSfYFh"
     Then I should see "well now, how to describe nothing in particular?"
-    And I should not see "The DOI 200070 cannot be displayed."
+    And I should not see "The DOI 200070 cannot be displayed"
 
   @ok @issue-917
   Scenario: Checkbox for files table in table settings exists

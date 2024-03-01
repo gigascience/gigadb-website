@@ -1,0 +1,121 @@
+<section>
+  <p>Used in create / update admin forms, e.g. /adminDatasetSample/update/id/154</p>
+  <div class="section form row">
+    <div class="col-md-offset-3 col-md-6">
+      <form>
+        <p class="note">
+          Fields with <span class="required">*</span> are required.
+        </p>
+
+        <div class="form-group">
+          <label class="control-label required" for="DatasetAuthor_dataset_id"
+            >Dataset<span aria-hidden="true"> *</span></label
+          >
+          <div>
+            <select
+              class="form-control"
+              name="DatasetAuthor[dataset_id]"
+              id="DatasetAuthor_dataset_id"
+            >
+              <option value="2342">100935</option>
+              <option value="700">300070</option>
+              <option value="668">200070</option>
+              <option value="319">100245</option>
+              <option value="200">100142</option>
+              <option value="144">100094</option>
+              <option value="63">100056</option>
+              <option value="22">100020</option>
+              <option value="8" selected="selected">100006</option>
+              <option value="5">100039</option>
+            </select>
+            <div
+              id="dataset_id-error"
+              role="alert"
+              class="control-error help-block"
+            ></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="DatasetAuthor_author_id"
+            >Author ID</label
+          >
+          <div>
+            <select
+              class="form-control"
+              name="DatasetAuthor[author_id]"
+              id="DatasetAuthor_author_id"
+            >
+              <option value="3724">Jamie Alnasir - ORCID:</option>
+              <option value="3017">Jacobus Boomsma - ORCID:</option>
+              <option value="2632">Chris Chang - ORCID:</option>
+              <option value="3031">Shifeng Cheng - ORCID:</option>
+              <option value="2634">Carson Chow - ORCID:</option>
+              <option value="2633">S Hsu - ORCID:</option>
+              <option value="3100">Haofu Hu - ORCID:</option>
+              <option value="3371">David Lambert - ORCID:</option>
+              <option value="2631">James Lee - ORCID:</option>
+              <option value="3134">Cai Li - ORCID:</option>
+              <option value="3173">Yingrui Li - ORCID:</option>
+              <option value="3168">Xin Liu - ORCID:0000-0003-3256-2940</option>
+              <option value="3203">Shengkai Pan - ORCID:</option>
+              <option value="3208">
+                Michael Poulsen - ORCID:0000-0002-2839-1715
+              </option>
+              <option value="651">Zhiwu Quan - ORCID:</option>
+              <option value="3725">Hugh Shanahan - ORCID:</option>
+              <option value="2630">Shashaank Vattikuti - ORCID:</option>
+              <option value="3257" selected="selected">
+                Jun Wang - ORCID:
+              </option>
+              <option value="14">J Wang - ORCID:</option>
+              <option value="3289">Min Xie - ORCID:</option>
+              <option value="3295">Xun Xu - ORCID:</option>
+              <option value="3316">Zhen Yue - ORCID:</option>
+              <option value="3320">Peng Zeng - ORCID:</option>
+              <option value="3321">Dongliang Zhan - ORCID:</option>
+              <option value="3324">Gengyun Zhang - ORCID:</option>
+              <option value="3325">Guojie Zhang - ORCID:</option>
+              <option value="659">Zhihai Zhao - ORCID:</option>
+            </select>
+            <div
+              id="author_id-error"
+              role="alert"
+              class="control-error help-block"
+            ></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label required" for="DatasetAuthor_rank"
+            >Order<span aria-hidden="true"> *</span></label
+          >
+          <div>
+            <input
+              required="required"
+              aria-required="true"
+              class="form-control"
+              name="DatasetAuthor[rank]"
+              id="DatasetAuthor_rank"
+              type="text"
+              value="5"
+            />
+            <div
+              id="rank-error"
+              role="alert"
+              class="control-error help-block"
+            ></div>
+          </div>
+        </div>
+        <div class="pull-right btns-row">
+          <a href="#" class="btn background-btn-o"
+            >Cancel</a
+          >
+          <input
+            class="btn background-btn"
+            type="submit"
+            value="Save"
+          />
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

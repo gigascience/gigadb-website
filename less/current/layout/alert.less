@@ -1,0 +1,38 @@
+.alert-gigadb-info {
+  color: @color-gigadb-green-900;
+  border-color: @color-gigadb-green-400;
+  background-color: @color-gigadb-green-50;
+}
+
+.alert-danger {
+  background-color: @color-brand-danger-100;
+  border-color: @color-brand-danger-400;
+  color: @color-brand-danger-900;
+  p {
+    color: @color-brand-danger-900;
+  }
+}
+
+.alert-flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  a.close-btn {
+    text-decoration: none;
+    opacity: 1;
+    color: @color-darker-gray;
+  }
+}
+
+.merge-author-info {
+  margin-bottom: 20px;
+  .alert {
+    margin-bottom: 5px;
+    ul {
+      margin-top: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+  }
+}

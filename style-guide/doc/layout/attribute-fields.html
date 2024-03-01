@@ -1,0 +1,486 @@
+<section class="container">
+  <div class="section form row">
+    <div class="col-md-offset-3 col-md-6">
+      <div class="control-group">
+        <button
+          type="button"
+          class="btn background-btn-o js-btn-attr"
+          aria-expanded="false"
+          aria-controls="newAttrForm"
+          data-test="new-attr-btn"
+        >
+          <span class="js-btn-attr-label">Show New Attribute Fields</span>
+          <i class="fa js-caret-type fa-caret-up" aria-hidden="true"></i>
+        </button>
+        <br />
+        <fieldset
+          id="newAttrForm"
+          class="js-new-attr mt-10 row"
+          aria-label="New attribute fields"
+          style="display:none;"
+        >
+          <div class="col-xs-5">
+            <div class="form-group">
+              <label
+                class="control-label required"
+                for="FileAttributes_attribute_id"
+                >Attribute<span aria-hidden="true"> *</span></label
+              >
+              <div>
+                <select
+                  class="form-control attr-form js-new-attr-name"
+                  name="FileAttributes[attribute_id]"
+                  id="FileAttributes_attribute_id"
+                  required="required"
+                  aria-required="true"
+                >
+                  <option value="">Select name</option>
+                  <option value="1">age</option>
+                  <option value="200">sex</option>
+                  <option value="269">
+                    geographic location (latitude and longitude)
+                  </option>
+                  <option value="270">
+                    geographic location (country and/or sea,region)
+                  </option>
+                  <option value="271">collection date</option>
+                  <option value="277">ploidy</option>
+                  <option value="282">source material identifiers</option>
+                  <option value="314">funding source</option>
+                  <option value="315">tissue</option>
+                  <option value="316">alternative names</option>
+                  <option value="318">sample source</option>
+                  <option value="319">sample contact</option>
+                  <option value="320">IUCN Red List</option>
+                  <option value="323">alternative accession-BioProject</option>
+                  <option value="324">collected by</option>
+                  <option value="325">comment</option>
+                  <option value="347">last_modified</option>
+                  <option value="356">Description</option>
+                  <option value="376">estimated genome size</option>
+                  <option value="448">alternative accession-biosample</option>
+                  <option value="455">keyword</option>
+                  <option value="472">camera parameters</option>
+                  <option value="497">urltoredirect</option>
+                  <option value="605">MD5 checksum</option>
+                </select>
+                <div
+                  id="attribute_id-error"
+                  role="alert"
+                  class="control-error help-block"
+                ></div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-3">
+            <div class="form-group">
+              <label class="control-label" for="FileAttributes_value"
+                >Value</label
+              >
+              <div>
+                <input
+                  class="form-control attr-form"
+                  name="FileAttributes[value]"
+                  id="FileAttributes_value"
+                  type="text"
+                  maxlength="50"
+                />
+                <div
+                  id="value-error"
+                  role="alert"
+                  class="control-error help-block"
+                ></div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-4">
+            <div class="form-group">
+              <label class="control-label" for="FileAttributes_unit_id"
+                >Unit</label
+              >
+              <div>
+                <select
+                  class="form-control attr-form"
+                  name="FileAttributes[unit_id]"
+                  id="FileAttributes_unit_id"
+                >
+                  <option value="">Select unit</option>
+                  <option value="UO:0000001">length unit</option>
+                  <option value="UO:0000002">mass unit</option>
+                  <option value="UO:0000003">time unit</option>
+                  <option value="UO:0000004">electric current unit</option>
+                  <option value="UO:0000005">temperature unit</option>
+                  <option value="UO:0000006">substance unit</option>
+                  <option value="UO:0000007">luminous intensity unit</option>
+                  <option value="UO:0000008">meter</option>
+                  <option value="UO:0000009">kilogram</option>
+                  <option value="UO:0000010">second</option>
+                  <option value="UO:0000011">ampere</option>
+                  <option value="UO:0000012">kelvin</option>
+                  <option value="UO:0000013">mole</option>
+                  <option value="UO:0000014">candela</option>
+                  <option value="UO:0000015">centimeter</option>
+                  <option value="UO:0000016">millimeter</option>
+                  <option value="UO:0000017">micrometer</option>
+                  <option value="UO:0000018">nanometer</option>
+                  <option value="UO:0000019">angstrom</option>
+                  <option value="UO:0000020">picometer</option>
+                  <option value="UO:0000021">gram</option>
+                  <option value="UO:0000022">milligram</option>
+                  <option value="UO:0000023">microgram</option>
+                  <option value="UO:0000024">nanogram</option>
+                  <option value="UO:0000025">picogram</option>
+                  <option value="UO:0000026">femtogram</option>
+                  <option value="UO:0000027">degree celsius</option>
+                  <option value="UO:0000028">millisecond</option>
+                  <option value="UO:0000029">microsecond</option>
+                  <option value="UO:0000030">picosecond</option>
+                  <option value="UO:0000031">minute</option>
+                  <option value="UO:0000032">hour</option>
+                  <option value="UO:0000033">day</option>
+                  <option value="UO:0000034">week</option>
+                  <option value="UO:0000035">month</option>
+                  <option value="UO:0000036">year</option>
+                  <option value="UO:0000037">milliampere</option>
+                  <option value="UO:0000038">microampere</option>
+                  <option value="UO:0000039">micromole</option>
+                  <option value="UO:0000040">millimole</option>
+                  <option value="UO:0000041">nanomole</option>
+                  <option value="UO:0000042">picomole</option>
+                  <option value="UO:0000043">femtomole</option>
+                  <option value="UO:0000044">attomole</option>
+                  <option value="UO:0000045">base unit</option>
+                  <option value="UO:0000046">derived unit</option>
+                  <option value="UO:0000047">area unit</option>
+                  <option value="UO:0000048">acceleration unit</option>
+                  <option value="UO:0000049">angular velocity unit</option>
+                  <option value="UO:0000050">angular acceleration unit</option>
+                  <option value="UO:0000051">concentration unit</option>
+                  <option value="UO:0000052">mass density unit</option>
+                  <option value="UO:0000053">luminance unit</option>
+                  <option value="UO:0000054">area density unit</option>
+                  <option value="UO:0000055">molar mass unit</option>
+                  <option value="UO:0000056">molar volume unit</option>
+                  <option value="UO:0000057">momentum unit</option>
+                  <option value="UO:0000058">rotational frequency unit</option>
+                  <option value="UO:0000059">specific volume unit</option>
+                  <option value="UO:0000060">speed/velocity unit</option>
+                  <option value="UO:0000061">unit of molarity</option>
+                  <option value="UO:0000062">molar</option>
+                  <option value="UO:0000063">millimolar</option>
+                  <option value="UO:0000064">micromolar</option>
+                  <option value="UO:0000065">nanomolar</option>
+                  <option value="UO:0000066">picomolar</option>
+                  <option value="UO:0000067">unit of molality</option>
+                  <option value="UO:0000068">molal</option>
+                  <option value="UO:0000069">millimolal</option>
+                  <option value="UO:0000070">micromolal</option>
+                  <option value="UO:0000071">nanomolal</option>
+                  <option value="UO:0000072">picomolal</option>
+                  <option value="UO:0000073">femtomolar</option>
+                  <option value="UO:0000074">unit of normality</option>
+                  <option value="UO:0000075">normal</option>
+                  <option value="UO:0000076">mole fraction</option>
+                  <option value="UO:0000077">
+                    meter per second per second
+                  </option>
+                  <option value="UO:0000078">
+                    radian per second per second
+                  </option>
+                  <option value="UO:0000079">radian per second</option>
+                  <option value="UO:0000080">square meter</option>
+                  <option value="UO:0000081">square centimeter</option>
+                  <option value="UO:0000082">square millimeter</option>
+                  <option value="UO:0000083">kilogram per cubic meter</option>
+                  <option value="UO:0000084">gram per cubic centimeter</option>
+                  <option value="UO:0000085">candela per square meter</option>
+                  <option value="UO:0000086">kilogram per square meter</option>
+                  <option value="UO:0000087">kilogram per mole</option>
+                  <option value="UO:0000088">gram per mole</option>
+                  <option value="UO:0000089">cubic meter per mole</option>
+                  <option value="UO:0000090">cubic centimeter per mole</option>
+                  <option value="UO:0000091">kilogram meter per second</option>
+                  <option value="UO:0000092">turns per second</option>
+                  <option value="UO:0000093">cubic meter per kilogram</option>
+                  <option value="UO:0000094">meter per second</option>
+                  <option value="UO:0000095">volume unit</option>
+                  <option value="UO:0000096">cubic meter</option>
+                  <option value="UO:0000097">cubic centimeter</option>
+                  <option value="UO:0000098">milliliter</option>
+                  <option value="UO:0000099">liter</option>
+                  <option value="UO:0000100">cubic decimeter</option>
+                  <option value="UO:0000101">microliter</option>
+                  <option value="UO:0000102">nanoliter</option>
+                  <option value="UO:0000103">picoliter</option>
+                  <option value="UO:0000104">femtoliter</option>
+                  <option value="UO:0000105">frequency unit</option>
+                  <option value="UO:0000106">hertz</option>
+                  <option value="UO:0000107">force unit</option>
+                  <option value="UO:0000108">newton</option>
+                  <option value="UO:0000109">pressure unit</option>
+                  <option value="UO:0000110">pascal</option>
+                  <option value="UO:0000111">energy unit</option>
+                  <option value="UO:0000112">joule</option>
+                  <option value="UO:0000113">power unit</option>
+                  <option value="UO:0000114">watt</option>
+                  <option value="UO:0000115">illuminance unit</option>
+                  <option value="UO:0000116">lux</option>
+                  <option value="UO:0000117">luminous flux unit</option>
+                  <option value="UO:0000118">lumen</option>
+                  <option value="UO:0000119">catalytic activity unit</option>
+                  <option value="UO:0000120">katal</option>
+                  <option value="UO:0000121">angle unit</option>
+                  <option value="UO:0000122">plane angle unit</option>
+                  <option value="UO:0000123">radian</option>
+                  <option value="UO:0000124">solid angle unit</option>
+                  <option value="UO:0000125">steradian</option>
+                  <option value="UO:0000126">temperature unit</option>
+                  <option value="UO:0000127">radiation unit</option>
+                  <option value="UO:0000128">
+                    activity (of a radionuclide) unit
+                  </option>
+                  <option value="UO:0000129">absorbed dose unit</option>
+                  <option value="UO:0000130">dose equivalent unit</option>
+                  <option value="UO:0000131">exposure unit</option>
+                  <option value="UO:0000132">becquerel</option>
+                  <option value="UO:0000133">curie</option>
+                  <option value="UO:0000134">gray</option>
+                  <option value="UO:0000135">rad</option>
+                  <option value="UO:0000136">roentgen</option>
+                  <option value="UO:0000137">sievert</option>
+                  <option value="UO:0000138">millisievert</option>
+                  <option value="UO:0000139">microsievert</option>
+                  <option value="UO:0000140">Roentgen equivalent man</option>
+                  <option value="UO:0000141">microgray</option>
+                  <option value="UO:0000142">milligray</option>
+                  <option value="UO:0000143">nanogray</option>
+                  <option value="UO:0000144">nanosievert</option>
+                  <option value="UO:0000145">millicurie</option>
+                  <option value="UO:0000146">microcurie</option>
+                  <option value="UO:0000147">disintegrations per minute</option>
+                  <option value="UO:0000148">counts per minute</option>
+                  <option value="UO:0000149">time unit</option>
+                  <option value="UO:0000150">nanosecond</option>
+                  <option value="UO:0000151">century</option>
+                  <option value="UO:0000152">half life</option>
+                  <option value="UO:0000153">foot candle</option>
+                  <option value="UO:0000154">irradiance unit</option>
+                  <option value="UO:0000155">watt per square meter</option>
+                  <option value="UO:0000156">
+                    einstein per square meter per second
+                  </option>
+                  <option value="UO:0000157">light unit</option>
+                  <option value="UO:0000158">
+                    watt per steradian per square meter
+                  </option>
+                  <option value="UO:0000159">radiant intensity unit</option>
+                  <option value="UO:0000160">
+                    microeinstein per square meter per second
+                  </option>
+                  <option value="UO:0000161">radiance unit</option>
+                  <option value="UO:0000162">watt per steradian</option>
+                  <option value="UO:0000163">mass percentage</option>
+                  <option value="UO:0000164">mass volume percentage</option>
+                  <option value="UO:0000165">volume percentage</option>
+                  <option value="UO:0000166">parts per notation unit</option>
+                  <option value="UO:0000167">parts per hundred</option>
+                  <option value="UO:0000168">parts per thousand</option>
+                  <option value="UO:0000169">parts per million</option>
+                  <option value="UO:0000170">parts per billion</option>
+                  <option value="UO:0000171">parts per trillion</option>
+                  <option value="UO:0000172">parts per quadrillion</option>
+                  <option value="UO:0000173">gram per milliliter</option>
+                  <option value="UO:0000174">kilogram per liter</option>
+                  <option value="UO:0000175">gram per liter</option>
+                  <option value="UO:0000176">milligram per milliliter</option>
+                  <option value="UO:0000177">unit per volume unit</option>
+                  <option value="UO:0000178">unit per milliliter</option>
+                  <option value="UO:0000179">unit per liter</option>
+                  <option value="UO:0000180">mass per unit volume</option>
+                  <option value="UO:0000181">enzyme unit</option>
+                  <option value="UO:0000182">density unit</option>
+                  <option value="UO:0000183">linear density unit</option>
+                  <option value="UO:0000184">kilogram per meter</option>
+                  <option value="UO:0000185">degree</option>
+                  <option value="UO:0000186">dimensionless unit</option>
+                  <option value="UO:0000187">percent</option>
+                  <option value="UO:0000188">pi</option>
+                  <option value="UO:0000189">count unit</option>
+                  <option value="UO:0000190">ratio</option>
+                  <option value="UO:0000191">fraction</option>
+                  <option value="UO:0000192">molecule count</option>
+                  <option value="UO:0000193">purity percentage</option>
+                  <option value="UO:0000194">confluence percentage</option>
+                  <option value="UO:0000195">degree fahrenheit</option>
+                  <option value="UO:0000196">pH</option>
+                  <option value="UO:0000197">liter per kilogram</option>
+                  <option value="UO:0000198">milliliter per kilogram</option>
+                  <option value="UO:0000199">microliter per kilogram</option>
+                  <option value="UO:0000200">cell concentration unit</option>
+                  <option value="UO:0000201">cells per milliliter</option>
+                  <option value="UO:0000202">
+                    catalytic (activity) concentration unit
+                  </option>
+                  <option value="UO:0000203">katal per cubic meter</option>
+                  <option value="UO:0000204">katal per liter</option>
+                  <option value="UO:0000205">volume per unit volume</option>
+                  <option value="UO:0000206">milliliter per cubic meter</option>
+                  <option value="UO:0000207">milliliter per liter</option>
+                  <option value="UO:0000208">gram per deciliter</option>
+                  <option value="UO:0000209">deciliter</option>
+                  <option value="UO:0000210">colony forming unit</option>
+                  <option value="UO:0000211">plaque forming unit</option>
+                  <option value="UO:0000212">
+                    colony forming unit per volume
+                  </option>
+                  <option value="UO:0000213">
+                    colony forming unit per milliliter
+                  </option>
+                  <option value="UO:0000214">
+                    plaque forming unit per volume
+                  </option>
+                  <option value="UO:0000215">
+                    plaque forming unit per milliliter
+                  </option>
+                  <option value="UO:0000216">disintegrations per second</option>
+                  <option value="UO:0000217">
+                    electric potential difference unit
+                  </option>
+                  <option value="UO:0000218">volt</option>
+                  <option value="UO:0000219">electric charge</option>
+                  <option value="UO:0000220">coulomb</option>
+                  <option value="UO:0000221">dalton</option>
+                  <option value="UO:0000222">kilodalton</option>
+                  <option value="UO:0000223">watt-hour</option>
+                  <option value="UO:0000224">kilowatt-hour</option>
+                  <option value="UO:0000225">magnetic flux unit</option>
+                  <option value="UO:0000226">weber</option>
+                  <option value="UO:0000227">magnetic flux density unit</option>
+                  <option value="UO:0000228">tesla</option>
+                  <option value="UO:0000229">volt-hour</option>
+                  <option value="UO:0000230">kilovolt-hour</option>
+                  <option value="UO:0000231">information unit</option>
+                  <option value="UO:0000232">bit</option>
+                  <option value="UO:0000233">byte</option>
+                  <option value="UO:0000234">kilobyte</option>
+                  <option value="UO:0000235">megabyte</option>
+                  <option value="UO:0000236">image resolution unit</option>
+                  <option value="UO:0000237">chroma sampling unit</option>
+                  <option value="UO:0000238">dynamic range unit</option>
+                  <option value="UO:0000239">spatial resolution unit</option>
+                  <option value="UO:0000240">dots per inch</option>
+                  <option value="UO:0000241">micron pixel</option>
+                  <option value="UO:0000242">pixels per inch</option>
+                  <option value="UO:0000243">pixels per millimeter</option>
+                  <option value="UO:0000244">base pair</option>
+                  <option value="UO:0000245">kibibyte</option>
+                  <option value="UO:0000246">mebibyte</option>
+                  <option value="UO:0000247">millivolt</option>
+                  <option value="UO:0000248">kilovolt</option>
+                  <option value="UO:0000249">microvolt</option>
+                  <option value="UO:0000250">nanovolt</option>
+                  <option value="UO:0000251">picovolt</option>
+                  <option value="UO:0000252">megavolt</option>
+                  <option value="UO:0000253">surface tension unit</option>
+                  <option value="UO:0000254">newton per meter</option>
+                  <option value="UO:0000255">dyne per cm</option>
+                  <option value="UO:0000256">viscosity unit</option>
+                  <option value="UO:0000257">pascal second</option>
+                  <option value="UO:0000258">poise</option>
+                  <option value="UO:0000259">decibel</option>
+                  <option value="UO:0000260">effective dose unit</option>
+                  <option value="UO:0000261">conduction unit</option>
+                  <option value="UO:0000262">electrical conduction unit</option>
+                  <option value="UO:0000263">heat conduction unit</option>
+                  <option value="UO:0000264">siemens</option>
+                  <option value="UO:0000265">watt per meter kelvin</option>
+                  <option value="UO:0000266">electronvolt</option>
+                  <option value="UO:0000267">
+                    electric field strength unit
+                  </option>
+                  <option value="UO:0000268">volt per meter</option>
+                  <option value="UO:0000269">absorbance unit</option>
+                  <option value="UO:0000270">volumetric flow rate unit</option>
+                  <option value="UO:0000271">microliters per minute</option>
+                  <option value="UO:0000272">millimetres of mercury</option>
+                  <option value="UO:0000273">milligram per liter</option>
+                  <option value="UO:0000274">microgram per milliliter</option>
+                  <option value="UO:0000275">nanogram per milliliter</option>
+                  <option value="UO:0000276">amount per container</option>
+                  <option value="UO:0000277">ug/disk</option>
+                  <option value="UO:0000278">nmole/disk</option>
+                  <option value="UO:0000279">milliunits per milliliter</option>
+                  <option value="UO:0000280">rate unit</option>
+                  <option value="UO:0000281">count per nanomolar second</option>
+                  <option value="UO:0000282">count per molar second</option>
+                  <option value="UO:0000283">kilogram per hectare</option>
+                  <option value="UO:0000284">count per nanomolar</option>
+                  <option value="UO:0000285">count per molar</option>
+                  <option value="UO:0000301">microgram per liter</option>
+                  <option value="UO:0000308">milligram per kilogram</option>
+                  <option value="UO:0000328">kilobasepair</option>
+                  <option value="UO:0000329">megabasepair</option>
+                  <option value="UO:0000330">gigabasepair</option>
+                </select>
+                <div
+                  id="unit_id-error"
+                  role="alert"
+                  class="control-error help-block"
+                ></div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-12">
+            <input
+              type="submit"
+              class="btn background-btn"
+              name="submit_attr"
+              value="Add attribute"
+            />
+          </div>
+        </fieldset>
+        <br />
+        <table class="table table-attr">
+          <caption>
+            Attributes
+          </caption>
+          <thead>
+            <tr>
+              <th>Attribute Name</th>
+              <th>Value</th>
+              <th>Unit</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="row-edit-370375">
+              <td>age</td>
+              <td>10</td>
+              <td>time unit</td>
+              <td>
+                <div class="action-btns">
+                  <button
+                    class="btn btn-link btn-edit js-edit"
+                    data-test="edit-attr-btn"
+                    data="370375"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    class="btn btn-link js-delete"
+                    name="delete_file_attr"
+                    data-test="delete-attr-btn"
+                    data="370375"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+

@@ -4,4 +4,15 @@
 
 .dropdown-menu > li > a {
   text-decoration: none;
+  &:hover {
+    background-color: @color-light-gray;
+  }
+}
+.dropdown-menu > li.active-item > a {
+  background-color: @color-lighter-gray;
+  border-left: 5px solid @color-gigadb-green;
+  padding-left: 15px;
+  &:hover {
+    background-color: @color-light-gray;
+  }
 }

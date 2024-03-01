@@ -251,6 +251,8 @@ services:
       - web-tier
     extra_hosts:
       - "gigadb.test:172.16.238.10"
+    environment:
+      PLAYWRIGHT_BASE_URL: "http://gigadb.test"
 
   codecept:
     build:

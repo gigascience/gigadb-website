@@ -33,6 +33,8 @@ class Controller extends CController
             'redirect' => false,
         );
 
+    public $loadBaBbqPolyfills = false;
+
     /*
      * An Admin has role == 'admin', that stored in the user obj
      *

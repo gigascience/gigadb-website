@@ -7,15 +7,16 @@ $this->breadcrumbs = array(
 
 <section>
     <div class="container" id="login">
-        <section class="page-title-section">
-            <div class="page-title">
-                <ol class="breadcrumb pull-right">
-                    <li><a href="/">Home</a></li>
-                    <li class="active">login</li>
-                </ol>
-                <h1 class="h4">Login</h1>
-            </div>
-        </section>
+      <?php
+        $this->widget('TitleBreadcrumb', [
+          'pageTitle' => 'Login',
+          'breadcrumbItems' => [
+            ['label' => 'Home', 'href' => '/'],
+            ['isActive' => true, 'label' => 'Login'],
+          ]
+        ]);
+        ?>
+
         <div class="subsection row" style="margin-bottom: 130px;">
             <div class="col-xs-12">
                 <?php if (Yii::app()->user->hasFlash('success-reset-password')) : ?>
@@ -38,7 +39,7 @@ $this->breadcrumbs = array(
                             Email Address<span class="required" aria-hidden="true">*</span>
                         </label>
                         <div class="col-xs-9">
-                            <?= $form->textField($model, 'username', array('size' => 50, 'class' => 'form-control', 'aria-describedby' => 'usernameError', 'required' => true)) ?>
+                            <?= $form->textField($model, 'username', array('size' => 50, 'class' => 'form-control', 'aria-describedby' => $model->getError('username') ? 'usernameError' : '', 'required' => true)) ?>
                             <div role="alert">
                                 <?php echo $form->error($model, 'username', array('class' => 'form-error', 'id' => 'usernameError')); ?>
                             </div>
@@ -50,23 +51,21 @@ $this->breadcrumbs = array(
                             Password<span class="required" aria-hidden="true">*</span>
                         </label>
                         <div class="col-xs-9">
-                            <?= $form->passwordField($model, 'password', array('size' => 50, 'class' => 'form-control', 'aria-describedby' => 'passwordError', 'required' => true)) ?>
+                            <?= $form->passwordField($model, 'password', array('size' => 50, 'class' => 'form-control', 'aria-describedby' => $model->getError('password') ? 'passwordError' : '', 'required' => true)) ?>
                             <div role="alert">
                                 <?php echo $form->error($model, 'password', array('class' => 'form-error', 'id' => 'passwordError')); ?>
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
-                        <div class="col-xs-9 login-form-checkbox">
-                            <div class="checkbox">
-                                <?= $form->checkBox($model, 'rememberMe') ?>
-                                <?= $form->label($model, 'rememberMe', array('disabled' => "disabled")) ?>
-                            </div>
+                        <div class="col-xs-9 form-inverted-checkbox">
+                            <?= $form->checkBox($model, 'rememberMe') ?>
+                            <?= $form->label($model, 'rememberMe', array('disabled' => "disabled")) ?>
                         </div>
                     </div>
                     <hr aria-hidden="true">
                     <div class="button-div">
-                        <?= CHtml::submitButton(Yii::t('app', 'Login'), array('class' => 'btn background-btn', 'style' => 'width:236px;hight:40px;float:center;')) ?>
+                        <?= CHtml::submitButton(Yii::t('app', 'Login'), array('class' => 'btn background-btn', 'style' => 'width:236px;')) ?>
                     </div>
                     <? $this->endWidget() ?>
                     <div class="login-links">
