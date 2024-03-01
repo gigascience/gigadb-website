@@ -1,26 +1,22 @@
 <?php
 ?>
 <div class="content files-annotate">
-    <div id="gigadb-fuw">
-        <article class="container">
-            <?php
-            if (Yii::app()->user->hasFlash('filesAnnotate') || Yii::app()->user->hasFlash('filesAnnotateErrors')) {
-                ?>
-              <aside class="card" style="padding-top:0.5em">
-                  <?php if (Yii::app()->user->hasFlash('filesAnnotate')) { ?>
-                      <div class="alert alert-success" role="alert">
-                          <?php echo Yii::app()->user->getFlash('filesAnnotate'); ?>
-                      </div>
-                  <?php } ?>
-                  <?php if (Yii::app()->user->hasFlash('filesAnnotateErrors')) { ?>
-                      <div class="alert alert-danger" role="alert">
-                          <?php echo Yii::app()->user->getFlash('filesAnnotateErrors'); ?>
-                      </div>
-                  <?php } ?>
-              </aside>
-                <?php
-            }
-            ?>
+  <div id="gigadb-fuw">
+      <?php
+        $alertClasses = '';
+        $alertMessage;
+        if (Yii::app()->user->hasFlash('filesAnnotate')) {
+            $alertClasses = 'alert alert-success';
+            $alertMessage = Yii::app()->user->getFlash('filesAnnotate');
+        } elseif (Yii::app()->user->hasFlash('filesAnnotateErrors')) {
+            $alertClasses = 'alert alert-danger';
+            $alertMessage = 'Error: ' . Yii::app()->user->getFlash('filesAnnotateErrors');
+        }
+        ?>
+      <div class="<?php echo $alertClasses ?>" role="alert">
+        <?php echo $alertMessage ?>
+      </div>
+        <div class="container">
             <?php
             $this->widget('TitleBreadcrumb', [
               'pageTitle' => 'GigaDB: Uploading files for the dataset ' . $identifier,
@@ -45,6 +41,6 @@
                 <?php echo CHtml::endForm(); ?>
               </div>
             </div>
-        </article>
+        </d>
     </div>
 </div>
