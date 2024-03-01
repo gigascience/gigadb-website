@@ -525,7 +525,7 @@ class AdminDatasetController extends Controller
                 $xml_data = $dataset->toXML();
                 $ch= curl_init();
                 curl_setopt($ch, CURLOPT_URL, $mds_metadata_url . '/' . $mds_prefix . '/' . $doi);
-                curl_setopt($ch, CURLOPT_PUT, 1);
+                curl_setopt($ch, CURLOPT_POST, 1);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
                 curl_setopt($ch, CURLOPT_POSTFIELDS, "$xml_data");
                 curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/xml;charset=UTF-8'));
