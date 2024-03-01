@@ -1,10 +1,14 @@
 <template>
   <div>
-    <p class="mb-20">Please, use this table to annotate the files you've just uploaded with metadata. Once you're done
-      with mandatory
-      fields (Data Type and Description) for all files, the "Complete and return to Your Uploaded Datasets page" button
-      will
-      be enabled at the bottom of the page. You must click it to effect your file submission.</p>
+    <div class="mb-20">
+      <p>Please, use this table to annotate the files you've just uploaded with metadata. Once you're done
+        with mandatory
+        fields (Data Type and Description) for all files, the <strong>"Complete and return to Your Uploaded Datasets
+          page"</strong> button
+        will
+        be enabled at the bottom of the page. You must click it to effect your file submission.</p>
+      <p>Required fields are followed by <span aria-label="required">*</span>.</p>
+    </div>
     <div>
       <table class="table table-striped table-bordered">
         <thead>
@@ -13,7 +17,7 @@
             <th scope="col" id="dataTypeTh">Data Type</th>
             <th scope="col">Format</th>
             <th scope="col">Size</th>
-            <th scope="col" id="descriptionTh">Description</th>
+            <th scope="col" id="descriptionTh">Description<span aria-label="required">*</span></th>
             <th scope="col">Actions</th>
           </tr>
         </thead>
@@ -28,7 +32,7 @@
               <div class="form-group m-0">
                 <select v-model="upload.datatype" :name="`Upload[${upload.id}][datatype]`"
                   :id="`upload-${(index + 1)}-datatype`" @change="fieldHasChanged(index, $event)"
-                  :aria-labelledy="`${upload.id}File dataTypeTh`" class="form-control td-content">
+                  :aria-labelledby="`${upload.id}File dataTypeTh`" class="form-control td-content">
                   <option v-for="datatype in dataTypes" :key="`${datatype}-datatype`">{{ datatype }}</option>
                 </select>
               </div>
@@ -40,7 +44,7 @@
                 <input v-model="upload.description" class="form-control td-content" type="text"
                   :name="`Upload[${upload.id}][description]`" :id="`upload-${(index + 1)}-description`"
                   @input="fieldHasChanged(index, $event)" required aria-required="true"
-                  :aria-labelledy="`${upload.id}File descriptionTh`">
+                  :aria-labelledby="`${upload.id}File descriptionTh`">
               </div>
             </td>
             <td>
@@ -74,46 +78,16 @@
 
         The uploader will only parse CSV and TSV files. Do not try to upload in other formats.
 
-        With this method of bulk metadata upload, you can also associate references to existing samples and to up to five
+        With this method of bulk metadata upload, you can also associate references to existing samples and to up to
+        five
         existing file attributes. (if the sample or the file attribute do not exist in the GigaDB, they are simply
         ignored).</p>
       <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-6">
           <bulk-metadata-upload />
         </div>
-        <div class="col-md-4">
-          <div class="panel tips-panel">
-            <div class="panel-heading">
-              <h4 class="panel-title">Tips</h4>
-            </div>
-            <div class="panel-body">
-              <p> In order for the metadata to be parsed correctly there are a couple of requirements to follow when
-                preparing the spreadsheet:
-              </p>
-              <ul>
-                <li> Ensure the first row is a header with the name with the columns (you can copy the text into the
-                  spreadsheet):
-                  <ul>
-                    <!-- NOTE fuw-sample-ids uncomment code below -->
-                    <li> TSV:
-                      <pre>File Name    Data Type   File Format     Description   <!--  Sample IDs --> Attribute 1     Attribute 2     Attribute 3     Attribute 4     Attribute 5</pre>
-                    </li>
-                    <li> CSV:
-                      <pre>File Name, Data Type, File Format, Description,<!-- Sample IDs,--> Attribute 1, Attribute 2, Attribute 3, Attribute 4, Attribute 5</pre>
-                    </li>
-                  </ul>
-                </li>
-                <li> When adding attributes, enter each one with the format "name::value::unit"</li>
-                <li> If there is no unit, the last "::"" is still needed: "name::value::"</li>
-                <li> After uploading the spreadsheet, you can still tweak the metadata in the table above</li>
-              </ul>
-
-              <p>Here is an example of a valid spreadsheet to illustrate these requirements:</p>
-              <ul>
-                <li><a href="/files/examples/bulk-data-upload-example.csv">bulk-data-upload-example.csv</a></li>
-              </ul>
-            </div>
-          </div>
+        <div class="col-md-6">
+          <file-annotator-tips-panel />
         </div>
       </div>
     </aside>
@@ -195,18 +169,8 @@
 </template>
 
 <style scoped>
-.panel-tips {
-  margin: 1em;
-  width: 100%
-}
-
 .panel-drawer-tips {
   margin-top: 1em;
-}
-
-.form-group.required .control-label:after {
-  content: "*";
-  color: red;
 }
 
 .td-content {
@@ -225,6 +189,7 @@ import IdSampler from './IdSampler.vue'
 import FileAnnotatorSubmitButton from './FileAnnotatorSubmitButton.vue'
 import AccessibleDrawer from './AccessibleDrawer.vue'
 import BulkMetadataUpload from './BulkMetadataUpload.vue'
+import FileAnnotatorTipsPanel from './FileAnnotatorTipsPanel.vue'
 
 export default {
   components: {
@@ -232,7 +197,8 @@ export default {
     "id-sampler": IdSampler,
     "file-annotator-submit-button": FileAnnotatorSubmitButton,
     "accessible-drawer": AccessibleDrawer,
-    "bulk-metadata-upload": BulkMetadataUpload
+    "bulk-metadata-upload": BulkMetadataUpload,
+    "file-annotator-tips-panel": FileAnnotatorTipsPanel
   },
   props: {
     identifier: { type: String }, // Unused?

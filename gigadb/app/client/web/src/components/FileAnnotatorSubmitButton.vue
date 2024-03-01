@@ -1,6 +1,6 @@
 <template>
   <div class="text-right">
-    <button :class="['btn complete complete-btn', disabled ? 'disabled-btn' : 'background-btn']" :aria-disabled="disabled"
+    <button :class="['btn complete complete-btn m-0', disabled ? 'disabled-btn' : 'background-btn']" :aria-disabled="disabled"
       @click="handleClick" type="submit">
       Complete and return to Your Uploaded
       Datasets page
