@@ -79,15 +79,7 @@
         ignored).</p>
       <div class="row">
         <div class="col-md-8">
-          <!-- WARN this form is nested inside another form -->
-          <form id="bulkUploadForm" method="post" enctype="multipart/form-data"
-            class="form-horizontal well form-bulk-upload">
-            <div class="form-group">
-              <label for="bulkmetadata">Select a spreadsheet:</label>
-              <input type="file" id="bulkmetadata" name="bulkmetadata" accept=".csv, .tsv">
-            </div>
-            <button class="btn background-btn" type="submit">Upload metadata from spreadsheet</button>
-          </form>
+          <bulk-metadata-upload />
         </div>
         <div class="col-md-4">
           <div class="panel tips-panel">
@@ -203,10 +195,6 @@
 </template>
 
 <style scoped>
-.form-bulk-upload {
-  padding: 5em;
-}
-
 .panel-tips {
   margin: 1em;
   width: 100%
@@ -236,13 +224,15 @@ import AttributeSpecifier from './AttributeSpecifier.vue'
 import IdSampler from './IdSampler.vue'
 import FileAnnotatorSubmitButton from './FileAnnotatorSubmitButton.vue'
 import AccessibleDrawer from './AccessibleDrawer.vue'
+import BulkMetadataUpload from './BulkMetadataUpload.vue'
 
 export default {
   components: {
     "attribute-specifier": AttributeSpecifier,
     "id-sampler": IdSampler,
     "file-annotator-submit-button": FileAnnotatorSubmitButton,
-    "accessible-drawer": AccessibleDrawer
+    "accessible-drawer": AccessibleDrawer,
+    "bulk-metadata-upload": BulkMetadataUpload
   },
   props: {
     identifier: { type: String }, // Unused?
