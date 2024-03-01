@@ -11,6 +11,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Fix #1659: Remove dependency on abandoned inter-container-communication project and fix broken tests
 - Feat #1624: FUW - Migrate to Vue 2.7
+- Feat #1629: FUW - Upgrade Element UI to latest version
+
+## v4.2.0 - 2024-02-27 - 017ba8f58
+
+- Fix #1659: Remove dependency on abandoned inter-container-communication project and fix broken tests
+- Feat #1624: FUW - Migrate to Vue 2.7
 - Feat #1334: Improve accessibility of public and admin pages, revamp admin pages styles, sync style guide with updated styles
 
 ## v4.1.2 - 2024-02-07 - 9a421a2c - live since 2024-02-08
