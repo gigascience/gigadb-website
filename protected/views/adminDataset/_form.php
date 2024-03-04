@@ -116,9 +116,9 @@ echo $form->hiddenField($model, "image_id");
 
                     <div>
 
-                      <fieldset class="publish-requirements">
-                        <legend class="mb-5">Publish requirements</legend>
-                        <p class="mb-10">To be able to set Upload Status to "Published" make sure to check the next 3 requirements:</p>
+                      <fieldset class="publish-requirements" aria-describedby="publishRequirementsDescription">
+                        <legend class="mb-5">Checklist items</legend>
+                        <p class="mb-10" id="publishRequirementsDescription">To be able to set Upload Status to "Published" make sure to check the next 3 requirements:</p>
                         <div class="checkbox-group">
                             <div class="form-group">
                                 <div class="col-xs-9 form-inverted-checkbox">
@@ -135,7 +135,7 @@ echo $form->hiddenField($model, "image_id");
                             <div class="form-group">
                                 <div class="col-xs-9 form-inverted-checkbox">
                                     <input name="publishRequirements" id="performedSecondEyesCheck" type="checkbox">
-                                    <label for="performedSecondEyesCheck">2nd eyes check have been performed</label>
+                                    <label for="performedSecondEyesCheck">2nd eyes check has been performed</label>
                                 </div>
                             </div>
                         </div>
