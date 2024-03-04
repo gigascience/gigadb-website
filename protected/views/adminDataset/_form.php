@@ -116,7 +116,7 @@ echo $form->hiddenField($model, "image_id");
 
                     <div>
 
-                      <fieldset>
+                      <fieldset class="publish-requirements">
                         <legend class="mb-5">Publish requirements</legend>
                         <p class="mb-10">To be able to set Upload Status to "Published" make sure to check the next 3 requirements:</p>
                         <div class="checkbox-group">
