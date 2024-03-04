@@ -116,8 +116,8 @@ echo $form->hiddenField($model, "image_id");
 
                     <div>
 
-                      <fieldset class="publish-requirements" aria-describedby="publishRequirementsDescription">
-                        <legend class="mb-5">Checklist items</legend>
+                      <fieldset class="publish-requirements" aria-labelledby="publishRequirementsLegend publishRequirementsDescription">
+                        <legend class="mb-5" id="publishRequirementsLegend">Checklist items</legend>
                         <p class="mb-10" id="publishRequirementsDescription">To be able to set Upload Status to "Published" make sure to check the next 3 requirements:</p>
                         <div class="checkbox-group">
                             <div class="form-group">
