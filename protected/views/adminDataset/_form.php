@@ -355,15 +355,15 @@ echo $form->hiddenField($model, "image_id");
                                             'dataType' => 'json',
                                             'success' => 'js:function(output){
                                             console.log(output);
-                                            if (output.metadata_status == 200 && output.doi_status == 200) {
-                                                $("#minting").addClass("infoMessage");
-                                                $("#minting").html("This DOI exists in datacite already, no need to mint.");
-                                            } else if (output.md_curl_status == 201 && output.doi_curl_status == 201) {
-                                                $("#minting").removeClass("errorMessage");
+                                            if (output.check_metadata_status == 200 && output.check_doi_status == 200 && output.update_md_status == 201) {
+                                                $("#minting").addClass("alert alert-info");
+                                                $("#minting").html("This DOI exists in datacite already, no need to mint, but the metadata is updated!");
+                                            } else if (output.create_md_status == 201 && output.create_doi_status == 201) {
+                                                $("#minting").removeClass("alert alert-success");
                                                 $("#minting").html("new DOI successfully minted");
                                             }else {
-                                                $("#minting").addClass("errorMessage");
-                                                $("#minting").html("error minting a DOI: "+ output.md_curl_status + ", " + output.doi_curl_status);
+                                                $("#minting").addClass("alert alert-danger");
+                                                $("#minting").html("error minting a DOI: "+ output.create_md_status + ", " + output.create_doi_status);
                                             }
                                             $("#mint_doi_button").toggleClass("active");
                                         }',

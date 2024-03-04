@@ -508,7 +508,7 @@ class AdminDatasetController extends Controller
                 curl_setopt($checkMeta, CURLOPT_USERPWD, $mds_username . ":" . $mds_password);
                 $checkMetaResponse = curl_exec($checkMeta);
                 $result['metadata_response'] = $checkMetaResponse;
-                $result['metadata_status'] = curl_getinfo($checkMeta, CURLINFO_HTTP_CODE);
+                $result['check_metadata_status'] = curl_getinfo($checkMeta, CURLINFO_HTTP_CODE);
                 curl_close($checkMeta);
 
                 $checkDoi = curl_init();
@@ -517,37 +517,52 @@ class AdminDatasetController extends Controller
                 curl_setopt($checkDoi, CURLOPT_USERPWD, $mds_username . ":" . $mds_password);
                 $checkDoiResponse = curl_exec($checkDoi);
                 $result['doi_response'] = $checkDoiResponse;
-                $result['doi_status'] = curl_getinfo($checkDoi, CURLINFO_HTTP_CODE);
+                $result['check_doi_status'] = curl_getinfo($checkDoi, CURLINFO_HTTP_CODE);
                 curl_close($checkDoi);
             }
 
-            if ( $result['metadata_status'] == 404 && $result['doi_status'] ==  404 ) {
+            if ( $result['check_metadata_status'] === 200 && $result['check_doi_status'] === 200 ) {
                 $xml_data = $dataset->toXML();
-                $ch= curl_init();
-                curl_setopt($ch, CURLOPT_URL, $mds_metadata_url . '/' . $mds_prefix . '/' . $doi);
-                curl_setopt($ch, CURLOPT_POST, 1);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-                curl_setopt($ch, CURLOPT_POSTFIELDS, "$xml_data");
-                curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/xml;charset=UTF-8'));
-                curl_setopt($ch, CURLOPT_USERPWD, $mds_username . ":" . $mds_password);
-                $curl_response = curl_exec($ch);
-                $result['md_curl_response'] = $curl_response;
-                $result['md_curl_status'] = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-                curl_close($ch) ;
+                $updateMeta= curl_init();
+                curl_setopt($updateMeta, CURLOPT_URL, $mds_metadata_url . '/' . $mds_prefix . '/' . $doi);
+                curl_setopt($updateMeta, CURLOPT_POST, 1);
+                curl_setopt($updateMeta, CURLOPT_RETURNTRANSFER, 1);
+                curl_setopt($updateMeta, CURLOPT_POSTFIELDS, "$xml_data");
+                curl_setopt($updateMeta, CURLOPT_HTTPHEADER, array('Content-Type:application/xml;charset=UTF-8'));
+                curl_setopt($updateMeta, CURLOPT_USERPWD, $mds_username . ":" . $mds_password);
+                $curl_response = curl_exec($updateMeta);
+                $result['update_md_response'] = $curl_response;
+                $result['update_md_status'] = curl_getinfo($updateMeta, CURLINFO_HTTP_CODE);
+                curl_close($updateMeta) ;
+            }
+
+            if ( $result['check_metadata_status'] === 404 && $result['check_doi_status'] ===  404 ) {
+                $xml_data = $dataset->toXML();
+                $createMeta= curl_init();
+                curl_setopt($createMeta, CURLOPT_URL, $mds_metadata_url . '/' . $mds_prefix . '/' . $doi);
+                curl_setopt($createMeta, CURLOPT_POST, 1);
+                curl_setopt($createMeta, CURLOPT_RETURNTRANSFER, 1);
+                curl_setopt($createMeta, CURLOPT_POSTFIELDS, "$xml_data");
+                curl_setopt($createMeta, CURLOPT_HTTPHEADER, array('Content-Type:application/xml;charset=UTF-8'));
+                curl_setopt($createMeta, CURLOPT_USERPWD, $mds_username . ":" . $mds_password);
+                $curl_response = curl_exec($createMeta);
+                $result['create_md_response'] = $curl_response;
+                $result['create_md_status'] = curl_getinfo($createMeta, CURLINFO_HTTP_CODE);
+                curl_close($createMeta) ;
 
                 $doi_data = "doi=".$mds_prefix."/".$doi."\n"."url=http://gigadb.org/dataset/".$doi;
                 $result['doi_data']  = $doi_data;
-                $ch2= curl_init();
-                curl_setopt($ch2, CURLOPT_URL, $mds_doi_url. '/' . $mds_prefix . '/' . $doi);
-                curl_setopt($ch2, CURLOPT_CUSTOMREQUEST, "PUT");
-                curl_setopt($ch2, CURLOPT_RETURNTRANSFER, 1);
-                curl_setopt($ch2, CURLOPT_POSTFIELDS, $doi_data);
-                curl_setopt($ch2, CURLOPT_HTTPHEADER, array('Content-Type:text/plain;charset=UTF-8'));
-                curl_setopt($ch2, CURLOPT_USERPWD, $mds_username . ":" . $mds_password);
-                $curl_response = curl_exec($ch2);
-                $result['doi_curl_response'] = $curl_response;
-                $result['doi_curl_status'] = curl_getinfo($ch2, CURLINFO_HTTP_CODE);
-                curl_close($ch2) ;
+                $createDoi= curl_init();
+                curl_setopt($createDoi, CURLOPT_URL, $mds_doi_url. '/' . $mds_prefix . '/' . $doi);
+                curl_setopt($createDoi, CURLOPT_CUSTOMREQUEST, "PUT");
+                curl_setopt($createDoi, CURLOPT_RETURNTRANSFER, 1);
+                curl_setopt($createDoi, CURLOPT_POSTFIELDS, $doi_data);
+                curl_setopt($createDoi, CURLOPT_HTTPHEADER, array('Content-Type:text/plain;charset=UTF-8'));
+                curl_setopt($createDoi, CURLOPT_USERPWD, $mds_username . ":" . $mds_password);
+                $curl_response = curl_exec($createDoi);
+                $result['create_doi_response'] = $curl_response;
+                $result['create_doi_status'] = curl_getinfo($createDoi, CURLINFO_HTTP_CODE);
+                curl_close($createDoi) ;
             }
         }
 
