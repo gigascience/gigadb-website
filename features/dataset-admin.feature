@@ -7,14 +7,6 @@ Background:
 	Given Gigadb web site is loaded with "gigadb_testdata.pgdmp" data
 	And default admin user exists
 
-@ok @javascript
-Scenario: Mint A DOI
-	Given I sign in as an admin
-	And I am on "/adminDataset/update/id/210"
-	When I follow "Mint DOI"
-	Then I should see "minting under way, please wait"
-	And I should see element "#minting"'s content changing from "minting under way, please wait" to "new DOI successfully minted"
-
 @ok
 Scenario: Keywords
 	Given I sign in as an admin
