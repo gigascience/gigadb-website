@@ -114,6 +114,9 @@ echo $form->hiddenField($model, "image_id");
                         </div>
                     </div>
 
+                    <?php
+                    if ($model->upload_status != 'Published') {
+                        ?>
                     <div>
 
                       <fieldset class="publish-requirements" aria-labelledby="publishRequirementsLegend publishRequirementsDescription">
@@ -141,6 +144,9 @@ echo $form->hiddenField($model, "image_id");
                         </div>
                       </fieldset>
                     </div>
+                    <?php
+                    }
+                    ?>
 
                     <div class="form-block-2">
                         <fieldset>
