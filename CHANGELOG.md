@@ -4,7 +4,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
-- Fix #1657: Fix the broken acceptance tests and functional tests inherited from the Feat #1334
+- Fix #1657: Fix the broken tests from release 4.2.0, fix curation log form and spreadsheet upload consent checkbox
+- Feat #1627: FUW - Migrate to Uppy version 2
 - Feat #1629: FUW - Upgrade Element UI to latest version
 
 ## v4.2.0 - 2024-02-27 - 017ba8f58
