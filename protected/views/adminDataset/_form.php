@@ -103,7 +103,9 @@ echo $form->hiddenField($model, "image_id");
                                     $model,
                                     'upload_status',
                                     Dataset::getAvailableStatusList(),
-                                    array('class' => 'js-pub form-control', 'disabled' => $model->upload_status == 'Published',)
+                                    array('class' => 'js-pub form-control', 'disabled' => $model->upload_status == 'Published', 'data-initial-value' => $model->upload_status, 'options' => array(
+                                      'Published' => array('disabled' => true)
+                                    ))
                                 ); ?>
                                 <div role="alert" class="help-block">
                                 <?php echo $form->error($model, 'upload_status'); ?>
@@ -111,6 +113,40 @@ echo $form->hiddenField($model, "image_id");
                             </div>
                         </div>
                     </div>
+
+                    <?php
+                    if ($model->upload_status != 'Published') {
+                        ?>
+                    <div>
+
+                      <fieldset class="publish-requirements" aria-labelledby="publishRequirementsLegend publishRequirementsDescription">
+                        <legend class="mb-5" id="publishRequirementsLegend">Checklist items</legend>
+                        <p class="mb-10" id="publishRequirementsDescription">To be able to set Upload Status to "Published" make sure to check the next 3 requirements:</p>
+                        <div class="checkbox-group">
+                            <div class="form-group">
+                                <div class="col-xs-9 form-inverted-checkbox">
+                                    <input name="publishRequirements" id="filesWereTransferred" type="checkbox">
+                                    <label class="" for="filesWereTransferred">Files have been transferred to the public repository</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-9 form-inverted-checkbox">
+                                    <input name="publishRequirements" id="doiWasMinted" type="checkbox">
+                                    <label for="doiWasMinted">DOI has been minted</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-9 form-inverted-checkbox">
+                                    <input name="publishRequirements" id="performedSecondEyesCheck" type="checkbox">
+                                    <label for="performedSecondEyesCheck">2nd eyes check has been performed</label>
+                                </div>
+                            </div>
+                        </div>
+                      </fieldset>
+                    </div>
+                    <?php
+                    }
+                    ?>
 
                     <div class="form-block-2">
                         <fieldset>
@@ -521,7 +557,7 @@ echo $form->hiddenField($model, "image_id");
     <a class="btn background-btn-o" href="<?= Yii::app()->createUrl('/adminDataset/admin') ?>">Cancel and go back</a>
     <?= CHtml::submitButton(
         $model->isNewRecord ? 'Create' : 'Save',
-        array('class' => 'btn background-btn submit-btn')
+        array('class' => 'btn background-btn submit-btn', 'id' => 'datasetFormSaveButton')
     ); ?>
     <?php if ("hidden" === $datasetPageSettings->getPageType() || "draft" === $datasetPageSettings->getPageType()) { ?>
         <a href="<?= Yii::app()->createUrl('/adminDataset/private/identifier/' . $model->identifier) ?>" />Create/Reset Private URL</a>
@@ -537,6 +573,39 @@ echo $form->hiddenField($model, "image_id");
     ?>
 
 </div>
+
+<div class="modal fade email-modal" id="customizeEmailModal" tabindex="-1" role="dialog" aria-labelledby="customizeEmailModalTitle" aria-modal="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h2 class="h4 modal-title" id="customizeEmailModalTitle">Customize email sent to the author</h2>
+      </div>
+      <div class="modal-body">
+        <div class="form-group m-0">
+          <label class="control-label" for="Dataset_emailBody">Email message</label>
+          <p class="help-block" id="Dataset_emailBody_Description">Write the email message to be sent to the author. Use the placeholder <code>{{ identifier }}</code> to automatically include the dataset's DOI.</p>
+          <textarea
+            rows="8"
+            cols="50"
+            class="form-control"
+            name="Dataset[emailBody]"
+            id="Dataset_emailBody"
+            required
+            aria-required="true"
+            aria-describedby="Dataset_emailBody_Description"
+          ></textarea>
+          <button type="button" class="btn btn-link" onclick="setDefaultEmailBody()">Reset to default email template</button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn background-btn-o" data-dismiss="modal">Cancel</button>
+        <button id="customizeEmailModalSubmitBtn" class="btn background-btn">Save and send email</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <?php $this->endWidget(); ?>
 <div class="modal fade" id="mockupCreation" tabindex="-1" role="dialog" aria-labelledby="generateMockup">
     <div class="modal-dialog" role="document">
@@ -569,7 +638,7 @@ echo $form->hiddenField($model, "image_id");
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-<script type="text/javascript">
+<script>
     $(function() {
 
         var publication_date = $('.js-date-pub');
@@ -730,9 +799,84 @@ echo $form->hiddenField($model, "image_id");
 
 
 <script>
+// this text is copied from the local files/templates/DataPending.twig, it needs to be updated to the production template
+const defaultDataPendingEmailBody = `
+Dear author,
+
+The curators have changed the upload status for the dataset with DOI {{ identifier }}.
+It is now set to "DataPending" which indicates that some files are missing.`;
+
+// if editor switched upload status to "data pending", a modal prompts to customize email body to send to author
 $(document).ready(function() {
-  document.addEventListener('focus', function() {
-    console.log(document.activeElement);
+  $("#Dataset_emailBody").val(defaultDataPendingEmailBody);
+
+  $("#dataset-form").on("submit", function(e) {
+    const uploadStatusInput = $("#Dataset_upload_status")
+    const initialUploadStatus = uploadStatusInput.attr('data-initial-value');
+    const currentUploadStatus = uploadStatusInput.val();
+    const submitButton = $(':focus');
+    const didSelectDataPending = initialUploadStatus !== currentUploadStatus && currentUploadStatus === 'DataPending';
+    const didSubmitFromModal = submitButton.attr('id') === 'customizeEmailModalSubmitBtn';
+
+    if (didSelectDataPending && !didSubmitFromModal) {
+      $('#customizeEmailModal').modal({
+        backdrop: 'static',
+        keyboard: false,
+      });
+      e.preventDefault();
+    }
   })
 })
+
+function setDefaultEmailBody() {
+  $("#Dataset_emailBody").val(defaultDataPendingEmailBody);
+}
+
+</script>
+<?php
+$jsFile = Yii::getPathOfAlias('application.js.trap-focus') . '.js';
+$jsUrl = Yii::app()->assetManager->publish($jsFile);
+Yii::app()->clientScript->registerScriptFile($jsUrl, CClientScript::POS_END);
+?>
+
+<script>
+$('#customizeEmailModal').on('shown.bs.modal', function(e) {
+  trapFocus($(this));
+});
+
+$('#customizeEmailModal').on('hidden.bs.modal', function() {
+  $('#datasetFormSaveButton').focus(); // hardcoded button that triggers the modal to return focus
+});
+</script>
+
+<script>
+// Handle enable published status
+function getPublishCheckboxes () {
+  return $('[name="publishRequirements"]');
+}
+
+function getPublishedOption() {
+  return $('[name="Dataset[upload_status]"] option[value="Published"]');
+}
+
+function allRequirementsChecked() {
+  const reqs = getPublishCheckboxes()
+  return [...reqs].every(req => req.checked)
+}
+
+function handleCheckPublishRequirements() {
+  const allChecked = allRequirementsChecked()
+  const published = getPublishedOption()
+
+  if (allChecked) {
+    $(published).prop('disabled', false)
+  } else {
+    $(published).prop('disabled', true)
+  }
+}
+
+$(document).ready(function() {
+  getPublishCheckboxes().on('change', handleCheckPublishRequirements)
+  handleCheckPublishRequirements()
+});
 </script>

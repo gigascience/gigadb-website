@@ -319,12 +319,35 @@
 
 .btn-link {
   background-color: transparent;
-  color: @dark-gray-on-white;
   padding: 0;
   text-decoration: underline;
   color: @link-color;
   &:hover {
     color: @link-color-hover;
+  }
+}
+
+.btn-transparent {
+  background-color: transparent;
+  color: @gigadb-green-on-lighter-gray;
+  &:hover {
+    color: @link-color-hover;
+  }
+}
+
+.disabled-btn {
+  color: @color-true-white;
+  background: @dark-gray-on-white;
+  font-weight: bold;
+  cursor: not-allowed;
+  &:hover {
+    color: @color-true-white;
+    background: @dark-gray-on-white;
+  }
+  &:focus {
+    color: @color-true-white;
+    outline-offset: 2px;
+    outline: solid 2px @dark-gray-on-white;
   }
 }
 

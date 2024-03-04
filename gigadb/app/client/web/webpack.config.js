@@ -16,7 +16,15 @@ module.exports = {
         test: /\.css$/,
         use: [
           'vue-style-loader',
-          'css-loader'
+          'css-loader',
+        ]
+      },
+      {
+        test: /\.less$/,
+        use: [
+          'vue-style-loader',
+          'css-loader',
+          'less-loader'
         ]
       },
       {
@@ -34,7 +42,7 @@ module.exports = {
       {
         test: /\.(txt)$/i,
         loader: 'raw-loader',
-      }      
+      }
     ]
   },
   // This is needed for vue to work, see https://github.com/vuejs-templates/webpack/issues/215

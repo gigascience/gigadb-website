@@ -58,7 +58,7 @@ Scenario: new dataset with mandatory fields filled in
 	And I fill in "Source" with "Wikimedia"
 	And I fill in "License" with "CC0"
 	And I fill in "Photographer" with "Anonymous"
-	And I fill in "DOI" with "100900"
+	And I fill in "Dataset_identifier" with "100900"
 	And I fill in "Ftp Site" with "ftp.genomics.cn"
 	And I press "Create"
 	Then the response should contain "My Dataset"
