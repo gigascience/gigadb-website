@@ -99,7 +99,7 @@ class StoredDatasetMainSectionTest extends CDbTestCase
                         "release_year" => "2018",
                         "dataset_title" => 'Supporting data for "Analyzing climate variations on multiple timescales can guide Zika virus response measures"',
                         "publisher" => "Gigascience",
-                        "full_doi" => "10.5072/100243",
+                        "full_doi" => "10.80027/100243",
                     );
         $this->assertEquals($expected, $daoUnderTest->getReleaseDetails());
 
@@ -144,9 +144,9 @@ class StoredDatasetMainSectionTest extends CDbTestCase
                 'dimension_query' => "View citations on Dimensions",
                 ),
             'urls' => array(
-                'scholar_query' => 'https://scholar.google.com/scholar?q=10.5072/100243',
-                'ePMC_query' => "https://europepmc.org/search?scope=fulltext&query=(REF:%2710.5072/100243%27)",
-                'dimension_query' => "https://app.dimensions.ai/discover/publication?search_text=10.5072/100243",
+                'scholar_query' => 'https://scholar.google.com/scholar?q=10.80027/100243',
+                'ePMC_query' => "https://europepmc.org/search?scope=fulltext&query=(REF:%2710.80027/100243%27)",
+                'dimension_query' => "https://app.dimensions.ai/discover/publication?search_text=10.80027/100243",
                 ),
             'images' => array(
                 'scholar_query' => '/images/google_scholar.png',
