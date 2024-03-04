@@ -103,13 +103,43 @@ echo $form->hiddenField($model, "image_id");
                                     $model,
                                     'upload_status',
                                     Dataset::getAvailableStatusList(),
-                                    array('class' => 'js-pub form-control', 'disabled' => $model->upload_status == 'Published', 'data-initial-value' => $model->upload_status )
+                                    array('class' => 'js-pub form-control', 'disabled' => $model->upload_status == 'Published', 'data-initial-value' => $model->upload_status, 'options' => array(
+                                      'Published' => array('disabled' => true)
+                                    ))
                                 ); ?>
                                 <div role="alert" class="help-block">
                                 <?php echo $form->error($model, 'upload_status'); ?>
                                 </div>
                             </div>
                         </div>
+                    </div>
+
+                    <div>
+
+                      <fieldset>
+                        <legend class="mb-5">Publish requirements</legend>
+                        <p class="mb-10">To be able to set Upload Status to "Published" make sure to check the next 3 requirements:</p>
+                        <div class="checkbox-group">
+                            <div class="form-group">
+                                <div class="col-xs-9 form-inverted-checkbox">
+                                    <input name="publishRequirements" id="filesWereTransferred" type="checkbox">
+                                    <label class="" for="filesWereTransferred">Files have been transferred to the public repository</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-9 form-inverted-checkbox">
+                                    <input name="publishRequirements" id="doiWasMinted" type="checkbox">
+                                    <label for="doiWasMinted">DOI has been minted</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-9 form-inverted-checkbox">
+                                    <input name="publishRequirements" id="performedSecondEyesCheck" type="checkbox">
+                                    <label for="performedSecondEyesCheck">2nd eyes check have been performed</label>
+                                </div>
+                            </div>
+                        </div>
+                      </fieldset>
                     </div>
 
                     <div class="form-block-2">
@@ -810,5 +840,37 @@ $('#customizeEmailModal').on('shown.bs.modal', function(e) {
 
 $('#customizeEmailModal').on('hidden.bs.modal', function() {
   $('#datasetFormSaveButton').focus(); // hardcoded button that triggers the modal to return focus
+});
+</script>
+
+<script>
+// Handle enable published status
+function getPublishCheckboxes () {
+  return $('[name="publishRequirements"]');
+}
+
+function getPublishedOption() {
+  return $('[name="Dataset[upload_status]"] option[value="Published"]');
+}
+
+function allRequirementsChecked() {
+  const reqs = getPublishCheckboxes()
+  return [...reqs].every(req => req.checked)
+}
+
+function handleCheckPublishRequirements() {
+  const allChecked = allRequirementsChecked()
+  const published = getPublishedOption()
+
+  if (allChecked) {
+    $(published).prop('disabled', false)
+  } else {
+    $(published).prop('disabled', true)
+  }
+}
+
+$(document).ready(function() {
+  getPublishCheckboxes().on('change', handleCheckPublishRequirements)
+  handleCheckPublishRequirements()
 });
 </script>
