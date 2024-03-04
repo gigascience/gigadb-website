@@ -169,7 +169,7 @@ $('.search-form form').submit(function(){
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h2 class="h4 modal-title" id="customizeInstructionsTitle">Customise upload instructions</h2>
+        <h2 class="h4 modal-title" id="customizeInstructionsTitle">Customize upload instructions</h2>
       </div>
       <div class="modal-body">
         <form id="instructionsForm" class="mb-20">
