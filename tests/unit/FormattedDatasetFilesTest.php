@@ -202,8 +202,8 @@ class FormattedDatasetFilesTest extends CTestCase
                     );
 
         // create a mock for the CachedDatasetFiles
-        $cachedDatasetFiles = $this->getMockBuilder(CachedDatasetFiles::class)
-                         ->setMethods(['getDatasetFiles'])
+        $cachedDatasetFiles = $this->getMockBuilder(DatasetFilesInterface::class)
+                         ->setMethods(['getDatasetFiles','getDatasetId','getDatasetDOI','getDatasetFilesSamples'])
                          ->disableOriginalConstructor()
                          ->getMock();
         //then we set our expectation

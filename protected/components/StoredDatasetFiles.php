@@ -47,7 +47,7 @@ class StoredDatasetFiles extends DatasetComponents implements DatasetFilesInterf
      *
      * @return array of files array maps
      */
-    public function getDatasetFiles(): array
+    public function getDatasetFiles(?string $limit = "ALL", ?int $offset = 0): array
     {
         $objectToHash =  function ($file) {
 

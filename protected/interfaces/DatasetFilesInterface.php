@@ -26,9 +26,12 @@ interface DatasetFilesInterface
 	/**
 	 * retrieve, cache and format the files associated to a dataset
 	 *
+	 * @param string|null $limit how many rows need to be returned (Or ALL)
+	 * @param int|null $offset how many rows need to be skipped
+	 * 
 	 * @return array of files array maps
 	 */
-	public function getDatasetFiles(): array;
+	public function getDatasetFiles(?string $limit, ?int $offset): array;
 
 	/**
 	 * retrieve, cache and format the sample attached to files associated to a dataset

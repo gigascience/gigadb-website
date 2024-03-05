@@ -45,10 +45,10 @@ class FormattedDatasetFiles extends DatasetComponents implements DatasetFilesInt
      *
      * @return array of external link array map
      */
-    public function getDatasetFiles(): array
+    public function getDatasetFiles(?string $limit = "ALL", ?int $offset = 0): array
     {
         $formatted_files = [];
-        $files =   $this->_cachedDatasetFiles->getDatasetFiles();
+        $files =   $this->_cachedDatasetFiles->getDatasetFiles($limit, $offset);
         foreach ($files as &$file) {
             $file['nameHtml'] = "<div title=\"" . $file['description'] . "\"><a href=\"" . $file['location'] . "\" target='_blank'>" . $file['name'] . "</a></div>";
             $file['sizeUnit'] = UnitHelper::specifySizeUnits($file['size']);

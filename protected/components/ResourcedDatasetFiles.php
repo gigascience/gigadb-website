@@ -53,7 +53,7 @@ class ResourcedDatasetFiles extends DatasetComponents implements DatasetFilesInt
      *
      * @return array of files array maps
      */
-    public function getDatasetFiles(): array
+    public function getDatasetFiles(?string $limit = "ALL", ?int $offset = 0): array
     {
         // convert the FUW upload record to a GigaDB record
         $uploadToFile = function ($upload) {
