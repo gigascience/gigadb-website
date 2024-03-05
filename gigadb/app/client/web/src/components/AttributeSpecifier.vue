@@ -1,7 +1,7 @@
 <template>
   <form class="container-fluid">
     <fieldset class="attributes-input-group">
-      <legend>Add a new attribute</legend>
+      <legend class="legend">Add a new attribute</legend>
       <input-field
         label="Name"
         :modelValue="name"
@@ -39,6 +39,9 @@
 <style lang="less" scoped>
 .attributes-input-group {
   margin-bottom: 20px;
+  .legend {
+    color: #333333;
+  }
 }
 .add-new-attribute {
   margin-bottom: 5px;

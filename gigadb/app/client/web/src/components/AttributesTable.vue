@@ -5,6 +5,9 @@
     </div>
 
     <table v-else class="table attr-table">
+      <caption class="caption">
+        Attribute list
+      </caption>
       <thead>
         <tr>
           <th v-for="col in cols" scope="col" class="table-header" :key="col.label">{{ col.label }}</th>
@@ -36,6 +39,10 @@
 }
 
 .attr-table {
+  .caption {
+    color: #333333;
+  }
+
   .cell {
     max-width: 100px;
     vertical-align: middle;
