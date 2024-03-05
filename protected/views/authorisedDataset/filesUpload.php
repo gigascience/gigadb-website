@@ -14,7 +14,11 @@
         ?>
             <div class="row">
                 <section class="col-xs-12 col-md-8" aria-label="file uploader">
-                    <file-uploader identifier="<?= $identifier ?>" endpoint="<?php echo $tusd_path ?>" />
+                    <file-uploader identifier="<?= $identifier ?>" endpoint="<?php echo $tusd_path ?>">
+                      <div class="uppy-spinner-wrapper">
+                        <div class="spinner-border"></div>
+                      </div>
+                    </file-uploader>
                 </section>
                 <div  class="col-xs-12 col-md-4">
                   <aside>

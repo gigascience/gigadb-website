@@ -1,0 +1,29 @@
+.uppy-spinner-wrapper {
+  min-height: 450px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  background-color: @color-lighter-gray;
+  width: 750px;
+  height: 450px;
+}
+
+.spinner-border {
+  border: 0.25rem solid currentcolor;
+  border-right-color: transparent;
+  display: inline-block;
+  width: 2rem;
+  height: 2rem;
+  vertical-align: -0.125em;
+  border-radius: 50%;
+  animation: 0.75s linear infinite spinner-border;
+  color: @color-gigadb-green;
+}
+
+@keyframes spinner-border {
+  to {
+    transform: rotate(360deg);
+  }
+}
