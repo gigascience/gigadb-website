@@ -14,7 +14,7 @@
  * @property DatasetSamplesInterface $_samplesProvider
  * @property Dataset $_dataset
  * @property SearchForm $_searchForm
- * @property FileUplooadService $_fileUploadService
+ * @property FileUploadService $_fileUploadService
  *
  * @uses yii::app()
  *
