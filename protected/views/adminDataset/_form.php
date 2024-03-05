@@ -584,7 +584,7 @@ echo $form->hiddenField($model, "image_id");
       <div class="modal-body">
         <div class="form-group m-0">
           <label class="control-label" for="Dataset_emailBody">Email message</label>
-          <p class="help-block" id="Dataset_emailBody_Description">Write the email message to be sent to the author. Use the placeholder <code>{{ identifier }}</code> to automatically include the dataset's DOI.</p>
+          <p class="help-block" id="Dataset_emailBody_Description">Write the email message to be sent to the author. Use the placeholder <span class="sr-only">opening double curly braces, identifier, closing double curly braces</span><code aria-hidden="true">{{ identifier }}</code> to automatically include the dataset's DOI.</p>
           <textarea
             rows="8"
             cols="50"
