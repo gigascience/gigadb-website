@@ -87,12 +87,12 @@
                                 <td>
                                     <? if ($data[$i]->upload_status !='Published' && $data[$i]->upload_status!='AuthorReview' && $data[$i]->upload_status!='Private'){ ?>
                                         <div>
-                                            <a class="update btn btn-transparent tooltip-trigger" data-toggle="tooltip" title="Update the metadata of the dataset" href=<? echo "/datasetSubmission/datasetManagement/id/" . $data[$i]->id ?>>Update<br />dataset</a>
-                                            <button class="js-delete-dataset btn btn-transparent" data-toggle="tooltip" title="Delete the dataset and all its files" did="<?=$data[$i]->id?>">
+                                            <a class="update btn btn-transparent tooltip-trigger" data-toggle="tooltip" title="Update the metadata of the dataset" href="/datasetSubmission/datasetManagement/id/<?php echo $data[$i]->id ?>" aria-label="Update dataset: Update the metadata of the dataset">Update<br />dataset</a>
+                                            <button class="js-delete-dataset btn btn-transparent" data-toggle="tooltip" title="Delete the dataset and all its files" did="<?=$data[$i]->id?>" aria-label="Delete dataset: Delete the dataset and all its files">
                                        Delete<br />dataset</button>
                                             <?php if ($data[$i]->upload_status === "UserUploadingData" || $data[$i]->upload_status === "DataPending") {
                                               ?>
-                                              <a class="upload btn btn-transparent" href="/authorisedDataset/uploadFiles/id/<?php echo $data[$i]->identifier; ?>" data-toggle="tooltip" title="Upload files to the dataset, delete the existing files or edit their metadata">Upload<br />Files</a>
+                                              <a class="upload btn btn-transparent" href="/authorisedDataset/uploadFiles/id/<?php echo $data[$i]->identifier; ?>" data-toggle="tooltip" title="Upload files to the dataset, delete the existing files or edit their metadata" aria-label="Upload Files: Upload files to the dataset, delete the existing files or edit their metadata">Upload<br />Files</a>
                                               <?php
                                             } ?>
                                         </div>
