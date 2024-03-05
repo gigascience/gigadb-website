@@ -7,17 +7,17 @@
           page"</strong> button
         will
         be enabled at the bottom of the page. You must click it to effect your file submission.</p>
-      <p>Required fields are followed by <span aria-label="required">*</span>.</p>
+      <p>Required fields are followed by *.</p>
     </div>
     <form method="post" class="mb-20">
       <table class="table table-striped table-bordered">
         <thead>
           <tr>
             <th scope="col">File Name</th>
-            <th scope="col" id="dataTypeTh">Data Type<span aria-label="required">*</span></th>
+            <th scope="col" id="dataTypeTh">Data Type<span class="sr-only"> required</span><span aria-hidden="true">*</span></th>
             <th scope="col">Format</th>
             <th scope="col">Size</th>
-            <th scope="col" id="descriptionTh">Description<span aria-label="required">*</span></th>
+            <th scope="col" id="descriptionTh">Description<span class="sr-only"> required</span><span aria-hidden="true">*</span></th>
             <th scope="col">Actions</th>
           </tr>
         </thead>

@@ -20,8 +20,8 @@
             </li>
           </ul>
         </li>
-        <li> When adding attributes, enter each one with the format <code>name::value::unit</code></li>
-        <li> If there is no unit, the last <code>::</code> is still needed: <code>name::value::</code></li>
+        <li> When adding attributes, enter each one with the format <span class="sr-only">name, double colon, value, double colon, unit</span><code aria-hidden="true">name::value::unit</code></li>
+        <li> If there is no unit, the last <span class="sr-only">double colon</span><code aria-hidden="true">::</code> is still needed: <span class="sr-only">name, double colon, value, double colon</span><code>name::value::</code></li>
         <li> After uploading the spreadsheet, you can still tweak the metadata in the table above</li>
       </ul>
 
