@@ -1,6 +1,6 @@
 <template>
   <form class="container-fluid">
-    <fieldset>
+    <fieldset class="attributes-input-group">
       <legend>Add a new attribute</legend>
       <input-field
         label="Name"
@@ -32,48 +32,28 @@
       />
       <button @click.prevent="addNewAttribute" class="btn background-btn btn-small pull-right add-new-attribute" id="add-new-attribute" aria-label="Add attribute">Add</button>
     </fieldset>
-    <el-table class="attr-table" :data="attributes">
-      <el-table-column prop="name" label="Name">
-      </el-table-column>
-      <el-table-column prop="value" label="Value">
-      </el-table-column>
-      <el-table-column prop="unit" label="Unit">
-      </el-table-column>
-      <el-table-column fixed="right" label="Actions">
-        <template v-slot="{ $index }">
-          <el-button
-            type="danger"
-            icon="el-icon-delete"
-            size="mini"
-            circle
-            @click.prevent="removeAttribute($index)"
-            :aria-label="`Remove attribute ${attributes[$index].name}`"
-          >
-          </el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+    <attributes-table :attributes="attributes" @remove-attribute="removeAttribute" />
   </form>
 </template>
 
 <style lang="less" scoped>
+.attributes-input-group {
+  margin-bottom: 20px;
+}
 .add-new-attribute {
   margin-bottom: 5px;
   min-width: 80px;
-}
-.attr-table::v-deep {
-  .cell {
-    overflow: visible;
-  }
 }
 </style>
 
 <script>
 import InputField from './InputField.vue';
+import AttributesTable from './AttributesTable.vue';
 
 export default {
   components: {
-    'input-field': InputField
+    'input-field': InputField,
+    'attributes-table': AttributesTable
   },
   props: {
     fileAttributes: {
