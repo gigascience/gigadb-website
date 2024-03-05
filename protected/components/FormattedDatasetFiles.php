@@ -91,7 +91,18 @@ class FormattedDatasetFiles extends DatasetComponents implements DatasetFilesInt
      */
     public function getDataProvider(): CArrayDataProvider
     {
+        $criteria=new CDbCriteria;
+        $criteria->join="LEFT join dataset on dataset.id = dataset_id";
+        $criteria->condition='dataset.identifier=:identifier';
+        $criteria->params=array(':identifier'=> $this->getDatasetDOI());
+
+        $totalFileCount = File::model()->count($criteria);
+        $files_pagination = new FilesPagination($totalFileCount);
+        $files_pagination->setPageSize($this->_pageSize);
+        $files_pagination->pageVar = "Files_page";
+
         $files = $this->getDatasetFiles();
+
         $dataProvider = new CArrayDataProvider($files, array(
             'sort' => array('defaultOrder' => 'name ASC',
                             'attributes' => array(
@@ -105,9 +116,6 @@ class FormattedDatasetFiles extends DatasetComponents implements DatasetFilesInt
                         ),
             'pagination' => null
             ));
-        $files_pagination = new FilesPagination(count($files));
-        $files_pagination->setPageSize($this->_pageSize);
-        $files_pagination->pageVar = "Files_page";
         $dataProvider->setPagination($files_pagination);
         return $dataProvider;
     }
