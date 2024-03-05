@@ -3,11 +3,8 @@
     <div class="sr-only" aria-live="polite">
       {{ liveMessage }}
     </div>
-    <div v-if="attributes.length === 0">
-      <p>No attributes added yet.</p>
-    </div>
 
-    <table v-else class="table attr-table">
+    <table class="table attr-table">
       <caption class="caption">
         Attribute list
       </caption>
@@ -17,7 +14,10 @@
         </tr>
       </thead>
       <tbody>
-        <tr class="table-row" v-for="({ name, unit, value }, index) in attributes" :key="index">
+        <tr v-if="!attributes.length">
+          <td colspan="4" class="placeholder-row">No attributes added.</td>
+        </tr>
+        <tr v-else class="table-row" v-for="({ name, unit, value }, index) in attributes" :key="index">
           <td class="cell" aria-colindex="1" :aria-rowindex="index">{{ name }}</td>
           <td class="cell" aria-colindex="2" :aria-rowindex="index">{{ value }}</td>
           <td class="cell" aria-colindex="3" :aria-rowindex="index">{{ unit }}</td>
@@ -54,6 +54,11 @@
     &:last-child {
       text-align: center;
     }
+  }
+
+  .placeholder-row {
+    text-align: center;
+    padding-block: 16px;
   }
 }
 
