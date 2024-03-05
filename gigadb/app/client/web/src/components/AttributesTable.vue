@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div class="sr-only" aria-live="polite">
+      {{ liveMessage }}
+    </div>
     <div v-if="attributes.length === 0">
       <p>No attributes added yet.</p>
     </div>
@@ -75,12 +78,39 @@ export default {
         { label: "Value" },
         { label: "Unit" },
         { label: "Actions" }
-      ]
+      ],
+      liveMessage: "",
+      timer: null
     }
+  },
+  computed: {
+    attributesLength() {
+      return this.attributes.length;
+    }
+  },
+  beforeDestroy() {
+    this.timer && clearTimeout(this.timer);
+  },
+  watch: {
+    attributesLength(newVal, oldVal) {
+      if (newVal > oldVal) {
+        this.toggleLiveMessage("Attribute added")
+      }
+      if (newVal < oldVal) {
+        this.toggleLiveMessage("Attribute removed")
+      }
+    },
   },
   methods: {
     removeAttribute(index) {
       this.$emit('remove-attribute', index);
+    },
+    toggleLiveMessage(newMessage) {
+      // set to emtpy first so that live region sees a change
+      this.liveMessage = "";
+      this.timer = setTimeout(() => {
+        this.liveMessage = newMessage;
+      }, 500)
     }
   }
 }
