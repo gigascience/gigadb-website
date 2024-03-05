@@ -24,7 +24,7 @@
                   <aside>
                       <div class="panel tips-panel">
                           <div class="panel-heading">
-                              <h4 class="panel-title">Tips</h4>
+                              <h2 class="h4 panel-title">Tips</h2>
                           </div>
                           <div class="panel-body">
                               <ul>
