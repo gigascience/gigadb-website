@@ -52,11 +52,6 @@ else
   # Check uploadDir is empty in dev environment
   if [ -n "$(ls -A "${currentPath}"/uploadDir)" ];then
     echo -e "${RED}Failed to upload spreadsheet, please check logs!${NO_COLOR}"
-
-    # Identify line number with "End error"
-    error_line_number=$(awk '/End error/{ print NR; exit }' logs/java.log)
-    OUT=$(tail -n +"${error_line_number}" logs/java.log)
-    echo "${OUT}" | grep --color -E 'ERROR|Detail'
   fi
 
 fi
