@@ -43,7 +43,7 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
                             </section>
                             <section>
                                 <div class="tab-content">
-                                    <div role="tabpanel" class="tab-pane" id="edit">
+                                    <div role="tabpanel" class="tab-pane" id="edit" tabindex="0">
                                         <div class="row">
                                             <div class="col-xs-8 col-xs-offset-2">
                                                 <div class="form well user-profile-box">
@@ -174,13 +174,13 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
                                             </div>
                                         </div>
                                     </div>
-                                    <div role="tabpanel" class="tab-pane" id="submitted">
+                                    <div role="tabpanel" class="tab-pane" id="submitted" tabindex="0">
                                         <?= $this->renderPartial('uploadedDatasets', array('uploadedDatasets' => $uploadedDatasets)); ?>
                                     </div>
-                                    <div role="tabpanel" class="tab-pane" id="authored">
+                                    <div role="tabpanel" class="tab-pane" id="authored" tabindex="0">
                                         <?= $this->renderPartial('authoredDatasets', array('authoredDatasets' => $authoredDatasets, 'linkedAuthors' => $linkedAuthors)); ?>
                                     </div>
-                                    <div role="tabpanel" class="tab-pane" id="saved">
+                                    <div role="tabpanel" class="tab-pane" id="saved" tabindex="0">
                                         <?= $this->renderPartial('searches', array('searchRecord' => $searchRecord)); ?>
                                     </div>
                                 </div>
