@@ -5,12 +5,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## Unreleased
 
 - Feat #1613: Add descriptive text, improved button labels and tooltips for user profile uploaded datasets tab
-- Feat #1629: FUW - Upgrade Element UI to latest version
-
-## v4.2.0 - 2024-02-27 - 017ba8f58
-
-- Fix #1659: Remove dependency on abandoned inter-container-communication project and fix broken tests
-- Feat #1624: FUW - Migrate to Vue 2.7
+- Fix #1714: Visually hide long description in guide workflow, so that it's only visible to screen readers
+- Fix #1657: Fix the broken tests from release 4.2.0, fix curation log form and spreadsheet upload consent checkbox
+- Feat #1627: FUW - Migrate to Uppy version 2
 - Feat #1629: FUW - Upgrade Element UI to latest version
 
 ## v4.2.0 - 2024-02-27 - 017ba8f58

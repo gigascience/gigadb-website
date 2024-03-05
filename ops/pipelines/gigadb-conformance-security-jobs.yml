@@ -106,13 +106,25 @@ spotbugs-sast:
   variables:
     SAST_DISABLED: "true"
 
+
+variables:
+  CS_ANALYZER_IMAGE: "$CI_TEMPLATE_REGISTRY_HOST/security-products/container-scanning:6"
+  CS_SCHEMA_MODEL: 15
+
 container_scanning:
   stage: conformance and security
+  image: "$CS_ANALYZER_IMAGE$CS_IMAGE_SUFFIX"
+  parallel:
+    matrix:
+      - CS_IMAGE: [
+          "registry.gitlab.com/$CI_PROJECT_PATH/production_web:staging",
+          "registry.gitlab.com/$CI_PROJECT_PATH/production_app:staging",
+          "registry.gitlab.com/$CI_PROJECT_PATH/production_web:live",
+          "registry.gitlab.com/$CI_PROJECT_PATH/production_app:live"
+        ]
   variables:
-    DOCKER_IMAGE: registry.gitlab.com/security-products/container-scanning:4
     CS_SEVERITY_THRESHOLD: critical
     SECURE_LOG_LEVEL: 'info'
-    CS_IMAGE: $IMAGES
   rules:
     - if: $CONTAINER_SCANNING_DISABLED == 'true' || $CONTAINER_SCANNING_DISABLED == '1'
       when: never

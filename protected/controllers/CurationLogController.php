@@ -42,23 +42,16 @@ class CurationLogController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		if(isset($_GET['id'])) {
-                    $id=$_GET['id'];
-                   $dataProvider=new CActiveDataProvider('CurationLog', array(
-    'criteria'=>array(
-        'condition'=>"dataset_id=$id",
-        'order'=>'id DESC',
+        $model=new CurationLog('search');
+        $model->unsetAttributes();  // clear any default values
+        if(isset($_GET['CurationLog']))
+            $model->setAttributes($_GET['CurationLog']);
 
-    ),
-
-));
-
-		   // $model->setAttributes('dataset_id',$id);
-			$this->render('admin',array(
-				'model'=>$dataProvider,
-                                'dataset_id'=>$id,
-			));
-		}
+        $this->layout = 'new_main';
+        $this->loadBaBbqPolyfills = true;
+        $this->render('admin',array(
+            'model'=>$model,
+        ));
 	}
 
 	/**
@@ -90,7 +83,7 @@ class CurationLogController extends Controller
 		$this->layout = 'new_datasetpage';
 		$this->render('create',array(
 			'model'=>$model,
-                        'dataset_id'=>$id,
+            'dataset_id'=>$id,
 		));
 	}
 
