@@ -10,7 +10,7 @@
 class UnitHelper
 {
     /**
-     * Return the human readable binary size of files with configurable formatting
+     * Return the human readable size of files with configurable formatting
      *
      * It's extracted out of getSizeWithFormat so the functionality can be used in other contexts as well.
      *
