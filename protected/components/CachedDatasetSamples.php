@@ -52,7 +52,7 @@ class CachedDatasetSamples extends DatasetComponents implements DatasetSamplesIn
         $samples =  $this->getCachedLocalData($this->getDatasetId());
         if (false == $samples) {
             $samples = $this->_storedDatasetSamples->getDatasetSamples();
-            $this->saveLocaldataInCache($this->getDatasetId(), $samples);
+            $this->saveLocalDataInCache($this->getDatasetId(), $samples);
         }
         return $samples;
     }

@@ -30,17 +30,20 @@ class DatasetComponents extends yii\base\BaseObject implements Cacheable
     /**
      * retrieve local cached data transparently.
      *
+     * @params string $dataset_id ID of the cached dataset
+     * @params string $range range (limit, offset) being cached
+     *
      * @uses Cacheable::getCacheKeyForLocalData()
      * @return mixed the content retrieved from cache, or false if content is expired
      */
-    public function getCachedLocalData(string $dataset_id)                                    
+    public function getCachedLocalData(string $dataset_identifier, string $range = "ALL_0")
     {
         $result = null;
         if (!defined('DISABLE_CACHE') || false === DISABLE_CACHE) {
-            $result = $this->_cache->get($this->getCacheKeyForLocalData($dataset_id));
+            $result = $this->_cache->get($this->getCacheKeyForLocalData($dataset_identifier."_".$range));
         }
         if (defined('YII_DEBUG') && true === YII_DEBUG) {
-            Yii::log("cache for " . $this->getCacheKeyForLocalData($dataset_id) . ": " . (false === $result ? "MISS" : "HIT"), 'info');
+            Yii::log("cache for " . $this->getCacheKeyForLocalData($dataset_identifier."_".$range) . ": " . (false === $result ? "MISS" : "HIT"), 'info');
         }
 
          return $result;
@@ -50,17 +53,19 @@ class DatasetComponents extends yii\base\BaseObject implements Cacheable
      * Store content from local context (collection, class, method) into the cache
      *
      * The content is cached until TTL read from config, or if there's a new entry in dataset_log table (invalidation query)
+     *
+     * @param string identifier for the collection of objects
      * @param mixed $content content to cache
+     * @param string range of query defined by its limit and offset
      * @return boolean true if operation successful, false otherwise
      */
-    public function saveLocaldataInCache(string $dataset_id, $content): bool
+    public function saveLocalDataInCache(string $dataset_identifier,  $content, string $range = "ALL_0"): bool
     {
-        // Yii::log("Saving to cache the data from:". $this->getCacheKeyForLocalData( $dataset_id ),'info');
-        $invalidationQuery = preg_replace("/@id/", $dataset_id, Yii::app()->params['cacheConfig']['DatasetComponents']['invalidationQuery']);
-        $ttl = preg_replace("/@id/", $dataset_id, Yii::app()->params['cacheConfig']['DatasetComponents']['timeToLive']);
-        $this->_cacheDependency->sql = $this->isCachedDisabled() ? "select current_time;" : $invalidationQuery;
+        $invalidationQuery = preg_replace("/@id/", $dataset_identifier, Yii::app()->params['cacheConfig']['DatasetComponents']['invalidationQuery']);
+        $ttl = preg_replace("/@id/", $dataset_identifier, Yii::app()->params['cacheConfig']['DatasetComponents']['timeToLive']);
+        $this->_cacheDependency->sql = $this->isCacheDisabled() ? "select current_time;" : $invalidationQuery;
         return $this->_cache->set(
-            $this->getCacheKeyForLocalData($dataset_id),
+            $this->getCacheKeyForLocalData($dataset_identifier."_".$range),
             $content,
             $ttl,
             $this->_cacheDependency
@@ -90,7 +95,7 @@ class DatasetComponents extends yii\base\BaseObject implements Cacheable
      * @use DISABLE_CACHE
      * @return bool
      */
-    public function isCachedDisabled()
+    public function isCacheDisabled(): bool
     {
         return defined('DISABLE_CACHE') && DISABLE_CACHE === true;
     }

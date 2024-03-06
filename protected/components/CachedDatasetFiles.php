@@ -49,10 +49,10 @@ class CachedDatasetFiles extends DatasetComponents implements DatasetFilesInterf
      */
     public function getDatasetFiles(?string $limit = "ALL", ?int $offset = 0): array
     {
-        $files =  $this->getCachedLocalData($this->getDatasetId()."_".$limit."_".$offset);
+        $files =  $this->getCachedLocalData($this->getDatasetId(), $limit."_".$offset);
         if (!$files) {
             $files = $this->_storedDatasetFiles->getDatasetFiles($limit, $offset);
-            $this->saveLocaldataInCache($this->getDatasetId()."_".$limit."_".$offset, $files);
+            $this->saveLocalDataInCache($this->getDatasetId(), $files, $limit."_".$offset);
         }
         return $files;
     }
@@ -67,7 +67,7 @@ class CachedDatasetFiles extends DatasetComponents implements DatasetFilesInterf
         $countFiles =  $this->getCachedLocalData($this->getDatasetId());
         if (!$countFiles) {
             $countFiles = $this->_storedDatasetFiles->countDatasetFiles();
-            $this->saveLocaldataInCache($this->getDatasetId(), $countFiles);
+            $this->saveLocalDataInCache($this->getDatasetId(), $countFiles);
         }
         return $countFiles;
     }
@@ -82,7 +82,7 @@ class CachedDatasetFiles extends DatasetComponents implements DatasetFilesInterf
         $samples =  $this->getCachedLocalData($this->getDatasetId());
         if (false == $samples) {
             $samples = $this->_storedDatasetFiles->getDatasetFilesSamples();
-            $this->saveLocaldataInCache($this->getDatasetId(), $samples);
+            $this->saveLocalDataInCache($this->getDatasetId(), $samples);
         }
         return $samples;
     }

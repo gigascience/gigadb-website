@@ -95,11 +95,12 @@ class FormattedDatasetFiles extends DatasetComponents implements DatasetFilesInt
         $currentPage = $files_pagination->currentPage;
         $nbToSkip = $currentPage*$this->_pageSize;
 
-        Yii::log("Current page: $currentPage",'info');
 
-        // $files = $this->getDatasetFiles();
         $files = $this->getDatasetFiles($this->_pageSize, $nbToSkip);
-        Yii::log("nb file returned: ".count($files), 'info');
+        if (defined('YII_DEBUG') && true === YII_DEBUG) {
+            Yii::log("Current page: $currentPage", 'info');
+            Yii::log("nb file returned: " . count($files), 'info');
+        }
 
         $dataProvider = new CArrayDataProvider(null, array(
             'totalItemCount' => $totalFileCount,
@@ -117,8 +118,10 @@ class FormattedDatasetFiles extends DatasetComponents implements DatasetFilesInt
             ));
         $dataProvider->setPagination($files_pagination);
         $dataProvider->setData($files);
-        Yii::log("Item count: ".$dataProvider->getItemCount(),"info");
-        Yii::log("Total count: ".$dataProvider->getTotalItemCount(),"info");
+        if (defined('YII_DEBUG') && true === YII_DEBUG) {
+            Yii::log("Item count: " . $dataProvider->getItemCount(), "info");
+            Yii::log("Total count: " . $dataProvider->getTotalItemCount(), "info");
+        }
         return $dataProvider;
     }
 
