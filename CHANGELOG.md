@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1717 #1715 #1716: remove Google Plus link, update X logo and add Mastodon link to social media links
 - Feat: FUW - Fix accessibility and styles issues in file upload page
 - Feat: FUW - Review and clean up uppy-related code
 - Feat #1607: FUW - Update the tips section of the data uploader to include relevant links to guides
