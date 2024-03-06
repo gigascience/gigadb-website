@@ -108,7 +108,7 @@
 
     <div v-if="uploadedFiles.length > 0">
       <accessible-drawer :title="`Add attributes to file: ${uploadedFiles[drawerIndex].name}`" :visible.sync="attrPanel"
-        :with-header="true" :before-close="handleAttrClose" destroy-on-close>
+        :with-header="true" destroy-on-close>
         <div class="attributes-drawer-body">
           <span>
             <attribute-specifier id="attributes-form" :fileAttributes="fileAttributes[selectedUpload]" />
@@ -249,13 +249,10 @@ export default {
       for (let uploadIndex = 0; uploadIndex < this.uploadedFiles.length; uploadIndex++) {
         if (this.uploadedFiles[uploadIndex].datatype != undefined && this.uploadedFiles[uploadIndex].datatype.length > 0 && this.uploadedFiles[uploadIndex].description != undefined && this.uploadedFiles[uploadIndex].description.length > 0) {
           this.metaComplete.includes(uploadIndex) || this.metaComplete.push(uploadIndex)
-          // console.log(`all fields complete for upload ${uploadIndex}`)
         }
       }
     },
     toggleAttrDrawer(uploadIndex, uploadId) {
-      // console.log(`Attr, uploadIndex: ${uploadIndex}, selectedUpload: ${uploadId}`)
-      // console.log("filesAttributes:"+JSON.stringify(this.fileAttributes[uploadId]))
       this.drawerIndex = uploadIndex
       this.selectedUpload = uploadId
       this.attrPanel = !this.attrPanel
@@ -270,21 +267,14 @@ export default {
     //   this.drawerIndex = uploadIndex
     //   this.selectedUpload = uploadId
     //   this.samplePanel = !this.samplePanel
-    //   // console.log(`Toogling sample drawer: ${this.samplePanel}`)
     // },
     // setSampleIds(uploadIndex, samples) {
     //   if (samples) {
     //     this.uploadedFiles[uploadIndex].sample_ids = samples.join(',')
-    //     // console.log(`Assigned sample_ids ${this.uploadedFiles[uploadIndex].sample_ids}`)
     //   }
     //   this.toggleSampleDrawer(uploadIndex, this.selectedUpload)
     // },
 
-    handleAttrClose(done) {
-      console.log("Closing Attributes panel")
-      console.log(JSON.stringify(this.fileAttributes))
-      done()
-    }
   },
   mounted: function () {
     this.$nextTick(function () {
@@ -292,11 +282,7 @@ export default {
     })
   },
   beforeDestroy: function () {
-    console.log("before destroy")
     delete this.uploadedfiles
-  },
-  destroyed: function () {
-    console.log("after destroy")
   }
 }
 </script>

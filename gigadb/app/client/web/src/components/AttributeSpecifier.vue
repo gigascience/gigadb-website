@@ -121,13 +121,11 @@ export default {
       const firstInvalidInput = this.$refs[firstError.field]
 
       if (firstInvalidInput) {
-        console.log(firstInvalidInput)
         firstInvalidInput.focus()
       }
     },
     removeAttribute(index) {
       this.attributes.splice(index, 1);
-      console.log("remove attribute at " + index)
     }
   }
 }
