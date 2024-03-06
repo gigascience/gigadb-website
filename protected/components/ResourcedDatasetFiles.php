@@ -108,4 +108,14 @@ class ResourcedDatasetFiles extends DatasetComponents implements DatasetFilesInt
         }
         return $samples;
     }
+
+    /**
+     * count dataset files
+     *
+     * @return int
+     */
+    public function countDatasetFiles(): int
+    {
+       return 1; //stub required by the interface, not used and not needed for now
+    }
 }

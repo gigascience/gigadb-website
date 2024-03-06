@@ -23,6 +23,14 @@ interface DatasetFilesInterface
 	 */
 	public function getDatasetDOI(): string;
 
+
+   /**
+     * count number of files associated to a dataset
+     *
+     * @return int how many files are associated with the dataset
+     */
+    public function countDatasetFiles(): int;
+
 	/**
 	 * retrieve, cache and format the files associated to a dataset
 	 *

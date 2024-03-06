@@ -110,7 +110,7 @@ class CachedDatasetFilesTest extends CTestCase
         //then we set our expectation for a Cache Hit
         $cache->expects($this->exactly(1))
                  ->method('get')
-                 ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetFiles_getDatasetFiles"))
+                 ->with($this->equalTo("dataset_${dataset_id}_ALL_0_CachedDatasetFiles_getDatasetFiles"))
                  ->willReturn($expected);
 
         $daoUnderTest = new CachedDatasetFiles($cache, $cacheDependency, $storedDatasetFiles) ;
@@ -179,13 +179,13 @@ class CachedDatasetFilesTest extends CTestCase
         //then we set our expectations for a Cache Miss
         $cache->expects($this->exactly(1))
                  ->method('get')
-                 ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetFiles_getDatasetFiles"))
+                 ->with($this->equalTo("dataset_${dataset_id}_ALL_0_CachedDatasetFiles_getDatasetFiles"))
                  ->willReturn(false);
 
         $cache->expects($this->exactly(1))
                 ->method('set')
                 ->with(
-                    $this->equalTo("dataset_${dataset_id}_CachedDatasetFiles_getDatasetFiles"),
+                    $this->equalTo("dataset_${dataset_id}_ALL_0_CachedDatasetFiles_getDatasetFiles"),
                     $expected,
                     Cacheable::defaultTTL * 30,
                     $cacheDependency

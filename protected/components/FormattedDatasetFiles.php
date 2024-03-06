@@ -9,9 +9,8 @@
  */
 class FormattedDatasetFiles extends DatasetComponents implements DatasetFilesInterface
 {
-    private $_cachedDatasetFiles;
-    private $_pageSize;
-    private $_nbFiles;
+    private DatasetFilesInterface $_cachedDatasetFiles;
+    private int $_pageSize;
 
     public function __construct(int $pageSize, DatasetFilesInterface $datasetFiles)
     {
@@ -47,7 +46,6 @@ class FormattedDatasetFiles extends DatasetComponents implements DatasetFilesInt
      */
     public function getDatasetFiles(?string $limit = "ALL", ?int $offset = 0): array
     {
-        $formatted_files = [];
         $files =   $this->_cachedDatasetFiles->getDatasetFiles($limit, $offset);
         foreach ($files as &$file) {
             $file['nameHtml'] = "<div title=\"" . $file['description'] . "\"><a href=\"" . $file['location'] . "\" target='_blank'>" . $file['name'] . "</a></div>";
@@ -68,10 +66,7 @@ class FormattedDatasetFiles extends DatasetComponents implements DatasetFilesInt
      */
     public function countDatasetFiles(): int
     {
-        if (!isset($this->_nbFiles)) {
-            $this->_nbFiles = count($this->_cachedDatasetFiles->getDatasetFiles());
-        }
-        return $this->_nbFiles;
+        return $this->_cachedDatasetFiles->countDatasetFiles();
     }
 
     /**
@@ -91,19 +86,23 @@ class FormattedDatasetFiles extends DatasetComponents implements DatasetFilesInt
      */
     public function getDataProvider(): CArrayDataProvider
     {
-        $criteria=new CDbCriteria;
-        $criteria->join="LEFT join dataset on dataset.id = dataset_id";
-        $criteria->condition='dataset.identifier=:identifier';
-        $criteria->params=array(':identifier'=> $this->getDatasetDOI());
 
-        $totalFileCount = File::model()->count($criteria);
+        $totalFileCount = $this->countDatasetFiles() ;
         $files_pagination = new FilesPagination($totalFileCount);
         $files_pagination->setPageSize($this->_pageSize);
         $files_pagination->pageVar = "Files_page";
 
-        $files = $this->getDatasetFiles();
+        $currentPage = $files_pagination->currentPage;
+        $nbToSkip = $currentPage*$this->_pageSize;
 
-        $dataProvider = new CArrayDataProvider($files, array(
+        Yii::log("Current page: $currentPage",'info');
+
+        // $files = $this->getDatasetFiles();
+        $files = $this->getDatasetFiles($this->_pageSize, $nbToSkip);
+        Yii::log("nb file returned: ".count($files), 'info');
+
+        $dataProvider = new CArrayDataProvider(null, array(
+            'totalItemCount' => $totalFileCount,
             'sort' => array('defaultOrder' => 'name ASC',
                             'attributes' => array(
                                 'name',
@@ -117,6 +116,9 @@ class FormattedDatasetFiles extends DatasetComponents implements DatasetFilesInt
             'pagination' => null
             ));
         $dataProvider->setPagination($files_pagination);
+        $dataProvider->setData($files);
+        Yii::log("Item count: ".$dataProvider->getItemCount(),"info");
+        Yii::log("Total count: ".$dataProvider->getTotalItemCount(),"info");
         return $dataProvider;
     }
 

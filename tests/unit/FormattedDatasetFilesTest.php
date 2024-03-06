@@ -137,19 +137,22 @@ class FormattedDatasetFilesTest extends CTestCase
 
         // create a mock for the CachedDatasetFiles
         $cachedDatasetFiles = $this->getMockBuilder(CachedDatasetFiles::class)
-                         ->setMethods(['getDatasetFiles'])
+                         ->setMethods(['getDatasetFiles','getDatasetId','countDatasetFiles'])
                          ->disableOriginalConstructor()
                          ->getMock();
-        //then we set our expectation
-        $cachedDatasetFiles->expects($this->exactly(2))
+        // then we set our expectations
+        $cachedDatasetFiles->expects($this->once())
                  ->method('getDatasetFiles')
                  ->willReturn($source);
+        $cachedDatasetFiles->expects($this->once())
+            ->method('countDatasetFiles')
+            ->willReturn(2);
 
 
         $daoUnderTest = new FormattedDatasetFiles($pageSize, $cachedDatasetFiles);
         $this->assertEquals($expected, $daoUnderTest->getDatasetFiles()) ;
-        $this->assertEquals(count($expected), $daoUnderTest->countDatasetFiles()) ;//_nbfiles not set
-        $this->assertEquals(count($expected), $daoUnderTest->countDatasetFiles()) ;//_nbfiles set
+        $this->assertEquals(count($expected), $daoUnderTest->countDatasetFiles()) ;
+
     }
 
     /**
@@ -203,7 +206,7 @@ class FormattedDatasetFilesTest extends CTestCase
 
         // create a mock for the CachedDatasetFiles
         $cachedDatasetFiles = $this->getMockBuilder(DatasetFilesInterface::class)
-                         ->setMethods(['getDatasetFiles','getDatasetId','getDatasetDOI','getDatasetFilesSamples'])
+                         ->setMethods(['getDatasetFiles','getDatasetId','getDatasetDOI','getDatasetFilesSamples','countDatasetFiles'])
                          ->disableOriginalConstructor()
                          ->getMock();
         //then we set our expectation

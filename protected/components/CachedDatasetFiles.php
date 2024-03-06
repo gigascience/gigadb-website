@@ -49,12 +49,27 @@ class CachedDatasetFiles extends DatasetComponents implements DatasetFilesInterf
      */
     public function getDatasetFiles(?string $limit = "ALL", ?int $offset = 0): array
     {
-        $files =  $this->getCachedLocalData($this->getDatasetId());
-        if (false == $files) {
+        $files =  $this->getCachedLocalData($this->getDatasetId()."_".$limit."_".$offset);
+        if (!$files) {
             $files = $this->_storedDatasetFiles->getDatasetFiles($limit, $offset);
-            $this->saveLocaldataInCache($this->getDatasetId(), $files);
+            $this->saveLocaldataInCache($this->getDatasetId()."_".$limit."_".$offset, $files);
         }
         return $files;
+    }
+
+     /**
+     * count number of files associated to a dataset
+     *
+     * @return int how many files are associated with the dataset
+     */
+    public function countDatasetFiles(): int
+    {
+        $countFiles =  $this->getCachedLocalData($this->getDatasetId());
+        if (!$countFiles) {
+            $countFiles = $this->_storedDatasetFiles->countDatasetFiles();
+            $this->saveLocaldataInCache($this->getDatasetId(), $countFiles);
+        }
+        return $countFiles;
     }
 
     /**

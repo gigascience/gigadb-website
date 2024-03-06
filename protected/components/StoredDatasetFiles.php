@@ -82,6 +82,23 @@ class StoredDatasetFiles extends DatasetComponents implements DatasetFilesInterf
     }
 
     /**
+     * count number of files associated to a dataset
+     *
+     * @return int how many files are associated with the dataset
+     */
+    public function countDatasetFiles(): int
+    {
+        $criteria=new CDbCriteria;
+        $criteria->join="LEFT join dataset on dataset.id = dataset_id";
+        $criteria->condition='dataset.identifier=:identifier';
+        $criteria->params=array(':identifier'=> $this->getDatasetDOI());
+
+        return  File::model()->count($criteria);
+
+    }
+
+
+    /**
      * retrieve the sample information attached to the files associated to a dataset
      *
      * @return array of files array maps

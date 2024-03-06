@@ -33,9 +33,12 @@ class DatasetComponents extends yii\base\BaseObject implements Cacheable
      * @uses Cacheable::getCacheKeyForLocalData()
      * @return mixed the content retrieved from cache, or false if content is expired
      */
-    public function getCachedLocalData(string $dataset_id)
+    public function getCachedLocalData(string $dataset_id)                                    
     {
-         $result = $this->_cache->get($this->getCacheKeyForLocalData($dataset_id));
+        $result = null;
+        if (!defined('DISABLE_CACHE') || false === DISABLE_CACHE) {
+            $result = $this->_cache->get($this->getCacheKeyForLocalData($dataset_id));
+        }
         if (defined('YII_DEBUG') && true === YII_DEBUG) {
             Yii::log("cache for " . $this->getCacheKeyForLocalData($dataset_id) . ": " . (false === $result ? "MISS" : "HIT"), 'info');
         }
