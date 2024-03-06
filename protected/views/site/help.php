@@ -821,8 +821,13 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242&lt;</pre>
 
                         <ol class="help-examples-list">
                             <li>
-                                Retrieve known datasets by doi<br />
-                                <a href="http://gigadb.org/api/dataset?doi=100051" target="_blank">http://gigadb.org/api/dataset?doi=100051</a>
+                                <p>Retrieve known datasets by doi <a href="http://gigadb.org/api/dataset?doi=100051" target="_blank">http://gigadb.org/api/dataset?doi=100051</a></p>
+                                <p>The above query only returns a maximum of 50 items for each of the sections <em>Sample</em> and <em>File</em>. To retrieve all dataset information please combine the output of the three commands below:</p>
+                                <ul>
+                                  <li><a href="http://gigadb.org/api/dataset?doi=100051&result=dataset" target="_blank">http://gigadb.org/api/dataset?doi=100051&result=dataset</a></li>
+                                  <li><a href="http://gigadb.org/api/dataset?doi=100051&result=sample" target="_blank">http://gigadb.org/api/dataset?doi=100051&result=sample</a></li>
+                                  <li><a href="http://gigadb.org/api/dataset?doi=100051&result=file" target="_blank">http://gigadb.org/api/dataset?doi=100051&result=file</a></li>
+                                </ul>
                             </li>
                             <li>
                                 Retrieve samples from a known DOI<br />
