@@ -91,7 +91,7 @@
                             <ul class="dropdown-menu">
                                 <li><a href="/site/about">General</a></li>
                                 <li><a href="/site/team">Our team</a></li>
-                                <li><a href="https://jobs.gigasciencejournal.com/" target="__blank">Jobs<span class="sr-only"> opens new window</span></a></li>
+                                <li><a href="https://jobs.gigasciencejournal.com/" target="__blank">Jobs <span class="sr-only">opens new window</span><i class="fa fa-external-link" aria-hidden="true"></i></a></li>
                                 <li><a href="/site/contact">Contact</a></li>
                                 <li><a href="/site/advisory">Advisory Board</a></li>
                             </ul>
