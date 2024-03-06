@@ -13,7 +13,9 @@ userOutputDir="$currentPath/uploadDir"
 if [[ $(uname -n) =~ compute ]];then
   outputDir="/home/centos/uploadLogs"
 else
-  outputDir="/tmp"
+  # For creating readme file on dev environment
+  # /home/curators is mapped to gigadb/app/tools/readme-generator/runtime/curators directory
+  outputDir="/home/curators"
 fi
 
 if [ -z "$DOI" ];then
@@ -31,7 +33,7 @@ updateMD5ChecksumStartMessage="\n* About to update files' MD5 Checksum as file a
 updateMD5ChecksumEndMessage="\nDone with updating files' MD5 Checksum as file attribute for $DOI. Process status is saved in file: $outputDir/updating-md5checksum-$DOI.txt"
 
 createReadMeFileStartMessage="\n* About to create the README file for $DOI"
-createReadMeFileEndMessage="\nDone with creating the README file for $DOI. The README file is saved in file: $outputDir/readme-$DOI.txt"
+createReadMeFileEndMessage="\nCreated README file for $DOI."
 
 if [[ $(uname -n) =~ compute ]];then
   . /home/centos/.bash_profile
@@ -77,7 +79,8 @@ else
 
   echo -e "$createReadMeFileStartMessage"
   cd ../readme-generator
-  docker-compose run --rm tool /app/yii readme/create --doi "$DOI" | tee "$outputDir/readme-$DOI.txt"
+  # Create readme file and upload to Wasabi dev directory
+  ./createReadme.sh --doi "$DOI" --outdir "$outputDir" --wasabi --apply
   echo -e "$createReadMeFileEndMessage"
 fi
 
