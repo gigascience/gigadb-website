@@ -1,8 +1,6 @@
 <template>
   <div>
-    <div class="sr-only" aria-live="polite">
-      {{ liveMessage }}
-    </div>
+    <live-message :message="liveMessage" />
 
     <table class="table attr-table">
       <caption class="caption">
@@ -68,8 +66,13 @@
 </style>
 
 <script>
+import LiveMessage from './LiveMessage.vue';
+
 export default {
   name: "AttributesTable",
+  components: {
+    'live-message': LiveMessage
+  },
   props: {
     attributes: {
       type: Array,
@@ -85,7 +88,6 @@ export default {
         { label: "Actions" }
       ],
       liveMessage: "",
-      timer: null
     }
   },
   computed: {
@@ -93,16 +95,13 @@ export default {
       return this.attributes.length;
     }
   },
-  beforeDestroy() {
-    this.timer && clearTimeout(this.timer);
-  },
   watch: {
     attributesLength(newVal, oldVal) {
       if (newVal > oldVal) {
-        this.toggleLiveMessage("Attribute added")
+        this.liveMessage = "Attribute added";
       }
       if (newVal < oldVal) {
-        this.toggleLiveMessage("Attribute removed")
+        this.liveMessage = "Attribute removed";
       }
     },
   },
@@ -110,13 +109,6 @@ export default {
     removeAttribute(index) {
       this.$emit('remove-attribute', index);
     },
-    toggleLiveMessage(newMessage) {
-      // set to emtpy first so that live region sees a change
-      this.liveMessage = "";
-      this.timer = setTimeout(() => {
-        this.liveMessage = newMessage;
-      }, 500)
-    }
   }
 }
 </script>
