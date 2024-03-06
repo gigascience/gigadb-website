@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1263: Update text in Terms of use page E564
 - Fix #1714: Visually hide long description in guide workflow, so that it's only visible to screen readers
 - Fix #1657: Fix the broken tests from release 4.2.0, fix curation log form and spreadsheet upload consent checkbox
 - Feat #1627: FUW - Migrate to Uppy version 2
