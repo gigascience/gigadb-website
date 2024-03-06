@@ -33,9 +33,8 @@ $this->pageTitle = 'GigaDB - Terms of use';
                         <p>We have a commitment to Open Science by freely providing an online database, data and services
                             relating to data contributed from biological and biomedical science experiments by authors and
                             users. We impose no additional restrictions on access to, or use of, the data provided beyond those
-                            asserted by the data depositors. </p>
-                        <p>Datasets associated with GigaScience journal articles are specifically released under a Creative
-                            Commons CC0 waiver unless stated otherwise. While <a href="http://creativecommons.org/about/cc0">CC0</a> waives any legal requirement for
+                            asserted by the data depositors.</p>
+                        <p>Datasets associated with GigaScience journal articles are specifically released under a <a href="https://opendatacommons.org/licenses/pddl/">Open Data Commons Public Domain Dedication and License (PDDL)</a> waiver unless stated otherwise. While PDDL waives any legal requirement for
                             attribution, crediting the source of research findings and data are cultural norms and expected
                             etiquette for science. In recognition of the extensive effort that underlies these projects, we ask
                             that users appropriately acknowledge the use of any dataset(s). To aid researchers to find, access,
@@ -69,7 +68,7 @@ $this->pageTitle = 'GigaDB - Terms of use';
                             solely responsible for establishing the nature of and complying with any such intellectual property
                             restrictions. Any software made available for download through our web pages (either directly or
                             from third party repositories like <a href="https://github.com/">GitHub</a>) will have its own
-                            individual license agreement that supersedes the default CC0 waiver.</p>
+                            individual license agreement that supersedes the default PDDL waiver.</p>
                     </div>
 
 
@@ -78,12 +77,7 @@ $this->pageTitle = 'GigaDB - Terms of use';
                         <p>As an Open Data repository, depositors must make sure everyone can legally reuse the data they
                             deposit and confirm that it is their own work. Co-authorship must be credited, and third party
                             materials created by someone else must have the necessary permissions and attribution to allow
-                            sharing in this manner. Publication irrevocably grants anyone the right to use this work under the
-                            <a href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero Waiver</a> which
-                            releases all rights, like public domain. We agree to include expression of wishes as to their
-                            specific licenses but we will not restrict access to data files based on those licenses. We require
-                            that all files hosted on our server are given an OSI or similarly open license, if the authors do
-                            not expressly provide one, the file(s) will be assumed to be under the most permissive <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0 copyright waiver</a>.
+                            sharing in this manner. Publication irrevocably grants anyone the right to use the work under the license stated in the relevant dataset, or where no license is stated then under the PDDL dedication and license which releases all rights and allows use of the data without restriction. We agree to include expression of wishes as to their specific licenses but we will not restrict access to data files based on those licenses. We require that all files hosted on our server are given an <a href="https://opensource.org/licenses/">Open Source initiative (OSI)</a> or similarly open license, if the authors do not expressly provide one, the file(s) will be assumed to be under the most permissive license appropriate e.g. <a href="https://opendatacommons.org/licenses/pddl/">PDDL</a> or <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0</a> waiver.
                         </p>
                     </div>
 
