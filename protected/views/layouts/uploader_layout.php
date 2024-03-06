@@ -237,5 +237,6 @@
     </script>
     <?= $this->renderPartial('//shared/_google_analytics') ?>
 </body>
+<?= $this->renderPartial('//shared/_handle_external_links') ?>
 
 </html>
