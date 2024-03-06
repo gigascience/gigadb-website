@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1283: Open jobs link in new browser tab
 - Feat: FUW - Fix accessibility and styles issues in file upload page
 - Feat: FUW - Review and clean up uppy-related code
 - Feat #1607: FUW - Update the tips section of the data uploader to include relevant links to guides
