@@ -131,7 +131,7 @@ $this->widget('TitleBreadcrumb', [
                                 <div class="pull-right">
                                      <?php echo CHtml::submitButton('Upload New Dataset', array(
                                          'class' => 'btn background-btn js-submit-button-control',
-                                         'aria-required' => 'true',
+                                         'aria-required' => 'true', 'aria-disabled' => 'true'
                                      )); ?>
                                 </div>
                             </div>
@@ -152,32 +152,18 @@ $this->widget('TitleBreadcrumb', [
                     // Function to enable or disable the fileField and submit button based on the checkbox state
                     function toggleFileFieldState() {
                         if ($('#agree-checkbox').is(':checked')) {
-                            fileInput.attr('aria-disabled', false);
-                            fileInput.prop('disabled', false);
                             submitBtn.attr('aria-disabled', false);
-                            submitBtn.prop('disabled', false);
                             agreeFormGroup.removeClass('has-error');
                             agreeError.hide();
                         } else {
-                            fileInput.attr('aria-disabled', true);
-                            fileInput.prop('disabled', true);
                             submitBtn.attr('aria-disabled', true);
-                            submitBtn.prop('disabled', true);
                             agreeFormGroup.addClass('has-error');
                             agreeError.show();
                         }
                     }
 
-                    // Call the function when the page loads
-                    toggleFileFieldState();
-
                     // Bind the function to the checkbox change event
                     $('#agree-checkbox').change(toggleFileFieldState);
-
-                    // Bind the function to the fileField change event
-                    $('#xls').change(function() {
-                        submitBtn.prop('disabled', false);
-                    });
                 });
             </script>
     <? } ?>
