@@ -152,7 +152,6 @@ class MintDoiCest
         $I->assertEquals("201", $result['create_md_status']);
 
         $doi_data = "doi=" . $mds_prefix . "/" . $doi . "\n" . "url=http://gigadb.org/dataset/" . $doi;
-        $result['doi_data']  = $doi_data;
         $createDoi = curl_init();
         curl_setopt($createDoi, CURLOPT_URL, $mds_doi_url . '/' . $mds_prefix . '/' . $doi);
         curl_setopt($createDoi, CURLOPT_CUSTOMREQUEST, "PUT");
@@ -200,7 +199,6 @@ class MintDoiCest
         $I->assertEquals("401", $result['create_md_status']);
 
         $doi_data = "doi=" . $mds_prefix . "/" . $doi . "\n" . "url=http://gigadb.org/dataset/" . $doi;
-        $result['doi_data']  = $doi_data;
         $createDoi = curl_init();
         curl_setopt($createDoi, CURLOPT_URL, $mds_doi_url . '/' . $mds_prefix . '/' . $doi);
         curl_setopt($createDoi, CURLOPT_CUSTOMREQUEST, "PUT");
@@ -229,13 +227,11 @@ class MintDoiCest
         $doi = 100006;
         $result = [];
 
-        $data = new SimpleXMLElement("<resource></resource>");
-
         $createMeta = curl_init();
         curl_setopt($createMeta, CURLOPT_URL, $mds_metadata_url . '/' . $mds_prefix . '/' . $doi);
         curl_setopt($createMeta, CURLOPT_POST, 1);
         curl_setopt($createMeta, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($createMeta, CURLOPT_POSTFIELDS, $data->asXML());
+        curl_setopt($createMeta, CURLOPT_POSTFIELDS, '');
         curl_setopt($createMeta, CURLOPT_HTTPHEADER, array('Content-Type:application/xml;charset=UTF-8'));
         curl_setopt($createMeta, CURLOPT_USERPWD, $mds_username . ":" . $mds_password);
         $curl_response = curl_exec($createMeta);
@@ -259,7 +255,7 @@ class MintDoiCest
         $doi = 100006;
         $result = [];
 
-        $data = new SimpleXMLElement('<identifier identifierType="DOI">10.80027/100006</identifier>');
+        $data = new SimpleXMLElement("<resource></resource>");
 
         $createMeta = curl_init();
         curl_setopt($createMeta, CURLOPT_URL, $mds_metadata_url . '/' . $mds_prefix . '/' . $doi);
