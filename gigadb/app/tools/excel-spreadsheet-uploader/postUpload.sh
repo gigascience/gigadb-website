@@ -50,16 +50,15 @@ if [[ $(uname -n) =~ compute ]];then
   docker run -e YII_PATH=/var/www/vendor/yiisoft/yii "registry.gitlab.com/$GITLAB_PROJECT/production_app:$GIGADB_ENV" ./protected/yiic files updateMD5FileAttributes --doi="$DOI" | tee "$outputDir/updating-md5checksum-$DOI.txt"
   echo -e "$updateMD5ChecksumEndMessage"
 
-  echo -e "$createReadMeFileStartMessage"
   if [[ $GIGADB_ENV == "staging" ]];then
-    # Upload readme file into wasabi staging directory
     ./createReadme.sh --doi "$DOI" --outdir /app/readmeFiles --wasabi --apply
-  fi
+    echo -e "Created readme file and uploaded it to Wasabi gigadb-website/staging bucket directory"
   elif [[ $GIGADB_ENV == "live" ]];then
-    # Upload readme file into wasabi live directory
     ./createReadme.sh --doi "$DOI" --outdir /app/readmeFiles --wasabi --use-live-data --apply
+    echo -e "Created readme file and uploaded it to Wasabi gigadb-website/live bucket directory"
+  else
+    echo -e "Environment is $GIGADB_ENV - Readme file creation is not required"
   fi
-  echo -e "$createReadMeFileEndMessage"
 
   if [[ $userOutputDir != "$outputDir" && -n "$(ls -A $outputDir)" ]];then
       mv $outputDir/* "$userOutputDir/" || true
