@@ -99,7 +99,7 @@ $this->widget('TitleBreadcrumb', [
 
                         <div class="form-group row js-agree-form-group">
                             <div class="col-xs-3">
-                                <input id="agree-checkbox" name="agree-checkbox" type="checkbox" required aria-required="true" class="pull-right" aria-describedby="agreeError"/>
+                                <input id="agree-checkbox" class="js-agree-checkbox pull-right" name="agree-checkbox" type="checkbox" required aria-required="true" />
                             </div>
                             <label class="col-xs-9" for="agree-checkbox"><a target="_blank" href="/site/term">I have read GigaDB's Terms and Conditions</a></label>
                             <div class="row">
@@ -131,7 +131,7 @@ $this->widget('TitleBreadcrumb', [
                                 <div class="pull-right">
                                      <?php echo CHtml::submitButton('Upload New Dataset', array(
                                          'class' => 'btn background-btn js-submit-button-control',
-                                         'aria-required' => 'true',
+                                         'aria-required' => 'true', 'aria-disabled' => 'true'
                                      )); ?>
                                 </div>
                             </div>
@@ -148,36 +148,25 @@ $this->widget('TitleBreadcrumb', [
                     const submitBtn = $('.js-submit-button-control');
                     const agreeError = $('.js-agree-error');
                     const agreeFormGroup = $('.js-agree-form-group');
+                    const agreeCheckbox = $('.js-agree-checkbox');
 
                     // Function to enable or disable the fileField and submit button based on the checkbox state
                     function toggleFileFieldState() {
                         if ($('#agree-checkbox').is(':checked')) {
-                            fileInput.attr('aria-disabled', false);
-                            fileInput.prop('disabled', false);
                             submitBtn.attr('aria-disabled', false);
-                            submitBtn.prop('disabled', false);
                             agreeFormGroup.removeClass('has-error');
                             agreeError.hide();
+                            agreeCheckbox.attr('aria-describedby', '');
                         } else {
-                            fileInput.attr('aria-disabled', true);
-                            fileInput.prop('disabled', true);
                             submitBtn.attr('aria-disabled', true);
-                            submitBtn.prop('disabled', true);
                             agreeFormGroup.addClass('has-error');
                             agreeError.show();
+                            agreeCheckbox.attr('aria-describedby', 'agreeError');
                         }
                     }
 
-                    // Call the function when the page loads
-                    toggleFileFieldState();
-
                     // Bind the function to the checkbox change event
                     $('#agree-checkbox').change(toggleFileFieldState);
-
-                    // Bind the function to the fileField change event
-                    $('#xls').change(function() {
-                        submitBtn.prop('disabled', false);
-                    });
                 });
             </script>
     <? } ?>
