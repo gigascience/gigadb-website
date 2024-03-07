@@ -215,35 +215,7 @@ class MintDoiCest
         $I->assertEquals("401", $result['create_doi_status']);
     }
 
-    public function tryUpdateMetadataWithEmptyXml(FunctionalTester $I)
-    {
-        $config = require("/var/www/protected/config/local.php");
-
-        $mds_metadata_url = $config['params']['mds_metadata_url'];
-        $mds_username = $config['params']['mds_username'];
-        $mds_password = $config['params']['mds_password'];
-        $mds_prefix = $config['params']['mds_prefix'];
-
-        $doi = 100006;
-        $result = [];
-
-        $createMeta = curl_init();
-        curl_setopt($createMeta, CURLOPT_URL, $mds_metadata_url . '/' . $mds_prefix . '/' . $doi);
-        curl_setopt($createMeta, CURLOPT_POST, 1);
-        curl_setopt($createMeta, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($createMeta, CURLOPT_POSTFIELDS, '');
-        curl_setopt($createMeta, CURLOPT_HTTPHEADER, array('Content-Type:application/xml;charset=UTF-8'));
-        curl_setopt($createMeta, CURLOPT_USERPWD, $mds_username . ":" . $mds_password);
-        $curl_response = curl_exec($createMeta);
-        $result['create_md_response'] = $curl_response;
-        $result['create_md_status'] = curl_getinfo($createMeta, CURLINFO_HTTP_CODE);
-        curl_close($createMeta);
-
-        $I->assertEquals("Metadata format not recognized", $result['create_md_response']);
-        $I->assertEquals("415", $result['create_md_status']);
-    }
-
-    public function tryUpdateMetadataWithInvalidXml(FunctionalTester $I)
+    public function tryUpdateMetadataWithNotRecognizdeXml(FunctionalTester $I)
     {
         $config = require("/var/www/protected/config/local.php");
 
@@ -271,5 +243,35 @@ class MintDoiCest
 
         $I->assertEquals("Metadata format not recognized", $result['create_md_response']);
         $I->assertEquals("415", $result['create_md_status']);
+    }
+
+    public function tryUpdateMetadataWithInvalidXml(FunctionalTester $I)
+    {
+        $config = require("/var/www/protected/config/local.php");
+
+        $mds_metadata_url = $config['params']['mds_metadata_url'];
+        $mds_username = $config['params']['mds_username'];
+        $mds_password = $config['params']['mds_password'];
+        $mds_prefix = $config['params']['mds_prefix'];
+
+        $doi = 100006;
+        $result = [];
+
+        $data = simplexml_load_file('/var/www/tests/_data/test_invalid.xml');
+
+        $createMeta = curl_init();
+        curl_setopt($createMeta, CURLOPT_URL, $mds_metadata_url . '/' . $mds_prefix . '/' . $doi);
+        curl_setopt($createMeta, CURLOPT_POST, 1);
+        curl_setopt($createMeta, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($createMeta, CURLOPT_POSTFIELDS, $data->asXML());
+        curl_setopt($createMeta, CURLOPT_HTTPHEADER, array('Content-Type:application/xml;charset=UTF-8'));
+        curl_setopt($createMeta, CURLOPT_USERPWD, $mds_username . ":" . $mds_password);
+        $curl_response = curl_exec($createMeta);
+        $result['create_md_response'] = $curl_response;
+        $result['create_md_status'] = curl_getinfo($createMeta, CURLINFO_HTTP_CODE);
+        curl_close($createMeta);
+
+        $I->assertContains("DOI 10.80027/100006: Missing child element(s). Expected is one of ( {http://datacite.org/schema/kernel-4}creators", $result['create_md_response']);
+        $I->assertEquals("422", $result['create_md_status']);
     }
 }
