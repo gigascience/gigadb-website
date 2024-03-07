@@ -99,7 +99,7 @@ $this->widget('TitleBreadcrumb', [
 
                         <div class="form-group row js-agree-form-group">
                             <div class="col-xs-3">
-                                <input id="agree-checkbox" name="agree-checkbox" type="checkbox" required aria-required="true" class="pull-right" aria-describedby="agreeError"/>
+                                <input id="agree-checkbox" class="js-agree-checkbox pull-right" name="agree-checkbox" type="checkbox" required aria-required="true" />
                             </div>
                             <label class="col-xs-9" for="agree-checkbox"><a target="_blank" href="/site/term">I have read GigaDB's Terms and Conditions</a></label>
                             <div class="row">
@@ -148,6 +148,7 @@ $this->widget('TitleBreadcrumb', [
                     const submitBtn = $('.js-submit-button-control');
                     const agreeError = $('.js-agree-error');
                     const agreeFormGroup = $('.js-agree-form-group');
+                    const agreeCheckbox = $('.js-agree-checkbox');
 
                     // Function to enable or disable the fileField and submit button based on the checkbox state
                     function toggleFileFieldState() {
@@ -155,10 +156,12 @@ $this->widget('TitleBreadcrumb', [
                             submitBtn.attr('aria-disabled', false);
                             agreeFormGroup.removeClass('has-error');
                             agreeError.hide();
+                            agreeCheckbox.attr('aria-describedby', '');
                         } else {
                             submitBtn.attr('aria-disabled', true);
                             agreeFormGroup.addClass('has-error');
                             agreeError.show();
+                            agreeCheckbox.attr('aria-describedby', 'agreeError');
                         }
                     }
 
