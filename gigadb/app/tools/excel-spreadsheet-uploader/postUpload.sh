@@ -51,7 +51,14 @@ if [[ $(uname -n) =~ compute ]];then
   echo -e "$updateMD5ChecksumEndMessage"
 
   echo -e "$createReadMeFileStartMessage"
-  docker run --rm -v /home/centos/readmeFiles:/app/readmeFiles "registry.gitlab.com/$GITLAB_PROJECT/production_tool:$GIGADB_ENV" /app/yii readme/create --doi "$DOI" | tee "$outputDir/readme-$DOI.txt"
+  if [[ $GIGADB_ENV == "staging" ]];then
+    # Upload readme file into wasabi staging directory
+    ./createReadme.sh --doi "$DOI" --outdir /app/readmeFiles --wasabi --apply
+  fi
+  elif [[ $GIGADB_ENV == "live" ]];then
+    # Upload readme file into wasabi live directory
+    ./createReadme.sh --doi "$DOI" --outdir /app/readmeFiles --wasabi --use-live-data --apply
+  fi
   echo -e "$createReadMeFileEndMessage"
 
   if [[ $userOutputDir != "$outputDir" && -n "$(ls -A $outputDir)" ]];then
