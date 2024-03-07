@@ -1,11 +1,9 @@
 <template>
-  <div class="text-right">
-    <button :class="['btn complete complete-btn m-0', disabled ? 'disabled-btn' : 'background-btn']"
-      :aria-disabled="disabled" type="submit">
-      Complete and return to Your Uploaded
-      Datasets page
-    </button>
-  </div>
+  <button :class="['btn complete complete-btn m-0', disabled ? 'disabled-btn' : 'background-btn']"
+    :aria-disabled="disabled" type="submit">
+    Complete and return to Your Uploaded
+    Datasets page
+  </button>
 </template>
 
 <style scoped>

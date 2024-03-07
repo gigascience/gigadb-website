@@ -79,7 +79,10 @@
           <input type="hidden" :name="`Attributes[${uid}][Attributes][${idx}][unit]`" :value="attr['unit']" />
         </div>
       </div>
-      <file-annotator-submit-button :disabled="!isMetadataComplete" />
+      <div class="btns-row btns-row-end">
+        <a :href="`/authorisedDataset/uploadFiles/id/${identifier}`" class="btn background-btn-o">Back to File Upload</a>
+        <file-annotator-submit-button :disabled="!isMetadataComplete" />
+      </div>
     </form>
 
 
