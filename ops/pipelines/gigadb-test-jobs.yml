@@ -87,9 +87,8 @@ unit_func_tests:
     expire_in: 1 week
   script:
     # appending dev variables at the end of the .env and .secrets
-    - env
     - env | grep "^HOME_URL" >> $APPLICATION/.env
-    - env | grep -iE "(^GIGADB_|MDS_)" >> $APPLICATION/.secrets
+    - env | grep "^GIGADB_" >> $APPLICATION/.secrets
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/console:latest || true
