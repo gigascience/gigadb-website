@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Fix #1666: Update the datacite credentials and make the Mint DOI button working
 - Fix #1230: Improve Excel upload tool by adding new dataset types in dev data
 - Fix #1722: Show more button on Dataset:Sample admin page works after filtering
 - Fix #1714: Visually hide long description in guide workflow, so that it's only visible to screen readers
