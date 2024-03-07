@@ -10,13 +10,13 @@
 class FormattedDatasetFiles extends DatasetComponents implements DatasetFilesInterface
 {
     private DatasetFilesInterface $_cachedDatasetFiles;
-    private int $_pageSize;
+    private CPagination $pager;
 
-    public function __construct(int $pageSize, DatasetFilesInterface $datasetFiles)
+    public function __construct(CPagination $pager, DatasetFilesInterface $datasetFiles)
     {
         parent::__construct();
         $this->_cachedDatasetFiles = $datasetFiles;
-        $this->_pageSize = $pageSize;
+        $this->pager = $pager;
     }
 
     /**
@@ -88,15 +88,14 @@ class FormattedDatasetFiles extends DatasetComponents implements DatasetFilesInt
     {
 
         $totalFileCount = $this->countDatasetFiles() ;
-        $files_pagination = new FilesPagination($totalFileCount);
-        $files_pagination->setPageSize($this->_pageSize);
-        $files_pagination->pageVar = "Files_page";
+        $this->pager->setItemCount($totalFileCount);
+        $this->pager->pageVar = "Files_page";
 
-        $currentPage = $files_pagination->currentPage;
-        $nbToSkip = $currentPage*$this->_pageSize;
+        $currentPage = $this->pager->getCurrentPage();
+        $nbToSkip = $currentPage*$this->pager->getPageSize();
 
 
-        $files = $this->getDatasetFiles($this->_pageSize, $nbToSkip);
+        $files = $this->getDatasetFiles($this->pager->getPageSize(), $nbToSkip);
         if (defined('YII_DEBUG') && true === YII_DEBUG) {
             Yii::log("Current page: $currentPage", 'info');
             Yii::log("nb file returned: " . count($files), 'info');
@@ -116,7 +115,7 @@ class FormattedDatasetFiles extends DatasetComponents implements DatasetFilesInt
                         ),
             'pagination' => null
             ));
-        $dataProvider->setPagination($files_pagination);
+        $dataProvider->setPagination($this->pager);
         $dataProvider->setData($files);
         if (defined('YII_DEBUG') && true === YII_DEBUG) {
             Yii::log("Item count: " . $dataProvider->getItemCount(), "info");

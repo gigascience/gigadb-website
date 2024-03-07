@@ -8,9 +8,14 @@
  */
 class FormattedDatasetFilesTest extends CTestCase
 {
+    private CPagination $pager;
+
     public function setUp()
     {
         parent::setUp();
+        $this->pager = new FilesPagination();
+        $this->pager->setPageSize(2);
+
     }
 
     public function testFormattedReturnsDatasetId()
@@ -28,7 +33,7 @@ class FormattedDatasetFilesTest extends CTestCase
                  ->willReturn(6);
 
 
-        $daoUnderTest = new FormattedDatasetFiles($pageSize, $cachedDatasetFiles);
+        $daoUnderTest = new FormattedDatasetFiles($this->pager, $cachedDatasetFiles);
         $this->assertEquals($dataset_id, $daoUnderTest->getDatasetId()) ;
     }
 
@@ -48,7 +53,7 @@ class FormattedDatasetFilesTest extends CTestCase
                  ->willReturn("100044");
 
 
-        $daoUnderTest = new FormattedDatasetFiles($pageSize, $cachedDatasetFiles);
+        $daoUnderTest = new FormattedDatasetFiles($this->pager, $cachedDatasetFiles);
         $this->assertEquals($doi, $daoUnderTest->getDatasetDOI()) ;
     }
 
@@ -149,7 +154,7 @@ class FormattedDatasetFilesTest extends CTestCase
             ->willReturn(2);
 
 
-        $daoUnderTest = new FormattedDatasetFiles($pageSize, $cachedDatasetFiles);
+        $daoUnderTest = new FormattedDatasetFiles($this->pager, $cachedDatasetFiles);
         $this->assertEquals($expected, $daoUnderTest->getDatasetFiles()) ;
         $this->assertEquals(count($expected), $daoUnderTest->countDatasetFiles()) ;
 
@@ -161,8 +166,8 @@ class FormattedDatasetFilesTest extends CTestCase
      */
     public function testFormattedReturnsDataProvider()
     {
-        $dataset_id = 1;
-        $pageSize = 2;
+        $expectedPageSize = 2;
+        $orderBy = "name ASC";
 
         $expected = array(
                         array(
@@ -210,14 +215,15 @@ class FormattedDatasetFilesTest extends CTestCase
                          ->disableOriginalConstructor()
                          ->getMock();
         //then we set our expectation
-        $cachedDatasetFiles->expects($this->exactly(2))
+        $cachedDatasetFiles->expects($this->exactly(3))
                  ->method('getDatasetFiles')
                  ->willReturn($expected);
 
 
-        $daoUnderTest = new FormattedDatasetFiles($pageSize, $cachedDatasetFiles);
+        $daoUnderTest = new FormattedDatasetFiles($this->pager, $cachedDatasetFiles);
         $this->assertEquals($expected, $daoUnderTest->getDataProvider()->getData()) ;
-        $this->assertEquals(2, $daoUnderTest->getDataProvider()->getPagination()->getPageSize()) ;
+        $this->assertEquals($expectedPageSize, $daoUnderTest->getDataProvider()->getPagination()->getPageSize()) ;
+        $this->assertEquals($orderBy, $daoUnderTest->getDataProvider()->getSort()->getOrderBy()) ;
     }
 
     /**
@@ -332,7 +338,7 @@ class FormattedDatasetFilesTest extends CTestCase
 
 
 
-        $daoUnderTest = new FormattedDatasetFiles($pageSize, $cachedDatasetFiles);
+        $daoUnderTest = new FormattedDatasetFiles($this->pager, $cachedDatasetFiles);
         $this->assertEquals($expected, $daoUnderTest->formatDatasetFilesSamples($sample_threshold)) ;
         $this->assertEquals([$expected[1]], $daoUnderTest->formatDatasetFilesSamples($sample_threshold, 2)) ;
     }

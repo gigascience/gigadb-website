@@ -13,11 +13,11 @@ class FormattedDatasetSamples extends DatasetComponents implements DatasetSample
     private $_cachedDatasetSamples;
     private $_pageSize;
 
-    public function __construct(int $pageSize, DatasetSamplesInterface $datasetSamples)
+    public function __construct(int $pager, DatasetSamplesInterface $datasetSamples)
     {
         parent::__construct();
         $this->_cachedDatasetSamples = $datasetSamples;
-        $this->_pageSize = $pageSize;
+        $this->_pageSize = $pager;
     }
 
     /**
