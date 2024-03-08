@@ -10,12 +10,12 @@ const factory = makeFactory(AttributeSpecifier, {
 })
 
 describe("AttributeSpecifier", function () {
+  const addedAttributes = [
+    { "name": "Luminosity", "value": "400", "unit": "Lux" },
+    { "name": "Contrast", "value": "3000", "unit": "Nits" },
+  ]
 
   beforeEach(function () {
-    const addedAttributes = [
-      { "name": "Luminosity", "value": "400", "unit": "Lux" },
-      { "name": "Contrast", "value": "3000", "unit": "Nits" },
-    ]
     this.renderedComponent = factory({
       propsData: {
         fileAttributes: JSON.parse(JSON.stringify(addedAttributes)) //we need a copy, not reference
@@ -95,5 +95,33 @@ describe("AttributeSpecifier", function () {
       expect(wrapper.vm.attributes.length).toBe(1)
       expect(wrapper.find('table tbody tr:first-child td:first-child').text()).toBe("Luminosity")
     })
+  })
+
+  it('should display a combobox if attributes are provided', function() {
+    const wrapper = factory({
+      propsData: {
+        fileAttributes: JSON.parse(JSON.stringify(addedAttributes)), //we need a copy, not reference
+        availableAttributes: [
+          {
+            attribute_name: "Age",
+            attachable_to_files: true,
+          },
+          {
+            attribute_name: "Weight",
+            attachable_to_files: true,
+          },
+          {
+            attribute_name: "Length",
+            attachable_to_files: false,
+          }
+        ]
+      }
+    })
+
+    expect(wrapper.find('select').exists()).toBe(true)
+    const options = wrapper.findAll('select option')
+    expect(options.length).toBe(3)
+    expect(options.at(1).attributes('value')).toBe("Age")
+    expect(options.at(2).attributes('value')).toBe("Weight")
   })
 })
