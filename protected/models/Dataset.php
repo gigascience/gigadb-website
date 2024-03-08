@@ -455,7 +455,7 @@ class Dataset extends CActiveRecord
         // create the SimpleXMLElement object with an empty <book> element
         $xml = new SimpleXMLElement($xmlstr);
 
-        // <identifier identifierType="DOI">10.5072/example-full</identifier>
+        // <identifier identifierType="DOI">$mds_prefix/example-full</identifier>
         $identifier = $xml->addChild("identifier", Yii::app()->params['mds_prefix']."/".$this->identifier);
         $identifier->addAttribute("identifierType", "DOI");
 
