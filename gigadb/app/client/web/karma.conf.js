@@ -15,7 +15,7 @@ module.exports = function(config) {
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
     frameworks: ['jasmine'],
 
-    files: ['app.js'].concat(getSpecs(process.env.KARMA_SPECS)),
+    files: getSpecs(process.env.KARMA_SPECS),
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
