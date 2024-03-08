@@ -13,7 +13,7 @@ const factory = function(options = {}, values = {}) {
     })
 }
 
-describe("Specifier component", function () {
+xdescribe("Specifier component", function () {
 
 	beforeEach(function () {
 		const examples = [

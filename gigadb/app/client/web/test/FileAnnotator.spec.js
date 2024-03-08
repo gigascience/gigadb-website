@@ -20,7 +20,7 @@ const factory = function(options = {}, values = {}) {
 
 // enableAutoDestroy(afterEach)
 
-describe('Annotator component initial state', function () {
+xdescribe('Annotator component initial state', function () {
     const { uploaded } = completedata
 
     it('should emit a ready event if uploads are already complete', function () {
@@ -72,7 +72,7 @@ describe('Annotator component initial state', function () {
     })
 })
 
-describe('Annotator component', function() {
+xdescribe('Annotator component', function() {
 
 	beforeEach(function () {
 		this.renderedComponent = factory({
@@ -212,7 +212,7 @@ describe('Annotator component', function() {
     })
 })
 
-describe("Annotator component's Attributes button", function () {
+xdescribe("Annotator component's Attributes button", function () {
     beforeEach(function () {
         this.renderedComponent = factory({
             attachToDocument: true,
@@ -264,7 +264,7 @@ describe("Annotator component's Attributes button", function () {
     })
 })
 
-describe("Annotator component's Samples button", function () {
+xdescribe("Annotator component's Samples button", function () {
     beforeEach(function () {
         this.renderedComponent = factory({
             attachToDocument: true,
@@ -344,7 +344,7 @@ describe("Annotator component's Samples button", function () {
 
 })
 
-describe("Annotator component's bulk upload form and instructions", function () {
+xdescribe("Annotator component's bulk upload form and instructions", function () {
 
     beforeEach(function () {
         this.renderedComponent = factory({

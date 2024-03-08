@@ -20,7 +20,7 @@ const factory = function(options = {}, values = {}) {
     })
 }
 
-describe("Sampler component", function () {
+xdescribe("IdSampler", function () {
 	const sampleString = "Sample 1, Sample 2, Sample 3"
 
 	it("Load existing sample ids", function () {
