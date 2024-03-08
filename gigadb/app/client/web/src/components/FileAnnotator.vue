@@ -114,7 +114,7 @@
         :with-header="true" destroy-on-close>
         <div class="attributes-drawer-body">
           <span>
-            <attribute-specifier id="attributes-form" :fileAttributes="fileAttributes[selectedUpload]" />
+            <attribute-specifier id="attributes-form" :fileAttributes="fileAttributes[selectedUpload]" :availableAttributes="availableAttributes" />
           </span>
           <div class="container-fluid">
             <div class="panel tips-panel panel-drawer-tips">
@@ -217,12 +217,15 @@ export default {
     },
     filetypes: {
       type: Object
+    },
+    availableAttributes: {
+      type: Array
     }
   },
   data: function () {
     return {
       uploadedFiles: this.uploads || [],
-      fileAttributes: this.attributes || [],
+      fileAttributes: [],
       filesToDelete: [],
       metaComplete: [],
       attrPanel: false,

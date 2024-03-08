@@ -2,7 +2,20 @@
   <form class="container-fluid">
     <fieldset class="attributes-input-group">
       <legend class="legend">Add a new attribute</legend>
+      <select-field
+        v-if="attributeOptions.length > 0"
+        label="Name"
+        :modelValue="name"
+        :options="attributeOptions"
+        ref="name"
+        id="new-attr-name-field"
+        name="name"
+        @update:modelValue="name = $event"
+        required
+        :error="getErrorMsg('name')"
+      />
       <input-field
+        v-else
         label="Name"
         :modelValue="name"
         ref="name"
@@ -52,16 +65,22 @@
 <script>
 import InputField from './InputField.vue';
 import AttributesTable from './AttributesTable.vue';
+import SelectField from './SelectField.vue';
 
 export default {
   components: {
     'input-field': InputField,
-    'attributes-table': AttributesTable
+    'attributes-table': AttributesTable,
+    'select-field': SelectField
   },
   props: {
     fileAttributes: {
       type: Array,
       default: () => []
+    },
+    availableAttributes: {
+      type: Array,
+      default: null
     }
   },
   data: function () {
@@ -71,6 +90,15 @@ export default {
       unit: '',
       attributes: this.fileAttributes || [],
       errors: []
+    }
+  },
+  computed: {
+    attributeOptions() {
+      return this.availableAttributes.filter(attr => attr.attachable_to_files).map(attr => {
+        return {
+          value: attr.attribute_name
+        }
+      })
     }
   },
   methods: {

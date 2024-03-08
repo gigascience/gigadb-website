@@ -34,6 +34,7 @@
                   identifier="<?php echo $identifier ?>"
                   :uploads='<?php echo json_encode($uploads) ?>'
                   :filetypes='<?php echo $filetypes ?>'
+                  :available-attributes='<?php echo $availableAttributes ?>'
                   :attributes='<?php echo json_encode($attributes, JSON_HEX_APOS | JSON_HEX_QUOT) ?>'
                 />
               </div>

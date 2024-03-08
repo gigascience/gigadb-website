@@ -22,6 +22,8 @@ class DatasetUpload extends yii\base\BaseObject
     private $_fileTypesJSON;
     /** @var string $_fileformatsJSON list of file formats supported by GigaDB, exported to JSON from DB*/
     private $_fileFormatsJSON;
+    /** @var string $_attributesJSON list of attributes supported by GigaDB, exported to JSON from DB*/
+    private $_attributesJSON;
 
 
     public function __construct(DatasetDAO $datasetDAO, FileUploadService $fileUploadSrv, array $config = [])
@@ -33,6 +35,7 @@ class DatasetUpload extends yii\base\BaseObject
 
         $this->_fileTypesJSON = file_get_contents("/var/www/files/data/filetypes.json");
         $this->_fileFormatsJSON = file_get_contents("/var/www/files/data/fileformats.json");
+        $this->_attributesJSON = file_get_contents("/var/www/files/data/attributes.json");
     }
 
     /**
@@ -53,6 +56,10 @@ class DatasetUpload extends yii\base\BaseObject
         return $this->_fileTypesJSON;
     }
 
+    public function getAttributesJSON(): string
+    {
+        return str_replace(array("\r", "\n", "\t"), '', json_encode(json_decode($this->_attributesJSON, true)));
+    }
 
     /**
      * Getter for _fileformatsJSON

@@ -4,19 +4,23 @@
       {{ label }}<span v-if="required" aria-label="required" class="required">*</span>:
     </label>
     <div class="col-sm-10">
-      <input
+      <select
         v-bind="$attrs"
         :required="required"
         :aria-required="required.toString()"
         :id="_uid"
         :name="name"
-        v-model="inputValue"
+        v-model="selectedValue"
         class="form-control"
-        :type="type"
-        @input="$emit('update:modelValue', inputValue)"
+        @change="$emit('update:modelValue', selectedValue)"
         :aria-describedby="error && `${_uid}-error`"
-        ref="inputRef"
-      />
+        ref="selectRef"
+      >
+        <option value="" disabled>Select an option</option>
+        <option v-for="option in options" :key="option.value" :value="option.value">
+          {{ option.label || option.value }}
+        </option>
+      </select>
       <div :id="`${_uid}-error`" :class="[error && 'control-error help-block']" role="alert">
         <span v-if="error">
           {{ error }}
@@ -26,31 +30,29 @@
   </div>
 </template>
 
-<style scoped>
-.form-group-element {
-  margin-bottom: 15px;
-}
-</style>
-
 <script>
 export default {
-  name: 'InputField',
+  name: 'SelectField',
   props: {
     label: {
       type: String,
       required: true,
     },
     modelValue: {
-      type: [String, Number],
       default: '',
     },
     name: {
       type: String,
       required: true,
     },
-    type: {
-      type: String,
-      default: 'text',
+    options: {
+      type: Array,
+      required: true,
+      validator: (options) => {
+        return options.every((option) => {
+          return option.hasOwnProperty('value');
+        });
+      },
     },
     error: {
       type: String,
@@ -63,18 +65,24 @@ export default {
   },
   data() {
     return {
-      inputValue: this.modelValue,
+      selectedValue: this.modelValue,
     };
   },
   watch: {
     modelValue(newValue) {
-      this.inputValue = newValue;
+      this.selectedValue = newValue;
     },
   },
   methods: {
     focus() {
-      this.$refs.inputRef.focus();
+      this.$refs.selectRef.focus();
     }
   }
 };
 </script>
+
+<style scoped>
+.form-group-element {
+  margin-bottom: 15px;
+}
+</style>

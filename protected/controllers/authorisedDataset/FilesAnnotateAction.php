@@ -144,7 +144,8 @@ class FilesAnnotateAction extends CAction
                                     "identifier" => $id, 
                                     "uploads" => $uploadedFiles, 
                                     "attributes" => $attributes, 
-                                    "filetypes" => $datasetUpload->getFiletypesJSON()
+                                    "filetypes" => $datasetUpload->getFiletypesJSON(),
+                                    "availableAttributes" => $datasetUpload->getAttributesJSON(),
         ));
     }
 }
