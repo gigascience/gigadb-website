@@ -21,20 +21,21 @@ const _defaultOptions = {
  *  - propsData (Object): Props to be passed to the component.
  *
  *  - data (Object): Initial data state of the component.
+ *
  */
 export function makeFactory(component, {
   mountFnc = shallowMount,
   defaultOptions = _defaultOptions
 } = {}) {
   return function factory({
-    options = {},
     propsData = {},
     data = {},
+    ...options
   } = {}) {
     const _options = {
       ...defaultOptions,
       ...options,
-      propsData
+      propsData,
     };
 
     if (data) {
