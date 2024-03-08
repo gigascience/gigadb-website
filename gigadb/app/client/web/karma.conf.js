@@ -1,15 +1,21 @@
 var webpackConfig = require('./webpack.config.js')
 
+function getSpecs(specList) {
+  if (specList) {
+    return specList.split(',')
+  } else {
+    return ['test/**/*.spec.js']
+  }
+}
+
 module.exports = function(config) {
   config.set({
 
     // frameworks to use
-    // available frameworks: https://npmjs.org/browse/keyword/karma-adapter    
+    // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
     frameworks: ['jasmine'],
 
-    files: [
-      'test/**/*.spec.js'
-    ],
+    files: ['app.js'].concat(getSpecs(process.env.KARMA_SPECS)),
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
