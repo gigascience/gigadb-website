@@ -1,3 +1,4 @@
+// this component is not used at this moment, so all tests are disabled
 import Vue from 'vue'
 import { mount } from '@vue/test-utils'
 
