@@ -365,8 +365,10 @@ class DatasetPageAssembly extends yii\base\Component
                 );
         }
 
+        $pager = new FilesPagination();
+        $pager->setPageSize($pageSize);
         $this->_samples = new FormattedDatasetSamples(
-            $pageSize,
+            $pager,
             $dataSource
         );
         return $this;

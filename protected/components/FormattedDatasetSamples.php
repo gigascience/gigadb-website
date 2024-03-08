@@ -10,14 +10,14 @@
  */
 class FormattedDatasetSamples extends DatasetComponents implements DatasetSamplesInterface
 {
-    private $_cachedDatasetSamples;
-    private $_pageSize;
+    private DatasetSamplesInterface $_cachedDatasetSamples;
+    private $pager;
 
-    public function __construct(int $pager, DatasetSamplesInterface $datasetSamples)
+    public function __construct(CPagination $pager, DatasetSamplesInterface $datasetSamples)
     {
         parent::__construct();
         $this->_cachedDatasetSamples = $datasetSamples;
-        $this->_pageSize = $pager;
+        $this->pager = $pager;
     }
 
     /**
@@ -63,22 +63,39 @@ class FormattedDatasetSamples extends DatasetComponents implements DatasetSample
      */
     public function getDataProvider(): CArrayDataProvider
     {
-        $samples = $this->getDatasetSamples();
-        $dataProvider = new CArrayDataProvider($samples, array(
-            'sort' => array('defaultOrder' => 't.name ASC',
-                            'attributes' => array(
-                                    'name',
-                                    'common_name',
-                                    'genbank_name',
-                                    'scientific_name',
-                                    'tax_id',
-                                )),
-            'pagination' => null
+        $totalSampleCount = $this->countDatasetSamples() ;
+        $this->pager->setItemCount($totalSampleCount);
+        $this->pager->pageVar = "Samples_page";
+
+
+        $currentPage = $this->pager->getCurrentPage();
+        $nbToSkip = $currentPage*$this->pager->getPageSize();
+
+        $samples = $this->getDatasetSamples($this->pager->getPageSize(), $nbToSkip);
+        if (defined('YII_DEBUG') && true === YII_DEBUG) {
+            Yii::log("Current page: $currentPage", 'info');
+            Yii::log("nb samples returned: " . count($samples), 'info');
+        }
+
+        $dataProvider = new CArrayDataProvider(null,
+            array(
+                'totalItemCount' => $totalSampleCount,
+                'sort' => array('defaultOrder' => 't.name ASC',
+                    'attributes' => array(
+                        'name',
+                        'common_name',
+                        'genbank_name',
+                        'scientific_name',
+                        'tax_id',
+                    )),
+                'pagination' => null
             ));
-        $samples_pagination = new CPagination(count($samples));
-        $samples_pagination->setPageSize($this->_pageSize);
-        $samples_pagination->pageVar = "Samples_page";
-        $dataProvider->setPagination($samples_pagination);
+        $dataProvider->setPagination($this->pager);
+        $dataProvider->setData($samples);
+        if (defined('YII_DEBUG') && true === YII_DEBUG) {
+            Yii::log("Sample Item count: " . $dataProvider->getItemCount(), "info");
+            Yii::log("Sample Total count: " . $dataProvider->getTotalItemCount(), "info");
+        }
         return $dataProvider;
     }
 
