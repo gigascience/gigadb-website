@@ -208,8 +208,8 @@ class FormattedDatasetSamplesTest extends CTestCase
      */
     public function testFormattedReturnsDataProvider()
     {
-        $dataset_id = 1;
         $pageSize = 2;
+        $orderBy = "t.name ASC";
 
         $expected = array( // only two items are expected as we've set the pageSize to be 2
             array(
@@ -278,19 +278,18 @@ class FormattedDatasetSamplesTest extends CTestCase
         );
 
         // create a mock for the CachedDatasetSamples
-        $cachedDatasetSamples = $this->getMockBuilder(CachedDatasetSamples::class)
-                         ->setMethods(['getDatasetSamples'])
+        $cachedDatasetSamples = $this->getMockBuilder(DatasetSamplesInterface::class)
+                         ->setMethods(['getDatasetSamples','getDatasetDOI','getDatasetId','countDatasetSamples'])
                          ->disableOriginalConstructor()
                          ->getMock();
         //then we set our expectation
-        $cachedDatasetSamples->expects($this->exactly(2))
+        $cachedDatasetSamples->expects($this->exactly(3))
                  ->method('getDatasetSamples')
                  ->willReturn($expected);
 
-
         $daoUnderTest = new FormattedDatasetSamples($pageSize, $cachedDatasetSamples);
-        $data = $daoUnderTest->getDataProvider()->getData();
-        $this->assertEquals($expected, $data) ;
+        $this->assertEquals($expected, $daoUnderTest->getDataProvider()->getData()) ;
         $this->assertEquals(2, $daoUnderTest->getDataProvider()->getPagination()->getPageSize()) ;
+        $this->assertEquals($orderBy, $daoUnderTest->getDataProvider()->getSort()->getOrderBy()) ;
     }
 }
