@@ -83,4 +83,21 @@ class StoredDatasetSamples extends DatasetComponents implements DatasetSamplesIn
         $result = array_map($objectToHash, $samples);
         return $result;
     }
+
+    /**
+     * count number of samples associated to a dataset
+     *
+     * @return int how many samples are associated with the dataset
+     */
+    public function countDatasetSamples(): int
+    {
+        $criteria=new CDbCriteria;
+        $criteria->join="LEFT join dataset on dataset.id = dataset_id";
+        $criteria->condition='dataset.identifier=:identifier';
+        $criteria->params=array(':identifier'=> $this->getDatasetDOI());
+
+        return  DatasetSample::model()->count($criteria);
+
+    }
+
 }

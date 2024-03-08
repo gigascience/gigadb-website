@@ -23,6 +23,13 @@ interface DatasetSamplesInterface
 	 */
 	public function getDatasetDOI(): string;
 
+    /**
+     * count number of samples associated to a dataset
+     *
+     * @return int how many samples are associated with the dataset
+     */
+    public function countDatasetSamples(): int;
+
 	/**
 	 * retrieve, cache and format the samples associated to a dataset
      * @param string|null $limit how many rows need to be returned (Or ALL)

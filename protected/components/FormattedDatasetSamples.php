@@ -124,4 +124,14 @@ class FormattedDatasetSamples extends DatasetComponents implements DatasetSample
         }
         return $display;
     }
+
+    /**
+     * count number of samples associated to a dataset
+     *
+     * @return int how many samples are associated with the dataset
+     */
+    public function countDatasetSamples(): int
+    {
+        return $this->_cachedDatasetSamples->countDatasetSamples();
+    }
 }
