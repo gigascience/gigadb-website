@@ -100,7 +100,7 @@ describe("AttributeSpecifier", function () {
   it('should display a combobox if attributes are provided', function() {
     const wrapper = factory({
       propsData: {
-        fileAttributes: JSON.parse(JSON.stringify(addedAttributes)), //we need a copy, not reference
+        fileAttributes: JSON.parse(JSON.stringify(addedAttributes)),
         availableAttributes: [
           {
             attribute_name: "Age",
