@@ -14,7 +14,7 @@ const factory = makeFactory(FileAnnotator,{
   mountFnc: mount
 })
 
-describe('Annotator component initial state', function () {
+describe('FileAnnotator initial state', function () {
   const { uploaded } = completedata
 
   // component no longer emits an event
@@ -65,7 +65,7 @@ describe('Annotator component initial state', function () {
   })
 })
 
-describe('Annotator component', function () {
+describe('FileAnnotator', function () {
   beforeEach(function () {
     this.renderedComponent = factory({
       propsData: {
@@ -203,7 +203,7 @@ describe('Annotator component', function () {
   })
 })
 
-describe("Annotator component's Attributes button", function () {
+describe("FileAnnotator's Attributes button", function () {
   beforeEach(function () {
     this.renderedComponent = factory({
       attachToDocument: true,
@@ -255,7 +255,7 @@ describe("Annotator component's Attributes button", function () {
 })
 
 // samples are disabled for now
-xdescribe("Annotator component's Samples button", function () {
+xdescribe("FileAnnotator's Samples button", function () {
   beforeEach(function () {
     this.renderedComponent = factory({
       attachToDocument: true,
@@ -274,7 +274,6 @@ xdescribe("Annotator component's Samples button", function () {
   xit('should exist', function () {
     const wrapper = this.renderedComponent
     return wrapper.vm.$nextTick().then(function () {
-      // console.log(wrapper.html())
       expect(wrapper.findAll(".sample-button").length).toBe(2)
       expect(wrapper.findAll(".sample-button").at(0).text()).toContain("Sample IDs")
       expect(wrapper.findAll(".sample-button").at(1).text()).toContain("Sample IDs")
@@ -295,13 +294,9 @@ xdescribe("Annotator component's Samples button", function () {
     wrapper.findAll(".sample-button").at(0).trigger("click")
     return wrapper.vm.$nextTick()
       .then(function () {
-        // console.log(wrapper.html())
         wrapper.find("#save-samples").trigger("click")
-        // wrapper.setData({samplePanel: false})
       })
       .then(function () {
-        // console.log(wrapper.html())
-        // expect(wrapper.find("#samples-form").exists()).toBe(false)
         expect(wrapper.vm.samplePanel).toBe(false)
       })
   })
@@ -335,7 +330,7 @@ xdescribe("Annotator component's Samples button", function () {
 
 })
 
-describe("Annotator component's bulk upload form and instructions", function () {
+describe("FileAnnotator's bulk upload form and instructions", function () {
 
   beforeEach(function () {
     this.renderedComponent = factory({

@@ -6,7 +6,7 @@ import { makeFactory } from './utils.js'
 
 const factory = makeFactory(FileUploader)
 
-describe('Uploader component', function () {
+describe('FileUploader', function () {
   let wrapper = null
 
   beforeEach(function () {
@@ -30,22 +30,18 @@ describe('Uploader component', function () {
   })
 
   it('should set value of the dataset hidden text field from props', function () {
-    // console.log(wrapper.find('#dataset').element.attributes)
     wrapper.vm.$nextTick().then(function () {
       expect(wrapper.find('#dataset').attributes('value')).toBe("000000")
     })
   })
 
   it('should set TUS endpoint from props', function () {
-    // console.log(wrapper.vm.uppy.getPlugin('Tus').opts['endpoint'])
-    // no need to use wrapper.vm.$nextTick() here as we are testing instance's variable
-    // not the rendered content
     expect(wrapper.vm.uppy.getPlugin('Tus').opts['endpoint']).toEqual('/foobar/')
   })
 
 })
 
-describe('Uploader component event handler', function () {
+describe('FileUploader event handler', function () {
   it('should emit an event when all the uploads have completed', function () {
     const wrapper = factory({
       attachToDocument: true,

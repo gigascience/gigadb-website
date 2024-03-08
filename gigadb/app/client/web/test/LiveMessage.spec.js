@@ -3,7 +3,7 @@ import LiveMessage from '../src/components/LiveMessage.vue'
 
 const factory = makeFactory(LiveMessage)
 
-describe('LiveMessage component', function () {
+describe('LiveMessage', function () {
   beforeEach(function() {
     jasmine.clock().install();
   });

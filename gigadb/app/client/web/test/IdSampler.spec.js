@@ -78,7 +78,6 @@ xdescribe("IdSampler", function () {
 		textInput.trigger('keyup.enter')
 		saveButton.trigger("click")
 		Vue.nextTick().then(function () {
-			console.log(renderedComponent.emitted())
 			expect(renderedComponent.emitted().new-samples-input).toBeTruthy()
 		})
 
