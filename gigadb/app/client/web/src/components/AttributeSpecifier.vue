@@ -13,6 +13,7 @@
         @update:modelValue="name = $event"
         required
         :error="getErrorMsg('name')"
+        enableOptionDefinition
       />
       <input-field
         v-else
@@ -99,7 +100,8 @@ export default {
       }
       return this.availableAttributes.filter(attr => attr.attachable_to_files).map(attr => {
         return {
-          value: attr.attribute_name
+          value: attr.attribute_name,
+          ...attr
         }
       })
     }

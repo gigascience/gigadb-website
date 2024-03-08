@@ -21,6 +21,9 @@
           {{ option.label || option.value }}
         </option>
       </select>
+      <div v-if="enableOptionDefinition && selectedOption && selectedOption.definition" class="help-block" :id="`${_uid}-option-description`">
+        {{ selectedOption.definition }}
+      </div>
       <div :id="`${_uid}-error`" :class="[error && 'control-error help-block']" role="alert">
         <span v-if="error">
           {{ error }}
@@ -61,12 +64,21 @@ export default {
     required: {
       type: Boolean,
       default: false,
-    }
+    },
+    enableOptionDefinition: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
       selectedValue: this.modelValue,
     };
+  },
+  computed: {
+    selectedOption() {
+      return this.options.find((option) => option.attribute_name === this.selectedValue);
+    },
   },
   watch: {
     modelValue(newValue) {
