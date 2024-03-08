@@ -3,7 +3,7 @@
     <fieldset class="attributes-input-group">
       <legend class="legend">Add a new attribute</legend>
       <select-field
-        v-if="attributeOptions.length > 0"
+        v-if="attributeOptions && attributeOptions.length > 0"
         label="Name"
         :modelValue="name"
         :options="attributeOptions"
@@ -94,6 +94,9 @@ export default {
   },
   computed: {
     attributeOptions() {
+      if (!this.availableAttributes) {
+        return null
+      }
       return this.availableAttributes.filter(attr => attr.attachable_to_files).map(attr => {
         return {
           value: attr.attribute_name
