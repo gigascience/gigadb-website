@@ -1,5 +1,4 @@
-import Vue from 'vue'
-import { enableAutoDestroy, mount } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import FileAnnotator from '../src/components/FileAnnotator.vue'
 import { makeFactory } from './utils.js'
 import { setup } from './setup.js'
@@ -14,8 +13,6 @@ const { uploads } = testdata
 const factory = makeFactory(FileAnnotator,{
   mountFnc: mount
 })
-
-// enableAutoDestroy(afterEach)
 
 describe('Annotator component initial state', function () {
   const { uploaded } = completedata
@@ -368,7 +365,6 @@ describe("Annotator component's bulk upload form and instructions", function () 
     const dT = new ClipboardEvent('').clipboardData || new DataTransfer()
     dT.items.add(new File(['foo'], 'programmatically_created.csv'))
     fileInput.element.files = dT.files
-    // wrapper.find("#bulkUploadForm button").trigger("click")
     expect(fileInput.element.files.length).toBe(1)
     expect(wrapper.find("#bulkUploadForm button").exists()).toBe(true)
   })

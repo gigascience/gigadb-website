@@ -1,4 +1,3 @@
-import Vue from 'vue'
 import FileUploader from '../src/components/FileUploader.vue'
 
 import fileData from './helper/base64image.txt' //base64 of CC0_pixel.jpg, use raw-loader
