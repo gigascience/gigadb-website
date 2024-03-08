@@ -11,8 +11,8 @@
  */
 class StoredDatasetSamples extends DatasetComponents implements DatasetSamplesInterface
 {
-    private $_id;
-    private $_db;
+    private int $_id;
+    private CDbConnection $_db;
 
     public function __construct(int $dataset_id, CDbConnection $dbConnection)
     {

@@ -45,10 +45,10 @@ class FormattedDatasetSamples extends DatasetComponents implements DatasetSample
      *
      * @return array of samples array map
      */
-    public function getDatasetSamples(): array
+    public function getDatasetSamples(?string $limit = "ALL", ?int $offset = 0): array
     {
         $formatted_samples = [];
-        $samples =   array_filter($this->_cachedDatasetSamples->getDatasetSamples());
+        $samples =   array_filter($this->_cachedDatasetSamples->getDatasetSamples($limit, $offset));
         foreach ($samples as &$sample) {
             $sample['taxonomy_link'] = "<a href=\"http://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?mode=Info&amp;id=" . $sample['tax_id'] . "\">" . $sample['tax_id'] . "</a>";
             $sample['displayAttr'] = self::getDisplayAttr($sample['sample_id'], $sample['sample_attributes']);

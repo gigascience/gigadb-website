@@ -25,9 +25,11 @@ interface DatasetSamplesInterface
 
 	/**
 	 * retrieve, cache and format the samples associated to a dataset
-	 *
+     * @param string|null $limit how many rows need to be returned (Or ALL)
+     * @param int|null $offset how many rows need to be skipped
+     *
 	 * @return array of files array maps
 	 */
-	public function getDatasetSamples(): array;
+	public function getDatasetSamples(?string $limit, ?int $offset): array;
 
 }

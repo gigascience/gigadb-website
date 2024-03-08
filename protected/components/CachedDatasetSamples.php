@@ -47,11 +47,11 @@ class CachedDatasetSamples extends DatasetComponents implements DatasetSamplesIn
      *
      * @return array of samples array maps
      */
-    public function getDatasetSamples(): array
+    public function getDatasetSamples(?string $limit = "ALL", ?int $offset = 0): array
     {
         $samples =  $this->getCachedLocalData($this->getDatasetId());
-        if (false == $samples) {
-            $samples = $this->_storedDatasetSamples->getDatasetSamples();
+        if (!$samples) {
+            $samples = $this->_storedDatasetSamples->getDatasetSamples($limit, $offset);
             $this->saveLocalDataInCache($this->getDatasetId(), $samples);
         }
         return $samples;
