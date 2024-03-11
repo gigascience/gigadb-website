@@ -12,16 +12,16 @@ the `up.sh` script installs dependencies via `npm install` and then the widget i
 
 ## Test
 
-Run all tests:
+Run all tests locally:
 
 ```sh
-npm test
+npm run test-local
 ```
 
 Run specific test based on glob pattern:
 
 ```sh
-env KARMA_SPECS="your-glob-pattern" npm test
+env KARMA_SPECS="your-glob-pattern" npm run test-local
 # e.g.
-env KARMA_SPECS="test/FileUploader.spec.js" npm test
+env KARMA_SPECS="test/FileUploader.spec.js" npm run test-local
 ```
