@@ -359,7 +359,7 @@ echo $form->hiddenField($model, "image_id");
                                                 $("#minting").addClass("alert alert-info");
                                                 $("#minting").html("This DOI exists in datacite already, no need to mint, but the metadata is updated!");
                                             } else if (output.create_md_status == 201 && output.create_doi_status == 201) {
-                                                $("#minting").removeClass("alert alert-success");
+                                                $("#minting").addClass("alert alert-success");
                                                 $("#minting").html("new DOI successfully minted");
                                             }else {
                                                 $("#minting").addClass("alert alert-danger");
