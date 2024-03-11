@@ -105,6 +105,12 @@ describe('FileAnnotator', function () {
       })
     })
   })
+
+  it('should render two not nested forms', function() {
+    const wrapper = this.renderedComponent
+    expect(wrapper.find('form form').exists()).toBe(false)
+    expect(wrapper.findAll('form').length).toBe(2)
+  })
 })
 
 describe("FileAnnotator's Attributes button", function () {
