@@ -53,7 +53,7 @@ describe('FocusTrap', () => {
 	it('Newly added elements are added to the list of focusable elements', async () => {
 		await wrapper.find('#outside').trigger('click')
 
-    expect(wrapper.vm.$refs.focusTrap.focusableElements.length).toBe(3)
+		expect(wrapper.vm.$refs.focusTrap.focusableElements.length).toBe(3)
 
 		await wrapper
 			.find('#container')
@@ -62,14 +62,14 @@ describe('FocusTrap', () => {
 		expect(wrapper.vm.$refs.focusTrap.focusableElements.length).toBe(4)
 	})
 
-  it('Removed elements are removed to the list of focusable elements', async () => {
+	it('Removed elements are removed to the list of focusable elements', async () => {
 		await wrapper.find('#outside').trigger('click')
 
-    expect(wrapper.vm.$refs.focusTrap.focusableElements.length).toBe(3)
+		expect(wrapper.vm.$refs.focusTrap.focusableElements.length).toBe(3)
 
-    const container = wrapper.find('#container').element
+		const container = wrapper.find('#container').element
 
-		await container.removeChild(wrapper.find("#first").element)
+		await container.removeChild(wrapper.find('#first').element)
 
 		expect(wrapper.vm.$refs.focusTrap.focusableElements.length).toBe(2)
 	})

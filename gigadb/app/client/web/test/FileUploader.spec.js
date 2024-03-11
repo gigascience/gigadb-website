@@ -43,7 +43,7 @@ describe('FileUploader', function () {
 })
 
 describe('FileUploader event handler', function () {
-  let wrapper = null
+	let wrapper = null
 
 	beforeEach(function () {
 		wrapper = factory({
