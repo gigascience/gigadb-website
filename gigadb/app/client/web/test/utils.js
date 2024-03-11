@@ -18,8 +18,6 @@ const _defaultOptions = {
  *
  *  - options (Object): Custom options for the mount function, merged with defaultOptions.
  *
- *  - propsData (Object): Props to be passed to the component.
- *
  *  - data (Object): Initial data state of the component.
  *
  */
@@ -28,14 +26,12 @@ export function makeFactory(component, {
   defaultOptions = _defaultOptions
 } = {}) {
   return function factory({
-    propsData = {},
     data = {},
     ...options
   } = {}) {
     const _options = {
       ...defaultOptions,
       ...options,
-      propsData,
     };
 
     if (data) {

@@ -2,67 +2,13 @@ import { mount } from '@vue/test-utils'
 import FileAnnotator from '../src/components/FileAnnotator.vue'
 import { makeFactory } from './utils.js'
 import { setup } from './setup.js'
-
-import { eventBus } from '../src/index.js'
 import testdata from './helper/db.json'
-import completedata from './helper/complete.json'
 
 setup()
 
 const { uploads } = testdata
 const factory = makeFactory(FileAnnotator,{
   mountFnc: mount
-})
-
-describe('FileAnnotator initial state', function () {
-  const { uploaded } = completedata
-
-  // component no longer emits an event
-  xit('should emit a ready event if uploads are already complete', function () {
-    let $emitted = false
-    eventBus.$on('metadata-ready-status', function (status) {
-      $emitted = status //event bus would catch our component's 'complete' event
-    })
-
-    const wrapper = factory({
-      propsData: {
-        identifier: '000000',
-        uploads: JSON.parse(JSON.stringify(uploaded)), //we need a copy, not reference
-        filetypes: JSON.parse('{"Readme":112,"Sequence assembly":113,"Annotation":114,"Protein sequence":115,"Repeat sequence":116,"Coding sequence":117,"Script":118,"Mixed archive":119}')
-      }
-    })
-
-    return wrapper.vm.$nextTick().then(function () {
-      expect(wrapper.vm.isMetadataComplete()).toBeTrue()
-      expect($emitted).toBeTrue()
-    })
-  })
-
-  // component no longer emits an event
-  xit('should not emit a ready event if uploads are not complete', function () {
-    let $emitted = false
-    eventBus.$on('metadata-ready-status', function (status) {
-      $emitted = status //event bus would catch our component's 'complete' event
-    })
-
-    const wrapper = factory({
-      attachToDocument: true,
-      propsData: {
-        identifier: '000000',
-        uploads: JSON.parse(JSON.stringify(uploads)), //we need a copy, not reference
-        filetypes: JSON.parse('{"Readme":112,"Sequence assembly":113,"Annotation":114,"Protein sequence":115,"Repeat sequence":116,"Coding sequence":117,"Script":118,"Mixed archive":119}')
-      }
-    })
-
-    return wrapper.vm.$nextTick().then(function () {
-      expect(wrapper.vm.isMetadataComplete()).toBeFalse()
-      expect($emitted).toBeFalse()
-    })
-  })
-
-  afterEach(function () {
-    eventBus.$off()
-  })
 })
 
 describe('FileAnnotator', function () {
@@ -74,10 +20,6 @@ describe('FileAnnotator', function () {
         filetypes: JSON.parse('{"Readme":112,"Sequence assembly":113,"Annotation":114,"Protein sequence":115,"Repeat sequence":116,"Coding sequence":117,"Script":118,"Mixed archive":119}')
       }
     })
-  })
-
-  afterEach(function () {
-    eventBus.$off()
   })
 
   it('should show rows matching the number of uploaded files', function () {
@@ -140,44 +82,6 @@ describe('FileAnnotator', function () {
     })
   })
 
-
-  // no longer emits event
-  xit('should emit a not-ready event when not all fields for all uploads are filled in', function () {
-    let $emitted = false
-    eventBus.$on('metadata-ready-status', function (status) {
-      $emitted = status
-    })
-    // do stuff here (update fields on both files)
-    this.renderedComponent.find('select[id="upload-1-datatype"]').setValue('Script')
-
-    this.renderedComponent.find('input[id="upload-1-description"]').setValue('Some description here')
-
-    this.renderedComponent.find('select[id="upload-2-datatype"]').setValue('Readme')
-
-    expect($emitted).toBeFalse()
-    expect(this.renderedComponent.vm.isMetadataComplete()).toBeFalse()
-  })
-
-  // no longer emits event
-  xit('should emit a ready event when all fields for all uploads are filled in', function () {
-    let $emitted = false
-    eventBus.$on('metadata-ready-status', function (status) {
-      $emitted = status //event bus would catch our component's 'complete' event
-    })
-    // do stuff here (update fields on both files)
-    this.renderedComponent.find('select[id="upload-1-datatype"]').setValue('Script')
-
-    this.renderedComponent.find('input[id="upload-1-description"]').setValue('Some description here')
-
-    this.renderedComponent.find('select[id="upload-2-datatype"]').setValue('Readme')
-
-    this.renderedComponent.find('input[id="upload-2-description"]').setValue('Further details about the thing')
-
-    // as all fields of both files updated, expect the event to have been emitted
-    expect($emitted).toBeTrue()
-    expect(this.renderedComponent.vm.isMetadataComplete()).toBeTrue()
-  })
-
   it('should take file from uploads and add to delete list when clicking delete', function () {
     const wrapper = this.renderedComponent
     wrapper.findAll(".el-button--danger").at(0).trigger("click")
@@ -206,17 +110,12 @@ describe('FileAnnotator', function () {
 describe("FileAnnotator's Attributes button", function () {
   beforeEach(function () {
     this.renderedComponent = factory({
-      attachToDocument: true,
       propsData: {
         identifier: '000000',
         uploads: JSON.parse(JSON.stringify(uploads)), //we need a copy, not reference
         filetypes: JSON.parse('{"Readme":112,"Sequence assembly":113,"Annotation":114,"Protein sequence":115,"Repeat sequence":116,"Coding sequence":117,"Script":118,"Mixed archive":119}')
       }
     })
-  })
-
-  afterEach(function () {
-    eventBus.$off()
   })
 
   it('should exist', function () {
@@ -258,17 +157,12 @@ describe("FileAnnotator's Attributes button", function () {
 xdescribe("FileAnnotator's Samples button", function () {
   beforeEach(function () {
     this.renderedComponent = factory({
-      attachToDocument: true,
       propsData: {
         identifier: '000000',
         uploads: JSON.parse(JSON.stringify(uploads)), //we need a copy, not reference
         filetypes: JSON.parse('{"Readme":112,"Sequence assembly":113,"Annotation":114,"Protein sequence":115,"Repeat sequence":116,"Coding sequence":117,"Script":118,"Mixed archive":119}')
       }
     })
-  })
-
-  afterEach(function () {
-    eventBus.$off()
   })
 
   xit('should exist', function () {
@@ -334,17 +228,12 @@ describe("FileAnnotator's bulk upload form and instructions", function () {
 
   beforeEach(function () {
     this.renderedComponent = factory({
-      attachToDocument: true,
       propsData: {
         identifier: '000000',
         uploads: JSON.parse(JSON.stringify(uploads)), //we need a copy, not reference
         filetypes: JSON.parse('{"Readme":112,"Sequence assembly":113,"Annotation":114,"Protein sequence":115,"Repeat sequence":116,"Coding sequence":117,"Script":118,"Mixed archive":119}')
       }
     })
-  })
-
-  afterEach(function () {
-    eventBus.$off()
   })
 
   it('should link to example spreadsheet', function () {
@@ -362,5 +251,50 @@ describe("FileAnnotator's bulk upload form and instructions", function () {
     fileInput.element.files = dT.files
     expect(fileInput.element.files.length).toBe(1)
     expect(wrapper.find("#bulkUploadForm button").exists()).toBe(true)
+  })
+})
+
+describe('FileAnnotator submit button', function () {
+  beforeEach(function () {
+    this.renderedComponent = factory({
+      propsData: {
+        identifier: '000000',
+        uploads: JSON.parse(JSON.stringify(uploads)), //we need a copy, not reference
+        filetypes: JSON.parse('{"Readme":112,"Sequence assembly":113,"Annotation":114,"Protein sequence":115,"Repeat sequence":116,"Coding sequence":117,"Script":118,"Mixed archive":119}')
+      }
+    })
+    this.button = this.renderedComponent.find('button[type="submit"]')
+  })
+
+  it('should be initially displayed but disabled', function() {
+    expect(this.button.exists()).toBe(true);
+    expect(this.button.isVisible()).toBe(true);
+    expect(this.button.attributes('aria-disabled')).toBe('true');
+  })
+
+  it('should remain disabled with partial form filling', async function() {
+    const wrapper = this.renderedComponent;
+    // fill all mandatory fields and trigger change / input event so that event handlers run
+    await wrapper.find('select#upload-1-datatype').setValue('Script');
+    await wrapper.find('select#upload-1-datatype').trigger('change');
+    await wrapper.find('input#upload-1-description').setValue('Some description here');
+    await wrapper.find('input#upload-1-description').trigger('input');
+
+    expect(this.button.attributes('aria-disabled')).toBe('true');
+  })
+
+  it('should be enabled after all mandatory fields are filled', async function() {
+    const wrapper = this.renderedComponent;
+
+    await wrapper.find('select#upload-1-datatype').setValue('Script');
+    await wrapper.find('select#upload-1-datatype').trigger('change');
+    await wrapper.find('input#upload-1-description').setValue('Some description here');
+    await wrapper.find('input#upload-1-description').trigger('input');
+    await wrapper.find('select#upload-2-datatype').setValue('Readme');
+    await wrapper.find('select#upload-2-datatype').trigger('change');
+    await wrapper.find('input#upload-2-description').setValue('Further details about the thing');
+    await wrapper.find('input#upload-2-description').trigger('input');
+
+    expect(this.button.attributes('aria-disabled')).toBe('false');
   })
 })

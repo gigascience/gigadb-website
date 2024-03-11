@@ -1,6 +1,6 @@
 <template>
   <button :class="['btn complete complete-btn m-0', disabled ? 'disabled-btn' : 'background-btn']"
-    :aria-disabled="disabled" type="submit">
+    :aria-disabled="disabled ? 'true' : 'false'" type="submit">
     Complete and return to Your Uploaded
     Datasets page
   </button>
@@ -23,6 +23,6 @@ export default {
       type: Boolean,
       default: false
     }
-  },
+  }
 };
 </script>
