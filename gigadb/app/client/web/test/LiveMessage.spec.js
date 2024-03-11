@@ -27,20 +27,17 @@ describe('LiveMessage', function () {
     expect(wrapper.attributes('aria-live')).toBe('assertive')
   })
 
-  it('updates the message after a delay', done => {
+  it('updates the message after a delay', async () => {
     const wrapper = factory({
       propsData: {
         message: 'Initial Message'
       }
     });
     wrapper.setProps({ message: 'Updated Message' });
-    wrapper.vm.$nextTick(() => {
-      expect(wrapper.text()).toBe('');
-      jasmine.clock().tick(600);
-      wrapper.vm.$nextTick(() => {
-        expect(wrapper.text()).toBe('Updated Message');
-        done();
-      });
-    });
+    await wrapper.vm.$nextTick()
+    expect(wrapper.text()).toBe('');
+    jasmine.clock().tick(600);
+    await wrapper.vm.$nextTick()
+    expect(wrapper.text()).toBe('Updated Message');
   });
 })
