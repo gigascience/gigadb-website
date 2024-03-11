@@ -18,20 +18,21 @@ describe('FileUploader', function () {
 		})
 	})
 
-	xit('should load Uppy Dashboard', function () {
-		wrapper.vm.$nextTick().then(function () {
-			const dropFilesTitle = wrapper.find('.uppy-Dashboard-AddFiles-title')
-
-			// Error: Expected false to be true.
-			expect(dropFilesTitle.exists()).toBeTrue()
-			expect(dropFilesTitle.text()).toContain('Drop files here or ')
-		})
+	afterEach(() => {
+		wrapper.destroy()
 	})
 
-	it('should set value of the dataset hidden text field from props', function () {
-		wrapper.vm.$nextTick().then(function () {
-			expect(wrapper.find('#dataset').attributes('value')).toBe('000000')
-		})
+	it('should load Uppy Dashboard', async function () {
+		await wrapper.vm.$nextTick()
+		const dropFilesTitle = wrapper.find('.uppy-Dashboard-AddFiles-title')
+
+		expect(dropFilesTitle.exists()).toBeTrue()
+		expect(dropFilesTitle.text()).toContain('Drop files here or ')
+	})
+
+	it('should set value of the dataset hidden text field from props', async function () {
+		await wrapper.vm.$nextTick()
+		expect(wrapper.find('#dataset').attributes('value')).toBe('000000')
 	})
 
 	it('should set TUS endpoint from props', function () {
@@ -42,14 +43,25 @@ describe('FileUploader', function () {
 })
 
 describe('FileUploader event handler', function () {
-	it('should emit an event when all the uploads have completed', function () {
-		const wrapper = factory({
-			attachToDocument: true,
+  let wrapper = null
+
+	beforeEach(function () {
+		wrapper = factory({
 			propsData: {
 				identifier: '000000',
 				endpoint: '/foobar/',
 			},
 		})
+	})
+
+	afterEach(() => {
+		if (wrapper.vm.uppy) {
+			wrapper.vm.uppy.close()
+		}
+		wrapper.destroy()
+	})
+
+	it('should emit an event when all the uploads have completed', function () {
 		let $emitted = false
 		eventBus.$on('complete', function ($result) {
 			$emitted = true //event bus would catch our component's 'complete' event
@@ -66,13 +78,6 @@ describe('FileUploader event handler', function () {
 		eventBus.$on('checksummed', function (message, file) {
 			checksumDone = message
 			notifiedFile = file
-		})
-		const wrapper = factory({
-			attachToDocument: true,
-			propsData: {
-				identifier: '000000',
-				endpoint: '/foobar/',
-			},
 		})
 		const fileReader = new FileReader()
 		wrapper.vm.uppy.addFile({
