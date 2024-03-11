@@ -1,8 +1,8 @@
-import { shallowMount } from '@vue/test-utils';
+import { shallowMount } from '@vue/test-utils'
 
 const _defaultOptions = {
-  attachTo: document.body
-};
+	attachTo: document.body,
+}
 
 /**
  * Creates a factory function for mounting Vue components with predefined or custom options.
@@ -21,24 +21,20 @@ const _defaultOptions = {
  *  - data (Object): Initial data state of the component.
  *
  */
-export function makeFactory(component, {
-  mountFnc = shallowMount,
-  defaultOptions = _defaultOptions
-} = {}) {
-  return function factory({
-    data = {},
-    ...options
-  } = {}) {
-    const _options = {
-      ...defaultOptions,
-      ...options,
-    };
+export function makeFactory(
+	component,
+	{ mountFnc = shallowMount, defaultOptions = _defaultOptions } = {}
+) {
+	return function factory({ data = {}, ...options } = {}) {
+		const _options = {
+			...defaultOptions,
+			...options,
+		}
 
-    if (data) {
-      _options.data = () => data;
-    }
+		if (data) {
+			_options.data = () => data
+		}
 
-    return mountFnc(component, _options)
-  }
-
+		return mountFnc(component, _options)
+	}
 }
