@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Fix #1746: FUW - Update existing vue component tests and add test coverage for new components
 - Feat #1632: FUW - Show list of selectable attributes in metadata editor
 - Fix #1694: Fix crossbrowser and screen reader issues related to FUW feature
 - Fix: FUW - Fix accessibility and styles issues in annotate files page
