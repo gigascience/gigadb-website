@@ -118,7 +118,7 @@ class MintDoiCest
         $I->assertEquals(422, $result['create_doi_status']);
     }
 
-    public function tryCreateDoiWithMetadata(FunctionalTester $I)
+    public function tryCreateExistingDOIWithMetadata(FunctionalTester $I)
     {
         $mdsConfig = $this->getMDSConfig();
 
@@ -157,6 +157,15 @@ class MintDoiCest
 
         $I->assertEquals("OK", $result['create_doi_response']);
         $I->assertEquals("201", $result['create_doi_status']);
+    }
+
+    /**
+     * @skip as datacite mds api does not allow delete and then create a doi, need to create a fake mds api
+     * TODO
+     */
+    public function tryCreateNonExistingDoiWithMetadata(FunctionalTester $I)
+    {
+
     }
 
     public function tryCreateDoiWithInvalidCredentials(FunctionalTester $I)
