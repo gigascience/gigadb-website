@@ -349,25 +349,27 @@ echo $form->hiddenField($model, "image_id");
                                     echo CHtml::ajaxButton(
                                         'Mint DOI',
                                         Yii::app()->createUrl('/adminDataset/mint/'),
-                                        array(
+                                        [
                                             'type' => 'POST',
-                                            'data' => array('doi' => 'js:$("#Dataset_identifier").val()'),
+                                            'data' => ['doi' => 'js:$("#Dataset_identifier").val()'],
                                             'dataType' => 'json',
-                                            'success' => 'js:function(output){
-                                            console.log(output);
-                                            if (output.check_metadata_status == 200 && output.check_doi_status == 200 && output.update_md_status == 201) {
-                                                $("#minting").addClass("alert alert-info");
-                                                $("#minting").html("This DOI exists in datacite already, no need to mint, but the metadata is updated!");
-                                            } else if (output.create_md_status == 201 && output.create_doi_status == 201) {
-                                                $("#minting").addClass("alert alert-success");
-                                                $("#minting").html("new DOI successfully minted");
-                                            }else {
-                                                $("#minting").addClass("alert alert-danger");
-                                                $("#minting").html("error minting a DOI: "+ output.create_md_status + ", " + output.create_doi_status);
-                                            }
-                                            $("#mint_doi_button").toggleClass("active");
-                                        }',
-                                        ),
+                                            'success' => new CJavaScriptExpression('function(output) {
+                                                console.log(output);
+                                                if (output.check_metadata_status == 200 && output.check_doi_status == 200 && output.update_md_status == 201) {
+                                                    $("#minting").addClass("alert alert-info").html("This DOI exists in datacite already, no need to mint, but the metadata is updated!");
+                                                } else if (output.check_metadata_status == 200 && output.check_doi_status == 200 && output.update_md_status == 422) {
+                                                    $("#minting").addClass("alert alert-info").html("This DOI exists in datacite, but failed to update metadata because of: " + output.update_md_response);
+                                                } else if (output.create_md_status == 201 && output.create_doi_status == 201) {
+                                                    $("#minting").addClass("alert alert-success").html("new DOI successfully minted");
+                                                } else if (output.check_metadata_status == 404 && output.check_doi_status == 404 && output.create_md_status == 422 && output.create_doi_status == 422) {
+                                                    $("#minting").addClass("alert alert-danger").html("This DOI cannot be created because of: " + output.create_md_response + ", and the xml file " + output.create_doi_response);
+                                                } else if ((output.check_metadata_status == 200 && output.check_doi_status == 404) || (output.check_metadata_status == 404 && output.check_doi_status == 200)) {
+                                                    $("#minting").addClass("alert alert-danger").html("Error with metadata status: " + output.metadata_response+ " and DOI status: " + output.doi_response);
+                                                }
+                                                $("#mint_doi_button").toggleClass("active");
+                                            }'
+                                            ),
+                                        ],
                                         array(
                                             'class' => 'btn background-btn m-0',
                                             'id' => 'mint_doi_button',
