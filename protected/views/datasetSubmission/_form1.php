@@ -66,7 +66,16 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
         <div class="col-xs-8">
           <div class="row sibling-controls">
             <div class="col-xs-7 sibling-control">
-              <?php echo $form->textField($model, 'dataset_size', array('type' => 'number', 'size' => 60, 'maxlength' => 200, 'class' => 'form-control', 'aria-describedby' => $model->hasErrors('name') ? 'dataset_size-error dataset_size-desc' : 'dataset_size-desc'));
+              <?php echo $form->textField($model, 'dataset_size', array(
+                'type' => 'number',
+                'size' => 60,
+                'maxlength' => 200,
+                'class' => 'form-control',
+                'required' => true,
+                'aria-required' => 'true',
+                'aria-describedby' => $model->hasErrors('name') ? 'dataset_size-error dataset_size-desc' : 'dataset_size-desc'
+              )
+              );
               ?>
             </div>
             <div class="col-xs-5 sibling-control">
