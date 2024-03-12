@@ -405,3 +405,27 @@ Feature: form to update dataset details
     Then I should see "minting under way, please wait"
     And I wait "5" seconds
     And I should see "This DOI exists in datacite already, no need to mint, but the metadata is updated!"
+
+  @ok @mint-doi
+  Scenario: Update metadata for non exist doi
+    Given I am on "/adminDataset/update/id/5"
+    When I follow "Mint DOI"
+    Then I should see "minting under way, please wait"
+    And I wait "5" seconds
+    And I should see "Error with metadata status: 200 and DOI status: 404 Details can be found at here"
+
+  @ok @mint-doi
+  Scenario: Update metadata with invalid metadata format with existing doi
+    Given I am on "adminDataset/update/id/2342"
+    When I follow "Mint DOI"
+    Then I should see "minting under way, please wait"
+    And I wait "5" seconds
+    And I should see "This DOI exists in datacite, but failed to update metadata because of: DOI 10.80027/100935: Missing child element(s). Expected is ( {http://datacite.org/schema/kernel-4}creator ). at line 4, column 0"
+
+  @ok @mint-doi
+  Scenario: Try to create doi with invalid metadata format
+    Given I am on "/adminDataset/update/id/700"
+    When I follow "Mint DOI"
+    Then I should see "minting under way, please wait"
+    And I wait "5" seconds
+    And I should see "This DOI cannot be created because of the metadata status: 422, and the doi status: 422 Details can be found at here"
