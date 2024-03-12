@@ -22,29 +22,10 @@
     )
   );
   ?>
-  <nav class="dataset-submission-nav" aria-label="secondary">
-    <a href="#" class="sw-selected-btn">
-      <?= Yii::t('app', 'Study') ?>
-    </a>
-    <a href="/datasetSubmission/authorManagement/id/<?= $model->id ?>" class="js-submit">
-      <?= Yii::t('app', 'Author') ?>
-    </a>
-    <a href="/datasetSubmission/projectManagement/id/<?= $model->id ?>" class="js-submit">
-      <?= Yii::t('app', 'Project') ?>
-    </a>
-    <a href="/datasetSubmission/linkManagement/id/<?= $model->id ?>" class="js-submit">
-      <?= Yii::t('app', 'Link') ?>
-    </a>
-    <a href="/datasetSubmission/exLinkManagement/id/<?= $model->id ?>" class="js-submit">
-      <?= Yii::t('app', 'External Link') ?>
-    </a>
-    <a href="/datasetSubmission/relatedDoiManagement/id/<?= $model->id ?>" class="js-submit">
-      <?= Yii::t('app', 'Related Doi') ?>
-    </a>
-    <a href="/datasetSubmission/sampleManagement/id/<?= $model->id ?>" class="js-submit">
-      <?= Yii::t('app', 'Sample') ?>
-    </a>
-  </nav>
+
+  <?
+  $this->renderPartial('_nav', array('model' => $model));
+  ?>
 
   <?
   $this->renderPartial('_form1', array('model' => $model, 'form' => $form, 'image' => $image));
