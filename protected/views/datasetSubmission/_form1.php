@@ -28,7 +28,7 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
     <!-- row 1 col 1 -->
     <div class="col-xs-5 form-block-1">
       <div class="form-group">
-        <?php echo $form->labelEx($model, 'submitter_id', array('class' => 'control-label col-xs-4')); ?>
+        <?php echo $form->labelEx($model, 'submitter_id', array('class' => 'control-label col-xs-4', 'for' => 'email')); ?>
         <div class="col-xs-8">
           <?php
           $email = Yii::app()->user->getEmail();
@@ -62,8 +62,7 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
 
 
       <fieldset class="form-group" aria-label="Dataset size and unit">
-        <?php echo CHtml::label('Estimated Dataset Size', '', array('class' => 'control-label col-xs-4', 'for' => 'Dataset_dataset_size'));
-        ?>
+        <label class="control-label col-xs-4" for="Dataset_dataset_size">Estimated Dataset Size</label>
         <div class="col-xs-8">
           <div class="row sibling-controls">
             <div class="col-xs-7 sibling-control">
@@ -130,7 +129,7 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
       </div>
 
       <div class="form-group js-image">
-        <label class="control-label col-xs-4">Upload<span aria-hidden="true"> *</span></label>
+        <label class="control-label col-xs-4" for="Images_image_upload">Upload<span aria-hidden="true"> *</span></label>
         <div class="col-xs-8">
           <?php echo $form->fileField(
             $image,
