@@ -16,6 +16,30 @@
   .form-block-2 {
     margin-block: @block-spacing;
   }
+  .form-block-3 {
+    margin-block: @block-spacing;
+  }
+  .full-width-block {
+    margin-block: @block-spacing;
+    // Absolute width values so that there is vertical alignment with fields in blocks 1 and 4
+    .control-label {
+      width: 157px;
+    }
+    .input-wrapper {
+      width: 879px;
+    }
+    @media (max-width: 1199px) {
+      .control-label {
+        width: 130px;
+        max-width: 20%;
+      }
+      .input-wrapper {
+        width: 722px;
+        max-width: 80%;
+      }
+    }
+
+  }
   .form-group {
     margin-bottom: 10px;
     .error {
@@ -51,6 +75,24 @@
           margin-bottom: 4px;
         }
       }
+    }
+  }
+  .form-control-btns {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 30px;
+    padding-right: 0;
+    > * {
+      margin: 0;
+    }
+  }
+  .tag-editor {
+    border-color: #cccccc;
+    border-radius: 4px;
+    .placeholder {
+      color: @dark-gray-on-light-gray;
     }
   }
 }

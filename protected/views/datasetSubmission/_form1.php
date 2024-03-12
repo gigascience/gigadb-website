@@ -117,104 +117,140 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
     <?php echo $form->hiddenField($image, 'location', array('size' => 60, 'maxlength' => 200, 'readonly' => "readonly", 'class' => 'image')); ?>
 
     <!-- row 1 col 2 -->
-    <div class="col-xs-offset-1 col-xs-5 form-block-2">
-      <div class="control-group">
-        <font class="control-label">No image</font>
-        <a class="myHint" data-content="check it if you don't want to upload an image"></a>
-        <div class="controls">
-          <?php echo $form->checkBox($image, 'is_no_image', array('id' => 'image-upload')); ?>
-          <!--input id="image-upload" type="checkbox" name="Images[is_no_image]"
-                           style="margin-right:5px"/-->
+    <fieldset class="col-xs-offset-1 col-xs-5 form-block-2">
+      <legend>Image</legend>
+
+      <div class="form-group checkbox-horizontal">
+        <label class="col-md-4 control-label" for="is_no_image">No image</label>
+        <div class="col-md-8 col-xs-1">
+          <?php echo $form->checkBox($image, 'is_no_image', array('id' => 'is_no_image', 'aria-describedby' => 'is_no_image-description')); ?>
+          <div id="is_no_image-description" class="control-description help-block">Check it if you don't want to upload
+            an image</div>
         </div>
       </div>
 
-      <div class="control-group">
-        <label class="control-label">Image Upload</label>
-        <a class="myHint" data-content="upload an image from your local computer/network"></a>
-        <div class="controls">
-          <?php echo $form->fileField($image, 'image_upload', array('class' => 'image')); ?>
-          <?php echo $form->error($image, 'image_upload'); ?>
+      <div class="form-group">
+        <label class="control-label col-xs-4">Upload</label>
+        <div class="col-xs-8">
+          <?php echo $form->fileField($image, 'image_upload', array('class' => 'image form-control', 'aria-describedby' => $form->error($image, 'image_upload') ? 'Images_image_upload-error' : '')); ?>
+          <p class="control-description help-block">Upload an image from your local computer/network</p>
+          <div id="Images_image_upload-error" class="control-error help-block" role="alert">
+            <?php echo $form->error($image, 'image_upload'); ?>
+          </div>
         </div>
       </div>
 
-      <div class="control-group">
-        <?php echo $form->labelEx($image, 'source', array('class' => 'control-label')); ?>
-        <a class="myHint" data-content="from where did you get the image, e.g. wikipedia"></a>
-        <div class="controls">
-          <?php echo $form->textField($image, 'source', array('size' => 60, 'maxlength' => 200, 'class' => 'image')); ?>
-          <?php echo $form->error($image, 'source'); ?>
+      <?php
+      $this->widget('application.components.controls.TextField', [
+        'form' => $form,
+        'model' => $image,
+        'attributeName' => 'source',
+        'description' => 'From where did you get the image, e.g. wikipedia',
+        'inputOptions' => [
+          'size' => 60,
+          'maxlength' => 200,
+          'class' => 'image',
+          'required' => true,
+        ],
+        'labelOptions' => ['class' => 'col-xs-4'],
+        'inputWrapperOptions' => 'col-xs-8',
+      ]);
+
+      $this->widget('application.components.controls.TextField', [
+        'form' => $form,
+        'model' => $image,
+        'attributeName' => 'tag',
+        'description' => 'A brief descriptive title of the image, this will be shown to users if they hover over the image',
+        'inputOptions' => [
+          'size' => 60,
+          'maxlength' => 200,
+          'class' => 'image'
+        ],
+        'labelOptions' => ['class' => 'col-xs-4'],
+        'inputWrapperOptions' => 'col-xs-8',
+      ]);
+      ?>
+
+      <div class="form-group">
+        <?php echo $form->labelEx($image, 'license', array('class' => 'control-label col-xs-4')); ?>
+        <div class="col-xs-8">
+          <?php echo $form->textField($image, 'license', array('size' => 60, 'maxlength' => 300, 'class' => 'form-control image', 'required' => true, 'aria-required' => 'true', 'aria-describedby' => $form->error($image, 'license') ? 'Images_license-error Images_license-desc' : 'Images_license-desc')); ?>
+          <p id="Images_license-desc" class="control-description help-block">GigaScience database will
+            only use images that are free for others to re-use,
+            primarily this is <a target='_blank' href='http://creativecommons.org/about/cc0'>Creative Commons 0 license
+              (CC0)</a></p>
+          <div id="Images_license-error" role="alert" class="control-error help-block">
+            <?php echo $form->error($image, 'license'); ?>
+          </div>
         </div>
       </div>
 
-      <div class="control-group">
-        <?php echo $form->labelEx($image, 'tag', array('class' => 'control-label')); ?>
-        <a class="myHint" data-content="A brief descriptive title of the image,
-                   this will be shown to users if they hover over the image."></a>
-        <div class="controls">
-          <?php echo $form->textField($image, 'tag', array('size' => 60, 'maxlength' => 200, 'class' => 'image')); ?>
-          <?php echo $form->error($image, 'tag'); ?>
-        </div>
-      </div>
 
-      <div class="control-group">
-        <?php echo $form->labelEx($image, 'license', array('class' => 'control-label')); ?>
-        <a class="myHint" data-content="GigaScience database will
-                   only use images that are free for others to re-use,
-                   primarily this is Creative Commons 0 license (CC0)
-                   please see <a target='_blank' href='http://creativecommons.org/about/cc0'>here</a>
-                   for further reading on creative commons licenses."></a>
-        <div class="controls">
-          <?php echo $form->textField($image, 'license', array('size' => 60, 'maxlength' => 200, 'class' => 'image')); ?>
-          <?php echo $form->error($image, 'license'); ?>
-        </div>
-      </div>
+      <?php
 
-      <div class="control-group">
-        <?php echo $form->labelEx($image, 'photographer', array('class' => 'control-label')); ?>
-        <a class="myHint" data-content="The person(s) that should
-                   be credited for the image"></a>
-        <div class="controls">
-          <?php echo $form->textField($image, 'photographer', array('size' => 60, 'maxlength' => 200, 'class' => 'image')); ?>
-          <?php echo $form->error($image, 'photographer'); ?>
-        </div>
-      </div>
-    </div>
+      $this->widget('application.components.controls.TextField', [
+        'form' => $form,
+        'model' => $image,
+        'attributeName' => 'photographer',
+        'description' => 'The person(s) that should be credited for the image',
+        'inputOptions' => [
+          'size' => 60,
+          'maxlength' => 200,
+          'class' => 'image',
+          'required' => true,
+        ],
+        'labelOptions' => ['class' => 'col-xs-4'],
+        'inputWrapperOptions' => 'col-xs-8',
+      ]);
+      ?>
+    </fieldset>
 
-
-    <!-- row 2 -->
-    <div class="">
-      <div class="control-group">
-        <?php echo $form->labelEx($model, 'description', array('class' => 'control-label')); ?>
-        <a class="myHint" data-content="Please provide a full description of the datatset, this may
-                   look like an article abstract giving a brief background of the research and a
-                   description of the results to be found in the dataset
-                   (it should be between 100 and 500 word in length).
-                   Please note this text box accepts HTML code tags for formatting,
-                   so you may use &quot;&lt; br &gt;&quot; for line breaks, &quot;&lt; em &gt;&QUOT; <em>for italics</em> &quot;
-                   &lt; em /&gt;&quot;
-                   and &quot;&lt; b &gt;&quot; <b>for bold</b> &quot;&lt; b/ &gt;&quot;"></a>
-        <div class="controls">
-          <?php echo $form->textArea($model, 'description', array('rows' => 6, 'cols' => 100, 'style' => 'resize:vertical;width:610px')); ?>
-          <?php echo $form->error($model, 'description'); ?>
-        </div>
-      </div>
-    </div>
-    <div class="">
-      <div class="control-group">
-        <?php echo CHtml::label('Keywords', 'keywords', array('class' => 'control-label')); ?>
-        <div class="controls">
-          <?php echo CHtml::textField('keywords', '', array('class' => '', 'size' => 60, 'maxlength' => 300)); ?>
-        </div>
-      </div>
-    </div>
   </div>
 
-  <div class="">
-    <a href="<?php echo Yii::app()->createUrl('/user/view_profile') ?>" class="btn">Cancel</a>
-    <?php echo CHtml::submitButton('Next', array('class' => 'btn-green', 'id' => 'next-btn')); ?>
+  <hr />
+
+  <!-- row 2 -->
+  <div class="row form-block-3 full-width-block">
+
+    <div class="col-xs-12">
+      <?php
+
+      $this->widget('application.components.controls.TextArea', [
+        'form' => $form,
+        'model' => $model,
+        'attributeName' => 'description',
+        'description' => 'Please provide a full description of the datatset, this may look like an article abstract giving a brief background of the research and a
+        description of the results to be found in the dataset
+        (it should be between 100 and 500 word in length).
+        Please note this text box accepts HTML code tags for formatting,
+        so you may use &quot;&lt; br &gt;&quot; for line breaks, &quot;&lt; em &gt;&QUOT; <em>for italics</em> &quot;
+        &lt; em /&gt;&quot;
+        and &quot;&lt; b &gt;&quot; <b>for bold</b> &quot;&lt; b/ &gt;&quot;',
+        'labelOptions' => ['class' => 'col-xs-4'],
+        'inputWrapperOptions' => 'input-wrapper col-xs-6',
+        'inputOptions' => [
+          'rows' => 6,
+          'cols' => 100
+        ],
+      ]);
+
+      ?>
+      <div class="form-group">
+        <?php echo CHtml::label('Keywords', 'keywords', array('class' => 'control-label col-xs-4')); ?>
+        <div class="col-xs-6 input-wrapper">
+          <?php echo CHtml::textArea('keywords', '', array('class' => 'form-control', 'size' => 60, 'maxlength' => 300)); ?>
+        </div>
+      </div>
+    </div>
   </div>
 
 </div>
+
+<div class="col-xs-12 form-control-btns">
+  <a href="<?php echo Yii::app()->createUrl('/user/view_profile') ?>" class="btn background-btn-o">Cancel</a>
+  <?php echo CHtml::submitButton('Next', array('class' => 'btn background-btn submit-btn', 'id' => 'next-btn')); ?>
+</div>
+
 
 <script>
   $('.date').datepicker();
