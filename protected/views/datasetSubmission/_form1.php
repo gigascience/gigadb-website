@@ -123,17 +123,27 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
       <div class="form-group checkbox-horizontal">
         <label class="col-md-4 control-label" for="is_no_image">No image</label>
         <div class="col-md-8 col-xs-1">
-          <?php echo $form->checkBox($image, 'is_no_image', array('id' => 'is_no_image', 'aria-describedby' => 'is_no_image-description')); ?>
+          <?php echo $form->checkBox($image, 'is_no_image', array('id' => 'is_no_image', 'aria-describedby' => 'is_no_image-description', 'class' => 'js-no-image')); ?>
           <div id="is_no_image-description" class="control-description help-block">Check it if you don't want to upload
             an image</div>
         </div>
       </div>
 
-      <div class="form-group">
-        <label class="control-label col-xs-4">Upload</label>
+      <div class="form-group js-image">
+        <label class="control-label col-xs-4">Upload<span aria-hidden="true"> *</span></label>
         <div class="col-xs-8">
-          <?php echo $form->fileField($image, 'image_upload', array('class' => 'image form-control', 'aria-describedby' => $form->error($image, 'image_upload') ? 'Images_image_upload-error' : '')); ?>
-          <p class="control-description help-block">Upload an image from your local computer/network</p>
+          <?php echo $form->fileField(
+            $image,
+            'image_upload',
+            array(
+              'class' => 'image form-control',
+              'required' => true,
+              'aria-required' => 'true',
+              'aria-describedby' => $form->error($image, 'image_upload') ? 'Images_image_upload-error Images_image_upload-desc' : 'Images_image_upload-desc'
+            )
+          ); ?>
+          <p id="Images_image_upload-desc" class="control-description help-block">Upload an image from your local
+            computer/network</p>
           <div id="Images_image_upload-error" class="control-error help-block" role="alert">
             <?php echo $form->error($image, 'image_upload'); ?>
           </div>
@@ -146,10 +156,10 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
         'model' => $image,
         'attributeName' => 'source',
         'description' => 'From where did you get the image, e.g. wikipedia',
+        'groupOptions' => ['class' => 'js-image'],
         'inputOptions' => [
           'size' => 60,
           'maxlength' => 200,
-          'class' => 'image',
           'required' => true,
         ],
         'labelOptions' => ['class' => 'col-xs-4'],
@@ -161,20 +171,20 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
         'model' => $image,
         'attributeName' => 'tag',
         'description' => 'A brief descriptive title of the image, this will be shown to users if they hover over the image',
+        'groupOptions' => ['class' => 'js-image'],
         'inputOptions' => [
           'size' => 60,
           'maxlength' => 200,
-          'class' => 'image'
         ],
         'labelOptions' => ['class' => 'col-xs-4'],
         'inputWrapperOptions' => 'col-xs-8',
       ]);
       ?>
 
-      <div class="form-group">
+      <div class="form-group js-image">
         <?php echo $form->labelEx($image, 'license', array('class' => 'control-label col-xs-4')); ?>
         <div class="col-xs-8">
-          <?php echo $form->textField($image, 'license', array('size' => 60, 'maxlength' => 300, 'class' => 'form-control image', 'required' => true, 'aria-required' => 'true', 'aria-describedby' => $form->error($image, 'license') ? 'Images_license-error Images_license-desc' : 'Images_license-desc')); ?>
+          <?php echo $form->textField($image, 'license', array('size' => 60, 'maxlength' => 300, 'class' => 'form-control', 'required' => true, 'aria-required' => 'true', 'aria-describedby' => $form->error($image, 'license') ? 'Images_license-error Images_license-desc' : 'Images_license-desc')); ?>
           <p id="Images_license-desc" class="control-description help-block">GigaScience database will
             only use images that are free for others to re-use,
             primarily this is <a target='_blank' href='http://creativecommons.org/about/cc0'>Creative Commons 0 license
@@ -193,10 +203,10 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
         'model' => $image,
         'attributeName' => 'photographer',
         'description' => 'The person(s) that should be credited for the image',
+        'groupOptions' => ['class' => 'js-image'],
         'inputOptions' => [
           'size' => 60,
           'maxlength' => 200,
-          'class' => 'image',
           'required' => true,
         ],
         'labelOptions' => ['class' => 'col-xs-4'],
@@ -253,48 +263,9 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
 
 
 <script>
-  $('.date').datepicker();
-
-
   $(".next1").click(function () {
     $("#next-btn").click();
   });
-
-  $(".myHint").popover();
-
-  $(".myHintLink").popover({ trigger: 'manual' }).hover(function (e) {
-    $(this).popover('show');
-    e.preventDefault();
-  });
-
-
-  $('.myHintLink').on('mouseleave', function () {
-    var v = $(this);
-    setTimeout(
-      function () {
-        v.popover('hide');
-      }, 2000);
-  });
-
-  $(function () {
-    $('#image-upload').click(function () {
-      if ($(this).is(':checked')) {
-        $('.image').attr('disabled', true);
-      } else {
-        $('.image').attr('disabled', false);
-      }
-    });
-  });
-
-  function disableImage() {
-    //        alert('here');
-    if ($('#image-upload').is(':checked')) {
-      $('.image').attr('disabled', true);
-    }
-  }
-
-  window.onload = disableImage;
-
 </script>
 <script>
   <?php
@@ -307,4 +278,43 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
     delimiter: ',', /* comma */
     placeholder: 'Enter keywords (separated by commas) ...'
   });
+
+  const MARKED_REQUIRED = 'js-marked-required';
+  const IMAGE_GROUP_SELECTOR = '.js-image';
+
+  function handleNoImage(el) {
+    const isChecked = $(el).is(':checked');
+
+    $(IMAGE_GROUP_SELECTOR).each(function () {
+      const group = $(this);
+      const input = $(this).find('input:not([type="hidden"])');
+
+      group.addClass('disabled');
+      input.attr('aria-disabled', isChecked);
+
+      if (group.hasClass(MARKED_REQUIRED)) {
+        input.attr('aria-required', !isChecked);
+        input.attr('required', !isChecked);
+      }
+    });
+  }
+
+  $(document).ready(function () {
+    $(IMAGE_GROUP_SELECTOR).each(function () {
+      const group = $(this);
+      const input = $(this).find('input:not([type="hidden"])');
+
+      if (input.prop('required')) {
+        group.addClass(MARKED_REQUIRED);
+      }
+    });
+
+    const noImageCheckbox = $('.js-no-image');
+
+    handleNoImage(noImageCheckbox);
+
+    noImageCheckbox.change(function () {
+      handleNoImage(this);
+    });
+  })
 </script>
