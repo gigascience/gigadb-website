@@ -11,7 +11,7 @@
   $this->renderPartial('_nav', array('model' => $model));
   ?>
 
-  <form class="form well">
+  <form class="form well js-author-amangement-form" novalidate dataset-id="<?= $model->id ?>">
     <div class="form-horizontal">
       <div id="author-grid" class="author-grid grid-view">
         <table class="table table-bordered">
@@ -32,7 +32,7 @@
               </th>
               <th id="author-grid_c3" class="author-orcid-col">
                 <div data-toggle="tooltip" data-html="true" tabindex="0"
-                  title="ORCID provides a persistent digital identifier that distinguishes you from every other researcher.  Please visit <a class='tooltip-link' href='http://orcid.org/'>http://orcid.org/</a> to learn more.">
+                  title="ORCID provides a persistent digital identifier that distinguishes you from every other researcher.  Please visit <a class='tooltip-link' tabindex='-1' href='http://orcid.org/'>http://orcid.org/</a> to learn more.">
                   <label for="js-author-orcid">ORCiD</label>
                   <i class="fa fa-question-circle" aria-hidden="true"></i>
                 </div>
@@ -73,9 +73,9 @@
                       appear in the dataset citation</span>
                   </td>
                   <td class="button-column">
-                    <a data-toggle="tooltip" title="Delete author <?php echo $authorFullName ?>"
-                      class="js-delete-author fa fa-trash fa-lg icon icon-delete" da-id="<?= $da->id ?>"
-                      aria-label="Delete author <?php echo $authorFullName ?>" href="/adminDataset/delete/id/5"></a>
+                    <button data-toggle="tooltip" title="Delete author <?php echo $authorFullName ?>"
+                      class="delete-author-btn js-delete-author fa fa-trash fa-lg icon icon-delete" da-id="<?= $da->id ?>"
+                      aria-label="Delete author <?php echo $authorFullName ?>"></button>
                   </td>
                 </tr>
               <? } ?>
@@ -112,27 +112,40 @@
         </table>
       </div>
       <div class="add-author-container btns-row btns-row-end">
-        <button dataset-id="<?= $model->id ?>" class="btn background-btn-o js-add-author">
+        <button dataset-id="<?= $model->id ?>" class="btn background-btn-o js-add-author" type="submit">
           Add Author
         </button>
       </div>
     </div>
 
-    <hr />
-
-    <div class="btns-row btns-row-end">
-      <a href="/datasetSubmission/datasetManagement/id/<?= $model->id ?>" class="btn background-btn">Previous</a>
-      <a href="/user/view_profile" title="Save your incomplete submission and leave the submission wizard."
-        class="btn background-btn delete-title">Save & Quit</a>
-      <a href="/datasetSubmission/projectManagement/id/<?= $model->id ?>" class="btn background-btn">Next</a>
-    </div>
-
   </form>
+  <div class="btns-row btns-row-end">
+    <a href="/datasetSubmission/datasetManagement/id/<?= $model->id ?>" class="btn background-btn">Previous</a>
+    <a href="/user/view_profile" title="Save your incomplete submission and leave the submission wizard."
+      class="btn background-btn delete-title">Save & Quit</a>
+    <a href="/datasetSubmission/projectManagement/id/<?= $model->id ?>" class="btn background-btn">Next</a>
+  </div>
 </div>
 
 <script>
   $(function () {
     $('[data-toggle="tooltip"]').tooltip()
+  })
+
+  $(document).ready(function () {
+    $('.js-author-amangement-form').on('submit', function (e) {
+      e.preventDefault()
+
+      const form = event.target
+
+      if (!form.checkValidity()) {
+        form.reportValidity()
+        return
+      }
+      addAuthor(this)
+
+
+    })
   })
 
   function ajaxIndicatorStart(text) {
@@ -220,9 +233,8 @@
     });
   });
 
-  $(".js-add-author").click(function (e) {
-    e.preventDefault();
-    var did = $(this).attr('dataset-id');
+  function addAuthor(el) {
+    var did = $(el).attr('dataset-id');
     var first_name = $('#js-author-first-name').val();
     var last_name = $('#js-author-last-name').val();
     var middle_name = $('#js-author-middle-name').val();
@@ -244,13 +256,12 @@
           window.location.reload();
         } else {
           alert(response.message);
-
         }
       },
       error: function () {
       }
     });
-  })
+  }
 
   $(".js-delete-author").click(function (e) {
     if (!confirm('Are you sure you want to delete this item?'))
@@ -281,8 +292,4 @@
     //hide ajax indicator
     ajaxIndicatorStop();
   });
-
-  // $(".myHint").tooltip({ 'placement': 'top' });
-  // $(".delete-title").tooltip({ 'placement': 'top' });
-
 </script>
