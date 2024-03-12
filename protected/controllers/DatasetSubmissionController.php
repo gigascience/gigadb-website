@@ -534,6 +534,7 @@ EO_MAIL;
             }
         }
 
+        $this->layout = 'new_datasetpage';
         $this->render('create1', array('model' => $dataset, 'image'=>$image));
     }
 
