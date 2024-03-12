@@ -1,98 +1,140 @@
-<h2>Add Authors</h2>
-<div class="clear"></div>
+<div class="container dataset-submission-page">
+  <?php
+  $this->widget('TitleBreadcrumb', [
+    'pageTitle' => 'Add Authors',
+    'breadcrumbItems' => []
+  ]);
 
-<?
-$this->renderPartial('_nav', array('model' => $model));
-?>
+  ?>
 
+  <?
+  $this->renderPartial('_nav', array('model' => $model));
+  ?>
 
-<div class="span12 form well">
-  <div class="form-horizontal">
-    <div id="author-grid" class="grid-view">
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th id="author-grid_c0" width="25%">First name</th>
-            <th id="author-grid_c1" width="25%">Middle name</th>
-            <th id="author-grid_c2" width="25%">Last name</th>
-            <th id="author-grid_c3" width="10%">
-              <span>ORCiD</span>
-              <a class="myHint"
-                title="ORCID provides a persistent digital identifier that distinguishes you from every other researcher.  Please visit <a href=&quot;http://orcid.org/&quot;>http://orcid.org/</a> to learn more."
-                style="float:right">
-              </a>
-            </th>
-            <th id="author-grid_c4" width="10%">
-              <span>Order</span>
-              <a class="myHint" title="This is the order in which authors will appear in the dataset citation."
-                style="float:right"></a>
-            </th>
-            <th id="author-grid_c5" class="button-column" width="5%"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php if ($das) { ?>
-            <?php foreach ($das as $da) { ?>
-              <tr class="odd">
-                <td><?= $da->author->first_name ?></td>
-                <td><?= $da->author->middle_name ?></td>
-                <td><?= $da->author->surname ?></td>
-                <td><?= $da->author->orcid ?></td>
-                <td>
-                  <input class='js-author-rank' id="js-author-rank-<?= $da->id ?>" da-id="<?= $da->id ?>" value="<?= $da->rank ?>"
-                    type="text" style="width:25px">
-                </td>
-                <td class="button-column">
-                  <a class="js-delete-author delete-title" da-id="<?= $da->id ?>" title="delete this row">
-                    <img alt="delete this row" src="/images/delete.png">
-                  </a>
+  <form class="form well">
+    <div class="form-horizontal">
+      <div id="author-grid" class="author-grid grid-view">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th id="author-grid_c0" class="first-name-col">
+                <label for="js-author-first-name">First name<span> *</span></label>
+              </th>
+              <th id="author-grid_c1" class="middle-name-col">
+                <label for="js-author-middle-name">
+                  Middle name
+                </label>
+              </th>
+              <th id="author-grid_c2" class="last-name-col">
+                <label for="js-author-last-name">
+                  Last name<span> *</span>
+                </label>
+              </th>
+              <th id="author-grid_c3" class="author-orcid-col">
+                <div data-toggle="tooltip" data-html="true" tabindex="0"
+                  title="ORCID provides a persistent digital identifier that distinguishes you from every other researcher.  Please visit <a class='tooltip-link' href='http://orcid.org/'>http://orcid.org/</a> to learn more.">
+                  <label for="js-author-orcid">ORCiD</label>
+                  <i class="fa fa-question-circle" aria-hidden="true"></i>
+                </div>
+              </th>
+              <th id="author-grid_c4" class="order-col">
+                <div data-toggle="tooltip"
+                  title="This is the order in which authors will appear in the dataset citation." tabindex="0">
+                  <span>Order</span>
+                  <i class="fa fa-question-circle" aria-hidden="true"></i>
+                </div>
+              </th>
+              <th id="author-grid_c5" class="button-column">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php if ($das) { ?>
+              <?php foreach ($das as $da) {
+                $authorFullName = $da->author->first_name . ' ' . $da->author->middle_name . ' ' . $da->author->surname;
+                ?>
+                <tr class="odd">
+                  <td>
+                    <?= $da->author->first_name ?>
+                  </td>
+                  <td>
+                    <?= $da->author->middle_name ?>
+                  </td>
+                  <td>
+                    <?= $da->author->surname ?>
+                  </td>
+                  <td>
+                    <?= $da->author->orcid ?>
+                  </td>
+                  <td>
+                    <input type="number" class='js-author-rank form-control' id="js-author-rank-<?= $da->id ?>"
+                      da-id="<?= $da->id ?>" aria-label="Order for author <?= $authorFullName ?>"
+                      aria-describedby="js-author-rank-<?= $da->id ?>-desc" />
+                    <span class="sr-only" id="js-author-rank-<?= $da->id ?>-desc">This is the order in which authors will
+                      appear in the dataset citation</span>
+                  </td>
+                  <td class="button-column">
+                    <a data-toggle="tooltip" title="Delete author <?php echo $authorFullName ?>"
+                      class="js-delete-author fa fa-trash fa-lg icon icon-delete" da-id="<?= $da->id ?>"
+                      aria-label="Delete author <?php echo $authorFullName ?>" href="/adminDataset/delete/id/5"></a>
+                  </td>
+                </tr>
+              <? } ?>
+            <? } else { ?>
+              <tr>
+                <td colspan="4">
+                  <span class="empty">No results found.</span>
                 </td>
               </tr>
-            <? } ?>
-          <? } else { ?>
-            <tr>
-              <td colspan="4">
-                <span class="empty">No results found.</span>
+              <tr>
+              <? } ?>
+              <td>
+                <input id="js-author-first-name" class="form-control" type="text" name="Author[first_name]"
+                  placeholder="First Name" aria-required="true" required>
               </td>
+              <td>
+                <input id="js-author-middle-name" class="form-control" type="text" name="Author[middle_name]"
+                  placeholder="Middle Name">
+              </td>
+              <td>
+                <input id="js-author-last-name" class="form-control" type="text" name="Author[last_name]"
+                  placeholder="Last Name" aria-required="true" required>
+              </td>
+              <td>
+                <input id="js-author-orcid" class="form-control" type="text" name="Author[orcid]" placeholder="ORCiD"
+                  aria-describedby="author-orcid-desc">
+                <span class="sr-only" id="author-orcid-desc">ORCID provides a persistent digital identifier that
+                  distinguishes you from every other researcher. Please visit http://orcid.org/ to learn more.</span>
+              </td>
+              <td></td>
+              <td></td>
             </tr>
-            <tr>
-            <? } ?>
-            <td>
-              <input id="js-author-first-name" type="text" name="Author[first_name]" placeholder="First Name"
-                style="width:180px">
-            </td>
-            <td>
-              <input id="js-author-middle-name" type="text" name="Author[middle_name]"
-                placeholder="Middle Name (Option)" style="width:180px">
-            </td>
-            <td>
-              <input id="js-author-last-name" type="text" name="Author[last_name]" placeholder="Last Name"
-                style="width:180px">
-            </td>
-            <td>
-              <input id="js-author-orcid" type="text" name="Author[orcid]" placeholder="ORCiD(Option)"
-                style="width:100px">
-            </td>
-            <td></td>
-            <td></td>
-          </tr>
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+      </div>
+      <div class="add-author-container btns-row btns-row-end">
+        <button dataset-id="<?= $model->id ?>" class="btn background-btn-o js-add-author">
+          Add Author
+        </button>
+      </div>
     </div>
-    <div class="add-author-container"><a href="#" dataset-id="<?= $model->id ?>" class="btn js-add-author" />Add
-      Author</a></div>
-  </div>
 
-  <div class="span12" style="text-align:center">
-    <a href="/datasetSubmission/datasetManagement/id/<?= $model->id ?>" class="btn-green">Previous</a>
-    <a href="/user/view_profile" title="Save your incomplete submission and leave the submission wizard."
-      class="btn-green delete-title">Save & Quit</a>
-    <a href="/datasetSubmission/projectManagement/id/<?= $model->id ?>" class="btn-green">Next</a>
-  </div>
+    <hr />
 
+    <div class="btns-row btns-row-end">
+      <a href="/datasetSubmission/datasetManagement/id/<?= $model->id ?>" class="btn background-btn">Previous</a>
+      <a href="/user/view_profile" title="Save your incomplete submission and leave the submission wizard."
+        class="btn background-btn delete-title">Save & Quit</a>
+      <a href="/datasetSubmission/projectManagement/id/<?= $model->id ?>" class="btn background-btn">Next</a>
+    </div>
+
+  </form>
 </div>
 
 <script>
+  $(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+  })
+
   function ajaxIndicatorStart(text) {
     if ($('body').find('#resultLoading').attr('id') != 'resultLoading') {
       $('body').append('<div id="resultLoading" style="display:none"><div><img width="30" src="/images/ajax-loader.gif"><div>' + text + '</div></div><div class="bg"></div></div>');
@@ -240,7 +282,7 @@ $this->renderPartial('_nav', array('model' => $model));
     ajaxIndicatorStop();
   });
 
-  $(".myHint").tooltip({ 'placement': 'top' });
-  $(".delete-title").tooltip({ 'placement': 'top' });
+  // $(".myHint").tooltip({ 'placement': 'top' });
+  // $(".delete-title").tooltip({ 'placement': 'top' });
 
 </script>

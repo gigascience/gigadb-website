@@ -413,7 +413,7 @@ class AdminDatasetAuthorController extends Controller
             $attrs = $_POST['Author'];
 
             if (!(($attrs['first_name']) and ($attrs['last_name']))) {
-                Util::returnJSON(array("success" => false, "message" => Yii::t("app", "You must input first namd and last name.")));
+                Util::returnJSON(array("success" => false, "message" => Yii::t("app", "You must input first name and last name.")));
             }
 
             $da = DatasetAuthor::model()->findByAttributes(array('dataset_id' => $_POST['dataset_id']), array('order' => 'rank desc'));

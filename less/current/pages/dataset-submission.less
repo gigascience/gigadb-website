@@ -1,14 +1,15 @@
 @block-spacing: 20px;
 
+.dataset-submission-nav {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
 .dataset-submission-page {
-  .dataset-submission-nav {
-    display: flex;
-    gap: 20px;
-    margin-bottom: 20px;
-  }
   .note {
     color: @color-true-black;
-    margin-bottom: 12px
+    margin-bottom: 12px;
   }
   .form-block-1 {
     margin-block: @block-spacing;
@@ -38,7 +39,6 @@
         max-width: 80%;
       }
     }
-
   }
   .form-group {
     margin-bottom: 10px;
@@ -96,6 +96,32 @@
     border-radius: 4px;
     .placeholder {
       color: @dark-gray-on-light-gray;
+    }
+  }
+  .author-grid {
+    label, th {
+      margin-bottom: 0;
+      color: @color-true-black;
+      font-weight: bold;
+    }
+    td {
+      color: @color-true-black;
+    }
+    .first-name-col,
+    .middle-name-col,
+    .last-name-col {
+      width: 25%;
+    }
+    .author-orcid-col {
+      width: 10%;
+    }
+    .order-col {
+      width: 10%;
+    }
+    .button-column {
+      width: 5%;
+      text-align: center;
+      vertical-align: middle;
     }
   }
 }

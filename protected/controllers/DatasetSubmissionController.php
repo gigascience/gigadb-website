@@ -659,6 +659,7 @@ EO_MAIL;
 
             $das = DatasetAuthor::model()->findAllByAttributes(array('dataset_id'=>$dataset->id), array('order'=>'rank asc'));
 
+            $this->layout = 'new_datasetpage';
             $this->render('authorManagement', array('model' => $dataset,'das'=>$das));
         }
     }
