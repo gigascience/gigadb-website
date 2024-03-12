@@ -362,9 +362,9 @@ echo $form->hiddenField($model, "image_id");
                                                 } else if (output.create_md_status == 201 && output.create_doi_status == 201) {
                                                     $("#minting").addClass("alert alert-success").html("new DOI successfully minted");
                                                 } else if (output.check_metadata_status == 404 && output.check_doi_status == 404 && output.create_md_status == 422 && output.create_doi_status == 422) {
-                                                    $("#minting").addClass("alert alert-danger").html("This DOI cannot be created because of: " + output.create_md_response + ", and the xml file " + output.create_doi_response);
+                                                    $("#minting").addClass("alert alert-danger").html("This DOI cannot be created because of the metadata status: " + output.create_md_status + ", and the doi status: " + output.create_doi_status + " Details can be found at <a href=\'https://support.datacite.org/reference/mds#api-response-codes\' target=\'_blank\'>here</a>");
                                                 } else if ((output.check_metadata_status == 200 && output.check_doi_status == 404) || (output.check_metadata_status == 404 && output.check_doi_status == 200)) {
-                                                    $("#minting").addClass("alert alert-danger").html("Error with metadata status: " + output.metadata_response+ " and DOI status: " + output.doi_response);
+                                                    $("#minting").addClass("alert alert-danger").html("Error with metadata status: " + output.check_metadata_status + " and DOI status: " + output.check_doi_status + " Details can be found at <a href=\'https://support.datacite.org/reference/mds#api-response-codes\' target=\'_blank\'>here</a>");
                                                 }
                                                 $("#mint_doi_button").toggleClass("active");
                                             }'
