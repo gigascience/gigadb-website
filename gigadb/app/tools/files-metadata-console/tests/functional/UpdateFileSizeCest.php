@@ -55,4 +55,13 @@ class UpdateFileSizeCest
         $success = $dfu->updateFileSize();
         $I->assertEquals(1, $success, "Not all files were updated successfully");
     }
+
+    public function tryUpdateFileSizesFromTsvFile(\FunctionalTester $I): void
+    {
+        $webClient = new Client([ 'allow_redirects' => false ]);
+        $us = new URLsService();
+        $dfu = new DatasetFilesUpdater(["doi" => "100005", "us" => $us, "webClient" => $webClient]);
+        $success = $dfu->updateFileSizes();
+//        $I->assertEquals(1, $success, "Not all files were updated successfully");
+    }
 }
