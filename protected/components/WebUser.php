@@ -33,6 +33,12 @@ class WebUser extends CWebUser
         return $user->first_name;
     }
 
+    function getLastName()
+    {
+        $user = $this->loadUser(Yii::app()->user->id);
+        return $user->last_name;
+    }
+
     function getEmail()
     {
         $user = $this->loadUser(Yii::app()->user->id);
