@@ -360,7 +360,7 @@ echo $form->hiddenField($model, "image_id");
                                                 } else if (output.check_metadata_status == 200 && output.check_doi_status == 200 && output.update_md_status == 422) {
                                                     $("#minting").addClass("alert alert-info").html("This DOI exists in datacite, but failed to update metadata because of: " + output.update_md_response);
                                                 } else if (output.create_md_status == 201 && output.create_doi_status == 201) {
-                                                    $("#minting").addClass("alert alert-success").html("new DOI successfully minted");
+                                                    $("#minting").addClass("alert alert-success").html("New DOI successfully minted");
                                                 } else if (output.check_metadata_status == 404 && output.check_doi_status == 404 && output.create_md_status == 422 && output.create_doi_status == 422) {
                                                     $("#minting").addClass("alert alert-danger").html("This DOI cannot be created because of the metadata status: " + output.create_md_status + ", and the doi status: " + output.create_doi_status + " Details can be found at <a href=\'https://support.datacite.org/reference/mds#api-response-codes\' target=\'_blank\'>here</a>");
                                                 } else if ((output.check_metadata_status == 200 && output.check_doi_status == 404) || (output.check_metadata_status == 404 && output.check_doi_status == 200)) {
