@@ -431,3 +431,11 @@ Feature: form to update dataset details
     And I wait "5" seconds
     And I should see "This DOI cannot be created because of the metadata status: 422, and the doi status: 422 Details can be found at here"
     And I should see a link "here" to "https://support.datacite.org/reference/mds#api-response-codes"
+
+  @ok
+  Scenario: Check curation log table display creator full name
+    Given I am on "/adminDataset/update/id/5"
+    And I select "Private" from the field "Dataset_upload_status"
+    And I press the button "Save"
+    And I should see "Joe Bloggs"
+    And I should see "Status changed to Private"
