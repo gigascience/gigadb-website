@@ -92,7 +92,7 @@ class CurationLog extends CActiveRecord
     public static function makeNewInstanceForDatasetBy(int $id, string $creator): CurationLog
     {
         $curationlog = new CurationLog();
-        $curationlog->creation_date = date("Y-m-d");
+        $curationlog->creation_date = date("Y-m-d H:i:s");
         $curationlog->last_modified_date = null;
         $curationlog->dataset_id = $id;
         $curationlog->created_by = $creator;
