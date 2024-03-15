@@ -10,13 +10,13 @@ class CurationLogTest extends CTestCase
 {
     public function testMakeNewInstance()
     {
-        $datasetId = 8;
-        $user = User::model()-> find('id=:id', array(':id' => $datasetId));
-        $creator = $user->first_name . " " . $user->last_name;
-        $curationLog = CurationLog::makeNewInstanceForDatasetBy($datasetId, $creator);
+        $userId = 344;
+        $user = User::model()-> find('id=:id', array(':id' => $userId));
+        $creator = $user->getFullName();
+        $curationLog = CurationLog::makeNewInstanceForDatasetBy($userId, $creator);
         $this->assertNotNull($curationLog);
         $this->assertTrue(is_a($curationLog, CurationLog::class));
-        $this->assertEquals($datasetId, $curationLog->dataset_id);
+        $this->assertEquals($userId, $curationLog->dataset_id);
         $this->assertEquals($creator, $curationLog->created_by);
         $this->assertTrue($curationLog->isNewRecord);
     }
