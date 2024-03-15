@@ -27,7 +27,7 @@ class WebUser extends CWebUser
         return ($operation === $role);
     }
 
-    function getFirst_Name()
+    function getFirstName()
     {
         $user = $this->loadUser(Yii::app()->user->id);
         return $user->first_name;
