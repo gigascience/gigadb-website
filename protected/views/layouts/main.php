@@ -49,7 +49,7 @@
                 <?/* <a class="btn" href="/site/mapbrowse"><?=Yii::t('app' , "Browse Samples")?></a> */?>
 	           	<a class="btn" href="/user/create" id="btnCreateAccount" title="<?=Yii::t('app' , 'An account with GigaDB is required if you want to upload a dataset or be automatically notified of new content of interest to you')?>"><?=Yii::t('app' , 'Create account')?></a>
                 <? } else {
-                        $name = Yii::app()->user->getFirst_Name();
+                        $name = Yii::app()->user->getFirstName();
 
                 // var_dump($name);
                         if (substr($name, -1) === 's') {
