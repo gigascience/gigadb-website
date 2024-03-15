@@ -136,3 +136,20 @@ Feature: A curator can manage file attributes in admin file update page
 #    And I press the button "Save"
 #    Then I am on "/adminFile/view/id/95354"
 #    And I should not see "File Attribute"
+
+  @ok
+  Scenario: Delete file attribute of non published dataset
+    Given I have signed in as admin
+    And I am on "/adminFile/update/id/457"
+    And I press the button "Show New Attribute Fields"
+    And I select "age" from the field "FileAttributes_attribute_id"
+    And I fill in the field of "id" "FileAttributes_value" with "50"
+    And I press the button "Add attribute"
+    And I should see "age"
+    When I press the button "Delete"
+    And I wait "1" seconds
+    Then I should not see "Attributes"
+    And I am on "/curationLog/admin"
+    And I should see "100039"
+    And I should see "Joe Bloggs"
+    And I should see "Parrot.k31.NumberOfSequences.txt: file attribute deleted"
