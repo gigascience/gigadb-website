@@ -151,5 +151,5 @@ Feature: A curator can manage file attributes in admin file update page
     Then I should not see "Attributes"
     And I am on "/curationLog/admin"
     And I should see "100039"
-    And I should see "Joe Bloggs"
     And I should see "Parrot.k31.NumberOfSequences.txt: file attribute deleted"
+    And I should not see "System"
