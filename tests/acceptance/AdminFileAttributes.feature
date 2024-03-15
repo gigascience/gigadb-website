@@ -72,7 +72,7 @@ Feature: A curator can manage file attributes in admin file update page
     And I follow "History"
     Then I should see "Termitomyces_assembly_v1.0.fa.gz: file attribute deleted"
 
-  @ok @nonPublished
+  @ok
   Scenario: See a keyword attribute and a camera parameters attribute on admin file update page
     Given I have signed in as admin
     When I am on "/adminFile/update/id/95354"
@@ -82,7 +82,7 @@ Feature: A curator can manage file attributes in admin file update page
       | camera parameters | test photo                       |      |
       | MD5 checksum      | b584eb4ce0947dbf9529acffc3e9f7cc |      |
 
-  @ok @nonPublished
+  @ok
   Scenario: See File Attribute value on admin file view page
     Given I have signed in as admin
     When I am on "/adminFile/view/id/95354"
@@ -91,7 +91,7 @@ Feature: A curator can manage file attributes in admin file update page
       | File Attribute | test photo                       |
       | File Attribute | b584eb4ce0947dbf9529acffc3e9f7cc |
 
-  @ok @javascript @nonPublished
+  @ok
   Scenario: Delete a keyword attribute on admin file update page
     Given I have signed in as admin
     And I am on "/adminFile/update/id/95354"
@@ -102,7 +102,7 @@ Feature: A curator can manage file attributes in admin file update page
       # | camera parameters | test photo                       |      |
       | MD5 checksum      | b584eb4ce0947dbf9529acffc3e9f7cc |      |
 
-  @ok @javascript @nonPublished
+  @ok
   Scenario: Delete camera parameters attribute and save, then check for File Attribute Value on admin file view page
     Given I have signed in as admin
     And I am on "/adminFile/update/id/95354"
@@ -114,7 +114,7 @@ Feature: A curator can manage file attributes in admin file update page
       | File Attribute | b584eb4ce0947dbf9529acffc3e9f7cc |
 
   #TODO: Fix problem why this test can sometimes randomly fail
-#  @javascript @nonPublished
+#  @javascript
 #  Scenario: Delete last MD5 checksum file attribute from a non published dataset
 #    Given I have signed in as admin
 #    And I am on "/adminFile/update/id/95354"
