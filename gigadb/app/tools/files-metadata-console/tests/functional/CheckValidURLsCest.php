@@ -19,7 +19,7 @@ class CheckValidURLsCest
     public function tryReportIssues(\FunctionalTester $I): void {
         $expectedIssues = [
             "URL appears to be a directory listing",
-            "Resource cannot be downloaded, not found or forbidden (4xx)",
+            "Resource cannot be downloaded, remote endpoint crashed (5xx)",
             "Wrong scheme (ftp://)",
             "URL appears to be a directory (/)",
         ];
