@@ -50,6 +50,23 @@ final class UpdateController extends Controller
     public string $stop = '0';
 
     /**
+     * Console command for updating size for all files in a given dataset
+     *
+     * ./yii update/file-sizes --doi=100142
+     *
+     * @return int
+     */
+    public function actionFileSizes(): int
+    {
+        $webClient = new Client([ 'allow_redirects' => false ]);
+        $us = new URLsService();
+        $dfu = new DatasetFilesUpdater(["doi" => $this->doi, "us" => $us, "webClient" => $webClient]);
+        $success = $dfu->updateFileSizes();
+        $this->stdout("Number of changes: $success" . PHP_EOL);
+        return ExitCode::OK;
+    }
+
+    /**
      * Console command for updating files' size for the given dataset
      *
      * ./yii update/file-size --doi=100142

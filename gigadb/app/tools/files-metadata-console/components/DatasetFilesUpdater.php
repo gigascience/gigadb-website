@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace app\components;
 
+use Exception;
 use GigaDB\models\Dataset;
 use GigaDB\models\File;
 use GigaDB\services\URLsService;
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\BadResponseException;
 use Yii;
 use yii\base\Component;
+use yii\db\Query;
 
 /**
  * DatasetFilesUpdater
@@ -33,43 +33,34 @@ final class DatasetFilesUpdater extends Component
     public \GuzzleHttp\Client $webClient;
 
     /**
-     * Updates file sizes for all files listed in fileSizes.tsv fetched from FTP
-     * server
+     * Updates sizes for all files listed in doi.tsv
      *
      * @return int returns the number of files that has been successfully updated
+     * @throws Exception
      */
-    public function updateFileSizes($doi): int
+    public function updateFileSizes(): int
     {
         $success = 0;
+        $d = Dataset::find()->where(['identifier' => $this->doi])->one();
         
-        $ftpHost = Yii::$app->params['DB_BACKUP_HOST'];
-        $ftpUrl = 'ftp://' . $ftpHost . '/datasets/' . $doi . ".tsv";
-        $fileSizesContent = "";
-        
-//        # Fetch $doi.tsv
-//        $webClient = new \GuzzleHttp\Client();
-//        $response = $webClient->request('GET', $ftpUrl);
-//        if ($response->getStatusCode() === 200) {
-//            $fileSizesContent = $response->getBody()->getContents();
-//        } else {
-//            throw new BadResponseException("Error downloading file: status code " . $response->getStatusCode());
-//        }
-//
-//        # Update file sizes in database
-//        $fileSizes = explode("\n", $fileSizesContent);
-//        for($i = 0; $i < count($fileSizes); ++$i) {
-//            $tokens = explode("\t", $fileSizes[$i]);
-//            $fileSize = $tokens[0];
-//            $fileName = $tokens[1];
-//
-//            $location = "$fileName";
-//            $f = File::find()->where(["location" => $location])->one();
-//            $f->size = $fileSize;
-//            if ($f->save()) {
-//                $success++;
-//            }
-//        }
+        $filesizes = Yii::getAlias('@app') . '/filesizes/' . $this->doi . ".filesizes";
+        if (!file_exists($filesizes)) {
+            throw new Exception('File containing file size information could not be found!');
+        }
 
+        $content = file_get_contents($filesizes);
+        $lines = explode("\n", $content);
+        foreach($lines as $line) {
+            $tokens = explode(" ", $line);
+            $size = (int)$tokens[0];
+            $filename = ltrim($tokens[1], './');
+            # Update file size
+            $f = File::find()->where(['name' => $filename, 'dataset_id' => $d->id])->one();
+            $f->size = $size;
+            if ($f->save()) {
+                $success++;
+            }
+        }
         return $success;
     }
 
