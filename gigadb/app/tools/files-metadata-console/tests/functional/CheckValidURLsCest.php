@@ -11,7 +11,7 @@ class CheckValidURLsCest
 {
     private const TEST_URLS = [
         "https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006",
-        "https://example.com/myfile.txt",
+        "http://gigasciencejournal.com/blog/badaboom",
         "ftp://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006/phylogeny_study_update/Pygoscelis_adeliae.RepeatMasker.out.gz",
         "https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006/phylogeny_study_update/",
     ];
@@ -19,7 +19,7 @@ class CheckValidURLsCest
     public function tryReportIssues(\FunctionalTester $I): void {
         $expectedIssues = [
             "URL appears to be a directory listing",
-            "Resource cannot be downloaded, remote endpoint crashed (5xx)",
+            "Resource cannot be downloaded, not found or forbidden (4xx)",
             "Wrong scheme (ftp://)",
             "URL appears to be a directory (/)",
         ];
