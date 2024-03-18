@@ -12,7 +12,7 @@ class CurationLogTest extends CTestCase
     {
         $datasetId = 1;
         # assume logged in as admin
-        $userId = 400;
+        $userId = 344;
         $user = User::model()-> find('id=:id', array(':id' => $userId));
         $curationLog = CurationLog::makeNewInstanceForDatasetBy($datasetId, $user->getFullName());
         $this->assertNotNull($curationLog);
