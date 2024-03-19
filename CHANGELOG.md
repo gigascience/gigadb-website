@@ -4,7 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
-- Feat #1652: Update documentation on live for API usage
+- Feat #1652: Update API doc for usage of retrieve known datasets by DOI endpoint
 
 ## v4.2.1 - 2024-03-18 - ac7d6168b
 
