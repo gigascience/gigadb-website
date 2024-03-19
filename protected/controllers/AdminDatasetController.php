@@ -55,6 +55,14 @@ class AdminDatasetController extends Controller
         );
     }
 
+    private function processTemplateString(string $inputString, array $vars): string {
+        foreach ($vars as $key => $value) {
+            $pattern = "/{{\s*" . preg_quote($key, '/') . "\s*}}/";
+            $inputString = preg_replace($pattern, $value, $inputString);
+        }
+        return $inputString;
+    }
+
 	/**
 	 * Manage creation of new dataset object from a form
 	 *
@@ -173,6 +181,7 @@ class AdminDatasetController extends Controller
      */
     public function actionUpdate($id)
     {
+
         $model = $this->loadModel($id);
 
         // setting DatasetUpload, the busisness object for File uploading
@@ -208,7 +217,7 @@ class AdminDatasetController extends Controller
         if (isset($_POST['Dataset'])) {
             if (isset($_POST['Dataset']['upload_status']) && $_POST['Dataset']['upload_status'] != $model->upload_status) {
                 $statusIsSet = false;
-                switch( $_POST['Dataset']['upload_status'] )
+                switch ($_POST['Dataset']['upload_status'])
                 {
                     case "Submitted":
                         $contentToSend = $datasetUpload->renderNotificationEmailBody("Submitted");
@@ -216,6 +225,14 @@ class AdminDatasetController extends Controller
                         break;
                     case "DataPending":
                         $contentToSend = $datasetUpload->renderNotificationEmailBody("DataPending");
+
+                        // If formdata has a defined custom email body, user it instead of the twig template
+                        if (isset($_POST['Dataset']['emailBody']) && $_POST['Dataset']['emailBody'] != '') {
+                            $contentToSend = $this->processTemplateString($_POST['Dataset']['emailBody'], [
+                              "identifier" => $model->identifier
+                          ]);
+                        }
+
                         $statusIsSet = $datasetUpload->setStatusToDataPending(
                             $contentToSend, $model->submitter->email
                         );
