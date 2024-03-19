@@ -81,6 +81,10 @@ unit_func_tests:
       - ops/scripts/node_modules
       - gigadb/app/client/web/node_modules
   dependencies: []
+  artifacts:
+    untracked: true
+    when: on_failure
+    expire_in: 1 week
   script:
     # appending dev variables at the end of the .env and .secrets
     - env | grep "^HOME_URL" >> $APPLICATION/.env

@@ -206,7 +206,7 @@ class CachedDatasetMainSectionTest extends CTestCase
                         "release_year" => "2018",
                         "dataset_title" => 'Supporting data for "Analyzing climate variations on multiple timescales can guide Zika virus response measures"',
                         "publisher" => "Gigascience",
-                        "full_doi" => "10.5072/100243",
+                        "full_doi" => "10.80027/100243",
                      )
                  );
 
@@ -251,7 +251,7 @@ class CachedDatasetMainSectionTest extends CTestCase
                         "release_year" => "2018",
                         "dataset_title" => 'Supporting data for "Analyzing climate variations on multiple timescales can guide Zika virus response measures"',
                         "publisher" => "Gigascience",
-                        "full_doi" => "10.5072/100243",
+                        "full_doi" => "10.80027/100243",
                     );
 
         $this->assertEquals($expected, $daoUnderTest->getReleaseDetails());
@@ -291,7 +291,7 @@ class CachedDatasetMainSectionTest extends CTestCase
                         "release_year" => "2018",
                         "dataset_title" => 'Supporting data for "Analyzing climate variations on multiple timescales can guide Zika virus response measures"',
                         "publisher" => "Gigascience",
-                        "full_doi" => "10.5072/100243",
+                        "full_doi" => "10.80027/100243",
                     );
 
         //we first need to create a mock object for the cache

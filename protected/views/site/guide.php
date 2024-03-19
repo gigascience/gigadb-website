@@ -32,30 +32,32 @@ $this->pageTitle = 'GigaDB - Submission Guidelines';
                         <div class="subsection">
                             <p>The workflow diagram below details a standard submission process:</p>
                             <figure>
-                                <img src="/images/workflow.png" alt="Workflow diagram of manuscript and data submission process for GigaScience, described in detail below"></img>
+                                <img src="/images/workflow.png" alt="Workflow diagram of manuscript and data submission process for GigaScience" aria-describedby="workflowDescription"></img>
                                 <figcaption>
                                     <h3 class="h4">Workflow overview</h3>
                                     <p>This workflow diagram outlines the manuscript and data submission process for GigaScience. It covers the steps from initial manuscript submission to the eventual publication of the dataset.</p>
-                                    <h3 class="h4">Workflow Steps</h3>
-                                    <ol class="number-spacing">
-                                        <li>Authors submit manuscript</li>
-                                        <li>Is it in scope for GigaScience?</li>
-                                        <li>Decision: If no, reject. If yes, continue.</li>
-                                        <li>Does manuscript include data?</li>
-                                        <li>Decision: If no, no further GigaDB involvement. If yes, continue.</li>
-                                        <li>Is data available to peer reviewers?</li>
-                                        <li>Decision: If no, provide authors with private FTP login, then authors upload all data files to GigaDB private FTP area and continue. If yes, continue.</li>
-                                        <li>Editors send manuscript and private FTP login details to reviewers</li>
-                                        <li>Does manuscript pass review?</li>
-                                        <li>Decision: If no, either reject or author makes revisions to manuscript and/or data in FTP server, and continue. If yes, continue.</li>
-                                        <li>Is all data available?</li>
-                                        <li>Decision: If no, gather all required data. If yes, continue.</li>
-                                        <li>Is all metadata available?</li>
-                                        <li>Decision: If no, gather all required metadata. If yes, continue.</li>
-                                        <li>Curator uploads metadata to GigaDB</li>
-                                        <li>Did authors confirm dataset page?</li>
-                                        <li>Decision: If no, authors liaise with curators to ensure dataset page is complete and correct, then again curators upload metadata to GigaDB and generate dataset page. If yes, publish dataset.</li>
-                                    </ol>
+                                    <div class="sr-only" id="workflowDescription">
+                                      <h3 class="h4">Workflow Steps</h3>
+                                      <ol class="number-spacing">
+                                          <li>Authors submit manuscript</li>
+                                          <li>Is it in scope for GigaScience?</li>
+                                          <li>Decision: If no, reject. If yes, continue.</li>
+                                          <li>Does manuscript include data?</li>
+                                          <li>Decision: If no, no further GigaDB involvement. If yes, continue.</li>
+                                          <li>Is data available to peer reviewers?</li>
+                                          <li>Decision: If no, provide authors with private FTP login, then authors upload all data files to GigaDB private FTP area and continue. If yes, continue.</li>
+                                          <li>Editors send manuscript and private FTP login details to reviewers</li>
+                                          <li>Does manuscript pass review?</li>
+                                          <li>Decision: If no, either reject or author makes revisions to manuscript and/or data in FTP server, and continue. If yes, continue.</li>
+                                          <li>Is all data available?</li>
+                                          <li>Decision: If no, gather all required data. If yes, continue.</li>
+                                          <li>Is all metadata available?</li>
+                                          <li>Decision: If no, gather all required metadata. If yes, continue.</li>
+                                          <li>Curator uploads metadata to GigaDB</li>
+                                          <li>Did authors confirm dataset page?</li>
+                                          <li>Decision: If no, authors liaise with curators to ensure dataset page is complete and correct, then again curators upload metadata to GigaDB and generate dataset page. If yes, publish dataset.</li>
+                                      </ol>
+                                    </div>
                                 </figcaption>
                             </figure>
                             <p>When contacted by curators to process the GigaDB dataset you will be invited to:</p>

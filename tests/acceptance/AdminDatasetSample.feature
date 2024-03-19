@@ -24,15 +24,18 @@ Feature: admin page for samples
     And I should see "Alternative names:PYGAD"
     And I should not see "... +"
 
-   @ok
+  @ok
   Scenario: Sorting on DOI column in ascending order
-     Given I am on "/adminDatasetSample/admin"
-     When I follow "DOI"
-     Then I should see "100006"
+    Given I am on "/adminDatasetSample/admin"
+    When I follow "DOI"
+    And I wait "1" seconds
+    Then I should see the table is sorted by column "DOI" in the "asc" order
 
   @ok
   Scenario: Sorting on DOI column in descending order
     Given I am on "/adminDatasetSample/admin"
     When I follow "DOI"
+    And I wait "1" seconds
     And I follow "DOI"
-    Then I should see "100006"
+    And I wait "1" seconds
+    Then I should see the table is sorted by column "DOI" in the "desc" order

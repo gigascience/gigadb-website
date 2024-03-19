@@ -1,9 +1,9 @@
 
-const { Plugin } = require('@uppy/core')
+import BasePlugin from '@uppy/core/lib/BasePlugin.js';
 const ChunkedFileReader = require('chunked-file-reader')
 const SparkMD5 = require('spark-md5')
 
-export const Checksum = class Checksum extends Plugin {
+export const Checksum = class Checksum extends BasePlugin {
   constructor (uppy, opts) {
     super(uppy, opts)
     this.id = opts.id || 'Checksum'

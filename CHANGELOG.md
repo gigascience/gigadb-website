@@ -5,9 +5,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## Unreleased
 
 - Feat #1618: Allow customization of email sent to author after "DataPending" status
+
+## v4.2.1 - 2024-03-18 - ac7d6168b
+
+- Feat #1613: Add descriptive text, improved button labels and tooltips for user profile uploaded datasets tab
+- Fix #1666: Update the datacite credentials and make the Mint DOI button working
+- Fix #1230: Improve Excel upload tool by adding new dataset types in dev data
+- Fix #1722: Show more button on Dataset:Sample admin page works after filtering
+- Fix #1714: Visually hide long description in guide workflow, so that it's only visible to screen readers
+- Fix #1657: Fix the broken tests from release 4.2.0, fix curation log form and spreadsheet upload consent checkbox
+- Feat #1627: FUW - Migrate to Uppy version 2
+- Feat #1629: FUW - Upgrade Element UI to latest version
+
+## v4.2.0 - 2024-02-27 - 017ba8f58 - live since 2024-03-13
+
+- Fix #1659: Remove dependency on abandoned inter-container-communication project and fix broken tests
+- Feat #1624: FUW - Migrate to Vue 2.7
 - Feat #1334: Improve accessibility of public and admin pages, revamp admin pages styles, sync style guide with updated styles
 
-## v4.1.2 - 2024-02-07 - 9a421a2c
+## v4.1.2 - 2024-02-07 - 9a421a2c - live since 2024-02-08
 
 - Fix #1660: Ensure dataset pages that are not published are not publicly visible
 
