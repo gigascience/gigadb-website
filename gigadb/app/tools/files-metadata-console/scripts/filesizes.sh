@@ -11,7 +11,7 @@ rm -f "$filename.tsv"
 for i in $(find .  -type f ! -name 'filesizes.sh');
 do
   # Create file containing dataset file sizes
-  echo -e "$(stat -c '%s' "$i" | numfmt --to=iec --format=%2f)\t$i" >> "$filename.tsv"
+  echo "$(wc -c $i)" >> "$filename.tsv"
 done
 echo -e "Created $filename.tsv file"
 
