@@ -15,9 +15,5 @@ do
 done
 echo -e "Created $filename.tsv file"
 
-# For FTP server access from Tencent backup server
-if test -f ~/.ftpconfig; then
-  source ~/.ftpconfig
-  curl -T "$filename.tsv" -u $ftp_credentials "$ftp_server/datasets/"
-  echo -e "Uploaded $filename.tsv file to FTP server"
-fi
+# Copy file into S3 bucket
+aws s3 cp "$filename.tsv" s3://gigadb-datasets-metadata
