@@ -33,7 +33,7 @@ class FileTest extends \Codeception\Test\Unit
         $this->assertEquals($expectation, $result);
     }
 
-    public function testItShouldReturnZeroByteWhenSizeNegative()
+    public function testItShouldReturnNegativeByteAsItIs()
     {
         $this->systemUnderTest->size = "-1";
         $result = $this->systemUnderTest->getSizeWithFormat();
