@@ -77,7 +77,7 @@ class StoredDatasetSamples extends DatasetComponents implements DatasetSamplesIn
         $sql = "select
 		ds.sample_id as id, s.name, s.species_id, s.consent_document, s.submitted_id, s.submission_date, s.contact_author_name, s.contact_author_email, s.sampling_protocol
 		from sample s, dataset_sample ds
-		where ds.sample_id = s.id and ds.dataset_id=:id limit $limit offset $offset" ;
+		where ds.sample_id = s.id and ds.dataset_id=:id order by id limit $limit offset $offset" ;
         //In the sql above, make sure that the only 'id' field is ds.sample_id, otherwise ActiveRecord may pick up the wrong id field (e.g: ds.id)
         $samples = Sample::model()->findAllBySql($sql, array('id' => $this->_id));
         $result = array_map($objectToHash, $samples);

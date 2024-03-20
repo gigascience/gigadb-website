@@ -73,7 +73,7 @@ class StoredDatasetFiles extends DatasetComponents implements DatasetFilesInterf
         $sql = "select
 		id, dataset_id, name, location, extension, size, description, date_stamp, format_id, type_id, download_count
 		from file
-		where dataset_id=:id limit $limit offset $offset" ;
+		where dataset_id=:id order by id limit $limit offset $offset" ;
         ;
         $files = File::model()->findAllBySql($sql, array('id' => $this->_id));
         $result = array_map($objectToHash, $files);
