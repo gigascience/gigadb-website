@@ -109,10 +109,10 @@ jQuery.sub = function() {
                 <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" defer></script>
                 <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js" defer></script>
                 <? } ?>
-                    <?= $this->renderPartial('//shared/_google_analytics')?>
                         <title>
                             <?php echo CHtml::encode($this->pageTitle); ?>
                         </title>
+                        <?= $this->renderPartial('//shared/_matomo') ?>
 </head>
 
 <body>

@@ -29,10 +29,10 @@
            Yii::app()->clientScript->scriptMap['jquery-ui.css'] = false;
            Yii::app()->clientScript->scriptMap['bootstrap.min.js'] = false;
            ?>
-                        <?= $this->renderPartial('//shared/_google_analytics') ?>
                             <title>
                                 <?php echo CHtml::encode($this->pageTitle); ?>
                             </title>
+                            <?= $this->renderPartial('//shared/_matomo') ?>
 </head>
 
 <body>
