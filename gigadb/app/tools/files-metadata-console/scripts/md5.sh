@@ -12,7 +12,7 @@ filename=$(basename $pwd)
 # Create doi.md5 file containing md5 checksum values for files
 ##############################################################
 
-find .  -type f ! -name 'md5.sh' -exec md5sum {} \; > "$filename.md5"
+find .  -type f ! -name 'md5.sh' ! -name '*.filesizes' -exec md5sum {} \; > "$filename.md5"
 echo "Created $filename.md5"
 
 ############################################################
@@ -25,7 +25,7 @@ S3_BUCKET="s3://gigadb-datasets-metadata"
 # Remove any existing filesizes file in current directory
 rm -f "$FILESIZE_FILE"
 
-for i in $(find .  -type f ! -name 'md5.sh');
+for i in $(find .  -type f ! -name 'md5.sh' ! -name '*.filesizes');
 do
   # Create file containing dataset file sizes
   echo -e "$(wc -c < $i)\t$i" >> "$FILESIZE_FILE"
