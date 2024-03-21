@@ -107,24 +107,24 @@ terraform {
   backend "http" {
   }
 
-  required_providers {
-    random = {
-      source  = "hashicorp/random"
-      version = "3.5.1"
-    }
+  # required_providers {
+  #   random = {
+  #     source  = "hashicorp/random"
+  #     version = "3.5.1"
+  #   }
 
-    external = {
-      source  = "hashicorp/external"
-      version = "2.3.1"
-    }
+  #   external = {
+  #     source  = "hashicorp/external"
+  #     version = "2.3.1"
+  #   }
     
-    aws = {
-      source  = "hashicorp/aws"
-      version = "5.5.0"
-    }
-  }
+  #   aws = {
+  #     source  = "hashicorp/aws"
+  #     version = "5.5.0"
+  #   }
+  # }
 
-  required_version = ">= 1.1"
+  # required_version = ">= 1.1"
 }
 
 # A custom virtual private cloud network for RDS and EC2 instances
@@ -283,4 +283,15 @@ module "rds" {
 
 output "rds_instance_address" {
   value = module.rds.rds_instance_address
+}
+
+
+# Setup AWS EFS 
+module "gigadb_efs" {
+  source = "../../modules/efs-filesystem"
+
+  vpc_id = module.vpc.vpc_id
+  deployment_target = var.deployment_target
+  owner = data.external.callerUserName.result.userName
+  
 }
