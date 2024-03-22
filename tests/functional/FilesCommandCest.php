@@ -21,8 +21,6 @@ class FilesCommandCest
     /**
      * Check DOI 100006 can be used to download a md5 file that is then used to
      * update md5 file attribute values
-     *
-     * @skip it keeps breaking on any branch with no related changes, no time to investigate for now so skipping it (TODO)
      */
     public function tryToUpdateMD5FileAttributes(FunctionalTester $I)
     {
