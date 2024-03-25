@@ -35,6 +35,8 @@ class m200528_090557_create_file_attributes_tab extends CDbMigration
 
         $this->execute("ALTER TABLE ONLY file_attributes
             ADD CONSTRAINT file_attributes_unit_id_fkey FOREIGN KEY (unit_id) REFERENCES unit(id);");
+
+        $this->execute("CREATE INDEX file_id_idx ON file_attributes USING btree (file_id);");
     }
 
     public function safeDown()
