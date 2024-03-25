@@ -416,9 +416,7 @@ class AdminFileController extends Controller
             $model->attributes = $_POST['File'];
 
             $model->setSizeValue();
-            if ($model->validate()) {
-                $model->save();
-
+            if ($model->save()) {
                 if(isset($_POST['File']['sample_name']) && !empty($_POST['File']['sample_name'])) {
                     $fs = $model->fileSamples;
                     if(!isset($fs[0])) {
