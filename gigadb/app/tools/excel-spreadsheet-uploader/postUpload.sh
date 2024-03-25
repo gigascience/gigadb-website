@@ -69,24 +69,30 @@ if [[ $(uname -n) =~ compute ]];then
       echo -e "\nNo logs found in: $outputDir!"
   fi
 
-else
-  echo -e "$updateMD5ChecksumStartMessage"
-  docker-compose run --rm  test ./protected/yiic files updateMD5FileAttributes --doi="$DOI" | tee "$outputDir/updating-md5checksum-$DOI.txt"
-  echo -e "$updateMD5ChecksumEndMessage"
+else  # Running on dev environment
 
-#  cd gigadb/app/tools/files-metadata-console
-#  echo -e "$checkValidUrlsStartMessage"
-#  docker-compose run --rm files-metadata-console ./yii check/valid-urls --doi="$DOI" | tee "$outputDir/invalid-urls-$DOI.txt"
-#  echo -e "$checkValidUrlsEndMessage"
-
-  echo -e "$updateFileSizeStartMessage"
-  docker-compose run --rm files-metadata-console ./yii update/file-sizes --doi="$DOI" | tee "$outputDir/updating-file-size-$DOI.txt"
-  echo -e "$updateFileSizeEndMessage"
-
+  # Readme tool needs to execute first so that it creates the
+  # readme-generator/runtime/curators directory that /home/curators is mapped to
   echo -e "$createReadMeFileStartMessage"
+  # Change directory to readme-generator tool folder
   cd ../readme-generator
   # Create readme file and upload to Wasabi dev directory
   ./createReadme.sh --doi "$DOI" --outdir "$outputDir" --wasabi --apply
   echo -e "$createReadMeFileEndMessage"
+
+  echo -e "$updateMD5ChecksumStartMessage"
+  # Change directory to gigadb-website folder
+  cd ../../../../
+  docker-compose run --rm  test ./protected/yiic files updateMD5FileAttributes --doi="$DOI" | tee "gigadb/app/tools/readme-generator/runtime/curators/updating-md5checksum-$DOI.txt"
+  echo -e "$updateMD5ChecksumEndMessage"
+  
+  echo -e "$updateFileSizeStartMessage"
+  cd gigadb/app/tools/files-metadata-console
+  docker-compose run --rm files-metadata-console ./yii update/file-sizes --doi="$DOI" | tee "../readme-generator/runtime/curators/updating-file-size-$DOI.txt"
+  echo -e "$updateFileSizeEndMessage"
+
+#  echo -e "$checkValidUrlsStartMessage"
+#  docker-compose run --rm files-metadata-console ./yii check/valid-urls --doi="$DOI" | tee "$outputDir/invalid-urls-$DOI.txt"
+#  echo -e "$checkValidUrlsEndMessage"
 fi
 
