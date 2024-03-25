@@ -35,7 +35,7 @@ class FilesCommandCest
         $I->seeInDatabase('file_attributes', ['id' => '10672', 'value' => '5afc9d8348bf4b52ee6e9c2bae9fd542']);
         $I->seeInDatabase('file_attributes', ['id' => '10673', 'value' => 'bd9bed43475eaa22b6ab62b9fb7a3909']);
         $I->seeInDatabase('file_attributes', ['id' => '10674', 'value' => '55c764721558086197bfbd663e1567a6']);
-        $I->seeInDatabase('file_attributes', ['id' => '10675', 'value' => '826b699c854cc0f06e982d836410a81b']);
+        $I->seeInDatabase('file_attributes', ['id' => '10675', 'value' => '88888888888888888888888888888888']);
     }
 
     /**
