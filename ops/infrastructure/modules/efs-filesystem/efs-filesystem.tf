@@ -108,11 +108,11 @@ module "efs" {
   # Backup policy
   enable_backup_policy = false
 
-  # Replication configuration
-  create_replication_configuration = true
-  replication_configuration_destination = {
-    region = data.aws_region.current.name
-  }
+  # Replication (to another region) configuration (see https://docs.aws.amazon.com/efs/latest/ug/efs-replication.html)
+  create_replication_configuration = false
+  # replication_configuration_destination = {
+  #   region = data.aws_region.current.name
+  # }
 
   tags = {
     Owner   = var.owner
