@@ -39,7 +39,7 @@ if [[ $(uname -n) =~ compute ]];then
   . /home/centos/.bash_profile
 
   echo -e "$updateFileSizeStartMessage"
-  docker run --rm "registry.gitlab.com/$GITLAB_PROJECT/production-files-metadata-console:$GIGADB_ENV" ./yii update/file-size --doi="$DOI" | tee "$outputDir/updating-file-size-$DOI.txt"
+  docker run --rm "registry.gitlab.com/$GITLAB_PROJECT/production-files-metadata-console:$GIGADB_ENV" ./yii update/file-sizes --doi="$DOI" | tee "$outputDir/updating-file-size-$DOI.txt"
   echo -e "$updateFileSizeEndMessage"
 
 #  echo -e "$checkValidUrlsStartMessage"
@@ -80,7 +80,7 @@ else
 #  echo -e "$checkValidUrlsEndMessage"
 
   echo -e "$updateFileSizeStartMessage"
-  docker-compose run --rm files-metadata-console ./yii update/file-size --doi="$DOI" | tee "$outputDir/updating-file-size-$DOI.txt"
+  docker-compose run --rm files-metadata-console ./yii update/file-sizes --doi="$DOI" | tee "$outputDir/updating-file-size-$DOI.txt"
   echo -e "$updateFileSizeEndMessage"
 
   echo -e "$createReadMeFileStartMessage"
