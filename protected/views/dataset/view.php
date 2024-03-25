@@ -222,7 +222,7 @@ $sampleDataProvider = $samples->getDataProvider();
                 </p>
 
 
-                <?php if (count($accessions) > 0) { ?>
+                <?php if (is_countable($accessions) && count($accessions) > 0) { ?>
                     <?php
                     $primary_links = $accessions->getPrimaryLinks();
                     $secondary_links = $accessions->getSecondaryLinks();

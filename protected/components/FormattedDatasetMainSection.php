@@ -49,7 +49,7 @@ class FormattedDatasetMainSection extends yii\base\BaseObject implements Dataset
         $headline = $this->_cachedDatasetMainSection->getHeadline();
         $headline['title'] = $headline['title'] ?? "" ;
         $headline['types'] = isset($headline['types']) ? implode(", ", $headline['types']) : "";
-        $headline['release_date'] = isset($headline['release_date']) ? strftime("%B %d, %Y", strtotime($headline['release_date'])) : "";
+        $headline['release_date'] = isset($headline['release_date']) ? date("%B %d, %Y", strtotime($headline['release_date'])) : "";
 
         return $headline;
     }

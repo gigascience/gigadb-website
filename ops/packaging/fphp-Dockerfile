@@ -1,0 +1,7 @@
+FROM dunglas/frankenphp:latest-php8.2-bookworm
+
+
+RUN apt-get update -y && rm -rf /var/lib/apt/lists/*
+RUN install-php-extensions pdo_pgsql bcmath pcntl curl gd opcache intl pgsql mailparse
+
+

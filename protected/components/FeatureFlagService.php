@@ -2,9 +2,9 @@
 
 use Unleash\Client\UnleashBuilder;
 use Unleash\Client\Unleash;
-use Buzz\Browser;
-use Buzz\Client\FileGetContents;
-use Nyholm\Psr7\Factory\Psr17Factory;
+//use Buzz\Browser;
+//use Buzz\Client\FileGetContents;
+//use Nyholm\Psr7\Factory\Psr17Factory;
 
 /**
  * FeatureFlagService
@@ -58,15 +58,15 @@ class FeatureFlagService extends CApplicationComponent
     public function init() {
         parent::init();
 
-        $client = new FileGetContents(new Psr17Factory());
-        $factory = new Psr17Factory();
+//        $client = new FileGetContents(new Psr17Factory());
+//        $factory = new Psr17Factory();
 
         $this->unleashed = UnleashBuilder::create()
             ->withAppName($this->fflagAppName)
             ->withAppUrl($this->fflagUrl)
             ->withInstanceId($this->fflagInstanceId)
-            ->withHttpClient($client)
-            ->withRequestFactory($factory)
+//            ->withHttpClient($client)
+//            ->withRequestFactory($factory)
             ->withCacheTimeToLive($this->cacheTTL)
             ->build();
     }

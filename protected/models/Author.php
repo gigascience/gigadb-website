@@ -90,10 +90,10 @@ class Author extends CActiveRecord {
         $criteria = new CDbCriteria;
         $criteria->select = 't.*, (SELECT min(d.identifier) from dataset d LEFT JOIN dataset_author da ON da.dataset_id = d.id WHERE da.author_id = t.id) as minDoi';
         $criteria->compare('id', $this->id);
-        $criteria->compare('LOWER(surname)', strtolower($this->surname), true);
-        $criteria->compare('LOWER(middle_name)', strtolower($this->middle_name), true);
-        $criteria->compare('LOWER(first_name)', strtolower($this->first_name), true);
-        $criteria->compare('LOWER(orcid)', strtolower($this->orcid), true);
+        $criteria->compare('LOWER(surname)', strtolower($this->surname ?? ''), true);
+        $criteria->compare('LOWER(middle_name)', strtolower($this->middle_name ?? ''), true);
+        $criteria->compare('LOWER(first_name)', strtolower($this->first_name ?? ''), true);
+        $criteria->compare('LOWER(orcid)', strtolower($this->orcid ?? ''), true);
         $criteria->compare('gigadb_user_id', $this->gigadb_user_id);
 
         if ($this->dois_search) {

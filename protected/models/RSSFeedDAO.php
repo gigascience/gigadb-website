@@ -24,7 +24,7 @@ class RSSFeedDAO
 		$rss_arr = array_merge($latest_datasets , $latest_messages);
 
         usort($rss_arr, function ($a,$b) {
-              return $a->publication_date < $b->publication_date;
+              return strtotime($a->publication_date ? $a->publication_date : 0) - strtotime($b->publication_date ? $b->publication_date : 0);
         });
 
         return $rss_arr;
