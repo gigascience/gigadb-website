@@ -4,6 +4,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+## v4.2.2 - 2024-03-25 - 3cf500fe8
+
 - Feat #1759: Replace Google Analytics script by Matomo script in all layouts
 - Feat #1652: Update API doc for usage of retrieve known datasets by DOI endpoint
 
