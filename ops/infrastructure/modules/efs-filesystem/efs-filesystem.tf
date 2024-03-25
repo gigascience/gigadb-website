@@ -22,8 +22,8 @@ module "efs" {
   source = "terraform-aws-modules/efs/aws"
 
   # File system
-  name           = "gigadb-efs ${var.deployment_target}"
-  creation_token = "gigadb-efs-${data.aws_caller_identity.current.arn}-${var.deployment_target}"
+  name           = "gigadb-efs ${var.owner} ${var.deployment_target}"
+  creation_token = "gigadb-efs-${var.owner}-${var.deployment_target}"
 
 
 
@@ -55,7 +55,7 @@ module "efs" {
   security_group_vpc_id      = data.aws_vpc.selected.id
   security_group_rules = {
     vpc = {
-      # relying on the defaults provdied for EFS/NFS (2049/TCP + ingress)
+      # relying on the defaults provided for EFS/NFS (2049/TCP + ingress)
       description = "NFS ingress from VPC private subnets"
       cidr_blocks = local.private_subnets
     }
@@ -65,7 +65,7 @@ module "efs" {
   access_points = {
     dropbox_area = {
 
-      name = "dropbox-area"
+      name = "dropbox-area-${data.aws_caller_identity.current.arn}-${var.deployment_target}"
 
       posix_user = {
         gid            = 1000
@@ -85,7 +85,7 @@ module "efs" {
 
     configuration_area = {
 
-      name = "configuration-area"
+      name = "config-area-${data.aws_caller_identity.current.arn}-${var.deployment_target}"
 
       posix_user = {
         gid            = 1000
