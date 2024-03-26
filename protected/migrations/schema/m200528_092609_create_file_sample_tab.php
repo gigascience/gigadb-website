@@ -32,6 +32,8 @@ class m200528_092609_create_file_sample_tab extends CDbMigration
         $this->execute("ALTER TABLE ONLY file_sample
             ADD CONSTRAINT file_sample_sample_id_fkey FOREIGN KEY (sample_id) 
             REFERENCES sample(id);");
+
+        $this->execute("CREATE INDEX fs_file_id_idx ON file_sample USING btree (file_id);");
     }
 
     public function safeDown()
