@@ -33,7 +33,7 @@ updateMD5ChecksumStartMessage="\n* About to update files' MD5 Checksum as file a
 updateMD5ChecksumEndMessage="\nDone with updating files' MD5 Checksum as file attribute for $DOI. Process status is saved in file: $outputDir/updating-md5checksum-$DOI.txt"
 
 createReadMeFileStartMessage="\n* About to create the README file for $DOI"
-createReadMeFileEndMessage="\nCreated README file for $DOI."
+createReadMeFileEndMessage="\nDone with creating the README file for $DOI. The README file is saved in file: $outputDir/readme-$DOI.txt"
 
 if [[ $(uname -n) =~ compute ]];then
   . /home/centos/.bash_profile
@@ -42,6 +42,7 @@ if [[ $(uname -n) =~ compute ]];then
   docker run --rm "registry.gitlab.com/$GITLAB_PROJECT/production-files-metadata-console:$GIGADB_ENV" ./yii update/file-sizes --doi="$DOI" | tee "$outputDir/updating-file-size-$DOI.txt"
   echo -e "$updateFileSizeEndMessage"
 
+#  Skip this because it requires dataset files to be in public directory
 #  echo -e "$checkValidUrlsStartMessage"
 #  docker run --rm "registry.gitlab.com/$GITLAB_PROJECT/production-files-metadata-console:$GIGADB_ENV" ./yii check/valid-urls --doi="$DOI" | tee "$outputDir/invalid-urls-$DOI.txt"
 #  echo -e "$checkValidUrlsEndMessage"
@@ -71,17 +72,16 @@ if [[ $(uname -n) =~ compute ]];then
 
 else  # Running on dev environment
 
-  # Readme tool needs to execute first so that it creates the
-  # readme-generator/runtime/curators directory that /home/curators is mapped to
+  # Execute readme tool first to create readme-generator/runtime/curators
+  # directory which /home/curators is mapped to
   echo -e "$createReadMeFileStartMessage"
-  # Change directory to readme-generator tool folder
   cd ../readme-generator
   # Create readme file and upload to Wasabi dev directory
   ./createReadme.sh --doi "$DOI" --outdir "$outputDir" --wasabi --apply
   echo -e "$createReadMeFileEndMessage"
 
   echo -e "$updateMD5ChecksumStartMessage"
-  # Change directory to gigadb-website folder
+  # Change to gigadb-website directory
   cd ../../../../
   docker-compose run --rm  test ./protected/yiic files updateMD5FileAttributes --doi="$DOI" | tee "gigadb/app/tools/readme-generator/runtime/curators/updating-md5checksum-$DOI.txt"
   echo -e "$updateMD5ChecksumEndMessage"
@@ -91,6 +91,7 @@ else  # Running on dev environment
   docker-compose run --rm files-metadata-console ./yii update/file-sizes --doi="$DOI" | tee "../readme-generator/runtime/curators/updating-file-size-$DOI.txt"
   echo -e "$updateFileSizeEndMessage"
 
+#  Skip this because it requires dataset files to be in public directory
 #  echo -e "$checkValidUrlsStartMessage"
 #  docker-compose run --rm files-metadata-console ./yii check/valid-urls --doi="$DOI" | tee "$outputDir/invalid-urls-$DOI.txt"
 #  echo -e "$checkValidUrlsEndMessage"
