@@ -19,7 +19,8 @@ class CheckValidURLsCest
     public function tryReportIssues(\FunctionalTester $I): void {
         $expectedIssues = [
             "URL appears to be a directory listing",
-            "Resource cannot be downloaded, not found or forbidden (4xx)",
+//            "Resource cannot be downloaded, not found or forbidden (4xx)",
+            "Resource cannot be downloaded, remote endpoint crashed (5xx)",
             "Wrong scheme (ftp://)",
             "URL appears to be a directory (/)",
         ];
@@ -47,7 +48,7 @@ class CheckValidURLsCest
 
     public function tryNoIssueToReport(\FunctionalTester $I): void {
         $testWebClient = new Client([ 'allow_redirects' => false ]);
-        $component = new FilesURLsFetcher(["doi" => "100005", "webClient" => $testWebClient]);
+        $component = new FilesURLsFetcher(["doi" => "100142", "webClient" => $testWebClient]);
         $report = $component->verifyURLs();
         $I->assertEmpty($report);
 

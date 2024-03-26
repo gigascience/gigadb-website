@@ -208,7 +208,7 @@ $ docker run --rm  --env-file ./db-env registry.gitlab.com/$GITLAB_PROJECT/produ
 
 Execute all unit tests:
 ```
-$ docker-compose run --rm files-metadata-console ./vendor/codeception/codeception/codecept run --debug tests/unit/DatasetFilesURLUpdaterTest.php
+$ docker-compose run --rm files-metadata-console ./vendor/codeception/codeception/codecept run --debug tests/unit
 ```
 
 Execute single unit test:
@@ -216,11 +216,9 @@ Execute single unit test:
 $ docker-compose run --rm files-metadata-console ./vendor/codeception/codeception/codecept run --debug tests/unit/DatasetFilesURLUpdaterTest.php:^testGetPendingDatasets$
 ```
 
-Execute functional tests:
+Execute all functional tests:
 ```
-$ docker-compose run --rm files-metadata-console ./vendor/codeception/codeception/codecept run --debug tests/functional/CheckValidURLsCest.php
-
-$ docker-compose run --rm files-metadata-console ./vendor/codeception/codeception/codecept run --debug tests/functional/ReplaceFileUrlSubstringWithPrefixCest.php
+$ docker-compose run --rm files-metadata-console ./vendor/codeception/codeception/codecept run --debug tests/functional
 ```
 
 Execute single functional test:
