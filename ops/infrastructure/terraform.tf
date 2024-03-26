@@ -290,7 +290,7 @@ output "rds_instance_address" {
 module "gigadb_efs" {
   source = "../../modules/efs-filesystem"
 
-  vpc_id = module.vpc.vpc_id
+  vpc = module.vpc
   deployment_target = var.deployment_target
   owner = data.external.callerUserName.result.userName
   
