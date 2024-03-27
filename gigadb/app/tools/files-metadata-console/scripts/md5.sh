@@ -3,8 +3,6 @@
 # Exit script on error
 set -e
 
-# How to use: Place this script in the dataset root directory
-# Run ./md5.sh *
 pwd=$(pwd)
 filename=$(basename $pwd)
 
