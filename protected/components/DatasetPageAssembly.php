@@ -14,7 +14,7 @@
  * @property DatasetSamplesInterface $_samplesProvider
  * @property Dataset $_dataset
  * @property SearchForm $_searchForm
- * @property FileUplooadService $_fileUploadService
+ * @property FileUploadService $_fileUploadService
  *
  * @uses yii::app()
  *
@@ -321,8 +321,10 @@ class DatasetPageAssembly extends yii\base\Component
                 );
         }
 
+        $pager = new FilesPagination();
+        $pager->setPageSize($pageSize);
         $this->_files = new FormattedDatasetFiles(
-            $pageSize,
+            $pager,
             $dataSource
         );
         return $this;
@@ -363,8 +365,10 @@ class DatasetPageAssembly extends yii\base\Component
                 );
         }
 
+        $pager = new FilesPagination();
+        $pager->setPageSize($pageSize);
         $this->_samples = new FormattedDatasetSamples(
-            $pageSize,
+            $pager,
             $dataSource
         );
         return $this;

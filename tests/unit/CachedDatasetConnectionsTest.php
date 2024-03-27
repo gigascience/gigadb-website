@@ -76,7 +76,7 @@ class CachedDatasetConnectionsTest extends CTestCase
         //then we set our expectation for a Cache Hit
         $cache->expects($this->exactly(4))
                  ->method('get')
-                 ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetConnections_getRelations"))
+                 ->with($this->equalTo("dataset_${dataset_id}_ALL_0_CachedDatasetConnections_getRelations"))
                  ->willReturn(
                      array(
                         array(
@@ -166,13 +166,13 @@ class CachedDatasetConnectionsTest extends CTestCase
         //then we set our expectations for a Cache Miss
         $cache->expects($this->exactly(4))
                  ->method('get')
-                 ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetConnections_getRelations"))
+                 ->with($this->equalTo("dataset_${dataset_id}_ALL_0_CachedDatasetConnections_getRelations"))
                  ->willReturn(false);
 
         $cache->expects($this->exactly(4))
                 ->method('set')
                 ->with(
-                    $this->equalTo("dataset_${dataset_id}_CachedDatasetConnections_getRelations"),
+                    $this->equalTo("dataset_${dataset_id}_ALL_0_CachedDatasetConnections_getRelations"),
                     array(
                         array(
                             'dataset_id' => 6, // 100044
@@ -238,7 +238,7 @@ class CachedDatasetConnectionsTest extends CTestCase
         //then we set our expectation for a Cache Hit
         $cache->expects($this->exactly(1))
                  ->method('get')
-                 ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetConnections_getPublications"))
+                 ->with($this->equalTo("dataset_${dataset_id}_ALL_0_CachedDatasetConnections_getPublications"))
                  ->willReturn(
                      array(
                         array(
@@ -330,7 +330,7 @@ class CachedDatasetConnectionsTest extends CTestCase
         //then we set our expectations for a Cache Miss
         $cache->expects($this->once())
                  ->method('get')
-                 ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetConnections_getPublications"))
+                 ->with($this->equalTo("dataset_${dataset_id}_ALL_0_CachedDatasetConnections_getPublications"))
                  ->willReturn(
                      false
                  );
@@ -338,7 +338,7 @@ class CachedDatasetConnectionsTest extends CTestCase
         $cache->expects($this->once())
                 ->method('set')
                 ->with(
-                    $this->equalTo("dataset_${dataset_id}_CachedDatasetConnections_getPublications"),
+                    $this->equalTo("dataset_${dataset_id}_ALL_0_CachedDatasetConnections_getPublications"),
                     array(
                         array(
                             'id' => 1,
@@ -405,7 +405,7 @@ class CachedDatasetConnectionsTest extends CTestCase
         //then we set our expectation for a Cache Hit
         $cache->expects($this->once())
                  ->method('get')
-                 ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetConnections_getProjects"))
+                 ->with($this->equalTo("dataset_${dataset_id}_ALL_0_CachedDatasetConnections_getProjects"))
                  ->willReturn(
                      array(
                         array(
@@ -486,7 +486,7 @@ class CachedDatasetConnectionsTest extends CTestCase
         //then we set our expectations for a Cache Miss
         $cache->expects($this->once())
                  ->method('get')
-                 ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetConnections_getProjects"))
+                 ->with($this->equalTo("dataset_${dataset_id}_ALL_0_CachedDatasetConnections_getProjects"))
                  ->willReturn(
                      false
                  );
@@ -494,7 +494,7 @@ class CachedDatasetConnectionsTest extends CTestCase
         $cache->expects($this->once())
                  ->method('set')
                                  ->with(
-                                     $this->equalTo("dataset_${dataset_id}_CachedDatasetConnections_getProjects"),
+                                     $this->equalTo("dataset_${dataset_id}_ALL_0_CachedDatasetConnections_getProjects"),
                                      array(
                                      array(
                                      'id' => 1,

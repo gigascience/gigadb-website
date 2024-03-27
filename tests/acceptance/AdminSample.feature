@@ -119,6 +119,6 @@ Feature: admin page for samples
     And I fill in the field of "name" "Sample[attributesList]" with "sex=\"male\",alternative_names=\"Alternative name here\""
     And I press the button "Create"
     And I wait "1" seconds
-    Then I should see "View Sample #433"
+    Then I should see "View Sample #451"
     And I should see "male"
     And I should see "Alternative name here"

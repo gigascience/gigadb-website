@@ -59,7 +59,7 @@ class CachedDatasetMainSectionTest extends CTestCase
         //then we set our expectation for a Cache Hit
         $cache->expects($this->once())
                  ->method('get')
-                 ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetMainSection_getHeadline"))
+                 ->with($this->equalTo("dataset_${dataset_id}_ALL_0_CachedDatasetMainSection_getHeadline"))
                  ->willReturn(
                      array(
                         "title" => 'Supporting data for "Analyzing climate variations on multiple timescales can guide Zika virus response measures"',
@@ -119,7 +119,7 @@ class CachedDatasetMainSectionTest extends CTestCase
         //then we set our expectation for a Cache Miss
         $cache->expects($this->once())
                  ->method('get')
-                 ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetMainSection_getHeadline"))
+                 ->with($this->equalTo("dataset_${dataset_id}_ALL_0_CachedDatasetMainSection_getHeadline"))
                  ->willReturn(
                      false
                  );
@@ -128,7 +128,7 @@ class CachedDatasetMainSectionTest extends CTestCase
         $cache->expects($this->once())
                  ->method('set')
                  ->with(
-                     $this->equalTo("dataset_${dataset_id}_CachedDatasetMainSection_getHeadline"),
+                     $this->equalTo("dataset_${dataset_id}_ALL_0_CachedDatasetMainSection_getHeadline"),
                      $expected,
                      Cacheable::defaultTTL * 30
                  )
@@ -177,7 +177,7 @@ class CachedDatasetMainSectionTest extends CTestCase
         //then we set our expectation for a Cache Hit
         $cache->expects($this->once())
                  ->method('get')
-                 ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetMainSection_getReleaseDetails"))
+                 ->with($this->equalTo("dataset_${dataset_id}_ALL_0_CachedDatasetMainSection_getReleaseDetails"))
                  ->willReturn(
                      array(
                         "authors" => array(
@@ -301,7 +301,7 @@ class CachedDatasetMainSectionTest extends CTestCase
         //then we set our expectations for a Cache Miss
         $cache->expects($this->once())
                  ->method('get')
-                 ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetMainSection_getReleaseDetails"))
+                 ->with($this->equalTo("dataset_${dataset_id}_ALL_0_CachedDatasetMainSection_getReleaseDetails"))
                  ->willReturn(
                      false
                  );
@@ -309,7 +309,7 @@ class CachedDatasetMainSectionTest extends CTestCase
         $cache->expects($this->once())
                  ->method('set')
                  ->with(
-                     "dataset_${dataset_id}_CachedDatasetMainSection_getReleaseDetails",
+                     "dataset_${dataset_id}_ALL_0_CachedDatasetMainSection_getReleaseDetails",
                      $expected,
                      Cacheable::defaultTTL * 30
                  )
@@ -357,7 +357,7 @@ class CachedDatasetMainSectionTest extends CTestCase
         //then we set our expectation for a Cache Hit
         $cache->expects($this->once())
                  ->method('get')
-                 ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetMainSection_getDescription"))
+                 ->with($this->equalTo("dataset_${dataset_id}_ALL_0_CachedDatasetMainSection_getDescription"))
                  ->willReturn(
                      array(
                         "description" => 'The emergence of Zika virus (ZIKV) as a public health emergency in Latin America and the Caribbean (LAC) occurred during a period of severe drought and unusually high temperatures. Speculation in the literature exists that these climate conditions were associated with the 2015/2016 El Niño event and/or climate change but to date no quantitative '
@@ -403,13 +403,13 @@ class CachedDatasetMainSectionTest extends CTestCase
         //then we set our expectation for a Cache Hit
         $cache->expects($this->once())
                  ->method('get')
-                 ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetMainSection_getDescription"))
+                 ->with($this->equalTo("dataset_${dataset_id}_ALL_0_CachedDatasetMainSection_getDescription"))
                  ->willReturn(false);
 
         $cache->expects($this->once())
                  ->method('set')
                  ->with(
-                     $this->equalTo("dataset_${dataset_id}_CachedDatasetMainSection_getDescription"),
+                     $this->equalTo("dataset_${dataset_id}_ALL_0_CachedDatasetMainSection_getDescription"),
                      $expected,
                      Cacheable::defaultTTL * 30
                  )
@@ -491,7 +491,7 @@ class CachedDatasetMainSectionTest extends CTestCase
         //then we set our expectation for a Cache Hit
         $cache->expects($this->once())
                  ->method('get')
-                 ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetMainSection_getKeywords"))
+                 ->with($this->equalTo("dataset_${dataset_id}_ALL_0_CachedDatasetMainSection_getKeywords"))
                  ->willReturn(
                      array("am", "gram")
                  );
@@ -531,7 +531,7 @@ class CachedDatasetMainSectionTest extends CTestCase
         //then we set our expectation for a Cache Hit
         $cache->expects($this->once())
                  ->method('get')
-                 ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetMainSection_getKeywords"))
+                 ->with($this->equalTo("dataset_${dataset_id}_ALL_0_CachedDatasetMainSection_getKeywords"))
                  ->willReturn(
                      false
                  );
@@ -539,7 +539,7 @@ class CachedDatasetMainSectionTest extends CTestCase
         $cache->expects($this->once())
                  ->method('set')
                  ->with(
-                     $this->equalTo("dataset_${dataset_id}_CachedDatasetMainSection_getKeywords"),
+                     $this->equalTo("dataset_${dataset_id}_ALL_0_CachedDatasetMainSection_getKeywords"),
                      $expected,
                      Cacheable::defaultTTL * 30
                  )
@@ -587,7 +587,7 @@ class CachedDatasetMainSectionTest extends CTestCase
         //then we set our expectation for a Cache Hit
         $cache->expects($this->once())
                  ->method('get')
-                 ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetMainSection_getHistory"))
+                 ->with($this->equalTo("dataset_${dataset_id}_ALL_0_CachedDatasetMainSection_getHistory"))
                  ->willReturn(
                      array(
                         array(
@@ -700,7 +700,7 @@ class CachedDatasetMainSectionTest extends CTestCase
         //then we set our expectation for a Cache Hit
         $cache->expects($this->once())
                  ->method('get')
-                 ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetMainSection_getHistory"))
+                 ->with($this->equalTo("dataset_${dataset_id}_ALL_0_CachedDatasetMainSection_getHistory"))
                  ->willReturn(
                      false
                  );
@@ -708,7 +708,7 @@ class CachedDatasetMainSectionTest extends CTestCase
          $cache->expects($this->once())
                  ->method('set')
                  ->with(
-                     $this->equalTo("dataset_${dataset_id}_CachedDatasetMainSection_getHistory"),
+                     $this->equalTo("dataset_${dataset_id}_ALL_0_CachedDatasetMainSection_getHistory"),
                      $expected,
                      Cacheable::defaultTTL * 30
                  )
@@ -760,7 +760,7 @@ class CachedDatasetMainSectionTest extends CTestCase
         //then we set our expectation for a Cache Hit
         $cache->expects($this->once())
                  ->method('get')
-                 ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetMainSection_getFunding"))
+                 ->with($this->equalTo("dataset_${dataset_id}_ALL_0_CachedDatasetMainSection_getFunding"))
                  ->willReturn($expected);
 
         // create a stub for the StoredDatasetConnection, cause we have no expectation on it as cache hit
@@ -814,13 +814,13 @@ class CachedDatasetMainSectionTest extends CTestCase
         //then we set our expectation for a Cache miss
         $cache->expects($this->once())
                  ->method('get')
-                 ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetMainSection_getFunding"))
+                 ->with($this->equalTo("dataset_${dataset_id}_ALL_0_CachedDatasetMainSection_getFunding"))
                  ->willReturn(false);
 
         $cache->expects($this->once())
                  ->method('set')
                  ->with(
-                     $this->equalTo("dataset_${dataset_id}_CachedDatasetMainSection_getFunding"),
+                     $this->equalTo("dataset_${dataset_id}_ALL_0_CachedDatasetMainSection_getFunding"),
                      $expected,
                      Cacheable::defaultTTL * 30
                  )

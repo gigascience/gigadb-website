@@ -29,7 +29,7 @@ Feature: main search function
     When I fill in the field of "id" "keyword" with "genome"
     And I press the button "Search"
     And I wait "1" seconds
-    Then I should see "Showing 1 - 2 of 5 datasets"
+    Then I should see "Showing 1 - 2 of 6 datasets"
     And I should see a link "Three Bauhinia species transcriptome sequence data" to "/dataset/100245"
     And I should see a link "Data and software to accompany the paper: Applying compressed sensing to genome-wide association studies." to "/dataset/100094"
     And I should not see "Genome data from foxtail millet (Setaria italica)."

@@ -47,7 +47,7 @@ class CachedDatasetAccessions extends DatasetComponents implements DatasetAccess
         $primaryLinks = $this->getCachedLocalData($this->getDatasetId());
         if (null == $primaryLinks) {
             $primaryLinks = $this->_datasetAccessions->getPrimaryLinks();
-            $this->saveLocaldataInCache($this->getDatasetId(), $primaryLinks);
+            $this->saveLocalDataInCache($this->getDatasetId(), $primaryLinks);
         }
         return $primaryLinks;
     }
@@ -57,7 +57,7 @@ class CachedDatasetAccessions extends DatasetComponents implements DatasetAccess
         $secondaryLinks = $this->getCachedLocalData($this->getDatasetId());
         if (null == $secondaryLinks) {
             $secondaryLinks = $this->_datasetAccessions->getSecondaryLinks();
-            $this->saveLocaldataInCache($this->getDatasetId(), $secondaryLinks);
+            $this->saveLocalDataInCache($this->getDatasetId(), $secondaryLinks);
         }
         return $secondaryLinks;
     }
@@ -67,7 +67,7 @@ class CachedDatasetAccessions extends DatasetComponents implements DatasetAccess
         $prefixes = $this->getCachedLocalData($this->getDatasetId());
         if (null == $prefixes) {
             $prefixes = $this->_datasetAccessions->getPrefixes();
-            $this->saveLocaldataInCache($this->getDatasetId(), $prefixes);
+            $this->saveLocalDataInCache($this->getDatasetId(), $prefixes);
         }
         return $prefixes;
     }

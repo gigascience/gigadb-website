@@ -9,9 +9,21 @@
 interface Cacheable
 {
 	/** @var int defaultTTL constant for the default Time-to-live (TTL) for cached objects */
-	const defaultTTL = 60*60*24; //1day
+    /**
+     * Store content from local context (collection, class, method) into the cache
+     *
+     * cacheDependency to invalidate out-of-date cache entry must be applied in the implementation
+     *
+     * @param string identifier for the collection of objects
+     * @param mixed $content content to cache
+     * @param string range of query defined by its limit and offset
+     * @return boolean true if operation successful, false otherwise
+     */
+    public function saveLocalDataInCache(string $dataset_identifier,  $content, string $range): bool;
 
-	/**
+    const defaultTTL = 60*60*24; //1day
+
+    /**
 	 * For generating a caching key based on local context (collection type, calling class and method)
 	 *
 	 * @param string $collection_id the id of the colleciton for which we are keeping data cached
@@ -19,24 +31,14 @@ interface Cacheable
 	 */
 	public function getCacheKeyForLocalData(string $collection_id): string;
 
-	/**
+    /**
 	 * retrieve local cached data transparently.
 	 *
 	 * @param string identifier for the collection of objects
+	 * @param string range in case data can be paginated, range of data slice as defined by its limit and offset
 	 * @uses Cacheable::getCacheKeyForLocalData()
 	 * @return mixed the content retrieved from cache
 	 */
-	public function getCachedLocalData(string $dataset_identifier);
-
-	/**
-	 * Store content from local context (collection, class, method) into the cache
-	 *
-	 * cacheDependency to invalidate out-of-date cache entry must be applied in the implementation
-	 *
-	 * @param string identifier for the collection of objects
-	 * @param mixed $content content to cache
-	 * @return boolean true if operation successful, false otherwise
-	 */
-	public function saveLocaldataInCache(string $dataset_identifier, $content): bool;
+	public function getCachedLocalData(string $dataset_identifier, string $range);
 }
 ?>

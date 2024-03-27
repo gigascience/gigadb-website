@@ -1,14 +1,83 @@
 id,name,description,edam_ontology_id
-1,TEXT,"(.readme, .text, .txt) - a text file",data_3671
-2,FASTA,"(.fa, .fasta, .chr, .seq, .cds, .pep, .scaffold, .scafseq, .fna, .ffn, .faa, .frn) A text-based format which begins with a single-line description, followed by lines of sequence data",format_1929
+1,TEXT,"(.doc, .readme, .text, .txt) - a text file",data_3671
+2,FASTA,"A text-based format which begins with a single-line description, followed by lines of sequence data",format_1929
 3,PDF, (.pdf) - portable document format,format_3508
 4,EXCEL,"(.xls, .xlsx) - Microsoft office spreadsheet files",format_3508
 5,GFF,"(.gff) - The General Feature Format (GFF) is used for describing genes and other features of DNA, RNA and protein sequences",format_2305
 6,UNKNOWN,any other file format not defined here,
 7,FASTQ,"(.fq, .fastq) - the FASTQ format stores sequences (usually nucleotide sequence) and Phred qualities in a single file.",format_1930
+8,CONTIG,(.contig) - the CONTIG format is a direct output from the SOAPdenovo alignment program,
+9,VCF,"(.vcf) - the Variant Call Format (VCF) is a text file format for representing eg SNPs, InDels, CNVs, SVs, microsatellites, genotypes",format_3016
 10,PNG,(.png) - portable network graphics,format_3603
-16,AGP,(.agp) - the Accessioned Golden Path (AGP) file describes the assembly of a larger sequence object from smaller objects. See AGP Specification v2.0 (https://www.ncbi.nlm.nih.gov/assembly/agp/AGP_Specification/),
+11,IPR," (.ipr) - the Web Gene Ontology (WEGO) Annotation format consists of the protein ID, followed by column(s) that are the IPR (InterPro) ID(s):
+CR_ENSP00000334840
+CR_ENSMMUP00000018123 	IPR000504 	IPR003954
+CR_ENSP00000333725 	IPR001781 	IPR015880 	IPR007087 	IPR001909
+
+See WEGO: a web tool for plotting GO annotations",format_1341
+12,KEGG,"(.kegg) - the Web Gene Ontology (WEGO) Annotation format consists of the protein ID, followed by column(s) that are the KEGG (Kyoto Encyclopedia of Genes and Genomes) ID(s):
+CR_ENSMMUP00000031408 	ko03010
+CR_ENSP00000364815 	ko00970 	ko00290
+CR_ENSP00000414605 	ko05146 	ko04510 	ko04512
+
+See WEGO: a web tool for plotting GO annotations",
+13,WEGO," (.wego) - the Web Gene Ontology (WEGO) Annotation format consists of the protein ID, followed by column(s) that are the GO ID(s):
+Bmb015379_2_IPR001092
+Bmb003749_1_IPR006329 	GO:0009168 	GO:0003876
+Bmb006173_1_IPR000909 	GO:0007165 	GO:0004629 	GO:0007242
+
+See WEGO: a web tool for plotting GO annotations",
+14,WIG, (.wig) - the output file from TopHat is a UCSC wigglegram of alignment coverage,format_3005
+15,RPKM," (.rpkm) - Gene expression levels are calculated by Reads Per Kilobase per Million (RPKM) mapped reads eg 1kb transcript with 1000 alignments in a sample of 10 million reads (out of which 8 million reads can be mapped) will have RPKM = 1000/(1 * 8) = 125:
+ENSP00000379387 	15.5651433366423 	6002951 	289 	3093
+ENSP00000349977 	24.7483107230444 	6002951 	398 	2679
+ENSP00000368887 	24.6477413647837 	6002951 	174 	1176",
+16,AGP,"(.agp) - the Accessioned Golden Path (AGP) file describes the assembly of a larger sequence object from smaller objects:
+chr1 	1 	1972671 	0 	W 	scaffold43 	1 	1972671 	m
+chr1 	1972672 	3061819 	1 	W 	scaffold8 	1 	1089148 	p
+chr1 	3061820 	3181505 	2 	W 	scaffold548 	1 	119686 	m
+chr1 	3181506 	4176151 	3 	W 	scaffold313 	1 	994646 	m
+
+The large object can be a contig, a scaffold (supercontig), or a chromosome.
+See AGP Specification v2.0",
 17,TAR, (.tar) - an archive containing other files,
+18,BAM," (.bam) - the Binary Alignment/Map (BAM) format is the compressed binary version of the Sequence Alignment/Map (SAM) format, a compact and index-able representation of nucleotide sequence alignments.",format_2572
+19,BIGWIG,"(.bw) - the BIGWIG format is for storing dense, continuous data (such as GC percent, probability scores, and transcriptome data) that will be displayed in the UCSC Genome Browser as a graph. BIGWIG files are created initially from wiggle (WIG) type files, using the program wigToBigWig.",format_3006
+20,MAF,(.maf) - the Multiple Alignment Format (MAF) stores a series of multiple alignments at the DNA level between entire genomes.,format_3008
+21,CHAIN,(.chain) - the CHAIN format describes a pairwise alignment that allow gaps in both sequences simultaneously and is used by the UCSC Genome Browser.,
+22,NET,(.net) - the NET file format is used to describe the axtNet data that underlie the net alignment annotations in the UCSC Genome Browser,
+23,QUAL,(.qual) - the QUAL file format represents base quality score file for NextGen data (similar in format to fasta),format_3607
+24,QMAP,(.qmap) - QMAP files are generated for methylation data from an internal BGI pipeline,
+25,RAW,(.raw) - Mass Spectrometry data format,format_1957
+26,SFF,sequence format file for Roche 454 nucleotide sequences.,format_3284
+27,Galaxy workflow,"",
+28,HDF5,(.h5),format_3590
+29,wmv,Windows movie file format,
+30,WORD,a MS word document,
+31,mzXML,"",format_3654
+32,zip,"",
+33,LSM,Laser Scanning Microscope format,
+34,TIF,Tagged Image File Format,format_3591
+35,GZIP,GNU zip compressed file,
+36,MATLAB,MatLab Script,format_3626
 37,CSV,Comma Separated Variables table,
+38,mzML,"",format_3244
+40,AVI,Audio Video Interleaved (AVI) format is a file container that allows synchronous audio-with-video playback.,
+41,SAM,"",format_2573
+42,HTML,"",
+43,TSV,Tabular data represented as tab-separated values in a text file.,format_3475
 44,JPG,Joint Picture Group file format for lossy graphics file. Sequence of segments with markers. Begins with byte of 0xFF and follows by marker type.,format_3579
+45,BED,"Browser Extensible Data (BED) format of sequence annotation track, typically to be displayed in a genome browser. BED detail format includes 2 additional columns (http://genome.ucsc.edu/FAQ/FAQformat#format1.7) and BED 15 includes 3 additional columns for experiment scores (http://genomewiki.ucsc.edu/index.php/Microarray_track).",format_3003
+46,TrackDB,"declaration file for UCSC browsers track dataset display charateristics, see https://genome.ucsc.edu/goldenPath/help/trackDb/trackDbHub.html for details",
+47,XML,"Data in XML format can be serialised into text, or binary format. eXtensible Markup Language (XML) format.",format_2332
+48,Newick,Phylogenetic tree Newick (text) format.,format_1910
+49,FASTA-aln,Fasta format for (aligned) sequences.,format_1984
+50,Cytoscape,Format of the cytoscape input file of gene expression ratios or values are specified over one or more experiments.,format_3477
+51,BLAST results,"Format of results of a sequence database search using some variant of BLAST. This includes score data, alignment data and summary table.",format_1333
+52,BAI,BAM indexing format,format_3327
+53,CIGAR,Compact Idiosyncratic Gapped Alignment Report format is a compressed (run-length encoded) pairwise alignment format. It is useful for representing long (e.g. genomic) pairwise alignments. See http://wiki.bits.vib.be/index.php/CIGAR for more details.,
+54,DOC,microsoft word format,format_3507
 55,DOCX,microsoft word format,format_3506
+56,archive,"",
+57,BMP,"bitmap image file, is a raster graphics image file format used to store bitmap digital images independently of the display device",
+58,GIF,Graphics Interchange Format is a bitmap image format that uses lossless compression,

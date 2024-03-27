@@ -4,6 +4,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Fix #1639: Paginate files and samples SQL queries on dataset pages to avoid running out of memory
+
 ## v4.2.2 - 2024-03-25 - 3cf500fe8
 
 - Feat #1759: Replace Google Analytics script by Matomo script in all layouts
