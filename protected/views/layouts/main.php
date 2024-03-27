@@ -22,9 +22,9 @@
         <link rel="stylesheet" type="text/css" href="/css/site.css"/>
     <? } ?>
 
-    <?= $this->renderPartial('//shared/_google_analytics')?>
 
     <title><?php echo CHtml::encode($this->pageTitle); ?></title>
+    <?= $this->renderPartial('//shared/_matomo') ?>
 </head>
 
 <body>
