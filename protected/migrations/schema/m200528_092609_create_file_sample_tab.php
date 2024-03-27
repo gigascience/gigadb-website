@@ -34,6 +34,8 @@ class m200528_092609_create_file_sample_tab extends CDbMigration
             REFERENCES sample(id);");
 
         $this->execute("CREATE INDEX fs_file_id_idx ON file_sample USING btree (file_id);");
+
+        $this->execute("CREATE INDEX fs_sample_id_idx ON file_sample USING btree (sample_id);");
     }
 
     public function safeDown()
