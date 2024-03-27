@@ -286,7 +286,9 @@ output "rds_instance_address" {
 }
 
 
-# Setup AWS EFS 
+################################################################################
+# Provisioning of File System
+################################################################################ 
 module "gigadb_efs" {
   source = "../../modules/efs-filesystem"
 
@@ -295,3 +297,24 @@ module "gigadb_efs" {
   owner = data.external.callerUserName.result.userName
   
 }
+
+output "efs_filesystem_id" {
+  value = module.gigadb_efs.id
+}
+
+output "efs_filesystem_arn" {
+  value = module.gigadb_efs.arn
+}
+
+output "efs_filesystem_dns_name" {
+  value = module.gigadb_efs.dns_name
+}
+
+output "efs_filesystem_size_in_bytes" {
+  value = module.gigadb_efs.size_in_bytes
+}
+
+output "efs_filesystem_access_points" {
+  value = module.gigadb_efs.access_points
+}
+
