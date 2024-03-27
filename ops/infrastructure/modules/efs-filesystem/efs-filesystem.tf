@@ -18,7 +18,7 @@ module "efs" {
   # File system
   name           = "gigadb-efs ${var.owner} ${var.deployment_target}"
   creation_token = "gigadb-efs-${var.owner}-${var.deployment_target}"
-
+  encrypted      = false
 
 
   lifecycle_policy = {
