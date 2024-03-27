@@ -11,7 +11,8 @@ class CurationLogTest extends CTestCase
     public function testMakeNewInstance()
     {
         $datasetId = 1;
-        $creator = "System";
+        # assume logged in as admin
+        $creator = "Joe Bloggs";
         $curationLog = CurationLog::makeNewInstanceForDatasetBy($datasetId, $creator);
         $this->assertNotNull($curationLog);
         $this->assertTrue(is_a($curationLog, CurationLog::class));

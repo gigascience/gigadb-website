@@ -92,7 +92,7 @@ class CurationLog extends CActiveRecord
     public static function makeNewInstanceForDatasetBy(int $id, string $creator): CurationLog
     {
         $curationlog = new CurationLog();
-        $curationlog->creation_date = date("Y-m-d");
+        $curationlog->creation_date = date("Y-m-d H:i:s");
         $curationlog->last_modified_date = null;
         $curationlog->dataset_id = $id;
         $curationlog->created_by = $creator;
@@ -109,7 +109,7 @@ class CurationLog extends CActiveRecord
      */
     public static function createCurationLogEntry(int $id, string $fileName): bool
     {
-        $curationlog = self::makeNewInstanceForCurationLogBy($id, "System");
+        $curationlog = self::makeNewInstanceForCurationLogBy($id, Yii::app()->user->getFirstName() . " " . Yii::app()->user->getLastName());
         $curationlog->action = $fileName.": file attribute deleted";
         return $curationlog->save();
     }
@@ -130,7 +130,7 @@ class CurationLog extends CActiveRecord
 
     public static function createlog($status,$id) {
        
-        $curationlog = self::makeNewInstanceForDatasetBy($id,"System");
+        $curationlog = self::makeNewInstanceForDatasetBy($id,Yii::app()->user->getFirstName() . " " . Yii::app()->user->getLastName());
         $curationlog->action = "Status changed to ".$status;
         return $curationlog->save();
     }
