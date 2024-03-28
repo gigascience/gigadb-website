@@ -14,9 +14,9 @@ class ReadmeGeneratorTest extends \Codeception\Test\Unit
      */
     public function testGetReadme()
     {
-        $doi = "100005";
+        $doi = "100142";
         $readme = Yii::$app->ReadmeGenerator->getReadme($doi);
         codecept_debug("Readme contents: ".$readme);
-        $this->assertTrue(str_contains($readme, "[DOI] 10.5524/100005"), "Readme does not contain starting DOI");
+        $this->assertTrue(str_contains($readme, "[DOI] 10.5524/100142"), "Readme does not contain starting DOI");
     }
 }

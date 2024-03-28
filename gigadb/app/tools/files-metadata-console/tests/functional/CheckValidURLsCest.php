@@ -16,6 +16,9 @@ class CheckValidURLsCest
         "https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006/phylogeny_study_update/",
     ];
 
+    /**
+     * @skip Skipping this test due to unreliable resolution of URLs
+     */
     public function tryReportIssues(\FunctionalTester $I): void {
         $expectedIssues = [
             "URL appears to be a directory listing",
@@ -47,7 +50,7 @@ class CheckValidURLsCest
 
     public function tryNoIssueToReport(\FunctionalTester $I): void {
         $testWebClient = new Client([ 'allow_redirects' => false ]);
-        $component = new FilesURLsFetcher(["doi" => "100005", "webClient" => $testWebClient]);
+        $component = new FilesURLsFetcher(["doi" => "100142", "webClient" => $testWebClient]);
         $report = $component->verifyURLs();
         $I->assertEmpty($report);
 

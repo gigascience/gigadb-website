@@ -18,6 +18,9 @@ class FilesCommand extends CConsoleCommand
     /** @const int  HTTP_STATUS_OK HTTP status code from HTTP response indicating successful GET */
     const HTTP_STATUS_OK = 200 ;
 
+    /** @const int  S3_BUCKET_GIGADB_DATASETS_METADATA_BUCKET_URL Domain URL for S3 bucket containing md5 files */
+    const S3_BUCKET_GIGADB_DATASETS_METADATA_BUCKET_URL = 'https://s3.ap-northeast-1.amazonaws.com/gigadb-datasets-metadata';
+
     /**
      * @return string
      */
@@ -79,7 +82,8 @@ class FilesCommand extends CConsoleCommand
     /**
      * Returns the URL for a dataset's md5 file
      *
-     * Determines the URL of the md5 file as it could be:
+     * First checks if md5 file can be found in S3 bucket. If not, then checks
+     * whether the URL of the md5 file could be:
      * https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006/100006.md5
      * https://ftp.cngb.org/pub/gigadb/pub/10.5524/101001_102000/101001/101001.md5
      * https://ftp.cngb.org/pub/gigadb/pub/10.5524/102001_103000/102236/102236.md5
@@ -91,13 +95,21 @@ class FilesCommand extends CConsoleCommand
     private function findDatasetMd5FileUrl($dataset): string
     {
         $doi = $dataset->identifier;
-        foreach ($dataset::RANGES as $range) {
-            $url = Yii::app()->params['ftp_connection_url']."/pub/gigadb/pub/10.5524/$range/$doi/$doi.md5";
-            // Check URL resolves to a real file
-            echo "Processing $url" . PHP_EOL;
-            $file_exists = DownloadService::fileExists($url);
-            if ($file_exists)
-                return $url;
+        
+        # Test if doi.md5 exists in S3 bucket first
+        $bucketMd5Url = self::S3_BUCKET_GIGADB_DATASETS_METADATA_BUCKET_URL . "/$doi.md5";
+        if(DownloadService::fileExists($bucketMd5Url)) {
+            return $bucketMd5Url;
+        }
+        else {
+            foreach ($dataset::RANGES as $range) {
+                $url = Yii::app()->params['ftp_connection_url'] . "/pub/gigadb/pub/10.5524/$range/$doi/$doi.md5";
+                // Check URL resolves to a real file
+                echo "Processing $url" . PHP_EOL;
+                $file_exists = DownloadService::fileExists($url);
+                if ($file_exists)
+                    return $url;
+            }
         }
         throw new Exception("No $doi.md5 file could be found for dataset DOI $doi");
     }

@@ -4,6 +4,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1664: Enable post upload script to work with non-published datasets
+
 ## v4.2.2 - 2024-03-25 - 3cf500fe8
 
 - Feat #1759: Replace Google Analytics script by Matomo script in all layouts

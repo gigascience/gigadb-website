@@ -31,8 +31,8 @@ class ReplaceFileUrlSubstringWithPrefixCest
         # Check output
         $I->canSeeInShellOutput("\tTransforming ftp_site for dataset 100002...\nDONE");
         $I->canSeeInShellOutput("\tTransforming file locations for dataset 100002...\nDONE (7/7)");
-        $I->canSeeInShellOutput("\tTransforming ftp_site for dataset 100005...\nDONE");
-        $I->canSeeInShellOutput("\tTransforming file locations for dataset 100005...\nWARNING (1/4)");
+        $I->canSeeInShellOutput("\tTransforming ftp_site for dataset 100142...\nDONE");
+        $I->canSeeInShellOutput("\tTransforming file locations for dataset 100142...\nWARNING (1/4)");
         $I->canSeeInShellOutput("\tTransforming ftp_site for dataset 100039...\nDONE");
         $I->canSeeInShellOutput("\tTransforming file locations for dataset 100039...\nDONE (24/24)");
 
@@ -58,8 +58,8 @@ class ReplaceFileUrlSubstringWithPrefixCest
         $I->canSeeInShellOutput("\tTransforming file locations for dataset 100002...\nDONE (7/7)");
         $I->dontSeeInShellOutput("\tTransforming ftp_site for dataset 100003...\nDONE");
         $I->dontSeeInShellOutput("\tTransforming ftp_site for dataset 100004...\nDONE");
-        $I->canSeeInShellOutput("\tTransforming ftp_site for dataset 100005...\nDONE");
-        $I->canSeeInShellOutput("\tTransforming file locations for dataset 100005...\nWARNING (1/4)");
+        $I->canSeeInShellOutput("\tTransforming ftp_site for dataset 100142...\nDONE");
+        $I->canSeeInShellOutput("\tTransforming file locations for dataset 100142...\nWARNING (1/4)");
         $I->canSeeInShellOutput("\tTransforming ftp_site for dataset 100039...\nDONE");
         $I->canSeeInShellOutput("\tTransforming file locations for dataset 100039...\nDONE (24/24)");
 
@@ -84,7 +84,7 @@ class ReplaceFileUrlSubstringWithPrefixCest
         $I->seeInDatabase('file', ['name' => 'millet.chr.version2.3.fa.gz', 'location' => "ftp://climb.genomics.cn/pub/10.5524/100001_101000/100003/millet.chr.version2.3.fa.gz"]);
         $I->seeInDatabase('dataset', ['identifier' => '100004', 'ftp_site' => 'ftp://climb.genomics.cn/pub/10.5524/100001_101000/100004']);
         $I->seeInDatabase('file', ['id' => '88266', 'location' => "ftp://climb.genomics.cn/pub/10.5524/100001_101000/100003/readme.txt"]);
-        $I->seeInDatabase('dataset', ['identifier' => '100005', 'ftp_site' => 'https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100005']);
+        $I->seeInDatabase('dataset', ['identifier' => '100142', 'ftp_site' => 'https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100142']);
 
         # Run tool to update file URLs for dataset 100002
         $I->runShellCommand("./yii_test update/urls --separator=/pub/ --next=3 --apply");
@@ -109,13 +109,13 @@ class ReplaceFileUrlSubstringWithPrefixCest
         $I->runShellCommand("./yii_test update/urls --separator=/pub/ --next=3 --exclude='100003,100004' --apply");
 
         # Check output
-        $I->canSeeInShellOutput("\tTransforming ftp_site for dataset 100005...\nDONE");
-        $I->canSeeInShellOutput("\tTransforming file locations for dataset 100005...\nWARNING (1/4)");
+        $I->canSeeInShellOutput("\tTransforming ftp_site for dataset 100142...\nDONE");
+        $I->canSeeInShellOutput("\tTransforming file locations for dataset 100142...\nWARNING (1/4)");
         $I->canSeeInShellOutput("\tTransforming ftp_site for dataset 100039...\nDONE");
         $I->canSeeInShellOutput("\tTransforming file locations for dataset 100039...\nDONE (24/24)");
 
-        # Check ftp_site URL has been updated for dataset 100005
-        $I->seeInDatabase('dataset', ['identifier' => '100005', 'ftp_site' => 'https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/' . Yii::$app->params['DEPLOYMENT_ENV'] . '/pub/10.5524/100001_101000/100005']);
+        # Check ftp_site URL has been updated for dataset 100142
+        $I->seeInDatabase('dataset', ['identifier' => '100142', 'ftp_site' => 'https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/' . Yii::$app->params['DEPLOYMENT_ENV'] . '/pub/10.5524/100001_101000/100142']);
     }
 
     /**

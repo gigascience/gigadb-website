@@ -39,3 +39,7 @@ config/test_db.php
 config/params.php
 
 docker-compose.override.yml
+
+tests/_data/102480/102480.md5
+tests/_data/102480/102480.filesizes
+

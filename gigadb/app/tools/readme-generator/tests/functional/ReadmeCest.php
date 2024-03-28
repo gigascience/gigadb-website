@@ -5,14 +5,14 @@ class ReadmeCest
     /**
      * Teardown code that is run after each test
      * 
-     * Currently just removes the readme file for dataset DOI 100005.
+     * Currently just removes the readme file for dataset DOI 100142.
      * 
      * @return void
      */
     public function _after()
     {
-        if (file_exists("/home/curators/readme_100005.txt")) {
-            unlink("/home/curators/readme_100005.txt");
+        if (file_exists("/home/curators/readme_100142.txt")) {
+            unlink("/home/curators/readme_100142.txt");
         }
     }
 
@@ -23,10 +23,10 @@ class ReadmeCest
      */
     public function tryCreate(FunctionalTester $I)
     {
-        $I->runShellCommand("/app/yii_test readme/create --doi 100005 --outdir=/home/curators");
-        $I->seeInShellOutput("[DOI] 10.5524/100005");
+        $I->runShellCommand("/app/yii_test readme/create --doi 100142 --outdir=/home/curators");
+        $I->seeInShellOutput("[DOI] 10.5524/100142");
         $I->runShellCommand("ls /home/curators");
-        $I->seeInShellOutput("readme_100005.txt");
+        $I->seeInShellOutput("readme_100142.txt");
     }
 
     /**
