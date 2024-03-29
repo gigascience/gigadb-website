@@ -1,15 +1,14 @@
-<?php
-$this->breadcrumbs=array(
-	'File Types'=>array('index'),
-	'Create',
-);
+<div class="container">
+	<?php
+	$this->widget('TitleBreadcrumb', [
+		'pageTitle' => 'Create FileType',
+		'breadcrumbItems' => [
+			['label' => 'Admin', 'href' => '/site/admin'],
+			['label' => 'Manage', 'href' => 'admin'],
+			['isActive' => true, 'label' => 'Create'],
+		]
+	]);
+	?>
 
-$this->menu=array(
-	array('label'=>'List FileType', 'url'=>array('index')),
-	array('label'=>'Manage FileType', 'url'=>array('admin')),
-);
-?>
-
-<h1>Create FileType</h1>
-
-<?php echo $this->renderPartial('_form', array('model'=>$model)); ?>
+	<?php echo $this->renderPartial('_form', array('model' => $model)); ?>
+</div>

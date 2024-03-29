@@ -1,0 +1,80 @@
+<section>
+  <p>Used in /user/admin to display user operations</p>
+  <div
+    role="dialog"
+    class="ui-dialog ui-corner-all ui-widget ui-widget-content ui-front ui-draggable ui-resizable"
+    aria-describedby="controls"
+    style="
+      height: auto;
+      width: 300px;
+      z-index: 101;
+    "
+    aria-labelledby="ui-id-2"
+  >
+    <div
+      class="ui-dialog-titlebar ui-corner-all ui-widget-header ui-helper-clearfix ui-draggable-handle"
+    >
+      <span id="ui-id-2" class="ui-dialog-title">Manage User Id: 8</span
+      ><button
+        type="button"
+        class="ui-dialog-titlebar-close"
+        aria-label="Close Dialog"
+      >
+        <i class="fa fa-close fa-lg"></i>
+      </button>
+    </div>
+    <div
+      id="controls"
+      class="ui-dialog-content ui-widget-content"
+      style="width: auto; min-height: 89.8438px; max-height: none; height: auto"
+    >
+      <h2 class="h5">Basic Operations</h2>
+      <div class="btns-row">
+        <button
+          class="btn background-btn-o"
+          title="view"
+          onclick="goto_userview();"
+        >
+          View
+        </button>
+        <button
+          class="btn background-btn-o"
+          title="update"
+          onclick="goto_userupdate();"
+        >
+          Update
+        </button>
+        <button
+          class="btn danger-btn-o delete"
+          title="delete"
+          onclick="goto_userdelete();"
+        >
+          Delete
+        </button>
+      </div>
+
+      <h2 class="h5">Advanced Operations</h2>
+      <button
+        class="btn background-btn-o"
+        title="link"
+        onclick="goto_userlinkauthor();"
+      >
+        Link this user to an author
+      </button>
+
+      <div id="status" class="mt-10"></div>
+    </div>
+    <div class="ui-resizable-handle ui-resizable-n" style="z-index: 90"></div>
+    <div class="ui-resizable-handle ui-resizable-e" style="z-index: 90"></div>
+    <div class="ui-resizable-handle ui-resizable-s" style="z-index: 90"></div>
+    <div class="ui-resizable-handle ui-resizable-w" style="z-index: 90"></div>
+    <div
+      class="ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se"
+      style="z-index: 90"
+    ></div>
+    <div class="ui-resizable-handle ui-resizable-sw" style="z-index: 90"></div>
+    <div class="ui-resizable-handle ui-resizable-ne" style="z-index: 90"></div>
+    <div class="ui-resizable-handle ui-resizable-nw" style="z-index: 90"></div>
+  </div>
+
+</section>

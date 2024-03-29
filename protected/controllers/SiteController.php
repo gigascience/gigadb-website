@@ -249,6 +249,7 @@ class SiteController extends Controller {
 	    		echo $error['message'];
             }
 	    	else {
+                $this->layout='new_main';
 	        	$this->render('error', $error);
             }
 	    }

@@ -14,7 +14,7 @@
                  'minLength'=>'2',
              ),
             'htmlOptions'=>array(
-                'title'=>'Search GigaDB',
+                'aria-label'=>'Search GigaDB',
                 'class'=>'form-control',
              ),
              'value'=>$model->keyword
@@ -44,7 +44,7 @@
     </div>
 </div>
 <script>
-document.addEventListener("DOMContentLoaded", function(event) { //This event is fired after deferred 
+document.addEventListener("DOMContentLoaded", function(event) { //This event is fired after deferred
     $('#save-search-criteria').on('click', function(e) {
         jQuery.ajax({
             'type': 'POST',

@@ -4,7 +4,7 @@ Yii::import("system.web.widgets.pagers.CLinkPager");
 
 class SiteLinkPager extends CLinkPager
 {
-    public $cssFile = '/css/pager.css';
+    public $cssFile = ''; // Added styles to global CSS file
     public function init()
     {
         parent::init();

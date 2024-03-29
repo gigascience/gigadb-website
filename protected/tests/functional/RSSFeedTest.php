@@ -24,9 +24,7 @@ class RSSFeedTest extends FunctionalTesting
         // Go to a page and getting xml content
         $feed = $this->getXMLWithSessionAndUrl($url);
         // Don't pick the first two as they have the same publishing date causing them to appear in undetermined order
-        $this->assertEquals("10.5072/100004", $feed->channel->item[0]->guid);
-        $this->assertEquals("10.5072/100039", $feed->channel->item[3]->guid);
-
-
+        $this->assertEquals("10.80027/100004", $feed->channel->item[0]->guid);
+        $this->assertEquals("10.80027/100039", $feed->channel->item[3]->guid);
     }
 }

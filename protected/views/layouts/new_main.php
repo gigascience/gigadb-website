@@ -27,11 +27,83 @@
                 <link rel="stylesheet" type="text/css" href="/css/current.css" />
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js" defer></script>
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+                <?php if (isset($this->loadBaBbqPolyfills) && $this->loadBaBbqPolyfills) { ?>
+                    <!-- Polyfills needed for 3.6.0/jquery.min.js and jquery.ba-bbq.min.js compatibility -->
+                    <script src="https://code.jquery.com/jquery-migrate-3.3.2.min.js"></script>
+                    <script>
+
+// Limit scope pollution from any deprecated API
+(function() {
+
+var matched, browser;
+
+// Use of jQuery.browser is frowned upon.
+// More details: http://api.jquery.com/jQuery.browser
+// jQuery.uaMatch maintained for back-compat
+jQuery.uaMatch = function( ua ) {
+    ua = ua.toLowerCase();
+
+    var match = /(chrome)[ \/]([\w.]+)/.exec( ua ) ||
+        /(webkit)[ \/]([\w.]+)/.exec( ua ) ||
+        /(opera)(?:.*version|)[ \/]([\w.]+)/.exec( ua ) ||
+        /(msie) ([\w.]+)/.exec( ua ) ||
+        ua.indexOf("compatible") < 0 && /(mozilla)(?:.*? rv:([\w.]+)|)/.exec( ua ) ||
+        [];
+
+    return {
+        browser: match[ 1 ] || "",
+        version: match[ 2 ] || "0"
+    };
+};
+
+matched = jQuery.uaMatch( navigator.userAgent );
+browser = {};
+
+if ( matched.browser ) {
+    browser[ matched.browser ] = true;
+    browser.version = matched.version;
+}
+
+// Chrome is Webkit, but Webkit is also Safari.
+if ( browser.chrome ) {
+    browser.webkit = true;
+} else if ( browser.webkit ) {
+    browser.safari = true;
+}
+
+jQuery.browser = browser;
+
+jQuery.sub = function() {
+    function jQuerySub( selector, context ) {
+        return new jQuerySub.fn.init( selector, context );
+    }
+    jQuery.extend( true, jQuerySub, this );
+    jQuerySub.superclass = this;
+    jQuerySub.fn = jQuerySub.prototype = this();
+    jQuerySub.fn.constructor = jQuerySub;
+    jQuerySub.sub = this.sub;
+    jQuerySub.fn.init = function init( selector, context ) {
+        if ( context && context instanceof jQuery && !(context instanceof jQuerySub) ) {
+            context = jQuerySub( context );
+        }
+
+        return jQuery.fn.init.call( this, selector, context, rootjQuerySub );
+    };
+    jQuerySub.fn.init.prototype = jQuerySub.fn;
+    var rootjQuerySub = jQuerySub(document);
+    return jQuerySub;
+};
+
+})();
+                    </script>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.ba-bbq/1.2.1/jquery.ba-bbq.min.js" defer></script>
+                <?php } ?>
                 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" defer></script>
                 <? } ?>
                     <title>
                         <?php echo CHtml::encode($this->pageTitle); ?>
                     </title>
+  <?= $this->renderPartial('//shared/_matomo') ?>
 </head>
 
 <body>
@@ -70,7 +142,27 @@
                                             <? } ?>
                         </ul>
                     </nav>
-                    <div class="col-xs-7 clearfix">
+                    <div class="col-xs-7 clearfix top-bar-left">
+                        <div class="search-bar clearfix">
+                            <form action="/search/new" method="GET" role="search" class="search-form" aria-label="Datasets">
+                                <?php
+                                    $this->widget('application.components.DeferrableCJuiAutoComplete', array(
+                                        'name' => 'keyword',
+                                        'source' => array_values(array()),
+                                        'options' => array(
+                                            'minLength' => '2',
+                                        ),
+                                        'htmlOptions' => array(
+                                            'aria-label'=>'Search GigaDB',
+                                            'class' => 'search-input',
+                                            'placeholder'=>'e.g. Chicken, brain, etc...',
+                                        ),
+                                    ));
+                                    ?>
+                                    <button class="btn-search" type="submit"><span class="fa fa-search"><span class="visually-hidden">Search</span></span>
+                                    </button>
+                            </form>
+                        </div>
                         <ul class="share-zone clearfix">
                             <li>
                                 <a class="fa fa-facebook" style="text-decoration: none;" href="http://facebook.com/GigaScience" title="GigaScience on Facebook" aria-label="GigaScience on Facebook"></a>
@@ -88,26 +180,6 @@
                                 <a class="fa fa-rss" style="text-decoration: none;" href="http://gigasciencejournal.com/blog/" title="Gigascience Blog" aria-label="GigaScience Blog"></a>
                             </li>
                         </ul>
-                        <div class="search-bar clearfix">
-                            <form action="/search/new" method="GET" role="search">
-                                <?php
-                                    $this->widget('application.components.DeferrableCJuiAutoComplete', array(
-                                        'name' => 'keyword',
-                                        'source' => array_values(array()),
-                                        'options' => array(
-                                            'minLength' => '2',
-                                        ),
-                                        'htmlOptions' => array(
-                                            'title'=>'Search GigaDB',
-                                            'class' => 'search-input',
-                                            'placeholder'=>'e.g. Chicken, brain etc...',
-                                        ),
-                                    ));
-                                    ?>
-                                    <button class="btn-search" type="submit"><span class="fa fa-search"><span class="visually-hidden">Search</span></span>
-                                    </button>
-                            </form>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -226,26 +298,25 @@
         </div>
         <div class="content-btnlog">
             <a class="btn btnlog facebook-log" href="/opauth/facebook">
-                        <img src="/images/icons/fb.png"/>&nbsp;&nbsp;<?= Yii::t('app', 'Facebook') ?>
-                    </a>
+                <img src="/images/icons/fb.png" alt="Login with Facebook"/>&nbsp;&nbsp;<?=Yii::t('app' , 'Facebook')?>
+            </a>
             <a class="btn btnlog google-log" href="/opauth/google">
-                        <img src="/images/icons/google.png"/>&nbsp;&nbsp;<?= Yii::t('app', 'Google') ?>
-                    </a>
+                <img src="/images/icons/google.png" alt="Login with Google" />&nbsp;&nbsp;<?=Yii::t('app' , 'Google')?>
+            </a>
         </div>
         <div class="content-btnlog">
             <a class="btn btnlog twitter-log" href="/opauth/twitter">
-                        <img src="/images/icons/twi.png"/>&nbsp;&nbsp;<?= Yii::t('app', 'Twitter') ?>
-                    </a>
+                    <img src="/images/icons/twi.png" alt="Login with twitter"/>&nbsp;&nbsp;<?=Yii::t('app' , 'Twitter')?>
+            </a>
             <a class="btn btnlog linkedin-log" href="/opauth/linkedin">
-                        <img src="/images/icons/in.png"/>&nbsp;&nbsp;<?= Yii::t('app', 'LinkedIn') ?>
-                    </a>
+                <img src="/images/icons/in.png" alt="Login with LinkedIn"/>&nbsp;&nbsp;<?=Yii::t('app' , 'LinkedIn')?>
+            </a>
         </div>
     </div>
     <?php endif ?>
     <script type="application/ld+json">
     { "@context": "http://schema.org", "@type": "DataCatalog", "name": "GigaDB.org", "description": "GigaDB primarily serves as a repository to host data and tools associated with articles in GigaScience; however, it also includes a subset of datasets that are not associated with GigaScience articles. GigaDB defines a dataset as a group of files (e.g., sequencing data, analyses, imaging files, software programs) that are related to and support an article or study. Through our association with DataCite, each dataset in GigaDB will be assigned a DOI that can be used as a standard citation for future use of these data in other articles by the authors and other researchers. Datasets in GigaDB all require a title that is specific to the dataset, an author list, and an abstract that provides information specific to the data included within the set. We encourage detailed information about the data we host to be submitted by their creators in ISA-Tab, a format used by the BioSharing and ISA Commons communities that we work with to maintain the highest data and metadata standards in our journal. To maximize its utility to the research community, all datasets in GigaDB are placed under a CC0 waiver (for more information on the issues surrounding CC0 and data see Hrynaszkiewicz and Cockerill, 2012).Datasets that are not affiliated with a GigaScience article are approved for inclusion by the Editors of GigaScience. The majority of such datasets are from internal projects at the BGI, given their sponsorship of GigaDB. Many of these datasets may not have another discipline-specific repository suitably able to host them or have been rapidly released prior to any publications for use by the research community, whilst enabling their producers to obtain credit through data citation. The GigaScience Editors may also consider the inclusion of particularly interesting, previously unpublished datasets in GigaDB, especially if they meet our criteria and inclusion as Data Note articles in the journal.", "alternateName": "GigaScience Journal Database", "license": "Public Domain", "citation": "Tam P. Sneddon, Xiao Si Zhe, Scott C. Edmunds, Peter Li, Laurie Goodman, Christopher I. Hunter; GigaDB: promoting data dissemination and reproducibility, Database, Volume 2014, 1 January 2014, bau018, https://doi.org/10.1093/database/bau018", "url": "https://GigaDB.org/", "keywords": ["registry", "life science", "GigaScience Journal"], "provider": [{ "@type": "Person", "name": "GigaDB.org support", "email": "database@gigasciencejournal.com" }] }
     </script>
-    <?= $this->renderPartial('//shared/_google_analytics') ?>
 </body>
 
 </html>

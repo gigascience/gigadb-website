@@ -27,7 +27,6 @@
                 <link rel="stylesheet" type="text/css" href="/fonts/open_sans/v13/open_sans.css">
                 <link rel="stylesheet" type="text/css" href="/fonts/pt_sans/v8/pt_sans.css">
                 <link rel="stylesheet" type="text/css" href="/fonts/lato/v11/lato.css">
-                <link rel="stylesheet" type="text/css" href="/css/common.css" />
                 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css" />
                 <!-- Disable datatables.css whilst fixing CSS problems -->
                 <!-- <link rel="stylesheet" type="text/css" href="/css/datatables.css" /> -->
@@ -35,14 +34,85 @@
                 <link rel="stylesheet" type="text/css" href="/css/current.css" />
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" defer></script>
+                <?php if (isset($this->loadBaBbqPolyfills) && $this->loadBaBbqPolyfills) { ?>
+                    <!-- Polyfills needed for 3.6.0/jquery.min.js and jquery.ba-bbq.min.js compatibility -->
+                    <script src="https://code.jquery.com/jquery-migrate-3.3.2.min.js"></script>
+                    <script>
+
+// Limit scope pollution from any deprecated API
+(function() {
+
+var matched, browser;
+
+// Use of jQuery.browser is frowned upon.
+// More details: http://api.jquery.com/jQuery.browser
+// jQuery.uaMatch maintained for back-compat
+jQuery.uaMatch = function( ua ) {
+    ua = ua.toLowerCase();
+
+    var match = /(chrome)[ \/]([\w.]+)/.exec( ua ) ||
+        /(webkit)[ \/]([\w.]+)/.exec( ua ) ||
+        /(opera)(?:.*version|)[ \/]([\w.]+)/.exec( ua ) ||
+        /(msie) ([\w.]+)/.exec( ua ) ||
+        ua.indexOf("compatible") < 0 && /(mozilla)(?:.*? rv:([\w.]+)|)/.exec( ua ) ||
+        [];
+
+    return {
+        browser: match[ 1 ] || "",
+        version: match[ 2 ] || "0"
+    };
+};
+
+matched = jQuery.uaMatch( navigator.userAgent );
+browser = {};
+
+if ( matched.browser ) {
+    browser[ matched.browser ] = true;
+    browser.version = matched.version;
+}
+
+// Chrome is Webkit, but Webkit is also Safari.
+if ( browser.chrome ) {
+    browser.webkit = true;
+} else if ( browser.webkit ) {
+    browser.safari = true;
+}
+
+jQuery.browser = browser;
+
+jQuery.sub = function() {
+    function jQuerySub( selector, context ) {
+        return new jQuerySub.fn.init( selector, context );
+    }
+    jQuery.extend( true, jQuerySub, this );
+    jQuerySub.superclass = this;
+    jQuerySub.fn = jQuerySub.prototype = this();
+    jQuerySub.fn.constructor = jQuerySub;
+    jQuerySub.sub = this.sub;
+    jQuerySub.fn.init = function init( selector, context ) {
+        if ( context && context instanceof jQuery && !(context instanceof jQuerySub) ) {
+            context = jQuerySub( context );
+        }
+
+        return jQuery.fn.init.call( this, selector, context, rootjQuerySub );
+    };
+    jQuerySub.fn.init.prototype = jQuerySub.fn;
+    var rootjQuerySub = jQuerySub(document);
+    return jQuerySub;
+};
+
+})();
+                    </script>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.ba-bbq/1.2.1/jquery.ba-bbq.min.js" defer></script>
+                <?php } ?>
                 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" defer></script>
                 <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" defer></script>
                 <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js" defer></script>
                 <? } ?>
-                    <?= $this->renderPartial('//shared/_google_analytics')?>
                         <title>
                             <?php echo CHtml::encode($this->pageTitle); ?>
                         </title>
+                        <?= $this->renderPartial('//shared/_matomo') ?>
 </head>
 
 <body>
@@ -81,7 +151,30 @@
                                             <? } ?>
                         </ul>
                     </nav>
-                    <div class="col-xs-7 clearfix">
+                    <div class="col-xs-7 clearfix top-bar-left">
+                        <div class="search-bar clearfix">
+                            <form action="/search/new" method="GET" role="search" class="search-form" aria-label="Datasets">
+                                <?php
+
+                                    $this->widget('application.components.DeferrableCJuiAutoComplete', array(
+                                    'name'=>'keyword',
+                                    'source'=> array_values(array()),
+
+                                    'options'=>array(
+                                    'minLength'=>'2',
+                                        ),
+                                    'htmlOptions'=>array(
+                                    'aria-label'=>'Search GigaDB',
+                                    'class'=>'search-input',
+                                    'placeholder'=>'e.g. Chicken, brain, etc...',
+                                        ),
+                                    ));
+
+
+                                ?>
+                                    <button class="btn-search" type="submit"><span class="fa fa-search"><span class="visually-hidden">Search</span></span></button>
+                            </form>
+                        </div>
                         <ul class="share-zone clearfix">
                             <li>
                                 <a class="fa fa-facebook" style="text-decoration: none;" href="http://facebook.com/GigaScience" title="GigaScience on Facebook" aria-label="GigaScience on Facebook"></a>
@@ -99,29 +192,6 @@
                                 <a  class="fa fa-rss" style="text-decoration: none;" href="http://gigasciencejournal.com/blog/" title="Gigascience Blog" aria-label="GigaScience Blog"></a>
                             </li>
                         </ul>
-                        <div class="search-bar clearfix">
-                            <form action="/search/new" method="GET" role="search">
-                                <?php
-
-                                    $this->widget('application.components.DeferrableCJuiAutoComplete', array(
-                                    'name'=>'keyword',
-                                    'source'=> array_values(array()),
-
-                                    'options'=>array(
-                                    'minLength'=>'2',
-                                        ),
-                                    'htmlOptions'=>array(
-                                    'title'=>'Search GigaDB',
-                                    'class'=>'search-input',
-                                    'placeholder'=>'e.g. Chicken, brain etc...',
-                                        ),
-                                    ));
-
-
-                                ?>
-                                    <button class="btn-search" type="submit"><span class="fa fa-search"><span class="visually-hidden">Search</span></span></button>
-                            </form>
-                        </div>
                     </div>
                 </div>
             </div>

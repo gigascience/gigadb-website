@@ -46,6 +46,7 @@ class AdminLinkController extends Controller
 	 */
 	public function actionView($id)
 	{
+		$this->layout = 'new_datasetpage';
 		$this->render('view',array(
 			'model'=>$this->loadModel($id),
 		));
@@ -69,6 +70,7 @@ class AdminLinkController extends Controller
 				$this->redirect(array('view','id'=>$model->id));
 		}
 
+		$this->layout = 'new_datasetpage';
 		$this->render('create',array(
 			'model'=>$model,
 		));
@@ -196,6 +198,7 @@ class AdminLinkController extends Controller
 				$this->redirect(array('view','id'=>$model->id));
 		}
 
+		$this->layout = 'new_datasetpage';
 		$this->render('update',array(
 			'model'=>$model,
 		));
@@ -242,6 +245,8 @@ class AdminLinkController extends Controller
 		if(isset($_GET['Link']))
 			$model->setAttributes($_GET['Link']);
 
+		$this->layout = 'new_main';
+		$this->loadBaBbqPolyfills = true;
 		$this->render('admin',array(
 			'model'=>$model,
 		));

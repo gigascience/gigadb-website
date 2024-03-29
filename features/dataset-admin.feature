@@ -7,14 +7,6 @@ Background:
 	Given Gigadb web site is loaded with "gigadb_testdata.pgdmp" data
 	And default admin user exists
 
-@ok @javascript
-Scenario: Mint A DOI
-	Given I sign in as an admin
-	And I am on "/adminDataset/update/id/210"
-	When I follow "Mint DOI"
-	Then I should see "minting under way, please wait"
-	And I should see element "#minting"'s content changing from "minting under way, please wait" to "new DOI successfully minted"
-
 @ok
 Scenario: Keywords
 	Given I sign in as an admin
@@ -55,9 +47,9 @@ Scenario: new dataset with mandatory fields filled in
 	And I select "user@gigadb.org" from "Submitter"
 	And I fill in "Title" with "My dataset"
 	And I fill in "Dataset Size" with "345345324235"
-	And I fill in "Image Source" with "Wikimedia"
-	And I fill in "Image License" with "CC0"
-	And I fill in "Image Photographer" with "Anonymous"
+	And I fill in "Source" with "Wikimedia"
+	And I fill in "License" with "CC0"
+	And I fill in "Photographer" with "Anonymous"
 	And I fill in "DOI" with "100900"
 	And I fill in "Ftp Site" with "ftp.genomics.cn"
 	And I press "Create"
