@@ -785,7 +785,7 @@ $(document).ready(function() {
     const submitSourceId = $(':focus').attr('id');
     const didSelectDataPending = initialUploadStatus !== currentUploadStatus && currentUploadStatus === 'DataPending';
     const didSubmitFromModal = submitSourceId === 'customizeEmailModalSubmitBtn' ||
-        // NOTE need to incldue this case for Safari compatibility
+        // NOTE need to include this case for Safari compatibility
         submitSourceId === 'customizeEmailModal';
 
     if (didSelectDataPending && !didSubmitFromModal) {
