@@ -26,22 +26,15 @@ module "efs" {
     transition_to_primary_storage_class = "AFTER_1_ACCESS"
   }
 
-  # File system policy (basic access only, better use IAM policies to add higher level access and/ore more granular)
-  attach_policy                      = true
+  # File system policy
+  attach_policy                      = false
   bypass_policy_lockout_safety_check = false
-  policy_statements = [
-    {
-      sid     = "BasicReadonlyAccess"
-      actions = ["elasticfilesystem:ClientMount"]
-      principals = [
-        {
-          type        = "AWS"
-          identifiers = [data.aws_caller_identity.current.arn]
-        }
-      ]
-    }
-  ]
+  
 
+  # Performance profile
+  performance_mode                = "generalPurpose"
+  throughput_mode                 = "elastic"
+  
   # Mount targets / security group
   mount_targets              = { for k, v in zipmap(local.azs, var.vpc.private_subnets) : k => { subnet_id = v } }
 
