@@ -782,9 +782,11 @@ $(document).ready(function() {
     const uploadStatusInput = $("#Dataset_upload_status")
     const initialUploadStatus = uploadStatusInput.attr('data-initial-value');
     const currentUploadStatus = uploadStatusInput.val();
-    const submitButton = $(':focus');
+    const submitSourceId = $(':focus').attr('id');
     const didSelectDataPending = initialUploadStatus !== currentUploadStatus && currentUploadStatus === 'DataPending';
-    const didSubmitFromModal = submitButton.attr('id') === 'customizeEmailModalSubmitBtn';
+    const didSubmitFromModal = submitSourceId === 'customizeEmailModalSubmitBtn' ||
+        // NOTE need to incldue this case for Safari compatibility
+        submitSourceId === 'customizeEmailModal';
 
     if (didSelectDataPending && !didSubmitFromModal) {
       $('#customizeEmailModal').modal({
