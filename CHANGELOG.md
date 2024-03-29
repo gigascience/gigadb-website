@@ -4,7 +4,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
-- Feat #1618: Allow customization of email sent to author after "DataPending" status
+- Feat #1618: Allow customization of email sent to author after "DataPending" stat
+
+## v4.2.2 - 2024-03-25 - 3cf500fe8
+
+- Feat #1759: Replace Google Analytics script by Matomo script in all layouts
+- Feat #1652: Update API doc for usage of retrieve known datasets by DOI endpoint
 
 ## v4.2.1 - 2024-03-18 - ac7d6168b
 
