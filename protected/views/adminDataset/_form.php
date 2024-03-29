@@ -765,19 +765,29 @@ echo $form->hiddenField($model, "image_id");
 </div>
 -->
 
-
 <script>
-// this text is copied from the local files/templates/DataPending.twig, it needs to be updated to the production template
-const defaultDataPendingEmailBody = `
-Dear author,
+async function fetchEmailTemplate() {
+  try {
+    const res = await fetch('/files/templates/DataPending.twig')
+    if (res.ok) {
+      return res.text();
+    }
+    throw new Error('Failed to fetch email template');
+  } catch (error) {
+    console.error('Error fetching email template:', error);
+    return ''
+  }
+}
 
-The curators have changed the upload status for the dataset with DOI {{ identifier }}.
-It is now set to "DataPending" which indicates that some files are missing.`;
+$(document).ready(async function() {
+  const template = await fetchEmailTemplate()
+  if (template) {
+    $("#Dataset_emailBody").val(template);
+  }
+})
 
 // if editor switched upload status to "data pending", a modal prompts to customize email body to send to author
 $(document).ready(function() {
-  $("#Dataset_emailBody").val(defaultDataPendingEmailBody);
-
   $("#dataset-form").on("submit", function(e) {
     const uploadStatusInput = $("#Dataset_upload_status")
     const initialUploadStatus = uploadStatusInput.attr('data-initial-value');
