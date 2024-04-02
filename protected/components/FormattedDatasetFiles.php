@@ -51,7 +51,7 @@ class FormattedDatasetFiles extends DatasetComponents implements DatasetFilesInt
         $files =   $this->_cachedDatasetFiles->getDatasetFiles();
         foreach ($files as &$file) {
             $file['nameHtml'] = "<div title=\"" . $file['description'] . "\"><a href=\"" . $file['location'] . "\" target='_blank'>" . $file['name'] . "</a></div>";
-            $file['sizeUnit'] = File::specifySizeUnits($file['size']);
+            $file['sizeUnit'] = UnitHelper::specifySizeUnits($file['size']);
             $attribute_strings = [];
             foreach ($file['file_attributes'] as $file_attribute) {
                 $attribute_strings[] = implode(array_keys($file_attribute)) . ": " . implode(array_values($file_attribute)) . "<br>";
