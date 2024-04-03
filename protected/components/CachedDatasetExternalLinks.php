@@ -64,7 +64,7 @@ class CachedDatasetExternalLinks extends DatasetComponents implements DatasetExt
         $externalLinks = $this->getCachedLocalData($this->getDatasetId());
         if (false == $externalLinks) {
             $externalLinks = $this->_storedDatasetExternalLinks->getDatasetExternalLinks();
-            $this->saveLocaldataInCache($this->getDatasetId(), $externalLinks);
+            $this->saveLocalDataInCache($this->getDatasetId(), $externalLinks);
         }
         return  array_values(array_filter($externalLinks, $filterByType)) ;
     }
@@ -81,7 +81,7 @@ class CachedDatasetExternalLinks extends DatasetComponents implements DatasetExt
         $typesAndCount =  $this->getCachedLocalData($this->getDatasetId());
         if (false == $typesAndCount) {
             $typesAndCount = $this->_storedDatasetExternalLinks->getDatasetExternalLinksTypesAndCount();
-            $this->saveLocaldataInCache($this->getDatasetId(), $typesAndCount);
+            $this->saveLocalDataInCache($this->getDatasetId(), $typesAndCount);
         }
 
         if (!empty($types)) {
