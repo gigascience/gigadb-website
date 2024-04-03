@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## Unreleased
 
 - Feat #1626: FUW - Update node version to the latest recommended to avoid openssl hack. Minimize dependency vulnerabilities.
+- Fix #1639: Paginate files and samples SQL queries on dataset pages to avoid running out of memory
+- Fix #1593: Display the units of file size based on 1000 byte system
 
 ## v4.2.2 - 2024-03-25 - 3cf500fe8
 
