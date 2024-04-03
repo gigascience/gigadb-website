@@ -766,6 +766,8 @@ echo $form->hiddenField($model, "image_id");
 -->
 
 <script>
+let defaultDataPendingEmailBody= '';
+
 async function fetchEmailTemplate() {
   try {
     const res = await fetch('/files/templates/DataPending.twig')
@@ -780,9 +782,9 @@ async function fetchEmailTemplate() {
 }
 
 $(document).ready(async function() {
-  const template = await fetchEmailTemplate()
-  if (template) {
-    $("#Dataset_emailBody").val(template);
+  defaultDataPendingEmailBody = await fetchEmailTemplate()
+  if (defaultDataPendingEmailBody) {
+    $("#Dataset_emailBody").val(defaultDataPendingEmailBody);
   }
 })
 
