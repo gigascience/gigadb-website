@@ -289,8 +289,6 @@ services:
       dockerfile: ../packaging/VueDev-Dockerfile
       args:
         - NODE_VERSION=$NODE_VERSION
-    environment: # TODO: the variable below is for testing purpose, never use this as solution to the openssl issue on production
-      NODE_OPTIONS: "--openssl-legacy-provider"
     volumes:
       - ${APPLICATION}/:/var/www
     shm_size: '1gb' # to avoid a known issue
