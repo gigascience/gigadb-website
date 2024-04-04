@@ -38,7 +38,7 @@ variables:
   NGINX_VERSION: "1.21.3"
   PHP_VERSION: "7.4.33"
   APCU_VERSION: "5.1.21"
-  NODE_VERSION: "17.6.0"
+  NODE_VERSION: "20.11.0"
   YII_VERSION: "1.1.28"
   YII2_VERSION: "2.0.48"
   POSTGRES_VERSION: "14.8"
@@ -130,7 +130,7 @@ sd_gigadb:
 ld_gigadb:
   variables:
     GIGADB_ENV: "live"
-  extends: 
+  extends:
     - .tag_only
     - .deploy
   stage: live deploy
