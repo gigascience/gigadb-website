@@ -1,4 +1,14 @@
-<a href="/funder/admin">Back</a>
-<h1>Create Funder</h1>
+<div class="container">
+  <?php
+  $this->widget('TitleBreadcrumb', [
+    'pageTitle' => 'Create Funder',
+    'breadcrumbItems' => [
+      ['label' => 'Admin', 'href' => '/site/admin'],
+      ['label' => 'Manage', 'href' => 'admin'],
+      ['isActive' => true, 'label' => 'Create'],
+    ]
+  ]);
+  ?>
 
-<?php echo $this->renderPartial('_form', array('model'=>$model)); ?>
+  <?php echo $this->renderPartial('_form', array('model' => $model)); ?>
+</div>

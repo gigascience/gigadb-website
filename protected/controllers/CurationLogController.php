@@ -6,7 +6,7 @@ class CurationLogController extends Controller
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
-	
+
 
 	/**
 	 * @return array action filters
@@ -42,23 +42,16 @@ class CurationLogController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		if(isset($_GET['id'])) {
-                    $id=$_GET['id'];
-                   $dataProvider=new CActiveDataProvider('CurationLog', array(
-    'criteria'=>array(
-        'condition'=>"dataset_id=$id",
-        'order'=>'id DESC',
+        $model=new CurationLog('search');
+        $model->unsetAttributes();  // clear any default values
+        if(isset($_GET['CurationLog']))
+            $model->setAttributes($_GET['CurationLog']);
 
-    ),
- 
-));
-		
-		   // $model->setAttributes('dataset_id',$id);
-			$this->render('admin',array(
-				'model'=>$dataProvider,
-                                'dataset_id'=>$id,
-			));
-		}
+        $this->layout = 'new_main';
+        $this->loadBaBbqPolyfills = true;
+        $this->render('admin',array(
+            'model'=>$model,
+        ));
 	}
 
 	/**
@@ -79,17 +72,18 @@ class CurationLogController extends Controller
                         $model->last_modified_date=null;
                         $model->dataset_id=$id;
                         $username = User::model()->find('id=:user_id', array(':user_id'=>Yii::app()->user->id));
-                                
+
                         $username = $username->first_name.' '.$username->last_name;
                         $model->created_by = $username;
-                        
+
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
 
+		$this->layout = 'new_datasetpage';
 		$this->render('create',array(
 			'model'=>$model,
-                        'dataset_id'=>$id,
+            'dataset_id'=>$id,
 		));
 	}
 
@@ -110,16 +104,17 @@ class CurationLogController extends Controller
 			{
 				$model->attributes=$_POST['CurationLog'];
                                 $model->last_modified_date=date("Y-m-d");
-                                
+
                                 $username = User::model()->find('id=:user_id', array(':user_id'=>Yii::app()->user->id));
-                                
+
                                 $username = $username->first_name.' '.$username->last_name;
-                                
+
                                 $model->last_modified_by = $username;
 				if($model->save())
 					$this->redirect(array('view','id'=>$model->id));
 			}
 
+		  $this->layout = 'new_datasetpage';
 			$this->render('update',array(
 				'model'=>$model,
 			));
@@ -151,7 +146,7 @@ class CurationLogController extends Controller
 	 */
 	public function actionView($id) {
 
-
+        $this->layout = 'new_datasetpage';
         $this->render('view', array(
             'model' => $this->loadModel($id),
         ));

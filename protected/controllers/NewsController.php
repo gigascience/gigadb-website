@@ -46,6 +46,7 @@ class NewsController extends Controller
 	 */
 	public function actionView($id)
 	{
+		$this->layout = 'new_datasetpage';
 		$this->render('view',array(
 			'model'=>$this->loadModel($id),
 		));
@@ -69,6 +70,7 @@ class NewsController extends Controller
 				$this->redirect(array('view','id'=>$model->id));
 		}
 
+		$this->layout = 'new_datasetpage';
 		$this->render('create',array(
 			'model'=>$model,
 		));
@@ -93,6 +95,7 @@ class NewsController extends Controller
 				$this->redirect(array('view','id'=>$model->id));
 		}
 
+		$this->layout = 'new_datasetpage';
 		$this->render('update',array(
 			'model'=>$model,
 		));
@@ -139,6 +142,8 @@ class NewsController extends Controller
 		if(isset($_GET['News']))
 			$model->setAttributes($_GET['News']);
 
+		$this->layout = 'new_main';
+		$this->loadBaBbqPolyfills = true;
 		$this->render('admin',array(
 			'model'=>$model,
 		));

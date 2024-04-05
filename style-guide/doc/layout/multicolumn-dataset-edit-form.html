@@ -1,0 +1,796 @@
+<section class="container">
+  <p>
+    User in adminDataset edit and create pages, e.g. adminDataset/update/id/5
+  </p>
+  <form
+    enctype="multipart/form-data"
+    class="form-horizontal admindataset-form"
+    id="dataset-form"
+  >
+    <input
+      name="Dataset[image_id]"
+      id="Dataset_image_id"
+      type="hidden"
+      value="5"
+    />
+    <div class="col-xs-12 form well">
+      <div>
+        <p class="note">
+          Fields with <span class="required">*</span> are required.
+        </p>
+        <div role="alert"></div>
+
+        <div>
+          <div class="row">
+            <!-- first column -->
+            <div class="col-xs-5">
+              <div class="form-block-1">
+                <div class="form-group">
+                  <label
+                    class="control-label col-xs-4 required"
+                    for="Dataset_submitter_id"
+                    >Submitter<span aria-hidden="true"> *</span></label
+                  >
+                  <div class="col-xs-8">
+                    <select
+                      required="required"
+                      class="form-control"
+                      aria-required="true"
+                      name="Dataset[submitter_id]"
+                      id="Dataset_submitter_id"
+                    >
+                      <option value="38">admin1@gigasciencejournal.com</option>
+                      <option value="400">admin@gigadb.org</option>
+                      <option value="14">test+14@gigasciencejournal.com</option>
+                      <option value="163">
+                        test+163@gigasciencejournal.com
+                      </option>
+                      <option value="2486">
+                        test+2486@gigasciencejournal.com
+                      </option>
+                      <option value="336">
+                        test+336@gigasciencejournal.com
+                      </option>
+                      <option value="339">
+                        test+339@gigasciencejournal.com
+                      </option>
+                      <option value="345" selected="selected">
+                        test+345@gigasciencejournal.com
+                      </option>
+                      <option value="8">test+8@gigasciencejournal.com</option>
+                      <option value="988">
+                        test+988@gigasciencejournal.com
+                      </option>
+                      <option value="44">
+                        test+gigadb44@gigasciencejournal.com
+                      </option>
+                      <option value="401">user@gigadb.org</option>
+                      <option value="22">user@mailinator.com</option>
+                    </select>
+                    <div
+                      id="submitter_id-error"
+                      role="alert"
+                      class="control-error help-block"
+                    ></div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-xs-4" for="Dataset_curator_id"
+                    >Curator Id</label
+                  >
+                  <div class="col-xs-8">
+                    <select
+                      class="form-control"
+                      name="Dataset[curator_id]"
+                      id="Dataset_curator_id"
+                    >
+                      <option value=""></option>
+                      <option value="38">admin1@gigasciencejournal.com</option>
+                      <option value="339">
+                        test+339@gigasciencejournal.com
+                      </option>
+                      <option value="988">
+                        test+988@gigasciencejournal.com
+                      </option>
+                    </select>
+                    <div role="alert" class="help-block"></div>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label
+                    class="control-label col-xs-4"
+                    for="Dataset_manuscript_id"
+                    >Manuscript Id</label
+                  >
+                  <div class="col-xs-8">
+                    <input
+                      maxlength="200"
+                      class="form-control"
+                      name="Dataset[manuscript_id]"
+                      id="Dataset_manuscript_id"
+                      type="text"
+                    />
+                    <div
+                      id="manuscript_id-error"
+                      role="alert"
+                      class="control-error help-block"
+                    ></div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label
+                    class="control-label col-xs-4"
+                    for="Dataset_upload_status"
+                    >Upload Status</label
+                  >
+                  <div class="col-xs-8">
+                    <select
+                      class="js-pub form-control"
+                      name="Dataset[upload_status]"
+                      id="Dataset_upload_status"
+                    >
+                      <option value="ImportFromEM">ImportFromEM</option>
+                      <option value="UserStartedIncomplete">
+                        UserStartedIncomplete
+                      </option>
+                      <option value="Rejected">Rejected</option>
+                      <option value="Not required">Not required</option>
+                      <option value="Submitted">Submitted</option>
+                      <option value="Curation">Curation</option>
+                      <option value="AuthorReview">AuthorReview</option>
+                      <option value="Private">Private</option>
+                      <option value="Published">Published</option>
+                      <option value="Incomplete" selected="selected">
+                        Incomplete
+                      </option>
+                    </select>
+                    <div role="alert" class="help-block"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-block-2">
+                <fieldset>
+                  <legend>Dataset Types</legend>
+                  <!-- checkboxes -->
+                  <div class="checkbox-group">
+                    <div class="from-group checkbox-horizontal">
+                      <label
+                        class="col-md-4 control-label"
+                        for="Dataset_Epigenomic"
+                        >Epigenomic</label
+                      >
+                      <div class="col-md-8 col-xs-1">
+                        <input
+                          class=""
+                          id="Dataset_Epigenomic"
+                          type="checkbox"
+                          name="datasettypes[1]"
+                          value="1"
+                        />
+                      </div>
+                    </div>
+                    <div class="from-group checkbox-horizontal">
+                      <label
+                        class="col-md-4 control-label"
+                        for="Dataset_Genomic"
+                        >Genomic</label
+                      >
+                      <div class="col-md-8 col-xs-1">
+                        <input
+                          class=""
+                          id="Dataset_Genomic"
+                          type="checkbox"
+                          name="datasettypes[2]"
+                          value="1"
+                        />
+                      </div>
+                    </div>
+                    <div class="from-group checkbox-horizontal">
+                      <label
+                        class="col-md-4 control-label"
+                        for="Dataset_Transcriptomic"
+                        >Transcriptomic</label
+                      >
+                      <div class="col-md-8 col-xs-1">
+                        <input
+                          class=""
+                          id="Dataset_Transcriptomic"
+                          type="checkbox"
+                          name="datasettypes[4]"
+                          value="1"
+                        />
+                      </div>
+                    </div>
+                    <div class="from-group checkbox-horizontal">
+                      <label
+                        class="col-md-4 control-label"
+                        for="Dataset_Software"
+                        >Software</label
+                      >
+                      <div class="col-md-8 col-xs-1">
+                        <input
+                          class=""
+                          id="Dataset_Software"
+                          type="checkbox"
+                          name="datasettypes[6]"
+                          value="1"
+                        />
+                      </div>
+                    </div>
+                    <div class="from-group checkbox-horizontal">
+                      <label
+                        class="col-md-4 control-label"
+                        for="Dataset_Metadata"
+                        >Metadata</label
+                      >
+                      <div class="col-md-8 col-xs-1">
+                        <input
+                          class=""
+                          id="Dataset_Metadata"
+                          type="checkbox"
+                          name="datasettypes[16]"
+                          value="1"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </fieldset>
+              </div>
+            </div>
+            <!-- second column -->
+            <div class="col-xs-offset-1 col-xs-5">
+              <div id="imageFields" class="form-block-3">
+                <div>
+                  <div
+                    id="imagePreviewWrapper"
+                    class="image-preview-wrapper"
+                    style="display: flex"
+                  >
+                    <img
+                      id="showImage"
+                      class="dataset-image"
+                      src="https://assets.gigadb-cdn.net/live/images/datasets/images/data/cropped/100039_parrot.jpg"
+                      alt="Puerto Rican parrot"
+                    /><img id="imagePreview" alt="" src="" /><input
+                      id="clearFileUrl"
+                      class="clear-file-url-btn btn background-btn-o"
+                      aria-label="Delete image file"
+                      name="yt0"
+                      type="button"
+                      value="X"
+                    />
+                  </div>
+                  <fieldset aria-label="Image upload">
+                    <div class="form-group">
+                      <label for="datasetImage" class="control-label col-xs-4"
+                        >Image Status</label
+                      >
+                      <div class="col-xs-8 block-spacing">
+                        <input
+                          class="form-control"
+                          aria-controls="metaFieldsSection"
+                          type="file"
+                          value=""
+                          name="datasetImage"
+                          id="datasetImage"
+                        />
+                      </div>
+                      <div class="col-xs-offset-4 col-xs-5 block-spacing">
+                        <a
+                          class="btn btn-sm danger-btn"
+                          id="removeButton"
+                          title="the dataset will be associated with the generic image record afterward"
+                          href="#"
+                          >Remove image record (file+metadata)</a
+                        >
+                      </div>
+                      <div class="col-xs-offset-4 col-xs-8">
+                        <div id="removing" role="alert"></div>
+                      </div>
+                    </div>
+                  </fieldset>
+                </div>
+                <fieldset id="metaFieldsSection" class="meta-fields-container">
+                  <legend>Image metafields</legend>
+                  <div class="form-group">
+                    <label class="control-label col-xs-4" for="Image_url"
+                      >Image URL</label
+                    >
+                    <div class="col-xs-8">
+                      <input
+                        class="form-control meta-fields"
+                        name="Image[url]"
+                        id="Image_url"
+                        type="text"
+                        maxlength="256"
+                        value="https://assets.gigadb-cdn.net/live/images/datasets/images/data/cropped/100039_parrot.jpg"
+                      />
+                      <div
+                        id="url-error"
+                        role="alert"
+                        class="control-error help-block"
+                      ></div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label
+                      class="control-label col-xs-4 required"
+                      for="Image_source"
+                      >Image Source<span aria-hidden="true"> *</span></label
+                    >
+                    <div class="col-xs-8">
+                      <input
+                        required="required"
+                        class="form-control meta-fields"
+                        aria-required="true"
+                        name="Image[source]"
+                        id="Image_source"
+                        type="text"
+                        maxlength="256"
+                        value="University of Puerto Rico at Mayagüez, PUERTO RICO"
+                      />
+                      <div
+                        id="source-error"
+                        role="alert"
+                        class="control-error help-block"
+                      ></div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-xs-4" for="Image_tag"
+                      >Image Tag</label
+                    >
+                    <div class="col-xs-8">
+                      <input
+                        class="form-control meta-fields"
+                        name="Image[tag]"
+                        id="Image_tag"
+                        type="text"
+                        maxlength="120"
+                        value="Puerto Rican parrot"
+                      />
+                      <div
+                        id="tag-error"
+                        role="alert"
+                        class="control-error help-block"
+                      ></div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label
+                      class="control-label col-xs-4 required"
+                      for="Image_license"
+                      >Image License<span aria-hidden="true"> *</span></label
+                    >
+                    <div class="col-xs-8">
+                      <input
+                        required="required"
+                        class="form-control meta-fields"
+                        aria-required="true"
+                        name="Image[license]"
+                        id="Image_license"
+                        type="text"
+                        value="CC0"
+                      />
+                      <div
+                        id="license-error"
+                        role="alert"
+                        class="control-error help-block"
+                      ></div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label
+                      class="control-label col-xs-4 required"
+                      for="Image_photographer"
+                      >Image Photographer<span aria-hidden="true">
+                        *</span
+                      ></label
+                    >
+                    <div class="col-xs-8">
+                      <input
+                        required="required"
+                        class="form-control meta-fields"
+                        aria-required="true"
+                        name="Image[photographer]"
+                        id="Image_photographer"
+                        type="text"
+                        maxlength="128"
+                        value="Taras Oleksyk"
+                      />
+                      <div
+                        id="photographer-error"
+                        role="alert"
+                        class="control-error help-block"
+                      ></div>
+                    </div>
+                  </div>
+                </fieldset>
+                <div
+                  id="metaFieldsLiveRegion"
+                  aria-live="polite"
+                  class="sr-only"
+                ></div>
+              </div>
+              <hr />
+              <div class="form-block-4">
+                <fieldset aria-labelledby="doiLabel">
+                  <div class="form-group row" id="doiFormGroup">
+                    <label
+                      class="control-label col-xs-4 required"
+                      id="doiLabel"
+                      for="Dataset_identifier"
+                      >DOI<span aria-hidden="true"> *</span></label
+                    >
+                    <div class="col-xs-6">
+                      <input
+                        required="required"
+                        aria-required="true"
+                        size="32"
+                        maxlength="32"
+                        class="form-control"
+                        name="Dataset[identifier]"
+                        id="Dataset_identifier"
+                        type="text"
+                        value="100039"
+                      />
+                      <div class="help-block" role="alert"></div>
+                    </div>
+                    <div class="col-xs-2">
+                      <input
+                        class="btn background-btn m-0"
+                        id="mint_doi_button"
+                        name="yt1"
+                        type="button"
+                        value="Mint DOI"
+                      />
+                    </div>
+                    <div
+                      id="minting"
+                      class="col-xs-offset-4 col-xs-8"
+                      role="alert"
+                    ></div>
+                  </div>
+                </fieldset>
+
+                <div class="form-group">
+                  <label
+                    class="control-label col-xs-4 required"
+                    for="Dataset_ftp_site"
+                    >Ftp Site<span aria-hidden="true"> *</span></label
+                  >
+                  <div class="col-xs-8">
+                    <input
+                      required="required"
+                      maxlength="200"
+                      class="form-control"
+                      aria-required="true"
+                      name="Dataset[ftp_site]"
+                      id="Dataset_ftp_site"
+                      type="text"
+                      value="ftp://climb.genomics.cn/pub/10.5524/100001_101000/100039/"
+                    />
+                    <div
+                      id="ftp_site-error"
+                      role="alert"
+                      class="control-error help-block"
+                    ></div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-xs-4" for="Dataset_fairnuse"
+                    >Fair Use Policy</label
+                  >
+                  <div class="col-xs-8">
+                    <input
+                      class="form-control hasDatepicker"
+                      aria-describedby="fairnuse-desc"
+                      data-js="datepicker"
+                      placeholder="mm/dd/yyyy"
+                      name="Dataset[fairnuse]"
+                      id="Dataset_fairnuse"
+                      type="text"
+                    />
+                    <p
+                      id="fairnuse-desc"
+                      class="control-description help-block"
+                    >
+                      Format: mm/dd/yyyy
+                    </p>
+                    <div
+                      id="fairnuse-error"
+                      role="alert"
+                      class="control-error help-block"
+                    ></div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label
+                    class="control-label col-xs-4"
+                    for="Dataset_publication_date"
+                    >Publication Date</label
+                  >
+                  <div class="col-xs-8">
+                    <input
+                      class="form-control js-date-pub hasDatepicker"
+                      aria-describedby="publication_date-desc"
+                      data-js="datepicker"
+                      placeholder="mm/dd/yyyy"
+                      name="Dataset[publication_date]"
+                      id="Dataset_publication_date"
+                      type="text"
+                      value="2012-09-11"
+                    />
+                    <p
+                      id="publication_date-desc"
+                      class="control-description help-block"
+                    >
+                      Format: mm/dd/yyyy
+                    </p>
+                    <div
+                      id="publication_date-error"
+                      role="alert"
+                      class="control-error help-block"
+                    ></div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label
+                    class="control-label col-xs-4"
+                    for="Dataset_modification_date"
+                    >Modification Date</label
+                  >
+                  <div class="col-xs-8">
+                    <input
+                      class="form-control hasDatepicker"
+                      aria-describedby="modification_date-desc"
+                      data-js="datepicker"
+                      placeholder="mm/dd/yyyy"
+                      name="Dataset[modification_date]"
+                      id="Dataset_modification_date"
+                      type="text"
+                      value="2012-09-14"
+                    />
+                    <p
+                      id="modification_date-desc"
+                      class="control-description help-block"
+                    >
+                      Format: mm/dd/yyyy
+                    </p>
+                    <div
+                      id="modification_date-error"
+                      role="alert"
+                      class="control-error help-block"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- end of row of two columns -->
+
+          <hr />
+
+          <div class="row form-block-5">
+            <div class="col-xs-12">
+              <div class="form-group">
+                <label
+                  class="control-label col-xs-4 required"
+                  for="Dataset_dataset_size"
+                  >Dataset Size<span aria-hidden="true"> *</span></label
+                >
+                <div class="col-xs-6 input-wrapper">
+                  <input
+                    required="required"
+                    size="60"
+                    maxlength="300"
+                    class="form-control"
+                    aria-required="true"
+                    name="Dataset[dataset_size]"
+                    id="Dataset_dataset_size"
+                    type="text"
+                    value="4294967296"
+                  />
+                  <div
+                    id="dataset_size-error"
+                    role="alert"
+                    class="control-error help-block"
+                  ></div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label
+                  class="control-label col-xs-4 required"
+                  for="Dataset_title"
+                  >Title<span aria-hidden="true"> *</span></label
+                >
+                <div class="col-xs-6 input-wrapper">
+                  <input
+                    required="required"
+                    size="60"
+                    maxlength="300"
+                    class="form-control"
+                    aria-required="true"
+                    name="Dataset[title]"
+                    id="Dataset_title"
+                    type="text"
+                    value="Genomic data of the Puerto Rican Parrot (<em>Amazona vittata</em>) from a locally funded project. "
+                  />
+                  <div
+                    id="title-error"
+                    role="alert"
+                    class="control-error help-block"
+                  ></div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-xs-4" for="Dataset_description"
+                  >Description</label
+                >
+                <div class="col-xs-6 input-wrapper">
+                  <textarea
+                    rows="8"
+                    cols="50"
+                    class="form-control"
+                    name="Dataset[description]"
+                    id="Dataset_description"
+                  >
+Irure laborum officia officia ex esse cupidatat cupidatat. Quis aute mollit aliqua adipisicing culpa elit elit labore non id. Ipsum magna enim excepteur elit reprehenderit eu eiusmod pariatur commodo nisi proident in do. Cupidatat irure nisi qui exercitation aute id duis.</textarea
+                  >
+                  <div
+                    id="description-error"
+                    role="alert"
+                    class="control-error help-block"
+                  ></div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-xs-4" for="keywords"
+                  >Keywords</label
+                >
+                <div class="col-xs-6 input-wrapper">
+                  <input
+                    class="form-control"
+                    size="60"
+                    maxlength="300"
+                    type="text"
+                    value=""
+                    name="keywords"
+                    id="keywords"
+                  />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="control-label col-xs-4" for="urltoredirect"
+                  >URL to redirect</label
+                >
+                <div class="col-xs-6 input-wrapper">
+                  <input
+                    class="form-control"
+                    size="60"
+                    maxlength="300"
+                    type="text"
+                    value=""
+                    name="urltoredirect"
+                    id="urltoredirect"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- end of row of one column -->
+
+          <!-- <a href="http://gigadb.gigasciencejournal.com:9170/curationlog/admin/id/5">Curation Log</a> -->
+
+          <hr />
+          <div class="form-block-6">
+            <a href="#" class="btn background-btn-o">Create New Log</a>
+            <div class="clear"></div>
+
+            <div id="dataset-grid" class="grid-view">
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th id="dataset-grid_c0">
+                      <a
+                        class="sort-link"
+                        href="#"
+                        >Creation Date</a
+                      >
+                    </th>
+                    <th id="dataset-grid_c1">
+                      <a
+                        class="sort-link"
+                        href="#"
+                        >Created By</a
+                      >
+                    </th>
+                    <th id="dataset-grid_c2">
+                      <a
+                        class="sort-link"
+                        href="#"
+                        >Action</a
+                      >
+                    </th>
+                    <th id="dataset-grid_c3">
+                      <a
+                        class="sort-link"
+                        href="#"
+                        >Comments</a
+                      >
+                    </th>
+                    <th id="dataset-grid_c4">
+                      <a
+                        class="sort-link"
+                        href="#"
+                        >Last Modified Date</a
+                      >
+                    </th>
+                    <th id="dataset-grid_c5">
+                      <a
+                        class="sort-link"
+                        href="#"
+                        >Last Modified By</a
+                      >
+                    </th>
+                    <th style="width: 100px" id="dataset-grid_c6">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="odd">
+                    <td>2023-11-15 00:00:00</td>
+                    <td>Joe Bloggs</td>
+                    <td>Comment</td>
+                    <td>Lorem Ipsum</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td class="button-column">
+                      <a
+                        title="View"
+                        class="fa fa-eye fa-lg icon icon-view"
+                        aria-label="View"
+                        href="#"
+                      ></a
+                      ><a
+                        title="Update"
+                        class="fa fa-pencil fa-lg icon icon-update"
+                        aria-label="Update"
+                        href="#"
+                      ></a
+                      ><a
+                        title="Delete"
+                        class="fa fa-trash fa-lg icon icon-delete"
+                        aria-label="Delete"
+                        href="#"
+                      ></a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div
+                class="keys"
+                style="display: none"
+                title="/adminDataset/update/id/5"
+              ></div>
+            </div>
+          </div>
+        </div>
+        <!-- end of container -->
+      </div>
+    </div>
+
+    <div class="col-xs-12 form-control-btns">
+      <a class="btn background-btn-o" href="#">Cancel and go back</a>
+      <input
+        class="btn background-btn submit-btn"
+        type="submit"
+        name="yt2"
+        value="Save"
+      />
+      <a href="#">Create/Reset Private URL</a>
+    </div>
+  </form>
+</section>

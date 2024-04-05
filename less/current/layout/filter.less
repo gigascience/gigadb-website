@@ -1,53 +1,83 @@
+.search-filter-sidebar {
+  .search-result-title {
+    font-size: 18px;
+    margin-bottom: 10px;
+    margin-top: 0;
+    .search-result-keyword {
+      font-weight: bold;
+    }
+  }
+}
 [class*="span"] {
   float: left;
   margin-left: 20px;
 }
-.filter-your-result {
+.filters-title {
   font-size: 18px;
   font-weight: bold;
-  color: #6ea23a;
-  margin-bottom: 20px !important;
+  color: @gigadb-green-on-white;
+  margin-top: 30px;
+  margin-bottom: 10px !important;
 }
 .filter {
   margin-bottom: 10px;
 }
-.filter h4 {
-  background: #a5cc7e;
-  background: -webkit-gradient(linear,0 0,0 bottom,from(#a5cc7e),to(#6ea23a));
-  background: -webkit-linear-gradient(#a5cc7e,#6ea23a);
-  background: -moz-linear-gradient(#a5cc7e,#6ea23a);
-  background: -ms-linear-gradient(#a5cc7e,#6ea23a);
-  background: -o-linear-gradient(#a5cc7e,#6ea23a);
-  background: linear-gradient(#a5cc7e,#6ea23a);
-  -pie-background: linear-gradient(#a5cc7e,#6ea23a);
-  behavior: url(/css/PIE.htc);
-  color: @color-true-white;
+.filter .toggle-btn {
+  width: 100%;
+  margin-bottom: -2px;
+  overflow: hidden;
+
+  border: none;
+  border-radius: 4px;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+
+  background: @color-gigadb-green;
+
+  color: @white-on-gigadb-green;
+  font-size: @font-size-h4;
+  font-weight: normal;
   line-height: 2em;
   text-align: center;
-  margin-bottom: -2px;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  border-radius: 4px;
+
   behavior: url(/css/PIE.htc);
-  overflow: hidden;
+
+  &:hover {
+    background: @color-gigadb-green-800;
+  }
+  &[aria-expanded="false"] {
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+  }
 }
-.filter .options {
+.filter .filter-content {
   border-left: 1px solid @color-medium-gray;
   border-bottom: 1px solid @color-medium-gray;
   border-right: 1px solid @color-medium-gray;
-  -webkit-border-bottom-right-radius: 4px;
-  -webkit-border-bottom-left-radius: 4px;
-  -moz-border-radius-bottomright: 4px;
-  -moz-border-radius-bottomleft: 4px;
   border-bottom-right-radius: 4px;
   border-bottom-left-radius: 4px;
   behavior: url(/css/PIE.htc);
-  padding: 5px 10px;
+  padding: 10px 15px;
 }
-.filter .options label {
-  display: inline;
-  color: @color-warm-black;
+.filter .options > span {
+  display: flex;
+  flex-direction: column;
+  margin-block: 8px;
+  gap: 12px;
+  .filter-checkbox {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    label {
+      display: inline;
+      color: @warm-black-on-white;
+      margin-left: 8px;
+      margin-bottom: 0;
+    }
+  }
 }
+
 .filter .options input.date {
   width: 150px;
 }
@@ -59,20 +89,10 @@
   margin-left: 5px;
   font-size: 11px;
 }
-.filter .disabled {
-  background-color: @color-light-gray;
-}
 .filter .disabled label,
 .filter .disabled input {
-  color: #8A8A8A;
+  color: @dark-gray-on-white;
 }
-.filter button.btn {
-  border-left: 1px solid @color-medium-gray;
-  border-right: 1px solid @color-medium-gray;
-  border-bottom: 0;
-  border-radius: 0;
-  width: 100%;
-  height: 20px;
-  padding-top: 1px;
-  font-weight: normal;
+.filter .btn-filter {
+  margin: 10px 0px;
 }

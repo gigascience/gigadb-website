@@ -1,8 +1,14 @@
-<h1>Modify Update Log <?php echo $model->id; ?></h1>
-<? if (Yii::app()->user->checkAccess('admin')) { ?>
-<div class="actionBar">
-[<?= CHtml::link('Manage Update Logs', array('admin')) ?>]
-</div>
-<? } ?>
+<div class="container">
+  <?php
+  $this->widget('TitleBreadcrumb', [
+    'pageTitle' => 'Update Update Log ' . $model->id,
+    'breadcrumbItems' => [
+      ['label' => 'Admin', 'href' => '/site/admin'],
+      ['label' => 'Manage', 'href' => '/datasetLog/admin'],
+      ['isActive' => true, 'label' => 'Update'],
+    ]
+  ]);
+  ?>
 
-<?php echo $this->renderPartial('_form', array('model'=>$model)); ?>
+  <?php echo $this->renderPartial('_form', array('model' => $model)); ?>
+</div>

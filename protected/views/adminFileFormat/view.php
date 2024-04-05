@@ -1,25 +1,23 @@
-<?php
-$this->breadcrumbs=array(
-	'File Formats'=>array('index'),
-	$model->name,
-);
+<div class="container">
+	<?php
+	$this->widget('TitleBreadcrumb', [
+		'pageTitle' => 'View FileFormat #' . $model->id,
+		'breadcrumbItems' => [
+			['label' => 'Admin', 'href' => '/site/admin'],
+			['label' => 'Manage', 'href' => '/adminFileFormat/admin'],
+			['isActive' => true, 'label' => 'View'],
+		]
+	]);
+	$this->widget('zii.widgets.CDetailView', array(
+		'data' => $model,
+		'attributes' => array(
+			'id',
+			'name',
+			'description',
+		),
+		'htmlOptions' => array('class' => 'table table-striped table-bordered dataset-view-table'),
+		'itemCssClass' => array('odd', 'even'),
+		'itemTemplate' => '<tr class="{class}"><th scope="row">{label}</th><td>{value}</td></tr>'
+	)); ?>
 
-$this->menu=array(
-	array('label'=>'List FileFormat', 'url'=>array('index')),
-	array('label'=>'Create FileFormat', 'url'=>array('create')),
-	array('label'=>'Update FileFormat', 'url'=>array('update', 'id'=>$model->id)),
-	array('label'=>'Delete FileFormat', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
-	array('label'=>'Manage FileFormat', 'url'=>array('admin')),
-);
-?>
-
-<h1>View FileFormat #<?php echo $model->id; ?></h1>
-
-<?php $this->widget('zii.widgets.CDetailView', array(
-	'data'=>$model,
-	'attributes'=>array(
-		'id',
-		'name',
-		'description',
-	),
-)); ?>
+</div>

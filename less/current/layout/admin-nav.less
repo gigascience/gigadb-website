@@ -1,14 +1,27 @@
-.admin-nav {
-  .admin-nav-col-container {
-    .admin-nav-col {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      min-width: fit-content;
-      a {
-        min-width: fit-content;
-        white-space: nowrap;
-      }
+.three-column-list {
+  columns: 3;
+  -webkit-columns: 3;
+  -moz-columns: 3;
+  list-style: none;
+  padding: 0;
+  margin: 10px 0 0 0;
+  li {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    -webkit-column-break-inside: avoid;
+    padding-inline: 30px;
+    a {
+      display: block;
+      margin-bottom: 10px;
+      border-radius: 4px;
     }
+  }
+}
+
+@media (max-width: 768px) {
+  .three-column-list {
+    columns: 1;
+    -webkit-columns: 1;
+    -moz-columns: 1;
   }
 }

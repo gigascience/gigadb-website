@@ -1,74 +1,51 @@
 // @ts-check
 const { test, expect } = require('@playwright/test');
 const AxeBuilder = require('@axe-core/playwright').default;
-
-// NOTE the commented out paths have pending color contrast issues
-const PUBLIC_PATHS = [
-  '/',
-  '/dataset/100006',
-  // '/search/new?keyword=Genomic&type%5B%5D=dataset&dataset_type%5B%5D=Genomic',
-  // '/site/contact',
-  '/site/help',
-  '/site/guide',
-  '/site/guidegenomic',
-  '/site/guideimaging',
-  '/site/guidemetabolomic',
-  '/site/guideepigenomic',
-  '/site/guidemetagenomic',
-  '/site/guidesoftware',
-  '/site/faq',
-  '/site/about',
-  '/site/team',
-  '/site/advisory',
-  '/site/term',
-  '/site/login',
-  '/site/forgot',
-  '/site/thanks',
-  // '/site/create',
-  'site/mapbrowse',
-];
-
-const USER_PATHS = [
-  'user/view_profile',
-  // 'datasetSubmission/upload'
-]
-
-const ADMIN_PATHS = [
-  // 'site/admin',
-  // 'adminDataset/admin',
-  // 'adminDataset/create',
-]
-
+const TAG = require('../tags');
+const { PUBLIC_PATHS, USER_PATHS, ADMIN_PATHS } = require('../paths');
 
 const runAccessibilityTests = (paths, storageStatePath) => {
-  paths.forEach((path) => {
-    test.describe(`Page ${path}`, () => {
-      if (storageStatePath) {
-        test.use({ storageState: storageStatePath });
-      }
+  paths.forEach((pathEntry) => {
+    let path;
+    let disabledElements = [];
+    let tags = [];
 
-      async function runColorContrastScan (page) {
-        await page.goto(path, { waitUntil: 'networkidle' });
-        const accessibilityScanResults = await new AxeBuilder({ page })
-          .withRules(['color-contrast'])
-          .exclude('.text-icon')
-          .exclude('.image-background')
-          .analyze();
 
-        return accessibilityScanResults;
-      };
+    if (typeof pathEntry === 'string') {
+      path = pathEntry;
+    } else {
+      path = pathEntry.path;
+      disabledElements = TAG.SKIP_DISABLED_ELEMENTS ? (pathEntry.disabledElements || []) : [];
+      tags = pathEntry.tags || [];
+    }
 
-      test('should not have any color contrast issues', async ({ page }) => {
-        const results = await runColorContrastScan(page);
+    const shouldRunTest = TAG.RUN_ALL || (tags.length === 0 ? TAG.DEFAULT : tags.some(tag => TAG[tag]));
 
-        // NOTE color contrast issues are not reported as violations but as incomplete checks, see https://github.com/dequelabs/axe-core/blob/master/doc/API.md#results-object
-        expect(results.violations).toEqual([]);
-        expect(results.incomplete.filter((item) => item.id === 'color-contrast')).toEqual([]);
+    if (shouldRunTest) {
+      test.describe(`Page ${path}`, () => {
+        if (storageStatePath) {
+          test.use({ storageState: storageStatePath });
+        }
+
+        test('should not have any accessibility violations outside of elements with known issues', async ({ page }) => {
+          await page.goto(path, { waitUntil: 'networkidle' });
+
+          let axeBuilder = new AxeBuilder({ page });
+
+          disabledElements.forEach(el => {
+            axeBuilder = axeBuilder.exclude(el);
+          });
+
+          const accessibilityScanResults = await axeBuilder.analyze();
+
+          expect(accessibilityScanResults.violations).toEqual([]);
+          expect(accessibilityScanResults.incomplete.filter((item) => item.id === 'color-contrast')).toEqual([]);
+        });
       });
-    });
+    }
   });
 }
 
-runAccessibilityTests(PUBLIC_PATHS);
-runAccessibilityTests(USER_PATHS, '.auth/user.json');
-runAccessibilityTests(ADMIN_PATHS, '.auth/admin.json');
+(TAG.RUN_ALL || TAG.PUBLIC) && runAccessibilityTests(PUBLIC_PATHS);
+(TAG.RUN_ALL || TAG.USER) && runAccessibilityTests(USER_PATHS, '.auth/user.json');
+(TAG.RUN_ALL || TAG.ADMIN) && runAccessibilityTests(ADMIN_PATHS, '.auth/admin.json');

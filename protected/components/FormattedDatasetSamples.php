@@ -10,14 +10,14 @@
  */
 class FormattedDatasetSamples extends DatasetComponents implements DatasetSamplesInterface
 {
-    private $_cachedDatasetSamples;
-    private $_pageSize;
+    private DatasetSamplesInterface $_cachedDatasetSamples;
+    private $pager;
 
-    public function __construct(int $pageSize, DatasetSamplesInterface $datasetSamples)
+    public function __construct(CPagination $pager, DatasetSamplesInterface $datasetSamples)
     {
         parent::__construct();
         $this->_cachedDatasetSamples = $datasetSamples;
-        $this->_pageSize = $pageSize;
+        $this->pager = $pager;
     }
 
     /**
@@ -45,10 +45,10 @@ class FormattedDatasetSamples extends DatasetComponents implements DatasetSample
      *
      * @return array of samples array map
      */
-    public function getDatasetSamples(): array
+    public function getDatasetSamples(?string $limit = "ALL", ?int $offset = 0): array
     {
         $formatted_samples = [];
-        $samples =   array_filter($this->_cachedDatasetSamples->getDatasetSamples());
+        $samples =   array_filter($this->_cachedDatasetSamples->getDatasetSamples($limit, $offset));
         foreach ($samples as &$sample) {
             $sample['taxonomy_link'] = "<a href=\"http://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?mode=Info&amp;id=" . $sample['tax_id'] . "\">" . $sample['tax_id'] . "</a>";
             $sample['displayAttr'] = self::getDisplayAttr($sample['sample_id'], $sample['sample_attributes']);
@@ -63,22 +63,39 @@ class FormattedDatasetSamples extends DatasetComponents implements DatasetSample
      */
     public function getDataProvider(): CArrayDataProvider
     {
-        $samples = $this->getDatasetSamples();
-        $dataProvider = new CArrayDataProvider($samples, array(
-            'sort' => array('defaultOrder' => 't.name ASC',
-                            'attributes' => array(
-                                    'name',
-                                    'common_name',
-                                    'genbank_name',
-                                    'scientific_name',
-                                    'tax_id',
-                                )),
-            'pagination' => null
+        $totalSampleCount = $this->countDatasetSamples() ;
+        $this->pager->setItemCount($totalSampleCount);
+        $this->pager->pageVar = "Samples_page";
+
+
+        $currentPage = $this->pager->getCurrentPage();
+        $nbToSkip = $currentPage*$this->pager->getPageSize();
+
+        $samples = $this->getDatasetSamples($this->pager->getPageSize(), $nbToSkip);
+        if (defined('YII_DEBUG') && true === YII_DEBUG) {
+            Yii::log("Current page: $currentPage", 'info');
+            Yii::log("nb samples returned: " . count($samples), 'info');
+        }
+
+        $dataProvider = new CArrayDataProvider(null,
+            array(
+                'totalItemCount' => $totalSampleCount,
+                'sort' => array('defaultOrder' => 't.name ASC',
+                    'attributes' => array(
+                        'name',
+                        'common_name',
+                        'genbank_name',
+                        'scientific_name',
+                        'tax_id',
+                    )),
+                'pagination' => null
             ));
-        $samples_pagination = new CPagination(count($samples));
-        $samples_pagination->setPageSize($this->_pageSize);
-        $samples_pagination->pageVar = "Samples_page";
-        $dataProvider->setPagination($samples_pagination);
+        $dataProvider->setPagination($this->pager);
+        $dataProvider->setData($samples);
+        if (defined('YII_DEBUG') && true === YII_DEBUG) {
+            Yii::log("Sample Item count: " . $dataProvider->getItemCount(), "info");
+            Yii::log("Sample Total count: " . $dataProvider->getTotalItemCount(), "info");
+        }
         return $dataProvider;
     }
 
@@ -117,11 +134,21 @@ class FormattedDatasetSamples extends DatasetComponents implements DatasetSample
             $display = "<span class=\"js-short-$sample_id\">$shortDesc</span>
         		<span class=\"js-long-$sample_id\" style=\"display: none;\">$fullDesc</span>";
             if ($shortDesc) {
-                    $display .= "<a href='#' class='js-desc' data='$sample_id'>+</a>";
+                    $display .= "<button class='js-desc btn btn-link' data='$sample_id' aria-label='show more' aria-expanded='false' aria-controls='js-long-$sample_id'>+</button>";
             }
         } elseif ($num <= 3 && $num > 0) {
             $display = "<span class=\"js-long-$sample_id\">$fullDesc</span>";
         }
         return $display;
+    }
+
+    /**
+     * count number of samples associated to a dataset
+     *
+     * @return int how many samples are associated with the dataset
+     */
+    public function countDatasetSamples(): int
+    {
+        return $this->_cachedDatasetSamples->countDatasetSamples();
     }
 }

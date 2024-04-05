@@ -14,15 +14,15 @@ img {
 .thumbnail .caption {
   padding: 15px;
 }
-.thumbnail .caption h3 {
+.thumbnail .caption :is(h3, .h3) {
   margin: 0px 0px 10px;
   font-size: 18px;
   color: @color-warm-black;
   line-height: 28px;
 }
-.thumbnail .caption h3 > small {
+.thumbnail .caption :is(h3, .h3) > small {
   font-size: 13px;
-  color: @color-dark-gray;
+  color: @color-darker-gray;
 }
 .thumbnail .member-social-list {
   margin: 0px;
@@ -40,9 +40,11 @@ img {
   margin-left: 10px;
 }
 
+.citation-popup {
+  margin-right: 10px;
+}
 .dataset-des-images {
   max-height: 50px;
-  margin-right: 10px;
   height: 28px;
 }
 .dataset-des-images:hover {

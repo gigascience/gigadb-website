@@ -42,6 +42,8 @@ class DatasetLogController extends Controller
 	 */
 	public function actionView()
 	{
+		$this->layout = 'new_datasetpage';
+
 		if(isset($_GET['id'])) {
 			$this->render('view',array(
 				'model'=>$this->loadModel($_GET['id']),
@@ -67,6 +69,7 @@ class DatasetLogController extends Controller
 				$this->redirect(array('view','id'=>$model->id));
 		}
 
+		$this->layout = 'new_datasetpage';
 		$this->render('create',array(
 			'model'=>$model,
 		));
@@ -92,6 +95,7 @@ class DatasetLogController extends Controller
 					$this->redirect(array('view','id'=>$model->id));
 			}
 
+			$this->layout = 'new_datasetpage';
 			$this->render('update',array(
 				'model'=>$model,
 			));
@@ -128,6 +132,8 @@ class DatasetLogController extends Controller
 		if(isset($_GET['DatasetLog']))
 			$model->setAttributes($_GET['DatasetLog']);
 
+		$this->layout = 'new_main';
+		$this->loadBaBbqPolyfills = true;
 		$this->render('admin',array(
 			'model'=>$model,
 		));

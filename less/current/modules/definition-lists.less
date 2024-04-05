@@ -1,0 +1,19 @@
+dl {
+  font-size: 13px;
+  .dl-item-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  dt {
+    color: @dark-gray-on-white;
+    font-weight: bold;
+    &::after {
+      content: " - ";
+      font-weight: normal;
+    }
+  }
+  dd {
+    color: @dark-gray-on-white;
+  }
+}
