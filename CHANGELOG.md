@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1624: FUW - Apply formatting, minor refactoring, clean up and best practices to Vue code
 - Feat #1618: Allow customization of email sent to author after "DataPending" status is set
 - Security #1626: FUW - Update node version to the latest recommended to avoid openssl hack. Minimize dependency vulnerabilities.
 - Fix #1639: Paginate files and samples SQL queries on dataset pages to avoid running out of memory
