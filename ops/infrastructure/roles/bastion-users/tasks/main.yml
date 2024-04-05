@@ -149,5 +149,15 @@
         mode: g-rw,o-rw
   when: (public_key_in_bastion.stat.exists == false and public_key_in_gitlab.status == 200)
 
+- name: Read credentials from CSV file and return a dictionary
+  community.general.read_csv:
+    path: "{{ credentials_csv_path }}"
+  register: credentials
+  delegate_to: localhost
+
+- ansible.builtin.debug:
+    msg: "{{credentials.list}}"
+
+
 - name: Restart systemd sshd service
   command: systemctl restart sshd.service
