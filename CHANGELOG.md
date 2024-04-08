@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Fix #1713: Make curation log recognize user's full name
 - Feat #1767: Restyle and reorder the buttons in create / edit dataset admin page
  
 ## v4.2.8 - 2024-05-28 - 771372fbb 
