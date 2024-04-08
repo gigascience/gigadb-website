@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Fix #1713: Make curation log recognize user's full name
 - Fix #2016: Avoid adding logs if the curator is not updated
 
 ## v4.4.15 - 2025-07-23 - a60aa8aa5 - live since 2025-07-24
