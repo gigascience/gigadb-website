@@ -156,7 +156,24 @@
   delegate_to: localhost
 
 - ansible.builtin.debug:
-    msg: "{{credentials.list}}"
+    msg: "{{credentials.list.0}}"
+
+- name: Create a .aws directory fo the new user
+  ansible.builtin.file:
+    path: "/home/{{ newuser }}/.aws"
+    state: directory
+    mode: '0755'
+    owner: "{{ newuser }}"
+    group: "{{ newuser }}"
+
+
+- name: Create AWS credential file for access to Wasabi using rclone
+  template:
+    src: ./credentials.j2
+    dest: "/home/{{ newuser }}/.aws/credentials"
+    owner: "{{ newuser }}"
+    group: "{{ newuser }}"
+    mode: 0644
 
 
 - name: Restart systemd sshd service
