@@ -74,5 +74,5 @@ We do not need to transition to archive (the third storage class) because dropbo
 ## Other settings
 
 Currently, the encryption-at-rest is disabled (`enable_backup_policy = false`) and so are the inter-region replication (`create_replication_configuration = false`) and the backup policy (`enable_backup_policy = false`).
-They do not seem to be needed features for now but ew need to have discussion with the business to confirm and wether the need could surface over time. There performance and cost factors associated with enabling those features.
+They do not seem to be needed features for now but we need to have discussion with the business to confirm and wether the need could surface over time. There performance and cost factors associated with enabling those features.
 
