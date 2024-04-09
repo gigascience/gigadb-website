@@ -315,6 +315,6 @@ output "efs_filesystem_size_in_bytes" {
 }
 
 output "efs_filesystem_access_points" {
-  value = module.gigadb_efs.access_points
+  value = values(module.gigadb_efs.access_points)[*].id
 }
 
