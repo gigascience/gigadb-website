@@ -158,6 +158,19 @@ RUN if [ ${INSTALL_TIDEWAYS_XHPROF} = true ]; then \
     echo "auto_prepend_file=/usr/local/src/xhgui-0.8.1/external/header.php" > /usr/local/etc/php/conf.d/xhgui.ini \
 ;fi
 
+ARG INSTALL_TIDEWAYSPHP=false
+
+# install tideways extension
+RUN if [ ${INSTALL_TIDEWAYSPHP} = true ]; then \
+    apt-get update -yq && \
+    apt-get install -yq --no-install-recommends gpg wget ca-certificates && \
+    echo 'deb [signed-by=/usr/share/keyrings/tideways.gpg] https://packages.tideways.com/apt-packages-main any-version main' | tee /etc/apt/sources.list.d/tideways.list && \
+    wget -qO - 'https://packages.tideways.com/key.gpg' | gpg --dearmor > /usr/share/keyrings/tideways.gpg && \
+    apt-get update -yq && \
+    apt-get install -yq tideways-php && \
+    apt-get clean -yq \
+;fi
+
 ARG INSTALL_LIBSODIUM=false
 
 RUN if [ ${INSTALL_LIBSODIUM} = true ]; then \

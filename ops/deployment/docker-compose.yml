@@ -66,6 +66,10 @@ services:
     environment:
       YII_PATH: ${YII_PATH}
       YII2_PATH: ${YII2_PATH}
+      TIDEWAYS_APIKEY: ${TIDEWAYS_APIKEY}
+      TIDEWAYS_SERVICE: $CI_PROJECT_PATH
+      TIDEWAYS_SAMPLERATE: 25
+      TIDEWAYS_CONNECTION: tcp://tideways-daemon:9135
     build:
       context: .
       dockerfile: ../packaging/Dockerfile
@@ -80,6 +84,7 @@ services:
         - APCU_VERSION=$APCU_VERSION
         - INSTALL_MAILPARSE=true
         - INSTALL_GIT=true
+        - INSTALL_TIDEWAYSPHP=true
     volumes:
       # Gigadb webapp
       - ${APPLICATION}/protected:/var/www/protected
@@ -111,6 +116,15 @@ services:
     networks:
       - web-tier
       - db-tier
+
+  tideways-daemon:
+    environment:
+      TIDEWAYS_ENVIRONMENT: $GIGADB_ENV
+    build:
+      context: .
+      dockerfile: ../packaging/Tideways-Dockerfile
+    expose:
+      - "9135"
 
   database:
     <<: *logging
