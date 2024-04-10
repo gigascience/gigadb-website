@@ -67,7 +67,7 @@ services:
       YII_PATH: ${YII_PATH}
       YII2_PATH: ${YII2_PATH}
       TIDEWAYS_APIKEY: ${TIDEWAYS_APIKEY}
-      TIDEWAYS_SERVICE: $CI_PROJECT_PATH
+      TIDEWAYS_SERVICE: ${GIGADB_ENV}
       TIDEWAYS_SAMPLERATE: 25
       TIDEWAYS_CONNECTION: tcp://tideways-daemon:9135
     build:
@@ -119,7 +119,7 @@ services:
 
   tideways-daemon:
     environment:
-      TIDEWAYS_ENVIRONMENT: $GIGADB_ENV
+      TIDEWAYS_ENVIRONMENT: ${GIGADB_ENV}-${REPO_NAME}
     build:
       context: .
       dockerfile: ../packaging/Tideways-Dockerfile
