@@ -68,8 +68,9 @@ services:
       YII2_PATH: ${YII2_PATH}
       TIDEWAYS_APIKEY: ${TIDEWAYS_APIKEY}
       TIDEWAYS_SERVICE: ${GIGADB_ENV}
-      TIDEWAYS_SAMPLERATE: 25
+      TIDEWAYS_SAMPLERATE: 75
       TIDEWAYS_CONNECTION: tcp://tideways-daemon:9135
+      tideways_sql_long_query_time_ms: 50
     build:
       context: .
       dockerfile: ../packaging/Dockerfile
