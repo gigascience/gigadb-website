@@ -125,6 +125,8 @@ services:
       dockerfile: ../packaging/Tideways-Dockerfile
     expose:
       - "9135"
+    networks:
+      - web-tier
 
   database:
     <<: *logging
