@@ -26,8 +26,9 @@ class DatasetFilesUpdaterTest extends \Codeception\Test\Unit
     }
 
     /**
-     * Test size of files in dataset 100039 can be updated using
-     * information in 100039.filesizes file.
+     * Test size of files in dataset 100040 is not updated because
+     * there is no 100040.filesizes file in gigadb-datasets-metadata
+     * S3 bucket.
      */
     public function testUpdateFileSizesWithNonExistentFile(): void
     {
