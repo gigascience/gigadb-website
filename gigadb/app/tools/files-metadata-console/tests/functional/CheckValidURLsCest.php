@@ -16,9 +16,6 @@ class CheckValidURLsCest
         "https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006/phylogeny_study_update/",
     ];
 
-    /**
-     * @skip Skipping this test due to unreliable resolution of URLs
-     */
     public function tryReportIssues(\FunctionalTester $I): void {
         $expectedIssues = [
             "URL appears to be a directory listing",
