@@ -4,6 +4,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1717 #1715 #1716: remove Google Plus link, update X logo and add Mastodon link to social media links
+
 ## v4.2.3 - 2024-04-08 - f084f51dd 
 
 - Feat #1618: FUW - Allow customization of email sent to author after "DataPending" status is set
