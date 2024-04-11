@@ -303,13 +303,8 @@ class File extends CActiveRecord
         // Save the size from file if not set by user
         if ($this->attributes['location'] && $this->attributes['name']) {
             $size = trim($this->attributes['size']);
-            if (empty($size)) {
-                if (!file_exists(ReadFile::TEMP_FOLDER . $this->attributes['name'])) {
-                    ReadFile::downloadRemoteFile($this->attributes['location'], $this->attributes['name']);
-                }
-                if (empty($this->size)) {
-                    $this->size = filesize(ReadFile::TEMP_FOLDER . $this->name);
-                }
+            if (!empty($size)) {
+                $this->size = $size;
             }
         }
     }
