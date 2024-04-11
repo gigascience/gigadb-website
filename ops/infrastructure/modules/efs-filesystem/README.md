@@ -25,7 +25,7 @@ This module will provision an EFS resource in the selected region, as well as an
 | Type | filter | description |
 | --- | --- | --- |
 | aws_region | current | return the current region |
-| aws_availability_zones" | available | return list of all the availability zone in the current region |
+| aws_availability_zones | available | return list of all the availability zone in the current region |
 | aws_caller_identity | current | return details about the current IAM user |
 
 
