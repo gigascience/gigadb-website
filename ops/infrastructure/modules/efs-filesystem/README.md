@@ -63,13 +63,15 @@ the module is configured with the following settings
 
 | setting | value | description |
 | --- | --- | --- |
-| transition_to_ia | AFTER_30_DAYS | IA: Inactive data that is accessed only a few times each quarter | 
-| transition_to_primary_storage_class | AFTER_1_ACCESS | Primary: Active data requiring fast sub-millisecond latency performance | 
+| transition_to_ia | AFTER_7_DAYS | IA: Inactive data that is accessed only a few times each quarter. We transition in that state after 7 days | 
+| transition_to_primary_storage_class | AFTER_1_ACCESS | Primary: Active data requiring fast sub-millisecond latency performance. We transition to that state after 1 access | 
 
 
 We do not need to transition to archive (the third storage class) because dropbox are for transcient files (up to 3 months).
 
-(for more info see https://docs.aws.amazon.com/efs/latest/ug/availability-durability.html#storage-classes)
+For more info see:
+* https://docs.aws.amazon.com/efs/latest/ug/availability-durability.html#storage-classes
+* https://docs.amazonaws.cn/en_us/efs/latest/ug/API_LifecyclePolicy.html
 
 ## Other settings
 
