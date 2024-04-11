@@ -149,32 +149,34 @@
         mode: g-rw,o-rw
   when: (public_key_in_bastion.stat.exists == false and public_key_in_gitlab.status == 200)
 
-- name: Read credentials from CSV file and return a dictionary
-  community.general.read_csv:
-    path: "{{ credentials_csv_path }}"
-  register: credentials
-  delegate_to: localhost
+- name: Create credentials file for user
+  block:
+  - name: Read credentials from CSV file and return a dictionary
+    community.general.read_csv:
+      path: "{{ credentials_csv_path }}"
+    register: credentials
+    delegate_to: localhost
 
-- ansible.builtin.debug:
-    msg: "{{credentials.list.0}}"
+  - ansible.builtin.debug:
+      msg: "{{credentials.list.0}}"
 
-- name: Create a .aws directory fo the new user
-  ansible.builtin.file:
-    path: "/home/{{ newuser }}/.aws"
-    state: directory
-    mode: '0755'
-    owner: "{{ newuser }}"
-    group: "{{ newuser }}"
+  - name: Create a .aws directory fo the new user
+    ansible.builtin.file:
+      path: "/home/{{ newuser }}/.aws"
+      state: directory
+      mode: '0755'
+      owner: "{{ newuser }}"
+      group: "{{ newuser }}"
 
 
-- name: Create AWS credential file for access to Wasabi using rclone
-  template:
-    src: ./credentials.j2
-    dest: "/home/{{ newuser }}/.aws/credentials"
-    owner: "{{ newuser }}"
-    group: "{{ newuser }}"
-    mode: 0644
-
+  - name: Create AWS credential file for access to Wasabi using rclone
+    template:
+      src: ./credentials.j2
+      dest: "/home/{{ newuser }}/.aws/credentials"
+      owner: "{{ newuser }}"
+      group: "{{ newuser }}"
+      mode: 0644
+  when: credentials_csv_path is defined
 
 - name: Restart systemd sshd service
   command: systemctl restart sshd.service
