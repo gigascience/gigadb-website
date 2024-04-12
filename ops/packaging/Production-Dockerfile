@@ -185,11 +185,12 @@ RUN if [ ${INSTALL_GIT} = true ]; then \
 
 ARG INSTALL_APCU=false
 ARG APCU_VERSION=5.1.21
+ARG APCU_SHM_SIZE=64M
 
 RUN if [ ${INSTALL_APCU} = true ]; then \
     pecl install apcu-${APCU_VERSION} && \
     echo "extension=apcu.so" >  /usr/local/etc/php/conf.d/apcu.ini && \
-    echo 'apc.shm_size="2048M"' | tee -a /usr/local/etc/php/conf.d/apcu.ini \
+    echo "apc.shm_size=\"${APCU_SHM_SIZE}\"" | tee -a /usr/local/etc/php/conf.d/apcu.ini \
 ;fi
 
 RUN usermod -u 1000 www-data

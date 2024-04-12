@@ -33,6 +33,7 @@ services:
         - "registry.gitlab.com/$CI_PROJECT_PATH/production_app:${GIGADB_ENV}"
       args:
         - TARGET_PHP_VERSION=${PHP_VERSION}
+        - APCU_SHM_SIZE=${PHP_APCU_MEMORY}
         - INSTALL_OPCACHE=true
         - INSTALL_INTL=true
         - INSTALL_COMPOSER=false
