@@ -306,10 +306,13 @@ $sampleDataProvider = $samples->getDataProvider();
 
 
                 <div class="tab-content">
+                <?php
+                    if ($sampleDataProvider->getTotalItemCount() > 0) {
+                        $samplesPerPage = $sampleDataProvider->getItemCount();
+                        $totalNbSamples = $sampleDataProvider->getTotalItemCount();
 
-                    <?php if (count($model->samples) > 0) {
+                        if (count($model->samples) > 0) {
                     ?>
-
                         <div role="tabpanel" class="tab-pane active" id="sample">
 
                             <p class="pull-left">
@@ -343,14 +346,35 @@ $sampleDataProvider = $samples->getDataProvider();
 
                                 </tbody>
                             </table>
-                            <?php
-                            $this->widget('SiteLinkPager', array(
-                                'id' => 'samples-pager',
-                                'pages' => $sampleDataProvider->getPagination(),
-                            ));
-                            ?>
+                            <div class="table-footer">
+                                <?php
+                                if ($samplesPerPage <> $totalNbSamples) {
+                                  ?>
+                                  <div class="pagination-wrapper">
+                                  <?
+                                    $this->widget('SiteLinkPager', array(
+                                        'id' => 'samples-pager',
+                                        'pages' => $sampleDataProvider->getPagination(),
+                                    ));
+                                ?>
+                                <div class="page-selector">
+                                  <button class="btn background-btn-o" id="samplesPageButton" onclick="goToSamplesPage()">Go to page</button>
+                                  <input type="number" id="samplesPageInput" class="page_box" onkeypress="detectEnterKeyPress(event)" min="1" max="<?= $sampleDataProvider->getPagination()->getPageCount() ?>" aria-label="Enter page number">
+                                  <span class="page-selector-label"> of <?php echo $sampleDataProvider->getPagination()->getPageCount() ?></span>
+                                </div>
+                                </div>
+                                <?php
+                              }
+                              ?>
+                                <div class="pull-right">
+                                    <div class="summary">Displaying <?php echo $filesPerPage ?> files of <?php echo $totalNbFiles ?></div>
+                                </div>
+                                </div>
+
                         </div>
-                    <?php }
+                    <?php
+                      }
+                    }
                     ?>
                     <?php
                     if ($fileDataProvider->getTotalItemCount() > 0) {
@@ -424,9 +448,9 @@ $sampleDataProvider = $samples->getDataProvider();
                                     ));
                                 ?>
                                 <div class="page-selector">
-                                <button class="btn background-btn-o" onclick="goToPage()">Go to page</button>
-                                <input type="number" id="pageNumber" class="page_box" onkeypress="detectEnterKeyPress()" min="1" max="<?= $fileDataProvider->getPagination()->getPageCount() ?>" aria-label="Enter page number">
-                                <span class="page-selector-label"> of <?php echo $fileDataProvider->getPagination()->getPageCount() ?></span>
+                                  <button class="btn background-btn-o" id="filesPageButton" onclick="goToFilesPage()">Go to page</button>
+                                  <input type="number" id="filesPageInput" class="page_box" onkeypress="detectEnterKeyPress(event)" min="1" max="<?= $fileDataProvider->getPagination()->getPageCount() ?>" aria-label="Enter page number">
+                                  <span class="page-selector-label"> of <?php echo $fileDataProvider->getPagination()->getPageCount() ?></span>
                                 </div>
                                 </div>
                                 <?php } ?>
@@ -843,6 +867,26 @@ $sampleDataProvider = $samples->getDataProvider();
         });
     </script>
     <script>
+      function handleInitFilesPage() {
+          let currentPageNumber = 1;
+
+          const match = window.location.pathname.match(/Files_page\/(\d+)/);
+          if (match && match[1]) {
+              currentPageNumber = parseInt(match[1], 10);
+          }
+
+          $('#pageNumber').val(currentPageNumber);
+      }
+      function handleInitSamplesPage() {
+          let currentPageNumber = 1;
+
+          const match = window.location.pathname.match(/Samples_page\/(\d+)/);
+          if (match && match[1]) {
+              currentPageNumber = parseInt(match[1], 10);
+          }
+
+          $('#pageNumber').val(currentPageNumber);
+      }
       function handleInitPagination() {
           let currentPageNumber = 1;
 
@@ -854,35 +898,69 @@ $sampleDataProvider = $samples->getDataProvider();
           $('#pageNumber').val(currentPageNumber);
       }
 
-        function goToPage() {
-            var targetPageNumber = document.getElementById('pageNumber').value;
-            var pageID = <?php echo $model->identifier ?>;
-            //To validate page number
-            var userInput = parseInt(targetPageNumber);
-            var max = <?php echo $fileDataProvider->getPagination()->getPageCount() ?>;
-            //To output total pages
-            // console.log(max);
-            var min = 1;
-            if (userInput >= min && userInput <= max) {
-                console.log("Valid page number!");
-            } else if (userInput > max) {
-                targetPageNumber = max;
-                console.log("Error, return to " + max);
-            } else if (userInput < min) {
-                targetPageNumber = min;
-                console.log("Error, return to " + min);
-            }
-            // Create array with default values
-            let targetUrlArray = ["", "dataset", "view", "id", pageID];
-            targetUrlArray.push('Files_page', targetPageNumber);
-            window.location = window.location.origin + targetUrlArray.join("/");
+      function isNumber(value) {
+        return typeof value === 'number' && !isNaN(value) && isFinite(value);
+      }
+
+
+      function computePageNumber(userInput, min, max) {
+        const [_userInput, _min, _max] = [parseInt(userInput), parseInt(min), parseInt(max)];
+
+        if (![_userInput, _min, _max].every(isNumber)) {
+          console.error("computePageNumber: Invalid input")
+          return _min; // Default fallback to minimum page
         }
 
-        function detectEnterKeyPress() {
-            if (event.which === 13 || event.keyCode === 13 || event.key === "Enter") {
-                goToPage();
-            }
+        if (_userInput >= _min && _userInput <= _max) {
+          console.log("Valid page number!");
+          return _userInput;
+        } else if (_userInput > _max) {
+          console.log("Error, return to " + _max);
+          return _max;
+        } else if (_userInput < _min) {
+          console.log("Error, return to " + _min);
+          return _min;
         }
+      }
+
+      function goToFilesPage() {
+        const pageID = <?php echo $model->identifier ?>;
+        //To validate page number
+        const max = <?php echo $fileDataProvider->getPagination()->getPageCount() ?>;
+        const min = 1;
+        let targetPageNumber = document.getElementById("filesPageInput").value;
+        const userInput = parseInt(targetPageNumber);
+        const targetUrlArray = ["", "dataset", "view", "id", pageID];
+
+        targetUrlArray.push('Files_page', computePageNumber(userInput, min, max));
+        window.location = window.location.origin + targetUrlArray.join("/");
+      }
+
+      function goToSamplesPage() {
+        const pageID = <?php echo $model->identifier ?>;
+        //To validate page number
+        const max = <?php echo $sampleDataProvider->getPagination()->getPageCount() ?>;
+        const min = 1;
+        let targetPageNumber = document.getElementById("samplesPageInput").value;
+        const userInput = parseInt(targetPageNumber);
+        const targetUrlArray = ["", "dataset", "view", "id", pageID];
+
+        targetUrlArray.push('Samples_page', computePageNumber(userInput, min, max));
+        window.location = window.location.origin + targetUrlArray.join("/");
+      }
+
+      function detectEnterKeyPress(event) {
+        const validIds = ["filesPageInput", "samplesPageInput"];
+        const id = event.target.id;
+
+        if (!validIds.includes(id)) {
+          return
+        }
+
+        if (event.which === 13 || event.keyCode === 13 || event.key === "Enter") {
+          id === "filesPageInput" ? goToFilesPage() : goToSamplesPage();
+        }
+      }
 
       function handlePaginationCssClasses() {
         $("ul.yiiPager li.first-visible").removeClass("first-visible");
