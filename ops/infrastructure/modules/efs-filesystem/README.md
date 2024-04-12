@@ -6,8 +6,8 @@ This module will provision an EFS resource in the selected region, as well as an
 
 | name | description |
 | --- | --- |
-| vpc | vpc object instanciated by the vpc module, needed to access the provisioned private subnets |
-| deployment_target | target environment, used for taggging |
+| vpc | vpc object instantiated by the vpc module, needed to access the provisioned private subnets |
+| deployment_target | target environment, used for tagging |
 | owner | username of the developer, used for tagging | 
 
 ## Output used in main terraform files
