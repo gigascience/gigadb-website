@@ -367,7 +367,7 @@ $sampleDataProvider = $samples->getDataProvider();
                               }
                               ?>
                                 <div class="pull-right">
-                                    <div class="summary">Displaying <?php echo $filesPerPage ?> files of <?php echo $totalNbFiles ?></div>
+                                    <div class="summary">Displaying <?php echo $samplesPerPage ?> samples of <?php echo $totalNbSamples ?></div>
                                 </div>
                                 </div>
 
