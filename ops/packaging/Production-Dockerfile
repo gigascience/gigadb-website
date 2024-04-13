@@ -214,6 +214,14 @@ ARG TARGET_PHP_VERSION=7.0
 COPY ops/configuration/php-conf/php-production.ini /usr/local/etc/php/php.ini
 COPY ops/configuration/php-conf/gigadb.pool.conf /usr/local/etc/php-fpm.d/www.conf
 COPY ops/configuration/php-conf/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
+ARG MAX_CHILDREN=5
+ARG START_SERVERS=5
+ARG MIN_SPARE_SERVERS=3
+ARG MAX_SPARE_SERVERS=3
+RUN sed -i "s/pm.max_children = 0/pm.max_children = ${MAX_CHILDREN}/" /usr/local/etc/php-fpm.d/www.conf
+RUN sed -i "s/pm.start_servers = 0/pm.start_servers  = ${START_SERVERS}/" /usr/local/etc/php-fpm.d/www.conf
+RUN sed -i "s/pm.min_spare_servers = 0/pm.min_spare_servers  = ${MIN_SPARE_SERVERS}/" /usr/local/etc/php-fpm.d/www.conf
+RUN sed -i "s/pm.max_spare_servers = 0/pm.max_spare_servers  = ${MAX_SPARE_SERVERS}/" /usr/local/etc/php-fpm.d/www.conf
 
 WORKDIR /var/www
 
