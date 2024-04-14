@@ -159,7 +159,7 @@ values can differ depending on deployment environment:
 | PHP_FPM_START_SERVERS | | Production-Dockerfile | The number of child processes created on startup |
 | PHP_FPM_MIN_SPARE_SERVERS | | Production-Dockerfile | The desired minimum number of idle server processes |
 | PHP_FPM_MAX_SPARE_SERVERS | | Production-Dockerfile | The desired maximum number of idle server processes |
-| PHP_RATE_LIMIT_ENABLED | | | Whether rate limit is enabled for PHP requests | 
+| PHP_CONN_LIMIT| enabled or disabled | | Whether rate limit is enabled for PHP requests | 
 
 ## SUB-GROUP: Forks
 
@@ -312,7 +312,7 @@ differ between developers:
 | PHP_FPM_START_SERVERS | | Production-Dockerfile | The number of child processes created on startup |
 | PHP_FPM_MIN_SPARE_SERVERS | | Production-Dockerfile | The desired minimum number of idle server processes |
 | PHP_FPM_MAX_SPARE_SERVERS | | Production-Dockerfile | The desired maximum number of idle server processes |
-| PHP_RATE_LIMIT_ENABLED | | | Whether rate limit is enabled for PHP requests | 
+| PHP_CONN_LIMIT| enabled or disabled | | Whether rate limit is enabled for PHP requests | 
 
 ### Automatically-created variables in PROJECT: *-gigadb-website
 
