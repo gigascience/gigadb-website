@@ -18,6 +18,7 @@ services:
         - NGINX_VERSION=${NGINX_VERSION}
         - GIGADB_ENV=${GIGADB_ENV}
         - FIX_SITE_CONFIGS=true
+        - CONN_LIMIT_STATE=${PHP_CONN_LIMIT}
 
   production_app:
     environment:
