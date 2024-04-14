@@ -154,6 +154,12 @@ values can differ depending on deployment environment:
 | Twitter_tester_password | |Affiliate login tests | As above |
 | Twitter_tester_first_name | | Affiliate login tests | As above |
 | Twitter_tester_last_name | | Affiliate login tests | As above |
+| PHP_APCU_MEMORY | | Production-Dockerfile | Size of in memory cache |
+| PHP_FPM_MAX_CHILDREN | | Production-Dockerfile | The maximum number of child processes | 
+| PHP_FPM_START_SERVERS | | Production-Dockerfile | The number of child processes created on startup |
+| PHP_FPM_MIN_SPARE_SERVERS | | Production-Dockerfile | The desired minimum number of idle server processes |
+| PHP_FPM_MAX_SPARE_SERVERS | | Production-Dockerfile | The desired maximum number of idle server processes |
+| PHP_RATE_LIMIT_ENABLED | | | Whether rate limit is enabled for PHP requests | 
 
 ## SUB-GROUP: Forks
 
@@ -301,6 +307,12 @@ differ between developers:
 | TENCENTCLOUD_APP_ID | | dataset-backup-tool | Set at project level so developers can use their own Tencent account |
 | TENCENTCLOUD_SECRET_ID | | As above | As above |
 | TENCENTCLOUD_SECRET_KEY | | As above | As above |
+| PHP_APCU_MEMORY | | Production-Dockerfile | Size of in memory cache |
+| PHP_FPM_MAX_CHILDREN | | Production-Dockerfile | The maximum number of child processes | 
+| PHP_FPM_START_SERVERS | | Production-Dockerfile | The number of child processes created on startup |
+| PHP_FPM_MIN_SPARE_SERVERS | | Production-Dockerfile | The desired minimum number of idle server processes |
+| PHP_FPM_MAX_SPARE_SERVERS | | Production-Dockerfile | The desired maximum number of idle server processes |
+| PHP_RATE_LIMIT_ENABLED | | | Whether rate limit is enabled for PHP requests | 
 
 ### Automatically-created variables in PROJECT: *-gigadb-website
 
