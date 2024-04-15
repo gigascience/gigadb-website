@@ -2,7 +2,7 @@
 
 ## TLS certificates
 
-Having gigadb.org pointing to GigaDB running on AWS requires this instnace to
+Having gigadb.org pointing to GigaDB running on AWS requires this instance to
 have a new TLS certificate that has been issued for the gigadb.org domain. When 
 migration of beta.gigadb.org to gigadb.org was attempted, however, the existing
 certificate was only issued for beta.gigadb.org which led to a name mismatch SSL
