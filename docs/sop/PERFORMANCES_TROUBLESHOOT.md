@@ -83,7 +83,7 @@ max_spare_servers	Same as start_servers
 ```
 according to https://tideways.com/profiler/blog/an-introduction-to-php-fpm-tuning
 
-When changes have been made to the Gitlab variables, to effect the chnage we need to rerun the build job adn the deploy job in the Gitlab pipeline.
+When changes have been made to the Gitlab variables, to effect the change we need to rerun the build job adn the deploy job in the Gitlab pipeline.
 
 ## CPU usage of Postgresql is a constant 99%
 
