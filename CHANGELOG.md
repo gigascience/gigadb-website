@@ -4,10 +4,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Fix #1784: Fix: Correct our configuration of PHP-FPM, Nginx and APCu to support real live load
 - Feat #1221: EFS filesystem for GigaDB
 - Feat #1717 #1715 #1716: remove Google Plus link, update X logo and add Mastodon link to social media links
 
-## v4.2.3 - 2024-04-08 - f084f51dd 
+## v4.2.3 - 2024-04-08 - f084f51dd - yanked 
 
 - Feat #1618: FUW - Allow customization of email sent to author after "DataPending" status is set
 - Security #1626: FUW - Update node version to the latest recommended to avoid openssl hack. Minimize dependency vulnerabilities.
