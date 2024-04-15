@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Fix #1791: Update IAM EC2 policy to prevent permission error when changing EC2 instant type on the fly
 - Fix #1784: Correct our configuration of PHP-FPM, Nginx and APCu to support real live load
 - Feat #1221: EFS filesystem for GigaDB
 - Feat #1717 #1715 #1716: remove Google Plus link, update X logo and add Mastodon link to social media links
