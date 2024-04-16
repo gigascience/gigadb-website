@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Docs #1786: Add documentation for creating TLS certificate for AWS gigadb.org migration
 - Fix #1784: Correct our configuration of PHP-FPM, Nginx and APCu to support real live load
 - Feat #1221: EFS filesystem for GigaDB
 - Feat #1717 #1715 #1716: remove Google Plus link, update X logo and add Mastodon link to social media links
