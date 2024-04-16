@@ -144,7 +144,7 @@ Nginx configuration and fail2ban are two levers for weeding out non-authentic ac
 
 ### PHP-FPM and APCu are configured appropriately for the instance specs but the website is still heavy pressure
 
-Immedidate alleviation is to upgrade the instance specs to tier above the current one.
+Immediate alleviation is to upgrade the instance specs to tier above the current one.
 First update the file `ops/infrastructure/envs/live/terraform.tfvars` and set the variable `web_ec2_type` to the desired instance type.
 Then update the environment with terraform:
 ```
@@ -155,7 +155,7 @@ $ terraform apply -target module.ec2_dockerhost
 Then redeploy the application from Gitlab pipeline (`ld_gigadb`)
 
 >Note1: There will be downtime after the Terraform plan have been applied
->Note2: Currently auhorised instance types are: 
+>Note2: Currently authorised instance types are: 
 ```
 "t3.nano",
 "t3.micro",
@@ -167,7 +167,7 @@ Then redeploy the application from Gitlab pipeline (`ld_gigadb`)
 "t3.2xlarge"
 ```
 
-When website is working normally again, refers to previous section to investigate and remove root cause of the issue.
-When fixed, the same procedure can be used to bring the EC2 instant type to pevious level.
+When website is working normally again, refer to previous section to investigate and remove root cause of the issue.
+When fixed, the same procedure can be used to bring the EC2 instant type to previous level.
 
 
