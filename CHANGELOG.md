@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Fix #1791: Update IAM EC2 policy to prevent permission error when changing EC2 instant type on the fly
 - Docs #1786: Add documentation for creating TLS certificate for AWS gigadb.org migration
 - Fix #1784: Correct our configuration of PHP-FPM, Nginx and APCu to support real live load
 - Feat #1221: EFS filesystem for GigaDB
