@@ -4,6 +4,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #514: Add canonical URL to dataset pages
+
 ## v4.2.4 - 2024-04-16 - 576757f38
 
 - Docs #1791: Update IAM EC2 policy to prevent permission error when changing EC2 instant type on the fly
@@ -12,7 +14,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Feat #1221: EFS filesystem for GigaDB
 - Feat #1717 #1715 #1716: remove Google Plus link, update X logo and add Mastodon link to social media links
 
-## v4.2.3 - 2024-04-08 - f084f51dd - yanked 
+## v4.2.3 - 2024-04-08 - f084f51dd - yanked
 
 - Feat #1618: FUW - Allow customization of email sent to author after "DataPending" status is set
 - Security #1626: FUW - Update node version to the latest recommended to avoid openssl hack. Minimize dependency vulnerabilities.
