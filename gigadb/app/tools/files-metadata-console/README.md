@@ -204,7 +204,7 @@ Finally, we commit the dataset changes and end the database transaction:
 $ docker run --rm  --env-file ./db-env registry.gitlab.com/$GITLAB_PROJECT/production_pgclient:$GIGADB_ENV -c "COMMIT TRANSACTION;"
 ```
 
-## Running unit and functional tests in files metadata console tool
+## Running unit, functional and bats tests in files metadata console tool
 
 Execute all unit tests:
 ```
@@ -226,4 +226,14 @@ Execute single functional test:
 $ docker-compose run --rm files-metadata-console ./vendor/codeception/codeception/codecept run --debug tests/functional/CheckValidURLsCest.php:^tryNoIssueToReport$
 
 $ docker-compose run --rm files-metadata-console ./vendor/codeception/codeception/codecept run --debug tests/functional/ReplaceFileUrlSubstringWithPrefixCest:^tryExcludingDOIsFromFileUrlChanges$
+```
+
+To run all bats tests in tests/bats/ directory:
+```
+$ bats tests/bats
+ ✓ create md5 and filesizes files for dataset
+ ✓ transform dataset and file URLs
+Resetting dev database...
+
+2 tests, 0 failures
 ```
