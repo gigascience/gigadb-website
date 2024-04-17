@@ -33,7 +33,7 @@ final class DatasetFilesUpdater extends Component
     /**
      * @var string URLs helper functions (here we interested in batch grab of specific response header)
      */
-    public string $GIGADB_DATASETS_METADATA_BUCKET_URL='https://s3.ap-northeast-1.amazonaws.com/gigadb-datasets-metadata';
+    public const GIGADB_DATASETS_METADATA_BUCKET_URL = 'https://s3.ap-northeast-1.amazonaws.com/gigadb-datasets-metadata';
 
     /**
      * Updates sizes for all files listed in doi.filesizes file located in 
@@ -47,7 +47,7 @@ final class DatasetFilesUpdater extends Component
         $success = 0;
         $d = Dataset::find()->where(['identifier' => $this->doi])->one();
 
-        $filesizesURL = $this->GIGADB_DATASETS_METADATA_BUCKET_URL . '/' . $this->doi . '.filesizes';
+        $filesizesURL = DatasetFilesUpdater::GIGADB_DATASETS_METADATA_BUCKET_URL . '/' . $this->doi . '.filesizes';
         $array = get_headers($filesizesURL);
         if(!strpos($array[0],'200 OK')) {
             throw new Exception("$filesizesURL not found");
