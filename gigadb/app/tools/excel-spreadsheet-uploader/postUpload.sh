@@ -108,6 +108,7 @@ else  # Running on dev environment
 #  docker-compose run --rm files-metadata-console ./yii check/valid-urls --doi="$DOI" | tee "$outputDir/invalid-urls-$DOI.txt"
 #  echo -e "$checkValidUrlsEndMessage"
 
+  cd ../../tools/excel-spreadsheet-uploader
   docker-compose run --rm pg_client -c 'create trigger file_finder_trigger after insert or update or delete or truncate on file for each statement execute procedure refresh_file_finder()'
   docker-compose run --rm pg_client -c 'create trigger sample_finder_trigger after insert or update or delete or truncate on sample for each statement execute procedure refresh_sample_finder()'
   docker-compose run --rm pg_client -c 'create trigger dataset_finder_trigger after insert or update or delete or truncate on dataset for each statement execute procedure refresh_dataset_finder()'
