@@ -54,6 +54,10 @@ class FilesCommand extends CConsoleCommand
             $contents = DownloadService::downloadFile($url);
             $lines = explode("\n", $contents);
             foreach ($lines as $line) {
+                # Last line in $doi.md5 file might be empty
+                if(!str_contains($line, '  ')) {
+                    break;
+                }
                 $tokens = explode("  ", $line);
                 // Only parse lines with content in md5 file
                 if($tokens[0] !== "") {

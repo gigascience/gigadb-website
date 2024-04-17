@@ -56,6 +56,10 @@ final class DatasetFilesUpdater extends Component
         $content = file_get_contents($filesizesURL);
         $lines = explode("\n", $content);
         foreach($lines as $line) {
+            # Last line in .filesizes file might be empty
+            if(!str_contains($line, "\t")) {
+                break;
+            }
             $tokens = explode("\t", $line);
             $size = (int)$tokens[0];
             $filename = ltrim($tokens[1], './');
