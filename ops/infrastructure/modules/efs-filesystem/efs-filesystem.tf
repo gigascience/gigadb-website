@@ -27,7 +27,7 @@ module "efs" {
   }
 
   # File system policy
-  attach_policy                      = false
+  attach_policy                      = true
   bypass_policy_lockout_safety_check = false
   
 
@@ -44,7 +44,7 @@ module "efs" {
     vpc = {
       # relying on the defaults provided for EFS/NFS (2049/TCP + ingress)
       description = "NFS ingress from VPC private subnets"
-      cidr_blocks = var.vpc.private_subnets_cidr_blocks
+      cidr_blocks = ["0.0.0.0/0"]
     }
   }
 
