@@ -2,6 +2,8 @@
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+- Feat #1741L: Add carets to sortable headers in dataset page
+
 ## Unreleased
 
 - Fix #1714: Visually hide long description in guide workflow, so that it's only visible to screen readers
