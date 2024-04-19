@@ -6,6 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Fix #1800: Read the correct sample page from cache on samples tables
 - Feat #1664: Enable post upload script to work with non-published datasets
 
 ## v4.2.4 - 2024-04-16 - 576757f38
