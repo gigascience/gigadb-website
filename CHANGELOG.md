@@ -2,11 +2,11 @@
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-- Feat #1741L: Add carets to sortable headers in dataset page
 
 ## Unreleased
 
 - Fix #1800: Read the correct sample page from cache on samples tables
+- Feat #1163: Add carets to sortable headers in dataset page
 - Feat #1664: Enable post upload script to work with non-published datasets
 
 ## v4.2.4 - 2024-04-16 - 576757f38
