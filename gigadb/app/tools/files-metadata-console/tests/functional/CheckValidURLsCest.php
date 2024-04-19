@@ -11,7 +11,7 @@ class CheckValidURLsCest
 {
     private const TEST_URLS = [
         "https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006",
-        "https://example.com/myfile.txt",
+        "http://gigasciencejournal.com/blog/badaboom",
         "ftp://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006/phylogeny_study_update/Pygoscelis_adeliae.RepeatMasker.out.gz",
         "https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006/phylogeny_study_update/",
     ];
@@ -47,7 +47,7 @@ class CheckValidURLsCest
 
     public function tryNoIssueToReport(\FunctionalTester $I): void {
         $testWebClient = new Client([ 'allow_redirects' => false ]);
-        $component = new FilesURLsFetcher(["doi" => "100005", "webClient" => $testWebClient]);
+        $component = new FilesURLsFetcher(["doi" => "100142", "webClient" => $testWebClient]);
         $report = $component->verifyURLs();
         $I->assertEmpty($report);
 

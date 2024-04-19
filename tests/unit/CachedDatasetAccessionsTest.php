@@ -34,7 +34,7 @@ class CachedDatasetAccessionsTest extends CDbTestCase
         //then we set our expectation for a Cache Hit
         $cache->expects($this->once())
                  ->method('get')
-                 ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetAccessions_getPrimaryLinks"))
+                 ->with($this->equalTo("dataset_${dataset_id}_ALL_0_CachedDatasetAccessions_getPrimaryLinks"))
                  ->willReturn([$this->links(0), $this->links(1)]);
 
         // create a mock for the StoredDatasetAccessions
@@ -98,7 +98,7 @@ class CachedDatasetAccessionsTest extends CDbTestCase
         //then we set our expectation for a Cache Miss
         $cache->expects($this->once())
                  ->method('get')
-                 ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetAccessions_getPrimaryLinks"))
+                 ->with($this->equalTo("dataset_${dataset_id}_ALL_0_CachedDatasetAccessions_getPrimaryLinks"))
                  ->willReturn(false);
 
         // create a mock for the StoredDatasetAccessions
@@ -122,7 +122,7 @@ class CachedDatasetAccessionsTest extends CDbTestCase
         $cache->expects($this->once())
                  ->method('set')
                  ->with(
-                     $this->equalTo("dataset_${dataset_id}_CachedDatasetAccessions_getPrimaryLinks"),
+                     $this->equalTo("dataset_${dataset_id}_ALL_0_CachedDatasetAccessions_getPrimaryLinks"),
                      [$this->links(0), $this->links(1)],
                      Cacheable::defaultTTL * 30,
                      $cacheDependency
@@ -160,7 +160,7 @@ class CachedDatasetAccessionsTest extends CDbTestCase
         //then we set our expectation for a Cache Hit
         $cache->expects($this->once())
                  ->method('get')
-                 ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetAccessions_getSecondaryLinks"))
+                 ->with($this->equalTo("dataset_${dataset_id}_ALL_0_CachedDatasetAccessions_getSecondaryLinks"))
                  ->willReturn([$this->links(2), $this->links(3), $this->links(4)]);
 
          // create a mock for the StoredDatasetAccessions
@@ -208,7 +208,7 @@ class CachedDatasetAccessionsTest extends CDbTestCase
         //then we set our expectation for a Cache Miss
         $cache->expects($this->once())
                  ->method('get')
-                 ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetAccessions_getSecondaryLinks"))
+                 ->with($this->equalTo("dataset_${dataset_id}_ALL_0_CachedDatasetAccessions_getSecondaryLinks"))
                  ->willReturn(false);
 
         // create a mock for the StoredDatasetAccessions
@@ -232,7 +232,7 @@ class CachedDatasetAccessionsTest extends CDbTestCase
         $cache->expects($this->once())
                  ->method('set')
                  ->with(
-                     $this->equalTo("dataset_${dataset_id}_CachedDatasetAccessions_getSecondaryLinks"),
+                     $this->equalTo("dataset_${dataset_id}_ALL_0_CachedDatasetAccessions_getSecondaryLinks"),
                      [$this->links(2), $this->links(3), $this->links(4)],
                      Cacheable::defaultTTL * 30,
                      $cacheDependency
@@ -288,7 +288,7 @@ class CachedDatasetAccessionsTest extends CDbTestCase
         //then we set our expectation for a Cache Hit
         $cache->expects($this->once())
                  ->method('get')
-                 ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetAccessions_getPrefixes"))
+                 ->with($this->equalTo("dataset_${dataset_id}_ALL_0_CachedDatasetAccessions_getPrefixes"))
                  ->willReturn($expected);
 
          // create a mock for the StoredDatasetAccessions
@@ -344,7 +344,7 @@ class CachedDatasetAccessionsTest extends CDbTestCase
         //then we set our expectation for a Cache Miss
         $cache->expects($this->once())
                  ->method('get')
-                 ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetAccessions_getPrefixes"))
+                 ->with($this->equalTo("dataset_${dataset_id}_ALL_0_CachedDatasetAccessions_getPrefixes"))
                  ->willReturn(false);
 
         // create a mock for the StoredDatasetAccessions
@@ -368,7 +368,7 @@ class CachedDatasetAccessionsTest extends CDbTestCase
         $cache->expects($this->once())
                  ->method('set')
                  ->with(
-                     $this->equalTo("dataset_${dataset_id}_CachedDatasetAccessions_getPrefixes"),
+                     $this->equalTo("dataset_${dataset_id}_ALL_0_CachedDatasetAccessions_getPrefixes"),
                      $expected,
                      Cacheable::defaultTTL * 30,
                      $cacheDependency

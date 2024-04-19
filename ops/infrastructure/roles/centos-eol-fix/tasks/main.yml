@@ -6,6 +6,9 @@
     group: root
     mode: 0644
 
+- name: Delete cache
+  shell: dnf clean all && rm -r /var/cache/dnf
+
 - name: Install epel-release
   dnf:
     name: epel-release
@@ -18,6 +21,7 @@
   ansible.builtin.rpm_key:
     state: present
     key: https://download.postgresql.org/pub/repos/yum/keys/PGDG-RPM-GPG-KEY-RHEL
+
 
 - name: install PostgreSQL repository
   yum:

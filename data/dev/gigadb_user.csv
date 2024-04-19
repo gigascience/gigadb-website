@@ -1,6 +1,7 @@
 id,email,password,first_name,last_name,affiliation,role,is_activated,newsletter,previous_newsletter_state,facebook_id,twitter_id,linkedin_id,google_id,username,orcid_id,preferred_link
 8,test+8@gigasciencejournal.com,5a4f75053077a32e681f81daa8792f95,Guojie,Zhang,BGI,"",f,t,t,,,,,test+8@gigasciencejournal.com,,EBI
 14,test+14@gigasciencejournal.com,5a4f75053077a32e681f81daa8792f95,Shifeng,Cheng,BGI,"",f,t,t,,,,,test+14@gigasciencejournal.com,,EBI
+15,test+gigadb15@gigasciencejournal.com,5a4f75053077a32e681f81daa8792f95,test,gigadb15,UCL Cancer Institute,"",f,t,t,,,,,test+gigadb15@gigasciencejournal.com,,EBI
 22,user@mailinator.com,5a4f75053077a32e681f81daa8792f95,John,Doe,BGI,user,true,false,true,,,,,user@mailinator.com,,EBI
 38,admin1@gigasciencejournal.com,bcf839ae349d13cb0c3c4a9ec0cc243e,C,H,BGI,admin,t,t,t,,,,114715812788877222335,admin1@gigasciencejournal.com,,EBI
 44,test+gigadb44@gigasciencejournal.com,5a4f75053077a32e681f81daa8792f95,test,gigadb44,BGI,"",false,true,false,,,,,test+gigadb44@gigasciencejournal.com,,EBI

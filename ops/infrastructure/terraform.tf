@@ -107,24 +107,24 @@ terraform {
   backend "http" {
   }
 
-  required_providers {
-    random = {
-      source  = "hashicorp/random"
-      version = "3.5.1"
-    }
+  # required_providers {
+  #   random = {
+  #     source  = "hashicorp/random"
+  #     version = "3.5.1"
+  #   }
 
-    external = {
-      source  = "hashicorp/external"
-      version = "2.3.1"
-    }
+  #   external = {
+  #     source  = "hashicorp/external"
+  #     version = "2.3.1"
+  #   }
     
-    aws = {
-      source  = "hashicorp/aws"
-      version = "5.5.0"
-    }
-  }
+  #   aws = {
+  #     source  = "hashicorp/aws"
+  #     version = "5.5.0"
+  #   }
+  # }
 
-  required_version = ">= 1.1"
+  # required_version = ">= 1.1"
 }
 
 # A custom virtual private cloud network for RDS and EC2 instances
@@ -284,3 +284,37 @@ module "rds" {
 output "rds_instance_address" {
   value = module.rds.rds_instance_address
 }
+
+
+################################################################################
+# Provisioning of File System
+################################################################################ 
+module "gigadb_efs" {
+  source = "../../modules/efs-filesystem"
+
+  vpc = module.vpc
+  deployment_target = var.deployment_target
+  owner = data.external.callerUserName.result.userName
+  
+}
+
+output "efs_filesystem_id" {
+  value = module.gigadb_efs.id
+}
+
+output "efs_filesystem_arn" {
+  value = module.gigadb_efs.arn
+}
+
+output "efs_filesystem_dns_name" {
+  value = module.gigadb_efs.dns_name
+}
+
+output "efs_filesystem_size_in_bytes" {
+  value = module.gigadb_efs.size_in_bytes
+}
+
+output "efs_filesystem_access_points" {
+  value = values(module.gigadb_efs.access_points)[*].id
+}
+

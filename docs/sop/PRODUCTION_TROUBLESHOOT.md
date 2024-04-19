@@ -53,7 +53,9 @@ app_data
 
 ### How to renew an expiring TLS certificate
 
-The details of TLS setup can refer to the [TLS doc](../TLS.md). Currently, the Let's Encrypt's certificate only last for 90 days, and Let's Encrypt's will start sending out reminder emails of renewing 30 days before expiration.
+The details of TLS setup can refer to the [TLS doc](../TLS.md). Currently, the 
+Let's Encrypt's certificate only last for 90 days, and Let's Encrypt's will 
+start sending out reminder emails of renewing 30 days before expiration.
 
 ```
 # login webapp server
@@ -90,14 +92,16 @@ local     gigadb-website_feeds
 local     gigadb-website_le_config
 local     gigadb-website_le_webrootpath
 local     gigadb-website_portainer_data
-# stop and remove all running containers
-$ docker rm -f $(docker ps -a -q)
-# remove all exiting volumes
-$ docker volume rm $(docker volume ls -q)
 ```
 
-Then delete the existing certs `tls_chain_pem:live`, `tls_fullchain_pem:live` and `tls_privkey_pem:live` in the gitlab [upstream variable page](https://gitlab.com/gigascience/upstream/gigadb-website/-/settings/ci_cd).
-After that, manually start the `ld_gigadb` in the last successful pipeline in gitlab and you will see screen output likes this:
+On the Gitlab pipeline page for Upstream gigadb-website project, click `ld_teardown`
+in  the live deploy stage to stop and remove running containers, networks, 
+volumes, and images.
+
+Then delete the existing certs `tls_chain_pem:live`, `tls_fullchain_pem:live` 
+and `tls_privkey_pem:live` in the gitlab [upstream variable page](https://gitlab.com/gigascience/upstream/gigadb-website/-/settings/ci_cd).
+After that, manually start the `ld_gigadb` in the last successful pipeline in 
+gitlab and you will see screen output likes this:
 ```
 .
 .
