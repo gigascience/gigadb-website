@@ -5,12 +5,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
-## v4.2.6 - 2024-04-30 - fe0348092
+- Feat #1634, #1824: Add new EC2 server for file serving purposes (including author/reviewer accessible ftp server)
+
+## v4.2.6 - 2024-04-30 - fe0348092 - live since 2024-05-02
 
 - Feat #1394: Update bastion-users Ansible role to create AWS credentials file from Wasabi credentials CSV
 - Fix #1833: Files metadata console containers built using gitlab-config-live-build.yml are tagged with "staging"
 
-## v4.2.5 - 2024-04-25 - ca6d17e0f - live since 2024-04-26
+## v4.2.5 - 2024-04-25 - ca6d17e0f
 
 - Feat #1770: Make AWS EFS can be mounted on the bastion server manually
 - Feat #1783: Avoid URLs with double pagination in dataset url
