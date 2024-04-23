@@ -2,11 +2,22 @@
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+
 ## Unreleased
 
+- Fix #1800: Read the correct sample page from cache on samples tables
+- Feat #1163: Add carets to sortable headers in dataset page
+- Feat #1664: Enable post upload script to work with non-published datasets
+
+## v4.2.4 - 2024-04-16 - 576757f38
+
+- Docs #1791: Update IAM EC2 policy to prevent permission error when changing EC2 instant type on the fly
+- Docs #1786: Add documentation for creating TLS certificate for AWS gigadb.org migration
+- Fix #1784: Correct our configuration of PHP-FPM, Nginx and APCu to support real live load
+- Feat #1221: EFS filesystem for GigaDB
 - Feat #1717 #1715 #1716: remove Google Plus link, update X logo and add Mastodon link to social media links
 
-## v4.2.3 - 2024-04-08 - f084f51dd 
+## v4.2.3 - 2024-04-08 - f084f51dd - yanked 
 
 - Feat #1618: FUW - Allow customization of email sent to author after "DataPending" status is set
 - Security #1626: FUW - Update node version to the latest recommended to avoid openssl hack. Minimize dependency vulnerabilities.

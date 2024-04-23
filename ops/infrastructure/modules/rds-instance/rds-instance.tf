@@ -44,7 +44,7 @@ module "db" {
 
   parameter_group_name      = (var.deployment_target == "staging" ? aws_db_parameter_group.gigadb-db-param-group[0].name : null)
   engine                    = "postgres"
-  engine_version            = "14.8"
+  engine_version            = "14.10"
   family                    = "postgres14"  # DB parameter group
   major_engine_version      = "14"          # DB option group
   instance_class            = "db.${var.rds_ec2_type}"
