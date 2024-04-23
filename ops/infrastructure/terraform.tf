@@ -211,7 +211,9 @@ module "ec2_dockerhost" {
   # Locate Dockerhost EC2 instance in public subnet so users can access website
   # container app
   public_subnet_id = module.vpc.public_subnets[0]
-  web_ec2_type = var.web_ec2_type
+  ec2_type = var.web_ec2_type
+  ec2_usage = "webserver"
+  app_port = 80
 }
 
 output "ec2_public_ip" {
@@ -224,6 +226,34 @@ output "ec2_private_ip" {
 
 output "web_ec2_type" {
   value = module.ec2_dockerhost.instance_type
+}
+
+# EC2 instance for hosting the ftp server
+module "ftp_host" {
+  source = "../../modules/aws-instance"
+
+  owner = data.external.callerUserName.result.userName
+  deployment_target = var.deployment_target
+  key_name = var.key_name
+  eip_tag_name = "eip-ftp-${var.deployment_target}-${data.external.callerUserName.result.userName}"
+  vpc_id = module.vpc.vpc_id
+  vpc_cidr_block = module.vpc.vpc_cidr_block
+  public_subnet_id = module.vpc.public_subnets[0]
+  ec2_type = var.web_ec2_type
+  ec2_usage = "ftpserver"
+  app_port = 21
+}
+
+output "ftp_ec2_public_ip" {
+  value = module.ftp_host.instance_public_ip_addr
+}
+
+output "ftp_ec2_private_ip" {
+  value = module.ftp_host.instance_ip_addr
+}
+
+output "ftp_ec2_type" {
+  value = module.ftp_host.instance_type
 }
 
 # EC2 instance for bastion server to access RDS for PostgreSQL admin
