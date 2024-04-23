@@ -34,6 +34,7 @@ fi
 
 # copy files into the environment specific directory
 cp ../../webapp_playbook.yml .
+cp ../../ftp_playbook.yml .
 cp ../../bastion_playbook.yml .
 cp ../../users_playbook.yml .
 cp ../../monitoring_playbook.yml .
@@ -88,6 +89,7 @@ echo "aws_secret_access_key = $aws_secret_access_key" >> ansible.properties
 # Retrieve ips of provisioned ec2 instances
 bastion_ip=$(terraform output ec2_bastion_public_ip | sed 's/"//g')
 webapp_ip=$(terraform output ec2_private_ip | sed 's/"//g')
+ftp_ip=$(terraform output ftp_ec2_private_ip | sed 's/"//g')
 
 echo "ec2_bastion_login_account = centos@$bastion_ip" >> ansible.properties
 
@@ -118,10 +120,13 @@ echo "grafana_contact_smtp_from_name = $grafana_contact_smtp_from_name" >> ansib
 # Remove old key
 ssh-keygen -R $bastion_ip
 ssh-keygen -R $webapp_ip
+ssh-keygen -R $ftp_ip
 # Add the new key
 ssh-keyscan -t ecdsa $bastion_ip >> ~/.ssh/known_hosts
-new_host=$(ssh -i $aws_ssh_key centos@$bastion_ip ssh-keyscan -t ecdsa $webapp_ip)
-echo $new_host  >> ~/.ssh/known_hosts
+web_host=$(ssh -i $aws_ssh_key centos"@$bastion_ip" ssh-keyscan -t ecdsa "$webapp_ip")
+ftp_host=$(ssh -i $aws_ssh_key centos@"$bastion_ip" ssh-keyscan -t ecdsa "$ftp_ip")
+echo "$web_host"  >> ~/.ssh/known_hosts
+echo "$ftp_host"  >> ~/.ssh/known_hosts
 
 # Bootstrap playbook
 echo "Saving EC2 IP addresses to GitLab"
