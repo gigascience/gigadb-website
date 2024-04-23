@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1757: Add pagination to samples table in dataset view
 - Fix #1800: Read the correct sample page from cache on samples tables
 - Feat #1163: Add carets to sortable headers in dataset page
 - Feat #1664: Enable post upload script to work with non-published datasets
@@ -17,7 +18,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Feat #1221: EFS filesystem for GigaDB
 - Feat #1717 #1715 #1716: remove Google Plus link, update X logo and add Mastodon link to social media links
 
-## v4.2.3 - 2024-04-08 - f084f51dd - yanked 
+## v4.2.3 - 2024-04-08 - f084f51dd - yanked
 
 - Feat #1618: FUW - Allow customization of email sent to author after "DataPending" status is set
 - Security #1626: FUW - Update node version to the latest recommended to avoid openssl hack. Minimize dependency vulnerabilities.
