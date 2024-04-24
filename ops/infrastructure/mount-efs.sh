@@ -2,7 +2,7 @@
 set -ex
 
 # Define the base mount path
-baseMountPath="/home/centos/efs-mountpoint"
+baseMountPath="/efs-mountpoint"
 
 # Create the mount directory if it doesn't exist
 if [ ! -d "$baseMountPath" ]; then
@@ -20,7 +20,7 @@ fi
 # by following https://github.com/aws/efs-utils?tab=readme-ov-file#on-other-linux-distributions
 #sudo yum update -y
 #sudo yum -y install git rpm-build make rust cargo openssl-devel
-#git clone https://github.com/aws/efs-utils.git
+#git clone https://github.com/aws/efs-utils
 #cd efs-utils
 #sudo make rpm
 #sudo yum -y install build/amazon-efs-utils*rpm
