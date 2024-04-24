@@ -179,3 +179,17 @@ Feature: a user visit the dataset page
     When I follow "2"
     Then I should see "SRS173549"
     And I should not see "SRS173539"
+
+  @ok @no-double-pagination
+  Scenario: Check there is no double pagination in URL when viewing between samples and files
+    Given I have not signed in
+    And I am on "/dataset/100035"
+    And I follow "Sample"
+    And I should see "SRS173539"
+    When I follow "2"
+    And I follow "Files"
+    And I follow "3"
+    Then I should be on "/dataset/view/id/100035/Files_page/3"
+    # If bug was present, URL would look like:
+    # "/dataset/view/id/100035/Samples_page/2/Files_page/3"
+    And I should see "GSM678699_sample16_mefTDGmm.bam.gz"
