@@ -204,11 +204,11 @@ Finally, we commit the dataset changes and end the database transaction:
 $ docker run --rm  --env-file ./db-env registry.gitlab.com/$GITLAB_PROJECT/production_pgclient:$GIGADB_ENV -c "COMMIT TRANSACTION;"
 ```
 
-## Running unit and functional tests in files metadata console tool
+## Running unit, functional and bats tests in files metadata console tool
 
 Execute all unit tests:
 ```
-$ docker-compose run --rm files-metadata-console ./vendor/codeception/codeception/codecept run --debug tests/unit/DatasetFilesURLUpdaterTest.php
+$ docker-compose run --rm files-metadata-console ./vendor/codeception/codeception/codecept run --debug tests/unit
 ```
 
 Execute single unit test:
@@ -216,11 +216,9 @@ Execute single unit test:
 $ docker-compose run --rm files-metadata-console ./vendor/codeception/codeception/codecept run --debug tests/unit/DatasetFilesURLUpdaterTest.php:^testGetPendingDatasets$
 ```
 
-Execute functional tests:
+Execute all functional tests:
 ```
-$ docker-compose run --rm files-metadata-console ./vendor/codeception/codeception/codecept run --debug tests/functional/CheckValidURLsCest.php
-
-$ docker-compose run --rm files-metadata-console ./vendor/codeception/codeception/codecept run --debug tests/functional/ReplaceFileUrlSubstringWithPrefixCest.php
+$ docker-compose run --rm files-metadata-console ./vendor/codeception/codeception/codecept run --debug tests/functional
 ```
 
 Execute single functional test:
@@ -228,4 +226,14 @@ Execute single functional test:
 $ docker-compose run --rm files-metadata-console ./vendor/codeception/codeception/codecept run --debug tests/functional/CheckValidURLsCest.php:^tryNoIssueToReport$
 
 $ docker-compose run --rm files-metadata-console ./vendor/codeception/codeception/codecept run --debug tests/functional/ReplaceFileUrlSubstringWithPrefixCest:^tryExcludingDOIsFromFileUrlChanges$
+```
+
+To run all bats tests in tests/bats/ directory:
+```
+$ bats tests/bats
+ ✓ create md5 and filesizes files for dataset
+ ✓ transform dataset and file URLs
+Resetting dev database...
+
+2 tests, 0 failures
 ```

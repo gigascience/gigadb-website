@@ -170,6 +170,16 @@ Feature: a user visit the dataset page
     And I should see "test generic image will be display for no image dataset"
     Then I should not see "Cite Dataset"
 
+  @ok
+  Scenario: Pagination in the sample tab
+    Given I have not signed in
+    And I am on "/dataset/100035"
+    And I follow "Sample"
+    And I should see "SRS173539"
+    When I follow "2"
+    Then I should see "SRS173549"
+    And I should not see "SRS173539"
+
   @ok @no-double-pagination
   Scenario: Check there is no double pagination in URL when viewing between samples and files
     Given I have not signed in

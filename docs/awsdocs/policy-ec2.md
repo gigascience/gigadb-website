@@ -68,7 +68,9 @@ when using the AWS management console.
                         "t3a.small",
                         "t3.small",
                         "t3.medium",
-                        "t3.large"
+                        "t3.large",
+                        "t3.xlarge",
+						"t3.2xlarge"
                     ]
                 }
             }
@@ -124,7 +126,8 @@ when using the AWS management console.
             "Action": [
                 "ec2:TerminateInstances",
                 "ec2:StartInstances",
-                "ec2:StopInstances"
+                "ec2:StopInstances",
+                "ec2:ModifyInstanceAttribute"
             ],
             "Resource": "*",
             "Condition": {
