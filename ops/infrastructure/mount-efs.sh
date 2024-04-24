@@ -2,7 +2,7 @@
 set -ex
 
 # Define the base mount path
-baseMountPath="/efs-mountpoint"
+baseMountPath="/share"
 
 # Create the mount directory if it doesn't exist
 if [ ! -d "$baseMountPath" ]; then
