@@ -244,11 +244,11 @@ module "ftp_host" {
   app_port = 21
 }
 
-output "ftp_ec2_public_ip" {
+output "ec2_ftp_public_ip" {
   value = module.ftp_host.instance_public_ip_addr
 }
 
-output "ftp_ec2_private_ip" {
+output "ec2_ftp_private_ip" {
   value = module.ftp_host.instance_ip_addr
 }
 
