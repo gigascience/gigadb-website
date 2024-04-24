@@ -5,3 +5,6 @@ variable "key_name" {}
 variable "eip_tag_name" {}
 variable "public_subnet_id" {}
 variable "vpc_id" {}
+variable "fs_id" {}
+variable "fasp_dropbox" {}
+variable "fasp_config" {}

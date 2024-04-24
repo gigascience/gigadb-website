@@ -269,6 +269,10 @@ module "ec2_bastion" {
   vpc_id = module.vpc.vpc_id
   public_subnet_id = module.vpc.public_subnets[0]
   bastion_ec2_type = var.bastion_ec2_type
+
+  fs_id = module.gigadb_efs.id
+  fasp_dropbox = module.gigadb_efs.access_points["dropbox_area"].id
+  fasp_config = module.gigadb_efs.access_points["configuration_area"].id
 }
 
 output "ec2_bastion_private_ip" {
