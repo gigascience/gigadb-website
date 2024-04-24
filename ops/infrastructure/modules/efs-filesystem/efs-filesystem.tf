@@ -43,8 +43,11 @@ module "efs" {
   security_group_rules = {
     vpc = {
       # relying on the defaults provided for EFS/NFS (2049/TCP + ingress)
-      description = "NFS ingress from VPC bastion public subnets"
-      cidr_blocks = var.vpc.public_subnets_cidr_blocks
+      description = "NFS ingress from VPC subnets"
+      cidr_blocks = concat(
+        var.vpc.public_subnets_cidr_blocks,
+        var.vpc.private_subnets_cidr_blocks
+      )
     }
   }
 
