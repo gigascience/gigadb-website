@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1770: Make AWS EFS can be mounted on the bastion server manually
 - Feat #1757: Add pagination to samples table in dataset view
 - Fix #1800: Read the correct sample page from cache on samples tables
 - Feat #1163: Add carets to sortable headers in dataset page
