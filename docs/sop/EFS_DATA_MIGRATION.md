@@ -76,7 +76,7 @@ rclone v1.66.0
 - go/tags: none
 # copy the $bastion-user-pem in local computer and paste it to the ftp server
 [ken@cngb-gigadb-ftp ~]$ vi $bastion-user-pem 
-# create rclone.conf file with following contents
+# create rclone.conf file with following contents and replace the variable with actual values
 [ken@cngb-gigadb-ftp ~]$ vi rclone.conf
 [aws-efs]
 type = sftp
@@ -137,16 +137,7 @@ Checks:                 4 / 4, 100%
 Elapsed time:         2.1s
 [ken@cngb-gigadb-ftp ~]$ 
 # use rclone to delete file in the aws efs dropbox in dry-run mode
-[ken@cngb-gigadb-ftp ~]$ rclone --config rclone.conf delete -v aws-efs:/share/dropbox/rclone-current-linux-amd64.zip
-2024/04/25 12:15:55 INFO  : rclone-current-linux-amd64.zip: Deleted
-[ken@cngb-gigadb-ftp ~]$ rclone --config rclone.conf delete -v aws-efs:/share/dropbox/rclone-current-linux-amd64.zip
-2024/04/25 12:16:00 ERROR : : error listing: directory not found
-2024/04/25 12:16:00 ERROR : Attempt 1/3 failed with 2 errors and: directory not found
-2024/04/25 12:16:00 ERROR : : error listing: directory not found
-2024/04/25 12:16:00 ERROR : Attempt 2/3 failed with 2 errors and: directory not found
-2024/04/25 12:16:00 ERROR : : error listing: directory not found
-2024/04/25 12:16:00 ERROR : Attempt 3/3 failed with 2 errors and: directory not found
-2024/04/25 12:16:00 Failed to delete with 2 errors: last error was: directory not found
+[ken@cngb-gigadb-ftp ~]$ rclone --config rclone.conf delete -v aws-efs:/share/dropbox/user103 --dry-run
 # use rclone to delete file in the aws efs dropbox 
 [ken@cngb-gigadb-ftp ~]$ rclone --config rclone.conf delete -v aws-efs:/share/dropbox/user103
 2024/04/25 12:34:02 INFO  : NO25.txt: Deleted
@@ -154,7 +145,17 @@ Elapsed time:         2.1s
 2024/04/25 12:34:04 INFO  : AD25.txt: Deleted
 2024/04/25 12:34:04 INFO  : user103.md5: Deleted
 [ken@cngb-gigadb-ftp ~]$ rclone --config rclone.conf ls aws-efs:/share/dropbox
-[ken@cngb-gigadb-ftp ~]$ 
+[ken@cngb-gigadb-ftp ~]$ rclone --config rclone.conf lsd aws-efs:/share/dropbox                        
+          -1 2024-04-25 12:34:04        -1 user103
+# remove the path and all ot its contents in dry-run mode
+[ken@cngb-gigadb-ftp ~]$ rclone --config rclone.conf purge -v aws-efs:/share/dropbox/user103 --dry-run
+2024/04/25 14:06:15 NOTICE: sftp://mary@3.36.204.163:22//share/dropbox/user103: Skipped remove directory as --dry-run is set
+# remove the path and all ot its contents
+[ken@cngb-gigadb-ftp ~]$ rclone --config rclone.conf purge -v aws-efs:/share/dropbox/user103
+2024/04/25 14:06:15 NOTICE: sftp://mary@3.36.204.163:22//share/dropbox/user103: Removing directory
+[ken@cngb-gigadb-ftp ~]$ rclone --config rclone.conf lsd aws-efs:/share/dropbox 
+[ken@cngb-gigadb-ftp ~]$
+# confirm the files still exist in the source dir 
 [ken@cngb-gigadb-ftp ~]$ ls -al /data/data_upload/user103/
 total 17
 drwxrwxr-x   2 gigadb_user gigadb_user 4096 Mar 14 01:55 .
