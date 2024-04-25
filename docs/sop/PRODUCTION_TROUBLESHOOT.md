@@ -374,7 +374,7 @@ Assuming AWS EFS has been created after `terraform apply`, which can be further 
 While the `FileSystem Id`, `access point Id` can be obtained from the `terraform output` as well, for example :
 
 ```
-% cd ops/infrastructure/envs/staging
+% cd ops/infrastructure/envs/live
 % terraform output
 ...
 Outputs:
