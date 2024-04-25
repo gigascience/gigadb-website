@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1770: Make AWS EFS can be mounted on the bastion server manually
 - Feat #1783: Avoid URLs with double pagination in dataset url
 - Feat #1757: Add pagination to samples table in dataset view
 - Fix #1800: Read the correct sample page from cache on samples tables
