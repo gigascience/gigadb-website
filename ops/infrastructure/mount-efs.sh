@@ -15,20 +15,9 @@ if [ ! -d "$baseMountPath" ]; then
   sudo chown -R  centos:centos "$baseMountPath"
 fi
 
-# TODO: install aws efs utils
-# by following this doc: https://github.com/aws/efs-utils?tab=readme-ov-file#on-other-linux-distributions
-# Wait for cloud-init to complete
-#while [ ! -f /var/lib/cloud/instance/boot-finished ]; do
-#    echo "Waiting for cloud-init to complete..."
-#    sleep 5
-#done
-# by following https://github.com/aws/efs-utils?tab=readme-ov-file#on-other-linux-distributions
-#sudo yum update -y
-#sudo yum -y install git rpm-build make rust cargo openssl-devel
-#git clone https://github.com/aws/efs-utils
-#cd efs-utils
-#sudo make rpm
-#sudo yum -y install build/amazon-efs-utils*rpm
+# install aws efs utils
+curl https://s3.ap-northeast-1.wasabisys.com/infra-resources/amazon-efs-utils-2.0.1-1.el8.x86_64.rpm -o aws-efs-utils.rpm
+sudo yum install -y aws-efs-utils.rpm
 
 # TODO: mount accesspoint
 #sudo mount -t efs -o tls,accesspoint=$fasp_dropbox $fs_id efs-mountpoint/dropbox
