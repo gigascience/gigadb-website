@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+## v4.2.5 - 2024-04-25 - ca6d17e0f
+
 - Feat #1770: Make AWS EFS can be mounted on the bastion server manually
 - Feat #1783: Avoid URLs with double pagination in dataset url
 - Feat #1757: Add pagination to samples table in dataset view
@@ -12,7 +14,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Feat #1163: Add carets to sortable headers in dataset page
 - Feat #1664: Enable post upload script to work with non-published datasets
 
-## v4.2.4 - 2024-04-16 - 576757f38
+## v4.2.4 - 2024-04-16 - 576757f38 - live since 2024-04-17
 
 - Docs #1791: Update IAM EC2 policy to prevent permission error when changing EC2 instant type on the fly
 - Docs #1786: Add documentation for creating TLS certificate for AWS gigadb.org migration
