@@ -67,7 +67,7 @@ class CachedDatasetConnections extends DatasetComponents implements DatasetConne
         $relations =  $this->getCachedLocalData($this->getDatasetId());
         if (false == $relations) {
             $relations = $this->_storedDatasetConnections->getRelations();
-            $this->saveLocaldataInCache($this->getDatasetId(), $relations);
+            $this->saveLocalDataInCache($this->getDatasetId(), $relations);
         }
 
         return  array_values(array_filter($relations, $filterByRelationshipType)) ;
@@ -83,7 +83,7 @@ class CachedDatasetConnections extends DatasetComponents implements DatasetConne
         $results = $this->getCachedLocalData($this->getDatasetId());
         if (false == $results) {
             $results = $this->_storedDatasetConnections->getPublications();
-            $this->saveLocaldataInCache($this->getDatasetId(), $results);
+            $this->saveLocalDataInCache($this->getDatasetId(), $results);
         }
         return $results;
     }
@@ -98,7 +98,7 @@ class CachedDatasetConnections extends DatasetComponents implements DatasetConne
         $results =  $this->getCachedLocalData($this->getDatasetId());
         if (false == $results) {
             $results = $this->_storedDatasetConnections->getProjects();
-            $this->saveLocaldataInCache($this->getDatasetId(), $results);
+            $this->saveLocalDataInCache($this->getDatasetId(), $results);
         }
         return $results;
     }

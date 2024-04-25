@@ -77,7 +77,7 @@ class CachedDatasetExternalLinksTest extends CTestCase
         //then we set our expectation for a Cache Hit
         $cache->expects($this->exactly(4))
                  ->method('get')
-                 ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetExternalLinks_getDatasetExternalLinks"))
+                 ->with($this->equalTo("dataset_${dataset_id}_ALL_0_CachedDatasetExternalLinks_getDatasetExternalLinks"))
                  ->willReturn(
                      array(
                         array(
@@ -229,13 +229,13 @@ class CachedDatasetExternalLinksTest extends CTestCase
         //then we set our expectations for a Cache Miss
         $cache->expects($this->exactly(4))
                  ->method('get')
-                 ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetExternalLinks_getDatasetExternalLinks"))
+                 ->with($this->equalTo("dataset_${dataset_id}_ALL_0_CachedDatasetExternalLinks_getDatasetExternalLinks"))
                  ->willReturn(false);
 
         $cache->expects($this->exactly(4))
                 ->method('set')
                 ->with(
-                    $this->equalTo("dataset_${dataset_id}_CachedDatasetExternalLinks_getDatasetExternalLinks"),
+                    $this->equalTo("dataset_${dataset_id}_ALL_0_CachedDatasetExternalLinks_getDatasetExternalLinks"),
                     array(
                         array(
                             'id' => 1,
@@ -343,7 +343,7 @@ class CachedDatasetExternalLinksTest extends CTestCase
         //then we set our expectation for a Cache Hit
         $cache->expects($this->exactly(3))
                  ->method('get')
-                 ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetExternalLinks_getDatasetExternalLinksTypesAndCount"))
+                 ->with($this->equalTo("dataset_${dataset_id}_ALL_0_CachedDatasetExternalLinks_getDatasetExternalLinksTypesAndCount"))
                  ->willReturn(
                      array(
                         "Additional information" => 2,
@@ -401,13 +401,13 @@ class CachedDatasetExternalLinksTest extends CTestCase
         //then we set our expectations for a Cache Miss
         $cache->expects($this->exactly(3))
                  ->method('get')
-                 ->with($this->equalTo("dataset_${dataset_id}_CachedDatasetExternalLinks_getDatasetExternalLinksTypesAndCount"))
+                 ->with($this->equalTo("dataset_${dataset_id}_ALL_0_CachedDatasetExternalLinks_getDatasetExternalLinksTypesAndCount"))
                  ->willReturn(false);
 
         $cache->expects($this->exactly(3))
                 ->method('set')
                 ->with(
-                    $this->equalTo("dataset_${dataset_id}_CachedDatasetExternalLinks_getDatasetExternalLinksTypesAndCount"),
+                    $this->equalTo("dataset_${dataset_id}_ALL_0_CachedDatasetExternalLinks_getDatasetExternalLinksTypesAndCount"),
                     array(
                         "Additional information" => 2,
                         "Genome browser" => 1,

@@ -103,7 +103,7 @@ echo $form->hiddenField($model, "image_id");
                                     $model,
                                     'upload_status',
                                     Dataset::getAvailableStatusList(),
-                                    array('class' => 'js-pub form-control', 'disabled' => $model->upload_status == 'Published',)
+                                    array('class' => 'js-pub form-control', 'disabled' => $model->upload_status == 'Published', 'data-initial-value' => $model->upload_status )
                                 ); ?>
                                 <div role="alert" class="help-block">
                                 <?php echo $form->error($model, 'upload_status'); ?>
@@ -349,23 +349,27 @@ echo $form->hiddenField($model, "image_id");
                                     echo CHtml::ajaxButton(
                                         'Mint DOI',
                                         Yii::app()->createUrl('/adminDataset/mint/'),
-                                        array(
+                                        [
                                             'type' => 'POST',
-                                            'data' => array('doi' => 'js:$("#Dataset_identifier").val()'),
+                                            'data' => ['doi' => 'js:$("#Dataset_identifier").val()'],
                                             'dataType' => 'json',
-                                            'success' => 'js:function(output){
-                                            console.log(output);
-                                            if(output.status){
-                                                $("#minting").removeClass("errorMessage");
-                                                $("#minting").html("new DOI successfully minted");
-
-                                            }else {
-                                                $("#minting").addClass("errorMessage");
-                                                $("#minting").html("error minting a DOI: "+ output.md_curl_status + ", " + output.doi_curl_status);
-                                            }
-                                            $("#mint_doi_button").toggleClass("active");
-                                        }',
-                                        ),
+                                            'success' => new CJavaScriptExpression('function(output) {
+                                                console.log(output);
+                                                if (output.check_metadata_status == 200 && output.check_doi_status == 200 && output.update_md_status == 201) {
+                                                    $("#minting").addClass("alert alert-info").html("This DOI exists in datacite already, no need to mint, but the metadata is updated!");
+                                                } else if (output.check_metadata_status == 200 && output.check_doi_status == 200 && output.update_md_status == 422) {
+                                                    $("#minting").addClass("alert alert-info").html("This DOI exists in datacite, but failed to update metadata because of: " + output.update_md_response);
+                                                } else if (output.create_md_status == 201 && output.create_doi_status == 201) {
+                                                    $("#minting").addClass("alert alert-success").html("New DOI successfully minted");
+                                                } else if (output.check_metadata_status == 404 && output.check_doi_status == 404 && output.create_md_status == 422 && output.create_doi_status == 422) {
+                                                    $("#minting").addClass("alert alert-danger").html("This DOI cannot be created because of the metadata status: " + output.create_md_status + ", and the doi status: " + output.create_doi_status + " Details can be found at <a href=\'https://support.datacite.org/reference/mds#api-response-codes\' target=\'_blank\'>here</a>");
+                                                } else if ((output.check_metadata_status == 200 && output.check_doi_status == 404) || (output.check_metadata_status == 404 && output.check_doi_status == 200)) {
+                                                    $("#minting").addClass("alert alert-danger").html("Error with metadata status: " + output.check_metadata_status + " and DOI status: " + output.check_doi_status + " Details can be found at <a href=\'https://support.datacite.org/reference/mds#api-response-codes\' target=\'_blank\'>here</a>");
+                                                }
+                                                $("#mint_doi_button").toggleClass("active");
+                                            }'
+                                            ),
+                                        ],
                                         array(
                                             'class' => 'btn background-btn m-0',
                                             'id' => 'mint_doi_button',
@@ -521,7 +525,7 @@ echo $form->hiddenField($model, "image_id");
     <a class="btn background-btn-o" href="<?= Yii::app()->createUrl('/adminDataset/admin') ?>">Cancel and go back</a>
     <?= CHtml::submitButton(
         $model->isNewRecord ? 'Create' : 'Save',
-        array('class' => 'btn background-btn submit-btn')
+        array('class' => 'btn background-btn submit-btn', 'id' => 'datasetFormSaveButton')
     ); ?>
     <?php if ("hidden" === $datasetPageSettings->getPageType() || "draft" === $datasetPageSettings->getPageType()) { ?>
         <a href="<?= Yii::app()->createUrl('/adminDataset/private/identifier/' . $model->identifier) ?>" />Create/Reset Private URL</a>
@@ -537,6 +541,39 @@ echo $form->hiddenField($model, "image_id");
     ?>
 
 </div>
+
+<div class="modal fade email-modal" id="customizeEmailModal" tabindex="-1" role="dialog" aria-labelledby="customizeEmailModalTitle" aria-modal="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h2 class="h4 modal-title" id="customizeEmailModalTitle">Customize email sent to the author</h2>
+      </div>
+      <div class="modal-body">
+        <div class="form-group m-0">
+          <label class="control-label" for="Dataset_emailBody">Email message</label>
+          <p class="help-block" id="Dataset_emailBody_Description">Write the email message to be sent to the author. Use the placeholder <code>{{ identifier }}</code> to automatically include the dataset's DOI.</p>
+          <textarea
+            rows="8"
+            cols="50"
+            class="form-control"
+            name="Dataset[emailBody]"
+            id="Dataset_emailBody"
+            required
+            aria-required="true"
+            aria-describedby="Dataset_emailBody_Description"
+          ></textarea>
+          <button type="button" class="btn btn-link" onclick="setDefaultEmailBody()">Reset to default email template</button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn background-btn-o" data-dismiss="modal">Cancel</button>
+        <button id="customizeEmailModalSubmitBtn" class="btn background-btn">Save and send email</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <?php $this->endWidget(); ?>
 <div class="modal fade" id="mockupCreation" tabindex="-1" role="dialog" aria-labelledby="generateMockup">
     <div class="modal-dialog" role="document">
@@ -569,7 +606,7 @@ echo $form->hiddenField($model, "image_id");
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-<script type="text/javascript">
+<script>
     $(function() {
 
         var publication_date = $('.js-date-pub');
@@ -728,11 +765,68 @@ echo $form->hiddenField($model, "image_id");
 </div>
 -->
 
-
 <script>
+let defaultDataPendingEmailBody= '';
+
+async function fetchEmailTemplate() {
+  try {
+    const res = await fetch('/files/templates/DataPending.twig')
+    if (res.ok) {
+      return res.text();
+    }
+    throw new Error('Failed to fetch email template');
+  } catch (error) {
+    console.error('Error fetching email template:', error);
+    return ''
+  }
+}
+
+$(document).ready(async function() {
+  defaultDataPendingEmailBody = await fetchEmailTemplate()
+  if (defaultDataPendingEmailBody) {
+    $("#Dataset_emailBody").val(defaultDataPendingEmailBody);
+  }
+})
+
+// if editor switched upload status to "data pending", a modal prompts to customize email body to send to author
 $(document).ready(function() {
-  document.addEventListener('focus', function() {
-    console.log(document.activeElement);
+  $("#dataset-form").on("submit", function(e) {
+    const uploadStatusInput = $("#Dataset_upload_status")
+    const initialUploadStatus = uploadStatusInput.attr('data-initial-value');
+    const currentUploadStatus = uploadStatusInput.val();
+    const submitSourceId = $(':focus').attr('id');
+    const didSelectDataPending = initialUploadStatus !== currentUploadStatus && currentUploadStatus === 'DataPending';
+    const didSubmitFromModal = submitSourceId === 'customizeEmailModalSubmitBtn' ||
+        // NOTE need to include this case for Safari compatibility
+        submitSourceId === 'customizeEmailModal';
+
+    if (didSelectDataPending && !didSubmitFromModal) {
+      $('#customizeEmailModal').modal({
+        backdrop: 'static',
+        keyboard: false,
+      });
+      e.preventDefault();
+    }
   })
 })
+
+function setDefaultEmailBody() {
+  $("#Dataset_emailBody").val(defaultDataPendingEmailBody);
+}
+
+</script>
+<?php
+$jsFile = Yii::getPathOfAlias('application.js.trap-focus') . '.js';
+$jsUrl = Yii::app()->assetManager->publish($jsFile);
+Yii::app()->clientScript->registerScriptFile($jsUrl, CClientScript::POS_END);
+?>
+
+<script>
+$('#customizeEmailModal').on('shown.bs.modal', function(e) {
+  trapFocus($(this));
+});
+
+$('#customizeEmailModal').on('hidden.bs.modal', function() {
+  $('#datasetFormSaveButton').focus(); // hardcoded button that triggers the modal to return focus
+});
 </script>

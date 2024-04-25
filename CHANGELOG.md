@@ -2,15 +2,48 @@
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+
 ## Unreleased
 
 - Feat #1143: Open external links in new browser tabs
+- Feat #1783: Avoid URLs with double pagination in dataset url
+- Feat #1757: Add pagination to samples table in dataset view
+- Fix #1800: Read the correct sample page from cache on samples tables
+- Feat #1163: Add carets to sortable headers in dataset page
+- Feat #1664: Enable post upload script to work with non-published datasets
+
+## v4.2.4 - 2024-04-16 - 576757f38
+
+- Docs #1791: Update IAM EC2 policy to prevent permission error when changing EC2 instant type on the fly
+- Docs #1786: Add documentation for creating TLS certificate for AWS gigadb.org migration
+- Fix #1784: Correct our configuration of PHP-FPM, Nginx and APCu to support real live load
+- Feat #1221: EFS filesystem for GigaDB
+- Feat #1717 #1715 #1716: remove Google Plus link, update X logo and add Mastodon link to social media links
+
+## v4.2.3 - 2024-04-08 - f084f51dd
+
+- Feat #1618: FUW - Allow customization of email sent to author after "DataPending" status is set
+- Security #1626: FUW - Update node version to the latest recommended to avoid openssl hack. Minimize dependency vulnerabilities.
+- Fix #1639: Paginate files and samples SQL queries on dataset pages to avoid running out of memory
+- Fix #1593: Display the units of file size based on 1000 byte system
+
+## v4.2.2 - 2024-03-25 - 3cf500fe8 - live since 2024-04-03
+
+- Feat #1759: Replace Google Analytics script by Matomo script in all layouts
+- Feat #1652: Update API doc for usage of retrieve known datasets by DOI endpoint
+
+## v4.2.1 - 2024-03-18 - ac7d6168b
+
+- Feat #1613: Add descriptive text, improved button labels and tooltips for user profile uploaded datasets tab
+- Fix #1666: Update the datacite credentials and make the Mint DOI button working
+- Fix #1230: Improve Excel upload tool by adding new dataset types in dev data
+- Fix #1722: Show more button on Dataset:Sample admin page works after filtering
 - Fix #1714: Visually hide long description in guide workflow, so that it's only visible to screen readers
 - Fix #1657: Fix the broken tests from release 4.2.0, fix curation log form and spreadsheet upload consent checkbox
 - Feat #1627: FUW - Migrate to Uppy version 2
 - Feat #1629: FUW - Upgrade Element UI to latest version
 
-## v4.2.0 - 2024-02-27 - 017ba8f58
+## v4.2.0 - 2024-02-27 - 017ba8f58 - live since 2024-03-13
 
 - Fix #1659: Remove dependency on abandoned inter-container-communication project and fix broken tests
 - Feat #1624: FUW - Migrate to Vue 2.7
