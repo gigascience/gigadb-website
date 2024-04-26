@@ -10,10 +10,10 @@ PureFtpdDeployStaging:
     - bash -c "echo '$docker_fileserver_tlsauth_cert' > ~/.docker/cert.pem"
     - bash -c "echo '$docker_fileserver_tlsauth_key' > ~/.docker/key.pem"
     - echo "$GIGADB_ENV"
-    - echo "$REMOTE_FILE_SERVER_DOCKER"
-    - docker --tlsverify -H=$REMOTE_FILE_SERVER_DOCKER info
-    - docker --tlsverify -H=$REMOTE_FILE_SERVER_DOCKER login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
-    - docker --tlsverify -H=$REMOTE_FILE_SERVER_DOCKER pull registry.gitlab.com/$CI_PROJECT_PATH/production_ftpd:$GIGADB_ENV
+    - echo "$REMOTE_FILESERVER_DOCKER"
+    - docker --tlsverify -H=$REMOTE_FILESERVER_DOCKER info
+    - docker --tlsverify -H=$REMOTE_FILESERVER_DOCKER login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+    - docker --tlsverify -H=$REMOTE_FILESERVER_DOCKER pull registry.gitlab.com/$CI_PROJECT_PATH/production_ftpd:$GIGADB_ENV
   environment:
     name: $GIGADB_ENV
   dependencies: []
