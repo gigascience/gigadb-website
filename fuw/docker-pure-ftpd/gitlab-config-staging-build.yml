@@ -2,6 +2,7 @@ PureFtpdBuildStaging:
   variables:
     GIGADB_ENV: "staging"
     YII_DEBUG: "true"
+    COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
   stage: staging build
   tags:
     - $GITLAB_USER_LOGIN
