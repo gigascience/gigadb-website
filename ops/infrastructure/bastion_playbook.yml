@@ -325,7 +325,7 @@
   tasks:
     - name: Install script to retrieve all datasets a curl config
       ansible.builtin.copy:
-        src: "../../../scripts/all-datasets-as-curl-config.sh
+        src: "../../../scripts/all-datasets-as-curl-config.sh"
         dest: /home/centos/
         owner: centos
         group: centos
