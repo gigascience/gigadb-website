@@ -2,7 +2,7 @@ PureFtpdBuildStaging:
   variables:
     GIGADB_ENV: "staging"
     YII_DEBUG: "true"
-  stage: stage build
+  stage: staging build
   tags:
     - $GITLAB_USER_LOGIN
   needs: []
