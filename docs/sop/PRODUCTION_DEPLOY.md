@@ -337,3 +337,17 @@ $ env TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-pla
 and run all the jobs in the live build stage in your pipeline, including but are not limited to `build_live`, `TidewaysBuildLive`.
 
 2. Next, run all the jobs in the live deploy stage in your pipeline, including but are not limited to `ld_gigadb`, `TidewaysDeployLive`.
+
+## Pre-warm the cache with all datasets
+
+### on Upstream staging
+
+```
+$ ssh -i ~/.ssh/id-rsa-aws-hk-gigadb.pem centos@bastion-stg.gigadb.host /home/centos/all-datasets-as-curl-config.sh | curl --silent -o /dev/null --parallel --parallel-immediate --parallel-max 5 --config -
+```
+
+### on Upstream live
+
+```
+$ ssh -i ~/.ssh/id-rsa-aws-hk-gigadb.pem centos@bastion.gigadb.host /home/centos/all-datasets-as-curl-config.sh | curl --silent -o /dev/null --parallel --parallel-immediate --parallel-max 5 --config -
+```

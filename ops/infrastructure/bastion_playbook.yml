@@ -317,6 +317,21 @@
         group: centos
         mode: a+x
 
+- name: Setup cache warmer script
+  hosts: name_bastion_server_{{gigadb_env}}*
+  tags:
+    - cache-warmer
+
+  tasks:
+    - name: Install script to retrieve all datasets a curl config
+      ansible.builtin.copy:
+        src: "../../../scripts/all-datasets-as-curl-config.sh
+        dest: /home/centos/
+        owner: centos
+        group: centos
+        mode: a+x
+
+
 - name: Set up and configuration of rclone on bastion server
   hosts: name_bastion_server_{{gigadb_env}}*
   tags:
