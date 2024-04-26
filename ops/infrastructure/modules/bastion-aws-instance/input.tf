@@ -6,5 +6,5 @@ variable "eip_tag_name" {}
 variable "public_subnet_id" {}
 variable "vpc_id" {}
 variable "fs_id" {}
-variable "fasp_dropbox" {}
-variable "fasp_config" {}
+variable "fsap_dropbox_id" {}
+variable "fsap_config_id" {}
