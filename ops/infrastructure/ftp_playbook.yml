@@ -26,7 +26,7 @@
   tags:
     - setup-docker-ce
   vars:
-    target_host: "fileserver"
+    target_host: "_fileserver"
 
   roles:
     - role: ../../roles/docker-install
