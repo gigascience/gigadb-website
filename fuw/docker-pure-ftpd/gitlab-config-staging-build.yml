@@ -1,4 +1,4 @@
-PureFtpdBuildLive:
+PureFtpdBuildStaging:
   variables:
     GIGADB_ENV: "staging"
     YII_DEBUG: "true"
