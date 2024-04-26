@@ -15,7 +15,7 @@
 
   tasks:
     - debug:
-        msg: "remote private ip : {{ ec2_private_ip }}"
+        msg: "remote private ip : {{ ec2_ftp_private_ip }}"
 
   roles:
     - role: ../../roles/fail2ban
@@ -26,12 +26,12 @@
   tags:
     - setup-docker-ce
   vars:
-    target_host: ""
+    target_host: "fileserver"
 
   roles:
     - role: ../../roles/docker-install
     - role: role-secure-docker-daemon
-      dds_host: "{{ ec2_public_ip }}"
+      dds_host: "{{ ec2_ftp_public_ip }}"
       dds_server_cert_path: /etc/docker
       dds_restart_docker: no
       dds_client_cert_path: /home/centos/.docker
