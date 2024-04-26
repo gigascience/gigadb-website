@@ -1,6 +1,5 @@
 PureFtpdDeployStaging:
   stage: staging deploy
-  extends: .tag_only
   variables:
     GIGADB_ENV: staging
     REMOTE_FILE_SERVER: "$remote_ftp_public_ip:2376"

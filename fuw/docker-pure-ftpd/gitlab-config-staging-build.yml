@@ -6,7 +6,6 @@ PureFtpdBuildStaging:
   tags:
     - $GITLAB_USER_LOGIN
   needs: []
-  extends: .tag_only
   when: manual
   environment:
     name: "staging"
