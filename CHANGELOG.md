@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1771: Mount AWS EFS automatically when launching
+
 ## v4.3.0 - 2024-06-25 - 9cf91f224
 
 - Feat #1892: Remove old layouts
