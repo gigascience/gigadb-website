@@ -214,6 +214,10 @@ module "ec2_dockerhost" {
   ec2_type = var.web_ec2_type
   ec2_usage = "webserver"
   app_port = 80
+
+  # EFS variables for mounting
+  fs_id = module.gigadb_efs.id
+  fsap_config_id = module.gigadb_efs.access_points["configuration_area"].id
 }
 
 output "ec2_public_ip" {

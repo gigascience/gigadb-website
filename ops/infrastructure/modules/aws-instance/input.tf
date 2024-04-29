@@ -8,4 +8,6 @@ variable "eip_tag_name" {}
 variable "public_subnet_id" {}
 variable "vpc_id" {}
 variable "vpc_cidr_block" {}
+variable "fs_id" {}
+variable "fsap_config_id" {}
 //variable "database_cidr_blocks" {}

@@ -94,6 +94,11 @@ resource "aws_instance" "docker_host" {
   key_name = var.key_name
   subnet_id = var.public_subnet_id
 
+  user_data = templatefile("../../mount-efs-dockerhost.sh", {
+    fs_id             = var.fs_id
+    fsap_config_id    = var.fsap_config_id
+  })
+
   tags = {
     Name = "gigadb_${var.ec2_usage}_${var.deployment_target}_${var.owner}",
     System = "${var.ec2_usage}_${var.ec2_type}_centos_stream8",
