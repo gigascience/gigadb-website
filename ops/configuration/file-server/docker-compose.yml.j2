@@ -1,0 +1,18 @@
+services:
+	ftpd:
+    image: registry.gitlab.com/{{ gitlab_project }}/production_ftpd:{{ gigadb_environment }}
+    volumes:
+      - /share/dropbox:/home
+      - /home/centos/pure-ftpd/vault:/etc/pure-ftpd/vault
+      - /share/config/pure-ftpd/passwd:/etc/pure-ftpd/passwd
+    environment:
+      PUBLICHOST: "{{ remote_fileserver_hostname.json.value }}"
+    command: -l puredb:/etc/pure-ftpd/vault/pureftpd.pdb -E -j -R -P {{ remote_fileserver_hostname.json.value }}
+    ports:
+      - target: 21
+        published: 9021
+        protocol: tcp
+        mode: host
+      - "30000-30009:30000-30009"
+    restart: unless-stopped
+

@@ -39,6 +39,33 @@
     - role: ../../roles/docker-daemon-enable-start
     - role: ../../roles/fuw
 
+
+- name: Configure FTP container service on the file server
+  hosts: name_gigadb_ftpserver_{{gigadb_env}}*
+  tags:
+    - configure-ftp
+
+  tasks:
+  - name: get remote hostname from GitLab CI environment variable
+    ansible.builtin.uri:
+      url: "{{ gitlab_url }}/variables/remote_fileserver_hostname?filter%5benvironment_scope%5d={{ gigadb_environment }}"
+      method: GET
+      headers:
+        PRIVATE-TOKEN: "{{ gitlab_private_token }}"
+      body_format: json
+      status_code:
+        - 200
+    register: remote_fileserver_hostname
+
+  - name: Create docker-compose on the server
+    template:
+      src: ../../../configuration/file-server/docker-compose.yml.j2
+      dest: /home/centos/docker-compose.yml
+      owner: centos
+      group: centos
+      mode: 0644
+
+
 - name: Install node exporter
   hosts: name_gigadb_ftpserver_{{gigadb_env}}*
   tags:
