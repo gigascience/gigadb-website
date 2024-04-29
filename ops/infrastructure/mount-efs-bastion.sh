@@ -16,6 +16,5 @@ sudo yum install -y aws-efs-utils.rpm
 
 # mount accesspoint
 sudo mount -t efs -o tls,accesspoint="${fsap_dropbox_id}" "${fs_id}" "$baseMountPath/dropbox"
-sudo mount -t efs -o tls,accesspoint="${fsap_config_id}" "${fs_id}"  "$baseMountPath/config"
-
+sudo mount -t efs -o tls,accesspoint="${fsap_config_id}" "${fs_id}" "$baseMountPath/config"
 
