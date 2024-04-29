@@ -1,5 +1,6 @@
 services:
-	ftpd:
+
+  ftpd:
     image: registry.gitlab.com/{{ gitlab_project }}/production_ftpd:{{ gigadb_environment }}
     volumes:
       - /share/dropbox:/home
