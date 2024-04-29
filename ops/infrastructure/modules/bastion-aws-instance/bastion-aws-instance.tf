@@ -63,7 +63,7 @@ resource "aws_instance" "bastion" {
   key_name = var.key_name
   subnet_id = var.public_subnet_id
 
-  user_data = templatefile("../../mount-efs-bastion.sh", {
+  user_data = templatefile("../../mount-efs.sh", {
     fs_id             = var.fs_id
     fsap_dropbox_id   = var.fsap_dropbox_id
     fsap_config_id    = var.fsap_config_id

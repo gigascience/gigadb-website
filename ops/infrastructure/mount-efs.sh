@@ -6,7 +6,7 @@ baseMountPath="/share"
 
 # Create the mount directory if it doesn't exist
 if [ ! -d "$baseMountPath" ]; then
-  sudo mkdir -p "$baseMountPath" "$baseMountPath/config"
+  sudo mkdir -p "$baseMountPath" "$baseMountPath/dropbox" "$baseMountPath/config"
   sudo chown -R  centos:centos "$baseMountPath"
 fi
 
@@ -15,5 +15,11 @@ curl https://s3.ap-northeast-1.wasabisys.com/infra-resources/amazon-efs-utils-2.
 sudo yum install -y aws-efs-utils.rpm
 
 # mount accesspoint
-sudo mount -t efs -o tls,accesspoint="${fsap_config_id}" "${fs_id}" "$baseMountPath/config"
+if [[ -n "${fsap_dropbox_id}" ]];then
+  sudo mount -t efs -o tls,accesspoint="${fsap_dropbox_id}" "${fs_id}" "$baseMountPath/dropbox"
+fi
+
+if [[ -n "${fsap_config_id}" ]];then
+  sudo mount -t efs -o tls,accesspoint="${fsap_config_id}" "${fs_id}" "$baseMountPath/config"
+fi
 

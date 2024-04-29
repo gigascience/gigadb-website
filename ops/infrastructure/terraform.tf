@@ -217,6 +217,7 @@ module "ec2_dockerhost" {
 
   # EFS variables for mounting
   fs_id = module.gigadb_efs.id
+  fsap_dropbox_id = ""
   fsap_config_id = module.gigadb_efs.access_points["configuration_area"].id
 }
 
