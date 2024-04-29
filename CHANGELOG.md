@@ -42,7 +42,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## v4.2.5 - 2024-04-25 - ca6d17e0f
 
-- Feat #1771: Mount AWS EFS automatically when launching
 - Feat #1770: Make AWS EFS can be mounted on the bastion server manually
 - Feat #1783: Avoid URLs with double pagination in dataset url
 - Feat #1757: Add pagination to samples table in dataset view
