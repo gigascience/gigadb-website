@@ -40,6 +40,23 @@
     - role: ../../roles/fuw
 
 
+- name: Ensure EFS mount directory exists
+  hosts: name_gigadb_ftpserver_{{gigadb_env}}*
+  tags:
+    - efs-mount-points
+
+  tasks:
+  - name: Create directories in /share
+    ansible.builtin.file:
+      path: "{{ item }}"
+      state: directory
+      mode: '0755'
+      owner: centos
+      group: centos
+    loop:
+      - "/share/dropbox"
+      - "/share/config"
+
 - name: Configure FTP container service on the file server
   hosts: name_gigadb_ftpserver_{{gigadb_env}}*
   tags:
