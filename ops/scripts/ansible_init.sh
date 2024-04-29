@@ -34,7 +34,7 @@ fi
 
 # copy files into the environment specific directory
 cp ../../webapp_playbook.yml .
-cp ../../ftp_playbook.yml .
+cp ../../files_playbook.yml .
 cp ../../bastion_playbook.yml .
 cp ../../users_playbook.yml .
 cp ../../monitoring_playbook.yml .
