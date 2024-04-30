@@ -21,7 +21,7 @@ storage_class =
 provider = Other
 no_check_bucket = true
 
-[wasabi_user]
+[wasabi_{{ credentials.list.0["User Name"] }}]
 type = s3
 env_auth = false
 access_key_id = {{ credentials.list.0["Access Key Id"] }}
