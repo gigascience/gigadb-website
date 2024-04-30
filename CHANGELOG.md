@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1834: Create rclone config for users
+
 ## v4.2.6 - 2024-04-30 - fe0348092
 
 - Feat #1394: Update bastion-users Ansible role to create AWS credentials file from Wasabi credentials CSV
