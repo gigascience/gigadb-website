@@ -160,7 +160,7 @@
   - ansible.builtin.debug:
       msg: "{{credentials.list.0}}"
 
-  - name: Create a .aws directory fo the new user
+  - name: Create a .aws directory for the new user
     ansible.builtin.file:
       path: "/home/{{ newuser }}/.aws"
       state: directory

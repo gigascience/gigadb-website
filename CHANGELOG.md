@@ -6,6 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## Unreleased
 
 - Feat #1394: Update bastion-users Ansible role to create AWS credentials file from Wasabi credentials CSV
+- Fix #1833: Files metadata console containers built using gitlab-config-live-build.yml are tagged with "staging"
 
 ## v4.2.5 - 2024-04-25 - ca6d17e0f
 
