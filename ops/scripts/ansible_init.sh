@@ -133,8 +133,8 @@ echo "$ftp_host"  >> ~/.ssh/known_hosts
 
 # Bootstrap playbook
 echo "Saving EC2 IP addresses to GitLab for web server"
-env TF_KEY_NAME=private_ip ansible-playbook -i ../../inventories bootstrap_playbook.yml --tags="webapp_ips" -e="private_ip=$webapp_private_ip, public_ip=$webapp_ip" --extra-vars="gigadb_env=$target_environment"
+env TF_KEY_NAME=private_ip ansible-playbook -i ../../inventories bootstrap_playbook.yml --tags="webapp_ips" -e="private_ip=$webapp_private_ip public_ip=$webapp_ip" --extra-vars="gigadb_env=$target_environment"
 echo "Saving EC2 IP addresses to GitLab for file server"
-env TF_KEY_NAME=private_ip ansible-playbook -vvv -i ../../inventories bootstrap_playbook.yml --tags="ftp_ips" -e="private_ip=$ftp_private_ip, public_ip=$ftp_ip" --extra-vars="gigadb_env=$target_environment"
+env TF_KEY_NAME=private_ip ansible-playbook -vvv -i ../../inventories bootstrap_playbook.yml --tags="ftp_ips" -e="private_ip=$ftp_private_ip public_ip=$ftp_ip" --extra-vars="gigadb_env=$target_environment"
 echo "Saving EC2 IP addresses to GitLab for bastion server"
-ansible-playbook -i ../../inventories bootstrap_playbook.yml --tags="bastion_ips" -e="private_ip=$bastion_private_ip, public_ip=$bastion_ip" --extra-vars="gigadb_env=$target_environment"
+ansible-playbook -i ../../inventories bootstrap_playbook.yml --tags="bastion_ips" -e="private_ip=$bastion_private_ip public_ip=$bastion_ip" --extra-vars="gigadb_env=$target_environment"
