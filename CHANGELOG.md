@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1825: "Continue to view old version" closes New Version Alert pop up
+
 ## v4.2.5 - 2024-04-25 - ca6d17e0f
 
 - Feat #1770: Make AWS EFS can be mounted on the bastion server manually
