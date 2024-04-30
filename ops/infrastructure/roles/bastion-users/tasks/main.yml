@@ -176,6 +176,22 @@
       owner: "{{ newuser }}"
       group: "{{ newuser }}"
       mode: 0644
+
+  - name: Create a rclone directory for user
+    ansible.builtin.file:
+      path: "/home/{{ newuser }}/.config/rclone"
+      state: directory
+      mode: '0755'
+      owner: "{{ newuser }}"
+      group: "{{ newuser }}"
+
+  - name: Create rclone config for user
+    template:
+      src: ../../../../ops/configuration/rclone-conf/rclone.conf.j2
+      dest: "/home/{{ newuser }}/.config/rclone/rclone.conf"
+      owner: "{{ newuser }}"
+      group: "{{ newuser }}"
+      mode: 0644
   when: credentials_csv_path is defined
 
 - name: Restart systemd sshd service
