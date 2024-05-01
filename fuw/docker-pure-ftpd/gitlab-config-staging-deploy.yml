@@ -2,7 +2,7 @@ PureFtpdDeployStaging:
   stage: staging deploy
   variables:
     GIGADB_ENV: staging
-    REMOTE_FILESERVER_DOCKER: "$remote_ftp_public_ip:2376"
+    REMOTE_FILESERVER_DOCKER: "$remote_files_public_ip:2376"
   script:
     # Deployment to bastion server
     - mkdir -pv ~/.docker

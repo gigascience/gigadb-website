@@ -3,7 +3,7 @@ PureFtpdDeployLive:
   extends: .tag_only
   variables:
     GIGADB_ENV: live
-    REMOTE_FILE_SERVER_DOCKER: "$remote_ftp_public_ip:2376"
+    REMOTE_FILE_SERVER_DOCKER: "$remote_files_public_ip:2376"
   script:
     # Deployment to bastion server
     - mkdir -pv ~/.docker

@@ -2,27 +2,27 @@
 # build a Centos server running a secure Docker CE install
 
 - name: Fix Centos EOL issues
-  hosts: name_gigadb_ftpserver_{{gigadb_env}}*
+  hosts: name_gigadb_filesserver_{{gigadb_env}}*
   tags:
     - fix-centos-eol-issues
   roles:
     - role: ../../roles/centos-eol-fix
 
 - name: Setup Fail2ban
-  hosts: name_gigadb_ftpserver_{{gigadb_env}}*
+  hosts: name_gigadb_filesserver_{{gigadb_env}}*
   tags:
     - setup-fail2ban
 
   tasks:
     - debug:
-        msg: "remote private ip : {{ ec2_ftp_private_ip }}"
+        msg: "remote private ip : {{ ec2_files_private_ip }}"
 
   roles:
     - role: ../../roles/fail2ban
     - role: ../../roles/jail-ssh
 
 - name: Setup Docker CE
-  hosts: name_gigadb_ftpserver_{{gigadb_env}}*
+  hosts: name_gigadb_filesserver_{{gigadb_env}}*
   tags:
     - setup-docker-ce
   vars:
@@ -31,7 +31,7 @@
   roles:
     - role: ../../roles/docker-install
     - role: role-secure-docker-daemon
-      dds_host: "{{ ec2_ftp_public_ip }}"
+      dds_host: "{{ ec2_files_public_ip }}"
       dds_server_cert_path: /etc/docker
       dds_restart_docker: no
       dds_client_cert_path: /home/centos/.docker
@@ -41,7 +41,7 @@
 
 
 - name: Ensure EFS mount directory exists
-  hosts: name_gigadb_ftpserver_{{gigadb_env}}*
+  hosts: name_gigadb_filesserver_{{gigadb_env}}*
   tags:
     - efs-mount-points
 
@@ -57,10 +57,10 @@
       - "/share/dropbox"
       - "/share/config"
 
-- name: Configure FTP container service on the file server
-  hosts: name_gigadb_ftpserver_{{gigadb_env}}*
+- name: Configure files container service on the file server
+  hosts: name_gigadb_filesserver_{{gigadb_env}}*
   tags:
-    - configure-ftp
+    - configure-files
 
   tasks:
   - name: get remote hostname from GitLab CI environment variable
@@ -84,7 +84,7 @@
 
 
 - name: Install node exporter
-  hosts: name_gigadb_ftpserver_{{gigadb_env}}*
+  hosts: name_gigadb_filesserver_{{gigadb_env}}*
   tags:
     - node-exporter
   roles:

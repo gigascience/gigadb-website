@@ -228,32 +228,32 @@ output "web_ec2_type" {
   value = module.ec2_dockerhost.instance_type
 }
 
-# EC2 instance for hosting the ftp server
-module "ftp_host" {
+# EC2 instance for hosting the files server
+module "files_host" {
   source = "../../modules/aws-instance"
 
   owner = data.external.callerUserName.result.userName
   deployment_target = var.deployment_target
   key_name = var.key_name
-  eip_tag_name = "eip-ftp-${var.deployment_target}-${data.external.callerUserName.result.userName}"
+  eip_tag_name = "eip-files-${var.deployment_target}-${data.external.callerUserName.result.userName}"
   vpc_id = module.vpc.vpc_id
   vpc_cidr_block = module.vpc.vpc_cidr_block
   public_subnet_id = module.vpc.public_subnets[0]
   ec2_type = var.web_ec2_type
-  ec2_usage = "ftpserver"
+  ec2_usage = "filesserver"
   app_port = 21
 }
 
-output "ec2_ftp_public_ip" {
-  value = module.ftp_host.instance_public_ip_addr
+output "ec2_files_public_ip" {
+  value = module.files_host.instance_public_ip_addr
 }
 
-output "ec2_ftp_private_ip" {
-  value = module.ftp_host.instance_ip_addr
+output "ec2_files_private_ip" {
+  value = module.files_host.instance_ip_addr
 }
 
-output "ftp_ec2_type" {
-  value = module.ftp_host.instance_type
+output "files_ec2_type" {
+  value = module.files_host.instance_type
 }
 
 # EC2 instance for bastion server to access RDS for PostgreSQL admin

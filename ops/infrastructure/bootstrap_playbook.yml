@@ -22,12 +22,12 @@
     - role: ../../roles/tf-output-to-gl-variables
 
 
-- name: Save FTP IP addresses
-  hosts: name_gigadb_ftpserver_{{gigadb_env}}*
+- name: Save files IP addresses
+  hosts: name_gigadb_filesserver_{{gigadb_env}}*
   tags:
-    - ftp_ips
+    - files_ips
   vars:
-    target_host: "_ftp"
+    target_host: "_files"
 
   tasks:
     - debug: var=ansible_default_ipv4.address
