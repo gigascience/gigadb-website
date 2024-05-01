@@ -235,7 +235,7 @@ module "files_host" {
   owner = data.external.callerUserName.result.userName
   deployment_target = var.deployment_target
   key_name = var.key_name
-  eip_tag_name = "eip-files-${var.deployment_target}-${data.external.callerUserName.result.userName}"
+  eip_tag_name = "eip-gigadb-files-${var.deployment_target}-${data.external.callerUserName.result.userName}"
   vpc_id = module.vpc.vpc_id
   vpc_cidr_block = module.vpc.vpc_cidr_block
   public_subnet_id = module.vpc.public_subnets[0]
