@@ -508,25 +508,28 @@ Where environment must be replaced by ``staging`` or ``live``.
 That script needs to be executed after ``ops/scripts/tf_init.sh`` has been run, as our script is dependent
 on the existence of an ``.init_env_vars`` file created by the latter.
 
-The `ansible_init.sh` script also makes a copy of `ops/infrastructure/webapp_playbook.yml`
-and `ops/infrastructure/bastion_playbook.yml` into the environment-specific 
+The `ansible_init.sh` script also makes a copy of:
+* `ops/infrastructure/webapp_playbook.yml`
+* `ops/infrastructure/files_playbook.yml`
+* `ops/infrastructure/bastion_playbook.yml`
+into the environment-specific 
 directory so the playbooks can be performed from environment specific directory. 
 This ansible script also updates the `gigadb_db_host` Gitlab variable with the 
 domain name of the RDS service in preparation for its provisioning.
 
-###### To enable provisioning dockerhost servers through a bastion server
+###### To enable provisioning web and files servers through a bastion server
 Bastion server provides perimeter access control, it acts as an entry point into a network containing private network instances. 
 Once dockerhost servers have been provisioned using terraform with ssh port restricted, which could then only be accessed the through bastion server. 
 
 Adding `ansible_ssh_common_args` in `/inventories/hosts` will make ansible to do the provisioning on dockerhost servers through bastion host.
 
-And prefixing the ansible commands with `TF_KEY_NAME=private_ip` to webapp_playbook.yml is essential as it would force dockerhost server to only accept a private ip entry,
+And prefixing the ansible commands with `TF_KEY_NAME=private_ip` to webapp_playbook.yml (or files_playbook.yml) is essential as it would force dockerhost server to only accept a private ip entry,
 otherwise, `UNREACHEABLE !` would be occurred.
 
 ##### How to manually ssh to dockerhost through the bastion for debugging purpose
 Sometimes, it would be useful to log into dockerhost server manually for debugging. There are two important points to keep in mind:
-1. Get the public DNS or private ip address of dockerhost server from `terraform output` or EC2 dashboard. 
-2. Both dockerhost server and bastion server share the same ssh private key.  
+1. Get the public DNS or private ip address of web server or files server from `terraform output` or EC2 dashboard. 
+2. All EC2 servers share the same ssh private key.  
 
 Here are the steps:
 ```
@@ -747,8 +750,9 @@ where you replace ``environment`` with ``staging`` or ``live``
 Ensure you are still in ``ops/infractructure/envs/staging`` or ``ops/infractructure/envs/live``
 
 ```
-$ TF_KEY_NAME=private_ip ansible-playbook -i ../../inventories webapp_playbook.yml
-$ ansible-playbook -i ../../inventories bastion_playbook.yml
+$ env TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook  -i ../../inventories webapp_playbook.yml -e="gigadb_env=environment"
+$ env TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook  -i ../../inventories files_playbook.yml -e="gigadb_env=environment" --tags="efs-mount-points"
+$ env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories bastion_playbook.yml -e "gigadb_env=environment" -e "backupDate=latest"
 ```
 where you replace ``environment`` with ``staging`` or ``live``
 
