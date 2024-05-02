@@ -12,7 +12,12 @@ On Upstream, the domain will be files-stg.gigadb.host and files.gigadb.org for t
 On Forks, you will have to create your own domain and create a DNS A record that maps that domain to the EIP associated with the file server, normally `eip-files-staging-username`
 
 
-## Deployment from Gitlab pipeline
+## How to deploy from Gitlab pipeline
+
+We have two new jobs (one for building, the other one for deploying) in Gitlab pipeline for each target environment (Staging or Live).
+They don't depend on any other jobs.
+The build job is the one that need to be trigger manually. The deploy job will happen automatically upon success of the build job.
+See below for the build job name for each environment.
 
 ### Staging deployment
 
@@ -22,7 +27,7 @@ We use Pure-FTPd and there are two jobs of interest in the Gitlab pipeline of Gi
 
 There are two jobs of interest in the Gitlab pipeline of GigaDB: `PureFtpdBuildLive` in the `live build` stage, and `PureFtpdDeployLive` in the `staging deploy` stage.
 
-## Connecting the file server to EFS
+## How to mount the EFS to the file server
 
 Identify the IP addresses needed to connect to the file server and the resource ids to mount the EFS:
 ```
@@ -56,7 +61,7 @@ $ df -T -h
 127.0.0.1:/    nfs4      8.0E     0  8.0E   0% /share/dropbox
 ```
 
-## Start and stop the server
+## How to start and stop the server
 
 on the file server, there is a docker compose file at `/home/centos/docker-compose.yml`.
 Start the server with:
@@ -70,7 +75,7 @@ To tear down the server:
 $ docker compose down -v --remove-orphans
 ```
 
-## Add user accounts
+## How to add user accounts
 
 You can create a user account with the following command:
 ```
