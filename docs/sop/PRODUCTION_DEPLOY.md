@@ -22,8 +22,10 @@ The GigaDB system has three public endpoints. Each with their own domain and ela
 
 | endpoint | environment | domain | EIP | 
 | -- | -- | -- | 
-| web site | staging | staging.gigadb.org | eip-gigadb-staging-gigadb |
-| web site | live | gigadb.org | eip-gigadb-live-gigadb |
+| web site (main) | staging | staging.gigadb.org | eip-gigadb-staging-gigadb |
+| web site (main)| live | gigadb.org | eip-gigadb-live-gigadb |
+| web site (portainer) | staging | portainer.staging.gigadb.org | eip-gigadb-staging-gigadb |
+| web site (portainer)| live | portainer.gigadb.org | eip-gigadb-live-gigadb |
 | bastion server | staging | bastion-stg.gigadb.host | eip-gigadb-bastion-staging-gigadb |
 | bastion server | live | bastion.gigadb.host | eip-gigadb-bastion-live-gigadb |
 | files server | staging | files-stg.gigadb.host | eip-gigadb-files-staging-gigadb |
