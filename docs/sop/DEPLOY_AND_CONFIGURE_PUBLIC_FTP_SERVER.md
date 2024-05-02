@@ -79,7 +79,7 @@ $ docker compose down -v --remove-orphans
 
 You can create a user account with the following command:
 ```
-$ docker compose exec ftpd pure-pw useradd user0 -f /etc/pure-ftpd/passwd/pureftpd.passwd -m -u downloader -d /home/user0
+$ docker compose exec ftpd pure-pw useradd user0 -f /etc/pure-ftpd/passwd/pureftpd.passwd -m -u dropboxuser -d /home/user0
 $ docker compose exec ftpd pure-pw show user0 -f /etc/pure-ftpd/passwd/pureftpd.passwd
 ```
 
