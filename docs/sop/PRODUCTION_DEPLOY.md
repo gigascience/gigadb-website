@@ -21,7 +21,7 @@ If you have any problem during the deployment process, please first check the [t
 The GigaDB system has three public endpoints. Each with their own domain and elastic IP for each environment (staging and live).
 
 | endpoint | environment | domain | EIP | 
-| -- | -- | -- | 
+| -- | -- | -- | -- | 
 | web site (main) | staging | staging.gigadb.org | eip-gigadb-staging-gigadb |
 | web site (main)| live | gigadb.org | eip-gigadb-live-gigadb |
 | web site (portainer) | staging | portainer.staging.gigadb.org | eip-gigadb-staging-gigadb |
