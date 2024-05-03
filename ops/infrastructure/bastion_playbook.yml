@@ -312,7 +312,7 @@
     - name: Copy shell script
       ansible.builtin.copy:
         src: "../../../../gigadb/app/tools/files-metadata-console/scripts/updateUrls.sh"
-        dest: /usr/local/bin/centos/updateUrls
+        dest: /usr/local/bin/updateUrls
         owner: centos
         group: centos
         mode: a+x
