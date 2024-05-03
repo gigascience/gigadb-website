@@ -13,7 +13,7 @@ doi="$1"
 
 MD5_FILE="$doi.md5"
 FILESIZE_FILE="$doi.filesizes"
-S3_BUCKET="s3://gigadb-datasets-metadata"
+S3_BUCKET="gigadb-datasets-metadata"
 
 echo $MD5_FILE
 echo $FILESIZE_FILE
@@ -29,12 +29,8 @@ do
 done
 echo "Created $FILESIZE_FILE"
 
-## In case we are on GigaDB file server
-#if [[ $(uname -n) =~ cngb-gigadb-ftp ]];then
-#  export AWS_CONFIG_FILE=/etc/aws/config
-#  export AWS_SHARED_CREDENTIALS_FILE=/etc/aws/credentials
-#fi
-#
-## Copy files into S3 bucket
-#aws s3 cp "$FILESIZE_FILE" "$S3_BUCKET"
-#aws s3 cp "$MD5_FILE" "$S3_BUCKET"
+# In case we are on the bastion
+if [[ $(uname -n) =~ compute ]];then
+  rclone copy -v "$FILESIZE_FILE" s3_metadata:"S3_BUCKET"
+  rclone copy -v "$MD5_FILE" s3_metadata:"S3_BUCKET"
+fi
