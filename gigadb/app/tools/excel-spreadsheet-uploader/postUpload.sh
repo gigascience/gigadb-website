@@ -19,7 +19,7 @@ else
 fi
 
 if [ -z "$DOI" ];then
-  echo -e "Usage: ./postUpload.sh <DOI>\n"
+  echo -e "Usage: /usr/local/bin/postUpload <DOI>\n"
   exit 1;
 fi
 

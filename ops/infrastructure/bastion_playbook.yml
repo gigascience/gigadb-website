@@ -103,7 +103,7 @@
     - name: Install new wrapper script to reset database
       ansible.builtin.copy:
         src: "../../../../gigadb/app/tools/files-url-updater/databaseReset.sh"
-        dest: /home/centos/
+        dest: /usr/local/bin/databaseReset
         owner: centos
         group: centos
         mode: a+x
@@ -124,7 +124,7 @@
         minute: "05"
         hour: "10"
         user: "centos"
-        job: "./databaseReset.sh 2> $HOME/logs/errors.log 1> $HOME/logs/output.log"
+        job: "/usr/local/bin/databaseReset 2> $HOME/logs/errors.log 1> $HOME/logs/output.log"
         state: "{{ reset_database_cronjob_state }}"
 
     - name: Install docker-compose
@@ -156,7 +156,7 @@
     - name: Copy dataset upload tool shell post upload script
       ansible.builtin.copy:
         src: "../../../../gigadb/app/tools/excel-spreadsheet-uploader/postUpload.sh"
-        dest: /home/centos/
+        dest: /usr/local/bin/postUpload
         owner: centos
         group: centos
         mode: a+x
@@ -288,7 +288,7 @@
     - name: Copy readme tool shell script
       ansible.builtin.copy:
         src: "../../../../gigadb/app/tools/readme-generator/createReadme.sh"
-        dest: /home/centos/createReadme.sh
+        dest: /usr/local/bin/createReadme
         owner: centos
         group: centos
         mode: a+x
@@ -312,7 +312,15 @@
     - name: Copy shell script
       ansible.builtin.copy:
         src: "../../../../gigadb/app/tools/files-metadata-console/scripts/updateUrls.sh"
-        dest: /home/centos/updateUrls.sh
+        dest: /usr/local/bin/centos/updateUrls
+        owner: centos
+        group: centos
+        mode: a+x
+
+    - name: Copy shell script for calculating the file sizes and md5
+      ansible.builtin.copy:
+        src: "../../../../gigadb/app/tools/files-metadata-console/scripts/md5.sh"
+        dest: /usr/local/bin/calculate_checksum_sizes
         owner: centos
         group: centos
         mode: a+x
@@ -339,7 +347,7 @@
 
   tasks:
   - name: Load latest database into this environment's RDS instance
-    ansible.builtin.shell: "./databaseReset.sh {{ backupDate }}"
+    ansible.builtin.shell: "/usr/local/bin/databaseReset {{ backupDate }}"
     args:
       chdir: /home/centos
       executable: /bin/bash
