@@ -7,7 +7,7 @@
 * Have the domain names registered and DNS A record pointing to the following EIPs (which also must be created):
 
 | endpoint | environment | domain | EIP | 
-| -- | -- | -- | 
+| -- | -- | -- | -- | 
 | web site (main) | staging | choose a domain  | eip-gigadb-staging-\<github handle\> |
 | web site  (main)| live | choose a domain | eip-gigadb-live-\<github handle\> |
 | web site (portainer) | staging | choose a domain  | eip-gigadb-staging-\<github handle\> |
