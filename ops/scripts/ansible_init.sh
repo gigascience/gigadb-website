@@ -34,6 +34,7 @@ fi
 
 # copy files into the environment specific directory
 cp ../../webapp_playbook.yml .
+cp ../../files_playbook.yml .
 cp ../../bastion_playbook.yml .
 cp ../../users_playbook.yml .
 cp ../../monitoring_playbook.yml .
@@ -86,8 +87,12 @@ echo "aws_access_key_id = $aws_access_key_id" >> ansible.properties
 echo "aws_secret_access_key = $aws_secret_access_key" >> ansible.properties
 
 # Retrieve ips of provisioned ec2 instances
+bastion_private_ip=$(terraform output ec2_bastion_private_ip | sed 's/"//g')
 bastion_ip=$(terraform output ec2_bastion_public_ip | sed 's/"//g')
-webapp_ip=$(terraform output ec2_private_ip | sed 's/"//g')
+webapp_private_ip=$(terraform output ec2_private_ip | sed 's/"//g')
+webapp_ip=$(terraform output ec2_public_ip | sed 's/"//g')
+files_private_ip=$(terraform output ec2_files_private_ip | sed 's/"//g')
+files_ip=$(terraform output ec2_files_public_ip | sed 's/"//g')
 
 echo "ec2_bastion_login_account = centos@$bastion_ip" >> ansible.properties
 
@@ -114,16 +119,22 @@ echo "grafana_contact_smtp_password = $grafana_contact_smtp_password" >> ansible
 echo "grafana_contact_smtp_from_address = $grafana_contact_smtp_from_address" >> ansible.properties
 echo "grafana_contact_smtp_from_name = $grafana_contact_smtp_from_name" >> ansible.properties
 
-# Add newly created vms to known host file
-# Remove old key
+echo  "\nRemove old key and add newly created vms to known host file"
+
 ssh-keygen -R $bastion_ip
-ssh-keygen -R $webapp_ip
+ssh-keygen -R $webapp_private_ip
+ssh-keygen -R $files_private_ip
 # Add the new key
 ssh-keyscan -t ecdsa $bastion_ip >> ~/.ssh/known_hosts
-new_host=$(ssh -i $aws_ssh_key centos@$bastion_ip ssh-keyscan -t ecdsa $webapp_ip)
-echo $new_host  >> ~/.ssh/known_hosts
+web_host=$(ssh -i $aws_ssh_key centos"@$bastion_ip" ssh-keyscan -t ecdsa "$webapp_private_ip")
+files_host=$(ssh -i $aws_ssh_key centos@"$bastion_ip" ssh-keyscan -t ecdsa "$files_private_ip")
+echo "$web_host"  >> ~/.ssh/known_hosts
+echo "$files_host"  >> ~/.ssh/known_hosts
 
 # Bootstrap playbook
-echo "Saving EC2 IP addresses to GitLab"
-env TF_KEY_NAME=private_ip ansible-playbook -i ../../inventories bootstrap_playbook.yml --tags="webapp_ips" --extra-vars="gigadb_env=$target_environment"
-ansible-playbook -i ../../inventories bootstrap_playbook.yml --tags="bastion_ips" --extra-vars="gigadb_env=$target_environment"
+echo "Saving EC2 IP addresses to GitLab for web server"
+env TF_KEY_NAME=private_ip ansible-playbook -i ../../inventories bootstrap_playbook.yml --tags="webapp_ips" -e="private_ip=$webapp_private_ip public_ip=$webapp_ip" --extra-vars="gigadb_env=$target_environment"
+echo "Saving EC2 IP addresses to GitLab for file server"
+env TF_KEY_NAME=private_ip ansible-playbook -vvv -i ../../inventories bootstrap_playbook.yml --tags="files_ips" -e="private_ip=$files_private_ip public_ip=$files_ip" --extra-vars="gigadb_env=$target_environment"
+echo "Saving EC2 IP addresses to GitLab for bastion server"
+ansible-playbook -i ../../inventories bootstrap_playbook.yml --tags="bastion_ips" -e="private_ip=$bastion_private_ip public_ip=$bastion_ip" --extra-vars="gigadb_env=$target_environment"
