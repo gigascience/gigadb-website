@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1834: Create rclone config for bastion users to allow managing files on Wasabi
 - Feat #1634, #1824: Add new EC2 server for file serving purposes (including author/reviewer accessible ftp server)
 - Fix #1829: Change maintenance window for the daily backup to S3 to prevent DB server error on live web site
 - Fix #1831: Update Out-of-date CSP on live blocks javascript scripts to prevent javascript errors
