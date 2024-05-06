@@ -527,12 +527,14 @@ echo $form->hiddenField($model, "image_id");
         $model->isNewRecord ? 'Create' : 'Save',
         array('class' => 'btn background-btn submit-btn', 'id' => 'datasetFormSaveButton')
     ); ?>
-    <?php if ("hidden" === $datasetPageSettings->getPageType() || "draft" === $datasetPageSettings->getPageType()) { ?>
+    <?php if (in_array($datasetPageSettings->getPageType(), ["hidden", "draft", "mockup"])) { ?>
         <a href="<?= Yii::app()->createUrl('/adminDataset/private/identifier/' . $model->identifier) ?>" />Create/Reset Private URL</a>
         <?php if ($model->token) { ?>
             <a href="<?= Yii::app()->createUrl('/dataset/' . $model->identifier . '/token/' . $model->token) ?>">Open Private URL</a>
         <?php } ?>
-    <?php } elseif ("mockup" === $datasetPageSettings->getPageType()) {
+<?php } 
+        if (Yii::app()->featureFlag->isEnabled("fuw")
+            && "mockup" === $datasetPageSettings->getPageType()) {
         echo CHtml::link('Generate mockup for reviewers', '#', array(
             'class' => 'btn background-btn',
             'data-toggle' => "modal", 'data-target' => "#mockupCreation"
