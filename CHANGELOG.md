@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Fix #1817: generate mockup link button not appearing for all upload statuses
+
 ## v4.2.7 - 2024-05-07 - 902e5bfb5 - live since 2024-05-13
 
 - Feat #1834: Create rclone config for bastion users to allow managing files on Wasabi
