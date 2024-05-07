@@ -31,6 +31,7 @@ echo "Created $FILESIZE_FILE"
 
 # In case we are on the bastion
 if [[ $(uname -n) =~ compute ]];then
-  rclone copy -v "$FILESIZE_FILE" s3_metadata:"S3_BUCKET"
-  rclone copy -v "$MD5_FILE" s3_metadata:"S3_BUCKET"
+  export AWS_SHARED_CREDENTIALS_FILE=/etc/aws/credentials
+  rclone copy -v "$FILESIZE_FILE" aws_metadata:"S3_BUCKET"
+  rclone copy -v "$MD5_FILE" aws_metadata:"S3_BUCKET"
 fi
