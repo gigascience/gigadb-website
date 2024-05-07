@@ -148,7 +148,7 @@
     - name: Copy dataset upload tool shell script
       ansible.builtin.copy:
         src: "../../../../gigadb/app/tools/excel-spreadsheet-uploader/execute.sh"
-        dest: /home/centos/datasetUpload.sh
+        dest: /usr/local/bin/datasetUpload
         owner: centos
         group: centos
         mode: a+x
