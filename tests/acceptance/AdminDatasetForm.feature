@@ -455,4 +455,13 @@ Feature: form to update dataset details
       | "DataAvailableForReview" |
       | "DataPending"            |
 
+  @ok @dataset-status
+  Scenario: Links to create mockup or to open mockup are not present for a published dataset
+    Given I am on "/adminDataset/update/id/5"
+    And I select "Published" from the field "Dataset_upload_status"
+    And I press the button "Save"
+    When I am on "/adminDataset/update/id/5"
+    Then I should not see "Create/Reset Private URL"
+    And I should not see "Open Private URL"
+
 
