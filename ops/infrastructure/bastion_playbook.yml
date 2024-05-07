@@ -320,7 +320,7 @@
     - name: Copy shell script for calculating the file sizes and md5
       ansible.builtin.copy:
         src: "../../../../gigadb/app/tools/files-metadata-console/scripts/md5.sh"
-        dest: /usr/local/bin/calculate_checksum_sizes
+        dest: /usr/local/bin/calculateChecksumSizes
         owner: centos
         group: centos
         mode: a+x
