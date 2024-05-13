@@ -5,7 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
-## v4.2.7 - 2024-05-07 - 902e5bfb5
+## v4.2.7 - 2024-05-07 - 902e5bfb5 - live since 2024-05-13
 
 - Feat #1834: Create rclone config for bastion users to allow managing files on Wasabi
 - Feat #1634, #1824: Add new EC2 server for file serving purposes (including author/reviewer accessible ftp server)
