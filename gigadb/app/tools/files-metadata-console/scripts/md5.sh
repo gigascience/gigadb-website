@@ -3,16 +3,11 @@
 # Exit script on error
 set -e
 
-# Function to display usage
-display_usage() {
-    echo "Usage: $0 <DOI>"
-    echo "Calculates and uploads MD5 checksums values and file sizes for the given DOI to the aws s3 bucket - gigadb-datasets-metadata."
-}
-
 # Check if DOI is provided
 if [[ -z "$1" ]]; then
     echo "Error: DOI is required!"
-    display_usage
+    echo "Usage: $0 <DOI>"
+    echo "Calculates and uploads MD5 checksums values and file sizes for the given DOI to the aws s3 bucket - gigadb-datasets-metadata."
     exit 1
 fi
 
