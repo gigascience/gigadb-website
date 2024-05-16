@@ -192,6 +192,28 @@
         insertafter: '# User specific environment and startup programs\n'
         line: "GITLAB_PROJECT={{ gitlab_project }}"
 
+- name: Create AWS credentials file
+  hosts: name_bastion_server_{{gigadb_env}}*
+  tags:
+    - create-metadata-bucket-credentials-file
+
+  tasks:
+  - name: Create a /etc/aws directory for the metadata
+    ansible.builtin.file:
+      path: "/etc/aws"
+      state: directory
+      mode: '0755'
+      owner: centos
+      group: centos
+
+  - name: Create AWS credential file for access to AWS S3 metadata bucket
+    template:
+      src: ../../../../ops/configuration/aws-conf/credentials.j2
+      dest: "/etc/aws/credentials"
+      owner: centos
+      group: centos
+      mode: 0644
+
 - name: Create setup for generating and uploading database dump files to S3
   hosts: name_bastion_server_{{gigadb_env}}*
   tags:
