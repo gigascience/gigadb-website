@@ -24,7 +24,7 @@ NB - there is a [pre-review checklist](https://docs.google.com/spreadsheets/d/1t
 6. Provide the userbox login details to the authors for them to upload their files into private dropboxes on the new FTP server (see [template letters](https://sites.google.com/gigasciencejournal.com/giganet/gigadb/google-mail/letter-templates?authuser=0#h.xy93n9deqqjy))
 Sometimes discussions between authors and curators maybe required to clarify things (CC'ing Eds)
 
-7. Curator to check the content of the userbox by accessing the private drop boxes via SSH to the bastion server. 
+7. Curator to check the content of the userbox by accessing the private drop boxes via SSH to the bastion server[see notes on using the bastion host](https://github.com/pli888/gigadb-website/blob/curator-docs/docs/curators/FILE_MANAGEMENT.md). 
     - Check MD5 of files provided by authors match the values provided by authors
     - Manipulate files as required (tar/untar etc)
     - At the appropriate point make a copy of the submitted files for backup purposes:
