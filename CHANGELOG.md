@@ -2,11 +2,33 @@
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+
 ## Unreleased
 
 - Feat #514: Add canonical URL to dataset pages
 
-## v4.2.4 - 2024-04-16 - 576757f38
+## v4.2.7 - 2024-05-07 - 902e5bfb5 - live since 2024-05-13
+
+- Feat #1834: Create rclone config for bastion users to allow managing files on Wasabi
+- Feat #1634, #1824: Add new EC2 server for file serving purposes (including author/reviewer accessible ftp server)
+- Fix #1829: Change maintenance window for the daily backup to S3 to prevent DB server error on live web site
+- Fix #1831: Update Out-of-date CSP on live blocks javascript scripts to prevent javascript errors
+
+## v4.2.6 - 2024-04-30 - fe0348092 - live since 2024-05-02
+
+- Feat #1394: Update bastion-users Ansible role to create AWS credentials file from Wasabi credentials CSV
+- Fix #1833: Files metadata console containers built using gitlab-config-live-build.yml are tagged with "staging"
+
+## v4.2.5 - 2024-04-25 - ca6d17e0f
+
+- Feat #1770: Make AWS EFS can be mounted on the bastion server manually
+- Feat #1783: Avoid URLs with double pagination in dataset url
+- Feat #1757: Add pagination to samples table in dataset view
+- Fix #1800: Read the correct sample page from cache on samples tables
+- Feat #1163: Add carets to sortable headers in dataset page
+- Feat #1664: Enable post upload script to work with non-published datasets
+
+## v4.2.4 - 2024-04-16 - 576757f38 - live since 2024-04-17
 
 - Docs #1791: Update IAM EC2 policy to prevent permission error when changing EC2 instant type on the fly
 - Docs #1786: Add documentation for creating TLS certificate for AWS gigadb.org migration
@@ -14,7 +36,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Feat #1221: EFS filesystem for GigaDB
 - Feat #1717 #1715 #1716: remove Google Plus link, update X logo and add Mastodon link to social media links
 
-## v4.2.3 - 2024-04-08 - f084f51dd - yanked
+## v4.2.3 - 2024-04-08 - f084f51dd
 
 - Feat #1618: FUW - Allow customization of email sent to author after "DataPending" status is set
 - Security #1626: FUW - Update node version to the latest recommended to avoid openssl hack. Minimize dependency vulnerabilities.

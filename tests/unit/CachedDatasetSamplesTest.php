@@ -56,7 +56,7 @@ class CachedDatasetSamplesTest extends CTestCase
         $this->assertEquals($doi, $daoUnderTest->getDatasetDOI()) ;
     }
 
-    public function testCachedReturnsDatasetSamplesCacheHit()
+    public function testCachedReturnsDatasetSamplesCacheHitDefault()
     {
         $dataset_id = 1 ;
 
@@ -142,6 +142,100 @@ class CachedDatasetSamplesTest extends CTestCase
 
         $daoUnderTest = new CachedDatasetSamples($cache, $cacheDependency, $storedDatasetSamples) ;
         $this->assertEquals($expected, $daoUnderTest->getDatasetSamples());
+    }
+    
+    public function testCachedReturnsDatasetSamplesCacheHitPaginated()
+    {
+        $dataset_id = 1 ;
+
+        $expected = array(
+            array(
+                'sample_id' => 1,
+                'linkName' => 'Sample 1',
+                'dataset_id' => 1,
+                'species_id' => 1,
+                'tax_id' => 9238,
+                'common_name' => 'Adelie penguin',
+                'scientific_name' => 'Pygoscelis adeliae',
+                'genbank_name' => 'Adelie penguin',
+                'name' => "Sample 1",
+                'consent_document' => "",
+                'submitted_id' => null,
+                'submission_date' => null,
+                'contact_author_name' => null,
+                'contact_author_email' => null,
+                'sampling_protocol' => null,
+                'sample_attributes' => array(
+                    array("keyword" => "some value"),
+                    array("number of lines" => "155"),
+                ),
+            ),
+            array(
+                'sample_id' => 2,
+                'linkName' => 'Sample 2',
+                'dataset_id' => 1,
+                'species_id' => 2,
+                'tax_id' => 4555,
+                'common_name' => 'Foxtail millet',
+                'scientific_name' => 'Setaria italica',
+                'genbank_name' => 'Foxtail millet',
+                'name' => "Sample 2",
+                'consent_document' => "",
+                'submitted_id' => null,
+                'submission_date' => null,
+                'contact_author_name' => null,
+                'contact_author_email' => null,
+                'sampling_protocol' => null,
+                'sample_attributes' => [],
+            ),
+            array(
+                'sample_id' => 3,
+                'linkName' => 'Sample 3',
+                'dataset_id' => 1,
+                'species_id' => 1,
+                'tax_id' => 9238,
+                'common_name' => 'Adelie penguin',
+                'scientific_name' => 'Pygoscelis adeliae',
+                'genbank_name' => 'Adelie penguin',
+                'name' => "Sample 3",
+                'consent_document' => "",
+                'submitted_id' => null,
+                'submission_date' => null,
+                'contact_author_name' => null,
+                'contact_author_email' => null,
+                'sampling_protocol' => null,
+                'sample_attributes' => [],
+            ),
+        );
+
+
+        // create a stub for the StoredDatasetConnection, cause we have no expectation on it as cache hit
+        $storedDatasetSamples = $this->createMock(StoredDatasetSamples::class);
+        $storedDatasetSamples->method('getDatasetID')
+                                    ->willReturn(1);
+
+        // create a stub of the cache dependency (because we don't need to verify expectations on the cache dependency)
+        $cacheDependency = $this->createMock(CCacheDependency::class);
+
+        // create a mock for the cache and we need to make the cache method for getting the key
+        $cache = $this->getMockBuilder(CApcCache::class)
+                        ->setMethods(['get'])
+                        ->getMock();
+
+        //then we set our expectation for a Cache Hit
+        $cache->expects($this->exactly(3))
+                 ->method('get')
+                 ->withConsecutive(
+                     [$this->equalTo("dataset_".$dataset_id."_10_0_CachedDatasetSamples_getDatasetSamples")],
+                     [$this->equalTo("dataset_".$dataset_id."_10_10_CachedDatasetSamples_getDatasetSamples")],
+                     [$this->equalTo("dataset_".$dataset_id."_10_20_CachedDatasetSamples_getDatasetSamples")],
+                 )
+                 ->willReturn($expected);
+
+        $daoUnderTest = new CachedDatasetSamples($cache, $cacheDependency, $storedDatasetSamples) ;
+        $this->assertEquals($expected, $daoUnderTest->getDatasetSamples(10,0));
+        $this->assertEquals($expected, $daoUnderTest->getDatasetSamples(10,10));
+        $this->assertEquals($expected, $daoUnderTest->getDatasetSamples(10,20));
     }
 
     public function testCachedReturnsDatasetSamplesCacheMiss()
