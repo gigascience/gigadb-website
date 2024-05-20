@@ -170,3 +170,7 @@ Feature: a user visit the dataset page
     And I should see "test generic image will be display for no image dataset"
     Then I should not see "Cite Dataset"
 
+  @ok
+  Scenario: Canonical URL is shown in page head block
+    When I am on "/dataset/view/id/100035/Samples_page/2"
+    Then I should see link element of type "canonical" to "http://gigadb.test/dataset/100035"
