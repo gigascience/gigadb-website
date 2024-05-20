@@ -71,12 +71,7 @@ class FilesCommand extends CConsoleCommand
                         'dataset_id' => $dataset->id,
                         'name' => $filename,
                     ));
-                    if ($file !== null)
-                    {
-                        $file->updateMd5Checksum($md5_value);
-                    } else {
-                        echo "File not found: $filename\n";
-                    }
+                    $file->updateMd5Checksum($md5_value);
                 }
             }
         }

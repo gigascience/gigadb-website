@@ -28,9 +28,6 @@ class FilesCommandCest
         $output = shell_exec("./protected/yiic_test files updateMD5FileAttributes --doi=100006");
         codecept_debug($output);
 
-        // Assert the md5 value will not be updated if the file does not exist in the File table
-        $I->assertContains("File not found: iDontExist.txt", $output);
-
         // Assert expected md5 values in file attributes table
         $I->seeInDatabase('file_attributes', ['id' => '10669', 'value' => '23c3241e6bc362d659a4b589c8d9e01c']);
         $I->seeInDatabase('file_attributes', ['id' => '10670', 'value' => '47b8f47ca31cfd06d5ad62ceceb99860']);
