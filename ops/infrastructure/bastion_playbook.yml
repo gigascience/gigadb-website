@@ -247,7 +247,7 @@
       - "/home/centos/backups"
 
   - name: Setup cronjob to drop the triggers
-    ansible.built.cron:
+    ansible.builtin.cron:
       name: "Drop the triggers"
       minute: "50"
       hour: "19"
