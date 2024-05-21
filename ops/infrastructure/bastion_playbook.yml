@@ -252,7 +252,7 @@
       minute: "50"
       hour: "19"
       user: "centos"
-      job: "docker run --rm  --env-file ./db-env registry.gitlab.com/{{ gitlab_project }}/production_pgclient:{{ gigadb_environment }} -c 'drop trigger if exists file_finder_trigger on file RESTRICT; drop trigger if exists sample_finder_trigger on sample RESTRICT; drop trigger if exists dataset_finder_trigger on dataset RESTRICT;'"
+      job: "docker run --rm  --env-file ./db-env registry.gitlab.com/{{ gitlab_project }}/production_pgclient:{{ gigadb_environment }} -c 'DROP TRIGGER IF EXISTS FILE_FINDER_TRIGGER ON FILE RESTRICT; DROP TRIGGER IF EXISTS SAMPLE_FINDER_TRIGGER ON SAMPLE RESTRICT; DROP TRIGGER IF EXISTS DATASET_FINDER_TRIGGER ON DATASET RESTRICT;'"
 
   - name: Setup cronjob to refresh the materialized view
     ansible.builtin.cron:
