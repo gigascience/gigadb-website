@@ -131,7 +131,7 @@ The bastion server can only be accessed from the authorized users, and each user
 ```
 $ cd ops/infrastructure/envs/live
 # try to create user lily in the bastion server
-$ ansible-playbook -i ../../inventories users_playbook.yml -e "newuser=lily"
+$ ansible-playbook -i ../../inventories users_playbook.yml -e "newuser=lily" --extra-vars="gigadb_env=live"
 # update the permission of the private key
 $ chmod 500 output/privkeys-$bastion-ip/lily
 $ ls -Al output/privkeys-$bastion-ip
@@ -142,6 +142,15 @@ $ ssh -i /path/to/envs/live/output/privkeys-$bastion-ip/lily lily@$bastion-ip
 [lily@ip-10-99-0-183 ~]$ ls
 uploadDir
 ```
+
+If the user will need to upload content to Wasabi, a new user should be created on Wasabi dashboard, and API keys should be created there.
+Wasabi will let the tech team operator download the credentials as a CSV file called `credentials.csv`.
+The command to run the `users_playbook.yml` should then be:
+```
+% ansible-playbook -i ../../inventories users_playbook.yml -e "newuser=lily" -e "credentials_csv_path=~/Downloads/credentials.csv" --extra-vars="gigadb_env=live"
+```
+
+
 ### What to do if we receive disk usage alerts or pipeline jobs fail due lack of space on device
 
 The disk usage is usually consumed by the docker containers, and it can be released by following the steps below:
@@ -299,6 +308,13 @@ The creation can be achieved as below:
 % chmod 500 output/privkeys-$bastion-ip/$user
 # connect to the bastion server
 % ssh -i output/privkeys-$bastion-ip/$user $user@$bastion-ip
+```
+
+If the user will need to upload content to Wasabi, a new user should be created on Wasabi dashboard, and API keys should be created there.
+Wasabi will let the tech team operator download the credentials as a CSV file called `credentials.csv`.
+The command to run the `users_playbook.yml` should then be:
+```
+% ansible-playbook -i ../../inventories users_playbook.yml -e "newuser=$user" -e "credentials_csv_path=~/Downloads/credentials.csv" --extra-vars="gigadb_env=live"
 ```
 
 ### What if a user has accidentally deleted (or corrupted) their .ssh/authorized_keys

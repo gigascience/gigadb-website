@@ -160,6 +160,7 @@ values can differ depending on deployment environment:
 | PHP_FPM_MIN_SPARE_SERVERS | | Production-Dockerfile | The desired minimum number of idle server processes |
 | PHP_FPM_MAX_SPARE_SERVERS | | Production-Dockerfile | The desired maximum number of idle server processes |
 | PHP_CONN_LIMIT| enabled or disabled | | Whether rate limit is enabled for PHP requests | 
+| remote_fileserver_hostname | files.gigadb.oreg or files-stg.gigadb.host  | | domain name for the files server | 
 
 ## SUB-GROUP: Forks
 
@@ -313,6 +314,7 @@ differ between developers:
 | PHP_FPM_MIN_SPARE_SERVERS | | Production-Dockerfile | The desired minimum number of idle server processes |
 | PHP_FPM_MAX_SPARE_SERVERS | | Production-Dockerfile | The desired maximum number of idle server processes |
 | PHP_CONN_LIMIT| enabled or disabled | | Whether rate limit is enabled for PHP requests | 
+| remote_fileserver_hostname | | | domain name for the files server | 
 
 ### Automatically-created variables in PROJECT: *-gigadb-website
 
@@ -321,8 +323,18 @@ differ between developers:
 | docker_tlsauth_ca | | Certificate authority for Dockerhost | Created by Ansible |
 | docker_tlsauth_cert | | Public certificate for Dockerhost | As above |
 | docker_tlsauth_key | | Server key for above CA | As above |
+| docker_fileserver_tlsauth_ca | | Certificate authority for the file server | Created by Ansible |
+| docker_fileserver_tlsauth_cert | | Public certificate for the file server | As above |
+| docker_fileserver_tlsauth_key | | Server key for above CA | As above |
+| docker_bastion_tlsauth_ca | | Certificate authority for the bastion server | Created by Ansible |
+| docker_bastion_tlsauth_cert | | Public certificate for the bastion server | As above |
+| docker_bastion_tlsauth_key | | Server key for above CA | As above |
 | remote_private_ip | | Private IP of Dockerhost | Created by Ansible |
 | remote_public_ip | | Public IP of Dockerhost | As above |
+| remote_bastion_private_ip | | Private IP of bastion server | Created by Ansible |
+| remote_bastion_public_ip | | Public IP of bastion server | As above |
+| remote_files_private_ip | | Private IP of files server | Created by Ansible |
+| remote_files_public_ip | | Public IP of files server | As above |
 | tls_chain_pem | | Contains additional intermediate certificate or certificates that web browsers need to validate server certificate | Created by Gitlab job |
 | tls_fullchain_pem | | All certificates, including server certificate (aka leaf certificate or end-entity certificate). The server certificate is the first one in this file, followed by any intermediates. | As above | |
 | tls_privkey_pem | | Private key for certificate in PEM format | As above | |
