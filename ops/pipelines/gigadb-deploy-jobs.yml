@@ -67,7 +67,7 @@
     # post-install script to run
     - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml run --rm application ./protected/yiic generatefiletypes
     - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml run --rm application ./protected/yiic generatefileformats
-    - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml run --rm application ./protected/yiic custommigrations droptriggers
+    - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml run --rm application bash -c "./protected/yiic migrate new --migrationPath=application.migrations.schema --interactive=0
     - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml run --rm application ./protected/yiic custommigrations refreshmaterializedviews
     # Spin up portainer container
     - ./ops/scripts/start_portainer.sh
