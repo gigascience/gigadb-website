@@ -9,7 +9,7 @@ class m240513_075134_drop_existing_triggers extends CDbMigration
     {
         Yii::app()->db->createCommand("drop trigger if exists file_finder_trigger on file RESTRICT")->execute();
         Yii::app()->db->createCommand("drop trigger if exists sample_finder_trigger on sample RESTRICT")->execute();
-        Yii::app()->db->createCommand("drop trigger if exists dataset_finder_trigger on file RESTRICT")->execute();
+        Yii::app()->db->createCommand("drop trigger if exists dataset_finder_trigger on dataset RESTRICT")->execute();
     }
 
     public function safeDown()
