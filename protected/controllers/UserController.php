@@ -261,6 +261,7 @@ class UserController extends Controller {
 	}
 
     public function actionWelcome() {
+        $this->layout = 'new_main';
         $this->render('welcome', array('user'=>$this->loadUser())) ;
     }
 
