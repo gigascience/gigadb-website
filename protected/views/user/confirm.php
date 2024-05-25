@@ -6,7 +6,7 @@
     <? } else { ?>
     <h1 class="h2">Account Pending</h1>
 
-    You are now registered. We will contact you shortly. Feel free to <?= CHtml::link("contact us", "mailto:database@gigasciencejournal.com" . Yii::app()->params['support_email']) ?> if you prefer.</p>
+    <p>You are now registered. We will contact you shortly. Feel free to <?= CHtml::link("contact us", "mailto:database@gigasciencejournal.com" . Yii::app()->params['support_email']) ?> if you prefer.</p>
     <? } ?>
 </div>
 
