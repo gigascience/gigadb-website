@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1892: Update uder confirm and user welcome pages to new styles
 - Feat #1825: "Continue to view old version" closes New Version Alert pop up
 - Feat #514: Add canonical URL to dataset pages
 

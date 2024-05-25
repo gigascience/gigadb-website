@@ -1,12 +1,12 @@
-<? if ($user->is_activated) { ?>
-<h3>Your account has been activated</h3>
+<div class="container">
+  <? if ($user->is_activated) { ?>
+    <h1 class="h2">Your account has been activated</h1>
 
-<p><?= CHtml::link("Log in", array('site/login')) ?> to configure your account.</p>
-<? } else { ?>
-<h3>Account Pending</h3>
+    <p><?= CHtml::link("Log in", array('site/login')) ?> to configure your account.</p>
+    <? } else { ?>
+    <h1 class="h2">Account Pending</h1>
 
-You are now registered. We will contact you shortly. Feel free to
-or <?= CHtml::link("contact us", "mailto:" . Yii::app()->params['support_email']) ?>&nbsp;
-if you prefer.</p>
-<? } ?>
+    <p>You are now registered. We will contact you shortly. Feel free to <?= CHtml::link("contact us", "mailto:database@gigasciencejournal.com" . Yii::app()->params['support_email']) ?> if you prefer.</p>
+    <? } ?>
+</div>
 

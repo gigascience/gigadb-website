@@ -256,10 +256,12 @@ class UserController extends Controller {
             $this->sendNotificationEmail($user);
         }
 
+    $this->layout = 'new_main';
 		$this->render('confirm', array('user'=>$user));
 	}
 
     public function actionWelcome() {
+        $this->layout = 'new_main';
         $this->render('welcome', array('user'=>$this->loadUser())) ;
     }
 
