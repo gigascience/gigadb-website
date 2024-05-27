@@ -44,7 +44,7 @@ for relative_path in "${!files_in_list[@]}"; do
     echo "$found_files"
     found_count=$((found_count + 1))
   else
-    echo "No files found for $relative_path"
+    echo "No files found for $relative_path" | gum style --background 196 --foreground 0
     not_found_count=$((not_found_count + 1))
   fi
 done
@@ -59,7 +59,8 @@ while IFS= read -r file_path; do
   # Get the relative path by stripping the search directory prefix
   relative_path="${file_path#"$search_directory/"}"
   if [[ -z "${files_in_list[$relative_path]}" ]]; then
-    echo "$relative_path not listed"
+    echo "$relative_path not listed" | gum style --background 196 --foreground 0
+
     reciprocal_count=$((reciprocal_count + 1))
   fi
 done < <(find "$search_directory" -type f)
