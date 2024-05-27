@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -e
 
+RED=196
+BLACK=0
+
 # Check if the correct number of arguments are provided
 if [[ $# -ne 2 ]]; then
   echo "Usage: $0 <file_list> <search_directory>"
@@ -44,7 +47,7 @@ for relative_path in "${!files_in_list[@]}"; do
     echo "$found_files"
     found_count=$((found_count + 1))
   else
-    echo "No files found for $relative_path" | gum style --background 196 --foreground 0
+    echo "No files found for $relative_path" | gum style --background $RED --foreground $BLACK
     not_found_count=$((not_found_count + 1))
   fi
 done
@@ -59,7 +62,7 @@ while IFS= read -r file_path; do
   # Get the relative path by stripping the search directory prefix
   relative_path="${file_path#"$search_directory/"}"
   if [[ -z "${files_in_list[$relative_path]}" ]]; then
-    echo "$relative_path not listed" | gum style --background 196 --foreground 0
+    echo "$relative_path not listed" | gum style --background $RED --foreground $BLACK
 
     reciprocal_count=$((reciprocal_count + 1))
   fi
