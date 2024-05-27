@@ -16,9 +16,25 @@ If you have any problem during the deployment process, please first check the [t
 ### AWS IAM policies
 [Click to see how to check IAM policies](AWS_SETUP.md#verify-aws-iam-policies)
 
-### Elastic IP addresses for staging and live environments
+### Domains and elastic IPs
 
-Both the staging.gigadb.org and gigadb.org domain names have been allocated
+The GigaDB system has three public endpoints. Each with their own domain and elastic IP for each environment (staging and live).
+
+| endpoint | environment | domain | EIP | 
+| -- | -- | -- | -- | 
+| web site (main) | staging | staging.gigadb.org | eip-gigadb-staging-gigadb |
+| web site (main)| live | gigadb.org | eip-gigadb-live-gigadb |
+| web site (portainer) | staging | portainer.staging.gigadb.org | eip-gigadb-staging-gigadb |
+| web site (portainer)| live | portainer.gigadb.org | eip-gigadb-live-gigadb |
+| bastion server | staging | bastion-stg.gigadb.host | eip-gigadb-bastion-staging-gigadb |
+| bastion server | live | bastion.gigadb.host | eip-gigadb-bastion-live-gigadb |
+| files server | staging | files-stg.gigadb.host | eip-gigadb-files-staging-gigadb |
+| files server | live | files.gigadb.org | eip-gigadb-files-live-gigadb |
+
+
+#### Elastic IP addresses for staging and live environments
+
+All the domain names above should have been allocated
 with AWS elastic IP addresses in the ap-east-1 region. You can check the current 
 elastic IP addresses pointing in the AWS EC2 console:
 
@@ -26,10 +42,9 @@ elastic IP addresses pointing in the AWS EC2 console:
 to get the password for the `Gigadb` AWS IAM user.
 2. Use the `Gigadb` AWS IAM user credentials to log into the AWS console.
 3. Go to the [Elastic IP addresses page](https://ap-east-1.console.aws.amazon.com/ec2/v2/home?region=ap-east-1#Addresses:)
-4. Check there is an `eip-gigadb-live-gigadb` and an `eip-gigadb-staging-gigadb` 
-elastic IP address.
+4. Check the EIPs from the table above are listed 
 
-### Domain name resolution to staging.gigadb.org and gigadb.org
+#### Domain name resolution to staging.gigadb.org, gigadb.org and files.gigadb.org
 
 Resolution to staging and live gigadb.org with the above elastic IP addresses 
 require DNS A records. Check these records have been created in Alibaba Cloud 
@@ -46,6 +61,16 @@ the Google Authenticator app.
 6. You will now see the `DNS Settings gigadb.org` page. There should be an entry
 for the Host with a value equal to the `eip-gigadb-live-gigadb` elastic 
 IP address. There will also be an entry for the `staging` Host too.
+
+#### Domain name resolution for \*.gigadb.host domain
+
+The domain registry for those domains is Route 53 and can be accesssed through AWS console.
+
+The DNS server for those domains is managed with Cloudflare's tech team account.
+Access: https://dash.cloudflare.com/login
+Login: tech team's email address
+Password: The value of `cloudflare_password` from [cnhk-infra CI/CD variables page](https://gitlab.com/gigascience/cnhk-infra/-/settings/ci_cd)
+
 
 ### Set up credentials for accessing AWS resources
 [Click to see how to setup credentials](AWS_SETUP.md#set-up-credentials-for-accessing-aws-resources)
@@ -175,6 +200,11 @@ You need to specify a backup file created by the files-url-updater tool: </path/
 You need to specify an AWS region: ap-east-1
 ```
 
+Alternatively you can specify most of the requrested information as parameters to the commands:
+```
+$ ./../../scripts/tf_init.sh --project gigascience/upstream/gigadb-website --env staging --region ap-east-1 --ssh-key /path/to/id-rsa-aws-hk-gigadb.pem --web-ec2-type t3.medium --bastion-ec2-type t3.medium --rds-ec2-type "t3.large"
+```
+
 And you should use Gigadb AWS IAM user account to provision production staging server:
 ```
 $ terraform show # will show all the existing resources, which should be the same as the terraform state file `staging_infra` from gitlab.
@@ -183,7 +213,7 @@ $ terraform apply # will make changes to the existing infrastructure and update 
 $ terraform refresh
 ```
 
-Copy ansible files into `staging` environment:
+Copy ansible files into `staging` environment and save to Gitlab variables the IP addresses output by terraform with this command:
 ```
 $ ../../../scripts/ansible_init.sh --env staging
 ```
@@ -198,9 +228,14 @@ Provision RDS via bastion server:
 $ env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories bastion_playbook.yml --extra-vars="gigadb_env=staging"
 ```
 
-Provision web application server:
+Provision web server:
 ```
 $ env TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories webapp_playbook.yml --extra-vars="gigadb_env=staging"
+```
+
+Provision files server:
+```
+$ env TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories files_playbook.yml --extra-vars="gigadb_env=staging"
 ```
 
 Additional features for executing ansible playbooks:
@@ -269,6 +304,11 @@ You need to specify a backup file created by the files-url-updater tool: </path/
 You need to specify an AWS region: ap-east-1
 ```
 
+Or alternatively:
+```
+$ ../../../scripts/tf_init.sh --project gigascience/upstream/gigadb-website --env live --region ap-east-1 --ssh-key /path/to/id-rsa-aws-hk-gigadb.pem --web-ec2-type t3.medium --bastion-ec2-type t3.medium --rds-ec2-type "t3.large"
+```
+
 Use Gigadb AWS IAM user account to provision production staging server:
 ```
 $ terraform show # will show all the existing resources, which should be the same as the terraform state file `live_infra` from gitlab.
@@ -277,7 +317,7 @@ $ terraform apply # will make changes to the existing infrastructure and update 
 $ terraform refresh
 ```
 
-Copy ansible files into `live` environment:
+Copy ansible files into `live` environment and save to Gitlab variables the IP addresses output by terraform with this command:
 ```
 $ ../../../scripts/ansible_init.sh --env live
 ```
@@ -318,6 +358,11 @@ Provision web application server:
 $ TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories webapp_playbook.yml --extra-vars="gigadb_env=live"
 ```
 
+Provision files server:
+```
+$ env TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories files_playbook.yml --extra-vars="gigadb_env=staging"
+```
+
 Additional features for executing ansible playbooks:
 ```
 # display all available plays
@@ -337,3 +382,4 @@ $ env TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-pla
 and run all the jobs in the live build stage in your pipeline, including but are not limited to `build_live`, `TidewaysBuildLive`.
 
 2. Next, run all the jobs in the live deploy stage in your pipeline, including but are not limited to `ld_gigadb`, `TidewaysDeployLive`.
+

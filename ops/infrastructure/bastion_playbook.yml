@@ -228,7 +228,7 @@
     ansible.builtin.cron:
       name: "Create database dump file from RDS and upload to S3 every day"
       minute: "00"
-      hour: "11"
+      hour: "20"
       user: "centos"
       job: "docker run --env-file .env -v /home/centos/backups:/backups -v /home/centos/.config/rclone/rclone.conf:/root/.config/rclone/rclone.conf registry.gitlab.com/{{ gitlab_project }}/production_s3backup:{{ gigadb_environment }}"
       state: "{{ upload_database_backup_to_S3_cronjob_state }}"

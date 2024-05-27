@@ -92,7 +92,8 @@ VOLUME ["/home/ftpusers", "/etc/pure-ftpd/passwd"]
 
 # setup group for uploader and downloader
 RUN useradd -g ftpgroup -d /home/uploader -s /dev/null uploader && \
-	useradd -g ftpgroup -d /home/downloader -s /dev/null downloader
+	useradd -g ftpgroup -d /home/downloader -s /dev/null downloader && \
+	useradd -g ftpgroup -d /home/dropboxuser -s /dev/null dropboxuser
 
 # startup
 ENTRYPOINT ["/run.sh"]

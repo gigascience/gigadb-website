@@ -523,11 +523,11 @@ echo $form->hiddenField($model, "image_id");
 
 <div class="col-xs-12 form-control-btns">
     <?php
-      $showCreateResetUrlBtn = "hidden" === $datasetPageSettings->getPageType() || "draft" === $datasetPageSettings->getPageType();
+      $showCreateResetUrlBtn = in_array($datasetPageSettings->getPageType(), ["hidden", "draft", "mockup"]);
 
       $showOpenPrivateUrlBtn = $showCreateResetUrlBtn && $model->token;
 
-      $showMockupBtn = !$showCreateResetUrlBtn && "mockup" === $datasetPageSettings->getPageType();
+      $showMockupBtn = Yii::app()->featureFlag->isEnabled("fuw") && "mockup" === $datasetPageSettings->getPageType();
 
       if ($showCreateResetUrlBtn) {
         ?>

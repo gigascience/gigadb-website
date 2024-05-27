@@ -13,7 +13,7 @@
       <div class="modal-footer">
         <a href="#" class="btn btn-default" data-dismiss="modal">Close</a>
         <a href="/dataset/<?= $relation['related_doi'] ?>" class="btn btn-default">View new version</a>
-        <a href="/dataset/<?= $relation['dataset_doi'] ?>" class="btn btn-default">Continue to view old version</a>
+        <a href="#" class="btn btn-default" data-dismiss="modal">Continue to view old version</a>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->

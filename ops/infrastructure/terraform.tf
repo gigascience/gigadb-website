@@ -211,7 +211,9 @@ module "ec2_dockerhost" {
   # Locate Dockerhost EC2 instance in public subnet so users can access website
   # container app
   public_subnet_id = module.vpc.public_subnets[0]
-  web_ec2_type = var.web_ec2_type
+  ec2_type = var.web_ec2_type
+  ec2_usage = "webserver"
+  app_port = 80
 }
 
 output "ec2_public_ip" {
@@ -224,6 +226,34 @@ output "ec2_private_ip" {
 
 output "web_ec2_type" {
   value = module.ec2_dockerhost.instance_type
+}
+
+# EC2 instance for hosting the files server
+module "files_host" {
+  source = "../../modules/aws-instance"
+
+  owner = data.external.callerUserName.result.userName
+  deployment_target = var.deployment_target
+  key_name = var.key_name
+  eip_tag_name = "eip-gigadb-files-${var.deployment_target}-${data.external.callerUserName.result.userName}"
+  vpc_id = module.vpc.vpc_id
+  vpc_cidr_block = module.vpc.vpc_cidr_block
+  public_subnet_id = module.vpc.public_subnets[0]
+  ec2_type = var.web_ec2_type
+  ec2_usage = "filesserver"
+  app_port = 21
+}
+
+output "ec2_files_public_ip" {
+  value = module.files_host.instance_public_ip_addr
+}
+
+output "ec2_files_private_ip" {
+  value = module.files_host.instance_ip_addr
+}
+
+output "files_ec2_type" {
+  value = module.files_host.instance_type
 }
 
 # EC2 instance for bastion server to access RDS for PostgreSQL admin
@@ -315,6 +345,9 @@ output "efs_filesystem_size_in_bytes" {
 }
 
 output "efs_filesystem_access_points" {
-  value = values(module.gigadb_efs.access_points)[*].id
+  value = {
+    dropbox_area       = module.gigadb_efs.access_points["dropbox_area"].id
+    configuration_area = module.gigadb_efs.access_points["configuration_area"].id
+  }
 }
 

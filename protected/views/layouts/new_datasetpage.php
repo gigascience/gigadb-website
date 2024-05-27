@@ -112,6 +112,9 @@ jQuery.sub = function() {
                         <title>
                             <?php echo CHtml::encode($this->pageTitle); ?>
                         </title>
+                        <?php if (!empty($this->canonicalUrl)) { ?>
+                            <link rel="canonical" href="<?= CHtml::encode($this->canonicalUrl) ?>" />
+                        <?php } ?>
                         <?= $this->renderPartial('//shared/_matomo') ?>
 </head>
 
