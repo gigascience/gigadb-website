@@ -8,6 +8,9 @@
  */
 class DatasetController extends Controller
 {
+
+    public $canonicalUrl;
+
     /**
      * @return array action filters
      */
@@ -157,6 +160,8 @@ class DatasetController extends Controller
                 $this->render('invalid', array('model' => new Dataset('search'), 'keyword' => $id));
             }
         } else { //page type is public
+            // specify canonical URL due to samples and files pagination generating multiple URLs with the same main content
+            $this->canonicalUrl = Yii::app()->request->hostInfo . '/dataset/' . $model->identifier;
             $mainRenderer($assembly, $datasetPageSettings, $previousDataset, $nextDataset, $fileSettings, $sampleSettings, $flag);
         }
     }
