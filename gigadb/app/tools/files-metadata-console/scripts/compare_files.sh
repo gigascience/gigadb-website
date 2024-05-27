@@ -59,7 +59,7 @@ while IFS= read -r file_path; do
   # Get the relative path by stripping the search directory prefix
   relative_path="${file_path#$search_directory/}"
   if [[ -z "${files_in_list[$relative_path]}" ]]; then
-    echo "$relative_path"
+    echo "$relative_path not listed"
     reciprocal_count=$((reciprocal_count + 1))
   fi
 done < <(find "$search_directory" -type f)
