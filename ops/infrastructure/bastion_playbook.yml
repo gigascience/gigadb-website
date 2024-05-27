@@ -346,6 +346,22 @@
         owner: centos
         group: centos
         mode: a+x
+          
+    - name: Install gum
+      ansible.builtin.yum:
+        name: https://github.com/charmbracelet/gum/releases/download/v0.14.1/gum-0.14.1-1.x86_64.rpm
+        state: present
+        disable_gpg_check: true
+
+
+    - name: Install new wrapper script for files comparison tools
+      ansible.builtin.copy:
+        src: "../../../../gigadb/app/tools/files-metadata-console/scripts/compare_files.sh"
+        dest: /usr/local/bin/compare
+        owner: centos
+        group: centos
+        mode: a+x
+
 
 - name: Set up and configuration of rclone on bastion server
   hosts: name_bastion_server_{{gigadb_env}}*
