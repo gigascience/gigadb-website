@@ -14,7 +14,8 @@ class m240513_075134_drop_existing_triggers extends CDbMigration
 
     public function safeDown()
     {
-        echo "m240513_075134_drop_existing_triggers does not support migration down.\n";
-        return false;
+        Yii::app()->db->createCommand("create trigger file_finder_trigger after insert or update or delete or truncate on file for each statement execute procedure refresh_file_finder()")->execute();
+        Yii::app()->db->createCommand("create trigger sample_finder_trigger after insert or update or delete or truncate on sample for each statement execute procedure refresh_sample_finder()")->execute();
+        Yii::app()->db->createCommand("create trigger dataset_finder_trigger after insert or update or delete or truncate on dataset for each statement execute procedure refresh_dataset_finder()")->execute();
     }
 }
