@@ -353,6 +353,15 @@ $ terraform output
 $ ssh -i ~/.ssh/id-rsa-aws-hk-gigadb.pem centos@<bastion public ip>
 ```
 
+Also to confirm a customized `/etc/aws/credentials` file has been created, this credentials 
+is for the user to manage the AWS S3 bucket `gigadb-datasets-metadata`, the secrets should be 
+equal to the gigadb_dataset_metadata_aws_access_key_id and gigadb_datasets_metadata_aws_secret_access_key 
+found in [Gitlab cnhk-infra variables page](https://gitlab.com/gigascience/cnhk-infra/-/settings/ci_cd):
+```
+$ ssh -i ~/.ssh/id-rsa-aws-hk-gigadb.pem centos@<bastion public ip>
+$ cat /etc/aws/credentials
+```
+
 Provision web application server:
 ```
 $ TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories webapp_playbook.yml --extra-vars="gigadb_env=live"

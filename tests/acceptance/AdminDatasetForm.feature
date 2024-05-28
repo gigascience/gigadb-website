@@ -406,7 +406,7 @@ Feature: form to update dataset details
     And I wait "5" seconds
     And I should see "This DOI exists in datacite already, no need to mint, but the metadata is updated!"
 
-  @wip @mint-doi
+  @ok @mint-doi
   Scenario: Update metadata for non exist doi
     Given I am on "/adminDataset/update/id/5"
     When I follow "Mint DOI"
