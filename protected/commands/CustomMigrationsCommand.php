@@ -28,7 +28,8 @@ class CustomMigrationsCommand extends CConsoleCommand
 SELECT nspname,relname, conname
  FROM pg_constraint 
  INNER JOIN pg_class ON conrelid=pg_class.oid 
- INNER JOIN pg_namespace ON pg_namespace.oid=pg_class.relnamespace 
+ INNER JOIN pg_namespace ON pg_namespace.oid=pg_class.relnamespace
+ WHERE nspname NOT IN ('pg_catalog', 'information_schema')
  ORDER BY CASE WHEN contype='f' THEN 0 ELSE 1 END,contype,nspname,relname,conname;
 END;
 
