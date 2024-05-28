@@ -59,9 +59,10 @@
     # Run database migrations if any
     - 'MIGRATION_STATUS="$(docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml run --rm application bash -c "./protected/yiic migrate new --migrationPath=application.migrations.schema --interactive=0 | tail -1")"'
     - echo "$MIGRATION_STATUS"
+    - '[[ -z "`echo $MIGRATION_STATUS | grep "up-to-date"`" ]] && docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml run --rm application ./protected/yiic migrate new --migrationPath=application.migrations.schema --interactive=0'
     - '[[ -z "`echo $MIGRATION_STATUS | grep "up-to-date"`" ]] && docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml run --rm application ./protected/yiic custommigrations dropconstraints'
     - '[[ -z "`echo $MIGRATION_STATUS | grep "up-to-date"`" ]] && docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml run --rm application ./protected/yiic custommigrations dropindexes'
-    - '[[ -z "`echo $MIGRATION_STATUS | grep "up-to-date"`" ]] && docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml run --rm application ./protected/yiic custommigrations droptriggers'
+#    - '[[ -z "`echo $MIGRATION_STATUS | grep "up-to-date"`" ]] && docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml run --rm application ./protected/yiic custommigrations droptriggers'
     - '[[ -z "`echo $MIGRATION_STATUS | grep "up-to-date"`" ]] && docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml run --rm application ./protected/yiic custommigrations refreshmaterializedviews'
     - '[[ -z "`echo $MIGRATION_STATUS | grep "up-to-date"`" ]] && docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml run --rm application ./protected/yiic migrate --migrationPath=application.migrations.fix_import --interactive=0'
     # post-install script to run
