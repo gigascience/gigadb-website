@@ -303,6 +303,27 @@ Feature: form to update dataset details
     And I should not see "my dodgy tag<script>alert('xss!');</script>"
     And I should not see "my dodgy tag"
 
+  @ok @curationlog
+  Scenario: Display full name after creating a new curation log entry
+    Given I am on "/adminDataset/update/id/5"
+    When I press the button "Create New Log"
+    And I am on "/curationLog/create/id/5"
+    And I should see "Create Curation Log"
+    And I select "Comment" from the field "CurationLog_action"
+    And I fill in the field of "name" "CurationLog[comments]" with "hello world"
+    And I press the button "Create"
+    And I press the button "Back to this Dataset Curation Log"
+    Then I should see "Joe Bloggs"
+    And I should see "hello world"
+
+  @ok @curationlog
+  Scenario: Display full name after updating the upload status
+    Given I am on "/adminDataset/update/id/5"
+    When I select "Curation" from the field "Dataset_upload_status"
+    And I press the button "Save"
+    Then I should see "Joe Bloggs"
+    And I should see "Status changed to Curation"
+
   @ok @issue-2061
   Scenario: Can delete all keywords on update
     Given I am on "/adminDataset/update/id/8"
