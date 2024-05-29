@@ -5,11 +5,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1767: Restyle and reorder the buttons in create / edit dataset admin page
+ 
 ## v4.2.8 - 2024-05-28 - 771372fbb 
 
 - Feat #1832: Make script for calculating the md5 values and file sizes available for bastion users
 - Fix #1817: generate mockup link button not appearing for all upload statuses
-- Feat #1825: "Continue to view old version" closes New Version Alert pop up
+- Fix #1825: "Continue to view old version" closes New Version Alert pop up
 - Feat #514: Add canonical URL to dataset pages
 
 ## v4.2.7 - 2024-05-07 - 902e5bfb5 - live since 2024-05-13
