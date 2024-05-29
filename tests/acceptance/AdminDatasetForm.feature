@@ -280,6 +280,27 @@ Feature: form to update dataset details
     And I press the button "Save"
     Then I am on "dataset/100006"
     And I should see "bam"
+    
+  @ok @curationlog
+  Scenario: Display full name after creating a new curation log entry
+    Given I am on "/adminDataset/update/id/5"
+    When I press the button "Create New Log"
+    And I am on "/curationLog/create/id/5"
+    And I should see "Create Curation Log"
+    And I select "Comment" from the field "CurationLog_action"
+    And I fill in the field of "name" "CurationLog[comments]" with "hello world"
+    And I press the button "Create"
+    And I press the button "Back to this Dataset Curation Log"
+    Then I should see "Joe Bloggs"
+    And I should see "hello world"
+
+  @ok @curationlog
+  Scenario: Display full name after updating the upload status
+    Given I am on "/adminDataset/update/id/5"
+    When I select "Curation" from the field "Dataset_upload_status"
+    And I press the button "Save"
+    Then I should see "Joe Bloggs"
+    And I should see "Status changed to Curation"
 
   @ok @curationlog
   Scenario: Create new curation log record for a dataset
@@ -389,6 +410,7 @@ Feature: form to update dataset details
     And I am on "/adminDataset/private/identifier/100039"
     Then I should see current url contains "/dataset/100039/token/"
     And I should see "Genomic data of the Puerto Rican Parrot"
+
 
   @ok @dataset-status
   Scenario: Check dataset page with Published status is publicly visible
