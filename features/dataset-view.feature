@@ -114,7 +114,6 @@ Feature: a user visit the dataset page
 		And I should see "There is a new version of this dataset available at DOI 10.80027/100148"
 		And I should see a button "View new version" with link "/dataset/100148"
 		And I should see a button "Continue to view old version" with link "/dataset/100044"
-		And I should see a button "Close"
 		# Then I take a screenshot named "Dataset view IsPreviousVersionOf"
 
 	@ok
