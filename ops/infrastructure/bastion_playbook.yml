@@ -246,15 +246,7 @@
     loop:
       - "/home/centos/backups"
 
-  - name: Setup cronjob to drop the triggers
-    ansible.builtin.cron:
-      name: "Drop the triggers"
-      minute: "50"
-      hour: "19"
-      user: "centos"
-      job: "docker run --rm  --env-file ./db-env registry.gitlab.com/{{ gitlab_project }}/production_pgclient:{{ gigadb_environment }} -c 'DROP TRIGGER IF EXISTS FILE_FINDER_TRIGGER ON FILE RESTRICT; DROP TRIGGER IF EXISTS SAMPLE_FINDER_TRIGGER ON SAMPLE RESTRICT; DROP TRIGGER IF EXISTS DATASET_FINDER_TRIGGER ON DATASET RESTRICT;'"
-
-  - name: Setup cronjob to refresh the materialized view
+  - name: Setup cronjob to refresh the materialized view of the database
     ansible.builtin.cron:
       name: "Refresh the materialized view of the database every day"
       minute: "00"
