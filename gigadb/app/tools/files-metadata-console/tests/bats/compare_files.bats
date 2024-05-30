@@ -41,7 +41,7 @@
 
 @test "Dot files are picked up in both directions" {
 	run scripts/compare_files.sh tests/_data/compare_files/emptylines tests/_data/compare_files/user0
-	[[ "$output" =~ "a/b/.DS_Store not listed" ]]
+	[[ "$output" =~ "a/b/.hidden-file not listed" ]]
 	[[ "$output" =~ "No files found for .env" ]]
   [ "$status" -eq 0 ]
 }
