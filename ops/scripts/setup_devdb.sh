@@ -39,7 +39,7 @@ $DOCKER_COMPOSE run --rm  application ./protected/yiic migrate --connectionID=db
 # Drop constraints, indexes and triggers to allow data migrations
 docker-compose run -T --rm test psql -h database -U gigadb < protected/runtime/dropConstraintsQuery.sql
 docker-compose run -T --rm test psql -h database -U gigadb < protected/runtime/dropIndexQuery.sql
-docker-compose run -T --rm test psql -h database -U gigadb < protected/runtime/dropTriggerQuery.sql
+#docker-compose run -T --rm test psql -h database -U gigadb < protected/runtime/dropTriggerQuery.sql
 
 # Perform data migrations
 $DOCKER_COMPOSE run --rm  application ./protected/yiic migrate --connectionID=db --migrationPath=application.migrations.data.$dbSet --interactive=0
@@ -50,7 +50,7 @@ $DOCKER_COMPOSE run --rm  application ./protected/yiic migrate --connectionID=db
 # Restore constraints, indexes and triggers
 docker-compose run -T --rm test psql -h database -U gigadb < protected/runtime/addConstraintsQuery.sql
 docker-compose run -T --rm test psql -h database -U gigadb < protected/runtime/addIndexQuery.sql
-docker-compose run -T --rm test psql -h database -U gigadb < protected/runtime/addTriggerQuery.sql
+#docker-compose run -T --rm test psql -h database -U gigadb < protected/runtime/addTriggerQuery.sql
 
 # run migration for FUW database
 $DOCKER_COMPOSE exec -T console /app/yii migrate/fresh --interactive=0
