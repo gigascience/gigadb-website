@@ -465,8 +465,8 @@ Feature: form to update dataset details
     And I should not see "Open Private URL"
 
 
-  @wip @issue-1812 @mockup
-  Scenario: Navigating mockup tables does not generate errors
+  @ok @issue-1812 @mockup
+  Scenario: Navigating mockup page tables does not generate errors
     Given I am on "/adminDataset/update/id/5"
     When I press the button "Create/Reset Private URL"
     And I wait "1" seconds
