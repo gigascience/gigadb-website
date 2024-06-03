@@ -1,6 +1,6 @@
 @test "Show usage when no arguments passed" {
 	run scripts/compare_files.sh
-	[ "$output" = "Usage: scripts/compare_files.sh <file_list> <search_directory>" ]
+	[ "$output" = "Usage: scripts/compare_files.sh <file_list> <search_directory> [-v]" ]
   [ "$status" -eq 1 ]
 }
 
@@ -44,4 +44,20 @@
 	[[ "$output" =~ "a/b/.hidden-file not listed" ]]
 	[[ "$output" =~ "No files found for .env" ]]
   [ "$status" -eq 0 ]
+}
+
+@test "Default non verbose mode only shows discrepancies" {
+	run scripts/compare_files.sh tests/_data/compare_files/emptylines tests/_data/compare_files/user0
+	[[ ! "$output" =~ "Checking whether files from" ]]
+	[[ ! "$output" =~ "Files found for README_000000.txt" ]]
+	[[ ! "$output" =~ "tests/_data/compare_files/user0/README_000000.txt" ]]
+	[[ "$output" =~ "No files found for .env" ]]
+}
+
+@test "Verbose mode shows all files and whether a match was found or not" {
+	run scripts/compare_files.sh tests/_data/compare_files/emptylines tests/_data/compare_files/user0 -v
+	[[ "$output" =~ "Checking whether files from" ]]
+	[[ "$output" =~ "Files found for README_000000.txt" ]]
+	[[ "$output" =~ "tests/_data/compare_files/user0/README_000000.txt" ]]
+	[[ "$output" =~ "No files found for .env" ]]
 }
