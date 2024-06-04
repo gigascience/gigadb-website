@@ -99,7 +99,7 @@ jQuery.sub = function() {
                     </script>
                     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.ba-bbq/1.2.1/jquery.ba-bbq.min.js" defer></script>
                 <?php } ?>
-                <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" defer></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" defer></script>
                 <? } ?>
                     <title>
                         <?php echo CHtml::encode($this->pageTitle); ?>
