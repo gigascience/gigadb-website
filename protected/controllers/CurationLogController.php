@@ -47,7 +47,6 @@ class CurationLogController extends Controller
         if(isset($_GET['CurationLog']))
             $model->setAttributes($_GET['CurationLog']);
 
-        $this->layout = 'main';
         $this->loadBaBbqPolyfills = true;
         $this->render('admin',array(
             'model'=>$model,

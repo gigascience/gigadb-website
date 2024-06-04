@@ -47,7 +47,6 @@ class FunderController extends Controller
 	 */
 	public function actionView()
 	{
-		$this->layout = 'datasetpage';
 		$this->render('view',array(
 			'model'=>$this->loadModel(),
 		));
@@ -71,7 +70,6 @@ class FunderController extends Controller
 				$this->redirect(array('view','id'=>$model->id));
 		}
 
-		$this->layout = 'datasetpage';
 		$this->render('create',array(
 			'model'=>$model,
 		));
@@ -95,7 +93,6 @@ class FunderController extends Controller
 				$this->redirect(array('view','id'=>$model->id));
 		}
 
-		$this->layout = 'datasetpage';
 		$this->render('update',array(
 			'model'=>$model,
 		));

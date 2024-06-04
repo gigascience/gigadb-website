@@ -46,7 +46,6 @@ class AdminLinkController extends Controller
 	 */
 	public function actionView($id)
 	{
-		$this->layout = 'datasetpage';
 		$this->render('view',array(
 			'model'=>$this->loadModel($id),
 		));
@@ -70,7 +69,6 @@ class AdminLinkController extends Controller
 				$this->redirect(array('view','id'=>$model->id));
 		}
 
-		$this->layout = 'datasetpage';
 		$this->render('create',array(
 			'model'=>$model,
 		));
@@ -198,7 +196,6 @@ class AdminLinkController extends Controller
 				$this->redirect(array('view','id'=>$model->id));
 		}
 
-		$this->layout = 'datasetpage';
 		$this->render('update',array(
 			'model'=>$model,
 		));

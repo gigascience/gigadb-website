@@ -42,7 +42,6 @@ class AdminSpeciesController extends Controller
 	 */
 	public function actionView($id)
 	{
-		$this->layout = 'datasetpage';
 		$this->render('view',array(
 			'model'=>$this->loadModel($id),
 		));
@@ -66,7 +65,6 @@ class AdminSpeciesController extends Controller
 				$this->redirect(array('view','id'=>$model->id));
 		}
 
-		$this->layout = 'datasetpage';
 		$this->render('create',array(
 			'model'=>$model,
 		));
@@ -91,7 +89,6 @@ class AdminSpeciesController extends Controller
 				$this->redirect(array('view','id'=>$model->id));
 		}
 
-		$this->layout = 'datasetpage';
 		$this->render('update',array(
 			'model'=>$model,
 		));

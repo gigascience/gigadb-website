@@ -50,7 +50,6 @@ class AdminFileController extends Controller
      */
     public function actionView($id)
     {
-	    $this->layout = 'datasetpage';
         $this->render('view',array(
             'model'=>$this->loadModel($id),
         ));
@@ -141,7 +140,6 @@ class AdminFileController extends Controller
             }
         }
 
-        $this->layout = 'datasetpage';
         $this->render('create', array(
             'model' => $model,
         ));
@@ -444,7 +442,6 @@ class AdminFileController extends Controller
             }
         }
 
-        $this->layout = 'datasetpage';
         $this->render('update', array(
             'model' => $model,
             'attribute' => $attribute
@@ -550,7 +547,6 @@ class AdminFileController extends Controller
     {
         $model = new Folder;
         $buff = array();
-        $this->layout = 'datasetpage';
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);

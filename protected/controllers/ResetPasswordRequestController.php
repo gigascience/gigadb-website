@@ -41,7 +41,6 @@ class ResetPasswordRequestController extends Controller
      */
     public function actionThanks()
     {
-        $this->layout = "main";
         $this->render('thanks');
     }
 
@@ -50,7 +49,6 @@ class ResetPasswordRequestController extends Controller
      */
     public function actionForgot()
     {
-        $this->layout = "main";
         $forgotPasswordForm = new ForgotPasswordForm;
         if (isset($_POST['ForgotPasswordForm'])) {
             $forgotPasswordForm->email = $_POST['ForgotPasswordForm']['email'];
@@ -101,8 +99,6 @@ class ResetPasswordRequestController extends Controller
      */
     public function actionReset()
     {
-        $this->layout = "main";
-
         if (isset($_GET['token'])) {
             $token = $_GET['token'];
             $userIdentity = new PasswordResetTokenUserIdentity($token);

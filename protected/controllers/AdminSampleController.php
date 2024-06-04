@@ -43,7 +43,6 @@ class AdminSampleController extends Controller
 	 */
 	public function actionView($id)
 	{
-		$this->layout = 'datasetpage';
 		$this->render('view',array(
 			'model'=>$this->loadModel($id),
 		));
@@ -81,7 +80,6 @@ class AdminSampleController extends Controller
             }
         }
 
-    		$this->layout = 'datasetpage';
         $this->render('create', array(
             'model' => $model,
         ));
@@ -239,7 +237,6 @@ class AdminSampleController extends Controller
             }
                     $model->species_id .= $species->scientific_name;
         }
-            $this->layout = 'datasetpage';
             $this->render('update', array(
                 'model' => $model,
                 'species' => $species,

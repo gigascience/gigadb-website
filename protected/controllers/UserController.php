@@ -3,6 +3,8 @@
 class UserController extends Controller {
     const PAGE_SIZE = 10;
 
+    public $layout='//layouts/main';
+
     /**
      * @var string specifies the default action
      */
@@ -60,7 +62,6 @@ class UserController extends Controller {
 
     # Create new account
     public function actionCreate() {
-        $this->layout='main';
         $user = new User;
         $user->newsletter=false;
         $this->performAjaxValidation($user);
@@ -166,7 +167,6 @@ class UserController extends Controller {
             }
         }
         $user->password = $user->password_repeat = '';
-        $this->layout = 'main';
         $this->render('update', array('model'=>$user));
 
     }
@@ -227,7 +227,6 @@ class UserController extends Controller {
         if(isset($_GET['User']))
             $model->setAttributes($_GET['User']);
 
-        $this->layout = '//layouts/main';
         $this->loadBaBbqPolyfills = true;
         $this->render('admin',array(
             'model'=>$model,
@@ -269,7 +268,6 @@ class UserController extends Controller {
 
     public function actionView_Profile() {
         $model = new EditProfileForm();
-        $this->layout="main";
         $model->user_id = Yii::app()->user->id;
 
         $user = $this->loadUser(Yii::app()->user->id);
@@ -338,7 +336,6 @@ class UserController extends Controller {
 
     # Change user password
     public function actionChangePassword() {
-        $this->layout="main";
         $model = new ChangePasswordForm();
         $model->user_id = Yii::app()->user->id;
         $user = User::model()->findByattributes(array('id'=> Yii::app()->user->id));

@@ -47,7 +47,6 @@ class AdminDatasetSampleController extends Controller
 	{
             $model=$this->loadModel($id);
 
-		    $this->layout = 'datasetpage';
             $this->render('view',array(
 			'model'=>$model,
 		));
@@ -71,7 +70,6 @@ class AdminDatasetSampleController extends Controller
 				$this->redirect(array('view','id'=>$model->id));
 		}
 
-        $this->layout = 'datasetpage';
 		$this->render('create',array(
 			'model'=>$model,
 		));
@@ -304,7 +302,6 @@ class AdminDatasetSampleController extends Controller
 				$this->redirect(array('view','id'=>$model->id));
 		}
 
-        $this->layout = 'datasetpage';
 		$this->render('update',array(
 			'model'=>$model,
 		));
@@ -352,7 +349,6 @@ class AdminDatasetSampleController extends Controller
 			$model->setAttributes($_GET['DatasetSample']);
 
         $this->loadBaBbqPolyfills = true;
-        $this->layout = '//layouts/datasetpage';
 		$this->render('admin',array(
 			'model'=>$model,
 		));

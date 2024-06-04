@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<!-- UPLOADER LAYOUT -->
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />

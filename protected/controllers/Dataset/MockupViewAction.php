@@ -73,7 +73,7 @@ class MockupViewAction extends CAction
         }
 
        Yii::app()->user->setFlash("mockupMode", "Mockup created for {$tokenData['reviewerEmail']}, valid for {$tokenData['monthsOfValidity']} month(s)");
-        $this->getController()->layout='column2';
+        $this->getController()->layout='datasetpage';
 
         $this->getController()->metaData['private'] = true ; //Don't want searchengines to index this page
         $this->getController()->metaData['description'] = $assembly->getDataset()->description;
