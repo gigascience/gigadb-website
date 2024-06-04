@@ -353,7 +353,6 @@ class SiteController extends Controller {
 		$this->render('advisory');
 	}
 	public function actionFaq() {
-                $this->layout='faq';
 		$this->render('faq');
 	}
 
