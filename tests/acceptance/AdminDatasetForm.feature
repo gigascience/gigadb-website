@@ -282,9 +282,17 @@ Feature: form to update dataset details
     And I should see "bam"
 
   @ok @curationlog
+  Scenario: Display full name after updating the upload status
+    Given I am on "/adminDataset/update/id/5"
+    When I select "Curation" from the field "Dataset_upload_status"
+    And I press the button "Save"
+    Then I should see "Joe Bloggs"
+    And I should see "Status changed to Curation"
+
+  @ok @curationlog
   Scenario: Create new curation log record for a dataset
-    When I am on "/adminDataset/update/id/5"
-    And I press the button "Create New Log"
+    Given I am on "/adminDataset/update/id/5"
+    When I press the button "Create New Log"
     And I am on "/curationLog/create/id/5"
     And I should see "Create Curation Log"
     And I select "Comment" from the field "CurationLog_action"
@@ -297,8 +305,8 @@ Feature: form to update dataset details
 
   @ok @curationlog
   Scenario: Click view curation record with link
-    When I am on "/adminDataset/update/id/22"
-    And I should see a curation log action "View" is linked to "http://gigadb.test/curationLog/view/id/3"
+    Given I am on "/adminDataset/update/id/22"
+    When I should see a curation log action "View" is linked to "http://gigadb.test/curationLog/view/id/3"
     And I click on curation log action "View"
     Then I am on "/curationLog/view/id/3"
     And I should see "View Curation Log #3"
@@ -306,24 +314,24 @@ Feature: form to update dataset details
 
   @ok @curationlog
   Scenario: Click update curation record with link
-    When I am on "/adminDataset/update/id/22"
+    Given I am on "/adminDataset/update/id/22"
     And  I should see a curation log action "Update" is linked to "http://gigadb.test/curationLog/update/id/3"
-    And I click on curation log action "Update"
+    When I click on curation log action "Update"
     Then I am on "/curationLog/update/id/3"
     And I should see "Update Curation Log 3"
     And I fill in the field of "name" "CurationLog[comments]" with "cogito, ergo sum"
     And I press the button "Save"
     And I wait "2" seconds
-    Then I am on "/curationLog/view/id/3"
+    And I am on "/curationLog/view/id/3"
     And I should see "View Curation Log #3"
     And I should see "cogito, ergo sum"
 
   @ok @curationlog
   Scenario: Click delete curation record with link
-    When I am on "/adminDataset/update/id/22"
+    Given I am on "/adminDataset/update/id/22"
     And I should see "Status changed to Published"
     And I should see a curation log action "Delete" is linked to "http://gigadb.test/curationLog/delete/id/3"
-    And I click on curation log action "Delete"
+    When I click on curation log action "Delete"
     And I confirm to "Are you sure you want to delete this item?"
     And I wait "2" seconds
     Then I am on "/adminDataset/update/id/22"
@@ -389,6 +397,7 @@ Feature: form to update dataset details
     And I am on "/adminDataset/private/identifier/100039"
     Then I should see current url contains "/dataset/100039/token/"
     And I should see "Genomic data of the Puerto Rican Parrot"
+
 
   @ok @dataset-status
   Scenario: Check dataset page with Published status is publicly visible
