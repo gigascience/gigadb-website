@@ -2,11 +2,7 @@
 
 class AttributeController extends Controller
 {
-	/**
-   * @var string the default layout for the views. Defaults to '//layouts/datasetpage'
-   * See 'protected/views/layouts/datasetpage.php'.
-   */
-	public $layout='//layouts/datasetpage';
+
 
 	/**
 	 * @var CActiveRecord the currently loaded data model instance.
@@ -138,7 +134,6 @@ class AttributeController extends Controller
 		if(isset($_GET['Attributes']))
 			$model->setAttributes($_GET['Attributes']);
 
-		$this->layout = 'main';
 		$this->loadBaBbqPolyfills = true;
 		$this->render('admin',array(
 			'model'=>$model,

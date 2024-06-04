@@ -3,12 +3,6 @@
 class AdminDatasetAuthorController extends Controller
 {
     /**
-     * @var string the default layout for the views. Defaults to '//layouts/datasetpage'
-     * See 'protected/views/layouts/datasetpage.php'.
-     */
-    public $layout = '//layouts/datasetpage';
-
-    /**
      * @return array action filters
      */
     public function filters()

@@ -3,12 +3,6 @@
 class AdminExternalLinkController extends Controller
 {
 	/**
-   * @var string the default layout for the views. Defaults to '//layouts/datasetpage'
-   * See 'protected/views/layouts/datasetpage.php'.
-   */
-	public $layout='//layouts/datasetpage';
-
-	/**
 	 * @return array action filters
 	 */
 	public function filters()
@@ -246,7 +240,6 @@ class AdminExternalLinkController extends Controller
 		if(isset($_GET['ExternalLink']))
 			$model->setAttributes($_GET['ExternalLink']);
 
-		$this->layout = 'main';
 		$this->loadBaBbqPolyfills = true;
 		$this->render('admin',array(
 			'model'=>$model,

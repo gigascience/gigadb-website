@@ -2,11 +2,7 @@
 
 class AdminFileFormatController extends Controller
 {
-	/**
-   * @var string the default layout for the views. Defaults to '//layouts/datasetpage'
-   * See 'protected/views/layouts/datasetpage.php'.
-   */
-	public $layout='//layouts/datasetpage';
+
 
 	/**
 	 * @return array action filters
@@ -135,7 +131,6 @@ class AdminFileFormatController extends Controller
 		if(isset($_GET['FileFormat']))
 			$model->setAttributes($_GET['FileFormat']);
 
-		$this->layout = 'main';
 		$this->loadBaBbqPolyfills = true;
 		$this->render('admin',array(
 			'model'=>$model,

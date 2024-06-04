@@ -3,12 +3,6 @@
 class AdminDatasetTypeController extends Controller
 {
 	/**
-   * @var string the default layout for the views. Defaults to '//layouts/datasetpage'
-   * See 'protected/views/layouts/datasetpage.php'.
-   */
-	public $layout='//layouts/datasetpage';
-
-	/**
 	 * @return array action filters
 	 */
 	public function filters()
@@ -135,7 +129,6 @@ class AdminDatasetTypeController extends Controller
 		if(isset($_GET['Type']))
 			$model->setAttributes($_GET['Type']);
 
-		$this->layout = 'main';
 		$this->loadBaBbqPolyfills = true;
 		$this->render('admin',array(
 			'model'=>$model,

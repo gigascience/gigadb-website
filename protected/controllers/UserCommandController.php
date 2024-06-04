@@ -6,11 +6,7 @@ use yii\swiftmailer\Message;
 class UserCommandController extends CController
 {
     // Members
-	/**
-   * @var string the default layout for the views. Defaults to '//layouts/datasetpage'
-   * See 'protected/views/layouts/datasetpage.php'.
-   */
-	public $layout='//layouts/datasetpage';
+
 
 
 	/**
