@@ -107,9 +107,11 @@ class DatasetController extends Controller
                 ->setSearchForm();
 
             // Rendering section
-            $this->layout = 'column2';
+            $this->layout = 'datasetpage';
 
             $this->metaData['description'] = $assembly->getDataset()->description;
+
+            // var_dump($this->metaData['description']);
 
             $urlToRedirect = trim($assembly->getDataset()->getUrlToRedirectAttribute());
             $currentAbsoluteFullUrl = Yii::app()->request->getBaseUrl(true) . Yii::app()->request->url ;

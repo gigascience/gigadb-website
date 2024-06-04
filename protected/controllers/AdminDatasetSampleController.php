@@ -3,9 +3,9 @@
 class AdminDatasetSampleController extends Controller
 {
 	/**
-	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
-	 * using two-column layout. See 'protected/views/layouts/column2.php'.
-	 */
+   * @var string the default layout for the views. Defaults to '//layouts/datasetpage'
+   * See 'protected/views/layouts/datasetpage.php'.
+   */
 	public $layout='//layouts/datasetpage';
 
 	/**
@@ -352,7 +352,7 @@ class AdminDatasetSampleController extends Controller
 			$model->setAttributes($_GET['DatasetSample']);
 
         $this->loadBaBbqPolyfills = true;
-        $this->layout = '//layouts/column2';
+        $this->layout = '//layouts/datasetpage';
 		$this->render('admin',array(
 			'model'=>$model,
 		));

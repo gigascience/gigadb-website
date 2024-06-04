@@ -4,9 +4,9 @@ class ApiController extends Controller
 {
     // Members
 	/**
-	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
-	 * using two-column layout. See 'protected/views/layouts/column2.php'.
-	 */
+   * @var string the default layout for the views. Defaults to '//layouts/datasetpage'
+   * See 'protected/views/layouts/datasetpage.php'.
+   */
 	public $layout='//layouts/datasetpage';
 
 
