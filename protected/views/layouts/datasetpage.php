@@ -4,12 +4,12 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="language" content="en" />
-    <?php if ( true || $this->$metaData['private']) {//TODO: remove true|| when going to prod. or get env ?>
+    <?php if ( true || $this->metaData['private']) {//TODO: remove true|| when going to prod. or get env ?>
         <meta name="robots" content="noindex, nofollow">
         <meta name="googlebot" content="noindex, nofollow">
     <?php } ?>
-    <?php if ($this->$metaData['redirect']) {
-            Yii::app()->clientScript->registerMetaTag("5;url={$this->$metaData['redirect']}", null, 'refresh');
+    <?php if ($this->metaData['redirect']) {
+            Yii::app()->clientScript->registerMetaTag("5;url={$this->metaData['redirect']}", null, 'refresh');
         }
     ?>
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
