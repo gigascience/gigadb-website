@@ -6,7 +6,7 @@ class AttributeController extends Controller
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
-	public $layout='//layouts/column2';
+	public $layout='//layouts/datasetpage';
 
 	/**
 	 * @var CActiveRecord the currently loaded data model instance.
@@ -31,8 +31,8 @@ class AttributeController extends Controller
 	public function accessRules()
 	{
 		return array(
-			
-			array('allow', // allow admin user to perform 'admin' and 'delete' actions				
+
+			array('allow', // allow admin user to perform 'admin' and 'delete' actions
 				'users'=>array('@'),
 				'roles'=>array('admin'),
 			),
@@ -47,7 +47,7 @@ class AttributeController extends Controller
 	 */
 	public function actionView()
 	{
-		$this->layout = 'new_datasetpage';
+		$this->layout = 'datasetpage';
 		$this->render('view',array(
 			'model'=>$this->loadModel(),
 		));
@@ -71,7 +71,7 @@ class AttributeController extends Controller
 				$this->redirect(array('view','id'=>$model->id));
 		}
 
-		$this->layout = 'new_datasetpage';
+		$this->layout = 'datasetpage';
 		$this->render('create',array(
 			'model'=>$model,
 		));
@@ -95,7 +95,7 @@ class AttributeController extends Controller
 				$this->redirect(array('view','id'=>$model->id));
 		}
 
-		$this->layout = 'new_datasetpage';
+		$this->layout = 'datasetpage';
 		$this->render('update',array(
 			'model'=>$model,
 		));
@@ -141,7 +141,7 @@ class AttributeController extends Controller
 		if(isset($_GET['Attributes']))
 			$model->setAttributes($_GET['Attributes']);
 
-		$this->layout = 'new_main';
+		$this->layout = 'main';
 		$this->loadBaBbqPolyfills = true;
 		$this->render('admin',array(
 			'model'=>$model,

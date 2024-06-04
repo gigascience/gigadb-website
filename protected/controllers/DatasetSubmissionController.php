@@ -11,7 +11,7 @@ class DatasetSubmissionController extends Controller
      * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
      * using two-column layout. See 'protected/views/layouts/column2.php'.
      */
-    //public $layout='//layouts/new_column2';
+    //public $layout='//layouts/datasetpage';
 
     /**
      * @return array action filters
@@ -92,7 +92,7 @@ EO_MAIL;
                 return;
             }
         }
-        $this->layout = 'new_datasetpage';
+        $this->layout = 'datasetpage';
         $this->render('upload');
     }
 

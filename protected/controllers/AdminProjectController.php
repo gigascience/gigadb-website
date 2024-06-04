@@ -6,7 +6,7 @@ class AdminProjectController extends Controller
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
-	public $layout='//layouts/column2';
+	public $layout='//layouts/datasetpage';
 
 	/**
 	 * @return array action filters
@@ -42,7 +42,7 @@ class AdminProjectController extends Controller
 	 */
 	public function actionView($id)
 	{
-		$this->layout = 'new_datasetpage';
+		$this->layout = 'datasetpage';
 		$this->render('view',array(
 			'model'=>$this->loadModel($id),
 		));
@@ -66,7 +66,7 @@ class AdminProjectController extends Controller
 				$this->redirect(array('view','id'=>$model->id));
 		}
 
-		$this->layout = 'new_datasetpage';
+		$this->layout = 'datasetpage';
 		$this->render('create',array(
 			'model'=>$model,
 		));
@@ -91,7 +91,7 @@ class AdminProjectController extends Controller
 				$this->redirect(array('view','id'=>$model->id));
 		}
 
-		$this->layout = 'new_datasetpage';
+		$this->layout = 'datasetpage';
 		$this->render('update',array(
 			'model'=>$model,
 		));
@@ -138,7 +138,7 @@ class AdminProjectController extends Controller
 		if(isset($_GET['Project']))
 			$model->setAttributes($_GET['Project']);
 
-		$this->layout = 'new_main';
+		$this->layout = 'main';
 		$this->loadBaBbqPolyfills = true;
 		$this->render('admin',array(
 			'model'=>$model,

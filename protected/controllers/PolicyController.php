@@ -2,7 +2,7 @@
 
 class PolicyController extends CController {
 
-	public $layout='//layouts/column2';
+	public $layout='//layouts/datasetpage';
 
 	/**
 	 * @return array action filters

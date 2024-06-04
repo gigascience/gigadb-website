@@ -2,7 +2,7 @@
 
 class ReportController extends Controller
 {
-	public $layout='//layouts/column2';
+	public $layout='//layouts/datasetpage';
 
 	/**
 	 * @return array action filters
@@ -52,7 +52,7 @@ class ReportController extends Controller
 				$next = $i + $num >= $max ? $max -1 : $i + $num;
 
 				$l = array($this->format_date($data[$i][0], $data[$next][0]));
-				
+
 				$visit = 0;
 				$visitor = 0;
 				$view = 0;
@@ -95,7 +95,7 @@ class ReportController extends Controller
 		}
 
 		//Yii::log(print_r($l, true), 'debug');
-		
+
 		$args = array();
 		$data = array();
 		$selectDois = array();
@@ -125,7 +125,7 @@ class ReportController extends Controller
 			}
 		}
 
-		$this->layout = 'new_datasetpage';
+		$this->layout = 'datasetpage';
 		$this->render('index', array('dois'=>$l, 'args'=>$args, 'linedata'=>CJSON::encode($data), 'selectDois'=>$selectDois));
 	}
 }

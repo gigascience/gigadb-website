@@ -107,7 +107,7 @@ class DatasetController extends Controller
                 ->setSearchForm();
 
             // Rendering section
-            $this->layout = 'new_column2';
+            $this->layout = 'column2';
 
             $this->metaData['description'] = $assembly->getDataset()->description;
 
@@ -148,7 +148,7 @@ class DatasetController extends Controller
 
         // Different rendering based on page type (invalid, hidden, public)
         if ("invalid" === $datasetPageSettings->getPageType()) {
-            $this->layout = 'new_datasetpage';
+            $this->layout = 'datasetpage';
             $this->render('invalid', array('model' => new Dataset('search'), 'keyword' => $id, 'general_search' => 1));
         } elseif (in_array($datasetPageSettings->getPageType(), ["hidden","draft", "mockup"])) {
             // Page private ? Disable robot to index
