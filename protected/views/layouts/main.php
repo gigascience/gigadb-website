@@ -21,7 +21,7 @@
   <link rel="stylesheet" type="text/css" href="/fonts/open_sans/v13/open_sans.css">
   <link rel="stylesheet" type="text/css" href="/fonts/pt_sans/v8/pt_sans.css">
   <link rel="stylesheet" type="text/css" href="/fonts/lato/v11/lato.css">
-  <link rel="stylesheet" type="text/css" href="/css/current.css" />
+  <link rel="stylesheet" type="text/css" href="/css/index.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" defer></script>
   <?php if (isset($this->loadBaBbqPolyfills) && $this->loadBaBbqPolyfills) {
