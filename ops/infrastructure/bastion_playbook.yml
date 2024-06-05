@@ -99,6 +99,7 @@
       loop:
         - "/home/centos/downloads"
         - "/home/centos/converted"
+        - "/home/centos/restore"
 
     - name: Install new wrapper script to reset database
       ansible.builtin.copy:
