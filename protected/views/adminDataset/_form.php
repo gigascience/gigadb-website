@@ -522,26 +522,37 @@ echo $form->hiddenField($model, "image_id");
 </div>
 
 <div class="col-xs-12 form-control-btns">
+    <?php
+      $showCreateResetUrlBtn = in_array($datasetPageSettings->getPageType(), ["hidden", "draft", "mockup"]);
+
+      $showOpenPrivateUrlBtn = $showCreateResetUrlBtn && $model->token;
+
+      $showMockupBtn = Yii::app()->featureFlag->isEnabled("fuw") && "mockup" === $datasetPageSettings->getPageType();
+
+      if ($showCreateResetUrlBtn) {
+        ?>
+        <a class="btn background-btn-o" href="<?php echo Yii::app()->createUrl('/adminDataset/private/identifier/' . $model->identifier) ?>">Create/Reset Private URL</a>
+        <?php
+      }
+      if ($showMockupBtn) {
+        echo CHtml::link('Generate mockup for reviewers', '#', array(
+          'class' => 'btn background-btn',
+          'data-toggle' => "modal", 'data-target' => "#mockupCreation"
+        ));
+      }
+    ?>
     <a class="btn background-btn-o" href="<?= Yii::app()->createUrl('/adminDataset/admin') ?>">Cancel and go back</a>
-    <?= CHtml::submitButton(
+    <?php echo CHtml::submitButton(
         $model->isNewRecord ? 'Create' : 'Save',
         array('class' => 'btn background-btn submit-btn', 'id' => 'datasetFormSaveButton')
     ); ?>
-    <?php if (in_array($datasetPageSettings->getPageType(), ["hidden", "draft", "mockup"])) { ?>
-        <a href="<?= Yii::app()->createUrl('/adminDataset/private/identifier/' . $model->identifier) ?>" />Create/Reset Private URL</a>
-        <?php if ($model->token) { ?>
-            <a href="<?= Yii::app()->createUrl('/dataset/' . $model->identifier . '/token/' . $model->token) ?>">Open Private URL</a>
-        <?php } ?>
-<?php } 
-        if (Yii::app()->featureFlag->isEnabled("fuw")
-            && "mockup" === $datasetPageSettings->getPageType()) {
-        echo CHtml::link('Generate mockup for reviewers', '#', array(
-            'class' => 'btn background-btn',
-            'data-toggle' => "modal", 'data-target' => "#mockupCreation"
-        ));
-    }
+    <?php
+      if ($showOpenPrivateUrlBtn) {
+        ?>
+        <a class="btn background-btn-o" href="<?php echo Yii::app()->createUrl('/dataset/' . $model->identifier . '/token/' . $model->token) ?>">Open Private URL</a>
+        <?php
+      }
     ?>
-
 </div>
 
 <div class="modal fade email-modal" id="customizeEmailModal" tabindex="-1" role="dialog" aria-labelledby="customizeEmailModalTitle" aria-modal="true">
