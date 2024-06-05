@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1892: Remove unused CSS and LESS files
 - Feat #1892: Consolidate all layouts into one single layout
 - Feat #1767: Restyle and reorder the buttons in create / edit dataset admin page
 
