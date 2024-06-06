@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+## v4.2.9 - 2024-06-06 - 30a64ce56
+
 - Feat #1869: Script to compare files in user dropbox with file list from spreadsheet
 - Fix #1825: Remove close button from view new version popup
 - Feat #1767: Restyle and reorder the buttons in create / edit dataset admin page
