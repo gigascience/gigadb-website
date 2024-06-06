@@ -613,4 +613,64 @@ class Dataset extends CActiveRecord
             return CMap::mergeArray(self::ORIGINAL_UPLOAD_STATUS_LIST,self::FUW_UPLOAD_STATUS_LIST);
         return self::ORIGINAL_UPLOAD_STATUS_LIST;
     }
+
+    public  function nullifyDateValueIfEmpty()
+    {
+        $this->publication_date = $this->publication_date ?: null;
+        $this->modification_date = $this->modification_date ?: null;
+        $this->fairnuse = $this->fairnuse ?: null;
+    }
+
+    public function updateDatasetTypes($postDatasetTypes)
+    {
+        $actualTypeIdsByDataset = [];
+        $datasetTypeMaps = $this->datasetTypes;
+
+        foreach ($datasetTypeMaps as $datasetTypeMap) {
+            $actualTypeIdsByDataset[] = $typeId = $datasetTypeMap->id;
+            if (!in_array($typeId, $postDatasetTypes, true)) {
+                $datasetTypeMap->delete();
+            }
+        }
+
+        $diffIds = array_diff($postDatasetTypes, $actualTypeIdsByDataset);
+
+        foreach ($diffIds as $typeId) {
+            $newDatasetTypeRelationship = new DatasetType;
+            $newDatasetTypeRelationship->dataset_id = $this->id;
+            $newDatasetTypeRelationship->type_id = $typeId;
+            $newDatasetTypeRelationship->save();
+        }
+    }
+
+    public function updateImageAndMetafields($datasetImage): bool
+    {
+        if ($datasetImage) {
+            $this->image = new Image();
+            $this->image->attributes = Yii::app()->request->getPost('Image');
+            if (!$this->image->write(Yii::$app->cloudStore, $this->getUuid(), $datasetImage)) {
+                Yii::log('Error writing file to storage for dataset ' . $this->identifier, 'error');
+                Yii::app()->user->setFlash('updateError', 'Fail to update your image');
+
+                return false;
+            }
+        } else {
+            if ($this->image->url) {
+                $this->image->attributes = Yii::app()->request->getPost('Image');
+            }
+
+            $this->image->scenario = 'update';
+        }
+
+        if ($this->image->id !== Image::GENERIC_IMAGE_ID && !$this->image->save()) {
+            Yii::app()->user->setFlash('updateError', 'Fail to update image!');
+            Yii::log(print_r($this->getErrors(), true), 'error');
+
+            return false;
+        }
+
+        $this->image_id = !$this->image->url ? Image::GENERIC_IMAGE_ID : $this->image->id;
+
+        return true;
+    }
 }

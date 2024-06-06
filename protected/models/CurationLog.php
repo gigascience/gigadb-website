@@ -135,10 +135,16 @@ class CurationLog extends CActiveRecord
         return $curationlog->save();
     }
     
-    public static function createlog_assign_curator($id,$creator,$username) {
+    public static function createlog_assign_curator($id, $curatorId) {
+        $User1 = User::model()->find('id=:id', array(':id' => Yii::app()->user->id));
+        $username1 = sprintf('%s %s', $User1->first_name, $User1->last_name);
+        $User = $curatorId ? User::model()->find('id=:id', array(':id' => $curatorId)) : null;
+        $username = $curatorId ? sprintf('%s %s', $User->first_name, $User->last_name) : 'none';
 
-        $curationlog =  self::makeNewInstanceForDatasetBy($id,$creator);
-        $curationlog->action = "Curator Assigned"." $username";
+
+        $curationlog =  self::makeNewInstanceForDatasetBy($id, $username1);
+        $curationlog->action = "Curator Assigned:"." $username";
+
         return $curationlog->save();
     }
 
@@ -165,6 +171,18 @@ class CurationLog extends CActiveRecord
 
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
+        ));
+    }
+
+    public function searchByDatasetId($id)
+    {
+        $criteria = new CDbCriteria;
+        $criteria->condition = 'dataset_id=:id';
+        $criteria->params = array(':id' => $id);
+        $criteria->order = 'id DESC';
+
+        return new CActiveDataProvider($this, array(
+            'criteria' => $criteria,
         ));
     }
 } 

@@ -103,15 +103,23 @@ class Image extends CActiveRecord
      */
     public function write(Filesystem $targetStorage, string $enclosingDirectory, CUploadedFile $uploadedFile): bool
     {
-        $imagePath = Yii::$app->params["environment"]."/images/datasets/$enclosingDirectory/".$uploadedFile->getName();
-        if ( $targetStorage->put($imagePath, file_get_contents($uploadedFile->getTempName()), [
-            'visibility' => AdapterInterface::VISIBILITY_PUBLIC
-        ]) ) {
-            $this->location = $uploadedFile->getName();
-            $this->url = "https://".self::BUCKET."/$imagePath" ;
+        $slugger = new \Symfony\Component\String\Slugger\AsciiSlugger();
+        $fileName = $slugger->slug(pathinfo($uploadedFile->getName(), PATHINFO_FILENAME))->toString();
+
+        $imagePath = sprintf("%s/images/datasets/%s/%s", Yii::$app->params['environment'], $enclosingDirectory, $fileName );
+
+        if ($targetStorage->put(
+            $imagePath, file_get_contents($uploadedFile->getTempName()),
+            ['visibility' => AdapterInterface::VISIBILITY_PUBLIC]
+        )) {
+            $this->location = sprintf("%s.%s", $fileName, $uploadedFile->getExtensionName());
+            $this->url = sprintf("https://%s/%s", self::BUCKET, $imagePath);
+
             return true;
         }
+
         Yii::log("Error attempting to write image to the storage","error");
+
         return false;
     }
 
