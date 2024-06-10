@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Fix #1743: Accessibility tweaks on datasetSubmission/upload page
+
 ## v4.2.9 - 2024-06-06 - 30a64ce56
 
 - Feat #1869: Script to compare files in user dropbox with file list from spreadsheet
