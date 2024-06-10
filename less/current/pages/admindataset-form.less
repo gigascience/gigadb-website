@@ -81,17 +81,33 @@
     }
   }
   .form-control-btns {
+    padding-inline: 0;
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: center;
     gap: 16px;
     margin-bottom: 30px;
+    flex-wrap: wrap;
+    padding-inline: 15%;
+    .btn {
+      flex: 1;
+    }
   }
   .tag-editor {
     border-color: #cccccc;
     border-radius: 4px;
     .placeholder {
       color: @dark-gray-on-light-gray;
+    }
+  }
+  .email-modal {
+    .modal-body .form-group {
+      .control-label {
+        margin-bottom: 10px;
+      }
+      .help-block {
+        line-height: 18px;
+      }
     }
   }
 }

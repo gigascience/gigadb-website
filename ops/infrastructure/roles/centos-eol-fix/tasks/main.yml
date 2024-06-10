@@ -6,6 +6,26 @@
     group: root
     mode: 0644
 
+- name: Delete cache
+  shell: dnf clean all && rm -r /var/cache/dnf
+
+- name: Replace release version from Centos 8 to 8-Stream
+  copy:
+    content: "8-stream"
+    dest: /etc/yum/vars/releasever
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Comment out mirrorlist because Centos 8 Stream is EOL
+  shell: sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
+
+- name: Use vault URL because Centos 8 Stream is EOL
+  shell: sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
+
+- name: Delete cache
+  shell: dnf clean all && rm -r /var/cache/dnf
+
 - name: Install epel-release
   dnf:
     name: epel-release
@@ -18,6 +38,7 @@
   ansible.builtin.rpm_key:
     state: present
     key: https://download.postgresql.org/pub/repos/yum/keys/PGDG-RPM-GPG-KEY-RHEL
+
 
 - name: install PostgreSQL repository
   yum:
@@ -32,3 +53,5 @@
 
 - name: Replace releasever in EPEL, pgdg and docker-ce repos with 8
   shell: sed -i 's/$releasever/8/g' /etc/yum.repos.d/{epel,docker-ce,pgdg-redhat-all}*.repo
+
+

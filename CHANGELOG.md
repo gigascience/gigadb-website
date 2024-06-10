@@ -2,15 +2,77 @@
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+
 ## Unreleased
 
 - Fix #1743: Accessibility tweaks on datasetSubmission/upload page
+
+## v4.2.9 - 2024-06-06 - 30a64ce56
+
+- Feat #1869: Script to compare files in user dropbox with file list from spreadsheet
+- Fix #1825: Remove close button from view new version popup
+- Feat #1767: Restyle and reorder the buttons in create / edit dataset admin page
+
+## v4.2.8 - 2024-05-28 - 771372fbb
+
+- Feat #1832: Make script for calculating the md5 values and file sizes available for bastion users
+- Fix #1817: generate mockup link button not appearing for all upload statuses
+- Fix #1825: "Continue to view old version" closes New Version Alert pop up
+- Feat #514: Add canonical URL to dataset pages
+
+## v4.2.7 - 2024-05-07 - 902e5bfb5 - live since 2024-05-13
+
+- Feat #1834: Create rclone config for bastion users to allow managing files on Wasabi
+- Feat #1634, #1824: Add new EC2 server for file serving purposes (including author/reviewer accessible ftp server)
+- Fix #1829: Change maintenance window for the daily backup to S3 to prevent DB server error on live web site
+- Fix #1831: Update Out-of-date CSP on live blocks javascript scripts to prevent javascript errors
+
+## v4.2.6 - 2024-04-30 - fe0348092 - live since 2024-05-02
+
+- Feat #1394: Update bastion-users Ansible role to create AWS credentials file from Wasabi credentials CSV
+- Fix #1833: Files metadata console containers built using gitlab-config-live-build.yml are tagged with "staging"
+
+## v4.2.5 - 2024-04-25 - ca6d17e0f
+
+- Feat #1770: Make AWS EFS can be mounted on the bastion server manually
+- Feat #1783: Avoid URLs with double pagination in dataset url
+- Feat #1757: Add pagination to samples table in dataset view
+- Fix #1800: Read the correct sample page from cache on samples tables
+- Feat #1163: Add carets to sortable headers in dataset page
+- Feat #1664: Enable post upload script to work with non-published datasets
+
+## v4.2.4 - 2024-04-16 - 576757f38 - live since 2024-04-17
+
+- Docs #1791: Update IAM EC2 policy to prevent permission error when changing EC2 instant type on the fly
+- Docs #1786: Add documentation for creating TLS certificate for AWS gigadb.org migration
+- Fix #1784: Correct our configuration of PHP-FPM, Nginx and APCu to support real live load
+- Feat #1221: EFS filesystem for GigaDB
+- Feat #1717 #1715 #1716: remove Google Plus link, update X logo and add Mastodon link to social media links
+
+## v4.2.3 - 2024-04-08 - f084f51dd
+
+- Feat #1618: FUW - Allow customization of email sent to author after "DataPending" status is set
+- Security #1626: FUW - Update node version to the latest recommended to avoid openssl hack. Minimize dependency vulnerabilities.
+- Fix #1639: Paginate files and samples SQL queries on dataset pages to avoid running out of memory
+- Fix #1593: Display the units of file size based on 1000 byte system
+
+## v4.2.2 - 2024-03-25 - 3cf500fe8 - live since 2024-04-03
+
+- Feat #1759: Replace Google Analytics script by Matomo script in all layouts
+- Feat #1652: Update API doc for usage of retrieve known datasets by DOI endpoint
+
+## v4.2.1 - 2024-03-18 - ac7d6168b
+
+- Feat #1613: Add descriptive text, improved button labels and tooltips for user profile uploaded datasets tab
+- Fix #1666: Update the datacite credentials and make the Mint DOI button working
+- Fix #1230: Improve Excel upload tool by adding new dataset types in dev data
+- Fix #1722: Show more button on Dataset:Sample admin page works after filtering
 - Fix #1714: Visually hide long description in guide workflow, so that it's only visible to screen readers
 - Fix #1657: Fix the broken tests from release 4.2.0, fix curation log form and spreadsheet upload consent checkbox
 - Feat #1627: FUW - Migrate to Uppy version 2
 - Feat #1629: FUW - Upgrade Element UI to latest version
 
-## v4.2.0 - 2024-02-27 - 017ba8f58
+## v4.2.0 - 2024-02-27 - 017ba8f58 - live since 2024-03-13
 
 - Fix #1659: Remove dependency on abandoned inter-container-communication project and fix broken tests
 - Feat #1624: FUW - Migrate to Vue 2.7

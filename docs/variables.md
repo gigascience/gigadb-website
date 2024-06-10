@@ -154,6 +154,13 @@ values can differ depending on deployment environment:
 | Twitter_tester_password | |Affiliate login tests | As above |
 | Twitter_tester_first_name | | Affiliate login tests | As above |
 | Twitter_tester_last_name | | Affiliate login tests | As above |
+| PHP_APCU_MEMORY | | Production-Dockerfile | Size of in memory cache |
+| PHP_FPM_MAX_CHILDREN | | Production-Dockerfile | The maximum number of child processes | 
+| PHP_FPM_START_SERVERS | | Production-Dockerfile | The number of child processes created on startup |
+| PHP_FPM_MIN_SPARE_SERVERS | | Production-Dockerfile | The desired minimum number of idle server processes |
+| PHP_FPM_MAX_SPARE_SERVERS | | Production-Dockerfile | The desired maximum number of idle server processes |
+| PHP_CONN_LIMIT| enabled or disabled | | Whether rate limit is enabled for PHP requests | 
+| remote_fileserver_hostname | files.gigadb.oreg or files-stg.gigadb.host  | | domain name for the files server | 
 
 ## SUB-GROUP: Forks
 
@@ -162,65 +169,67 @@ values can differ depending on deployment environment:
 the following variables which all projects belonging to developers in the Forks 
 sub-group can use:
 
-| Variable | Example value | Used in                                                        | Comments                                                                                                            |
-|----------|--------------|----------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
-| ANALYTICS_CLIENT_EMAIL | | local.php.dist for Google analytics                            | Set at Forks level with test Google Analytics account for development work                                          |
-| ANALYTICS_CLIENT_ID | | local.php.dist                                                 | As above                                                                                                            |
-| ANALYTICS_KEYFILE_PATH | | Cannot find where it is used                                   | As above                                                                                                            |
-| ANALYTICS_PRIVATE_KEY | | docker-compose.ci.yml                                          | As above                                                                                                            |
-| Facebook_access_token | | Affiliate login                                                | Use test Facebook account for development work                                                                      |
-| FACEBOOK_APP_ID | | Affiliate login                                                | As above                                                                                                            |
-| FACEBOOK_APP_SECRET | | Affiliate login                                                | As above                                                                                                            |
-| Facebook_tester_email | | Affiliate login                                                | As above                                                                                                            |
-| Facebook_tester_first_name | | Affiliate login                                                | As above                                                                                                            |
-| Facebook_tester_last_name | | Affiliate login                                                | As above                                                                                                            |
-| Facebook_tester_password | | Affiliate login                                                | As above                                                                                                            |
-| GIGADB_admin_tester_email | | GigadbWebsiteContext.php admin behat tests                     | Set at Forks sub-group levels                                                                                       |
+| Variable                       | Example value | Used in                                                        | Comments                                                                                                            |
+|--------------------------------|--------------|----------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
+| ANALYTICS_CLIENT_EMAIL         | | local.php.dist for Google analytics                            | Set at Forks level with test Google Analytics account for development work                                          |
+| ANALYTICS_CLIENT_ID            | | local.php.dist                                                 | As above                                                                                                            |
+| ANALYTICS_KEYFILE_PATH         | | Cannot find where it is used                                   | As above                                                                                                            |
+| ANALYTICS_PRIVATE_KEY          | | docker-compose.ci.yml                                          | As above                                                                                                            |
+| Facebook_access_token          | | Affiliate login                                                | Use test Facebook account for development work                                                                      |
+| FACEBOOK_APP_ID                | | Affiliate login                                                | As above                                                                                                            |
+| FACEBOOK_APP_SECRET            | | Affiliate login                                                | As above                                                                                                            |
+| Facebook_tester_email          | | Affiliate login                                                | As above                                                                                                            |
+| Facebook_tester_first_name     | | Affiliate login                                                | As above                                                                                                            |
+| Facebook_tester_last_name      | | Affiliate login                                                | As above                                                                                                            |
+| Facebook_tester_password       | | Affiliate login                                                | As above                                                                                                            |
+| GIGADB_admin_tester_email      | | GigadbWebsiteContext.php admin behat tests                     | Set at Forks sub-group levels                                                                                       |
 | GIGADB_admin_tester_first_name | | GigadbWebsiteContext.php admin behat tests                     | As above                                                                                                            |
-| GIGADB_admin_tester_last_name | | GigadbWebsiteContext.php admin behat tests                     | As above                                                                                                            |
-| GIGADB_admin_tester_password | | GigadbWebsiteContext.php admin behat tests                     | As above                                                                                                            |
-| GOOGLE_ANALYTICS_PROFILE | | local.php.dist                                                 | Set at Forks sub-group level so developers use test account                                                         |
-| GOOGLE_API_AUTH_CODE | | local.php.dist                                                 | As above                                                                                                            |
-| GOOGLE_CLIENT_ID | | main.php.dist, Affiliate login tests                           | As above                                                                                                            |
-| GOOGLE_SECRET | | main.php.dist, Affiliate login tests                           | As above                                                                                                            |
-| Google_tester_email | | Affiliate login tests                                          | Set at Forks sub-group level so all developers use same credentials                                                 |
-| Google_tester_first_name | | Affiliate login tests                                          | As above                                                                                                            |
-| Google_tester_last_name | | Affiliate login tests                                          | As above                                                                                                            |
-| Google_tester_password | | Affiliate login tests                                          | As above                                                                                                            |
-| group | Forks | Cannot find where it is used                                   | Kept as a Forks sub-group variable                                                                                  |
-| HASH_SECRET_KEY | | local.php.dist                                                 | Used as a signing key for creating the hash value of the password reset token verifier                              |
-| LINKEDIN_API_KEY | | main.php.dist, Affiliate login tests                           | Set at Forks sub-group level so all developers use same test LinkedIn account for development work                  |
-| LINKEDIN_SECRET_KEY | | main.php.dist, Affiliate login tests                           | As above                                                                                                            |
-| LinkedIn_tester_email | | Affiliate login tests                                          | As above                                                                                                            |
-| LinkedIn_tester_password | | Affiliate login tests                                          | As above                                                                                                            |
-| LinkedIn_tester_first_name | | Affiliate login tests                                          | As above                                                                                                            |
-| LinkedIn_tester_last_name | | Affiliate login tests                                          | As above                                                                                                            |
-| MAILCHIMP_API_KEY | | local.php.dist, NewsletterTest.php                             | Set at Forks sub-group level so all developers use same test Mailchimp account for development work                 |
-| MAILCHIMP_LIST_ID | | local.php.dist, NewsletterTest.php                             | As above                                                                                                            |
-| MAILCHIMP_TEST_EMAIL | | local.php.dist, NewsletterTest.php                             | As above                                                                                                            |
-| MDS_PASSWORD | | local.php.dist for minting DOIs                                | Set at Forks sub-group level so all developers use same test MDS account for development work                       |
-| MDS_PREFIX | | local.php.dist for minting DOIs                                | As above                                                                                                            |
-| MDS_USERNAME | | local.php.dist for minting DOIs                                | As above                                                                                                            |
-| OPAUTH_SECURITY_SALT | | main.php.dist for opauth package                               | Set in Forks sub-group with test OPAUTH_SECURITY_SALT for development work                                          |
-| ORCID_CLIENT_ENVIRONMENT | | main.php.dist for affiliate login                              | Set at Forks sub-group level so all developers use test ORCID account for development work                          |
-| ORCID_CLIENT_ID | | main.php.dist, Affiliate login tests                           | As above                                                                                                            |
-| ORCID_CLIENT_SECRET | | main.php.dist, Affiliate login tests                           | As above                                                                                                            |
-| Orcid_tester_email | | Affiliate login tests                                          | As above                                                                                                            |
-| Orcid_tester_first_name | | Affiliate login tests                                          | As above                                                                                                            |
-| Orcid_tester_last_name | | Affiliate login tests                                          | As above                                                                                                            |
-| Orcid_tester_password | | Affiliate login tests                                          | As above                                                                                                            |
-| Orcid_tester_uid | | Affiliate login tests                                          | As above                                                                                                            |
-| RECAPTCHA_PRIVATEKEY | | local.php.dist for login captcha test                          | Set at Forks sub-group level so all developers use same development specific RECAPTCHA account for development work |
-| RECAPTCHA_PUBLICKEY | | local.php.dist for login captcha test                          | As above                                                                                                            |
-| TWITTER_KEY | | main.php.dist, Affiliate login tests                           | Set at Forks sub-group level so all developers use same test Twitter account for development work                   |
-| TWITTER_SECRET | | main.php.dist, Affiliate login tests                           | As above                                                                                                            |
-| Twitter_tester_email | | Affiliate login tests                                          | As above                                                                                                            |
-| Twitter_tester_password | | Affiliate login tests                                          | As above                                                                                                            |
-| Twitter_tester_first_name | | Affiliate login tests                                          | As above                                                                                                            |
-| Twitter_tester_last_name | | Affiliate login tests                                          | As above                                                                                                            |
-| GITTER_API_TOKEN | | API token to access Gitter API                                 | Use personal token on dev forks, tech@ token on Upstream                                                            |
+| GIGADB_admin_tester_last_name  | | GigadbWebsiteContext.php admin behat tests                     | As above                                                                                                            |
+| GIGADB_admin_tester_password   | | GigadbWebsiteContext.php admin behat tests                     | As above                                                                                                            |
+| GOOGLE_ANALYTICS_PROFILE       | | local.php.dist                                                 | Set at Forks sub-group level so developers use test account                                                         |
+| GOOGLE_API_AUTH_CODE           | | local.php.dist                                                 | As above                                                                                                            |
+| GOOGLE_CLIENT_ID               | | main.php.dist, Affiliate login tests                           | As above                                                                                                            |
+| GOOGLE_SECRET                  | | main.php.dist, Affiliate login tests                           | As above                                                                                                            |
+| Google_tester_email            | | Affiliate login tests                                          | Set at Forks sub-group level so all developers use same credentials                                                 |
+| Google_tester_first_name       | | Affiliate login tests                                          | As above                                                                                                            |
+| Google_tester_last_name        | | Affiliate login tests                                          | As above                                                                                                            |
+| Google_tester_password         | | Affiliate login tests                                          | As above                                                                                                            |
+| group                          | Forks | Cannot find where it is used                                   | Kept as a Forks sub-group variable                                                                                  |
+| HASH_SECRET_KEY                | | local.php.dist                                                 | Used as a signing key for creating the hash value of the password reset token verifier                              |
+| LINKEDIN_API_KEY               | | main.php.dist, Affiliate login tests                           | Set at Forks sub-group level so all developers use same test LinkedIn account for development work                  |
+| LINKEDIN_SECRET_KEY            | | main.php.dist, Affiliate login tests                           | As above                                                                                                            |
+| LinkedIn_tester_email          | | Affiliate login tests                                          | As above                                                                                                            |
+| LinkedIn_tester_password       | | Affiliate login tests                                          | As above                                                                                                            |
+| LinkedIn_tester_first_name     | | Affiliate login tests                                          | As above                                                                                                            |
+| LinkedIn_tester_last_name      | | Affiliate login tests                                          | As above                                                                                                            |
+| MAILCHIMP_API_KEY              | | local.php.dist, NewsletterTest.php                             | Set at Forks sub-group level so all developers use same test Mailchimp account for development work                 |
+| MAILCHIMP_LIST_ID              | | local.php.dist, NewsletterTest.php                             | As above                                                                                                            |
+| MAILCHIMP_TEST_EMAIL           | | local.php.dist, NewsletterTest.php                             | As above                                                                                                            |
+| MDS_PASSWORD                   | | local.php.dist for minting DOIs                                | Set at Forks sub-group level so all developers use same test MDS account for development work                       |
+| MDS_PREFIX                     | | local.php.dist for minting DOIs                                | As above                                                                                                            |
+| MDS_USERNAME                   | | local.php.dist for minting DOIs                                | As above                                                                                                            |
+| MDS_DOI_URL                    | | local.php.dist for minting DOIs                                | As above                                                                                                            |
+| MDS_MEADATA_URL                | | local.php.dist for minting DOIs                                | As above                                                                                                            |
+| OPAUTH_SECURITY_SALT           | | main.php.dist for opauth package                               | Set in Forks sub-group with test OPAUTH_SECURITY_SALT for development work                                          |
+| ORCID_CLIENT_ENVIRONMENT       | | main.php.dist for affiliate login                              | Set at Forks sub-group level so all developers use test ORCID account for development work                          |
+| ORCID_CLIENT_ID                | | main.php.dist, Affiliate login tests                           | As above                                                                                                            |
+| ORCID_CLIENT_SECRET            | | main.php.dist, Affiliate login tests                           | As above                                                                                                            |
+| Orcid_tester_email             | | Affiliate login tests                                          | As above                                                                                                            |
+| Orcid_tester_first_name        | | Affiliate login tests                                          | As above                                                                                                            |
+| Orcid_tester_last_name         | | Affiliate login tests                                          | As above                                                                                                            |
+| Orcid_tester_password          | | Affiliate login tests                                          | As above                                                                                                            |
+| Orcid_tester_uid               | | Affiliate login tests                                          | As above                                                                                                            |
+| RECAPTCHA_PRIVATEKEY           | | local.php.dist for login captcha test                          | Set at Forks sub-group level so all developers use same development specific RECAPTCHA account for development work |
+| RECAPTCHA_PUBLICKEY            | | local.php.dist for login captcha test                          | As above                                                                                                            |
+| TWITTER_KEY                    | | main.php.dist, Affiliate login tests                           | Set at Forks sub-group level so all developers use same test Twitter account for development work                   |
+| TWITTER_SECRET                 | | main.php.dist, Affiliate login tests                           | As above                                                                                                            |
+| Twitter_tester_email           | | Affiliate login tests                                          | As above                                                                                                            |
+| Twitter_tester_password        | | Affiliate login tests                                          | As above                                                                                                            |
+| Twitter_tester_first_name      | | Affiliate login tests                                          | As above                                                                                                            |
+| Twitter_tester_last_name       | | Affiliate login tests                                          | As above                                                                                                            |
+| GITTER_API_TOKEN               | | API token to access Gitter API                                 | Use personal token on dev forks, tech@ token on Upstream                                                            |
 | GITTER_IT_NOTIFICATION_ROOM_ID | | Numeric ID of a specific Gitter room (the IT notification one) |                                                                                                             |
-| URL_PREFIX | | File location URL updates | As above |
+| URL_PREFIX                     | | File location URL updates | As above |
 
 ## PROJECT: *-gigadb-website
 
@@ -299,6 +308,13 @@ differ between developers:
 | TENCENTCLOUD_APP_ID | | dataset-backup-tool | Set at project level so developers can use their own Tencent account |
 | TENCENTCLOUD_SECRET_ID | | As above | As above |
 | TENCENTCLOUD_SECRET_KEY | | As above | As above |
+| PHP_APCU_MEMORY | | Production-Dockerfile | Size of in memory cache |
+| PHP_FPM_MAX_CHILDREN | | Production-Dockerfile | The maximum number of child processes | 
+| PHP_FPM_START_SERVERS | | Production-Dockerfile | The number of child processes created on startup |
+| PHP_FPM_MIN_SPARE_SERVERS | | Production-Dockerfile | The desired minimum number of idle server processes |
+| PHP_FPM_MAX_SPARE_SERVERS | | Production-Dockerfile | The desired maximum number of idle server processes |
+| PHP_CONN_LIMIT| enabled or disabled | | Whether rate limit is enabled for PHP requests | 
+| remote_fileserver_hostname | | | domain name for the files server | 
 
 ### Automatically-created variables in PROJECT: *-gigadb-website
 
@@ -307,8 +323,18 @@ differ between developers:
 | docker_tlsauth_ca | | Certificate authority for Dockerhost | Created by Ansible |
 | docker_tlsauth_cert | | Public certificate for Dockerhost | As above |
 | docker_tlsauth_key | | Server key for above CA | As above |
+| docker_fileserver_tlsauth_ca | | Certificate authority for the file server | Created by Ansible |
+| docker_fileserver_tlsauth_cert | | Public certificate for the file server | As above |
+| docker_fileserver_tlsauth_key | | Server key for above CA | As above |
+| docker_bastion_tlsauth_ca | | Certificate authority for the bastion server | Created by Ansible |
+| docker_bastion_tlsauth_cert | | Public certificate for the bastion server | As above |
+| docker_bastion_tlsauth_key | | Server key for above CA | As above |
 | remote_private_ip | | Private IP of Dockerhost | Created by Ansible |
 | remote_public_ip | | Public IP of Dockerhost | As above |
+| remote_bastion_private_ip | | Private IP of bastion server | Created by Ansible |
+| remote_bastion_public_ip | | Public IP of bastion server | As above |
+| remote_files_private_ip | | Private IP of files server | Created by Ansible |
+| remote_files_public_ip | | Public IP of files server | As above |
 | tls_chain_pem | | Contains additional intermediate certificate or certificates that web browsers need to validate server certificate | Created by Gitlab job |
 | tls_fullchain_pem | | All certificates, including server certificate (aka leaf certificate or end-entity certificate). The server certificate is the first one in this file, followed by any intermediates. | As above | |
 | tls_privkey_pem | | Private key for certificate in PEM format | As above | |

@@ -397,3 +397,71 @@ Feature: form to update dataset details
     And I press the button "Save"
     And I am on "/dataset/100039"
     Then I should see "Genomic data of the Puerto Rican Parrot"
+
+  @ok @mint-doi
+  Scenario: Update metadata for an existing doi
+    Given I am on "/adminDataset/update/id/8"
+    When I follow "Mint DOI"
+    Then I should see "minting under way, please wait"
+    And I wait "5" seconds
+    And I should see "This DOI exists in datacite already, no need to mint, but the metadata is updated!"
+
+  @ok @mint-doi
+  Scenario: Update metadata for non exist doi
+    Given I am on "/adminDataset/update/id/5"
+    When I follow "Mint DOI"
+    Then I should see "minting under way, please wait"
+    And I wait "5" seconds
+    And I should see "Error with metadata status: 200 and DOI status: 404 Details can be found at here"
+    And I should see a link "here" to "https://support.datacite.org/reference/mds#api-response-codes"
+
+  @ok @mint-doi
+  Scenario: Update metadata with invalid metadata format with existing doi
+    Given I am on "adminDataset/update/id/2342"
+    When I follow "Mint DOI"
+    Then I should see "minting under way, please wait"
+    And I wait "5" seconds
+    And I should see "This DOI exists in datacite, but failed to update metadata because of: DOI 10.80027/100935: Missing child element(s). Expected is ( {http://datacite.org/schema/kernel-4}creator ). at line 4, column 0"
+
+  @ok @mint-doi
+  Scenario: Try to create doi with invalid metadata format
+    Given I am on "/adminDataset/update/id/700"
+    When I follow "Mint DOI"
+    Then I should see "minting under way, please wait"
+    And I wait "10" seconds
+    And I should see "This DOI cannot be created because of the metadata status: 422, and the doi status: 422 Details can be found at here"
+    And I should see a link "here" to "https://support.datacite.org/reference/mds#api-response-codes"
+
+  @ok @dataset-status
+  Scenario Outline: Links to create mockup or to open mockup are always present for a non-published dataset
+    Given I am on "/adminDataset/update/id/668"
+    And I select <status> from the field "Dataset_upload_status"
+    And I press the button "Save"
+    And I am on "/adminDataset/update/id/668"
+    Then I should see a link "Create/Reset Private URL" to "/adminDataset/private/identifier/200070"
+    And I should see a link "Open Private URL" to "/dataset/200070/token/ImP3Bbu7ytRSfYFh"
+    Examples:
+      | status                   |
+      | "ImportFromEM"           |
+      | "UserStartedIncomplete"  |
+      | "Rejected"               |
+      | "Not required"           |
+      | "Submitted"              |
+      | "Curation"               |
+      | "AuthorReview"           |
+      | "Private"                |
+      | "AssigningFTPbox"        |
+      | "UserUploadingData"      |
+      | "DataAvailableForReview" |
+      | "DataPending"            |
+
+  @ok @dataset-status
+  Scenario: Links to create mockup or to open mockup are not present for a published dataset
+    Given I am on "/adminDataset/update/id/5"
+    And I select "Published" from the field "Dataset_upload_status"
+    And I press the button "Save"
+    When I am on "/adminDataset/update/id/5"
+    Then I should not see "Create/Reset Private URL"
+    And I should not see "Open Private URL"
+
+

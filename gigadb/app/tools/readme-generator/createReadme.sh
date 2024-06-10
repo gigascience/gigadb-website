@@ -77,7 +77,7 @@ done
 #   None
 #######################################
 function set_up_logging() {
-  LOGDIR="$APP_SOURCE/logs"
+  LOGDIR="$APP_SOURCE/uploadDir"
   LOGFILE="$LOGDIR/readme_${doi}_$(date +'%Y%m%d_%H%M%S').log"
   mkdir -p "${LOGDIR}"
   touch "${LOGFILE}"

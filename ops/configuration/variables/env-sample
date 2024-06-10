@@ -30,6 +30,7 @@ REPO_NAME=
 GROUP_VARIABLES_URL="https://gitlab.com/api/v4/groups/gigascience/variables?per_page=100"
 FORK_VARIABLES_URL="https://gitlab.com/api/v4/groups/3501869/variables"
 PROJECT_VARIABLES_URL="https://gitlab.com/api/v4/projects/gigascience%2Fforks%2F$REPO_NAME/variables"
+MISC_VARIABLES_URL="https://gitlab.com/api/v4/projects/gigascience%2Fcnhk-infra/variables"
 
 ### Deployment Environment  #############################################################################################
 # dev, ci,  staging or production
@@ -52,7 +53,7 @@ DISABLE_CACHE=true
 NGINX_VERSION=1.21.3
 PHP_VERSION=7.4.33
 APCU_VERSION=5.1.21
-NODE_VERSION=17.6.0
+NODE_VERSION=20.11.0
 POSTGRES_VERSION=14.8
 YII_VERSION=1.1.28
 YII2_VERSION=2.0.48.1

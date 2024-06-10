@@ -45,7 +45,7 @@ class CachedDatasetSubmitter extends DatasetComponents implements DatasetSubmitt
         $cachedEmailAddress = $this->getCachedLocalData($this->getDatasetId());
         if (null == $cachedEmailAddress) {
             $cachedEmailAddress = $this->_storedDatasetSubmitter->getEmailAddress();
-            $this->saveLocaldataInCache($this->getDatasetId(), $cachedEmailAddress);
+            $this->saveLocalDataInCache($this->getDatasetId(), $cachedEmailAddress);
         }
         return $cachedEmailAddress;
     }
