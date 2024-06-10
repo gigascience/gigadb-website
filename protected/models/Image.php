@@ -22,6 +22,8 @@ use Ramsey\Uuid\Uuid;
  */
 class Image extends CActiveRecord
 {
+    public bool $is_no_image = false;
+
     /** @const int  database id of the generic image (no_image.png) */
     const GENERIC_IMAGE_ID  = 0 ;
     /** @const string database url of the generic image (no_image.png) */

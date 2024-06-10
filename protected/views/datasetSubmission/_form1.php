@@ -35,7 +35,7 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                 <a class="myHint" data-content="Select the type of data to be included 
                    in this submission, you may select more than 1. If a 
                    data type is missing please contact us on database@gigasciencejournal.com."></a>
-                <div class="controls">
+                <div class="clear">
                     <?
                     $datasetTypes = CHtml::listData(Type::model()->findAll(), 'id', 'name');
                     foreach ($datasetTypes as $id => $datasetType) {
@@ -156,13 +156,13 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
             </div>
         </div>
         <div class="span10">
-        <div class="control-group">
-                        <?php echo CHtml::label('Keywords','keywords', array('class'=>'control-label')); ?>
-                        <div class="controls">
-                            <?php echo CHtml::textField('keywords', '', array('class'=>'span10', 'size'=>60,'maxlength'=>300)); ?>
-                        </div>
-                    </div>
-               </div>
+            <div class="control-group">
+                <?php echo CHtml::label('Keywords','keywords', array('class'=>'control-label')); ?>
+                <div class="controls">
+                    <?php echo CHtml::textField('keywords', '', array('class'=>'span10', 'size'=>60,'maxlength'=>300)); ?>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="span12" style="text-align:center">
