@@ -193,3 +193,8 @@ Feature: a user visit the dataset page
     # If bug was present, URL would look like:
     # "/dataset/view/id/100035/Samples_page/2/Files_page/3"
     And I should see "GSM678699_sample16_mefTDGmm.bam.gz"
+
+  @ok
+  Scenario: Canonical URL is shown in page head block
+    When I am on "/dataset/view/id/100035/Samples_page/2"
+    Then I should see link element of type "canonical" to "http://gigadb.test/dataset/100035"

@@ -131,7 +131,7 @@ The bastion server can only be accessed from the authorized users, and each user
 ```
 $ cd ops/infrastructure/envs/live
 # try to create user lily in the bastion server
-$ ansible-playbook -i ../../inventories users_playbook.yml -e "newuser=lily"
+$ ansible-playbook -i ../../inventories users_playbook.yml -e "newuser=lily" --extra-vars="gigadb_env=live"
 # update the permission of the private key
 $ chmod 500 output/privkeys-$bastion-ip/lily
 $ ls -Al output/privkeys-$bastion-ip
@@ -142,6 +142,15 @@ $ ssh -i /path/to/envs/live/output/privkeys-$bastion-ip/lily lily@$bastion-ip
 [lily@ip-10-99-0-183 ~]$ ls
 uploadDir
 ```
+
+If the user will need to upload content to Wasabi, a new user should be created on Wasabi dashboard, and API keys should be created there.
+Wasabi will let the tech team operator download the credentials as a CSV file called `credentials.csv`.
+The command to run the `users_playbook.yml` should then be:
+```
+% ansible-playbook -i ../../inventories users_playbook.yml -e "newuser=lily" -e "credentials_csv_path=~/Downloads/credentials.csv" --extra-vars="gigadb_env=live"
+```
+
+
 ### What to do if we receive disk usage alerts or pipeline jobs fail due lack of space on device
 
 The disk usage is usually consumed by the docker containers, and it can be released by following the steps below:
@@ -301,6 +310,13 @@ The creation can be achieved as below:
 % ssh -i output/privkeys-$bastion-ip/$user $user@$bastion-ip
 ```
 
+If the user will need to upload content to Wasabi, a new user should be created on Wasabi dashboard, and API keys should be created there.
+Wasabi will let the tech team operator download the credentials as a CSV file called `credentials.csv`.
+The command to run the `users_playbook.yml` should then be:
+```
+% ansible-playbook -i ../../inventories users_playbook.yml -e "newuser=$user" -e "credentials_csv_path=~/Downloads/credentials.csv" --extra-vars="gigadb_env=live"
+```
+
 ### What if a user has accidentally deleted (or corrupted) their .ssh/authorized_keys
 
 Please contact tech team if a user suspects that the /home/$user/.ssh/authorized_keys has accidentally deleted or corrupted, tech team can help to retrieve it from the [upstream gitlab variable page](https://gitlab.com/gigascience/upstream/gigadb-website/-/settings/ci_cd) after logging in 
@@ -366,4 +382,124 @@ Then user can connect to the bastion server with the given private key as below:
 4. Click "Browse..." under "Authentication parameters" / "Private key file for authentication".
 5. Locate the $user.ppk private key and click "Open".
 6. Finally, click "Open" again to log into the remote server with key pair authentication.
+```
+
+### How to manually listing and mounting the AWS EFS access-points
+
+Assuming AWS EFS has been created after `terraform apply`, which can be further confirmed in the regional AWS EFS dashboard, eg. [here](https://ap-northeast-2.console.aws.amazon.com/efs/home?region=ap-northeast-2#/get-started)
+While the `FileSystem Id`, `access point Id` can be obtained from the `terraform output` as well, for example :
+
+```
+% cd ops/infrastructure/envs/live
+% terraform output
+...
+Outputs:
+.
+.
+.
+efs_filesystem_access_points = {
+  "configuration_area" = "fsap-02000d2d873a159be"
+  "dropbox_area" = "fsap-03cba147d08a9405c"
+}
+efs_filesystem_arn = "arn:aws:elasticfilesystem:ap-northeast-2:049839813732:file-system/fs-00073d99cb4083b87"
+efs_filesystem_dns_name = "fs-00073d99cb4083b87.efs.ap-northeast-2.amazonaws.com"
+efs_filesystem_id = "fs-00073d99cb4083b87"
+...
+
+```
+
+Below are the details for mounting and listing the access points:
+```
+# mounting can only be done by a sudoer
+# login bastion server as a sudoer, eg. centos
+% ssh -i output/privkeys-$bastion-ip/centos centos@$bastion-ip
+Activate the web console with: systemctl enable --now cockpit.socket
+
+Last login: Tue Apr 23 13:40:56 2024 from 14.199.148.232
+[centos@ip-10-99-0-157 ~]$ ls -al
+total 16
+drwx------.  6 centos centos  124 Apr 25 02:29 .
+drwxr-xr-x.  4 root   root     32 Apr 25 02:12 ..
+drwx------.  3 centos centos   17 Apr 25 02:12 .ansible
+-rw-r--r--.  1 centos centos   18 Feb 10 08:05 .bash_logout
+-rw-r--r--.  1 centos centos  141 Feb 10 08:05 .bash_profile
+-rw-r--r--.  1 centos centos  376 Feb 10 08:05 .bashrc
+drwx------.  2 centos centos   
+[centos@ip-10-99-0-157 ~]$ 
+# confirm the dir for mounting exists
+[centos@ip-10-99-0-157 ~]$ ls -al /share
+total 0
+drwxr-xr-x.  4 centos centos  35 Apr 25 02:00 .
+dr-xr-xr-x. 18 root   root   237 Apr 25 02:00 ..
+drwxr-xr-x.  2 centos centos   6 Apr 25 02:00 config
+drwxr-xr-x.  2 centos centos   6 Apr 25 02:00 dropbox
+[centos@ip-10-99-0-157 ~]$ ls -al /share/dropbox/
+total 0
+drwxr-xr-x. 2 centos centos  6 Apr 25 02:00 .
+drwxr-xr-x. 4 centos centos 35 Apr 25 02:00 ..
+[[macentosry@ip-10-99-0-157 ~]$ df -hT
+Filesystem     Type      Size  Used Avail Use% Mounted on
+devtmpfs       devtmpfs  838M     0  838M   0% /dev
+tmpfs          tmpfs     871M     0  871M   0% /dev/shm
+tmpfs          tmpfs     871M  8.5M  862M   1% /run
+tmpfs          tmpfs     871M     0  871M   0% /sys/fs/cgroup
+/dev/nvme0n1p1 xfs        30G  1.6G   29G   6% /
+tmpfs          tmpfs     175M     0  175M   0% /run/user/1001
+[centos@ip-10-99-0-157 ~]$ sudo mount -t efs -o tls,accesspoint=fsap-03cba147d08a9405c fs-00073d99cb4083b87 /share/dropbox
+[centos@ip-10-99-0-157 ~]$ sudo mount -t efs -o tls,accesspoint=fsap-02000d2d873a159be fs-00073d99cb4083b87 /share/config
+[centos@ip-10-99-0-157 ~]$ df -hT
+Filesystem     Type      Size  Used Avail Use% Mounted on
+devtmpfs       devtmpfs  838M     0  838M   0% /dev
+tmpfs          tmpfs     871M     0  871M   0% /dev/shm
+tmpfs          tmpfs     871M  8.6M  862M   1% /run
+tmpfs          tmpfs     871M     0  871M   0% /sys/fs/cgroup
+/dev/nvme0n1p1 xfs        30G  3.9G   27G  13% /
+tmpfs          tmpfs     175M     0  175M   0% /run/user/1001
+tmpfs          tmpfs     175M     0  175M   0% /run/user/1000
+127.0.0.1:/    nfs4      8.0E     0  8.0E   0% /share/dropbox
+127.0.0.1:/    nfs4      8.0E     0  8.0E   0% /share/config
+[centos@ip-10-99-0-157 ~]$ mount | grep /share
+127.0.0.1:/ on /share/dropbox type nfs4 (rw,relatime,vers=4.1,rsize=1048576,wsize=1048576,namlen=255,hard,noresvport,proto=tcp,port=20450,timeo=600,retrans=2,sec=sys,clientaddr=127.0.0.1,local_lock=none,addr=127.0.0.1)
+127.0.0.1:/ on /share/config type nfs4 (rw,relatime,vers=4.1,rsize=1048576,wsize=1048576,namlen=255,hard,noresvport,proto=tcp,port=20162,timeo=600,retrans=2,sec=sys,clientaddr=127.0.0.1,local_lock=none,addr=127.0.0.1)
+[centos@ip-10-99-0-157 ~]$ 
+```
+
+Below are the details for listing the access points as a user:
+```
+# login bastion server as a sudoer, eg. mary
+% ssh -i output/privkeys-$bastion-ip/mary mary@$bastion-ip
+[mary@ip-10-99-0-157 ~]$ ls -al
+total 12
+drwx------. 4 mary mary  91 Apr 25 02:12 .
+drwxr-xr-x. 4 root root  32 Apr 25 02:12 ..
+-rw-r--r--. 1 mary mary  18 Feb 10 08:05 .bash_logout
+-rw-r--r--. 1 mary mary 141 Feb 10 08:05 .bash_profile
+-rw-r--r--. 1 mary mary 376 Feb 10 08:05 .bashrc
+drwx------. 2 mary mary  29 Apr 25 02:13 .ssh
+drwx------. 2 mary mary   6 Apr 25 02:12 uploadDir
+[mary@ip-10-99-0-157 ~]$ ls -al /share/dropbox
+total 4
+drwxr-xr-x. 2 centos centos 6144 Apr 25 02:37 .
+drwxr-xr-x. 4 centos centos   35 Apr 25 02:00 ..
+[mary@ip-10-99-0-157 ~]$ ls -al /share/config/
+total 4
+drwx------. 2 centos centos 6144 Apr 25 02:37 .
+drwxr-xr-x. 4 centos centos   35 Apr 25 02:00 ..
+[mary@ip-10-99-0-157 ~]$
+[mary@ip-10-99-0-157 ~]$ df -hT
+Filesystem     Type      Size  Used Avail Use% Mounted on
+devtmpfs       devtmpfs  838M     0  838M   0% /dev
+tmpfs          tmpfs     871M     0  871M   0% /dev/shm
+tmpfs          tmpfs     871M  8.6M  862M   1% /run
+tmpfs          tmpfs     871M     0  871M   0% /sys/fs/cgroup
+/dev/nvme0n1p1 xfs        30G  3.9G   27G  13% /
+tmpfs          tmpfs     175M     0  175M   0% /run/user/1001
+tmpfs          tmpfs     175M     0  175M   0% /run/user/1000
+127.0.0.1:/    nfs4      8.0E     0  8.0E   0% /share/dropbox
+127.0.0.1:/    nfs4      8.0E     0  8.0E   0% /share/config
+[mary@ip-10-99-0-157 ~]$ 
+[mary@ip-10-99-0-157 ~]$ mount | grep /share
+127.0.0.1:/ on /share/dropbox type nfs4 (rw,relatime,vers=4.1,rsize=1048576,wsize=1048576,namlen=255,hard,noresvport,proto=tcp,port=20450,timeo=600,retrans=2,sec=sys,clientaddr=127.0.0.1,local_lock=none,addr=127.0.0.1)
+127.0.0.1:/ on /share/config type nfs4 (rw,relatime,vers=4.1,rsize=1048576,wsize=1048576,namlen=255,hard,noresvport,proto=tcp,port=20162,timeo=600,retrans=2,sec=sys,clientaddr=127.0.0.1,local_lock=none,addr=127.0.0.1)
+[mary@ip-10-99-0-157 ~]$ 
 ```
