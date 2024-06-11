@@ -77,6 +77,9 @@ class ReadmeController extends Controller
             } else if ($optOutdir !== '' && is_dir($optOutdir) === false) {
                 throw new Exception('Cannot save readme file - Output directory does not exist or is not a directory');
             }
+            $md5 = md5_file($filename);
+            $fileSize = filesize($filename);
+            Yii::$app->ReadmeGenerator->updateOrCreate($optDoi, $filename, $fileSize, $md5);
         } catch (UserException $e) {
             $this->stderr($e->getMessage().PHP_EOL, Console::FG_YELLOW);
             return ExitCode::DATAERR;

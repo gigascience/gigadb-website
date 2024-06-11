@@ -2,6 +2,8 @@
 
 namespace app\components;
 
+use GigaDB\models\FileAttributes;
+use GigaDB\models\File;
 use Exception;
 use GigaDB\models\Dataset;
 use yii\base\Component;
@@ -117,4 +119,35 @@ class ReadmeGenerator extends Component
         // Convert readme array to string.
         return implode(PHP_EOL, $readme);
     }
+
+    public function updateOrCreate($doi, $filename, $fileSize, $md5)
+    {
+        $dataset = Dataset::findOne(['identifier' => $doi]);
+        if ($dataset) {
+            $fileEntry = File::findOne(['dataset_id' => $dataset->id]);
+            if ($fileEntry === null) {
+                // Create a new file entry
+                $fileEntry = new File();
+                $fileEntry->dataset_id = $dataset->id;
+                $fileEntry->name = $filename;
+                $fileEntry->size = $fileSize;
+                $fileSize->save();
+            } else {
+                $fileEntry->name = $filename;
+                $fileEntry->size = $fileSize;
+                $fileEntry->save();
+            }
+            $fa = FileAttributes::findOne(['file_id' => $fileEntry->id]);
+            if ($fa === null) {
+                $fa = new FileAttributes();
+                $fa->file_id = $fileEntry->id;
+                $fa->value = $md5;
+                $fa->save();
+            } else {
+                $fa->value = $md5;
+                $fa->save();
+            }
+        }
+    }
+
 }

@@ -27,6 +27,7 @@ class ReadmeCest
         $I->seeInShellOutput("[DOI] 10.5524/100142");
         $I->runShellCommand("ls /home/curators");
         $I->seeInShellOutput("readme_100142.txt");
+        $I->canSeeInDatabase("file", ["name" => "/home/curators/readme_100142.txt"]);
     }
 
     /**
