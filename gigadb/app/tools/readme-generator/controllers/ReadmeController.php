@@ -79,7 +79,7 @@ class ReadmeController extends Controller
             }
             $md5 = md5_file($filename);
             $fileSize = filesize($filename);
-            Yii::$app->ReadmeGenerator->updateOrCreate($optDoi, $filename, $fileSize, $md5);
+            Yii::$app->ReadmeGenerator->updateOrCreate($optDoi, str_replace("$optOutdir/", "", $filename), $fileSize, $md5);
         } catch (UserException $e) {
             $this->stderr($e->getMessage().PHP_EOL, Console::FG_YELLOW);
             return ExitCode::DATAERR;
