@@ -123,49 +123,38 @@ class ReadmeGenerator extends Component
     public function updateOrCreate($doi, $filename, $fileSize, $md5)
     {
         $dataset = Dataset::findOne(['identifier' => $doi]);
-        if ($dataset) {
-            $fileEntry = File::findOne(['dataset_id' => $dataset->id, 'name' => $filename]);
-            if ($fileEntry === null) {
-                $fileEntry= File::findOne(['dataset_id' => $dataset->id, 'name' => 'readme.txt']);
-                if ($fileEntry === null) {
-                    // Create a new file entry
-                    $fileEntry  = new File();
-                    $fileEntry->dataset_id = $dataset->id;
-                    $fileEntry->name = $filename;
-                    $fileEntry->size = $fileSize;
-                    $fileEntry->location = "/abcd/" . "$filename";
-                    $fileEntry->extension = "txt";
-                    $fileEntry->save();
-                } else {
-                    $fileEntry->name = $filename;
-                    $fileEntry->size = $fileSize;
-                    $fileEntry->location = str_replace("readme.txt", "$filename", $fileEntry->location);
-                    $fileEntry->save();
-                }
-            } else {
-                $fileEntry->name = $filename;
-                $fileEntry->size = $fileSize;
-                $fileEntry->location = str_replace("readme.txt", "$filename", $fileEntry->location);
-                $fileEntry->save();
-            }
-
-            // Attribute id for MD5 checksum
-            $attributeId = 605;
-
-            $fa = FileAttributes::findOne(['file_id' => $fileEntry->id]);
-
-            if ($fa === null) {
-                $fa = new FileAttributes();
-                $fa->file_id = $fileEntry->id;
-                $fa->attribute_id = $attributeId;
-                $fa->value = $md5;
-                $fa->save();
-            } else {
-                $fa->file_id = $fileEntry->id;
-                $fa->attribute_id = $attributeId;
-                $fa->value = $md5;
-                $fa->save();
-            }
+        if (!$dataset) {
+            return;
         }
+
+        $fileEntry = File::findOne(['dataset_id' => $dataset->id, 'name' => $filename]);
+        if (!$fileEntry) {
+            $fileEntry = File::findOne(['dataset_id' => $dataset->id, 'name' => 'readme.txt']);
+        }
+
+        if (!$fileEntry) {
+            $fileEntry = new File();
+            $fileEntry->dataset_id = $dataset->id;
+        }
+
+        $fileEntry->name = $filename;
+        $fileEntry->size = $fileSize;
+        $fileEntry->location = $fileEntry->location ? str_replace("readme.txt", $filename, $fileEntry->location) : "/abcd/" . $filename;
+        $fileEntry->extension = "txt";
+        $fileEntry->save();
+
+        // Attribute id for MD5 checksum
+        $attributeId = 605;
+
+        $fa = FileAttributes::findOne(['file_id' => $fileEntry->id]);
+
+        if (!$fa) {
+            $fa = new FileAttributes();
+            $fa->file_id = $fileEntry->id;
+            $fa->attribute_id = $attributeId;
+        }
+
+        $fa->value = $md5;
+        $fa->save();
     }
 }
