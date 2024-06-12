@@ -137,10 +137,16 @@ class ReadmeGenerator extends Component
                 $fileEntry->size = $fileSize;
                 $fileEntry->save();
             }
+
+            // Attribute id for MD5 checksum
+            $attributeId = 605;
+
             $fa = FileAttributes::findOne(['file_id' => $fileEntry->id]);
+
             if ($fa === null) {
                 $fa = new FileAttributes();
                 $fa->file_id = $fileEntry->id;
+                $fa->attribute_id = $attributeId;
                 $fa->value = $md5;
                 $fa->save();
             } else {

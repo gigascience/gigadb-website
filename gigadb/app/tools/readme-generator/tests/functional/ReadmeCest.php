@@ -28,6 +28,7 @@ class ReadmeCest
         $I->runShellCommand("ls /home/curators");
         $I->seeInShellOutput("readme_100142.txt");
         $I->canSeeInDatabase("file", ["name" => "/home/curators/readme_100142.txt"]);
+        $I->canSeeInDatabase("file_attributes", ["file_id" => 88270, "attribute_id" => 605, "value" => "ddaa29fb2e20f75c3e2ce887622ab0ef"]);
     }
 
     /**
