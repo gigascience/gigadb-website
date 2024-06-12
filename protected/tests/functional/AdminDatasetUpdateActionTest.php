@@ -82,7 +82,6 @@ class AdminDatasetUpdateActionTest extends FunctionalTesting
         $this->session->visit($this->url);
         $this->session->getPage()->selectFieldOption("Dataset_upload_status", "Rejected");
         $this->session->getPage()->pressButton("Save");
-        $this->session->visit($this->url);
         $this->assertTrue($this->session->getPage()->hasContent($curationEntry));
         
 
@@ -105,7 +104,6 @@ class AdminDatasetUpdateActionTest extends FunctionalTesting
         $this->session->visit($this->url);
         $this->session->getPage()->selectFieldOption("Dataset_upload_status", "Submitted");
         $this->session->getPage()->pressButton("Save");
-        $this->session->visit($this->url);
         $this->assertTrue($this->session->getPage()->hasContent($curationEntry));
         
 
@@ -128,7 +126,6 @@ class AdminDatasetUpdateActionTest extends FunctionalTesting
         $this->session->visit($this->url);
         $this->session->getPage()->selectFieldOption("Dataset_upload_status", "Published");
         $this->session->getPage()->pressButton("Save");
-        $this->session->visit($this->url);
         $this->assertTrue($this->session->getPage()->hasContent($curationEntry));
         
 
