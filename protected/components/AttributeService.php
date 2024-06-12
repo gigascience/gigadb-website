@@ -46,26 +46,15 @@ class AttributeService extends CApplicationComponent
     public function replaceKeywordsForDatasetIdWithString($dataset_id, $keyword_string)
     {
         $sanitized_keywords = trim(filter_var($keyword_string, FILTER_SANITIZE_FULL_SPECIAL_CHARS));
-        $transaction = Yii::app()->db->getCurrentTransaction();
-        if ($transaction !== null) {
-            // Transaction already started outside
-            $transaction = null;
-        } else {
-            // There is no outer transaction, creating a local one
-            $transaction = Yii::app()->db->beginTransaction();
-        }
-
+        $transaction = Yii::app()->db->beginTransaction();
 
         try {
             $this->dataset_dao->removeKeywordsFromDatabaseForDatasetId($dataset_id);
             $this->dataset_dao->addKeywordsToDatabaseForDatasetIdAndString($dataset_id, $sanitized_keywords);
-            if ($transaction !== null) {
-                $transaction->commit();
-            }
+
+            $transaction->commit();
         } catch (Exception $e) {
-            if ($transaction !== null) {
-                $transaction->rollback();
-            }
+            $transaction->rollback();
         }
     }
 }

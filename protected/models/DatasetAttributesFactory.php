@@ -2,7 +2,7 @@
 
 class DatasetAttributesFactory
 {
-	protected $da;
+	protected DatasetAttributes $da;
 
 	public function create()
 	{

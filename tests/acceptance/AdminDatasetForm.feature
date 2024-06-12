@@ -642,3 +642,10 @@ Feature: form to update dataset details
     And I am on "/adminDataset/update/id/5"
     Then I can see the option "Published" selected for "Dataset_upload_status"
     And I should see "Status changed to Published"
+
+  @ok
+  Scenario: We stay on udate page after updating a published dataset
+    Given I am on "/adminDataset/update/id/5"
+    When I select "Published" from the field "Dataset_upload_status"
+    And I press the button "Save"
+    Then I should see "Updated Successfully"

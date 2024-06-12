@@ -126,8 +126,8 @@ class Dataset extends CActiveRecord
             'datasetFunders'=>array(self::HAS_MANY, 'DatasetFunder', 'dataset_id'),
             'funders' =>array(self::HAS_MANY, 'Funder', 'dataset_funder(dataset_id, funder_id)'),
             'datasetLogs'=>array(self::HAS_MANY, 'DatasetLog', 'dataset_id'),
-            'datasetAttributes' => array(self::HAS_MANY, 'DatasetAttributes', 'dataset_id'),
             'attributes' => array(self::MANY_MANY, 'Attributes', 'dataset_attributes(dataset_id, attribute_id)'),
+            'datasetAttributes' => array(self::HAS_MANY, 'DatasetAttributes', 'dataset_id'),
         );
     }
 

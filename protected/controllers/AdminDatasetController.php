@@ -281,23 +281,11 @@ class AdminDatasetController extends Controller
                 $urlToRedirectDatasetAttribute->save();
             }
 
-            if ($hasPartialError) {
-                 $this->redirect(array('/adminDataset/update/id/' . $model->id));
+            if (!$hasPartialError) {
+                Yii::app()->user->setFlash('updateSuccess', 'Updated successfully!');
             }
 
-            Yii::app()->user->setFlash('updateSuccess', 'Updated successfully!');
-            switch ($datasetPageSettings->getPageType()) {
-                case "draft":
-                    $this->redirect('/adminDataset/admin/');
-                    break;
-                case "public":
-                    $this->redirect('/dataset/' . $model->identifier);
-                    break;
-                case "hidden":
-                    $this->redirect(array('/adminDataset/update/id/' . $model->id));
-                    break;
-            }
-
+            $this->redirect(array('/adminDataset/update/id/' . $model->id));
         } else {
             Yii::app()->user->setFlash('updateError', 'Fail to update!');
             Yii::log(print_r($model->getErrors(), true), 'error');
