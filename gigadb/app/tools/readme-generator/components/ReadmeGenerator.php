@@ -148,7 +148,6 @@ class ReadmeGenerator extends Component
         $bucketPath = str_replace('wasabi:', '', $bucketPath);
         $location = "https://s3.ap-northeast-1.wasabisys.com/" . "$bucketPath/$dir_range/$doi/$filename";
 
-
         $fileEntry->name = $filename;
         $fileEntry->size = $fileSize;
         $fileEntry->location = $location;
