@@ -70,7 +70,7 @@ class ReadmeController extends Controller
         // Return usage unless mandatory options are passed.
         if ($optDoi === '') {
             $this->stdout(
-                "\nUsage:\n\t./yii readme/create --doi 100142 | --outdir /home/curators".PHP_EOL
+                "\nUsage:\n\t./yii readme/create --doi 100142 | --outdir /home/curators | --bucketPath wasabi:gigadb-datasets/dev/pub/10.5524".PHP_EOL
             );
             return ExitCode::USAGE;
         }
