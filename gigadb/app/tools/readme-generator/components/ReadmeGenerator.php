@@ -120,7 +120,7 @@ class ReadmeGenerator extends Component
         return implode(PHP_EOL, $readme);
     }
 
-    public function updateOrCreate($doi, $filename, $fileSize, $md5)
+    public function updateOrCreate($doi, $filename, $fileSize, $md5, $bucketPath)
     {
         $dataset = Dataset::findOne(['identifier' => $doi]);
         if (!$dataset) {
@@ -137,9 +137,21 @@ class ReadmeGenerator extends Component
             $fileEntry->dataset_id = $dataset->id;
         }
 
+        if ($doi <= 101000) {
+            $dir_range = "100001_101000";
+        } elseif ($doi <= 102000 && $doi >= 101001) {
+            $dir_range = "101001_102000";
+        } elseif ($doi <= 103000 && $doi >= 102001) {
+            $dir_range = "102001_103000";
+        }
+
+        $bucketPath = str_replace('wasabi:', '', $bucketPath);
+        $location = "https://s3.ap-northeast-1.wasabisys.com/" . "$bucketPath/$dir_range/$doi/$filename";
+
+
         $fileEntry->name = $filename;
         $fileEntry->size = $fileSize;
-        $fileEntry->location = $fileEntry->location ? str_replace("readme.txt", $filename, $fileEntry->location) : "/abcd/" . $filename;
+        $fileEntry->location = $location;
         $fileEntry->extension = "txt";
         $fileEntry->save();
 

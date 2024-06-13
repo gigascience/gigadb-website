@@ -30,6 +30,12 @@ class ReadmeController extends Controller
      */
     public $outdir = '';
 
+    /**
+     * The wasabi bucket path that the readme file copied to
+     *
+     * @var string $bucketPath
+     */
+    public $bucketPath = '';
 
     /**
      * Specify options available to console command provided by this controller.
@@ -42,6 +48,7 @@ class ReadmeController extends Controller
         return [
             'doi',
             'outdir',
+            'bucketPath',
         ];
     }
 
@@ -58,6 +65,7 @@ class ReadmeController extends Controller
     {
         $optDoi    = $this->doi;
         $optOutdir = $this->outdir;
+        $optBucketPath = $this->bucketPath;
 
         // Return usage unless mandatory options are passed.
         if ($optDoi === '') {
@@ -79,7 +87,7 @@ class ReadmeController extends Controller
             }
             $md5 = md5_file($filename);
             $fileSize = filesize($filename);
-            Yii::$app->ReadmeGenerator->updateOrCreate($optDoi, str_replace("$optOutdir/", "", $filename), $fileSize, $md5);
+            Yii::$app->ReadmeGenerator->updateOrCreate($optDoi, str_replace("$optOutdir/", "", $filename), $fileSize, $md5, $optBucketPath);
         } catch (UserException $e) {
             $this->stderr($e->getMessage().PHP_EOL, Console::FG_YELLOW);
             return ExitCode::DATAERR;
