@@ -197,7 +197,8 @@ function copy_to_wasabi() {
 #######################################
 function main {
   set_up_logging
-  
+  determine_destination_path
+
   count=0
   # Execute loop if number of readme files created is less than batch number
   # or run loop if batch = 0
@@ -205,9 +206,9 @@ function main {
     # Conditional for how to generate readme file - dependant on user's environment
     if [[ $(uname -n) =~ compute ]];then
       . /home/centos/.bash_profile
-      docker run --rm -v /home/centos/readmeFiles:/app/readmeFiles registry.gitlab.com/$GITLAB_PROJECT/production_tool:$GIGADB_ENV /app/yii readme/create --doi "${doi}" --outdir "${outdir}"
+      docker run --rm -v /home/centos/readmeFiles:/app/readmeFiles registry.gitlab.com/$GITLAB_PROJECT/production_tool:$GIGADB_ENV /app/yii readme/create --doi "${doi}" --outdir "${outdir}" --bucketPath "${destination_path}"
     else
-      docker-compose run --rm tool /app/yii readme/create --doi "${doi}" --outdir "${outdir}"
+      docker-compose run --rm tool /app/yii readme/create --doi "${doi}" --outdir "${outdir}" --bucketPath "${destination_path}"
     fi
     exitCode=$?
     if [ "${exitCode}" -eq 74 ]; then
@@ -224,7 +225,6 @@ function main {
 
       # Readme file can be copied into Wasabi if --wasabi flag is present
       if [ "${wasabi_upload}" ]; then
-        determine_destination_path
         dir_range=""
         get_doi_directory_range
         copy_to_wasabi
