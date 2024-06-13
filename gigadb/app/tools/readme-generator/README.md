@@ -92,8 +92,18 @@ $ bats tests
 The readme information for a dataset can be viewed on standard output using its
 DOI:
 ```
-$ docker-compose run --rm tool /app/yii readme/create --doi 100142
+$ docker-compose run --rm tool /app/yii readme/create --doi 100142 --bucketPath wasabi:gigadb-datasets/dev/pub/10.5524
 ```
+
+The `--bucketPath` variable is essential for executing the readme tool as a command line tool,
+it is needed for constructing the location path in the `File` table as below:
+
+| location                                                                                                       |
+|----------------------------------------------------------------------------------------------------------------|
+| https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/dev/pub/10.5524/100001_101000/100142/readme_100142.txt |
+
+Once the tool has been executed successfully, an entry in the `file` table will be updated/created with the updated name, location and file size,
+and an entry in the `file_attributes` will be created with attribute_id `605` and the md5 value.
 
 Information for the readme is retrieved from the `database` container that was
 spun up using the `up.sh` command above. The tool is able to connect to this
@@ -101,7 +111,7 @@ container by connecting to the Docker `db-tier` network.
 
 Saving the readme information into a file requires a file path, for example:
 ```
-$ docker-compose run --rm tool /app/yii readme/create --doi=100142 --outdir=/home/curators
+$ docker-compose run --rm tool /app/yii readme/create --doi=100142 --outdir=/home/curators --bucketPath wasabi:gigadb-datasets/dev/pub/10.5524
 ```
 Since `/home/curators` has been mounted to `runtime/curators` directory in
 `docker-compose.yml`, you should find a `readme_100142.txt` created there after
@@ -115,9 +125,12 @@ There is a shell script which can be used to call the readme tool:
 $ ./createReadme.sh --doi 100142 --outdir /home/curators
 ```
 
+The `--bucketPath` variable here is not necessary, as it will be supplied to the
+tool inside the script.
+
 You should see a `readme_100142.txt` file created in runtime/curators directory.
-There will also be a new log file created in logs/ directory which is named:
-`readme_100142_batch_1_*.log`.
+There will also be a new log file created in uploadDir/ directory which is named:
+`readme_100142_yyyymmdd_hhmmss.log`.
 
 In the absence of an output directory `outdir` parameter value or if the
 directory cannot be created then an error message will be displayed:
