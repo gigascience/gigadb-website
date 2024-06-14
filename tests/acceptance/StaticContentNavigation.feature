@@ -146,7 +146,7 @@ Feature: A user visit gigadb website
     Then I should see "General"
     And I should see "Our team"
     And I should see "Jobs"
-    And I should see "Cntact"
+    And I should see "Contact"
     And I should see "Advisory Board"
 
   @ok @spike
