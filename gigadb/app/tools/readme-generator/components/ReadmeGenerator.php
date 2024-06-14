@@ -123,8 +123,8 @@ class ReadmeGenerator extends Component
     public function updateOrCreate($doi, $filename, $fileSize, $md5, $bucketPath)
     {
         $dataset = Dataset::findOne(['identifier' => $doi]);
-        if (!$dataset) {
-            return;
+        if (is_null($dataset)) {
+            throw new UserException('Dataset ' . $doi . ' not found');
         }
 
         $fileEntry = File::findOne(['dataset_id' => $dataset->id, 'name' => $filename]);
