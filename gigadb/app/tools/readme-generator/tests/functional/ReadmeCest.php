@@ -11,8 +11,8 @@ class ReadmeCest
      */
     public function _after()
     {
-        if (file_exists("/home/curators/readme_100142.txt")) {
-            unlink("/home/curators/readme_100142.txt");
+        if (file_exists("/home/curators/readme_100004.txt")) {
+            unlink("/home/curators/readme_100004.txt");
         }
         if (file_exists("/home/curators/readme_100003.txt")) {
             unlink("/home/curators/readme_100003.txt");
@@ -20,22 +20,27 @@ class ReadmeCest
     }
 
     /**
-     * Test actionCreate function in ReadmeController
+     * Test create readme file for 100004 dataset
      *
      * @param FunctionalTester $I
      */
     public function tryCreate(FunctionalTester $I)
     {
-        $I->cantSeeInDatabase("file", ["id" => 6300, "dataset_id" => 213, "name" => "readme_100142.txt", "size" => 1500, "location" => "https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/dev/pub/10.5524/100001_101000/100142/readme_100142.txt", "extension" => "txt"]);
-        $I->cantSeeInDatabase("file_attributes", ["file_id" => 6300, "attribute_id" => 605, "value" => "ddaa29fb2e20f75c3e2ce887622ab0ef"]);
-        $I->runShellCommand("/app/yii_test readme/create --doi 100142 --outdir=/home/curators --bucketPath wasabi:gigadb-datasets/dev/pub/10.5524");
-        $I->seeInShellOutput("[DOI] 10.5524/100142");
+        $I->cantSeeInDatabase("file", ["id" => 6300, "dataset_id" => 212, "name" => "readme_100004.txt", "size" => 1997, "location" => "https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/dev/pub/10.5524/100001_101000/100004/readme_100004.txt", "extension" => "txt"]);
+        $I->cantSeeInDatabase("file_attributes", ["file_id" => 6300, "attribute_id" => 605, "value" => "60da98a0c5cb6f872a4576f737089636"]);
+        $I->runShellCommand("/app/yii_test readme/create --doi 100004 --outdir=/home/curators --bucketPath wasabi:gigadb-datasets/dev/pub/10.5524");
+        $I->seeInShellOutput("[DOI] 10.5524/100004");
         $I->runShellCommand("ls /home/curators");
-        $I->seeInShellOutput("readme_100142.txt");
-        $I->canSeeInDatabase("file", ["id" => 6300, "dataset_id" => 213, "name" => "readme_100142.txt", "size" => 1500, "location" => "https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/dev/pub/10.5524/100001_101000/100142/readme_100142.txt", "extension" => "txt"]);
-        $I->canSeeInDatabase("file_attributes", ["file_id" => 6300, "attribute_id" => 605, "value" => "ddaa29fb2e20f75c3e2ce887622ab0ef"]);
+        $I->seeInShellOutput("readme_100004.txt");
+        $I->canSeeInDatabase("file", ["id" => 6300, "dataset_id" => 212, "name" => "readme_100004.txt", "size" => 1997, "location" => "https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/dev/pub/10.5524/100001_101000/100004/readme_100004.txt", "extension" => "txt"]);
+        $I->canSeeInDatabase("file_attributes", ["file_id" => 6300, "attribute_id" => 605, "value" => "60da98a0c5cb6f872a4576f737089636"]);
     }
 
+    /**
+     * Test update existing readme file for 100003 dataset
+     *
+     * @param FunctionalTester $I
+     */
     public function tryUpdate(FunctionalTester $I)
     {
         $I->canSeeInDatabase("file", ["id" => 88266, "dataset_id" => 211, "name" => "readme.txt", "size" => 1, "location" => "ftp://climb.genomics.cn/pub/10.5524/100001_101000/100003/readme.txt", "extension" => "txt"]);
