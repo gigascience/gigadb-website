@@ -52,10 +52,10 @@ if [[ $(uname -n) =~ compute ]];then
   echo -e "$updateMD5ChecksumEndMessage"
 
   if [[ $GIGADB_ENV == "staging" ]];then
-    ./createReadme.sh --doi "$DOI" --outdir /app/readmeFiles --wasabi --apply
+    /usr/local/bin/createReadme --doi "$DOI" --outdir /app/readmeFiles --wasabi --apply
     echo -e "Created readme file and uploaded it to Wasabi gigadb-website/staging bucket directory"
   elif [[ $GIGADB_ENV == "live" ]];then
-    ./createReadme.sh --doi "$DOI" --outdir /app/readmeFiles --wasabi --use-live-data --apply
+    /usr/local/bin/createReadme --doi "$DOI" --outdir /app/readmeFiles --wasabi --use-live-data --apply
     echo -e "Created readme file and uploaded it to Wasabi gigadb-website/live bucket directory"
   else
     echo -e "Environment is $GIGADB_ENV - Readme file creation is not required"
