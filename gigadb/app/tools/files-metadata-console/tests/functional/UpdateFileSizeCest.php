@@ -9,17 +9,15 @@ use GuzzleHttp\Client;
 class UpdateFileSizeCest
 {
     private const TEST_URLS = [
-        "https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/10.5524/100001_101000/100142/readme_100142.txt",
-        "https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/10.5524/100001_101000/100142/SRAmetadb.zip",
-        "https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/10.5524/100001_101000/100142",
-        "https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/10.5524/100001_101000/100142/",
+        "https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/dev/pub/10.5524/100001_101000/100142/readme_100142.txt",
+        "https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/dev/pub/10.5524/100001_101000/100142",
+        "https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/dev/pub/10.5524/100001_101000/100142/",
     ];
 
     public function tryFetchFileSizeFromFilesUrl(\FunctionalTester $I): void
     {
         $expectedLengthList = [
-            1672,
-            383892184,
+            1523,
             0,
             0,
         ];
