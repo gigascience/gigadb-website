@@ -262,6 +262,7 @@
     });
     </script>
 </body>
+<?= $this->renderPartial('//shared/_handle_external_links') ?>
 
 </html>
 <script type="application/ld+json">

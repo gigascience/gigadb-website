@@ -17,9 +17,6 @@
                     <li>
                         <a class="fa fa-facebook" href="http://facebook.com/GigaScience" title="GigaScience on Facebook" aria-label="GigaScience on Facebook"></a>
                     </li>
-                    <li>
-                        <a class="fa fa-twitter" href="http://twitter.com/GigaScience" title="GigaScience on Twitter" aria-label="GigaScience on Twitter"></a>
-                    </li>
                     <li class="icon-list-item">
                         <a
                           href="http://x.com/GigaScience"
