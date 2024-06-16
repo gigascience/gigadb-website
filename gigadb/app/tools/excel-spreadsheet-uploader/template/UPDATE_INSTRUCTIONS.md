@@ -15,6 +15,8 @@ For more  information about that document's usage, check the corresponding [Giga
     * The "Changes" column on the left should be empty
 3. Identify where Github Desktop has clone the repository on your computer and navigate to it.
 4. On your computer, make the change you want to the file in `gigadb/app/tools/excel-spreadsheet-uploader/template`
+  - replace the current template file with the new version 
+  - remember to include a testable example file 
 5. Then return to Github Desktop, you should see that the "Changes" column on the left is not empty and reflects the changes your made
 6. Create a new branch by clicking on the drop-down menu right of "Current branch" in the toolbar
 7. Click on "New branch", choose a meaningful name (e.g: fix-doi-hint), and click "Create branch"
