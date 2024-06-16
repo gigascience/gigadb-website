@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Fix: Enable curators to save Gigadb forms from many browser tabs at once
 - Feat #1840: Make create readme tool available as part of postUpload script
 
 ## v4.3.0 - 2024-06-25 - 9cf91f224
