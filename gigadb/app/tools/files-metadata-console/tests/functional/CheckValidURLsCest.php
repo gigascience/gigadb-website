@@ -16,6 +16,9 @@ class CheckValidURLsCest
         "https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/dev/pub/10.5524/100001_101000/100006/",
     ];
 
+    /**
+     * @skip Skip test due to CNGB FTP server not in use anymore
+     */
     public function tryReportIssues(\FunctionalTester $I): void {
         $expectedIssues = [
             "Resource cannot be downloaded, not found or forbidden (4xx)",
@@ -45,6 +48,9 @@ class CheckValidURLsCest
         }
     }
 
+    /**
+     * @skip Skip test due to CNGB FTP server not in use anymore
+     */
     public function tryNoIssueToReport(\FunctionalTester $I): void {
         $testWebClient = new Client([ 'allow_redirects' => false ]);
         $component = new FilesURLsFetcher(["doi" => "100142", "webClient" => $testWebClient]);
