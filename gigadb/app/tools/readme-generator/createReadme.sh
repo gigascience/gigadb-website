@@ -78,7 +78,7 @@ done
 #######################################
 function set_up_logging() {
   if [[ $(uname -n) =~ compute ]];then
-    LOGDIR="/home/centos/uploadDir"
+    LOGDIR="/home/centos/uploadLogs"
   else
     LOGDIR="$APP_SOURCE/uploadDir"
   fi
