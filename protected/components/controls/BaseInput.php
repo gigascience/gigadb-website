@@ -11,6 +11,7 @@ class BaseInput extends CWidget
   public $errorOptions;
   public $groupOptions;
   public $inputWrapperOptions;
+  // NOTE: bootstrap tooltips override the aria-describedby attribute, losing all values it previously held. So if using a tooltip, it is assumed that a description is not needed
   public $tooltip = '';
 
   protected function hasError()
@@ -36,7 +37,7 @@ class BaseInput extends CWidget
     $this->labelOptions['class'] = $this->mergeCssClasses($this->labelOptions, 'control-label');
     $this->errorOptions['class'] = $this->mergeCssClasses($this->errorOptions, 'control-error help-block');
 
-    if ($this->description) {
+    if ($this->description && !$this->tooltip) {
       $describedBy[] = $this->attributeName . '-desc';
     }
 
@@ -75,7 +76,7 @@ class BaseInput extends CWidget
 
   protected function renderDescription()
   {
-    if ($this->description) {
+    if ($this->description && !$this->tooltip) {
       echo CHtml::tag('p', array('id' => $this->attributeName . '-desc', 'class' => 'control-description help-block'), $this->description);
     }
   }
