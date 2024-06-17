@@ -10,5 +10,5 @@
 	<?php echo CHtml::activeDropDownList($attribute, 'unit_id', CHtml::listData(Unit::model()->findAll(), 'id', 'name'), array('class' => 'attr-form form-control', 'empty' => 'Select unit')); ?>
 </td>
 <td>
-	<input type="submit" class="btn background-btn js-save" name="edit_attr" value="Save" />
+	<button type="submit" class="btn background-btn js-save" name="edit_attr">Save Attribute</button>
 </td>
