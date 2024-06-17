@@ -333,27 +333,52 @@ protocol sequencing steps in the Sequence Read Archive".
 
 Use shell script to run readme tool:
 ```
-$ ./createReadme.sh --doi 100142 --outdir /app/readmeFiles
+$ /usr/local/bin/createReadme --doi 100142 --outdir /app/readmeFiles
 ```
 
 This time, you can check the log of this create readme file command:
 ```
-$ more logs/readme_100142_20230901_080216.log 
-2023/09/01 08:02:22 INFO  : Created readme file for DOI 100142 in /home/centos/runtime/curators/readme_100142.txt
+$ more uploadDir/readme_100142_20230901_080216.log 
+2024/06/17 02:40:24 INFO  : Created readme file for DOI 100142 in /usr/local/bin/runtime/curators/readme_100142.txt
 ```
 
 The createReadme.sh script can also be used to copy the newly created readme 
 file into the Wasabi gigadb-datasets bucket. To test this in dry-run mode,
 execute:
 ```
-$ ./createReadme.sh --doi 100142 --outdir /app/readmeFiles --wasabi
+$ /usr/local/bin/createReadme --doi 100142 --outdir /app/readmeFiles --wasabi
+```
+
+And then check the rclone log:
+```
+[centos@ip-10-99-0-207 ~]$ more uploadDir/readme_100142_20240617_030024.log 
+2024/06/17 03:00:29 INFO  : Created readme file for DOI 100142 in /usr/local/bin/runtime/curators/readme_100142.txt
+2024/06/17 03:00:30 NOTICE: readme_100142.txt: Skipped copy as --dry-run is set (size 1.640Ki)
+2024/06/17 03:00:30 NOTICE: 
+Transferred:        1.640 KiB / 1.640 KiB, 100%, 0 B/s, ETA -
+Transferred:            1 / 1, 100%
+Elapsed time:         1.0s
+
+2024/06/17 03:00:30 INFO  : Executed: rclone copy --s3-no-check-bucket /home/centos/readmeFiles/readme_100142.txt wasabi:gigadb-datasets/staging/pub/10.5524/100001_101000/100142/ --config /home/centos/.config/rclone/rclone.conf
+ --dry-run --log-file /home/centos/uploadDir/readme_100142_20240617_030024.log --log-level INFO --stats-log-level DEBUG >> /home/centos/uploadDir/readme_100142_20240617_030024.log
+2024/06/17 03:00:30 INFO  : Successfully copied file to Wasabi for DOI: 100142
 ```
 
 If you look at the latest log file in the logs directory, you will see the
 destination path that the readme file will be copied to which will be in the 
 staging directory. You can deactivate dry-run mode using the --apply flag:
 ```
-$ ./createReadme.sh --doi 100142 --outdir /app/readmeFiles --wasabi --apply
+$ /usr/local/bin/createReadme --doi 100142 --outdir /app/readmeFiles --wasabi --apply
+```
+
+And the rclone log will be:
+```
+[centos@ip-10-99-0-207 ~]$ more uploadDir/readme_100142_20240617_030758.log
+2024/06/17 03:08:03 INFO  : Created readme file for DOI 100142 in /usr/local/bin/runtime/curators/readme_100142.txt
+2024/06/17 03:08:03 INFO  : readme_100142.txt: Copied (replaced existing)
+2024/06/17 03:08:03 INFO  : Executed: rclone copy --s3-no-check-bucket /home/centos/readmeFiles/readme_100142.txt wasabi:gigadb-datasets/staging/pub/10.5524/100001_101000/100142/ --config /home/centos/.config/rclone/rclone.conf
+ --log-file /home/centos/uploadDir/readme_100142_20240617_030758.log --log-level INFO --stats-log-level DEBUG >> /home/centos/uploadDir/readme_100142_20240617_030758.log
+2024/06/17 03:08:03 INFO  : Successfully copied file to Wasabi for DOI: 100142
 ```
 
 You can confirm that the presence of the new readme file in the 100142 directory
@@ -363,16 +388,52 @@ There is a batch mode for the script which can be used by providing the
 `--batch` flag followed by a number to denote the number of datasets to be
 processed. For example, to process DOIs 100141, 100142, 100143:
 ```
-$ ./createReadme.sh --doi 100141 --outdir /app/readmeFiles --wasabi --batch 3
+$ /usr/local/bin/createReadme --doi 100141 --outdir /app/readmeFiles --wasabi --batch 3
 ```
 
 You will be able to see in the latest log file in the logs directory that 3
 readme files have been created and copied into Wasabi in dry-run mode.
 
+```
+[centos@ip-10-99-0-207 ~]$ more uploadDir/readme_100141_20240617_032006.log 
+2024/06/17 03:20:12 INFO  : Created readme file for DOI 100141 in /usr/local/bin/runtime/curators/readme_100141.txt
+2024/06/17 03:20:12 NOTICE: readme_100141.txt: Skipped copy as --dry-run is set (size 3.646Ki)
+2024/06/17 03:20:12 NOTICE: 
+Transferred:        3.646 KiB / 3.646 KiB, 100%, 0 B/s, ETA -
+Transferred:            1 / 1, 100%
+Elapsed time:         0.2s
+
+2024/06/17 03:20:12 INFO  : Executed: rclone copy --s3-no-check-bucket /home/centos/readmeFiles/readme_100141.txt wasabi:gigadb-datasets/staging/pub/10.5524/100001_101000/100141/ --config /home/centos/.config/rclone/rclone.conf
+ --dry-run --log-file /home/centos/uploadDir/readme_100141_20240617_032006.log --log-level INFO --stats-log-level DEBUG >> /home/centos/uploadDir/readme_100141_20240617_032006.log
+2024/06/17 03:20:12 INFO  : Successfully copied file to Wasabi for DOI: 100141
+2024/06/17 03:20:16 INFO  : Created readme file for DOI 100142 in /usr/local/bin/runtime/curators/readme_100142.txt
+2024/06/17 03:20:17 NOTICE: readme_100142.txt: Skipped copy as --dry-run is set (size 1.640Ki)
+2024/06/17 03:20:17 NOTICE: 
+Transferred:        1.640 KiB / 1.640 KiB, 100%, 0 B/s, ETA -
+Transferred:            1 / 1, 100%
+Elapsed time:         0.2s
+
+2024/06/17 03:20:17 INFO  : Executed: rclone copy --s3-no-check-bucket /home/centos/readmeFiles/readme_100142.txt wasabi:gigadb-datasets/staging/pub/10.5524/100001_101000/100142/ --config /home/centos/.config/rclone/rclone.conf
+ --dry-run --log-file /home/centos/uploadDir/readme_100141_20240617_032006.log --log-level INFO --stats-log-level DEBUG >> /home/centos/uploadDir/readme_100141_20240617_032006.log
+2024/06/17 03:20:17 INFO  : Successfully copied file to Wasabi for DOI: 100142
+2024/06/17 03:20:22 INFO  : Created readme file for DOI 100143 in /usr/local/bin/runtime/curators/readme_100143.txt
+2024/06/17 03:20:22 NOTICE: readme_100143.txt: Skipped copy as --dry-run is set (size 5.145Ki)
+2024/06/17 03:20:22 NOTICE: 
+Transferred:        5.145 KiB / 5.145 KiB, 100%, 0 B/s, ETA -
+Transferred:            1 / 1, 100%
+Elapsed time:         0.2s
+
+2024/06/17 03:20:22 INFO  : Executed: rclone copy --s3-no-check-bucket /home/centos/readmeFiles/readme_100143.txt wasabi:gigadb-datasets/staging/pub/10.5524/100001_101000/100143/ --config /home/centos/.config/rclone/rclone.conf
+ --dry-run --log-file /home/centos/uploadDir/readme_100141_20240617_032006.log --log-level INFO --stats-log-level DEBUG >> /home/centos/uploadDir/readme_100141_20240617_032006.log
+2024/06/17 03:20:22 INFO  : Successfully copied file to Wasabi for DOI: 100143
+[centos@ip-10-99-0-207 ~]$ 
+
+```
+
 To copy the readme file to the live data directory, use the `--use-live-data`
 and `--apply` flags:
 ```
-$ ./createReadme.sh --doi 100142 --outdir /app/readmeFiles --wasabi --use-live-data --apply
+$ /usr/local/bin/createReadme --doi 100142 --outdir /app/readmeFiles --wasabi --use-live-data --apply
 ```
 
 Now check the directory for dataset 100142 in relevant location in
