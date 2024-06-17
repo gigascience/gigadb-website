@@ -63,6 +63,15 @@ class AdminDatasetController extends Controller
         return $inputString;
     }
 
+    protected function registerTooltipScript() {
+        // Check if the script has already been registered
+        if (!Yii::app()->clientScript->isScriptRegistered('bootstrap-tooltip-init')) {
+            $jsFile = Yii::getPathOfAlias('application.js.bootstrap-tooltip-init') . '.js';
+            $jsUrl = Yii::app()->assetManager->publish($jsFile);
+            Yii::app()->clientScript->registerScriptFile($jsUrl, CClientScript::POS_END);
+        }
+    }
+
 	/**
 	 * Manage creation of new dataset object from a form
 	 *
@@ -143,6 +152,7 @@ class AdminDatasetController extends Controller
         }
 
         $this->layout = 'new_main';
+        $this->registerTooltipScript();
         $this->render('create', array('model'=>$dataset,'datasetPageSettings' => $datasetPageSettings)) ;
     }
 
@@ -413,6 +423,7 @@ class AdminDatasetController extends Controller
 
         $this->layout = 'new_main';
         $this->loadBaBbqPolyfills = true;
+        $this->registerTooltipScript();
         $this->render('update', array(
             'model' => $model,
             'datasetPageSettings' => $datasetPageSettings,

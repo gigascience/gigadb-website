@@ -11,10 +11,17 @@ class BaseInput extends CWidget
   public $errorOptions;
   public $groupOptions;
   public $inputWrapperOptions;
+  public $tooltip = '';
 
   protected function hasError()
   {
     return $this->model->hasErrors($this->attributeName);
+  }
+
+  protected function registerTooltipScript() {
+    $jsFile = Yii::getPathOfAlias('application.js.bootstrap-tooltip-init') . '.js';
+    $jsUrl = Yii::app()->assetManager->publish($jsFile);
+    Yii::app()->clientScript->registerScriptFile($jsUrl, CClientScript::POS_END);
   }
 
   private function mergeCssClasses($options, $defaultClass)
@@ -37,12 +44,17 @@ class BaseInput extends CWidget
       $describedBy[] = $this->attributeName . '-error';
     }
 
-    if (!empty($describedBy)) {
-      $this->inputOptions['aria-describedby'] = implode(" ", $describedBy);
-    }
-
     if (isset($this->inputOptions['required']) && $this->inputOptions['required']) {
       $this->inputOptions['aria-required'] = 'true';
+    }
+
+    if (!empty($this->tooltip)) {
+      $this->inputOptions['title'] = $this->tooltip;
+      $this->inputOptions['data-toggle'] = 'tooltip';
+    }
+
+    if (!empty($describedBy)) {
+      $this->inputOptions['aria-describedby'] = implode(" ", $describedBy);
     }
   }
 
@@ -80,5 +92,14 @@ class BaseInput extends CWidget
     $this->renderError();
     echo CHtml::closeTag('div');
     echo CHtml::closeTag('div');
+  }
+
+  public function init()
+  {
+    if (!empty($this->tooltip)) {
+      $this->registerTooltipScript();
+    }
+
+    parent::init();
   }
 }

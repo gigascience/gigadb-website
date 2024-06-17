@@ -65,7 +65,8 @@ echo $form->hiddenField($model, "image_id");
                           'inputWrapperOptions' => 'col-xs-8',
                           'inputOptions' => [
                               'required' => true,
-                          ]
+                          ],
+                          'tooltip' => 'Select the registered user account of the submitting author, this value will be used by the "Contact Author" button on the dataset page.',
                         ]);
                         ?>
                         <div class="form-group <?php echo $form->error($model, 'curator_id') ? 'has-error' : '' ?>">
@@ -75,7 +76,7 @@ echo $form->hiddenField($model, "image_id");
                                 $criteria = new CDbCriteria;
                                 $criteria->condition = 'role=\'admin\' and email like \'%gigasciencejournal.com\'';
                                 ?>
-                                <?php echo $form->dropDownList($model, 'curator_id', CHtml::listData(User::model()->findAll($criteria), 'id', 'email'), array('prompt' => '', 'class' => 'form-control')); ?>
+                                <?php echo $form->dropDownList($model, 'curator_id', CHtml::listData(User::model()->findAll($criteria), 'id', 'email'), array('prompt' => '', 'class' => 'form-control', 'title' => 'Select the relevant curator who is assigned to work on this dataset', 'data-toggle' => 'tooltip')); ?>
                                 <div role="alert" class="help-block">
                                   <?php echo $form->error($model, 'curator_id'); ?>
                                 </div>
@@ -843,3 +844,4 @@ $('#customizeEmailModal').on('hidden.bs.modal', function() {
   $('#datasetFormSaveButton').focus(); // hardcoded button that triggers the modal to return focus
 });
 </script>
+
