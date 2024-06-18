@@ -17,5 +17,4 @@
   $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip();
   });
-  // no need to clean up when partial is removed as there is a page refresh
 </script>
