@@ -317,9 +317,49 @@ ec2_bastion_public_ip = "88.888.888.888"
 $ ssh -i ~/.ssh/your-private-key.pem centos@88.888.888.888
 ```
 
+Before executing the `createReadme` tool, get the existing values of the `file` table and `file_attributes` table:
+```
+# check the tables
+[centos@ip-10-99-0-207 ~]$ psql -h $rds_instance_address -U gigadb -c 'select id, name, location, size from file where dataset_id = 200'
+Password for user gigadb: 
+  id   |                      name                       |                                                                   location                                                                    |   size    
+-------+-------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+-----------
+ 87517 | Diagram-ALL-FIELDS-Check-annotation.jpg         | https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/10.5524/100001_101000/100142/Diagram-ALL-FIELDS-Check-annotation.jpg         |     55547
+ 87540 | SRAmetadb.zip                                   | https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/10.5524/100001_101000/100142/SRAmetadb.zip                                   | 383892184
+ 87542 | Diagram-SRA-Study-Experiment-Joined-probing.jpg | https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/10.5524/100001_101000/100142/Diagram-SRA-Study-Experiment-Joined-probing.jpg |     81717
+ 87516 | readme.txt                                      | https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/10.5524/100001_101000/100142/readme.txt                                      |      2351
+(4 rows)
+[centos@ip-10-99-0-207 ~]$ psql -h $rds_instance_address -U gigadb -c 'select * from file_attributes where file_id = 87516'
+Password for user gigadb: 
+  id   | file_id | attribute_id |               value                | unit_id 
+-------+---------+--------------+------------------------------------+---------
+ 17051 |   87516 |          605 | c60c299fdf375b28cd444e70f43fa398   | 
+(1 row)
+```
+
 Using docker command to access tool:
 ```
-$ docker run --rm -v /home/centos/readmeFiles:/app/readmeFiles registry.gitlab.com/$GITLAB_PROJECT/production_tool:$GIGADB_ENV /app/yii readme/create --doi 100142 --outdir /app/readmeFiles
+$ docker run --rm -v /home/centos/readmeFiles:/app/readmeFiles registry.gitlab.com/$GITLAB_PROJECT/production_tool:$GIGADB_ENV /app/yii readme/create --doi 100142 --outdir /app/readmeFiles --bucketPath wasabi:gigadb-datasets/$GIGADB_ENV/pub/10.5524
+```
+
+Check the tables `file` and `file_attribbutes` that `name`, `location`, `size` and `value` have been updated.
+```
+[centos@ip-10-99-0-207 ~]$ psql -h rds-server-staging-ken.cjizsjwbxkxv.ap-northeast-2.rds.amazonaws.com -U gigadb -c 'select id, name, location, size from file where dataset_id = 200'
+Password for user gigadb: 
+  id   |                      name                       |                                                                   location                                                                    |   size    
+-------+-------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+-----------
+ 87516 | readme_100142.txt                               | https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/staging/pub/10.5524/100001_101000/100142/readme_100142.txt                            |      1672
+ 87540 | SRAmetadb.zip                                   | https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/10.5524/100001_101000/100142/SRAmetadb.zip                                   | 383892184
+ 87542 | Diagram-SRA-Study-Experiment-Joined-probing.jpg | https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/10.5524/100001_101000/100142/Diagram-SRA-Study-Experiment-Joined-probing.jpg |     81717
+ 87517 | Diagram-ALL-FIELDS-Check-annotation.jpg         | https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/10.5524/100001_101000/100142/Diagram-ALL-FIELDS-Check-annotation.jpg         |     55547
+(4 rows)
+[centos@ip-10-99-0-207 ~]$ psql -h rds-server-staging-ken.cjizsjwbxkxv.ap-northeast-2.rds.amazonaws.com -U gigadb -c 'select * from file_attributes where file_id = 87516'
+Password for user gigadb: 
+  id   | file_id | attribute_id |              value               | unit_id 
+-------+---------+--------------+----------------------------------+---------
+ 17051 |   87516 |          605 | 0fe8d1309283ffac54d782fd44434f9e | 
+(1 row)
+
 ```
 
 Check a readme file has been created:
