@@ -62,15 +62,15 @@ final class DatasetFilesUpdater extends Component
             }
             $tokens = explode("\t", $line);
             $size = (int)$tokens[0];
-            $filename = ltrim($tokens[1], './');
-            $filename = $this->doi . '/' . $filename;
+            $filepath = ltrim($tokens[1], './');
+            $filepath = $this->doi . '/' . $filepath;
             # Find file to be updated
             $file = File::find()
                 ->where(['dataset_id' => $d->id])
                 # Use % wildcard to ensure location ends with filename and
                 # another file with same filename in different directory is not
                 # accidentally updated
-                ->where("location LIKE :substr", array(':substr' => "%$filename"))
+                ->where("location LIKE :substr", array(':substr' => "%$filepath"))
                 ->one();
             if($file) {
                 # Update file size
