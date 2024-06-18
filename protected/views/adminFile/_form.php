@@ -27,7 +27,8 @@
             ],
             'inputOptions' => [
                 'required' => true,
-            ]
+            ],
+            'tooltip' => 'The DOI of the dataset to which the file is linked, select from dropdown menu'
         ]);
         $this->widget('application.components.controls.TextField', [
             'form' => $form,
@@ -37,6 +38,7 @@
                 'required' => true,
                 'maxlength' => 100
             ],
+            'tooltip' => 'the name of the file as it will appear in the file table on the dataset page'
         ]);
         $this->widget('application.components.controls.TextField', [
             'form' => $form,
@@ -46,6 +48,7 @@
                 'required' => true,
                 'maxlength' => 200
             ],
+            'tooltip' => 'Complete path of the file location including the server'
         ]);
         $this->widget('application.components.controls.TextField', [
             'form' => $form,
@@ -55,6 +58,7 @@
                 'required' => true,
                 'maxlength' => 30
             ],
+            'tooltip' => 'The file extension, usually ignoring any archive related extension, e.g. something.fasta.gz would have extension fasta not gz'
         ]);
         $this->widget('application.components.controls.TextField', [
             'form' => $form,
@@ -63,6 +67,7 @@
             'inputOptions' => [
                 'required' => true,
             ],
+            'tooltip' => 'The size of file on disk in bytes'
         ]);
         $this->widget('application.components.controls.TextArea', [
             'form' => $form,
@@ -72,11 +77,13 @@
                 'rows' => 6,
                 'cols' => 50
             ],
+            'tooltip' => 'The description of the files content'
         ]);
         $this->widget('application.components.controls.DateField', [
             'form' => $form,
             'model' => $model,
             'attributeName' => 'date_stamp',
+            'tooltip' => 'The date the file is made publicly available, usually the same as the dataset release date. Format: yyyy-mm-dd'
         ]);
         $this->widget('application.components.controls.DropdownField', [
             'form' => $form,
@@ -87,6 +94,7 @@
                 'valueField' => 'id',
                 'textField' => 'name',
             ],
+            'tooltip' => 'The format of the file content, usually a MIME format, select from the dropdown menu'
         ]);
         $this->widget('application.components.controls.DropdownField', [
             'form' => $form,
@@ -97,17 +105,19 @@
                 'valueField' => 'id',
                 'textField' => 'name',
             ],
+            'tooltip' => 'The type of data contained in the file, select from the dropdown menu'
         ]);
         $this->widget('application.components.controls.TextField', [
             'form' => $form,
             'model' => $model,
             'attributeName' => 'sample_name',
+            'tooltip' => 'If the file is directly and solely related to a single Sample entity named in GigaDB, a link to that sample can be added here by entering the exact name of the sample'
         ]);
         ?>
 
         <?php if (!$model->isNewRecord) { ?>
             <div class="control-group">
-                <button type="button" class="btn background-btn-o js-btn-attr" aria-expanded="false" aria-controls="newAttrForm" data-test="new-attr-btn"><span class="js-btn-attr-label">Show New Attribute Fields</span> <i class="fa fa-caret-down js-caret-type" aria-hidden="true"></i></button>
+                <button type="button" class="btn background-btn-o js-btn-attr" aria-expanded="false" aria-controls="newAttrForm" data-test="new-attr-btn" data-toggle="tooltip" title="Show and/or Add file attributes"><span class="js-btn-attr-label">Show New Attribute Fields</span> <i class="fa fa-caret-down js-caret-type" aria-hidden="true"></i></button>
                 <br />
                 <fieldset id="newAttrForm" class="js-new-attr mt-10 row" aria-label="New attribute fields" style="display:none;">
                     <div class="col-xs-5">
@@ -124,7 +134,8 @@
                             'inputOptions' => array(
                                 'empty' => 'Select name',
                                 'class' => 'attr-form js-new-attr-name',
-                            )
+                            ),
+                            'tooltip' => 'Choose the appropriate attribute name from the dropdown menu'
                         ]);
                         ?>
                     </div>
@@ -137,6 +148,7 @@
                             'inputOptions' => [
                                 'class' => 'attr-form'
                             ],
+                            'tooltip' => 'The value of the chosen attribute for this file'
                         ]);
                         ?>
                     </div>
@@ -154,7 +166,8 @@
                             'inputOptions' => array(
                                 'empty' => 'Select unit',
                                 'class' => 'attr-form'
-                            )
+                            ),
+                            'tooltip' => 'If units should be specified, select the appropriate value from the dropdown menu, otherwise leave blank'
                         ]);
                         ?>
                     </div>
