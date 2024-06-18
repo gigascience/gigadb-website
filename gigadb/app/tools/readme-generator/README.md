@@ -338,7 +338,7 @@ $ /usr/local/bin/createReadme --doi 100142 --outdir /app/readmeFiles
 
 This time, you can check the log of this create readme file command:
 ```
-$ more uploadDir/readme_100142_20230901_080216.log 
+$ more uploadLogs/readme_100142_20230901_080216.log 
 2024/06/17 02:40:24 INFO  : Created readme file for DOI 100142 in /usr/local/bin/runtime/curators/readme_100142.txt
 ```
 
@@ -351,7 +351,7 @@ $ /usr/local/bin/createReadme --doi 100142 --outdir /app/readmeFiles --wasabi
 
 And then check the rclone log:
 ```
-[centos@ip-10-99-0-207 ~]$ more uploadDir/readme_100142_20240617_030024.log 
+[centos@ip-10-99-0-207 ~]$ more uploadLogs/readme_100142_20240617_030024.log 
 2024/06/17 03:00:29 INFO  : Created readme file for DOI 100142 in /usr/local/bin/runtime/curators/readme_100142.txt
 2024/06/17 03:00:30 NOTICE: readme_100142.txt: Skipped copy as --dry-run is set (size 1.640Ki)
 2024/06/17 03:00:30 NOTICE: 
@@ -373,7 +373,7 @@ $ /usr/local/bin/createReadme --doi 100142 --outdir /app/readmeFiles --wasabi --
 
 And the rclone log will be:
 ```
-[centos@ip-10-99-0-207 ~]$ more uploadDir/readme_100142_20240617_030758.log
+[centos@ip-10-99-0-207 ~]$ more uploadLogs/readme_100142_20240617_030758.log
 2024/06/17 03:08:03 INFO  : Created readme file for DOI 100142 in /usr/local/bin/runtime/curators/readme_100142.txt
 2024/06/17 03:08:03 INFO  : readme_100142.txt: Copied (replaced existing)
 2024/06/17 03:08:03 INFO  : Executed: rclone copy --s3-no-check-bucket /home/centos/readmeFiles/readme_100142.txt wasabi:gigadb-datasets/staging/pub/10.5524/100001_101000/100142/ --config /home/centos/.config/rclone/rclone.conf
@@ -395,7 +395,7 @@ You will be able to see in the latest log file in the logs directory that 3
 readme files have been created and copied into Wasabi in dry-run mode.
 
 ```
-[centos@ip-10-99-0-207 ~]$ more uploadDir/readme_100141_20240617_032006.log 
+[centos@ip-10-99-0-207 ~]$ more uploadLogs/readme_100141_20240617_032006.log 
 2024/06/17 03:20:12 INFO  : Created readme file for DOI 100141 in /usr/local/bin/runtime/curators/readme_100141.txt
 2024/06/17 03:20:12 NOTICE: readme_100141.txt: Skipped copy as --dry-run is set (size 3.646Ki)
 2024/06/17 03:20:12 NOTICE: 
