@@ -107,63 +107,7 @@
 
         <?php if (!$model->isNewRecord) { ?>
             <div class="control-group">
-                <button type="button" class="btn background-btn-o js-btn-attr" aria-expanded="false" aria-controls="newAttrForm" data-test="new-attr-btn"><span class="js-btn-attr-label">Show New Attribute Fields</span> <i class="fa fa-caret-down js-caret-type" aria-hidden="true"></i></button>
-                <br />
-                <fieldset id="newAttrForm" class="js-new-attr mt-10 row" aria-label="New attribute fields" style="display:none;">
-                    <div class="col-xs-5">
-                        <?php
-                        $this->widget('application.components.controls.DropdownField', [
-                            'form' => $form,
-                            'model' => $attribute,
-                            'attributeName' => 'attribute_id',
-                            'listDataOptions' => [
-                                'data' => Attributes::model()->findAll(),
-                                'valueField' => 'id',
-                                'textField' => 'attribute_name',
-                            ],
-                            'inputOptions' => array(
-                                'empty' => 'Select name',
-                                'class' => 'attr-form js-new-attr-name',
-                            )
-                        ]);
-                        ?>
-                    </div>
-                    <div class="col-xs-3">
-                        <?php
-                        $this->widget('application.components.controls.TextField', [
-                            'form' => $form,
-                            'model' => $attribute,
-                            'attributeName' => 'value',
-                            'inputOptions' => [
-                                'class' => 'attr-form'
-                            ],
-                        ]);
-                        ?>
-                    </div>
-                    <div class="col-xs-4">
-                        <?php
-                        $this->widget('application.components.controls.DropdownField', [
-                            'form' => $form,
-                            'model' => $attribute,
-                            'attributeName' => 'unit_id',
-                            'listDataOptions' => [
-                                'data' => Unit::model()->findAll(),
-                                'valueField' => 'id',
-                                'textField' => 'name',
-                            ],
-                            'inputOptions' => array(
-                                'empty' => 'Select unit',
-                                'class' => 'attr-form'
-                            )
-                        ]);
-                        ?>
-                    </div>
-                    <div class="col-xs-12">
-                        <input type="submit" class="btn background-btn" name="submit_attr" value="Add attribute" />
-                    </div>
-                </fieldset>
-                <br />
-                <?php if ($model->fileAttributes) { ?>
+            <?php if ($model->fileAttributes) { ?>
                     <table class="table table-attr">
                         <caption>Attributes</caption>
                         <thead>
@@ -197,6 +141,74 @@
                         </tbody>
                     </table>
                 <?php } ?>
+                <br />
+                <button type="button" class="btn background-btn-o js-btn-attr" aria-expanded="false" aria-controls="newAttrForm" data-test="new-attr-btn"><span class="js-btn-attr-label">Show New Attribute Fields</span> <i class="fa fa-caret-down js-caret-type" aria-hidden="true"></i></button>
+                <br />
+                <fieldset id="newAttrForm" class="js-new-attr mt-10 mb-20 row" aria-label="New attribute fields" style="display:none;">
+                    <div class="col-xs-5">
+                        <?php
+                        $this->widget('application.components.controls.DropdownField', [
+                            'form' => $form,
+                            'model' => $attribute,
+                            'attributeName' => 'attribute_id',
+                            'listDataOptions' => [
+                                'data' => Attributes::model()->findAll(),
+                                'valueField' => 'id',
+                                'textField' => 'attribute_name',
+                            ],
+                            'groupOptions' => [
+                                'class' => 'mb-10'
+                            ],
+                            'inputOptions' => array(
+                                'empty' => 'Select name',
+                                'class' => 'attr-form js-new-attr-name',
+                            )
+                        ]);
+                        ?>
+                    </div>
+                    <div class="col-xs-3">
+                        <?php
+                        $this->widget('application.components.controls.TextField', [
+                            'form' => $form,
+                            'model' => $attribute,
+                            'attributeName' => 'value',
+                            'groupOptions' => [
+                                'class' => 'mb-10'
+                            ],
+                            'inputOptions' => [
+                                'class' => 'attr-form'
+                            ],
+                        ]);
+                        ?>
+                    </div>
+                    <div class="col-xs-4">
+                        <?php
+                        $this->widget('application.components.controls.DropdownField', [
+                            'form' => $form,
+                            'model' => $attribute,
+                            'attributeName' => 'unit_id',
+                            'groupOptions' => [
+                                'class' => 'mb-10'
+                            ],
+                            'listDataOptions' => [
+                                'data' => Unit::model()->findAll(),
+                                'valueField' => 'id',
+                                'textField' => 'name',
+                            ],
+                            'inputOptions' => array(
+                                'empty' => 'Select unit',
+                                'class' => 'attr-form'
+                            )
+                        ]);
+                        ?>
+                    </div>
+                    <div class="col-xs-12">
+                      <div class="pull-right btns-row">
+                          <input type="submit" class="btn background-btn" name="submit_attr" value="Add attribute" />
+                      </div>
+                    </div>
+                    <br />
+                </fieldset>
             </div>
         <?php } ?>
         <div class="pull-right btns-row">
