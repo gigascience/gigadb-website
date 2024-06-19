@@ -63,18 +63,33 @@ $('.search-form form').submit(function(){
         ]
     ]);
     ?>
-	<p>
-	You may optionally enter a comparison operator (<b>&lt;</b>, <b>&lt;=</b>, <b>&gt;</b>, <b>&gt;=</b>, <b>&lt;&gt;</b>
-	or <b>=</b>) at the beginning of each of your search values to specify how the comparison should be done. Date should be exactly in this format: <b>yyyy-mm-dd</b>
-	</p>
 
-  <div class="mb-10">
-	  <a href="/adminDataset/create" class="btn background-btn">Create Dataset</a>
+
+<div class="mb-10">
+  <a href="/adminDataset/create" class="btn background-btn">Create Dataset</a>
   </div>
 
-	<p>
-		Column headers with links are sortable. Cells with a text input are used for filtering.
-	</p>
+  <div class="panel panel-success">
+      <!-- NOTE: remove inline styles once https://github.com/gigascience/gigadb-website/pull/1701 is merged -->
+      <div class="panel-heading" style="padding: .5rem;">
+          <h4 class="panel-title">Table Instructions</h4>
+      </div>
+      <div class="panel-body">
+          <p>To filter the dataset listings, you can prepend your search terms in the fields below with comparison operators:</p>
+          <ul style="color: gray;">
+              <li><strong>&lt;</strong> (less than)</li>
+              <li><strong>&lt;=</strong> (less than or equal to)</li>
+              <li><strong>&gt;</strong> (greater than)</li>
+              <li><strong>&gt;=</strong> (greater than or equal to)</li>
+              <li><strong>&lt;&gt;</strong> (not equal to)</li>
+              <li><strong>=</strong> (equal to)</li>
+          </ul>
+          <p>For date fields, ensure the format is strictly <code>yyyy-mm-dd</code>.</p>
+          <p>
+            Column headers with links are sortable. Cells with a text input are used for filtering.
+          </p>
+      </div>
+  </div>
 
 	<?php $this->widget('CustomGridView', array(
 		'id'=>'dataset-grid',
