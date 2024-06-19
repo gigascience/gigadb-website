@@ -15,7 +15,7 @@ Feature: form to manage file metadata
     And I press the button "Save"
     Then I should see "Not set"
 
-  @ok @this
+  @ok
   Scenario: Can change release date
     Given I am on "/adminFile/update/id/17679"
     When I fill in the field of "id" "File_date_stamp" with "2022-01-01"
