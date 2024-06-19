@@ -825,13 +825,20 @@ $('#customizeEmailModal').on('hidden.bs.modal', function() {
 </script>
 
 <script>
-function handleDoiStatus({
-  check_metadata_status,
-  check_doi_status,
-  update_md_response,
-  create_doi_status,
-  create_md_status
-}) {
+function handleDoiStatus(output) {
+  if (!output) {
+    console.error('No output from minting DOI');
+    $("#minting").addClass("alert alert-danger").html("Unexpected error");
+    return
+  }
+  const {
+    check_metadata_status,
+    check_doi_status,
+    update_md_response,
+    create_doi_status,
+    create_md_status
+  } = output
+
   if (check_metadata_status === 200 && check_doi_status === 200 && update_md_status === 201) {
     console.log('DOI exists in DataCite, metadata updated');
 
@@ -867,11 +874,7 @@ function handleDoiStatus({
 }
 
 function handleMintingSuccess(output) {
-  if (!output) {
-    console.error('No output from minting DOI');
-  } else {
-    handleDoiStatus(output)
-  }
+  handleDoiStatus(output)
   $("#mint_doi_button").toggleClass("active");
 }
 </script>
