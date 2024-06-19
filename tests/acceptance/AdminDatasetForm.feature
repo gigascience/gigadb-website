@@ -404,7 +404,7 @@ Feature: form to update dataset details
     When I follow "Mint DOI"
     Then I should see "minting under way, please wait"
     And I wait "5" seconds
-    And I should see "This DOI exists in datacite already, no need to mint, but the metadata is updated!"
+    And I should see "This DOI exists in DataCite already, so it has now been updated with the current values from GigaDB."
 
   @ok @mint-doi
   Scenario: Update metadata for non exist doi

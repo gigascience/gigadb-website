@@ -825,6 +825,13 @@ $('#customizeEmailModal').on('hidden.bs.modal', function() {
 </script>
 
 <script>
+$(function() {
+  $('#mint_doi_button').click(function() {
+    $('#minting').html('minting under way, please wait');
+    $(this).toggleClass('active');
+  });
+});
+
 function handleDoiStatus(output) {
   if (!output) {
     console.error('No output from minting DOI');
