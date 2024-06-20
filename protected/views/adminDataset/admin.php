@@ -69,12 +69,13 @@ $('.search-form form').submit(function(){
   <a href="/adminDataset/create" class="btn background-btn">Create Dataset</a>
   </div>
 
-  <div class="panel panel-success">
+  <div class="panel panel-success panel-toggleable">
       <!-- NOTE: remove inline styles once https://github.com/gigascience/gigadb-website/pull/1701 is merged -->
-      <div class="panel-heading" style="padding: .5rem;">
-          <h4 class="panel-title">Table Instructions</h4>
-      </div>
-      <div class="panel-body">
+
+      <button class="panel-heading btn background-btn filter toggle-btn js-toggle-btn" aria-expanded="false" aria-controls="table-help-panel-body">
+        <h4 class="panel-title">Table Instructions</h4><i class="fa fa-caret-down js-caret-type" aria-hidden="true"></i>
+      </button>
+      <div id="table-help-panel-body" class="panel-body js-panel-body" style="display: none;">
           <p>To filter the dataset listings, you can prepend your search terms in the fields below with comparison operators:</p>
           <ul style="color: gray;">
               <li><strong>&lt;</strong> (less than)</li>
@@ -237,3 +238,15 @@ document.addEventListener("DOMContentLoaded", function(event) {//after deferred 
 });
 </script>
 <?php } ?>
+<script>
+$(document).ready(function() {
+  $('.panel-toggleable').on('click', '.js-toggle-btn', function() {
+    const caret = $(this).find(".js-caret-type");
+    const panel = $(this).closest('.panel').find(".js-panel-body");
+    const isExpanded = $(this).attr("aria-expanded") === "true";
+    $(this).attr("aria-expanded", !isExpanded);
+    caret.toggleClass("fa-caret-up fa-caret-down");
+    panel.slideToggle(300);
+  });
+});
+</script>
