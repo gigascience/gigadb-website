@@ -237,15 +237,15 @@ class Dataset extends CActiveRecord
         $criteria->compare('id',$this->id);
         $criteria->compare('submitter_id',$this->submitter_id);
         $criteria->compare('image_id',$this->image_id);
-        $criteria->compare('LOWER(identifier)',strtolower($this->identifier),true);
-        $criteria->compare('LOWER(title)',strtolower($this->title),true);
-        $criteria->compare('LOWER(description)',strtolower($this->description),true);
-        $criteria->compare('LOWER(publisher)',strtolower($this->publisher_id),true);
-        $criteria->compare('LOWER(dataset_size)',strtolower($this->dataset_size),true);
-        $criteria->compare('LOWER(ftp_site)',strtolower($this->ftp_site),true);
-        $criteria->compare('LOWER(upload_status)', strtolower($this->upload_status),true);
-        $criteria->compare('LOWER(excelfile)',strtolower($this->excelfile),true);
-        $criteria->compare('LOWER(excelfile_md5)',strtolower($this->excelfile_md5),true);
+        $criteria->compare('LOWER(identifier)',strtolower($this->identifier ?? ''),true);
+        $criteria->compare('LOWER(title)',strtolower($this->title ?? ''),true);
+        $criteria->compare('LOWER(description)',strtolower($this->description ?? ''),true);
+        $criteria->compare('LOWER(publisher)',strtolower($this->publisher_id ?? ''),true);
+        $criteria->compare('LOWER(dataset_size)',strtolower($this->dataset_size ?? ''),true);
+        $criteria->compare('LOWER(ftp_site)',strtolower($this->ftp_site ?? ''),true);
+        $criteria->compare('LOWER(upload_status)', strtolower($this->upload_status ?? ''),true);
+        $criteria->compare('LOWER(excelfile)',strtolower($this->excelfile ?? ''),true);
+        $criteria->compare('LOWER(excelfile_md5)',strtolower($this->excelfile_md5 ?? ''),true);
         $criteria->compare('publication_date',$this->publication_date);
         $criteria->compare('modification_date',$this->modification_date);
 
@@ -607,7 +607,7 @@ class Dataset extends CActiveRecord
         return Uuid::uuid5(Uuid::NAMESPACE_URL, self::NAMESPACE."/id/".$this->id);
     }
 
-    public function getAvailableStatusList(): array
+    public static function getAvailableStatusList(): array
     {
         if (Yii::app()->featureFlag->isEnabled("fuw"))
             return CMap::mergeArray(self::ORIGINAL_UPLOAD_STATUS_LIST,self::FUW_UPLOAD_STATUS_LIST);

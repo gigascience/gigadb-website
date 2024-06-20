@@ -92,8 +92,8 @@ class Type extends CActiveRecord
         $criteria->order='number DESC';
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('LOWER(name)',strtolower($this->name) , true);
-		$criteria->compare('LOWER(description)',strtolower($this->description) , true);
+		$criteria->compare('LOWER(name)',strtolower($this->name ?? '') , true);
+		$criteria->compare('LOWER(description)',strtolower($this->description ?? '') , true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

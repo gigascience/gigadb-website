@@ -182,17 +182,17 @@ class File extends CActiveRecord
 
     		$criteria->with = array( 'dataset' , 'format' , 'type' );
 		$criteria->compare('t.id',$this->id);
-		$criteria->compare('LOWER(t.name)',strtolower($this->name),true);
+		$criteria->compare('LOWER(t.name)',strtolower($this->name ?? ''),true);
 		$criteria->compare('location',$this->location,true);
 		$criteria->compare('extension',$this->extension,true);
 		$criteria->compare('size',$this->size,true);
 		$criteria->compare('description',$this->description,true);
 		$criteria->compare('date_stamp',$this->date_stamp);
-		$criteria->compare('LOWER(code)',strtolower($this->code),true);
+		$criteria->compare('LOWER(code)',strtolower($this->code ?? ''),true);
 		$criteria->compare('LOWER(index4blast)',$this->index4blast,true);
-		$criteria->compare('LOWER(dataset.identifier)',strtolower($this->doi_search),true);
-		$criteria->compare('LOWER(format.name)',strtolower($this->format_search),true);
-		$criteria->compare('LOWER(type.name)',strtolower($this->type_search),true);
+		$criteria->compare('LOWER(dataset.identifier)',strtolower($this->doi_search ?? ''),true);
+		$criteria->compare('LOWER(format.name)',strtolower($this->format_search ?? ''),true);
+		$criteria->compare('LOWER(type.name)',strtolower($this->type_search ?? ''),true);
 		$criteria->compare('download_count',$this->download_count);
 
 		$sort = new CSort();
