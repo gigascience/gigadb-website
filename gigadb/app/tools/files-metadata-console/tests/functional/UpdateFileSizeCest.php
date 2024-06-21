@@ -14,9 +14,6 @@ class UpdateFileSizeCest
         "https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/dev/pub/10.5524/100001_101000/100142/",
     ];
 
-    /**
-     * @skip Skip test due to CNGB FTP server not in use anymore
-     */
     public function tryFetchFileSizeFromFilesUrl(\FunctionalTester $I): void
     {
         $expectedLengthList = [
@@ -46,9 +43,6 @@ class UpdateFileSizeCest
         }
     }
 
-    /**
-     * @skip Skip test due to CNGB FTP server not in use anymore
-     */
     public function tryUpdateFileSizeWhenContentLengthInBytes(\FunctionalTester $I): void
     {
         $webClient = new Client([ 'allow_redirects' => false ]);
