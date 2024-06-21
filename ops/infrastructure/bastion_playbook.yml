@@ -99,6 +99,7 @@
       loop:
         - "/home/centos/downloads"
         - "/home/centos/converted"
+        - "/home/centos/restore"
 
     - name: Install new wrapper script to reset database
       ansible.builtin.copy:
@@ -246,11 +247,21 @@
     loop:
       - "/home/centos/backups"
 
+  - name: Setup cronjob to refresh the materialized view of the database
+    ansible.builtin.cron:
+      name: "Refresh the materialized view of the database every day"
+      minute: "00"
+      hour: "20"
+      user: "centos"
+      job: 'echo "$(date +\%y\%m\%d_\%H\%M\%S) - Refresh materialized views start..." >> /home/centos/logs/refresh_materialized_views_daily.log
+        && docker run --rm  --env-file ./db-env registry.gitlab.com/{{ gitlab_project }}/production_pgclient:{{ gigadb_environment }} -c "REFRESH MATERIALIZED VIEW FILE_FINDER; REFRESH MATERIALIZED VIEW SAMPLE_FINDER; REFRESH MATERIALIZED VIEW DATASET_FINDER;" >> /home/centos/logs/refresh_materialized_views_daily.log 2>&1
+        && echo "$(date +\%y\%m\%d_\%H\%M\%S) - Refresh materialized views completed!" >> /home/centos/logs/refresh_materialized_views_daily.log'
+
   - name: Setup cronjob to automate copying database backup file to S3
     ansible.builtin.cron:
       name: "Create database dump file from RDS and upload to S3 every day"
       minute: "00"
-      hour: "20"
+      hour: "22"
       user: "centos"
       job: "docker run --env-file .env -v /home/centos/backups:/backups -v /home/centos/.config/rclone/rclone.conf:/root/.config/rclone/rclone.conf registry.gitlab.com/{{ gitlab_project }}/production_s3backup:{{ gigadb_environment }}"
       state: "{{ upload_database_backup_to_S3_cronjob_state }}"
