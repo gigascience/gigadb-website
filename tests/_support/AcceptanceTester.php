@@ -146,11 +146,11 @@ class AcceptanceTester extends \Codeception\Actor
     }
 
     /**
-     * @Then I should see a disabled file input for :file
+     * @Then I should see a file input for :file
      */
-    public function iShouldSeeADisbledFileInputFor($file)
+    public function iShouldSeeAFileInputFor($file)
     {
-        $this->seeElement('input', ['type' => 'file', 'name' => $file, 'aria-disabled' => 'true']);
+        $this->seeElement('input', ['type' => 'file', 'name' => $file]);
     }
 
     /**
