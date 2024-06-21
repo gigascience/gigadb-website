@@ -5,7 +5,7 @@ services:
     volumes:
       - /share/dropbox:/home
       - /home/centos/app_data/pure-ftpd:/etc/pure-ftpd
-      - /home/centos/app_data/pure-ftpd/passwd:/etc/pure-ftpd/passwd
+      - /share/config/pure-ftpd/passwd:/etc/pure-ftpd/passwd
     environment:
       PUBLICHOST: "{{ remote_fileserver_hostname.json.value }}"
     command: -l puredb:/etc/pure-ftpd/pureftpd.pdb -E -j -R -P {{ remote_fileserver_hostname.json.value }}
