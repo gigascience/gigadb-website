@@ -56,7 +56,7 @@ class ReadmeController extends Controller
      * This command will auto-create a readme file for a dataset given a doi
      *
      *  Usage:
-     *      ./yii readme/create --doi
+     *      ./yii readme/create --doi --outdir  --bucketPath
      *
      * @throws Exception When output directory cannot be found.
      * @return integer Exit code

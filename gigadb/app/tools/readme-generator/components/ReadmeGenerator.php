@@ -33,7 +33,7 @@ class ReadmeGenerator extends Component
      * @param string $doi DOI for a dataset.
      *
      * @return string Contents of readme file
-     * @throws Exception Dataset DOI not found.
+     * @throws UserException Dataset DOI not found.
      */
     public function getReadme(string $doi): string
     {
@@ -120,6 +120,19 @@ class ReadmeGenerator extends Component
         return implode(PHP_EOL, $readme);
     }
 
+    /**
+     * Update an exiting readme entry in file table and file_attributes table
+     * or
+     * Create an entry file table and file_attributes table
+     *
+     * @param string $doi DOI for a dataset.
+     * @param string $filename Readme filename in readme_$doi.txt
+     * @param int $fileSize File size of the readme file
+     * @param string $md5 md5 value of the readme file
+     * @param string $bucketPath
+     * @return void
+     * @throws UserException Dataset DOI not found.
+     */
     public function updateOrCreate($doi, $filename, $fileSize, $md5, $bucketPath)
     {
         $dataset = Dataset::findOne(['identifier' => $doi]);

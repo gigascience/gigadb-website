@@ -111,7 +111,7 @@ container by connecting to the Docker `db-tier` network.
 
 Saving the readme information into a file requires a file path, for example:
 ```
-$ docker-compose run --rm tool /app/yii readme/create --doi=100142 --outdir=/home/curators --bucketPath wasabi:gigadb-datasets/dev/pub/10.5524
+$ docker-compose run --rm tool /app/yii readme/create --doi 100142 --outdir /home/curators --bucketPath wasabi:gigadb-datasets/dev/pub/10.5524
 ```
 Since `/home/curators` has been mounted to `runtime/curators` directory in
 `docker-compose.yml`, you should find a `readme_100142.txt` created there after
