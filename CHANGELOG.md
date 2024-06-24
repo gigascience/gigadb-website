@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1840: Make create readme tool available as part of postUpload script
+
 ## v4.3.0 - 2024-06-25 - 9cf91f224
 
 - Feat #1892: Remove old layouts
@@ -15,13 +17,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Feat: updated upload spreadsheet template to version 19
 - Fix #1743: Accessibility tweaks on datasetSubmission/upload page
 
-## v4.2.9 - 2024-06-06 - 30a64ce56 - live since 2024-06-11
+## v4.2.9 - 2024-06-06 - 30a64ce56
 
 - Feat #1869: Script to compare files in user dropbox with file list from spreadsheet
 - Fix #1825: Remove close button from view new version popup
 - Feat #1767: Restyle and reorder the buttons in create / edit dataset admin page
 
-## v4.2.8 - 2024-05-28 - 771372fbb - live since 2024-05-30
+## v4.2.8 - 2024-05-28 - 771372fbb
 
 - Feat #1832: Make script for calculating the md5 values and file sizes available for bastion users
 - Fix #1817: generate mockup link button not appearing for all upload statuses
