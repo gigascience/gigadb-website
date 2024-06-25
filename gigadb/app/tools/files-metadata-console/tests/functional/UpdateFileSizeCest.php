@@ -17,7 +17,7 @@ class UpdateFileSizeCest
     public function tryFetchFileSizeFromFilesUrl(\FunctionalTester $I): void
     {
         $expectedLengthList = [
-            1641,
+            1648,
             0,
             0,
         ];
