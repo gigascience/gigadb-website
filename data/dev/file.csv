@@ -330,7 +330,7 @@ id,dataset_id,name,location,extension,size,description,date_stamp,format_id,type
 80844,144,GD_readme.pdf,https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100094/GD_readme.pdf,pdf,93218,Summary of uploaded files in the GD repository.,2014-06-06,3,1,"",,1,
 80845,144,CS-master.tar.gz,https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100094/CS-master.tar.gz,tar,117066,compressed archive of the Analysis scripts (CS) files,2014-06-06,17,113,"",,2,
 80846,144,GD-master.tar.gz,https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100094/GD-master.tar.gz,tar,171531316,compressed archive of the mock data and scripts GD files,2014-06-06,17,125,"",,4,
-87516,200,readme.txt,https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100142/readme.txt,txt,2351,"",2015-04-29,1,1,,,2,
+87516,200,readme_100142.txt,https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/dev/pub/10.5524/100001_101000/100142/readme_100142.txt,txt,1648,"",2015-04-29,1,1,,,2,
 87517,200,Diagram-ALL-FIELDS-Check-annotation.jpg,https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100142/Diagram-ALL-FIELDS-Check-annotation.jpg,jpg,55547,image usedin manuscript,2015-04-29,6,41,,,3,
 87540,200,SRAmetadb.zip,https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100142/SRAmetadb.zip,zip,383892184,Archival copy of SRA metadata at time of experiment,2015-04-29,6,7,,,2,
 87542,200,Diagram-SRA-Study-Experiment-Joined-probing.jpg,https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100142/Diagram-SRA-Study-Experiment-Joined-probing.jpg,jpg,81717,"",2015-04-30,6,41,"",,0,
