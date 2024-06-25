@@ -142,7 +142,6 @@ class AdminDatasetController extends Controller
 
         }
 
-        $this->layout = 'new_main';
         $this->render('create', array('model'=>$dataset,'datasetPageSettings' => $datasetPageSettings)) ;
     }
 
@@ -166,7 +165,6 @@ class AdminDatasetController extends Controller
             $model->setAttributes($_GET['Dataset']);
         }
 
-        $this->layout = 'new_main';
         $this->loadBaBbqPolyfills = true;
         $this->render('admin', array(
             'model'=>$model,
@@ -411,7 +409,6 @@ class AdminDatasetController extends Controller
             }
         }
 
-        $this->layout = 'new_main';
         $this->loadBaBbqPolyfills = true;
         $this->render('update', array(
             'model' => $model,

@@ -60,7 +60,7 @@ class UserController extends Controller {
 
     # Create new account
     public function actionCreate() {
-        $this->layout='new_main';
+        $this->layout='main';
         $user = new User;
         $user->newsletter=false;
         $this->performAjaxValidation($user);
@@ -224,17 +224,17 @@ class UserController extends Controller {
             'model'=>$model,
         ));
     }
-    
+
     public function actionNewsletter(){
-        
+
      $result = User::model()->findAllBySql("select email,first_name, last_name, affiliation from gigadb_user where newsletter=true order by id;");
-     
-                 
+
+
      $this->renderPartial('newsletter',array(
             'models'=>$result,
         ));
-       
-        
+
+
     }
 
     # Confirm email works
@@ -260,14 +260,14 @@ class UserController extends Controller {
 
     # Look up user and reset password
     public function actionReset() {
-        $this->layout='new_main';
+        $this->layout='main';
         $user = new User;
         $user->newsletter=false;
     	$user->email='';
         $user->terms=false;
         //$this->render('reset',array('user'=>$this->loadUser())) ;
         if (isset($_POST['User'])) {
-        
+
             $attrs = $_POST['User'];
             $user = User::model()->findByAttributes(array('email' => trim($attrs['email'])));
             if ($user !== null) {
@@ -318,7 +318,7 @@ class UserController extends Controller {
 
     public function actionView_Profile() {
         $model = new EditProfileForm();
-        $this->layout="new_main";
+        $this->layout="main";
         $model->user_id = Yii::app()->user->id;
 
         $user = $this->loadUser(Yii::app()->user->id);
@@ -387,7 +387,7 @@ class UserController extends Controller {
 
     # Change user password
     public function actionChangePassword() {
-        $this->layout="new_main";
+        $this->layout="main";
         $model = new ChangePasswordForm();
         $model->user_id = Yii::app()->user->id;
         $user = User::model()->findByattributes(array('id'=> Yii::app()->user->id));

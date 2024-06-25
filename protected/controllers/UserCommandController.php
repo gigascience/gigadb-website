@@ -7,10 +7,10 @@ class UserCommandController extends CController
 {
     // Members
 	/**
-	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
-	 * using two-column layout. See 'protected/views/layouts/column2.php'.
-	 */
-	public $layout='//layouts/column2';
+   * @var string the default layout for the views. Defaults to '//layouts/datasetpage'
+   * See 'protected/views/layouts/datasetpage.php'.
+   */
+	public $layout='//layouts/datasetpage';
 
 
 	/**
@@ -56,7 +56,7 @@ class UserCommandController extends CController
     	$result['status'] = false;
         $result['message'] = "there was an error";
 
-        $dataset_author = DatasetAuthor::model()->findByAttributes(array('dataset_id' => $dataset_id, 
+        $dataset_author = DatasetAuthor::model()->findByAttributes(array('dataset_id' => $dataset_id,
                                                                         'author_id' => $author_id));
 
         $user = User::model()->findByPk(Yii::app()->user->id);

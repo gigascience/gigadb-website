@@ -3,6 +3,8 @@
 class UserController extends Controller {
     const PAGE_SIZE = 10;
 
+    public $layout='//layouts/main';
+
     /**
      * @var string specifies the default action
      */
@@ -60,7 +62,6 @@ class UserController extends Controller {
 
     # Create new account
     public function actionCreate() {
-        $this->layout='new_main';
         $user = new User;
         $user->newsletter=false;
         $this->performAjaxValidation($user);
@@ -166,7 +167,6 @@ class UserController extends Controller {
             }
         }
         $user->password = $user->password_repeat = '';
-        $this->layout = 'new_main';
         $this->render('update', array('model'=>$user));
 
     }
@@ -227,23 +227,22 @@ class UserController extends Controller {
         if(isset($_GET['User']))
             $model->setAttributes($_GET['User']);
 
-        $this->layout = '//layouts/new_column1';
         $this->loadBaBbqPolyfills = true;
         $this->render('admin',array(
             'model'=>$model,
         ));
     }
-    
+
     public function actionNewsletter(){
-        
+
      $result = User::model()->findAllBySql("select email,first_name, last_name, affiliation from gigadb_user where newsletter=true order by id;");
-     
-                 
+
+
      $this->renderPartial('newsletter',array(
             'models'=>$result,
         ));
-       
-        
+
+
     }
 
     # Confirm email works
@@ -269,7 +268,6 @@ class UserController extends Controller {
 
     public function actionView_Profile() {
         $model = new EditProfileForm();
-        $this->layout="new_main";
         $model->user_id = Yii::app()->user->id;
 
         $user = $this->loadUser(Yii::app()->user->id);
@@ -338,7 +336,6 @@ class UserController extends Controller {
 
     # Change user password
     public function actionChangePassword() {
-        $this->layout="new_main";
         $model = new ChangePasswordForm();
         $model->user_id = Yii::app()->user->id;
         $user = User::model()->findByattributes(array('id'=> Yii::app()->user->id));
@@ -434,14 +431,14 @@ EO_MAIL;
             $this->refresh();
         }
     }
-    
+
     /**
      * Displays a particular model.
      * @param integer $id the ID of the model to be displayed
      */
     public function actionView($id)
     {
-        $this->layout = 'new_datasetpage';
+        $this->layout = 'datasetpage';
         $this->render('view',array(
             'model'=>$this->loadModel($id)
         ));

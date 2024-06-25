@@ -3,10 +3,10 @@
 class AdminFileController extends Controller
 {
     /**
-     * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
-     * using two-column layout. See 'protected/views/layouts/column2.php'.
+     * @var string the default layout for the views. Defaults to '//layouts/datasetpage'
+     * See 'protected/views/layouts/column2.php'.
      */
-    public $layout='//layouts/column2';
+    public $layout='//layouts/datasetpage';
 
     /**
      * @return array action filters
@@ -50,7 +50,6 @@ class AdminFileController extends Controller
      */
     public function actionView($id)
     {
-	    $this->layout = 'new_datasetpage';
         $this->render('view',array(
             'model'=>$this->loadModel($id),
         ));
@@ -98,7 +97,7 @@ class AdminFileController extends Controller
                 if (!$file->save()) {
                     $model->addError('error', "Files are not saved correctly");
                     return false;
-                    //how to 
+                    //how to
 //                    var_dump($file->name);
                 } else {
                     $this->setAutoFileAttributes($file);
@@ -141,7 +140,6 @@ class AdminFileController extends Controller
             }
         }
 
-        $this->layout = 'new_datasetpage';
         $this->render('create', array(
             'model' => $model,
         ));
@@ -270,7 +268,7 @@ class AdminFileController extends Controller
         }
 
         if($data[3] != $format->name) {
-            $nf = FileFormat::model()->find(array('condition'=>'lower(name) =:name', 
+            $nf = FileFormat::model()->find(array('condition'=>'lower(name) =:name',
                 'params'=>array(':name'=>strtolower($data[3]))));
             if($nf) {
                 $f->format_id = $nf->id;
@@ -444,7 +442,6 @@ class AdminFileController extends Controller
             }
         }
 
-        $this->layout = 'new_datasetpage';
         $this->render('update', array(
             'model' => $model,
             'attribute' => $attribute
@@ -536,7 +533,7 @@ class AdminFileController extends Controller
         if (isset($_GET['File']))
             $model->attributes = $_GET['File'];
 
-        $this->layout = 'new_main';
+        $this->layout = 'main';
         $this->loadBaBbqPolyfills = true;
         $this->render('admin', array(
             'model' => $model,
@@ -544,13 +541,12 @@ class AdminFileController extends Controller
     }
 
     /**
-     * Link files through a folder 
+     * Link files through a folder
      */
     public function actionLinkFolder()
     {
         $model = new Folder;
         $buff = array();
-        $this->layout = 'new_datasetpage';
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
@@ -602,14 +598,14 @@ class AdminFileController extends Controller
             $ok = $this->getFilesInfo($conn_id, $ftp_dir, $ftp, $model, $file_count);
             ftp_close($conn_id);
 
-            //email 
+            //email
             if ($ok && $file_count > 0) {
                 $user = User::model()->findByPk(Yii::app()->user->id);
 
                 $from = Yii::app()->params['app_email_name'] . " <" . Yii::app()->params['app_email'] . ">";
                 $dataset = Dataset::model()->findByattributes(array('id' => $model->dataset_id));
                 $dataset->upload_status = 'Curation';
-                
+
                 if (!$dataset->save()) {
                     $transaction->rollback();
                     $model->addError('error', "Failure: Dataset status is not updated successfully.");
@@ -624,7 +620,7 @@ class AdminFileController extends Controller
                 $to = $dataset->submitter->email;
 
                 // $subject = "Files are added to Your dataset: " . $model->dataset_id;
-                //$subject= 
+                //$subject=
                 $subject = "GigaDB submission \"" . $dataset->title . '"' . ' [' . $dataset->id . ']';
                 $receiveNewsletter = $user->newsletter ? 'Yes' : 'No';
                 $link = Yii::app()->params['home_url'] . "/adminFile/create1/id/" . $model->dataset_id;
@@ -634,7 +630,7 @@ Dear $submitter->first_name,<br/><br/>
 $file_count Files have been added to your GigaDB submission "$dataset->title".<br/><br/>
 
 Please complete the submission by clicking the
-    link below and adding the sample(s) from which each file was generated, 
+    link below and adding the sample(s) from which each file was generated,
         along with the File type, File format and a description of the file.
             Once all file information has been added, click the “Complete submission” button
                 to let the curator know that you have completed the required information.<br/><br/>
@@ -643,7 +639,7 @@ Please review the files here: $link<br/><br/>
 
 Kind regards<br/>
 GigaDB team
-<br/><br/>                        
+<br/><br/>
 EO_MAIL;
 
                 $headers = "From: $from";
@@ -682,7 +678,7 @@ First Name: $user->first_name<br/>
 Last Name: $user->last_name<br/>
 Affiliation: $user->affiliation<br/>
 Submission ID: $model->dataset_id<br/>
-$link<br/><br/>                    
+$link<br/><br/>
 EO_MAIL;
 
                 $headers = "From: $from";
@@ -873,7 +869,7 @@ EO_MAIL;
             Util::returnJSON(array("success"=>true));
         }
     }
-    
+
     /**
      * Save file attributes from File
      * @param File $file
@@ -885,7 +881,7 @@ EO_MAIL;
         if (!file_exists(ReadFile::TEMP_FOLDER . $file->name)) {
             ReadFile::downloadRemoteFile($file->location, $file->name);
         }
-        
+
         // from update page, we delete all auto attributes and make them again
         if ($update) {
             $criteria = new CDbCriteria;
@@ -897,7 +893,7 @@ EO_MAIL;
                 }
             }
         }
-        
+
         $fileAttribute = new FileAttributes;
         $fileAttribute->file_id = $file->id;
         /*$name = strpos($file->name, '.') ? explode('.', $file->name) : $file->name;
@@ -914,7 +910,7 @@ EO_MAIL;
             case 'cram';
                 // Launche the python script to get the result
                 list($aminoAcids, $nucleotides) = ReadFile::readPythonFile($file->name);
-                
+
                 // Number of Amino Acids
                 $numberAminoAcids = clone $fileAttribute;
                 $attribute = Attributes::model()->findByAttributes(array('structured_comment_name' => 'num_amino_acids'));
@@ -942,7 +938,7 @@ EO_MAIL;
             case 'README';
             case 'pdf';
             case '';
-                
+
                 $result = null;
                 if (in_array($extension, array('txt', 'text', 'readme', 'README', '', 'wpd', 'lwd'))) {
                     $result = ReadFile::readTextFile($file->name);
@@ -991,7 +987,7 @@ EO_MAIL;
             case 'vcf';
             case 'ipr';
                 $rows = $columns = 0;
-                
+
                 if ($extension == 'xls') {
                     list($rows, $columns) = ReadFile::readXlsFile($file->name);
                 }

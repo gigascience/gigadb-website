@@ -3,10 +3,10 @@
 class AdminLinkPrefixController extends Controller
 {
     /**
-     * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
-     * using two-column layout. See 'protected/views/layouts/column2.php'.
+     * @var string the default layout for the views. Defaults to '//layouts/datasetpage'
+     * See 'protected/views/layouts/column2.php'.
      */
-    public $layout='//layouts/column2';
+    public $layout='//layouts/datasetpage';
 
     /**
      * @return array action filters
@@ -42,7 +42,6 @@ class AdminLinkPrefixController extends Controller
      */
     public function actionView($id)
     {
-		$this->layout = 'new_datasetpage';
         $this->render('view',array(
             'model'=>$this->loadModel($id),
         ));
@@ -68,7 +67,6 @@ class AdminLinkPrefixController extends Controller
                 $this->redirect(array('view','id'=>$model->id));
         }
 
-		$this->layout = 'new_datasetpage';
         $this->render('create',array(
             'model'=>$model,
         ));
@@ -93,7 +91,6 @@ class AdminLinkPrefixController extends Controller
                 $this->redirect(array('view','id'=>$model->id));
         }
 
-		$this->layout = 'new_datasetpage';
         $this->render('update',array(
             'model'=>$model,
         ));
@@ -140,7 +137,7 @@ class AdminLinkPrefixController extends Controller
         if(isset($_GET['Prefix']))
             $model->setAttributes($_GET['Prefix']);
 
-        $this->layout = 'new_main';
+        $this->layout = 'main';
         $this->loadBaBbqPolyfills = true;
         $this->render('admin',array(
             'model'=>$model,
