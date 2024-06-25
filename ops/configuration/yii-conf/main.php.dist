@@ -134,7 +134,7 @@ return CMap::mergeArray(array(
             'showScriptName'=>false,
             'rules'=>array(
                 '/dataset/<id:\d+>'=>'dataset/view/id/<id>',
-                '/dataset/<id:\d+>/<slug:.+>'=>'dataset/view/id/<id>',
+                '/dataset/<id:\d+>/<token:.+>'=>'dataset/view/id/<id>/<token>',
                 '.*'=>'site/index',
                 'site/forgot' => 'resetPasswordRequest/forgot',
                 'site/thanks' => 'resetPasswordRequest/thanks',

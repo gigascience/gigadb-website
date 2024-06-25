@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## Unreleased
 
 - Feat #1892: Remove old layouts
+- Fix #1845: Use file path to update md5 values and file sizes in database
+- Fix #1812: Navigating tables on mockup pages does not generate errors
+- Fix #1801: Refresh materialized views daily using cron job and drop existing triggers
 - Feat #1143: Open external links in new browser tabs
 - Feat: updated upload spreadsheet template to version 19
 - Fix #1743: Accessibility tweaks on datasetSubmission/upload page
