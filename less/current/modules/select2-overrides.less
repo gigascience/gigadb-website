@@ -1,0 +1,67 @@
+// The main container for Select2
+.select2-container {
+  // The dropdown container
+  .select2-dropdown-override {
+  }
+  // The element containing the selection
+  .select2-selection-override[role="combobox"] {
+    border-color: @color-medium-gray;
+    color: @color-darker-gray;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 34px;
+    padding: 6px 12px;
+    &:focus {
+      box-shadow: none;
+      outline: 1px solid @color-gigadb-green;
+      border-color: @color-gigadb-green-600;
+      box-shadow: inset 0 1px 1px fade(@color-gigadb-green, 7.5%),
+        0 0 6px fade(@color-gigadb-green-600, 50%);
+    }
+    // the text input visible when the dropdown is collapsed
+    .select2-selection__rendered[role="textbox"] {
+      order: 0;
+      color: @color-darker-gray;
+      box-shadow: none;
+      border-color: @color-medium-gray;
+      color: @color-darker-gray;
+      font-size: 13px;
+      margin: 0;
+    }
+    // clear input button
+    button.select2-selection__clear {
+      order: 1;
+      font-size: 18px;
+      color: @color-darker-gray;
+    }
+    // caret
+    .select2-selection__arrow {
+      height: 100%;
+      display: flex;
+      b[role="presentation"] {
+        border: none;
+        &:after {
+          content: "\f078";
+          font-family: "FontAwesome";
+          font-size: 10px;
+          color: @color-darker-gray;
+          position: absolute;
+          transform: translate(0, -50%);
+        }
+      }
+    }
+  }
+  // The search input displayed when the dropdown is expanded
+  input.select2-search__field[type="search"] {
+  }
+  // The results list
+  .select2-results {
+    .select2-results__option.select2-results__option--selectable.select2-results__option--highlighted {
+      background-color: @gigadb-green-on-white;
+      color: @color-true-white;
+    }
+  }
+}
