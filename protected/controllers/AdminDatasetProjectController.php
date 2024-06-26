@@ -3,10 +3,10 @@
 class AdminDatasetProjectController extends Controller
 {
 	/**
-	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
-	 * using two-column layout. See 'protected/views/layouts/column2.php'.
-	 */
-	public $layout='//layouts/column2';
+   * @var string the default layout for the views. Defaults to '//layouts/datasetpage'
+   * See 'protected/views/layouts/datasetpage.php'.
+   */
+	public $layout='//layouts/datasetpage';
 
 	/**
 	 * @return array action filters
@@ -46,7 +46,6 @@ class AdminDatasetProjectController extends Controller
 	 */
 	public function actionView($id)
 	{
-		$this->layout = 'new_datasetpage';
 		$this->render('view',array(
 			'model'=>$this->loadModel($id),
 		));
@@ -70,12 +69,11 @@ class AdminDatasetProjectController extends Controller
 				$this->redirect(array('view','id'=>$model->id));
 		}
 
-		$this->layout = 'new_datasetpage';
 		$this->render('create',array(
 			'model'=>$model,
 		));
 	}
-        
+
          public function actionCreate1() {
         $model = new DatasetProject;
 
@@ -84,7 +82,7 @@ class AdminDatasetProjectController extends Controller
 
         $model->dataset_id = 1;
 
-        //update 
+        //update
         if (!isset($_SESSION['projects']))
             $_SESSION['projects'] = array();
 
@@ -106,12 +104,12 @@ class AdminDatasetProjectController extends Controller
                 array_push($projects, $newItem);
 
                 $_SESSION['projects'] = $projects;
-                
+
                 //$vars = array('projects');
                 ////Dataset::storeSession($vars);
 
                 $model = new DatasetProject;
-                
+
             }
         }
 
@@ -144,7 +142,6 @@ class AdminDatasetProjectController extends Controller
 				$this->redirect(array('view','id'=>$model->id));
 		}
 
-		$this->layout = 'new_datasetpage';
 		$this->render('update',array(
 			'model'=>$model,
 		));
@@ -169,7 +166,7 @@ class AdminDatasetProjectController extends Controller
 		else
 			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
 	}
-        
+
          public function actionDelete1($id) {
         if (isset($_SESSION['projects'])) {
             $info = $_SESSION['projects'];
@@ -177,7 +174,7 @@ class AdminDatasetProjectController extends Controller
                 if ($value['id'] == $id) {
                     unset($info[$key]);
                     $_SESSION['projects'] = $info;
-                    
+
                     //$vars = array('projects');
                     ////Dataset::storeSession($vars);
                     $condition = "id=" . $id;
@@ -209,13 +206,13 @@ class AdminDatasetProjectController extends Controller
 		if(isset($_GET['DatasetProject']))
 			$model->setAttributes($_GET['DatasetProject']);
 
-		$this->layout = 'new_main';
+		$this->layout = 'main';
 		$this->loadBaBbqPolyfills = true;
 		$this->render('admin',array(
 			'model'=>$model,
 		));
 	}
-        
+
           public function storeProject(&$model, &$id) {
 
 
@@ -227,7 +224,7 @@ class AdminDatasetProjectController extends Controller
                 $model->addError("error", "save error");
                 return false;
             }
-         
+
             $id = $model->id;
         }
 

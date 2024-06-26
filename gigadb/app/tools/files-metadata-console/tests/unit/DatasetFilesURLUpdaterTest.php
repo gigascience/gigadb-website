@@ -36,7 +36,8 @@ class DatasetFilesURLUpdaterTest extends \Codeception\Test\Unit
         $dfu = DatasetFilesURLUpdater::build(true);
         $dois = $dfu->getNextPendingDatasets($batchSize, $excludedDois);
         codecept_debug($dois);
-        $this->assertEquals(3, sizeof($dois), "Unexpected number of DOIs returned");
+        $this->assertEquals(2, sizeof($dois), "Unexpected number of DOIs returned");
+        # expect 2 dois will be returned, because the location url of 100142 in gigadb_testdata has already been updated to wasabi url
         $this->assertTrue(in_array("100002", $dois), "DOI 100002 was not found");
         $this->assertFalse(in_array("100003", $dois), "DOI 100003 should not have been returned");
     }

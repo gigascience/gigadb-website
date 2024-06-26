@@ -10,10 +10,9 @@ Scenario: Display all the fields for uploading dataset spreadsheet
   When I am on "/datasetSubmission/upload"
   Then I should see "Dataset Upload"
   And I should see a check-box field "agree-checkbox"
-  And I should see "You must agree to the terms and conditions before continuing"
   And I should see "Excel File"
-  And I should see a disabled file input for "xls"
-  And I should see a disabled submit button "Upload New Dataset"
+  And I should see a file input for "xls"
+  And I should see a submit button "Upload New Dataset"
 
 @ok
 Scenario: Upload dataset metadata with an Excel spreadsheet

@@ -5,18 +5,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+## v4.3.0 - 2024-06-25 - 9cf91f224
+
 - Feat #1711: Add toggleable help panel to admin dataset table
+- Feat #1892: Remove old layouts
+- Fix #1845: Use file path to update md5 values and file sizes in database
+- Fix #1812: Navigating tables on mockup pages does not generate errors
+- Fix #1801: Refresh materialized views daily using cron job and drop existing triggers
 - Feat #1143: Open external links in new browser tabs
 - Feat: updated upload spreadsheet template to version 19
 - Fix #1743: Accessibility tweaks on datasetSubmission/upload page
 
-## v4.2.9 - 2024-06-06 - 30a64ce56
+## v4.2.9 - 2024-06-06 - 30a64ce56 - live since 2024-06-11
 
 - Feat #1869: Script to compare files in user dropbox with file list from spreadsheet
 - Fix #1825: Remove close button from view new version popup
 - Feat #1767: Restyle and reorder the buttons in create / edit dataset admin page
 
-## v4.2.8 - 2024-05-28 - 771372fbb
+## v4.2.8 - 2024-05-28 - 771372fbb - live since 2024-05-30
 
 - Feat #1832: Make script for calculating the md5 values and file sizes available for bastion users
 - Fix #1817: generate mockup link button not appearing for all upload statuses
