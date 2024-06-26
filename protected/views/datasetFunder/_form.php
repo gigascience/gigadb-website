@@ -76,22 +76,34 @@
 
     <?php $this->endWidget(); ?>
   </div>
-
 </div>
 
-
 <script>
+  const SELECT2 = '.js-select2-combobox'
+  const COMBOBOX = '.select2-selection-override[role="combobox"]'
+  const LISTBOX = `.select2-results__options`
+  const SEARCH_INPUT = '.select2-search__field'
+
   $(document).ready(function () {
-    $('.js-select2-combobox').select2({
+    $(SELECT2).select2({
       placeholder: "Select an option",
       allowClear: true,
       dropdownCssClass: 'select2-dropdown-override',
       selectionCssClass: 'select2-selection-override',
       width: '100%'
     }).on('select2:open', function () {
-      // search input does not get automatic focus
-      const searchInput = document.querySelector('.select2-search__field')
-      searchInput.focus();
+      document.querySelector(SEARCH_INPUT).focus()
+      document.querySelector(LISTBOX).setAttribute('aria-label', 'Funders')
     });
+    $(COMBOBOX).on('keydown', function (e) {
+      const isExpanded = $(this).attr('aria-expanded') === 'true';
+
+      if ((e.key === 'ArrowDown' || e.key === 'ArrowUp') && !isExpanded) {
+        $(SELECT2).select2('open');
+      }
+      if (e.key === 'Escape' && !isExpanded) {
+        $(SELECT2).val(null).trigger('change');
+      }
+    })
   });
 </script>
