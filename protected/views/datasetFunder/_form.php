@@ -86,7 +86,8 @@
       placeholder: "Select an option",
       allowClear: true,
       dropdownCssClass: 'select2-dropdown-override',
-      selectionCssClass: 'select2-selection-override'
+      selectionCssClass: 'select2-selection-override',
+      width: '100%'
     }).on('select2:open', function () {
       // search input does not get automatic focus
       const searchInput = document.querySelector('.select2-search__field')
