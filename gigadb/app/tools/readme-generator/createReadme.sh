@@ -203,11 +203,15 @@ function main {
   set_up_logging
   determine_destination_path
 
+  createReadMeFileStartMessage="\n* About to create the README file for $DOI"
+  createReadMeFileEndMessage="\nDone with creating the README file for $DOI. The README file is saved in file: $outputDir/readme-$DOI.txt"
+
   count=0
   # Execute loop if number of readme files created is less than batch number
   # or run loop if batch = 0
   while [ "${count}" -lt "${batch}" ] || [ "${batch}" -eq 0 ]; do
     # Conditional for how to generate readme file - dependant on user's environment
+    echo -e "$createReadMeFileStartMessage"
     if [[ $(uname -n) =~ compute ]];then
       . /home/centos/.bash_profile
       docker run --rm -v /home/centos/readmeFiles:/app/readmeFiles registry.gitlab.com/$GITLAB_PROJECT/production_tool:$GIGADB_ENV /app/yii readme/create --doi "${doi}" --outdir "${outdir}" --bucketPath "${destination_path}"
@@ -215,6 +219,8 @@ function main {
       docker-compose run --rm tool /app/yii readme/create --doi "${doi}" --outdir "${outdir}" --bucketPath "${destination_path}"
     fi
     exitCode=$?
+    echo -e "$createReadMeFileEndMessage"
+
     if [ "${exitCode}" -eq 74 ]; then
       echo "$(date +'%Y/%m/%d %H:%M:%S') ERROR  : Could not save readme file for DOI ${doi} at ${outdir}" >> "$LOGFILE"
       exit 1
