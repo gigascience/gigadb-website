@@ -57,13 +57,11 @@ if [[ $(uname -n) =~ compute ]];then
 #  Execute the filesMetaDb script to  update md5 values and file sizes to db
   /usr/local/bin/filesMetaToDb "$DOI"
 
-  if [[ $userOutputDir != "$outputDir" && -n "$(ls -A $outputDir)" ]];then
-      mv $outputDir/* "$userOutputDir/" || true
-      chown "$SUDO_USER":"$SUDO_USER" "$userOutputDir"/*
-      echo -e "\nAll postUpload logs have been moved to: $userOutputDir"
-      echo -e "\nPostUpload jobs done!"
+  if [[ -f /home/centos/readmeFiles/readme_"$DOI".txt ]];then
+    mv /home/centos/readmeFiles/readme_"$DOI".txt "$userOutputDir/"
+    echo -e "\nThe readme_$DOI.txt has been moved to: $userOutputDir"
   else
-      echo -e "\nNo logs found in: $outputDir!"
+    echo -e "\nThe readme_$DOI.txt is not found!"
   fi
 
 else  # Running on dev environment
