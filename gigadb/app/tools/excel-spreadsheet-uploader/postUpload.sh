@@ -38,19 +38,7 @@ createReadMeFileEndMessage="\nDone with creating the README file for $DOI. The R
 if [[ $(uname -n) =~ compute ]];then
   . /home/centos/.bash_profile
 
-  echo -e "$updateFileSizeStartMessage"
-  docker run --rm "registry.gitlab.com/$GITLAB_PROJECT/production-files-metadata-console:$GIGADB_ENV" ./yii update/file-sizes --doi="$DOI" | tee "$outputDir/updating-file-size-$DOI.txt"
-  echo -e "$updateFileSizeEndMessage"
-
-#  Skip this because it requires dataset files to be in public directory
-#  echo -e "$checkValidUrlsStartMessage"
-#  docker run --rm "registry.gitlab.com/$GITLAB_PROJECT/production-files-metadata-console:$GIGADB_ENV" ./yii check/valid-urls --doi="$DOI" | tee "$outputDir/invalid-urls-$DOI.txt"
-#  echo -e "$checkValidUrlsEndMessage"
-
-  echo -e "$updateMD5ChecksumStartMessage"
-  docker run -e YII_PATH=/var/www/vendor/yiisoft/yii "registry.gitlab.com/$GITLAB_PROJECT/production_app:$GIGADB_ENV" ./protected/yiic files updateMD5FileAttributes --doi="$DOI" | tee "$outputDir/updating-md5checksum-$DOI.txt"
-  echo -e "$updateMD5ChecksumEndMessage"
-
+  echo -e "$createReadMeFileStartMessage"
   if [[ $GIGADB_ENV == "staging" ]];then
     /usr/local/bin/createReadme --doi "$DOI" --outdir /app/readmeFiles --wasabi --apply
     echo -e "Created readme file and uploaded it to Wasabi gigadb-website/staging bucket directory"
@@ -60,6 +48,20 @@ if [[ $(uname -n) =~ compute ]];then
   else
     echo -e "Environment is $GIGADB_ENV - Readme file creation is not required"
   fi
+  echo -e "$createReadMeFileEndMessage"
+
+  echo -e "$updateMD5ChecksumStartMessage"
+  docker run -e YII_PATH=/var/www/vendor/yiisoft/yii "registry.gitlab.com/$GITLAB_PROJECT/production_app:$GIGADB_ENV" ./protected/yiic files updateMD5FileAttributes --doi="$DOI" | tee "$outputDir/updating-md5checksum-$DOI.txt"
+  echo -e "$updateMD5ChecksumEndMessage"
+
+  echo -e "$updateFileSizeStartMessage"
+  docker run --rm "registry.gitlab.com/$GITLAB_PROJECT/production-files-metadata-console:$GIGADB_ENV" ./yii update/file-sizes --doi="$DOI" | tee "$outputDir/updating-file-size-$DOI.txt"
+  echo -e "$updateFileSizeEndMessage"
+
+#  Skip this because it requires dataset files to be in public directory
+#  echo -e "$checkValidUrlsStartMessage"
+#  docker run --rm "registry.gitlab.com/$GITLAB_PROJECT/production-files-metadata-console:$GIGADB_ENV" ./yii check/valid-urls --doi="$DOI" | tee "$outputDir/invalid-urls-$DOI.txt"
+#  echo -e "$checkValidUrlsEndMessage"
 
   if [[ $userOutputDir != "$outputDir" && -n "$(ls -A $outputDir)" ]];then
       mv $outputDir/* "$userOutputDir/" || true
@@ -97,4 +99,3 @@ else  # Running on dev environment
 #  echo -e "$checkValidUrlsEndMessage"
 
 fi
-
