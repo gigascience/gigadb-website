@@ -27,6 +27,7 @@ class BaseInput extends CWidget
     $this->groupOptions['class'] = $this->mergeCssClasses($this->groupOptions, 'form-group' . ($this->hasError() ? ' has-error' : ''));
     $this->inputOptions['class'] = $this->mergeCssClasses($this->inputOptions, 'form-control');
     $this->labelOptions['class'] = $this->mergeCssClasses($this->labelOptions, 'control-label');
+    $this->labelOptions['id'] = $this->attributeName . 'Label';
     $this->errorOptions['class'] = $this->mergeCssClasses($this->errorOptions, 'control-error help-block');
 
     if ($this->description) {

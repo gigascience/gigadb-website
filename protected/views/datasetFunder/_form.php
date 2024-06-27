@@ -83,19 +83,34 @@
   const COMBOBOX = '.select2-selection-override[role="combobox"]'
   const LISTBOX = `.select2-results__options`
   const SEARCH_INPUT = '.select2-search__field'
+  const CLEAR_BTN = 'button.select2-selection__clear'
 
   $(document).ready(function () {
-    $(SELECT2).select2({
+    const select = $(SELECT2).select2({
       placeholder: "Select an option",
       allowClear: true,
       dropdownCssClass: 'select2-dropdown-override',
       selectionCssClass: 'select2-selection-override',
       width: '100%'
-    }).on('select2:open', function () {
+    })
+
+    select.on('select2:open', function () {
+      document.querySelector(LISTBOX).setAttribute('aria-label', 'Funder')
       document.querySelector(SEARCH_INPUT).focus()
-      document.querySelector(LISTBOX).setAttribute('aria-label', 'Funders')
     });
-    $(COMBOBOX).on('keydown', function (e) {
+
+    select.on('select2:close', function () {
+      $(CLEAR_BTN).attr('aria-hidden', true)
+    });
+
+    $(CLEAR_BTN).attr('aria-hidden', true)
+
+    const cb = $(COMBOBOX)
+
+    cb.attr('aria-labelledby', `funder_idLabel ${cb.attr('aria-labelledby')}`)
+    cb.attr('aria-required', 'true')
+
+    cb.on('keydown', function (e) {
       const isExpanded = $(this).attr('aria-expanded') === 'true';
 
       if ((e.key === 'ArrowDown' || e.key === 'ArrowUp') && !isExpanded) {
