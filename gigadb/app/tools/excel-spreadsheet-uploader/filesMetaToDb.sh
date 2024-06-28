@@ -19,7 +19,11 @@ else
 fi
 
 if [ -z "$DOI" ];then
-  echo -e "Usage: /usr/local/bin/filesMetaToDb <DOI>\n"
+  if [[ $(uname -n) =~ compute ]]; then
+    echo -e "Usage: /usr/local/bin/filesMetaToDb <DOI>\n"
+  else
+    echo -e "Usage: ./filesMetaToDb.sh <DOI>\n "
+  fi
   exit 1;
 fi
 
@@ -49,4 +53,17 @@ if [[ $(uname -n) =~ compute ]];then
     echo -e "\nNo logs for updating md5 values and file sizes found in: $outputDir!"
   fi
 
+else
+
+  # Change to gigadb-website directory
+  echo -e "$updateMD5ChecksumStartMessage"
+  cd ../../../../
+  docker-compose run --rm  test ./protected/yiic files updateMD5FileAttributes --doi="$DOI" | tee "gigadb/app/tools/readme-generator/runtime/curators/updating-md5checksum-$DOI.txt"
+  echo -e "$updateMD5ChecksumEndMessage"
+
+  echo -e "$updateFileSizeStartMessage"
+  cd gigadb/app/tools/files-metadata-console
+  docker-compose run --rm files-metadata-console ./yii update/file-sizes --doi="$DOI" | tee "../readme-generator/runtime/curators/updating-file-size-$DOI.txt"
+  echo -e "$updateFileSizeEndMessage"
 fi
+
