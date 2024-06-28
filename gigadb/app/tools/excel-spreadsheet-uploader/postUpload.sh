@@ -81,12 +81,8 @@ else  # Running on dev environment
   echo -e "$createReadMeFileEndMessage"
 
   echo -e "$updateFileMetaDataStartMessage"
-  # Change to gigadb-website directory
-  cd ../../../../
-  docker-compose run --rm  test ./protected/yiic files updateMD5FileAttributes --doi="$DOI" | tee "gigadb/app/tools/readme-generator/runtime/curators/updating-md5checksum-$DOI.txt"
-
-  cd gigadb/app/tools/files-metadata-console
-  docker-compose run --rm files-metadata-console ./yii update/file-sizes --doi="$DOI" | tee "../readme-generator/runtime/curators/updating-file-size-$DOI.txt"
+  cd ../excel-spreadsheet-uploader
+  ./filesMetaToDb.sh "$DOI"
   echo -e "$updateFileMetaDataEndMessage"
 
 #  Skip this because it requires dataset files to be in public directory
