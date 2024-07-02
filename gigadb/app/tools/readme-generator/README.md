@@ -92,7 +92,7 @@ $ bats tests
 The readme information for a dataset can be viewed on standard output using its
 DOI:
 ```
-$ docker-compose run --rm tool /app/yii readme/create --doi 100142 --bucketPath wasabi:gigadb-datasets/dev/pub/10.5524
+$ docker-compose run --rm tool /app/yii readme/create --doi 100142 --outdir /home/curators  --bucketPath wasabi:gigadb-datasets/dev/pub/10.5524
 ```
 
 The `--bucketPath` variable is essential for executing the readme tool as a command line tool,
