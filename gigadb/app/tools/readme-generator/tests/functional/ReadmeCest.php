@@ -29,11 +29,12 @@ class ReadmeCest
         $I->cantSeeInDatabase("file", ["id" => 6300, "dataset_id" => 212, "name" => "readme_100004.txt", "size" => 1997, "location" => "https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/dev/pub/10.5524/100001_101000/100004/readme_100004.txt", "extension" => "txt"]);
         $I->cantSeeInDatabase("file_attributes", ["file_id" => 6300, "attribute_id" => 605, "value" => "60da98a0c5cb6f872a4576f737089636"]);
         $I->runShellCommand("/app/yii_test readme/create --doi 100004 --outdir=/home/curators --bucketPath wasabi:gigadb-datasets/dev/pub/10.5524");
-        $I->seeInShellOutput("[DOI] 10.5524/100004");
+        $I->seeInShellOutput("[DOI]\n");
+        $I->seeInShellOutput("10.5524/100004\n");
         $I->runShellCommand("ls /home/curators");
         $I->seeInShellOutput("readme_100004.txt");
-        $I->canSeeInDatabase("file", ["id" => 6300, "dataset_id" => 212, "name" => "readme_100004.txt", "size" => 1997, "location" => "https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/dev/pub/10.5524/100001_101000/100004/readme_100004.txt", "extension" => "txt"]);
-        $I->canSeeInDatabase("file_attributes", ["file_id" => 6300, "attribute_id" => 605, "value" => "60da98a0c5cb6f872a4576f737089636"]);
+        $I->canSeeInDatabase("file", ["id" => 6300, "dataset_id" => 212, "name" => "readme_100004.txt", "size" => 2095, "location" => "https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/dev/pub/10.5524/100001_101000/100004/readme_100004.txt", "extension" => "txt"]);
+        $I->canSeeInDatabase("file_attributes", ["file_id" => 6300, "attribute_id" => 605, "value" => "3e8d263f9ba4ef7961848317dc7873ca"]);
     }
 
     /**
@@ -46,11 +47,12 @@ class ReadmeCest
         $I->canSeeInDatabase("file", ["id" => 88266, "dataset_id" => 211, "name" => "readme.txt", "size" => 1, "location" => "ftp://climb.genomics.cn/pub/10.5524/100001_101000/100003/readme.txt", "extension" => "txt"]);
         $I->cantSeeInDatabase("file_attributes", ["file_id" => 88266, "attribute_id" => 605, "value" => "e22f66cbedb5c8c913c0bcf495a4ae11"]);
         $I->runShellCommand("/app/yii_test readme/create --doi 100003 --outdir=/home/curators --bucketPath wasabi:gigadb-datasets/dev/pub/10.5524");
-        $I->seeInShellOutput("[DOI] 10.5524/100003");
+        $I->seeInShellOutput("[DOI]\n");
+        $I->seeInShellOutput("10.5524/100003\n");
         $I->runShellCommand("ls /home/curators");
         $I->seeInShellOutput("readme_100003.txt");
-        $I->canSeeInDatabase("file", ["id" => 88266, "dataset_id" => 211, "name" => "readme_100003.txt", "size" => 1889, "location" => "https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/dev/pub/10.5524/100001_101000/100003/readme_100003.txt", "extension" => "txt"]);
-        $I->canSeeInDatabase("file_attributes", ["file_id" => 88266, "attribute_id" => 605, "value" => "e22f66cbedb5c8c913c0bcf495a4ae11"]);
+        $I->canSeeInDatabase("file", ["id" => 88266, "dataset_id" => 211, "name" => "readme_100003.txt", "size" => 2327, "location" => "https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/dev/pub/10.5524/100001_101000/100003/readme_100003.txt", "extension" => "txt"]);
+        $I->canSeeInDatabase("file_attributes", ["file_id" => 88266, "attribute_id" => 605, "value" => "b89b1a3d94e05a3fa44bef8b544025f0"]);
     }
 
     /**
