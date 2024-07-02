@@ -19,123 +19,144 @@ when using the AWS management console.
 ## Policy Name: `GigadbEC2Access`
 ```
 {
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Sid": "NonResourceBasedPermissions",
-            "Effect": "Allow",
-            "Action": [
-                "ec2:Describe*",
-                "ec2:AssociateAddress",
-                "ec2:DisassociateAddress",
-                "ec2:ImportKeyPair",
-                "ec2:CreateKeyPair",
-                "ec2:CreateSecurityGroup",
-                "ec2:CreateTags",
-                "sts:DecodeAuthorizationMessage"
-            ],
-            "Resource": "*"
-        },
-        {
-            "Sid": "SecurityGroupActions",
-            "Effect": "Allow",
-            "Action": [
-                "ec2:AuthorizeSecurityGroupIngress",
-                "ec2:DeleteSecurityGroup",
-                "ec2:RevokeSecurityGroupEgress",
-                "ec2:AuthorizeSecurityGroupEgress"
-            ],
-            "Resource": "*"
-        },
-        {
-            "Sid": "RunInstancesWithRegionAndInstanceTypeRestriction",
-            "Effect": "Allow",
-            "Action": "ec2:RunInstances",
-            "Resource": "*",
-            "Condition": {
-                "StringEquals": {
-                    "ec2:Region": [
-                        "ap-east-1",
-                        "ap-northeast-1",
-                        "ap-southeast-1",
-                        "eu-west-3"
-                    ]
-                },
-                "ForAllValues:StringLike": {
-                    "ec2:InstanceType": [
-                        "t3.nano",
-                        "t3.micro",
-                        "t3a.small",
-                        "t3.small",
-                        "t3.medium",
-                        "t3.large",
-                        "t3.xlarge",
-						"t3.2xlarge"
-                    ]
-                }
-            }
-        },
-        {
-            "Sid": "RunInstancesWithOwnerTagRestriction",
-            "Effect": "Allow",
-            "Action": [
-                "ec2:CreateVolume",
-                "ec2:RunInstances"
-            ],
-            "Resource": [
-                "arn:aws:ec2:*:*:volume/*",
-                "arn:aws:ec2:*:*:instance/*"
-            ],
-            "Condition": {
-                "StringEqualsIgnoreCase": {
-                    "aws:ResourceTag/Owner": "${aws:username}"
-                }
-            }
-        },
-        {
-            "Sid": "RunInstancesWithNameTagRestriction",
-            "Effect": "Deny",
-            "Action": [
-                "ec2:CreateVolume",
-                "ec2:RunInstances"
-            ],
-            "Resource": [
-                "arn:aws:ec2:*:*:volume/*",
-                "arn:aws:ec2:*:*:instance/*"
-            ],
-            "Condition": {
-                "StringNotLike": {
-                    "aws:RequestTag/Name": "*"
-                }
-            }
-        },
-        {
-            "Sid": "AllowCreateTagsOnRunInstance",
-            "Effect": "Allow",
-            "Action": "ec2:CreateTags",
-            "Resource": "*",
-            "Condition": {
-                "StringEquals": {
-                    "ec2:CreateAction": "RunInstances"
-                }
-            }
-        },
-        {
-            "Sid": "ModifyInstancesWithOwnerTagRestriction",
-            "Effect": "Allow",
-            "Action": [
-                "ec2:TerminateInstances",
-                "ec2:StartInstances",
-                "ec2:StopInstances",
-                "ec2:ModifyInstanceAttribute"
-            ],
-            "Resource": "*",
-            "Condition": {
-                "StringEqualsIgnoreCase": {
-                    "ec2:ResourceTag/Owner": "${aws:username}"
-                }
-            }
-        }
-    ]
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+			"Sid": "NonResourceBasedPermissions",
+			"Effect": "Allow",
+			"Action": [
+				"ec2:Describe*",
+				"ec2:AssociateAddress",
+				"ec2:DisassociateAddress",
+				"ec2:ImportKeyPair",
+				"ec2:CreateKeyPair",
+				"ec2:CreateSecurityGroup",
+				"ec2:CreateTags",
+				"sts:DecodeAuthorizationMessage"
+			],
+			"Resource": "*"
+		},
+		{
+			"Sid": "SecurityGroupActions",
+			"Effect": "Allow",
+			"Action": [
+				"ec2:AuthorizeSecurityGroupIngress",
+				"ec2:DeleteSecurityGroup",
+				"ec2:RevokeSecurityGroupEgress",
+				"ec2:AuthorizeSecurityGroupEgress"
+			],
+			"Resource": "*"
+		},
+		{
+			"Sid": "RunInstancesWithRegionAndInstanceTypeRestriction",
+			"Effect": "Allow",
+			"Action": "ec2:RunInstances",
+			"Resource": "*",
+			"Condition": {
+				"StringEquals": {
+					"ec2:Region": [
+						"ap-east-1",
+						"ap-northeast-1",
+						"ap-northeast-2",
+						"ap-southeast-1",
+						"eu-west-1",
+						"eu-west-2",
+						"eu-west-3",
+						"eu-central-1",
+						"eu-north-1"
+					]
+				},
+				"ForAllValues:StringLike": {
+					"ec2:InstanceType": [
+						"t3.nano",
+						"t3.micro",
+						"t3a.small",
+						"t3.small",
+						"t3.medium",
+						"t3.large",
+						"t3.xlarge",
+						"t3.2xlarge",
+						"c5a.xlarge",
+						"c5a.2xlarge"
+					]
+				}
+			}
+		},
+		{
+			"Sid": "RunInstancesWithOwnerTagRestriction",
+			"Effect": "Allow",
+			"Action": [
+				"ec2:CreateVolume",
+				"ec2:RunInstances"
+			],
+			"Resource": [
+				"arn:aws:ec2:*:*:volume/*",
+				"arn:aws:ec2:*:*:instance/*"
+			],
+			"Condition": {
+				"StringEqualsIgnoreCase": {
+					"aws:ResourceTag/Owner": "${aws:username}"
+				}
+			}
+		},
+		{
+			"Sid": "RunInstancesWithNameTagRestriction",
+			"Effect": "Deny",
+			"Action": [
+				"ec2:CreateVolume",
+				"ec2:AttachVolume",
+				"ec2:DetachVolume",
+				"ec2:RunInstances"
+			],
+			"Resource": [
+				"arn:aws:ec2:*:*:volume/*",
+				"arn:aws:ec2:*:*:instance/*"
+			],
+			"Condition": {
+				"StringNotLike": {
+					"aws:RequestTag/Name": "*"
+				}
+			}
+		},
+		{
+			"Sid": "AllowCreateTagsOnRunInstance",
+			"Effect": "Allow",
+			"Action": "ec2:CreateTags",
+			"Resource": "*",
+			"Condition": {
+				"StringEquals": {
+					"ec2:CreateAction": "RunInstances"
+				}
+			}
+		},
+		{
+			"Sid": "AllowCreateTagsOnCreateVolume",
+			"Effect": "Allow",
+			"Action": "ec2:CreateTags",
+			"Resource": "*",
+			"Condition": {
+				"StringEquals": {
+					"ec2:CreateAction": "CreateVolume"
+				}
+			}
+		},
+		{
+			"Sid": "ModifyInstancesWithOwnerTagRestriction",
+			"Effect": "Allow",
+			"Action": [
+				"ec2:TerminateInstances",
+				"ec2:StartInstances",
+				"ec2:StopInstances",
+				"ec2:ModifyInstanceAttribute",
+				"ec2:RebootInstances"
+			],
+			"Resource": "*",
+			"Condition": {
+				"StringEqualsIgnoreCase": {
+					"ec2:ResourceTag/Owner": "${aws:username}"
+				}
+			}
+		}
+	]
 }
 ```
