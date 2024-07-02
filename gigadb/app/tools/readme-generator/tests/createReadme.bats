@@ -4,7 +4,9 @@ teardown () {
     echo "executing teardown code"
     FILES="runtime/curators/readme_100142.txt
     runtime/curators/readme_100006.txt
-    runtime/curators/readme_100020.txt"
+    runtime/curators/readme_100020.txt
+    uploadDir/readme_100005_"*".log
+    uploadDir/readme_100142_"*".log"
 
     for file in $FILES
     do
