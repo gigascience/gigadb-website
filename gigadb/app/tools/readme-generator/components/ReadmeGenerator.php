@@ -95,14 +95,14 @@ class ReadmeGenerator extends Component
 
         $readme[] = '[File Location] ' . $dataset->ftp_site . PHP_EOL;
 
-        $fileNameDescription = '[File name] - [File Description]' . PHP_EOL;
+        $fileNameDescription = '[File name] - [File Description] - [File Location]' . PHP_EOL;
         // Returns array of File objects.
         $files = $dataset->files;
         foreach ($files as $file) {
             $fileName             = $file->name;
             $fileDescription      = $file->description;
             $fileLocation         = $file->location;
-            $fileNameDescription .= $fileName . '  -  ' . $fileDescription . ' - ' . $fileLocation . PHP_EOL;
+            $fileNameDescription .= $fileName . ' - ' . $fileDescription . ' - ' . $fileLocation . PHP_EOL;
         }
 
         $readme[] = $fileNameDescription;
