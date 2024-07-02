@@ -69,8 +69,6 @@ class ReplaceFileUrlSubstringWithPrefixCest
     }
 
     /**
-     * @skip as reported this test will systematically fail on @rija's fork
-     * TODO
      * @param FunctionalTester $I
      */
     public function tryReplaceFileUrlSubstringWithPrefix(\FunctionalTester $I): void
