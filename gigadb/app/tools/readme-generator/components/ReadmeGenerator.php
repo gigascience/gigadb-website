@@ -15,10 +15,6 @@ use yii\base\UserException;
  */
 class ReadmeGenerator extends Component
 {
-    // Character width of text in readme file.
-    public const STRING_WIDTH = 80;
-
-
     /**
      * Initialize component
      */
