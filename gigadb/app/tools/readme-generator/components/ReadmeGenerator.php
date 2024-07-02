@@ -23,17 +23,6 @@ class ReadmeGenerator extends Component
         parent::init();
     }
 
-
-    private function wrapSentences(string $text): string
-    {
-        // Split the text into sentences
-        $sentences = preg_split('/(?<=[.!?])\s+/', $text, -1, PREG_SPLIT_NO_EMPTY);
-
-        // Trim each sentence and join them with line breaks
-        return implode(PHP_EOL, array_map('trim', $sentences));
-    }
-
-
     /**
      * Returns the contents for a dataset's readme file
      *
@@ -52,9 +41,12 @@ class ReadmeGenerator extends Component
 
         // Use array to store readme information.
         $readme = [
-            '[DOI] 10.5524/' . $doi . PHP_EOL,
-            $this->wrapSentences('[Title] ' . $dataset->title) . PHP_EOL,
-            '[Release Date] ' . $dataset->publication_date . PHP_EOL,
+            '[DOI]',
+            '10.5524/' . $doi . PHP_EOL,
+            '[Title]',
+            $dataset->title . PHP_EOL,
+            '[Release Date]',
+            $dataset->publication_date . PHP_EOL,
         ];
 
         $citation = '[Citation]' . PHP_EOL;
@@ -75,10 +67,10 @@ class ReadmeGenerator extends Component
 
         $publicationYear = substr($dataset->publication_date, 0, 4);
         $citation .= '(' . $publicationYear . '): ';
-        $citation .= $dataset->title . ' GigaScience Database. https://dx.doi.org/10.5524/' . $doi;
-        $readme[] = $this->wrapSentences($citation) .  PHP_EOL;
+        $citation .= $dataset->title . PHP_EOL . 'GigaScience Database. https://dx.doi.org/10.5524/' . $doi;
+        $readme[] = $citation .  PHP_EOL;
 
-        $datasetType = '[Data Type]' . PHP_EOL;
+        $datasetType = '[Dataset Type]' . PHP_EOL;
         $datasetTypes = $dataset->datasetTypes;
         $numberOfDatasetTypes = count($datasetTypes);
         for ($i = 0; $i < $numberOfDatasetTypes; $i++) {
@@ -93,11 +85,9 @@ class ReadmeGenerator extends Component
         }
         $readme[] = $datasetType . PHP_EOL;
 
-        $readme[] = $this->wrapSentences('[Dataset Summary] ' . $dataset->description) . PHP_EOL;
+        $readme[] = '[Dataset Summary]' . PHP_EOL . $dataset->description . PHP_EOL;
 
-        $readme[] = '[File Location]' . $dataset->ftp_site . PHP_EOL;
-
-        $fileNameDescription = '[File name] - [File Description] - [File Location]' . PHP_EOL;
+        $fileNameDescription = '[File name] - [File Description] - [File Location]';
         $files = $dataset->files;
         foreach ($files as $file) {
             $fileName = $file->name;
@@ -108,7 +98,7 @@ class ReadmeGenerator extends Component
         $readme[] = $fileNameDescription . PHP_EOL;
 
         $license = 'All files and data are distributed under the CC0 1.0 Universal (CC0 1.0) Public Domain Dedication (https://creativecommons.org/publicdomain/zero/1.0/), unless specifically stated otherwise, see http://gigadb.org/site/term for more details.';
-        $readme[] = '[License]' . "\n" . $this->wrapSentences($license) . PHP_EOL;
+        $readme[] = '[License]' . PHP_EOL . $license . PHP_EOL;
 
         $readme[] = '[Comments]' . PHP_EOL;
 
