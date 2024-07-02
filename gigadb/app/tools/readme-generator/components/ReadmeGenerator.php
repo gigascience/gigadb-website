@@ -90,7 +90,7 @@ class ReadmeGenerator extends Component
 
         $readme[] = $datasetType;
 
-        $formattedDescription = wordwrap('[Data Summary] ' . $dataset->description, self::STRING_WIDTH, PHP_EOL);
+        $formattedDescription = wordwrap('[Dataset Summary] ' . $dataset->description, self::STRING_WIDTH, PHP_EOL);
         $readme[]             = $formattedDescription . PHP_EOL;
 
         $readme[] = '[File Location] ' . $dataset->ftp_site . PHP_EOL;
@@ -101,7 +101,8 @@ class ReadmeGenerator extends Component
         foreach ($files as $file) {
             $fileName             = $file->name;
             $fileDescription      = $file->description;
-            $fileNameDescription .= $fileName . '  -  ' . $fileDescription . PHP_EOL;
+            $fileLocation         = $file->location;
+            $fileNameDescription .= $fileName . '  -  ' . $fileDescription . ' - ' . $fileLocation . PHP_EOL;
         }
 
         $readme[] = $fileNameDescription;
