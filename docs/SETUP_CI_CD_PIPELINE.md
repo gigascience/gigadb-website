@@ -64,6 +64,41 @@ others in the Forks group.
 * Click the *Connect* button to create the mirror of the GitHub repository on
 GitLab.
 
+### Understanding environments
+
+Environmments are the foundation of the pipeline.
+There are used in two contexts:
+* When getting and setting variables
+* When deploying the code 
+
+
+#### When deploying the code
+
+There are two types of environments: developement and production.
+
+| Environment name | Type | Purpose |
+| --- | --- | --- |
+| dev | development | a developer's local development machine where they create applications |
+| CI | development | an environment created and hosted on GitLab to run automated tests continuously upon every commits (Continuous Integration) |
+| staging | production | an environmment hosted on AWS cloud for final acceptance of a version of the web site product that's like the real live in every aspect |
+| live | production | the real live web site product hosted on AWS cloud |
+
+The local environment is on the developer's machine, that's what the dev environment refers to. 
+The CI environment is implictely created by the CI part of GitLab, that's where the code is deployed for the execution of the automated tests.
+The CI is a gate-keeper for the production environments: deployment to staging and live can only happen if the tests pass in CI.
+
+#### When getting and settings variables from Gitlab
+
+A functionality of Gitlab is to store environment variables, so that we can use them in our deployed applications.
+Because there is multiple deployument environments and the variables often differ from one to the other, Gitlab variables can be categorised and into different environment which are:
+* dev
+* staging
+* live
+* All (or \*)
+
+**Note:** there is no connection between the environment of variables and the deployment environments listed in previous section. By convention the `staging` and `live` environments for variables are associated with the `staging` and `live` deployments respectively. (i.e: a staging variable is only to be used on staging deployment environment, and a live variable is to be used only on live deployment environment).
+`All` class of variables are needed in applications regardless of their deployment environments, while the `dev` class of variables are equally used on a developer's local environments and on CI deployment environment.
+
 ### Configuring your GitLab gigadb-website project
 
 Your new GitLab `gigadb-website` project requires configuration:
@@ -85,31 +120,40 @@ the *General pipelines* section, ensure that the *Public pipelines* checkbox is
 ` \ \ Lines:\s*(\d+.\d+\%)`. Click on the *Save changes* green button.
  
 * The variables below need to be created for your project in the `Environment variables` 
-section in the CI/CD Settings page. Any values below listed as `somevalue` 
-should be replaced by proper values - please contact the GigaScience tech 
-support team for help with setting these.
-  
+section in the CI/CD Settings page.   
+Make sure the "Protect variable" and "Expand variable reference" checkboxes are unchecked.
+the Visibility radio input should be set to "Visible" except for the passwords and tokens that should be set to "Masked".
 
-These environment variables together with those in the Forks group are exported 
+| Variable Name          | Value     | Environment |
+|---|---|---|
+| DOCKER_HUB_USERNAME    | Your login on Docker hub | All |
+| DOCKER_HUB_PASSWORD    | Your password on Docker hub | All |
+| COVERALLS_REPO_TOKEN   | Ask tech team | All |
+| GIGADB_HOST | database | dev |
+| GIGADB_USER | gigadb | dev |
+| GIGADB_PASSWORD | Pick one | dev |
+| GIGADB_DB | gigadb | dev |
+| FUW_DB_HOST | database | dev |
+| FUW_DB_USER | fuwdb | dev |
+| FUW_DB_PASSWORD | Pick one | dev |
+| FUW_DB_NAME |fuwdb |  dev |
+| REVIEW_DB_HOST | reviewdb | dev |
+| REVIEW_DB_USERNAME | reviewdb | dev |
+| REVIEW_DB_PORT | 5432 | dev |
+| REVIEW_DB_PASSWORD | Pick one | dev |
+| REVIEW_DB_DATABASE | reviewdb | dev |
+| GITLAB_PRIVATE_TOKEN | Ask tech team | All |
+
+Those environment variables together with those in the Forks group are exported 
 to the `.secrets` file and are listed 
 [here](https://github.com/gigascience/gigadb-website/blob/develop/ops/configuration/variables/secrets-sample). 
 All these GitLab CI/CD environment variables are referred to in the 
 `gitlab-ci.yml` file or used in the CI/CD pipeline.
 
-| Variable Name          | Value     |
-|------------------------|-----------|
-| ANALYTICS_CLIENT_EMAIL | somevalue |
-| ANALYTICS_CLIENT_ID    | somevalue |
-| ANALYTICS_PRIVATE_KEY  | somevalue |
-| COVERALLS_REPO_TOKEN   | somevalue |
-| FORK                   | somevalue |
-| MAILCHIMP_API_KEY      | somevalue |
-| MAILCHIMP_LIST_ID      | somevalue |
-| MAILCHIMP_TEST_EMAIL   | somevalue |
 
 ### Executing a Continuous Integration run
  
-Your CI/CD pipeline can now be executed:
+Your CI/CD pipeline can now be executed up to and including the **test** stage:
 
 * Go to your pipelines page and click on *Run Pipeline*.
 
@@ -117,8 +161,8 @@ Your CI/CD pipeline can now be executed:
 the CI/CD pipeline. The default branch should already be pre-selected for you. 
 Then click on the *Create pipeline* button. 
 
-* Refresh the pipelines page, you should see the CI/CD pipeline running. If the 
-set up of your pipeline is successful, you will see it run the build, test, 
+* Refresh the pipelines page, you should see the CI/CD pipeline running. 
+If the set up of your pipeline is successful, you will see it run the build, test, 
 security and conformance stages defined in the `.gitlab-ci.yml` file.
  
 ## Continuous Deployment in the CI/CD pipeline
@@ -140,19 +184,6 @@ AWS-CLI, Terraform, and Ansible.
 
 ### Preparing GitLab for provisioning, build and deployment
 
-environmments are the foundation. There are two types of environments: developement and production.
-
-| Environment name | Type | Purpose |
-| --- | --- | --- |
-| dev | development | a developer's local development machine where they create applications |
-| CI | development | an environment created and hosted on GitLab to run automated tests continuously upon every commits (Continuous Integration) |
-| staging | production | an environmment hosted on AWS cloud for final acceptance of a version of the web site product that's like the real live in every aspect |
-| live | production | the real live web site product hosted on AWS cloud |
-
-Since the local environment is on the developer's machine, it is not our concern in this section.
-The CI environment is implictely created by the CI part of GitLab and is concerned with our present topic
-only as a pre-requisite: deployment to staging and live can only happen if the tests pass in CI.
-
 ``staging`` and ``live`` are what  matter in this section. If they are not already, these environments need to  created
 in GitLab under the ``Deployments > Environments`` section.
 They have two very important use:
@@ -163,32 +194,32 @@ us to store variables and specify for which environment this variable is bound t
 
 #### GitLab Variables
 
-Ensure the following variables are set for their respective environments in the appropriate GitLab project (the variables should have the Protected checkbox unchecked if it's your personal project space in the Forks group)
+Ensure the following variables are set for their respective environments in the appropriate GitLab project.
+Make sure the "Protect variable" and "Expand variable reference" checkboxes are unchecked.
+the Visibility radio input should be set to "Visible" except for the passwords and tokens that should be set to "Masked".
 
-| Name | Masked? |
+| Name | value | 
 | --- | --- |
-| DEPLOYMENT_ENV | no |
-| REMOTE_HOME_URL | no |
-| REMOTE_HOSTNAME | no |
-| REMOTE_PUBLIC_HTTP_PORT | no |
-| REMOTE_PUBLIC_HTTPS_PORT | no |
-| REMOTE_SMTP_HOST | no |
-| REMOTE_SMTP_PASSWORD | yes |
-| REMOTE_SMTP_PORT | no |
-| REMOTE_SMTP_USERNAME | no |
-| GITLAB_PRIVATE_TOKEN | yes |
-| gigadb_db_host | no |
-| gigadb_db_user | no |
-| gigadb_db_password | yes |
-| gigadb_db_database | no |
-| fuw_db_host | no |
-| fuw_db_user | no |
-| fuw_db_password | yes |
-| fuw_db_database | no |
-| PORTAINER_PASSWORD | yes |
-
-
-so, there should be 2 or 3 versions of each variable, one for each environment.
+| DEPLOYMENT_ENV | deployment environment goes here |
+| REMOTE_HOME_URL | URL to the home website as https://FQDN |
+| REMOTE_HOSTNAME | domain name associated to the elastic IP of the web server as FQDN |
+| REMOTE_PUBLIC_HTTP_PORT | 80 |
+| REMOTE_PUBLIC_HTTPS_PORT | 443 |
+| REMOTE_SMTP_HOST | Pick an SMTP host |
+| REMOTE_SMTP_PASSWORD | SMTP password |
+| REMOTE_SMTP_PORT | 563 |
+| REMOTE_SMTP_USERNAME | SMTP username |
+| gigadb_db_host | keep empty, it will overwritten by the provising script with RDS endpoint |
+| gigadb_db_user | gigadb |
+| gigadb_db_password | Pick a password |
+| gigadb_db_database | gigadb |
+| fuw_db_host | keep empty, it will be overwritten by the provisioning script with RDS endpoint |
+| fuw_db_user | fuwdb |
+| fuw_db_password | Pick a password |
+| fuw_db_database | fuwdb |
+| PORTAINER_PASSWORD | Pick a password |
+ 
+so, there should be 2 versions of each variable, one for each deployment environment (staging or live).
 
 ##### Good examples:
 
@@ -198,7 +229,6 @@ so, there should be 2 or 3 versions of each variable, one for each environment.
 | DEPLOYMENT_ENV | live | x | live|
 | gigadb_db_password| 1234 | v | staging |
 | gigadb_db_password| 5678 | v | live |
-| PORTAINER_PASSWORD | "password for dev" | v | dev |
 | PORTAINER_PASSWORD | "password for staging" | v | staging |
 | PORTAINER_PASSWORD | "password for live" | v | live |
 
