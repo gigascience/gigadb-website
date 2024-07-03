@@ -1,10 +1,10 @@
-[DOI] 
+[DOI]
 10.5524/100142
 
-[Title] 
+[Title]
 Supporting scripts and data for "Investigation into the annotation of protocol sequencing steps in the Sequence Read Archive".
 
-[Release Date] 
+[Release Date]
 2015-05-11
 
 [Citation]
@@ -14,7 +14,7 @@ GigaScience Database. https://dx.doi.org/10.5524/100142
 [Dataset Type]
 Metadata
 
-[Dataset Summary] 
+[Dataset Summary]
 The workflow for the production of high-throughput sequencing data from nucleic acid samples is complex. There are a series of protocol steps to be followed in the preparation of samples for next-generation sequencing. The quantification of bias in a number of protocol steps, namely DNA fractionation, blunting, phosphorylation, adapter ligation and library enrichment, remains to be determined. We examined the experimental metadata of the public repository Sequence Read Archive (SRA) in order to ascertain the level of annotation of important sequencing steps in submissions to the database.
 
 [File name] - [File Description] - [File Location]
