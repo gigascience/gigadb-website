@@ -17,6 +17,9 @@ class ReadmeCest
         if (file_exists("/home/curators/readme_100003.txt")) {
             unlink("/home/curators/readme_100003.txt");
         }
+        if (file_exists("/home/curators/readme_100142.txt")) {
+            unlink("/home/curators/readme_100142.txt");
+        }
     }
 
     /**
@@ -53,6 +56,14 @@ class ReadmeCest
         $I->canSeeInDatabase("file_attributes", ["file_id" => 88266, "attribute_id" => 605, "value" => "b89b1a3d94e05a3fa44bef8b544025f0"]);
     }
 
+    public function tryCompareWithGoldenReadme(FunctionalTester $I)
+    {
+        $I->runShellCommand("/app/yii_test readme/create --doi 100003 --outdir=/home/curators --bucketPath wasabi:gigadb-datasets/dev/pub/10.5524");
+        $I->assertFileExists("/home/curators/readme_100142.txt", "readme_100142.txt non exists");
+        $generatedReadmeContent = file_get_contents("/home/curators/readme_100142.txt");
+        $goldenReadmeContent = file_get_contents("tests/_data/golden_readme_100142.txt");
+        $I->assertEquals($goldenReadmeContent, $generatedReadmeContent, "The generated readme file does not match the golden readme file");
+    }
     /**
      * Test functionality using a DOI for a dataset that does not exist
      *
