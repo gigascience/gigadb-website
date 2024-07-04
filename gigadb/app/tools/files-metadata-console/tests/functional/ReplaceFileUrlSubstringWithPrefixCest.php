@@ -69,7 +69,7 @@ class ReplaceFileUrlSubstringWithPrefixCest
     }
 
     /**
-     * @skip as reported this test will systematically on @rija's fork
+     * @skip as reported this test will systematically fail on @rija's fork
      * TODO
      * @param FunctionalTester $I
      */
