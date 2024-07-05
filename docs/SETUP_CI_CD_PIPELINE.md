@@ -74,7 +74,7 @@ There are used in two contexts:
 
 #### When deploying the code
 
-There are two types of environments: developement and production.
+There are two types of environments: development and production.
 
 | Environment name | Type | Purpose |
 | --- | --- | --- |
@@ -192,6 +192,65 @@ They have two very important use:
 us to store variables and specify for which environment this variable is bound to (for organisation and security).
  * Gitlab stages and jobs must be tied to a specific environment, so that pipelines don't leak variables.
 
+#### Create DNS record for accessing endpoint on staging and on live servers
+
+There is a couple of endpoints that need to have a domain name associated with them for each deployment environments.
+
+The domain names should be for staging enviroment:
+* yoursubdomain-staging.gigadb.host
+* portainer.yoursubdomain-staging.gigadb.host
+and optionally:
+* files.yoursubdomain-staging.gigadb.host
+* bastion.yoursubdomain-staging.gigadb.host
+
+and for live environment:
+* yoursubdomain-live.gigadb.host
+* portainer.yoursubdomain-live.gigadb.host
+and optionally:
+* files.yoursubdomain-live.gigadb.host
+* bastion.yoursubdomain-live.gigadb.host
+
+where *yourdomain* is a unique short string of your choice to identify your endpoints form those of other team members, like your IAM role name in lowercase or Gitlab project prefix
+
+Ask a core team member to create an "A" record in the DNS server to map to the Elastic IPs you have set up in previous section for your staging and live environment.
+
+
+#### AWS dashboard
+
+There are two activities to perform on the AWS dashboard's EC2 console prior to using the GitLab Pipeline for deployment:
+
+1. Creation of Elastic IPs (under ``Network & Security > Elastic IPs``) to be used for the deployments to ``staging`` and ``live`` environments
+1. Creation of a SSH Key Pair (under ``Network & Security > Key Pairs``) that will allow Ansible and operators to ssh into the deployed EC2 instances
+
+Those resources needs to be globally unique in the same AWS acccount, so you need to follow the naming convention below:
+
+1. For Elastic IPS: ``eip-<application>-<environment>[-<sub-system>]-<IAM Role Username>``, e.g: ``eip-gigadb-staging-John`` or ``eip-gigadb-files-staging-John``
+1. For SSH Key pair: ``aws-<application>-<AWS region>-<IAM Role Username>.pem``, e.g: ``aws-gigadb-eu-north-1-John.pem``
+The private part of the SSH Key pair needs to be dowloaded to your developer machine in the ``~/.ssh`` directory and with 
+permission set to ``600``.
+
+Here the 3 EIPs you must create for provisioning a staging environment:
+
+EIPs Name tag | associated domain, if any |
+| -- | -- |
+| ``eip-gigadb-staging-<IAM Role Username>`` | yoursubdomain-staging.gigadb.host |
+| ``eip-gigadb-bastion-staging-<IAM Role Username>`` | (optional)bastion.yoursubdomain-staging.gigadb.host |
+| ``eip-gigadb-files-staging-<IAM Role Username>`` | (optional)files.yoursubdomain-staging.gigadb.host |
+ 
+If also deploying to a live environment, you will need to create
+
+EIPs Name tag | associated domain (only the 1st one is mandatory) |
+| -- | -- |
+| ``eip-gigadb-live-<IAM Role Username>`` | yourdomain-live.gigadb.host |
+| ``eip-gigadb-bastion-live-<IAM Role Username>`` | (optional)bastion.yoursubdomain-live.gigadb.host |
+| ``eip-gigadb-files-live-<IAM Role Username>`` | (optional)files.yoursubdomain-live.gigadb.host |
+
+**Notes**: By default the number of EIPs allowed to be created in any given region is limited to 5. So if you need to deploy a live environment, you will need to request a quota increase for the region you are deploying into. Ask a core team member to do it for you.
+
+#### AWS credentials
+
+TODO
+
 #### GitLab Variables
 
 Ensure the following variables are set for their respective environments in the appropriate GitLab project.
@@ -209,15 +268,16 @@ the Visibility radio input should be set to "Visible" except for the passwords a
 | REMOTE_SMTP_PASSWORD | SMTP password |
 | REMOTE_SMTP_PORT | 563 |
 | REMOTE_SMTP_USERNAME | SMTP username |
-| gigadb_db_host | keep empty, it will overwritten by the provising script with RDS endpoint |
+| gigadb_db_host | keep empty, it will be overwritten by the provising script with RDS endpoint |
 | gigadb_db_user | gigadb |
 | gigadb_db_password | Pick a password |
 | gigadb_db_database | gigadb |
 | fuw_db_host | keep empty, it will be overwritten by the provisioning script with RDS endpoint |
-| fuw_db_user | fuwdb |
+| fuw_db_user | fuw |
 | fuw_db_password | Pick a password |
-| fuw_db_database | fuwdb |
+| fuw_db_database | fuw |
 | PORTAINER_PASSWORD | Pick a password |
+| remote_fileserver_hostname | files.yoursubdomain.gigadb.host | 
  
 so, there should be 2 versions of each variable, one for each deployment environment (staging or live).
 
@@ -273,13 +333,6 @@ The following variables need to be set for Environment "All (default)"
 | AWS_ACCESS_KEY_ID | yes |
 | AWS_SECRET_ACCESS_KEY | yes |
 
-##### Create DNS record for accessing portainer on staging and on live servers
-Create an `A` record in DNS dashboard as following:
-
-| Record name | Type | IP |  
-| --- | --- | --- |
-| portainer.$REMOTE_HOSTNAME(staging) | A | staging server IP |
-| portainer.$REMOTE_HOSTNAME(live) | A | live server IP |
 
 #### Jobs and stages in GitLab configuration files
 
@@ -330,21 +383,6 @@ sd_gigadb:
 #### AWS-CLI
 
 See [awsdocs/awscli.md](awsdocs/awscli.md)
-
-#### AWS dashboard
-
-There are two activities to perform on the AWS dashboard's EC2 console prior to using the GitLab Pipeline for deployment:
-
-1. Creation of Elastic IPs (under ``Network & Security > Elastic IPs``) to be used for the deployments to ``staging`` and ``live`` environments
-1. Creation of a SSH Key Pair (under ``Network & Security > Key Pairs``) that will allow Ansible and operators to ssh into the deployed EC2 instances
-
-Those resources needs to be globally unique in the same AWS acccount, so you need to follow the naming convention below:
-
-1. For Elastic IPS: ``eip-<application>-<environment>-<IAM Role Username>``, e.g: ``eip-gigadb-staging-Rija``
-1. For SSH Key pair: ``aws-<application>-<AWS region>-<IAM Role Username>.pem``, e.g: ``aws-gigadb-eu-west-3-Rija.pem``
-The private part of the SSH Key pair needs to be dowloaded to your developer machine in the ``~/.ssh`` directory and with 
-permission set to ``600``.
-
 
 #### Terraform
 
