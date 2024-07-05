@@ -48,6 +48,9 @@ aws_secret_access_key = "{{ lookup('ini', 'aws_secret_access_key type=properties
 gigadb_dataset_metadata_aws_access_key_id = "{{ lookup('ini', 'gigadb_dataset_metadata_aws_access_key_id type=properties file=ansible.properties') }}"
 gigadb_datasets_metadata_aws_secret_access_key = "{{ lookup('ini', 'gigadb_datasets_metadata_aws_secret_access_key type=properties file=ansible.properties') }}"
 
+gigadb_datasetfiles_aws_access_key_id = "{{ lookup('ini', 'gigadb_datasetfiles_aws_access_key_id type=properties file=ansible.properties') }}"
+gigadb_datasetfiles_aws_secret_access_key = "{{ lookup('ini', 'gigadb_datasetfiles_aws_secret_access_key type=properties file=ansible.properties') }}"
+
 wasabi_access_key_id = "{{ lookup('ini', 'wasabi_access_key_id type=properties file=ansible.properties') }}"
 wasabi_secret_access_key = "{{ lookup('ini', 'wasabi_secret_access_key type=properties file=ansible.properties') }}"
 

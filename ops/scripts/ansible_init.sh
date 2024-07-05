@@ -93,6 +93,13 @@ gigadb_datasets_metadata_aws_secret_access_key=$(curl -s --header "PRIVATE-TOKEN
 echo "gigadb_dataset_metadata_aws_access_key_id = $gigadb_dataset_metadata_aws_access_key_id" >> ansible.properties
 echo "gigadb_datasets_metadata_aws_secret_access_key = $gigadb_datasets_metadata_aws_secret_access_key" >> ansible.properties
 
+# Required to upload dataset files to S3 bucket - gigadb-datasetfiles-backup
+gigadb_datasetfiles_aws_access_key_id=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$MISC_VARIABLES_URL/gigadb_datasetfiles_aws_access_key_id" | jq -r .value)
+gigadb_datasetfiles_aws_secret_access_key=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$MISC_VARIABLES_URL/gigadb_datasetfiles_aws_secret_access_key" | jq -r .value)
+
+echo "gigadb_datasetfiles_aws_access_key_id = $gigadb_datasetfiles_aws_access_key_id" >> ansible.properties
+echo "gigadb_datasetfiles_aws_secret_access_key = $gigadb_datasetfiles_aws_secret_access_key" >> ansible.properties
+
 # Retrieve ips of provisioned ec2 instances
 bastion_private_ip=$(terraform output ec2_bastion_private_ip | sed 's/"//g')
 bastion_ip=$(terraform output ec2_bastion_public_ip | sed 's/"//g')
