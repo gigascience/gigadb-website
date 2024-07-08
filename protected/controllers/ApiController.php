@@ -5,6 +5,7 @@ class ApiController extends Controller
     // Members
 
 
+    const RESULTS = ['file', 'sample', 'dataset'];
 
 	/**
 	 * @return array action filters
@@ -48,71 +49,57 @@ class ApiController extends Controller
 
     public function actionDataset()
 	{
-                $status='Published';
-                $id = Yii::app()->request->getParam('id');
-                $doi= Yii::app()->request->getParam('doi');
-                $result= Yii::app()->request->getParam('result');
-                if(!isset($result))
-                {
-                  $result='all';
+        $status = 'Published';
+        $id = Yii::app()->request->getParam('id');
+        $doi = Yii::app()->request->getParam('doi');
+        $result = Yii::app()->request->getParam('result');
+        $model = null;
+
+        if (!in_array($result, self::RESULTS)) {
+          $result = 'all';
+        }
+
+        try {
+            if ($id) {
+                $model = Dataset::model()->findByAttributes(array('id' => $id, 'upload_status' => $status));
+
+                if (!$model) {
+                    $this->_sendResponse(404, sprintf('No items where found for dataset id <b>%s</b>',$id));
                 }
-                if(isset($id))
-                {
-                   try{
-                   $model=  Dataset::model()->findByAttributes(array('id'=>$id,'upload_status'=>$status));}
-                   catch(CDbException $e)
-                   {
+            } elseif ($doi) {
+                $model = Dataset::model()->findByAttributes(array('identifier' => $doi, 'upload_status' => $status));
 
-                            $this->_sendResponse(404,
-                            sprintf('No items where found for dataset id <b>%s</b>',$id) );
-                   }
-                    if(!isset($model))
-                   {
-
-                        $this->_sendResponse(404,
-                            sprintf('No items where found for dataset id <b>%s</b>',$id) );
-                   }
+                if (!$model) {
+                    $this->_sendResponse(404, sprintf('No items where found for dataset doi <b>%s</b>',$doi));
                 }
-                else{
-                    try{
-                    $model=  Dataset::model()->findByAttributes(array('identifier'=>$doi,'upload_status'=>$status));}
-                    catch(CDbException $e)
-                   {
+            }
+        } catch (CDbException $e) {
+            $this->_sendResponse(500, 'An error occurred');
+        } catch (CException $e) {
+            $this->_sendResponse(500, 'An error occurred');
+        }
 
-                            $this->_sendResponse(404,
-                            sprintf('No items where found for dataset doi <b>%s</b>',$doi) );
-                   }
-                   if(!isset($model))
-                   {
+        if (!$model) {
+            $this->_sendResponse(400, 'An error occurred, please check your parameters');
+        }
 
-                       $this->_sendResponse(404,
-                            sprintf('No items where found for dataset doi <b>%s</b>',$doi) );
-                   }
-
-                }
-
-
-
-                 switch ($result) {
-                        case "dataset":
-                            $this->renderPartial('singledatasetonly',array('model'=>$model,));
-                            break;
-                        case "sample":
-                            $this->renderPartial('singlesample',array('model'=>$model,));
-                            break;
-                        case "file":
-                            $this->renderPartial('singlefile',array('model'=>$model,));
-                            break;
-                        case "all":
-                            $this->renderPartial('singledataset',array('model'=>$model,));
-                            break;
-                        default:
-                            break;
-                    }
-               /*
-                $this->renderPartial('singledataset',array(
-			'model'=>$model,
-		));*/
+         switch ($result) {
+                case "dataset":
+                    $this->renderPartial('singledatasetonly',array('model'=> $model));
+                    break;
+                case "sample":
+                    $this->renderPartial('singlesample',array('model'=> $model));
+                    break;
+                case "file":
+                    $this->renderPartial('singlefile',array('model'=> $model));
+                    break;
+                case "all":
+                    $this->renderPartial('singledataset',array('model'=> $model));
+                    break;
+                default:
+                    $this->_sendResponse(500, 'A problem occurred');
+                    break;
+        }
 	}
 
     public function actionList()
