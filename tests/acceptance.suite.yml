@@ -10,14 +10,14 @@ modules:
         - \Helper\Acceptance
         - \Codeception\Module\Asserts
         - Db:
-            dsn: 'pgsql:host=database;dbname=gigadb;port=5432'
-            user: 'gigadb'
-            password: ''
+            dsn: "pgsql:host=%GIGADB_HOST%;dbname=%GIGADB_DB%;port=%GIGAADB_PORT%"
+            user: "%GIGADB_USER%"
+            password: "GIGADB_PASSWORD"
             dump: 'sql/gigadb.pgdmp'
             populate: true # run populator before all tests
             cleanup: true # run populator before each test
             # Can use --verbose in pg_restore command to output progress messages
-            populator: 'PGPASSWORD=$password pg_restore -h database -p $port -U gigadb -d gigadb --no-owner /var/www/sql/gigadb.pgdmp'
+            populator: "PGPASSWORD=$password pg_restore -h %GIGADB_HOST% -p $port -U %GIGADB_USER% -d %GIGADB_DB% --no-owner /var/www/sql/gigadb.pgdmp"
         - WebDriver:
               url: 'http://gigadb.test'
               window_size: 2000x3500
