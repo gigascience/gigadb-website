@@ -11,3 +11,12 @@ server_side_encryption =
 storage_class = 
 provider = Other
 
+[gigadb-datasetfiles]
+type = s3
+provider = AWS
+access_key_id = ${gigadb_datasetfiles_aws_access_key_id}
+secret_access_key = ${gigadb_datasetfiles_aws_secret_access_key}
+region = ap-east-1
+location_constraint = ap-east-1
+storage_class = GLACIER
+env_auth = false
