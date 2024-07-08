@@ -28,7 +28,7 @@
 - name: Add curator to sudoers
   ansible.builtin.lineinfile:
     path: "/etc/sudoers.d/91-add-{{ newuser }}"
-    line: "{{ newuser }} ALL=(ALL)       NOPASSWD: /usr/local/bin/datasetUpload, /usr/local/bin/postUpload, /usr/local/bin/calculateChecksumSizes, /usr/local/bin/createReadme, /usr/local/bin/filesMetaToDb\n"
+    line: "{{ newuser }} ALL=(ALL)       NOPASSWD: /usr/local/bin/datasetUpload, /usr/local/bin/postUpload, /usr/local/bin/calculateChecksumSizes, /usr/local/bin/createReadme, /usr/local/bin/filesMetaToDb, /usr/local/bin/efsBackup\n"
     owner: root
     group: root
     mode: 440
