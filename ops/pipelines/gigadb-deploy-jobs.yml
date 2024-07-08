@@ -19,12 +19,13 @@
     # login to gitlab container registry
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
     # appending production variables at the end of the .env and .secrets
-    - env | grep -v "SAST" | grep -iE "^(staging_|remote_)" | grep -viE "(password|email|tester|secret|key|user|app_id|client_id|token|tls)" >> $APPLICATION/.env
+    - env > full_env.txt
+    - env | grep -v "SAST" | grep -iE "^(staging_|remote_)" | grep -viE "(password|email|tester|secret|key|user|app_id|client_id|token|tls)" | tee -a  $APPLICATION/.env
     - env | grep -v "SAST" | grep -iE "^TIDEWAYS_APIKEY" >> $APPLICATION/.env
-    - env | grep -v "SAST" | grep -iE "^(staging_|remote_)" | grep -iE "(password|email|tester|secret|key|user|app_id|client_id|token)" | grep -viE "tlsauth">> $APPLICATION/.secrets
-    - env | grep -v "SAST" | grep "^CI_API_V4_URL" >> $APPLICATION/.env
-    - env | grep -v "SAST" | grep "^CI_PROJECT_PATH" >> $APPLICATION/.env
-    - env | grep -v "SAST" | grep "^GITLAB_PRIVATE_TOKEN" >> $APPLICATION/.secrets
+    - env | grep -v "SAST" | grep -v "DOCKER_" | grep -v "GITLAB_" | grep -v "CI_" | grep -iE "(password|email|tester|secret|user|app_id|client_id|token)" | grep -viE "tlsauth" | grep -v "client_" | grep -v "token_uri" | tee -a $APPLICATION/.secrets
+    - env | grep -v "SAST" | grep "^CI_API_V4_URL" | tee -a  $APPLICATION/.env
+    - env | grep -v "SAST" | grep "^CI_PROJECT_PATH" | tee -a  $APPLICATION/.env
+    - env | grep -v "SAST" | grep "^GITLAB_PRIVATE_TOKEN" | tee -a  $APPLICATION/.secrets
     # Steps below are for interacting with the remote staging server to deploy, configure and start the production containers using staging compose file
     # Create client certificate files for authenticating with remote docker daemon
     - mkdir -pv ~/.docker
