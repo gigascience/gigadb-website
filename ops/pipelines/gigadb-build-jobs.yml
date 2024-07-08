@@ -230,6 +230,7 @@ b_gigadb:
     name: $DEPLOYMENT_ENV
     url: $REMOTE_HOME_URL
   artifacts:
+    untracked: true
     paths:
       - php-$PHP_VERSION-fpm-buster.tar
       - php-$PHP_VERSION-cli-buster.tar
