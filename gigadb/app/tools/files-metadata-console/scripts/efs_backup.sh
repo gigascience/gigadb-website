@@ -71,11 +71,11 @@ fi
 
 if [[ $(uname -n) =~ compute ]]; then
   if [[ "${use_live_data}" = true ]]; then
-    WASABI_DATASETFILES_DIR="gigadb-datasets/live/pub/10.5524"
-    S3_DATASETFILES_DIR="gigadb-datasetfiles-backup/live/pub/10.5524"
+    WASABI_DATASETFILES_DIR="wasabi:gigadb-datasets/live/pub/10.5524"
+    S3_DATASETFILES_DIR="gigadb-datasetfiles:gigadb-datasetfiles-backup/live/pub/10.5524"
   else
-    WASABI_DATASETFILES_DIR="gigadb-datasets/staging/pub/10.5524"
-    S3_DATASETFILES_DIR="gigadb-datasetfiles-backup/staging/pub/10.5524"
+    WASABI_DATASETFILES_DIR="wasabi:gigadb-datasets/staging/pub/10.5524"
+    S3_DATASETFILES_DIR="gigadb-datasetfiles:gigadb-datasetfiles-backup/staging/pub/10.5524"
   fi
 fi
 
