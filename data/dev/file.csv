@@ -23,7 +23,7 @@ id,dataset_id,name,location,extension,size,description,date_stamp,format_id,type
 467,5,Parrot.k31.degreeDistribution.txt,https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100039/Assembly-2011/Parrot.k31/Parrot.k31.degreeDistribution.txt,txt,699,"",2012-09-11,1,7,A. vittata,,0,
 468,5,DATABASE.DATA.Repeats_to_scaffolds.txt,https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100039/DATABASE.DATA.Repeats_to_scaffolds.txt,txt,33794706,"",2012-09-14,1,7,A. vittata,,2,
 469,5,DATABASE.ANNOTATION.repeats_to_scaffolds.xlsx,https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100039/DATABASE.ANNOTATION.repeats_to_scaffolds.xlsx,xlsx,57057997,"",2012-09-14,4,7,A. vittata,,3,
-663,8,readme.txt,https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006/readme.txt,txt,138,"",2011-07-06,1,1,"",,18,
+663,8,readme_100006.txt,https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/dev/pub/10.5524/100001_101000/100006/readme_100006.txt,txt,138,"",2011-07-06,1,1,"",,18,
 664,8,Pygoscelis_adeliae.scaf.fa.gz,https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006/Pygoscelis_adeliae.scaf.fa.gz,fa,367639441,"",2011-07-06,2,132,Pygoscelis_adeliae,,13,
 5102,22,readme.txt,https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100020/readme.txt,txt,526,"",2011-11-12,1,1,Zhang gu,,11,
 5103,22,Millet_scaffoldVersion2.3.fa.gz,https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100020/Millet_scaffoldVersion2.3.fa.gz,fa,114680840,"",2011-11-12,2,132,Zhang gu,,5,
