@@ -69,12 +69,14 @@ else
   exit 1
 fi
 
-if [[ $(uname -n) =~ compute && "${use_live_data}" = true ]];then
-  WASABI_DATASETFILES_DIR="gigadb-datasets/live/pub/10.5524"
-  S3_DATASETFILES_DIR="gigadb-datasetfiles-backup/live/pub/10.5524"
-esif
-  WASABI_DATASETFILES_DIR="gigadb-datasets/staging/pub/10.5524"
-  S3_DATASETFILES_DIR="gigadb-datasetfiles-backup/staging/pub/10.5524"
+if [[ $(uname -n) =~ compute ]]; then
+  if [[ "${use_live_data}" = true ]]; then
+    WASABI_DATASETFILES_DIR="gigadb-datasets/live/pub/10.5524"
+    S3_DATASETFILES_DIR="gigadb-datasetfiles-backup/live/pub/10.5524"
+  else
+    WASABI_DATASETFILES_DIR="gigadb-datasets/staging/pub/10.5524"
+    S3_DATASETFILES_DIR="gigadb-datasetfiles-backup/staging/pub/10.5524"
+  fi
 fi
 
 WASABI_DESTINATION_PATH="${WASABI_DATASETFILES_DIR}/${dir_range}/${doi}"
