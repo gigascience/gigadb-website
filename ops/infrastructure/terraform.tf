@@ -247,6 +247,11 @@ module "files_host" {
   ec2_type = var.web_ec2_type
   ec2_usage = "filesserver"
   app_port = 21
+
+  # EFS variables for mounting
+  fs_id = module.gigadb_efs.id
+  fsap_dropbox_id = module.gigadb_efs.access_points["dropbox_area"].id
+  fsap_config_id = module.gigadb_efs.access_points["configuration_area"].id
 }
 
 output "ec2_files_public_ip" {
