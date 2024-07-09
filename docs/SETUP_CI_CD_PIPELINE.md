@@ -217,12 +217,13 @@ Ask a core team member to create an "A" record in the DNS server to map to the E
 
 #### AWS dashboard
 
-There are two activities to perform on the AWS dashboard's EC2 console prior to using the GitLab Pipeline for deployment:
+There are three activities to perform on the AWS dashboard's EC2 console prior to using the GitLab Pipeline for deployment:
 
 1. Creation of Elastic IPs (under ``Network & Security > Elastic IPs``) to be used for the deployments to ``staging`` and ``live`` environments
 1. Creation of a SSH Key Pair (under ``Network & Security > Key Pairs``) that will allow Ansible and operators to ssh into the deployed EC2 instances
+1. Creation of API keys (under top-right dashboard menu item `<IAM Role Username> @  <AWS account ID> > Security Credentials`, then click `Create access key`, the click the button to download the `.CSV` file)
 
-Those resources needs to be globally unique in the same AWS acccount, so you need to follow the naming convention below:
+The first two resources needs to be globally unique in the same AWS acccount, so you need to follow the naming convention below:
 
 1. For Elastic IPS: ``eip-<application>-<environment>[-<sub-system>]-<IAM Role Username>``, e.g: ``eip-gigadb-staging-John`` or ``eip-gigadb-files-staging-John``
 1. For SSH Key pair: ``aws-<application>-<AWS region>-<IAM Role Username>.pem``, e.g: ``aws-gigadb-eu-north-1-John.pem``
@@ -496,11 +497,15 @@ This is how the script is run:
 
 ```
 $ cd ops/infrastructure/envs/environment
-$ ../../../scripts/tf_init.sh --project gigascience/forks/rija-gigadb-website --env environment
+$ ../../../scripts/tf_init.sh --project gigascience/forks/rija-gigadb-website --env environment --region region --ssh-key /Users/owner/.ssh/rm-gigadb-sshkey.pem --web-ec2-type t3.micro --bastion-ec2-type t3.micro
 ```
 
-where we replace ``gigascience/forks/rija-gigadb-website`` with the appropriate GitLab project.
-and ``environment`` with ``staging`` or ``live``
+where we replace:
+* ``gigascience/forks/rija-gigadb-website`` with the appropriate GitLab project.
+* ``environment`` with ``staging`` or ``live``
+* ``region`` with an AWS region where to deploy the infrastructure
+
+You can type `../../../scripts/tf_init.sh --help` to get the list of all possible arguments.
 
 The script also copies the ``ops/infrastructure/terraform.tf`` root module in the environment-specific directory so 
 that terraform commands can be run from that directory.
@@ -520,12 +525,12 @@ again in subsequent runs. ``ops/scripts/ansible_init.sh`` will also source that 
 
 | name | description | used by |
 | --- | --- | --- |
-| ansible.properties | created by ``provisioner_init.sh``, holds variables assignment used by Ansible to configure deployed application| ansible-playbook | 
-| getIAMUserNameToJSON.sh | copied by ``provisioner_init.sh`` | terraform |
+| ansible.properties | created by ``ansible_init.sh``, holds variables assignment used by Ansible to configure deployed application| ansible-playbook | 
+| getIAMUserNameToJSON.sh | copied by ``ansible_init.sh`` | terraform |
 | output/ | created by ``ansible-playbook`` to store a copy of Docker certs | docker |
-| playbook.yml | copied by ``provisioner_init.sh`` | ansible-playbook | 
-| terraform.tf | copied by ``provisioner_init.sh`` | terraform |
-| terraform.tfvars | created by ``provisioner_init.sh`` to hold Terraform variables assigments | terraform | 
+| (webapp|files|users|bastion)_playbook.yml | copied by ``ansible_init.sh`` | ansible-playbook | 
+| terraform.tf | copied by ``ansible_init.sh`` | terraform |
+| terraform.tfvars | created by ``ansible_init.sh`` to hold Terraform variables assigments | terraform | 
 
 #### Ansible
 
