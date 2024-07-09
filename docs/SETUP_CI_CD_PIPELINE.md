@@ -278,7 +278,9 @@ the Visibility radio input should be set to "Visible" except for the passwords a
 | fuw_db_database | fuw |
 | PORTAINER_PASSWORD | Pick a password |
 | remote_fileserver_hostname | files.yoursubdomain.gigadb.host | 
- 
+| REMOTE_PUBLIC_HTTP_PORT | 80 |
+| REMOTE_PUBLIC_HTTPS_PORT | 443 |
+| 
 so, there should be 2 versions of each variable, one for each deployment environment (staging or live).
 
 ##### Good examples:
@@ -321,6 +323,21 @@ to depart from the default.
 
 > Note: Although caching is on by default for all environments, but DISABLE_CACHE variable will be still available to provide flexibility if some specific development work needs it off.
 >  DISABLE_CACHE can be manually configured to true in .env to turn off caching in dev environment.
+
+##### Variables for configuring PHP-FPM
+
+Below are further variables that must be set in Gitlab variables.
+They are necessary to configure PHP-FPM application server.
+
+
+| name | value | environment |
+| -- | -- | -- |
+| PHP_APCU_MEMORY | 128M | staging |
+| PHP_FPM_MAX_CHILDREN | 17 | staging |
+| PHP_FPM_START_SERVERS | 4 | staging |
+| PHP_FPM_MIN_SPARE_SERVERS | 4 | staging |
+| PHP_FPM_MAX_SPARE_SERVERS | 12 | staging |
+| PHP_CONN_LIMIT | disabled | staging |
 
 ##### Exceptions
 
@@ -377,6 +394,23 @@ sd_gigadb:
 >Note: Make sure you have a Docker Hub account and that its username and access token (which can be created in Docker Hub's security settings)
 > are used as value for GitLab variables DOCKER_HUB_USERNAME and DOCKER_HUB_PASSWORD (set for the "All (default)" environment)
 > as the ``before_script`` section of ``.gitlab-ci.yml`` uses them to login to Docker Hub and pull the main base image to speed up the build stage
+
+#### Relationship between pipeline jobs and Ansible playbooks
+
+The continuous integration part of the Gitlab pipeline is not dependent on the AWS deployed infrastructure and can be run anytime.
+The provisioning of a new AWS infrastructure and deployment of Gigadb applicaiton onto it requires orchestration between the Gitlab pipeline and the operators.
+There are 5 phases:
+
+| phase | description | operator actions | required Gitlab pipeline state |
+| -- | -- | -- | -- |
+| TF init | The local terraform state is initiliased from a remote Gitlab state (which is created on the fly if it doesn't exist) | runs `tf_init.sh` | no state required |
+| TF provisioning | The resources of the infrastructure are created on AWS | runs `terraform plan`, `terraform apply` and `terrafrom refresh` | no state required | 
+| Ansible init | the AWS resources details are uploaded to Gitlab variables, Ansible dependency are built, and playbook copied to the deployment directory | runs `ansible_init.sh`  |no state required |
+| Ansible provisioning | Configuration of the various GigaDB subsystems on each hosts of the infrastructure | executes the Ansible playbook | the build stage for the target environment should have run successfully | 
+| Application deployment | deployment of the application code from git repository | none on staging, manually trigger Gitlab deployment stage on live | the deployment stage the target environment has been triggered and ran successfully |
+
+**>Note:** The above implies that you cannot run the Ansible playbooks until you have run the build stage of the Gitlab pipeline, 
+but you cannot run the build stage until you have run `ansible_init.sh`
 
 ### Tools
 
