@@ -14,9 +14,9 @@ $this->pageTitle = 'GigaDB - Help';
         ]);
         ?>
         <div class="subsection">
-            <p>The <a href="http://gigadb.org/" target="_blank"><span class="text-italic">GigaDB</span></a> website allows any user to browse, search, view datasets and access data files. If you want to submit a dataset, save searches or be alerted of new content of interest we request that you <a href="/user/create" target="_blank">create an account</a>.</p>
+            <p>The <a href="https://gigadb.org/" target="_blank"><span class="text-italic">GigaDB</span></a> website allows any user to browse, search, view datasets and access data files. If you want to submit a dataset, save searches or be alerted of new content of interest we request that you <a href="/user/create" target="_blank">create an account</a>.</p>
             <p>A 'Latest news' section will be visible to announce any updates or new features to the database and the RSS feed automatically announces each new dataset release.</p>
-            <p>The <a href="http://gigadb.org/" target="_blank"><span class="text-italic">GigaDB</span></a> homepage allows you to browse datasets by type eg Genomic, Metagenomic, Transcriptomic. Clicking on the DOI (digital object identifier) or image will take you directly to the webpage for the dataset of interest.</p>
+            <p>The <a href="https://gigadb.org/" target="_blank"><span class="text-italic">GigaDB</span></a> homepage allows you to browse datasets by type eg Genomic, Metagenomic, Transcriptomic. Clicking on the DOI (digital object identifier) or image will take you directly to the webpage for the dataset of interest.</p>
             <p>Alternatively you can use the search functions to find datasets, samples or files of interest.</p>
         </div>
         <div class="section">
@@ -89,10 +89,10 @@ $this->pageTitle = 'GigaDB - Help';
                     </section>
                 </div>
                 <div role="tabpanel" class="tab-pane" id="guidelines" aria-labelledby="liguideline">
-                    <p><a href="http://gigadb.org/"><span class="text-italic">GigaDB</span></a> is an open-access database. As such, all data submitted to <span class="text-italic">GigaDB</span> must be fully consented for public release (for more information about our data policies, please see our <a href="http://gigadb.org/site/term/" target="_blank">Terms of use page</a>).</p>
-                    <p>All sequence, assembly, variation, and microarray data must be deposited in a public database at <a href="http://www.ncbi.nlm.nih.gov/" target="_blank">NCBI</a>, <a href="http://www.ebi.ac.uk/" target="_blank">EBI</a>, or <a href="http://www.ddbj.nig.ac.jp/" target="_blank">DDBJ</a> before you submit them to <a href="http://gigadb.org/" target="_blank"><span class="text-italic">GigaDB</span></a>. In the cases where you would like <span class="text-italic">Giga</span>DB to host files associated with genomic data not fully consented for public release, you must first submit the non-public data to <a href="http://www.ncbi.nlm.nih.gov/gap/" target="_blank">dbGaP</a> or <a href="http://ega-archive.org" target="_blank">EGA</a>.</p>
-                    <p><strong>Step 1</strong> - <a href="http://gigadb.org/user/create" target="_blank">Create an account</a> or <a href="http://gigadb.org/site/login" target="_blank">log in</a> to <a href="http://gigadb.org/" target="_blank"><span class="text-italic">Giga</span>DB</a></p>
-                    <p><strong>Step 2</strong> - Download and complete the <a href="/files/templates/GigaDBUploadForm-forWebsite-v22Dec2021.xlsx" target="_blank">Excel template file</a>. Completed example files for the <a href="http://gigadb.org/files/GigaDBUploadForm-example1.xls" aria-label="Example Excel file for E. coli">E. coli</a> (<a href="http://gigadb.org/dataset/100001" target="_blank">10.5524/100001</a>) and <a href="http://gigadb.org/files/GigaDBUploadForm-example2.xls" aria-label="Example Excel file for Sorghum">Sorghum</a> (<a href="http://gigadb.org/dataset/100012" target="_blank">10.5524/100012</a>) datasets are available.</p>
+                    <p><a href="https://gigadb.org/"><span class="text-italic">GigaDB</span></a> is an open-access database. As such, all data submitted to <span class="text-italic">GigaDB</span> must be fully consented for public release (for more information about our data policies, please see our <a href="https://gigadb.org/site/term/" target="_blank">Terms of use page</a>).</p>
+                    <p>All sequence, assembly, variation, and microarray data must be deposited in a public database at <a href="http://www.ncbi.nlm.nih.gov/" target="_blank">NCBI</a>, <a href="http://www.ebi.ac.uk/" target="_blank">EBI</a>, or <a href="http://www.ddbj.nig.ac.jp/" target="_blank">DDBJ</a> before you submit them to <a href="https://gigadb.org/" target="_blank"><span class="text-italic">GigaDB</span></a>. In the cases where you would like <span class="text-italic">Giga</span>DB to host files associated with genomic data not fully consented for public release, you must first submit the non-public data to <a href="http://www.ncbi.nlm.nih.gov/gap/" target="_blank">dbGaP</a> or <a href="http://ega-archive.org" target="_blank">EGA</a>.</p>
+                    <p><strong>Step 1</strong> - <a href="https://gigadb.org/user/create" target="_blank">Create an account</a> or <a href="https://gigadb.org/site/login" target="_blank">log in</a> to <a href="https://gigadb.org/" target="_blank"><span class="text-italic">Giga</span>DB</a></p>
+                    <p><strong>Step 2</strong> - Download and complete the <a href="/files/templates/GigaDBUploadForm-forWebsite-v22Dec2021.xlsx" target="_blank">Excel template file</a>. Completed example files for the <a href="https://gigadb.org/files/GigaDBUploadForm-example1.xls" aria-label="Example Excel file for E. coli">E. coli</a> (<a href="https://gigadb.org/dataset/100001" target="_blank">10.5524/100001</a>) and <a href="https://gigadb.org/files/GigaDBUploadForm-example2.xls" aria-label="Example Excel file for Sorghum">Sorghum</a> (<a href="https://gigadb.org/dataset/100012" target="_blank">10.5524/100012</a>) datasets are available.</p>
                     <p>The template file contains:</p>
                     <ol>
                         <li>3 tabs which must all be completed [Study, Samples, Files]</li>
@@ -100,13 +100,13 @@ $this->pageTitle = 'GigaDB - Help';
                     </ol>
                     <p>Mandatory fields are highlighted in yellow.</p>
                     <h2 class="h5">Study</h2>
-                    <p>Required information includes submitter name, email and affiliation, upload status [can we publish this dataset immediately after review (Publish) or should it be held until publication (HUP)], author list, <a href="http://gigadb.org/site/help#datasettype" target="_blank">dataset type(s)</a> (selected from a controlled vocabulary list), dataset title and description, estimated total size of the files that will be submitted and dataset image information.</p>
-                    <p>Optional information includes links to additional resources and related manuscripts, accessions for data in other databases (prefixes are found in the Links tab), and <a href="http://gigadb.org/site/help#relation" target="_blank">relationship</a> (if any) to a previously published <em>Giga</em>DB dataset (selected from a controlled vocabulary list).</p>
+                    <p>Required information includes submitter name, email and affiliation, upload status [can we publish this dataset immediately after review (Publish) or should it be held until publication (HUP)], author list, <a href="https://gigadb.org/site/help#datasettype" target="_blank">dataset type(s)</a> (selected from a controlled vocabulary list), dataset title and description, estimated total size of the files that will be submitted and dataset image information.</p>
+                    <p>Optional information includes links to additional resources and related manuscripts, accessions for data in other databases (prefixes are found in the Links tab), and <a href="https://gigadb.org/site/help#relation" target="_blank">relationship</a> (if any) to a previously published <em>Giga</em>DB dataset (selected from a controlled vocabulary list).</p>
                     <h2 class="h5">Samples</h2>
                     <p>Required information includes a sample ID or name (please use an <a href="http://www.ncbi.nlm.nih.gov/biosample" target="_blank">NCBI BioSample ID</a> when possible), species <a href="http://www.ncbi.nlm.nih.gov/Taxonomy" target="_blank">NCBI taxonomy ID</a>, and species common name.</p>
                     <p>Optional information includes sample attributes (these are automatically populated in <em>Giga</em>DB if an <a href="http://www.ncbi.nlm.nih.gov/biosample" target="_blank">NCBI BioSample ID</a> is provided).</p>
                     <h2 class="h5">Files</h2>
-                    <p>Required information includes a file name or path relative to your home directory and <a href="http://gigadb.org/site/help#filetype" target="_blank">file type</a> (selected from a controlled vocabulary list). A readme file must be provided.</p>
+                    <p>Required information includes a file name or path relative to your home directory and <a href="https://gigadb.org/site/help#filetype" target="_blank">file type</a> (selected from a controlled vocabulary list). A readme file must be provided.</p>
                     <p>Please note:</p>
                     <ul class="content-text">
                       <li class="mb-5">Filenames should be unique.</li>
@@ -114,8 +114,8 @@ $this->pageTitle = 'GigaDB - Help';
                       <li class="mb-5">Filenames should only include the following characters a-z,A-Z,0-9,_,-,+,.</li>
                     </ul>
                     <p>Optional information includes a file description and a sample ID or name.</p>
-                    <p><strong>Step 3</strong> - confirm you have read our <a href="http://gigadb.org/site/term/" target="_blank">Terms of use</a> page and upload the completed Excel template file.</p>
-                    <p>You can expect a response from the <a href="http://gigadb.org/" target="_blank"><em>Giga</em>DB</a> team within 5 days to verify the information in your submission and to arrange upload of your files to our FTP site.</p>
+                    <p><strong>Step 3</strong> - confirm you have read our <a href="https://gigadb.org/site/term/" target="_blank">Terms of use</a> page and upload the completed Excel template file.</p>
+                    <p>You can expect a response from the <a href="https://gigadb.org/" target="_blank"><em>Giga</em>DB</a> team within 5 days to verify the information in your submission and to arrange upload of your files to our FTP site.</p>
                     <p>If you have any questions, please contact us at <a href="mailto:database@gigasciencejournal.com" target="_blank">database@gigasciencejournal.com</a>.</p>
                 </div>
                 <div role="tabpanel" class="tab-pane" id="vocabulary" aria-labelledby="livocabulary">
@@ -566,10 +566,10 @@ ENSP00000368887 24.6477413647837 6002951 174 1176</pre>
                                         is a TAB-delimited text format consisting of a header section, which is
                                         optional, and an alignment section. Most often it is generated as a
                                         human readable version of its sister
-                                        <a href="http://gigadb.org/site/help#bam" target="_blank">BAM</a>
+                                        <a href="https://gigadb.org/site/help#bam" target="_blank">BAM</a>
                                         format, which stores the same data in a compressed, indexed, binary
                                         form. Currently, most SAM format data is output from aligners that read
-                                        <a href="http://gigadb.org/site/help#fastq" target="_blank">FASTQ</a>
+                                        <a href="https://gigadb.org/site/help#fastq" target="_blank">FASTQ</a>
                                         files and assign the sequences to a position with respect to a known
                                         reference genome. In the future, SAM will also be used to archive
                                         unaligned sequence data generated directly from sequencing machines. See
@@ -763,8 +763,7 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242&lt;</pre>
                         <hr class="dashed">
                         <h2 class="page-subtitle">Summary</h2>
                         <p>It is currently possible to search "all" fields, or to specify one of a select few fields to search.</p>
-                        <p>It is possible to have results return all metadata for each dataset with "hits" to the search term, or to specify a particular portion of the metadata, these portions are currently "dataset", "sample" and "file", which is in alignment with the same functionality on the web-search tool. The default is to return results as <a href="https://sites.google.com/a/gigasciencejournal.com/gigascience/public-pages/xml-schema">GigaDB v3 XML</a></p>
-                        <p>It is planned that we will have the option to specify the format to be GigaDBv3-JSON or ISA2.0-JSON in the future, but that has not been implemented yet.</p>
+                        <p>It is possible to have results return all metadata for each dataset with "hits" to the search term, or to specify a particular portion of the metadata, these portions are currently "dataset", "sample" and "file", which is in alignment with the same functionality on the web-search tool.</p>
                     </section>
 
                     <hr class="dashed">
@@ -809,7 +808,7 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242&lt;</pre>
                             </div>
                         </dl>
                         <p>eg. <span>..../search?taxno=9606</span></p>
-                        <p>To specify results to be returned are ONLY a particular level of data, add the phrase <strong><span>&amp;results=dataset</span></strong>, or file or sample:<br />e.g. <a href="http://gigadb.org/api/search?project=Genome%2010K&amp;result=sample" target="_blank">http://gigadb.org/api/search?project=Genome%2010K&amp;result=sample</a></p>
+                        <p>To specify results to be returned are ONLY a particular level of data, add the phrase <strong><span>&amp;results=dataset</span></strong>, or file or sample:<br />e.g. <a href="https://gigadb.org/api/search?project=Genome%2010K&amp;result=sample" target="_blank">https://gigadb.org/api/search?project=Genome%2010K&amp;result=sample</a></p>
                         <p>NB - the search still looks everywhere, but the results returned are only those samples that are in datasets that are found by the search.</p>
                         <p><strong>Default results are "dataset" only.</strong></p>
                     </section>
@@ -818,9 +817,9 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242&lt;</pre>
                     <section aria-labelledby="cliTitle" class="m-0">
                         <h2 class="page-subtitle" id="cliTitle">Command line usage</h2>
                         <p>You can also use the curl commands on the command line to retrieve metadata, e.g.:</p>
-                        <pre><code>curl <a href="http://gigadb.org/api/dataset?doi=100051" target="_blank" rel="noopener noreferrer">http://gigadb.org/api/dataset?doi=100051</a></code></pre>
+                        <pre><code>curl <a href="https://gigadb.org/api/dataset?doi=100051" target="_blank" rel="noopener noreferrer">https://gigadb.org/api/dataset?doi=100051</a></code></pre>
                         <p>If you want to check whether a search will work you can use the <code>-I</code> flag:</p>
-                        <pre><code>curl -I <a href="http://gigadb.org/api/dataset?doi=100051" target="_blank" rel="noopener noreferrer">http://gigadb.org/api/dataset?doi=100051</a>
+                        <pre><code>curl -I <a href="https://gigadb.org/api/dataset?doi=100051" target="_blank" rel="noopener noreferrer">https://gigadb.org/api/dataset?doi=100051</a>
 # HTTP/1.1 200 OK
 # or
 # HTTP/1.1 404 Not Found / HTTP/1.1 500 Internal server error</code></pre>
@@ -833,81 +832,81 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242&lt;</pre>
 
                         <ol class="help-examples-list">
                             <li>
-                                <p>Retrieve known datasets by doi <a href="http://gigadb.org/api/dataset?doi=100051" target="_blank">http://gigadb.org/api/dataset?doi=100051</a></p>
+                                <p>Retrieve known datasets by doi <a href="https://gigadb.org/api/dataset?doi=100051" target="_blank">https://gigadb.org/api/dataset?doi=100051</a></p>
                                 <p>The above query only returns a maximum of 50 items for each of the sections <em>Sample</em> and <em>File</em>. To retrieve all dataset information please combine the output of the three queries below:</p>
                                 <ul>
-                                  <li><a href="http://gigadb.org/api/dataset?doi=100051&result=dataset" target="_blank">http://gigadb.org/api/dataset?doi=100051&result=dataset</a></li>
-                                  <li><a href="http://gigadb.org/api/dataset?doi=100051&result=sample" target="_blank">http://gigadb.org/api/dataset?doi=100051&result=sample</a></li>
-                                  <li><a href="http://gigadb.org/api/dataset?doi=100051&result=file" target="_blank">http://gigadb.org/api/dataset?doi=100051&result=file</a></li>
+                                  <li><a href="https://gigadb.org/api/dataset?doi=100051&result=dataset" target="_blank">https://gigadb.org/api/dataset?doi=100051&result=dataset</a></li>
+                                  <li><a href="https://gigadb.org/api/dataset?doi=100051&result=sample" target="_blank">https://gigadb.org/api/dataset?doi=100051&result=sample</a></li>
+                                  <li><a href="https://gigadb.org/api/dataset?doi=100051&result=file" target="_blank">https://gigadb.org/api/dataset?doi=100051&result=file</a></li>
                                 </ul>
                             </li>
                             <li>
                                 Retrieve samples from a known DOI<br />
-                                <a href="http://gigadb.org/api/sample?doi=100051" target="_blank">http://gigadb.org/api/sample?doi=100051</a>
+                                <a href="https://gigadb.org/api/sample?doi=100051" target="_blank">https://gigadb.org/api/sample?doi=100051</a>
                             </li>
                             <li>
                                 Retrieve file information from a known DOI<br />
-                                <a href="http://gigadb.org/api/file?doi=100051" target="_blank">http://gigadb.org/api/file?doi=100051</a>
+                                <a href="https://gigadb.org/api/file?doi=100051" target="_blank">https://gigadb.org/api/file?doi=100051</a>
                             </li>
                             <li>
                                 Search all <span class="text-italic">GigaDB</span> by keyword, return only the top level dataset
                                 metadata<br />
-                                <a href="http://gigadb.org/api/search?keyword=chimp&amp;result=dataset" target="_blank">http://gigadb.org/api/search?keyword=chimp&amp;result=dataset</a>
+                                <a href="https://gigadb.org/api/search?keyword=chimp&amp;result=dataset" target="_blank">https://gigadb.org/api/search?keyword=chimp&amp;result=dataset</a>
                             </li>
                             <li>
                                 Search all <span class="text-italic">GigaDB</span> by keyword, return only the sample level
                                 metadata<br />
-                                <a href="http://gigadb.org/api/search?keyword=chimp&amp;result=sample" target="_blank">http://gigadb.org/api/search?keyword=chimp&amp;result=sample</a>
+                                <a href="https://gigadb.org/api/search?keyword=chimp&amp;result=sample" target="_blank">https://gigadb.org/api/search?keyword=chimp&amp;result=sample</a>
                             </li>
                             <li>
                                 Search all <span class="text-italic">GigaDB</span> by keyword, return only the file level
                                 metadata<br />
-                                <a href="http://gigadb.org/api/search?keyword=chimp&amp;result=file" target="_blank">http://gigadb.org/api/search?keyword=chimp&amp;result=file</a>
+                                <a href="https://gigadb.org/api/search?keyword=chimp&amp;result=file" target="_blank">https://gigadb.org/api/search?keyword=chimp&amp;result=file</a>
                             </li>
                             <li>
                                 Refine search to just the title of the dataset<br />
-                                <a href="http://gigadb.org/api/search?keyword=title:human&amp;result=dataset" target="_blank">http://gigadb.org/api/search?keyword=title:human&amp;result=dataset</a>
+                                <a href="https://gigadb.org/api/search?keyword=title:human&amp;result=dataset" target="_blank">https://gigadb.org/api/search?keyword=title:human&amp;result=dataset</a>
                             </li>
                             <li>
                                 Refine search to the descriptions of datasets<br />
-                                <a href="http://gigadb.org/api/search?keyword=description:human&amp;result=dataset" target="_blank">http://gigadb.org/api/search?keyword=description:human&amp;result=dataset</a>
+                                <a href="https://gigadb.org/api/search?keyword=description:human&amp;result=dataset" target="_blank">https://gigadb.org/api/search?keyword=description:human&amp;result=dataset</a>
                             </li>
                             <li>
                                 Refine search to NCBI taxonomic ID<br />
-                                <a href="http://gigadb.org/api/search?taxno=9606&amp;result=dataset" target="_blank">http://gigadb.org/api/search?taxno=9606&amp;result=dataset</a>
+                                <a href="https://gigadb.org/api/search?taxno=9606&amp;result=dataset" target="_blank">https://gigadb.org/api/search?taxno=9606&amp;result=dataset</a>
                             </li>
                             <li>
                                 Refine search to taxonomic names<br />
-                                <a href="http://gigadb.org/api/search?taxname=Homo%20sapiens&amp;result=dataset" target="_blank">http://gigadb.org/api/search?taxname=Homo%20sapiens&amp;result=dataset</a>
+                                <a href="https://gigadb.org/api/search?taxname=Homo%20sapiens&amp;result=dataset" target="_blank">https://gigadb.org/api/search?taxname=Homo%20sapiens&amp;result=dataset</a>
                             </li>
                             <li>
                                 Refine search to Authors<br />
-                                <a href="http://gigadb.org/api/search?author=Wang%20Jun" target="_blank">http://gigadb.org/api/search?author=Wang%20Jun</a>
+                                <a href="https://gigadb.org/api/search?author=Wang%20Jun" target="_blank">https://gigadb.org/api/search?author=Wang%20Jun</a>
                             </li>
                             <li>
                                 Refine search to linked manuscript IDs<br />
-                                <a href="http://gigadb.org/api/search?manuscript=10.1371/journal.pone.0005795" target="_blank">http://gigadb.org/api/search?manuscript=10.1371/journal.pone.0005795</a>
+                                <a href="https://gigadb.org/api/search?manuscript=10.1371/journal.pone.0005795" target="_blank">https://gigadb.org/api/search?manuscript=10.1371/journal.pone.0005795</a>
                             </li>
                             <li>
                                 Refine search to dataset types<br />
-                                <a href="http://gigadb.org/api/search?datasettype=Genomic" target="_blank">http://gigadb.org/api/search?datasettype=Genomic</a>
+                                <a href="https://gigadb.org/api/search?datasettype=Genomic" target="_blank">https://gigadb.org/api/search?datasettype=Genomic</a>
                             </li>
                             <li>
                                 Refine search to project names<br />
-                                <a href="http://gigadb.org/api/search?project=Genome%2010K&amp;result=sample" target="_blank">http://gigadb.org/api/search?project=Genome%2010K&amp;result=sample</a>
+                                <a href="https://gigadb.org/api/search?project=Genome%2010K&amp;result=sample" target="_blank">https://gigadb.org/api/search?project=Genome%2010K&amp;result=sample</a>
                             </li>
                             <li>
                                 List all published dataset DOIs (listed in publication date order)<br />
-                                <a href="http://gigadb.org/api/list" target="_blank">http://gigadb.org/api/list</a>
+                                <a href="https://gigadb.org/api/list" target="_blank">https://gigadb.org/api/list</a>
                             </li>
                             <li>
                                 Dump the database<br />
-                                <a href="http://gigadb.org/api/dump" target="_blank">http://gigadb.org/api/dump</a>
+                                <a href="https://gigadb.org/api/dump" target="_blank">https://gigadb.org/api/dump</a>
                             </li>
                             <li>
                                 List all dataset DOI's published in a date range (results ordered by
                                 publication date)<br />
-                                <a href="http://gigadb.org/api/list?start_date=2018-01-01&amp;end_date=2018-01-30" target="_blank">http://gigadb.org/api/list?start_date=2018-01-01&amp;end_date=2018-01-30</a>
+                                <a href="https://gigadb.org/api/list?start_date=2018-01-01&amp;end_date=2018-01-30" target="_blank">https://gigadb.org/api/list?start_date=2018-01-01&amp;end_date=2018-01-30</a>
                             </li>
                         </ol>
                     </section>
