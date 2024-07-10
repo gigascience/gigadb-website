@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1976: Update static content of help page
 - Fix #1912: Enable curators to save Gigadb forms from many browser tabs at once
 - Feat #1840: Make create readme tool available as part of postUpload script
 
