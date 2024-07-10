@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## Unreleased
 
 - Feat #1892: Consolidate all layouts into one single layout
+- Fix #1912: Enable curators to save Gigadb forms from many browser tabs at once
+- Feat #1840: Make create readme tool available as part of postUpload script
 
 ## v4.3.0 - 2024-06-25 - 9cf91f224
 
@@ -17,7 +19,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Feat: updated upload spreadsheet template to version 19
 - Fix #1743: Accessibility tweaks on datasetSubmission/upload page
 
-## v4.2.9 - 2024-06-06 - 30a64ce56 - live since 2024-06-11
+## v4.2.9 - 2024-06-06 - 30a64ce56
 
 - Feat #1869: Script to compare files in user dropbox with file list from spreadsheet
 - Fix #1825: Remove close button from view new version popup
