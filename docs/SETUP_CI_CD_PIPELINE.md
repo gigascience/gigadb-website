@@ -277,6 +277,11 @@ the Visibility radio input should be set to "Visible" except for the passwords a
 | fuw_db_user | fuw |
 | fuw_db_password | Pick a password |
 | fuw_db_database | fuw |
+| REVIEW_DB_DATABASE | reviewdb |
+| REVIEW_DB_PASSWORD | Pick a password |
+| REVIEW_DB_PORT | 5432 |
+| REVIEW_DB_USERNAME | reviewdb |
+| REVIEW_DB_HOST | reviewdb |
 | PORTAINER_PASSWORD | Pick a password |
 | remote_fileserver_hostname | files.yoursubdomain.gigadb.host | 
 | REMOTE_PUBLIC_HTTP_PORT | 80 |
@@ -412,6 +417,21 @@ There are 5 phases:
 
 **>Note:** The above implies that you cannot run the Ansible playbooks until you have run the build stage of the Gitlab pipeline, 
 but you cannot run the build stage until you have run `ansible_init.sh`
+
+### Acceptance tests
+
+the stage between staging and live in Gitlab pipeline is for acceptance tests.
+The rationale is that nothing gets deployed to live if acceptance tests are failing.
+Only when the acceptance tests are passing that the jobs in the live stage of the pipeline become actionable.
+
+The following Gitlab variables are needed for the acceptance run, both in the pipeline but also locally
+
+| name | value | environment |
+| -- | -- | -- |
+| SERVER_EMAIL | foo@bar.local | dev |
+| AWS_ACCESS_KEY_ID | your access key to AWS | All |
+| AWS_SECRET_ACCESS_KEY | your secret key to AWS | All |
+
 
 ### Tools
 
