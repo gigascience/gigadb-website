@@ -4,8 +4,8 @@ teardown () {
     echo "executing teardown code"
         FILES="../readme-generator/runtime/curators/updating-file-size-100006.txt
         ../readme-generator/runtime/curators/updating-md5checksum-100006.txt
-        ../readme-generator/runtime/curators/updating-file-size-100142.txt
-        ../readme-generator/runtime/curators/updating-md5checksum-100142.txt
+        ../readme-generator/runtime/curators/updating-file-size-100020.txt
+        ../readme-generator/runtime/curators/updating-md5checksum-100020.txt
         ../readme-generator/runtime/curators/updating-file-size-888888.txt
         ../readme-generator/runtime/curators/updating-md5checksum-888888.txt"
 
@@ -45,12 +45,14 @@ teardown () {
 }
 
 @test "DOI with non-existing md5 file in s3 bucket" {
-    run ./filesMetaToDb.sh 100142
-    [[ "$output" =~ "* About to update files' MD5 Checksum as file attribute for 100142" ]]
-    [[ "$output" =~ "No 100142.md5 file could be found for dataset DOI 100142" ]]
+    # DOI 100020 has no 100020.md5 in the s3 gigadb-dataset-metadata bucket
+    run ./filesMetaToDb.sh 100020
+    [[ "$output" =~ "* About to update files' MD5 Checksum as file attribute for 100020" ]]
+    [[ "$output" =~ "No 100020.md5 file could be found for dataset DOI 100020" ]]
+    [[ "$output" =~ "Exception 'Exception' with message 'https://s3.ap-northeast-1.amazonaws.com/gigadb-datasets-metadata/100020.filesizes not found'" ]]
 
-    [ -f "../readme-generator/runtime/curators/updating-file-size-100142.txt" ]
-    [ -f "../readme-generator/runtime/curators/updating-md5checksum-100142.txt" ]
+    [ -f "../readme-generator/runtime/curators/updating-file-size-100020.txt" ]
+    [ -f "../readme-generator/runtime/curators/updating-md5checksum-100020.txt" ]
 }
 
 @test "Invalid DOI" {
