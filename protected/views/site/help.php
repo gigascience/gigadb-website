@@ -815,6 +815,18 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242&lt;</pre>
                     </section>
 
                     <hr class="dashed">
+                    <section aria-labelledby="cliTitle" class="m-0">
+                        <h2 class="page-subtitle" id="cliTitle">Command line usage</h2>
+                        <p>You can also use the curl commands on the command line to retrieve metadata, e.g.:</p>
+                        <pre><code>curl <a href="http://gigadb.org/api/dataset?doi=100051" target="_blank" rel="noopener noreferrer">http://gigadb.org/api/dataset?doi=100051</a></code></pre>
+                        <p>If you want to check whether a search will work you can use the <code>-I</code> flag:</p>
+                        <pre><code>curl -I <a href="http://gigadb.org/api/dataset?doi=100051" target="_blank" rel="noopener noreferrer">http://gigadb.org/api/dataset?doi=100051</a>
+# HTTP/1.1 200 OK
+# or
+# HTTP/1.1 404 Not Found / HTTP/1.1 500 Internal server error</code></pre>
+                    </section>
+
+                    <hr class="dashed">
 
                     <section aria-labelledby="examplesTitle" class="m-0">
                         <h2 class="page-subtitle" id="examplesTitle">Examples</h2>
@@ -898,18 +910,6 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242&lt;</pre>
                                 <a href="http://gigadb.org/api/list?start_date=2018-01-01&amp;end_date=2018-01-30" target="_blank">http://gigadb.org/api/list?start_date=2018-01-01&amp;end_date=2018-01-30</a>
                             </li>
                         </ol>
-                    </section>
-
-                    <hr class="dashed">
-                    <section aria-labelledby="cliTitle" class="m-0">
-                        <h2 class="page-subtitle" id="cliTitle">Command line usage</h2>
-                        <p>You can also use the curl commands on the command line to retrieve metadata, e.g.:</p>
-                        <pre><code>curl <a href="http://gigadb.org/api/dataset?doi=100051" target="_blank" rel="noopener noreferrer">http://gigadb.org/api/dataset?doi=100051</a></code></pre>
-                        <p>If you want to check whether a search will work you can use the <code>-I</code> flag:</p>
-                        <pre><code>curl -I <a href="http://gigadb.org/api/dataset?doi=100051" target="_blank" rel="noopener noreferrer">http://gigadb.org/api/dataset?doi=100051</a>
-# HTTP/1.1 200 OK
-# or
-# HTTP/1.1 404 Not Found / HTTP/1.1 500 Internal server error</code></pre>
                     </section>
                 </div>
             </div>
