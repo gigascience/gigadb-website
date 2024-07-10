@@ -412,7 +412,7 @@ $sampleDataProvider = $samples->getDataProvider();
                                         foreach ($file_models as $file) {
                                         ?>
                                             <tr>
-                                                <td><?= $file['nameHtml'] ?></td>
+                                                <td class="file-name-cell"><?= $file['nameHtml'] ?></td>
                                                 <td><?= $file['description'] ?></td>
                                                 <td><?php
                                                     //TODO: huge performance issue with large numbers of fileDatasetKeywordsTest.php:49, manifesting when disabling cache
