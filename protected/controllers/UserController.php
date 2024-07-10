@@ -2,9 +2,6 @@
 
 class UserController extends Controller {
     const PAGE_SIZE = 10;
-
-    public $layout='//layouts/main';
-
     /**
      * @var string specifies the default action
      */
@@ -438,7 +435,6 @@ EO_MAIL;
      */
     public function actionView($id)
     {
-        $this->layout = 'datasetpage';
         $this->render('view',array(
             'model'=>$this->loadModel($id)
         ));

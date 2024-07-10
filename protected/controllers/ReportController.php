@@ -2,8 +2,6 @@
 
 class ReportController extends Controller
 {
-	public $layout='//layouts/datasetpage';
-
 	/**
 	 * @return array action filters
 	 */

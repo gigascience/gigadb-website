@@ -2,11 +2,7 @@
 
 class AdminLinkPrefixController extends Controller
 {
-    /**
-     * @var string the default layout for the views. Defaults to '//layouts/datasetpage'
-     * See 'protected/views/layouts/column2.php'.
-     */
-    public $layout='//layouts/datasetpage';
+
 
     /**
      * @return array action filters
@@ -137,7 +133,7 @@ class AdminLinkPrefixController extends Controller
         if(isset($_GET['Prefix']))
             $model->setAttributes($_GET['Prefix']);
 
-        $this->layout = 'main';
+
         $this->loadBaBbqPolyfills = true;
         $this->render('admin',array(
             'model'=>$model,

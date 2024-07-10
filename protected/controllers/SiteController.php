@@ -9,7 +9,6 @@ class SiteController extends Controller {
     /**
  	 * Declares class-based actions.
 	 */
-    public $layout='//layouts/main';
 	public function actions() {
 		return array(
 			# captcha action renders the CAPTCHA image displayed on the contact page
@@ -353,7 +352,6 @@ class SiteController extends Controller {
 		$this->render('advisory');
 	}
 	public function actionFaq() {
-                $this->layout='faq';
 		$this->render('faq');
 	}
 

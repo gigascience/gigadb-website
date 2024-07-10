@@ -2,11 +2,7 @@
 
 class AdminLinkController extends Controller
 {
-	/**
-   * @var string the default layout for the views. Defaults to '//layouts/datasetpage'
-   * See 'protected/views/layouts/datasetpage.php'.
-   */
-	public $layout='//layouts/datasetpage';
+
 
 	/**
 	 * @return array action filters
@@ -242,7 +238,6 @@ class AdminLinkController extends Controller
 		if(isset($_GET['Link']))
 			$model->setAttributes($_GET['Link']);
 
-		$this->layout = 'main';
 		$this->loadBaBbqPolyfills = true;
 		$this->render('admin',array(
 			'model'=>$model,

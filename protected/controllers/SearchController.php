@@ -2,8 +2,6 @@
 
 class SearchController extends Controller
 {
-    public $layout='//layouts/datasetpage';
-
     public function actionEmailNewDatasets() {
         $this->render('emailNewDatasets');
     }

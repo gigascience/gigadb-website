@@ -2,11 +2,7 @@
 
 class AdminPublisherController extends Controller
 {
-	/**
-   * @var string the default layout for the views. Defaults to '//layouts/datasetpage'
-   * See 'protected/views/layouts/datasetpage.php'.
-   */
-	public $layout='//layouts/datasetpage';
+
 
 	/**
 	 * @return array action filters
@@ -135,7 +131,6 @@ class AdminPublisherController extends Controller
 		if(isset($_GET['Publisher']))
 			$model->setAttributes($_GET['Publisher']);
 
-		$this->layout = 'main';
 		$this->loadBaBbqPolyfills = true;
 		$this->render('admin',array(
 			'model'=>$model,

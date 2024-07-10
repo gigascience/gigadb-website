@@ -2,11 +2,7 @@
 
 class AdminRelationController extends Controller
 {
-	/**
-   * @var string the default layout for the views. Defaults to '//layouts/datasetpage'
-   * See 'protected/views/layouts/datasetpage.php'.
-   */
-	public $layout='//layouts/datasetpage';
+
 
 	/**
 	 * @return array action filters
@@ -249,7 +245,7 @@ class AdminRelationController extends Controller
 		if(isset($_GET['Relation']))
 			$model->setAttributes($_GET['Relation']);
 
-        $this->layout = 'main';
+
         $this->loadBaBbqPolyfills = true;
 		$this->render('admin',array(
 			'model'=>$model,

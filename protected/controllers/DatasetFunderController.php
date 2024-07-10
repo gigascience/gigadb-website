@@ -2,11 +2,7 @@
 
 class DatasetFunderController extends Controller
 {
-	/**
-   * @var string the default layout for the views. Defaults to '//layouts/datasetpage'
-   * See 'protected/views/layouts/datasetpage.php'.
-   */
-	public $layout='//layouts/datasetpage';
+
 
 	/**
 	 * @var CActiveRecord the currently loaded data model instance.
@@ -178,7 +174,6 @@ class DatasetFunderController extends Controller
 		if(isset($_GET['DatasetFunder']))
 			$model->setAttributes($_GET['DatasetFunder'],true);
 
-		$this->layout = 'main';
 		$this->loadBaBbqPolyfills = true;
 		$this->render('admin',array(
 			'model'=>$model,
