@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat 1872: Extract stages of postUpload script into separate scripts
+
 ## v4.3.2
 
 - Feat #1892: Remove unused CSS and LESS files
