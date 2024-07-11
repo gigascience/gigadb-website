@@ -248,9 +248,17 @@ EIPs Name tag | associated domain (only the 1st one is mandatory) |
 
 **Notes**: By default the number of EIPs allowed to be created in any given region is limited to 5. So if you need to deploy a live environment, you will need to request a quota increase for the region you are deploying into. Ask a core team member to do it for you.
 
-#### AWS credentials
+##### AWS credentials
 
-TODO
+The credentials obtained from the AWS dashboard needs to be stored locally at the path `~/.aws/credentials` under a profile called `[gigadb]`
+
+if the file doesn't exist yet, it should looks something like:
+
+```
+[gigadb]
+aws_access_key_id=XXXXX
+aws_secret_access_key=YYYYY
+```
 
 #### GitLab Variables
 
