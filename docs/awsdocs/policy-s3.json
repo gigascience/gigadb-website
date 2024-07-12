@@ -1,4 +1,3 @@
-```
 {
     "Version": "2012-10-17",
     "Statement": [
@@ -54,4 +53,3 @@ bucket which stores $doi.md5 and $doi.filesizes files.
         }
     ]
 }
-```
