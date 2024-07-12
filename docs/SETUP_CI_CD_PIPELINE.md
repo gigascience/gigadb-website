@@ -315,29 +315,6 @@ so, there should be 2 versions of each variable, one for each deployment environ
 | DEPLOYMENT_ENV | live | x | All (default) |
 | gigadb_db_host | dockerhost | x | staging |
 
-##### Optional
-
-The following variables can be configured as Gitlab Variables (or in .env) like above
-but as they already have default values, one needs to change their values only if want
-to depart from the default.
-
-| Key                 | Role                                      | Default on Dev/CI | Default on Staging | Default on Live |
-|---------------------|-------------------------------------------|-------------------|--------------------|-----------------| 
-| YII_DEBUG           | enable debug mode for extra logging       | true              | true               | false           |
-| YII_TRACE_LEVEL     | how many lines of context for log entries | 3                 | 0                  | 0               | 
-| DISABLE_CACHE       | whether to disable caching of DB queries  | false             | false              | false           |
-| SEARCH_RESULT_LIMIT | Nb. of results per page                   | 10                | 10                 | 10              |
-
->Note: the value of each of the first three variables has impact on website performances. 
-> The default values for the live environment offer the maximum performance. 
-> While the default values for Dev/CI provide the most debugging information.
-
->Note: those three variables set the values for PHP constants of the same names that are
-> defined in the Yii web application's ``index.php`` file (generated from templates  ``ops/configuration/yii-conf/index.$GIGADB_ENV.php.dist``)
-
-> Note: Although caching is on by default for all environments, but DISABLE_CACHE variable will be still available to provide flexibility if some specific development work needs it off.
->  DISABLE_CACHE can be manually configured to true in .env to turn off caching in dev environment.
-
 ##### Variables for configuring PHP-FPM
 
 Below are further variables that must be set in Gitlab variables.
@@ -363,6 +340,29 @@ The following variables need to be set for Environment "All (default)"
 | DOCKER_HUB_PASSWORD | yes |
 | AWS_ACCESS_KEY_ID | yes |
 | AWS_SECRET_ACCESS_KEY | yes |
+
+##### Optional
+
+The following variables can be configured as Gitlab Variables (or in .env) like above
+but as they already have default values, one needs to change their values only if want
+to depart from the default.
+
+| Key                 | Role                                      | Default on Dev/CI | Default on Staging | Default on Live |
+|---------------------|-------------------------------------------|-------------------|--------------------|-----------------| 
+| YII_DEBUG           | enable debug mode for extra logging       | true              | true               | false           |
+| YII_TRACE_LEVEL     | how many lines of context for log entries | 3                 | 0                  | 0               | 
+| DISABLE_CACHE       | whether to disable caching of DB queries  | false             | false              | false           |
+| SEARCH_RESULT_LIMIT | Nb. of results per page                   | 10                | 10                 | 10              |
+
+>Note: the value of each of the first three variables has impact on website performances. 
+> The default values for the live environment offer the maximum performance. 
+> While the default values for Dev/CI provide the most debugging information.
+
+>Note: those three variables set the values for PHP constants of the same names that are
+> defined in the Yii web application's ``index.php`` file (generated from templates  ``ops/configuration/yii-conf/index.$GIGADB_ENV.php.dist``)
+
+> Note: Although caching is on by default for all environments, but DISABLE_CACHE variable will be still available to provide flexibility if some specific development work needs it off.
+>  DISABLE_CACHE can be manually configured to true in .env to turn off caching in dev environment.
 
 
 #### Jobs and stages in GitLab configuration files
