@@ -1,8 +1,3 @@
-# Policy for managing VPCs
-
-In order to allow Terraform to manage the Network ACLs for VPC, the following policy is necessary
-
-```
 {
     "Version": "2012-10-17",
     "Statement": [
@@ -37,4 +32,3 @@ In order to allow Terraform to manage the Network ACLs for VPC, the following po
     ]
 }
 
-```
