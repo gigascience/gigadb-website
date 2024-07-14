@@ -1,3 +1,5 @@
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css" />
+
 <?php
 $title = strlen($model->title) > 100 ? strip_tags(substr($model->title, 0, 100)) . " ..." : strip_tags($model->title);
 $this->pageTitle = "GigaDB Dataset - DOI 10.5524/" . $model->identifier . " - " . $title;
@@ -563,6 +565,8 @@ $sampleDataProvider = $samples->getDataProvider();
     <a href="/dataset/<?php echo $previous_doi ?>" class="fixed-btn-left" title="Previous dataset" aria-label="Previous dataset"><span class="fa fa-angle-left"></span></a>
     <a href="/dataset/<?php echo $next_doi ?>" title="Next dataset" class="fixed-btn-right" aria-label="Next dataset"><span class="fa fa-angle-right"></span></a>
 
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" defer></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js" defer></script>
     <!-- Place this tag in your head or just before your close body tag. -->
     <script>
         document.addEventListener("DOMContentLoaded", function(event) { //This event is fired after deferred scripts are loaded
