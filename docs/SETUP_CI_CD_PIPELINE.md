@@ -18,12 +18,12 @@ GitLab's infrastructure to build any project.
 
 The GigaDB `gitlab-ci.yml` configuration file tells the GitLab Runner to run a pipeline job 
 with these stages:
-- build for test
-- test
-- conformance and security
-- production build
-- staging deploy
-- live deploy
+* build for test
+* test
+* conformance and security
+* production build
+* staging deploy
+* live deploy
 
 That file is the entry point for configuring the GitLab pipelines. The configuration is organised in a modular way.
 Thus, ``gitlab-ci.yml`` includes other configuration files to maintain a clear organisation:
@@ -103,7 +103,8 @@ The environment is associated upon creation to each variable as one of its attri
 
 >**Note:** there is no connection between the environment of variables and the deployment environments listed in previous section. 
 >By convention the `staging` and `live` environments for variables are associated with the `staging` and `live` deployments respectively. 
->(i.e: a staging variable is only to be used on staging deployment environment, and a live variable is to be used only on live deployment environment).
+>(i.e: a staging variable is only to be used on staging deployment environment, 
+>and a live variable is to be used only on live deployment environment).
 >`All` class of variables are needed in applications regardless of their deployment environments, 
 >while the `dev` class of variables are equally used on a developer's local environments and on CI deployment environment.
 
@@ -233,7 +234,8 @@ on which the GigaDB application will be deployed. In addition, an RDS machine
 is created to provide a PostgreSQL database for GigaDB. Both these machines can
 be used for a specific environment, most likely staging or live.
 
-There are two pre-requisites to fulfill before. First, GitLab needs be configured for build and deployment to production (staging and live).
+There are two pre-requisites to fulfill beforehand: 
+First, GitLab needs be configured for build and deployment to production (staging and live).
 Second, several tools are needed to set up a Docker-enabled server on the AWS cloud: 
 AWS-CLI, Terraform, and Ansible.
 
@@ -265,9 +267,11 @@ and optionally:
 * files.yoursubdomain-live.gigadb.host
 * bastion.yoursubdomain-live.gigadb.host
 
-where *yourdomain* is a unique short string of your choice to identify your endpoints form those of other team members, like your IAM role name in lowercase or Gitlab project prefix
+where *yourdomain* is a unique short string of your choice to identify your endpoints form those of other team members, 
+like your IAM role name in lowercase or Gitlab project prefix.
 
-Ask a core team member to create an "A" record in the DNS server to map to the Elastic IPs you have set up in previous section for your staging and live environment.
+Ask a core team member to create an "A" record in the DNS server to map to the Elastic IPs 
+you have set up in previous section for your staging and live environment.
 
 
 #### AWS dashboard
@@ -301,7 +305,9 @@ EIPs Name tag | associated domain (only the 1st one is mandatory) |
 | ``eip-gigadb-bastion-live-<IAM Role Username>`` | (optional)bastion.yoursubdomain-live.gigadb.host |
 | ``eip-gigadb-files-live-<IAM Role Username>`` | (optional)files.yoursubdomain-live.gigadb.host |
 
-**Notes**: By default the number of EIPs allowed to be created in any given region is limited to 5. So if you need to deploy a live environment, you will need to request a quota increase for the region you are deploying into. Ask a core team member to do it for you.
+>**Notes**: By default the number of EIPs allowed to be created in any given region is limited to 5. 
+>So if you need to deploy a live environment, you will need to request a quota increase for the region you are deploying into. 
+>Ask a core team member to do it for you.
 
 ##### AWS credentials
 
@@ -409,15 +415,17 @@ to depart from the default.
 | DISABLE_CACHE       | whether to disable caching of DB queries  | false             | false              | false           |
 | SEARCH_RESULT_LIMIT | Nb. of results per page                   | 10                | 10                 | 10              |
 
->Note: the value of each of the first three variables has impact on website performances. 
-> The default values for the live environment offer the maximum performance. 
-> While the default values for Dev/CI provide the most debugging information.
+>**Note:** the value of each of the first three variables has impact on website performances. 
+>The default values for the live environment offer the maximum performance. 
+>While the default values for Dev/CI provide the most debugging information.
 
->Note: those three variables set the values for PHP constants of the same names that are
-> defined in the Yii web application's ``index.php`` file (generated from templates  ``ops/configuration/yii-conf/index.$GIGADB_ENV.php.dist``)
+>**Note:** those three variables set the values for PHP constants of the same names that are
+>defined in the Yii web application's ``index.php`` file 
+>(generated from templates  ``ops/configuration/yii-conf/index.$GIGADB_ENV.php.dist``)
 
-> Note: Although caching is on by default for all environments, but DISABLE_CACHE variable will be still available to provide flexibility if some specific development work needs it off.
->  DISABLE_CACHE can be manually configured to true in .env to turn off caching in dev environment.
+>**Note:** Although caching is on by default for all environments, 
+>DISABLE_CACHE variable will still be available to provide flexibility if some specific development work needs it off.
+>DISABLE_CACHE can be manually configured to true in .env to turn off caching in dev environment.
 
 
 #### Jobs and stages in GitLab configuration files
@@ -426,9 +434,10 @@ Every job defined in the configuration need to have their stage and environment 
 The former enables the execution order of the pipeline, and the latter ensures the variables for the selected 
 environment only is made available to the pipeline's jobs.
 
-> The name of valid stages to be used in GitLab configuration are listed at the top of the file ``.gitlab-ci.yml``  
+>The name of valid stages to be used in GitLab configuration are listed at the top of the file ``.gitlab-ci.yml``  
 
-> Ensure the value of ``environment:name:`` in GitLab configuration matches the environment that you have created in Gitlab dashboard under ``Deployments > Environments``
+>Ensure the value of ``environment:name:`` in GitLab configuration matches the environment that 
+>you have created in Gitlab dashboard under ``Deployments > Environments``
 
 
 ##### Examples:
@@ -460,9 +469,12 @@ sd_gigadb:
 ```
 
 
->Note: Make sure you have a Docker Hub account and that its username and access token (which can be created in Docker Hub's security settings)
-> are used as value for GitLab variables DOCKER_HUB_USERNAME and DOCKER_HUB_PASSWORD (set for the "All (default)" environment)
-> as the ``before_script`` section of ``.gitlab-ci.yml`` uses them to login to Docker Hub and pull the main base image to speed up the build stage
+>**Note:** Make sure you have a Docker Hub account and that its username and access token 
+>(which can be created in Docker Hub's security settings)
+>are used as value for GitLab variables DOCKER_HUB_USERNAME and DOCKER_HUB_PASSWORD 
+>(set for the "All (default)" environment)
+>as the ``before_script`` section of ``.gitlab-ci.yml`` uses them to login to Docker Hub 
+>and pull the main base image to speed up the build stage
 
 ### Acceptance tests
 
