@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Fix #1908: Correct and improve CI/CD setup documentation
+
 ## v4.3.2
 
 - Feat #1892: Remove unused CSS and LESS files
