@@ -137,13 +137,13 @@ class CurationLog extends CActiveRecord
     
     public static function createlog_assign_curator($id, $curatorId) {
         $User1 = User::model()->find('id=:id', array(':id' => Yii::app()->user->id));
-        $username1 = sprintf('%s %s', $User1->first_name, $User1->last_name);
+        $username = sprintf('%s %s', $User1->first_name, $User1->last_name);
         $User = $curatorId ? User::model()->find('id=:id', array(':id' => $curatorId)) : null;
-        $username = $curatorId ? sprintf('%s %s', $User->first_name, $User->last_name) : 'none';
+        $displayName = $curatorId ? sprintf('%s %s', $User->first_name, $User->last_name) : 'none';
 
 
-        $curationlog =  self::makeNewInstanceForDatasetBy($id, $username1);
-        $curationlog->action = "Curator Assigned:"." $username";
+        $curationlog =  self::makeNewInstanceForDatasetBy($id, $username);
+        $curationlog->action = "Curator Assigned:"." $displayName";
 
         return $curationlog->save();
     }

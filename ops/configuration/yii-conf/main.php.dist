@@ -174,7 +174,7 @@ return CMap::mergeArray(array(
             'useApcu'=>true
         ),
         'fileUploadService' => array(
-                'class' => 'application.extensions.CFileUploadComponent',
+                'class' => 'application.components.FileUploadComponent',
         )
     ),
 

@@ -222,7 +222,6 @@ class AdminDatasetController extends Controller
         $model->nullifyDateValueIfEmpty();
 
         if ($model->save()) {
-
             $postDatasetTypes = array_keys(Yii::$app->request->post('datasettypes'));
             if (!$postDatasetTypes) {
                 Yii::app()->user->setFlash('updateError', 'Fail to update your types');
@@ -232,7 +231,7 @@ class AdminDatasetController extends Controller
             }
 
             if ($uploadStatus !== $previousUploadStatus) {
-                $this->renderNotificationsAccordingToStatus($uploadStatus, $model);
+                $this->renderNotificationsAccordingToStatus($uploadStatus, $previousUploadStatus, $model);
             }
 
             // semantic kewyords update, using remove all and re-create approach
@@ -245,7 +244,7 @@ class AdminDatasetController extends Controller
             // retrieve existing redirect
             $criteria = new CDbCriteria(array('order'=>'id ASC'));
             $urlToRedirectAttr = Attributes::model()->findByAttributes(array('attribute_name'=>'urltoredirect'));
-            $urlToRedirectDatasetAttribute = datasetAttributes::model()->findByAttributes(array('dataset_id'=>$id,'attribute_id'=>$urlToRedirectAttr->id), $criteria);
+            $urlToRedirectDatasetAttribute = DatasetAttributes::model()->findByAttributes(array('dataset_id'=>$id,'attribute_id'=>$urlToRedirectAttr->id), $criteria);
 
             // update with value from form if value has changed.
             if ($urlToRedirectDatasetAttribute && $urlToRedirect !== $urlToRedirectDatasetAttribute->value) {
@@ -497,7 +496,7 @@ class AdminDatasetController extends Controller
         return $model;
     }
 
-    private function renderNotificationsAccordingToStatus($uploadStatus, $model)
+    private function renderNotificationsAccordingToStatus($uploadStatus, $previousStatus, $model)
     {
         // setting DatasetUpload, the busisness object for File uploading
         $webClient = new \GuzzleHttp\Client();
@@ -511,7 +510,7 @@ class AdminDatasetController extends Controller
         switch ($uploadStatus) {
             case 'Submitted':
                 $contentToSend = $datasetUpload->renderNotificationEmailBody('Submitted');
-                $statusIsSet = $datasetUpload->setStatusToSubmitted($contentToSend);
+                $statusIsSet = $datasetUpload->setStatusToSubmitted($contentToSend, $previousStatus);
 
                 break;
             case 'DataPending':
@@ -525,7 +524,7 @@ class AdminDatasetController extends Controller
                 }
 
                 $statusIsSet = $datasetUpload->setStatusToDataPending(
-                    $contentToSend, $model->submitter->email
+                    $contentToSend, $model->submitter->email, $previousStatus
                 );
 
                 break;

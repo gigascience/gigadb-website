@@ -1,11 +1,14 @@
 <?php
 
-class CFileUploadComponent extends CApplicationComponent
+class FileUploadComponent extends CApplicationComponent
 {
+    /**
+     * @throws CException
+     */
     public function getFileUploadService($webClient, $identifier)
     {
-        if ($webClient instanceof \GuzzleHttp\Client) {
-            // TODO throw exception
+        if (!$webClient instanceof \GuzzleHttp\Client) {
+            throw new CException('An error occurred');
         }
 
         return new  FileUploadService([

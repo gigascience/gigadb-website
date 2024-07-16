@@ -27,9 +27,10 @@ class ImageTest extends \Codeception\Test\Unit
     {
         $datasetUuid = Uuid::uuid4(); //random UUID
         $imageName = "bgi_logo_new.png";
+        $expectedImageName = 'bgi-logo-new.png';
         $tempName = __DIR__ . "/../_data/" . $imageName;
         $expectedOptions = [ 'visibility' => AdapterInterface::VISIBILITY_PUBLIC ];
-        $expectedTargetLocationPattern = "/images\/datasets\/$datasetUuid\/$imageName/"; //use regex so test works on dev and CI environments
+        $expectedTargetLocationPattern = "/images\/datasets\/$datasetUuid\/$expectedImageName/"; //use regex so test works on dev and CI environments
 
         $sut = new Image(); // System Under Test
 
@@ -55,7 +56,7 @@ class ImageTest extends \Codeception\Test\Unit
 
         $this->assertTrue($sut->write($mockStorageTarget, $datasetUuid, $mockDatasetImage));
 
-        $this->assertEquals($imageName, $sut->location);
+        $this->assertEquals($expectedImageName, $sut->location);
         $urlArray = parse_url($sut->url); // we compare by URL component because root directory varies with the environments
         $this->assertEquals("https", $urlArray["scheme"]);
         $this->assertEquals(Image::BUCKET, $urlArray["host"]);
@@ -70,9 +71,10 @@ class ImageTest extends \Codeception\Test\Unit
     {
         $datasetUuid = Uuid::uuid4();
         $imageName = "bgi_logo_new.png";
+        $expectedImageName = 'bgi-logo-new.png';
         $tempName = __DIR__ . "/../_data/" . $imageName;
         $expectedOptions = [ 'visibility' => AdapterInterface::VISIBILITY_PUBLIC ];
-        $expectedTargetLocationPattern = "/images\/datasets\/$datasetUuid\/$imageName/"; //use regex so test works on dev and CI environments
+        $expectedTargetLocationPattern = "/images\/datasets\/$datasetUuid\/$expectedImageName/"; //use regex so test works on dev and CI environments
 
         $sut = new Image(); // System Under Test
 
