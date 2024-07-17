@@ -11,7 +11,11 @@
 .panel-default > .panel-heading + .panel-collapse > .panel-body {
   border-top-color: @color-light-gray;
 }
-.panel-title > .small, .panel-title > .small > button, .panel-title > button, .panel-title > small, .panel-title > small > button {
+.panel-title > .small,
+.panel-title > .small > button,
+.panel-title > button,
+.panel-title > small,
+.panel-title > small > button {
   color: @color-warm-black;
   text-decoration: none;
 }
@@ -99,4 +103,35 @@
 }
 .profile-panel label {
   color: @color-warm-black;
+}
+.panel.panel-toggleable {
+  .toggle-btn {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    padding: 0.5rem;
+    margin-bottom: 0;
+    text-align: left;
+    gap: 6px;
+    border: none;
+    border-radius: 4px;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    &:focus {
+      color: @color-gigadb-green-900;
+    }
+    &:hover {
+      color: white;
+    }
+    &[aria-expanded="false"] {
+      border-bottom-left-radius: 4px;
+      border-bottom-right-radius: 4px;
+    }
+  }
+}
+
+.xxxx {
+  color: red;
 }

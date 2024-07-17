@@ -15,6 +15,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## v4.3.0 - 2024-06-25 - 9cf91f224 - live since 2024-07-01
 
+- Feat #1711: Add toggleable help panel to admin dataset table
 - Feat #1892: Remove old layouts
 - Fix #1845: Use file path to update md5 values and file sizes in database
 - Fix #1812: Navigating tables on mockup pages does not generate errors
