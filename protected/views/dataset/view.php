@@ -396,7 +396,7 @@ $sampleDataProvider = $samples->getDataProvider();
                                 <table id="files_table" class="table table-striped table-bordered" style="width:100%">
                                     <thead>
                                         <tr>
-                                            <th title="The name of the file. Click header to sort by A-Z/Z-A.">File Name</th>
+                                            <th title="The name of the file. Click header to sort by A-Z/Z-A." class="file-name-header">File Name</th>
                                             <th title="Short description of file contents. Click header to sort by A-Z/Z-A.">Description</th>
                                             <th title="Name or ID of sample used to generate this file.">Sample ID</th>
                                             <th title="The type of data in the file, see [help](http://gigadb.org/site/help#vocabulary) page for definitions of individual data types.  Click header to sort by A-Z/Z-A.">Data Type</th>
