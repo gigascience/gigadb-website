@@ -28,8 +28,17 @@ There are 5 phases of provisioning, and below they are listed alongside their re
 
 ## Provisioning How-to
 
-Here's what you need to do to provision and infrastructure and deploy the application. 
-The remainders of sections explain how to install the tools mentioned here and give additional info on the process.
+Here's a quick run-down of what you need to do to provision and infrastructure and deploy the application. 
+The remainders of sections explain in more details how to install the tools mentioned here and give additional info on the process.
+
+### Pre-requisites: Setup pipeline and Install the tools
+
+1. You have implemented the instructions in `docs/SETUP_CI_CD_PIPELINE.md`
+2. Install AWS CLI by following AWS's instructions[here](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html).
+3. Install Terraform with `brew install terraform`
+4. Install Ansible with `brew install ansible`
+
+More details about the tools can be found in the "Tools" section futher down.
 
 ### Setting up your Staging environment
 
@@ -586,7 +595,7 @@ Install Terraform-0.14 by downloading the installer from the
 package manager for your operating system. For example, macOS users can use 
 [Macports](https://www.macports.org) or [HomeBrew](https://brew.sh/):
 ```
-$ sudo port install terraform-0.14
+$ sudo port install terraform
 ```
 or
 ```
