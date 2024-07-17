@@ -55,6 +55,7 @@ $ ../../../scripts/ansible_init.sh --env staging
 This will save the information Terraform retrieved from the just created AWS resources into Gitlab variables.
 You can now start a Gitlab pipeline for the git branch or tag you want to deploy (the main branch is called `develop`).
 
+
 #### 3. Configure the infastructure
  
 ```
@@ -523,113 +524,31 @@ When provisioning a new staging or live environment, ``ops/scripts/setup_cert.sh
 This way, we won't unnecessarily creat certificate everytime we need to re-create a staging and deployment, 
 thus reducing the risk of hitting weekly rate-limit for certificate creation imposed by Let's Encrypt.
 
-### Executing the CD pipeline for deployment
-
-#### 1. Choose the environment for which to deploy
-
-* For staging: ``cd ops/infractructure/envs/staging``
-* For live: ``cd ops/infractructure/envs/live``
-
-Those directories start empty, but the ``tf_init.sh`` and ``ansible_init.sh`` scripts below will populate them with necessary files
-so we can run ``terraform`` and ``ansible-playbook`` commands from those directories for a safe provisioning of the desired environment.
-
-#### 2. Initialise and provision with Terraform
-
-```
-$ ../../../scripts/tf_init.sh --project gigascience/forks/rija-gigadb-website --env environment
-You need to specify the path to the ssh private key to use to connect to the EC2 instance: ~/.ssh/id-rsa-aws.pem
-You need to specify your GitLab username: pli888
-You need to specify a backup file created by the files-url-updater tool: ../../../../gigadb/app/tools/files-url-updater/sql/gigadbv3_20210929_v9.3.25.backup
-# Now provision with Terraform
-$ terraform plan  
-$ terraform apply
-$ terraform refresh
-```
-
-where you replace ``gigascience/forks/rija-gigadb-website`` with the appropriate GitLab project.
-and ``environment`` with ``staging`` or ``live``
-
->To provision infrastructure for *.gigadb.org, we need to use the `Gigadb` AWS
-> IAM user account which needs to be correctly configured in ~/.aws.credentials
-> and ~/.aws/config. This IAM profile can then be used as follows:
-```
-$ AWS_PROFILE=Gigadb terraform plan
-$ AWS_PROFILE=Gigadb terraform apply
-$ AWS_PROFILE=Gigadb terraform refresh
-```
-
-#### 3. Initialise Ansible
-
-```
-$ ../../../scripts/ansible_init.sh --env environment
-```
-
-where you replace ``environment`` with ``staging`` or ``live``
-
-#### 4. Perform Ansible playbook
-
-Ensure you are still in ``ops/infractructure/envs/staging`` or ``ops/infractructure/envs/live``
-
-```
-$ env TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook  -i ../../inventories webapp_playbook.yml -e="gigadb_env=environment"
-$ env TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook  -i ../../inventories files_playbook.yml -e="gigadb_env=environment" --tags="efs-mount-points"
-$ env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories bastion_playbook.yml -e "gigadb_env=environment" -e "backupDate=latest"
-```
-where you replace ``environment`` with ``staging`` or ``live``
-
-when performing the plays, It's important to pay particular attention  to the selected host group after the ``-i`` parameter.
-
-The two valid values are listed in ``ops/infrastructure/inventories/hosts`` as section heads ``[...]``
-
-That latter file also shows how the files created in the environment-specific directory by ``tf_init.sh`` and ``ansible_init.sh`` are used to set the Ansible host variables.
-There's no need to use ``ansible-vault`` anymore.
-
 > Since an elastic IP address is being used, you might need to delete the entry
 in the `~/.ssh/known_hosts` file associated with the elastic IP address if this
 is not the first time you have performed the plays in the playbook.
 
-#### 5. Build and deploy
-
-Use the Gitlab Pipelines dashboard to build the application (by triggering manual job ``build_staging`` or ``build_live``).
-Once the production containers are build (in the Gitlab Containers Registry they are listed as production_<service>:<environment),
-We can proceed with deployment to the target environment by triggering manual job ``sd_gigadb`` (staging) or ``ld_gigadb`` (live).
-
-The application should be available at the url defined in $REMOTE_HOME_URL for a given environment.
-
-### Restoration of database snapshots
-```
-# Go to environment directory
-$ cd <path>/gigadb-website/ops/infrastructure/envs/staging
-
-# Terminate existing RDS service
-$ terraform destroy --target module.rds
-
-# Restore database snapshot
-$ terraform plan -var snapshot_identifier="snapshot-for-testing"
-$ terraform apply -var snapshot_identifier="snapshot-for-testing"
-$ terraform refresh
-```
-
 ### Restoration of database backups
+
 ```
-# Go to environment directory
+#Go to environment directory
 $ cd <path>/gigadb-website/ops/infrastructure/envs/staging
 
-# Terminate existing RDS service
+#Terminate existing RDS service
 $ terraform destroy --target module.rds
 
-# Copy override.tf to staging environment
+#Copy override.tf to staging environment
 $ ../../../scripts/tf_init.sh --project gigascience/forks/pli888-gigadb-website --env staging --restore-backup
 
-# Backups can either be restored to its latest restorable time or to a specific
-# time.
+#Backups can either be restored to its latest restorable time or to a specific
+#time.
 
-# To restore to latest restorable time - need to override database name as this 
-# will come from the backup
+#To restore to latest restorable time - need to override database name as this 
+#will come from the backup
 $ terraform apply -var source_dbi_resource_id="db-6GQU4LWFBZI34AOR5BW2MEQFLU" -var gigadb_db_database="" -var use_latest_restorable_time="true"
 
-# To restore to specific time in backup - need to override database name as this 
-# will come from the backup
+#To restore to specific time in backup - need to override database name as this 
+#will come from the backup
 $ terraform apply -var source_dbi_resource_id="db-6GQU4LWFBZI34AOR5BW2MEQFLU" -var gigadb_db_database="" -var utc_restore_time="2021-10-27T06:02:12+00:00"
 ```
 
@@ -648,65 +567,9 @@ Then running the following command to create a default subnet will fix it:
 
 All SQL statements executed on the PostgreSQL RDS instance are logged in staging
 deployments of GigaDB. These `postgres.log` files are available from the AWS
-console for the RDS service in the `Log & events` tab.###  Provision AWS infrastructure
+console for the RDS service in the `Log & events` tab.
 
-```
-$ rm -rf ops/infrastructure/envs/staging
-$ mkdir ops/infrastructure/envs/staging
-$ cd ops/infrastructure/envs/staging/
-$ ../../../scripts/tf_init.sh --project \<your gitlab project path\> --env staging --region \<your region\> --ssh-key \<path to your key\> --web-ec2-type t3.small --bastion-ec2-type t3.small
-$ terraform plan
-$ terraform apply
-$ terraform refresh
-```
 
-### Configure the infastructure
- 
-```
-$ ../../../scripts/ansible_init.sh --env staging
-$ env TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook  -i ../../inventories webapp_playbook.yml -e="gigadb_env=staging"
-$ env TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook  -i ../../inventories files_playbook.yml -e="gigadb_env=staging"
-$ env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories bastion_playbook.yml -e "gigadb_env=staging" -e "backupDate=latest"
-```
-
-## Setting up your Live environment
-
-###  Provision AWS infrastructure
-
-```
-$ rm -rf ops/infrastructure/envs/live
-$ mkdir ops/infrastructure/envs/live
-$ cd ops/infrastructure/envs/live/
-$ ../../../scripts/tf_init.sh --project \<your gitlab project path\> --env live --region \<your region\> --ssh-key \<path to your key\> --web-ec2-type t3.small --bastion-ec2-type t3.small
-$ terraform plan
-$ terraform apply
-$ terraform refresh
-```
-
-### Configure the infastructure
- 
-```
-$ ../../../scripts/ansible_init.sh --env live
-$ env TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook  -i ../../inventories webapp_playbook.yml -e="gigadb_env=live"
-$ env TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook  -i ../../inventories files_playbook.yml -e="gigadb_env=live"
-$ env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories bastion_playbook.yml -e "gigadb_env=live" -e "backupDate=latest"
-```
-
-## Tear down your environment
-
-Don't forget to tear down your environment when you don't use it anymore:
-
-```
-$ cd ops/infrastructure/envs/staging
-$ terraform destroy
-```
-
-or:
-
-```
-$ cd ops/infrastructure/envs/live
-$ terraform destroy
-```
 ### Tools
 
 #### AWS-CLI
@@ -1075,14 +938,18 @@ thus reducing the risk of hitting weekly rate-limit for certificate creation imp
 
 ### Restoration of database snapshots
 
+
 ```
-# Go to environment directory
+#Go to environment directory
 $ cd <path>/gigadb-website/ops/infrastructure/envs/staging
+```
 
 # Terminate existing RDS service
+
+```
 $ terraform destroy --target module.rds
 
-# Restore database snapshot
+#Restore database snapshot
 $ terraform plan -var snapshot_identifier="snapshot-for-testing"
 $ terraform apply -var snapshot_identifier="snapshot-for-testing"
 $ terraform refresh
@@ -1572,71 +1439,6 @@ Upon creation of new certificate or renewal, the certificates are backed up to G
 When provisioning a new staging or live environment, ``ops/scripts/setup_cert.sh`` will attempt to pull these variables if they exist.
 This way, we won't unnecessarily creat certificate everytime we need to re-create a staging and deployment, 
 thus reducing the risk of hitting weekly rate-limit for certificate creation imposed by Let's Encrypt.
-
-### Executing provisioning
-
-#### 1. Choose the environment for which to deploy
-
-* For staging: ``cd ops/infractructure/envs/staging``
-* For live: ``cd ops/infractructure/envs/live``
-
-Those directories start empty, but the ``tf_init.sh`` and ``ansible_init.sh`` scripts below will populate them with necessary files
-so we can run ``terraform`` and ``ansible-playbook`` commands from those directories for a safe provisioning of the desired environment.
-
-#### 2. Initialise and provision with Terraform
-
-```
-$ ../../../scripts/tf_init.sh --project gigascience/forks/rija-gigadb-website --env environment
-You need to specify the path to the ssh private key to use to connect to the EC2 instance: ~/.ssh/id-rsa-aws.pem
-You need to specify your GitLab username: pli888
-You need to specify a backup file created by the files-url-updater tool: ../../../../gigadb/app/tools/files-url-updater/sql/gigadbv3_20210929_v9.3.25.backup
-# Now provision with Terraform
-$ terraform plan  
-$ terraform apply
-$ terraform refresh
-```
-
-where you replace ``gigascience/forks/rija-gigadb-website`` with the appropriate GitLab project.
-and ``environment`` with ``staging`` or ``live``
-
->To provision infrastructure for *.gigadb.org, we need to use the `Gigadb` AWS
-> IAM user account which needs to be correctly configured in ~/.aws.credentials
-> and ~/.aws/config. This IAM profile can then be used as follows:
-```
-$ AWS_PROFILE=Gigadb terraform plan
-$ AWS_PROFILE=Gigadb terraform apply
-$ AWS_PROFILE=Gigadb terraform refresh
-```
-
-#### 3. Initialise Ansible
-
-```
-$ ../../../scripts/ansible_init.sh --env environment
-```
-
-where you replace ``environment`` with ``staging`` or ``live``
-
-#### 4. Perform Ansible playbook
-
-Ensure you are still in ``ops/infractructure/envs/staging`` or ``ops/infractructure/envs/live``
-
-```
-$ env TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook  -i ../../inventories webapp_playbook.yml -e="gigadb_env=environment"
-$ env TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook  -i ../../inventories files_playbook.yml -e="gigadb_env=environment" --tags="efs-mount-points"
-$ env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories bastion_playbook.yml -e "gigadb_env=environment" -e "backupDate=latest"
-```
-where you replace ``environment`` with ``staging`` or ``live``
-
-when performing the plays, It's important to pay particular attention  to the selected host group after the ``-i`` parameter.
-
-The two valid values are listed in ``ops/infrastructure/inventories/hosts`` as section heads ``[...]``
-
-That latter file also shows how the files created in the environment-specific directory by ``tf_init.sh`` and ``ansible_init.sh`` are used to set the Ansible host variables.
-There's no need to use ``ansible-vault`` anymore.
-
-> Since an elastic IP address is being used, you might need to delete the entry
-in the `~/.ssh/known_hosts` file associated with the elastic IP address if this
-is not the first time you have performed the plays in the playbook.
 
 ### Restoration of database snapshots
 
