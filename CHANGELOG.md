@@ -5,7 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
-- Fix #1960: Truncate long filenames in dataset files table
+- Fix #1960: Let long filenames wrap anywhere in dataset files table
 - Fix #1912: Enable curators to save Gigadb forms from many browser tabs at once
 - Feat #1840: Make create readme tool available as part of postUpload script
 
