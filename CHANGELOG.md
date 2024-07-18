@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1892: Remove unused CSS and LESS files
 - Fix #1871: Allowed to save species info filling only required inputs
 
 ## v4.3.1 - 2024-07-10 - 2ba5e7dbc
