@@ -38,9 +38,21 @@ createReadMeFileEndMessage="\nDone with creating the README file for $DOI. The R
 if [[ $(uname -n) =~ compute ]];then
   . /home/centos/.bash_profile
 
-  docker run --rm  --env-file ./db-env registry.gitlab.com/$GITLAB_PROJECT/production_pgclient:$GIGADB_ENV -c 'drop trigger if exists file_finder_trigger on file RESTRICT'
-  docker run --rm  --env-file ./db-env registry.gitlab.com/$GITLAB_PROJECT/production_pgclient:$GIGADB_ENV -c 'drop trigger if exists sample_finder_trigger on sample RESTRICT'
-  docker run --rm  --env-file ./db-env registry.gitlab.com/$GITLAB_PROJECT/production_pgclient:$GIGADB_ENV -c 'drop trigger if exists dataset_finder_trigger on dataset RESTRICT'
+  echo -e "$createReadMeFileStartMessage"
+  if [[ $GIGADB_ENV == "staging" ]];then
+    /usr/local/bin/createReadme --doi "$DOI" --outdir /app/readmeFiles --wasabi --apply
+    echo -e "Created readme file and uploaded it to Wasabi gigadb-website/staging bucket directory"
+  elif [[ $GIGADB_ENV == "live" ]];then
+    /usr/local/bin/createReadme --doi "$DOI" --outdir /app/readmeFiles --wasabi --use-live-data --apply
+    echo -e "Created readme file and uploaded it to Wasabi gigadb-website/live bucket directory"
+  else
+    echo -e "Environment is $GIGADB_ENV - Readme file creation is not required"
+  fi
+  echo -e "$createReadMeFileEndMessage"
+
+  echo -e "$updateMD5ChecksumStartMessage"
+  docker run -e YII_PATH=/var/www/vendor/yiisoft/yii "registry.gitlab.com/$GITLAB_PROJECT/production_app:$GIGADB_ENV" ./protected/yiic files updateMD5FileAttributes --doi="$DOI" | tee "$outputDir/updating-md5checksum-$DOI.txt"
+  echo -e "$updateMD5ChecksumEndMessage"
 
   echo -e "$updateFileSizeStartMessage"
   docker run --rm "registry.gitlab.com/$GITLAB_PROJECT/production-files-metadata-console:$GIGADB_ENV" ./yii update/file-sizes --doi="$DOI" | tee "$outputDir/updating-file-size-$DOI.txt"
@@ -51,20 +63,6 @@ if [[ $(uname -n) =~ compute ]];then
 #  docker run --rm "registry.gitlab.com/$GITLAB_PROJECT/production-files-metadata-console:$GIGADB_ENV" ./yii check/valid-urls --doi="$DOI" | tee "$outputDir/invalid-urls-$DOI.txt"
 #  echo -e "$checkValidUrlsEndMessage"
 
-  echo -e "$updateMD5ChecksumStartMessage"
-  docker run -e YII_PATH=/var/www/vendor/yiisoft/yii "registry.gitlab.com/$GITLAB_PROJECT/production_app:$GIGADB_ENV" ./protected/yiic files updateMD5FileAttributes --doi="$DOI" | tee "$outputDir/updating-md5checksum-$DOI.txt"
-  echo -e "$updateMD5ChecksumEndMessage"
-
-  if [[ $GIGADB_ENV == "staging" ]];then
-    ./createReadme.sh --doi "$DOI" --outdir /app/readmeFiles --wasabi --apply
-    echo -e "Created readme file and uploaded it to Wasabi gigadb-website/staging bucket directory"
-  elif [[ $GIGADB_ENV == "live" ]];then
-    ./createReadme.sh --doi "$DOI" --outdir /app/readmeFiles --wasabi --use-live-data --apply
-    echo -e "Created readme file and uploaded it to Wasabi gigadb-website/live bucket directory"
-  else
-    echo -e "Environment is $GIGADB_ENV - Readme file creation is not required"
-  fi
-
   if [[ $userOutputDir != "$outputDir" && -n "$(ls -A $outputDir)" ]];then
       mv $outputDir/* "$userOutputDir/" || true
       chown "$SUDO_USER":"$SUDO_USER" "$userOutputDir"/*
@@ -74,15 +72,7 @@ if [[ $(uname -n) =~ compute ]];then
       echo -e "\nNo logs found in: $outputDir!"
   fi
 
-  docker run --rm  --env-file ./db-env registry.gitlab.com/$GITLAB_PROJECT/production_pgclient:$GIGADB_ENV -c 'create trigger file_finder_trigger after insert or update or delete or truncate on file for each statement execute procedure refresh_file_finder()'
-  docker run --rm  --env-file ./db-env registry.gitlab.com/$GITLAB_PROJECT/production_pgclient:$GIGADB_ENV -c 'create trigger sample_finder_trigger after insert or update or delete or truncate on sample for each statement execute procedure refresh_sample_finder()'
-  docker run --rm  --env-file ./db-env registry.gitlab.com/$GITLAB_PROJECT/production_pgclient:$GIGADB_ENV -c 'create trigger dataset_finder_trigger after insert or update or delete or truncate on dataset for each statement execute procedure refresh_dataset_finder()'
-
 else  # Running on dev environment
-
-  docker-compose run --rm pg_client -c 'drop trigger if exists file_finder_trigger on file RESTRICT'
-  docker-compose run --rm pg_client -c 'drop trigger if exists sample_finder_trigger on sample RESTRICT'
-  docker-compose run --rm pg_client -c 'drop trigger if exists dataset_finder_trigger on dataset RESTRICT'
 
   # Execute readme tool first to create readme-generator/runtime/curators
   # directory which /home/curators is mapped to
@@ -108,10 +98,4 @@ else  # Running on dev environment
 #  docker-compose run --rm files-metadata-console ./yii check/valid-urls --doi="$DOI" | tee "$outputDir/invalid-urls-$DOI.txt"
 #  echo -e "$checkValidUrlsEndMessage"
 
-  cd ../../tools/excel-spreadsheet-uploader
-  docker-compose run --rm pg_client -c 'create trigger file_finder_trigger after insert or update or delete or truncate on file for each statement execute procedure refresh_file_finder()'
-  docker-compose run --rm pg_client -c 'create trigger sample_finder_trigger after insert or update or delete or truncate on sample for each statement execute procedure refresh_sample_finder()'
-  docker-compose run --rm pg_client -c 'create trigger dataset_finder_trigger after insert or update or delete or truncate on dataset for each statement execute procedure refresh_dataset_finder()'
-
 fi
-

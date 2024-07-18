@@ -114,7 +114,6 @@ Feature: a user visit the dataset page
 		And I should see "There is a new version of this dataset available at DOI 10.80027/100148"
 		And I should see a button "View new version" with link "/dataset/100148"
 		And I should see a button "Continue to view old version" with link "/dataset/100044"
-		And I should see a button "Close"
 		# Then I take a screenshot named "Dataset view IsPreviousVersionOf"
 
 	@ok
@@ -452,3 +451,32 @@ Feature: a user visit the dataset page
 		| Ssol.cltw.I.67 	| |	Schistocephalus solidus |	Description:short PE reads | 70667 | |
 		| Ssol.cltw.I.98.1 	| |	Schistocephalus solidus |	Description:short PE reads | 70667 | |
 
+  @ok @javascript
+  Scenario: Popup Old version with link to new version closes when choosing old version
+    Given I am not logged in to Gigadb web site
+    And I am on "dataset/100044"
+    And I wait "3" seconds
+    And I should see "There is a new version of this dataset available at DOI 10.80027/100148"
+    And I should see a button "Continue to view old version" with link "#"
+    When I click on the "Continue to view old version" button
+    And I wait "3" seconds
+    Then I should not see "There is a new version of this dataset available at DOI 10.80027/100148"
+
+  @ok @javascript
+  Scenario: Popup Old version with link to new version doesn't have a close button
+    Given I am not logged in to Gigadb web site
+    When I am on "dataset/100044"
+    And I wait "3" seconds
+    And I should see "There is a new version of this dataset available at DOI 10.80027/100148"
+    And I should not see "Close"
+
+  @ok @javascript
+  Scenario: Popup Old version with link to new version go to new version when choosing new version
+    Given I am not logged in to Gigadb web site
+    And I am on "dataset/100044"
+    And I wait "3" seconds
+    And I should see "There is a new version of this dataset available at DOI 10.80027/100148"
+    And I should see a button "View new version" with link "/dataset/100148"
+    When I click on the "View new version" button
+    And I wait "3" seconds
+    Then I should be on "/dataset/100148"

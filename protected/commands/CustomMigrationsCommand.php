@@ -28,7 +28,8 @@ class CustomMigrationsCommand extends CConsoleCommand
 SELECT nspname,relname, conname
  FROM pg_constraint 
  INNER JOIN pg_class ON conrelid=pg_class.oid 
- INNER JOIN pg_namespace ON pg_namespace.oid=pg_class.relnamespace 
+ INNER JOIN pg_namespace ON pg_namespace.oid=pg_class.relnamespace
+ WHERE nspname NOT IN ('pg_catalog', 'information_schema')
  ORDER BY CASE WHEN contype='f' THEN 0 ELSE 1 END,contype,nspname,relname,conname;
 END;
 
@@ -148,6 +149,7 @@ END;
 FROM pg_constraint
 INNER JOIN pg_class ON conrelid=pg_class.oid
 INNER JOIN pg_namespace ON pg_namespace.oid=pg_class.relnamespace
+WHERE nspname NOT IN ('pg_catalog', 'information_schema')
 ORDER BY CASE WHEN contype='f' THEN 0 ELSE 1 END,contype,nspname,relname,conname;")->queryAll();
 
         foreach ($rows as $row) {
@@ -159,6 +161,7 @@ ORDER BY CASE WHEN contype='f' THEN 0 ELSE 1 END,contype,nspname,relname,conname
 FROM pg_constraint
 INNER JOIN pg_class ON conrelid=pg_class.oid
 INNER JOIN pg_namespace ON pg_namespace.oid=pg_class.relnamespace
+WHERE nspname NOT IN ('pg_catalog', 'information_schema')
 ORDER BY CASE WHEN contype='f' THEN 0 ELSE 1 END DESC,contype DESC,nspname DESC,relname DESC,conname DESC;")->queryAll();
 
         foreach ($rows as $row) {
@@ -177,26 +180,6 @@ ORDER BY CASE WHEN contype='f' THEN 0 ELSE 1 END DESC,contype DESC,nspname DESC,
             $addIndexQuery .= $row["q"].PHP_EOL;
         }
         file_put_contents("/var/www/protected/runtime/addIndexQuery.sql", $addIndexQuery);
-
-        $dropTriggerQuery = "drop trigger if exists file_finder_trigger on file RESTRICT;".PHP_EOL;
-        $dropTriggerQuery .=  "drop trigger if exists sample_finder_trigger on sample RESTRICT;".PHP_EOL;
-        $dropTriggerQuery .=  "drop trigger if exists dataset_finder_trigger on dataset RESTRICT;".PHP_EOL;
-
-        $addTriggerQuery = "create trigger file_finder_trigger
-after insert or update or delete or truncate
-on file for each statement 
-execute procedure refresh_file_finder();".PHP_EOL;
-        $addTriggerQuery .= "create trigger sample_finder_trigger
-after insert or update or delete or truncate
-on sample for each statement 
-execute procedure refresh_sample_finder();".PHP_EOL;
-        $addTriggerQuery .= "create trigger dataset_finder_trigger
-after insert or update or delete or truncate
-on dataset for each statement 
-execute procedure refresh_dataset_finder();".PHP_EOL;
-
-        file_put_contents("/var/www/protected/runtime/dropTriggerQuery.sql", $dropTriggerQuery);
-        file_put_contents("/var/www/protected/runtime/addTriggerQuery.sql", $addTriggerQuery);
     }
 
 }
