@@ -90,13 +90,9 @@ class DatasetPageSettings extends yii\base\BaseObject
      */
     public function setFileSettings(array $columns, int $pageSize, CMap $cookies): array
     {
-        if (isset($cookies['file_setting'])) {
-            $cookies['file_setting']->value = json_encode([ "setting" => $columns, "page" => $pageSize]);
-        } else {
-                $cookie = new CHttpCookie('file_setting', json_encode(array('setting' => $columns, 'page' => $pageSize)));
-                $cookie->expire = time() + (60 * 60 * 24 * 30);
-                $cookies['file_setting'] = $cookie;
-        }
+        $cookie = new CHttpCookie('file_setting', json_encode(array('setting' => $columns, 'page' => $pageSize)));
+        $cookie->expire = time() + (60 * 60 * 24 * 30);
+        $cookies['file_setting'] = $cookie;
         return [ "columns" => $columns, "pageSize" => $pageSize ];
     }
 
