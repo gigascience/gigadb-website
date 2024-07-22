@@ -35,6 +35,34 @@ use_live_data=false
 # Default number of DOIs to process
 batch=0
 
+# Default output directory
+if [[ $(uname -n) =~ compute ]];then
+  outdir='/app/readmeFiles'
+  wasabi_upload=true
+else
+  outdir='/home/curators'
+  wasabi_upload=false
+fi
+
+if [[ $# -eq 0 ]];then
+  if [[ $(uname -n) =~ compute ]];then
+    echo -e "Usage: sudo $0 --doi <DOI>"
+    echo -e "Option: --outdir <directory> Specify the output directory"
+    echo -e "Option: --batch <number> Number of doi to process"
+    echo -e "Option: --wasabi Default copy readme file to Wasabi bucket"
+    echo -e "Option: --apply Escape dry run mode"
+    echo -e "Option: --use-live-data Copy data to production live bucket"
+  else
+    echo -e "Usage: $0 --doi <DOI>"
+    echo -e "Option: --outdir <directory> Specify the output directory"
+    echo -e "Option: --batch <number> Number of doi to process"
+    echo -e "Option: --wasabi Default copy readme file to Wasabi bucket"
+    echo -e "Option: --apply Escape dry run mode"
+    echo -e "Option: --use-live-data Copy data to production live bucket"
+  exit 1
+  fi
+fi
+
 # Parse command line parameters
 while [[ $# -gt 0 ]]; do
     case "$1" in
