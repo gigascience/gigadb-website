@@ -388,4 +388,35 @@ class AcceptanceTester extends \Codeception\Actor
     {
         $this->seeElement('a', ['class' => "sort-link $order", 'text' => $column]);
     }
+
+    /**
+     * @Then I should see the table with the following rows:
+     */
+    public function iShouldSeeTheTableWithTheFollowingRows(\Behat\Gherkin\Node\TableNode $table)
+    {
+        $rows = $table->getRows();
+        foreach ($rows as $index => $expectedRow) {
+            $expectedRow = implode(' ', $expectedRow);
+            $tableRows = $this->grabMultiple('table tr');
+            //remove headers and search bar
+            $tableRows = array_slice($tableRows, 2);
+
+            $this->assertEquals($expectedRow, $tableRows[$index]);
+        }
+    }
+
+    /**
+     * @Then I should not see the table with the following index :index
+     */
+    public function iShouldNotSeeTheTableWithTheFollowingIndex($index, \Behat\Gherkin\Node\TableNode $table)
+    {
+        $rows = $table->getRows();
+        $expectedRow = implode(' ', $rows[$index]);
+
+        $tableRows = $this->grabMultiple('table tr');
+        //remove headers and search bar
+        $tableRows = array_slice($tableRows, 2);
+
+        $this->assertNotEquals($expectedRow, $tableRows[$index]);
+    }
 }
