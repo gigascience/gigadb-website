@@ -534,7 +534,7 @@ Upon creation of new certificate or renewal, the certificates are backed up to G
 | tls_chain_pem | live | contains the additional intermediate certificate or certificates that web browsers will need in order to validate the server certificate |
 
 When provisioning a new staging or live environment, ``ops/scripts/setup_cert.sh`` will attempt to pull these variables if they exist.
-This way, we won't unnecessarily creat certificate everytime we need to re-create a staging and deployment, 
+This way, we won't unnecessarily create certificate everytime we need to re-create a staging and deployment, 
 thus reducing the risk of hitting weekly rate-limit for certificate creation imposed by Let's Encrypt.
 
 > Since an elastic IP address is being used, you might need to delete the entry
