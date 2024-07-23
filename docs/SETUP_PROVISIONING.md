@@ -468,9 +468,7 @@ $ cd ops/infrastructure/envs/staging
 $ ansible-playbook -i ../../inventories bastion_playbook.yml
 ```
 
-The bastion playbook will create a `gigadb` database containing data from
-`sql/production_like.pgdmp`. This file is created by running `./up.sh` when
-spinning up a local GigaDB on your development platform.
+The bastion playbook will create a `gigadb` database from RDS automated backups
 
 ### Further configuration steps
 
