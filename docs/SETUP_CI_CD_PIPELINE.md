@@ -165,9 +165,8 @@ the repository project for CI/CD to work.
 * Go to the CI/CD Settings for your project, *e.g.*
 [https://gitlab.com/gigascience/forks/pli888-gigadb-website/-/settings/ci_cd]. In 
 the *General pipelines* section, ensure that the *Public pipelines* checkbox is 
-**NOT** ticked, otherwise variables will leak into the logs. The 
-*Test coverage parsing* text field should also contain: 
-` \ \ Lines:\s*(\d+.\d+\%)`. Click on the *Save changes* green button.
+**NOT** ticked, otherwise variables will leak into the logs.
+Click on the *Save changes* green button.
  
 * The variables below need to be created for your project in the `Environment variables` 
 section in the CI/CD Settings page.   
