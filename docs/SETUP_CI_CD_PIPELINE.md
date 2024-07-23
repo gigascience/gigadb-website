@@ -103,7 +103,9 @@ Furthermore, variables have a hierarchal organisation that map to groups and pro
 So that, when there are variables is needed by all developers with the same value, such variable can be defined in a parent group, 
 which allow sub-groups or sub-projects to access it without having to define it.
 
-##### Group and projects The diagram below show the hierarchy we have in place.
+##### Group and projects 
+
+The diagram below show the hierarchy we have in place.
 
 ```
 Gigascience
