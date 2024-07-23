@@ -344,9 +344,7 @@ the Visibility radio input should be set to "Visible" except for the passwords a
 | REVIEW_DB_HOST | reviewdb |
 | PORTAINER_PASSWORD | Pick a password |
 | remote_fileserver_hostname | files.yoursubdomain.gigadb.host | 
-| REMOTE_PUBLIC_HTTP_PORT | 80 |
-| REMOTE_PUBLIC_HTTPS_PORT | 443 |
-| 
+
 so, there should be 2 versions of each variable, one for each deployment environment (staging or live).
 
 ##### Good examples:
