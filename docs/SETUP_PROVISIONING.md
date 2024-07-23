@@ -433,7 +433,7 @@ Ansible will update values for the project environment variables below in
 GitLab. Check them on the project environment variables page after the Ansible
 provisioning has completed. This is done by the `docker-postinstall` role.
 
-| Variable's Key | Environnments | Description |
+| Variable's Key | Environments | Description |
 |---|---|---|
 | docker_tlsauth_ca | staging | Certificate authority for staging server - this is provided by the staging server during Ansible provisioning |
 | docker_tlsauth_cert | staging | Public certificate for staging server - this is provided by staging server during Ansible provisioning |
