@@ -1019,12 +1019,12 @@ $ rm -rf ops/infrastructure/envs/staging
 $ mkdir ops/infrastructure/envs/staging
 $ cd ops/infrastructure/envs/staging/
 $ ../../../scripts/tf_init.sh --project \<your gitlab project path\> --env staging --region \<your region\> --ssh-key \<path to your key\> --web-ec2-type t3.small --bastion-ec2-type t3.small
-$ terraform plan
-$ terraform apply
-$ terraform refresh
+$ AWS_PROFILE=gigadb terraform plan
+$ AWS_PROFILE=gigadb terraform apply
+$ AWS_PROFILE=gigadb terraform refresh
 ```
 
-### Configure the infastructure
+### Configure the infrastructure
  
 ```
 $ ../../../scripts/ansible_init.sh --env staging
@@ -1042,12 +1042,12 @@ $ rm -rf ops/infrastructure/envs/live
 $ mkdir ops/infrastructure/envs/live
 $ cd ops/infrastructure/envs/live/
 $ ../../../scripts/tf_init.sh --project \<your gitlab project path\> --env live --region \<your region\> --ssh-key \<path to your key\> --web-ec2-type t3.small --bastion-ec2-type t3.small
-$ terraform plan
-$ terraform apply
-$ terraform refresh
+$ AWS_PROFILE=gigadb terraform plan
+$ AWS_PROFILE=gigadb terraform apply
+$ AWS_PROFILE=gigadb terraform refresh
 ```
 
-### Configure the infastructure
+### Configure the infrastructure
  
 ```
 $ ../../../scripts/ansible_init.sh --env live
@@ -1062,14 +1062,14 @@ Don't forget to tear down your environment when you don't use it anymore:
 
 ```
 $ cd ops/infrastructure/envs/staging
-$ terraform destroy
+$ AWS_PROFILE=gigadb terraform destroy
 ```
 
 or:
 
 ```
 $ cd ops/infrastructure/envs/live
-$ terraform destroy
+$ AWS_PROFILE=gigadb terraform destroy
 ```
 ## Tools
 
