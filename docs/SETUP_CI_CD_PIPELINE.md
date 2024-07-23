@@ -75,7 +75,7 @@ There are two types of environments: development and production.
 | live | production | the real live web site product hosted on AWS cloud |
 
 The local environment is on the developer's machine, that's what the dev environment refers to. 
-The CI environment is implictely created by the CI part of GitLab, that's where the code is deployed for the execution of the automated tests.
+The CI environment is implicitly created by the CI part of GitLab, that's where the code is deployed for the execution of the automated tests.
 The CI is a gate-keeper for the production environments: deployment to staging and live can only happen if the tests pass in CI.
 
 #### Getting and settings variables on Gitlab
