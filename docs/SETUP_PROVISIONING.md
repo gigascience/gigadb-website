@@ -5,7 +5,7 @@ It is assumed you read through `docs/SETUP_CI_CD_PIPELINE.md` and preprate the G
 ## Relationship between Gitlab pipeline and provisioning
 
 The continuous integration part of the Gitlab pipeline is not dependent on the AWS deployed infrastructure and can be run anytime.
-The provisioning of a new AWS infrastructure and deployment of Gigadb applicaiton onto it requires 
+The provisioning of a new AWS infrastructure and deployment of Gigadb application onto it requires 
 orchestration between the Gitlab pipeline execution and the execution of the provisioning tools here, especially the Ansible playbook.
 
 There are 5 phases of provisioning, and below they are listed alongside their relationship with Gitlab
