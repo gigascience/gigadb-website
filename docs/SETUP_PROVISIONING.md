@@ -80,7 +80,7 @@ We can proceed with deployment to the target environment by triggering manual jo
 
 The application should be available at the url defined in $REMOTE_HOME_URL for the staging environment
 
-For the FTP, trigger on the Gitlab pipelione the build job `PureFtpdBuildStaging`, and upon success trigger the deployment with `PureFtpdDeployStaging`.
+For the FTP, trigger on the Gitlab pipeline the build job `PureFtpdBuildStaging`, and upon success trigger the deployment with `PureFtpdDeployStaging`.
 
 >**Note:** The `build_staging` and `sd_gigadb` jobs are automated, so if you take too long to perform step 3, the jobs may run and fails.
 >That's fine, you can just trigger the jobs manually whenever you have completed step 3.
@@ -140,7 +140,7 @@ We can proceed with deployment to the target environment by triggering manual jo
 
 The application should be available at the url defined in $REMOTE_HOME_URL for the staging environment
 
-For the FTP, trigger on the Gitlab pipelione the build job `PureFtpdBuildLive`, and upon success trigger the deployment with `PureFtpdDeployLive`.
+For the FTP, trigger on the Gitlab pipeline the build job `PureFtpdBuildLive`, and upon success trigger the deployment with `PureFtpdDeployLive`.
 
 
 #### 5. Configure the bastion server and deploy the back-office subsystems
