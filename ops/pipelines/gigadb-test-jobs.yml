@@ -1,11 +1,5 @@
-.test_base:
-  script:
-    # login to gitlab container registry
-    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
-
 legacy_tests:
   stage: test
-  extends: .test_base
   cache:
     key:
       files:
@@ -43,6 +37,8 @@ legacy_tests:
     when: always
     expire_in: 1 week
   script:
+    # login to gitlab container registry
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
     # appending dev variables at the end of the .env and .secrets
     - env | grep "^HOME_URL" >> $APPLICATION/.env
     - env | grep "^GIGADB_" >> $APPLICATION/.secrets
@@ -72,7 +68,6 @@ legacy_tests:
 
 unit_func_tests:
   stage: test
-  extends: .test_base
   cache:
     key:
       files:
@@ -93,6 +88,8 @@ unit_func_tests:
     when: on_failure
     expire_in: 1 week
   script:
+    # login to gitlab container registry
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
     # appending dev variables at the end of the .env and .secrets
     - env | grep "^HOME_URL" >> $APPLICATION/.env
     - env | grep "^GIGADB_" >> $APPLICATION/.secrets
@@ -120,7 +117,6 @@ unit_func_tests:
 
 integration_tests:
   stage: test
-  extends: .test_base
   cache:
     key:
       files:
@@ -137,6 +133,8 @@ integration_tests:
       - gigadb/app/client/web/node_modules
   dependencies: []
   script:
+    # login to gitlab container registry
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
     # appending dev variables at the end of the .env and .secrets
     - env | grep "^HOME_URL" >> $APPLICATION/.env
     - env | grep "^GIGADB_" >> $APPLICATION/.secrets
@@ -164,7 +162,6 @@ integration_tests:
 
 a_gigadb:
   stage: acceptance
-  extends: .test_base
   cache:
     key:
       files:
@@ -202,6 +199,8 @@ a_gigadb:
     when: always
     expire_in: 1 week
   script:
+    # login to gitlab container registry
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
     # appending dev variables at the end of the .env and .secrets
     - env | grep "^HOME_URL" >> $APPLICATION/.env
     - env | grep "^GIGADB_" >> $APPLICATION/.secrets
