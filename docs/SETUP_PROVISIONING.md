@@ -520,7 +520,7 @@ so that a TLS certificates created with Let's Encrypt can pass verification.
 The TLS certificate for the domain $REMOTE_HOSTNAME are managed by the script ``ops/scripts/setup_cert.sh``
 
 It will create new certificates with Let's encrypt if none exists on the target deployment or remotely as GitLab variables.
-if existing on the target deployment, the script will request renewal which Let's Encrypt will only perform if close to expiration.
+If existing on the target deployment, the script will request renewal which Let's Encrypt will only perform if close to expiration.
 
 Upon creation of new certificate or renewal, the certificates are backed up to GitLab as the following variables:
 
