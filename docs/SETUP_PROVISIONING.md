@@ -70,6 +70,7 @@ You can now start a Gitlab pipeline for the git branch or tag you want to deploy
 ```
 $ env TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook  -i ../../inventories webapp_playbook.yml -e="gigadb_env=staging"
 $ env TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook  -i ../../inventories files_playbook.yml -e="gigadb_env=staging"
+$ env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories bastion_playbook.yml -e "gigadb_env=staging" -e "backupDate=latest"
 ```
 
 #### 4. Deploy the web-based application and the FTP server
@@ -87,6 +88,7 @@ For the FTP, trigger on the Gitlab pipeline the build job `PureFtpdBuildStaging`
 
 #### 5. Configure the bastion server and deploy the back-office subsystems
 
+Run the bastion playbook again to setup the rest of the backend infrastructure.
 ```
 $ env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories bastion_playbook.yml -e "gigadb_env=staging" -e "backupDate=latest"
 ```
