@@ -58,7 +58,7 @@ fi
 
 if [[ $# -eq 0 ]];then
   if [[ $(uname -n) =~ compute ]];then
-    echo -e "sudo $usage_message"
+    echo -e "$usage_message"
   else
     echo -e "$usage_message"
   exit 1
