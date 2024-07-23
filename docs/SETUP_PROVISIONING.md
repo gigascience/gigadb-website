@@ -12,7 +12,7 @@ There are 5 phases of provisioning, and below they are listed alongside their re
 
 | phase | description | operator actions | required Gitlab pipeline state |
 | -- | -- | -- | -- |
-| 1.TF init | The local terraform state is initiliased from a remote Gitlab state (which is created on the fly if it doesn't exist) | runs `tf_init.sh` | no state required |
+| 1.TF init | The local terraform state is initialised from a remote Gitlab state (which is created on the fly if it doesn't exist) | runs `tf_init.sh` | no state required |
 | 2.TF provisioning | The resources of the infrastructure are created on AWS | runs `terraform plan`, `terraform apply` and `terrafrom refresh` | no state required | 
 | 3.Ansible init | The AWS resources details are uploaded to Gitlab variables, Ansible dependency are built, and playbook copied to the deployment environment directory | runs `ansible_init.sh`  |no state required |
 | 4.Ansible provisioning | Configuration of the various GigaDB subsystems on each hosts of the infrastructure | executes the Ansible playbook | the build stage for the target environment should have run successfully | 
