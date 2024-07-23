@@ -19,8 +19,6 @@ class FilesCommandCest
     }
 
     /**
-     * @skip fails on develop (fix will come with #1919
-     *
      * Check DOI 100006 can be used to download a md5 file that is then used to
      * update md5 file attribute values
      */
