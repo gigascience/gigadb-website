@@ -157,14 +157,14 @@ Don't forget to tear down your environment when you don't use it anymore:
 
 ```
 $ cd ops/infrastructure/envs/staging
-$ terraform destroy
+$ AWS_PROFILE=gigadb terraform destroy
 ```
 
 or:
 
 ```
 $ cd ops/infrastructure/envs/live
-$ terraform destroy
+$ AWS_PROFILE=gigadb terraform destroy
 ```
 
 ## Tools
@@ -365,7 +365,7 @@ otherwise, `UNREACHEABLE !` would be occurred.
 
 ##### How to manually ssh to dockerhost through the bastion for debugging purpose
 Sometimes, it would be useful to log into dockerhost server manually for debugging. There are two important points to keep in mind:
-1. Get the public DNS or private ip address of web server or files server from `terraform output` or EC2 dashboard. 
+1. Get the public DNS or private ip address of web server or files server from `AWS_PROFILE=gigadb terraform output` or EC2 dashboard. 
 2. All EC2 servers share the same ssh private key.  
 
 Here are the steps:
@@ -548,7 +548,7 @@ is not the first time you have performed the plays in the playbook.
 $ cd <path>/gigadb-website/ops/infrastructure/envs/staging
 
 #Terminate existing RDS service
-$ terraform destroy --target module.rds
+$ AWS_PROFILE=gigadb terraform destroy --target module.rds
 
 #Copy override.tf to staging environment
 $ ../../../scripts/tf_init.sh --project gigascience/forks/pli888-gigadb-website --env staging --restore-backup
