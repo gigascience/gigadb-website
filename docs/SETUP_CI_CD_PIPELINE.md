@@ -240,30 +240,6 @@ They have two very important use:
 us to store variables and specify for which environment this variable is bound to (for organisation and security).
  * Gitlab stages and jobs must be tied to a specific environment, so that pipelines don't leak variables.
 
-#### Create DNS record for accessing endpoint on staging and on live servers
-
-There is a couple of endpoints that need to have a domain name associated with them for each deployment environments.
-
-The domain names should be for staging enviroment:
-* yoursubdomain-staging.gigadb.host
-* portainer.yoursubdomain-staging.gigadb.host
-and optionally:
-* files.yoursubdomain-staging.gigadb.host
-* bastion.yoursubdomain-staging.gigadb.host
-
-and for live environment:
-* yoursubdomain-live.gigadb.host
-* portainer.yoursubdomain-live.gigadb.host
-and optionally:
-* files.yoursubdomain-live.gigadb.host
-* bastion.yoursubdomain-live.gigadb.host
-
-where *yourdomain* is a unique short string of your choice to identify your endpoints form those of other team members, 
-like your IAM role name in lowercase or Gitlab project prefix.
-
-Ask a core team member to create an "A" record in the DNS server to map to the Elastic IPs 
-you have set up in previous section for your staging and live environment.
-
 
 #### AWS dashboard
 
@@ -299,6 +275,30 @@ EIPs Name tag | associated domain (only the 1st one is mandatory) |
 >**Notes**: By default the number of EIPs allowed to be created in any given region is limited to 5. 
 >So if you need to deploy a live environment, you will need to request a quota increase for the region you are deploying into. 
 >Ask a core team member to do it for you.
+
+#### Create DNS record for accessing endpoint on staging and on live servers
+
+There is a couple of endpoints that need to have a domain name associated with them for each deployment environments.
+
+The domain names should be for staging enviroment:
+* yoursubdomain-staging.gigadb.host
+* portainer.yoursubdomain-staging.gigadb.host
+and optionally:
+* files.yoursubdomain-staging.gigadb.host
+* bastion.yoursubdomain-staging.gigadb.host
+
+and for live environment:
+* yoursubdomain-live.gigadb.host
+* portainer.yoursubdomain-live.gigadb.host
+and optionally:
+* files.yoursubdomain-live.gigadb.host
+* bastion.yoursubdomain-live.gigadb.host
+
+where *yourdomain* is a unique short string of your choice to identify your endpoints form those of other team members, 
+like your IAM role name in lowercase or Gitlab project prefix.
+
+Ask a core team member to create an "A" record in the DNS server to map to the Elastic IPs 
+you have set up in previous section for your staging and live environment.
 
 ##### AWS credentials
 
