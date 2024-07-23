@@ -96,7 +96,7 @@ $ env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventor
 ### Setting up your Live environment
 
 After you have setup your staging environment, you can optionally set up a live environment.
-In general this is not necessary, unless you want to test changes to infrastructure, Gitlabp pipeline or provisioning scripts.
+In general this is not necessary, unless you want to test changes to infrastructure, Gitlab pipeline or provisioning scripts.
 
 >**Note:** the live environment share the same Gitlab pipeline as the staging environment. 
 >There are different stages on the pipeline, two (build and deploy) for staging, and two (build and deploy) for live.
