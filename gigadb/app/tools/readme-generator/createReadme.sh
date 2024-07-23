@@ -41,7 +41,6 @@ Required:
 --doi            DOI to process
 
 Available Options:
---outdir         Specify the output directory
 --batch          Number of DOI to process
 --wasabi         (Default) Copy readme file to Wasabi bucket
 --apply          Escape dry run mode
@@ -269,6 +268,22 @@ function main {
         dir_range=""
         get_doi_directory_range
         copy_to_wasabi
+      fi
+
+       # Copy files to user uploadDir
+       if [[ $(uname -n) =~ compute ]]; then
+         currentPath=$(pwd)
+         userOutputDir="$currentPath/uploadDir"
+         if [[ "$currentPath" != "/home/centos" ]]; then
+           if [[ -f "/home/centos/readmeFiles/readme_${doi}.txt" ]]; then
+             mv "/home/centos/readmeFiles/readme_${doi}.txt" "$userOutputDir/"
+             echo -e "\nThe readme_$doi.txt has been moved to: $userOutputDir"
+           else
+             echo -e "\nThe readme_$doi.txt is not found!"
+           fi
+           mv "$LOGFILE" "$userOutputDir"
+           echo -e "\nLog for copying readme_$doi.txt to wasabi bucket has been moved to: $userOutputDir"
+         fi
       fi
 
       # Exit if not running in batch mode
