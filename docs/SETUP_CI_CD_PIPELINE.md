@@ -116,7 +116,7 @@ Gigascience
     └── gigadb-website
 ```
 
-All the leaves op the tree are _Gitlab projects_, the nodes are _Gitlab groups_.
+All the leaves of the tree are _Gitlab projects_, the nodes are _Gitlab groups_.
 The distinction is important as the Gitlab API endpoints are different.
 
 >**Note:** This documentation is only concerned with variables and pipelines under the Forks group.
