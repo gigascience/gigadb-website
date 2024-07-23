@@ -426,7 +426,7 @@ environment only is made available to the pipeline's jobs.
 >The name of valid stages to be used in GitLab configuration are listed at the top of the file ``.gitlab-ci.yml``  
 
 >Ensure the value of ``environment:name:`` in GitLab configuration matches the environment that 
->you have created in Gitlab dashboard under ``Deployments > Environments``
+>you have created in Gitlab dashboard under ``Operate > Environments``
 
 
 ##### Examples:
