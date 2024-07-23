@@ -210,7 +210,7 @@ You have a chance to preview what those changes would be by executing the ``terr
 Actual changes to the infrastructure are performed with the command ``terraform apply``.
 
 The state file Terraform works with can be a local file (ending with suffix .tfstate), but it is recommended 
-to use a remote state backend wich has the following benefits:
+to use a remote state backend which has the following benefits:
 
  * every team members who need to perform provisioning can start their work with a state that accurately represent reality 
  * a locking mechanism is available to prevent the same piece of infrastructure to be changed by several people at the same time
