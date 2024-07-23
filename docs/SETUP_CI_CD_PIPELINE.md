@@ -78,6 +78,8 @@ The local environment is on the developer's machine, that's what the dev environ
 The CI environment is implicitly created by the CI part of GitLab, that's where the code is deployed for the execution of the automated tests.
 The CI is a gate-keeper for the production environments: deployment to staging and live can only happen if the tests pass in CI.
 
+>**Note:** you will need to create **all** those environments in Gitlab dashboard under ``Operate > Environments``
+
 #### Getting and settings variables on Gitlab
 
 ##### Environment attribute
