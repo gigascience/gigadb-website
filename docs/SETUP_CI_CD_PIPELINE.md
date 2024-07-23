@@ -92,7 +92,6 @@ Gitlab variables can be categoriseinto different environment which are:
 
 The environment is associated upon creation to each variable as one of its attributes.
 
->**Note:** there is no connection between the environment of variables and the deployment environments listed in previous section. 
 >By convention the `staging` and `live` environments for variables are associated with the `staging` and `live` deployments respectively. 
 >(i.e: a staging variable is only to be used on staging deployment environment, 
 >and a live variable is to be used only on live deployment environment).
