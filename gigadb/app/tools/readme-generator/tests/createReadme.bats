@@ -17,6 +17,32 @@ teardown () {
     done
 }
 
+@test "Output usage information" {
+    run ./createReadme.sh
+    [ "$status" -eq 1 ]
+    [[ "$output" =~ "Usage: ./createReadme.sh --doi <DOI>" ]]
+    [[ "$output" =~ "Required:" ]]
+    [[ "$output" =~ "--doi            DOI to process" ]]
+    [[ "$output" =~ "Available Options:" ]]
+    [[ "$output" =~ "--outdir         Specify the output directory" ]]
+    [[ "$output" =~ "--batch          Number of DOI to process" ]]
+    [[ "$output" =~ "--wasabi         (Default) Copy readme file to Wasabi bucket" ]]
+    [[ "$output" =~ "--apply          Escape dry run mode" ]]
+    [[ "$output" =~ "--use-live-data  Copy data to production live bucket" ]]
+}
+
+@test "DOI is required" {
+    run ./createReadme.sh --doi
+    [ "$status" -eq 1 ]
+    [[ "$output" =~ "Error: --doi <DOI> is required." ]]
+}
+
+@test "invalid option is provided" {
+    run ./createReadme.sh 100142
+    [ "$status" -eq 1 ]
+    [[ "$output" =~ "Invalid option: 100142" ]]
+}
+
 @test "create readme file" {
     ./createReadme.sh --doi 100142 --outdir /home/curators
     # Check readme file has been created

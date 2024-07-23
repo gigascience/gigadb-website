@@ -35,6 +35,18 @@ use_live_data=false
 # Default number of DOIs to process
 batch=0
 
+# Usage message
+usage_message="Usage: $0 --doi <DOI>\n
+Required:
+--doi            DOI to process
+
+Available Options:
+--outdir         Specify the output directory
+--batch          Number of DOI to process
+--wasabi         (Default) Copy readme file to Wasabi bucket
+--apply          Escape dry run mode
+--use-live-data  Copy data to production live bucket"
+
 # Default output directory
 if [[ $(uname -n) =~ compute ]];then
   outdir='/app/readmeFiles'
@@ -46,19 +58,9 @@ fi
 
 if [[ $# -eq 0 ]];then
   if [[ $(uname -n) =~ compute ]];then
-    echo -e "Usage: sudo $0 --doi <DOI>"
-    echo -e "Option: --outdir <directory> Specify the output directory"
-    echo -e "Option: --batch <number> Number of doi to process"
-    echo -e "Option: --wasabi Default copy readme file to Wasabi bucket"
-    echo -e "Option: --apply Escape dry run mode"
-    echo -e "Option: --use-live-data Copy data to production live bucket"
+    echo -e "sudo $usage_message"
   else
-    echo -e "Usage: $0 --doi <DOI>"
-    echo -e "Option: --outdir <directory> Specify the output directory"
-    echo -e "Option: --batch <number> Number of doi to process"
-    echo -e "Option: --wasabi Default copy readme file to Wasabi bucket"
-    echo -e "Option: --apply Escape dry run mode"
-    echo -e "Option: --use-live-data Copy data to production live bucket"
+    echo -e "$usage_message"
   exit 1
   fi
 fi
@@ -94,6 +96,12 @@ while [[ $# -gt 0 ]]; do
     esac
     shift
 done
+
+# Check if the --doi option is provided
+if [[ -z "$doi" ]]; then
+  echo "Error: --doi <DOI> is required."
+  exit 1
+fi
 
 #######################################
 # Set up logging
