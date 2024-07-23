@@ -784,7 +784,7 @@ otherwise, `UNREACHEABLE !` would be occurred.
 
 ##### How to manually ssh to dockerhost through the bastion for debugging purpose
 Sometimes, it would be useful to log into dockerhost server manually for debugging. There are two important points to keep in mind:
-1. Get the public DNS or private ip address of web server or files server from `terraform output` or EC2 dashboard. 
+1. Get the public DNS or private ip address of web server or files server from `AWS_PROFILE=gigadb terraform output` or EC2 dashboard. 
 2. All EC2 servers share the same ssh private key.  
 
 Here are the steps:
