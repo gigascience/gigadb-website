@@ -253,7 +253,7 @@ The first two resources needs to be globally unique in the same AWS acccount, so
 
 1. For Elastic IPS: ``eip-<application>-<environment>[-<sub-system>]-<IAM Role Username>``, e.g: ``eip-gigadb-staging-John`` or ``eip-gigadb-files-staging-John``
 1. For SSH Key pair: ``aws-<application>-<AWS region>-<IAM Role Username>.pem``, e.g: ``aws-gigadb-eu-north-1-John.pem``
-The private part of the SSH Key pair needs to be dowloaded to your developer machine in the ``~/.ssh`` directory and with 
+The private part of the SSH Key pair needs to be downloaded to your developer machine in the ``~/.ssh`` directory and with 
 permission set to ``600``.
 
 Here the 3 EIPs you must create for provisioning a staging environment:
