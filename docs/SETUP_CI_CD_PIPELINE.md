@@ -154,14 +154,14 @@ Your new GitLab `gigadb-website` project requires configuration:
 * The default branch needs to be selected for your project to allow you to 
 perform CI/CD on this branch. Go to the Repository settings for your project, 
 *e.g.*
-[https://gitlab.com/gigascience/forks/pli888-gigadb-website/settings/repository],
- click on the *Expand* button for the `Default Branch` settings. Use the 
-drop-down menu to select the default branch and click the *Save changes* green 
+[https://gitlab.com/gigascience/forks/pli888-gigadb-website/-/settings/repository],
+ click on the *Expand* button next to the "Branch defaults" section header for the `Default Branch` settings. 
+Use the drop-down menu to select the default branch and click the *Save changes* green 
 button. Whatever branch you select requires a .gitlab-ci.yml file at the root of 
 the repository project for CI/CD to work.
 
 * Go to the CI/CD Settings for your project, *e.g.*
-[https://gitlab.com/gigascience/forks/pli888-gigadb-website/settings/ci_cd]. In 
+[https://gitlab.com/gigascience/forks/pli888-gigadb-website/-/settings/ci_cd]. In 
 the *General pipelines* section, ensure that the *Public pipelines* checkbox is 
 **NOT** ticked, otherwise variables will leak into the logs. The 
 *Test coverage parsing* text field should also contain: 
