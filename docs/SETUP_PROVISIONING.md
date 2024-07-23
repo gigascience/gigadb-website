@@ -273,7 +273,11 @@ again in subsequent runs. ``ops/scripts/ansible_init.sh`` will also source that 
 | ansible.properties | created by ``ansible_init.sh``, holds variables assignment used by Ansible to configure deployed application| ansible-playbook | 
 | getIAMUserNameToJSON.sh | copied by ``ansible_init.sh`` | terraform |
 | output/ | created by ``ansible-playbook`` to store a copy of Docker certs | docker |
-| (webapp|files|users|bastion)_playbook.yml | copied by ``ansible_init.sh`` | ansible-playbook | 
+| webapp_playbook.yml | copied by ``ansible_init.sh`` | ansible-playbook | 
+| files_playbook.yml | copied by ``ansible_init.sh`` | ansible-playbook | 
+| users_playbook.yml | copied by ``ansible_init.sh`` | ansible-playbook | 
+| bastion_playbook.yml | copied by ``ansible_init.sh`` | ansible-playbook | 
+| bootstrap_playbook.yml | copied by ``ansible_init.sh`` | ansible-playbook | 
 | terraform.tf | copied by ``ansible_init.sh`` | terraform |
 | terraform.tfvars | created by ``ansible_init.sh`` to hold Terraform variables assigments | terraform | 
 
