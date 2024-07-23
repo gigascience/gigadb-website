@@ -22,7 +22,7 @@ There are 5 phases of provisioning, and below they are listed alongside their re
 
 >**Note:** The above implies that you cannot run the Ansible playbooks until you have run the build stage of the Gitlab pipeline 
 
->**Note:** GigaDB application is made of web-based and backoffice subsystems. Their deployment requires the build stage of the Gitlab pipeline to have been peformed frist.
+>**Note:** GigaDB application is made of web-based and backoffice subsystems. Their deployment requires the build stage of the Gitlab pipeline to have been performed first.
 >Their deployment is performed using the deployment stage job (`sd_gigadb` or `ld_gigadb`) of the Gitlab pipeline for the web-based application 
 >and using the Ansible playbook  `bastion_playbook.yml` for the backoffice subsystems.
 
