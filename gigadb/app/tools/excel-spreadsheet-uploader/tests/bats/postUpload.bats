@@ -59,7 +59,7 @@ teardown () {
 @test "DOI with non-existing md5 file in s3 bucket" {
     run ./postUpload.sh 100020
     [[ "$output" =~ "* About to create the README file for 100020" ]]
-    [[ "$output" =~ "Done with creating the README file for 100020. The README file is saved in file: /home/curators/readme-100020.txt" ]]
+    [[ "$output" =~ "Done with creating the README file for 100020" ]]
     [[ "$output" =~ "* About to update files' size and MD5 checksum for 100020" ]]
     [[ "$output" =~ "No 100020.md5 file could be found for dataset DOI 100020" ]]
     [[ "$output" =~ "Done with updating files' size and MD5 checksum for 100020" ]]

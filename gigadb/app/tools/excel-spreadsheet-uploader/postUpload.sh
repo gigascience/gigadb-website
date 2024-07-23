@@ -35,7 +35,7 @@ updateFileMetaDataEndMessage="\nDone with updating files' size and MD5 checksum 
 #checkValidUrlsEndMessage="\nDone with checking that file urls are valid for $DOI. Invalid Urls (if any) are save in file: $outputDir/invalid-urls-$DOI.txt"
 
 createReadMeFileStartMessage="\n* About to create the README file for $DOI"
-createReadMeFileEndMessage="\nDone with creating the README file for $DOI. The README file is saved in file: $outputDir/readme-$DOI.txt"
+createReadMeFileEndMessage="\nDone with creating the README file for $DOI."
 
 if [[ $(uname -n) =~ compute ]];then
   . /home/centos/.bash_profile
@@ -62,13 +62,6 @@ if [[ $(uname -n) =~ compute ]];then
   echo -e "$updateFileMetaDataStartMessage"
   /usr/local/bin/filesMetaToDb "$DOI"
   echo -e "$updateFileMetaDataEndMessage"
-
-  if [[ -f /home/centos/readmeFiles/readme_"$DOI".txt ]];then
-    mv /home/centos/readmeFiles/readme_"$DOI".txt "$userOutputDir/"
-    echo -e "\nThe readme_$DOI.txt has been moved to: $userOutputDir"
-  else
-    echo -e "\nThe readme_$DOI.txt is not found!"
-  fi
 
 else  # Running on dev environment
 
