@@ -329,7 +329,7 @@ the Visibility radio input should be set to "Visible" except for the passwords a
 | REMOTE_SMTP_PASSWORD | SMTP password |
 | REMOTE_SMTP_PORT | 563 |
 | REMOTE_SMTP_USERNAME | SMTP username |
-| gigadb_db_host | keep empty, it will be overwritten by the provising script with RDS endpoint |
+| gigadb_db_host | keep empty, it will be overwritten by the provisioning script with RDS endpoint |
 | gigadb_db_user | gigadb |
 | gigadb_db_password | Pick a password |
 | gigadb_db_database | gigadb |
