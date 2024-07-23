@@ -514,7 +514,7 @@ Example from ``ops/pipelines/gigadb-deploy-jobs.yml``
 - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml exec -T web /usr/local/bin/enable_sites gigadb.$GIGADB_ENV.https
 ```
 
-When the container service ``web`` is started, it will also execute that ascript to enable the default http configuration for Gigadb.org,
+When the container service ``web`` is started, it will also execute that script to enable the default http configuration for Gigadb.org,
 so that a TLS certificates created with Let's Encrypt can pass verification.
 
 The TLS certificate for the domain $REMOTE_HOSTNAME are managed by the script ``ops/scripts/setup_cert.sh``
