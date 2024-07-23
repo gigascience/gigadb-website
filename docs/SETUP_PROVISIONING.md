@@ -20,7 +20,7 @@ There are 5 phases of provisioning, and below they are listed alongside their re
 
 >**Note:** You cannot run the build stage until you have run `ansible_init.sh`, because the build stage needs AWS resources details uploaded by that script
 
->**Note:** The above implies that you cannot run the Ansible playbooks until you have run the build stage of the Gitlab pipeline, 
+>**Note:** The above implies that you cannot run the Ansible playbooks until you have run the build stage of the Gitlab pipeline 
 
 >**Note:** GigaDB application is made of web-based and backoffice subsystems. Their deployment requires the build stage of the Gitlab pipeline to have been peformed frist.
 >Their deployment is performed using the deployment stage job (`sd_gigadb` or `ld_gigadb`) of the Gitlab pipeline for the web-based application 
