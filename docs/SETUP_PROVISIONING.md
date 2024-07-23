@@ -370,7 +370,7 @@ Sometimes, it would be useful to log into dockerhost server manually for debuggi
 
 Here are the steps:
 ```
-# To check whether bastion server is accessible by loggin in
+# To check whether bastion server is accessible by logging in
 user@dev-computer: % ssh -i ~/.ssh/<CustomPrivateKey>.pem centos@<bastion_public_ip>
 [centos@<bastion_private_ip> ~]$ ls
 database_bootstrap.backup
@@ -791,7 +791,7 @@ Sometimes, it would be useful to log into dockerhost server manually for debuggi
 
 Here are the steps:
 ```
-# To check whether bastion server is accessible by loggin in
+# To check whether bastion server is accessible by logging in
 user@dev-computer: % ssh -i ~/.ssh/<CustomPrivateKey>.pem centos@<bastion_public_ip>
 [centos@<bastion_private_ip> ~]$ ls
 database_bootstrap.backup
@@ -1295,7 +1295,7 @@ Sometimes, it would be useful to log into dockerhost server manually for debuggi
 
 Here are the steps:
 ```
-# To check whether bastion server is accessible by loggin in
+# To check whether bastion server is accessible by logging in
 user@dev-computer: % ssh -i ~/.ssh/<CustomPrivateKey>.pem centos@<bastion_public_ip>
 [centos@<bastion_private_ip> ~]$ ls
 database_bootstrap.backup
