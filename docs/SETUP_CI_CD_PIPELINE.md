@@ -84,7 +84,7 @@ The CI is a gate-keeper for the production environments: deployment to staging a
 
 A functionality of Gitlab is to store environment variables, so that we can use them in our deployed applications.
 Because there is multiple deployment environments and the variables often differ from one to the other, 
-Gitlab variables can be categorised and into different environment which are:
+Gitlab variables can be categoriseinto different environment which are:
 * dev
 * staging
 * live
@@ -101,7 +101,7 @@ The environment is associated upon creation to each variable as one of its attri
 
 Furthermore, variables have a hierarchal organisation that map to groups and projects.
 So that, when there are variables is needed by all developers with the same value, such variable can be defined in a parent group, 
-which allow and sub-groups or sub-projects to access it without having to define it.
+which allow sub-groups or sub-projects to access it without having to define it.
 
 ##### Group and projects The diagram below show the hierarchy we have in place.
 
