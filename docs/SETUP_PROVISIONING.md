@@ -65,7 +65,7 @@ This will save the information Terraform retrieved from the just created AWS res
 You can now start a Gitlab pipeline for the git branch or tag you want to deploy (the main branch is called `develop`).
 
 
-#### 3. Configure the infastructure
+#### 3. Configure the infrastructure
  
 ```
 $ env TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook  -i ../../inventories webapp_playbook.yml -e="gigadb_env=staging"
@@ -126,7 +126,7 @@ $ ../../../scripts/ansible_init.sh --env live
 
 This will save the information Terraform retrieved from the just created AWS resources into Gitlab variables.
 
-#### 3. Configure the infastructure
+#### 3. Configure the infrastructure
  
 ```
 $ env TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook  -i ../../inventories webapp_playbook.yml -e="gigadb_env=live"
