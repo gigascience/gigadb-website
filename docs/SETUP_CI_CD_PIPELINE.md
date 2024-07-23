@@ -49,20 +49,11 @@ GitLab Gigascience Forks organisation. To do this:
 * Log into GitLab and go to the 
 [gigascience/Forks page](https://gitlab.com/gigascience/forks).
  
-* Click on *New Project* followed by *CI/CD for external repo* and then 
-*GitHub*. 
+* Click on *New Project* button in the top-right corner, then on the next screen click on *Run CI/CD for external repository* 
 
-* On the *Connect repositories from GitHub page*, click on the 
-*List your GitHub repositories* green button. Find the repository fork of 
-`gigadb-website` that you want to perform CI/CD on.
-
-* Under the *To GitLab* column, select *gigascience/forks* to connect your repo 
-to this GitLab group. Also, provide a name for the repo, *e.g.* 
-`pli888-gigadb-website` so that you can differentiate your repository from 
-others in the Forks group.
-
-* Click the *Connect* button to create the mirror of the GitHub repository on
-GitLab.
+* Fill in the **Git repository URL** field, e.g. https://github.com/pli888/gigadb-website. 
+* Check the Mirror repository checkbox and check Public visibility Level option. 
+* Finally click the **Create project** button
 
 ### Understanding environments
 
