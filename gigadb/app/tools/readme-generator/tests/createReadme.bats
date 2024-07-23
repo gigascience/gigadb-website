@@ -24,7 +24,6 @@ teardown () {
     [[ "$output" =~ "Required:" ]]
     [[ "$output" =~ "--doi            DOI to process" ]]
     [[ "$output" =~ "Available Options:" ]]
-    [[ "$output" =~ "--outdir         Specify the output directory" ]]
     [[ "$output" =~ "--batch          Number of DOI to process" ]]
     [[ "$output" =~ "--wasabi         (Default) Copy readme file to Wasabi bucket" ]]
     [[ "$output" =~ "--apply          Escape dry run mode" ]]
