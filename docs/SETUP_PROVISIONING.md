@@ -36,7 +36,7 @@ The remainders of sections explain in more details how to install the tools ment
 1. You have implemented the instructions in `docs/SETUP_CI_CD_PIPELINE.md`
 2. Install AWS CLI by following AWS's instructions [here](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html).
 3. Install Terraform with `brew install terraform`
-4. Install Ansible with `brew install ansible`
+4. Install Ansible with `brew install ansible@9`
 
 More details about the tools can be found in the "Tools" section futher down.
 
@@ -695,7 +695,16 @@ again in subsequent runs. ``ops/scripts/ansible_init.sh`` will also source that 
 with a Docker daemon. In addition, a PostgreSQL database is created on the RDS
 instance using `sql/production_like.pgdmp`.
 
-You can install Ansible on macOS using [HomeBrew](https://brew.sh) with the command ``brew install ansible``
+You can install Ansible on macOS using [HomeBrew](https://brew.sh) with the command ``brew install ansible@9``
+
+>**Note:** Currently our setup support only Ansible core up to version 2.16.*. More recent versions will cause errors
+> ansible-core 2.16.* comes with the [Ansible version 9.0.0](https://docs.ansible.com/ansible/latest/roadmap/COLLECTIONS_9.html) 
+>(2.15.* comes with [Ansible version 8.0.0](https://docs.ansible.com/ansible/latest/roadmap/COLLECTIONS_8.html)), 
+>Therefore do not install [Ansible version 10.0.0](https://docs.ansible.com/ansible/latest/roadmap/COLLECTIONS_10.html) for now. That's why the brew incantation specifies `@9`
+
+>**Note:** You can also install Ansible using Python package with `pip3 install ansible=9.7.0`
+>However if you choose that method you will have to adjust how you call the Ansible command appropriately
+>as this documentation will assume you used Brew.
 
 ##### Ansible setup and configuration
 
