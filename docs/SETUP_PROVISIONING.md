@@ -34,7 +34,7 @@ The remainders of sections explain in more details how to install the tools ment
 ### Pre-requisites: Setup pipeline and Install the tools
 
 1. You have implemented the instructions in `docs/SETUP_CI_CD_PIPELINE.md`
-2. Install AWS CLI by following AWS's instructions[here](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html).
+2. Install AWS CLI by following AWS's instructions [here](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html).
 3. Install Terraform with `brew install terraform`
 4. Install Ansible with `brew install ansible`
 
