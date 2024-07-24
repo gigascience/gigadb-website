@@ -33,6 +33,8 @@ ReadmeGeneratorTest:
     # Need GigaDB images to provide database
     - env | grep "^HOME_URL" >> $APPLICATION/.env
     - env | grep "^GIGADB_" >> $APPLICATION/.secrets
+    # login to gitlab container registry
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/console:latest || true
