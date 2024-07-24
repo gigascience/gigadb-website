@@ -12,8 +12,6 @@ FilesMetaDataConsoleTestRun:
     - docker load -i alpine-3_14.tar
     - docker load -i nginx-$NGINX_VERSION-alpine.tar
     - docker load -i node-$NODE_VERSION-buster-slim.tar
-    # login to gitlab container registry
-    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/console:latest || true
