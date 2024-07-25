@@ -2,7 +2,9 @@
 
 ## Overview
 
-![Tool Overview](https://www.dropbox.com/scl/fi/8jl4kg8w39f2l0qjujdga/overview.png?rlkey=azi9chfz1w496iuunilzmtsls&dl=0 'Overview of tools on bastion server')
+![Tool Overview](https://www.dropbox.com/scl/fi/8jl4kg8w39f2l0qjujdga/overview.png?raw=1 'Overview of tools on bastion server')
+![Tool Overview](https://www.dropbox.com/scl/fi/8jl4kg8w39f2l0qjujdga/overview.jpg?raw=1 'Overview of tools on bastion server')
+![Tool Overview](https://www.dropbox.com/scl/fi/p4u5it3d0rnjfx5m08es1/overview.jpg?raw=1 'Overview of tools on bastion server')
 
 The bastion server provides a set of command-line tools which implement the above workflow for ingesting Excel spreadsheets and performing post-upload operations.
 
@@ -106,8 +108,8 @@ A readme_<doi>.txt will appear in the user dropbox. The readme file will also ha
 Two files, doi.md5 and doi.filesizes are required to update these information in the database. These two files are created using the `calculateChecksumSizes` command. Firstly, change directory to the user drop box of the dataset then run `calculateChecksumSizes`:
 ```
 # The files for dataset 100520 are being managed in user888 dropbox
-[lily@ip-10-99-0-88 user103]$ cd /share/dropbox/user888
-[lily@ip-10-99-0-88 user103]$ calculateChecksumSizes 100520
+[lily@ip-10-99-0-88 ~]$ cd /share/dropbox/user888
+[lily@ip-10-99-0-88 user888]$ calculateChecksumSizes 100520
 Created 100520.md5
 Created 100520.filesizes
 2024/05/07 08:22:59 INFO  : 100520.filesizes: Copied (new)
@@ -134,3 +136,51 @@ You then need to check the dataset page in the file table to see if MD5 values a
 
 ## Using postUpload to create readme file and update file metadata in database
 
+There is a script called postUpload which calls createReadme, calculateChecksumSizes and fileMetaToDb in turn so that these three tools do not have to be manually executed one after another. To use postUpload, change directory to the user dropbox folder that you are working on and run the postUpload script:
+```
+[lily@ip-10-99-0-88 ~]$ cd /share/dropbox/user888
+[lily@ip-10-99-0-88 user888]$ postUpload 100142
+[centos@ip-10-99-0-207 ~]$ ls -al ~/uploadDir/
+-rw-rw-r--.  1 centos centos  668 Jun 17 04:41 readme_100142_20240617_044125.log
+-rw-rw-r--.  1 centos centos   21 Jun 17 04:41 updating-file-size-100142.txt
+-rw-rw-r--.  1 centos centos 1049 Jun 17 04:41 updating-md5checksum-100142.txt
+[centos@ip-10-99-0-207 ~]$ more ~/uploadDir/readme_100142_20240617_044125.log
+2024/06/17 04:41:29 INFO  : Created readme file for DOI 100142 in /usr/local/bin/runtime/curators/readme_100142.txt
+2024/06/17 04:41:30 INFO  : readme_100142.txt: Copied (replaced existing)
+2024/06/17 04:41:30 INFO  : Executed: rclone copy --s3-no-check-bucket /home/centos/readmeFiles/readme_100142.txt wasabi:gigadb-datasets/staging/pub/10.5524/100001_101000/100142/ --config /home/centos/.config/rclone/rclone.conf
+--log-file /home/centos/uploadLogs/readme_100142_20240617_044125.log --log-level INFO --stats-log-level DEBUG >> /home/centos/uploadDir/readme_100142_20240617_044125.log
+2024/06/17 04:41:30 INFO  : Successfully copied file to Wasabi for DOI: 100142
+```
+
+## compare: How to compare files on the user dropbox with the files in the dataset spreadsheet
+
+If there are discrepancies between the state of the filesystem in a user dropbox and the list of files in the dataset spreadsheet, it will cause errors in the processing of the dataset spreadsheet and the saving of files metadata to the database at a later stage of the process. It may be necessary to curate the actual files in user dropboxes for conformity to guidelines or organisational purposes.
+
+To solve this problem, it is important to reconcile both sources of files list regularly. To help with that, there is command available on the bastion server, called compare, to compare the list of files in the dataset spreadsheet with the list of files on the filesystem. By default, when running the command, it will show any discrepancies in both direction.
+
+### How to use the tool
+
+Open the dataset spreadsheet you are working on the files list tab
+
+Copy the list of files and paste it into a text file that you save as DOI_xls.txt (where DOI is to be replaced by the real DOI of the dataset you are working on
+
+Upload the text file listing all the files form the spreadsheet to the bastion server in your home directory using your preferred method (FileZilla, scp, …)
+
+Connect to the bastion with SSH
+
+Change directory to the user dropbox associated with the dataset spreadsheet you are working on
+```
+$ cd /share/dropbox/user0
+```
+
+Remember where you have saved the file DOI_xls.txt ? Pass it as the first argument to the compare command, and pass the current directory (.) as the second argument
+```
+$ compare /home/rija/100006_xls.txt .
+```
+
+If there are any discrepancies between the files listed in the spreadsheet and the files in the user dropbox, that command will output them.
+
+> The command won’t show the list of files, it only output differences in either directions. If you want to see the full list of files from the spreadsheet and have highlighted the ones that are missing in the user dropbox, pass the -v parameter as the final argument to the command:
+```
+$ compare /home/rija/100006_xls.txt . -v
+```
