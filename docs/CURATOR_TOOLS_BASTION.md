@@ -2,9 +2,7 @@
 
 ## Overview
 
-![Tool Overview](https://www.dropbox.com/scl/fi/8jl4kg8w39f2l0qjujdga/overview.png?raw=1 'Overview of tools on bastion server')
-![Tool Overview](https://www.dropbox.com/scl/fi/8jl4kg8w39f2l0qjujdga/overview.jpg?raw=1 'Overview of tools on bastion server')
-![Tool Overview](https://www.dropbox.com/scl/fi/p4u5it3d0rnjfx5m08es1/overview.jpg?raw=1 'Overview of tools on bastion server')
+![Tool Overview](./overview.png 'Overview of tools on bastion server')
 
 The bastion server provides a set of command-line tools which implement the above workflow for ingesting Excel spreadsheets and performing post-upload operations.
 
