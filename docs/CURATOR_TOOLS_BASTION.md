@@ -11,38 +11,43 @@ The bastion server provides a set of command-line tools which implement the abov
 Use your private key to SSH into the bastion server:
 ```
 # Assumes your private key is located in /Users/<name>/.ssh directory
-$ ssh -i ~/.ssh/key.pem <name>@bastion.gigadb.host
+$ ssh -i ~/.ssh/id-openssh-bastion-peterl.pem peterl@bastion.gigadb.host
+Activate the web console with: systemctl enable --now cockpit.socket
+
+Last login: Fri Jul 26 11:59:36 2024 from 116.49.85.85
+[peterl@ip-10-99-0-88 ~]$
 ```
 
 List tools:
 ```
-[lily@ip-10-99-0-88 ~]$ ls /usr/local/bin/
+[peterl@ip-10-99-0-88 ~]$ ls /usr/local/bin/
 __pycache__ calculateChecksumSizes compare createReadme datasetUpload docker-compose node_exporter postUpload rclone updateUrls wsdump.py
 ```
 
 ## Ingesting Excel spreadsheets into GigaDB
 
-New datasets can be uploaded into GigaDB using Excel spreadsheets. Dataset metadata is added into [Excel template file version 19](https://github.com/gigascience/gigadb-website/blob/develop/gigadb/app/tools/excel-spreadsheet-uploader/template/GigaDBUpload-template_v19.xls). This Excel file needs to placed in the `uploadDir` directory:
+New datasets are uploaded into GigaDB using Excel spreadsheets. Dataset metadata is added into [Excel template file version 19](https://github.com/gigascience/gigadb-website/blob/develop/gigadb/app/tools/excel-spreadsheet-uploader/template/GigaDBUpload-template_v19.xls). This Excel file needs to placed in the `uploadDir` directory:
 ```
 # Your home directory can be referred to using ~
-[lily@ip-10-99-0-88 ~]$ ls ~
+[peterl@ip-10-99-0-88 ~]$ ls ~
 uploadDir
 ```
 
-Excel files can be uploaded into `uploadDir` using `sftp` tool or [Filezilla](https://filezilla-project.org). The Excel file can then be ingested:
+Excel files can be uploaded into `uploadDir` using `sftp` tool or [Filezilla](https://filezilla-project.org). The Excel file can then be ingested using the datasetUpload script in `/usr/local/bin`:
 ```
-[lily@ip-10-99-0-88 ~]$ datasetUpload
+[peterl@ip-10-99-0-88 ~]$ sudo /usr/local/bin/datasetUpload
 Done.
 ```
 
-If the ingestion process has been successful then you should see the above output. In addition, the Excel file will have disappeared from `uploadDir` folder:
+If the ingestion process has been successful then you should see the above output. In addition, the Excel file will have disappeared from `uploadDir` folder and there will be two log files:
 ```
-[lily@ip-10-99-0-88 ~]$ ls uploadDir/
+[peterl@ip-10-99-0-88 ~]$ ls uploadDir/
+java.log  javac.log
 ```
 
 Looking at the uploadDir/java.log will help confirm upload:
 ```
-[lily@ip-10-99-0-88 ~]$ tail logs/java.log 
+[peterl@ip-10-99-0-88 ~]$ tail uploadDir/java.log 
 Insert True: insert into file_attributes select 674771, 538926, 1045, 'S10', null where not exists ( select null from file_attributes where id = 674771 ); 
 Insert false: insert into file_attributes select 674771, 538926, 1045, 'S10', null where not exists ( select null from file_attributes where id = 674771 ); 
 Insert True: insert into file_attributes select 674772, 538927, 1045, 'S12', null where not exists ( select null from file_attributes where id = 674772 ); 
@@ -62,8 +67,7 @@ Also, look at the dataset's samples and files in the relevant dataset samples an
 
 If there is a problem with Excel file ingestion then you will see the following output when running `datasetUpload`:
 ```
-$ ssh -i path/to/ssh.key centos@ ec2_bastion_public_ip
-[lily@ip-10-99-0-88 ~]$ datasetUpload
+[peterl@ip-10-99-0-88 ~]$ datasetUpload
 Spreadsheet cannot be uploaded, please check logs!
 Done.
 ```
@@ -90,33 +94,49 @@ validation output: false
 [GigaDBUpload_v18_GIGA-D-23-00109-Koref4K.xls]
 ```
 
-In the above error, dataset_type is wrongly spelt as `Genomics` which breaks the ingestion process.
+In the above example error, dataset_type is wrongly spelt as `Genomics` which breaks the ingestion process and therefore needs to be corrected.
 
 ## Generating readme files
 
-Readme files for datasets should be created changing directory to the user dropbox and calling createReadme and providing a DOI as a command-line parameter:
+From your home directory on the bastion server, readme files for datasets can be created using the `createReadme` script by calling it with a DOI; `--wasabi --apply --use-live-data` are parameters required to copy the readme file into Wasabi:
 ```
-[lily@ip-10-99-0-88 ~]$ createReadme --doi 100142
+[peterl@ip-10-99-0-142 ~]$ pwd
+/home/peterl
+[peterl@ip-10-99-0-88 ~]$ sudo /usr/local/bin/createReadme --doi 100142 --wasabi --apply --use-live-data
 ```
 
-A readme_<doi>.txt will appear in the user dropbox. The readme file will also have been uploaded into the correct dataset directory in Wasabi live bucket.
+A readme_<doi>.txt will appear in the `uploadDir` directory.
+```
+[peterl@ip-10-99-0-142 ~]$ ls uploadDir/
+java.log  javac.log  readme_100142.txt  readme_100142_20240727_042600.log
+```
+The readme file will also have been uploaded into the correct dataset directory in Wasabi live bucket.  The file size and MD5 value for the readme file will also be updated in the database.
 
 ## Calculating MD5 checksum values and file sizes
 
-Two files, doi.md5 and doi.filesizes are required to update these information in the database. These two files are created using the `calculateChecksumSizes` command. Firstly, change directory to the user drop box of the dataset then run `calculateChecksumSizes`:
+> Executing `calculateChecksumSizes` as a curator user on bastion is currently broken. Since `calculateChecksumSizes` is called using sudo, it will look for /root/.config/rclone/rclone.conf that is not created. There is a `~/.config/rclone/rclone.conf` created each curator user's home directory and it is this config file that should be used in `calculateChecksumSizes` when copying doi.md5 and doi.filesizes files into S3 bucket. Actually, we can stop copying these files to S3 bucket and have `fileMetaToDb` use the files in the dropbox directory.
 ```
-# The files for dataset 100520 are being managed in user888 dropbox
-[lily@ip-10-99-0-88 ~]$ cd /share/dropbox/user888
-[lily@ip-10-99-0-88 user888]$ calculateChecksumSizes 100520
-Created 100520.md5
-Created 100520.filesizes
-2024/05/07 08:22:59 INFO  : 100520.filesizes: Copied (new)
+[peterl@ip-10-99-0-142 user888]$ sudo /usr/local/bin/calculateChecksumSizes 100888
+Created 100888.md5
+Created 100888.filesizes
+2024/07/27 05:39:21 NOTICE: Config file "/root/.config/rclone/rclone.conf" not found - using defaults
+2024/07/27 05:39:21 Failed to create file system for "aws_metadata:gigadb-datasets-metadata": didn't find section in config file
+```
+
+Two files, doi.md5 and doi.filesizes are required to update MD5 checksum values and file sizes for dataset files in the database. These two files are created using the `calculateChecksumSizes` command. Firstly, change directory to the user drop box of the dataset then run `calculateChecksumSizes`, providing it with the DOI of the dataset as a paramter:
+```
+# The files for dataset 100888 are being managed in user888 dropbox
+[peterl@ip-10-99-0-88 ~]$ cd /share/dropbox/user888
+[peterl@ip-10-99-0-88 user888]$ sudo /usr/local/bin/calculateChecksumSizes 100888
+Created 100888.md5
+Created 100888.filesizes
+2024/05/07 08:22:59 INFO  : 100888.filesizes: Copied (new)
 2024/05/07 08:22:59 INFO  : 
 Transferred:             65 B / 65 B, 100%, 0 B/s, ETA -
 Transferred:            1 / 1, 100%
 Elapsed time:         0.3s
 
-2024/05/07 08:23:00 INFO  : 100520.md5: Copied (new)
+2024/05/07 08:23:00 INFO  : 100888.md5: Copied (new)
 2024/05/07 08:23:00 INFO  : 
 Transferred:            185 B / 185 B, 100%, 0 B/s, ETA -
 Transferred:            1 / 1, 100%
@@ -127,28 +147,97 @@ Elapsed time:         0.3s
 
 The `fileMetaToDb` can be called to update file metadata in the database:
 ```
-[lily@ip-10-99-0-88 user103]$ filesMetaToDb 100142
+[peterl@ip-10-99-0-88 ~]$ sudo /usr/local/bin/filesMetaToDb 100142
+
+* About to update files' MD5 Checksum as file attribute for 100142
+Saved md5 file attribute with id: 17050
+Saved md5 file attribute with id: 17053
+Saved md5 file attribute with id: 17052
+
+Done with updating files' MD5 Checksum as file attribute for 100142. Process status is saved in file: /home/centos/uploadLogs/updating-md5checksum-100142.txt
+
+* About to update files' size for 100142
+Number of changes: 0
+
+Done with updating files' size for 100142. Nb of successful changes saved in file: /home/centos/uploadLogs/updating-file-size-100142.txt
+
+Logs for updating md5 values and file sizes have been moved to: /home/peterl/uploadDir
+
+Update files meta data to database done!
+
 ```
 
 You then need to check the dataset page in the file table to see if MD5 values and file sizes are visible.
 
 ## Using postUpload to create readme file and update file metadata in database
 
-There is a script called postUpload which calls createReadme, calculateChecksumSizes and fileMetaToDb in turn so that these three tools do not have to be manually executed one after another. To use postUpload, change directory to the user dropbox folder that you are working on and run the postUpload script:
+There is a script called postUpload which calls createReadme, calculateChecksumSizes and fileMetaToDb in turn so that these three tools do not have to be manually executed one after another:
 ```
-[lily@ip-10-99-0-88 ~]$ cd /share/dropbox/user888
-[lily@ip-10-99-0-88 user888]$ postUpload 100142
-[centos@ip-10-99-0-207 ~]$ ls -al ~/uploadDir/
--rw-rw-r--.  1 centos centos  668 Jun 17 04:41 readme_100142_20240617_044125.log
--rw-rw-r--.  1 centos centos   21 Jun 17 04:41 updating-file-size-100142.txt
--rw-rw-r--.  1 centos centos 1049 Jun 17 04:41 updating-md5checksum-100142.txt
-[centos@ip-10-99-0-207 ~]$ more ~/uploadDir/readme_100142_20240617_044125.log
-2024/06/17 04:41:29 INFO  : Created readme file for DOI 100142 in /usr/local/bin/runtime/curators/readme_100142.txt
-2024/06/17 04:41:30 INFO  : readme_100142.txt: Copied (replaced existing)
-2024/06/17 04:41:30 INFO  : Executed: rclone copy --s3-no-check-bucket /home/centos/readmeFiles/readme_100142.txt wasabi:gigadb-datasets/staging/pub/10.5524/100001_101000/100142/ --config /home/centos/.config/rclone/rclone.conf
---log-file /home/centos/uploadLogs/readme_100142_20240617_044125.log --log-level INFO --stats-log-level DEBUG >> /home/centos/uploadDir/readme_100142_20240617_044125.log
-2024/06/17 04:41:30 INFO  : Successfully copied file to Wasabi for DOI: 100142
+[peter@ip-10-99-0-88 ~]$ $ sudo /usr/local/bin/postUpload 100142
+
+* About to create the README file for 100142
+[DOI]
+10.5524/100142
+
+[Title]
+Supporting scripts and data for "Investigation into the annotation of protocol sequencing steps in the Sequence Read Archive".
+
+[Release Date]
+2015-05-11
+
+[Citation]
+Alnasir, J; Shanahan, H (2015): Supporting scripts and data for "Investigation into the annotation of protocol sequencing steps in the Sequence Read Archive".
+GigaScience Database. https://dx.doi.org/10.5524/100142
+
+[Dataset Type]
+Metadata
+
+[Dataset Summary]
+The workflow for the production of high-throughput sequencing data from nucleic acid samples is complex. There are a series of protocol steps to be followed in the preparation of samples for next-generation sequencing.  The quantification of bias in a number of protocol steps, namely DNA fractionation, blunting, phosphorylation, adapter ligation and library enrichment, remains to be determined. 
+We examined the experimental metadata of the public repository Sequence Read Archive (SRA) in order to ascertain the level of annotation of important sequencing steps in submissions to the database. 
+
+[File name] - [File Description] - [File Location]
+SRAmetadb.zip - Archival copy of SRA metadata at time of experiment - https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/10.5524/100001_101000/100142/SRAmetadb.zip
+readme_100142.txt -  - https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/staging/pub/10.5524/100001_101000/100142/readme_100142.txt
+Diagram-ALL-FIELDS-Check-annotation.jpg - image usedin manuscript - https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/10.5524/100001_101000/100142/Diagram-ALL-FIELDS-Check-annotation.jpg
+Diagram-SRA-Study-Experiment-Joined-probing.jpg -  - https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/10.5524/100001_101000/100142/Diagram-SRA-Study-Experiment-Joined-probing.jpg
+
+[License]
+All files and data are distributed under the CC0 1.0 Universal (CC0 1.0) Public Domain Dedication (https://creativecommons.org/publicdomain/zero/1.0/), unless specifically stated otherwise, see http://gigadb.org/site/term for more details.
+
+[Comments]
+
+[End]
+
+The readme_100142.txt has been moved to: /home/peterl/uploadDir
+
+Log for copying readme_100142.txt to wasabi bucket has been moved to: /home/peterl/uploadDir
+Created readme file and uploaded it to Wasabi gigadb-website/staging bucket directory
+
+Done with creating the README file for 100142.
+
+* About to update files' size and MD5 checksum for 100142
+
+* About to update files' MD5 Checksum as file attribute for 100142
+Saved md5 file attribute with id: 17050
+Saved md5 file attribute with id: 17053
+Saved md5 file attribute with id: 17052
+
+Done with updating files' MD5 Checksum as file attribute for 100142. Process status is saved in file: /home/centos/uploadLogs/updating-md5checksum-100142.txt
+
+* About to update files' size for 100142
+Number of changes: 0
+
+Done with updating files' size for 100142. Nb of successful changes saved in file: /home/centos/uploadLogs/updating-file-size-100142.txt
+
+Logs for updating md5 values and file sizes have been moved to: /home/peterl/uploadDir
+
+Update files meta data to database done!
+
+Done with updating files' size and MD5 checksum for 100142.
 ```
+
+> It is strange that the `Number of changes: 0` for `About to update files' size for 100142`. I suspect there is a mismatch between the delimiter used to separate file size values and file names in doi.filesizes, and the delimiter used to parse these lines in the file size update tool.
 
 ## compare: How to compare files on the user dropbox with the files in the dataset spreadsheet
 
