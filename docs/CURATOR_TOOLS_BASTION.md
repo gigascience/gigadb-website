@@ -114,6 +114,7 @@ The readme file will also have been uploaded into the correct dataset directory 
 
 ## Calculating MD5 checksum values and file sizes
 
+> [!WARNING]
 > Executing `calculateChecksumSizes` as a curator user on bastion is currently broken. Since `calculateChecksumSizes` is called using sudo, it will look for /root/.config/rclone/rclone.conf that is not created. There is a `~/.config/rclone/rclone.conf` created each curator user's home directory and it is this config file that should be used in `calculateChecksumSizes` when copying doi.md5 and doi.filesizes files into S3 bucket. Actually, we can stop copying these files to S3 bucket and have `fileMetaToDb` use the files in the dropbox directory.
 ```
 [peterl@ip-10-99-0-142 user888]$ sudo /usr/local/bin/calculateChecksumSizes 100888
@@ -236,7 +237,7 @@ Update files meta data to database done!
 
 Done with updating files' size and MD5 checksum for 100142.
 ```
-
+> [!WARNING]
 > It is strange that the `Number of changes: 0` for `About to update files' size for 100142`. I suspect there is a mismatch between the delimiter used to separate file size values and file names in doi.filesizes, and the delimiter used to parse these lines in the file size update tool.
 
 ## compare: How to compare files on the user dropbox with the files in the dataset spreadsheet
