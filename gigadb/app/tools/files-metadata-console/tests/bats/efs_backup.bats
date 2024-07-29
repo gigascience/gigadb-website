@@ -11,6 +11,10 @@ teardown () {
           rm "$file"
       fi
     done
+
+    # Reset the bucket state
+    rclone --config ../wasabi-migration/config/rclone.conf delete wasabi:gigadb-datasets/dev/pub/10.5524/102001_103000/102480/
+    rclone --config ../wasabi-migration/config/rclone.conf delete gigadb-datasetfiles:gigadb-datasetfiles-backup/dev/pub/10.5524/102001_103000/102480
 }
 
 @test "No DOI provided" {
@@ -83,14 +87,5 @@ teardown () {
     [ "$status" -eq 0 ]
     [[ "$output" =~ "359 analysis_data/Tree_file.txt" ]]
     [[ "$output" =~ "3202 readme_102480.txt" ]]
-
-    # Reset the bucket state
-    run rclone --config ../wasabi-migration/config/rclone.conf delete wasabi:gigadb-datasets/dev/pub/10.5524/102001_103000/102480/ -v
-    [[ "$output" =~ "INFO  : readme_102480.txt: Deleted" ]]
-    [[ "$output" =~ "INFO  : analysis_data/Tree_file.txt: Deleted" ]]
-
-    run rclone --config ../wasabi-migration/config/rclone.conf delete gigadb-datasetfiles:gigadb-datasetfiles-backup/dev/pub/10.5524/102001_103000/102480 -v
-    [[ "$output" =~ "INFO  : readme_102480.txt: Deleted" ]]
-    [[ "$output" =~ "INFO  : analysis_data/Tree_file.txt: Deleted" ]]
 }
 
