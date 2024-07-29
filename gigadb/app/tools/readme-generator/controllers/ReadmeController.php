@@ -68,9 +68,13 @@ class ReadmeController extends Controller
         $optBucketPath = $this->bucketPath;
 
         // Return usage unless mandatory options are passed.
-        if ($optDoi === '') {
+        if ($optDoi === '' || $optOutdir === '' || $optBucketPath === '') {
             $this->stdout(
-                "\nUsage:\n\t./yii readme/create --doi 100142 | --outdir /home/curators | --bucketPath wasabi:gigadb-datasets/dev/pub/10.5524".PHP_EOL
+                "\nUsage:\n\t./yii readme/create --doi <DOI> --outdir <directory path> --bucketPath <bucket path>
+                \nRequired Options:
+                --doi         DOI to process, eg. 100142
+                --outdir      Specify the output directory, eg. /home/curators
+                --bucketPath  Path to the bucket, eg. wasabi:gigadb-datasets/dev/pub/10.5524".PHP_EOL
             );
             return ExitCode::USAGE;
         }

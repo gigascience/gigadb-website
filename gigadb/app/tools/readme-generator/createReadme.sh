@@ -35,6 +35,35 @@ use_live_data=false
 # Default number of DOIs to process
 batch=0
 
+# Usage message
+usage_message="Usage: $0 --doi <DOI>\n
+Required:
+--doi            DOI to process
+
+Available Options:
+--batch          Number of DOI to process
+--wasabi         (Default) Copy readme file to Wasabi bucket
+--apply          Escape dry run mode
+--use-live-data  Copy data to production live bucket"
+
+# Default output directory
+if [[ $(uname -n) =~ compute ]];then
+  outdir='/app/readmeFiles'
+  wasabi_upload=true
+else
+  outdir='/home/curators'
+  wasabi_upload=false
+fi
+
+if [[ $# -eq 0 ]];then
+  if [[ $(uname -n) =~ compute ]];then
+    echo -e "$usage_message"
+  else
+    echo -e "$usage_message"
+  exit 1
+  fi
+fi
+
 # Parse command line parameters
 while [[ $# -gt 0 ]]; do
     case "$1" in
@@ -66,6 +95,12 @@ while [[ $# -gt 0 ]]; do
     esac
     shift
 done
+
+# Check if the --doi option is provided
+if [[ -z "$doi" ]]; then
+  echo "Error: --doi <DOI> is required."
+  exit 1
+fi
 
 #######################################
 # Set up logging
@@ -215,6 +250,7 @@ function main {
       docker-compose run --rm tool /app/yii readme/create --doi "${doi}" --outdir "${outdir}" --bucketPath "${destination_path}"
     fi
     exitCode=$?
+
     if [ "${exitCode}" -eq 74 ]; then
       echo "$(date +'%Y/%m/%d %H:%M:%S') ERROR  : Could not save readme file for DOI ${doi} at ${outdir}" >> "$LOGFILE"
       exit 1
@@ -225,13 +261,29 @@ function main {
         exit 0
       fi
     else
-      echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Created readme file for DOI ${doi} in ${SOURCE_PATH}/readme_${doi}.txt" >> "$LOGFILE"
+      echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Created readme file for DOI ${doi} in ${outdir}/readme_${doi}.txt" >> "$LOGFILE"
 
       # Readme file can be copied into Wasabi if --wasabi flag is present
       if [ "${wasabi_upload}" ]; then
         dir_range=""
         get_doi_directory_range
         copy_to_wasabi
+      fi
+
+       # Copy files to user uploadDir
+       if [[ $(uname -n) =~ compute ]]; then
+         currentPath=$(pwd)
+         userOutputDir="$currentPath/uploadDir"
+         if [[ "$currentPath" != "/home/centos" ]]; then
+           if [[ -f "/home/centos/readmeFiles/readme_${doi}.txt" ]]; then
+             mv "/home/centos/readmeFiles/readme_${doi}.txt" "$userOutputDir/"
+             echo -e "\nThe readme_$doi.txt has been moved to: $userOutputDir"
+           else
+             echo -e "\nThe readme_$doi.txt is not found!"
+           fi
+           mv "$LOGFILE" "$userOutputDir"
+           echo -e "\nLog for copying readme_$doi.txt to wasabi bucket has been moved to: $userOutputDir"
+         fi
       fi
 
       # Exit if not running in batch mode

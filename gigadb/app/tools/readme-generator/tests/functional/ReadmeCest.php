@@ -72,7 +72,7 @@ class ReadmeCest
     public function tryCreateWithBadDoi(FunctionalTester $I)
     {
         # Test actionCreate function in ReadmeController should fail
-        $I->runShellCommand("/app/yii_test readme/create --doi 888888 --outdir=/home/curators", false);
+        $I->runShellCommand("/app/yii_test readme/create --doi 888888 --outdir=/home/curators --bucketPath wasabi:gigadb-datasets/dev/pub/10.5524", false);
         $I->seeResultCodeIs(65);
 
         # Test getReadme function in ReadmeGenerator class to
