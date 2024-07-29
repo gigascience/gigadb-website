@@ -344,10 +344,11 @@ output "efs_filesystem_size_in_bytes" {
   value = module.gigadb_efs.size_in_bytes
 }
 
-output "efs_filesystem_access_points" {
-  value = {
-    dropbox_area       = module.gigadb_efs.access_points["dropbox_area"].id
-    configuration_area = module.gigadb_efs.access_points["configuration_area"].id
-  }
+output "efs_filesystem_dropbox_area_id" {
+  value = module.gigadb_efs.access_points["dropbox_area"].id
+}
+
+output "efs_filesystem_configuration_area_id" {
+  value = module.gigadb_efs.access_points["configuration_area"].id
 }
 
