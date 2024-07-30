@@ -38,6 +38,8 @@ if ! [ -s ./.secrets ];then
     # deal with special case we are in Upstream
     if [[ $CI_PROJECT_URL == "https://gitlab.com/gigascience/upstream/gigadb-website" ]];then
       PROJECT_VARIABLES_URL="https://gitlab.com/api/v4/projects/gigascience%2Fupstream%2Fgigadb-website/variables"
+    elif [[ $CI_PROJECT_URL == "https://gitlab.com/gigascience/upstream/alt-gigadb-website" ]];then
+      PROJECT_VARIABLES_URL="https://gitlab.com/api/v4/projects/gigascience%2Fupstream%2Falt-gigadb-website/variables"
     fi
 
     echo "Retrieving variables from ${GROUP_VARIABLES_URL}"
