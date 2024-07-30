@@ -39,6 +39,52 @@
     - role: ../../roles/docker-daemon-enable-start
     - role: ../../roles/fuw
 
+- name: Mount AWS efs config access points
+  hosts: name_bastion_server_{{gigadb_env}}*
+  become: yes
+  tags:
+    - mount-efs
+
+  tasks:
+    - name: Download custom build aws efs utils binary
+      ansible.builtin.get_url:
+        url: https://s3.ap-northeast-1.wasabisys.com/infra-resources/amazon-efs-utils-2.0.4-1.el8.x86_64.rpm
+        dest: /tmp/aws-efs-utils.rpm
+
+    - name: Install the aws efs utils binary
+      dnf:
+        name: /tmp/aws-efs-utils.rpm
+        state: present
+        disable_gpg_check: yes
+
+    - name: Create directories for mounting
+      ansible.builtin.file:
+        path: /share/config
+        state: directory
+        mode: '0755'
+        owner: centos
+        group: centos
+
+    - name: Mount the config access points
+      ansible.posix.mount:
+        path: "/share/config"
+        src: "{{ efs_filesystem_dns_name }}"
+        fstype: efs
+        opts: tls,accesspoint={{ configuration_area_id }}
+        state: mounted
+
+    - name: Confirm the config access point is mounted
+      ansible.builtin.command:
+        cmd: mountpoint /share/config
+      register: config_mount_check
+      changed_when: false
+      failed_when: config_mount_check.stdout == "/share/config is not a mountpoint"
+
+    - name: Remove custom build aws efs utils rpm
+      ansible.builtin.file:
+        path: /tmp/aws-efs-utils.rpm
+        state: absent
+
 - name: Install node exporter
   hosts: name_gigadb_webserver_{{gigadb_env}}*
   tags:
