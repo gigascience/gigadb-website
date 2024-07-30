@@ -111,12 +111,12 @@ files_ip=$(terraform output ec2_files_public_ip | sed 's/"//g')
 echo "ec2_bastion_login_account = centos@$bastion_ip" >> ansible.properties
 
 # Retrieve efs ids for mounting
-efs_filesystem_id=$(terraform output efs_filesystem_id | sed 's/"//g')
+efs_filesystem_dns_name=$(terraform output efs_filesystem_dns_name | sed 's/"//g')
 configuration_area_id=$(terraform output efs_filesystem_configuration_area_id | sed 's/"//g')
 dropbox_area_id=$(terraform output efs_filesystem_dropbox_area_id | sed 's/"//g')
 
 {
-  echo "efs_filesystem_id = $efs_filesystem_id"
+  echo "efs_filesystem_dns_name = $efs_filesystem_dns_name"
   echo "configuration_area_id = $configuration_area_id"
   echo "dropbox_area_id = $dropbox_area_id"
 } >> ansible.properties
@@ -163,5 +163,3 @@ echo "Saving EC2 IP addresses to GitLab for file server"
 env TF_KEY_NAME=private_ip ansible-playbook -vvv -i ../../inventories bootstrap_playbook.yml --tags="files_ips" -e="private_ip=$files_private_ip public_ip=$files_ip" --extra-vars="gigadb_env=$target_environment"
 echo "Saving EC2 IP addresses to GitLab for bastion server"
 ansible-playbook -i ../../inventories bootstrap_playbook.yml --tags="bastion_ips" -e="private_ip=$bastion_private_ip public_ip=$bastion_ip" --extra-vars="gigadb_env=$target_environment"
-
-}
