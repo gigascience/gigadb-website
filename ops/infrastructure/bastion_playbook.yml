@@ -404,6 +404,70 @@
         install_manpages: "true"
         rclone_config_location: "/home/centos/.config/rclone/rclone.conf"
 
+- name: Mount AWS efs access points
+  hosts: name_bastion_server_{{gigadb_env}}*
+  become: yes
+  tags:
+    - mount-efs
+
+  tasks:
+    - name: Download custom build aws efs utils binary
+      ansible.builtin.get_url:
+        url: https://s3.ap-northeast-1.wasabisys.com/infra-resources/amazon-efs-utils-2.0.4-1.el8.x86_64.rpm
+        dest: /tmp/aws-efs-utils.rpm
+
+    - name: Install the aws efs utils binary
+      dnf:
+        name: /tmp/aws-efs-utils.rpm
+        state: present
+        disable_gpg_check: yes
+
+    - name: Create directories for mounting
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        mode: '0755'
+        owner: centos
+        group: centos
+      loop:
+        - "/share/dropbox"
+        - "/share/config"
+
+    - name: Mount the dropbox access points
+      ansible.posix.mount:
+        path: "/share/dropbox"
+        src: "{{ efs_filesystem_dns_name }}"
+        fstype: efs
+        opts: tls,accesspoint={{ dropbox_area_id }}
+        state: mounted
+
+    - name: Confirm the dropbox access point is mounted
+      ansible.builtin.command:
+        cmd: mountpoint /share/dropbox
+      register: dropbox_mount_check
+      changed_when: false
+      failed_when: dropbox_mount_check.stdout == "/share/dropbox is not a mountpoint"
+
+    - name: Mount the config access points
+      ansible.posix.mount:
+        path: "/share/config"
+        src: "{{ efs_filesystem_dns_name }}"
+        fstype: efs
+        opts: tls,accesspoint={{ configuration_area_id }}
+        state: mounted
+
+    - name: Confirm the config access point is mounted
+      ansible.builtin.command:
+        cmd: mountpoint /share/config
+      register: config_mount_check
+      changed_when: false
+      failed_when: config_mount_check.stdout == "/share/config is not a mountpoint"
+
+    - name: Remove custom build aws efs utils rpm
+      ansible.builtin.file:
+        path: /tmp/aws-efs-utils.rpm
+        state: absent
+
 - name: Load latest DB backup
   hosts: name_bastion_server_{{gigadb_env}}*
   tags:
