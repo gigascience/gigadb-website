@@ -40,7 +40,7 @@
     - role: ../../roles/fuw
 
 - name: Mount AWS efs config access points
-  hosts: name_bastion_server_{{gigadb_env}}*
+  hosts: name_gigadb_webserver_{{gigadb_env}}*
   become: yes
   tags:
     - mount-efs
