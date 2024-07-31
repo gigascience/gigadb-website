@@ -17,6 +17,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Feat #1892: Consolidate all layouts into one single layout
 - Fix #1912: Enable curators to save Gigadb forms from many browser tabs at once
 - Feat #1840: Make create readme tool available as part of postUpload script
+- Fix #1848: Save modifications to image metafields
 
 ## v4.3.0 - 2024-06-25 - 9cf91f224 - live since 2024-07-01
 
