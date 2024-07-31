@@ -5,19 +5,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Fix #1848: Save modifications to image metafields
 - Feat 1872: Extract stages of postUpload script into separate scripts
 
-## v4.3.2
+## v4.3.2 - 2024-07-22 - 6531115b7 - live since 2024-07-25
 
 - Feat #1892: Remove unused CSS and LESS files
 - Fix #1871: Allowed to save species info filling only required inputs
 
-## v4.3.1 - 2024-07-10 - 2ba5e7dbc
+## v4.3.1 - 2024-07-10 - 2ba5e7dbc - live since 2024-07-15
 
 - Feat #1892: Consolidate all layouts into one single layout
 - Fix #1912: Enable curators to save Gigadb forms from many browser tabs at once
 - Feat #1840: Make create readme tool available as part of postUpload script
-- Fix #1848: Save modifications to image metafields
 
 ## v4.3.0 - 2024-06-25 - 9cf91f224 - live since 2024-07-01
 
