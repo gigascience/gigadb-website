@@ -2,7 +2,7 @@
 
 teardown () {
     echo "executing teardown code"
-    FILES="uploadDir/backup_"*".log"
+    FILES="log/backup_"*".log"
 
     for file in $FILES
     do
@@ -20,11 +20,21 @@ teardown () {
 @test "No DOI provided" {
     run scripts/efs_backup.sh
     [ "$status" -eq 1 ]
-    [ "${lines[0]}" = "Error: DOI is required!" ]
-    [ "${lines[1]}" = "Usage: scripts/efs_backup.sh <DOI> <Source Path>" ]
-    [ "${lines[2]}" = "uploads dataset files to the aws s3 bucket - gigadb-datasets-metadata and the wasabi bucket - gigadb-datasets" ]
-    [ "${lines[3]}" = "Use scripts/efs_backup.sh <DOI> <Source Path> --apply to escape dry run mode" ]
-    [ "${lines[4]}" = "Use scripts/efs_backup.sh <DOI> <Source Path> --use_live_data to upload to live buckets" ]
+    [[ "$output" =~ "Usage: scripts/efs_backup.sh --doi <DOI> --sourcePath <Source Path>" ]]
+    [[ "$output" =~ "Required:" ]]
+    [[ "$output" =~ "--doi            Specify DOI to process" ]]
+    [[ "$output" =~ "--sourcePath     Specify source path" ]]
+    [[ "$output" =~ "Available Options:" ]]
+    [[ "$output" =~ "--wasabi         Copy files to Wasabi bucket" ]]
+    [[ "$output" =~ "--backup         Copy files to s3 bucket" ]]
+    [[ "$output" =~ "--apply          Escape dry run mode" ]]
+    [[ "$output" =~ "Example usages:" ]]
+    [[ "$output" =~ "scripts/efs_backup.sh --doi 100148 --sourcePath /share/dropbox/user101 --wasabi" ]]
+    [[ "$output" =~ "scripts/efs_backup.sh --doi 100148 --sourcePath /share/dropbox/user101 --wasabi --apply" ]]
+    [[ "$output" =~ "scripts/efs_backup.sh --doi 100148 --sourcePath /share/dropbox/user101 --backup" ]]
+    [[ "$output" =~ "scripts/efs_backup.sh --doi 100148 --sourcePath /share/dropbox/user101 --backup --apply" ]]
+    [[ "$output" =~ "scripts/efs_backup.sh --doi 100148 --sourcePath /share/dropbox/user101 --wasabi --backup" ]]
+    [[ "$output" =~ "scripts/efs_backup.sh --doi 100148 --sourcePath /share/dropbox/user101 --wasabi --backup --apply" ]]
 }
 
 @test "Input out of range DI" {
@@ -33,46 +43,175 @@ teardown () {
     [ "${lines[0]}" = "DOI out of supported range" ]
 }
 
-@test "With valid DOI under dry run mode" {
-    run scripts/efs_backup.sh --doi 102480 --sourcePath tests/_data/102480
+@test "Copy files from dev to Wasabi in dry run mode" {
+    run scripts/efs_backup.sh --doi 102480 --sourcePath tests/_data/102480 --wasabi
     [ "$status" -eq 0 ]
 
     expected_lines=(
-        "NOTICE: readme_102480.txt: Skipped copy as --dry-run is set (size 3.127Ki)"
+        "INFO  : Start copying files from dev to Wasabi"
         "NOTICE: analysis_data/Tree_file.txt: Skipped copy as --dry-run is set (size 359)"
-        "INFO  : Executed: rclone copy --s3-no-check-bucket tests/_data/102480 wasabi:gigadb-datasets/dev/pub/10.5524/102001_103000/102480 --config ../wasabi-migration/config/rclone.conf --dry-run"
-        "INFO  : Successfully copied file to Wasabi bucket for DOI: 102480"
         "NOTICE: readme_102480.txt: Skipped copy as --dry-run is set (size 3.127Ki)"
-        "NOTICE: analysis_data/Tree_file.txt: Skipped copy as --dry-run is set (size 359)"
-        "INFO  : Executed: rclone copy --s3-no-check-bucket tests/_data/102480 gigadb-datasetfiles:gigadb-datasetfiles-backup/dev/pub/10.5524/102001_103000/102480 --config ../wasabi-migration/config/rclone.conf"
-        "INFO  : Successfully copied file to s3 bucket for DOI: 102480"
+        "INFO  : Executed: rclone copy --s3-no-check-bucket tests/_data/102480 wasabi:gigadb-datasets/dev/pub/10.5524/102001_103000/102480 --dry-run --config ../wasabi-migration/config/rclone.conf"
+        "INFO  : Successfully copied files to Wasabi bucket for DOI: 102480"
     )
 
     # Check the log
     for line in "${expected_lines[@]}"; do
-        run grep -F "$line" uploadDir/backup_*.log
+        run grep -F "$line" log/backup_*.log
+        [ "$status" -eq 0 ]
+    done
+
+    unexpected_lines=(
+        "INFO  : Start copying files from dev to s3"
+        "NOTICE: readme_102480.txt: Skipped copy as --dry-run is set (size 3.127Ki)"
+        "NOTICE: analysis_data/Tree_file.txt: Skipped copy as --dry-run is set (size 359)"
+        "INFO  : Executed: rclone copy --s3-no-check-bucket tests/_data/102480 gigadb-datasetfiles:gigadb-datasetfiles-backup/dev/pub/10.5524/102001_103000/102480 --dry-run --config ../wasabi-migration/config/rclone.conf"
+        "INFO  : Successfully copied files to s3 bucket for DOI: 102480"
+    )
+
+    # Verify no files copy to s3
+    for line in "${unexpected_lines[@]}"; do
+        run grep -vF "$line" log/backup_*.log
         [ "$status" -eq 0 ]
     done
 }
 
-@test "With valid DOI and apply flag" {
-    run scripts/efs_backup.sh --doi 102480 --sourcePath tests/_data/102480 --apply
+@test "Copy files from dev to Wasabi with apply flag" {
+    run scripts/efs_backup.sh --doi 102480 --sourcePath tests/_data/102480 --wasabi --apply
     [ "$status" -eq 0 ]
 
-     expected_lines=(
+    expected_lines=(
+        "INFO  : Start copying files from dev to Wasabi"
         "INFO  : analysis_data/Tree_file.txt: Copied (new)"
         "INFO  : readme_102480.txt: Copied (new)"
         "INFO  : Executed: rclone copy --s3-no-check-bucket tests/_data/102480 wasabi:gigadb-datasets/dev/pub/10.5524/102001_103000/102480 --config ../wasabi-migration/config/rclone.conf"
-        "INFO  : Successfully copied file to Wasabi bucket for DOI: 102480"
+        "INFO  : Successfully copied files to Wasabi bucket for DOI: 102480"
+    )
+
+    # Check the log
+    for line in "${expected_lines[@]}"; do
+        run grep -F "$line" log/backup_*.log
+        [ "$status" -eq 0 ]
+    done
+
+    # Capture and check the listing from the Wasabi bucket
+    run rclone --config ../wasabi-migration/config/rclone.conf ls wasabi:gigadb-datasets/dev/pub/10.5524/102001_103000/102480
+    [ "$status" -eq 0 ]
+    [[ "$output" =~ "359 analysis_data/Tree_file.txt" ]]
+    [[ "$output" =~ "3202 readme_102480.txt" ]]
+
+     # Check no files have been uploaded to s3 bucket that the output is empty
+     run rclone --config ../wasabi-migration/config/rclone.conf ls gigadb-datasetfiles:gigadb-datasetfiles-backup/dev/pub/10.5524/102001_103000/102480
+     [ -z "$output" ]
+}
+
+@test "Copy files from dev to s3 in dry run mode" {
+    run scripts/efs_backup.sh --doi 102480 --sourcePath tests/_data/102480 --backup
+    [ "$status" -eq 0 ]
+
+    expected_lines=(
+        "INFO  : Start copying files from dev to s3"
+        "NOTICE: readme_102480.txt: Skipped copy as --dry-run is set (size 3.127Ki)"
+        "NOTICE: analysis_data/Tree_file.txt: Skipped copy as --dry-run is set (size 359)"
+        "INFO  : Executed: rclone copy --s3-no-check-bucket tests/_data/102480 gigadb-datasetfiles:gigadb-datasetfiles-backup/dev/pub/10.5524/102001_103000/102480 --dry-run --config ../wasabi-migration/config/rclone.conf"
+        "INFO  : Successfully copied files to s3 bucket for DOI: 102480"
+    )
+
+    # Check the log
+    for line in "${expected_lines[@]}"; do
+        run grep -F "$line" log/backup_*.log
+        [ "$status" -eq 0 ]
+    done
+
+    unexpected_lines=(
+        "INFO  : Start copying files from dev to Wasabi"
+        "INFO  : analysis_data/Tree_file.txt: Copied (new)"
+        "INFO  : readme_102480.txt: Copied (new)"
+        "INFO  : Executed: rclone copy --s3-no-check-bucket tests/_data/102480 wasabi:gigadb-datasets/dev/pub/10.5524/102001_103000/102480 --config ../wasabi-migration/config/rclone.conf"
+        "INFO  : Successfully copied files to Wasabi bucket for DOI: 102480"
+    )
+
+    # Verify no copy files to Wasabi
+    for line in "${unexpected_lines[@]}"; do
+        run grep -vF "$line" log/backup_*.log
+        [ "$status" -eq 0 ]
+    done
+
+}
+
+@test "Copy files from dev to s3 with apply flag" {
+    run scripts/efs_backup.sh --doi 102480 --sourcePath tests/_data/102480 --backup --apply
+    [ "$status" -eq 0 ]
+
+    expected_lines=(
+        "INFO  : Start copying files from dev to s3"
         "INFO  : analysis_data/Tree_file.txt: Copied (new)"
         "INFO  : readme_102480.txt: Copied (new)"
         "INFO  : Executed: rclone copy --s3-no-check-bucket tests/_data/102480 gigadb-datasetfiles:gigadb-datasetfiles-backup/dev/pub/10.5524/102001_103000/102480 --config ../wasabi-migration/config/rclone.conf"
-        "INFO  : Successfully copied file to s3 bucket for DOI: 102480"
+        "INFO  : Successfully copied files to s3 bucket for DOI: 102480"
+    )
+
+    # Check the log
+    for line in "${expected_lines[@]}"; do
+        run grep -F "$line" log/backup_*.log
+        [ "$status" -eq 0 ]
+    done
+
+    # Capture and check the listing from the S3 bucket
+    run rclone --config ../wasabi-migration/config/rclone.conf ls gigadb-datasetfiles:gigadb-datasetfiles-backup/dev/pub/10.5524/102001_103000/102480
+    [ "$status" -eq 0 ]
+    [[ "$output" =~ "359 analysis_data/Tree_file.txt" ]]
+    [[ "$output" =~ "3202 readme_102480.txt" ]]
+
+    # Check no files have been uploaded to Wasabi bucket that the output is empty
+    run rclone --config ../wasabi-migration/config/rclone.conf ls wasabi:gigadb-datasets/dev/pub/10.5524/102001_103000/102480/
+    [ -z "$output" ]
+}
+
+@test "Copy files from dev to Wasabi and s3 in dry run mode" {
+    run scripts/efs_backup.sh --doi 102480 --sourcePath tests/_data/102480 --wasabi --backup
+    [ "$status" -eq 0 ]
+
+    expected_lines=(
+        "INFO  : Start copying files from dev to Wasabi"
+        "NOTICE: analysis_data/Tree_file.txt: Skipped copy as --dry-run is set (size 359)"
+        "NOTICE: readme_102480.txt: Skipped copy as --dry-run is set (size 3.127Ki)"
+        "INFO  : Executed: rclone copy --s3-no-check-bucket tests/_data/102480 wasabi:gigadb-datasets/dev/pub/10.5524/102001_103000/102480 --dry-run --config ../wasabi-migration/config/rclone.conf"
+        "INFO  : Successfully copied files to Wasabi bucket for DOI: 102480"
+        "INFO  : Start copying files from dev to s3"
+        "NOTICE: readme_102480.txt: Skipped copy as --dry-run is set (size 3.127Ki)"
+        "NOTICE: analysis_data/Tree_file.txt: Skipped copy as --dry-run is set (size 359)"
+        "INFO  : Executed: rclone copy --s3-no-check-bucket tests/_data/102480 gigadb-datasetfiles:gigadb-datasetfiles-backup/dev/pub/10.5524/102001_103000/102480 --dry-run --config ../wasabi-migration/config/rclone.conf"
+        "INFO  : Successfully copied files to s3 bucket for DOI: 102480"
+    )
+
+    # Check the log
+    for line in "${expected_lines[@]}"; do
+        run grep -F "$line" log/backup_*.log
+        [ "$status" -eq 0 ]
+    done
+}
+
+@test "Copy files from dev to Wasabi and s3 and apply flag" {
+    run scripts/efs_backup.sh --doi 102480 --sourcePath tests/_data/102480 --wasabi --backup --apply
+    [ "$status" -eq 0 ]
+
+     expected_lines=(
+        "INFO  : Start copying files from dev to Wasabi"
+        "INFO  : analysis_data/Tree_file.txt: Copied (new)"
+        "INFO  : readme_102480.txt: Copied (new)"
+        "INFO  : Executed: rclone copy --s3-no-check-bucket tests/_data/102480 wasabi:gigadb-datasets/dev/pub/10.5524/102001_103000/102480 --config ../wasabi-migration/config/rclone.conf"
+        "INFO  : Successfully copied files to Wasabi bucket for DOI: 102480"
+        "INFO  : Start copying files from dev to s3"
+        "INFO  : analysis_data/Tree_file.txt: Copied (new)"
+        "INFO  : readme_102480.txt: Copied (new)"
+        "INFO  : Executed: rclone copy --s3-no-check-bucket tests/_data/102480 gigadb-datasetfiles:gigadb-datasetfiles-backup/dev/pub/10.5524/102001_103000/102480 --config ../wasabi-migration/config/rclone.conf"
+        "INFO  : Successfully copied files to s3 bucket for DOI: 102480"
      )
 
     # Check the log
     for line in "${expected_lines[@]}"; do
-        run grep -F "$line" uploadDir/backup_*.log
+        run grep -F "$line" log/backup_*.log
         [ "$status" -eq 0 ]
     done
 
@@ -88,4 +227,3 @@ teardown () {
     [[ "$output" =~ "359 analysis_data/Tree_file.txt" ]]
     [[ "$output" =~ "3202 readme_102480.txt" ]]
 }
-

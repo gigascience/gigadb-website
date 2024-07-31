@@ -3,36 +3,60 @@
 # stop the script upon error
 set -e
 
+if [[ $(uname -n) =~ compute ]]; then
+  source "./.files-env"
+else
+  source "./.env"
+  source "./.secrets"
+fi
+
+usage_message="Usage: $0 --doi <DOI> --sourcePath <Source Path>\n
+Required:
+--doi            Specify DOI to process
+--sourcePath     Specify source path
+
+Available Options:
+--wasabi         Copy files to Wasabi bucket
+--backup         Copy files to s3 bucket
+--apply          Escape dry run mode
+
+Example usages:
+$0 --doi 100148 --sourcePath /share/dropbox/user101 --wasabi
+$0 --doi 100148 --sourcePath /share/dropbox/user101 --wasabi --apply
+$0 --doi 100148 --sourcePath /share/dropbox/user101 --backup
+$0 --doi 100148 --sourcePath /share/dropbox/user101 --backup --apply
+$0 --doi 100148 --sourcePath /share/dropbox/user101 --wasabi --backup
+$0 --doi 100148 --sourcePath /share/dropbox/user101 --wasabi --backup --apply"
+
 # Check if DOI is provided
 if [ $# -eq 0 ]; then
-    echo "Error: DOI is required!"
-    echo "Usage: $0 <DOI> <Source Path>"
-    echo "uploads dataset files to the aws s3 bucket - gigadb-datasets-metadata and the wasabi bucket - gigadb-datasets"
-    echo "Use $0 <DOI> <Source Path> --apply to escape dry run mode"
-    echo "Use $0 <DOI> <Source Path> --use_live_data to upload to live buckets"
+    echo -e "$usage_message"
     exit 1
 fi
 
 # Setup logging
-currentPath=$(pwd)
-LOGDIR="$currentPath/uploadDir"
-LOGFILE="$LOGDIR/backup_$(date +'%Y%m%d_%H%M%S').log"
-mkdir -p "${LOGDIR}"
-touch "${LOGFILE}"
+function set_up_logging() {
+  if [[ $(uname -n) =~ compute ]];then
+    LOGDIR="/var/log"
+  else
+    currentPath=$(pwd)
+    LOGDIR="$currentPath/log"
+  fi
+  LOGFILE="$LOGDIR/backup_$(date +'%Y%m%d_%H%M%S').log"
+  mkdir -p "${LOGDIR}"
+  touch "${LOGFILE}"
+}
 
-# Default directories
-WASABI_DATASETFILES_DIR="wasabi:gigadb-datasets/dev/pub/10.5524"
-S3_DATASETFILES_DIR="gigadb-datasetfiles:gigadb-datasetfiles-backup/dev/pub/10.5524"
-
-
+#
 # Rclone copy is executed in dry run mode as default. Use --apply flag to turn
 # off dry run mode
 dry_run=true
 
-# By default, readme files will be copied into dev directory. Use
-# --use-live-data flag to copy readme files to live directory
-use_live_data=false
+# By default, do not copy files to wasabi bucket
+wasabi_upload=false
 
+# By default, do not copy files to s3 bucket for backup
+s3_upload=false
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
@@ -44,11 +68,14 @@ while [[ $# -gt 0 ]]; do
         sourcePath=$2
         shift
         ;;
+    --wasabi)
+      wasabi_upload=true
+        ;;
+    --backup)
+      s3_upload=true
+        ;;
     --apply)
         dry_run=false
-        ;;
-    --use-live-data)
-        use_live_data=true
         ;;
     *)
         echo "Invalid option: $1"
@@ -69,62 +96,72 @@ else
   exit 1
 fi
 
-if [[ $(uname -n) =~ compute ]]; then
-  if [[ "${use_live_data}" = true ]]; then
-    WASABI_DATASETFILES_DIR="wasabi:gigadb-datasets/live/pub/10.5524"
-    S3_DATASETFILES_DIR="gigadb-datasetfiles:gigadb-datasetfiles-backup/live/pub/10.5524"
-  else
-    WASABI_DATASETFILES_DIR="wasabi:gigadb-datasets/staging/pub/10.5524"
-    S3_DATASETFILES_DIR="gigadb-datasetfiles:gigadb-datasetfiles-backup/staging/pub/10.5524"
-  fi
-fi
+# Defaul rclone config
+DEV_RCLONE_CONF_LOCATION='../wasabi-migration/config/rclone.conf'
 
+# Construct the destination path
 WASABI_DESTINATION_PATH="${WASABI_DATASETFILES_DIR}/${dir_range}/${doi}"
 S3_DESTINATION_PATH="${S3_DATASETFILES_DIR}/${dir_range}/${doi}"
 
-DEV_RCLONE_CONF_LOCATION='../wasabi-migration/config/rclone.conf'
+function copy_to_wasabi () {
+  echo -e "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Start copying files from $GIGADB_ENV to Wasabi" >> "${LOGFILE}"
+  rclone_wasabi_cmd="rclone copy --s3-no-check-bucket ${sourcePath} ${WASABI_DESTINATION_PATH}"
 
-# Construct rclone command to copy readme file to Wasabi
-rclone_wasabi_cmd="rclone copy --s3-no-check-bucket ${sourcePath} ${WASABI_DESTINATION_PATH}"
-if [[ ! $(uname -n) =~ compute ]];then
-  rclone_wasabi_cmd+=" --config ${DEV_RCLONE_CONF_LOCATION}"
+  if [[ "${dry_run}" == true ]]; then
+    rclone_wasabi_cmd+=" --dry-run"
+  fi
+
+  if [[ "${GIGADB_ENV}" == dev ]];then
+    rclone_wasabi_cmd+=" --config ${DEV_RCLONE_CONF_LOCATION}"
+  fi
+  rclone_wasabi_cmd+=" --log-file ${LOGFILE}"
+  rclone_wasabi_cmd+=" --log-level INFO"
+  rclone_wasabi_cmd+=" --stats-log-level DEBUG"
+  rclone_wasabi_cmd+=" >> ${LOGFILE}"
+  # Execute command
+  eval "${rclone_wasabi_cmd}"
+  rclone_wasabi_exit_code=$?
+  echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Executed: ${rclone_wasabi_cmd}" >> "$LOGFILE"
+  if [ ${rclone_wasabi_exit_code} -eq 0 ]; then
+    echo -e "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Successfully copied files to Wasabi bucket for DOI: $doi" >> "${LOGFILE}"
+  else
+    echo -e "$(date +'%Y/%m/%d %H:%M:%S') ERROR  : Problem with copying files to Wasabi bucket - rclone has exit code: ${rclone_wasabi_exit_code}" >> "${LOGFILE}"
+  fi
+}
+
+function copy_to_s3 () {
+    echo -e "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Start copying files from $GIGADB_ENV to s3" >> "${LOGFILE}"
+    rclone_s3_cmd="rclone copy --s3-no-check-bucket ${sourcePath} ${S3_DESTINATION_PATH}"
+
+    if [ "${dry_run}" == true ]; then
+      rclone_s3_cmd+=" --dry-run"
+    fi
+
+    if [[ "${GIGADB_ENV}" == dev ]];then
+        rclone_s3_cmd+=" --config ${DEV_RCLONE_CONF_LOCATION}"
+    fi
+
+    rclone_s3_cmd+=" --log-file ${LOGFILE}"
+    rclone_s3_cmd+=" --log-level INFO"
+    rclone_s3_cmd+=" --stats-log-level DEBUG"
+    rclone_s3_cmd+=" >> ${LOGFILE}"
+
+    eval "${rclone_s3_cmd}"
+    rclone_s3_exit_code=$?
+    echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Executed: ${rclone_s3_cmd}" >> "$LOGFILE"
+    if [ ${rclone_s3_exit_code} -eq 0 ]; then
+      echo -e "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Successfully copied files to s3 bucket for DOI: $doi" >> "${LOGFILE}"
+    else
+      echo -e "$(date +'%Y/%m/%d %H:%M:%S') ERROR  : Problem with copying files to s3 bucket - rclone has exit code: ${rclone_s3_exit_code}" >> "${LOGFILE}"
+    fi
+}
+
+set_up_logging
+
+if [[ "${wasabi_upload}" == true ]];then
+  copy_to_wasabi
 fi
 
-if [ "${dry_run}" = true ]; then
-  rclone_wasabi_cmd+=" --dry-run"
-fi
-rclone_wasabi_cmd+=" --log-file ${LOGFILE}"
-rclone_wasabi_cmd+=" --log-level INFO"
-rclone_wasabi_cmd+=" --stats-log-level DEBUG"
-rclone_wasabi_cmd+=" >> ${LOGFILE}"
-# Execute command
-eval "${rclone_wasabi_cmd}"
-rclone_wasabi_exit_code=$?
-echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Executed: ${rclone_wasabi_cmd}" >> "$LOGFILE"
-if [ ${rclone_wasabi_exit_code} -eq 0 ]; then
-  echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Successfully copied file to Wasabi bucket for DOI: $doi" >> "${LOGFILE}"
-else
-  echo "$(date +'%Y/%m/%d %H:%M:%S') ERROR  : Problem with copying file to Wasabi bucket - rclone has exit code: ${rclone_wasabi_exit_code}" >> "${LOGFILE}"
-fi
-
-rclone_s3_cmd="rclone copy --s3-no-check-bucket ${sourcePath} ${S3_DESTINATION_PATH}"
-if [[ ! $(uname -n) =~ compute ]];then
-  rclone_s3_cmd+=" --config ${DEV_RCLONE_CONF_LOCATION}"
-fi
-
-if [ "${dry_run}" = true ]; then
-  rclone_s3_cmd+=" --dry-run"
-fi
-rclone_s3_cmd+=" --log-file ${LOGFILE}"
-rclone_s3_cmd+=" --log-level INFO"
-rclone_s3_cmd+=" --stats-log-level DEBUG"
-rclone_s3_cmd+=" >> ${LOGFILE}"
-
-eval "${rclone_s3_cmd}"
-rclone_s3_exit_code=$?
-echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Executed: ${rclone_s3_cmd}" >> "$LOGFILE"
-if [ ${rclone_s3_exit_code} -eq 0 ]; then
-  echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Successfully copied file to s3 bucket for DOI: $doi" >> "${LOGFILE}"
-else
-  echo "$(date +'%Y/%m/%d %H:%M:%S') ERROR  : Problem with copying file to s3 buckt - rclone has exit code: ${rclone_s3_exit_code}" >> "${LOGFILE}"
+if [[ "${s3_upload}" == true ]];then
+  copy_to_s3
 fi
