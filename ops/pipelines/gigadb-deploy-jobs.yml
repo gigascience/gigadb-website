@@ -56,18 +56,9 @@
     - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml up -d application #fuw-admin fuw-public
     # deploy the web container once the application servers are up
     - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml up -d web
-    # Run database migrations if any
-    - 'MIGRATION_STATUS="$(docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml run --rm application bash -c "./protected/yiic migrate new --migrationPath=application.migrations.schema --interactive=0 | tail -1")"'
-    - echo "$MIGRATION_STATUS"
-    - '[[ -z "`echo $MIGRATION_STATUS | grep "up-to-date"`" ]] && docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml run --rm  application ./protected/yiic custommigrations dropconstraints'
-    - '[[ -z "`echo $MIGRATION_STATUS | grep "up-to-date"`" ]] && docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml run --rm  application ./protected/yiic custommigrations dropindexes'
-    - '[[ -z "`echo $MIGRATION_STATUS | grep "up-to-date"`" ]] && docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml run --rm  application ./protected/yiic custommigrations droptriggers'
-    - '[[ -z "`echo $MIGRATION_STATUS | grep "up-to-date"`" ]] && docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml run --rm  application ./protected/yiic migrate --migrationPath=application.migrations.schema --interactive=0'
-    - '[[ -z "`echo $MIGRATION_STATUS | grep "up-to-date"`" ]] && docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml run --rm  application ./protected/yiic migrate --migrationPath=application.migrations.fix_import --interactive=0'
-    # post-install script to run
+    # Run migration script to generate reference data feed for file formats and file types
     - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml run --rm application ./protected/yiic generatefiletypes
     - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml run --rm application ./protected/yiic generatefileformats
-    - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml run --rm application ./protected/yiic custommigrations refreshmaterializedviews
     # Spin up portainer container
     - ./ops/scripts/start_portainer.sh
     # Generate the web certificate for TLS termination on web container.

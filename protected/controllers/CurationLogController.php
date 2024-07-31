@@ -3,12 +3,6 @@
 class CurationLogController extends Controller
 {
 	/**
-	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
-	 * using two-column layout. See 'protected/views/layouts/column2.php'.
-	 */
-
-
-	/**
 	 * @return array action filters
 	 */
 	public function filters()
@@ -47,7 +41,6 @@ class CurationLogController extends Controller
         if(isset($_GET['CurationLog']))
             $model->setAttributes($_GET['CurationLog']);
 
-        $this->layout = 'new_main';
         $this->loadBaBbqPolyfills = true;
         $this->render('admin',array(
             'model'=>$model,
@@ -80,7 +73,6 @@ class CurationLogController extends Controller
 				$this->redirect(array('view','id'=>$model->id));
 		}
 
-		$this->layout = 'new_datasetpage';
 		$this->render('create',array(
 			'model'=>$model,
             'dataset_id'=>$id,
@@ -114,7 +106,6 @@ class CurationLogController extends Controller
 					$this->redirect(array('view','id'=>$model->id));
 			}
 
-		  $this->layout = 'new_datasetpage';
 			$this->render('update',array(
 				'model'=>$model,
 			));
@@ -146,7 +137,6 @@ class CurationLogController extends Controller
 	 */
 	public function actionView($id) {
 
-        $this->layout = 'new_datasetpage';
         $this->render('view', array(
             'model' => $this->loadModel($id),
         ));

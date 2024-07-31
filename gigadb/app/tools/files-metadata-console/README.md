@@ -1,8 +1,6 @@
 # Files Metadata Console
 
-## Updating dataset file URLs with Wasabi prefix
-
-### Preparation
+## Preparation
 
 Go to `gigadb/app/tools/files-metadata-console` and create a .env file: 
 ```
@@ -12,6 +10,8 @@ $ docker-compose run --rm configure
 Update the .env file with values for REPO_NAME and GITLAB_PRIVATE_TOKEN. Re-run
 `docker-compose run --rm configure` to create a .secrets file and other 
 configuration files in config directory.
+
+## Updating dataset file URLs with Wasabi prefix
 
 ### Dev environment
 
@@ -202,6 +202,114 @@ $ docker run --rm  --env-file ./db-env registry.gitlab.com/$GITLAB_PROJECT/produ
 Finally, we commit the dataset changes and end the database transaction:
 ```
 $ docker run --rm  --env-file ./db-env registry.gitlab.com/$GITLAB_PROJECT/production_pgclient:$GIGADB_ENV -c "COMMIT TRANSACTION;"
+```
+
+## Updating dataset files with file size information
+
+### Dev environment
+
+Take a look at the file sizes for dataset 100006:
+```
+$ pwd
+/path/to/gigadb-website
+$ docker-compose run --rm test psql -h database -p 5432 -U gigadb gigadb -c "select id, name, size from file where dataset_id=8;"
+  id   |                  name                  |   size    
+-------+----------------------------------------+-----------
+   663 | readme.txt                             |       138
+   664 | Pygoscelis_adeliae.scaf.fa.gz          | 367639441
+ 17677 | Pygoscelis_adeliae.fa.gz               | 367501431
+ 17678 | Pygoscelis_adeliae.gff.gz              |   1671666
+ 17679 | Pygoscelis_adeliae.RepeatMasker.out.gz |   7858032
+ 17680 | Pygoscelis_adeliae.cds.gz              |   6746663
+ 17681 | Pygoscelis_adeliae.pep.gz              |   4370788
+(7 rows)
+
+```
+
+Test the file size update functionality in files metadata console tool:
+```
+$ cd gigadb/app/tools/files-metadata-console
+$ docker-compose run --rm files-metadata-console ./yii update/file-sizes --doi=100006
+Number of changes: 7
+```
+
+Check file sizes have been updated for dataset 100006:
+```
+$ cd ../../../..
+$ docker-compose run --rm test psql -h database -p 5432 -U gigadb gigadb -c "select id, name, size from file where dataset_id=8;"
+  id   |                  name                  |  size  
+-------+----------------------------------------+--------
+   663 | readme.txt                             |      8
+ 17680 | Pygoscelis_adeliae.cds.gz              |   1000
+ 17679 | Pygoscelis_adeliae.RepeatMasker.out.gz |  10000
+ 17677 | Pygoscelis_adeliae.fa.gz               | 100000
+   664 | Pygoscelis_adeliae.scaf.fa.gz          |      1
+ 17678 | Pygoscelis_adeliae.gff.gz              |     10
+ 17681 | Pygoscelis_adeliae.pep.gz              |    100
+(7 rows)
+```
+
+To check functionality on production data in `dev` environment, download the [live 20240612 database backup file](https://ap-east-1.console.aws.amazon.com/s3/object/gigadb-database-backups?region=ap-east-1&bucketType=general&prefix=gigadb_gigascience-upstream-gigadb-website_live_20240612.backup)
+from S3 gigadb-database-backups bucket. Place this in the `gigadb/app/tools/files-metadata-console/sql` 
+directory.
+
+There are  3 `REFRESH MATERIALIZED VIEW` commands which will cause restoration
+of the database backup file. Therefore, comment out the 3 `REFRESH MATERIALIZED VIEW`
+commands at the bottom of the database backup file using a text editor so that
+it looks like this:
+```
+ --
+ -- Name: dataset_finder; Type: MATERIALIZED VIEW DATA; Schema: public; Owner: gigadb
+ --
+ 
+ --REFRESH MATERIALIZED VIEW public.dataset_finder;
+ 
+ --
+ -- Name: file_finder; Type: MATERIALIZED VIEW DATA; Schema: public; Owner: gigadb
+ --
+ 
+ --REFRESH MATERIALIZED VIEW public.file_finder;
+ 
+ --
+ -- Name: sample_finder; Type: MATERIALIZED VIEW DATA; Schema: public; Owner: gigadb
+ --
+ 
+ --REFRESH MATERIALIZED VIEW public.sample_finder;
+```
+
+Load this production data into the dev database:
+```
+# Connect to dev database - use vagrant as password
+docker-compose run --rm test psql -h database -p 5432 -U gigadb postgres
+# Delete connections on a given database
+postgres=# SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE pg_stat_activity.datname = 'gigadb';
+postgres=# drop database gigadb;
+postgres=# create database gigadb owner gigadb;
+postgres=# \q
+
+# Restore dev database using psql and backup file
+$ docker-compose run --rm test psql -h database -U gigadb -d gigadb -f "/var/www/gigadb/app/tools/files-metadata-console/sql/gigadb_gigascience-upstream-gigadb-website_live_20240612.backup"
+```
+
+Drop database triggers as they will inhibit updates to tables, including the
+file table:
+```
+$ cd gigadb/app/tools/excel-spreadsheet-uploader
+$ docker-compose run --rm pg_client -c 'drop trigger if exists file_finder_trigger on file RESTRICT'
+DROP TRIGGER
+$ docker-compose run --rm pg_client -c 'drop trigger if exists sample_finder_trigger on sample RESTRICT'
+DROP TRIGGER
+$ docker-compose run --rm pg_client -c 'drop trigger if exists dataset_finder_trigger on dataset RESTRICT'
+DROP TRIGGER
+```
+
+Now, test the file size update functionality in files metadata console tool:
+```
+$ pwd
+gigadb/app/tools/files-metadata-console
+# Next command will take a couple of minutes
+$ docker-compose run --rm files-metadata-console ./yii update/file-sizes --doi=102532
+Number of changes: 125
 ```
 
 ## Running unit, functional and bats tests in files metadata console tool

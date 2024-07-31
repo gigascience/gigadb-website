@@ -6,17 +6,36 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## Unreleased
 
 - Fix #1856: Fix overlapping caret and table header in dataset page
+- Feat 1872: Extract stages of postUpload script into separate scripts
+
+## v4.3.2
+
+- Feat #1892: Remove unused CSS and LESS files
+- Fix #1871: Allowed to save species info filling only required inputs
+
+## v4.3.1 - 2024-07-10 - 2ba5e7dbc
+
+- Feat #1892: Consolidate all layouts into one single layout
+- Fix #1912: Enable curators to save Gigadb forms from many browser tabs at once
+- Feat #1840: Make create readme tool available as part of postUpload script
+
+## v4.3.0 - 2024-06-25 - 9cf91f224 - live since 2024-07-01
+
+- Feat #1892: Remove old layouts
+- Fix #1845: Use file path to update md5 values and file sizes in database
+- Fix #1812: Navigating tables on mockup pages does not generate errors
+- Fix #1801: Refresh materialized views daily using cron job and drop existing triggers
 - Feat #1143: Open external links in new browser tabs
 - Feat: updated upload spreadsheet template to version 19
 - Fix #1743: Accessibility tweaks on datasetSubmission/upload page
 
-## v4.2.9 - 2024-06-06 - 30a64ce56
+## v4.2.9 - 2024-06-06 - 30a64ce56 - live since 2024-06-11
 
 - Feat #1869: Script to compare files in user dropbox with file list from spreadsheet
 - Fix #1825: Remove close button from view new version popup
 - Feat #1767: Restyle and reorder the buttons in create / edit dataset admin page
 
-## v4.2.8 - 2024-05-28 - 771372fbb
+## v4.2.8 - 2024-05-28 - 771372fbb - live since 2024-05-30
 
 - Feat #1832: Make script for calculating the md5 values and file sizes available for bastion users
 - Fix #1817: generate mockup link button not appearing for all upload statuses
