@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Fix #1991: Update and save sample ID when updating
 - Feat #2008: Remove Dimensions citation link
 - Fix #2074: Update contact website URL
 - Feat #2089: Update team members
