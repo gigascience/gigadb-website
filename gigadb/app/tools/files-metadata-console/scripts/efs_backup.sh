@@ -14,10 +14,10 @@ usage_message="Usage: $0 --doi <DOI> --sourcePath <Source Path>\n
 Required:
 --doi            Specify DOI to process
 --sourcePath     Specify source path
-
-Available Options:
 --wasabi         Copy files to Wasabi bucket
 --backup         Copy files to s3 bucket
+
+Available Option:
 --apply          Escape dry run mode
 
 Example usages:
@@ -84,6 +84,13 @@ while [[ $# -gt 0 ]]; do
     esac
     shift
 done
+
+# Check if neither --wasabi nor --backup is supplied
+if [[ "${wasabi_upload}" == false && "${s3_upload}" == false ]]; then
+    echo -e "Error: please specify --wasabi or --backup or both"
+    echo -e "$usage_message"
+    exit 1
+fi
 
 if [ "${doi}" -le 101000 ]; then
   dir_range="100001_101000"

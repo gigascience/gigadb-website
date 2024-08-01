@@ -24,9 +24,9 @@ teardown () {
     [[ "$output" =~ "Required:" ]]
     [[ "$output" =~ "--doi            Specify DOI to process" ]]
     [[ "$output" =~ "--sourcePath     Specify source path" ]]
-    [[ "$output" =~ "Available Options:" ]]
     [[ "$output" =~ "--wasabi         Copy files to Wasabi bucket" ]]
     [[ "$output" =~ "--backup         Copy files to s3 bucket" ]]
+    [[ "$output" =~ "Available Option:" ]]
     [[ "$output" =~ "--apply          Escape dry run mode" ]]
     [[ "$output" =~ "Example usages:" ]]
     [[ "$output" =~ "scripts/efs_backup.sh --doi 100148 --sourcePath /share/dropbox/user101 --wasabi" ]]
@@ -37,8 +37,30 @@ teardown () {
     [[ "$output" =~ "scripts/efs_backup.sh --doi 100148 --sourcePath /share/dropbox/user101 --wasabi --backup --apply" ]]
 }
 
-@test "Input out of range DI" {
-    run scripts/efs_backup.sh --doi 600700 --sourcePath tests/_data/102480
+@test "Show error and usage if no flag" {
+    run scripts/efs_backup.sh --doi 102480 --sourcePath tests/_data/102480
+    [ "$status" -eq 1 ]
+    [ "${lines[0]}" = "Error: please specify --wasabi or --backup or both" ]
+    [[ "$output" =~ "Usage: scripts/efs_backup.sh --doi <DOI> --sourcePath <Source Path>" ]]
+    [[ "$output" =~ "Required:" ]]
+    [[ "$output" =~ "--doi            Specify DOI to process" ]]
+    [[ "$output" =~ "--sourcePath     Specify source path" ]]
+    [[ "$output" =~ "--wasabi         Copy files to Wasabi bucket" ]]
+    [[ "$output" =~ "--backup         Copy files to s3 bucket" ]]
+    [[ "$output" =~ "Available Option:" ]]
+    [[ "$output" =~ "--apply          Escape dry run mode" ]]
+    [[ "$output" =~ "Example usages:" ]]
+    [[ "$output" =~ "scripts/efs_backup.sh --doi 100148 --sourcePath /share/dropbox/user101 --wasabi" ]]
+    [[ "$output" =~ "scripts/efs_backup.sh --doi 100148 --sourcePath /share/dropbox/user101 --wasabi --apply" ]]
+    [[ "$output" =~ "scripts/efs_backup.sh --doi 100148 --sourcePath /share/dropbox/user101 --backup" ]]
+    [[ "$output" =~ "scripts/efs_backup.sh --doi 100148 --sourcePath /share/dropbox/user101 --backup --apply" ]]
+    [[ "$output" =~ "scripts/efs_backup.sh --doi 100148 --sourcePath /share/dropbox/user101 --wasabi --backup" ]]
+    [[ "$output" =~ "scripts/efs_backup.sh --doi 100148 --sourcePath /share/dropbox/user101 --wasabi --backup --apply" ]]
+
+}
+
+@test "Input DOI out of range" {
+    run scripts/efs_backup.sh --doi 600700 --sourcePath tests/_data/102480 --wasabi
     [ "$status" -eq 1 ]
     [ "${lines[0]}" = "DOI out of supported range" ]
 }
