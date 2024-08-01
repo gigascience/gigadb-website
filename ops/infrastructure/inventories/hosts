@@ -58,6 +58,9 @@ efs_filesystem_dns_name = "{{ lookup('ini', 'efs_filesystem_dns_name type=proper
 configuration_area_id = "{{ lookup('ini', 'configuration_area_id type=properties file=ansible.properties') }}"
 dropbox_area_id = "{{ lookup('ini', 'configuration_area_id type=properties file=ansible.properties') }}"
 
+wasabi_datasetfiles_dir = "{{ lookup('ini', 'wasabi_datasetfiles_dir type=properties file=ansible.properties') }}"
+s3_datasetfiles_dir = "{{ lookup('ini', 's3_datasetfiles_dir type=properties file=ansible.properties') }}"
+
 upload_database_backup_to_S3_cronjob_state = "absent"
 
 gitlab_project = {{ lookup('ini', 'gitlab_project type=properties file=ansible.properties') }}

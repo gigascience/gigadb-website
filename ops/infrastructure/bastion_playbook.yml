@@ -372,6 +372,13 @@
         state: present
         disable_gpg_check: true
 
+    - name: Create env file for backup
+      ansible.builtin.template:
+        src: ../../../../gigadb/app/tools/files-metadata-console/files-env.j2
+        dest: /home/centos/files-env
+        owner: centos
+        group: centos
+        mode: 0644
 
     - name: Install new wrapper script for files comparison tools
       ansible.builtin.copy:

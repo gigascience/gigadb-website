@@ -121,6 +121,14 @@ dropbox_area_id=$(terraform output efs_filesystem_dropbox_area_id | sed 's/"//g'
   echo "dropbox_area_id = $dropbox_area_id"
 } >> ansible.properties
 
+# Retrieve bucket information
+wasabi_datasetfiles_dir=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$PROJECT_VARIABLES_URL/WASABI_DATASETFILES_DIR?filter%5benvironment_scope%5d=$target_environment" | jq -r .value)
+s3_datasetfiles_dir=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$PROJECT_VARIABLES_URL/S3_DATASETFILES_DIR?filter%5benvironment_scope%5d=$target_environment" | jq -r .value)
+
+echo "wasabi_datasetfiles_dir = $wasabi_datasetfiles_dir" >> ansible.properties
+echo "s3_datasetfiles_dir = $s3_datasetfiles_dir" >> ansible.properties
+
+
 # variables needed by disk-usage-monitor
 gitter_room_id=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$FORK_VARIABLES_URL/GITTER_IT_NOTIFICATION_ROOM_ID" | jq -r .value)
 gitter_api_token=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$FORK_VARIABLES_URL/GITTER_API_TOKEN" | jq -r .value)
