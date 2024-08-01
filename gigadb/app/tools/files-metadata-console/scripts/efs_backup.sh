@@ -37,7 +37,7 @@ fi
 # Setup logging
 function set_up_logging() {
   if [[ $(uname -n) =~ compute ]];then
-    LOGDIR="/var/log"
+    LOGDIR="/var/log/gigadb"
   else
     currentPath=$(pwd)
     LOGDIR="$currentPath/log"

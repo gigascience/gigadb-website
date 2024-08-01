@@ -372,6 +372,14 @@
         state: present
         disable_gpg_check: true
 
+    - name: Install new wrapper script for files comparison tools
+      ansible.builtin.copy:
+        src: "../../../../gigadb/app/tools/files-metadata-console/scripts/compare_files.sh"
+        dest: /usr/local/bin/compare
+        owner: centos
+        group: centos
+        mode: a+
+
     - name: Create env file for backup
       ansible.builtin.template:
         src: ../../../../gigadb/app/tools/files-metadata-console/files-env.j2
@@ -380,13 +388,13 @@
         group: centos
         mode: 0644
 
-    - name: Install new wrapper script for files comparison tools
-      ansible.builtin.copy:
-        src: "../../../../gigadb/app/tools/files-metadata-console/scripts/compare_files.sh"
-        dest: /usr/local/bin/compare
+    - name: Create directory for storing log output
+      ansible.builtin.file:
+        path: /var/log/gigadb
+        state: directory
+        mode: '0755'
         owner: centos
         group: centos
-        mode: a+x
 
     - name: Copy wrapper script to backup files to wasabi bucket and s3 bucket
       ansible.builtin.copy:
