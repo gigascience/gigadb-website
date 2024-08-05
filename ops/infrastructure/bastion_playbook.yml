@@ -1,6 +1,9 @@
 ---
-# Use bastion server to restore PostgreSQL database on RDS instance
-
+# This playbook is to configure the EC2 instance that acts as a public bastion to access EC2 instances
+# on private networks (web and files EC2 instances,as well as RDS)
+# Do not use this playbook to install endusers CLI app
+# This playbook needs to run after executing `ansible_init.sh` but before triggering the Gitlab pipeline for
+# a given environment
 
 
 - name: Fix Centos EOL issues
@@ -41,11 +44,17 @@
     - role: ../../roles/docker-postinstall
     - role: ../../roles/docker-daemon-enable-start
 
-
-- name: Restore PostgreSQL database on RDS instance using pg_restore
+- name: Install node exporter
   hosts: name_bastion_server_{{gigadb_env}}*
   tags:
-    - restore-db-on-rds
+    - node-exporter
+  roles:
+    - prometheus.prometheus.node_exporter
+
+- name: Setup postgresql client
+  hosts: name_bastion_server_{{gigadb_env}}*
+  tags:
+    - postgresql-client
 
   tasks:
     - name: Disable postgresql module in AppStream
@@ -81,7 +90,45 @@
         group:
       when: backup_file
 
-- name: Setup files-url-updater so to load latest DB backup in RDS daily
+- name: Create AWS credentials file
+  hosts: name_bastion_server_{{gigadb_env}}*
+  tags:
+    - create-metadata-bucket-credentials-file
+
+  tasks:
+  - name: Create a /etc/aws directory for the metadata
+    ansible.builtin.file:
+      path: "/etc/aws"
+      state: directory
+      mode: '0755'
+      owner: centos
+      group: centos
+
+  - name: Create AWS credential file for access to AWS S3 metadata bucket
+    template:
+      src: ../../../../ops/configuration/aws-conf/credentials.j2
+      dest: "/etc/aws/credentials"
+      owner: centos
+      group: centos
+      mode: 0644
+
+- name: Set up and configuration of rclone on bastion server
+  hosts: name_bastion_server_{{gigadb_env}}*
+  tags:
+    - rclone-tool
+  
+  tasks:
+    - name: Install rclone
+      ansible.builtin.include_role:
+        name: ansible-rclone
+      vars:
+        rclone_version: "1.60.0"
+        rclone_arch: "amd64"
+        install_manpages: "true"
+        rclone_config_location: "/home/centos/.config/rclone/rclone.conf"
+
+
+- name: Setup files-url-updater config and cronjob so to load latest DB backup in RDS daily
   hosts: name_bastion_server_{{gigadb_env}}*
   tags:
     - files-url-updater
@@ -140,285 +187,4 @@
         group: root
         mode: 0644
 
-- name: Setup Excel to GigaDB tool
-  hosts: name_bastion_server_{{gigadb_env}}*
-  tags:
-    - excel-spreadsheet-uploader
 
-  tasks:
-    - name: Copy dataset upload tool shell script
-      ansible.builtin.copy:
-        src: "../../../../gigadb/app/tools/excel-spreadsheet-uploader/execute.sh"
-        dest: /usr/local/bin/datasetUpload
-        owner: centos
-        group: centos
-        mode: a+x
-
-    - name: Copy dataset upload tool shell post upload script
-      ansible.builtin.copy:
-        src: "../../../../gigadb/app/tools/excel-spreadsheet-uploader/postUpload.sh"
-        dest: /usr/local/bin/postUpload
-        owner: centos
-        group: centos
-        mode: a+x
-
-    - name: Copy script for updating the md5 values and file size to db
-      ansible.builtin.copy:
-        src: "../../../../gigadb/app/tools/excel-spreadsheet-uploader/filesMetaToDb.sh"
-        dest: /usr/local/bin/filesMetaToDb
-        owner: centos
-        group: centos
-        mode: a+x
-
-    - name: Create env file for database  (for pg_client docker service)
-      ansible.builtin.template:
-        src: ../../../../gigadb/app/tools/excel-spreadsheet-uploader/env.j2
-        dest: /home/centos/db-env
-        owner: centos
-        group: centos
-        mode: 0644
-
-    - name: Create directories for dataset upload operations
-      ansible.builtin.file:
-        path: "{{ item }}"
-        state: directory
-        mode: '0755'
-        owner: centos
-        group: centos
-      loop:
-        - "/home/centos/uploadLogs"
-        - "/home/centos/uploadDir"
-
-    - name: Ensure centos user has GIGADB_ENV set
-      ansible.builtin.lineinfile:
-        path: /home/centos/.bash_profile
-        insertafter: '# User specific environment and startup programs\n'
-        line: "GIGADB_ENV={{ gigadb_environment }}"
-
-    - name: Ensure centos user has GITLAB_PROJECT set
-      ansible.builtin.lineinfile:
-        path: /home/centos/.bash_profile
-        insertafter: '# User specific environment and startup programs\n'
-        line: "GITLAB_PROJECT={{ gitlab_project }}"
-
-- name: Create AWS credentials file
-  hosts: name_bastion_server_{{gigadb_env}}*
-  tags:
-    - create-metadata-bucket-credentials-file
-
-  tasks:
-  - name: Create a /etc/aws directory for the metadata
-    ansible.builtin.file:
-      path: "/etc/aws"
-      state: directory
-      mode: '0755'
-      owner: centos
-      group: centos
-
-  - name: Create AWS credential file for access to AWS S3 metadata bucket
-    template:
-      src: ../../../../ops/configuration/aws-conf/credentials.j2
-      dest: "/etc/aws/credentials"
-      owner: centos
-      group: centos
-      mode: 0644
-
-- name: Create setup for generating and uploading database dump files to S3
-  hosts: name_bastion_server_{{gigadb_env}}*
-  tags:
-    - setup-uploading-db-dump-to-s3
-
-  tasks:
-  - name: Create a /home/centos/.config/rclone directory
-    ansible.builtin.file:
-      path: /home/centos/.config/rclone
-      state: directory
-      mode: '0755'
-      owner: centos
-      group: centos
-
-  - name: Create AWS S3 configuration for rclone
-    template:
-      src: ../../../../ops/configuration/rclone-conf/rclone.conf.j2
-      dest: /home/centos/.config/rclone/rclone.conf
-      owner: root
-      group: root
-      mode: 0644
-
-  - name: Create a backups directory for storing database dump files
-    ansible.builtin.file:
-      path: "{{ item }}"
-      state: directory
-      mode: '0755'
-      owner: centos
-      group: centos
-    loop:
-      - "/home/centos/backups"
-
-  - name: Setup cronjob to refresh the materialized view of the database
-    ansible.builtin.cron:
-      name: "Refresh the materialized view of the database every day"
-      minute: "00"
-      hour: "20"
-      user: "centos"
-      job: 'echo "$(date +\%y\%m\%d_\%H\%M\%S) - Refresh materialized views start..." >> /home/centos/logs/refresh_materialized_views_daily.log
-        && docker run --rm  --env-file ./db-env registry.gitlab.com/{{ gitlab_project }}/production_pgclient:{{ gigadb_environment }} -c "REFRESH MATERIALIZED VIEW FILE_FINDER; REFRESH MATERIALIZED VIEW SAMPLE_FINDER; REFRESH MATERIALIZED VIEW DATASET_FINDER;" >> /home/centos/logs/refresh_materialized_views_daily.log 2>&1
-        && echo "$(date +\%y\%m\%d_\%H\%M\%S) - Refresh materialized views completed!" >> /home/centos/logs/refresh_materialized_views_daily.log'
-
-  - name: Setup cronjob to automate copying database backup file to S3
-    ansible.builtin.cron:
-      name: "Create database dump file from RDS and upload to S3 every day"
-      minute: "00"
-      hour: "22"
-      user: "centos"
-      job: "docker run --env-file .env -v /home/centos/backups:/backups -v /home/centos/.config/rclone/rclone.conf:/root/.config/rclone/rclone.conf registry.gitlab.com/{{ gitlab_project }}/production_s3backup:{{ gigadb_environment }}"
-      state: "{{ upload_database_backup_to_S3_cronjob_state }}"
-
-- name: Setup Disk usage monitoring tool
-  hosts: name_bastion_server_{{gigadb_env}}*
-  tags:
-    - swatch-tool
-
-  tasks:
-    - name: Create the diskUsage monitoring script
-      ansible.builtin.copy:
-        content: 'df -h | grep /dev/ | cut -d " " -f10 | cut -d% -f1'
-        dest: /home/centos/diskUsage
-        owner: centos
-        group: centos
-        mode: a+x
-
-    - name: Create the Gitter notify script
-      ansible.builtin.copy:
-        content: "source /home/centos/.env;curl -X POST -i -H \"Content-Type: application/json\" -H \"Accept: application/json\" -H \"Authorization: Bearer $GITTER_API_TOKEN\" \"https://api.gitter.im/v1/rooms/$GITTER_IT_NOTIFICATION_ROOM_ID/chatMessages\"  -d '{\"text\":\"Disk space usage requires attention on '\"$DEPLOYMENT_TIER-$GIGADB_ENVIRONMENT\"': '\"$1\"'%\"}'"
-        dest: /home/centos/notify
-        owner: centos
-        group: centos
-        mode: a+x
-
-    - name: Copy swatch config file
-      ansible.builtin.copy:
-        src: "{{ item }}"
-        dest: /home/centos/
-        owner: centos
-        group: centos
-      loop:
-          - "../../../../gigadb/app/tools/disk-usage-monitor/swatch.conf"
-          - "../../../../gigadb/app/tools/disk-usage-monitor/check-swatch.conf"
-
-    - name: Install swatch packages
-      become: yes
-      dnf:
-        name: swatch
-        state: present
-
-    - name: Setup cronjob to automate disk usage monitoring
-      ansible.builtin.cron:
-        name: "Check daily the disk usage and notify from 50%"
-        minute: "00"
-        hour: "23"
-        user: "centos"
-        job: "swatch -c swatch.conf -p ./diskUsage"
-
-- name: Setup create readme tool
-  hosts: name_bastion_server_{{gigadb_env}}*
-  tags:
-    - readme-tool
-
-  tasks:
-    - name: Copy readme tool shell script
-      ansible.builtin.copy:
-        src: "../../../../gigadb/app/tools/readme-generator/createReadme.sh"
-        dest: /usr/local/bin/createReadme
-        owner: centos
-        group: centos
-        mode: a+x
-
-    # Files created by readme tool container can be accessed in this directory
-    - name: Create a directory where readme files can be saved to
-      ansible.builtin.file:
-        path: /home/centos/readmeFiles
-        state: directory
-        mode: '0755'
-        owner: centos
-        group: centos
-
-- name: Setup files metadata console tool
-  hosts: name_bastion_server_{{gigadb_env}}*
-  tags:
-    - files-metadata-tool
-
-  tasks:
-    # Used to transform dataset ftp_site and file location URLs
-    - name: Copy shell script
-      ansible.builtin.copy:
-        src: "../../../../gigadb/app/tools/files-metadata-console/scripts/updateUrls.sh"
-        dest: /usr/local/bin/updateUrls
-        owner: centos
-        group: centos
-        mode: a+x
-
-    - name: Copy shell script for calculating the file sizes and md5
-      ansible.builtin.copy:
-        src: "../../../../gigadb/app/tools/files-metadata-console/scripts/md5.sh"
-        dest: /usr/local/bin/calculateChecksumSizes
-        owner: centos
-        group: centos
-        mode: a+x
-          
-    - name: Install gum
-      ansible.builtin.yum:
-        name: https://github.com/charmbracelet/gum/releases/download/v0.14.1/gum-0.14.1-1.x86_64.rpm
-        state: present
-        disable_gpg_check: true
-
-
-    - name: Install new wrapper script for files comparison tools
-      ansible.builtin.copy:
-        src: "../../../../gigadb/app/tools/files-metadata-console/scripts/compare_files.sh"
-        dest: /usr/local/bin/compare
-        owner: centos
-        group: centos
-        mode: a+x
-
-
-- name: Set up and configuration of rclone on bastion server
-  hosts: name_bastion_server_{{gigadb_env}}*
-  tags:
-    - rclone-tool
-  
-  tasks:
-    - name: Install rclone
-      ansible.builtin.include_role:
-        name: ansible-rclone
-      vars:
-        rclone_version: "1.60.0"
-        rclone_arch: "amd64"
-        install_manpages: "true"
-        rclone_config_location: "/home/centos/.config/rclone/rclone.conf"
-
-- name: Load latest DB backup
-  hosts: name_bastion_server_{{gigadb_env}}*
-  tags:
-    - load-latest-db
-
-  tasks:
-  - name: Load latest database into this environment's RDS instance
-    ansible.builtin.shell: "/usr/local/bin/databaseReset {{ backupDate }}"
-    args:
-      chdir: /home/centos
-      executable: /bin/bash
-    register: reset_database_output
-
-  - debug:
-      msg: "reset database stdout : {{ reset_database_output.stdout }}"
-
-  - debug:
-      msg: "reset database stderr : {{ reset_database_output.stderr }}"
-
-- name: Install node exporter
-  hosts: name_bastion_server_{{gigadb_env}}*
-  tags:
-    - node-exporter
-  roles:
-    - prometheus.prometheus.node_exporter
