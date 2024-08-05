@@ -194,5 +194,13 @@
       mode: 0644
   when: credentials_csv_path is defined
 
+- name: Create env file for user to backup
+  ansible.builtin.template:
+    src: ../../../../gigadb/app/tools/files-metadata-console/files-env.j2
+    dest: "/home/{{ newuser }}/files-env"
+    owner: "{{ newuser }}"
+    group: "{{ newuser }}"
+    mode: 0644
+
 - name: Restart systemd sshd service
   command: systemctl restart sshd.service

@@ -4,7 +4,7 @@
 set -e
 
 if [[ $(uname -n) =~ compute ]]; then
-  source "/home/centos/files-env"
+  source "./files-env"
 else
   source "./.env"
   source "./.secrets"
