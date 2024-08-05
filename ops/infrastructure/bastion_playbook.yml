@@ -378,7 +378,7 @@
         dest: /usr/local/bin/compare
         owner: centos
         group: centos
-        mode: a+
+        mode: a+x
 
     - name: Create env file for backup
       ansible.builtin.template:
