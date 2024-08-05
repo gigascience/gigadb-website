@@ -269,7 +269,7 @@ class CuratorSteps #extends \common\tests\AcceptanceTester
             $fileUploadSrv, 
             Yii::$app->params['dataset_upload']
         );
-        $datasetUpload->setStatusToDataAvailableForReview("changed from test scenario");
+        $datasetUpload->setStatusToUserProvidedData("changed from test scenario");
      }
 
     /**

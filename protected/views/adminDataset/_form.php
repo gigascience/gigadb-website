@@ -919,11 +919,11 @@ echo $form->hiddenField($model, "image_id");
 -->
 
 <script>
-    let defaultDataPendingEmailBody = '';
+    let defaultDataPreparationEmailBody = '';
 
     async function fetchEmailTemplate() {
         try {
-            const res = await fetch('/files/templates/DataPending.twig')
+            const res = await fetch('/files/templates/DataPreparation.twig')
             if (res.ok) {
                 return res.text();
             }
@@ -935,9 +935,9 @@ echo $form->hiddenField($model, "image_id");
     }
 
     $(document).ready(async function () {
-        defaultDataPendingEmailBody = await fetchEmailTemplate()
-        if (defaultDataPendingEmailBody) {
-            $("#Dataset_emailBody").val(defaultDataPendingEmailBody);
+        defaultDataPreparationEmailBody = await fetchEmailTemplate()
+        if (defaultDataPreparationEmailBody) {
+            $("#Dataset_emailBody").val(defaultDataPreparationEmailBody);
         }
     })
 
@@ -948,12 +948,12 @@ echo $form->hiddenField($model, "image_id");
             const initialUploadStatus = uploadStatusInput.attr('data-initial-value');
             const currentUploadStatus = uploadStatusInput.val();
             const submitSourceId = $(':focus').attr('id');
-            const didSelectDataPending = initialUploadStatus !== currentUploadStatus && currentUploadStatus === 'DataPending';
+            const didSelectDataPreparation = initialUploadStatus !== currentUploadStatus && currentUploadStatus === 'DataPreparation';
             const didSubmitFromModal = submitSourceId === 'customizeEmailModalSubmitBtn' ||
                 // NOTE need to include this case for Safari compatibility
                 submitSourceId === 'customizeEmailModal';
 
-            if (didSelectDataPending && !didSubmitFromModal) {
+            if (didSelectDataPreparation && !didSubmitFromModal) {
                 $('#customizeEmailModal').modal({
                     backdrop: 'static',
                     keyboard: false,
@@ -964,7 +964,7 @@ echo $form->hiddenField($model, "image_id");
     })
 
     function setDefaultEmailBody() {
-        $("#Dataset_emailBody").val(defaultDataPendingEmailBody);
+        $("#Dataset_emailBody").val(defaultDataPreparationEmailBody);
     }
 
 </script>

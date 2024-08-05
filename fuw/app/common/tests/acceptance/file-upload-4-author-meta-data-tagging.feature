@@ -111,7 +111,7 @@ Scenario: Saving file metadata with attributes and samples
 	And I should see "1 attribute(s) added for upload TheProof.csv"
 	And I should see "2 sample(s) added for upload CC0_pixel.jpg"
 	And I should not see "1 sample(s) added for upload TheProof.csv"
-	And I should see "DataAvailableForReview"
+	And I should see "UserProvidedData"
 
 # Scenario: there is a button to add attributes in the file metadata page when all mandatory fields are filled in
 # 	Given I sign in as a user

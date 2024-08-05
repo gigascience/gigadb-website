@@ -1,6 +1,6 @@
 Feature:
 	As a Curator
-	I want the retrieve the context of a dataset status change to "DataAvailableForReview"
+	I want the retrieve the context of a dataset status change to "UserProvidedData"
 	So that I can audit or troubleshoot the dataset files and metadata upload process
 
 Background:
@@ -11,7 +11,7 @@ Background:
 	And filedrop account for DOI "000007" does exist
 
 @ok
-Scenario: after status is changed to DataAvailableForReview, add entry in curation log
+Scenario: after status is changed to UserProvidedData, add entry in curation log
 	Given I sign in as the user "Artie" "Dodger"
 	And The user "Artie" "Dodger" is registered as authorised user in the API
 	And I am on "/user/view_profile#submitted"
@@ -30,8 +30,8 @@ Scenario: after status is changed to DataAvailableForReview, add entry in curati
 	When I press "Complete and return to Your Uploaded Datasets page"
 	Then I should be on "/user/view_profile#submitted"
 	And I should see "File uploading complete"
-	And I should see "DataAvailableForReview"
+	And I should see "UserProvidedData"
 	Given I sign in as an admin
 	When I go to "/adminDataset/admin"
 	And I press "Update Dataset" for dataset "000007"
-	Then I should see "Status changed to DataAvailableForReview"
+	Then I should see "Status changed to UserProvidedData"

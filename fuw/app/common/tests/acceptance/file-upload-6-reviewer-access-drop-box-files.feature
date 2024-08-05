@@ -6,7 +6,7 @@ Feature:
 
 Background:
 	Given there is "user" "Artie" "Dodger"
-	And a dataset with DOI "000007" owned by user "Artie" "Dodger" has status "Submitted"
+	And a dataset with DOI "000007" owned by user "Artie" "Dodger" has status "DataAvailableForReview"
 	And filedrop account for DOI "000007" does exist
 
 @ok

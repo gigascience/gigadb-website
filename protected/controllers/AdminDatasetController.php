@@ -573,11 +573,11 @@ class AdminDatasetController extends Controller
     private function checkAndSetTransition(DatasetUpload $datasetUpload, Dataset $model, string $newStatus): bool
     {
         switch ($newStatus) {
-            case 'Submitted':
-                return $datasetUpload->setStatusToSubmitted($model->upload_status);
+            case 'DataAvailableForReview':
+                return $datasetUpload->setStatusToDataAvailableForReview($model->upload_status);
 
-            case 'DataPending':
-                return $datasetUpload->setStatusToDataPending($model->upload_status);
+            case 'DataPreparation':
+                return $datasetUpload->setStatusToDataPreparation($model->upload_status);
 
             default:
                 return true;

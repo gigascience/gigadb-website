@@ -432,14 +432,15 @@ Feature: form to update dataset details
       | "UserStartedIncomplete"  |
       | "Rejected"               |
       | "Not required"           |
-      | "Submitted"              |
+      | "DataAvailableForReview" |
       | "Curation"               |
       | "AuthorReview"           |
       | "Private"                |
       | "AssigningFTPbox"        |
       | "UserUploadingData"      |
       | "DataAvailableForReview" |
-      | "DataPending"            |
+      | "UserProvidedData"       |
+      | "DataPreparation"        |
 
   @ok @dataset-status
   Scenario: Check dataset page with Curation status can be viewed using private URL
@@ -509,7 +510,8 @@ Feature: form to update dataset details
       | "AssigningFTPbox"        |
       | "UserUploadingData"      |
       | "DataAvailableForReview" |
-      | "DataPending"            |
+      | "UserProvidedData"       |
+      | "DataPreparation"        |
 
   @ok
   Scenario: Links to create mockup is present for a submitted dataset

@@ -121,9 +121,9 @@ class FilesAnnotateAction extends CAction
 
         if (Yii::$app->request->isPost && $allUploadsSaved && $allAttributesSaved) {
 
-                $statusChangedAndNotified = $datasetUpload->setStatusToDataAvailableForReview(
+                $statusChangedAndNotified = $datasetUpload->setStatusToUserProvidedData(
                     $datasetUpload->renderNotificationEmailBody(
-                        "DataAvailableForReview"
+                        "UserProvidedData"
                     )
                 );
                 if($statusChangedAndNotified) {

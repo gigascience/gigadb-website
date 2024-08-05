@@ -70,7 +70,7 @@ class AdminDatasetUpdateActionTest extends FunctionalTesting
         $testDOI = "100142";
         $curationEntry = "Status changed to Rejected";
         // set upload status to the  UserUploadingData
-        $this->setUpDatasetUploadStatus($this->dbh_gigadb, "$testDOI","DataAvailableForReview");
+        $this->setUpDatasetUploadStatus($this->dbh_gigadb, "$testDOI", "UserProvidedData");
         // ensure there is a filedrop_account
         $filedropAccountId = $this->makeFiledropAccountRecord($this->dbh_fuw,"$testDOI", $curationEntry);
         //admin user logs in
@@ -88,12 +88,12 @@ class AdminDatasetUpdateActionTest extends FunctionalTesting
 
     }
 
-    public function testSetUploadToSubmitted() {
+    public function testSetUploadToDataAvailableForReview() {
 
         $testDOI = "100142";
-        $curationEntry = "Status changed to Submitted";
+        $curationEntry = "Status changed to DataAvailableForReview";
         // set upload status to the  UserUploadingData
-        $this->setUpDatasetUploadStatus($this->dbh_gigadb, "$testDOI","DataAvailableForReview");
+        $this->setUpDatasetUploadStatus($this->dbh_gigadb, "$testDOI","UserProvidedData");
         // ensure there is a filedrop_account
         $filedropAccountId = $this->makeFiledropAccountRecord($this->dbh_fuw,"$testDOI", $curationEntry);
         //admin user logs in
@@ -103,12 +103,10 @@ class AdminDatasetUpdateActionTest extends FunctionalTesting
             "Admin");
         
         $this->session->visit($this->url);
-        $this->session->getPage()->selectFieldOption("Dataset_upload_status", "Submitted");
+        $this->session->getPage()->selectFieldOption("Dataset_upload_status", "DataAvailableForReview");
         $this->session->getPage()->pressButton("Save");
         $this->session->visit($this->url);
         $this->assertTrue($this->session->getPage()->hasContent($curationEntry));
-        
-
     }
 }
 

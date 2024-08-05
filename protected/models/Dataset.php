@@ -29,22 +29,22 @@ class Dataset extends CActiveRecord
     public $types;
 
     public const ORIGINAL_UPLOAD_STATUS_LIST = [
-        'ImportFromEM'=>'ImportFromEM',
-        'UserStartedIncomplete'=>'UserStartedIncomplete',
-        'Rejected'=>'Rejected',
-        'Not required'=>'Not required',
-        'Submitted'=>'Submitted',
-        'Curation'=>'Curation',
-        'AuthorReview'=>'AuthorReview',
-        'Private'=>'Private',
-        'Published' =>'Published',
+        'ImportFromEM'           => 'ImportFromEM',
+        'UserStartedIncomplete'  => 'UserStartedIncomplete',
+        'Rejected'               => 'Rejected',
+        'Not required'           => 'Not required',
+        'DataAvailableForReview' => 'DataAvailableForReview',
+        'Curation'               => 'Curation',
+        'AuthorReview'           => 'AuthorReview',
+        'Private'                => 'Private',
+        'Published'              => 'Published',
     ];
 
     public const FUW_UPLOAD_STATUS_LIST = [
-        'AssigningFTPbox'=>'AssigningFTPbox',
-        'UserUploadingData'=>'UserUploadingData',
-        'DataAvailableForReview'=>'DataAvailableForReview',
-        'DataPending'=>'DataPending',
+        'AssigningFTPbox'        => 'AssigningFTPbox',
+        'UserUploadingData'      => 'UserUploadingData',
+        'UserProvidedData'       => 'UserProvidedData',
+        'DataPreparation'        => 'DataPreparation',
     ];
 
     /*
