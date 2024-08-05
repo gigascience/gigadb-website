@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+## v4.3.3 - 2024-08-05 - 7204ee854
+
 - Fix #1848: Save modifications to image metafields
 - Feat 1872: Extract stages of postUpload script into separate scripts
 
