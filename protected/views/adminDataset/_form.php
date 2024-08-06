@@ -166,12 +166,11 @@ echo $form->hiddenField($model, "image_id");
                                             'data' => array('doi' => 'js:$("#Dataset_identifier").val()'),
                                             'dataType' => 'json',
                                             'success' => 'js:function(output){
-                                                    console.log(output);
                                                     if(output.status){
                                                         $("#showImage").src = "";
                                                         $("#showImage").css("display", "none");
                                                         $("#clearFileUrl").css("display", "none");
-                                                        window.location.reload();
+                                                        
                                                     }else {
                                                         $("#removing").html("Failed clearing image file url");
                                                         $("#removing").addClass("block-spacing");
@@ -205,7 +204,7 @@ echo $form->hiddenField($model, "image_id");
                                                     'data' => array('doi' => 'js:$("#Dataset_identifier").val()'),
                                                     'dataType' => 'json',
                                                     'success' => 'js:function(output){
-                                                    console.log(output);
+ 
                                                     if(output.status){
                                                         $("#showImage").src = "https://assets.gigadb-cdn.net/images/datasets/no_image.png";
                                                         $("#showImage").alt = "Default placeholder image";
@@ -247,16 +246,6 @@ echo $form->hiddenField($model, "image_id");
                         <fieldset id="metaFieldsSection" class="meta-fields-container">
                             <legend>Image metafields</legend>
                             <?php
-                              $this->widget('application.components.controls.TextField', [
-                                'form' => $form,
-                                'model' => $model->image,
-                                'attributeName' => 'url',
-                                'labelOptions' => ['class' => 'col-xs-4'],
-                                'inputWrapperOptions' => 'col-xs-8',
-                                'inputOptions' => [
-                                  'class' => 'meta-fields'
-                                ],
-                              ]);
                               $this->widget('application.components.controls.TextField', [
                                 'form' => $form,
                                 'model' => $model->image,
@@ -354,7 +343,6 @@ echo $form->hiddenField($model, "image_id");
                                             'data' => ['doi' => 'js:$("#Dataset_identifier").val()'],
                                             'dataType' => 'json',
                                             'success' => new CJavaScriptExpression('function(output) {
-                                                console.log(output);
                                                 if (output.check_metadata_status == 200 && output.check_doi_status == 200 && output.update_md_status == 201) {
                                                     $("#minting").addClass("alert alert-info").html("This DOI exists in datacite already, no need to mint, but the metadata is updated!");
                                                 } else if (output.check_metadata_status == 200 && output.check_doi_status == 200 && output.update_md_status == 422) {
@@ -750,7 +738,6 @@ echo $form->hiddenField($model, "image_id");
             metaFieldsContainer.hide();
             metaFieldsLiveRegion.text(hiddenText);
         } else {
-            console.log('0 != image_id && null != image_id')
             metaFieldsLiveRegion.text(shownText);
         }
     }

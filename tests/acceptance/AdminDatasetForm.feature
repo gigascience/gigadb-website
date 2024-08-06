@@ -20,7 +20,6 @@ Feature: form to update dataset details
     And I should see "Metadata"
     And I should see "Dataset Size *"
     And I should see "Status"
-    And I should see "URL"
     And I should see "Source *"
     And I should see "Tag"
     And I should see "License *"
@@ -44,7 +43,6 @@ Feature: form to update dataset details
     When I am on "/adminDataset/update/id/144"
     And I attach the file "bgi_logo_new.png" to the file input element "datasetImage"
     Then I should see an image located in "blob:http://gigadb.test/"
-    And I should see "URL"
     And I should see "Source"
     And I should see "Tag"
     And I should see "License"
@@ -56,14 +54,13 @@ Feature: form to update dataset details
     And I attach the file "bgi_logo_new.png" to the file input element "datasetImage"
     And I press the button "Save"
     Then I am on "/dataset/100094"
-    And I should see an image located in "/images/datasets/9febbdcf-3f7c-5558-abaa-448e633a109d/bgi_logo_new.png"
+    And I should see an image located in "/images/datasets/9febbdcf-3f7c-5558-abaa-448e633a109d/bgi-logo-new.png"
 
   @ok @datasetimage
   Scenario: Can display dataset image, meta data and remove image button in update page
     When I am on "/adminDataset/update/id/8"
     Then I should see an image located in "https://assets.gigadb-cdn.net/live/images/datasets/images/data/cropped/100006_Pygoscelis_adeliae.jpg"
     And I should see "Remove image"
-    And I should see "URL"
     And I should see "Source"
     And I should see "Tag"
     And I should see "License"
@@ -75,7 +72,6 @@ Feature: form to update dataset details
     And I attach the file "bgi_logo_new.png" to the file input element "datasetImage"
     Then I should see an image located in "blob:http://gigadb.test/"
     And I should not see "Remove image"
-    And I should see "URL"
     And I should see "Source"
     And I should see "Tag"
     And I should see "License"
@@ -117,7 +113,7 @@ Feature: form to update dataset details
     And I fill in the field of "name" "Dataset[title]" with "test dataset"
     And I press the button "Create"
     Then I should see current url contains "/dataset/400789/token/"
-    And I should see an image located in "/images/datasets/e166c2a0-3684-5209-bccd-c4b18ff87be9/bgi_logo_new.png"
+    And I should see an image located in "/images/datasets/e166c2a0-3684-5209-bccd-c4b18ff87be9/bgi-logo-new.png"
 
   @ok @issue-1023
   Scenario: To confirm the upload status of published dataset has changed to incomplete
@@ -144,8 +140,6 @@ Feature: form to update dataset details
     When I am on "/adminDataset/update/id/5"
     And I press the button "Create/Reset Private URL"
     And I wait "1" seconds
-    And I am on "/adminDataset/update/id/5"
-    And I follow "Open Private URL"
     Then I should see current url contains "/dataset/100039/token/"
     And I should see "Genomic data of the Puerto Rican Parrot (Amazona vittata) from a locally funded project."
 
@@ -259,7 +253,7 @@ Feature: form to update dataset details
 
   @ok @datasetimage
   Scenario: Delete an image's file and then remove the image record
-    When I am on "/adminDataset/update/id/5"
+    When I am on "/adminDataset/update/id/8"
     And I press the button "X"
     And I confirm to "Are you sure? This will take effect immediately"
     And I wait "2" seconds
@@ -271,6 +265,22 @@ Feature: form to update dataset details
     And I should see an image field "photographer" with text "n/a"
     And I should see an image located in "/images/datasets/no_image.png"
     And I should not see an input button "X"
+
+  @ok @datasetimage
+  Scenario: Delete an image's file and then update metadata but don't save a new image's file
+    When I am on "/adminDataset/update/id/8"
+    And I press the button "X"
+    And I confirm to "Are you sure? This will take effect immediately"
+    And I wait "2" seconds
+    And I fill in the field of "name" "Image[source]" with "test source"
+    And I fill in the field of "name" "Image[license]" with "test license"
+    And I fill in the field of "name" "Image[photographer]" with "test Joe"
+    And I press the button "Save"
+    Then I am on "/adminDataset/update/id/8"
+    And I should see an image field "source" with text "test source"
+    And I should see an image field "license" with text "test license"
+    And I should see an image field "photographer" with text "test Joe"
+    And I should see an image located in "/images/datasets/no_image.png"
 
   @ok
   Scenario: can save keywords on update
@@ -344,6 +354,7 @@ Feature: form to update dataset details
     Given I am on "/adminDataset/update/id/668"
     And I should see "Private"
     When I fill in the field of "name" "Dataset[dataset_size]" with "1024"
+    When I check the field "Dataset_Epigenomic"
     And I press the button "Save"
     Then I should be on "/adminDataset/update/id/668"
     And I should see "Updated successfully!"
