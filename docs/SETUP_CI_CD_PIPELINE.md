@@ -216,21 +216,30 @@ security and conformance stages defined in the `.gitlab-ci.yml` file.
  
 ## Continuous Deployment in the CI/CD pipeline
 
-The deployment of `gigadb-website` code onto a staging or live servers to 
-provide a running GigaDB application is not automatically performed by the 
-CI/CD pipeline since it is set to run manually in the `.gitlab-ci.yml` file. 
-This part of the CI/CD process has to be explicitly executed from the GitLab 
-pipelines page.
+The deployment of `gigadb-website` code to staging and to live environments are all parts of the same pipeline described in the previous chapter.
+While the jobs for continuous integration were performed in the stages up to the `test` stage, 
+the deployment to staging and live environment are performed by the stages after that: 
+for each environments there are two stages involved, the build stage and the deployment stage.
 
-Prior to this, a host machine has to be instantiated with a secure Docker daemon
+The jobs to deploy to the staging environment are fully automated and will trigger for every branch that are pushed to the Github remote.
+The jobs for deploying to live environment are manually triggered and are enabled only for tags that are pushed to the Github remote.
+
+The deployment of the code from the pipeline is dependent on the cloud infrastructure to be existing. 
+So prior to this,  host machines have to be instantiated with a secure Docker daemon
 on which the GigaDB application will be deployed. In addition, an RDS machine 
 is created to provide a PostgreSQL database for GigaDB. Both these machines can
 be used for a specific environment, most likely staging or live.
 
-There are two pre-requisites to fulfill beforehand: 
-First, GitLab needs be configured for build and deployment to production (staging and live).
-Second, several tools are needed to set up a Docker-enabled server on the AWS cloud: 
+There are three pre-requisites to fulfill beforehand: 
+* First, GitLab needs be configured for build and deployment to production (staging and live).
+* Second, an AWS account need to be set up and elastic IP addresses created
+* Third, several tools are needed to set up a Docker-enabled server on the AWS cloud: 
 AWS-CLI, Terraform, and Ansible.
+
+The rest of this document will guide you for the first requirement.
+For the other requirements, and for guidance on infrastructure provisioning in general, do refer to the document:
+[docs/SETUP_PROVISIONING.md](SETUP_PROVISIONING.md)
+
 
 ### Preparing GitLab for provisioning, build and deployment
 
@@ -243,77 +252,6 @@ us to store variables and specify for which environment this variable is bound t
  * Gitlab stages and jobs must be tied to a specific environment, so that pipelines don't leak variables.
 
 
-#### AWS dashboard
-
-There are three activities to perform on the AWS dashboard's EC2 console prior to using the GitLab Pipeline for deployment:
-
-1. Creation of Elastic IPs (under ``Network & Security > Elastic IPs``) to be used for the deployments to ``staging`` and ``live`` environments
-1. Creation of a SSH Key Pair (under ``Network & Security > Key Pairs``) that will allow Ansible and operators to ssh into the deployed EC2 instances
-1. Creation of API keys (under top-right dashboard menu item `<IAM Role Username> @  <AWS account ID> > Security Credentials`, then click `Create access key`, the click the button to download the `.CSV` file)
-
-The first two resources needs to be globally unique in the same AWS acccount, so you need to follow the naming convention below:
-
-1. For Elastic IPS: ``eip-<application>-<environment>[-<sub-system>]-<IAM Role Username>``, e.g: ``eip-gigadb-staging-John`` or ``eip-gigadb-files-staging-John``
-1. For SSH Key pair: ``aws-<application>-<AWS region>-<IAM Role Username>.pem``, e.g: ``aws-gigadb-eu-north-1-John.pem``
-The private part of the SSH Key pair needs to be downloaded to your developer machine in the ``~/.ssh`` directory and with 
-permission set to ``600``.
-
-Here the 3 EIPs you must create for provisioning a staging environment:
-
-EIPs Name tag | associated domain, if any |
-| -- | -- |
-| ``eip-gigadb-staging-<IAM Role Username>`` | yoursubdomain-staging.gigadb.host |
-| ``eip-gigadb-bastion-staging-<IAM Role Username>`` | (optional)bastion.yoursubdomain-staging.gigadb.host |
-| ``eip-gigadb-files-staging-<IAM Role Username>`` | (optional)files.yoursubdomain-staging.gigadb.host |
- 
-If also deploying to a live environment, you will need to create
-
-EIPs Name tag | associated domain (only the 1st one is mandatory) |
-| -- | -- |
-| ``eip-gigadb-live-<IAM Role Username>`` | yourdomain-live.gigadb.host |
-| ``eip-gigadb-bastion-live-<IAM Role Username>`` | (optional)bastion.yoursubdomain-live.gigadb.host |
-| ``eip-gigadb-files-live-<IAM Role Username>`` | (optional)files.yoursubdomain-live.gigadb.host |
-
->**Notes**: By default the number of EIPs allowed to be created in any given region is limited to 5. 
->So if you need to deploy a live environment, you will need to request a quota increase for the region you are deploying into. 
->Ask a core team member to do it for you.
-
-#### Create DNS record for accessing endpoint on staging and on live servers
-
-There is a couple of endpoints that need to have a domain name associated with them for each deployment environments.
-
-The domain names should be for staging enviroment:
-* yoursubdomain-staging.gigadb.host
-* portainer.yoursubdomain-staging.gigadb.host
-and optionally:
-* files.yoursubdomain-staging.gigadb.host
-* bastion.yoursubdomain-staging.gigadb.host
-
-and for live environment:
-* yoursubdomain-live.gigadb.host
-* portainer.yoursubdomain-live.gigadb.host
-and optionally:
-* files.yoursubdomain-live.gigadb.host
-* bastion.yoursubdomain-live.gigadb.host
-
-where *yourdomain* is a unique short string of your choice to identify your endpoints form those of other team members, 
-like your IAM role name in lowercase or Gitlab project prefix.
-
-Ask a core team member to create an "A" record in the DNS server to map to the Elastic IPs 
-you have set up in previous section for your staging and live environment.
-
-##### AWS credentials
-
-The credentials obtained from the AWS dashboard needs to be stored locally at the path `~/.aws/credentials` under a profile called `[gigadb]`
-
-if the file doesn't exist yet, it should looks something like:
-
-```
-[gigadb]
-aws_access_key_id=XXXXX
-aws_secret_access_key=YYYYY
-```
-
 #### GitLab Variables
 
 Ensure the following variables are set for their respective environments in the appropriate GitLab project.
@@ -323,8 +261,8 @@ the Visibility radio input should be set to "Visible" except for the passwords a
 | Name | value | 
 | --- | --- |
 | DEPLOYMENT_ENV | deployment environment goes here |
-| REMOTE_HOME_URL | URL to the home website as https://FQDN |
-| REMOTE_HOSTNAME | domain name associated to the elastic IP of the web server as FQDN |
+| REMOTE_HOME_URL | URL to the home website as https://yoursubodmain.gigadb.host |
+| REMOTE_HOSTNAME | domain name associated to the elastic IP of the web server as yoursubdomain.gigadb.host |
 | REMOTE_PUBLIC_HTTP_PORT | 80 |
 | REMOTE_PUBLIC_HTTPS_PORT | 443 |
 | REMOTE_SMTP_HOST | Pick an SMTP host |
@@ -349,7 +287,10 @@ the Visibility radio input should be set to "Visible" except for the passwords a
 
 so, there should be 2 versions of each variable, one for each deployment environment (staging or live).
 
-##### Good examples:
+>**Notes:**The `yoursubdomain` part of `yoursubdomain.gigadb.host` needs to be replaced by string unique that indicates ownership environment.
+E.g: `rm-staging.gigadb.host` or `peter-live.gigadb.host`
+
+#### examples:
 
 | Key | Value | Masked | Environments |
 | --- | --- | --- | --- |

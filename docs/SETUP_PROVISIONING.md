@@ -1,6 +1,109 @@
 # Provisioning of infrastructure on AWS
 
-It is assumed you read through `docs/SETUP_CI_CD_PIPELINE.md` and preprate the Gitlab pipeline as documented.
+It is assumed you have read through [docs/SETUP_CI_CD_PIPELINE.md](SETUP_CI_CD_PIPELINE.md) and prepared the Gitlab pipeline as documented.
+The first step is to connect and prepare to your AWS account from which the resources of the infrastructure to provision
+will be associated with.
+If you don't have an account yet, ask a core team member and they will do so 
+and also generate the domain names you will need later to access certain endpoints of the infrastructure.
+
+## AWS dashboard
+
+### Choosing a region
+
+The very first step is to choose a region where to deploy your infrastructure.
+It has to be a region not used by someone else, that has the specific AWS AMI we need for our EC2 instances, 
+and finally it should be authorised in our policies to be used. Below is a table showing you the choices.
+Once you pick an unused region, we will update this document to mark your name on your choice.
+
+| Region code | Region name | Used by |  Comments |
+| --- | --- | --- | --- |
+| ap-east-1 | Hong Kong | gigadb | |
+|  ap-northeast-1 |  Tokyo | Peter | |
+|  ap-southeast-1 | Singapore | gigabyte, gigablog | |
+|  ap-southeast-2 |  Sidney | gigadb (alternative) | |
+| ap-southeast-4 | Melbourne | | Under preparation, available soon |
+| ap-northeast-2 | Osaka | | Don't use, it doesn't have Centos 8 Stream X86_64 |
+| ap-northeast-3 | Seoul | |Don't use, it doesn't have Centos 8 Stream X86_64|
+|  ap-south-1 | Mumbai | | |
+|  eu-west-1  |  Ireland | Rija | |
+|  eu-west-2  | London | Allison | |
+|  eu-west-3 | Paris | | |
+|  eu-central-1 | Frankfurt | | |
+| eu-south-2 | Spain | | Under preparation, available soon |
+
+### EIPs and SSH keys
+
+There are three activities to perform on the AWS dashboard's EC2 console prior to using the GitLab Pipeline for deployment:
+
+1. Creation of Elastic IPs (under ``Network & Security > Elastic IPs``) to be used for the deployments to ``staging`` and ``live`` environments
+1. Creation of a SSH Key Pair (under ``Network & Security > Key Pairs``) that will allow Ansible and operators to ssh into the deployed EC2 instances
+1. Creation of API keys (under top-right dashboard menu item `<IAM Role Username> @  <AWS account ID> > Security Credentials`, then click `Create access key`, the click the button to download the `.CSV` file)
+
+The first two resources needs to be globally unique in the same AWS acccount, so you need to follow the naming convention below:
+
+1. For Elastic IPS: ``eip-<application>-<environment>[-<sub-system>]-<IAM Role Username>``, e.g: ``eip-gigadb-staging-John`` or ``eip-gigadb-files-staging-John``
+1. For SSH Key pair: ``aws-<application>-<AWS region>-<IAM Role Username>.pem``, e.g: ``aws-gigadb-eu-north-1-John.pem``
+The private part of the SSH Key pair needs to be downloaded to your developer machine in the ``~/.ssh`` directory and with 
+permission set to ``600``.
+
+Here the 3 EIPs you must create for provisioning a staging environment:
+
+EIPs Name tag | associated domain, if any |
+| -- | -- |
+| ``eip-gigadb-staging-<IAM Role Username>`` | userid-staging.gigadb.host |
+| ``eip-gigadb-bastion-staging-<IAM Role Username>`` | (optional)bastion.userid-staging.gigadb.host |
+| ``eip-gigadb-files-staging-<IAM Role Username>`` | (optional)files.userid-staging.gigadb.host |
+ 
+If also deploying to a live environment, you will need to create
+
+EIPs Name tag | associated domain (only the 1st one is mandatory) |
+| -- | -- |
+| ``eip-gigadb-live-<IAM Role Username>`` | userid-live.gigadb.host |
+| ``eip-gigadb-bastion-live-<IAM Role Username>`` | (optional)bastion.userid-live.gigadb.host |
+| ``eip-gigadb-files-live-<IAM Role Username>`` | (optional)files.userid-live.gigadb.host |
+
+>**Notes**: By default the number of EIPs allowed to be created in any given region is limited to 5. 
+>So if you need to deploy a live environment, you will need to request a quota increase for the region you are deploying into. 
+>Ask a core team member to do it for you.
+
+### Associate DNS records to EIPs for accessing endpoint on staging and on live servers
+
+There is a couple of endpoints that need to have a domain name associated with them for each deployment environments.
+Once you have created the EIPs, ask a core team member to create the following domain name for you.
+
+The domain names should be for staging enviroment:
+* userid-staging.gigadb.host
+* portainer.userid-staging.gigadb.host
+and optionally:
+* files.userid-staging.gigadb.host
+* bastion.userid-staging.gigadb.host
+
+and for live environment:
+* userid-live.gigadb.host
+* portainer.userid-live.gigadb.host
+and optionally:
+* files.userid-live.gigadb.host
+* bastion.userid-live.gigadb.host
+
+where *userid* is a unique short string of your choice to identify your endpoints form those of other team members, 
+like your IAM role name in lowercase or Gitlab project prefix.
+
+Ask a core team member to create an "A" record in the DNS server to map to the Elastic IPs 
+you have set up in previous section for your staging and live environment.
+
+### AWS credentials
+
+The credentials obtained from the AWS dashboard needs to be stored locally at the path `~/.aws/credentials` under a profile called `[gigadb]`
+
+if the file doesn't exist yet, it should looks something like:
+
+```
+[gigadb]
+aws_access_key_id=XXXXX
+aws_secret_access_key=YYYYY
+```
+
+
 
 ## Relationship between Gitlab pipeline and provisioning
 
