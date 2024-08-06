@@ -289,6 +289,7 @@ so, there should be 2 versions of each variable, one for each deployment environ
 
 >**Notes:**The `yoursubdomain` part of `yoursubdomain.gigadb.host` needs to be replaced by string unique that indicates ownership environment.
 E.g: `rm-staging.gigadb.host` or `peter-live.gigadb.host`
+More info about domains can be found in the "Associate DNS records to EIPs for accessing endpoint on staging and on live servers" section of [docs/SETUP_PROVISIONING.md](SETUP_PROVISIONING.md)
 
 #### examples:
 
