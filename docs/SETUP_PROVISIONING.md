@@ -139,8 +139,11 @@ The remainders of sections explain in more details how to install the tools ment
 1. You have implemented the instructions in `docs/SETUP_CI_CD_PIPELINE.md`
 2. Install AWS CLI by following AWS's instructions [here](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html).
 3. Install Terraform with `brew install terraform`
-4. Install Ansible with `brew install ansible@9`
-
+4. Install Ansible with:
+```
+$ brew install ansible@9
+$ echo 'export PATH="/opt/homebrew/opt/ansible@9/bin:$PATH"' >> ~/.profile
+```
 More details about the tools can be found in the "Tools" section futher down.
 
 ### Setting up your Staging environment
@@ -390,7 +393,14 @@ again in subsequent runs. ``ops/scripts/ansible_init.sh`` will also source that 
 with a Docker daemon. In addition, a PostgreSQL database is created on the RDS
 instance using `sql/production_like.pgdmp`.
 
-You can install Ansible on macOS using [HomeBrew](https://brew.sh) with the command ``brew install ansible``
+You can install Ansible on macOS using [HomeBrew](https://brew.sh) with the commands
+```
+$ brew install ansible@9
+$ echo 'export PATH="/opt/homebrew/opt/ansible@9/bin:$PATH"' >> ~/.profile
+```
+
+>**Note:** if you have installed the latest version (Ansible 10+, ansible-core 2.17+), it's not going to work for now.
+You will need to uninstall it with `brew uninstall ansible` and re-install the specific version as described above.
 
 ##### Ansible setup and configuration
 
