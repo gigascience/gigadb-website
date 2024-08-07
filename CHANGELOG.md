@@ -11,7 +11,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Security #dependabot/116: Prototype Pollution in handlebars
 - Security #dependabot/172: Unsafe Reflection in base Component class in yiisoft/yii2
 
-## v4.3.3 - 2024-08-05 - 7204ee854
+## v4.3.3 - 2024-08-05 - 7204ee854 - live since 2024-08-07
 
 - Fix #1848: Save modifications to image metafields
 - Feat 1872: Extract stages of postUpload script into separate scripts
