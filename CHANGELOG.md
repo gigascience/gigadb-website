@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Fix #1856: Fix overlapping caret and table header in dataset page
 - Security #dependabot/114: Command injection in fs-path
 - Security #dependabot/115: Remote code execution in handlebars when compiling templates
 - Security #dependabot/116: Prototype Pollution in handlebars
