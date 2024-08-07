@@ -21,15 +21,13 @@ Once you pick an unused region, we will update this document to mark your name o
 |  ap-northeast-1 |  Tokyo | Peter | |
 |  ap-southeast-1 | Singapore | gigabyte, gigablog | |
 |  ap-southeast-2 |  Sidney | gigadb (alternative) | |
-| ap-southeast-4 | Melbourne | | Under preparation, available soon |
-| ap-northeast-2 | Osaka | | Don't use, it doesn't have Centos 8 Stream X86_64 |
-| ap-northeast-3 | Seoul | |Don't use, it doesn't have Centos 8 Stream X86_64|
+| ap-northeast-2 | Seoul | Ken | |
 |  ap-south-1 | Mumbai | | |
 |  eu-west-1  |  Ireland | Rija | |
 |  eu-west-2  | London | Allison | |
-|  eu-west-3 | Paris | | |
+|  eu-west-3 | Paris | | Used to be in use, cleanup under way |
 |  eu-central-1 | Frankfurt | | |
-| eu-south-2 | Spain | | Under preparation, available soon |
+| eu-north-1 | Stockholm | | |
 
 ### EIPs and SSH keys
 
