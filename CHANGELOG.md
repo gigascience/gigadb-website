@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Security #dependabot/114: Command injection in fs-path
+- Security #dependabot/115: Remote code execution in handlebars when compiling templates
+- Security #dependabot/116: Prototype Pollution in handlebars
+- Security #dependabot/172: Unsafe Reflection in base Component class in yiisoft/yii2
+
 ## v4.3.3 - 2024-08-05 - 7204ee854
 
 - Fix #1848: Save modifications to image metafields
