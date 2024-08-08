@@ -5,7 +5,7 @@
 - name: Copy a database to bootstrap postgres server
   copy:
     src: "{{ database_bootstrap }}"
-    dest: /home/centos/database_bootstrap.pgdmp
+    dest: /home/ec2-user/database_bootstrap.pgdmp
     owner: root
     group: root
     mode: 0644

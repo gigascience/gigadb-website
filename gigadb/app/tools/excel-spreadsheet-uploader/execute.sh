@@ -10,22 +10,22 @@ NO_COLOR='\033[0m'
 currentPath=$(pwd)
 if [[ $(uname -n) =~ compute ]];then
   uploadDir=${1:-"$currentPath/uploadDir"}
-  cd /home/centos
+  cd /home/ec2-user
   . .bash_profile
 
-  if [[ $uploadDir != "/home/centos/uploadDir" ]];then
-    mv "$uploadDir"/* /home/centos/uploadDir/
-    chown centos:centos /home/centos/uploadDir/*
+  if [[ $uploadDir != "/home/ec2-user/uploadDir" ]];then
+    mv "$uploadDir"/* /home/ec2-user/uploadDir/
+    chown centos:centos /home/ec2-user/uploadDir/*
   fi
 
-  docker run --rm -v /home/centos/uploadDir:/tool/uploadDir -v /home/centos/uploadLogs:/tool/logs registry.gitlab.com/$GITLAB_PROJECT/production_xls_uploader:$GIGADB_ENV ./run.sh
+  docker run --rm -v /home/ec2-user/uploadDir:/tool/uploadDir -v /home/ec2-user/uploadLogs:/tool/logs registry.gitlab.com/$GITLAB_PROJECT/production_xls_uploader:$GIGADB_ENV ./run.sh
 
-  if [[ -n "$(ls -A /home/centos/uploadDir)" ]];then
+  if [[ -n "$(ls -A /home/ec2-user/uploadDir)" ]];then
     echo -e "${RED}Spreadsheet cannot be uploaded, please check logs!${NO_COLOR}"
-    mv /home/centos/uploadDir/* "$uploadDir/"
+    mv /home/ec2-user/uploadDir/* "$uploadDir/"
   fi
 
-  mv /home/centos/uploadLogs/* "$uploadDir/" || true
+  mv /home/ec2-user/uploadLogs/* "$uploadDir/" || true
   chown "$SUDO_USER":"$SUDO_USER" "$uploadDir"/*
   echo "Done."
 else

@@ -40,10 +40,10 @@ copy the candidate dataset spreadsheets to bastion server using SCP:
 
 ```
 $ cd gigadb/app/tools/excel-spreadsheet-uploader/
-$ scp -i <path to SSH key> uploadDir/GigaDB_v15_GIGA_D_22_00026_DeePVP_102240_v3.xls centos@13.38.58.174:/home/centos/uploadDir/
+$ scp -i <path to SSH key> uploadDir/GigaDB_v15_GIGA_D_22_00026_DeePVP_102240_v3.xls centos@13.38.58.174:/home/ec2-user/uploadDir/
 ```
 
->Note: the remote ``/home/centos/uploadDir/`` directory is created during execution of the bastion playbook
+>Note: the remote ``/home/ec2-user/uploadDir/`` directory is created during execution of the bastion playbook
 
 
 ### 3. Run the spreadsheet uploader on bastion
@@ -66,7 +66,7 @@ $ ansible -i ../../inventories name_bastion_server_staging_(lowercase IAM role h
 ### 4. Audit the upload process
 
 
-Verify that the ``/home/centos/uploadDir`` is empty and that ``/home/centos/uploadLogs/java.log`` and ``/home/centos/uploadLogs/javac.log`` have no errors.
+Verify that the ``/home/ec2-user/uploadDir`` is empty and that ``/home/ec2-user/uploadLogs/java.log`` and ``/home/ec2-user/uploadLogs/javac.log`` have no errors.
 
 ```
 $ cd ops/infrastructure/envs/staging
@@ -75,7 +75,7 @@ $ ansible -i ../../inventories name_bastion_server_staging_(lowercase IAM role h
 $ ansible -i ../../inventories name_bastion_server_staging_(lowercase IAM role here) -a "cat uploadLogs/javac.log"
 ```
 
-> Note: the uploader logs directory is located in ``/home/centos/uploadLogs``. That directory is created during execution of the bastion playbook
+> Note: the uploader logs directory is located in ``/home/ec2-user/uploadLogs``. That directory is created during execution of the bastion playbook
 
 Navigate to the staging GigaDB website and generate a mockup for the DOI of the candidate spreadsheet.
 Use it to sanity check related information like authors, samples, files, links, funding, etc...

@@ -34,7 +34,7 @@
       dds_host: "{{ ec2_public_ip }}"
       dds_server_cert_path: /etc/docker
       dds_restart_docker: no
-      dds_client_cert_path: /home/centos/.docker
+      dds_client_cert_path: /home/ec2-user/.docker
     - role: ../../roles/docker-postinstall
     - role: ../../roles/docker-daemon-enable-start
     - role: ../../roles/fuw
