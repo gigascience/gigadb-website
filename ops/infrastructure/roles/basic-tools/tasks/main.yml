@@ -1,0 +1,20 @@
+- name: Install tmux
+  dnf:
+    name: tmux
+    state: present
+
+- name: Install wget
+  dnf:
+    name: wget
+    state: present
+
+- name: Install emacs
+  dnf:
+    name: emacs
+    state: present
+
+- name: Install lbzip2
+  dnf:
+    name: lbzip2
+    state: present
+
