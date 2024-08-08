@@ -20,7 +20,7 @@
 
 - name: Create directory to store keys
   ansible.builtin.file:
-    path: "/home/centos/{{ newuser }}.keys"
+    path: "/home/ec2-user/{{ newuser }}.keys"
     state: directory
     owner: centos
     group: centos
@@ -60,7 +60,7 @@
   block:
     - name: generate key pair
       community.crypto.openssh_keypair:
-        path: "/home/centos/{{ newuser }}.keys/id_ssh_rsa"
+        path: "/home/ec2-user/{{ newuser }}.keys/id_ssh_rsa"
         owner: centos
       register: pk
 
@@ -69,7 +69,7 @@
 
     - name: download private key
       ansible.builtin.fetch:
-        src: "/home/centos/{{ newuser }}.keys/id_ssh_rsa"
+        src: "/home/ec2-user/{{ newuser }}.keys/id_ssh_rsa"
         dest: "output/privkeys-{{ inventory_hostname }}/{{ newuser }}"
         flat: yes
       when: pk.failed == false

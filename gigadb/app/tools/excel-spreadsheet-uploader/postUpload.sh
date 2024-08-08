@@ -11,7 +11,7 @@ currentPath=$(pwd)
 userOutputDir="$currentPath/uploadDir"
 
 if [[ $(uname -n) =~ compute ]];then
-  outputDir="/home/centos/uploadLogs"
+  outputDir="/home/ec2-user/uploadLogs"
 else
   # For creating readme file on dev environment
   # /home/curators is mapped to gigadb/app/tools/readme-generator/runtime/curators directory
@@ -38,7 +38,7 @@ createReadMeFileStartMessage="\n* About to create the README file for $DOI"
 createReadMeFileEndMessage="\nDone with creating the README file for $DOI."
 
 if [[ $(uname -n) =~ compute ]];then
-  . /home/centos/.bash_profile
+  . /home/ec2-user/.bash_profile
 
 # Execute create readme script
   echo -e "$createReadMeFileStartMessage"
