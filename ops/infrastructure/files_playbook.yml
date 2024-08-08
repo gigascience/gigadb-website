@@ -34,7 +34,7 @@
       dds_host: "{{ ec2_files_public_ip }}"
       dds_server_cert_path: /etc/docker
       dds_restart_docker: no
-      dds_client_cert_path: /home/centos/.docker
+      dds_client_cert_path: /home/ec2-user/.docker
     - role: ../../roles/docker-postinstall
     - role: ../../roles/docker-daemon-enable-start
     - role: ../../roles/fuw
@@ -83,7 +83,7 @@
   - name: Create docker-compose on the server
     template:
       src: ../../../configuration/file-server/docker-compose.yml.j2
-      dest: /home/centos/docker-compose.yml
+      dest: /home/ec2-user/docker-compose.yml
       owner: centos
       group: centos
       mode: 0644

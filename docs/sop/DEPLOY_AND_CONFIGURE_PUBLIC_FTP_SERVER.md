@@ -63,7 +63,7 @@ $ df -T -h
 
 ## How to start and stop the server
 
-on the file server, there is a docker compose file at `/home/centos/docker-compose.yml`.
+on the file server, there is a docker compose file at `/home/ec2-user/docker-compose.yml`.
 Start the server with:
 ```
 $ docker compose up -d

@@ -12,12 +12,12 @@ export PATH
 # script is located
 APP_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
-# Readme file will be created in the current working directory from where this 
+# Readme file will be created in the current working directory from where this
 # createReadme.sh script is called
 WORKING_DIR=$(pwd)
 
 # Locations of rclone.conf
-BASTION_RCLONE_CONF_LOCATION='/home/centos/.config/rclone/rclone.conf'
+BASTION_RCLONE_CONF_LOCATION='/home/ec2-user/.config/rclone/rclone.conf'
 DEV_RCLONE_CONF_LOCATION="${APP_DIR}/../wasabi-migration/config/rclone.conf"
 
 # Source of AWS credentials to supply to rclone on bastion server
@@ -199,7 +199,7 @@ function copy_to_wasabi() {
     rclone_cmd+=" --log-level INFO"
     rclone_cmd+=" --stats-log-level DEBUG"
     rclone_cmd+=" >> ${LOGFILE}"
-  
+
     # For informing rclone where AWS credentials are located on bastion server
     if [[ $(uname -n) =~ compute ]];then
       export AWS_SHARED_CREDENTIALS_FILE
