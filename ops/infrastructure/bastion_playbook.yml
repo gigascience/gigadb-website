@@ -27,6 +27,15 @@
     - role: ../../roles/fail2ban
     - role: ../../roles/jail-ssh
 
+- name: Setup basic tools
+  hosts: name_bastion_server_{{gigadb_env}}*
+  tags:
+    - basic-tools
+
+  roles:
+    - role: ../../roles/basic-tools
+
+
 - name: Setup Docker CE
   hosts: name_bastion_server_{{gigadb_env}}*
   tags:
