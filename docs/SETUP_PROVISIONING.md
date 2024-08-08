@@ -20,7 +20,7 @@ Once you pick an unused region, we will update this document to mark your name o
 | ap-east-1 | Hong Kong | gigadb | |
 |  ap-northeast-1 |  Tokyo | Peter | |
 |  ap-southeast-1 | Singapore | gigabyte, gigablog | |
-|  ap-southeast-2 |  Sidney | gigadb (alternative) | |
+|  ap-southeast-2 |  Sydney | gigadb (alternative) | |
 | ap-northeast-2 | Seoul | Ken | |
 |  ap-south-1 | Mumbai | | |
 |  eu-west-1  |  Ireland | Rija | |
