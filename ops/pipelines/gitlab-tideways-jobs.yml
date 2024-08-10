@@ -29,6 +29,7 @@
     expire_in: 1 week
   rules:
     - if: '$CI_PROJECT_PATH == "gigascience/upstream/gigadb-website"'
+    - if: '$CI_PROJECT_PATH == "gigascience/upstream/alt-gigadb-website"'
 
 TidewaysBuildStaging:
   stage: staging build
@@ -102,6 +103,7 @@ TidewaysBuildLive:
     expire_in: 1 week
   rules:
     - if: '$CI_PROJECT_PATH == "gigascience/upstream/gigadb-website"'
+    - if: '$CI_PROJECT_PATH == "gigascience/upstream/alt-gigadb-website"'
 
 TidewaysDeployStaging:
   stage: staging deploy
