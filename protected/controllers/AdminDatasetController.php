@@ -207,6 +207,26 @@ class AdminDatasetController extends Controller
         Yii::log('**** new attributes: ' . print_r($postDataset, true), 'warning');
         $uploadStatus = $postDataset['upload_status'];
         $previousUploadStatus = $model->upload_status;
+        $isStatusAvailable = true;
+
+        // setting DatasetUpload, the busisness object for File uploading
+        $datasetUpload = $this->getDatasetUpload($model->identifier);
+
+        if ($uploadStatus && $uploadStatus !== $previousUploadStatus) {
+            $isStatusAvailable = $this->checkAndSetTransition($datasetUpload, $model, $uploadStatus);
+        }
+
+        if (!$isStatusAvailable) {
+            Yii::app()->user->setFlash('updateError', 'Fail to update status!');
+            Yii::log(sprintf('Failed to change status to %s', $uploadStatus), 'error');
+
+            return $this->render('update', array(
+                'model' => $model,
+                'datasetPageSettings' => $datasetPageSettings,
+                'curationlog'=> $dataProvider,
+                'dataset_id'=> $id,
+            ));
+        }
 
         //curator
         $curatorId = $postDataset['curator_id'];
@@ -239,8 +259,9 @@ class AdminDatasetController extends Controller
                 $model->updateDatasetTypes($postDatasetTypes);
             }
 
-            if ($uploadStatus !== $previousUploadStatus) {
-                $this->renderNotificationsAccordingToStatus($uploadStatus, $previousUploadStatus, $model);
+            if ($uploadStatus && $uploadStatus !== $previousUploadStatus) {
+                Yii::log('Status changed to '.$uploadStatus, 'info');
+                $this->renderNotificationsAccordingToStatus($datasetUpload, $model);
             }
 
             // semantic kewyords update, using remove all and re-create approach
@@ -505,36 +526,46 @@ class AdminDatasetController extends Controller
         return $model;
     }
 
-    private function renderNotificationsAccordingToStatus($uploadStatus, $previousStatus, $model)
+    private function getDatasetUpload(string $identifier): DatasetUpload
     {
         // setting DatasetUpload, the busisness object for File uploading
         $webClient = new \GuzzleHttp\Client();
-        $fileUploadSrv = Yii::app()->fileUploadService->getFileUploadService($webClient, $model->identifier);
-        $datasetUpload = new DatasetUpload(
+        $fileUploadSrv = Yii::app()->fileUploadService->getFileUploadService($webClient, $identifier);
+
+        return new DatasetUpload(
             $fileUploadSrv->dataset,
             $fileUploadSrv,
             Yii::$app->params['dataset_upload']
         );
+    }
 
-        switch ($uploadStatus) {
+    private function checkAndSetTransition(DatasetUpload $datasetUpload, Dataset $model, string $newStatus): bool
+    {
+        switch ($newStatus) {
+            case 'Submitted':
+                return $datasetUpload->setStatusToSubmitted($model->upload_status);
+
+            case 'DataPending':
+                return $datasetUpload->setStatusToDataPending($model->upload_status);
+
+            default:
+                return true;
+        }
+    }
+
+    private function renderNotificationsAccordingToStatus(DatasetUpload $datasetUpload, Dataset $model)
+    {
+        switch ($model->upload_status) {
             case 'Submitted':
                 $contentToSend = $datasetUpload->renderNotificationEmailBody('Submitted');
-                $statusIsSet = $datasetUpload->setStatusToSubmitted($contentToSend, $previousStatus);
+                $statusIsSet = $datasetUpload->sendNotificationEmailBody($contentToSend, $model->upload_status);
 
                 break;
             case 'DataPending':
-                $contentToSend = $datasetUpload->renderNotificationEmailBody('DataPending');
+                $contentToSend = ($emailBody = Yii::$app->request->post('Dataset')['emailBody']) ?
+                    $this->processTemplateString($emailBody, ['identifier' => $model->identifier]) : $datasetUpload->renderNotificationEmailBody('DataPending');
 
-                // If formdata has a defined custom email body, user it instead of the twig template
-                if (isset($_POST['Dataset']['emailBody']) && $_POST['Dataset']['emailBody'] != '') {
-                    $contentToSend = $this->processTemplateString($_POST['Dataset']['emailBody'], [
-                        'identifier' => $model->identifier
-                    ]);
-                }
-
-                $statusIsSet = $datasetUpload->setStatusToDataPending(
-                    $contentToSend, $model->submitter->email, $previousStatus
-                );
+                $statusIsSet = $datasetUpload->sendNotificationEmailBody($contentToSend, $model->upload_status, $model->submitter->email);
 
                 break;
             default:
@@ -542,8 +573,8 @@ class AdminDatasetController extends Controller
         }
 
         if ($statusIsSet) {
-            CurationLog::createlog($uploadStatus, $model->id);
+            CurationLog::createlog($model->upload_status, $model->id);
         }
     }
 }
-?>
+
