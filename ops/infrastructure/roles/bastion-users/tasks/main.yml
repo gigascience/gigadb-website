@@ -4,7 +4,7 @@
   ansible.builtin.user:
     name: "{{ newuser }}"
     shell: /bin/bash
-    groups: centos
+    groups: ec2-user
     append: yes
 
 - name: Create a .ssh and uploadDir directories
@@ -22,8 +22,8 @@
   ansible.builtin.file:
     path: "/home/ec2-user/{{ newuser }}.keys"
     state: directory
-    owner: centos
-    group: centos
+    owner: ec2-user
+    group: ec2-user
 
 - name: Add curator to sudoers
   ansible.builtin.lineinfile:
@@ -61,7 +61,7 @@
     - name: generate key pair
       community.crypto.openssh_keypair:
         path: "/home/ec2-user/{{ newuser }}.keys/id_ssh_rsa"
-        owner: centos
+        owner: ec2-user
       register: pk
 
     - debug:
