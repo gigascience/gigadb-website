@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+## v4.3.4 - 2024-08-13 - fd9ed2480 - 
+
 - Fix #1908: Correct and improve CI/CD setup documentation
 - Fix #1856: Fix overlapping caret and table header in dataset page
 - Security #dependabot/114: Command injection in fs-path
