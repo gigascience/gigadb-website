@@ -28,7 +28,7 @@
 - name: Add curator to sudoers
   ansible.builtin.lineinfile:
     path: "/etc/sudoers.d/91-add-{{ newuser }}"
-    line: "{{ newuser }} ALL=(ALL)       NOPASSWD: /usr/local/bin/datasetUpload, /usr/local/bin/postUpload, /usr/local/bin/calculateChecksumSizes, /usr/local/bin/createReadme, /usr/local/bin/filesMetaToDb, /usr/local/bin/efsBackup\n"
+    line: "{{ newuser }} ALL=(ALL)       NOPASSWD: /usr/local/bin/datasetUpload, /usr/local/bin/postUpload, /usr/local/bin/calculateChecksumSizes, /usr/local/bin/createReadme, /usr/local/bin/filesMetaToDb, /usr/local/bin/transfer\n"
     owner: root
     group: root
     mode: 440
@@ -196,7 +196,7 @@
 
 - name: Create env file for user to backup
   ansible.builtin.template:
-    src: ../../../../gigadb/app/tools/files-metadata-console/files-env.j2
+    src: ../../../../gigadb/app/tools/transfer-files/files-env.j2
     dest: "/home/{{ newuser }}/files-env"
     owner: "{{ newuser }}"
     group: "{{ newuser }}"

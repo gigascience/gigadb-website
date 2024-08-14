@@ -380,9 +380,15 @@
         group: centos
         mode: a+x
 
+- name: Set up transfer files tool
+  hosts: name_bastion_server_{{gigadb_env}}*
+  tags:
+    - transfer-tool
+
+  tasks:
     - name: Create env file for backup
       ansible.builtin.template:
-        src: ../../../../gigadb/app/tools/files-metadata-console/files-env.j2
+        src: ../../../../gigadb/app/tools/transfer-files/files-env.j2
         dest: /home/centos/files-env
         owner: centos
         group: centos
@@ -398,8 +404,8 @@
 
     - name: Copy wrapper script to backup files to wasabi bucket and s3 bucket
       ansible.builtin.copy:
-        src: "../../../../gigadb/app/tools/files-metadata-console/scripts/efs_backup.sh"
-        dest: /usr/local/bin/efsBackup
+        src: "../../../../gigadb/app/tools/files-metadata-console/scripts/transfer.sh"
+        dest: /usr/local/bin/transfer
         owner: centos
         group: centos
         mode: a+x
