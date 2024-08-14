@@ -404,7 +404,7 @@
 
     - name: Copy wrapper script to backup files to wasabi bucket and s3 bucket
       ansible.builtin.copy:
-        src: "../../../../gigadb/app/tools/files-metadata-console/scripts/transfer.sh"
+        src: "../../../../gigadb/app/tools/transfer-files/scripts/transfer.sh"
         dest: /usr/local/bin/transfer
         owner: centos
         group: centos
