@@ -174,8 +174,8 @@ Example usages:
 [centos@ip-10-99-0-212 ~]$ 
 [centos@ip-10-99-0-212 ~]$ /usr/local/bin/transfer --doi 102480 --sourcePath /share/dropbox/user101/ --wasabi --backup
 [centos@ip-10-99-0-212 ~]$ ls /var/log/gigadb/
-backup_20240805_041137.log
-[centos@ip-10-99-0-212 ~]$ cat /var/log/gigadb/backup_20240805_041137.log 
+transfer_20240805_041137.log
+[centos@ip-10-99-0-212 ~]$ cat /var/log/gigadb/transfer_20240805_041137.log 
 2024/08/05 04:11:37 INFO  : Start copying files from staging to Wasabi
 2024/08/05 04:11:37 NOTICE: analysis_data/Tree_file.txt: Skipped update modification time as --dry-run is set (size 359)
 2024/08/05 04:11:37 NOTICE: readme_102480.txt: Skipped update modification time as --dry-run is set (size 3.127Ki)
@@ -185,7 +185,7 @@ Transferred:              0 B / 0 B, -, 0 B/s, ETA -
 Checks:                 2 / 2, 100%
 Elapsed time:         0.5s
 
-2024/08/05 04:11:37 INFO  : Executed: rclone copy --s3-no-check-bucket /share/dropbox/user101/ wasabi:gigadb-datasets/staging/pub/10.5524/102001_103000/102480 --dry-run --log-file /var/log/gigadb/backup_20240805_041137.log --log-level INFO --stats-log-level DEBUG >> /var/log/gigadb/backup_20240805_041137.log
+2024/08/05 04:11:37 INFO  : Executed: rclone copy --s3-no-check-bucket /share/dropbox/user101/ wasabi:gigadb-datasets/staging/pub/10.5524/102001_103000/102480 --dry-run --log-file /var/log/gigadb/transfer_20240805_041137.log --log-level INFO --stats-log-level DEBUG >> /var/log/gigadb/transfer_20240805_041137.log
 2024/08/05 04:11:37 INFO  : Successfully copied files to Wasabi bucket for DOI: 102480
 2024/08/05 04:11:37 INFO  : Start copying files from staging to s3
 2024/08/05 04:11:38 NOTICE: readme_102480.txt: Skipped update modification time as --dry-run is set (size 3.127Ki)
@@ -196,7 +196,7 @@ Transferred:              0 B / 0 B, -, 0 B/s, ETA -
 Checks:                 2 / 2, 100%
 Elapsed time:         0.4s
 
-2024/08/05 04:11:38 INFO  : Executed: rclone copy --s3-no-check-bucket /share/dropbox/user101/ gigadb-datasetfiles:gigadb-datasetfiles-backup/staging/pub/10.5524/102001_103000/102480 --dry-run --log-file /var/log/gigadb/backup_20240805_041137.log --log-level INFO --stats-log-level DEBUG >> /var/log/gigadb/backup_20240805_041137.log
+2024/08/05 04:11:38 INFO  : Executed: rclone copy --s3-no-check-bucket /share/dropbox/user101/ gigadb-datasetfiles:gigadb-datasetfiles-backup/staging/pub/10.5524/102001_103000/102480 --dry-run --log-file /var/log/gigadb/transfer_20240805_041137.log --log-level INFO --stats-log-level DEBUG >> /var/log/gigadb/transfer_20240805_041137.log
 2024/08/05 04:11:38 INFO  : Successfully copied files to s3 bucket for DOI: 102480
 [centos@ip-10-99-0-212 ~]$ 
 ```
@@ -261,11 +261,11 @@ Example usages:
 /usr/local/bin/transfer --doi 100148 --sourcePath /share/dropbox/user101 --wasabi --backup --apply
 [lily@ip-10-99-0-212 ~]$ /usr/local/bin/transfer --doi 102481 --sourcePath /share/dropbox/user101/ --wasabi
 [lily@ip-10-99-0-212 ~]$ ls /var/log/gigadb/
-backup_20240805_041137.log
+transfer_20240805_041137.log
 [lily@ip-10-99-0-212 ~]$ /usr/local/bin/transfer --doi 102481 --sourcePath /share/dropbox/user101/ --wasabi --backup
 [lily@ip-10-99-0-212 ~]$ ls /var/log/gigadb/
-backup_20240805_041137.log  backup_20240805_041332.log
-[lily@ip-10-99-0-212 ~]$ cat /var/log/gigadb/backup_20240805_041332.log 
+transfer_20240805_041137.log  transfer_20240805_041332.log
+[lily@ip-10-99-0-212 ~]$ cat /var/log/gigadb/transfer_20240805_041332.log 
 2024/08/05 04:13:32 INFO  : Start copying files from staging to Wasabi
 2024/08/05 04:13:33 NOTICE: readme_102480.txt: Skipped copy as --dry-run is set (size 3.127Ki)
 2024/08/05 04:13:33 NOTICE: analysis_data/Tree_file.txt: Skipped copy as --dry-run is set (size 359)
@@ -274,7 +274,7 @@ Transferred:        3.478 KiB / 3.478 KiB, 100%, 0 B/s, ETA -
 Transferred:            2 / 2, 100%
 Elapsed time:         0.3s
 
-2024/08/05 04:13:33 INFO  : Executed: rclone copy --s3-no-check-bucket /share/dropbox/user101/ wasabi:gigadb-datasets/staging/pub/10.5524/102001_103000/102481 --dry-run --log-file /var/log/gigadb/backup_20240805_041332.log --log-level INFO --stats-log-level DEBUG >> /var/log/gigadb/backup_20240805_041332.log
+2024/08/05 04:13:33 INFO  : Executed: rclone copy --s3-no-check-bucket /share/dropbox/user101/ wasabi:gigadb-datasets/staging/pub/10.5524/102001_103000/102481 --dry-run --log-file /var/log/gigadb/transfer_20240805_041332.log --log-level INFO --stats-log-level DEBUG >> /var/log/gigadb/transfer_20240805_041332.log
 2024/08/05 04:13:33 INFO  : Successfully copied files to Wasabi bucket for DOI: 102481
 2024/08/05 04:13:33 INFO  : Start copying files from staging to s3
 2024/08/05 04:13:33 NOTICE: readme_102480.txt: Skipped copy as --dry-run is set (size 3.127Ki)
@@ -284,7 +284,7 @@ Transferred:        3.478 KiB / 3.478 KiB, 100%, 0 B/s, ETA -
 Transferred:            2 / 2, 100%
 Elapsed time:         0.2s
 
-2024/08/05 04:13:33 INFO  : Executed: rclone copy --s3-no-check-bucket /share/dropbox/user101/ gigadb-datasetfiles:gigadb-datasetfiles-backup/staging/pub/10.5524/102001_103000/102481 --dry-run --log-file /var/log/gigadb/backup_20240805_041332.log --log-level INFO --stats-log-level DEBUG >> /var/log/gigadb/backup_20240805_041332.log
+2024/08/05 04:13:33 INFO  : Executed: rclone copy --s3-no-check-bucket /share/dropbox/user101/ gigadb-datasetfiles:gigadb-datasetfiles-backup/staging/pub/10.5524/102001_103000/102481 --dry-run --log-file /var/log/gigadb/transfer_20240805_041332.log --log-level INFO --stats-log-level DEBUG >> /var/log/gigadb/transfer_20240805_041332.log
 2024/08/05 04:13:33 INFO  : Successfully copied files to s3 bucket for DOI: 102481
 [lily@ip-10-99-0-212 ~]$ 
 
@@ -356,8 +356,8 @@ Example usages:
 [centos@ip-10-99-0-253 ~]$ ls /var/log/gigadb/
 [centos@ip-10-99-0-253 ~]$ /usr/local/bin/transfer --doi 102480 --sourcePath /share/dropbox/user101/ --wasabi --backup
 [centos@ip-10-99-0-253 ~]$ ls /var/log/gigadb/
-backup_20240805_054904.log
-[centos@ip-10-99-0-253 ~]$ cat /var/log/gigadb/backup_20240805_054904.log 
+transfer_20240805_054904.log
+[centos@ip-10-99-0-253 ~]$ cat /var/log/gigadb/transfer_20240805_054904.log 
 2024/08/05 05:49:04 INFO  : Start copying files from live to Wasabi
 2024/08/05 05:49:05 NOTICE: readme_102480.txt: Skipped copy as --dry-run is set (size 3.127Ki)
 2024/08/05 05:49:05 NOTICE: analysis_data/Tree_file.txt: Skipped update modification time as --dry-run is set (size 359)
@@ -367,7 +367,7 @@ Checks:                 2 / 2, 100%
 Transferred:            1 / 1, 100%
 Elapsed time:         1.5s
 
-2024/08/05 05:49:05 INFO  : Executed: rclone copy --s3-no-check-bucket /share/dropbox/user101/ wasabi:gigadb-datasets/live/pub/10.5524/102001_103000/102480 --dry-run --log-file /var/log/gigadb/backup_20240805_054904.log --log-level INFO --stats-log-level DEBUG >> /var/log/gigadb/backup_20240805_054904.log
+2024/08/05 05:49:05 INFO  : Executed: rclone copy --s3-no-check-bucket /share/dropbox/user101/ wasabi:gigadb-datasets/live/pub/10.5524/102001_103000/102480 --dry-run --log-file /var/log/gigadb/transfer_20240805_054904.log --log-level INFO --stats-log-level DEBUG >> /var/log/gigadb/transfer_20240805_054904.log
 2024/08/05 05:49:05 INFO  : Successfully copied files to Wasabi bucket for DOI: 102480
 2024/08/05 05:49:05 INFO  : Start copying files from live to s3
 2024/08/05 05:49:06 NOTICE: readme_102480.txt: Skipped copy as --dry-run is set (size 3.127Ki)
@@ -377,7 +377,7 @@ Transferred:        3.478 KiB / 3.478 KiB, 100%, 0 B/s, ETA -
 Transferred:            2 / 2, 100%
 Elapsed time:         0.2s
 
-2024/08/05 05:49:06 INFO  : Executed: rclone copy --s3-no-check-bucket /share/dropbox/user101/ gigadb-datasetfiles:gigadb-datasetfiles-backup/live/pub/10.5524/102001_103000/102480 --dry-run --log-file /var/log/gigadb/backup_20240805_054904.log --log-level INFO --stats-log-level DEBUG >> /var/log/gigadb/backup_20240805_054904.log
+2024/08/05 05:49:06 INFO  : Executed: rclone copy --s3-no-check-bucket /share/dropbox/user101/ gigadb-datasetfiles:gigadb-datasetfiles-backup/live/pub/10.5524/102001_103000/102480 --dry-run --log-file /var/log/gigadb/transfer_20240805_054904.log --log-level INFO --stats-log-level DEBUG >> /var/log/gigadb/transfer_20240805_054904.log
 2024/08/05 05:49:06 INFO  : Successfully copied files to s3 bucket for DOI: 102480
 [centos@ip-10-99-0-253 ~]$ 
 ```
@@ -410,7 +410,7 @@ analysis_data  readme_102480.txt
 [lily@ip-10-99-0-253 ~]$ ls /share/dropbox/user101/analysis_data/
 Tree_file.txt
 [lily@ip-10-99-0-253 ~]$ ls /var/log/gigadb/
-backup_20240805_054904.log
+transfer_20240805_054904.log
 [lily@ip-10-99-0-253 ~]$ /usr/local/bin/transfer
 Usage: /usr/local/bin/transfer --doi <DOI> --sourcePath <Source Path>
 
@@ -451,8 +451,8 @@ Example usages:
 /usr/local/bin/transfer --doi 100148 --sourcePath /share/dropbox/user101 --wasabi --backup
 /usr/local/bin/transfer --doi 100148 --sourcePath /share/dropbox/user101 --wasabi --backup --apply
 [lily@ip-10-99-0-253 ~]$ ls /var/log/gigadb/
-backup_20240805_054904.log  backup_20240805_061241.log
-[lily@ip-10-99-0-253 ~]$ cat /var/log/gigadb/backup_20240805_061241.log 
+transfer_20240805_054904.log  transfer_20240805_061241.log
+[lily@ip-10-99-0-253 ~]$ cat /var/log/gigadb/transfer_20240805_061241.log 
 2024/08/05 06:12:41 INFO  : Start copying files from live to Wasabi
 2024/08/05 06:12:43 NOTICE: readme_102480.txt: Skipped copy as --dry-run is set (size 3.127Ki)
 2024/08/05 06:12:43 NOTICE: analysis_data/Tree_file.txt: Skipped update modification time as --dry-run is set (size 359)
@@ -462,7 +462,7 @@ Checks:                 2 / 2, 100%
 Transferred:            1 / 1, 100%
 Elapsed time:         1.4s
 
-2024/08/05 06:12:43 INFO  : Executed: rclone copy --s3-no-check-bucket /share/dropbox/user101/ wasabi:gigadb-datasets/live/pub/10.5524/102001_103000/102480 --dry-run --log-file /var/log/gigadb/backup_20240805_061241.log --log-level INFO --stats-log-level DEBUG >> /var/log/gigadb/backup_20240805_061241.log
+2024/08/05 06:12:43 INFO  : Executed: rclone copy --s3-no-check-bucket /share/dropbox/user101/ wasabi:gigadb-datasets/live/pub/10.5524/102001_103000/102480 --dry-run --log-file /var/log/gigadb/transfer_20240805_061241.log --log-level INFO --stats-log-level DEBUG >> /var/log/gigadb/transfer_20240805_061241.log
 2024/08/05 06:12:43 INFO  : Successfully copied files to Wasabi bucket for DOI: 102480
 2024/08/05 06:12:43 INFO  : Start copying files from live to s3
 2024/08/05 06:12:43 NOTICE: readme_102480.txt: Skipped copy as --dry-run is set (size 3.127Ki)
@@ -472,6 +472,6 @@ Transferred:        3.478 KiB / 3.478 KiB, 100%, 0 B/s, ETA -
 Transferred:            2 / 2, 100%
 Elapsed time:         0.2s
 
-2024/08/05 06:12:43 INFO  : Executed: rclone copy --s3-no-check-bucket /share/dropbox/user101/ gigadb-datasetfiles:gigadb-datasetfiles-backup/live/pub/10.5524/102001_103000/102480 --dry-run --log-file /var/log/gigadb/backup_20240805_061241.log --log-level INFO --stats-log-level DEBUG >> /var/log/gigadb/backup_20240805_061241.log
+2024/08/05 06:12:43 INFO  : Executed: rclone copy --s3-no-check-bucket /share/dropbox/user101/ gigadb-datasetfiles:gigadb-datasetfiles-backup/live/pub/10.5524/102001_103000/102480 --dry-run --log-file /var/log/gigadb/transfer_20240805_061241.log --log-level INFO --stats-log-level DEBUG >> /var/log/gigadb/transfer_20240805_061241.log
 2024/08/05 06:12:43 INFO  : Successfully copied files to s3 bucket for DOI: 102480
 ```
