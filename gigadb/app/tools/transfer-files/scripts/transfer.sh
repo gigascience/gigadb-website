@@ -42,7 +42,7 @@ function set_up_logging() {
     currentPath=$(pwd)
     LOGDIR="$currentPath/log"
   fi
-  LOGFILE="$LOGDIR/backup_$(date +'%Y%m%d_%H%M%S').log"
+  LOGFILE="$LOGDIR/transfer_$(date +'%Y%m%d_%H%M%S').log"
   mkdir -p "${LOGDIR}"
   touch "${LOGFILE}"
 }

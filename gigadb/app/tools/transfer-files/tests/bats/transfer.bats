@@ -2,7 +2,7 @@
 
 teardown () {
     echo "executing teardown code"
-    FILES="log/backup_"*".log"
+    FILES="log/transfer_"*".log"
 
     for file in $FILES
     do
@@ -79,7 +79,7 @@ teardown () {
 
     # Check the log
     for line in "${expected_lines[@]}"; do
-        run grep -F "$line" log/backup_*.log
+        run grep -F "$line" log/transfer_*.log
         [ "$status" -eq 0 ]
     done
 
@@ -93,7 +93,7 @@ teardown () {
 
     # Verify no files copy to s3
     for line in "${unexpected_lines[@]}"; do
-        run grep -vF "$line" log/backup_*.log
+        run grep -vF "$line" log/transfer_*.log
         [ "$status" -eq 0 ]
     done
 }
@@ -112,7 +112,7 @@ teardown () {
 
     # Check the log
     for line in "${expected_lines[@]}"; do
-        run grep -F "$line" log/backup_*.log
+        run grep -F "$line" log/transfer_*.log
         [ "$status" -eq 0 ]
     done
 
@@ -141,7 +141,7 @@ teardown () {
 
     # Check the log
     for line in "${expected_lines[@]}"; do
-        run grep -F "$line" log/backup_*.log
+        run grep -F "$line" log/transfer_*.log
         [ "$status" -eq 0 ]
     done
 
@@ -155,7 +155,7 @@ teardown () {
 
     # Verify no copy files to Wasabi
     for line in "${unexpected_lines[@]}"; do
-        run grep -vF "$line" log/backup_*.log
+        run grep -vF "$line" log/transfer_*.log
         [ "$status" -eq 0 ]
     done
 
@@ -175,7 +175,7 @@ teardown () {
 
     # Check the log
     for line in "${expected_lines[@]}"; do
-        run grep -F "$line" log/backup_*.log
+        run grep -F "$line" log/transfer_*.log
         [ "$status" -eq 0 ]
     done
 
@@ -209,7 +209,7 @@ teardown () {
 
     # Check the log
     for line in "${expected_lines[@]}"; do
-        run grep -F "$line" log/backup_*.log
+        run grep -F "$line" log/transfer_*.log
         [ "$status" -eq 0 ]
     done
 }
@@ -233,7 +233,7 @@ teardown () {
 
     # Check the log
     for line in "${expected_lines[@]}"; do
-        run grep -F "$line" log/backup_*.log
+        run grep -F "$line" log/transfer_*.log
         [ "$status" -eq 0 ]
     done
 
