@@ -54,14 +54,20 @@ rclone v1.67.0
 ```
 2. The following variables need to be added into your gitlab project variable page
 
-| key | value | env |
-| --- | --- | --- |
-| WASABI_DATASETFILES_DIR | wasabi:gigadb-datasets/dev/pub/10.5524 | dev |
+| key | value | env     |
+| --- | --- |---------|
+| WASABI_ACCESS_KEY_ID | $developer_wasabi_access_key | dev     |
+| WASABI_SECRET_ACCESS_KEY | $developer_wasabi_secret_access_key | dev     |
+| WASABI_ACCESS_KEY_ID | $developer_wasabi_access_key | staging |
+| WASABI_SECRET_ACCESS_KEY | $developer_wasabi_secret_access_key | staging |
+| WASABI_ACCESS_KEY_ID | $developer_wasabi_access_key | live    |
+| WASABI_SECRET_ACCESS_KEY | $developer_wasabi_secret_access_key | live    |
+| WASABI_DATASETFILES_DIR | wasabi:gigadb-datasets/dev/pub/10.5524 | dev     |
 | WASABI_DATASETFILES_DIR | wasabi:gigadb-datasets/staging/pub/10.5524 | staging |
-| WASABI_DATASETFILES_DIR | wasabi:gigadb-datasets/live/pub/10.5524 | live |
-| S3_DATASETFILES_DIR| gigadb-datasetfiles:gigadb-datasetfiles-backup/dev/pub/10.5524 | dev |
+| WASABI_DATASETFILES_DIR | wasabi:gigadb-datasets/live/pub/10.5524 | live    |
+| S3_DATASETFILES_DIR| gigadb-datasetfiles:gigadb-datasetfiles-backup/dev/pub/10.5524 | dev     |
 | S3_DATASETFILES_DIR| gigadb-datasetfiles:gigadb-datasetfiles-backup/staging/pub/10.5524 | staging |
-| S3_DATASETFILES_DIR| gigadb-datasetfiles:gigadb-datasetfiles-backup/live/pub/10.5524 | live |
+| S3_DATASETFILES_DIR| gigadb-datasetfiles:gigadb-datasetfiles-backup/live/pub/10.5524 | live    |
 
 3. Check that these variables have been added to gitlab `cnhk-infra` variable page
 
@@ -75,9 +81,12 @@ rclone v1.67.0
 ```
 # update the rclone config file
 % cd gigadb/app/tools/transfer-files
-% cp env.example .env
-# In the new `.env` file, uncomment and provide a value for the `GITLAB_PRIVATE_TOKEN` variable
-% docker-compose run --rm config
+# execute the configure script to create the .env file
+% ./configure
+# in the new `.env` file, uncomment and provide a value for the `GITLAB_PRIVATE_TOKEN` variable and also fill in the REPO_NAME
+# then execute the configure script again to create the .secrets file
+% ./configure
+# execute the bats tests
 % bats tests/bats/transfer.bats
 transfer.bats
  ✓ No DOI provided
