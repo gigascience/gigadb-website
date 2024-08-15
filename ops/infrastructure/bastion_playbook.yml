@@ -388,7 +388,7 @@
   tasks:
     - name: Create env file for backup
       ansible.builtin.template:
-        src: ../../../../gigadb/app/tools/transfer-files/files-env.j2
+        src: ../../../../gigadb/app/tools/transfer-files/config-sources/files-env.j2
         dest: /home/centos/files-env
         owner: centos
         group: centos
