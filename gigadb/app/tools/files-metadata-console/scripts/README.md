@@ -1,9 +1,24 @@
-# Transformation of dataset ftp_site and file location URLs
+# Scripts
+
+## Calculation of md5 checksum values
+
+### Dev environment
+
+```
+$ docker-compose run --rm -w /gigadb/app/tools/files-metadata-console/tests/_data/102480 files-metadata-console ../../../scripts/md5.sh 102480
+Created 102480.md5
+Created 102480.filesizes
+```
+
+The md5.sh script will copy the $doi.md5 and $doi.filesizes files into the /var/share/gigadb/metadata/ directory. In the dev environment, the /var/share/gigadb/metadata/ directory has been mapped to the runtime/gigadb/metadata directory by docker-compose.yml. If you check this folder, it will have a copy of the 102480.md5 and 102480.filesizes files.
+
+
+## Transformation of dataset ftp_site and file location URLs
 
 The `updateUrl.sh` bash script in this directory can be used to transform the
 URLs in dataset ftp_site and file location table columns in to Wasabi links.
 
-## Dev environment
+### Dev environment
 
 Go to `gigadb/app/tools/files-metadata-console` and create a .env file:
 ```
@@ -104,7 +119,7 @@ ERROR:  No. of row changes in dataset table does not equal no. of rows in datase
 CONTEXT:  PL/pgSQL function inline_code_block line 9 at ASSERT
 ```
 
-### Testing updateUrls.sh using bats-core test
+#### Testing updateUrls.sh using bats-core test
 
 A bats-core test in tests/updateUrls.bats can be used to test updateUrls.sh:
 ```
@@ -114,7 +129,7 @@ $ bats tests
 1 test, 0 failures
 ```
 
-## Staging environment
+### Staging environment
 
 Instantiate the AWS resources for your staging environment:
 ```

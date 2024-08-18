@@ -11,6 +11,8 @@ services:
       - ../../models:/gigadb/app/models
       # For accessing pgdmp database dumps
       - ../../../../sql:/gigadb/app/tools/files-metadata-console/sql
+      # For saving doi.md5, doi.filesizes files
+      - ./runtime/gigadb/metadata:/var/share/gigadb/metadata
     networks:
       # Connect to db-tier network in ops/docker-compose.yml
       - proxy-db-tier
