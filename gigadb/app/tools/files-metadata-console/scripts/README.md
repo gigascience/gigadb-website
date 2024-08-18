@@ -12,6 +12,16 @@ Created 102480.filesizes
 
 The md5.sh script will copy the $doi.md5 and $doi.filesizes files into the /var/share/gigadb/metadata/ directory. In the dev environment, the /var/share/gigadb/metadata/ directory has been mapped to the runtime/gigadb/metadata directory by docker-compose.yml. If you check this folder, it will have a copy of the 102480.md5 and 102480.filesizes files.
 
+To run all bats tests in tests/bats/ directory:
+```
+$ bats tests/bats/md5.bats
+ ✓ No DOI provided
+ ✓ DOI provided
+ ✓ Confirm md5 and file size values
+ ✓ Execute md5.sh within container
+
+4 tests, 0 failures
+```
 
 ## Transformation of dataset ftp_site and file location URLs
 
