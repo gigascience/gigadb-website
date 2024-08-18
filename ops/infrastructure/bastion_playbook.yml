@@ -372,7 +372,6 @@
         state: present
         disable_gpg_check: true
 
-
     - name: Install new wrapper script for files comparison tools
       ansible.builtin.copy:
         src: "../../../../gigadb/app/tools/files-metadata-console/scripts/compare_files.sh"
@@ -380,6 +379,14 @@
         owner: centos
         group: centos
         mode: a+x
+
+    - name: Create a directory where files created by md5.sh can be saved to
+      ansible.builtin.file:
+        path: /var/share/gigadb/metadata
+        state: directory
+        mode: '0757'
+        owner: centos
+        group: centos
 
 
 - name: Set up and configuration of rclone on bastion server
