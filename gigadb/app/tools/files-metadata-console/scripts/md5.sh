@@ -7,7 +7,7 @@ set -e
 if [[ -z "$1" ]]; then
     echo "Error: DOI is required!"
     echo "Usage: $0 <DOI>"
-    echo "Calculates and uploads MD5 checksums values and file sizes for the given DOI to the aws s3 bucket - gigadb-datasets-metadata."
+    echo "Calculates MD5 checksums values and file sizes for a given DOI."
     exit 1
 fi
 
@@ -23,3 +23,7 @@ echo "Created $MD5_FILE"
 # Create doi.filesizes file containing file size information
 find . -type f ! -name "$MD5_FILE" ! -name "$FILESIZE_FILE" -exec wc -c {} \; > "$FILESIZE_FILE"
 echo "Created $FILESIZE_FILE"
+
+# Copy files to location where calculateChecksumSizes can access them
+cp "$MD5_FILE" /var/share/gigadb/metadata/
+cp "$FILESIZE_FILE" /var/share/gigadb/metadata/
