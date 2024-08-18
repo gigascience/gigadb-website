@@ -2,8 +2,6 @@
 
 class PolicyController extends CController {
 
-	public $layout='//layouts/column2';
-
 	/**
 	 * @return array action filters
 	 */
