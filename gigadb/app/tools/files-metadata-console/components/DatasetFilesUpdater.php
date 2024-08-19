@@ -75,6 +75,9 @@ final class DatasetFilesUpdater extends Component
                     $success++;
                 }
             }
+            else {
+                throw new Exception("$filepath in $this->doi.filesizes was not found in database" . PHP_EOL);
+            }
         }
         return $success;
     }

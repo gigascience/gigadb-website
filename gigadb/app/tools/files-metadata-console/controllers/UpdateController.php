@@ -58,11 +58,15 @@ final class UpdateController extends Controller
      */
     public function actionFileSizes(): int
     {
-        $webClient = new Client([ 'allow_redirects' => false ]);
-        $us = new URLsService();
-        $dfu = new DatasetFilesUpdater(["doi" => $this->doi, "us" => $us, "webClient" => $webClient]);
-        $success = $dfu->updateFileSizes();
-        $this->stdout("Number of changes: $success" . PHP_EOL);
+        try {
+            $webClient = new Client([ 'allow_redirects' => false ]);
+            $us = new URLsService();
+            $dfu = new DatasetFilesUpdater(["doi" => $this->doi, "us" => $us, "webClient" => $webClient]);
+            $success = $dfu->updateFileSizes();
+            $this->stdout("Number of changes: $success" . PHP_EOL);
+        } catch (Exception $e) {
+            $this->stdout($e->getMessage(), Console::FG_RED);
+        }
         return ExitCode::OK;
     }
 
