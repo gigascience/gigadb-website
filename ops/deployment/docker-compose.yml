@@ -104,7 +104,7 @@ services:
       - ../../fuw/app:/app      
       - ../../gigadb:/gigadb
       # access for md5 update tool
-      - ${APPLICATION}/gigadb/app/tools/files-metadata-console/runtime/gigadb/metadata:/var/share/gigadb/metadata
+      - ${APPLICATION}/gigadb/app/tools/files-metadata-console/tests/_data/var/share/gigadb/metadata:/var/share/gigadb/metadata
     expose:
       - "9000"
     extra_hosts:
