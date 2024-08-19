@@ -85,16 +85,16 @@ class FilesCommand extends CConsoleCommand
     /**
      * Returns the path for a dataset's md5 file
      *
-     * @param $dataset
+     * @param $doi
      * @return string
      * @throws Exception
      */
     private function findDatasetMd5FilePath($doi): string
     {
         # Test if doi.md5 exists
-        $bucketMd5Path = self::GIGADB_METADATA_DIR . "/$doi.md5";
-        if(file_exists($bucketMd5Path)) {
-            return $bucketMd5Path;
+        $md5FilePath = self::GIGADB_METADATA_DIR . "/$doi.md5";
+        if(file_exists($md5FilePath)) {
+            return $md5FilePath;
         }
         throw new Exception("No $doi.md5 file could be found for dataset DOI $doi");
     }
