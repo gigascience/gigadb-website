@@ -143,10 +143,10 @@ The relevant data stores are:
 
 Regularly, the data from both stores on the current production needs to be synchronised to the hot stand-by.
 
-| Data store | method | Frequency/time | what infra performs the synching | script        |
-| --- | --- | --- | --- |---------------|
-| EFS | rlcone sync | daily | hot stand-by | s3backup      |
-| RDS | pgsql load from RDS backup | daily | hot stand-by | databaseReset |
+| Data store | method | Frequency/time | what infra performs the synching                     | script                                                            |
+| --- | --- | --- |------------------------------------------------------|-------------------------------------------------------------------|
+| EFS | rlcone sync | daily | hot stand-by                                         | sync_drobox                                                       |
+| RDS | pgsql load from RDS backup | daily | current production (backup) + hot stand-by (restore) | s3backup (on current production), databaseReset (on hot stand-by) |
 
 >**Note**: `s3backup` and `databaseReset` needs to understand backup keyed on date (YYYYMMDD) and date time (YYYYMMDDHHMM). The former is used for cron driven daily backup and restore, while the latter is for manual backup and restore, during blue/green deployment and other ad-hoc situations.
 
@@ -177,8 +177,8 @@ Basic principles:
 
 
 Logical Steps to perform:
-* Setup a change embargo on current production
-* Turn off the data stores sync on the hot stand by
+* Setup a change embargo on current production infrastructure
+* Turn off the data stores sync on the hot stand by side
 * Manually run S3backup with date+time suffix
 * On the hot standby, manually run `databaseReset <date+time>`
 * Deploy the release to hot stand-by
@@ -187,8 +187,15 @@ Logical Steps to perform:
 * Blue is now live, make announcement and perform sanity check
 
 Two possibilities from there:
-* Release on Blue is OK, then deploy the release to the former current-production, now hot stand-by (Green), and turn on both data stores sync cronjob on Green
-* Release on Blue is KO and the business want reverting, then perform the opposite DNS records swap, then investigate on hot stand-by
+* Release on Blue is OK,
+  * Turn on the RDS S3 backup cronjob on Blue
+  * then deploy the release to the former current-production, now hot stand-by (Green)
+  * and turn on EFS sync cronjob on Green
+  * and turn on databaseReset cronjob on Green
+* Release on Blue is KO and the business want reverting, 
+  * then perform the opposite DNS records swap, that will immediately restore current production before deployment 
+  * then investigate on Green
 
 Steps to always perform whatever outcome:
+* Lift change embargo on current production infrastructure
 * Ensure the table at the top of this document always correctly represent reality
