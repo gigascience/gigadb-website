@@ -112,8 +112,8 @@ echo "ec2_bastion_login_account = centos@$bastion_ip" >> ansible.properties
 
 # Retrieve efs ids for mounting
 efs_filesystem_dns_name=$(terraform output efs_filesystem_dns_name | sed 's/"//g')
-configuration_area_id=$(terraform output efs_filesystem_configuration_area_id | sed 's/"//g')
-dropbox_area_id=$(terraform output efs_filesystem_dropbox_area_id | sed 's/"//g')
+configuration_area_id=$(terraform output -json efs_filesystem_access_points | jq -r '.configuration_area')
+dropbox_area_id=$(terraform output -json efs_filesystem_access_points | jq -r '.dropbox_area')
 
 {
   echo "efs_filesystem_dns_name = $efs_filesystem_dns_name"
