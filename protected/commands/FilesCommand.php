@@ -8,16 +8,9 @@
  */
 
 use \yii\console\ExitCode;
-use \GigaDB\services\DatasetFileService;
 
 class FilesCommand extends CConsoleCommand
 {
-    /** @const int RETURN_ASSOCIATIVE_ARRAY set to 1 it is passed to get_headers() second parameters so output is a list of key/value pairs */
-    const RETURN_ASSOCIATIVE_ARRAY = 1 ;
-
-    /** @const int  HTTP_STATUS_OK HTTP status code from HTTP response indicating successful GET */
-    const HTTP_STATUS_OK = 200 ;
-
     /** @const string  GIGADB_METADATA_DIR Path in bastion server where doi.md5 file can be found */
     const GIGADB_METADATA_DIR = '/var/share/gigadb/metadata/';
 
@@ -26,9 +19,7 @@ class FilesCommand extends CConsoleCommand
      */
     public function getHelp()
     {
-        $helpText = "Checks files url for a specific dataset in the database" . PHP_EOL;
-        $helpText .= "Usage: ./protected/yiic files checkUrls --doi=<DOI>" . PHP_EOL;
-        $helpText .= "Updates md5 checksum attribute value for all files in a given dataset" . PHP_EOL;
+        $helpText = "Updates md5 checksum attribute value for all files in a given dataset" . PHP_EOL;
         $helpText .= "Usage: ./protected/yiic files updateMD5FileAttributes --doi=<DOI>" . PHP_EOL;
 
         return $helpText;
