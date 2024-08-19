@@ -19,10 +19,10 @@ Together they represent an implementation of:
 
 The two infrastructures are meant to be identical and independent, and must run on two distinct regions. Each infrastructure has a role and they will swap roles upon blue/green deployment or incident failover.
 
-| project | AWS profile | AWS region | current role | current release | status |
-| -- | -- | -- | -- | -- | -- |
-| gigadb-website | Upstream | ap-east-1 | current production | v4.3.3 | OK |
-| alt-gigadb-website | UpstreamAlt | ap-southeast-2 | hot stand-by | v4.3.3 | OK |
+| project | AWS profile | AWS region              | current role | current release | status |
+| --- | --- |-------------------------| --- | --- |--------|
+| gigadb-website | Upstream | ap-east-1 (HK)          | current production | v4.3.3 | OK     |
+| alt-gigadb-website | UpstreamAlt | ap-southeast-2 (Sydney) | hot stand-by | v4.3.3 | OK     |
 
 >**Note**: this table needs updating after each deployment or incident failover
 
@@ -104,16 +104,16 @@ The DNS records are to be saved in the Cloudflare dashboard.
 
 #### Current production
 
-| FQDN | EIP |  environment |
-| --- | --- | --- |
-| gigadb.org | eip-gigadb-live-gigadb  |  live |
-| bastion.gigadb.org | eip-gigadb-bastion-live-gigadb |  live |
-| files.gigadb.org | eip-gigadb-files-live-gigadb |  live |
-| portainer.gigadb.org |  eip-gigadb-live-gigad |  live |
-| staging.gigadb.org | eip-gigadb-staging-gigadb  |  staging |
+| FQDN | EIP                               |  environment |
+| --- |-----------------------------------| --- |
+| gigadb.org | eip-gigadb-live-gigadb            |  live |
+| bastion.gigadb.org | eip-gigadb-bastion-live-gigadb    |  live |
+| files.gigadb.org | eip-gigadb-files-live-gigadb      |  live |
+| portainer.gigadb.org | eip-gigadb-live-gigadb            |  live |
+| staging.gigadb.org | eip-gigadb-staging-gigadb         |  staging |
 | bastion-stg.gigadb.host | eip-gigadb-bastion-staging-gigadb |  staging |
-| files.staging.gigadb.org | eip-gigadb-files-staging-gigadb |  staging |
-| portainer.staging.gigadb.org |  eip-gigadb-staging-gigadb |  staging |
+| files.staging.gigadb.org | eip-gigadb-files-staging-gigadb   |  staging |
+| portainer.staging.gigadb.org | eip-gigadb-staging-gigadb         |  staging |
 
 
 #### Hot Stand-by
@@ -176,19 +176,19 @@ Basic principles:
 >**Note**:  Do not use The Gitlab names or the AWS profile to figure out which one is current production and which one is hot stand by as these name can refers to either. Use DNS mappings and the table at the top of the document
 
 
-Steps to perform:
-* Deploy to hot stand-by the release
+Logical Steps to perform:
 * Setup a change embargo on current production
 * Turn off the data stores sync on the hot stand by
 * Manually run S3backup with date+time suffix
 * On the hot standby, manually run `databaseReset <date+time>`
-* Have the business team validate the hot standby deployment (Blue)
-* Swap the two DNS records between the EIPs of the current production and the hot stand by
+* Deploy the release to hot stand-by
+* Have the business team to validate the hot standby deployment (Blue)
+* Swap the DNS records between the EIPs of the current production and the hot stand by
 * Blue is now live, make announcement and perform sanity check
 
 Two possibilities from there:
 * Release on Blue is OK, then deploy the release to the former current-production, now hot stand-by (Green), and turn on both data stores sync cronjob on Green
-* Release on Blue is KO and the business want reverting, then perform the opposite DNS records swap then investigate on hot stand-by
+* Release on Blue is KO and the business want reverting, then perform the opposite DNS records swap, then investigate on hot stand-by
 
-Steps to always perform:
-* Ensure the table at the top of this document is always correctly representing reality
+Steps to always perform whatever outcome:
+* Ensure the table at the top of this document always correctly represent reality
