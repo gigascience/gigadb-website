@@ -30,11 +30,9 @@ final class DatasetFilesUpdater extends Component
      */
     public \GuzzleHttp\Client $webClient;
 
-    /**
-     * @var string URLs helper functions (here we interested in batch grab of specific response header)
-     */
-    public const GIGADB_DATASETS_METADATA_BUCKET_URL = 'https://s3.ap-northeast-1.amazonaws.com/gigadb-datasets-metadata';
-
+    /** @const string  GIGADB_METADATA_DIR Path in bastion server where doi.filesizes can be found */
+    const GIGADB_METADATA_DIR = '/var/share/gigadb/metadata/';
+    
     /**
      * Updates sizes for all files listed in doi.filesizes file located in 
      * gigadb-datasets-metadata S3 bucket.
@@ -47,13 +45,12 @@ final class DatasetFilesUpdater extends Component
         $success = 0;
         $d = Dataset::find()->where(['identifier' => $this->doi])->one();
 
-        $filesizesURL = DatasetFilesUpdater::GIGADB_DATASETS_METADATA_BUCKET_URL . '/' . $this->doi . '.filesizes';
-        $array = get_headers($filesizesURL);
-        if(!strpos($array[0],'200 OK')) {
-            throw new Exception("$filesizesURL not found");
+        $filesizesPath = DatasetFilesUpdater::GIGADB_METADATA_DIR . $this->doi . '.filesizes';
+        if(!file_exists($filesizesPath)) {
+            throw new Exception("$filesizesPath not found");
         }
 
-        $content = file_get_contents($filesizesURL);
+        $content = file_get_contents($filesizesPath);
         $lines = explode("\n", $content);
         foreach($lines as $line) {
             # Last line in .filesizes file might be empty
@@ -63,7 +60,6 @@ final class DatasetFilesUpdater extends Component
             $tokens = explode("\t", $line);
             $size = (int)$tokens[0];
             $filepath = ltrim($tokens[1], './');
-            $filepath = $this->doi . '/' . $filepath;
             # Find file to be updated
             $file = File::find()
                 ->where(['dataset_id' => $d->id])
