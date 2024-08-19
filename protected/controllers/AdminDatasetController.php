@@ -1,5 +1,7 @@
 <?php
 
+use GigaDB\services\UploadStatusWorkflowService;
+use GigaDB\services\MailerService;
 use League\Flysystem\AdapterInterface;
 
 /**
@@ -254,8 +256,8 @@ class AdminDatasetController extends Controller
             }
 
             if ($uploadStatus && $uploadStatus !== $previousUploadStatus) {
-                Yii::log('Status changed to '.$uploadStatus, 'info');
-                $this->renderNotificationsAccordingToStatus($datasetUpload, $model);
+                Yii::log(sprintf('Status changed to %s', $uploadStatus), 'info');
+                $this->renderNotificationsAccordingToStatus($model);
             }
 
             // semantic keywords update, using remove all and re-create approach
@@ -570,37 +572,20 @@ class AdminDatasetController extends Controller
         );
     }
 
-    private function checkAndSetTransition(DatasetUpload $datasetUpload, Dataset $model, string $newStatus): bool
+    private function renderNotificationsAccordingToStatus(Dataset $model)
     {
-        switch ($newStatus) {
-            case 'Submitted':
-                return $datasetUpload->setStatusToSubmitted($model->upload_status);
+        /** @var MailerService $mailerService */
+        $mailerService = Yii::$container->get('mailerService');
 
-            case 'DataPending':
-                return $datasetUpload->setStatusToDataPending($model->upload_status);
-
-            default:
-                return true;
-        }
-    }
-
-    private function renderNotificationsAccordingToStatus(DatasetUpload $datasetUpload, Dataset $model)
-    {
         switch ($model->upload_status) {
             case 'Submitted':
-                $contentToSend = $datasetUpload->renderNotificationEmailBody('Submitted');
-                $statusIsSet = true;
                 if (Yii::app()->featureFlag->isEnabled('fuw')) {
-                    $statusIsSet = $datasetUpload->sendNotificationEmailBody($contentToSend, $model->upload_status);
+                    $statusIsSet = $mailerService->sendEmailForStatusUpdate($model->upload_status, $model->identifier);
                 }
-
                 break;
             case 'DataPending':
-                $contentToSend = ($emailBody = Yii::$app->request->post('Dataset')['emailBody']) ?
-                    $this->processTemplateString($emailBody, ['identifier' => $model->identifier]) : $datasetUpload->renderNotificationEmailBody('DataPending');
-                $statusIsSet = true;
                 if (Yii::app()->featureFlag->isEnabled('fuw')) {
-                    $statusIsSet = $datasetUpload->sendNotificationEmailBody($contentToSend, $model->upload_status, $model->submitter->email);
+                    $statusIsSet = $mailerService->sendEmailForStatusUpdate($model->upload_status, $model->identifier, Yii::$app->request->post('Dataset')['emailBody']);
                 }
                 break;
             default:
