@@ -18,8 +18,8 @@ class FilesCommand extends CConsoleCommand
     /** @const int  HTTP_STATUS_OK HTTP status code from HTTP response indicating successful GET */
     const HTTP_STATUS_OK = 200 ;
 
-    /** @const int  S3_BUCKET_GIGADB_DATASETS_METADATA_BUCKET_URL Domain URL for S3 bucket containing md5 files */
-    const S3_BUCKET_GIGADB_DATASETS_METADATA_BUCKET_URL = 'https://s3.ap-northeast-1.amazonaws.com/gigadb-datasets-metadata';
+    /** @const string  GIGADB_METADATA_DIR Path in bastion server where doi.md5 file can be found */
+    const GIGADB_METADATA_DIR = '/var/share/gigadb/metadata/';
 
     /**
      * @return string
@@ -49,15 +49,16 @@ class FilesCommand extends CConsoleCommand
             if(is_null($dataset))
                 throw new Exception("No dataset found in database with DOI $doi");
 
-            # Download and parse dataset md5 file
-            $url = $this->findDatasetMd5FileUrl($dataset);
-            $contents = DownloadService::downloadFile($url);
+            # Fetch and parse dataset md5 file
+            $md5FilePath = $this->findDatasetMd5FilePath($doi);
+            $contents = file_get_contents($md5FilePath);
             $lines = explode("\n", $contents);
             foreach ($lines as $line) {
                 # Last line in $doi.md5 file might be empty
                 if(!str_contains($line, '  ')) {
                     break;
                 }
+                # md5 value and file name is separated by 2 spaces in doi.md5 file
                 $tokens = explode("  ", $line);
                 // Only parse lines with content in md5 file
                 if($tokens[0] !== "") {
@@ -78,43 +79,22 @@ class FilesCommand extends CConsoleCommand
         }
         catch (Exception $e) {
             echo $e->getMessage();
-        } 
-        catch (\GuzzleHttp\Exception\GuzzleException $ge) {
-            echo $ge->getMessage();
         }
     }
 
     /**
-     * Returns the URL for a dataset's md5 file
-     *
-     * First checks if md5 file can be found in S3 bucket. If not, then checks
-     * whether the URL of the md5 file could be:
-     * https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006/100006.md5
-     * https://ftp.cngb.org/pub/gigadb/pub/10.5524/101001_102000/101001/101001.md5
-     * https://ftp.cngb.org/pub/gigadb/pub/10.5524/102001_103000/102236/102236.md5
+     * Returns the path for a dataset's md5 file
      *
      * @param $dataset
      * @return string
      * @throws Exception
      */
-    private function findDatasetMd5FileUrl($dataset): string
+    private function findDatasetMd5FilePath($doi): string
     {
-        $doi = $dataset->identifier;
-        
-        # Test if doi.md5 exists in S3 bucket first
-        $bucketMd5Url = self::S3_BUCKET_GIGADB_DATASETS_METADATA_BUCKET_URL . "/$doi.md5";
-        if(DownloadService::fileExists($bucketMd5Url)) {
-            return $bucketMd5Url;
-        }
-        else {
-            foreach ($dataset::RANGES as $range) {
-                $url = Yii::app()->params['ftp_connection_url'] . "/pub/gigadb/pub/10.5524/$range/$doi/$doi.md5";
-                // Check URL resolves to a real file
-                echo "Processing $url" . PHP_EOL;
-                $file_exists = DownloadService::fileExists($url);
-                if ($file_exists)
-                    return $url;
-            }
+        # Test if doi.md5 exists
+        $bucketMd5Path = self::GIGADB_METADATA_DIR . "/$doi.md5";
+        if(file_exists($bucketMd5Path)) {
+            return $bucketMd5Path;
         }
         throw new Exception("No $doi.md5 file could be found for dataset DOI $doi");
     }
