@@ -20,8 +20,11 @@ FILESIZE_FILE="$doi.filesizes"
 find .  -type f ! -name "$MD5_FILE" ! -name "$FILESIZE_FILE" -exec md5sum {} \; > "$MD5_FILE"
 echo "Created $MD5_FILE"
 
-# Create doi.filesizes file containing file size information
-find . -type f ! -name "$MD5_FILE" ! -name "$FILESIZE_FILE" -exec wc -c {} \; > "$FILESIZE_FILE"
+# Create out.txt file containing file size information
+find . -type f ! -name "$MD5_FILE" ! -name "$FILESIZE_FILE" ! -name out.txt -exec wc -c {} \; > out.txt
+# Transform any space delimiters in out.txt into tabs
+tr " " "\t" < out.txt > "$FILESIZE_FILE"
+rm out.txt
 echo "Created $FILESIZE_FILE"
 
 # Copy files to location where calculateChecksumSizes can access them
