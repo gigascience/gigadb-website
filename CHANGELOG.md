@@ -5,7 +5,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
-## v00-pli888-testing - 2024-09-04 - fa907fc54 -
+- Feat #1957: Create alternative infrastructure with live data copied
+- Fix #1990: The tar function reports error in the bastion server
+- Feat #1904: Install commonly use software to bastion server
+- Fix #1985: Circular dependency between Gitlab pipeline and the Ansible bastion playbook run
+- Security #security/4: Use composer.json in main app instead of templated composer.json.dist
 
 ## v4.3.5 - 2024-08-23 - 4eaa1cda5 - 
 
