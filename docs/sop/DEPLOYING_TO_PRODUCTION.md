@@ -3,8 +3,6 @@
 This document is a SOP is for preparing the infrastructure used for the live production environments of GigaDB. 
 This document is for core team members who need to work on live production infrastructure.
 
-## Pipeline and provisioning
-
 The base principles, tooling, configuration and provisioning approach are the same that used for developers environments on AWS.
 The implications are:
 * You must be familiar with the content of and have provisioned and deployed following the guidance of `docs/SETUP_CI_CD_PIPELINES.md` and `docs/SETUP_PROVISIONING.md`
@@ -180,6 +178,10 @@ Basic principles:
 
 >**Note**:  Do not use The Gitlab names or the AWS profile to figure out which one is current production and which one is hot stand by as these name can refers to either. Use DNS mappings and the table at the top of the document
 
+#### Process for complex changes
+
+If the release contains infrastructure changes, and/or changes to the database schema, 
+and/or brand new application deployment (e.g: FUW, Gigareview, ...)
 
 Logical Steps to perform:
 1. Setup a change embargo on current production infrastructure
@@ -206,3 +208,11 @@ B) Release on Blue has failed and the business want reverting,
 Steps to always perform whatever outcome:
 * Lift change embargo on current production infrastructure
 * Ensure the table at the top of this document always correctly represent reality
+
+#### Process for simple changes
+
+In this scenario, a release doesn't require infrastructure changes, nor database schema changes, 
+and the changes are small and stateless.
+In this case, there is no need to perform blue/green approach, and the process is almost similar to what we do now.
+The only difference, is deployment needs to be done on both current production and hot stand by (starting with the latter) 
+to keep them in sync. Also, it is necessary to update the table at the top of this document with the new release versions.
