@@ -42,7 +42,10 @@ docker-compose.override.yml
 
 tests/_data/102480/102480.md5
 tests/_data/102480/102480.filesizes
-tests/_data/var/share/gigadb/*
+#tests/_data/var/share/gigadb/*
+*.md5
+*.filesizes
 # Required for tests
 !tests/_data/var/share/gigadb/metadata/100006.md5
 !tests/_data/var/share/gigadb/metadata/100039.filesizes
+!tests/_data/var/share/gigadb/metadata/100039.md5
