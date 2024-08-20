@@ -1,6 +1,7 @@
-# AWS SETUP for the Upstream projects
+# Deploying to production for the Upstream projects
 
-This document is a SOP is for preparing the infrastructure used for the live production environments of GigaDB. This document is for core team members who need to work on live production infrastructure.
+This document is a SOP is for preparing the infrastructure used for the live production environments of GigaDB. 
+This document is for core team members who need to work on live production infrastructure.
 
 ## Pipeline and provisioning
 
@@ -72,7 +73,7 @@ region=<see the table above>
 output=json
 ```
 
-## Preparation of the hot stand-by
+## Preparation of the current production and the hot stand-by pipelines and infrastructures
 
 The configuration of the infrastructures relies on Gitlab variables and DNS records.
 
@@ -101,6 +102,7 @@ You can look up the corresponding Gitlab project and AWS region  in the table at
 The DNS records are to be saved in the Cloudflare dashboard.
 
 >**Note**: the EIP names are the same across both infrastructure
+>**Note**: TODO: We should create a command to perform DNS records swap so that we don't have to do it manually.
 
 #### Current production
 
@@ -131,7 +133,8 @@ The DNS records are to be saved in the Cloudflare dashboard.
 
 ### Pipeline and provisioning
 
-You can now follow the process described in `docs/SETUP_CI_CD_PIPELINE.md` and `docs/SETUP_PROVISIONING.md` while remembering that:
+You can now follow the process described in `docs/SETUP_CI_CD_PIPELINE.md` and `docs/SETUP_PROVISIONING.md` 
+while remembering that:
 * for terraform, prefix the command with `AWS_PROFILE=Upstream` or `AWS_PROFILE=UpstreamAlt` depending on which role you are deploying
 * for Ansible, make sure to configure one of the AWS regions in the table at the top depending on which role you are deploying
 
@@ -148,13 +151,15 @@ Regularly, the data from both stores on the current production needs to be synch
 | EFS | rlcone sync | daily | hot stand-by                                         | sync_drobox                                                       |
 | RDS | pgsql load from RDS backup | daily | current production (backup) + hot stand-by (restore) | s3backup (on current production), databaseReset (on hot stand-by) |
 
->**Note**: `s3backup` and `databaseReset` needs to understand backup keyed on date (YYYYMMDD) and date time (YYYYMMDDHHMM). The former is used for cron driven daily backup and restore, while the latter is for manual backup and restore, during blue/green deployment and other ad-hoc situations.
+>**Note**: TODO: `s3backup` and `databaseReset` needs to understand backup keyed on date (YYYYMMDD) and date time (YYYYMMDDHHMM). 
+> The former is used for cron driven daily backup and restore, while the latter is for manual backup and restore, during blue/green deployment and other ad-hoc situations.
 
 
 ## Deploying releases
 
 
-Both Gitlab projects track gigadb-website repo on GitHub and will deploy to their respective staging production environments automatically.
+Both Gitlab projects track `gigasciencve/gigadb-website` repo on GitHub 
+and will deploy to their respective staging production environments automatically.
 
 In both projects, deploying to the live production environment has to be triggered manually.
 **But they should not be done at the same time**.
@@ -177,24 +182,26 @@ Basic principles:
 
 
 Logical Steps to perform:
-* Setup a change embargo on current production infrastructure
-* Turn off the data stores sync on the hot stand by side
-* Manually run S3backup with date+time suffix
-* On the hot standby, manually run `databaseReset <date+time>`
-* Deploy the release to hot stand-by
-* Have the business team to validate the hot standby deployment (Blue)
-* Swap the DNS records between the EIPs of the current production and the hot stand by
-* Blue is now live, make announcement and perform sanity check
+1. Setup a change embargo on current production infrastructure
+2. Turn off the data stores sync on the hot stand by side
+3. Manually run S3backup with date+time suffix
+4. On the hot standby, manually run `databaseReset <date+time>`
+5. Deploy the release to hot stand-by
+6. Have the business team to validate the hot standby deployment (Blue)
+7. If validated, Swap the DNS records between the EIPs of the current production and the hot stand by
+   1. if not validated, see B.2 item below
+8. Blue is now live, make announcement and perform sanity check
 
 Two possibilities from there:
-* Release on Blue is OK,
-  * Turn on the RDS S3 backup cronjob on Blue
-  * then deploy the release to the former current-production, now hot stand-by (Green)
-  * and turn on EFS sync cronjob on Green
-  * and turn on databaseReset cronjob on Green
-* Release on Blue is KO and the business want reverting, 
-  * then perform the opposite DNS records swap, that will immediately restore current production before deployment 
-  * then investigate on Green
+A) Release on Blue is OK
+1. Turn on the RDS S3 backup cronjob on Blue
+2. Deploy the release to the former current-production, now the new hot stand-by (Green)
+3. Turn on EFS sync cronjob on Green
+4. Turn on databaseReset cronjob on Green
+
+B) Release on Blue has failed and the business want reverting,
+1. Perform the opposite DNS records swap, that will immediately restore current production as before deployment
+2. Investigate issue on Green
 
 Steps to always perform whatever outcome:
 * Lift change embargo on current production infrastructure
