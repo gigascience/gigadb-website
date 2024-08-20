@@ -2,6 +2,7 @@
 
 namespace GigaDB\models;
 
+use Exception;
 use Yii;
 
 /**
@@ -31,6 +32,9 @@ use Yii;
  */
 class File extends \yii\db\ActiveRecord
 {
+    /** @const string  DATABASE_ATTRIBUTE_ID_FOR_MD5_CHECKSUM the attribute id for MD5 checksum in attribute database table */
+    const DATABASE_ATTRIBUTE_ID_FOR_MD5_CHECKSUM = "605";
+
     /**
      * {@inheritdoc}
      */
@@ -142,5 +146,31 @@ class File extends \yii\db\ActiveRecord
     public function getFileSamples()
     {
         return $this->hasMany(FileSample::className(), ['file_id' => 'id']);
+    }
+
+    /**
+     * Updates the MD5 checksum file attribute for a given file
+     *
+     * @param $md5_value
+     * @return void
+     * @throws Exception If file attribute with md5 values was not saved
+     */
+    public function updateMd5Checksum($md5_value) {
+        $fa = FileAttributes::find()
+            ->where(['file_id' => $this->id, 'attribute_id' => self::DATABASE_ATTRIBUTE_ID_FOR_MD5_CHECKSUM])
+            ->orderBy('id')
+            ->one();
+        // In case no MD5 FileAttribute can be found for $file_id
+        if($fa === null) {
+            $fa = new FileAttributes();
+            $fa->file_id = $this->id;
+            $fa->attribute_id = self::DATABASE_ATTRIBUTE_ID_FOR_MD5_CHECKSUM;
+        }
+        $fa->value = $md5_value;
+        if( ! $fa->save() ) {
+            var_dump($fa->getErrors());
+            throw new Exception("File attribute $fa->id was not saved with md5 value");
+        }
+        // echo "Saved md5 file attribute with id: ".$fa->id.PHP_EOL;
     }
 }
