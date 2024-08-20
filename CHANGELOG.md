@@ -4,6 +4,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1957: Create alternative infrastructure with live data copied
+- Fix #1990: The tar function reports error in the bastion server
+- Feat #1904: Install commonly use software to bastion server
+- Fix #1985: Circular dependency between Gitlab pipeline and the Ansible bastion playbook run
+- Security #security/4: Use composer.json in main app instead of templated composer.json.dist
+
 ## v4.3.7 - 2024-09-24 - 7709c8545 -
 
 - Fix #2015: Error when deleting file on admin dasboard
