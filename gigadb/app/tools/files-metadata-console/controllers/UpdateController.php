@@ -48,6 +48,25 @@ final class UpdateController extends Controller
     public string $stop = '0';
 
     /**
+     * Console command for updating md5 values for all files in a given dataset
+     *
+     * ./yii update/file-sizes --doi=100142
+     *
+     * @return int
+     */
+    public function actionMd5Values(): int
+    {
+        try {
+            $dfu = new DatasetFilesUpdater(["doi" => $this->doi]);
+            $success = $dfu->updateMD5FileAttributes();
+            $this->stdout("Number of changes: $success" . PHP_EOL);
+        } catch (Exception $e) {
+            $this->stdout($e->getMessage(), Console::FG_RED);
+        }
+        return ExitCode::OK;
+    }
+
+    /**
      * Console command for updating size for all files in a given dataset
      *
      * ./yii update/file-sizes --doi=100142

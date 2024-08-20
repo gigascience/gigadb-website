@@ -24,7 +24,63 @@ final class DatasetFilesUpdater extends Component
 
     /** @const string  GIGADB_METADATA_DIR Path in bastion server where doi.filesizes can be found */
     const GIGADB_METADATA_DIR = '/var/share/gigadb/metadata/';
-    
+
+    /**
+     * Update MD5 checksum attribute for all files in a dataset given its DOI
+     *
+     * @param $doi
+     * @return void
+     */
+    public function updateMD5FileAttributes(): int {
+        $success = 0;
+        try {
+            // Dataset id is required for querying files
+            $dataset = Dataset::find()->where(['identifier' => $this->doi])->one();
+            if(is_null($dataset))
+                throw new Exception("No dataset found in database with DOI $this->doi");
+
+            # Fetch and parse dataset md5 file
+            $md5FilePath = DatasetFilesUpdater::GIGADB_METADATA_DIR . $this->doi . '.md5';
+            if(!file_exists($md5FilePath)) {
+                throw new Exception("$md5FilePath not found");
+            }
+
+            $contents = file_get_contents($md5FilePath);
+            $lines = explode("\n", $contents);
+            foreach ($lines as $line) {
+                # Last line in $doi.md5 file might be empty
+                if(!str_contains($line, '  ')) {
+                    break;
+                }
+                # md5 value and file name is separated by 2 spaces in doi.md5 file
+                $tokens = explode("  ", $line);
+                // Only parse lines with content in md5 file
+                if($tokens[0] !== "") {
+                    $md5_value = $tokens[0];
+                    # Make use of whole file path
+                    $filepath = ltrim($tokens[1], './');
+                    if ($filepath === "$this->doi.md5")  // Ignore $doi.md5 file
+                        continue;
+
+                    # Find file to be updated
+                    $file = File::find()
+                        ->where(['dataset_id' => $dataset->id])
+                        # Use % wildcard to ensure location ends with filename and
+                        # another file with same filename in different directory is not
+                        # accidentally updated
+                        ->where("location LIKE :substr", array(':substr' => "%$filepath"))
+                        ->one();
+                    $file->updateMd5Checksum($md5_value);
+                    $success++;
+                }
+            }
+        }
+        catch (Exception $e) {
+            echo $e->getMessage();
+        }
+        return $success;
+    }
+
     /**
      * Updates sizes for all files listed in doi.filesizes file located in 
      * gigadb-datasets-metadata S3 bucket.
