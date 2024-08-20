@@ -4,11 +4,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1957: Create alternative infrastructure with live data copied
+- Fix #1990: The tar function reports error in the bastion server
+- Feat #1904: Install commonly use software to bastion server
+- Fix #1985: Circular dependency between Gitlab pipeline and the Ansible bastion playbook run
+- Security #security/4: Use composer.json in main app instead of templated composer.json.dist
 - Feat #1893: Move new attribute inputs to the end of the adminFile form
 - Fix #2048: Upgrade database Dockerfiles from buster to bullseye to fix failed pipeline jobs
 - Feat security#2: Upgrade Bootstrap from v3.3.7 to v3.4.1
 
-## v00-kencho51-testing - 2024-10-02 - 1e19c816a -
 
 ## v4.3.7 - 2024-09-24 - 7709c8545 - live since 2024-09-26
 
