@@ -4,6 +4,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1906: Bastion needs a speed upgrade
+- Feat #1874: Add dropbox creation script in git repo
+- Feat #1957: Create alternative infrastructure with live data copied
+- Fix #1990: The tar function reports error in the bastion server
+- Feat #1904: Install commonly use software to bastion server
+- Fix #1985: Circular dependency between Gitlab pipeline and the Ansible bastion playbook run
+- Security #security/4: Use composer.json in main app instead of templated composer.json.dist
+
 ## v4.4.16 - 2025-08-15 - 6e04c0b9e - live since 2025-08-21
 
 - Fix #2428: AdminUserController should target AdminUserController when validating or rejecting a claim
@@ -103,7 +111,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Fix #2178: save xml payload even if minting DOI fails
 - Feat #2054: Visualize 3D models locally without relying on sketchfab iframe
 
-## v4.4.5 - 2025-02-24 - cfe6bc63c - live since 2025-02-26
+## v4.4.5 - 2025-02-24 - cfe6bc63c - live since 2025-02-26 
 
 - Fix #1119: Fix filename column width in dataset page
 - Feat #2138: Avoid deleting a type when deleting a dataset type
