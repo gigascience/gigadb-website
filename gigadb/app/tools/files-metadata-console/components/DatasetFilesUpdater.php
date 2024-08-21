@@ -8,6 +8,7 @@ use Exception;
 use GigaDB\models\Dataset;
 use GigaDB\models\File;
 use yii\base\Component;
+use yii\helpers\Console;
 
 /**
  * DatasetFilesUpdater
@@ -118,7 +119,9 @@ final class DatasetFilesUpdater extends Component
                 }
             }
             else {
-                throw new Exception("$filepath in $this->doi.filesizes was not found in database" . PHP_EOL);
+                # Let user know when a file cannot be found but continue
+                # processing remainder of doi.filesizes file
+                echo("$filepath in $this->doi.filesizes was not found in database" . PHP_EOL);
             }
         }
         return $success;
