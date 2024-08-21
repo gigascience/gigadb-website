@@ -35,9 +35,10 @@ final class DatasetFilesUpdater extends Component
         $success = 0;
         // Dataset id is required for querying files
         $dataset = Dataset::find()->where(['identifier' => $this->doi])->one();
-        if(is_null($dataset))
+        if(is_null($dataset)) {
             throw new Exception("No dataset found in database with DOI $this->doi");
-
+        }
+    
         # Fetch and parse dataset md5 file
         $md5FilePath = DatasetFilesUpdater::GIGADB_METADATA_DIR . $this->doi . '.md5';
         if(!file_exists($md5FilePath)) {
@@ -69,8 +70,13 @@ final class DatasetFilesUpdater extends Component
                     # accidentally updated
                     ->where("location LIKE :substr", array(':substr' => "%$filepath"))
                     ->one();
-                $file->updateMd5Checksum($md5_value);
-                $success++;
+                if(!$file) {
+                    echo("$filepath in $this->doi.md5 was not found in database" . PHP_EOL);
+                }
+                else {
+                    $file->updateMd5Checksum($md5_value);
+                    $success++;
+                }
             }
         }
         return $success;
@@ -87,10 +93,13 @@ final class DatasetFilesUpdater extends Component
     {
         $success = 0;
         $d = Dataset::find()->where(['identifier' => $this->doi])->one();
+        if(is_null($d)) {
+            throw new Exception("No dataset found in database with DOI $this->doi");
+        }
 
         $filesizesPath = DatasetFilesUpdater::GIGADB_METADATA_DIR . $this->doi . '.filesizes';
         if(!file_exists($filesizesPath)) {
-            throw new Exception("$filesizesPath not found");
+            throw new Exception("$filesizesPath not found" . PHP_EOL);
         }
 
         $content = file_get_contents($filesizesPath);
