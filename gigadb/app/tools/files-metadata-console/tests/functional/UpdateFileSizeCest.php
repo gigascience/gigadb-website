@@ -31,4 +31,20 @@ class UpdateFileSizeCest
         $I->seeInDatabase('file', ['id' => 449, 'size' => 10000]);
         $I->seeInDatabase('file', ['id' => 468, 'size' => 100000]);
     }
+
+    /**
+     * Check dummy DOI is not associated with any dataset
+     */
+    public function tryToUpdateFileSizesWithFakeDOI(\FunctionalTester $I)
+    {
+        try {
+            $out = shell_exec("./yii_test update/file-sizes --doi=888888");
+            codecept_debug($out);
+            # A non-existing DOI will return an error message and null output
+            $I->assertEquals(null, $out, "Did not receive null output");
+        }
+        catch (Exception $e) {
+            codecept_debug($e->getMessage());
+        }
+    }
 }
