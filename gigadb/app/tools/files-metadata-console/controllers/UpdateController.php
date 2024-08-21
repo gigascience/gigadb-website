@@ -59,11 +59,11 @@ final class UpdateController extends Controller
         try {
             $dfu = new DatasetFilesUpdater(["doi" => $this->doi]);
             $success = $dfu->updateMD5FileAttributes();
+            $this->stdout("Number of changes: $success" . PHP_EOL);
         } catch (Exception $e) {
             $this->stderr($e->getMessage(), Console::FG_RED);
             return ExitCode::DATAERR;
         }
-        $this->stdout("Number of changes: $success" . PHP_EOL);
         return ExitCode::OK;
     }
 
@@ -79,10 +79,11 @@ final class UpdateController extends Controller
         try {
             $dfu = new DatasetFilesUpdater(["doi" => $this->doi]);
             $success = $dfu->updateFileSizes();
+            $this->stdout("Number of changes: $success" . PHP_EOL);
         } catch (Exception $e) {
             $this->stderr($e->getMessage(), Console::FG_RED);
+            return ExitCode::DATAERR;
         }
-        $this->stdout("Number of changes: $success" . PHP_EOL);
         return ExitCode::OK;
     }
 
