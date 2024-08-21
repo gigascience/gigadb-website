@@ -50,7 +50,7 @@ final class UpdateController extends Controller
     /**
      * Console command for updating md5 values for all files in a given dataset
      *
-     * ./yii update/file-sizes --doi=100142
+     * ./yii update/file-sizes --doi=100039
      *
      * @return int
      */
@@ -59,10 +59,11 @@ final class UpdateController extends Controller
         try {
             $dfu = new DatasetFilesUpdater(["doi" => $this->doi]);
             $success = $dfu->updateMD5FileAttributes();
-            $this->stdout("Number of changes: $success" . PHP_EOL);
         } catch (Exception $e) {
-            $this->stdout($e->getMessage(), Console::FG_RED);
+            $this->stderr($e->getMessage(), Console::FG_RED);
+            return ExitCode::DATAERR;
         }
+        $this->stdout("Number of changes: $success" . PHP_EOL);
         return ExitCode::OK;
     }
 
@@ -78,10 +79,10 @@ final class UpdateController extends Controller
         try {
             $dfu = new DatasetFilesUpdater(["doi" => $this->doi]);
             $success = $dfu->updateFileSizes();
-            $this->stdout("Number of changes: $success" . PHP_EOL);
         } catch (Exception $e) {
-            $this->stdout($e->getMessage(), Console::FG_RED);
+            $this->stderr($e->getMessage(), Console::FG_RED);
         }
+        $this->stdout("Number of changes: $success" . PHP_EOL);
         return ExitCode::OK;
     }
 
