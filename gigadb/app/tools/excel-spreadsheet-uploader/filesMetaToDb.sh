@@ -37,7 +37,7 @@ if [[ $(uname -n) =~ compute ]];then
   . /home/centos/.bash_profile
 
   echo -e "$updateMD5ChecksumStartMessage"
-  docker run -e YII_PATH=/var/www/vendor/yiisoft/yii "registry.gitlab.com/$GITLAB_PROJECT/production_app:$GIGADB_ENV" ./protected/yiic files updateMD5FileAttributes --doi="$DOI" | tee "$outputDir/updating-md5checksum-$DOI.txt"
+  docker run --rm "registry.gitlab.com/$GITLAB_PROJECT/production-files-metadata-console:$GIGADB_ENV" ./yii update/md5-values --doi="$DOI" | tee "$outputDir/updating-md5checksum-$DOI.txt"
   echo -e "$updateMD5ChecksumEndMessage"
 
   echo -e "$updateFileSizeStartMessage"
@@ -58,7 +58,7 @@ else
   # Change to gigadb-website directory
   echo -e "$updateMD5ChecksumStartMessage"
   cd ../../../../
-  docker-compose run --rm  test ./protected/yiic files updateMD5FileAttributes --doi="$DOI" | tee "gigadb/app/tools/readme-generator/runtime/curators/updating-md5checksum-$DOI.txt"
+  docker-compose run --rm files-metadata-console ./yii update/md5-values --doi="$DOI" | tee "gigadb/app/tools/readme-generator/runtime/curators/updating-md5checksum-$DOI.txt"
   echo -e "$updateMD5ChecksumEndMessage"
 
   echo -e "$updateFileSizeStartMessage"
