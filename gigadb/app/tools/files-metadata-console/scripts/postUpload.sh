@@ -68,13 +68,13 @@ else  # Running on dev environment
   # Execute readme tool first to create readme-generator/runtime/curators
   # directory which /home/curators is mapped to
   echo -e "$createReadMeFileStartMessage"
-  cd ../readme-generator
+  cd ../../readme-generator
   # Create readme file and upload to Wasabi dev directory
   ./createReadme.sh --doi "$DOI" --outdir "$outputDir" --wasabi --apply
   echo -e "$createReadMeFileEndMessage"
 
   echo -e "$updateFileMetaDataStartMessage"
-  cd ../excel-spreadsheet-uploader
+  cd ../files-metadata-console/scripts
   ./filesMetaToDb.sh "$DOI"
   echo -e "$updateFileMetaDataEndMessage"
 
