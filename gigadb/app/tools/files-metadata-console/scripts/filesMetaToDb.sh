@@ -55,15 +55,12 @@ if [[ $(uname -n) =~ compute ]];then
 
 else
 
-  # Change to gigadb-website directory
   echo -e "$updateMD5ChecksumStartMessage"
-  cd ../../../../
-  docker-compose run --rm files-metadata-console ./yii update/md5-values --doi="$DOI" | tee "gigadb/app/tools/readme-generator/runtime/curators/updating-md5checksum-$DOI.txt"
+  docker-compose run --rm files-metadata-console ./yii update/md5-values --doi="$DOI" | tee "./updating-md5checksum-$DOI.txt"
   echo -e "$updateMD5ChecksumEndMessage"
 
   echo -e "$updateFileSizeStartMessage"
-  cd gigadb/app/tools/files-metadata-console
-  docker-compose run --rm files-metadata-console ./yii update/file-sizes --doi="$DOI" | tee "../readme-generator/runtime/curators/updating-file-size-$DOI.txt"
+  docker-compose run --rm files-metadata-console ./yii update/file-sizes --doi="$DOI" | tee "./updating-file-size-$DOI.txt"
   echo -e "$updateFileSizeEndMessage"
 fi
 
