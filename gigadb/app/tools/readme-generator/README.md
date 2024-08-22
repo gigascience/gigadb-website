@@ -40,7 +40,7 @@ The copying of readme files created by this tool into Wasabi requires Rclone
 to be installed on your `dev` machine. This can be done using as follows:
 ```
 # Using Homebrew
-$ brew install rclome
+$ brew install rclone
 # Or using Macports
 $ sudo port install rclone
 ```
