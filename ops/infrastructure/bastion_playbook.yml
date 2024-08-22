@@ -156,7 +156,7 @@
 
     - name: Copy dataset upload tool shell post upload script
       ansible.builtin.copy:
-        src: "../../../../gigadb/app/tools/excel-spreadsheet-uploader/postUpload.sh"
+        src: "../../../../gigadb/app/tools/files-metadata-console/scripts/postUpload.sh"
         dest: /usr/local/bin/postUpload
         owner: centos
         group: centos
