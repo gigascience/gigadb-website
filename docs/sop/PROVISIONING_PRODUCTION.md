@@ -257,9 +257,10 @@ need to be performed first on the Hot stand-by infrastructure. So that the Curre
 by potential fallouts from deployment of that particular change.
 
 That's why the next couple of sections that cover provisioning of live production environment for each Upstream projects
-won't cover the deployment from Gitlab part. 
-For that, you will need to check the "Deploying releases" section of `docs/sop/DEPLOYING_TO_PRODUCTION.md`
-to figure out which protocol to apply for the deployment part.
+won't cover the deployment from Gitlab part.
+Instead, we have an additional section call "Deployment to a specific live environment" which will need to be used 
+in conjunction with the "Deploying releases" section of `docs/sop/DEPLOYING_TO_PRODUCTION.md`
+to figure out which protocol to apply that section with.
 
 If the release includes changes to the infrastructure, then provisioning should be performed again, starting on the Hot Stand-by
 infrastructure.
@@ -444,6 +445,35 @@ Provision files server:
 ```  
 env TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories files_playbook.yml --extra-vars="gigadb_env=live"  
 ```
+
+### Deployment to a specific live environment
+
+>**Important**: Only preform this section after checking the "Blue/green deployment of the release" of `docs/sop/DEPLOYING_TO_PRODUCTION.md`
+
+Trigger a pipeline for the release tag you want to deploy on the suitable Gitlab project:
+
+Go to either [Gitlab Upstream pipeline page](https://gitlab.com/gigascience/upstream/gigadb-website/-/pipelines)
+or [Gitlab UpstreamAlt pipeline page](https://gitlab.com/gigascience/upstream/alt-gigadb-website/-/pipelines)
+depending on which on you are deploying to
+and run all the jobs in the staging build stage in your pipeline, and press "Run pipeline",
+then select`develop` and confirm   by clicking "Run pipeline".
+This will execute all automated jobs.
+There is a couple of manual jobs that will also need triggering: `PureFtpdBuildStaging` and then `PureFtpdDeployStaging`.
+
+Since this is live production environment, you will need to build and deploy Tideways by running the manual jobs: `TidewaysBuildLive` and then `TidewaysDeployLive`
+
+When the manual and automated jobs have all completed successfully, it will result in a partial deployment of GigaDB website to the infrastructure we've just provisioned.
+Next, you can perform the last step which is to load the environment's database server with data and install the tools on bastion servers needed by the users:
+
+```
+env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories data_cliapp_playbook.yml -e "gigadb_env=staging"
+```
+
+Finally, you need to warm the cache by following instructions from the wiki:
+https://github.com/gigascience/gigadb-website/wiki/How-to-warm-the-in%E2%80%90memory-cache
+
+The website should be visitable at https://alt-live.gigadb.host, and the bastion server ready at bastion.alt-live.gigadb.host if you were deploying the Hot Stand-by.
+The website should be visitable at https://gigadb.org, and the bastion server ready at bastion.gigadb.host if you were deploying the Current Production.
 
 
 ## Additional features for executing ansible playbooks:
