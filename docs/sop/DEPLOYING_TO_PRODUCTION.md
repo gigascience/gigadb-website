@@ -19,9 +19,9 @@ Together they represent an implementation of:
 The two infrastructures are meant to be identical and independent, and must run on two distinct regions. Each infrastructure has a role and they will swap roles upon blue/green deployment or incident failover.
 
 | project | AWS profile | AWS region              | current role | current release | status |
-| --- | --- |-------------------------| --- | --- |--------|
-| gigadb-website | Upstream | ap-east-1 (HK)          | current production | v4.3.3 | OK     |
-| alt-gigadb-website | UpstreamAlt | ap-southeast-2 (Sydney) | hot stand-by | v4.3.3 | OK     |
+| --- | --- |-------------------------| --- |-----------------|--------|
+| gigadb-website | Upstream | ap-east-1 (HK)          | current production | v4.3.4          | OK     |
+| alt-gigadb-website | UpstreamAlt | ap-southeast-2 (Sydney) | hot stand-by | v0337-alt-upstream-beta          | OK     |
 
 >**Note**: this table needs updating after each deployment or incident failover
 
@@ -33,7 +33,7 @@ The two infrastructures are meant to be identical and independent, and must run 
 
 [3] https://aws.amazon.com/blogs/architecture/creating-an-organizational-multi-region-failover-strategy/
 
-## Configuring AWS for Upstream projects
+## Configuring locally AWS for Upstream projects
 
 Normally, in `~/.aws/credentials`, you should already have a profile called `[GigaDB]` that you have used for creating developer environments on AWS.
 You now need two new profiles:
@@ -70,8 +70,62 @@ output=json
 region=<see the table above>
 output=json
 ```
+## Configuring and using your local checkout to work with Upstream projects
 
-## Preparation of the current production and the hot stand-by pipelines and infrastructures
+### Configuration
+
+You need a checkout of gigadb-website repository to work with each Upstream project.
+To avoid errors, they should be  separate checkouts from the one you use for development.
+
+To that effect, clone a new local copy of the website using the SSH endpoint (not the HTTP),
+so that, as a core member, you can pull and push to the remote repository
+
+```
+$ git clone git@github.com:gigascience/gigadb-website.git gigadb-upstream
+```
+
+Verify that you are tracking the main repository using SSH:
+```
+$ cd gigadb-upstream
+```
+```
+$ git remote -v
+```
+Should return:
+```
+origin	git@github.com:gigascience/gigadb-website.git (fetch)
+origin	git@github.com:gigascience/gigadb-website.git (push)
+```
+
+Then repeat the above for the UpstreamAlt project:
+
+```
+$ git clone git@github.com:gigascience/gigadb-website.git gigadb-alt
+```
+
+Verify that you are tracking the main repository using SSH:
+```
+$ cd gigadb-alt
+```
+```
+$ git remote -v
+```
+Should return:
+```
+origin	git@github.com:gigascience/gigadb-website.git (fetch)
+origin	git@github.com:gigascience/gigadb-website.git (push)
+```
+
+
+
+### Usage
+
+The activities to perform in those checkouts are:
+* Create releases. See [docs/sop/RELEASE_PROCESS.md](docs/sop/RELEASE_PROCESS.md)
+* Provision an environment for Upstream projects. See  [docs/sop/PROVISIONING_PRODUCTION.md](docs/sop/PROVISIONING_PRODUCTION.md)
+
+
+## Configuring both Upstream projects in Gitlab and Cloudflare
 
 The configuration of the infrastructures relies on Gitlab variables and DNS records.
 
