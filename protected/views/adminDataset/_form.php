@@ -65,7 +65,8 @@ echo $form->hiddenField($model, "image_id");
                           'inputWrapperOptions' => 'col-xs-8',
                           'inputOptions' => [
                               'required' => true,
-                          ]
+                          ],
+                          'tooltip' => 'Select the registered user account of the submitting author, this value will be used by the "Contact Author" button on the dataset page.',
                         ]);
                         ?>
                         <div class="form-group <?php echo $form->error($model, 'curator_id') ? 'has-error' : '' ?>">
@@ -75,7 +76,7 @@ echo $form->hiddenField($model, "image_id");
                                 $criteria = new CDbCriteria;
                                 $criteria->condition = 'role=\'admin\' and email like \'%gigasciencejournal.com\'';
                                 ?>
-                                <?php echo $form->dropDownList($model, 'curator_id', CHtml::listData(User::model()->findAll($criteria), 'id', 'email'), array('prompt' => '', 'class' => 'form-control')); ?>
+                                <?php echo $form->dropDownList($model, 'curator_id', CHtml::listData(User::model()->findAll($criteria), 'id', 'email'), array('prompt' => '', 'class' => 'form-control', 'title' => 'Select the relevant curator who is assigned to work on this dataset', 'data-toggle' => 'tooltip')); ?>
                                 <div role="alert" class="help-block">
                                   <?php echo $form->error($model, 'curator_id'); ?>
                                 </div>
@@ -93,6 +94,7 @@ echo $form->hiddenField($model, "image_id");
                           'inputOptions' => [
                             'maxlength' => 200
                           ],
+                          'tooltip' => 'Insert the manuscript submission ID from the relevant manuscript submission system'
                         ]);
                         ?>
 
@@ -103,7 +105,7 @@ echo $form->hiddenField($model, "image_id");
                                     $model,
                                     'upload_status',
                                     Dataset::getAvailableStatusList(),
-                                    array('class' => 'js-pub form-control', 'disabled' => $model->upload_status == 'Published', 'data-initial-value' => $model->upload_status )
+                                    array('class' => 'js-pub form-control', 'disabled' => $model->upload_status == 'Published', 'data-initial-value' => $model->upload_status, 'title' => 'This field records the current step in the processing of the dataset', 'data-toggle' => 'tooltip' )
                                 ); ?>
                                 <div role="alert" class="help-block">
                                 <?php echo $form->error($model, 'upload_status'); ?>
@@ -114,7 +116,8 @@ echo $form->hiddenField($model, "image_id");
 
                     <div class="form-block-2">
                         <fieldset>
-                            <legend>Dataset Types</legend>
+                            <legend>Dataset Types: <span class="legend-description">Select all types that are directly relevant to the dataset</span></legend>
+                            <div id=""></div>
                             <!-- checkboxes -->
                             <div class="checkbox-group">
                                 <?php
@@ -170,7 +173,7 @@ echo $form->hiddenField($model, "image_id");
                                                         $("#showImage").src = "";
                                                         $("#showImage").css("display", "none");
                                                         $("#clearFileUrl").css("display", "none");
-                                                        
+
                                                     }else {
                                                         $("#removing").html("Failed clearing image file url");
                                                         $("#removing").addClass("block-spacing");
@@ -193,7 +196,7 @@ echo $form->hiddenField($model, "image_id");
                                     <div class="form-group">
                                         <label for="datasetImage" class="control-label col-xs-4">Image Status</label>
                                         <div class="col-xs-8 block-spacing">
-                                            <?php echo CHtml::fileField('datasetImage', '', array('class' => 'form-control', 'aria-controls' => 'metaFieldsSection')); ?>
+                                            <?php echo CHtml::fileField('datasetImage', '', array('class' => 'form-control', 'aria-controls' => 'metaFieldsSection', 'title' => 'Add a suitable thumbnail image to the dataset page, this is for aesthetic purposes only, and should be suitably small in size', 'data-toggle' => 'tooltip')); ?>
                                         </div>
                                         <div class="col-xs-offset-4 col-xs-5 block-spacing">
                                             <?php echo CHtml::ajaxLink(
@@ -204,7 +207,7 @@ echo $form->hiddenField($model, "image_id");
                                                     'data' => array('doi' => 'js:$("#Dataset_identifier").val()'),
                                                     'dataType' => 'json',
                                                     'success' => 'js:function(output){
- 
+
                                                     if(output.status){
                                                         $("#showImage").src = "https://assets.gigadb-cdn.net/images/datasets/no_image.png";
                                                         $("#showImage").alt = "Default placeholder image";
@@ -222,7 +225,8 @@ echo $form->hiddenField($model, "image_id");
                                                 array(
                                                     'class' => 'btn btn-sm danger-btn',
                                                     'id' => 'removeButton',
-                                                    'title' => 'the dataset will be associated with the generic image record afterward',
+                                                    'title' => 'Clicking this button will delete the thumbnail image AND its metadata values below',
+                                                    'data-toggle' => 'tooltip',
                                                     'confirm' => 'Are you sure? This will take effect immediately',
 
                                                 )
@@ -244,8 +248,11 @@ echo $form->hiddenField($model, "image_id");
                             <?php } ?>
                         </div>
                         <fieldset id="metaFieldsSection" class="meta-fields-container">
-                            <legend>Image metafields</legend>
+                            <legend>Image metafields:
+                              <span class="legend-description">The following fields relate only to the Thumbnail image added above</span>
+                            </legend>
                             <?php
+
                               $this->widget('application.components.controls.TextField', [
                                 'form' => $form,
                                 'model' => $model->image,
@@ -256,6 +263,7 @@ echo $form->hiddenField($model, "image_id");
                                   'required' => true,
                                   'class' => 'meta-fields'
                                 ],
+                                'tooltip' => 'Cite the source of the thumbnail image'
                               ]);
                               $this->widget('application.components.controls.TextField', [
                                 'form' => $form,
@@ -266,6 +274,7 @@ echo $form->hiddenField($model, "image_id");
                                 'inputOptions' => [
                                   'class' => 'meta-fields'
                                 ],
+                                'tooltip' => 'Add a short title or description of the thumbnail image'
                               ]);
                               $this->widget('application.components.controls.TextField', [
                                 'form' => $form,
@@ -277,6 +286,7 @@ echo $form->hiddenField($model, "image_id");
                                   'required' => true,
                                   'class' => 'meta-fields'
                                 ],
+                                'tooltip' => 'Provide the license underwhich the image is shared, this must be CC0 or CC-BY. Note CC-BY-NC is not acceptable for us.'
                               ]);
                               $this->widget('application.components.controls.TextField', [
                                 'form' => $form,
@@ -288,6 +298,7 @@ echo $form->hiddenField($model, "image_id");
                                   'required' => true,
                                   'class' => 'meta-fields'
                                 ],
+                                'tooltip' => 'Add the credit of the person(s) responsible for creating the image'
                               ]);
 
                               ?>
@@ -296,7 +307,9 @@ echo $form->hiddenField($model, "image_id");
                     </div>
                     <div class="form-block-4">
                         <fieldset>
-                            <legend>Dataset metafields</legend>
+                            <legend>Dataset metafields:
+                              <span class="legend-description">The following fields are specific to the dataset as a whole</span>
+                            </legend>
                             <div class="form-group row <?php echo $form->error($model, 'identifier') ? 'has-error' : ''; ?>" id="doiFormGroup">
                                 <?php echo $form->labelEx($model, 'identifier', array(
                                     'class' => 'control-label col-xs-4',
@@ -313,6 +326,8 @@ echo $form->hiddenField($model, "image_id");
                                             'maxlength' => 32,
                                             'disabled' => $model->upload_status == 'Published',
                                             'class' => 'form-control',
+                                            'title' => 'Ensure this value is not already in use before assigning it! The standard format is a 6 digit number, usually assigned in sequential order',
+                                            'data-toggle' => 'tooltip',
                                             'ajax' => array(
                                                 'type' => 'POST',
                                                 'url' => array('adminDataset/checkDOIExist'),
@@ -362,6 +377,8 @@ echo $form->hiddenField($model, "image_id");
                                             'class' => 'btn background-btn m-0',
                                             'id' => 'mint_doi_button',
                                             'disabled' => in_array($model->upload_status, $status_array),
+                                            'title' => 'This botton will take all the dataset information stored in GigaDB and convert it to the DataCite schema in XML and via an API call, register that information with DataCite',
+                                            'data-toggle' => 'tooltip'
                                         )
                                     );
 
@@ -392,6 +409,7 @@ echo $form->hiddenField($model, "image_id");
                               'maxlength' => 200,
                               'disabled' => $model->upload_status == 'Published'
                             ],
+                            'tooltip' => 'This value is the top level directory of where the data files are stored for this dataset'
                           ]);
                           $this->widget('application.components.controls.DateField', [
                             'form' => $form,
@@ -399,6 +417,7 @@ echo $form->hiddenField($model, "image_id");
                             'attributeName' => 'fairnuse',
                             'labelOptions' => ['class' => 'col-xs-4'],
                             'inputWrapperOptions' => 'col-xs-8',
+                            'tooltip' => 'Set a date here to display the Fair Use policy test "These data are made available pre-publication under the Fort Lauderdale rules. Please respect the rights of the data producers to publish their whole dataset analysis first. The data is being made available so that the research community can make use of them for more focused studies without having to wait for publication of the whole dataset analysis paper. If you wish to perform analyses on this complete dataset, please contact the authors directly so that you can work in collaboration rather than in competition." on the dataset page Until the date specified.',
                           ]);
 
                           $this->widget('application.components.controls.DateField', [
@@ -411,6 +430,7 @@ echo $form->hiddenField($model, "image_id");
                               'class' => 'js-date-pub',
                               'disabled' => $model->upload_status == 'Published'
                             ],
+                            'tooltip' => 'Set this date to the day the dataset is published'
                           ]);
 
                           $this->widget('application.components.controls.DateField', [
@@ -418,7 +438,8 @@ echo $form->hiddenField($model, "image_id");
                             'model' => $model,
                             'attributeName' => 'modification_date',
                             'labelOptions' => ['class' => 'col-xs-4'],
-                            'inputWrapperOptions' => 'col-xs-8'
+                            'inputWrapperOptions' => 'col-xs-8',
+                            'tooltip' => 'If updates are made to the dataset after its been published this date should be set automatically'
                           ]);
                         ?>
 
@@ -447,6 +468,7 @@ echo $form->hiddenField($model, "image_id");
                       'size' => 60,
                       'maxlength' => 300
                     ],
+                    'tooltip' => 'This field should be auto-populated by the post-upload script, it is editible if there are additional data files hosted on other servers that should be included in the dataset size'
                   ]);
                   $this->widget('application.components.controls.TextField', [
                     'form' => $form,
@@ -459,6 +481,7 @@ echo $form->hiddenField($model, "image_id");
                       'size' => 60,
                       'maxlength' => 300
                     ],
+                    'tooltip' => 'This should be unique to the dataset, but it is normal for it to include the manuscript title, prefixed by "Supporting data for" or similar'
                   ]);
                   $this->widget('application.components.controls.TextArea', [
                     'form' => $form,
@@ -470,6 +493,7 @@ echo $form->hiddenField($model, "image_id");
                         'rows' => 8,
                         'cols' => 50
                     ],
+                    'tooltip' => 'This field holds the dataset description, at present we are using the manuscript abstract as the basis of this, in future we want to move towards a more specific description of the actual dataset hosted'
                   ]);
                 ?>
 
@@ -477,14 +501,15 @@ echo $form->hiddenField($model, "image_id");
                         <?php echo CHtml::label('Keywords', 'keywords', array('class' => 'control-label col-xs-4')); ?>
                         <div class='col-xs-6 input-wrapper'>
                             <!-- NOTE this input is repositioned outside the viewport by teh tagEditor plugin but is still focusable, so the keyboard navigation is very confusing. Fixing this is not trivial, so warrants another ticket #1467 -->
-                            <?php echo CHtml::textArea('keywords', '', array('class' => 'form-control', 'size' => 60, 'maxlength' => 300)); ?>
+                            <?php echo CHtml::textArea('keywords', '', array('class' => 'form-control', 'size' => 60, 'maxlength' => 300, 'aria-describedby' => 'keywords-desc')); ?>
+                          <div class="control-description help-block" id="keywords-desc">The authors may wish to include bespoke keywords, these can be added here, there should not be any duplicates of the Dataset Type values</div>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <?php echo CHtml::label('URL to redirect', 'urltoredirect', array('class' => 'control-label col-xs-4')); ?>
                         <div class='col-xs-6 input-wrapper '>
-                            <?php echo CHtml::textField('urltoredirect', $model->getUrlToRedirectAttribute(), array('class' => 'form-control', 'size' => 60, 'maxlength' => 300,)); ?>
+                            <?php echo CHtml::textField('urltoredirect', $model->getUrlToRedirectAttribute(), array('class' => 'form-control', 'size' => 60, 'maxlength' => 300, 'title' => 'This field is only relevant if the mockup URL is accidentally published somewhere and we need to main it as a valid URL, in those cases add the mockup link here and it should redirect the users to the correct DOI page', 'data-toggle' => 'tooltip')); ?>
                         </div>
                     </div>
                 </div>
@@ -519,7 +544,7 @@ echo $form->hiddenField($model, "image_id");
 
       if ($showCreateResetUrlBtn) {
         ?>
-        <a class="btn background-btn-o" href="<?php echo Yii::app()->createUrl('/adminDataset/private/identifier/' . $model->identifier) ?>">Create/Reset Private URL</a>
+        <a class="btn background-btn-o" href="<?php echo Yii::app()->createUrl('/adminDataset/private/identifier/' . $model->identifier) ?>" title="This will save any changes made on this page AND create a new mockup page URL/token link" data-toggle="tooltip">Create/Reset Private URL</a>
         <?php
       }
       if ($showMockupBtn) {
@@ -529,15 +554,15 @@ echo $form->hiddenField($model, "image_id");
         ));
       }
     ?>
-    <a class="btn background-btn-o" href="<?= Yii::app()->createUrl('/adminDataset/admin') ?>">Cancel and go back</a>
+    <a class="btn background-btn-o" href="<?= Yii::app()->createUrl('/adminDataset/admin') ?>" title="Cancel any changes not saved on this page and return to the list of datasets" data-toggle="tooltip">Cancel and go back</a>
     <?php echo CHtml::submitButton(
         $model->isNewRecord ? 'Create' : 'Save',
-        array('class' => 'btn background-btn submit-btn', 'id' => 'datasetFormSaveButton')
+        array('class' => 'btn background-btn submit-btn', 'id' => 'datasetFormSaveButton', 'title' => 'Save any changes made on this page and stay on this page', 'data-toggle' => 'tooltip')
     ); ?>
     <?php
       if ($showOpenPrivateUrlBtn) {
         ?>
-        <a class="btn background-btn-o" href="<?php echo Yii::app()->createUrl('/dataset/' . $model->identifier . '/token/' . $model->token) ?>">Open Private URL</a>
+        <a class="btn background-btn-o" href="<?php echo Yii::app()->createUrl('/dataset/' . $model->identifier . '/token/' . $model->token) ?>" title="This will Save any changes made on this page and open the mockup view of the dataset page" data-toggle="tooltip">Open Private URL</a>
         <?php
       }
     ?>
@@ -830,3 +855,4 @@ $('#customizeEmailModal').on('hidden.bs.modal', function() {
   $('#datasetFormSaveButton').focus(); // hardcoded button that triggers the modal to return focus
 });
 </script>
+

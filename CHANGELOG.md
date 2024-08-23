@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1853: Add tooltips to adminDataset, adminFile and datasetFunder forms
 - Fix #1959: Relation cannot be blank error in Dataset:Relation admin form
 
 ## v4.3.4 - 2024-08-13 - fd9ed2480 - 

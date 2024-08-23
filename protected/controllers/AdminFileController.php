@@ -3,6 +3,14 @@
 class AdminFileController extends Controller
 {
 
+    protected function registerTooltipScript() {
+      // Check if the script has already been registered
+      if (!Yii::app()->clientScript->isScriptRegistered('bootstrap-tooltip-init')) {
+          $jsFile = Yii::getPathOfAlias('application.js.bootstrap-tooltip-init') . '.js';
+          $jsUrl = Yii::app()->assetManager->publish($jsFile);
+          Yii::app()->clientScript->registerScriptFile($jsUrl, CClientScript::POS_END);
+        }
+    }
 
     /**
      * @return array action filters
@@ -136,6 +144,7 @@ class AdminFileController extends Controller
             }
         }
 
+        $this->registerTooltipScript();
         $this->render('create', array(
             'model' => $model,
         ));
@@ -438,6 +447,7 @@ class AdminFileController extends Controller
             }
         }
 
+        $this->registerTooltipScript();
         $this->render('update', array(
             'model' => $model,
             'attribute' => $attribute
