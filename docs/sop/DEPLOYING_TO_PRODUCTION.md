@@ -264,12 +264,21 @@ Basic principles:
 
 >**Note**:  Do not use The Gitlab names or the AWS profile to figure out which one is current production and which one is hot stand by as these name can refers to either. Use DNS mappings and the table at the top of the document
 
+Common initial steps whichever scenarios:
+* Make a release and deploy to Current Production's staging environment and Hot Stand-by
+* Wait that the pipeline for both projects is all green
+* If the release requires it, run the `data_cliapp_playbook.yml` playbook to deploy on both staging environments updates to backoffice apps
+
+>**Note**: For how to make a release, refers to `docs/sop/RELEASE_PROCESS.md`
+
+
 #### Process for complex changes
 
 If the release contains infrastructure changes, and/or changes to the database schema, 
 and/or brand new application deployment (e.g: FUW, Gigareview, ...)
 
-Logical Steps to perform:
+
+Logical Steps to perform for live deployment:
 1. Setup a change embargo on current production infrastructure
 2. Turn off the data stores sync on the hot stand by side
 3. Manually run S3backup with date+time suffix
@@ -296,7 +305,7 @@ Steps to always perform whatever outcome:
 * Lift change embargo on current production infrastructure
 * Ensure the table at the top of this document always correctly represent reality
 
-#### Process for simple changes
+#### Process for deploying simple changes to live environments
 
 In this scenario, a release doesn't require infrastructure changes, nor database schema changes, 
 and the changes are small and stateless.
