@@ -21,6 +21,8 @@ class Relation extends CActiveRecord
 	 */
     public $doi_search;
     public $relationship_name;
+    public $add_reciprocal = true;
+
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
@@ -42,9 +44,9 @@ class Relation extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('dataset_id, related_doi, relationship_id', 'required'),
-			array('dataset_id, relationship_id', 'numerical', 'integerOnly'=>true),
-			array('related_doi', 'length', 'max'=>15),
+			array('dataset_id, related_doi, relationship_id', 'required', 'message' => 'Please select a value'),
+			array('dataset_id, relationship_id', 'numerical', 'integerOnly' => true, 'message' => 'Wrong format'),
+			array('related_doi', 'length', 'max'=> 6, 'message' => 'Cannot exceed 6 characters'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, dataset_id, related_doi, relationship , doi_search, relationship_id', 'safe', 'on'=>'search'),
@@ -138,7 +140,7 @@ class Relation extends CActiveRecord
 
     /**
 	 *
-	 * @return string $relationship
+	 * @return Relationship
 	 **/
     public function getRelationship() {
     	return $this->relationship;
