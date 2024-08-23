@@ -18,10 +18,10 @@ Together they represent an implementation of:
 
 The two infrastructures are meant to be identical and independent, and must run on two distinct regions. Each infrastructure has a role and they will swap roles upon blue/green deployment or incident failover.
 
-| project | AWS profile | AWS region              | current role | current release | status |
-| --- | --- |-------------------------| --- |-----------------|--------|
-| gigadb-website | Upstream | ap-east-1 (HK)          | current production | v4.3.4          | OK     |
-| alt-gigadb-website | UpstreamAlt | ap-southeast-2 (Sydney) | hot stand-by | v0337-alt-upstream-beta          | OK     |
+| Gitlab project     | AWS profile | Local checkout name | AWS region              | current role | current release | status |
+|--------------------| --- |---------------------|-------------------------| --- |-----------------|--------|
+| gigadb-website     | Upstream | gigadb-upstream     | ap-east-1 (HK)          | current production             | v4.3.4          | OK     |
+| alt-gigadb-website | UpstreamAlt | gigadb-alt-upstream | ap-southeast-2 (Sydney) | hot stand-by   | v0337-alt-upstream-beta          | OK     |
 
 >**Note**: this table needs updating after each deployment or incident failover
 
@@ -81,40 +81,70 @@ To that effect, clone a new local copy of the website using the SSH endpoint (no
 so that, as a core member, you can pull and push to the remote repository
 
 ```
-$ git clone git@github.com:gigascience/gigadb-website.git gigadb-upstream
+git clone git@github.com:gigascience/gigadb-website.git gigadb-upstream
 ```
 
 Verify that you are tracking the main repository using SSH:
 ```
-$ cd gigadb-upstream
+cd gigadb-upstream
 ```
 ```
-$ git remote -v
+git remote -v
 ```
 Should return:
 ```
 origin	git@github.com:gigascience/gigadb-website.git (fetch)
 origin	git@github.com:gigascience/gigadb-website.git (push)
 ```
+
+Next we need to set local environment variables to be used for this project.
+```
+cp ops/configuration/variables/env-sample .env
+```
+then set the following variables to these values:
+```
+REPO_NAME="gigadb-website"
+GROUP_VARIABLES_URL="https://gitlab.com/api/v4/groups/gigascience/variables?per_page=100"
+FORK_VARIABLES_URL="https://gitlab.com/api/v4/groups/3506500/variables"
+PROJECT_VARIABLES_URL="https://gitlab.com/api/v4/projects/gigascience%2Fupstream%2F$REPO_NAME/variables"
+MISC_VARIABLES_URL="https://gitlab.com/api/v4/projects/gigascience%2Fcnhk-infra/variables"
+```
+
+Don't forget to provide a value to the `GITLAB_PRIVATE_TOKEN` variable in that file.
 
 Then repeat the above for the UpstreamAlt project:
 
 ```
-$ git clone git@github.com:gigascience/gigadb-website.git gigadb-alt
+git clone git@github.com:gigascience/gigadb-website.git gigadb-alt-upstream
 ```
 
 Verify that you are tracking the main repository using SSH:
 ```
-$ cd gigadb-alt
+cd gigadb-alt-upstream
 ```
 ```
-$ git remote -v
+git remote -v
 ```
 Should return:
 ```
 origin	git@github.com:gigascience/gigadb-website.git (fetch)
 origin	git@github.com:gigascience/gigadb-website.git (push)
 ```
+
+Next we need to set local environment variables to be used for this project.
+```
+cp ops/configuration/variables/env-sample .env
+```
+then set the following variables to these values:
+```
+REPO_NAME="alt-gigadb-website"
+GROUP_VARIABLES_URL="https://gitlab.com/api/v4/groups/gigascience/variables?per_page=100"
+FORK_VARIABLES_URL="https://gitlab.com/api/v4/groups/3506500/variables"
+PROJECT_VARIABLES_URL="https://gitlab.com/api/v4/projects/gigascience%2Fupstream%2F$REPO_NAME/variables"
+MISC_VARIABLES_URL="https://gitlab.com/api/v4/projects/gigascience%2Fcnhk-infra/variables"
+```
+
+Don't forget to provide a value to the `GITLAB_PRIVATE_TOKEN` variable in that file.
 
 
 
@@ -148,9 +178,11 @@ The below table show only the manually-set variables for which the  current prod
 
 ### DNS Records
 
+Before you can configure the DNS records in Cloudflare, you need to have provisioned the production environments
+as instructed in `docs/sop/PROVISIONING_PRODUCTION.md`.
 The table below shows the mappings between the fully qualified domain name (FQDN) and the AWS EIPs.
-You will need to look up the actual IP in the AWS EC2 dashboard.
-You can look up the corresponding Gitlab project and AWS region  in the table at the top of this document.
+You will need to look up the actual IP addresses corresponding to the EIP name in the AWS EC2 dashboard.
+You can look up the corresponding Gitlab project and AWS region in the table at the top of this document.
 The DNS records are to be saved in the Cloudflare dashboard.
 
 >**Note**: the EIP names are the same across both infrastructure
@@ -249,6 +281,7 @@ Logical Steps to perform:
 8. Blue is now live, make announcement and perform sanity check
 
 Two possibilities from there:
+
 A) Release on Blue is OK
 1. Turn on the RDS S3 backup cronjob on Blue
 2. Deploy the release to the former current-production, now the new hot stand-by (Green)
