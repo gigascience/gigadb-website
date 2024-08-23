@@ -283,7 +283,9 @@ Logical Steps to perform for live deployment:
 2. Turn off the data stores sync on the hot stand by side
 3. Manually run S3backup with date+time suffix
 4. On the hot standby, manually run `databaseReset <date+time>`
-5. Deploy the release to hot stand-by
+5. Deploy the release to hot stand-by by following the instructions in `docs/sop/PROVISIONING_PRODUCTION.md` in:
+   1. "Provisioning live for [...]" section, the one that matches the current Host stand-by
+   2. "Deployment to a specific live environment" section for the Hot stand-by
 6. Have the business team to validate the hot standby deployment (Blue)
 7. If validated, Swap the DNS records between the EIPs of the current production and the hot stand by
    1. if not validated, see B.2 item below
@@ -294,6 +296,8 @@ Two possibilities from there:
 A) Release on Blue is OK
 1. Turn on the RDS S3 backup cronjob on Blue
 2. Deploy the release to the former current-production, now the new hot stand-by (Green)
+   1. "Provisioning live for [...]" section, the one that matches the new Host stand-by
+   2. "Deployment to a specific live environment" section for the new Hot stand-by 
 3. Turn on EFS sync cronjob on Green
 4. Turn on databaseReset cronjob on Green
 
@@ -312,3 +316,6 @@ and the changes are small and stateless.
 In this case, there is no need to perform blue/green approach, and the process is almost similar to what we do now.
 The only difference, is deployment needs to be done on both current production and hot stand by (starting with the latter) 
 to keep them in sync. Also, it is necessary to update the table at the top of this document with the new release versions.
+
+1. "Deployment to a specific live environment" section from`docs/sop/PROVISIONING_PRODUCTION.md` for the Hot stand-by
+2. "Deployment to a specific live environment" section from`docs/sop/PROVISIONING_PRODUCTION.md` for the Current Production
