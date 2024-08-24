@@ -37,11 +37,11 @@ if [[ $(uname -n) =~ compute ]];then
   . /home/centos/.bash_profile
 
   echo -e "$updateMD5ChecksumStartMessage"
-  docker run --rm "registry.gitlab.com/$GITLAB_PROJECT/production-files-metadata-console:$GIGADB_ENV" ./yii update/md5-values --doi="$DOI" | tee "$outputDir/updating-md5checksum-$DOI.txt"
+  docker run --rm -v /var/share/gigadb/metadata:/var/share/gigadb/metadata "registry.gitlab.com/$GITLAB_PROJECT/production-files-metadata-console:$GIGADB_ENV" ./yii update/md5-values --doi="$DOI" | tee "$outputDir/updating-md5checksum-$DOI.txt"
   echo -e "$updateMD5ChecksumEndMessage"
 
   echo -e "$updateFileSizeStartMessage"
-  docker run --rm "registry.gitlab.com/$GITLAB_PROJECT/production-files-metadata-console:$GIGADB_ENV" ./yii update/file-sizes --doi="$DOI" | tee "$outputDir/updating-file-size-$DOI.txt"
+  docker run --rm -v /var/share/gigadb/metadata:/var/share/gigadb/metadata "registry.gitlab.com/$GITLAB_PROJECT/production-files-metadata-console:$GIGADB_ENV" ./yii update/file-sizes --doi="$DOI" | tee "$outputDir/updating-file-size-$DOI.txt"
   echo -e "$updateFileSizeEndMessage"
 
   if [[ $userOutputDir != "$outputDir" && -n "$(ls -A $outputDir)" ]];then
