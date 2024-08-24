@@ -7,6 +7,3 @@ services:
       dockerfile: gigadb/app/tools/files-metadata-console/Dockerfile-Production
       cache_from:
         - "registry.gitlab.com/$CI_PROJECT_PATH/production-files-metadata-console:$GIGADB_ENV"
-    volumes:
-      # Map host directory /var/share/gigadb/metadata to /var/share/gigadb/metadata in container
-      - /var/share/gigadb/metadata:/var/share/gigadb/metadata
