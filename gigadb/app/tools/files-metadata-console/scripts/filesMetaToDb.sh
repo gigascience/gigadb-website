@@ -7,9 +7,6 @@ export PATH
 
 DOI=$1
 
-currentPath=$(pwd)
-userOutputDir="$currentPath/uploadDir"
-
 if [[ $(uname -n) =~ compute ]];then
   outputDir="/home/centos/uploadLogs"
 else
@@ -37,30 +34,23 @@ if [[ $(uname -n) =~ compute ]];then
   . /home/centos/.bash_profile
 
   echo -e "$updateMD5ChecksumStartMessage"
-  docker run --rm -v /var/share/gigadb/metadata:/var/share/gigadb/metadata "registry.gitlab.com/$GITLAB_PROJECT/production-files-metadata-console:$GIGADB_ENV" ./yii update/md5-values --doi="$DOI" | tee "$outputDir/updating-md5checksum-$DOI.txt"
+  docker run --rm -v /var/share/gigadb/metadata:/var/share/gigadb/metadata "registry.gitlab.com/$GITLAB_PROJECT/production-files-metadata-console:$GIGADB_ENV" ./yii update/md5-values --doi="$DOI"
   echo -e "$updateMD5ChecksumEndMessage"
 
   echo -e "$updateFileSizeStartMessage"
-  docker run --rm -v /var/share/gigadb/metadata:/var/share/gigadb/metadata "registry.gitlab.com/$GITLAB_PROJECT/production-files-metadata-console:$GIGADB_ENV" ./yii update/file-sizes --doi="$DOI" | tee "$outputDir/updating-file-size-$DOI.txt"
+  docker run --rm -v /var/share/gigadb/metadata:/var/share/gigadb/metadata "registry.gitlab.com/$GITLAB_PROJECT/production-files-metadata-console:$GIGADB_ENV" ./yii update/file-sizes --doi="$DOI"
   echo -e "$updateFileSizeEndMessage"
 
-  if [[ $userOutputDir != "$outputDir" && -n "$(ls -A $outputDir)" ]];then
-    mv $outputDir/* "$userOutputDir/" || true
-    chown "$SUDO_USER":"$SUDO_USER" "$userOutputDir"/*
-    echo -e "\nLogs for updating md5 values and file sizes have been moved to: $userOutputDir"
-    echo -e "\nUpdate files meta data to database done!"
-  else
-    echo -e "\nNo logs for updating md5 values and file sizes found in: $outputDir!"
-  fi
+  echo -e "\nUpdate files meta data to database done!"
 
 else
 
   echo -e "$updateMD5ChecksumStartMessage"
-  docker-compose run --rm files-metadata-console ./yii update/md5-values --doi="$DOI" | tee "./updating-md5checksum-$DOI.txt"
+  docker-compose run --rm files-metadata-console ./yii update/md5-values --doi="$DOI"
   echo -e "$updateMD5ChecksumEndMessage"
 
   echo -e "$updateFileSizeStartMessage"
-  docker-compose run --rm files-metadata-console ./yii update/file-sizes --doi="$DOI" | tee "./updating-file-size-$DOI.txt"
+  docker-compose run --rm files-metadata-console ./yii update/file-sizes --doi="$DOI"
   echo -e "$updateFileSizeEndMessage"
 fi
 
