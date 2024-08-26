@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Fix #2015: Error when deleting file on admin dasboard
 - Fix #2029: Add new file attribute even if edit attribute fields are visible
 
 ## v4.3.6 - 2024-09-13 - 2d935c496 -
