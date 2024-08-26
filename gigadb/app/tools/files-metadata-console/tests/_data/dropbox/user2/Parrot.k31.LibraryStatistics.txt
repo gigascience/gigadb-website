@@ -1,0 +1,26 @@
+NumberOfPairedLibraries: 2
+
+LibraryNumber: 0
+ InputFormat: TwoFiles,Paired
+ DetectionType: Manual
+ File: Pa9a-MP_1.fastq.gz
+  NumberOfSequences: 76663415
+ File: Pa9a-MP_2.fastq.gz
+  NumberOfSequences: 76663415
+ Distribution: Parrot.k31.Library0.txt
+ Peak 0
+  AverageOuterDistance: 2000
+  StandardDeviation: 200
+
+LibraryNumber: 1
+ InputFormat: TwoFiles,Paired
+ DetectionType: Automatic
+ File: Pa9a_1.fastq.gz
+  NumberOfSequences: 133631138
+ File: Pa9a_2.fastq.gz
+  NumberOfSequences: 133631138
+ Distribution: Parrot.k31.Library1.txt
+ Peak 0
+  AverageOuterDistance: 287
+  StandardDeviation: 29
+
