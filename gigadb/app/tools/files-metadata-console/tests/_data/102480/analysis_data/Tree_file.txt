@@ -1,1 +1,0 @@
-(Rana_temporaria_protein:0.172893,((Podarcis_muralis_protein:0.109904,((Thamnophis_elegans_protein:0.0415451,(Elaphe_carinata:0.0658181,pantherophis_guttatus:0.0191048)N6:0.0249074)N4:0.0157255,(Pseudonaja_textilis_protein:0.0311758,Bungarus_multicinctus_protein:0.141237)N5:0.025058)N3:0.104277)N2:0.0647413,Gopherus_evgoodei_protein:0.141112)N1:0.172893)N0;
