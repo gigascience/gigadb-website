@@ -70,15 +70,13 @@ if [[ $(uname -n) =~ compute ]]; then  # Running on staging or live environment
     echo -e "Environment is ${GIGADB_ENV} - Readme file creation is not required"
   fi
 
-  # Stop execution if readme file does not exist
-  if [ ! -f "/home/centos/readmeFiles/readme_${doi}.txt" ]; then
-    err "readme_${doi}.txt was not created"
-    exit 1
+  echo -e "Copying README file into dropbox ${dropbox}"
+  if [[ "$(logname)" != "centos" ]]; then
+    cp "/home/$(logname)/uploadDir/readme_${doi}.txt" "/share/dropbox/${dropbox}"
+  else
+    cp "/home/centos/readmeFiles/readme_${doi}.txt" "/share/dropbox/${dropbox}i"
   fi
 
-  echo -e "Copying README file into dropbox ${dropbox}"
-  cp "/home/centos/readmeFiles/readme_${doi}.txt" "/share/dropbox/${dropbox}"
-  
   # Create file sizes and md5 metadata files
   echo -e "Creating dataset metadata files for ${doi}"
   cd "/share/dropbox/${dropbox}"
