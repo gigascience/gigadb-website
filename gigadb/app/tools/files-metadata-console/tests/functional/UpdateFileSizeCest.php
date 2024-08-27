@@ -9,9 +9,9 @@ class UpdateFileSizeCest
     public function _before(\FunctionalTester $I)
     {
         // Remove file size values in database
-        $I->updateInDatabase('file', array('size' => 0), array('id' => 447));
-        $I->updateInDatabase('file', array('size' => 0), array('id' => 449));
-        $I->updateInDatabase('file', array('size' => 0), array('id' => 468));
+        $I->updateInDatabase('file', array('size' => 0), array('id' => 453));
+        $I->updateInDatabase('file', array('size' => 0), array('id' => 454));
+        $I->updateInDatabase('file', array('size' => 0), array('id' => 457));
 
     }
 
@@ -27,9 +27,9 @@ class UpdateFileSizeCest
         }
 
         // Assert expected file sizes in file table
-        $I->seeInDatabase('file', ['id' => 447, 'size' => 1000]);
-        $I->seeInDatabase('file', ['id' => 449, 'size' => 10000]);
-        $I->seeInDatabase('file', ['id' => 468, 'size' => 100000]);
+        $I->seeInDatabase('file', ['id' => 453, 'size' => 4245]);
+        $I->seeInDatabase('file', ['id' => 454, 'size' => 593]);
+        $I->seeInDatabase('file', ['id' => 457, 'size' => 581]);
     }
 
     /**
