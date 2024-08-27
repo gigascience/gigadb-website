@@ -69,7 +69,7 @@ class DatasetFilesUpdaterTest extends \Codeception\Test\Unit
      * Test size of files in dataset 100040 is not updated because
      * there is no dataset 100040 in database
      */
-    public function testUpdateFileSizesWithNonExistentFile(): void
+    public function testUpdateFileSizesWithNonExistentDoi(): void
     {
         try {
             $dfu = new DatasetFilesUpdater(["doi" => "100040"]);
@@ -77,7 +77,7 @@ class DatasetFilesUpdaterTest extends \Codeception\Test\Unit
         }
         catch (Exception $e) {
             codecept_debug($e->getMessage());
-            $this->assertStringEndsWith('100040.filesizes not found',
+            $this->assertStringEndsWith('No dataset found in database with DOI 100040',
                 $e->getMessage(),
                 'Unexpected exception message');
         }
