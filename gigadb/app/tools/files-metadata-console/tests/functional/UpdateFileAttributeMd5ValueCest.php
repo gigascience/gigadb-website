@@ -37,9 +37,9 @@ class UpdateFileAttributeMd5ValueCest
         }
 
         // Assert expected md5 values in file attributes table
-        $I->seeInDatabase('file_attributes', ['id' => '10669', 'value' => 'd41d8cd98f00b204e9800998ecf8427e']);
-        $I->seeInDatabase('file_attributes', ['id' => '10670', 'value' => 'bd9bed43475eaa22b6ab62b9fb7a3909']);
-        $I->seeInDatabase('file_attributes', ['id' => '10671', 'value' => '99999999999999999999999999999999']);
+        $I->seeInDatabase('file_attributes', ['id' => '10669', 'value' => 'd30b8b3549777953aeec9c82e8ac8265']);
+        $I->seeInDatabase('file_attributes', ['id' => '10670', 'value' => 'da3aa9c474329f45a5f1053e1e99cc0d']);
+        $I->seeInDatabase('file_attributes', ['id' => '10671', 'value' => '35850810fcf14328b9811029b5a0d5b9']);
     }
 
     /**
