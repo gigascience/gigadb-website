@@ -381,42 +381,45 @@ class AdminFileController extends Controller
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
-        if (isset($_POST['edit_attr'])) {
-            $args = $_POST['FileAttributes'];
-            $fa = FileAttributes::model()->findByPk($args['id']);
-            if($fa) {
-                $fa->attribute_id = $args['attribute_id'];
-                $fa->value = $args['value'];
-                if($args['unit_id'])
-                    $fa->unit_id = $args['unit_id'];
-
-                if($fa->validate()) {
-                    if($fa->save())
-                        $this->redirect(array('update','id'=>$model->id));
-                    else
-                        Yii::log('save attr failed', 'debug');
-                } else
-                    Yii::log(print_r($fa->getErrors(), true), 'debug');
+        if (isset($_POST['edit_attr']) || isset($_POST['submit_attr'])) {
+            $isEdit = $_POST['edit_attr'];
+            if ($isEdit) {
+                $args = $_POST['FileAttributes'];
+                $fa = FileAttributes::model()->findByPk($args['id']);
+                if ($fa) {
+                    $fa->attribute_id = $args['attribute_id'];
+                    $fa->value = $args['value'];
+                    if ($args['unit_id']) {
+                        $fa->unit_id = $args['unit_id'];
+                    }
+                    if ($fa->validate()) {
+                        if ($fa->save()) {
+                            $this->redirect(array('update', 'id' => $model->id));
+                        } else {
+                            Yii::log('save attr failed', 'debug');
+                        }
+                    } else {
+                        Yii::log(print_r($fa->getErrors(), true), 'debug');
+                    }
+                }
+            } else {
+                $attrs = $_POST['FileAttributes'];
+                $attribute->attribute_id = $attrs['attribute_id'];
+                $attribute->value = $attrs['value'];
+                if ($attrs['unit_id']) {
+                    $attribute->unit_id = $attrs['unit_id'];
+                }
+                if ($attribute->validate()) {
+                    $attribute->save();
+                    $this->redirect(array('update', 'id' => $model->id));
+                }
             }
         }
-        elseif(isset($_POST['submit_attr'])) {
-            $attrs = $_POST['FileAttributes'];
-            $attribute->attribute_id = $attrs['attribute_id'];
-            $attribute->value = $attrs['value'];
-            if($attrs['unit_id'])
-                $attribute->unit_id = $attrs['unit_id'];
-
-            if($attribute->validate()) {
-                $attribute->save();
-                $this->redirect(array('update', 'id' => $model->id));
-            }
-        } elseif (isset($_POST['File'])) {
+        if (isset($_POST['File'])) {
             $model->attributes = $_POST['File'];
 
             $model->setSizeValue();
-            if ($model->validate()) {
-                $model->save();
-
+            if ($model->save()) {
                 if(isset($_POST['File']['sample_name']) && !empty($_POST['File']['sample_name'])) {
                     $fs = $model->fileSamples;
                     if(!isset($fs[0])) {
@@ -429,7 +432,7 @@ class AdminFileController extends Controller
                     $fs->file_id = $model->id;
                     if( $fs->sample_id !='None'&& $fs->sample_id !="" )
                     {
-                    $fs->save(false);
+                        $fs->save(false);
                     }
                     $temp=$fs->find('file_id=:file_id', array(':file_id'=>$model->id));
                     if($fs->sample_id =="" && $temp != null)
