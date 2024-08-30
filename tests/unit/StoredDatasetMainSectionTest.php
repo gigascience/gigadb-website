@@ -141,17 +141,14 @@ class StoredDatasetMainSectionTest extends CDbTestCase
             'services' => array(
                 'scholar_query' => "View citations on Google Scholar",
                 'ePMC_query' => "View citations on Europe PubMed Central",
-                'dimension_query' => "View citations on Dimensions",
                 ),
             'urls' => array(
                 'scholar_query' => 'https://scholar.google.com/scholar?q=10.80027/100243',
                 'ePMC_query' => "https://europepmc.org/search?scope=fulltext&query=(REF:%2710.80027/100243%27)",
-                'dimension_query' => "https://app.dimensions.ai/discover/publication?search_text=10.80027/100243",
                 ),
             'images' => array(
                 'scholar_query' => '/images/google_scholar.png',
                 'ePMC_query' => "/images/ePMC.jpg",
-                'dimension_query' => "/images/dimensions.jpg",
             ),
         );
         $this->assertEquals($expected, $daoUnderTest->getCitationsLinks());
