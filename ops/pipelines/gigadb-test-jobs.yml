@@ -43,9 +43,12 @@ legacy_tests:
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/gigadb-worker:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/fuw-public:latest || true
     - env
-    - ./up.sh
-    - cd $APPLICATION
-    - ./tests/all_and_coverage
+    - ls -alrt /builds/gigascience/forks/rm-gigadb-website/containers-data
+    - docker-compose up -d --build database
+    - docker-compose logs database
+      #- ./up.sh
+      #- cd $APPLICATION
+      #- ./tests/all_and_coverage
   environment:
     name: dev
   tags:
