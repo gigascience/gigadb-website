@@ -18,8 +18,7 @@ legacy_tests:
     untracked: true
     when: on_failure
     expire_in: 1 week
-  variables:
-    DB_DATA: $DATA_SAVE_PATH/postgres/POSTGRES_VERSION/data
+  dependencies: []
   script:
     # login to gitlab container registry
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
@@ -42,7 +41,6 @@ legacy_tests:
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/gigadb-worker:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/fuw-public:latest || true
     - env
-    - if [ -d "$DB_DATA" ]; then ls -alrt $DB_DATA ; rm -Rf $DB_DATA ; else echo "DB_DATA is empty" ; fi
     - ./up.sh
     - cd $APPLICATION
     - ./tests/all_and_coverage
