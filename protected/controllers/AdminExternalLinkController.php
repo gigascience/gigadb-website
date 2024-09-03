@@ -3,12 +3,6 @@
 class AdminExternalLinkController extends Controller
 {
 	/**
-	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
-	 * using two-column layout. See 'protected/views/layouts/column2.php'.
-	 */
-	public $layout='//layouts/column2';
-
-	/**
 	 * @return array action filters
 	 */
 	public function filters()
@@ -46,7 +40,6 @@ class AdminExternalLinkController extends Controller
 	 */
 	public function actionView($id)
 	{
-		$this->layout = 'new_datasetpage';
 		$this->render('view',array(
 			'model'=>$this->loadModel($id),
 		));
@@ -70,12 +63,11 @@ class AdminExternalLinkController extends Controller
 				$this->redirect(array('view','id'=>$model->id));
 		}
 
-		$this->layout = 'new_datasetpage';
 		$this->render('create',array(
 			'model'=>$model,
 		));
 	}
-        
+
          public function actionDelete1($id) {
         if (isset($_SESSION['externalLinks'])) {
             $info = $_SESSION['externalLinks'];
@@ -119,7 +111,7 @@ class AdminExternalLinkController extends Controller
 
         $model->dataset_id = 1;
 
-        //update 
+        //update
         if (!isset($_SESSION['externalLinks']))
             $_SESSION['externalLinks'] = array();
 
@@ -127,7 +119,7 @@ class AdminExternalLinkController extends Controller
 
 
         if (isset($_POST['ExternalLink'])) {
-            //store the information in session 
+            //store the information in session
 //            if (!isset($_SESSION['externalLink_id']))
 //                $_SESSION['externalLink_id'] = 0;
 //            $id = $_SESSION['externalLink_id'];
@@ -202,7 +194,6 @@ class AdminExternalLinkController extends Controller
 				$this->redirect(array('view','id'=>$model->id));
 		}
 
-		$this->layout = 'new_datasetpage';
 		$this->render('update',array(
 			'model'=>$model,
 		));
@@ -249,7 +240,6 @@ class AdminExternalLinkController extends Controller
 		if(isset($_GET['ExternalLink']))
 			$model->setAttributes($_GET['ExternalLink']);
 
-		$this->layout = 'new_main';
 		$this->loadBaBbqPolyfills = true;
 		$this->render('admin',array(
 			'model'=>$model,
@@ -294,7 +284,7 @@ class AdminExternalLinkController extends Controller
             	if($exLink) {
             		Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "This external link has been added already.")));
             	}
-            	
+
             	$exLink = new ExternalLink;
             	$exLink->dataset_id = $_POST['dataset_id'];
             	$exLink->url = $url;

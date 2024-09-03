@@ -63,6 +63,15 @@ class AdminDatasetController extends Controller
         return $inputString;
     }
 
+    protected function registerTooltipScript() {
+        // Check if the script has already been registered
+        if (!Yii::app()->clientScript->isScriptRegistered('bootstrap-tooltip-init')) {
+            $jsFile = Yii::getPathOfAlias('application.js.bootstrap-tooltip-init') . '.js';
+            $jsUrl = Yii::app()->assetManager->publish($jsFile);
+            Yii::app()->clientScript->registerScriptFile($jsUrl, CClientScript::POS_END);
+        }
+    }
+
 	/**
 	 * Manage creation of new dataset object from a form
 	 *
@@ -142,7 +151,6 @@ class AdminDatasetController extends Controller
 
         }
 
-        $this->layout = 'new_main';
         $this->render('create', array('model'=>$dataset,'datasetPageSettings' => $datasetPageSettings)) ;
     }
 
@@ -166,7 +174,6 @@ class AdminDatasetController extends Controller
             $model->setAttributes($_GET['Dataset']);
         }
 
-        $this->layout = 'new_main';
         $this->loadBaBbqPolyfills = true;
         $this->render('admin', array(
             'model'=>$model,
@@ -181,243 +188,114 @@ class AdminDatasetController extends Controller
      */
     public function actionUpdate($id)
     {
-
+        $hasPartialError = false;
         $model = $this->loadModel($id);
-
-        // setting DatasetUpload, the busisness object for File uploading
-        $webClient = new \GuzzleHttp\Client();
-        $fileUploadSrv = new FileUploadService([
-            "tokenSrv" => new TokenService([
-                                  'jwtTTL' => 3600,
-                                  'jwtBuilder' => Yii::$app->jwt->getBuilder(),
-                                  'jwtSigner' => new \Lcobucci\JWT\Signer\Hmac\Sha256(),
-                                  'users' => new UserDAO(),
-                                  'dt' => new DateTime(),
-                                ]),
-            "webClient" => $webClient,
-            "requesterEmail" => Yii::app()->user->email,
-            "identifier"=> $model->identifier,
-            "dataset" => new DatasetDAO(["identifier" => $model->identifier]),
-            "dryRunMode"=>false,
-            ]);
-        $datasetUpload = new DatasetUpload(
-            $fileUploadSrv->dataset,
-            $fileUploadSrv,
-            Yii::$app->params['dataset_upload']
-        );
-
         $datasetPageSettings = new DatasetPageSettings($model);
+        $dataProvider = CurationLog::model()->searchByDatasetId($id);
 
-        $dataProvider = new CActiveDataProvider('CurationLog', array(
-            'criteria' => array(
-                'condition' => "dataset_id=$id",
-                'order' => 'id DESC',
-            ),
-        ));
-        if (isset($_POST['Dataset'])) {
-            if (isset($_POST['Dataset']['upload_status']) && $_POST['Dataset']['upload_status'] != $model->upload_status) {
-                $statusIsSet = false;
-                switch ($_POST['Dataset']['upload_status'])
-                {
-                    case "Submitted":
-                        $contentToSend = $datasetUpload->renderNotificationEmailBody("Submitted");
-                        $statusIsSet = $datasetUpload->setStatusToSubmitted($contentToSend);
-                        break;
-                    case "DataPending":
-                        $contentToSend = $datasetUpload->renderNotificationEmailBody("DataPending");
+        if (!$postDataset = Yii::$app->request->post('Dataset')) {
+            $this->loadBaBbqPolyfills = true;
 
-                        // If formdata has a defined custom email body, user it instead of the twig template
-                        if (isset($_POST['Dataset']['emailBody']) && $_POST['Dataset']['emailBody'] != '') {
-                            $contentToSend = $this->processTemplateString($_POST['Dataset']['emailBody'], [
-                              "identifier" => $model->identifier
-                          ]);
-                        }
-
-                        $statusIsSet = $datasetUpload->setStatusToDataPending(
-                            $contentToSend, $model->submitter->email
-                        );
-                        break;
-                    default:
-                        $statusIsSet = true;
-                }
-                if ($statusIsSet) {
-                    CurationLog::createlog($_POST['Dataset']['upload_status'], $id);
-                }
-
-            }
-            if ($_POST['Dataset']['curator_id'] != $model->curator_id) {
-                if ($_POST['Dataset']['curator_id'] != "") {
-                    $User1 = User::model()-> find('id=:id', array(':id'=>Yii::app()->user->id));
-                    $username1 = $User1->first_name." ".$User1->last_name;
-                    $User = User::model()-> find('id=:id', array(':id'=>$_POST['Dataset']['curator_id']));
-                    $username = $User->first_name." ".$User->last_name;
-                    CurationLog::createlog_assign_curator($id, $username1, $username);
-                    $model->curator_id = $_POST['Dataset']['curator_id'];
-                } else {
-                    $model->curator_id = null;
-                }
-            }
-
-            if ($_POST['Dataset']['manuscript_id']) {
-                $model->manuscript_id = $_POST['Dataset']['manuscript_id'];
-            } else {
-                $model->manuscript_id = "";
-            }
-
-            $datasetAttr = $_POST['Dataset'];
-            Yii::log("**** new attributes: ".print_r($datasetAttr,true),"warning");
-            $model->setAttributes($datasetAttr, true);
-
-            if ($model->upload_status == 'Published') {
-                $files = $model->files;
-                if (strpos($model->ftp_site, "10.5524") == false) {
-                    $model->ftp_site="ftp://climb.genomics.cn/pub/10.5524/100001_101000/" . $model->identifier;
-
-                    if (count($files) > 0) {
-                        foreach ($files as $file) {
-                            $origin_location = $file->location;
-                            $new_location = "";
-                            $location_array = explode("/", $origin_location);
-                            $count = count($location_array);
-                            if ($count == 1) {
-                                $new_location = "ftp://climb.genomics.cn/pub/10.5524/100001_101000/" .
-                                        $model->identifier . "/" . $location_array[0];
-                            } elseif ($count >= 2) {
-                                $new_location = "ftp://climb.genomics.cn/pub/10.5524/100001_101000/" .
-                                        $model->identifier . "/" . $location_array[$count - 2] . "/" . $location_array[$count - 1];
-                            }
-                            $file->location = $new_location;
-                            $file->date_stamp = date("Y-m-d H:i:s");
-                            if (!$file->save()) {
-                                return false;
-                            }
-                        }
-                    }
-                }
-            }
-
-
-            if ($model->publication_date == "") {
-                $model->publication_date = null;
-            }
-            if ($model->modification_date == "") {
-                $model->modification_date = null;
-            }
-            if ($model->fairnuse == "") {
-                $model->fairnuse = null;
-            }
-
-            // Image information
-
-            $datasetImage = CUploadedFile::getInstanceByName('datasetImage');
-
-            if (0 === $model->image->id && !empty($_POST['Image']) && $datasetImage) {
-                $model->image =  new Image();
-                Yii::log("Generic image was associated with dataset, so creating a new Image object","warning");
-            }
-            else {
-                $model->image->scenario = 'update';
-                Yii::log("Dataset is already associated with image :". $model->image->id,"warning");
-            }
-            $model->image->attributes = $_POST['Image'];
-
-            if($datasetImage) {
-                if( ! $model->image->write(Yii::$app->cloudStore, $model->getUuid(), $datasetImage) ) {
-                    Yii::log("Error writing file to storage for dataset ".$model->identifier, "error");
-                }
-                // save image
-                if( $model->image->save() ) {
-                    $model->image_id = $model->image->id;
-                }
-                else {
-                    Yii::log(print_r($model->image->getErrors(), true), 'error');
-                }
-            }
-
-            if ($model->save()) {
-                if (isset($_POST['datasettypes'])) {
-                    $datasettypes = $_POST['datasettypes'];
-                }
-
-                $datasetTypeMaps = DatasetType::model()->findAllByAttributes(array('dataset_id' => $id));
-
-                for ($i = 0; $i < count($datasetTypeMaps); ++$i) {
-                    $datasetTypeMap = $datasetTypeMaps[$i];
-                    if ((isset($datasettypes) && !in_array($datasetTypeMap->type_id, array_keys($datasettypes), true)) || !isset($datasettypes)) {
-                        $datasetTypeMap->delete();
-                    }
-                }
-
-                if (isset($datasettypes)) {
-                    foreach (array_keys($datasettypes) as $datasetTypeId) {
-                        $currDatasetTypeMap = DatasetType::model()->findByAttributes(array('dataset_id' => $model->id, 'type_id' => $datasetTypeId));
-                        if (!$currDatasetTypeMap) {
-                            $newDatasetTypeRelationship = new DatasetType;
-                            $newDatasetTypeRelationship->dataset_id = $model->id;
-                            $newDatasetTypeRelationship->type_id = $datasetTypeId;
-                            $newDatasetTypeRelationship->save();
-                        }
-                    }
-                }
-
-                // semantic kewyords update, using remove all and re-create approach
-                if (isset($_POST['keywords'])) {
-                    $attribute_service = Yii::app()->attributeService;
-                    $attribute_service->replaceKeywordsForDatasetIdWithString($id, $_POST['keywords']);
-                }
-
-
-                // retrieve existing redirect
-                $criteria = new CDbCriteria(array('order'=>'id ASC'));
-                $urlToRedirectAttr = Attributes::model()->findByAttributes(array('attribute_name'=>'urltoredirect'));
-                $urlToRedirectDatasetAttribute = datasetAttributes::model()->findByAttributes(array('dataset_id'=>$id,'attribute_id'=>$urlToRedirectAttr->id), $criteria);
-
-                // saving url to redirect as a dataset attribute
-                if (isset($urlToRedirectDatasetAttribute) || isset($_POST['urltoredirect'])) {
-
-
-                    // update with value from form if value has changed.
-                    if (isset($urlToRedirectDatasetAttribute) && $_POST['urltoredirect'] != $urlToRedirectDatasetAttribute->value) {
-                        $urlToRedirectDatasetAttribute->value = $_POST['urltoredirect'];
-                        $urlToRedirectDatasetAttribute->save();
-                    }
-
-                    // create a new dataset attribute if there isn't one
-                    elseif (isset($_POST['urltoredirect'])) {
-                        $urlToRedirectDatasetAttribute = new DatasetAttributes();
-                        $urlToRedirectDatasetAttribute->attribute_id = $urlToRedirectAttr->id;
-                        $urlToRedirectDatasetAttribute->dataset_id = $id;
-                        $urlToRedirectDatasetAttribute->value = $_POST['urltoredirect'];
-                        $urlToRedirectDatasetAttribute->save();
-                    }
-                }
-
-                Yii::app()->user->setFlash('updateSuccess', 'Updated successfully!');
-                switch ($datasetPageSettings->getPageType()) {
-                    case "draft":
-                        $this->redirect('/adminDataset/admin/');
-                        break;
-                    case "public":
-                        $this->redirect('/dataset/' . $model->identifier);
-                        break;
-                    case "hidden":
-                        $this->redirect(array('/adminDataset/update/id/' . $model->id));
-                        break;
-                }
-
-            } else {
-                Yii::app()->user->setFlash('updateError', 'Fail to update!');
-                Yii::log(print_r($model->getErrors(), true), 'error');
-            }
+            return $this->render('update', array(
+                'model' => $model,
+                'datasetPageSettings' => $datasetPageSettings,
+                'curationlog'=> $dataProvider,
+                'dataset_id'=> $id,
+            ));
         }
 
-        $this->layout = 'new_main';
+        Yii::log('**** new attributes: ' . print_r($postDataset, true), 'warning');
+        $uploadStatus = $postDataset['upload_status'];
+        $previousUploadStatus = $model->upload_status;
+
+        //curator
+        $curatorId = $postDataset['curator_id'];
+        if ($curatorId !== $model->curator_id) {
+            CurationLog::createlog_assign_curator($id, $curatorId);
+            $model->curator_id = $curatorId;
+        }
+
+        $model->manuscript_id = $postDataset['manuscript_id'] ?? null;
+
+        $model->setAttributes($postDataset);
+
+        // Image information
+        $datasetImage = CUploadedFile::getInstanceByName('datasetImage');
+        if ($model->image){
+            $isUpdated = $model->updateImageAndMetafields($datasetImage);
+            $hasPartialError = !$isUpdated || $hasPartialError;
+        } else {
+            Yii::log(print_r($model->image->getErrors(), true), 'error');
+        }
+
+        $model->nullifyDateValueIfEmpty();
+
+        if ($model->save()) {
+            $postDatasetTypes = array_keys(Yii::$app->request->post('datasettypes'));
+            if (!$postDatasetTypes) {
+                Yii::app()->user->setFlash('updateError', 'Fail to update your types');
+                $hasPartialError = true;
+            } else {
+                $model->updateDatasetTypes($postDatasetTypes);
+            }
+
+            if ($uploadStatus !== $previousUploadStatus) {
+                $this->renderNotificationsAccordingToStatus($uploadStatus, $previousUploadStatus, $model);
+            }
+
+            // semantic kewyords update, using remove all and re-create approach
+            if ($postKeywords = Yii::$app->request->post('keywords')) {
+                $attribute_service = Yii::app()->attributeService;
+                $attribute_service->replaceKeywordsForDatasetIdWithString($id, $postKeywords);
+            }
+
+            $urlToRedirect = Yii::$app->request->post('urltoredirect');
+            // retrieve existing redirect
+            $criteria = new CDbCriteria(array('order'=>'id ASC'));
+            $urlToRedirectAttr = Attributes::model()->findByAttributes(array('attribute_name'=>'urltoredirect'));
+            $urlToRedirectDatasetAttribute = DatasetAttributes::model()->findByAttributes(array('dataset_id'=>$id,'attribute_id'=>$urlToRedirectAttr->id), $criteria);
+
+            // update with value from form if value has changed.
+            if ($urlToRedirectDatasetAttribute && $urlToRedirect !== $urlToRedirectDatasetAttribute->value) {
+                $urlToRedirectDatasetAttribute->value = $urlToRedirect;
+                $urlToRedirectDatasetAttribute->save();
+            } elseif ($urlToRedirect) {
+                $urlToRedirectDatasetAttribute = new DatasetAttributes();
+                $urlToRedirectDatasetAttribute->attribute_id = $urlToRedirectAttr->id;
+                $urlToRedirectDatasetAttribute->dataset_id = $id;
+                $urlToRedirectDatasetAttribute->value = $urlToRedirect;
+                $urlToRedirectDatasetAttribute->save();
+            }
+
+            if ($hasPartialError) {
+                 $this->redirect(array('/adminDataset/update/id/' . $model->id));
+            }
+
+            Yii::app()->user->setFlash('updateSuccess', 'Updated successfully!');
+            switch ($datasetPageSettings->getPageType()) {
+                case "draft":
+                    $this->redirect('/adminDataset/admin/');
+                    break;
+                case "public":
+                    $this->redirect('/dataset/' . $model->identifier);
+                    break;
+                case "hidden":
+                    $this->redirect(array('/adminDataset/update/id/' . $model->id));
+                    break;
+            }
+
+        } else {
+            Yii::app()->user->setFlash('updateError', 'Fail to update!');
+            Yii::log(print_r($model->getErrors(), true), 'error');
+        }
+
         $this->loadBaBbqPolyfills = true;
+        $this->registerTooltipScript();
         $this->render('update', array(
             'model' => $model,
             'datasetPageSettings' => $datasetPageSettings,
-            'curationlog'=>$dataProvider,
-            'dataset_id'=>$id,
+            'curationlog'=> $dataProvider,
+            'dataset_id'=> $id,
         ));
     }
 
@@ -619,11 +497,53 @@ class AdminDatasetController extends Controller
      */
     private function loadModel($id)
     {
-        $model=Dataset::model()->findByPk($id);
-        if ($model===null) {
+        $model = Dataset::model()->findByPk($id);
+        if ($model === null) {
             throw new CHttpException(404, 'The requested page does not exist.');
         }
+
         return $model;
+    }
+
+    private function renderNotificationsAccordingToStatus($uploadStatus, $previousStatus, $model)
+    {
+        // setting DatasetUpload, the busisness object for File uploading
+        $webClient = new \GuzzleHttp\Client();
+        $fileUploadSrv = Yii::app()->fileUploadService->getFileUploadService($webClient, $model->identifier);
+        $datasetUpload = new DatasetUpload(
+            $fileUploadSrv->dataset,
+            $fileUploadSrv,
+            Yii::$app->params['dataset_upload']
+        );
+
+        switch ($uploadStatus) {
+            case 'Submitted':
+                $contentToSend = $datasetUpload->renderNotificationEmailBody('Submitted');
+                $statusIsSet = $datasetUpload->setStatusToSubmitted($contentToSend, $previousStatus);
+
+                break;
+            case 'DataPending':
+                $contentToSend = $datasetUpload->renderNotificationEmailBody('DataPending');
+
+                // If formdata has a defined custom email body, user it instead of the twig template
+                if (isset($_POST['Dataset']['emailBody']) && $_POST['Dataset']['emailBody'] != '') {
+                    $contentToSend = $this->processTemplateString($_POST['Dataset']['emailBody'], [
+                        'identifier' => $model->identifier
+                    ]);
+                }
+
+                $statusIsSet = $datasetUpload->setStatusToDataPending(
+                    $contentToSend, $model->submitter->email, $previousStatus
+                );
+
+                break;
+            default:
+                $statusIsSet = true;
+        }
+
+        if ($statusIsSet) {
+            CurationLog::createlog($uploadStatus, $model->id);
+        }
     }
 }
 ?>
