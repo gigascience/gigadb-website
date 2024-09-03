@@ -40,19 +40,23 @@ You now need two new profiles:
 * `[Upstream]`: for the `gigadb-website` project
 * `[UpstreamAlt]`: for the `alt-gigadb-website` project
 
-You populate these sections with AWS access keys you create in the IAM dashboard for the GigaDB user.
+You populate these sections with AWS access keys for the `Gigadb` and `GigadbAlt` users respectively.
+
 
 ```
 [Upstream]
-aws_access_key_id=<aws_access_key_id1 for Gigadb user>
-aws_secret_access_key=<aws_secret_access_key1 for Gigadb user>
+aws_access_key_id=<upstream_aws_access_key_id>
+aws_secret_access_key=<upstream_aws_secret_access_key>
 
 [UpstreamAlt]
-aws_access_key_id=<aws_access_key_id2 for Gigadb user>
-aws_secret_access_key=<aws_secret_access_key2 for Gigadb user>
+aws_access_key_id=<upstream_alt_aws_access_key_id>
+aws_secret_access_key=<upstream_alt_aws_secret_access_key>
 ```
 
->**Note**: D	o not use the same keys for both sections, as if that key led to the compromise of one infrastructure, then the other one is done for too. For similar reason, do not use the keys you are using on your AWS developers deployment.
+The values for `upstream_aws_access_key_id`, `upstream_aws_secret_access_key`, `upstream_alt_aws_access_key_id`,
+and `upstream_alt_aws_secret_access_key` are stored in Gitlab variables for the `cngb-infra` project.
+
+>**Note**: Do not use the same keys for both sections, as if that key led to the compromise of one infrastructure, then the other one is done for too. For similar reason, do not use the keys you are using on your AWS developers deployment.
 
 Then, still in the IAM dashboard, you will need to create two pairs of SSH public keys for each infrastructure. Try make the name easily identifiable as you will be using both keys often. E.g:
 
