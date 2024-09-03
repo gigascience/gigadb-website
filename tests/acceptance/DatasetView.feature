@@ -198,3 +198,20 @@ Feature: a user visit the dataset page
   Scenario: Canonical URL is shown in page head block
     When I am on "/dataset/view/id/100035/Samples_page/2"
     Then I should see link element of type "canonical" to "http://gigadb.test/dataset/100035"
+
+  Scenario: Expand the sample attributes box in sample tab
+    Given I have not signed in
+    And I am on "/dataset/100006"
+    And I follow "Sample"
+    And I should not see "Alternative names:PYGAD"
+    When I press the button "+"
+    Then I should see "Alternative names:PYGAD"
+
+  Scenario: Collapse the sample attributes box in sample tab
+    Given I have not signed in
+    And I am on "/dataset/100006"
+    And I follow "Sample"
+    And I press the button "+"
+    And I should see "Alternative names:PYGAD"
+    When I press the button "-"
+    Then I should not see "Alternative names:PYGAD"
