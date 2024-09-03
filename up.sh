@@ -71,6 +71,8 @@ docker-compose up -d chrome
 docker-compose exec -T console bash -c 'cd /gigadb-apps/worker/file-worker/ && composer install'
 
 # Start Beanstalkd workers after running the required migrations
+docker-compose ps
+docker-compose logs database
 docker-compose exec -T console /app/yii migrate/fresh --interactive=0
 docker-compose up -d fuw-worker gigadb-worker
 
