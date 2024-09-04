@@ -11,7 +11,7 @@ class CheckValidURLsCest
 {
     private const TEST_URLS = [
         "https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/dev/pub/10.5524/100001_101000/100006",
-        "http://gigasciencejournal.com/blog/badaboom",
+        "https//gigadb.org/blog/badaboom",
         "ftp://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/dev/pub/10.5524/100001_101000/100006/readme_100006.txt",
         "https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/dev/pub/10.5524/100001_101000/100006/",
     ];
