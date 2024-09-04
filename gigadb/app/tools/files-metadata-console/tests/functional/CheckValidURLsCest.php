@@ -19,7 +19,6 @@ class CheckValidURLsCest
     public function tryReportIssues(\FunctionalTester $I): void {
         $expectedIssues = [
             "Resource cannot be downloaded, not found or forbidden (4xx)",
-            "Resource cannot be downloaded, not found or forbidden (4xx)",
             "Wrong scheme (ftp://)",
             "URL appears to be a directory (/)",
         ];
