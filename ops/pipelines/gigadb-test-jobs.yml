@@ -98,7 +98,10 @@ unit_func_tests:
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/gigadb-worker:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/fuw-public:latest || true
     - env
+    - ls -alrt /builds/gigascience/forks/rm-gigadb-website/containers-data/postgres/
     - ./up.sh
+    - docker-compose logs database
+    - ls -alrt /builds/gigascience/forks/rm-gigadb-website/containers-data/postgres/14.8
     - cd $APPLICATION
     - ./tests/unit_functional_runner
   environment:
@@ -143,7 +146,10 @@ integration_tests:
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/gigadb-worker:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/fuw-public:latest || true
     - env
+    - ls -alrt /builds/gigascience/forks/rm-gigadb-website/containers-data/postgres/
     - ./up.sh
+    - docker-compose logs database
+    - ls -alrt /builds/gigascience/forks/rm-gigadb-website/containers-data/postgres/14.8
     - cd $APPLICATION
     - ./tests/integration_runner
   environment:
@@ -191,7 +197,10 @@ a_gigadb:
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/gigadb-worker:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/fuw-public:latest || true
     - env
+    - ls -alrt /builds/gigascience/forks/rm-gigadb-website/containers-data/postgres/
     - ./up.sh
+    - docker-compose logs database
+    - ls -alrt /builds/gigascience/forks/rm-gigadb-website/containers-data/postgres/14.8
     - cd $APPLICATION
     - ./tests/acceptance_runner ci-js
   needs: ["sd_gigadb"]
