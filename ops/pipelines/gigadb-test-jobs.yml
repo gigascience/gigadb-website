@@ -43,14 +43,9 @@ legacy_tests:
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/gigadb-worker:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/fuw-public:latest || true
     - env
-    - ls -alrt /builds/gigascience/forks/rm-gigadb-website/containers-data/postgres/
-    - docker-compose up -d --build database
-    - docker-compose logs database
-    - ls -alrt /builds/gigascience/forks/rm-gigadb-website/containers-data/postgres/14.8
-    - rm -rf /builds/gigascience/forks/rm-gigadb-website/containers-data/postgres
-      #- ./up.sh
-      #- cd $APPLICATION
-      #- ./tests/all_and_coverage
+    - ./up.sh
+    - cd $APPLICATION
+    - ./tests/all_and_coverage
   environment:
     name: dev
   tags:
