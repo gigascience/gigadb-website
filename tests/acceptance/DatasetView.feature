@@ -199,6 +199,7 @@ Feature: a user visit the dataset page
     When I am on "/dataset/view/id/100035/Samples_page/2"
     Then I should see link element of type "canonical" to "http://gigadb.test/dataset/100035"
 
+  @ok @sample-attributes-toggler
   Scenario: Expand the sample attributes box in sample tab
     Given I have not signed in
     And I am on "/dataset/100006"
@@ -207,6 +208,7 @@ Feature: a user visit the dataset page
     When I press the button "+"
     Then I should see "Alternative names:PYGAD"
 
+  @ok @sample-attributes-toggler
   Scenario: Collapse the sample attributes box in sample tab
     Given I have not signed in
     And I am on "/dataset/100006"
