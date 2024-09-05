@@ -805,7 +805,11 @@ $sampleDataProvider = $samples->getDataProvider();
             $(".js-desc").click(function(e) {
                 e.preventDefault();
                 id = $(this).attr('data');
-                $(this).hide();
+                const isExpanded = $(this).attr('aria-expanded') === 'true';
+                $(this).text(isExpanded ? '+' : '-');
+                $(this).attr('aria-label', isExpanded ? 'Show more' : 'Show less');
+                $(this).attr('aria-expanded', !isExpanded);
+
                 $('.js-short-' + id).toggle();
                 $('.js-long-' + id).toggle();
             });
