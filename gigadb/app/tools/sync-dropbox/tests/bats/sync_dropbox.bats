@@ -27,7 +27,18 @@ teardown () {
 @test "Execute in dry run" {
     run scripts/sync_dropbox.sh --dry-run
     [ "$status" -eq 0 ]
-    [[ "$output" =~ "INFO : Start sync dropbox from production to alt-production" ]]
-    [[ "$output" =~ "INFO  : Executed: rclone sync production-staging:/share/dropbox/ /share/dropbox --dry-run --config config/rclone.conf" ]]
-    [[ "$output" =~ "INFO  : Successfully sync dropbox from production to alt-production" ]]
+
+    expected_lines=(
+        "INFO : Start sync dropbox from production to alt-production"
+        "NOTICE: rija_test.txt: Skipped copy as --dry-run is set (size 166)"
+        "NOTICE: user27: Skipped set directory modification time as --dry-run is set"
+        "INFO  : Executed: rclone sync production-staging:/share/dropbox/ /share/dropbox --dry-run --config config/rclone.conf"
+        "INFO  : Successfully sync dropbox from production to alt-production"
+    )
+
+    # Check the log
+    for line in "${expected_lines[@]}"; do
+        run grep -F "$line" logs/sync_dropbox_*.log
+        [ "$status" -eq 0 ]
+    done
 }
