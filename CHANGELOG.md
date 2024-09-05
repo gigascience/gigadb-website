@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Feat #1849: Able to toggle expand dataset sample attributes field
 
-## v4.3.5 - 2024-08-23 - 4eaa1cda5 -
+## v4.3.5 - 2024-08-23 - 4eaa1cda5 - live since 2024-08-29
 
 - Feat #1853: Add tooltips to adminDataset, adminFile and datasetFunder forms
 - Fix #1959: Relation cannot be blank error in Dataset:Relation admin form
