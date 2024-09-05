@@ -30,7 +30,7 @@ function set_up_logging() {
     LOGDIR="/var/logs/sync_dropbox/"
   else
     currentPath=$(pwd)
-    LOGDIR="$currentPath/log"
+    LOGDIR="$currentPath/logs"
   fi
   LOGFILE="$LOGDIR/sync_dropbox_$(date +'%Y%m%d_%H%M%S').log"
   mkdir -p "${LOGDIR}"
