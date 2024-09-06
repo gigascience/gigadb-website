@@ -11,6 +11,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Fix #1985: Circular dependency between Gitlab pipeline and the Ansible bastion playbook run
 - Security #security/4: Use composer.json in main app instead of templated composer.json.dist
 
+## v00-pli888-testing - 2024-09-06 -
+
 ## v4.3.5 - 2024-08-23 - 4eaa1cda5 - 
 
 - Feat #1853: Add tooltips to adminDataset, adminFile and datasetFunder forms
