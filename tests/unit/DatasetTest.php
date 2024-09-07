@@ -15,6 +15,18 @@ class DatasetTest extends CDbTestCase
         'dataset_author' => 'DatasetAuthor',
     );
 
+    public function testUploadStatusValidation()
+    {
+        $myDataset = $this->datasets(0);
+
+        $this->assertTrue($myDataset->validate());
+        $this->assertContains($myDataset->upload_status, array_merge(Dataset::ORIGINAL_UPLOAD_STATUS_LIST, Dataset::FUW_UPLOAD_STATUS_LIST));
+
+        $myDataset->upload_status = 'invalid';
+
+        $this->assertFalse($myDataset->validate());
+    }
+
     function testGetAuthors()
     {
         $this->assertGreaterThan(0, count($this->datasets(0)->authors), "dataset returns its two authors");

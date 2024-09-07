@@ -23,6 +23,7 @@ class CheckBoxField extends CWidget
   public $checkboxOptions;
   public $labelOptions;
   public $errorOptions;
+  public $label = null;
 
   private function hasError()
   {
@@ -48,7 +49,15 @@ class CheckBoxField extends CWidget
 
     echo CHtml::openTag('div', $this->groupOptions);
     echo $this->form->checkBox($this->model, $this->attributeName, $this->checkboxOptions);
-    echo $this->form->labelEx($this->model, $this->attributeName, $this->labelOptions);
+    if ($this->label) {
+        echo CHtml::tag('div', [], CHtml::tag(
+            'label',
+            [],
+            CHtml::encode($this->label)
+        ));
+    } else {
+        echo $this->form->labelEx($this->model, $this->attributeName, $this->labelOptions);
+    }
     echo $this->form->error($this->model, $this->attributeName, $this->errorOptions);
     echo CHtml::closeTag('div');
   }

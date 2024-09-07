@@ -1,4 +1,5 @@
 <?php
+  $this->renderPartial('//shared/_fuw');
 ?>
 <div class="content">
     <div id="gigadb-fuw">

@@ -103,24 +103,27 @@ class DatasetDAO extends yii\base\BaseObject
 	 * @param string $fromStatus upload status to transition from
 	 * @param string $toStatus upload status to transition to
 	 * @param string $comment description for curation_log entry
+	 * @param string|null $previousStatus useful if dataset has already been updated
 	 *
 	 * @return bool whether the transition was enacted or not
 	 */
-	public function transitionStatus(string $fromStatus, string $toStatus, string $comment = null): bool
+	public function transitionStatus(string $fromStatus, string $toStatus, string $comment = null, string $previousStatus = null): bool
 	{
+		if (!$previousStatus) {
+			$dataset = Dataset::model()->findByAttributes(['identifier' => $this->_identifier]);
+		}
 
-		$dataset = Dataset::model()->findByAttributes(["identifier" => $this->_identifier]);
-		if ($fromStatus !== $dataset->upload_status) {
+		if (!$toStatus || $fromStatus !== ($previousStatus ?: $dataset->upload_status)) {
 			return false;
 		}
-		if (null === $toStatus) {
-			return false;
+
+		if (!$previousStatus) {
+			$dataset->upload_status = $toStatus;
+
+			return $dataset->save();
 		}
-		$dataset->upload_status = $toStatus;
-		if ( $dataset->save() ) {
-			return true;
-		}
-		return false;
+
+		return true;
 	}
 
 	/**
