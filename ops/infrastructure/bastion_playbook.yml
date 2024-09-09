@@ -432,42 +432,54 @@
     - sync-dropbox-tool
 
   tasks:
-    block:
-      - name: Copy rclone config for dropbox sync
-        ansible.builtin.copy:
-          src: "../../../../gigadb/app/tools/sync-dropbox/config-sources/rclone.conf.dist"
-          dest: /etc/sync_dropbox/rclone.conf
-          owner: centos
-          group: centos
-          mode: 0644
+    - name: Create dir for storing rclone config
+      ansible.builtin.file:
+        path: /etc/sync_dropbox
+        state: directory
+        owner: centos
+        group: centos
+        mode: '0777'
 
-      - name: Copy the wrapper script to sync dropbox from upstream to alt
-        ansible.builtin.copy:
-          src: "../../../../gigadb/app/tools/sync-dropbox/scripts/sync_dropbox.sh"
-          dest: /usr/local/bin/sync_dropbox
-          owner: centos
-          group: centos
-          mode: a+x
+    - name: Create directory for storing log output
+      ansible.builtin.file:
+        path: /var/log/gigadb
+        state: directory
+        mode: '0777'
+        owner: centos
+        group: centos
 
-      - name: get private key of upstream
-        ansible.builtin.uri:
-          url: "{{ gitlab_misc_url }}/variables/id_rsa_aws_hk_gigadb_pem"
-          method: GET
-          headers:
-            PRIVATE-TOKEN: "{{ gitlab_private_token }}"
-          body_format: json
-          status_code:
-            - 200
-        register: private_key_from_gl
+    - name: Copy rclone config for dropbox sync
+      ansible.builtin.copy:
+        src: "../../../../gigadb/app/tools/sync-dropbox/config-sources/rclone.conf.dist"
+        dest: /etc/sync_dropbox/rclone.conf
+        owner: centos
+        group: centos
+        mode: '0644'
 
-      - name: copy public key
-        ansible.builtin.copy:
-          content: "{{ public_key_from_gl.json.value  }}"
-          dest: "/home/centos/.ssh/id-rsa-aws-hk-gigadb.pem"
-          owner: "{{ centos }}"
-          group: "{{ centos }}"
-          mode: g-rw,o-rw
-    when: private_key_from_gl.status == 200
+    - name: Copy the wrapper script to sync dropbox from upstream to alt
+      ansible.builtin.copy:
+        src: "../../../../gigadb/app/tools/sync-dropbox/scripts/sync_dropbox.sh"
+        dest: /usr/local/bin/sync_dropbox
+        owner: centos
+        group: centos
+        mode: a+x
+
+    - name: Get then upstream private key
+      ansible.builtin.uri:
+        url: "{{ gitlab_misc_url }}/variables/id_rsa_aws_hk_gigadb_pem"
+        method: GET
+        headers:
+          PRIVATE-TOKEN: "{{ gitlab_private_token }}"
+        body_format: json
+      register: private_key_from_gl
+
+    - name: Copy the upstream private key
+      ansible.builtin.copy:
+        content: "{{ private_key_from_gl.json.value  }}"
+        dest: "/home/centos/.ssh/id-rsa-aws-hk-gigadb.pem"
+        owner: centos
+        group: centos
+        mode: g-rw,o-rw
 
 - name: Set up and configuration of rclone on bastion server
   hosts: name_bastion_server_{{gigadb_env}}*
