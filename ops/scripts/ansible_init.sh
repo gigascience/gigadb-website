@@ -76,6 +76,7 @@ echo "wasabi_secret_access_key = $wasabi_secret_access_key" >> ansible.propertie
 
 echo "deployment_target = $deployment_target" >> ansible.properties
 echo "gitlab_project = $gitlab_project" >> ansible.properties
+echo "gitlab_misc = cnhk-infra" >> ansible.properties
 echo "ssh_private_key_file = $aws_ssh_key" >> ansible.properties
 echo "gitlab_private_token= $GITLAB_PRIVATE_TOKEN" >> ansible.properties
 
