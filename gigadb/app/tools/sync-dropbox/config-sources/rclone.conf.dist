@@ -2,7 +2,7 @@
 type = sftp
 host = bastion-stg.gigadb.host
 user = centos
-key_file = config/id-rsa-aws-hk-gigadb.pem
+key_file = ~/.ssh/id-rsa-aws-hk-gigadb.pem
 shell_type = unix
 md5sum_command = md5sum
 sha1sum_command = sha1sum
@@ -11,7 +11,7 @@ sha1sum_command = sha1sum
 type = sftp
 host = bastion.gigadb.host
 user = centos
-key_file = config/id-rsa-aws-hk-gigadb.pem
+key_file = ~/.ssh/id-rsa-aws-hk-gigadb.pem
 shell_type = unix
 md5sum_command = md5sum
 sha1sum_command = sha1sum
