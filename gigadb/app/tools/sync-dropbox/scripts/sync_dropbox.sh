@@ -34,9 +34,10 @@ function set_up_logging() {
     currentPath=$(pwd)
     LOGDIR="$currentPath/logs"
     SHAREDATADIR="data/share/dropbox"
+    mkdir -p "${SHAREDATADIR}"
   fi
   LOGFILE="$LOGDIR/sync_dropbox_$(date +'%Y%m%d_%H%M%S').log"
-  mkdir -p "${LOGDIR}" "${SHAREDATADIR}"
+  mkdir -p "${LOGDIR}"
   touch "${LOGFILE}"
 }
 
