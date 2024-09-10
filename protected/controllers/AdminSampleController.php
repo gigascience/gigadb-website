@@ -23,7 +23,7 @@ class AdminSampleController extends Controller
 	{
 		return array(
 			array('allow', // admin only
-				'actions'=>array('admin','delete','index','view','create','update'),
+				'actions'=>array('admin','delete','index','view','create','update', 'checkAttribute'),
 				'roles'=>array('admin'),
 			),
                         array('allow', 'actions' => array('create1', 'choose'), 'users' => array('@')),
@@ -315,6 +315,43 @@ class AdminSampleController extends Controller
 		}
 	}
 
+    public function actionCheckAttribute()
+    {
+        if (!Yii::app()->request->isAjaxRequest) {
+            throw new CHttpException(400,'Invalid request. An Error occurred');
+        }
+
+        $errorMessage = [];
+        $attributesList = $_POST['attr'];
+
+        foreach (explode('",', $attributesList) as $attributes) {
+            $attributes = str_replace('"', '', $attributes);
+            $attributeData = explode('=', $attributes);
+            if (count($attributeData) === 2) {
+                $attributeData[0] = trim($attributeData[0]);
+                if ($attributeData[0] !== 'longitude' && $attributeData[0] !== 'latitude') {
+                    continue;
+                }
+
+                if(preg_match('/^[^0-9]*$/', $attributeData[1])) {
+                   $errorMessage[] = sprintf('Attribute value for %s doesn\'t match WGS84 decimal format.
+                    For geographic location (country, sea, region) use another attribute name', $attributeData[0]);
+                }
+
+                if ($attributeData[0] === 'latitude' && !preg_match('/^[-+]?(?:90(?:\.0+)?|[1-8]?\d(?:\.\d+)?)$/', $attributeData[1])) {
+                    $errorMessage[] = sprintf('Attribute value for %s doesn\'t match WGS84 decimal format', $attributeData[0]);
+                }
+
+                if ($attributeData[0] === 'longitude' && !preg_match('/^[-+]?(?:180(?:\.0+)?|1[0-7]\d(?:\.\d+)?|\d{1,2}(?:\.\d+)?)$/', $attributeData[1])) {
+                    $errorMessage[] = sprintf('Attribute value for %s doesn\'t match WGS84 decimal format', $attributeData[0]);
+                }
+            }
+        }
+
+        echo CJSON::encode(['messages' => $errorMessage]);
+        Yii::app()->end();
+    }
+
     /**
      * Upate sample attribute
      *
@@ -337,15 +374,16 @@ class AdminSampleController extends Controller
                     $attribute = Attributes::model()->findByAttributes(array('structured_comment_name' => trim($attributeData[0])));
                     if (!$attribute) {
                         $model->addError('error', 'Attribute name for the input ' . $attributeData[0] . "=" . $attributeData[1] . ' is not valid - please select a valid attribute name!');
-                    } else {
-                        // Let's save the new sample attribute
-                        $sampleAttribute->value = trim($attributeData[1]);
-                        $sampleAttribute->attribute_id = $attribute->id;
-                        if (!$sampleAttribute->save(true)) {
-                            foreach ($sampleAttribute->getErrors() as $errors) {
-                                foreach ($errors as $errorMessage) {
-                                    $model->addError('error', $errorMessage);
-                                }
+
+                        continue;
+                    }
+                    // Let's save the new sample attribute
+                    $sampleAttribute->value = trim($attributeData[1]);
+                    $sampleAttribute->attribute_id = $attribute->id;
+                    if (!$sampleAttribute->save()) {
+                        foreach ($sampleAttribute->getErrors() as $errors) {
+                            foreach ($errors as $errorMessage) {
+                                $model->addError('error', $errorMessage);
                             }
                         }
                     }
