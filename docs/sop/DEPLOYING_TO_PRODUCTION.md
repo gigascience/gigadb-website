@@ -246,7 +246,7 @@ Regularly, the data from both stores on the current production needs to be synch
 ## Deploying releases
 
 
-Both Gitlab projects track `gigasciencve/gigadb-website` repo on GitHub 
+Both Gitlab projects track `gigascience/gigadb-website` repo on GitHub 
 and will deploy to their respective staging production environments automatically.
 
 In both projects, deploying to the live production environment has to be triggered manually.
