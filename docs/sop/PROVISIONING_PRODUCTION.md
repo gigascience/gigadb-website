@@ -71,7 +71,7 @@ It's an interactive command and it will ask question you will need to answer lik
 
 Alternatively you can specify most of the requested information as parameters to the commands:
 ```  
-./../../scripts/tf_init.sh --project gigascience/upstream/gigadb-website --env staging --region ap-east-1 --ssh-key /path/to/your-ssh-key-for-hk-region --web-ec2-type t3.medium --bastion-ec2-type t3.medium --rds-ec2-type "t3.large"  
+../../../scripts/tf_init.sh --project gigascience/upstream/gigadb-website --env staging --region ap-east-1 --ssh-key /path/to/your-ssh-key-for-hk-region --web-ec2-type t3.medium --bastion-ec2-type t3.medium --rds-ec2-type "t3.large"  
 ```  
 
 You can now  provision production staging server using the appropriate profile:
@@ -88,7 +88,7 @@ AWS_PROFILE=Upstream terraform plan
 ```
 AWS_PROFILE=Upstream terraform apply
 ```
->**Note**: will make changes to the existing infrastructure and update the terraform state file, input `yest` if the changes are expected to make.
+>**Note**: will make changes to the existing infrastructure and update the terraform state file, input `yes` if the changes are expected to make.
 
 ```  
 AWS_PROFILE=Upstream terraform refresh  
@@ -181,7 +181,7 @@ It's an interactive command and it will ask question you will need to answer lik
 
 Alternatively you can specify most of the requested information as parameters to the commands:
 ```  
-./../../scripts/tf_init.sh --project gigascience/upstream/gigadb-website --env staging --region ap-southeast-2 --ssh-key /path/to/your-ssh-key-for-sydney-region --web-ec2-type t3.medium --bastion-ec2-type t3.medium --rds-ec2-type "t3.large"  
+../../../scripts/tf_init.sh --project gigascience/upstream/gigadb-website --env staging --region ap-southeast-2 --ssh-key /path/to/your-ssh-key-for-sydney-region --web-ec2-type t3.medium --bastion-ec2-type t3.medium --rds-ec2-type "t3.large"  
 ```  
 
 You can now  provision production staging server using the appropriate profile:
@@ -306,7 +306,7 @@ It's an interactive command and it will ask question you will need to answer lik
 
 Alternatively you can specify most of the requested information as parameters to the commands:
 ```  
-./../../scripts/tf_init.sh --project gigascience/upstream/gigadb-website --env live --region ap-east-1 --ssh-key /path/to/your-ssh-key-for-hk-region --web-ec2-type t3.medium --bastion-ec2-type t3.medium --rds-ec2-type "t3.large"  
+../../../scripts/tf_init.sh --project gigascience/upstream/gigadb-website --env live --region ap-east-1 --ssh-key /path/to/your-ssh-key-for-hk-region --web-ec2-type t3.medium --bastion-ec2-type t3.medium --rds-ec2-type "t3.large"  
 ```  
 
 You can now  provision production staging server using the appropriate profile:
@@ -448,7 +448,7 @@ env TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playb
 
 ### Deployment to a specific live environment
 
->**Important**: Only preform this section after checking the "Blue/green deployment of the release" of `docs/sop/DEPLOYING_TO_PRODUCTION.md`
+>**Important**: Only perform this section after checking the "Blue/green deployment of the release" of `docs/sop/DEPLOYING_TO_PRODUCTION.md`
 
 Trigger a pipeline for the release tag you want to deploy on the suitable Gitlab project:
 
