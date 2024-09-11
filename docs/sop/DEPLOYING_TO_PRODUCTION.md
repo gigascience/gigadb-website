@@ -189,12 +189,16 @@ You will need to look up the actual IP addresses corresponding to the EIP name i
 You can look up the corresponding Gitlab project and AWS region in the table at the top of this document.
 The DNS records are to be saved in the Cloudflare dashboard.
 
->**Note**: the EIP names are the same across both infrastructure
+>**Note**: the EIP names are almost the same across both infrastructure. But because the IAM roles differs and terraform derive the EIP name suffix from the IAM role,
+the EIP names' last component differs so to match the corresponding IAM role's name (`Gigadb` for Upstream and `GigadbAlt` for UpstreamAlt)
 >**Note**: TODO: We should create a command to perform DNS records swap so that we don't have to do it manually.
 
-#### Current production
+The next two sections assume that Upstream is the current production and UpstreamAlt is the hot stand-by.
+In practice, it could be the other way round.
 
-| FQDN | EIP                               |  environment |
+#### FQDN to use in Current production
+
+| FQDN to use | EIP for Upstream |  environment |
 | --- |-----------------------------------| --- |
 | gigadb.org | eip-gigadb-live-gigadb            |  live |
 | bastion.gigadb.org | eip-gigadb-bastion-live-gigadb    |  live |
@@ -206,18 +210,18 @@ The DNS records are to be saved in the Cloudflare dashboard.
 | portainer.staging.gigadb.org | eip-gigadb-staging-gigadb         |  staging |
 
 
-#### Hot Stand-by
+#### FQDN to use in Hot Stand-by
 
-| FQDN | EIP |  environment |
+| FQDN to use | EIP for UpstreamAlt |  environment |
 | --- | --- | --- |
-| alt-live.gigadb.host | eip-gigadb-live-gigadb  |  live |
-| bastion.alt-live.gigadb.host | eip-gigadb-bastion-live-gigadb |  live |
-| files.alt-live.gigadb.org | eip-gigadb-files-live-gigadb |  live |
-| portainer.alt-live.gigadb.host |  eip-gigadb-live-gigadb |  live |
-| alt-staging.gigadb.host | eip-gigadb-staging-gigadb  |  staging |
-| bastion.alt-staging.gigadb.host | eip-gigadb-bastion-staging-gigadb |  staging |
-| files.alt-staging.gigadb.host | eip-gigadb-files-staging-gigadb |  staging |
-| portainer.alt-staging.gigadb.host |  eip-gigadb-staging-gigadb |  staging |
+| alt-live.gigadb.host | eip-gigadb-live-gigadbhost|  live |
+| bastion.alt-live.gigadb.host | eip-gigadb-bastion-live-gigadbalt |  live |
+| files.alt-live.gigadb.host | eip-gigadb-files-live-gigadbalt |  live |
+| portainer.alt-live.gigadb.host |  eip-gigadb-live-gigadbalt |  live |
+| alt-staging.gigadb.host | eip-gigadb-staging-gigadbalt  |  staging |
+| bastion.alt-staging.gigadb.host | eip-gigadb-bastion-staging-gigadbalt |  staging |
+| files.alt-staging.gigadb.host | eip-gigadb-files-staging-gigadbalt |  staging |
+| portainer.alt-staging.gigadb.host |  eip-gigadb-staging-gigadbalt |  staging |
 
 ### Pipeline and provisioning
 
