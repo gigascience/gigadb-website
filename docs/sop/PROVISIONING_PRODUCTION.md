@@ -198,7 +198,7 @@ AWS_PROFILE=UpstreamAlt terraform plan
 ```
 AWS_PROFILE=UpstreamAlt terraform apply
 ```
->**Note**: will make changes to the existing infrastructure and update the terraform state file, input `yest` if the changes are expected to make.
+>**Note**: will make changes to the existing infrastructure and update the terraform state file, input `yes` if the changes are expected to make.
 
 ```  
 AWS_PROFILE=UpstreamAlt terraform refresh  
@@ -323,7 +323,7 @@ AWS_PROFILE=Upstream terraform plan
 ```
 AWS_PROFILE=Upstream terraform apply
 ```
->**Note**: will make changes to the existing infrastructure and update the terraform state file, input `yest` if the changes are expected to make.
+>**Note**: will make changes to the existing infrastructure and update the terraform state file, input `yes` if the changes are expected to make.
 
 ```  
 AWS_PROFILE=Upstream terraform refresh  
@@ -413,7 +413,7 @@ AWS_PROFILE=UpstreamAlt terraform plan
 ```
 AWS_PROFILE=UpstreamAlt terraform apply
 ```
->**Note**: will make changes to the existing infrastructure and update the terraform state file, input `yest` if the changes are expected to make.
+>**Note**: will make changes to the existing infrastructure and update the terraform state file, input `yes` if the changes are expected to make.
 
 ```  
 AWS_PROFILE=UpstreamAlt terraform refresh  
