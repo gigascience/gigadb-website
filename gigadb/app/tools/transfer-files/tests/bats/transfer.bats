@@ -2,15 +2,8 @@
 
 teardown () {
     echo "executing teardown code"
-    FILES="log/transfer_"*".log"
 
-    for file in $FILES
-    do
-      echo "Deleting $file"
-      if [ -f "$file" ] ; then
-          rm "$file"
-      fi
-    done
+    rm log/transfer.log
 
     # Reset the bucket state
     rclone --config config/rclone.conf delete wasabi:gigadb-datasets/dev/pub/10.5524/102001_103000/102480/
@@ -68,6 +61,8 @@ teardown () {
 @test "Copy files from dev to Wasabi in dry run mode" {
     run scripts/transfer.sh --doi 102480 --sourcePath tests/_data/102480 --wasabi
     [ "$status" -eq 0 ]
+    [[ "$output" =~ "More details about copying files to Wasabi bucket, please refer to:" ]]
+    [[ "$output" =~ "/log/transfer.log" ]]
 
     expected_lines=(
         "INFO  : Start copying files from dev to Wasabi"
@@ -79,7 +74,7 @@ teardown () {
 
     # Check the log
     for line in "${expected_lines[@]}"; do
-        run grep -F "$line" log/transfer_*.log
+        run grep -F "$line" log/transfer.log
         [ "$status" -eq 0 ]
     done
 
@@ -93,7 +88,7 @@ teardown () {
 
     # Verify no files copy to s3
     for line in "${unexpected_lines[@]}"; do
-        run grep -vF "$line" log/transfer_*.log
+        run grep -vF "$line" log/transfer.log
         [ "$status" -eq 0 ]
     done
 }
@@ -101,6 +96,8 @@ teardown () {
 @test "Copy files from dev to Wasabi with apply flag" {
     run scripts/transfer.sh --doi 102480 --sourcePath tests/_data/102480 --wasabi --apply
     [ "$status" -eq 0 ]
+    [[ "$output" =~ "More details about copying files to Wasabi bucket, please refer to:" ]]
+    [[ "$output" =~ "/log/transfer.log" ]]
 
     expected_lines=(
         "INFO  : Start copying files from dev to Wasabi"
@@ -112,7 +109,7 @@ teardown () {
 
     # Check the log
     for line in "${expected_lines[@]}"; do
-        run grep -F "$line" log/transfer_*.log
+        run grep -F "$line" log/transfer.log
         [ "$status" -eq 0 ]
     done
 
@@ -130,6 +127,8 @@ teardown () {
 @test "Copy files from dev to s3 in dry run mode" {
     run scripts/transfer.sh --doi 102480 --sourcePath tests/_data/102480 --backup
     [ "$status" -eq 0 ]
+    [[ "$output" =~ "More details about copying files to s3 bucket, please refer to:" ]]
+    [[ "$output" =~ "/log/transfer.log" ]]
 
     expected_lines=(
         "INFO  : Start copying files from dev to s3"
@@ -141,7 +140,7 @@ teardown () {
 
     # Check the log
     for line in "${expected_lines[@]}"; do
-        run grep -F "$line" log/transfer_*.log
+        run grep -F "$line" log/transfer.log
         [ "$status" -eq 0 ]
     done
 
@@ -155,7 +154,7 @@ teardown () {
 
     # Verify no copy files to Wasabi
     for line in "${unexpected_lines[@]}"; do
-        run grep -vF "$line" log/transfer_*.log
+        run grep -vF "$line" log/transfer.log
         [ "$status" -eq 0 ]
     done
 
@@ -164,6 +163,8 @@ teardown () {
 @test "Copy files from dev to s3 with apply flag" {
     run scripts/transfer.sh --doi 102480 --sourcePath tests/_data/102480 --backup --apply
     [ "$status" -eq 0 ]
+    [[ "$output" =~ "More details about copying files to s3 bucket, please refer to:" ]]
+    [[ "$output" =~ "/log/transfer.log" ]]
 
     expected_lines=(
         "INFO  : Start copying files from dev to s3"
@@ -175,7 +176,7 @@ teardown () {
 
     # Check the log
     for line in "${expected_lines[@]}"; do
-        run grep -F "$line" log/transfer_*.log
+        run grep -F "$line" log/transfer.log
         [ "$status" -eq 0 ]
     done
 
@@ -193,6 +194,9 @@ teardown () {
 @test "Copy files from dev to Wasabi and s3 in dry run mode" {
     run scripts/transfer.sh --doi 102480 --sourcePath tests/_data/102480 --wasabi --backup
     [ "$status" -eq 0 ]
+    [[ "$output" =~ "More details about copying files to Wasabi bucket, please refer to:" ]]
+    [[ "$output" =~ "More details about copying files to s3 bucket, please refer to:" ]]
+    [[ "$output" =~ "/log/transfer.log" ]]
 
     expected_lines=(
         "INFO  : Start copying files from dev to Wasabi"
@@ -209,7 +213,7 @@ teardown () {
 
     # Check the log
     for line in "${expected_lines[@]}"; do
-        run grep -F "$line" log/transfer_*.log
+        run grep -F "$line" log/transfer.log
         [ "$status" -eq 0 ]
     done
 }
@@ -217,6 +221,9 @@ teardown () {
 @test "Copy files from dev to Wasabi and s3 and apply flag" {
     run scripts/transfer.sh --doi 102480 --sourcePath tests/_data/102480 --wasabi --backup --apply
     [ "$status" -eq 0 ]
+    [[ "$output" =~ "More details about copying files to Wasabi bucket, please refer to:" ]]
+    [[ "$output" =~ "More details about copying files to s3 bucket, please refer to:" ]]
+    [[ "$output" =~ "/log/transfer.log" ]]
 
      expected_lines=(
         "INFO  : Start copying files from dev to Wasabi"
@@ -233,7 +240,7 @@ teardown () {
 
     # Check the log
     for line in "${expected_lines[@]}"; do
-        run grep -F "$line" log/transfer_*.log
+        run grep -F "$line" log/transfer.log
         [ "$status" -eq 0 ]
     done
 

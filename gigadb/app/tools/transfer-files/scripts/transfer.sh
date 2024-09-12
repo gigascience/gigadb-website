@@ -42,7 +42,7 @@ function set_up_logging() {
     currentPath=$(pwd)
     LOGDIR="$currentPath/log"
   fi
-  LOGFILE="$LOGDIR/transfer_$(date +'%Y%m%d_%H%M%S').log"
+  LOGFILE="$LOGDIR/transfer.log"
   mkdir -p "${LOGDIR}"
   touch "${LOGFILE}"
 }
@@ -134,6 +134,8 @@ function copy_to_wasabi () {
   else
     echo -e "$(date +'%Y/%m/%d %H:%M:%S') ERROR  : Problem with copying files to Wasabi bucket - rclone has exit code: ${rclone_wasabi_exit_code}" >> "${LOGFILE}"
   fi
+
+  echo -e "More details about copying files to Wasabi bucket, please refer to:" "${LOGFILE}"
 }
 
 function copy_to_s3 () {
@@ -161,6 +163,8 @@ function copy_to_s3 () {
     else
       echo -e "$(date +'%Y/%m/%d %H:%M:%S') ERROR  : Problem with copying files to s3 bucket - rclone has exit code: ${rclone_s3_exit_code}" >> "${LOGFILE}"
     fi
+
+    echo -e "More details about copying files to s3 bucket, please refer to:" "${LOGFILE}"
 }
 
 set_up_logging
