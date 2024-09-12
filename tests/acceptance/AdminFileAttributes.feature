@@ -136,3 +136,12 @@ Feature: A curator can manage file attributes in admin file update page
 #    And I press the button "Save"
 #    Then I am on "/adminFile/view/id/95354"
 #    And I should not see "File Attribute"
+
+  @ok @published
+  Scenario: See the "Save Attribute" button on admin file update page
+    Given I have signed in as admin
+    And I am on "/adminFile/update/id/13973"
+    When I press the button "Edit"
+    And I wait 2 seconds
+    Then I should see "Save Attribute"
+    And I should see a submit button "Save"
