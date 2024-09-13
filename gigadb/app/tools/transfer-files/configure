@@ -27,4 +27,4 @@ if [[ ! -d "${appSource}/config" ]];then
   mkdir -p "${appSource}/config"
 fi
 
-makeConfigs "${appSource}/config-sources/rclone.conf.dist" "${appSource}/config/rclone.conf" '$WASABI_ACCESS_KEY_ID:$WASABI_SECRET_ACCESS_KEY:$gigadb_datasetfiles_aws_access_key_id:$gigadb_datasetfiles_aws_secret_access_key'
+makeConfigs "${appSource}/config-sources/rclone.conf.dist" "${appSource}/config/rclone.conf"
