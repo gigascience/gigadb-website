@@ -23,3 +23,7 @@
     name: bzip2
     state: present
 
+- name: Install tree
+  dnf:
+    name: tree
+    state: present
