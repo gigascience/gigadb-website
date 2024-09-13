@@ -112,7 +112,7 @@ S3_DESTINATION_PATH="${S3_DATASETFILES_DIR}/${dir_range}/${doi}"
 
 function copy_to_wasabi () {
   echo -e "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Start copying files from $GIGADB_ENV to Wasabi" >> "${LOGFILE}"
-  rclone_wasabi_cmd="rclone copy --s3-no-check-bucket ${sourcePath} ${WASABI_DESTINATION_PATH}"
+  rclone_wasabi_cmd="rclone copy --s3-no-check-bucket --s3-profile wasabi-transfer ${sourcePath} ${WASABI_DESTINATION_PATH}"
 
   if [[ "${dry_run}" == true ]]; then
     rclone_wasabi_cmd+=" --dry-run"
@@ -140,7 +140,7 @@ function copy_to_wasabi () {
 
 function copy_to_s3 () {
     echo -e "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Start copying files from $GIGADB_ENV to s3" >> "${LOGFILE}"
-    rclone_s3_cmd="rclone copy --s3-no-check-bucket ${sourcePath} ${S3_DESTINATION_PATH}"
+    rclone_s3_cmd="rclone copy --s3-no-check-bucket --s3-profile aws-transfer ${sourcePath} ${S3_DESTINATION_PATH}"
 
     if [ "${dry_run}" == true ]; then
       rclone_s3_cmd+=" --dry-run"

@@ -6,8 +6,8 @@ teardown () {
     rm log/transfer.log
 
     # Reset the bucket state
-    rclone --config config/rclone.conf delete wasabi:gigadb-datasets/dev/pub/10.5524/102001_103000/102480/
-    rclone --config config/rclone.conf delete gigadb-datasetfiles:gigadb-datasetfiles-backup/dev/pub/10.5524/102001_103000/102480
+    rclone --config config/rclone.conf delete --s3-profile wasabi-transfer wasabi:gigadb-datasets/dev/pub/10.5524/102001_103000/102480/
+    rclone --config config/rclone.conf delete --s3-profile aws-transfer gigadb-datasetfiles:gigadb-datasetfiles-backup/dev/pub/10.5524/102001_103000/102480
 }
 
 @test "No DOI provided" {
@@ -68,7 +68,7 @@ teardown () {
         "INFO  : Start copying files from dev to Wasabi"
         "NOTICE: analysis_data/Tree_file.txt: Skipped copy as --dry-run is set (size 359)"
         "NOTICE: readme_102480.txt: Skipped copy as --dry-run is set (size 3.127Ki)"
-        "INFO  : Executed: rclone copy --s3-no-check-bucket tests/_data/102480 wasabi:gigadb-datasets/dev/pub/10.5524/102001_103000/102480 --dry-run --config config/rclone.conf"
+        "INFO  : Executed: rclone copy --s3-no-check-bucket --s3-profile wasabi-transfer tests/_data/102480 wasabi:gigadb-datasets/dev/pub/10.5524/102001_103000/102480 --dry-run --config config/rclone.conf"
         "INFO  : Successfully copied files to Wasabi bucket for DOI: 102480"
     )
 
@@ -82,7 +82,7 @@ teardown () {
         "INFO  : Start copying files from dev to s3"
         "NOTICE: readme_102480.txt: Skipped copy as --dry-run is set (size 3.127Ki)"
         "NOTICE: analysis_data/Tree_file.txt: Skipped copy as --dry-run is set (size 359)"
-        "INFO  : Executed: rclone copy --s3-no-check-bucket tests/_data/102480 gigadb-datasetfiles:gigadb-datasetfiles-backup/dev/pub/10.5524/102001_103000/102480 --dry-run --config config/rclone.conf"
+        "INFO  : Executed: rclone copy --s3-no-check-bucket --s3-profile aws-transfer tests/_data/102480 gigadb-datasetfiles:gigadb-datasetfiles-backup/dev/pub/10.5524/102001_103000/102480 --dry-run --config config/rclone.conf"
         "INFO  : Successfully copied files to s3 bucket for DOI: 102480"
     )
 
@@ -103,7 +103,7 @@ teardown () {
         "INFO  : Start copying files from dev to Wasabi"
         "INFO  : analysis_data/Tree_file.txt: Copied (new)"
         "INFO  : readme_102480.txt: Copied (new)"
-        "INFO  : Executed: rclone copy --s3-no-check-bucket tests/_data/102480 wasabi:gigadb-datasets/dev/pub/10.5524/102001_103000/102480 --config config/rclone.conf"
+        "INFO  : Executed: rclone copy --s3-no-check-bucket --s3-profile wasabi-transfer tests/_data/102480 wasabi:gigadb-datasets/dev/pub/10.5524/102001_103000/102480 --config config/rclone.conf"
         "INFO  : Successfully copied files to Wasabi bucket for DOI: 102480"
     )
 
@@ -114,13 +114,13 @@ teardown () {
     done
 
     # Capture and check the listing from the Wasabi bucket
-    run rclone --config config/rclone.conf ls wasabi:gigadb-datasets/dev/pub/10.5524/102001_103000/102480
+    run rclone --config config/rclone.conf --s3-profile wasabi-transfer ls wasabi:gigadb-datasets/dev/pub/10.5524/102001_103000/102480
     [ "$status" -eq 0 ]
     [[ "$output" =~ "359 analysis_data/Tree_file.txt" ]]
     [[ "$output" =~ "3202 readme_102480.txt" ]]
 
      # Check no files have been uploaded to s3 bucket that the output is empty
-     run rclone --config config/rclone.conf ls gigadb-datasetfiles:gigadb-datasetfiles-backup/dev/pub/10.5524/102001_103000/102480
+     run rclone --config config/rclone.conf --s3-profile aws-transfer ls gigadb-datasetfiles:gigadb-datasetfiles-backup/dev/pub/10.5524/102001_103000/102480
      [ -z "$output" ]
 }
 
@@ -134,7 +134,7 @@ teardown () {
         "INFO  : Start copying files from dev to s3"
         "NOTICE: readme_102480.txt: Skipped copy as --dry-run is set (size 3.127Ki)"
         "NOTICE: analysis_data/Tree_file.txt: Skipped copy as --dry-run is set (size 359)"
-        "INFO  : Executed: rclone copy --s3-no-check-bucket tests/_data/102480 gigadb-datasetfiles:gigadb-datasetfiles-backup/dev/pub/10.5524/102001_103000/102480 --dry-run --config config/rclone.conf"
+        "INFO  : Executed: rclone copy --s3-no-check-bucket --s3-profile aws-transfer tests/_data/102480 gigadb-datasetfiles:gigadb-datasetfiles-backup/dev/pub/10.5524/102001_103000/102480 --dry-run --config config/rclone.conf"
         "INFO  : Successfully copied files to s3 bucket for DOI: 102480"
     )
 
@@ -148,7 +148,7 @@ teardown () {
         "INFO  : Start copying files from dev to Wasabi"
         "INFO  : analysis_data/Tree_file.txt: Copied (new)"
         "INFO  : readme_102480.txt: Copied (new)"
-        "INFO  : Executed: rclone copy --s3-no-check-bucket tests/_data/102480 wasabi:gigadb-datasets/dev/pub/10.5524/102001_103000/102480 --config config/rclone.conf"
+        "INFO  : Executed: rclone copy --s3-no-check-bucket --s3-profile wasabi-transfer tests/_data/102480 wasabi:gigadb-datasets/dev/pub/10.5524/102001_103000/102480 --config config/rclone.conf"
         "INFO  : Successfully copied files to Wasabi bucket for DOI: 102480"
     )
 
@@ -170,7 +170,7 @@ teardown () {
         "INFO  : Start copying files from dev to s3"
         "INFO  : analysis_data/Tree_file.txt: Copied (new)"
         "INFO  : readme_102480.txt: Copied (new)"
-        "INFO  : Executed: rclone copy --s3-no-check-bucket tests/_data/102480 gigadb-datasetfiles:gigadb-datasetfiles-backup/dev/pub/10.5524/102001_103000/102480 --config config/rclone.conf"
+        "INFO  : Executed: rclone copy --s3-no-check-bucket --s3-profile aws-transfer tests/_data/102480 gigadb-datasetfiles:gigadb-datasetfiles-backup/dev/pub/10.5524/102001_103000/102480 --config config/rclone.conf"
         "INFO  : Successfully copied files to s3 bucket for DOI: 102480"
     )
 
@@ -181,13 +181,13 @@ teardown () {
     done
 
     # Capture and check the listing from the S3 bucket
-    run rclone --config config/rclone.conf ls gigadb-datasetfiles:gigadb-datasetfiles-backup/dev/pub/10.5524/102001_103000/102480
+    run rclone --config config/rclone.conf --s3-profile aws-transfer ls gigadb-datasetfiles:gigadb-datasetfiles-backup/dev/pub/10.5524/102001_103000/102480
     [ "$status" -eq 0 ]
     [[ "$output" =~ "359 analysis_data/Tree_file.txt" ]]
     [[ "$output" =~ "3202 readme_102480.txt" ]]
 
     # Check no files have been uploaded to Wasabi bucket that the output is empty
-    run rclone --config config/rclone.conf ls wasabi:gigadb-datasets/dev/pub/10.5524/102001_103000/102480/
+    run rclone --config config/rclone.conf --s3-profile wasabi-transfer ls wasabi:gigadb-datasets/dev/pub/10.5524/102001_103000/102480/
     [ -z "$output" ]
 }
 
@@ -202,12 +202,12 @@ teardown () {
         "INFO  : Start copying files from dev to Wasabi"
         "NOTICE: analysis_data/Tree_file.txt: Skipped copy as --dry-run is set (size 359)"
         "NOTICE: readme_102480.txt: Skipped copy as --dry-run is set (size 3.127Ki)"
-        "INFO  : Executed: rclone copy --s3-no-check-bucket tests/_data/102480 wasabi:gigadb-datasets/dev/pub/10.5524/102001_103000/102480 --dry-run --config config/rclone.conf"
+        "INFO  : Executed: rclone copy --s3-no-check-bucket --s3-profile wasabi-transfer tests/_data/102480 wasabi:gigadb-datasets/dev/pub/10.5524/102001_103000/102480 --dry-run --config config/rclone.conf"
         "INFO  : Successfully copied files to Wasabi bucket for DOI: 102480"
         "INFO  : Start copying files from dev to s3"
         "NOTICE: readme_102480.txt: Skipped copy as --dry-run is set (size 3.127Ki)"
         "NOTICE: analysis_data/Tree_file.txt: Skipped copy as --dry-run is set (size 359)"
-        "INFO  : Executed: rclone copy --s3-no-check-bucket tests/_data/102480 gigadb-datasetfiles:gigadb-datasetfiles-backup/dev/pub/10.5524/102001_103000/102480 --dry-run --config config/rclone.conf"
+        "INFO  : Executed: rclone copy --s3-no-check-bucket --s3-profile aws-transfer tests/_data/102480 gigadb-datasetfiles:gigadb-datasetfiles-backup/dev/pub/10.5524/102001_103000/102480 --dry-run --config config/rclone.conf"
         "INFO  : Successfully copied files to s3 bucket for DOI: 102480"
     )
 
@@ -229,12 +229,12 @@ teardown () {
         "INFO  : Start copying files from dev to Wasabi"
         "INFO  : analysis_data/Tree_file.txt: Copied (new)"
         "INFO  : readme_102480.txt: Copied (new)"
-        "INFO  : Executed: rclone copy --s3-no-check-bucket tests/_data/102480 wasabi:gigadb-datasets/dev/pub/10.5524/102001_103000/102480 --config config/rclone.conf"
+        "INFO  : Executed: rclone copy --s3-no-check-bucket --s3-profile wasabi-transfer tests/_data/102480 wasabi:gigadb-datasets/dev/pub/10.5524/102001_103000/102480 --config config/rclone.conf"
         "INFO  : Successfully copied files to Wasabi bucket for DOI: 102480"
         "INFO  : Start copying files from dev to s3"
         "INFO  : analysis_data/Tree_file.txt: Copied (new)"
         "INFO  : readme_102480.txt: Copied (new)"
-        "INFO  : Executed: rclone copy --s3-no-check-bucket tests/_data/102480 gigadb-datasetfiles:gigadb-datasetfiles-backup/dev/pub/10.5524/102001_103000/102480 --config config/rclone.conf"
+        "INFO  : Executed: rclone copy --s3-no-check-bucket --s3-profile aws-transfer tests/_data/102480 gigadb-datasetfiles:gigadb-datasetfiles-backup/dev/pub/10.5524/102001_103000/102480 --config config/rclone.conf"
         "INFO  : Successfully copied files to s3 bucket for DOI: 102480"
      )
 
@@ -245,13 +245,13 @@ teardown () {
     done
 
     # Capture and check the listing from the Wasabi bucket
-    run rclone --config config/rclone.conf ls wasabi:gigadb-datasets/dev/pub/10.5524/102001_103000/102480
+    run rclone --config config/rclone.conf --s3-profile wasabi-transfer ls wasabi:gigadb-datasets/dev/pub/10.5524/102001_103000/102480
     [ "$status" -eq 0 ]
     [[ "$output" =~ "359 analysis_data/Tree_file.txt" ]]
     [[ "$output" =~ "3202 readme_102480.txt" ]]
 
     # Capture and check the listing from the S3 bucket
-    run rclone --config config/rclone.conf ls gigadb-datasetfiles:gigadb-datasetfiles-backup/dev/pub/10.5524/102001_103000/102480
+    run rclone --config config/rclone.conf --s3-profile aws-transfer ls gigadb-datasetfiles:gigadb-datasetfiles-backup/dev/pub/10.5524/102001_103000/102480
     [ "$status" -eq 0 ]
     [[ "$output" =~ "359 analysis_data/Tree_file.txt" ]]
     [[ "$output" =~ "3202 readme_102480.txt" ]]
