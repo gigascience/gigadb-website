@@ -12,7 +12,7 @@ class MockupViewAction extends CAction
     {
 
         // Yii::log("MockupAction in DatasetController with uuid: $uuid","info");
-        // Retrieve mockup token data (email, validity and dataset DOI) based on url fragment 
+        // Retrieve mockup token data (email, validity and dataset DOI) based on url fragment
         $srv = new FileUploadService([
             "tokenSrv" => new TokenService([
                                   'jwtTTL' => 3600,
@@ -48,7 +48,7 @@ class MockupViewAction extends CAction
             $dao = new DatasetDAO(["identifier" => $tokenData["DOI"]]) ;
             $nextDataset =  $dao->getNextDataset() ?? $dao->getFirstDataset();
             $previousDataset =  $dao->getPreviousDataset() ?? $dao->getFirstDataset();
-    
+
             // Page configuration
             $cookies = Yii::app()->request->cookies;
             $flag=null;
@@ -73,8 +73,6 @@ class MockupViewAction extends CAction
         }
 
        Yii::app()->user->setFlash("mockupMode", "Mockup created for {$tokenData['reviewerEmail']}, valid for {$tokenData['monthsOfValidity']} month(s)");
-        $this->getController()->layout='new_column2';
-
         $this->getController()->metaData['private'] = true ; //Don't want searchengines to index this page
         $this->getController()->metaData['description'] = $assembly->getDataset()->description;
 
@@ -97,7 +95,7 @@ class MockupViewAction extends CAction
             'columns' => $sampleSettings["columns"],
             'flag' => $flag,
         ));
-        
+
     }
 }
 
