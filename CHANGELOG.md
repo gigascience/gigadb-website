@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Fix #1843: Add top margin to table footer in dataset page
 - Feat #1858: Relabel button that saves attribute in adminFile to avoid ambiguity
 - Feat #1849: Able to toggle expand dataset sample attributes field
 
