@@ -402,6 +402,22 @@
         owner: centos
         group: centos
 
+    - name: Create a .aws directory for the centos user
+      ansible.builtin.file:
+        path: "/home/centos/.aws"
+        state: directory
+        mode: '0755'
+        owner: centos
+        group: centos
+
+    - name: Create aws credentials file
+      ansible.builtin.template:
+        src: ../../../../ops/configuration/aws-conf/credentials.j2
+        dest: "/home/centos/.aws/credentials"
+        owner: centos
+        group: centos
+        mode: 0644
+
     - name: Copy wrapper script to backup files to wasabi bucket and s3 bucket
       ansible.builtin.copy:
         src: "../../../../gigadb/app/tools/transfer-files/scripts/transfer.sh"
