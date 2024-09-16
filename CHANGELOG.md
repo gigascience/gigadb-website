@@ -4,7 +4,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
-## v4.3.6 - 2024-09-13 - 2d935c496 - 
+- Feat #2: Upgrade Bootstrap from v3.3.7 to v3.4.1
+
+## v4.3.6 - 2024-09-13 - 2d935c496 -
 
 - Feat #1858: Relabel button that saves attribute in adminFile to avoid ambiguity
 - Feat #1849: Able to toggle expand dataset sample attributes field
