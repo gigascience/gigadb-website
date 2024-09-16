@@ -382,7 +382,7 @@ class AdminFileController extends Controller
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
         if (isset($_POST['edit_attr'])) {
-            $args = $_POST['FileAttributes'];
+            $args = $_POST['FileAttributes']['edit'];
             $fa = FileAttributes::model()->findByPk($args['id']);
             if($fa) {
                 $fa->attribute_id = $args['attribute_id'];
@@ -400,7 +400,7 @@ class AdminFileController extends Controller
             }
         }
         elseif(isset($_POST['submit_attr'])) {
-            $attrs = $_POST['FileAttributes'];
+            $attrs = $_POST['FileAttributes']['new'];
             $attribute->attribute_id = $attrs['attribute_id'];
             $attribute->value = $attrs['value'];
             if($attrs['unit_id'])

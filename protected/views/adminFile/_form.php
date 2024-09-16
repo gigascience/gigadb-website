@@ -125,7 +125,7 @@
                         $this->widget('application.components.controls.DropdownField', [
                             'form' => $form,
                             'model' => $attribute,
-                            'attributeName' => 'attribute_id',
+                            'attributeName' => '[new]attribute_id',
                             'listDataOptions' => [
                                 'data' => Attributes::model()->findAll(),
                                 'valueField' => 'id',
@@ -144,7 +144,7 @@
                         $this->widget('application.components.controls.TextField', [
                             'form' => $form,
                             'model' => $attribute,
-                            'attributeName' => 'value',
+                            'attributeName' => '[new]value',
                             'inputOptions' => [
                                 'class' => 'attr-form'
                             ],
@@ -157,7 +157,7 @@
                         $this->widget('application.components.controls.DropdownField', [
                             'form' => $form,
                             'model' => $attribute,
-                            'attributeName' => 'unit_id',
+                            'attributeName' => '[new]unit_id',
                             'listDataOptions' => [
                                 'data' => Unit::model()->findAll(),
                                 'valueField' => 'id',
