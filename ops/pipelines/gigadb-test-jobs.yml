@@ -1,4 +1,4 @@
-legacy_tests:
+.legacy_tests:
   stage: test
   variables:
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.runtests.yml"
