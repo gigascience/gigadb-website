@@ -481,6 +481,15 @@
         group: centos
         mode: g-rw,o-rw
 
+    - name: Set up cronjob to execute the wrapper script
+      ansible.builtin.cron:
+        name: "Sync efs dropbox from upstream to alt upstream"
+        minute: "00"
+        hour: "11"
+        user: "centos"
+        job: "/usr/local/bin/sync_dropbox --apply"
+
+
 - name: Set up and configuration of rclone on bastion server
   hosts: name_bastion_server_{{gigadb_env}}*
   tags:
