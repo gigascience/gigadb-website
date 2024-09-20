@@ -72,12 +72,12 @@ function start_sync () {
     staging)
       ENV=$(awk 'NR==1 {print $1}' ${RCLONE_CONF} | tr -d '[]')
       echo -e "$(date +'%Y/%m/%d %H:%M:%S') INFO : Start sync dropbox from ${ENV} to alt ${GIGADB_ENV}" | tee -a "${LOGFILE}"
-      rclone_sync_cmd="rclone sync production-staging:/share/dropbox/ /share/dropbox"
+      rclone_sync_cmd="/usr/local/bin/rclone sync production-staging:/share/dropbox/ /share/dropbox"
       ;;
     live)
       ENV=$(awk 'NR==10 {print $10}' ${RCLONE_CONF} | tr -d '[]')
       echo -e "$(date +'%Y/%m/%d %H:%M:%S') INFO : Start sync dropbox from ${ENV} to alt ${GIGADB_ENV}" | tee -a "${LOGFILE}"
-      rclone_sync_cmd="rclone sync production-live:/share/dropbox/ /share/dropbox"
+      rclone_sync_cmd="/usr/local/bin/rclone sync production-live:/share/dropbox/ /share/dropbox"
       ;;
   esac
 
