@@ -50,7 +50,7 @@ final class UpdateController extends Controller
     /**
      * Console command for updating md5 values for all files in a given dataset
      *
-     * ./yii update/file-sizes --doi=100039
+     * ./yii update/md5-values --doi=100039
      *
      * @return int
      */
