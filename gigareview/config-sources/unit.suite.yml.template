@@ -1,6 +1,6 @@
 suite_namespace: common\tests\unit
 actor: UnitTester
-bootstrap: false
+bootstrap: initdb.php
 modules:
     enabled:
         - Yii2:
