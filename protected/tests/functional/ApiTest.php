@@ -46,7 +46,7 @@ class ApiTest extends FunctionalTesting
         $feed = $this->getXMLWithSessionAndUrl($url);
 
         // Validate text presence on a page.
-        $this->assertEquals("Pygoscelis_adeliae.cds.gz", $feed->files->file[5]->name);
+        $this->assertEquals("Pygoscelis_adeliae.scaf.fa.gz", $feed->files->file[5]->name);
         $this->assertNull($feed->samples->sample);
         $this->assertNull($feed->dataset->title);
     }
@@ -60,7 +60,7 @@ class ApiTest extends FunctionalTesting
         // Validate text presence on a page.
         $this->assertEquals("Genomic data from Adelie penguin (Pygoscelis adeliae). ", $feed->dataset->title);
         $this->assertEquals("9238", $feed->samples->sample[0]->species->tax_id);
-        $this->assertEquals("Pygoscelis_adeliae.cds.gz", $feed->files->file[5]->name);
+        $this->assertEquals("Pygoscelis_adeliae.scaf.fa.gz", $feed->files->file[5]->name);
     }
 
     public function testItShouldOutputFullDatasetByDefault() {
@@ -72,7 +72,7 @@ class ApiTest extends FunctionalTesting
         // Validate text presence on a page.
         $this->assertEquals("Genomic data from Adelie penguin (Pygoscelis adeliae). ", $feed->dataset->title);
         $this->assertEquals("9238", $feed->samples->sample[0]->species->tax_id);
-        $this->assertEquals("Pygoscelis_adeliae.cds.gz", $feed->files->file[5]->name);
+        $this->assertEquals("Pygoscelis_adeliae.scaf.fa.gz", $feed->files->file[5]->name);
     }
 
     public function testItShouldSearchWithKeywordAndOutputDatasetOnly() {
@@ -94,7 +94,7 @@ class ApiTest extends FunctionalTesting
         $feed = $this->getXMLWithSessionAndUrl($url);
 
         // Validate text presence on a page.
-        $this->assertEquals("Pygoscelis_adeliae.cds.gz", $feed->gigadb_entry->files->file[5]->name);
+        $this->assertEquals("Pygoscelis_adeliae.scaf.fa.gz", $feed->gigadb_entry->files->file[5]->name);
         $this->assertNull($feed->gigadb_entry->samples->sample);
         $this->assertNull($feed->gigadb_entry->dataset->title);
     }

@@ -59,6 +59,20 @@ fi
 echo "Sourcing secrets"
 source "./.secrets"
 
+TARGET_FILE=".env.test"
+VARS=("GIGADB_USER" "GIGADB_HOST" "GIGADB_DB" "GIGADB_PORT" "GIGADB_TEST_PASSWORD")
+
+> "$TARGET_FILE"
+
+for VAR in "${VARS[@]}"; do
+    if [ "${!VAR+x}" ]; then
+        echo "$VAR=${!VAR}" >> "$TARGET_FILE"
+    else
+        echo "Variable $VAR not found"
+    fi
+done
+
+echo "Variables added to $TARGET_FILE"
 
 
 # If we are on staging environment override variable name with their remote environment counterpart
