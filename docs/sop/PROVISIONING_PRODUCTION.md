@@ -381,7 +381,7 @@ cd live
 
 Initialise Terraform, including creating a new state (or retrieving if existing) on Gitlab and copying terraform files to `live` environment:
 ```   
-../../../scripts/tf_init.sh --project gigascience/upstream/gigadb-website --env live  
+../../../scripts/tf_init.sh --project gigascience/upstream/alt-gigadb-website --env live  
  ```
 It's an interactive command and it will ask question you will need to answer like:
   ```
@@ -389,14 +389,14 @@ It's an interactive command and it will ask question you will need to answer lik
       
     You need to specify your GitLab username: <user input>  
       
-    You need to specify a backup file created by the files-url-updater tool: </path/to/giagdbv3_*_v9.3.5.backup> (optional)  
+    You need to specify a backup file created by the files-url-updater tool: </path/to/gigagdbv3_*_v9.3.5.backup> (optional)  
       
     You need to specify an AWS region: ap-southeast-2  
  ```  
 
 Alternatively you can specify most of the requrested information as parameters to the commands:
 ```  
-./../../scripts/tf_init.sh --project gigascience/upstream/gigadb-website --env live --region ap-southeast-2 --ssh-key /path/to/your-ssh-key-for-sydney-region --web-ec2-type t3.medium --bastion-ec2-type t3.medium --rds-ec2-type "t3.large"  
+../../../scripts/tf_init.sh --project gigascience/upstream/alt-gigadb-website --env live --region ap-southeast-2 --ssh-key /path/to/your-ssh-key-for-sydney-region --web-ec2-type t3.medium --bastion-ec2-type t3.medium --rds-ec2-type "t3.large"  
 ```  
 
 You can now  provision production staging server using the appropriate profile:
@@ -466,7 +466,7 @@ When the manual and automated jobs have all completed successfully, it will resu
 Next, you can perform the last step which is to load the environment's database server with data and install the tools on bastion servers needed by the users:
 
 ```
-env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories data_cliapp_playbook.yml -e "gigadb_env=staging"
+env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories data_cliapp_playbook.yml -e "gigadb_env=live"
 ```
 
 Finally, you need to warm the cache by following instructions from the wiki:
