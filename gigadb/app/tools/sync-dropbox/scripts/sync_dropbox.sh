@@ -29,16 +29,17 @@ fi
 # Setup logging
 function set_up_logging() {
   if [[ $(uname -n) =~ compute ]];then
-    LOGDIR="/var/log/gigadb/sync_dropbox"
+    LOGFILE="/var/log/gigadb/sync_dropbox.log"
   else
     currentPath=$(pwd)
     LOGDIR="$currentPath/logs"
+    LOGFILE="$LOGDIR/sync_dropbox.log"
+    mkdir -p "${LOGDIR}"
+    touch "${LOGFILE}"
+
     SHAREDATADIR="data/share/dropbox"
     mkdir -p "${SHAREDATADIR}"
   fi
-  LOGFILE="$LOGDIR/sync_dropbox_$(date +'%Y%m%d_%H%M%S').log"
-  mkdir -p "${LOGDIR}"
-  touch "${LOGFILE}"
 }
 
 

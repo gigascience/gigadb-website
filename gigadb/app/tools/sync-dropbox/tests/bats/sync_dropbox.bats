@@ -1,15 +1,7 @@
 teardown () {
     echo "executing teardown code"
-    FILES="logs/sync_dropbox_"*".log"
 
-    for file in $FILES
-    do
-      echo "Deleting $file"
-      if [ -f "$file" ] ; then
-          rm "$file"
-      fi
-    done
-
+    rm -rf logs/sync_dropbox.log
     rm -rf data/share/dropbox/*
 }
 
@@ -39,7 +31,7 @@ teardown () {
 
     # Check the log
     for line in "${expected_lines[@]}"; do
-        run grep -F "$line" logs/sync_dropbox_*.log
+        run grep -F "$line" logs/sync_dropbox.log
         [ "$status" -eq 0 ]
     done
 }
@@ -61,7 +53,7 @@ teardown () {
 
     # Check the log
     for line in "${expected_lines[@]}"; do
-        run grep -F "$line" logs/sync_dropbox_*.log
+        run grep -F "$line" logs/sync_dropbox.log
         [ "$status" -eq 0 ]
     done
 }
