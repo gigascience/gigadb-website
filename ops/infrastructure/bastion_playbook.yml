@@ -81,6 +81,55 @@
         group:
       when: backup_file
 
+- name: Create and update logrotate service
+  hosts: name_bastion_server_{{gigadb_env}}*
+  become: yes
+  tags:
+    - logrotate
+
+  tasks:
+    - name: Create gigadb group if it does not exist
+      ansible.builtin.group:
+        name: gigadb
+        state: present
+
+    - name: Add centos user to gigadb group
+      ansible.builtin.user:
+        name: centos
+        groups: gigadb
+        append: yes
+
+    - name: Create directory for storing log output
+      ansible.builtin.file:
+        path: /var/log/gigadb
+        state: directory
+        mode: '0755'
+        owner: root
+        group: gigadb
+
+    - name: Create logrotate config file for gigadb services
+      ansible.builtin.file:
+        path: /etc/logrotate.d/gigadb
+        state: touch
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Add in configuration
+      ansible.builtin.blockinfile:
+        path: /etc/logrotate.d/gigadb
+        block: |
+          /var/log/gigadb/*.log {  
+            daily  
+            missingok  
+            rotate 7  
+            compress  
+            delaycompress  
+            notifempty  
+            create 0640 root gigadb  
+            dateformat -%Y%m%d  
+          }
+
 - name: Setup files-url-updater so to load latest DB backup in RDS daily
   hosts: name_bastion_server_{{gigadb_env}}*
   tags:
@@ -440,14 +489,6 @@
         group: centos
         mode: '0777'
 
-    - name: Create directory for storing log output
-      ansible.builtin.file:
-        path: /var/log/gigadb
-        state: directory
-        mode: '0777'
-        owner: centos
-        group: centos
-
     - name: Copy rclone config for dropbox sync
       ansible.builtin.copy:
         src: "../../../../gigadb/app/tools/sync-dropbox/config-sources/rclone.conf.dist"
@@ -455,6 +496,14 @@
         owner: centos
         group: centos
         mode: '0644'
+
+    - name: Create log file
+      ansible.builtin.file:
+        path: /var/log/gigadb/sync_dropbox.log
+        state: touch
+        owner: root
+        group: gigadb
+        mode: '0664'
 
     - name: Copy the wrapper script to sync dropbox from upstream to alt
       ansible.builtin.copy:

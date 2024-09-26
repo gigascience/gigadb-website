@@ -225,5 +225,11 @@
     group: "{{ newuser }}"
     mode: g-rw,o-rw
 
+- name: add user to the gigadb group
+  ansible.builtin.user:
+    name: "{{ newuser }}"
+    groups: gigadb
+    append: yes
+
 - name: Restart systemd sshd service
   command: systemctl restart sshd.service
