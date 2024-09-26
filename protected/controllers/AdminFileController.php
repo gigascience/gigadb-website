@@ -493,27 +493,19 @@ class AdminFileController extends Controller
             throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
         }
 
-        $file = File::model()->findByPk($id);
+        if(!$file = File::model()->findByPk($id)) {
+            throw new CHttpException(404, 'File not found.');
+        }
+
 
         $transaction = Yii::app()->db->beginTransaction();
+        $criteria = new CDbCriteria();
+        $criteria->condition = 'file_id=:id';
+        $criteria->params = array(':id' => $id);
 
         try {
-            foreach ($file->fileAttributes as $fileAttribute) {
-                $isDeleted = $fileAttribute->delete();
-
-                if (!$isDeleted) {
-                    throw new CHttpException(500, 'There was an error while deleting the file');
-                }
-            }
-
-            foreach ($file->fileSamples as $fileSample) {
-                $isDeleted = $fileSample->delete();
-
-                if (!$isDeleted) {
-                    throw new CHttpException(500, 'There was an error while deleting the file');
-                }
-            }
-
+            FileAttributes::model()->deleteAll($criteria);
+            FileSample::model()->deleteAll($criteria);
             $isDeleted = $file->delete();
 
             if (!$isDeleted) {
