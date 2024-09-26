@@ -145,3 +145,17 @@ Feature: A curator can manage file attributes in admin file update page
     And I wait 2 seconds
     Then I should see "Save Attribute"
     And I should see a submit button "Save"
+
+  @ok @issue-2029
+  Scenario: When both the edit from and the new attribute form are open, duplicate are not created
+    Given I have signed in as admin
+    And I am on "/adminFile/update/id/13973"
+    And I press the button "Edit"
+    And I press the button "Show New Attribute Fields"
+    When I select "age" in menu "FileAttributes_new_attribute_id"
+    And I fill in the text input "FileAttributes[new][value]" with "35"
+    And I press the button "Add attribute"
+    Then I should see a file attribute table
+      | Attribute Name | Value     | Unit |
+      | last_modified  | 2013-7-15 |      |
+      | age            | 35        |      |

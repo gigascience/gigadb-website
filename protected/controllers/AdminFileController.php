@@ -382,7 +382,7 @@ class AdminFileController extends Controller
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
         if (isset($_POST['edit_attr'])) {
-            $args = $_POST['FileAttributes'];
+            $args = $_POST['FileAttributes']['edit'];
             $fa = FileAttributes::model()->findByPk($args['id']);
             if($fa) {
                 $fa->attribute_id = $args['attribute_id'];
@@ -400,7 +400,7 @@ class AdminFileController extends Controller
             }
         }
         elseif(isset($_POST['submit_attr'])) {
-            $attrs = $_POST['FileAttributes'];
+            $attrs = $_POST['FileAttributes']['new'];
             $attribute->attribute_id = $attrs['attribute_id'];
             $attribute->value = $attrs['value'];
             if($attrs['unit_id'])
@@ -483,40 +483,56 @@ class AdminFileController extends Controller
     /**
      * Deletes a particular model.
      * If deletion is successful, the browser will be redirected to the 'admin' page.
+     *
      * @param integer $id the ID of the model to be deleted
      */
-   public function actionDelete($id)
+   public function actionDelete(int $id)
     {
-
-        if (Yii::app()->request->isPostRequest) {
-            // we only allow deletion via POST request
-            $file = File::model()->findByPk($id);
-            // $file->fileSamples->delete();
-          foreach ($file->fileAttributes as $fileattributes) {
-              print_r($fileattributes);
-              $fileattributes->delete();
-
-          }
-         foreach ($file->fileSamples as $filesample) {
-              print_r($filesample);
-              $filesample->delete();
-
-          }
-
-         $file->delete();
-
-        }
-
-            // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-
-        if (!isset($_GET['ajax'])) {
-            $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
-        } else {
+        // we only allow deletion via POST request
+        if (!Yii::app()->request->isPostRequest) {
             throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
         }
 
-    }
+        $file = File::model()->findByPk($id);
 
+        $transaction = Yii::app()->db->beginTransaction();
+
+        try {
+            foreach ($file->fileAttributes as $fileAttribute) {
+                $isDeleted = $fileAttribute->delete();
+
+                if (!$isDeleted) {
+                    throw new CHttpException(500, 'There was an error while deleting the file');
+                }
+            }
+
+            foreach ($file->fileSamples as $fileSample) {
+                $isDeleted = $fileSample->delete();
+
+                if (!$isDeleted) {
+                    throw new CHttpException(500, 'There was an error while deleting the file');
+                }
+            }
+
+            $isDeleted = $file->delete();
+
+            if (!$isDeleted) {
+                throw new CHttpException(500, 'There was an error while deleting the file');
+            }
+        } catch(\Throwable $e) {
+            if ($transaction->getActive()) {
+                $transaction->rollback();
+            }
+
+            throw new CHttpException(500, 'There was an error while deleting the file');
+        }
+
+        if (!$transaction->getActive()) {
+            throw new CHttpException(500, 'There was an error while deleting the file');
+        }
+
+        $transaction->commit();
+    }
 
     /**
      * Lists all models.
