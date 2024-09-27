@@ -146,11 +146,11 @@ class AcceptanceTester extends \Codeception\Actor
     }
 
     /**
-     * @Then I should see a disabled file input for :file
+     * @Then I should see a file input for :file
      */
-    public function iShouldSeeADisbledFileInputFor($file)
+    public function iShouldSeeAFileInputFor($file)
     {
-        $this->seeElement('input', ['type' => 'file', 'name' => $file, 'aria-disabled' => 'true']);
+        $this->seeElement('input', ['type' => 'file', 'name' => $file]);
     }
 
     /**
@@ -387,5 +387,36 @@ class AcceptanceTester extends \Codeception\Actor
     public function iShouldSeeTheTableIsSortedByColumn($column, $order)
     {
         $this->seeElement('a', ['class' => "sort-link $order", 'text' => $column]);
+    }
+
+    /**
+     * @Then I should see the table with the following rows:
+     */
+    public function iShouldSeeTheTableWithTheFollowingRows(\Behat\Gherkin\Node\TableNode $table)
+    {
+        $rows = $table->getRows();
+        foreach ($rows as $index => $expectedRow) {
+            $expectedRow = implode(' ', $expectedRow);
+            $tableRows = $this->grabMultiple('table tr');
+            //remove headers and search bar
+            $tableRows = array_slice($tableRows, 2);
+
+            $this->assertEquals($expectedRow, $tableRows[$index]);
+        }
+    }
+
+    /**
+     * @Then I should not see the table with the following index :index
+     */
+    public function iShouldNotSeeTheTableWithTheFollowingIndex($index, \Behat\Gherkin\Node\TableNode $table)
+    {
+        $rows = $table->getRows();
+        $expectedRow = implode(' ', $rows[$index]);
+
+        $tableRows = $this->grabMultiple('table tr');
+        //remove headers and search bar
+        $tableRows = array_slice($tableRows, 2);
+
+        $this->assertNotEquals($expectedRow, $tableRows[$index]);
     }
 }

@@ -62,20 +62,20 @@ final class DatasetFilesUpdater extends Component
             }
             $tokens = explode("\t", $line);
             $size = (int)$tokens[0];
-            $filename = ltrim($tokens[1], './');
-            $filename = $this->doi . '/' . $filename;
-            
-            # Find file id for file to be updated
-            $result = (new \yii\db\Query())
-                ->select('id')
-                ->from('file')
-                ->where(['like', 'location', $filename])
+            $filepath = ltrim($tokens[1], './');
+            $filepath = $this->doi . '/' . $filepath;
+            # Find file to be updated
+            $file = File::find()
+                ->where(['dataset_id' => $d->id])
+                # Use % wildcard to ensure location ends with filename and
+                # another file with same filename in different directory is not
+                # accidentally updated
+                ->where("location LIKE :substr", array(':substr' => "%$filepath"))
                 ->one();
-            if($result) {
+            if($file) {
                 # Update file size
-                $f = File::find()->where(['id' => $result['id'], 'dataset_id' => $d->id])->one();
-                $f->size = $size;
-                if ($f->save()) {
+                $file->size = $size;
+                if ($file->save()) {
                     $success++;
                 }
             }
