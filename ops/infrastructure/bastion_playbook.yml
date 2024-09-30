@@ -126,7 +126,7 @@
             compress  
             delaycompress  
             notifempty  
-            create 0640 root gigadb  
+            create 0660 root gigadb  
             dateformat -%Y%m%d  
           }
 
