@@ -49,7 +49,6 @@ Available Options:
 
 # Default output directory
 if [[ $(uname -n) =~ compute ]];then
-  outdir='/app/readmeFiles'
   wasabi_upload=true
 else
   wasabi_upload=false
@@ -241,7 +240,7 @@ function main {
     # Conditional for how to generate readme file - dependant on user's environment
     if [[ $(uname -n) =~ compute ]];then
       . /home/centos/.bash_profile
-      docker run --rm -v /home/centos/readmeFiles:/app/readmeFiles registry.gitlab.com/$GITLAB_PROJECT/production_tool:$GIGADB_ENV /app/yii readme/create --doi "${doi}" --outdir "${outdir}" --bucketPath "${destination_path}"
+      docker run --rm -v "${WORKING_DIR}":/app/readmeFiles registry.gitlab.com/$GITLAB_PROJECT/production_tool:$GIGADB_ENV /app/yii readme/create --doi "${doi}" --outdir /app/readmeFiles --bucketPath "${destination_path}"
     else
       # Create readme file in current working directory by mounting this location at /app/readmeFiles in container
       docker-compose -f "${APP_DIR}"/docker-compose.yml run --rm -v "${WORKING_DIR}":/app/readmeFiles tool /app/yii readme/create --doi "${doi}" --outdir /app/readmeFiles --bucketPath "${destination_path}"
