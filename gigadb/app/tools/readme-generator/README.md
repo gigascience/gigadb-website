@@ -92,7 +92,7 @@ $ bats tests
 The readme information for a dataset can be viewed on standard output using its
 DOI:
 ```
-$ docker-compose run --rm tool /app/yii readme/create --doi 100142 --outdir /home/curators  --bucketPath wasabi:gigadb-datasets/dev/pub/10.5524
+$ docker-compose run --rm tool /app/yii readme/create --doi 100142 --outdir /app/readmeFiles  --bucketPath wasabi:gigadb-datasets/dev/pub/10.5524
 ```
 
 The `--bucketPath` variable is essential for executing the readme tool as a command line tool,
@@ -109,13 +109,13 @@ Information for the readme is retrieved from the `database` container that was
 spun up using the `up.sh` command above. The tool is able to connect to this
 container by connecting to the Docker `db-tier` network.
 
-Saving the readme information into a file requires a file path, for example:
+Saving the readme information into a file requires a file path, specified using `--outdir` parameter for example:
 ```
-$ docker-compose run --rm tool /app/yii readme/create --doi 100142 --outdir /home/curators --bucketPath wasabi:gigadb-datasets/dev/pub/10.5524
+$ docker-compose run --rm tool /app/yii readme/create --doi 100142 --outdir /app/readmeFiles --bucketPath wasabi:gigadb-datasets/dev/pub/10.5524
 ```
-Since `/home/curators` has been mounted to `runtime/curators` directory in
-`docker-compose.yml`, you should find a `readme_100142.txt` created there after
-running the above command.
+Since `/app` has been mounted to the `readme-generator` directory in
+`docker-compose.yml`, you should find a `readme_100142.txt` created in the
+`readmeFiles` directory after running the above command.
 
 
 ## Using readme generator tool via shell wrapper script in dev environment
