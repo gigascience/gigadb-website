@@ -8,16 +8,17 @@
 PATH=/usr/local/bin:$PATH
 export PATH
 
-# Allow all scripts to base themselves from directory where backup script 
-# is located
-APP_SOURCE=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+# Allow all scripts to base themselves in the directory where this createReadme.sh
+# script is located
+APP_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
-# Location where readme files will be created
-SOURCE_PATH="${APP_SOURCE}/runtime/curators"
+# Readme file will be created in the current working directory from where this 
+# createReadme.sh script is called
+WORKING_DIR=$(pwd)
 
 # Locations of rclone.conf
 BASTION_RCLONE_CONF_LOCATION='/home/centos/.config/rclone/rclone.conf'
-DEV_RCLONE_CONF_LOCATION='../wasabi-migration/config/rclone.conf'
+DEV_RCLONE_CONF_LOCATION="${APP_DIR}/wasabi-migration/config/rclone.conf"
 
 # Wasabi directory paths
 WASABI_DEV_DIRECTORY="wasabi:gigadb-datasets/dev/pub/10.5524"
@@ -51,7 +52,6 @@ if [[ $(uname -n) =~ compute ]];then
   outdir='/app/readmeFiles'
   wasabi_upload=true
 else
-  outdir='/home/curators'
   wasabi_upload=false
 fi
 
@@ -73,10 +73,6 @@ while [[ $# -gt 0 ]]; do
         ;;
     --batch)
         batch=$2
-        shift
-        ;;
-    --outdir)
-        outdir=$2
         shift
         ;;
     --wasabi)
@@ -106,7 +102,7 @@ fi
 # Set up logging
 # Globals:
 #   LOGDIR
-#   APP_SOURCE
+#   APP_DIR
 #   doi
 # Arguments:
 #   None
@@ -115,7 +111,7 @@ function set_up_logging() {
   if [[ $(uname -n) =~ compute ]];then
     LOGDIR="/home/centos/uploadLogs"
   else
-    LOGDIR="$APP_SOURCE/uploadDir"
+    LOGDIR="${APP_DIR}/uploadDir"
   fi
   LOGFILE="$LOGDIR/readme_${doi}_$(date +'%Y%m%d_%H%M%S').log"
   mkdir -p "${LOGDIR}"
@@ -126,7 +122,7 @@ function set_up_logging() {
 # Determine path to which directory in bucket readme file should be copied into
 # Globals:
 #   SOURCE_PATH
-#   APP_SOURCE
+#   APP_DIR
 #   destination_path
 #   use_live_data
 # Arguments:
@@ -247,12 +243,13 @@ function main {
       . /home/centos/.bash_profile
       docker run --rm -v /home/centos/readmeFiles:/app/readmeFiles registry.gitlab.com/$GITLAB_PROJECT/production_tool:$GIGADB_ENV /app/yii readme/create --doi "${doi}" --outdir "${outdir}" --bucketPath "${destination_path}"
     else
-      docker-compose run --rm tool /app/yii readme/create --doi "${doi}" --outdir "${outdir}" --bucketPath "${destination_path}"
+      # Create readme file in current working directory by mounting this location at /app/readmeFiles in container
+      docker-compose -f "${APP_DIR}"/docker-compose.yml run --rm -v "${WORKING_DIR}":/app/readmeFiles tool /app/yii readme/create --doi "${doi}" --outdir /app/readmeFiles --bucketPath "${destination_path}"
     fi
     exitCode=$?
 
     if [ "${exitCode}" -eq 74 ]; then
-      echo "$(date +'%Y/%m/%d %H:%M:%S') ERROR  : Could not save readme file for DOI ${doi} at ${outdir}" >> "$LOGFILE"
+      echo "$(date +'%Y/%m/%d %H:%M:%S') ERROR  : Could not save readme file for DOI ${doi} at ${WORKING_DIR}" >> "$LOGFILE"
       exit 1
     elif [ "${exitCode}" -eq 65 ]; then
       echo "$(date +'%Y/%m/%d %H:%M:%S') WARN  : No dataset for DOI ${doi}" >> "$LOGFILE"
@@ -261,7 +258,7 @@ function main {
         exit 0
       fi
     else
-      echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Created readme file for DOI ${doi} in ${outdir}/readme_${doi}.txt" >> "$LOGFILE"
+      echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Created readme file for DOI ${doi} in ${WORKING_DIR}/readme_${doi}.txt" >> "$LOGFILE"
 
       # Readme file can be copied into Wasabi if --wasabi flag is present
       if [ "${wasabi_upload}" ]; then
