@@ -95,17 +95,8 @@ java.log  javac.log  readme_102498.txt  readme_102498_20240727_042600.log
 ```
 The readme file will also have been uploaded into the correct dataset directory in Wasabi live bucket.  The file size and MD5 value for the readme file will also be updated in the database.
 
-> [!TIP]
-> To continue with the remainder of this workflow, create a directory at /share/dropbox/user5 using the `centos` user. This user5 directory will act as an example user dropbox.
-```
-[centos@ip-10-99-0-199 ~]$ mkdir /share/dropbox/user5
-```
-
-Add the following two files into the user5 directory:
-```
-[peterl@ip-10-99-0-142 ~]$ curl -L -o "/share/dropbox/user5/DLPFC_69_72_VNS_results.csv" "https://raw.githubusercontent.com/pli888/gigadb-website/curator-manual/gigadb/app/tools/files-metadata-console/tests/_data/dropbox/user5/DLPFC_69_72_VNS_results.csv"
-[peterl@ip-10-99-0-142 ~]$ curl -L -o "/share/dropbox/user5/E2_VNS_Ground_Truth.csv" "https://raw.githubusercontent.com/pli888/gigadb-website/curator-manual/gigadb/app/tools/files-metadata-console/tests/_data/dropbox/user5/E2_VNS_Ground_Truth.csv"
-```
+> [!NOTE]
+> To continue with the remainder of this workflow requires a user dropbox. We will be using the directory at `/share/dropbox/user5` that contains 2 files: `DLPFC_69_72_VNS_results.csv` and `E2_VNS_Ground_Truth.csv`. For the time being, the tech team will create new user dropboxes on request.
 
 The readme file in the uploadDir directory needs to be copied into the user dropbox:
 ```
