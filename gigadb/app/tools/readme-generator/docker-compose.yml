@@ -12,8 +12,6 @@ services:
       - ../../../:/gigadb
       # For accessing pgdmp database dumps
       - ../../../../sql:/app/sql
-      # Destination for readme files
-      - ./runtime/curators:/home/curators
     networks:
       # Connect to db-tier network in ops/docker-compose.yml
       - proxy-db-tier
