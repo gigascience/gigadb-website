@@ -6,9 +6,9 @@
 
 The bastion server provides a set of command-line tools which implement the above workflow for ingesting Excel spreadsheets and performing post-upload operations.
 
-## Ingesting Excel spreadsheets into GigaDB
+## 1. datasetUpload
 
-After you have logged into the bastion server (bastion.gigadb.host) using SSH, you can begin the process of Excel spreadsheet ingestion.
+After you have logged into the bastion server (bastion.gigadb.host) using SSH, you can begin the process of Excel spreadsheet ingestion into GigaDB.
 
 New datasets are uploaded into GigaDB using Excel spreadsheets. Dataset metadata is added into [Excel template file version 19](https://github.com/gigascience/gigadb-website/blob/develop/gigadb/app/tools/excel-spreadsheet-uploader/template/GigaDBUpload-template_v19.xls). This Excel file needs to placed in the `uploadDir` directory:
 ```
@@ -43,7 +43,7 @@ execution time: 130
 **End success: GigaDBUpload_v18_102498_TRR_202311_02_Cell_Clustering_Spatial_Transcriptomics.xls
 ```
 
-You should also check the corresponding dataset admin page at `http://gigadb.gigasciencejournal.com/adminDataset/update/id/<dataset_id>` which you will be able to find by entering the dataset's DOI, e.g. 102498 into the DOI column header in /adminDataset/admin page.
+You should also check the corresponding dataset admin page at `https://gigadb.org/adminDataset/update/id/<dataset_id>` which you will be able to find by entering the dataset's DOI, e.g. 102498 into the DOI column header in /adminDataset/admin page.
 
 Also, look at the dataset's samples and files in the relevant dataset samples and dataset files admin pages.
 
@@ -79,7 +79,7 @@ validation output: false
 
 > In the above example error, dataset_type is wrongly spelt as `Genomics` which breaks the ingestion process and therefore needs to be corrected.
 
-### Create readme file
+## 2. createReadme
 
 From your home directory on the bastion server, readme files for datasets can be created using the `createReadme` script by calling it with a DOI; `--wasabi --apply --use-live-data` are parameters required to copy the readme file into Wasabi:
 ```
@@ -98,12 +98,14 @@ The readme file will also have been uploaded into the correct dataset directory 
 > [!NOTE]
 > To continue with the remainder of this workflow requires a user dropbox. We will be using the directory at `/share/dropbox/user5` that contains 2 files: `DLPFC_69_72_VNS_results.csv` and `E2_VNS_Ground_Truth.csv`. For the time being, the tech team will create new user dropboxes on request.
 
+## 3. Copy `readme_doi.txt` file into user dropbox
+
 The readme file in the uploadDir directory needs to be copied into the user dropbox:
 ```
 [peterl@ip-10-99-0-142 ~]$ cp uploadDir/readme_102498.txt /share/dropbox/user5
 ```
 
-### Calculating MD5 checksum values and file sizes
+## 4. calculateChecksumSizes
 
 `$doi.md5` and `$doi.filesizes` provide information used to update dataaset files with md5 values and file size information in the database. The two files can be generated as follows:
 ```
@@ -137,7 +139,7 @@ total 8
 -rw-r--r--. 1 root root 178 Aug 27 06:59 102498.md5
 ```
 
-### Updating MD5 values and size information for dataset files in database
+## 5. Run `filesMetdaToDb` to update file with md5 values and sizes in database
 
 The `fileMetaToDb` script can use 102498.filesizes and 102498.md5 to update file metadata in the database:
 ```
@@ -151,9 +153,13 @@ Number of changes: 3
 Updated file metadata for 102498 in database
 ```
 
-You should check the dataset page in the file table to see if MD5 values and file sizes are visible.
+You should check the adminfile pages of the files associated with this dataset to see if MD5 values and file sizes are visible.
 
-### Using postUpload to create readme file and update file metadata in database
+## 6. Send gigadb.org link
+
+With the post upload operations complete, you need to go back to the page at https://gigadb.org/adminDataset/update/id/<dataset_id>` in order to continue curation work on the dataset. You will be able to find this link by entering the dataset's DOI, e.g. 102498 into the DOI column header in /adminDataset/admin page.
+
+## postUpload.sh: using a wrapper script to create readme file and update file metadata in database
 
 There is a script called postUpload which calls createReadme, calculateChecksumSizes and fileMetaToDb in turn so that these three tools do not have to be manually executed one after another:
 ```
@@ -184,7 +190,7 @@ Updated file metadata for 102498 in database
 
 To ensure the postUpload script has worked, you should perform checks using the dataset, sample and file admin pages to see if dataset metadata are correctly stored in the database.
 
-### compare: How to compare files on the user dropbox with the files in the dataset spreadsheet
+## compare: How to compare files on the user dropbox with the files in the dataset spreadsheet
 
 If there are discrepancies between the state of the filesystem in a user dropbox and the list of files in the dataset spreadsheet, it will cause errors in the processing of the dataset spreadsheet and the saving of files metadata to the database at a later stage of the process. It may be necessary to curate the actual files in user dropboxes for conformity to guidelines or organisational purposes.
 
