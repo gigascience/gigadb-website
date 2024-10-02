@@ -166,7 +166,7 @@ cd staging
 
 Initialise Terraform, including creating a new state (or retrieving if existing) on Gitlab and copying terraform files to `staging` environment:
 ```   
-../../../scripts/tf_init.sh --project gigascience/upstream/gigadb-website --env staging  
+../../../scripts/tf_init.sh --project gigascience/upstream/alt-gigadb-website --env staging  
  ```
 It's an interactive command and it will ask question you will need to answer like:
   ```
@@ -181,7 +181,7 @@ It's an interactive command and it will ask question you will need to answer lik
 
 Alternatively you can specify most of the requested information as parameters to the commands:
 ```  
-../../../scripts/tf_init.sh --project gigascience/upstream/gigadb-website --env staging --region ap-southeast-2 --ssh-key /path/to/your-ssh-key-for-sydney-region --web-ec2-type t3.medium --bastion-ec2-type t3.medium --rds-ec2-type "t3.large"  
+../../../scripts/tf_init.sh --project gigascience/upstream/alt-gigadb-website --env staging --region ap-southeast-2 --ssh-key /path/to/your-ssh-key-for-sydney-region --web-ec2-type t3.medium --bastion-ec2-type t3.medium --rds-ec2-type "t3.large"  
 ```  
 
 You can now  provision production staging server using the appropriate profile:
@@ -232,7 +232,7 @@ env TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playb
 ```
 
 
-At this stage you can trigger a pipeline for the `develop` branch on the `upstream/gigadb-website` Gitlab project:
+At this stage you can trigger a pipeline for the `develop` branch on the `upstream/alt-gigadb-website` Gitlab project:
 
 Go to [Gitlab Upstream pipeline page](https://gitlab.com/gigascience/upstream/alt-gigadb-website/-/pipelines)
 and run all the jobs in the staging build stage in your pipeline, and press "Run pipeline",
