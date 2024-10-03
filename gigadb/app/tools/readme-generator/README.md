@@ -122,27 +122,19 @@ Since `/app` has been mounted to the `readme-generator` directory in
 
 There is a shell script which can be used to call the readme tool:
 ```
-$ ./createReadme.sh --doi 100142 --outdir /home/curators
+$ ./createReadme.sh --doi 100142
 ```
 
 The `--bucketPath` variable here is not necessary, as it will be supplied to the
 tool inside the script.
 
-You should see a `readme_100142.txt` file created in runtime/curators directory.
+The `--outdir` variable here is not necessary because the readme file will be 
+created in your current working directory from where the createReadme.sh script
+is being called.
+
+You should see a `readme_100142.txt` file created in your current directory.
 There will also be a new log file created in uploadDir/ directory which is named:
 `readme_100142_yyyymmdd_hhmmss.log`.
-
-In the absence of an output directory `outdir` parameter value or if the
-directory cannot be created then an error message will be displayed:
-```
-$ ./createReadme.sh --doi 100142 --outdir /home/foo
-Cannot save readme file - Output directory does not exist or is not a directory
-```
-
-The corresponding log file will confirm this:
-```
-2023/09/01 10:51:43 ERROR  : Could not save readme file for DOI 100142 at /home/foo
-```
 
 An error message is also displayed if a DOI is provided for a dataset that does 
 not exist:
@@ -156,7 +148,7 @@ Dataset 1 not found
 The readme tool is also able to copy readme files it creates into Wasabi:
 ```
 # Execute wasabi upload in dry run mode
-$ ./createReadme.sh --doi 100142 --outdir /home/curators --wasabi
+$ ./createReadme.sh --doi 100142 --wasabi
 ```
 
 The latest log file will confirm dry run mode Wasabi upload:

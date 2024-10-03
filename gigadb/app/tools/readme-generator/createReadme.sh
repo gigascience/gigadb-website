@@ -108,11 +108,11 @@ fi
 #######################################
 function set_up_logging() {
   if [[ $(uname -n) =~ compute ]];then
-    LOGDIR="/home/centos/uploadLogs"
+    LOGDIR="/var/log/gigadb"
   else
     LOGDIR="${APP_DIR}/uploadDir"
   fi
-  LOGFILE="$LOGDIR/readme_${doi}_$(date +'%Y%m%d_%H%M%S').log"
+  LOGFILE="$LOGDIR/readme.log"
   mkdir -p "${LOGDIR}"
   touch "${LOGFILE}"
 }
@@ -179,12 +179,7 @@ function get_doi_directory_range() {
 #######################################
 function copy_to_wasabi() {
   # Create directory path to readme file
-  readme_file=""
-  if [[ $(uname -n) =~ compute ]];then
-    readme_file="/home/centos/readmeFiles/readme_${doi}.txt"
-  else
-    readme_file="${SOURCE_PATH}/readme_${doi}.txt"
-  fi
+  readme_file="${WORKING_DIR}/readme_${doi}.txt"
   doi_directory="${destination_path}/${dir_range}/${doi}/"
   
   # Check readme file exists
@@ -264,22 +259,6 @@ function main {
         dir_range=""
         get_doi_directory_range
         copy_to_wasabi
-      fi
-
-       # Copy files to user uploadDir
-       if [[ $(uname -n) =~ compute ]]; then
-         currentPath=$(pwd)
-         userOutputDir="$currentPath/uploadDir"
-         if [[ "$currentPath" != "/home/centos" ]]; then
-           if [[ -f "/home/centos/readmeFiles/readme_${doi}.txt" ]]; then
-             mv "/home/centos/readmeFiles/readme_${doi}.txt" "$userOutputDir/"
-             echo -e "\nThe readme_$doi.txt has been moved to: $userOutputDir"
-           else
-             echo -e "\nThe readme_$doi.txt is not found!"
-           fi
-           mv "$LOGFILE" "$userOutputDir"
-           echo -e "\nLog for copying readme_$doi.txt to wasabi bucket has been moved to: $userOutputDir"
-         fi
       fi
 
       # Exit if not running in batch mode
