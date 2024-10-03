@@ -18,7 +18,7 @@ WORKING_DIR=$(pwd)
 
 # Locations of rclone.conf
 BASTION_RCLONE_CONF_LOCATION='/home/centos/.config/rclone/rclone.conf'
-DEV_RCLONE_CONF_LOCATION="${APP_DIR}/wasabi-migration/config/rclone.conf"
+DEV_RCLONE_CONF_LOCATION="${APP_DIR}/../wasabi-migration/config/rclone.conf"
 
 # Wasabi directory paths
 WASABI_DEV_DIRECTORY="wasabi:gigadb-datasets/dev/pub/10.5524"
