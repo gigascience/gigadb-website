@@ -1,0 +1,8 @@
+1	./Pygoscelis_adeliae.scaf.fa.gz
+10	./phylogeny_study_update/Pygoscelis_adeliae.gff.gz
+100	./phylogeny_study_update/Pygoscelis_adeliae.pep.gz
+1000	./phylogeny_study_update/Pygoscelis_adeliae.cds.gz
+10000	./phylogeny_study_update/Pygoscelis_adeliae.RepeatMasker.out.gz
+100000	./phylogeny_study_update/Pygoscelis_adeliae.fa.gz
+8	./readme.txt
+88	./md5.sh

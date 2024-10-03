@@ -23,6 +23,8 @@ class DatasetFilesUpdaterTest extends \Codeception\Test\Unit
         }
         catch (Exception $e) {
             codecept_debug($e->getMessage());
+            # This assertion will fail due to error message
+            $this->assertEmpty($e->getMessage(), $e->getMessage());
         }
     }
 
