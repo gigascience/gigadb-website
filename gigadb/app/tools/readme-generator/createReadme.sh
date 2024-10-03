@@ -110,7 +110,7 @@ function set_up_logging() {
   if [[ $(uname -n) =~ compute ]];then
     LOGDIR="/var/log/gigadb"
   else
-    LOGDIR="${APP_DIR}/uploadDir"
+    LOGDIR="${APP_DIR}/log"
   fi
   LOGFILE="$LOGDIR/readme.log"
   mkdir -p "${LOGDIR}"
