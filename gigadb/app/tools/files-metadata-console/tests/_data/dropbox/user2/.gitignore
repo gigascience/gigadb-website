@@ -1,0 +1,7 @@
+# Ignore everything in this directory
+*
+# Except this file
+!.gitignore
+!Parrot.k31.Library1.txt
+!Parrot.k31.LibraryStatistics.txt
+!Parrot.k31.NumberOfSequences.txt

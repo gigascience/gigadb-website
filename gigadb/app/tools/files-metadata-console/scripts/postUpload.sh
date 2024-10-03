@@ -13,6 +13,10 @@ set -e
 # script is located
 APP_SOURCE=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
+# doi.filesizes and doi.md5 located in current working directory will be used by
+# tool to update dataset file metadata 
+WORKING_DIR=$(pwd)
+
 PATH=/usr/local/bin:$PATH
 export PATH
 
@@ -60,10 +64,10 @@ if [[ $(uname -n) =~ compute ]]; then  # Running on staging or live environment
 
   # Execute create readme script
   echo -e "Creating README file for ${doi}"
-  if [[ ${GIGADB_ENV} == "staging" ]]; then
+  if [[ "${GIGADB_ENV}" == "staging" ]]; then
     /usr/local/bin/createReadme --doi "${doi}" --outdir /app/readmeFiles --wasabi --apply
     echo -e "Created readme file and uploaded it to Wasabi gigadb-website/staging bucket directory"
-  elif [[ ${GIGADB_ENV} == "live" ]];then
+  elif [[ "${GIGADB_ENV}" == "live" ]];then
     /usr/local/bin/createReadme --doi "${doi}" --outdir /app/readmeFiles --wasabi --use-live-data --apply
     echo -e "Created readme file and uploaded it to Wasabi gigadb-website/live bucket directory"
   else
@@ -93,42 +97,25 @@ if [[ $(uname -n) =~ compute ]]; then  # Running on staging or live environment
 else  # Running on dev environment
 
   # Check user dropbox exists
-  if [ ! -d "${APP_SOURCE}/../../files-metadata-console/tests/_data/dropbox/${dropbox}" ]; then
+  if [ ! -d "${APP_SOURCE}"/../../files-metadata-console/tests/_data/dropbox/"${dropbox}" ]; then
     err "User dropbox at gigadb-website/app/tools/files-metadata-console/tests/_data/dropbox/${dropbox} does not exist"
     exit 1
   fi
 
-  # For creating readme file on dev environment
-  # /home/curators is mapped to gigadb/app/tools/readme-generator/runtime/curators directory
-  outputDir="/home/curators"
-
-  # Execute readme tool first to create readme-generator/runtime/curators
-  # directory which /home/curators is mapped to
   echo -e "Creating README file for ${doi}"
-  cd "${APP_SOURCE}/../../readme-generator"
-  # Create readme file and upload to Wasabi dev directory
-  ./createReadme.sh --doi "${doi}" --outdir "${outputDir}" --wasabi --apply
-  
+  "${WORKING_DIR}"/../../../../../readme-generator/createReadme.sh --doi "${doi}" --wasabi --apply
   # Stop execution if readme file does not exist
-  if [ ! -f "${APP_SOURCE}/../../readme-generator/runtime/curators/readme_${doi}.txt" ]; then
+  if [ ! -f "${WORKING_DIR}/readme_${doi}.txt" ]; then
     err "readme_${doi}.txt was not created"
     exit 1
   fi
 
-  # Copy readme file to dropbox
-  echo -e "Copying README file into dropbox ${dropbox}"
-  if [ "${outputDir}" == '/home/curators' ]; then
-    cp "${APP_SOURCE}/../../readme-generator/runtime/curators/readme_${doi}.txt" "${APP_SOURCE}/../../files-metadata-console/tests/_data/dropbox/${dropbox}"
-  fi
-
   # Create file sizes and md5 metadata files
   echo -e "Creating dataset metadata files for ${doi}"
-  cd "${APP_SOURCE}/../../files-metadata-console/tests/_data/dropbox/${dropbox}"
   docker-compose run --rm -w /gigadb/app/tools/files-metadata-console/tests/_data/dropbox/"${dropbox}" files-metadata-console ../../../../scripts/md5.sh "$doi"
 
   echo -e "Updating file sizes and MD5 values in database for ${doi}"
-  cd "${APP_SOURCE}/../../files-metadata-console/scripts"
-  ./filesMetaToDb.sh "${doi}"
+  "${WORKING_DIR}"/../../../../scripts/filesMetaToDb.sh "${doi}"
 
 #  Skip this because it requires dataset files to be in public directory
 #  echo -e "Checking file urls are valid for $DOI"
