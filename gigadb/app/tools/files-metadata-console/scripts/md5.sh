@@ -26,7 +26,3 @@ find . -type f ! -name "$MD5_FILE" ! -name "$FILESIZE_FILE" ! -name out.txt -exe
 tr " " "\t" < out.txt > "$FILESIZE_FILE"
 rm out.txt
 echo "Created $FILESIZE_FILE"
-
-# Copy files to location where calculateChecksumSizes can access them
-cp "$MD5_FILE" /var/share/gigadb/metadata/
-cp "$FILESIZE_FILE" /var/share/gigadb/metadata/
