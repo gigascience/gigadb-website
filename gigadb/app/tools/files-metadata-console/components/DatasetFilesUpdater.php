@@ -22,9 +22,6 @@ final class DatasetFilesUpdater extends Component
      */
     public string $doi;
 
-    /** @const string  GIGADB_METADATA_DIR Path in bastion server where doi.filesizes can be found */
-    const GIGADB_METADATA_DIR = '/var/share/gigadb/metadata/';
-
     /**
      * Update MD5 checksum attribute for all files in a dataset given its DOI
      *
@@ -40,7 +37,7 @@ final class DatasetFilesUpdater extends Component
         }
     
         # Fetch and parse dataset md5 file
-        $md5FilePath = DatasetFilesUpdater::GIGADB_METADATA_DIR . $this->doi . '.md5';
+        $md5FilePath = \Yii::$app->basePath . '/metadata/' . $this->doi . '.md5';
         if(!file_exists($md5FilePath)) {
             throw new Exception("$md5FilePath not found");
         }
@@ -97,7 +94,7 @@ final class DatasetFilesUpdater extends Component
             throw new Exception("No dataset found in database with DOI $this->doi");
         }
 
-        $filesizesPath = DatasetFilesUpdater::GIGADB_METADATA_DIR . $this->doi . '.filesizes';
+        $filesizesPath = \Yii::$app->basePath . '/metadata/' . $this->doi . '.filesizes';
         if(!file_exists($filesizesPath)) {
             throw new Exception("$filesizesPath not found" . PHP_EOL);
         }
