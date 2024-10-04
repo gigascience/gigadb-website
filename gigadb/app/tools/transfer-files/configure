@@ -21,10 +21,3 @@ set +a
 # If we are on staging environment override variable name with their remote environment counterpart
 echo "Current environment: $GIGADB_ENV"
 
-set -a
-
-if [[ ! -d "${appSource}/config" ]];then
-  mkdir -p "${appSource}/config"
-fi
-
-makeConfigs "${appSource}/config-sources/rclone.conf.dist" "${appSource}/config/rclone.conf"
