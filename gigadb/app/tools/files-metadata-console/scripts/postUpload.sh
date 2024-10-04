@@ -57,7 +57,6 @@ if [ -z "${doi}" ] || [ -z "${dropbox}" ]; then
 fi
 
 if [[ $(uname -n) =~ compute ]]; then  # Running on staging or live environment
-  outputDir="/home/centos/uploadLogs"
   
   # Source centos user's login shell settings
   . /home/centos/.bash_profile
@@ -65,29 +64,22 @@ if [[ $(uname -n) =~ compute ]]; then  # Running on staging or live environment
   # Execute create readme script
   echo -e "Creating README file for ${doi}"
   if [[ "${GIGADB_ENV}" == "staging" ]]; then
-    /usr/local/bin/createReadme --doi "${doi}" --outdir /app/readmeFiles --wasabi --apply
+    "${WORKING_DIR}"../../../usr/local/bin/createReadme --doi "${doi}" --wasabi --apply
     echo -e "Created readme file and uploaded it to Wasabi gigadb-website/staging bucket directory"
   elif [[ "${GIGADB_ENV}" == "live" ]];then
-    /usr/local/bin/createReadme --doi "${doi}" --outdir /app/readmeFiles --wasabi --use-live-data --apply
+    "${WORKING_DIR}"../../../usr/local/bin/createReadme --doi "${doi}" --wasabi --use-live-data --apply
     echo -e "Created readme file and uploaded it to Wasabi gigadb-website/live bucket directory"
   else
     echo -e "Environment is ${GIGADB_ENV} - Readme file creation is not required"
   fi
 
-  echo -e "Copying README file into dropbox ${dropbox}"
-  if [[ "$(logname)" != "centos" ]]; then
-    cp "/home/$(logname)/uploadDir/readme_${doi}.txt" "/share/dropbox/${dropbox}"
-  else
-    cp "/home/centos/readmeFiles/readme_${doi}.txt" "/share/dropbox/${dropbox}i"
-  fi
-
   # Create file sizes and md5 metadata files
   echo -e "Creating dataset metadata files for ${doi}"
   cd "/share/dropbox/${dropbox}"
-  sudo /usr/local/bin/calculateChecksumSizes "${doi}"
+  "${WORKING_DIR}"/../../../usr/local/bin/calculateChecksumSizes "${doi}"
 
   echo -e "Updating file sizes and MD5 values in database for ${doi}"
-  /usr/local/bin/filesMetaToDb "${doi}"
+  "${WORKING_DIR}"/../../../usr/local/bin/filesMetaToDb "${doi}"
 
 #  Skip this because it requires dataset files to be in public directory
 #  echo -e "Checking file urls are valid for $DOI"
