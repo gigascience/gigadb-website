@@ -21,6 +21,8 @@ base_images:
     - docker save -o debian-buster.tar debian:buster
     - docker pull debian:buster-slim
     - docker save -o debian-buster-slim.tar debian:buster-slim
+    - docker pull debian:bullseye
+    - docker save -o debian-bullseye.tar debian:bullseye
   artifacts:
     paths:
       - php-$PHP_VERSION-fpm-buster.tar
@@ -30,6 +32,7 @@ base_images:
       - nginx-$NGINX_VERSION-alpine.tar
       - node-$NODE_VERSION-buster-slim.tar
       - debian-buster.tar
+      - debian-bullseye.tar
       - debian-buster-slim.tar
   cache:
     key:
@@ -62,6 +65,7 @@ b_gigadb:
     - docker load -i nginx-$NGINX_VERSION-alpine.tar
     - docker load -i node-$NODE_VERSION-buster-slim.tar
     - docker load -i debian-buster.tar
+    - docker load -i debian-bullseye.tar
     - docker load -i debian-buster-slim.tar
     # login to gitlab container registry
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
