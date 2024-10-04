@@ -103,8 +103,6 @@ services:
       # access to File Upload Wizard model classes
       - ../../fuw/app:/app      
       - ../../gigadb:/gigadb
-      # access for md5 update tool
-      - ${APPLICATION}/gigadb/app/tools/files-metadata-console/tests/_data/var/share/gigadb/metadata:/var/share/gigadb/metadata
     expose:
       - "9000"
     extra_hosts:
@@ -230,8 +228,7 @@ services:
       # access to File Upload Wizard model classes
       - ../../fuw/app:/app
       - ../../gigadb:/gigadb
-      # access for md5 update tool
-      - ${APPLICATION}/gigadb/app/tools/files-metadata-console/tests/_data/var/share/gigadb/metadata:/var/share/gigadb/metadata
+
     networks:
       - web-tier
       - db-tier
