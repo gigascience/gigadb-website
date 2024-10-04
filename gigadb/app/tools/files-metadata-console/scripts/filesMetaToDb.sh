@@ -14,7 +14,7 @@ WORKING_DIR=$(pwd)
 
 DOI=$1
 
-if [ -z "$DOI" ];then
+if [ -z "${DOI}" ];then
   if [[ $(uname -n) =~ compute ]]; then
     echo -e "Usage: /usr/local/bin/filesMetaToDb <DOI>\n"
   else
@@ -26,16 +26,16 @@ fi
 if [[ $(uname -n) =~ compute ]];then
   . /home/centos/.bash_profile
 
-  echo -e "Updating md5 checksum values as file attributes for $DOI"
-  docker run --rm -v "${WORKING_DIR}":/gigadb/app/tools/files-metadata-console/metadata "registry.gitlab.com/$GITLAB_PROJECT/production-files-metadata-console:$GIGADB_ENV" ./yii update/md5-values --doi="$DOI"
-  echo -e "Updating file sizes for $DOI"
-  docker run --rm -v "${WORKING_DIR}":/gigadb/app/tools/files-metadata-console/metadata "registry.gitlab.com/$GITLAB_PROJECT/production-files-metadata-console:$GIGADB_ENV" ./yii update/file-sizes --doi="$DOI"
+  echo -e "Updating md5 checksum values as file attributes for ${DOI}"
+  docker run --rm -v "${WORKING_DIR}":/gigadb/app/tools/files-metadata-console/metadata "registry.gitlab.com/${GITLAB_PROJECT}/production-files-metadata-console:${GIGADB_ENV}" ./yii update/md5-values --doi="${DOI}"
+  echo -e "Updating file sizes for ${DOI}"
+  docker run --rm -v "${WORKING_DIR}":/gigadb/app/tools/files-metadata-console/metadata "registry.gitlab.com/${GITLAB_PROJECT}/production-files-metadata-console:${GIGADB_ENV}" ./yii update/file-sizes --doi="${DOI}"
 
 else
-  echo -e "Updating md5 checksum values as file attributes for $DOI"
-  docker-compose run --rm -v "${WORKING_DIR}":/gigadb/app/tools/files-metadata-console/metadata files-metadata-console ./yii update/md5-values --doi="$DOI"
+  echo -e "Updating md5 checksum values as file attributes for ${DOI}"
+  docker-compose run --rm -v "${WORKING_DIR}":/gigadb/app/tools/files-metadata-console/metadata files-metadata-console ./yii update/md5-values --doi="${DOI}"
   echo -e "Updating file sizes for $DOI"
-  docker-compose run --rm -v "${WORKING_DIR}":/gigadb/app/tools/files-metadata-console/metadata files-metadata-console ./yii update/file-sizes --doi="$DOI"
+  docker-compose run --rm -v "${WORKING_DIR}":/gigadb/app/tools/files-metadata-console/metadata files-metadata-console ./yii update/file-sizes --doi="${DOI}"
 fi
 
-echo -e "Updated file metadata for $DOI in database"
+echo -e "Updated file metadata for ${DOI} in database"
