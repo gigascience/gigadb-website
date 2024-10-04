@@ -76,8 +76,8 @@ rclone v1.67.0
 
 | key | value | env |
 | --- | --- | --- |
-| gigadb_dataset_metadata_aws_access_key_id | xxxxxxxxxxxxxxxxxx | All (default) |
-| gigadb_datasets_metadata_aws_secret_access_key | yyyyyyyyyyyyyyyyy | All (default) |
+| gigadb_datasetfiles_aws_access_key_id | xxxxxxxxxxxxxxxxxx | All (default) |
+| gigadb_datasetfiles_aws_secret_access_key | yyyyyyyyyyyyyyyyy | All (default) |
 
 
 ### In dev
@@ -96,8 +96,8 @@ aws_access_key_id = $WASABI_ACCESS_KEY_ID
 aws_secret_access_key = $WASABI_SECRET_ACCESS_KEY
 
 [aws-transfer]
-aws_access_key_id = $gigadb_dataset_metadata_aws_access_key_id
-aws_secret_access_key = $gigadb_datasets_metadata_aws_secret_access_key
+aws_access_key_id = $gigadb_datasetfiles_aws_access_key_id
+aws_secret_access_key = $gigadb_datasetfiles_aws_secret_access_key
 
 # execute the bats tests
 % bats tests/bats/transfer.bats
