@@ -67,7 +67,7 @@ services:
       cache_from:
         - "registry.gitlab.com/$CI_PROJECT_PATH/production_gigadb-worker:${GIGADB_ENV}"
       args:
-        - PHP_BASE_IMAGE_VERSION=$PHP_VERSION-cli-buster
+        - PHP_BASE_IMAGE_VERSION=$PHP_VERSION-cli-bullseye
         - INSTALL_NETCAT_JQ=true
         - INSTALL_IPROUTE2=true
 
@@ -78,7 +78,7 @@ services:
       cache_from:
         - "registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-console:${GIGADB_ENV}"
       args:
-        - PHP_BASE_IMAGE_VERSION=$PHP_VERSION-fpm-buster
+        - PHP_BASE_IMAGE_VERSION=$PHP_VERSION-fpm-bullseye
         - APP_PORT=9001
         - INSTALL_NETCAT_JQ=true
         - INSTALL_IPROUTE2=true
@@ -91,7 +91,7 @@ services:
       cache_from:
         - "registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-admin:${GIGADB_ENV}"
       args:
-        - PHP_BASE_IMAGE_VERSION=$PHP_VERSION-fpm-buster
+        - PHP_BASE_IMAGE_VERSION=$PHP_VERSION-fpm-bullseye
         - APP_PORT=9002
         - INSTALL_NETCAT_JQ=true
         - INSTALL_IPROUTE2=true
@@ -105,7 +105,7 @@ services:
       cache_from:
         - "registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-worker:${GIGADB_ENV}"
       args:
-        - PHP_BASE_IMAGE_VERSION=$PHP_VERSION-cli-buster
+        - PHP_BASE_IMAGE_VERSION=$PHP_VERSION-cli-bullseye
         - INSTALL_NETCAT_JQ=true
         - INSTALL_IPROUTE2=true
 
@@ -116,7 +116,7 @@ services:
       cache_from:
         - "registry.gitlab.com/$CI_PROJECT_PATH/production_fuw-public:${GIGADB_ENV}"
       args:
-        - PHP_BASE_IMAGE_VERSION=$PHP_VERSION-fpm-buster
+        - PHP_BASE_IMAGE_VERSION=$PHP_VERSION-fpm-bullseye
         - APP_PORT=9001
         - INSTALL_NETCAT_JQ=true
         - INSTALL_IPROUTE2=true

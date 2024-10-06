@@ -1,4 +1,4 @@
-FROM php:7.4-cli-buster
+FROM php:7.4-cli-bullseye
 
 # Always run apt update when start and after add new source list, then clean up at end.
 RUN apt-get update -yqq && \
@@ -14,7 +14,7 @@ RUN apt-get update -yq && \
         gnupg \
         wget \
         ca-certificates && \
-        apt-get clean 
+        apt-get clean
 
 # Install extensions for the postgresql and PHP integration
 RUN docker-php-ext-install pdo_pgsql
@@ -26,7 +26,7 @@ RUN if [ ${INSTALL_PG_CLIENT} = true ]; then \
     mkdir -p /usr/share/man/man1 && \
     mkdir -p /usr/share/man/man7 && \
     # Add the PostgreSQL Apt Repository
-    echo "deb http://apt.postgresql.org/pub/repos/apt buster-pgdg main" > /etc/apt/sources.list.d/pgdg.list && \
+    echo "deb http://apt.postgresql.org/pub/repos/apt bullseye-pgdg main" > /etc/apt/sources.list.d/pgdg.list && \
     wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - && \
     # Install the pgsql client
     apt-get update -yq && \
@@ -44,7 +44,7 @@ RUN docker-php-ext-configure zip \
     && test $EXPECTED_SIGNATURE = $ACTUAL_SIGNATURE  \
     && php composer-setup.php --install-dir=/usr/local/bin --filename=composer --quiet \
     && rm composer-setup.php \
-    && composer config --global repo.packagist composer https://packagist.org 
+    && composer config --global repo.packagist composer https://packagist.org
 
 # Bind mount Yii2 basic app
 VOLUME ["/app"]

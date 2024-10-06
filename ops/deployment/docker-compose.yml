@@ -93,7 +93,7 @@ services:
       - ${APPLICATION}/less:/var/www/less
       - ${APPLICATION}/css:/var/www/css
       - ${APPLICATION}/sql:/var/www/sql
-      - ${APPLICATION}/style-guide:/var/www/style-guide      
+      - ${APPLICATION}/style-guide:/var/www/style-guide
       - ${APPLICATION}/index.php:/var/www/index.php
       - ${APPLICATION}/composer.json:/var/www/composer.json
       - ${APPLICATION}/composer.lock:/var/www/composer.lock
@@ -101,7 +101,7 @@ services:
       - ${APPLICATION}/ops/configuration/php-conf/gigadb.pool.conf:/usr/local/etc/php-fpm.d/gigadb.pool.conf
       - ${APPLICATION}/ops/configuration/php-conf/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini
       # access to File Upload Wizard model classes
-      - ../../fuw/app:/app      
+      - ../../fuw/app:/app
       - ../../gigadb:/gigadb
     expose:
       - "9000"
@@ -276,7 +276,7 @@ services:
       - "fuw-public-api:172.16.238.10"
 
   csv-to-migrations:
-    image: node:$NODE_VERSION-buster-slim
+    image: node:$NODE_VERSION-bullseye-slim
     working_dir: /var/www/ops/scripts
     volumes:
       - ${APPLICATION}/:/var/www
@@ -348,7 +348,7 @@ services:
         ipv4_address: 172.16.238.11
     extra_hosts:
       - "gigadb.test:172.16.238.10"
-      - "fuw-admin-api:172.16.238.10"      
+      - "fuw-admin-api:172.16.238.10"
     environment: # to run headless, set false and comment out port 5900 above and make sure to pass --headless arg in acceptance.suite.yml
       START_XVFB: "false"
 
@@ -356,12 +356,12 @@ services:
     <<: *logging
     environment:
       GIGADB_ENV: $GIGADB_ENV
-      DOCKER_HOST: "tcp://host.docker.internal:2375"    
+      DOCKER_HOST: "tcp://host.docker.internal:2375"
     build:
       context: ../../fuw/app
       dockerfile: common/Dockerfile
       args:
-        - PHP_BASE_IMAGE_VERSION=$PHP_VERSION-fpm-buster
+        - PHP_BASE_IMAGE_VERSION=$PHP_VERSION-fpm-bullseye
         - APP_PORT=9002
         - INSTALL_OPCACHE=true
         - INSTALL_INTL=true
@@ -406,7 +406,7 @@ services:
       context: ../../fuw/app
       dockerfile: common/Dockerfile
       args:
-        - PHP_BASE_IMAGE_VERSION=$PHP_VERSION-fpm-buster
+        - PHP_BASE_IMAGE_VERSION=$PHP_VERSION-fpm-bullseye
         - APP_PORT=9001
         - INSTALL_OPCACHE=true
         - INSTALL_INTL=true
@@ -451,7 +451,7 @@ services:
       context: ../../fuw/app/console
       dockerfile: Worker-Dockerfile
       args:
-        - PHP_BASE_IMAGE_VERSION=$PHP_VERSION-cli-buster
+        - PHP_BASE_IMAGE_VERSION=$PHP_VERSION-cli-bullseye
         - INSTALL_OPCACHE=true
         - INSTALL_INTL=true
         - INSTALL_COMPOSER=true
@@ -465,7 +465,7 @@ services:
       - ~/.composer/cache:/root/.composer/cache:delegated
       # Mount source-code for development
       - ../../fuw/app:/app
-      - ../../gigadb/app:/gigadb-apps        
+      - ../../gigadb/app:/gigadb-apps
       # php config
       - ../../fuw/app/php-conf/fuw.ini:/usr/local/etc/php/conf.d/fuw.ini
       - ../../fuw/app/php-conf/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
@@ -480,7 +480,7 @@ services:
       # volume mount the location of public ftp directory
       - /tmp:/var/ftp/public
       # access to files and reference data
-      - ../../files:/var/www/files      
+      - ../../files:/var/www/files
     depends_on:
       - database
       - beanstalkd
@@ -495,7 +495,7 @@ services:
       context: ..
       dockerfile: packaging/Worker-Dockerfile
       args:
-        - PHP_BASE_IMAGE_VERSION=$PHP_VERSION-cli-buster
+        - PHP_BASE_IMAGE_VERSION=$PHP_VERSION-cli-bullseye
         - INSTALL_OPCACHE=true
         - INSTALL_INTL=true
         - INSTALL_COMPOSER=true
@@ -509,7 +509,7 @@ services:
       - ~/.composer/cache:/root/.composer/cache:delegated
       # Mount source-code for development
       - ../../fuw/app:/app
-      - ../../gigadb/app:/gigadb-apps        
+      - ../../gigadb/app:/gigadb-apps
       # php config
       - ../../fuw/app/php-conf/fuw.ini:/usr/local/etc/php/conf.d/fuw.ini
       - ../../fuw/app/php-conf/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
@@ -524,7 +524,7 @@ services:
       # volume mount the location of public ftp directory
       - /tmp:/var/ftp/public
       # access to files and reference data
-      - ../../files:/var/www/files      
+      - ../../files:/var/www/files
     depends_on:
       - database
       - beanstalkd
@@ -543,7 +543,7 @@ services:
       context: ../../fuw/app
       dockerfile: common/Dockerfile
       args:
-        - PHP_BASE_IMAGE_VERSION=$PHP_VERSION-fpm-buster
+        - PHP_BASE_IMAGE_VERSION=$PHP_VERSION-fpm-bullseye
         - APP_PORT=9001
         - INSTALL_OPCACHE=true
         - INSTALL_INTL=true
@@ -565,7 +565,7 @@ services:
       - ~/.composer/cache:/root/.composer/cache:delegated
       # Mount source-code for development
       - ../../fuw/app:/app
-      - ../../gigadb/app:/gigadb-apps      
+      - ../../gigadb/app:/gigadb-apps
       - ../../vendor:/gigadb-website/vendor
       - ../../sql:/gigadb-website/sql
       - ../../protected:/gigadb-website
@@ -587,7 +587,7 @@ services:
       # to run tests that interact with containers
       # - /var/run/docker.sock:/var/run/docker.sock:ro
       # volume mount the location of public ftp directory
-      - /tmp:/var/ftp/public      
+      - /tmp:/var/ftp/public
     networks:
       - web-tier
       - db-tier
@@ -634,7 +634,7 @@ services:
       - ${DATA_SAVE_PATH}/fuw/repo:/var/repo/
       - ${DATA_SAVE_PATH}/fuw/flags:/var/tmp/processing_flag
       # access to the ftp tokens so the upload's location attribute can be populated
-      - ${DATA_SAVE_PATH}/fuw/credentials:/var/private:ro    
+      - ${DATA_SAVE_PATH}/fuw/credentials:/var/private:ro
       # access to the fuw/console so tusd hooks can trigger upload update
       - ../../fuw/app:/fuw/app
       # access to data feeds
@@ -657,7 +657,7 @@ services:
       - ${DATA_SAVE_PATH}/fuw/incoming/tusd:/var/inbox/
       - ${DATA_SAVE_PATH}/fuw/repo:/var/repo/
       # access to the ftp tokens so the upload's location attribute can be populated
-      - ${DATA_SAVE_PATH}/fuw/credentials:/var/private    
+      - ${DATA_SAVE_PATH}/fuw/credentials:/var/private
       # access to the fuw/console so tusd hooks can trigger upload update
       - ../../fuw/app:/app
       # access to data feeds

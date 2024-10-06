@@ -10,12 +10,12 @@ check_PSR2:
   script:
     # Load Base image
     - docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
-    - docker load -i php-7_1-fpm-buster.tar
-    - docker load -i php-7_2-fpm-buster.tar
-    - docker load -i php-7_2-cli-buster.tar
+    - docker load -i php-7_1-fpm-bullseye.tar
+    - docker load -i php-7_2-fpm-bullseye.tar
+    - docker load -i php-7_2-cli-bullseye.tar
     - docker load -i alpine-3_14.tar
     - docker load -i nginx-1_21-alpine.tar
-    - docker load -i node-$NODE_VERSION-buster-slim.tar
+    - docker load -i node-$NODE_VERSION-bullseye-slim.tar
     # login to gitlab container registry
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
@@ -38,12 +38,12 @@ check_PHPDoc:
   script:
     # Load Base image
     - docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
-    - docker load -i php-7_1-fpm-buster.tar
-    - docker load -i php-7_2-fpm-buster.tar
-    - docker load -i php-7_2-cli-buster.tar
+    - docker load -i php-7_1-fpm-bullseye.tar
+    - docker load -i php-7_2-fpm-bullseye.tar
+    - docker load -i php-7_2-cli-bullseye.tar
     - docker load -i alpine-3_14.tar
     - docker load -i nginx-1_21-alpine.tar
-    - docker load -i node-$NODE_VERSION-buster-slim.tar
+    - docker load -i node-$NODE_VERSION-bullseye-slim.tar
     # login to gitlab container registry
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
