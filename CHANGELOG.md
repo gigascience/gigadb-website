@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Fix #376: Update Dockerfiles to use Debian Bullseye
 - Feat security#2: Upgrade Bootstrap from v3.3.7 to v3.4.1
 
 ## v4.3.7 - 2024-09-24 - 7709c8545 - live since 2024-09-26
