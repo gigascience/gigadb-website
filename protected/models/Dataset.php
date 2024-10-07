@@ -88,6 +88,7 @@ class Dataset extends CActiveRecord
             array('submitter_id, identifier, title, dataset_size, ftp_site', 'required'),
             array('submitter_id, image_id, publisher_id', 'numerical', 'integerOnly'=>true),
             array('dataset_size', 'numerical'),
+            array('identifier', 'unique', 'message' => 'Already exists'),
             array('identifier, excelfile_md5', 'length', 'max'=>32),
             array('title', 'length', 'max'=>300),
             array('upload_status', 'length', 'max'=>45),
@@ -532,38 +533,29 @@ class Dataset extends CActiveRecord
 
         $related_identifiers = $xml->addChild("relatedIdentifiers");
 
-        if ( isset($manuscripts) ){
-            foreach($manuscripts as $manuscript){
-                $related_identifier = $related_identifiers->addchild("relatedIdentifier", $manuscript->identifier);
-                $related_identifier->addAttribute('relatedIdentifierType','DOI');
-                $related_identifier->addAttribute('relationType','IsReferencedBy');
-            }
-
+        foreach($manuscripts as $manuscript){
+            $related_identifier = $related_identifiers->addchild("relatedIdentifier", $manuscript->identifier);
+            $related_identifier->addAttribute('relatedIdentifierType','DOI');
+            $related_identifier->addAttribute('relationType','IsReferencedBy');
         }
-        if ( isset($internal_links) ){
-            foreach($internal_links as $relation){
-                $related_identifier = $related_identifiers->addchild("relatedIdentifier",$relation->related_doi);
-                $related_identifier->addAttribute('relatedIdentifierType','DOI');
-                $related_identifier->addAttribute('relationType',$relation->relationship->name);
-            }
 
+        foreach($internal_links as $relation){
+            $related_identifier = $related_identifiers->addchild("relatedIdentifier",$relation->related_doi);
+            $related_identifier->addAttribute('relatedIdentifierType','DOI');
+            $related_identifier->addAttribute('relationType',$relation->relationship->name);
         }
 
         $funding_References = $xml->addChild("fundingReferences");
 
-        if (isset($fundings)){
-            foreach($fundings as $funding){
-
-                $funder =  Funder::model()-> findByAttributes(array('id'=>$funding->funder_id));
-                $fundingReference = $funding_References->addChild("fundingReference");
-                $fundingReference->addChild('funderName',str_replace(array('&','>','<','"'), array('&amp;','&gt;','&lt;','&quot;'), $funder->primary_name_display));
-                $funderidentifier= $fundingReference->addChild('funderIdentifier',$funder->uri);
-                $funderidentifier->addAttribute('funderIdentifierType','Crossref Funder ID');
-                $fundingReference->addChild('awardNumber',$funding->grant_award);
-
-            }
-
+        foreach($fundings as $funding){
+            $funder =  Funder::model()-> findByAttributes(array('id'=>$funding->funder_id));
+            $fundingReference = $funding_References->addChild("fundingReference");
+            $fundingReference->addChild('funderName',str_replace(array('&','>','<','"'), array('&amp;','&gt;','&lt;','&quot;'), $funder->primary_name_display));
+            $funderidentifier= $fundingReference->addChild('funderIdentifier',$funder->uri);
+            $funderidentifier->addAttribute('funderIdentifierType','Crossref Funder ID');
+            $fundingReference->addChild('awardNumber',$funding->grant_award);
         }
+
 
         //<sizes><size>
         // TODO: use the already installed Byte-Units library to do those size calculation

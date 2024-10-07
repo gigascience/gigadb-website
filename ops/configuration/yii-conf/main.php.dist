@@ -69,6 +69,9 @@ return CMap::mergeArray(array(
     ),
 
     'components'=>array(
+        'format'=>array(
+            'class'=>'application.extensions.CTypeFormatter'
+        ),
         'db'=>array(
             'class'=>'system.db.CDbConnection',
             'connectionString'=>"pgsql:dbname={$dbConfig['database']};host={$dbConfig['host']}",
