@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Fix #2048: Upgrade database Dockerfiles from buster to bullseye to fix failed pipeline jobs
 - Feat security#2: Upgrade Bootstrap from v3.3.7 to v3.4.1
 
 ## v00-kencho51-testing - 2024-10-02 - 1e19c816a -
