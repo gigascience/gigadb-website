@@ -1,19 +1,35 @@
 # Scripts
 
-## Calculation of md5 checksum values
+## md5.sh - Calculation of md5 checksum values
 
 ### Dev environment
 
+From a curator's perspective, the md5.sh script is meant to be executed from
+within a user dropbox directory.
 ```
-$ docker-compose run --rm -w /gigadb/app/tools/files-metadata-console/tests/_data/102480 files-metadata-console ../../../scripts/md5.sh 102480
+$ pwd
+path/to/gigadb/app/tools/files-metadata-console/tests/_data/dropbox/user4
+# Run tool
+$ ../../../../scripts/md5.sh 102480
 Created 102480.md5
 Created 102480.filesizes
 ```
 
-The md5.sh script will copy the $doi.md5 and $doi.filesizes files into the /var/share/gigadb/metadata/ directory. In the dev environment, the /var/share/gigadb/metadata/ directory has been mapped to the runtime/gigadb/metadata directory by docker-compose.yml. If you check this folder, it will have a copy of the 102480.md5 and 102480.filesizes files.
-
-To run all bats tests in tests/bats/ directory:
+If you list the contents in `tests/_data/user4`, you will see two new metadata
+files have been created:
 ```
+# Check metadata files have been created
+$ ls -lh
+-rw-r--r--  1 peterli  staff    68B Oct  3 19:07 102480.filesizes
+-rw-r--r--  1 peterli  staff   118B Oct  3 19:07 102480.md5
+drwxr-xr-x  3 peterli  staff    96B Oct  3 09:33 analysis_data
+-rw-r--r--  1 peterli  staff   3.1K Oct  3 15:38 readme_102480.txt
+```
+
+There is also a bats test script md5.sh:
+```
+$ pwd
+path/to/gigadb/app/tools/files-metadata-console
 $ bats tests/bats/md5.bats
  ✓ No DOI provided
  ✓ DOI provided
@@ -21,6 +37,47 @@ $ bats tests/bats/md5.bats
  ✓ Execute md5.sh within container
 
 4 tests, 0 failures
+```
+
+## filesMetaToDb.sh - update file sizes and md5 values for files in database
+
+### Dev environment
+
+Like md5.sh, the filesMetaToDb.sh script is designed for curators to use from
+within a user dropbox directory:
+```
+# Change directory
+$ cd gigadb/app/tools/files-metadata-console/tests/_data/dropbox/user2
+# Run script
+$ ../../../../scripts/filesMetaToDb.sh 100039
+Updating md5 checksum values as file attributes for 100039
+Number of changes: 3
+Updating file sizes for 100039
+Number of changes: 3
+Updated file metadata for 100039 in database
+```
+
+## postUpload.sh - Perform post upload operations to create readme file and update file metadata in database
+
+### Dev environment
+
+Like md5.sh and filesMetaToDb.sh, the postUpload.sh script is designed for
+curators to use from within a user dropbox directory:
+```
+# Change directory to a test user dropbox
+$ cd gigadb/app/tools/files-metadata-console/tests/_data/dropbox/user2
+# Run script
+$ ../../../../scripts/postUpload.sh --doi 100039 --dropbox user2
+Creating README file for 100039
+Creating dataset metadata files for 100039
+Created 100039.md5
+Created 100039.filesizes
+Updating file sizes and MD5 values in database for 100039
+Updating md5 checksum values as file attributes for 100039
+Number of changes: 4
+Updating file sizes for 100039
+Number of changes: 4
+Updated file metadata for 100039 in database
 ```
 
 ## Transformation of dataset ftp_site and file location URLs
