@@ -158,7 +158,7 @@ $ AWS_PROFILE=gigadb terraform apply
 $ AWS_PROFILE=gigadb terraform refresh
 ```
 
->**Note:** Core team members who are deploying on Upstream should use `AWS_PROFILE=upstream` or `AWS_PROFILE=upstreamAlt`
+>**Note:** Core team members who are deploying on Upstream should use `AWS_PROFILE=Upstream` or `AWS_PROFILE=UpstreamAlt`
 
 #### 2. Connect provisioning with Gitlab pipeline
 
@@ -174,7 +174,7 @@ You can now start a Gitlab pipeline for the git branch or tag you want to deploy
 ```
 $ env TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook  -i ../../inventories webapp_playbook.yml -e="gigadb_env=staging"
 $ env TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook  -i ../../inventories files_playbook.yml -e="gigadb_env=staging"
-$ env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories bastion_playbook.yml -e "gigadb_env=staging" -e "backupDate=latest"
+$ env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories bastion_playbook.yml -e "gigadb_env=staging"
 ```
 
 #### 4. Deploy the web-based application and the FTP server
@@ -190,11 +190,11 @@ For the FTP, trigger on the Gitlab pipeline the build job `PureFtpdBuildStaging`
 >**Note:** The `build_staging` and `sd_gigadb` jobs are automated, so if you take too long to perform step 3, the jobs may run and fails.
 >That's fine, you can just trigger the jobs manually whenever you have completed step 3.
 
-#### 5. Configure the bastion server and deploy the back-office subsystems
+#### 5. Configure the back-office subsystems
 
-Run the bastion playbook again to setup the rest of the backend infrastructure.
+Run the playbook to setup the rest of the backend infrastructure.
 ```
-$ env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories bastion_playbook.yml -e "gigadb_env=staging" -e "backupDate=latest"
+$ env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories data_cliapp_playbook.yml -e "gigadb_env=staging"
 ```
 
 ### Setting up your Live environment
@@ -235,7 +235,7 @@ This will save the information Terraform retrieved from the just created AWS res
 ```
 $ env TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook  -i ../../inventories webapp_playbook.yml -e="gigadb_env=live"
 $ env TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook  -i ../../inventories files_playbook.yml -e="gigadb_env=live"
-$ env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories bastion_playbook.yml -e "gigadb_env=live" -e "backupDate=latest"
+$ env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories bastion_playbook.yml -e "gigadb_env=live"
 ```
 
 #### 4. Deploy the web-based application and the FTP server
@@ -249,10 +249,10 @@ The application should be available at the url defined in $REMOTE_HOME_URL for t
 For the FTP, trigger on the Gitlab pipeline the build job `PureFtpdBuildLive`, and upon success trigger the deployment with `PureFtpdDeployLive`.
 
 
-#### 5. Configure the bastion server and deploy the back-office subsystems
+#### 5. Configure the back-office subsystems
 
 ```
-$ env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories bastion_playbook.yml -e "gigadb_env=live" -e "backupDate=latest"
+$ env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories data_cliapp_playbook.yml -e "gigadb_env=live"
 ```
 
 ### Tear down your environment

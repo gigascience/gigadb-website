@@ -13,8 +13,6 @@ set -a
 # It's the counterpart of the host variable APPLICATION
 APP_SOURCE=/var/www
 
-# Warning to dissuade from modify the generated composer.json file
-COMPOSER_WARNING="!! Auto-generated file, edit ops/php-conf/composer.json.dist instead"
 
 # read env variables in same directory, from a file called .env.
 # They are shared by both this script and Docker compose files.
@@ -100,13 +98,6 @@ fi
 
 echo "* ---------------------------------------------- *"
 
-
-# Configure composer.json with dependency versions
-
-SOURCE=${APP_SOURCE}/ops/configuration/php-conf/composer.json.dist
-TARGET=${APP_SOURCE}/composer.json
-VARS='$COMPOSER_WARNING:$YII_VERSION:$YII2_VERSION:$PHP_VERSION'
-envsubst $VARS < $SOURCE > $TARGET
 
 # Generate config files for gigadb-website application using sed
 

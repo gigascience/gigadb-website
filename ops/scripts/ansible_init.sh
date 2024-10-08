@@ -27,8 +27,8 @@ fi
 
 
 # Ensure we are in the environment-specific directory
-if [ "envs/$target_environment" != `pwd | rev | cut -d"/" -f 1,2 | rev` ];then
-  echo "You are not in the correct directory given the specified parameters. you should be in 'envs/$target_environment'"
+if [ "$target_environment" != `pwd | rev | cut -d"/" -f 1 | rev` ];then
+  echo "You are not in the correct directory given the specified parameters. you should be in '$target_environment'"
   exit 1
 fi
 
@@ -36,6 +36,7 @@ fi
 cp ../../webapp_playbook.yml .
 cp ../../files_playbook.yml .
 cp ../../bastion_playbook.yml .
+cp ../../data_cliapp_playbook.yml .
 cp ../../users_playbook.yml .
 cp ../../monitoring_playbook.yml .
 cp ../../bootstrap_playbook.yml .

@@ -17,28 +17,13 @@ legacy_tests:
       - ops/scripts/node_modules
       - gigadb/app/client/web/node_modules
   artifacts:
-    paths:
-      - tmp/
-      - protected/runtime/coverage/
-      - protected/runtime/application.log
-      - protected/runtime/phpunit-coverage.txt
-      - protected/runtime/clover.xml
-      - protected/config/main.php
-      - protected/config/test.php
-      - fuw/app/backend/runtime/
-      - fuw/app/frontend/runtime/
-      - fuw/app/console/runtime/
-      - fuw/app/common/tests/_output
-      - fuw/app/common/config/params-local.php
-      - gigadb/app/tools/files-url-updater/config/params.php
-      - .env
-      - .secrets
-      - composer.lock
-      - containers-data
-      - tests
-    when: always
+    untracked: true
+    when: on_failure
     expire_in: 1 week
+  dependencies: []
   script:
+    # login to gitlab container registry
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
     # appending dev variables at the end of the .env and .secrets
     - env | grep "^HOME_URL" >> $APPLICATION/.env
     - env | grep "^GIGADB_" >> $APPLICATION/.secrets
@@ -88,6 +73,8 @@ unit_func_tests:
     when: on_failure
     expire_in: 1 week
   script:
+    # login to gitlab container registry
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
     # appending dev variables at the end of the .env and .secrets
     - env | grep "^HOME_URL" >> $APPLICATION/.env
     - env | grep "^GIGADB_" >> $APPLICATION/.secrets
@@ -131,6 +118,8 @@ integration_tests:
       - gigadb/app/client/web/node_modules
   dependencies: []
   script:
+    # login to gitlab container registry
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
     # appending dev variables at the end of the .env and .secrets
     - env | grep "^HOME_URL" >> $APPLICATION/.env
     - env | grep "^GIGADB_" >> $APPLICATION/.secrets
@@ -173,28 +162,12 @@ a_gigadb:
       - ops/scripts/node_modules
       - gigadb/app/client/web/node_modules
   artifacts:
-    paths:
-      - tmp/
-      - protected/runtime/coverage/
-      - protected/runtime/application.log
-      - protected/runtime/phpunit-coverage.txt
-      - protected/runtime/clover.xml
-      - protected/config/main.php
-      - protected/config/test.php
-      - fuw/app/backend/runtime/
-      - fuw/app/frontend/runtime/
-      - fuw/app/console/runtime/
-      - fuw/app/common/tests/_output
-      - fuw/app/common/config/params-local.php
-      - gigadb/app/tools/files-url-updater/config/params.php
-      - .env
-      - .secrets
-      - composer.lock
-      - containers-data
-      - tests
-    when: always
+    untracked: true
+    when: on_failure
     expire_in: 1 week
   script:
+    # login to gitlab container registry
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
     # appending dev variables at the end of the .env and .secrets
     - env | grep "^HOME_URL" >> $APPLICATION/.env
     - env | grep "^GIGADB_" >> $APPLICATION/.secrets

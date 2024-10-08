@@ -1,14 +1,14 @@
 {
     "name": "gigascience/gigadb-website",
     "type": "yii-project",
-    "description": "GigaDB primarily serves as a repository to host data and tools associated with articles in GigaScience journal. (${COMPOSER_WARNING})",
+    "description": "GigaDB primarily serves as a repository to host data and tools associated with articles in GigaScience journal.",
     "homepage": "http://gigadb.org",
     "license": "GPL-3.0-or-later",
     "require": {
         "php": "7.4.33",
         "yidas/yii2-composer-bower-skip": "~2.0.13",
-        "yiisoft/yii": "~${YII_VERSION}",
-        "yiisoft/yii2": "~${YII2_VERSION}",
+        "yiisoft/yii": "~1.1.28",
+        "yiisoft/yii2": "~2.0.48.1",
         "yiisoft/yii2-swiftmailer": "~2.1.0",
         "phpmailer/phpmailer": "^6.0",
         "gabrielelana/byte-units": "^0.5",
