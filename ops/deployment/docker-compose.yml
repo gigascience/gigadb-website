@@ -543,7 +543,7 @@ services:
       context: ../../fuw/app
       dockerfile: common/Dockerfile
       args:
-        - PHP_BASE_IMAGE_VERSION=$PHP_VERSION-fpm-buster
+        - PHP_BASE_IMAGE_VERSION=$PHP_VERSION-fpm-bullseye
         - APP_PORT=9001
         - INSTALL_OPCACHE=true
         - INSTALL_INTL=true
