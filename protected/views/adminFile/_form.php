@@ -117,66 +117,7 @@
 
         <?php if (!$model->isNewRecord) { ?>
             <div class="control-group">
-                <button type="button" class="btn background-btn-o js-btn-attr" aria-expanded="false" aria-controls="newAttrForm" data-test="new-attr-btn" data-toggle="tooltip" title="Show and/or Add file attributes"><span class="js-btn-attr-label">Show New Attribute Fields</span> <i class="fa fa-caret-down js-caret-type" aria-hidden="true"></i></button>
-                <br />
-                <fieldset id="newAttrForm" class="js-new-attr mt-10 row" aria-label="New attribute fields" style="display:none;">
-                    <div class="col-xs-5">
-                        <?php
-                        $this->widget('application.components.controls.DropdownField', [
-                            'form' => $form,
-                            'model' => $attribute,
-                            'attributeName' => '[new]attribute_id',
-                            'listDataOptions' => [
-                                'data' => Attributes::model()->findAll(),
-                                'valueField' => 'id',
-                                'textField' => 'attribute_name',
-                            ],
-                            'inputOptions' => array(
-                                'empty' => 'Select name',
-                                'class' => 'attr-form js-new-attr-name',
-                            ),
-                            'tooltip' => 'Choose the appropriate attribute name from the dropdown menu'
-                        ]);
-                        ?>
-                    </div>
-                    <div class="col-xs-3">
-                        <?php
-                        $this->widget('application.components.controls.TextField', [
-                            'form' => $form,
-                            'model' => $attribute,
-                            'attributeName' => '[new]value',
-                            'inputOptions' => [
-                                'class' => 'attr-form'
-                            ],
-                            'tooltip' => 'The value of the chosen attribute for this file'
-                        ]);
-                        ?>
-                    </div>
-                    <div class="col-xs-4">
-                        <?php
-                        $this->widget('application.components.controls.DropdownField', [
-                            'form' => $form,
-                            'model' => $attribute,
-                            'attributeName' => '[new]unit_id',
-                            'listDataOptions' => [
-                                'data' => Unit::model()->findAll(),
-                                'valueField' => 'id',
-                                'textField' => 'name',
-                            ],
-                            'inputOptions' => array(
-                                'empty' => 'Select unit',
-                                'class' => 'attr-form'
-                            ),
-                            'tooltip' => 'If units should be specified, select the appropriate value from the dropdown menu, otherwise leave blank'
-                        ]);
-                        ?>
-                    </div>
-                    <div class="col-xs-12">
-                        <input type="submit" class="btn background-btn" name="submit_attr" value="Add attribute" />
-                    </div>
-                </fieldset>
-                <br />
-                <?php if ($model->fileAttributes) { ?>
+            <?php if ($model->fileAttributes) { ?>
                     <table class="table table-attr">
                         <caption>Attributes</caption>
                         <thead>
@@ -210,6 +151,77 @@
                         </tbody>
                     </table>
                 <?php } ?>
+                <br />
+                <button type="button" class="btn background-btn-o js-btn-attr" aria-expanded="false" aria-controls="newAttrForm" data-test="new-attr-btn" data-toggle="tooltip" title="Show and/or Add file attributes"><span class="js-btn-attr-label">Show New Attribute Fields</span> <i class="fa fa-caret-down js-caret-type" aria-hidden="true"></i></button>
+                <br />
+                <fieldset id="newAttrForm" class="js-new-attr mt-10 mb-20 row" aria-label="New attribute fields" style="display:none;">
+                    <div class="col-xs-5">
+                        <?php
+                        $this->widget('application.components.controls.DropdownField', [
+                            'form' => $form,
+                            'model' => $attribute,
+                            'attributeName' => '[new]attribute_id',
+                            'listDataOptions' => [
+                                'data' => Attributes::model()->findAll(),
+                                'valueField' => 'id',
+                                'textField' => 'attribute_name',
+                            ],
+                            'groupOptions' => [
+                                'class' => 'mb-10'
+                            ],
+                            'inputOptions' => array(
+                                'empty' => 'Select name',
+                                'class' => 'attr-form js-new-attr-name',
+                            ),
+                            'tooltip' => 'Choose the appropriate attribute name from the dropdown menu'
+                        ]);
+                        ?>
+                    </div>
+                    <div class="col-xs-3">
+                        <?php
+                        $this->widget('application.components.controls.TextField', [
+                            'form' => $form,
+                            'model' => $attribute,
+                            'attributeName' => '[new]value',
+                            'groupOptions' => [
+                                'class' => 'mb-10'
+                            ],
+                            'inputOptions' => [
+                                'class' => 'attr-form'
+                            ],
+                            'tooltip' => 'The value of the chosen attribute for this file'
+                        ]);
+                        ?>
+                    </div>
+                    <div class="col-xs-4">
+                        <?php
+                        $this->widget('application.components.controls.DropdownField', [
+                            'form' => $form,
+                            'model' => $attribute,
+                            'attributeName' => '[new]unit_id',
+                            'groupOptions' => [
+                                'class' => 'mb-10'
+                            ],
+                            'listDataOptions' => [
+                                'data' => Unit::model()->findAll(),
+                                'valueField' => 'id',
+                                'textField' => 'name',
+                            ],
+                            'inputOptions' => array(
+                                'empty' => 'Select unit',
+                                'class' => 'attr-form'
+                            ),
+                            'tooltip' => 'If units should be specified, select the appropriate value from the dropdown menu, otherwise leave blank'
+                        ]);
+                        ?>
+                    </div>
+                    <div class="col-xs-12">
+                      <div class="pull-right btns-row">
+                          <input type="submit" class="btn background-btn" name="submit_attr" value="Add attribute" />
+                      </div>
+                    </div>
+                    <br />
+                </fieldset>
             </div>
         <?php } ?>
         <div class="pull-right btns-row">
@@ -223,63 +235,85 @@
 </div>
 
 <script type="text/javascript">
-    $(document).ready(function() {
-        // Handle new attribute dropdown button
-        $('.js-btn-attr').click(function(e) {
-            e.preventDefault();
+  $(document).ready(function() {
+    const toggleBtn = $('.js-btn-attr');
+    const caret = $(toggleBtn).children(".js-caret-type");
+    const label = $(toggleBtn).children(".js-btn-attr-label");
+    const newAttrNameInput = $(".js-new-attr-name");
 
-            const caret = $(this).children(".js-caret-type");
-            const label = $(this).children(".js-btn-attr-label");
-            const newAttrNameInput = $(".js-new-attr-name");
-            const isExpanded = $(this).attr("aria-expanded") == "true";
+    function collapseNewAttrForm() {
+      $('.js-new-attr').hide();
+      $(toggleBtn).attr("aria-expanded", "false");
+      caret.removeClass("fa-caret-up").addClass("fa-caret-down");
+      label.text("Show New Attribute Fields");
+      newAttrNameInput.attr({
+          "required": false,
+          "aria-required": "false"
+      });
+    }
 
-            $('.js-new-attr').toggle();
-            $(this).attr("aria-expanded", !isExpanded);
-            caret.toggleClass("fa-caret-up fa-caret-down");
-            label.text(isExpanded ? "Show New Attribute Fields" : "Hide New Attribute Fields");
-            // NOTE: toggling the required attributes from the input on and off so that client-side validation is not triggered when the fields are hidden
-            newAttrNameInput.attr({
-                "required": !isExpanded,
-                "aria-required": (!isExpanded).toString()
-            });
-        })
+    function expandNewAttrForm() {
+      $('.js-new-attr').show();
+      $(toggleBtn).attr("aria-expanded", "true");
+      caret.removeClass("fa-caret-down").addClass("fa-caret-up");
+      label.text("Hide New Attribute Fields");
+      newAttrNameInput.attr({
+          "required": true,
+          "aria-required": "true"
+      });
+    }
 
-        // Handle attribute edit
-        $('.js-edit').click(function(e) {
-            e.preventDefault();
-            const id = $(this).attr('data');
-
-            const row = $('.row-edit-' + id);
-            if (id) {
-                $.post('/adminFile/editAttr', {
-                    'id': id
-                }, function(result) {
-                    if (result.success) {
-                        row.html(result.data);
-                        //$('.js-new-attr').remove();
-                    }
-                }, 'json');
-            }
-        })
-
-        // Handle attribute delete
-        $('.js-delete').click(function(e) {
-            e.preventDefault();
-            const id = $(this).attr('data');
-            const row = $('.row-edit-' + id);
-            if (id) {
-                $.post('/adminFile/deleteFileAttribute', {
-                    'id': id
-                }, function(result) {
-                    if (result) {
-                        // console.log(result);
-                    }
-                }, 'json');
-            }
-            // Give enough time to the database to update before reloading the page
-            setTimeout(() => {
-                window.location.reload();
-            }, 200);
-        })
+    function toggleNewAttrForm() {
+      const isExpanded = $('.js-btn-attr').attr("aria-expanded") === "true";
+      if (isExpanded) {
+          collapseNewAttrForm();
+      } else {
+          expandNewAttrForm();
+      }
+    }
+    // NOTE click listener on the document because the button is in a partial view
+    $(document).on('click', '.js-save-attr-edit-btn', function(e) {
+      collapseNewAttrForm();
+    });
+    $('.js-btn-attr').click(function(e) {
+        e.preventDefault();
+        toggleNewAttrForm()
     })
+
+    $('.js-edit').click(function(e) {
+        e.preventDefault();
+        const id = $(this).attr('data');
+
+        const row = $('.row-edit-' + id);
+        if (id) {
+            $.post('/adminFile/editAttr', {
+                'id': id
+            }, function(result) {
+                if (result.success) {
+                    row.html(result.data);
+                }
+            }, 'json');
+        }
+    })
+
+    // Handle attribute delete
+    $('.js-delete').click(function(e) {
+        e.preventDefault();
+        const id = $(this).attr('data');
+        const row = $('.row-edit-' + id);
+        if (id) {
+            $.post('/adminFile/deleteFileAttribute', {
+                'id': id
+            }, function(result) {
+                if (result) {
+                    // console.log(result);
+                }
+            }, 'json');
+        }
+        // Give enough time to the database to update before reloading the page
+        setTimeout(() => {
+            window.location.reload();
+        }, 200);
+    })
+  })
 </script>
