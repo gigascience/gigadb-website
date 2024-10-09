@@ -377,88 +377,81 @@ class AdminDatasetController extends Controller
      */
     public function actionMint()
     {
+        if (!$doi = Yii::$app->request->post('doi')) {
+            $result['error'] = 'You need to provide a DOI';
+            echo json_encode($result);
+            Yii::app()->end();
+        }
+
         $status_array = array('Submitted', 'UserStartedIncomplete', 'Curation');
 
         $mds_metadata_url= Yii::app()->params['mds_metadata_url'];
         $mds_doi_url= Yii::app()->params['mds_doi_url'];
-
         $mds_username = Yii::app()->params['mds_username'];
         $mds_password = Yii::app()->params['mds_password'];
         $mds_prefix = Yii::app()->params['mds_prefix'];
 
-        if (isset($_POST['doi'])) {
-            $doi = $_POST['doi'];
-            if (stristr($doi, "/")) {
-                $temp = explode("/", $doi);
-                $doi = $temp[1];
+        $result = [];
+
+        if (stristr($doi, "/")) {
+            $temp = explode("/", $doi);
+            $doi = $temp[1];
+        }
+
+        $doi = trim($doi);
+        $dataset = Dataset::model()->find("identifier=?", array($doi));
+        $client = Yii::$container->get('guzzleHttpClient');
+
+        if (!$dataset || in_array($dataset->upload_status, $status_array)) {
+            $result['error'] = 'Please, check the dataset and the status';
+            echo json_encode($result);
+            Yii::app()->end();
+        }
+
+        $doiResponse = $client->request('GET', $mds_doi_url . '/' . $mds_prefix . '/' . $doi, [
+            'http_errors' => false,
+            'auth'        => [$mds_username, $mds_password]
+        ]);
+        $result['doi_response'] = $doiResponse->getBody()->getContents();
+        $result['check_doi_status'] = $doiResponse->getStatusCode();
+
+        if ($result['check_doi_status'] === 200 || $result['check_doi_status'] === 204  || $result['check_doi_status'] === 404) {
+            $xml_data = $dataset->toXML();
+            $options = [
+                'headers'     => [
+                    'Content-Type' => 'text/xml; charset=UTF8',
+                ],
+                'auth'        => [$mds_username, $mds_password],
+                'body'        => $xml_data,
+                'http_errors' => false
+            ];
+            $updateMdResponse = $client->request('POST', $mds_metadata_url . '/' . $mds_prefix . '/' . $doi, $options);
+
+            $keyResponse = sprintf('%s_md_response', $result['check_doi_status'] === 200 ? 'update' : 'create');
+            $keyStatus = sprintf('%s_md_status', $result['check_doi_status'] === 200 ? 'update' : 'create');
+            $result[$keyResponse] = $updateMdResponse->getBody()->getContents();
+            $result[$keyStatus] = $updateMdResponse->getStatusCode();
+
+            if (201 === $updateMdResponse->getStatusCode() && 404 === $result['check_doi_status']) {
+                $result['doi_data'] = 'doi=' . $mds_prefix . '/' . $doi . "\n" . 'url=http://gigadb.org/dataset/' . $doi;
+                $options = [
+                    'headers'     => [
+                        'Content-Type' => 'text/plain; charset=UTF-8',
+                    ],
+                    'auth'        => [$mds_username, $mds_password],
+                    'body'        => $result['doi_data'],
+                    'http_errors' => false
+                ];
+
+                $response = $client->request('PUT', $mds_doi_url. '/' . $mds_prefix . '/' . $doi, $options);
+
+                $result['create_doi_response'] = $response->getBody()->getContents();
+                $result['create_doi_status'] = $response->getStatusCode();
             }
+        }
 
-            $doi = trim($doi);
-            $dataset = Dataset::model()->find("identifier=?", array($doi));
-
-            if ($dataset && ! in_array($dataset->upload_status, $status_array) ) {
-                $checkMeta = curl_init();
-                curl_setopt($checkMeta, CURLOPT_URL, $mds_metadata_url . '/' . $mds_prefix . '/' . $doi);
-                curl_setopt($checkMeta, CURLOPT_RETURNTRANSFER, 1);
-                curl_setopt($checkMeta, CURLOPT_USERPWD, $mds_username . ":" . $mds_password);
-                $checkMetaResponse = curl_exec($checkMeta);
-                $result['metadata_response'] = $checkMetaResponse;
-                $result['check_metadata_status'] = curl_getinfo($checkMeta, CURLINFO_HTTP_CODE);
-                curl_close($checkMeta);
-
-                $checkDoi = curl_init();
-                curl_setopt($checkDoi, CURLOPT_URL, $mds_doi_url. '/' . $mds_prefix . '/' . $doi);
-                curl_setopt($checkDoi, CURLOPT_RETURNTRANSFER, 1);
-                curl_setopt($checkDoi, CURLOPT_USERPWD, $mds_username . ":" . $mds_password);
-                $checkDoiResponse = curl_exec($checkDoi);
-                $result['doi_response'] = $checkDoiResponse;
-                $result['check_doi_status'] = curl_getinfo($checkDoi, CURLINFO_HTTP_CODE);
-                curl_close($checkDoi);
-            }
-
-            if ( $result['check_metadata_status'] === 200 && $result['check_doi_status'] === 200 ) {
-                $xml_data = $dataset->toXML();
-                $updateMeta= curl_init();
-                curl_setopt($updateMeta, CURLOPT_URL, $mds_metadata_url . '/' . $mds_prefix . '/' . $doi);
-                curl_setopt($updateMeta, CURLOPT_POST, 1);
-                curl_setopt($updateMeta, CURLOPT_RETURNTRANSFER, 1);
-                curl_setopt($updateMeta, CURLOPT_POSTFIELDS, "$xml_data");
-                curl_setopt($updateMeta, CURLOPT_HTTPHEADER, array('Content-Type:application/xml;charset=UTF-8'));
-                curl_setopt($updateMeta, CURLOPT_USERPWD, $mds_username . ":" . $mds_password);
-                $curl_response = curl_exec($updateMeta);
-                $result['update_md_response'] = $curl_response;
-                $result['update_md_status'] = curl_getinfo($updateMeta, CURLINFO_HTTP_CODE);
-                curl_close($updateMeta) ;
-            }
-
-            if ( $result['check_metadata_status'] === 404 && $result['check_doi_status'] ===  404 ) {
-                $xml_data = $dataset->toXML();
-                $createMeta= curl_init();
-                curl_setopt($createMeta, CURLOPT_URL, $mds_metadata_url . '/' . $mds_prefix . '/' . $doi);
-                curl_setopt($createMeta, CURLOPT_POST, 1);
-                curl_setopt($createMeta, CURLOPT_RETURNTRANSFER, 1);
-                curl_setopt($createMeta, CURLOPT_POSTFIELDS, "$xml_data");
-                curl_setopt($createMeta, CURLOPT_HTTPHEADER, array('Content-Type:application/xml;charset=UTF-8'));
-                curl_setopt($createMeta, CURLOPT_USERPWD, $mds_username . ":" . $mds_password);
-                $curl_response = curl_exec($createMeta);
-                $result['create_md_response'] = $curl_response;
-                $result['create_md_status'] = curl_getinfo($createMeta, CURLINFO_HTTP_CODE);
-                curl_close($createMeta) ;
-
-                $doi_data = "doi=".$mds_prefix."/".$doi."\n"."url=http://gigadb.org/dataset/".$doi;
-                $result['doi_data']  = $doi_data;
-                $createDoi= curl_init();
-                curl_setopt($createDoi, CURLOPT_URL, $mds_doi_url. '/' . $mds_prefix . '/' . $doi);
-                curl_setopt($createDoi, CURLOPT_CUSTOMREQUEST, "PUT");
-                curl_setopt($createDoi, CURLOPT_RETURNTRANSFER, 1);
-                curl_setopt($createDoi, CURLOPT_POSTFIELDS, $doi_data);
-                curl_setopt($createDoi, CURLOPT_HTTPHEADER, array('Content-Type:text/plain;charset=UTF-8'));
-                curl_setopt($createDoi, CURLOPT_USERPWD, $mds_username . ":" . $mds_password);
-                $curl_response = curl_exec($createDoi);
-                $result['create_doi_response'] = $curl_response;
-                $result['create_doi_status'] = curl_getinfo($createDoi, CURLINFO_HTTP_CODE);
-                curl_close($createDoi) ;
-            }
+        if (!$result) {
+            $result['error'] = 'An error occurred';
         }
 
         echo json_encode($result);

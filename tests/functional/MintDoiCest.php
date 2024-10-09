@@ -12,8 +12,11 @@
  */
 class MintDoiCest
 {
+    private $client;
+
     public function _before(FunctionalTester $I)
     {
+        $this->client =  new \GuzzleHttp\Client();
     }
 
     public function getMDSConfig()
@@ -35,128 +38,101 @@ class MintDoiCest
     public function tryGetTheStatusReturnOfAnExistingDOI(FunctionalTester $I)
     {
         $mdsConfig = $this->getMDSConfig();
-
         $doi = 100006;
-        $result = [];
 
-        $checkDoi = curl_init();
-        curl_setopt($checkDoi, CURLOPT_URL, $mdsConfig['mds_doi_url'] . '/' . $mdsConfig['mds_prefix']  . '/' . $doi);
-        curl_setopt($checkDoi, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($checkDoi, CURLOPT_USERPWD, $mdsConfig['mds_username'] . ":" . $mdsConfig['mds_password']);
-        $checkDoiResponse = curl_exec($checkDoi);
-        $result['doi_response'] = $checkDoiResponse;
-        $result['check_doi_status'] = curl_getinfo($checkDoi, CURLINFO_HTTP_CODE);
-        curl_close($checkDoi);
+        $doiResponse = $this->client->request('GET', $mdsConfig['mds_doi_url'] . '/' . $mdsConfig['mds_prefix']  . '/' . $doi, [
+            'http_errors' => false,
+            'auth' => [$mdsConfig['mds_username'], $mdsConfig['mds_password']]
+        ]);
+        $response = $doiResponse->getBody()->getContents();
+        $status = $doiResponse->getStatusCode();
 
-        $I->assertEquals('http://gigadb.org/dataset/100006', $result['doi_response']);
-        $I->assertEquals(200, $result['check_doi_status']);
-
-        $checkMeta = curl_init();
-        curl_setopt($checkMeta, CURLOPT_URL, $mdsConfig['mds_metadata_url'] . '/' . $mdsConfig['mds_prefix']  . '/' . $doi);
-        curl_setopt($checkMeta, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($checkMeta, CURLOPT_USERPWD, $mdsConfig['mds_username'] . ":" . $mdsConfig['mds_password']);
-        $checkMetaResponse = curl_exec($checkMeta);
-        $result['md_response'] = $checkMetaResponse;
-        $result['check_md_status'] = curl_getinfo($checkMeta, CURLINFO_HTTP_CODE);
-        curl_close($checkMeta);
-
-        $I->assertEquals(200, $result['check_md_status']);
+        $I->assertEquals('http://gigadb.org/dataset/100006', $response);
+        $I->assertEquals(200, $status);
     }
 
     public function tryGetTheStatusReturnOfNonExistingDOI (FunctionalTester $I)
     {
         $mdsConfig = $this->getMDSConfig();
-
         $doi = 999999;
-        $result = [];
 
-        $checkDoi = curl_init();
-        curl_setopt($checkDoi, CURLOPT_URL, $mdsConfig['mds_doi_url'] . '/' . $mdsConfig['mds_prefix']  . '/' . $doi);
-        curl_setopt($checkDoi, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($checkDoi, CURLOPT_USERPWD, $mdsConfig['mds_username'] . ":" . $mdsConfig['mds_password']);
-        $checkDoiResponse = curl_exec($checkDoi);
-        $result['doi_response'] = $checkDoiResponse;
-        $result['check_doi_status'] = curl_getinfo($checkDoi, CURLINFO_HTTP_CODE);
-        curl_close($checkDoi);
+        $doiResponse = $this->client->request('GET', $mdsConfig['mds_doi_url'] . '/' . $mdsConfig['mds_prefix']  . '/' . $doi, [
+            'http_errors' => false,
+            'auth' => [$mdsConfig['mds_username'], $mdsConfig['mds_password']]
+        ]);
+        $response = $doiResponse->getBody()->getContents();
+        $status = $doiResponse->getStatusCode();
 
-        $I->assertEquals('DOI not found', $result['doi_response']);
-        $I->assertEquals(404, $result['check_doi_status']);
-
-        $checkMeta = curl_init();
-        curl_setopt($checkMeta, CURLOPT_URL, $mdsConfig['mds_metadata_url'] . '/' . $mdsConfig['mds_prefix']  . '/' . $doi);
-        curl_setopt($checkMeta, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($checkMeta, CURLOPT_USERPWD, $mdsConfig['mds_username'] . ":" . $mdsConfig['mds_password']);
-        $checkMetaResponse = curl_exec($checkMeta);
-        $result['md_response'] = $checkMetaResponse;
-        $result['check_md_status'] = curl_getinfo($checkMeta, CURLINFO_HTTP_CODE);
-        curl_close($checkMeta);
-
-        $I->assertEquals('DOI is unknown to MDS', $result['md_response']);
-        $I->assertEquals(404, $result['check_md_status']);
+        $I->assertEquals('DOI not found', $response);
+        $I->assertEquals(404, $status);
     }
 
     public function tryCreateDoiWhenNonExistMetadata(FunctionalTester $I)
     {
         $mdsConfig = $this->getMDSConfig();
         $doi = 999999;
-        $result = [];
 
         $doi_data = "doi=" .$mdsConfig['mds_prefix'] . "/" . $doi . "\n" . "url=http://gigadb.org/dataset/" . $doi;
-        $createDoi = curl_init();
-        curl_setopt($createDoi, CURLOPT_URL, $mdsConfig['mds_doi_url'] . '/' . $mdsConfig['mds_prefix'] . '/' . $doi);
-        curl_setopt($createDoi, CURLOPT_CUSTOMREQUEST, "PUT");
-        curl_setopt($createDoi, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($createDoi, CURLOPT_POSTFIELDS, $doi_data);
-        curl_setopt($createDoi, CURLOPT_HTTPHEADER, array('Content-Type:text/plain;charset=UTF-8'));
-        curl_setopt($createDoi, CURLOPT_USERPWD, $mdsConfig['mds_username'] . ":" . $mdsConfig['mds_password']);
-        $curl_response = curl_exec($createDoi);
-        $result['create_doi_response'] = $curl_response;
-        $result['create_doi_status'] = curl_getinfo($createDoi, CURLINFO_HTTP_CODE);
-        curl_close($createDoi);
 
-        $I->assertEquals('Can\'t be blank', $result['create_doi_response']);
-        $I->assertEquals(422, $result['create_doi_status']);
+        $options = [
+            'headers' => [
+                'Content-Type' => 'text/plain; charset=UTF-8',
+            ],
+            'auth'    => [$mdsConfig['mds_username'], $mdsConfig['mds_password']],
+            'body'    => $doi_data,
+            'http_errors' => false
+        ];
+
+        $response = $this->client->request('PUT', $mdsConfig['mds_doi_url'] . '/' . $mdsConfig['mds_prefix'] . '/' . $doi, $options);
+
+        $createDoiResponse = $response->getBody()->getContents();
+        $createDoiStatus = $response->getStatusCode();
+
+        $I->assertEquals('Can\'t be blank', $createDoiResponse);
+        $I->assertEquals(422, $createDoiStatus);
     }
 
     public function tryCreateExistingDOIWithMetadata(FunctionalTester $I)
     {
         $mdsConfig = $this->getMDSConfig();
-
         $doi = 100006;
-        $result = [];
 
         $data = simplexml_load_file('/var/www/tests/_data/test_100006.xml');
 
-        $createMeta = curl_init();
-        curl_setopt($createMeta, CURLOPT_URL, $mdsConfig['mds_metadata_url'] . '/' . $mdsConfig['mds_prefix'] . '/' . $doi);
-        curl_setopt($createMeta, CURLOPT_POST, 1);
-        curl_setopt($createMeta, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($createMeta, CURLOPT_POSTFIELDS, $data->asXML());
-        curl_setopt($createMeta, CURLOPT_HTTPHEADER, array('Content-Type:application/xml;charset=UTF-8'));
-        curl_setopt($createMeta, CURLOPT_USERPWD, $mdsConfig['mds_username'] . ":" . $mdsConfig['mds_password']);
-        $curl_response = curl_exec($createMeta);
-        $result['create_md_response'] = $curl_response;
-        $result['create_md_status'] = curl_getinfo($createMeta, CURLINFO_HTTP_CODE);
-        curl_close($createMeta) ;
+        $options = [
+            'headers' => [
+                'Content-Type' => 'text/xml; charset=UTF8',
+            ],
+            'auth'    => [$mdsConfig['mds_username'], $mdsConfig['mds_password']],
+            'body'    => $data,
+            'http_errors' => false
+        ];
+        $updateMdResponse = $this->client->request('POST', $mdsConfig['mds_metadata_url'] . '/' . $mdsConfig['mds_prefix'] . '/' . $doi, $options);
 
-        $I->assertEquals("OK (10.80027/100006)", $result['create_md_response']);
-        $I->assertEquals("201", $result['create_md_status']);
+        $createMdResponse = $updateMdResponse->getBody()->getContents();
+        $createMdStatus = $updateMdResponse->getStatusCode();
+
+        $I->assertEquals("OK (10.80027/100006)", $createMdResponse);
+        $I->assertEquals("201", $createMdStatus);
 
         $doi_data = "doi=" . $mdsConfig['mds_prefix'] . "/" . $doi . "\n" . "url=http://gigadb.org/dataset/" . $doi;
-        $createDoi = curl_init();
-        curl_setopt($createDoi, CURLOPT_URL, $mdsConfig['mds_doi_url'] . '/' . $mdsConfig['mds_prefix'] . '/' . $doi);
-        curl_setopt($createDoi, CURLOPT_CUSTOMREQUEST, "PUT");
-        curl_setopt($createDoi, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($createDoi, CURLOPT_POSTFIELDS, $doi_data);
-        curl_setopt($createDoi, CURLOPT_HTTPHEADER, array('Content-Type:text/plain;charset=UTF-8'));
-        curl_setopt($createDoi, CURLOPT_USERPWD, $mdsConfig['mds_username'] . ":" . $mdsConfig['mds_password']);
-        $curl_response = curl_exec($createDoi);
-        $result['create_doi_response'] = $curl_response;
-        $result['create_doi_status'] = curl_getinfo($createDoi, CURLINFO_HTTP_CODE);
-        curl_close($createDoi) ;
 
-        $I->assertEquals("OK", $result['create_doi_response']);
-        $I->assertEquals("201", $result['create_doi_status']);
+        $options = [
+            'headers' => [
+                'Content-Type' => 'text/plain; charset=UTF-8',
+            ],
+            'auth'    => [$mdsConfig['mds_username'], $mdsConfig['mds_password']],
+            'body'    => $doi_data,
+            'http_errors' => false
+        ];
+
+        $response = $this->client->request('PUT', $mdsConfig['mds_doi_url'] . '/' . $mdsConfig['mds_prefix'] . '/' . $doi, $options);
+
+        $createDoiResponse = $response->getBody()->getContents();
+        $createDoiStatus = $response->getStatusCode();
+
+        $I->assertEquals("OK", $createDoiResponse);
+        $I->assertEquals("201", $createDoiStatus);
     }
 
     /**
@@ -171,91 +147,90 @@ class MintDoiCest
     public function tryCreateDoiWithInvalidCredentials(FunctionalTester $I)
     {
         $mdsConfig = $this->getMDSConfig();
-
         $doi = 100006;
-        $result = [];
 
         $data = simplexml_load_file('/var/www/tests/_data/test_100006.xml');
 
-        $createMeta = curl_init();
-        curl_setopt($createMeta, CURLOPT_URL, $mdsConfig['mds_metadata_url'] . '/' . $mdsConfig['mds_prefix'] . '/' . $doi);
-        curl_setopt($createMeta, CURLOPT_POST, 1);
-        curl_setopt($createMeta, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($createMeta, CURLOPT_POSTFIELDS, $data->asXML());
-        curl_setopt($createMeta, CURLOPT_HTTPHEADER, array('Content-Type:application/xml;charset=UTF-8'));
-        curl_setopt($createMeta, CURLOPT_USERPWD, $mdsConfig['invalid_username'] . ":" . $mdsConfig['invalid_password']);
-        $curl_response = curl_exec($createMeta);
-        $result['create_md_response'] = $curl_response;
-        $result['create_md_status'] = curl_getinfo($createMeta, CURLINFO_HTTP_CODE);
-        curl_close($createMeta) ;
+        $options = [
+            'headers' => [
+                'Content-Type' => 'text/xml; charset=UTF8',
+            ],
+            'auth'    => [$mdsConfig['invalid_username'], $mdsConfig['invalid_password']],
+            'body'    => $data,
+            'http_errors' => false
+        ];
+        $updateMdResponse = $this->client->request('POST', $mdsConfig['mds_metadata_url'] . '/' . $mdsConfig['mds_prefix'] . '/' . $doi, $options);
 
-        $I->assertEquals("Bad credentials", $result['create_md_response']);
-        $I->assertEquals("401", $result['create_md_status']);
+        $createMdResponse = $updateMdResponse->getBody()->getContents();
+        $createMdStatus = $updateMdResponse->getStatusCode();
+
+        $I->assertEquals("Bad credentials", $createMdResponse);
+        $I->assertEquals("401", $createMdStatus);
 
         $doi_data = "doi=" . $mdsConfig['mds_prefix'] . "/" . $doi . "\n" . "url=http://gigadb.org/dataset/" . $doi;
-        $createDoi = curl_init();
-        curl_setopt($createDoi, CURLOPT_URL, $mdsConfig['mds_doi_url'] . '/' . $mdsConfig['mds_prefix'] . '/' . $doi);
-        curl_setopt($createDoi, CURLOPT_CUSTOMREQUEST, "PUT");
-        curl_setopt($createDoi, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($createDoi, CURLOPT_POSTFIELDS, $doi_data);
-        curl_setopt($createDoi, CURLOPT_HTTPHEADER, array('Content-Type:text/plain;charset=UTF-8'));
-        curl_setopt($createDoi, CURLOPT_USERPWD, $mdsConfig['invalid_username'] . ":" . $mdsConfig['invalid_password']);
-        $curl_response = curl_exec($createDoi);
-        $result['create_doi_response'] = $curl_response;
-        $result['create_doi_status'] = curl_getinfo($createDoi, CURLINFO_HTTP_CODE);
-        curl_close($createDoi) ;
+        $options = [
+            'headers' => [
+                'Content-Type' => 'text/plain; charset=UTF-8',
+            ],
+            'auth'    => [$mdsConfig['invalid_username'], $mdsConfig['invalid_password']],
+            'body'    => $doi_data,
+            'http_errors' => false
+        ];
 
-        $I->assertEquals("Bad credentials", $result['create_doi_response']);
-        $I->assertEquals("401", $result['create_doi_status']);
+        $response = $this->client->request('PUT', $mdsConfig['mds_doi_url'] . '/' . $mdsConfig['mds_prefix'] . '/' . $doi, $options);
+
+        $createDoiResponse = $response->getBody()->getContents();
+        $createDoiStatus = $response->getStatusCode();
+
+        $I->assertEquals("Bad credentials", $createDoiResponse);
+        $I->assertEquals("401", $createDoiStatus);
     }
 
-    public function tryUpdateMetadataWithNotRecognizdeXml(FunctionalTester $I)
+    public function tryUpdateMetadataWithNotRecognizedXml(FunctionalTester $I)
     {
         $mdsConfig = $this->getMDSConfig();
-
         $doi = 100006;
-        $result = [];
 
         $data = new SimpleXMLElement("<resource></resource>");
 
-        $createMeta = curl_init();
-        curl_setopt($createMeta, CURLOPT_URL, $mdsConfig['mds_metadata_url'] . '/' . $mdsConfig['mds_prefix'] . '/' . $doi);
-        curl_setopt($createMeta, CURLOPT_POST, 1);
-        curl_setopt($createMeta, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($createMeta, CURLOPT_POSTFIELDS, $data->asXML());
-        curl_setopt($createMeta, CURLOPT_HTTPHEADER, array('Content-Type:application/xml;charset=UTF-8'));
-        curl_setopt($createMeta, CURLOPT_USERPWD, $mdsConfig['mds_username'] . ":" . $mdsConfig['mds_password']);
-        $curl_response = curl_exec($createMeta);
-        $result['create_md_response'] = $curl_response;
-        $result['create_md_status'] = curl_getinfo($createMeta, CURLINFO_HTTP_CODE);
-        curl_close($createMeta);
+        $options = [
+            'headers' => [
+                'Content-Type' => 'text/xml; charset=UTF8',
+            ],
+            'auth'    => [$mdsConfig['mds_username'], $mdsConfig['mds_password']],
+            'body'    => $data->asXML(),
+            'http_errors' => false
+        ];
+        $updateMdResponse = $this->client->request('POST', $mdsConfig['mds_metadata_url'] . '/' . $mdsConfig['mds_prefix'] . '/' . $doi, $options);
 
-        $I->assertEquals("Metadata format not recognized", $result['create_md_response']);
-        $I->assertEquals("415", $result['create_md_status']);
+        $createMdResponse = $updateMdResponse->getBody()->getContents();
+        $createMdStatus = $updateMdResponse->getStatusCode();
+
+        $I->assertEquals("Metadata format not recognized", $createMdResponse);
+        $I->assertEquals("415", $createMdStatus);
     }
 
     public function tryUpdateMetadataWithInvalidXml(FunctionalTester $I)
     {
         $mdsConfig = $this->getMDSConfig();
-
         $doi = 100006;
-        $result = [];
 
         $data = simplexml_load_file('/var/www/tests/_data/test_invalid.xml');
 
-        $createMeta = curl_init();
-        curl_setopt($createMeta, CURLOPT_URL, $mdsConfig['mds_metadata_url'] . '/' . $mdsConfig['mds_prefix'] . '/' . $doi);
-        curl_setopt($createMeta, CURLOPT_POST, 1);
-        curl_setopt($createMeta, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($createMeta, CURLOPT_POSTFIELDS, $data->asXML());
-        curl_setopt($createMeta, CURLOPT_HTTPHEADER, array('Content-Type:application/xml;charset=UTF-8'));
-        curl_setopt($createMeta, CURLOPT_USERPWD, $mdsConfig['mds_username'] . ":" . $mdsConfig['mds_password']);
-        $curl_response = curl_exec($createMeta);
-        $result['create_md_response'] = $curl_response;
-        $result['create_md_status'] = curl_getinfo($createMeta, CURLINFO_HTTP_CODE);
-        curl_close($createMeta);
+        $options = [
+            'headers' => [
+                'Content-Type' => 'text/xml; charset=UTF8',
+            ],
+            'auth'    => [$mdsConfig['mds_username'], $mdsConfig['mds_password']],
+            'body'    => $data->asXML(),
+            'http_errors' => false
+        ];
+        $updateMdResponse = $this->client->request('POST', $mdsConfig['mds_metadata_url'] . '/' . $mdsConfig['mds_prefix'] . '/' . $doi, $options);
 
-        $I->assertContains("DOI 10.80027/100006: Missing child element(s). Expected is one of ( {http://datacite.org/schema/kernel-4}creators", $result['create_md_response']);
-        $I->assertEquals("422", $result['create_md_status']);
+        $createMdResponse = $updateMdResponse->getBody()->getContents();
+        $createMdStatus = $updateMdResponse->getStatusCode();
+
+        $I->assertContains("DOI 10.80027/100006: Missing child element(s). Expected is one of ( {http://datacite.org/schema/kernel-4}creators", $createMdResponse);
+        $I->assertEquals("422", $createMdStatus);
     }
 }

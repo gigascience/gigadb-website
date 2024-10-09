@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- feat #1750: Switch to guzzle instead of cURL
 - Feat #1893: Move new attribute inputs to the end of the adminFile form
 - Fix #2048: Upgrade database Dockerfiles from buster to bullseye to fix failed pipeline jobs
 - Feat security#2: Upgrade Bootstrap from v3.3.7 to v3.4.1
