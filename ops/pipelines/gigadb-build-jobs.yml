@@ -17,6 +17,12 @@ base_images:
     - docker save -o nginx-$NGINX_VERSION-alpine.tar nginx:$NGINX_VERSION-alpine
     - docker pull node:$NODE_VERSION-buster-slim
     - docker save -o node-$NODE_VERSION-buster-slim.tar node:$NODE_VERSION-buster-slim
+    - docker pull debian:buster
+    - docker save -o debian-buster.tar debian:buster
+    - docker pull debian:buster-slim
+    - docker save -o debian-buster-slim.tar debian:buster-slim
+    - docker pull debian:bullseye
+    - docker save -o debian-bullseye.tar debian:bullseye
   artifacts:
     paths:
       - php-$PHP_VERSION-fpm-buster.tar
@@ -25,6 +31,9 @@ base_images:
       - alpine-3_14.tar
       - nginx-$NGINX_VERSION-alpine.tar
       - node-$NODE_VERSION-buster-slim.tar
+      - debian-buster.tar
+      - debian-bullseye.tar
+      - debian-buster-slim.tar
   cache:
     key:
       files:
@@ -55,6 +64,9 @@ b_gigadb:
     - docker load -i alpine-3_14.tar
     - docker load -i nginx-$NGINX_VERSION-alpine.tar
     - docker load -i node-$NODE_VERSION-buster-slim.tar
+    - docker load -i debian-buster.tar
+    - docker load -i debian-bullseye.tar
+    - docker load -i debian-buster-slim.tar
     # login to gitlab container registry
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
     # build for test
@@ -148,11 +160,11 @@ b_gigadb:
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
     # appending remote variables at the end of the .env and .secrets
     - env > full_env.txt
-    - env | grep -v "SAST" | grep -iE "^(staging_|remote_)" | grep -viE "(password|email|tester|secret|key|user|app_id|client_id|token|tlsauth)" >> $APPLICATION/.env
-    - env | grep -v "SAST" | grep -iE "^TIDEWAYS_APIKEY" >> $APPLICATION/.env
-    - env | grep -v "SAST" | grep -iE "^(staging_|remote_)" | grep -iE "(password|email|tester|secret|key|user|app_id|client_id|token)" | grep -viE "tlsauth">> $APPLICATION/.secrets
-    - env | grep -v "SAST" | grep -iE "gitlab_private_token">> $APPLICATION/.secrets
-    - env | grep -v "SAST" | grep -iE "CI_PROJECT_URL">> $APPLICATION/.secrets
+    - env | grep -v "SAST" | grep -iE "^(staging_|remote_)" | grep -viE "(password|email|tester|secret|key|user|app_id|client_id|token|tlsauth)" | tee -a $APPLICATION/.env
+    - env | grep -v "SAST" | grep -iE "^TIDEWAYS_APIKEY" | tee -a $APPLICATION/.env
+    - env | grep -v "SAST" | grep -v "DOCKER_" | grep -v "GITLAB_" | grep -v "CI_" | grep -iE "(password|email|tester|secret|user|app_id|client_id|token)" | grep -viE "tlsauth" | grep -v "client_" | grep -v "token_uri" | tee -a $APPLICATION/.secrets
+    - env | grep -v "SAST" | grep -iE "gitlab_private_token" | tee -a $APPLICATION/.secrets
+    - env | grep -v "SAST" | grep -iE "CI_PROJECT_URL" | tee -a $APPLICATION/.secrets
     - env | grep -v "SAST" | grep -iE "^(gigadb_|fuw_).+=.+$" | tee -a $APPLICATION/.secrets
     # pulling the CI build of the application from registry and configure it for staging for the purpose of building production containers
     - time docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
@@ -230,6 +242,7 @@ b_gigadb:
     name: $DEPLOYMENT_ENV
     url: $REMOTE_HOME_URL
   artifacts:
+    untracked: true
     paths:
       - php-$PHP_VERSION-fpm-buster.tar
       - php-$PHP_VERSION-cli-buster.tar

@@ -62,15 +62,16 @@ class FilesCommand extends CConsoleCommand
                 // Only parse lines with content in md5 file
                 if($tokens[0] !== "") {
                     $md5_value = $tokens[0];
-                    $filename = basename($tokens[1]);
-                    if ($filename === "$doi.md5")  // Ignore $doi.md5 file
+                    # Make use of whole file path
+                    $filepath = ltrim($tokens[1], './');
+                    if ($filepath === "$doi.md5")  // Ignore $doi.md5 file
                         continue;
 
-                    # Update file_attributes table with md5 checksum value
-                    $file = File::model()->findByAttributes(array(
-                        'dataset_id' => $dataset->id,
-                        'name' => $filename,
-                    ));
+                    # Find file with unique URL location that ends with filepath
+                    $criteria = new CDbCriteria();
+                    $criteria->addColumnCondition(['dataset_id' => $dataset->id]);
+                    $criteria->addSearchCondition('location', "%$filepath", false);
+                    $file = File::model()->find($criteria);
                     $file->updateMd5Checksum($md5_value);
                 }
             }

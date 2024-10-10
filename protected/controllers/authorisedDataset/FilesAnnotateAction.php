@@ -16,7 +16,6 @@ class FilesAnnotateAction extends CAction
 
     public function run($id)
     {
-        $this->getController()->layout='uploader_layout';
         $webClient = new \GuzzleHttp\Client();
 
         // Instantiate FileUploadService and DatasetUpload
@@ -36,8 +35,8 @@ class FilesAnnotateAction extends CAction
             ]);
 
         $datasetUpload = new DatasetUpload(
-            $fileUploadSrv->dataset, 
-            $fileUploadSrv, 
+            $fileUploadSrv->dataset,
+            $fileUploadSrv,
             Yii::$app->params['dataset_upload']
         );
         // Fetch list of uploaded files
@@ -78,7 +77,7 @@ class FilesAnnotateAction extends CAction
                  Yii::app()->user->setFlash('filesAnnotateErrors',implode("<br/>\n",array_merge($parseErrors, $mergeErrors)));
             }
 
-            $this->getController()->redirect(["authorisedDataset/annotateFiles", "id" => $id]);            
+            $this->getController()->redirect(["authorisedDataset/annotateFiles", "id" => $id]);
         }
 
         if(isset($_POST['DeleteList']))
@@ -135,15 +134,15 @@ class FilesAnnotateAction extends CAction
                 else {
                     Yii::app()->user->setFlash('error','Error changing and notifying dataset upload status');
                 }
-                
+
         }
         elseif ( Yii::$app->request->isPost ) {
                 Yii::app()->user->setFlash('error','Error with some files');
         }
         $this->getController()->render("filesAnnotate", array(
-                                    "identifier" => $id, 
-                                    "uploads" => $uploadedFiles, 
-                                    "attributes" => $attributes, 
+                                    "identifier" => $id,
+                                    "uploads" => $uploadedFiles,
+                                    "attributes" => $attributes,
                                     "filetypes" => $datasetUpload->getFiletypesJSON()
         ));
     }

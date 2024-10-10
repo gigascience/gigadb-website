@@ -135,5 +135,4 @@ class DatasetType extends CActiveRecord
 	            'ActiveRecordLogableBehavior' => 'application.behaviors.DatasetRelatedTableBehavior',
 	        );
 	    }
-
 }
