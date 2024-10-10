@@ -139,13 +139,11 @@ class DatasetFilesController extends Controller
                 $ftpConfig = \Yii::$app->params['ftp'];
 
                 if ($optDefault) {
-                    $downloadHost = DatasetFiles::TESTDATA_HOST;
-                    $lastLine = system("curl -o /downloads/gigadbv3_default.backup --user {$ftpConfig['username']}:{$ftpConfig['password']} $downloadHost/gigadbv3_default.backup", $returnValue);
+                    $optDate = "20240605";
                 }
-                else {
-                    $downloadHost = $ftpConfig['host'];
-                    $lastLine = system("ncftpget -u {$ftpConfig['username']} -p {$ftpConfig['password']} $downloadHost /downloads/ /gigadbv3_{$optDate}.backup", $returnValue);
-                }
+                $downloadHost = $ftpConfig['host'];
+                $lastLine = system("ncftpget -u {$ftpConfig['username']} -p {$ftpConfig['password']} $downloadHost /downloads/ /gigadbv3_{$optDate}.backup", $returnValue);
+
                 if(0 !== $returnValue) {
                     throw new Exception("Failed downloading backup file for date $optDate".$lastLine);
                 }
