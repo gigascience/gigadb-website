@@ -10,15 +10,15 @@ use GuzzleHttp\Client;
 class CheckValidURLsCest
 {
     private const TEST_URLS = [
-        "https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006",
+        "https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/dev/pub/10.5524/100001_101000/100006",
         "http://gigasciencejournal.com/blog/badaboom",
-        "ftp://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006/phylogeny_study_update/Pygoscelis_adeliae.RepeatMasker.out.gz",
-        "https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006/phylogeny_study_update/",
+        "ftp://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/dev/pub/10.5524/100001_101000/100006/readme_100006.txt",
+        "https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/dev/pub/10.5524/100001_101000/100006/",
     ];
 
     public function tryReportIssues(\FunctionalTester $I): void {
         $expectedIssues = [
-            "URL appears to be a directory listing",
+            "Resource cannot be downloaded, not found or forbidden (4xx)",
             "Resource cannot be downloaded, not found or forbidden (4xx)",
             "Wrong scheme (ftp://)",
             "URL appears to be a directory (/)",
@@ -47,7 +47,7 @@ class CheckValidURLsCest
 
     public function tryNoIssueToReport(\FunctionalTester $I): void {
         $testWebClient = new Client([ 'allow_redirects' => false ]);
-        $component = new FilesURLsFetcher(["doi" => "100005", "webClient" => $testWebClient]);
+        $component = new FilesURLsFetcher(["doi" => "100142", "webClient" => $testWebClient]);
         $report = $component->verifyURLs();
         $I->assertEmpty($report);
 

@@ -28,7 +28,7 @@
 - name: Add curator to sudoers
   ansible.builtin.lineinfile:
     path: "/etc/sudoers.d/91-add-{{ newuser }}"
-    line: "{{ newuser }} ALL=(ALL)       NOPASSWD: /home/centos/datasetUpload.sh, /home/centos/postUpload.sh\n"
+    line: "{{ newuser }} ALL=(ALL)       NOPASSWD: /usr/local/bin/datasetUpload, /usr/local/bin/postUpload, /usr/local/bin/calculateChecksumSizes, /usr/local/bin/createReadme, /usr/local/bin/filesMetaToDb\n"
     owner: root
     group: root
     mode: 440
@@ -148,6 +148,51 @@
         group: "{{ newuser }}"
         mode: g-rw,o-rw
   when: (public_key_in_bastion.stat.exists == false and public_key_in_gitlab.status == 200)
+
+- name: Create credentials file for user
+  block:
+  - name: Read credentials from CSV file and return a dictionary
+    community.general.read_csv:
+      path: "{{ credentials_csv_path }}"
+    register: credentials
+    delegate_to: localhost
+
+  - ansible.builtin.debug:
+      msg: "{{credentials.list.0}}"
+
+  - name: Create a .aws directory for the new user
+    ansible.builtin.file:
+      path: "/home/{{ newuser }}/.aws"
+      state: directory
+      mode: '0755'
+      owner: "{{ newuser }}"
+      group: "{{ newuser }}"
+
+
+  - name: Create AWS credential file for access to Wasabi using rclone
+    template:
+      src: ./credentials.j2
+      dest: "/home/{{ newuser }}/.aws/credentials"
+      owner: "{{ newuser }}"
+      group: "{{ newuser }}"
+      mode: 0644
+
+  - name: Create a rclone directory for user
+    ansible.builtin.file:
+      path: "/home/{{ newuser }}/.config/rclone"
+      state: directory
+      mode: '0755'
+      owner: "{{ newuser }}"
+      group: "{{ newuser }}"
+
+  - name: Create rclone config for user
+    template:
+      src: ./rclone-user.conf.j2
+      dest: "/home/{{ newuser }}/.config/rclone/rclone.conf"
+      owner: "{{ newuser }}"
+      group: "{{ newuser }}"
+      mode: 0644
+  when: credentials_csv_path is defined
 
 - name: Restart systemd sshd service
   command: systemctl restart sshd.service

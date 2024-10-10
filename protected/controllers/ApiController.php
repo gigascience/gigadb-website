@@ -3,11 +3,7 @@
 class ApiController extends Controller
 {
     // Members
-	/**
-	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
-	 * using two-column layout. See 'protected/views/layouts/column2.php'.
-	 */
-	public $layout='//layouts/column2';
+
 
 
 	/**
@@ -821,7 +817,7 @@ class ApiController extends Controller
                     $message = 'The requested method is not implemented.';
                     break;
             }
-            // servers don't always have a signature turned on 
+            // servers don't always have a signature turned on
             // (this is an apache directive "ServerSignature On")
             $signature = ($_SERVER['SERVER_SIGNATURE'] == '') ? $_SERVER['SERVER_SOFTWARE'] . ' Server at ' . $_SERVER['SERVER_NAME'] . ' Port ' . $_SERVER['SERVER_PORT'] : $_SERVER['SERVER_SIGNATURE'];
             // this should be templated in a real-world solution

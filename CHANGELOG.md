@@ -5,8 +5,97 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## Unreleased
 
 - Feat #1768: Alphabetically sorted dataset author dropdown options in adminDatasetAuthor form
+- Feat #1893: Move new attribute inputs to the end of the adminFile form
+- Fix #2048: Upgrade database Dockerfiles from buster to bullseye to fix failed pipeline jobs
+- Feat security#2: Upgrade Bootstrap from v3.3.7 to v3.4.1
 
-## v4.2.4 - 2024-04-16 - 576757f38
+## v00-kencho51-testing - 2024-10-02 - 1e19c816a -
+
+## v4.3.7 - 2024-09-24 - 7709c8545 - live since 2024-09-26
+
+- Fix #2015: Error when deleting file on admin dasboard
+- Fix #2029: Add new file attribute even if edit attribute fields are visible
+
+## v4.3.6 - 2024-09-13 - 2d935c496 -
+
+- Feat #1858: Relabel button that saves attribute in adminFile to avoid ambiguity
+- Feat #1849: Able to toggle expand dataset sample attributes field
+
+## v4.3.5 - 2024-08-23 - 4eaa1cda5 - live since 2024-08-29
+
+- Feat #1853: Add tooltips to adminDataset, adminFile and datasetFunder forms
+- Fix #1959: Relation cannot be blank error in Dataset:Relation admin form
+
+## v4.3.4 - 2024-08-13 - fd9ed2480 - live since 2024-08-14
+
+- Fix #1908: Correct and improve CI/CD setup documentation
+- Fix #1856: Fix overlapping caret and table header in dataset page
+- Security #dependabot/114: Command injection in fs-path
+- Security #dependabot/115: Remote code execution in handlebars when compiling templates
+- Security #dependabot/116: Prototype Pollution in handlebars
+- Security #dependabot/172: Unsafe Reflection in base Component class in yiisoft/yii2
+
+## v4.3.3 - 2024-08-05 - 7204ee854 - live since 2024-08-07
+
+- Fix #1848: Save modifications to image metafields
+- Feat 1872: Extract stages of postUpload script into separate scripts
+
+## v4.3.2 - 2024-07-22 - 6531115b7 - live since 2024-07-25
+
+- Feat #1892: Remove unused CSS and LESS files
+- Fix #1871: Allowed to save species info filling only required inputs
+
+## v4.3.1 - 2024-07-10 - 2ba5e7dbc - live since 2024-07-15
+
+- Feat #1892: Consolidate all layouts into one single layout
+- Fix #1912: Enable curators to save Gigadb forms from many browser tabs at once
+- Feat #1840: Make create readme tool available as part of postUpload script
+
+## v4.3.0 - 2024-06-25 - 9cf91f224 - live since 2024-07-01
+
+- Feat #1892: Remove old layouts
+- Fix #1845: Use file path to update md5 values and file sizes in database
+- Fix #1812: Navigating tables on mockup pages does not generate errors
+- Fix #1801: Refresh materialized views daily using cron job and drop existing triggers
+- Feat #1143: Open external links in new browser tabs
+- Feat: updated upload spreadsheet template to version 19
+- Fix #1743: Accessibility tweaks on datasetSubmission/upload page
+
+## v4.2.9 - 2024-06-06 - 30a64ce56 - live since 2024-06-11
+
+- Feat #1869: Script to compare files in user dropbox with file list from spreadsheet
+- Fix #1825: Remove close button from view new version popup
+- Feat #1767: Restyle and reorder the buttons in create / edit dataset admin page
+
+## v4.2.8 - 2024-05-28 - 771372fbb - live since 2024-05-30
+
+- Feat #1832: Make script for calculating the md5 values and file sizes available for bastion users
+- Fix #1817: generate mockup link button not appearing for all upload statuses
+- Fix #1825: "Continue to view old version" closes New Version Alert pop up
+- Feat #514: Add canonical URL to dataset pages
+
+## v4.2.7 - 2024-05-07 - 902e5bfb5 - live since 2024-05-13
+
+- Feat #1834: Create rclone config for bastion users to allow managing files on Wasabi
+- Feat #1634, #1824: Add new EC2 server for file serving purposes (including author/reviewer accessible ftp server)
+- Fix #1829: Change maintenance window for the daily backup to S3 to prevent DB server error on live web site
+- Fix #1831: Update Out-of-date CSP on live blocks javascript scripts to prevent javascript errors
+
+## v4.2.6 - 2024-04-30 - fe0348092 - live since 2024-05-02
+
+- Feat #1394: Update bastion-users Ansible role to create AWS credentials file from Wasabi credentials CSV
+- Fix #1833: Files metadata console containers built using gitlab-config-live-build.yml are tagged with "staging"
+
+## v4.2.5 - 2024-04-25 - ca6d17e0f
+
+- Feat #1770: Make AWS EFS can be mounted on the bastion server manually
+- Feat #1783: Avoid URLs with double pagination in dataset url
+- Feat #1757: Add pagination to samples table in dataset view
+- Fix #1800: Read the correct sample page from cache on samples tables
+- Feat #1163: Add carets to sortable headers in dataset page
+- Feat #1664: Enable post upload script to work with non-published datasets
+
+## v4.2.4 - 2024-04-16 - 576757f38 - live since 2024-04-17
 
 - Docs #1791: Update IAM EC2 policy to prevent permission error when changing EC2 instant type on the fly
 - Docs #1786: Add documentation for creating TLS certificate for AWS gigadb.org migration
@@ -14,7 +103,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Feat #1221: EFS filesystem for GigaDB
 - Feat #1717 #1715 #1716: remove Google Plus link, update X logo and add Mastodon link to social media links
 
-## v4.2.3 - 2024-04-08 - f084f51dd - yanked
+## v4.2.3 - 2024-04-08 - f084f51dd
 
 - Feat #1618: FUW - Allow customization of email sent to author after "DataPending" status is set
 - Security #1626: FUW - Update node version to the latest recommended to avoid openssl hack. Minimize dependency vulnerabilities.

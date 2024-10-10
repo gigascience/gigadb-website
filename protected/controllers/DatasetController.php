@@ -8,6 +8,9 @@
  */
 class DatasetController extends Controller
 {
+
+    public $canonicalUrl;
+
     /**
      * @return array action filters
      */
@@ -104,8 +107,6 @@ class DatasetController extends Controller
                 ->setSearchForm();
 
             // Rendering section
-            $this->layout = 'new_column2';
-
             $this->metaData['description'] = $assembly->getDataset()->description;
 
             $urlToRedirect = trim($assembly->getDataset()->getUrlToRedirectAttribute());
@@ -145,18 +146,20 @@ class DatasetController extends Controller
 
         // Different rendering based on page type (invalid, hidden, public)
         if ("invalid" === $datasetPageSettings->getPageType()) {
-            $this->layout = 'new_datasetpage';
             $this->render('invalid', array('model' => new Dataset('search'), 'keyword' => $id, 'general_search' => 1));
         } elseif (in_array($datasetPageSettings->getPageType(), ["hidden","draft", "mockup"])) {
             // Page private ? Disable robot to index
             $this->metaData['private'] = true;
 
-            if ("/dataset/$id/token/" . $assembly->getDataset()->token === $_SERVER['REQUEST_URI']) { //access using mockup page url
+            if (preg_match("/dataset\/$id\/token/",$_SERVER['REQUEST_URI']) || preg_match("/dataset\/view\/id\/$id\/token\/.+/",$_SERVER['REQUEST_URI']) ) { //access using mockup page url
                 $mainRenderer($assembly, $datasetPageSettings, $previousDataset, $nextDataset, $fileSettings, $sampleSettings, $flag);
             } else {
+                Yii::log('Request is invalid for URI: '.$_SERVER['REQUEST_URI'],'error');
                 $this->render('invalid', array('model' => new Dataset('search'), 'keyword' => $id));
             }
         } else { //page type is public
+            // specify canonical URL due to samples and files pagination generating multiple URLs with the same main content
+            $this->canonicalUrl = Yii::app()->request->hostInfo . '/dataset/' . $model->identifier;
             $mainRenderer($assembly, $datasetPageSettings, $previousDataset, $nextDataset, $fileSettings, $sampleSettings, $flag);
         }
     }

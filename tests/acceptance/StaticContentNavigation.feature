@@ -135,11 +135,9 @@ Feature: A user visit gigadb website
 
   @ok @spike
   Scenario: Go to the Jobs page from the main page
-    When I am on "/index.php"
-    And I press the button "About"
-    And I press the button "Jobs"
-    Then I should see "Jobs at GigaScience"
-    And I am on "https://jobs.gigasciencejournal.com/"
+    Given I am on "/index.php"
+    When I press the button "About"
+    Then I should see a link "Jobs" to "https://jobs.gigasciencejournal.com/"
 
   @ok @spike
   Scenario: Jobs could be found in the About dropdown box in the faq page
@@ -154,10 +152,8 @@ Feature: A user visit gigadb website
   @ok @spike
   Scenario: Go to the Jobs page from the faq page
     When I am on "/site/faq"
-    And I press the button "About"
-    And I press the button "Jobs"
-    Then I should see "Jobs at GigaScience"
-    And I am on "https://jobs.gigasciencejournal.com/"
+    When I press the button "About"
+    Then I should see a link "Jobs" to "https://jobs.gigasciencejournal.com/"
 
   @ok @spike
   Scenario: Jobs could be found in the About dropdown box in the dataset page
@@ -172,7 +168,5 @@ Feature: A user visit gigadb website
   @ok @spike
   Scenario: Go to the Jobs page from the dataset page
     When I am on "/dataset/100006"
-    And I press the button "About"
-    And I press the button "Jobs"
-    Then I should see "Jobs at GigaScience"
-    And I am on "https://jobs.gigasciencejournal.com/"
+    When I press the button "About"
+    Then I should see a link "Jobs" to "https://jobs.gigasciencejournal.com/"
