@@ -92,10 +92,15 @@ $sampleDataProvider = $samples->getDataProvider();
             </div>
 
             <div class="subsection">
-                <?php if (!empty($mainSection->getKeywords())) { ?>
+                <?php
+                $validKeywords = array_filter(
+                  $mainSection->getKeywords(), function($keyword) {
+                    return strlen(trim($keyword)) > 0;
+                });
+                if (!empty($validKeywords)) { ?>
                     <p>Keywords:</p>
                     <ul class="list-inline">
-                        <? foreach ($mainSection->getKeywords() as $keyword_link) {
+                        <? foreach ($validKeywords as $keyword_link) {
                             echo "<li>$keyword_link</li>";
                         }
                         ?>
