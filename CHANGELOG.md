@@ -4,7 +4,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
-## v4.3.8 - 2024-10-10 - 74ebccaeb - 
+- Feat #1768: Alphabetically sorted dataset author dropdown options in adminDatasetAuthor form
+
+## v4.3.8 - 2024-10-10 - 74ebccaeb -
 
 - Feat #1893: Move new attribute inputs to the end of the adminFile form
 - Fix #2048: Upgrade database Dockerfiles from buster to bullseye to fix failed pipeline jobs

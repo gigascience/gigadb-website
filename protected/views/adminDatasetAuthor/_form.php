@@ -37,6 +37,7 @@
 				'valueField' => 'id',
 				'textField' => 'fullAuthor',
 			],
+      'enableSorting' => true,
 		]);
 		?>
 

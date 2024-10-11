@@ -38,6 +38,7 @@ class DropdownField extends BaseInput
 {
   public $listDataOptions = [];
   public $dataset = [];
+  public $enableSorting = false;
 
   public function run()
   {
@@ -48,6 +49,14 @@ class DropdownField extends BaseInput
         $data = $this->listDataOptions['data'] ?? [];
         $valueField = $this->listDataOptions['valueField'] ?? 'id';
         $textField = $this->listDataOptions['textField'] ?? 'name';
+
+        if ($this->enableSorting) {
+          // expects $data elements to have $textField key with string value, might need to be extended for more use cases
+          usort($data, function ($a, $b) use ($textField) {
+            return strcmp($a[$textField], $b[$textField]);
+          });
+        }
+
         $dataset = CHtml::listData($data, $valueField, $textField);
       }
 
