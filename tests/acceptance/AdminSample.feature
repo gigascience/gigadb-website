@@ -21,6 +21,9 @@ Feature: admin page for samples
     When I fill in the field of "name" "Sample[species_id]" with ":Foxtail millet"
     And I press the button "Save"
     And I wait "1" seconds
+    Then I should see "Are you sure you want to continue?"
+    And I press the button "Confirm"
+    And I wait "1" seconds
     Then I should see "Please fix the following input errors:"
     And I should see "Taxon ID is empty!"
 
@@ -30,6 +33,8 @@ Feature: admin page for samples
     And I should see "lat_lon"
     When I fill in the field of "name" "Sample[attributesList]" with "source_mat_id=\"David Lambert & BGI\",est_genome_size=\"1.32\",alternative_names=\"PYGAD\",animal=\"tiger\""
     And I press the button "Save"
+    And I wait "1" seconds
+    And I press the button "Confirm"
     And I wait "1" seconds
     Then I should see "Please fix the following input errors:"
     And I should see "Attribute name for the input animal=\tiger\ is not valid - please select a valid attribute name!"
@@ -43,6 +48,8 @@ Feature: admin page for samples
     And I should see "lat_lon"
     And I press the button "Save"
     And I wait "1" seconds
+    And I press the button "Confirm"
+    And I wait "1" seconds
     And I should see "David Lambert"
     And I should see "1.32"
     And I should see "PYGAD"
@@ -54,6 +61,8 @@ Feature: admin page for samples
     When I fill in the field of "name" "Sample[species_id]" with "4555=Foxtail millet"
     And I press the button "Save"
     And I wait "1" seconds
+    And I press the button "Confirm"
+    And I wait "1" seconds
     Then I should see "Please fix the following input errors:"
     And I should see "The input format is wrong, should be tax_id:common_name"
 
@@ -63,6 +72,8 @@ Feature: admin page for samples
     And I should see "lat_lon"
     When I fill in the field of "name" "Sample[attributesList]" with "animal=\"tiger\",plant=\"rose\""
     And I press the button "Save"
+    And I wait "1" seconds
+    And I press the button "Confirm"
     And I wait "1" seconds
     Then I should see "Please fix the following input errors:"
     And I should see "Attribute name for the input animal=\tiger\ is not valid - please select a valid attribute name!"
@@ -75,6 +86,8 @@ Feature: admin page for samples
     When I fill in the field of "name" "Sample[species_id]" with "Human"
     And I press the button "Create"
     And I wait "1" seconds
+    And I press the button "Confirm"
+    And I wait "1" seconds
     Then I should see "Please fix the following input errors:"
     And I should see "Taxon ID Human is not numeric!"
 
@@ -84,6 +97,8 @@ Feature: admin page for samples
     And I should see "Create"
     When I fill in the field of "name" "Sample[species_id]" with "789123"
     And I press the button "Create"
+    And I wait "1" seconds
+    And I press the button "Confirm"
     And I wait "1" seconds
     Then I should see "Please fix the following input errors:"
     And I should see "Taxon ID 789123 is not found!"
@@ -96,8 +111,101 @@ Feature: admin page for samples
     And I fill in the field of "name" "Sample[attributesList]" with "animal=\"tiger\""
     And I press the button "Create"
     And I wait "1" seconds
+    And I press the button "Confirm"
+    And I wait "1" seconds
     Then I should see "Please fix the following input errors:"
     And I should see "Attribute name for the input animal=\tiger\ is not valid - please select a valid attribute name!"
+
+  Scenario: display 1 warning message when create with wrong latitude beyond 90
+    Given I am on "/adminSample/create"
+    And I should see "Create"
+    When I fill in the field of "name" "Sample[species_id]" with "87676:Eucalyptus pauciflora"
+    And I fill in the field of "name" "Sample[attributesList]" with "latitude=\"95.1234\""
+    And I press the button "Create"
+    And I wait "1" seconds
+    Then I should see "Are you sure you want to continue?"
+    And I should see "Attribute value for latitude doesn't match WGS84 decimal format"
+    And I press the button "Confirm"
+    And I wait "1" seconds
+    Then I should not see "Please fix the following input errors:"
+
+  Scenario: display 1 warning message when create with wrong latitude below -90
+    Given I am on "/adminSample/create"
+    And I should see "Create"
+    When I fill in the field of "name" "Sample[species_id]" with "87676:Eucalyptus pauciflora"
+    And I fill in the field of "name" "Sample[attributesList]" with "latitude=\"-95.1234\""
+    And I press the button "Create"
+    And I wait "1" seconds
+    Then I should see "Are you sure you want to continue?"
+    And I should see "Attribute value for latitude doesn't match WGS84 decimal format"
+    And I press the button "Confirm"
+    And I wait "1" seconds
+    Then I should not see "Please fix the following input errors:"
+
+  Scenario: display 1 warning message when create with wrong longitude beyond 180
+    Given I am on "/adminSample/create"
+    And I should see "Create"
+    When I fill in the field of "name" "Sample[species_id]" with "87676:Eucalyptus pauciflora"
+    And I fill in the field of "name" "Sample[attributesList]" with "longitude=\"200.1234\""
+    And I press the button "Create"
+    And I wait "1" seconds
+    Then I should see "Are you sure you want to continue?"
+    And I should see "Attribute value for longitude doesn't match WGS84 decimal format"
+    And I press the button "Confirm"
+    And I wait "1" seconds
+    Then I should not see "Please fix the following input errors:"
+
+  Scenario: display 1 warning message when create with wrong longitude below -180
+    Given I am on "/adminSample/create"
+    And I should see "Create"
+    When I fill in the field of "name" "Sample[species_id]" with "87676:Eucalyptus pauciflora"
+    And I fill in the field of "name" "Sample[attributesList]" with "longitude=\"-200.1234\""
+    And I press the button "Create"
+    And I wait "1" seconds
+    Then I should see "Attribute value for longitude doesn't match WGS84 decimal format"
+    And I should see "Are you sure you want to continue?"
+    And I press the button "Confirm"
+    And I wait "1" seconds
+    Then I should not see "Please fix the following input errors:"
+
+  Scenario: display 1 warning message when create with incorrect formatting
+    Given I am on "/adminSample/create"
+    And I should see "Create"
+    When I fill in the field of "name" "Sample[species_id]" with "87676:Eucalyptus pauciflora"
+    And I fill in the field of "name" "Sample[attributesList]" with "longitude=\"123.456.789\""
+    And I press the button "Create"
+    And I wait "1" seconds
+    Then I should see "Are you sure you want to continue?"
+    And I should see "Attribute value for longitude doesn't match WGS84 decimal format"
+    And I press the button "Confirm"
+    And I wait "1" seconds
+    Then I should not see "Please fix the following input errors:"
+
+  Scenario: display 1 extra message when create with extra symbol
+    Given I am on "/adminSample/create"
+    And I should see "Create"
+    When I fill in the field of "name" "Sample[species_id]" with "87676:Eucalyptus pauciflora"
+    And I fill in the field of "name" "Sample[attributesList]" with "longitude=\"123.4567°\""
+    And I press the button "Create"
+    And I wait "1" seconds
+    Then I should see "Are you sure you want to continue?"
+    And I should see "Attribute value for longitude doesn't match WGS84 decimal format"
+    And I press the button "Confirm"
+    And I wait "1" seconds
+    Then I should not see "Please fix the following input errors:"
+
+  Scenario: display 1 warning message when create with region for lat_lon
+    Given I am on "/adminSample/create"
+    And I should see "Create"
+    When I fill in the field of "name" "Sample[species_id]" with "87676:Eucalyptus pauciflora"
+    And I fill in the field of "name" "Sample[attributesList]" with "latitude=something"
+    And I press the button "Create"
+    And I wait "1" seconds
+    Then I should see "Are you sure you want to continue?"
+    And I should see "Attribute value for latitude doesn't match WGS84 decimal format. For geographic location (country, sea, region) use another attribute name"
+    And I press the button "Confirm"
+    And I wait "1" seconds
+    Then I should not see "Please fix the following input errors:"
 
   @ok
   Scenario: display 2 input error messages when create
@@ -106,6 +214,8 @@ Feature: admin page for samples
     When I fill in the field of "name" "Sample[species_id]" with "87676:Eucalyptus pauciflora"
     And I fill in the field of "name" "Sample[attributesList]" with "animal=\"tiger\",plant=\"rose\""
     And I press the button "Create"
+    And I wait "1" seconds
+    And I press the button "Confirm"
     And I wait "1" seconds
     Then I should see "Please fix the following input errors:"
     And I should see "Attribute name for the input animal=\tiger\ is not valid - please select a valid attribute name!"
@@ -118,6 +228,8 @@ Feature: admin page for samples
     When I fill in the field of "name" "Sample[species_id]" with "87676:Eucalyptus pauciflora"
     And I fill in the field of "name" "Sample[attributesList]" with "sex=\"male\",alternative_names=\"Alternative name here\""
     And I press the button "Create"
+    And I wait "1" seconds
+    And I press the button "Confirm"
     And I wait "1" seconds
     Then I should see "View Sample #451"
     And I should see "male"
