@@ -16,7 +16,7 @@ APP_SOURCE=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 SOURCE_PATH="${APP_SOURCE}/runtime/curators"
 
 # Locations of rclone.conf
-BASTION_RCLONE_CONF_LOCATION='/home/centos/.config/rclone/rclone.conf'
+BASTION_RCLONE_CONF_LOCATION='/home/ec2-user/.config/rclone/rclone.conf'
 DEV_RCLONE_CONF_LOCATION='../wasabi-migration/config/rclone.conf'
 
 # Wasabi directory paths
@@ -113,7 +113,7 @@ fi
 #######################################
 function set_up_logging() {
   if [[ $(uname -n) =~ compute ]];then
-    LOGDIR="/home/centos/uploadLogs"
+    LOGDIR="/home/ec2-user/uploadLogs"
   else
     LOGDIR="$APP_SOURCE/uploadDir"
   fi
@@ -186,7 +186,7 @@ function copy_to_wasabi() {
   # Create directory path to readme file
   readme_file=""
   if [[ $(uname -n) =~ compute ]];then
-    readme_file="/home/centos/readmeFiles/readme_${doi}.txt"
+    readme_file="/home/ec2-user/readmeFiles/readme_${doi}.txt"
   else
     readme_file="${SOURCE_PATH}/readme_${doi}.txt"
   fi
@@ -244,8 +244,8 @@ function main {
   while [ "${count}" -lt "${batch}" ] || [ "${batch}" -eq 0 ]; do
     # Conditional for how to generate readme file - dependant on user's environment
     if [[ $(uname -n) =~ compute ]];then
-      . /home/centos/.bash_profile
-      docker run --rm -v /home/centos/readmeFiles:/app/readmeFiles registry.gitlab.com/$GITLAB_PROJECT/production_tool:$GIGADB_ENV /app/yii readme/create --doi "${doi}" --outdir "${outdir}" --bucketPath "${destination_path}"
+      . /home/ec2-user/.bash_profile
+      docker run --rm -v /home/ec2-user/readmeFiles:/app/readmeFiles registry.gitlab.com/$GITLAB_PROJECT/production_tool:$GIGADB_ENV /app/yii readme/create --doi "${doi}" --outdir "${outdir}" --bucketPath "${destination_path}"
     else
       docker-compose run --rm tool /app/yii readme/create --doi "${doi}" --outdir "${outdir}" --bucketPath "${destination_path}"
     fi
@@ -274,9 +274,9 @@ function main {
        if [[ $(uname -n) =~ compute ]]; then
          currentPath=$(pwd)
          userOutputDir="$currentPath/uploadDir"
-         if [[ "$currentPath" != "/home/centos" ]]; then
-           if [[ -f "/home/centos/readmeFiles/readme_${doi}.txt" ]]; then
-             mv "/home/centos/readmeFiles/readme_${doi}.txt" "$userOutputDir/"
+         if [[ "$currentPath" != "/home/ec2-user" ]]; then
+           if [[ -f "/home/ec2-user/readmeFiles/readme_${doi}.txt" ]]; then
+             mv "/home/ec2-user/readmeFiles/readme_${doi}.txt" "$userOutputDir/"
              echo -e "\nThe readme_$doi.txt has been moved to: $userOutputDir"
            else
              echo -e "\nThe readme_$doi.txt is not found!"

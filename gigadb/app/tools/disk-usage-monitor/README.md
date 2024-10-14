@@ -21,7 +21,7 @@ df -h | grep /dev/ | cut -d " " -f10 | cut -d% -f1
 ### Notify
 
 ```
-source /home/centos/.env;curl -X POST -i -H \"Content-Type: application/json\" -H \"Accept: application/json\" -H \"Authorization: Bearer $GITTER_API_TOKEN\" \"https://api.gitter.im/v1/rooms/$GITTER_IT_NOTIFICATION_ROOM_ID/chatMessages\"  -d '{\"text\":\"Disk space usage requires attention on '\"$DEPLOYMENT_TIER-$GIGADB_ENVIRONMENT\"': '\"$1\"'%\"}'
+source /home/ec2-user/.env;curl -X POST -i -H \"Content-Type: application/json\" -H \"Accept: application/json\" -H \"Authorization: Bearer $GITTER_API_TOKEN\" \"https://api.gitter.im/v1/rooms/$GITTER_IT_NOTIFICATION_ROOM_ID/chatMessages\"  -d '{\"text\":\"Disk space usage requires attention on '\"$DEPLOYMENT_TIER-$GIGADB_ENVIRONMENT\"': '\"$1\"'%\"}'
 ```
 
 ### Deployment

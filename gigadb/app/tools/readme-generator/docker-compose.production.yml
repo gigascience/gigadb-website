@@ -8,8 +8,8 @@ services:
       cache_from:
         - "registry.gitlab.com/$CI_PROJECT_PATH/production_tool:$GIGADB_ENV"
     volumes:
-      # Map host directory /home/centos/readmeFiles to /app/readmeFiles in container
-      - /home/centos/readmeFiles:/app/readmeFiles
+      # Map host directory /home/ec2-user/readmeFiles to /app/readmeFiles in container
+      - /home/ec2-user/readmeFiles:/app/readmeFiles
     networks:
       # Connect to db-tier network in ops/docker-compose.yml
       - proxy-db-tier

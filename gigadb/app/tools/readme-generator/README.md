@@ -339,7 +339,7 @@ Password for user gigadb:
 
 Using docker command to access tool:
 ```
-$ docker run --rm -v /home/centos/readmeFiles:/app/readmeFiles registry.gitlab.com/$GITLAB_PROJECT/production_tool:$GIGADB_ENV /app/yii readme/create --doi 100142 --outdir /app/readmeFiles --bucketPath wasabi:gigadb-datasets/$GIGADB_ENV/pub/10.5524
+$ docker run --rm -v /home/ec2-user/readmeFiles:/app/readmeFiles registry.gitlab.com/$GITLAB_PROJECT/production_tool:$GIGADB_ENV /app/yii readme/create --doi 100142 --outdir /app/readmeFiles --bucketPath wasabi:gigadb-datasets/$GIGADB_ENV/pub/10.5524
 ```
 
 Check the tables `file` and `file_attribbutes` that `name`, `location`, `size` and `value` have been updated.
@@ -399,8 +399,8 @@ Transferred:        1.640 KiB / 1.640 KiB, 100%, 0 B/s, ETA -
 Transferred:            1 / 1, 100%
 Elapsed time:         1.0s
 
-2024/06/17 03:00:30 INFO  : Executed: rclone copy --s3-no-check-bucket /home/centos/readmeFiles/readme_100142.txt wasabi:gigadb-datasets/staging/pub/10.5524/100001_101000/100142/ --config /home/centos/.config/rclone/rclone.conf
- --dry-run --log-file /home/centos/uploadDir/readme_100142_20240617_030024.log --log-level INFO --stats-log-level DEBUG >> /home/centos/uploadDir/readme_100142_20240617_030024.log
+2024/06/17 03:00:30 INFO  : Executed: rclone copy --s3-no-check-bucket /home/ec2-user/readmeFiles/readme_100142.txt wasabi:gigadb-datasets/staging/pub/10.5524/100001_101000/100142/ --config /home/ec2-user/.config/rclone/rclone.conf
+ --dry-run --log-file /home/ec2-user/uploadDir/readme_100142_20240617_030024.log --log-level INFO --stats-log-level DEBUG >> /home/ec2-user/uploadDir/readme_100142_20240617_030024.log
 2024/06/17 03:00:30 INFO  : Successfully copied file to Wasabi for DOI: 100142
 ```
 
@@ -416,8 +416,8 @@ And the rclone log will be:
 [centos@ip-10-99-0-207 ~]$ more uploadLogs/readme_100142_20240617_030758.log
 2024/06/17 03:08:03 INFO  : Created readme file for DOI 100142 in /usr/local/bin/runtime/curators/readme_100142.txt
 2024/06/17 03:08:03 INFO  : readme_100142.txt: Copied (replaced existing)
-2024/06/17 03:08:03 INFO  : Executed: rclone copy --s3-no-check-bucket /home/centos/readmeFiles/readme_100142.txt wasabi:gigadb-datasets/staging/pub/10.5524/100001_101000/100142/ --config /home/centos/.config/rclone/rclone.conf
- --log-file /home/centos/uploadDir/readme_100142_20240617_030758.log --log-level INFO --stats-log-level DEBUG >> /home/centos/uploadDir/readme_100142_20240617_030758.log
+2024/06/17 03:08:03 INFO  : Executed: rclone copy --s3-no-check-bucket /home/ec2-user/readmeFiles/readme_100142.txt wasabi:gigadb-datasets/staging/pub/10.5524/100001_101000/100142/ --config /home/ec2-user/.config/rclone/rclone.conf
+ --log-file /home/ec2-user/uploadDir/readme_100142_20240617_030758.log --log-level INFO --stats-log-level DEBUG >> /home/ec2-user/uploadDir/readme_100142_20240617_030758.log
 2024/06/17 03:08:03 INFO  : Successfully copied file to Wasabi for DOI: 100142
 ```
 
@@ -443,8 +443,8 @@ Transferred:        3.646 KiB / 3.646 KiB, 100%, 0 B/s, ETA -
 Transferred:            1 / 1, 100%
 Elapsed time:         0.2s
 
-2024/06/17 03:20:12 INFO  : Executed: rclone copy --s3-no-check-bucket /home/centos/readmeFiles/readme_100141.txt wasabi:gigadb-datasets/staging/pub/10.5524/100001_101000/100141/ --config /home/centos/.config/rclone/rclone.conf
- --dry-run --log-file /home/centos/uploadDir/readme_100141_20240617_032006.log --log-level INFO --stats-log-level DEBUG >> /home/centos/uploadDir/readme_100141_20240617_032006.log
+2024/06/17 03:20:12 INFO  : Executed: rclone copy --s3-no-check-bucket /home/ec2-user/readmeFiles/readme_100141.txt wasabi:gigadb-datasets/staging/pub/10.5524/100001_101000/100141/ --config /home/ec2-user/.config/rclone/rclone.conf
+ --dry-run --log-file /home/ec2-user/uploadDir/readme_100141_20240617_032006.log --log-level INFO --stats-log-level DEBUG >> /home/ec2-user/uploadDir/readme_100141_20240617_032006.log
 2024/06/17 03:20:12 INFO  : Successfully copied file to Wasabi for DOI: 100141
 2024/06/17 03:20:16 INFO  : Created readme file for DOI 100142 in /usr/local/bin/runtime/curators/readme_100142.txt
 2024/06/17 03:20:17 NOTICE: readme_100142.txt: Skipped copy as --dry-run is set (size 1.640Ki)
@@ -453,8 +453,8 @@ Transferred:        1.640 KiB / 1.640 KiB, 100%, 0 B/s, ETA -
 Transferred:            1 / 1, 100%
 Elapsed time:         0.2s
 
-2024/06/17 03:20:17 INFO  : Executed: rclone copy --s3-no-check-bucket /home/centos/readmeFiles/readme_100142.txt wasabi:gigadb-datasets/staging/pub/10.5524/100001_101000/100142/ --config /home/centos/.config/rclone/rclone.conf
- --dry-run --log-file /home/centos/uploadDir/readme_100141_20240617_032006.log --log-level INFO --stats-log-level DEBUG >> /home/centos/uploadDir/readme_100141_20240617_032006.log
+2024/06/17 03:20:17 INFO  : Executed: rclone copy --s3-no-check-bucket /home/ec2-user/readmeFiles/readme_100142.txt wasabi:gigadb-datasets/staging/pub/10.5524/100001_101000/100142/ --config /home/ec2-user/.config/rclone/rclone.conf
+ --dry-run --log-file /home/ec2-user/uploadDir/readme_100141_20240617_032006.log --log-level INFO --stats-log-level DEBUG >> /home/ec2-user/uploadDir/readme_100141_20240617_032006.log
 2024/06/17 03:20:17 INFO  : Successfully copied file to Wasabi for DOI: 100142
 2024/06/17 03:20:22 INFO  : Created readme file for DOI 100143 in /usr/local/bin/runtime/curators/readme_100143.txt
 2024/06/17 03:20:22 NOTICE: readme_100143.txt: Skipped copy as --dry-run is set (size 5.145Ki)
@@ -463,8 +463,8 @@ Transferred:        5.145 KiB / 5.145 KiB, 100%, 0 B/s, ETA -
 Transferred:            1 / 1, 100%
 Elapsed time:         0.2s
 
-2024/06/17 03:20:22 INFO  : Executed: rclone copy --s3-no-check-bucket /home/centos/readmeFiles/readme_100143.txt wasabi:gigadb-datasets/staging/pub/10.5524/100001_101000/100143/ --config /home/centos/.config/rclone/rclone.conf
- --dry-run --log-file /home/centos/uploadDir/readme_100141_20240617_032006.log --log-level INFO --stats-log-level DEBUG >> /home/centos/uploadDir/readme_100141_20240617_032006.log
+2024/06/17 03:20:22 INFO  : Executed: rclone copy --s3-no-check-bucket /home/ec2-user/readmeFiles/readme_100143.txt wasabi:gigadb-datasets/staging/pub/10.5524/100001_101000/100143/ --config /home/ec2-user/.config/rclone/rclone.conf
+ --dry-run --log-file /home/ec2-user/uploadDir/readme_100141_20240617_032006.log --log-level INFO --stats-log-level DEBUG >> /home/ec2-user/uploadDir/readme_100141_20240617_032006.log
 2024/06/17 03:20:22 INFO  : Successfully copied file to Wasabi for DOI: 100143
 [centos@ip-10-99-0-207 ~]$ 
 

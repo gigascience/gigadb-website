@@ -101,7 +101,7 @@ webapp_ip=$(terraform output ec2_public_ip | sed 's/"//g')
 files_private_ip=$(terraform output ec2_files_private_ip | sed 's/"//g')
 files_ip=$(terraform output ec2_files_public_ip | sed 's/"//g')
 
-echo "ec2_bastion_login_account = centos@$bastion_ip" >> ansible.properties
+echo "ec2_bastion_login_account = ec2-user@$bastion_ip" >> ansible.properties
 
 # variables needed by disk-usage-monitor
 gitter_room_id=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$FORK_VARIABLES_URL/GITTER_IT_NOTIFICATION_ROOM_ID" | jq -r .value)
@@ -132,9 +132,10 @@ ssh-keygen -R $bastion_ip
 ssh-keygen -R $webapp_private_ip
 ssh-keygen -R $files_private_ip
 # Add the new key
+# Add the new key
 ssh-keyscan -t ecdsa $bastion_ip >> ~/.ssh/known_hosts
-web_host=$(ssh -i $aws_ssh_key centos"@$bastion_ip" ssh-keyscan -t ecdsa "$webapp_private_ip")
-files_host=$(ssh -i $aws_ssh_key centos@"$bastion_ip" ssh-keyscan -t ecdsa "$files_private_ip")
+web_host=$(ssh -i $aws_ssh_key ec2-user"@$bastion_ip" ssh-keyscan -t ecdsa "$webapp_private_ip")
+files_host=$(ssh -i $aws_ssh_key ec2-user"@$bastion_ip" ssh-keyscan -t ecdsa "$files_private_ip")
 echo "$web_host"  >> ~/.ssh/known_hosts
 echo "$files_host"  >> ~/.ssh/known_hosts
 

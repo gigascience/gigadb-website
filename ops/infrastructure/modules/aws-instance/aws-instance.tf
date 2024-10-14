@@ -76,7 +76,7 @@ data "aws_ami" "centos" {
 
   filter {
     name   = "name"
-    values = ["CentOS Stream 8 x86_64 *"]
+    values = ["CentOS Stream 9 x86_64 *"]
   }
 
   filter {

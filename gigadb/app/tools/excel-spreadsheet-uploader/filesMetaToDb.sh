@@ -11,7 +11,7 @@ currentPath=$(pwd)
 userOutputDir="$currentPath/uploadDir"
 
 if [[ $(uname -n) =~ compute ]];then
-  outputDir="/home/centos/uploadLogs"
+  outputDir="/home/ec2-user/uploadLogs"
 else
   # For creating readme file on dev environment
   # /home/curators is mapped to gigadb/app/tools/readme-generator/runtime/curators directory
@@ -34,7 +34,7 @@ updateFileSizeStartMessage="\n* About to update files' size for $DOI"
 updateFileSizeEndMessage="\nDone with updating files' size for $DOI. Nb of successful changes saved in file: $outputDir/updating-file-size-$DOI.txt"
 
 if [[ $(uname -n) =~ compute ]];then
-  . /home/centos/.bash_profile
+  . /home/ec2-user/.bash_profile
 
   echo -e "$updateMD5ChecksumStartMessage"
   docker run -e YII_PATH=/var/www/vendor/yiisoft/yii "registry.gitlab.com/$GITLAB_PROJECT/production_app:$GIGADB_ENV" ./protected/yiic files updateMD5FileAttributes --doi="$DOI" | tee "$outputDir/updating-md5checksum-$DOI.txt"

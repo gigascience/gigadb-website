@@ -184,14 +184,14 @@ pg_dump (PostgreSQL) 14.8
 [centos@ip-10-xx-x-xx ~]$ psql --version
 psql (PostgreSQL) 14.8
 # upload the current latest database to s3
-[centos@ip-10-xx-x-xx ~]$ docker run --env-file .env -v /home/centos/backups:/backups -v /home/centos/.config/rclone/rclone.conf:/root/.config/rclone/rclone.conf registry.gitlab.com/gigascience/forks/kencho-gigadb-website/production_s3backup:staging 2> logs/upload-errors-"$latestDate".log 1> logs/upload-output-"$latestDate".log
+[centos@ip-10-xx-x-xx ~]$ docker run --env-file .env -v /home/ec2-user/backups:/backups -v /home/ec2-user/.config/rclone/rclone.conf:/root/.config/rclone/rclone.conf registry.gitlab.com/gigascience/forks/kencho-gigadb-website/production_s3backup:staging 2> logs/upload-errors-"$latestDate".log 1> logs/upload-output-"$latestDate".log
 # log in aws console s3 dashboard to check s3:gigadb-database-backups bucket and look for gigadb_gigascience-forks-$GITLAB_USERNAME-gigadb-website_$env_"$latestDate".backup, eg: gigadb_gigascience-forks-kencho-gigadb-website_staging_20230620.backup
 # back to the bastion server
 # download and restore the datasets from the earlier date
 [centos@ip-10-xx-x-xx ~]$ ./databaseReset.sh 20230606 2> logs/errors-6jun.log 1> logs/output-6jun.log
 # check the RSS feed in the staging website
 # restore the $latest backup from s3
-[centos@ip-10-xx-x-xx ~]$ docker run --rm --env-file .env -v /home/centos/.config/rclone/rclone.conf:/root/.config/rclone/rclone.conf --entrypoint /restore_database_from_s3_backup.sh registry.gitlab.com/gigascience/forks/kencho-gigadb-website/production_s3backup:staging "$latestDate" 2> logs/restore-latest-erros.log 1> logs/restore-latest-output.log
+[centos@ip-10-xx-x-xx ~]$ docker run --rm --env-file .env -v /home/ec2-user/.config/rclone/rclone.conf:/root/.config/rclone/rclone.conf --entrypoint /restore_database_from_s3_backup.sh registry.gitlab.com/gigascience/forks/kencho-gigadb-website/production_s3backup:staging "$latestDate" 2> logs/restore-latest-erros.log 1> logs/restore-latest-output.log
 # check the RSS feed in staging website
 # check the logs/*output* logs, the migration jobs are performed by the following tools
 Yii Migration Tool v1.0 (based on Yii v1.1.28)
@@ -218,14 +218,14 @@ pg_dump (PostgreSQL) 14.8
 [centos@ip-10-xx-x-xx ~]$ psql --version
 psql (PostgreSQL) 14.8
 # upload the current latest database to s3
-[centos@ip-10-xx-x-xx ~]$ docker run --env-file .env -v /home/centos/backups:/backups -v /home/centos/.config/rclone/rclone.conf:/root/.config/rclone/rclone.conf registry.gitlab.com/gigascience/forks/kencho-gigadb-website/production_s3backup:live 2> logs/upload-errors-"$latestDate".log 1> logs/upload-output-"$latestDate".log
+[centos@ip-10-xx-x-xx ~]$ docker run --env-file .env -v /home/ec2-user/backups:/backups -v /home/ec2-user/.config/rclone/rclone.conf:/root/.config/rclone/rclone.conf registry.gitlab.com/gigascience/forks/kencho-gigadb-website/production_s3backup:live 2> logs/upload-errors-"$latestDate".log 1> logs/upload-output-"$latestDate".log
 # log in aws console s3 dashboard to check s3:gigadb-database-backups bucket and look for gigadb_gigascience-forks-$GITLAB_USERNAME-gigadb-website_$env_"$latestDate".backup, eg: gigadb_gigascience-forks-kencho-gigadb-website_live_20230620.backup
 # back to the bastion server
 # download and restore the datasets from the earlier date
 [centos@ip-10-xx-x-xx ~]$ ./databaseReset.sh 20230606 2> logs/errors-6jun.log 1> logs/output-6jun.log
 # check the RSS feed in staging website
 # restore the $latest backup from s3
-[centos@ip-10-xx-x-xx ~]$ docker run --rm --env-file .env -v /home/centos/.config/rclone/rclone.conf:/root/.config/rclone/rclone.conf --entrypoint /restore_database_from_s3_backup.sh registry.gitlab.com/gigascience/forks/kencho-gigadb-website/production_s3backup:live "$latestDate" 2> logs/restore-latest-erros.log 1> logs/restore-latest-output.log
+[centos@ip-10-xx-x-xx ~]$ docker run --rm --env-file .env -v /home/ec2-user/.config/rclone/rclone.conf:/root/.config/rclone/rclone.conf --entrypoint /restore_database_from_s3_backup.sh registry.gitlab.com/gigascience/forks/kencho-gigadb-website/production_s3backup:live "$latestDate" 2> logs/restore-latest-erros.log 1> logs/restore-latest-output.log
 # check the RSS feed in the live gigadb website
 # check the logs/*output* logs, the migration jobs are performed by the following tools
 Yii Migration Tool v1.0 (based on Yii v1.1.28)
@@ -255,14 +255,14 @@ pg_dump (PostgreSQL) 14.8
 [centos@ip-10-xx-x-xx ~]$ psql --version
 psql (PostgreSQL) 14.8
 # upload the current latest database to s3
-[centos@ip-10-xx-x-xx ~]$ docker run --env-file .env -v /home/centos/backups:/backups -v /home/centos/.config/rclone/rclone.conf:/root/.config/rclone/rclone.conf registry.gitlab.com/gigascience/upstream/gigadb-website/production_s3backup:live 2> logs/upload-errors-"$latestDate".log 1> logs/upload-output-"$latestDate".log
+[centos@ip-10-xx-x-xx ~]$ docker run --env-file .env -v /home/ec2-user/backups:/backups -v /home/ec2-user/.config/rclone/rclone.conf:/root/.config/rclone/rclone.conf registry.gitlab.com/gigascience/upstream/gigadb-website/production_s3backup:live 2> logs/upload-errors-"$latestDate".log 1> logs/upload-output-"$latestDate".log
 # log in aws console s3 dashboard to check s3:gigadb-database-backups bucket and look for gigadb_gigascience-upstream-gigadb-website_live_"$latestDate".backup, eg: gigadb_gigascience-upstream-gigadb-website_live_20230628.backup
 # back to the upstream live bastion server
 # download and restore the datasets from the earlier date
 [centos@ip-10-xx-x-xx ~]$ ./databaseReset.sh 20230606 2> logs/errors-6jun.log 1> logs/output-6jun.log
 # check the RSS feed in the live gigadb website, https://beta.gigadb.org
 # restore the $latest backup from s3
-[centos@ip-10-xx-x-xx ~]$ docker run --rm --env-file .env -v /home/centos/.config/rclone/rclone.conf:/root/.config/rclone/rclone.conf --entrypoint /restore_database_from_s3_backup.sh registry.gitlab.com/gigascience/upstream/gigadb-website/production_s3backup:live "$latestDate" 2> logs/restore-latest-erros.log 1> logs/restore-latest-output.log
+[centos@ip-10-xx-x-xx ~]$ docker run --rm --env-file .env -v /home/ec2-user/.config/rclone/rclone.conf:/root/.config/rclone/rclone.conf --entrypoint /restore_database_from_s3_backup.sh registry.gitlab.com/gigascience/upstream/gigadb-website/production_s3backup:live "$latestDate" 2> logs/restore-latest-erros.log 1> logs/restore-latest-output.log
 # check the RSS feed in the live gigadb website, https://beta.gigadb.org
 # check the logs/*output* logs, the migration jobs are performed by the following tools
 Yii Migration Tool v1.0 (based on Yii v1.1.28)

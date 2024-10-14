@@ -44,9 +44,9 @@ The keys and certificates created by Certbot can be found in `/etc/letsencrypt/l
 We need to mount this Docker container directory with a directory on the host
 machine. Let's create 3 new directories for this:
 ```
-[centos@ip-10-99-0-229 ~]$ mkdir -p /home/centos/data/certbot/letsencrypt
-[centos@ip-10-99-0-229 ~]$ mkdir -p /home/centos/data/certbot/www
-[centos@ip-10-99-0-229 ~]$ mkdir -p /home/centos/data/certbot/log
+[centos@ip-10-99-0-229 ~]$ mkdir -p /home/ec2-user/data/certbot/letsencrypt
+[centos@ip-10-99-0-229 ~]$ mkdir -p /home/ec2-user/data/certbot/www
+[centos@ip-10-99-0-229 ~]$ mkdir -p /home/ec2-user/data/certbot/log
 ```
 
 There are rate limits to the number of certificates that Let's Encrypt will
@@ -56,9 +56,9 @@ use the Let's Encrypt test staging API to learn how to create TLS certificates
 by using `--test-cert` flag:
 ```
 [centos@ip-10-99-0-229 ~]$ docker run -it --rm --name temp_certbot \
-  -v /home/centos/data/certbot/letsencrypt:/etc/letsencrypt \
-  -v /home/centos/data/certbot/www:/tmp/letsencrypt \
-  -v /home/centos/data/certbot/log:/var/log \
+  -v /home/ec2-user/data/certbot/letsencrypt:/etc/letsencrypt \
+  -v /home/ec2-user/data/certbot/www:/tmp/letsencrypt \
+  -v /home/ec2-user/data/certbot/log:/var/log \
   certbot/certbot:latest \
   certonly --test-cert --manual \
   --preferred-challenges dns \
@@ -71,9 +71,9 @@ To create TLS certificates for use in live production site:
 # -rm remove container when it exits, -it starts interactive shell
 # Uses DNS authentication before cert creation
 [centos@ip-10-99-0-229 ~]$ docker run -it --rm --name temp_certbot \
-  -v /home/centos/data/certbot/letsencrypt:/etc/letsencrypt \
-  -v /home/centos/data/certbot/www:/tmp/letsencrypt \
-  -v /home/centos/data/certbot/log:/var/log \
+  -v /home/ec2-user/data/certbot/letsencrypt:/etc/letsencrypt \
+  -v /home/ec2-user/data/certbot/www:/tmp/letsencrypt \
+  -v /home/ec2-user/data/certbot/log:/var/log \
   certbot/certbot:latest \
   certonly --manual \
   --preferred-challenges dns \
@@ -88,10 +88,10 @@ name consisting of the hostname for which you want a certificate issued,
 prepended by `_acme-challenge`. You will need to access the [Alibaba DNS manager](https://www.alibabacloud.com)
 to do this because the gigadb.org domain is managed by this service.
 
-The new certificates can be viewed in the `/home/centos/data/certbot/letsencrypt/live/gigadb.org`
+The new certificates can be viewed in the `/home/ec2-user/data/certbot/letsencrypt/live/gigadb.org`
 directory:
 ```
-[centos@ip-10-99-0-229 ~]$ cd /home/centos/data/certbot/letsencrypt/live/gigadb.org
+[centos@ip-10-99-0-229 ~]$ cd /home/ec2-user/data/certbot/letsencrypt/live/gigadb.org
 [centos@ip-10-99-0-229 ~]$ ls
 README  cert.pem  chain.pem  fullchain.pem  privkey.pem
 ```
