@@ -193,50 +193,43 @@ class AdminSampleController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->loadModel($id);
-                //$old_code= $model->code;
-        // Uncomment the following line if AJAX validation is needed
-        // $this->performAjaxValidation($model);
 
-        if (isset($_POST['Sample'])) {
-            $model->attributes = $_POST['Sample'];
-                        $model->name = $_POST['Sample']['name'];
+        if ($sampleAttribute = Yii::$app->request->post('Sample')) {
+            $model->name = $sampleAttribute['name'];
 
-            if (strpos($_POST['Sample']['species_id'], ":") !== false) {
-                $array = explode(":", $_POST['Sample']['species_id']);
-                $tax_id = $array[0];
-                if (!empty($tax_id)) {
-                    $species = $this->findSpeciesRecord($tax_id, $model);
-                    $this->updateSampleAttributes($model);
-                    if (!$model->hasErrors()) {
-                        $this->redirect(array('view', 'id' => $model->id));
-                    }
-                } else {
-                    $model->addError('error', 'Taxon ID is empty!');
-                }
-            } else {
+            if (!strpos($sampleAttribute['species_id'], ":")) {
                 $model->addError('error', 'The input format is wrong, should be tax_id:common_name');
             }
-        }
 
-            $species = Species::model()->findByPk($model->species_id);
+            $array = explode(":", $sampleAttribute['species_id']);
+            $tax_id = $array[0];
 
-            $model->species_id = $species->tax_id . ":";
-            $has_common_name = false;
-        if ($species->common_name != null) {
-                   $has_common_name = true;
-                   $model->species_id .= $species->common_name;
-        }
-
-        if ($species->scientific_name != null) {
-            if ($has_common_name) {
-                $model->species_id .= ",";
+            if (!$tax_id) {
+                $model->addError('error', 'Taxon ID is empty!');
             }
-                    $model->species_id .= $species->scientific_name;
+
+            if (!$this->findSpeciesRecord($tax_id, $model)) {
+                $model->addError('error', 'The species does not exist');
+            }
+
+            if ($model->save()) {
+                $this->updateSampleAttributes($model);
+            }
+
+            if (!$model->hasErrors()) {
+                $this->redirect(array('view', 'id' => $model->id));
+            }
         }
-            $this->render('update', array(
-                'model' => $model,
-                'species' => $species,
-            ));
+
+        $species = Species::model()->findByPk($model->species_id);
+
+        $model->species_id = sprintf("%s: %s",$species->tax_id, $species->common_name ?: '');
+        $model->species_id .= sprintf("%s%s", $species->common_name ? ', ' : '', $species->scientific_name ?: '');
+
+        $this->render('update', array(
+            'model' => $model,
+            'species' => $species,
+        ));
     }
 
 	/**
