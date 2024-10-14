@@ -70,8 +70,6 @@ check_PHPDoc:
 
 semgrep-sast:
   stage: conformance and security
-  variables:
-    SAST_EXCLUDED_ANALYZERS: "spotbugs, bandit, eslint, nodejs-scan"
   artifacts:
     untracked: true
     when: always
