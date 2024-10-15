@@ -243,11 +243,10 @@ class AdminDatasetController extends Controller
                 $this->renderNotificationsAccordingToStatus($uploadStatus, $previousUploadStatus, $model);
             }
 
-            // semantic kewyords update, using remove all and re-create approach
-            if ($postKeywords = Yii::$app->request->post('keywords')) {
-                $attribute_service = Yii::app()->attributeService;
-                $attribute_service->replaceKeywordsForDatasetIdWithString($id, $postKeywords);
-            }
+            // semantic keywords update, using remove all and re-create approach
+            $postKeywords = Yii::$app->request->post('keywords', '');
+            $attribute_service = Yii::app()->attributeService;
+            $attribute_service->replaceKeywordsForDatasetIdWithString($id, $postKeywords);
 
             $urlToRedirect = Yii::$app->request->post('urltoredirect');
             // retrieve existing redirect
