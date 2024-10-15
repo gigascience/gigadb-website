@@ -4,6 +4,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #456: Improve DataCite metadata by migrating to Datacite version 4.6
+
 ## v4.4.1 - 2024-12-24 - 51c426dfe - 
 
 - Feat #2067: Sort files by size in dataset page
