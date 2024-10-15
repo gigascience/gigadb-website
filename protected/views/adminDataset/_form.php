@@ -22,11 +22,11 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tag-editor/1.0.20/jquery.tag-editor.min.js"></script>
 
 <?php $form = $this->beginWidget('CActiveForm', array(
-    'id' => 'dataset-form',
+    'id'                   => 'dataset-form',
     'enableAjaxValidation' => false,
-    'htmlOptions' => array(
+    'htmlOptions'          => array(
         'enctype' => 'multipart/form-data',
-        'class' => 'form-horizontal admindataset-form'
+        'class'   => 'form-horizontal admindataset-form'
     ),
 ));
 
@@ -49,24 +49,24 @@ echo $form->hiddenField($model, "image_id");
                 <!-- first column -->
                 <div class="col-xs-5">
                     <div class="form-block-1">
-                      <?php
+                        <?php
                         $this->widget('application.components.controls.DropdownField', [
-                          'form' => $form,
-                          'model' => $model,
-                          'attributeName' => 'submitter_id',
-                          'listDataOptions' => [
-                              'data' => User::model()->findAll(
-                                  array('order' => 'email ASC')
-                              ),
-                              'valueField' => 'id',
-                              'textField' => 'email',
-                          ],
-                          'labelOptions' => ['class' => 'col-xs-4'],
-                          'inputWrapperOptions' => 'col-xs-8',
-                          'inputOptions' => [
-                              'required' => true,
-                          ],
-                          'tooltip' => 'Select the registered user account of the submitting author, this value will be used by the "Contact Author" button on the dataset page.',
+                            'form'                => $form,
+                            'model'               => $model,
+                            'attributeName'       => 'submitter_id',
+                            'listDataOptions'     => [
+                                'data'       => User::model()->findAll(
+                                    array('order' => 'email ASC')
+                                ),
+                                'valueField' => 'id',
+                                'textField'  => 'email',
+                            ],
+                            'labelOptions'        => ['class' => 'col-xs-4'],
+                            'inputWrapperOptions' => 'col-xs-8',
+                            'inputOptions'        => [
+                                'required' => true,
+                            ],
+                            'tooltip'             => 'Select the registered user account of the submitting author, this value will be used by the "Contact Author" button on the dataset page.',
                         ]);
                         ?>
                         <div class="form-group <?php echo $form->error($model, 'curator_id') ? 'has-error' : '' ?>">
@@ -78,7 +78,7 @@ echo $form->hiddenField($model, "image_id");
                                 ?>
                                 <?php echo $form->dropDownList($model, 'curator_id', CHtml::listData(User::model()->findAll($criteria), 'id', 'email'), array('prompt' => '', 'class' => 'form-control', 'title' => 'Select the relevant curator who is assigned to work on this dataset', 'data-toggle' => 'tooltip')); ?>
                                 <div role="alert" class="help-block">
-                                  <?php echo $form->error($model, 'curator_id'); ?>
+                                    <?php echo $form->error($model, 'curator_id'); ?>
                                 </div>
                             </div>
                         </div>
@@ -86,15 +86,15 @@ echo $form->hiddenField($model, "image_id");
                         <?php
 
                         $this->widget('application.components.controls.TextField', [
-                          'form' => $form,
-                          'model' => $model,
-                          'attributeName' => 'manuscript_id',
-                          'labelOptions' => ['class' => 'col-xs-4'],
-                          'inputWrapperOptions' => 'col-xs-8',
-                          'inputOptions' => [
-                            'maxlength' => 200
-                          ],
-                          'tooltip' => 'Insert the manuscript submission ID from the relevant manuscript submission system'
+                            'form'                => $form,
+                            'model'               => $model,
+                            'attributeName'       => 'manuscript_id',
+                            'labelOptions'        => ['class' => 'col-xs-4'],
+                            'inputWrapperOptions' => 'col-xs-8',
+                            'inputOptions'        => [
+                                'maxlength' => 200
+                            ],
+                            'tooltip'             => 'Insert the manuscript submission ID from the relevant manuscript submission system'
                         ]);
                         ?>
 
@@ -105,10 +105,10 @@ echo $form->hiddenField($model, "image_id");
                                     $model,
                                     'upload_status',
                                     Dataset::getAvailableStatusList(),
-                                    array('class' => 'js-pub form-control', 'disabled' => $model->upload_status == 'Published', 'data-initial-value' => $model->upload_status, 'title' => 'This field records the current step in the processing of the dataset', 'data-toggle' => 'tooltip' )
+                                    array('class' => 'js-pub form-control', 'disabled' => $model->upload_status == 'Published', 'data-initial-value' => $model->upload_status, 'title' => 'This field records the current step in the processing of the dataset', 'data-toggle' => 'tooltip')
                                 ); ?>
                                 <div role="alert" class="help-block">
-                                <?php echo $form->error($model, 'upload_status'); ?>
+                                    <?php echo $form->error($model, 'upload_status'); ?>
                                 </div>
                             </div>
                         </div>
@@ -125,7 +125,7 @@ echo $form->hiddenField($model, "image_id");
                                 $checkedTypes = CHtml::listData($model->datasetTypes, 'id', 'id');
 
                                 foreach ($datasetTypes as $id => $datasetType) {
-                                ?>
+                                    ?>
                                     <div class="from-group checkbox-horizontal">
                                         <?php
                                         $checkedHtml = in_array($id, $checkedTypes, true) ? 'checked="checked"' : '';
@@ -139,7 +139,7 @@ echo $form->hiddenField($model, "image_id");
                                             ?>
                                         </div>
                                     </div>
-                                <?php
+                                    <?php
                                 }
                                 ?>
                             </div>
@@ -165,10 +165,10 @@ echo $form->hiddenField($model, "image_id");
                                         'X',
                                         Yii::app()->createUrl('/adminDataset/clearImageFile/'),
                                         array(
-                                            'type' => 'POST',
-                                            'data' => array('doi' => 'js:$("#Dataset_identifier").val()'),
+                                            'type'     => 'POST',
+                                            'data'     => array('doi' => 'js:$("#Dataset_identifier").val()'),
                                             'dataType' => 'json',
-                                            'success' => 'js:function(output){
+                                            'success'  => 'js:function(output){
                                                     if(output.status){
                                                         $("#showImage").src = "";
                                                         $("#showImage").css("display", "none");
@@ -182,10 +182,10 @@ echo $form->hiddenField($model, "image_id");
                                                 }',
                                         ),
                                         array(
-                                            'id' => 'clearFileUrl',
-                                            'class' => 'clear-file-url-btn btn background-btn-o',
+                                            'id'         => 'clearFileUrl',
+                                            'class'      => 'clear-file-url-btn btn background-btn-o',
                                             'aria-label' => 'Delete image file',
-                                            'confirm' => 'Are you sure? This will take effect immediately',
+                                            'confirm'    => 'Are you sure? This will take effect immediately',
                                         )
                                     );
                                 }
@@ -203,10 +203,10 @@ echo $form->hiddenField($model, "image_id");
                                                 'Remove image record (file+metadata)',
                                                 Yii::app()->createUrl('/adminDataset/removeImage/'),
                                                 array(
-                                                    'type' => 'POST',
-                                                    'data' => array('doi' => 'js:$("#Dataset_identifier").val()'),
+                                                    'type'     => 'POST',
+                                                    'data'     => array('doi' => 'js:$("#Dataset_identifier").val()'),
                                                     'dataType' => 'json',
-                                                    'success' => 'js:function(output){
+                                                    'success'  => 'js:function(output){
 
                                                     if(output.status){
                                                         $("#showImage").src = "https://assets.gigadb-cdn.net/images/datasets/no_image.png";
@@ -223,11 +223,11 @@ echo $form->hiddenField($model, "image_id");
                                                 }',
                                                 ),
                                                 array(
-                                                    'class' => 'btn btn-sm danger-btn',
-                                                    'id' => 'removeButton',
-                                                    'title' => 'Clicking this button will delete the thumbnail image AND its metadata values below',
+                                                    'class'       => 'btn btn-sm danger-btn',
+                                                    'id'          => 'removeButton',
+                                                    'title'       => 'Clicking this button will delete the thumbnail image AND its metadata values below',
                                                     'data-toggle' => 'tooltip',
-                                                    'confirm' => 'Are you sure? This will take effect immediately',
+                                                    'confirm'     => 'Are you sure? This will take effect immediately',
 
                                                 )
                                             );
@@ -249,91 +249,91 @@ echo $form->hiddenField($model, "image_id");
                         </div>
                         <fieldset id="metaFieldsSection" class="meta-fields-container">
                             <legend>Image metafields:
-                              <span class="legend-description">The following fields relate only to the Thumbnail image added above</span>
+                                <span class="legend-description">The following fields relate only to the Thumbnail image added above</span>
                             </legend>
                             <?php
 
-                              $this->widget('application.components.controls.TextField', [
-                                'form' => $form,
-                                'model' => $model->image,
-                                'attributeName' => 'source',
-                                'labelOptions' => ['class' => 'col-xs-4'],
+                            $this->widget('application.components.controls.TextField', [
+                                'form'                => $form,
+                                'model'               => $model->image,
+                                'attributeName'       => 'source',
+                                'labelOptions'        => ['class' => 'col-xs-4'],
                                 'inputWrapperOptions' => 'col-xs-8',
-                                'inputOptions' => [
-                                  'required' => true,
-                                  'class' => 'meta-fields'
+                                'inputOptions'        => [
+                                    'required' => true,
+                                    'class'    => 'meta-fields'
                                 ],
-                                'tooltip' => 'Cite the source of the thumbnail image'
-                              ]);
-                              $this->widget('application.components.controls.TextField', [
-                                'form' => $form,
-                                'model' => $model->image,
-                                'attributeName' => 'tag',
-                                'labelOptions' => ['class' => 'col-xs-4'],
+                                'tooltip'             => 'Cite the source of the thumbnail image'
+                            ]);
+                            $this->widget('application.components.controls.TextField', [
+                                'form'                => $form,
+                                'model'               => $model->image,
+                                'attributeName'       => 'tag',
+                                'labelOptions'        => ['class' => 'col-xs-4'],
                                 'inputWrapperOptions' => 'col-xs-8',
-                                'inputOptions' => [
-                                  'class' => 'meta-fields'
+                                'inputOptions'        => [
+                                    'class' => 'meta-fields'
                                 ],
-                                'tooltip' => 'Add a short title or description of the thumbnail image'
-                              ]);
-                              $this->widget('application.components.controls.TextField', [
-                                'form' => $form,
-                                'model' => $model->image,
-                                'attributeName' => 'license',
-                                'labelOptions' => ['class' => 'col-xs-4'],
+                                'tooltip'             => 'Add a short title or description of the thumbnail image'
+                            ]);
+                            $this->widget('application.components.controls.TextField', [
+                                'form'                => $form,
+                                'model'               => $model->image,
+                                'attributeName'       => 'license',
+                                'labelOptions'        => ['class' => 'col-xs-4'],
                                 'inputWrapperOptions' => 'col-xs-8',
-                                'inputOptions' => [
-                                  'required' => true,
-                                  'class' => 'meta-fields'
+                                'inputOptions'        => [
+                                    'required' => true,
+                                    'class'    => 'meta-fields'
                                 ],
-                                'tooltip' => 'Provide the license underwhich the image is shared, this must be CC0 or CC-BY. Note CC-BY-NC is not acceptable for us.'
-                              ]);
-                              $this->widget('application.components.controls.TextField', [
-                                'form' => $form,
-                                'model' => $model->image,
-                                'attributeName' => 'photographer',
-                                'labelOptions' => ['class' => 'col-xs-4'],
+                                'tooltip'             => 'Provide the license underwhich the image is shared, this must be CC0 or CC-BY. Note CC-BY-NC is not acceptable for us.'
+                            ]);
+                            $this->widget('application.components.controls.TextField', [
+                                'form'                => $form,
+                                'model'               => $model->image,
+                                'attributeName'       => 'photographer',
+                                'labelOptions'        => ['class' => 'col-xs-4'],
                                 'inputWrapperOptions' => 'col-xs-8',
-                                'inputOptions' => [
-                                  'required' => true,
-                                  'class' => 'meta-fields'
+                                'inputOptions'        => [
+                                    'required' => true,
+                                    'class'    => 'meta-fields'
                                 ],
-                                'tooltip' => 'Add the credit of the person(s) responsible for creating the image'
-                              ]);
+                                'tooltip'             => 'Add the credit of the person(s) responsible for creating the image'
+                            ]);
 
-                              ?>
+                            ?>
                         </fieldset>
                         <div id="metaFieldsLiveRegion" aria-live="polite" class="sr-only"></div>
                     </div>
                     <div class="form-block-4">
                         <fieldset>
                             <legend>Dataset metafields:
-                              <span class="legend-description">The following fields are specific to the dataset as a whole</span>
+                                <span class="legend-description">The following fields are specific to the dataset as a whole</span>
                             </legend>
                             <div class="form-group row doi-group <?php echo $form->error($model, 'identifier') ? 'has-error' : ''; ?>" id="doiFormGroup">
                                 <?php echo $form->labelEx($model, 'identifier', array(
                                     'class' => 'control-label col-xs-4',
-                                    'id' => 'doiLabel'
+                                    'id'    => 'doiLabel'
                                 )); ?>
                                 <div class="col-xs-5">
                                     <?php echo $form->textField(
                                         $model,
                                         'identifier',
                                         array(
-                                            'required' => 'required',
+                                            'required'      => 'required',
                                             'aria-required' => 'true',
-                                            'size' => 32,
-                                            'maxlength' => 32,
-                                            'disabled' => $model->upload_status == 'Published',
-                                            'class' => 'form-control',
-                                            'title' => 'Ensure this value is not already in use before assigning it! The standard format is a 6 digit number, usually assigned in sequential order',
-                                            'data-toggle' => 'tooltip',
-                                            'ajax' => array(
-                                                'type' => 'POST',
-                                                'url' => array('adminDataset/checkDOIExist'),
+                                            'size'          => 32,
+                                            'maxlength'     => 32,
+                                            'disabled'      => $model->upload_status == 'Published',
+                                            'class'         => 'form-control',
+                                            'title'         => 'Ensure this value is not already in use before assigning it! The standard format is a 6 digit number, usually assigned in sequential order',
+                                            'data-toggle'   => 'tooltip',
+                                            'ajax'          => array(
+                                                'type'     => 'POST',
+                                                'url'      => array('adminDataset/checkDOIExist'),
                                                 'dataType' => 'JSON',
-                                                'data' => array('doi' => 'js:$(this).val()'),
-                                                'success' => 'function(data){
+                                                'data'     => array('doi' => 'js:$(this).val()'),
+                                                'success'  => 'function(data){
                                                     if(data.status){
                                                         $("#Dataset_identifier").addClass("error");
                                                     }else {
@@ -344,8 +344,8 @@ echo $form->hiddenField($model, "image_id");
                                         ),
                                     ); ?>
                                     <div class="help-block" role="alert">
-                                    <?php echo $form->error($model, 'identifier'); ?>
-                                  </div>
+                                        <?php echo $form->error($model, 'identifier'); ?>
+                                    </div>
                                 </div>
                                 <div class="col-xs-3">
                                     <?php
@@ -354,16 +354,16 @@ echo $form->hiddenField($model, "image_id");
                                         'Mint DOI',
                                         Yii::app()->createUrl('/adminDataset/mint/'),
                                         [
-                                            'type' => 'POST',
-                                            'data' => ['doi' => 'js:$("#Dataset_identifier").val()'],
+                                            'type'     => 'POST',
+                                            'data'     => ['doi' => 'js:$("#Dataset_identifier").val()'],
                                             'dataType' => 'json',
-                                            'success' => new CJavaScriptExpression('handleMintingSuccess'),
+                                            'success'  => new CJavaScriptExpression('handleMintingSuccess'),
                                         ],
                                         array(
-                                            'class' => 'btn background-btn m-0 mint-doi-button',
-                                            'id' => 'mint_doi_button',
-                                            'disabled' => in_array($model->upload_status, $status_array),
-                                            'title' => 'This button will take all the dataset information stored in GigaDB and convert it to the DataCite schema in XML and via an API call, register that information with DataCite',
+                                            'class'       => 'btn background-btn m-0 mint-doi-button',
+                                            'id'          => 'mint_doi_button',
+                                            'disabled'    => in_array($model->upload_status, $status_array),
+                                            'title'       => 'This button will take all the dataset information stored in GigaDB and convert it to the DataCite schema in XML and via an API call, register that information with DataCite',
                                             'data-toggle' => 'tooltip'
                                         )
                                     );
@@ -380,110 +380,110 @@ echo $form->hiddenField($model, "image_id");
                                     ?>
                                 </div>
                                 <div class="col-xs-offset-4 col-xs-8">
-                                  <div id="minting" class="col-xs-12" role="alert"></div>
+                                    <div id="minting" class="col-xs-12" role="alert"></div>
                                 </div>
-                              </div>
+                            </div>
 
 
-                        <?php
-                          $this->widget('application.components.controls.TextField', [
-                            'form' => $form,
-                            'model' => $model,
-                            'attributeName' => 'ftp_site',
-                            'labelOptions' => ['class' => 'col-xs-4'],
-                            'inputWrapperOptions' => 'col-xs-8',
-                            'inputOptions' => [
-                              'required' => true,
-                              'maxlength' => 200,
-                              'disabled' => $model->upload_status == 'Published'
-                            ],
-                            'tooltip' => 'This value is the top level directory of where the data files are stored for this dataset'
-                          ]);
-                          $this->widget('application.components.controls.DateField', [
-                            'form' => $form,
-                            'model' => $model,
-                            'attributeName' => 'fairnuse',
-                            'labelOptions' => ['class' => 'col-xs-4'],
-                            'inputWrapperOptions' => 'col-xs-8',
-                            'tooltip' => 'Set a date here to display the Fair Use policy test "These data are made available pre-publication under the Fort Lauderdale rules. Please respect the rights of the data producers to publish their whole dataset analysis first. The data is being made available so that the research community can make use of them for more focused studies without having to wait for publication of the whole dataset analysis paper. If you wish to perform analyses on this complete dataset, please contact the authors directly so that you can work in collaboration rather than in competition." on the dataset page Until the date specified.',
-                          ]);
+                            <?php
+                            $this->widget('application.components.controls.TextField', [
+                                'form'                => $form,
+                                'model'               => $model,
+                                'attributeName'       => 'ftp_site',
+                                'labelOptions'        => ['class' => 'col-xs-4'],
+                                'inputWrapperOptions' => 'col-xs-8',
+                                'inputOptions'        => [
+                                    'required'  => true,
+                                    'maxlength' => 200,
+                                    'disabled'  => $model->upload_status == 'Published'
+                                ],
+                                'tooltip'             => 'This value is the top level directory of where the data files are stored for this dataset'
+                            ]);
+                            $this->widget('application.components.controls.DateField', [
+                                'form'                => $form,
+                                'model'               => $model,
+                                'attributeName'       => 'fairnuse',
+                                'labelOptions'        => ['class' => 'col-xs-4'],
+                                'inputWrapperOptions' => 'col-xs-8',
+                                'tooltip'             => 'Set a date here to display the Fair Use policy test "These data are made available pre-publication under the Fort Lauderdale rules. Please respect the rights of the data producers to publish their whole dataset analysis first. The data is being made available so that the research community can make use of them for more focused studies without having to wait for publication of the whole dataset analysis paper. If you wish to perform analyses on this complete dataset, please contact the authors directly so that you can work in collaboration rather than in competition." on the dataset page Until the date specified.',
+                            ]);
 
-                          $this->widget('application.components.controls.DateField', [
-                            'form' => $form,
-                            'model' => $model,
-                            'attributeName' => 'publication_date',
-                            'labelOptions' => ['class' => 'col-xs-4'],
-                            'inputWrapperOptions' => 'col-xs-8',
-                            'inputOptions' => [
-                              'class' => 'js-date-pub',
-                              'disabled' => $model->upload_status == 'Published'
-                            ],
-                            'tooltip' => 'Set this date to the day the dataset is published'
-                          ]);
+                            $this->widget('application.components.controls.DateField', [
+                                'form'                => $form,
+                                'model'               => $model,
+                                'attributeName'       => 'publication_date',
+                                'labelOptions'        => ['class' => 'col-xs-4'],
+                                'inputWrapperOptions' => 'col-xs-8',
+                                'inputOptions'        => [
+                                    'class'    => 'js-date-pub',
+                                    'disabled' => $model->upload_status == 'Published'
+                                ],
+                                'tooltip'             => 'Set this date to the day the dataset is published'
+                            ]);
 
-                          $this->widget('application.components.controls.DateField', [
-                            'form' => $form,
-                            'model' => $model,
-                            'attributeName' => 'modification_date',
-                            'labelOptions' => ['class' => 'col-xs-4'],
-                            'inputWrapperOptions' => 'col-xs-8',
-                            'tooltip' => 'If updates are made to the dataset after its been published this date should be set automatically'
-                          ]);
-                        ?>
+                            $this->widget('application.components.controls.DateField', [
+                                'form'                => $form,
+                                'model'               => $model,
+                                'attributeName'       => 'modification_date',
+                                'labelOptions'        => ['class' => 'col-xs-4'],
+                                'inputWrapperOptions' => 'col-xs-8',
+                                'tooltip'             => 'If updates are made to the dataset after its been published this date should be set automatically'
+                            ]);
+                            ?>
 
-                      </fieldset>
+                        </fieldset>
                     </div>
 
                 </div>
 
             </div> <!-- end of row of two columns -->
 
-            <hr />
+            <hr/>
 
             <div class="row form-block-5">
 
                 <div class="col-xs-12">
 
-                <?php
-                  $this->widget('application.components.controls.TextField', [
-                    'form' => $form,
-                    'model' => $model,
-                    'attributeName' => 'dataset_size',
-                    'labelOptions' => ['class' => 'col-xs-2'],
-                    'inputWrapperOptions' => 'input-wrapper col-xs-6',
-                    'inputOptions' => [
-                      'required' => true,
-                      'size' => 60,
-                      'maxlength' => 300
-                    ],
-                    'tooltip' => 'This field should be auto-populated by the post-upload script, it is editible if there are additional data files hosted on other servers that should be included in the dataset size'
-                  ]);
-                  $this->widget('application.components.controls.TextField', [
-                    'form' => $form,
-                    'model' => $model,
-                    'attributeName' => 'title',
-                    'labelOptions' => ['class' => 'col-xs-4'],
-                    'inputWrapperOptions' => 'input-wrapper col-xs-6',
-                    'inputOptions' => [
-                      'required' => true,
-                      'size' => 60,
-                      'maxlength' => 300
-                    ],
-                    'tooltip' => 'This should be unique to the dataset, but it is normal for it to include the manuscript title, prefixed by "Supporting data for" or similar'
-                  ]);
-                  $this->widget('application.components.controls.TextArea', [
-                    'form' => $form,
-                    'model' => $model,
-                    'attributeName' => 'description',
-                    'labelOptions' => ['class' => 'col-xs-4'],
-                    'inputWrapperOptions' => 'input-wrapper col-xs-6',
-                    'inputOptions' => [
-                        'rows' => 8,
-                        'cols' => 50
-                    ],
-                    'tooltip' => 'This field holds the dataset description, at present we are using the manuscript abstract as the basis of this, in future we want to move towards a more specific description of the actual dataset hosted'
-                  ]);
-                ?>
+                    <?php
+                    $this->widget('application.components.controls.TextField', [
+                        'form'                => $form,
+                        'model'               => $model,
+                        'attributeName'       => 'dataset_size',
+                        'labelOptions'        => ['class' => 'col-xs-2'],
+                        'inputWrapperOptions' => 'input-wrapper col-xs-6',
+                        'inputOptions'        => [
+                            'required'  => true,
+                            'size'      => 60,
+                            'maxlength' => 300
+                        ],
+                        'tooltip'             => 'This field should be auto-populated by the post-upload script, it is editible if there are additional data files hosted on other servers that should be included in the dataset size'
+                    ]);
+                    $this->widget('application.components.controls.TextField', [
+                        'form'                => $form,
+                        'model'               => $model,
+                        'attributeName'       => 'title',
+                        'labelOptions'        => ['class' => 'col-xs-4'],
+                        'inputWrapperOptions' => 'input-wrapper col-xs-6',
+                        'inputOptions'        => [
+                            'required'  => true,
+                            'size'      => 60,
+                            'maxlength' => 300
+                        ],
+                        'tooltip'             => 'This should be unique to the dataset, but it is normal for it to include the manuscript title, prefixed by "Supporting data for" or similar'
+                    ]);
+                    $this->widget('application.components.controls.TextArea', [
+                        'form'                => $form,
+                        'model'               => $model,
+                        'attributeName'       => 'description',
+                        'labelOptions'        => ['class' => 'col-xs-4'],
+                        'inputWrapperOptions' => 'input-wrapper col-xs-6',
+                        'inputOptions'        => [
+                            'rows' => 8,
+                            'cols' => 50
+                        ],
+                        'tooltip'             => 'This field holds the dataset description, at present we are using the manuscript abstract as the basis of this, in future we want to move towards a more specific description of the actual dataset hosted'
+                    ]);
+                    ?>
 
                     <div class="form-group">
                         <?php echo CHtml::label('Keywords', 'keywords', array('class' => 'control-label col-xs-4')); ?>
@@ -506,14 +506,14 @@ echo $form->hiddenField($model, "image_id");
             <!-- <?php echo CHtml::link('Curation Log', $this->createAbsoluteUrl('curationlog/admin', array('id' => $model->id))); ?> -->
 
             <?php if (isset($dataset_id)) {
-            ?>
-                <hr />
-                <div class="form-block-6" id="curationLogId">
+                ?>
+                <hr/>
+                <div class="form-block-6" id='curationLogId'>
                     <?php
                     echo $this->renderPartial("curationLog", array('dataset_id' => $dataset_id, 'model' => $curationlog));
                     ?>
                 </div>
-            <?php
+                <?php
             }
             ?>
 
@@ -526,66 +526,86 @@ echo $form->hiddenField($model, "image_id");
     <?php
       $showCreateResetUrlBtn = in_array($datasetPageSettings->getPageType(), ["hidden", "draft", "mockup"]);
 
-      $showOpenPrivateUrlBtn = $showCreateResetUrlBtn && $model->token;
+    $showOpenPrivateUrlBtn = $showCreateResetUrlBtn && $model->token;
 
       $showMockupBtn = Yii::app()->featureFlag->isEnabled("fuw") && "mockup" === $datasetPageSettings->getPageType();
 
-      if ($showCreateResetUrlBtn) {
+    if ($showCreateResetUrlBtn) {
         ?>
         <a id="mockup" class="btn background-btn-o" href="<?php echo Yii::app()->createUrl('/adminDataset/private/identifier/' . $model->identifier) ?>" title="This will save any changes made on this page AND create a new mockup page URL/token link" data-toggle="tooltip">Create/Reset Private URL</a>
         <?php
-      }
-      if ($showMockupBtn) {
+    }
+    if ($showMockupBtn) {
         echo CHtml::link('Generate mockup for reviewers', '#', array(
-          'class' => 'btn background-btn',
+            'class'       => 'btn background-btn',
           'data-toggle' => "modal", 'data-target' => "#mockupCreation"
         ));
-      }
+    }
     ?>
-    <a class="btn background-btn-o" href="<?= Yii::app()->createUrl('/adminDataset/admin') ?>" title="Cancel any changes not saved on this page and return to the list of datasets" data-toggle="tooltip">Cancel and go back</a>
+    <a class="btn background-btn-o" href="<?= Yii::app()->createUrl('/adminDataset/admin') ?>"
+       title="Cancel any changes not saved on this page and return to the list of datasets" data-toggle="tooltip">Cancel
+        and go back</a>
     <?php echo CHtml::submitButton(
         $model->isNewRecord ? 'Create' : 'Save',
         array('class' => 'btn background-btn submit-btn', 'id' => 'datasetFormSaveButton', 'title' => 'Save any changes made on this page and stay on this page', 'data-toggle' => 'tooltip')
-    ); ?>
-    <?php
-      if ($showOpenPrivateUrlBtn) {
+    );
+    if ($showOpenPrivateUrlBtn) {
         ?>
         <a class="btn background-btn-o" href="<?php echo Yii::app()->createUrl('/dataset/' . $model->identifier . '/token/' . $model->token) ?>" title="This will Save any changes made on this page and open the mockup view of the dataset page" data-toggle="tooltip">Open Private URL</a>
         <?php
-      }
+    }
     ?>
 </div>
 
-<div class="modal fade email-modal" id="customizeEmailModal" tabindex="-1" role="dialog" aria-labelledby="customizeEmailModalTitle" aria-modal="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h2 class="h4 modal-title" id="customizeEmailModalTitle">Customize email sent to the author</h2>
-      </div>
-      <div class="modal-body">
-        <div class="form-group m-0">
-          <label class="control-label" for="Dataset_emailBody">Email message</label>
-          <p class="help-block" id="Dataset_emailBody_Description">Write the email message to be sent to the author. Use the placeholder <code>{{ identifier }}</code> to automatically include the dataset's DOI.</p>
-          <textarea
-            rows="8"
-            cols="50"
-            class="form-control"
-            name="Dataset[emailBody]"
-            id="Dataset_emailBody"
-            required
-            aria-required="true"
-            aria-describedby="Dataset_emailBody_Description"
-          ></textarea>
-          <button type="button" class="btn btn-link" onclick="setDefaultEmailBody()">Reset to default email template</button>
+<div class='modal fade admindataset-form' id='check_doi_modal' role='dialog' tabindex='-1' aria-modal='true'>
+    <div class='modal-dialog'>
+        <div class='modal-content'>
+            <div class='modal-header'>
+                <button type='button' class='close' data-dismiss='modal'>&times;</button>
+                <h4 class='modal-title'>Important</h4>
+            </div>
+            <div class='modal-body'>
+                <div id='check-doi-error' class='alert alert-error clearfix' style='display: none;'></div>
+                <div class="pull-right mb-20">
+                    <a id='hideModalCheckDoi' class='btn background-btn-o'>Ok</a>
+                </div>
+                <div id='check-confirmation' class="clearfix"></div>
+            </div>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn background-btn-o" data-dismiss="modal">Cancel</button>
-        <button id="customizeEmailModalSubmitBtn" class="btn background-btn">Save and send email</button>
-      </div>
+
     </div>
-  </div>
+</div>
+
+<div class="modal fade email-modal" id="customizeEmailModal" tabindex="-1" role="dialog" aria-labelledby="customizeEmailModalTitle" aria-modal="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h2 class="h4 modal-title" id="customizeEmailModalTitle">Customize email sent to the author</h2>
+            </div>
+            <div class="modal-body">
+                <div class="form-group m-0">
+                    <label class="control-label" for="Dataset_emailBody">Email message</label>
+          <p class="help-block" id="Dataset_emailBody_Description">Write the email message to be sent to the author. Use the placeholder <code>{{ identifier }}</code> to automatically include the dataset's DOI.</p>
+                    <textarea
+                            rows="8"
+                            cols="50"
+                            class="form-control"
+                            name="Dataset[emailBody]"
+                            id="Dataset_emailBody"
+                            required
+                            aria-required="true"
+                            aria-describedby="Dataset_emailBody_Description"
+                    ></textarea>
+          <button type="button" class="btn btn-link" onclick="setDefaultEmailBody()">Reset to default email template</button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn background-btn-o" data-dismiss="modal">Cancel</button>
+                <button id="customizeEmailModalSubmitBtn" class="btn background-btn">Save and send email</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <?php $this->endWidget(); ?>
@@ -599,7 +619,7 @@ echo $form->hiddenField($model, "image_id");
             <?php echo CHtml::beginForm("/adminDataset/mockup/id/" . $model->id, "POST", ["id" => "mockupform"]); ?>
             <div class="modal-body">
                 <label for="reviewerEmail">Reviewer's email</label>
-                <input type="text" name="revieweremail" id="reviewerEmail" class="form-control" />
+                <input type="text" name="revieweremail" id="reviewerEmail" class="form-control"/>
                 <div class="btn-group" data-toggle="buttons">
                     <label class="btn btn-primary active">
                         <input type="radio" name="monthsofvalidity" id="nbMonths1" value="1" autocomplete="off" checked>1 month
@@ -622,10 +642,67 @@ echo $form->hiddenField($model, "image_id");
 </div><!-- /.modal -->
 <script>
     $(document).ready(function () {
+        let previousValue = ''
+
+        $('#Dataset_upload_status').on('focus', function () {
+            previousValue = $(this).val()
+        });
+
+        $('#Dataset_upload_status').on('change', function (e) {
+            e.preventDefault()
+            if ("Published" !== $(this).val()) {
+                return
+            }
+
+            let myError = $('#check-doi-error')[0];
+            myError.textContent = ''
+
+            $.ajax({
+                url: "<?php echo Yii::app()->createUrl('adminDataset/mint') ?> ",
+                type: 'POST',
+                data: {
+                    doi: $('#Dataset_identifier').val(),
+                    check: true
+                },
+                dataType: 'json',
+                success: function (response) {
+                    if (200 !== response.check_doi_status) {
+                        $('#check_doi_modal').modal('show')
+                        myError.style.display = 'block'
+                        let el = document.createElement('div')
+                        const link = '<a href="#" id="mint_action">Mint DOI</a>'
+                        el.innerHTML = 'The DOI does not exist. Please mint the DOI before saving your dataset: ' + link
+                        el.className = 'alert alert-danger'
+                        myError.appendChild(el)
+                        $('#Dataset_upload_status').val(previousValue)
+
+                        $('#mint_action').on('click', function (event) {
+                            event.preventDefault()
+                            $('#mint_doi_button').click()
+                            $('#check_doi_modal').modal('hide')
+                        });
+                    }
+                },
+                error: function (xhr, status, error) {
+                    $('#check_doi_modal').modal('show');
+
+                    myError.style.display = 'block'
+                    let el = document.createElement('div');
+                    el.textContent = xhr.responseText ? xhr.responseText : 'A error occurred'
+                    el.className = 'alert alert-danger'
+                    myError.appendChild(el);
+                }
+            });
+        })
+
+        $('#hideModalCheckDoi').click(function (e) {
+            $('#check_doi_modal').modal('hide')
+        })
+
         $('#mockup').on('click', function (event) {
             event.preventDefault();
 
-            mockupUrl = $(this).attr("href");
+            mockupUrl = $(this).attr('href');
             form = $('#dataset-form');
 
             $.ajax({
@@ -647,7 +724,39 @@ echo $form->hiddenField($model, "image_id");
         });
     });
 
-    $(function() {
+    function formatXML(xmlString) {
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(xmlString, 'text/xml');
+        let formatted = '';
+
+        function traverse(node, pad) {
+            const PADDING = '  ';
+            if (node.nodeType === Node.ELEMENT_NODE) {
+                formatted += PADDING.repeat(pad) + `<${node.nodeName}`;
+
+                if (node.attributes.length > 0) {
+                    Array.from(node.attributes).forEach(attr => {
+                        formatted += ` ${attr.name}="${attr.value}"`;
+                    });
+                }
+
+                formatted += '>\n';
+                Array.from(node.childNodes).forEach(child => traverse(child, pad + 1));
+                formatted += PADDING.repeat(pad) + `</${node.nodeName}>\n`;
+            } else if (node.nodeType === Node.TEXT_NODE) {
+                const trimmedContent = node.textContent.trim();
+                if (trimmedContent) {
+                    formatted += PADDING.repeat(pad) + trimmedContent + '\n';
+                }
+            }
+        }
+
+        traverse(xmlDoc.documentElement, 0);
+        return formatted.trim();
+    }
+
+
+    $(function () {
 
         var publication_date = $('.js-date-pub');
         var months = new Array('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec');
@@ -661,7 +770,7 @@ echo $form->hiddenField($model, "image_id");
         }
 
         // On Published show modal if date != date today
-        $('.js-pub').on('change', function(e) {
+        $('.js-pub').on('change', function (e) {
             if ($(this).val() === 'Published') {
                 var d = today();
                 if (publication_date.val() && publication_date.val() !== d[1]) {
@@ -677,7 +786,7 @@ echo $form->hiddenField($model, "image_id");
         });
 
         // Change the publication date with date today
-        $('.changeToday').on('click', function(e) {
+        $('.changeToday').on('click', function (e) {
             var d = today();
             publication_date.val(d[1]);
             $("#myModal").modal('hide');
@@ -698,7 +807,7 @@ echo $form->hiddenField($model, "image_id");
 
     var image = document.getElementById("showImage");
     if (image.src.match('images/datasets/no_image.png')) {
-      image.alt = "Default placeholder image"
+        image.alt = "Default placeholder image"
     }
     var image_id = document.getElementById("Dataset_image_id").value;
     const metaFields = $('.meta-fields');
@@ -776,7 +885,6 @@ echo $form->hiddenField($model, "image_id");
 </script>
 
 
-
 <!-- Button to trigger modal -->
 <!--<a href="#myModal" role="button" class="btn" data-toggle="modal">Launch demo modal</a> -->
 
@@ -798,53 +906,53 @@ echo $form->hiddenField($model, "image_id");
 -->
 
 <script>
-let defaultDataPendingEmailBody= '';
+    let defaultDataPendingEmailBody = '';
 
-async function fetchEmailTemplate() {
-  try {
-    const res = await fetch('/files/templates/DataPending.twig')
-    if (res.ok) {
-      return res.text();
+    async function fetchEmailTemplate() {
+        try {
+            const res = await fetch('/files/templates/DataPending.twig')
+            if (res.ok) {
+                return res.text();
+            }
+            throw new Error('Failed to fetch email template');
+        } catch (error) {
+            console.error('Error fetching email template:', error);
+            return ''
+        }
     }
-    throw new Error('Failed to fetch email template');
-  } catch (error) {
-    console.error('Error fetching email template:', error);
-    return ''
-  }
-}
 
-$(document).ready(async function() {
-  defaultDataPendingEmailBody = await fetchEmailTemplate()
-  if (defaultDataPendingEmailBody) {
-    $("#Dataset_emailBody").val(defaultDataPendingEmailBody);
-  }
-})
+    $(document).ready(async function () {
+        defaultDataPendingEmailBody = await fetchEmailTemplate()
+        if (defaultDataPendingEmailBody) {
+            $("#Dataset_emailBody").val(defaultDataPendingEmailBody);
+        }
+    })
 
-// if editor switched upload status to "data pending", a modal prompts to customize email body to send to author
-$(document).ready(function() {
-  $("#dataset-form").on("submit", function(e) {
-    const uploadStatusInput = $("#Dataset_upload_status")
-    const initialUploadStatus = uploadStatusInput.attr('data-initial-value');
-    const currentUploadStatus = uploadStatusInput.val();
-    const submitSourceId = $(':focus').attr('id');
-    const didSelectDataPending = initialUploadStatus !== currentUploadStatus && currentUploadStatus === 'DataPending';
-    const didSubmitFromModal = submitSourceId === 'customizeEmailModalSubmitBtn' ||
-        // NOTE need to include this case for Safari compatibility
-        submitSourceId === 'customizeEmailModal';
+    // if editor switched upload status to "data pending", a modal prompts to customize email body to send to author
+    $(document).ready(function () {
+        $("#dataset-form").on("submit", function (e) {
+            const uploadStatusInput = $("#Dataset_upload_status")
+            const initialUploadStatus = uploadStatusInput.attr('data-initial-value');
+            const currentUploadStatus = uploadStatusInput.val();
+            const submitSourceId = $(':focus').attr('id');
+            const didSelectDataPending = initialUploadStatus !== currentUploadStatus && currentUploadStatus === 'DataPending';
+            const didSubmitFromModal = submitSourceId === 'customizeEmailModalSubmitBtn' ||
+                // NOTE need to include this case for Safari compatibility
+                submitSourceId === 'customizeEmailModal';
 
-    if (didSelectDataPending && !didSubmitFromModal) {
-      $('#customizeEmailModal').modal({
-        backdrop: 'static',
-        keyboard: false,
-      });
-      e.preventDefault();
+            if (didSelectDataPending && !didSubmitFromModal) {
+                $('#customizeEmailModal').modal({
+                    backdrop: 'static',
+                    keyboard: false,
+                });
+                e.preventDefault();
+            }
+        })
+    })
+
+    function setDefaultEmailBody() {
+        $("#Dataset_emailBody").val(defaultDataPendingEmailBody);
     }
-  })
-})
-
-function setDefaultEmailBody() {
-  $("#Dataset_emailBody").val(defaultDataPendingEmailBody);
-}
 
 </script>
 <?php
@@ -854,67 +962,107 @@ Yii::app()->clientScript->registerScriptFile($jsUrl, CClientScript::POS_END);
 ?>
 
 <script>
-$('#customizeEmailModal').on('shown.bs.modal', function(e) {
-  trapFocus($(this));
-});
+    $('#customizeEmailModal').on('shown.bs.modal', function (e) {
+        trapFocus($(this));
+    });
 
-$('#customizeEmailModal').on('hidden.bs.modal', function() {
-  $('#datasetFormSaveButton').focus(); // hardcoded button that triggers the modal to return focus
-});
+    $('#customizeEmailModal').on('hidden.bs.modal', function () {
+        $('#datasetFormSaveButton').focus(); // hardcoded button that triggers the modal to return focus
+    });
 </script>
 
 <script>
-$(function() {
-  $('#mint_doi_button').click(function() {
-    $('#minting').html('minting under way, please wait');
-    $(this).toggleClass('active');
-  });
-});
+    $(function () {
+        $('#mint_doi_button').click(function () {
+            $('#minting').html('minting under way, please wait');
+            $(this).toggleClass('active');
+        });
+    });
 
-function handleDoiStatus(output) {
-  if (!output) {
-    $("#minting").addClass("alert alert-danger").html("Unexpected error");
-    return
-  }
-  const {
-    check_doi_status,
-    create_doi_status,
-    create_md_status,
-    update_md_status,
-    update_md_response,
-    error,
-    html,
-  } = output
+    function handleDoiStatus(output) {
+        if (!output) {
+            $("#minting").addClass("alert alert-danger").html("Unexpected error")
+            return
+        }
+        let shouldBlock = false
 
-  if (check_doi_status === 200 && update_md_status === 201) {
-      $("#minting").addClass("alert alert-gigadb-info").html("This DOI exists in DataCite already, so it has now been updated with the current values from GigaDB.");
-  } else if (check_doi_status === 204 && create_md_status === 201) {
-      $("#minting").addClass("alert alert-gigadb-info").html("This DOI exists but is not registered, no need to mint, but the metadata has been created!");
-  } else if (check_doi_status === 200 && update_md_status !== 201) {
-      $("#minting").addClass("alert alert-gigadb-info").html("This DOI exists in datacite, but failed to update metadata because of: " + update_md_response);
-  } else if (check_doi_status === 204 && create_md_status !== 201) {
-      $("#minting").addClass("alert alert-gigadb-info").html("This DOI exists in datacite, but failed to create metadata because of: " + create_md_response);
-  } else if (check_doi_status === 404 && create_md_status !== 201) {
-      $("#minting").addClass("alert alert-danger").html("This DOI cannot be created because of the metadata status: " + create_md_status + ". Details can be found at <a href=\'https://support.datacite.org/reference/mds#api-response-codes\' target=\'_blank\'>here</a>");
-  } else if (create_md_status === 201 && create_doi_status !== 201) {
-      $("#minting").addClass("alert alert-success").html("New DOI couldn\'t be minted");
-  } else if (create_md_status === 201 && create_doi_status === 201) {
-      $("#minting").addClass("alert alert-success").html("New DOI successfully minted");
-  } else {
-    $("#minting").addClass("alert alert-danger").html("An error occurred");
-  }
+        const {
+            check_doi_status,
+            create_doi_status,
+            create_md_status,
+            update_md_status,
+            update_md_response,
+            xml,
+            html,
+            error
+        } = output
 
-  if (error) {
-    $("#minting").addClass("alert alert-danger").html(error)
-  }
+        if (check_doi_status === 200 && update_md_status === 201) {
+            $("#minting").addClass("alert alert-gigadb-info").html("This DOI exists in DataCite already, so it has now been updated with the current values from GigaDB.");
+        } else if (check_doi_status === 204 && create_md_status === 201) {
+            $("#minting").addClass("alert alert-gigadb-info").html("This DOI exists but is not registered, no need to mint, but the metadata has been created!");
+        } else if (check_doi_status === 200 && update_md_status !== 201) {
+            $("#minting").addClass("alert alert-gigadb-info").html("This DOI exists in datacite, but failed to update metadata because of: " + update_md_response);
+        } else if (check_doi_status === 204 && create_md_status !== 201) {
+            $("#minting").addClass("alert alert-gigadb-info").html("This DOI exists in datacite, but failed to create metadata because of: " + create_md_response);
+        } else if (check_doi_status === 404 && create_md_status !== 201) {
+            shouldBlock = true;
+            $("#minting").addClass("alert alert-danger").html("This DOI cannot be created because of the metadata status: " + create_md_status + ". Details can be found at <a href=\'https://support.datacite.org/reference/mds#api-response-codes\' target=\'_blank\'>here</a>");
+        } else if (create_md_status === 201 && create_doi_status !== 201) {
+            shouldBlock = true
+            $("#minting").addClass("alert alert-success").html("New DOI couldn\'t be minted");
+        } else if (create_md_status === 201 && create_doi_status === 201) {
+            $("#minting").addClass("alert alert-success").html("New DOI successfully minted");
+        } else {
+            shouldBlock = true
+            $("#minting").addClass("alert alert-danger").html("An error occurred");
+        }
 
-  if (html) {
-      $('#curationLogId').html(html);
-  }
-}
+        if (error) {
+            $("#minting").addClass("alert alert-danger").html(error)
+            shouldBlock = true
+        }
 
-function handleMintingSuccess(output) {
-  handleDoiStatus(output)
-  $("#mint_doi_button").toggleClass("active");
-}
+        let datasetFormSaveButton = $('#datasetFormSaveButton')[0]
+        if (!shouldBlock) {
+            let myConfirmation = $('#check-confirmation')[0];
+            myConfirmation.innerHTML = ''
+            datasetFormSaveButton.disabled = false
+
+            if (!xml) {
+                $('#check_doi_modal').modal('show')
+                let el = document.createElement('div')
+                el.textContent = 'Please, check the metadata for the DOI'
+                el.className = 'alert alert-info'
+
+                let elXml = document.createElement('div')
+                elXml.textContent = 'Metadata: preview'
+                elXml.className = 'mb-20'
+                let reason = ''
+                if (update_md_response || create_md_response) {
+                    reason = update_md_response ? update_md_response : create_md_response
+                }
+
+                let preTag = document.createElement('p')
+                preTag.textContent = 'No metadata registered: ' + reason
+
+                myConfirmation.appendChild(el)
+                myConfirmation.appendChild(elXml)
+                myConfirmation.appendChild(preTag)
+            }
+
+            datasetFormSaveButton.disabled = false
+        } else if ('Published' === $('#Dataset_upload_status').val()) {
+            datasetFormSaveButton.disabled = true
+        }
+
+        if (html) {
+            $('#curationLogId').html(html);
+        }
+    }
+
+    function handleMintingSuccess(output) {
+        handleDoiStatus(output)
+        $("#mint_doi_button").toggleClass("active");
+    }
 </script>
