@@ -68,44 +68,8 @@ check_PHPDoc:
     - docker-compose run --rm gigadb
     - docker-compose run --rm test ./tests/coverage_check
 
-
-bandit-sast:
-  stage: conformance and security
-  variables:
-    SAST_DISABLED: "true"
-
-eslint-sast:
-  stage: conformance and security
-  variables:
-    SAST_DISABLED: "true"
-
-nodejs-scan-sast:
-  stage: conformance and security
-  variables:
-    SAST_DISABLED: "true"
-
-phpcs-security-audit-sast:
-  stage: conformance and security
-  rules:
-    - if: $SAST_DISABLED == 'true' || $SAST_DISABLED == '1'
-      when: never
-    - if: $SAST_EXCLUDED_ANALYZERS =~ /phpcs-security-audit/
-      when: never
-    - if: $CI_COMMIT_BRANCH || $CI_COMMIT_TAG
-      exists:
-        - '**/*.php'
-
-
 semgrep-sast:
   stage: conformance and security
-  variables:
-    SAST_DISABLED: "true"
-
-spotbugs-sast:
-  stage: conformance and security
-  variables:
-    SAST_DISABLED: "true"
-
 
 variables:
   CS_ANALYZER_IMAGE: "$CI_TEMPLATE_REGISTRY_HOST/security-products/container-scanning:6"
