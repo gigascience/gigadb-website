@@ -70,10 +70,6 @@ check_PHPDoc:
 
 semgrep-sast:
   stage: conformance and security
-  artifacts:
-    untracked: true
-    when: always
-    expire_in: 1 week
 
 variables:
   CS_ANALYZER_IMAGE: "$CI_TEMPLATE_REGISTRY_HOST/security-products/container-scanning:6"
