@@ -64,10 +64,10 @@ if [[ $(uname -n) =~ compute ]]; then  # Running on staging or live environment
   # Execute create readme script
   echo -e "Creating README file for ${doi}"
   if [[ "${GIGADB_ENV}" == "staging" ]]; then
-    "${WORKING_DIR}"../../../usr/local/bin/createReadme --doi "${doi}" --wasabi --apply
+    "${WORKING_DIR}"/../../../usr/local/bin/createReadme --doi "${doi}" --wasabi --apply
     echo -e "Created readme file and uploaded it to Wasabi gigadb-website/staging bucket directory"
   elif [[ "${GIGADB_ENV}" == "live" ]];then
-    "${WORKING_DIR}"../../../usr/local/bin/createReadme --doi "${doi}" --wasabi --use-live-data --apply
+    "${WORKING_DIR}"/../../../usr/local/bin/createReadme --doi "${doi}" --wasabi --use-live-data --apply
     echo -e "Created readme file and uploaded it to Wasabi gigadb-website/live bucket directory"
   else
     echo -e "Environment is ${GIGADB_ENV} - Readme file creation is not required"
