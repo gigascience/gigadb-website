@@ -8,10 +8,10 @@ setup () {
   # Download Excel file for dataset 102498
   echo '# Downloading Excel file for dataset 102498' >&3
   filename="GigaDBUpload_v18_102498_TRR_202311_02_Cell_Clustering_Spatial_Transcriptomics.xls"
-  fileid="1sLabqRPkhF61nRocLmumjjCxxjzmODH5"
+  fileid="129j3ikdSojNVpvZPnBefoOA2Uz6OusHR"
   curl -L -o "${TOOLS_DIR}/excel-spreadsheet-uploader/uploadDir/${filename}" "https://drive.google.com/uc?export=download&id=${fileid}"
   if [ ! -f "${TOOLS_DIR}/excel-spreadsheet-uploader/uploadDir/${filename}" ] ; then
-    echo '# Error - Dataset excel file not downloaded' >&3
+    err '# Error - Dataset excel file not downloaded' >&3
     exit 1
   fi
   
@@ -42,16 +42,16 @@ teardown () {
 
 @test "Test postUpload.sh" {
   echo '# Executing test postUpload.sh --doi 102498 --dropbox user5' >&3
-  cd ../files-metadata-console/scripts
-  run ./postUpload.sh --doi 102498 --dropbox user5
+  cd ../files-metadata-console/tests/_data/dropbox/user5
+  run ../../../../scripts/postUpload.sh --doi 102498 --dropbox user5
   # Uncomment to display output of postUpload script
   # echo "${output}" >&3
   # Check readme file was created
-  [ -f "${TOOLS_DIR}/readme-generator/runtime/curators/readme_102498.txt" ]
+  [ -f "./readme_102498.txt" ]
   # Display contents of readme file
   # cat "${TOOLS_DIR}/readme-generator/runtime/curators/readme_102498.txt" >&3
   # Check readme file content
-  run sed '2q;d' "${TOOLS_DIR}/readme-generator/runtime/curators/readme_102498.txt"
+  run sed '2q;d' "./readme_102498.txt"
   [ "${lines[0]}" = "10.5524/102498" ]
   # Check readme file was copied into user dropbox
   [ -f "${TOOLS_DIR}/files-metadata-console/tests/_data/dropbox/user5/readme_102498.txt" ]
