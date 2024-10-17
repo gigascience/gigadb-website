@@ -74,10 +74,10 @@ function makeDotSecrets () {
       curl -s --header "PRIVATE-TOKEN: $accessToken" "${PROJECT_VARIABLES_URL}?per_page=100&page=1"  > "$mdsBaseDir/.project_var_raw1"
       curl -s --header "PRIVATE-TOKEN: $accessToken" "${PROJECT_VARIABLES_URL}?per_page=100&page=2"  > "$mdsBaseDir/.project_var_raw2"
       jq -s 'add' "$mdsBaseDir/.project_var_raw1" "$mdsBaseDir/.project_var_raw2" > "$mdsBaseDir/.project_vars.json"
-      cat "$mdsBaseDir/.project_vars.json" | jq --arg ENVIRONMENT $GIGADB_ENV -r '.[] | select( .environment_scope == $ENVIRONMENT or .environment_scope == "*") | select(.key | test("key|ca|pem|cert";"i") | not ) |.key + "=" + .value' > "$mdsBaseDir/.project_var"
+      cat "$mdsBaseDir/.project_vars.json" | jq --arg ENVIRONMENT $GIGADB_ENV -r '.[] | select( .environment_scope == $ENVIRONMENT or .environment_scope == "*") | select(.key | (test("key|ca|pem|cert";"i") | not ) or (test("AWS_|WASABI_";"i"))) |.key + "=" + .value' > "$mdsBaseDir/.project_var"
 
       echo "Retrieving variables from ${MISC_VARIABLES_URL}"
-      curl -s --header "PRIVATE-TOKEN: $accessToken" "${MISC_VARIABLES_URL}?per_page=100" | jq --arg ENVIRONMENT $GIGADB_ENV -r '.[] | select(.environment_scope == "*" or .environment_scope == $ENVIRONMENT ) | select(.key | test("sftp_") ) | .key + "=" + .value' > "$mdsBaseDir/.misc_var"
+      curl -s --header "PRIVATE-TOKEN: $accessToken" "${MISC_VARIABLES_URL}?per_page=100" | jq --arg ENVIRONMENT $GIGADB_ENV -r '.[] | select(.environment_scope == "*" or .environment_scope == $ENVIRONMENT ) | select(.key | test("sftp_|MATRIX_|gigadb_datasetfiles_") ) | .key + "=" + .value' > "$mdsBaseDir/.misc_var"
 
       cat "$mdsBaseDir/.group_var" "$mdsBaseDir/.fork_var" "$mdsBaseDir/.project_var" "$mdsBaseDir/.misc_var" > "$mdsBaseDir/.secrets" && rm "$mdsBaseDir/.group_var" && rm "$mdsBaseDir/.fork_var" && rm "$mdsBaseDir/.project_var" && rm "$mdsBaseDir/.misc_var" && rm "$mdsBaseDir/.project_var_raw1" && rm "$mdsBaseDir/.project_var_raw2" && rm "$mdsBaseDir/.project_vars.json"
       echo "# Some help about this file in ops/configuration/variables/secrets-sample" >> "$mdsBaseDir/.secrets"
