@@ -1,0 +1,9 @@
+# Ignore everything in this directory
+*
+# Except these files
+!user2/Parrot.k31.Library1.txt
+!user2/Parrot.k31.LibraryStatistics.txt
+!user2/Parrot.k31.NumberOfSequences.txt
+!user4/analysis_data/Tree_file.txt
+!user5/DLPFC_69_72_VNS_results.csv
+!user5/E2_VNS_Ground_Truth.csv
