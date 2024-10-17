@@ -88,9 +88,9 @@ if [[ $(uname -n) =~ compute ]]; then  # Running on staging or live environment
 
 else  # Running on dev environment
 
-  # Check user dropbox exists
-  if [ ! -d "${APP_SOURCE}"/../../files-metadata-console/tests/_data/dropbox/"${dropbox}" ]; then
-    err "User dropbox at gigadb-website/app/tools/files-metadata-console/tests/_data/dropbox/${dropbox} does not exist"
+  # Check working directory is a user dropbox
+  if [[ ! "${WORKING_DIR}" == *"gigadb-website/gigadb/app/tools/files-metadata-console/tests/_data/dropbox/user"* ]]; then
+    err "Doesn't look like your current working directory is a dev environment user dropbox"
     exit 1
   fi
 
@@ -104,7 +104,7 @@ else  # Running on dev environment
 
   # Create file sizes and md5 metadata files
   echo -e "Creating dataset metadata files for ${doi}"
-  docker-compose run --rm -w /gigadb/app/tools/files-metadata-console/tests/_data/dropbox/"${dropbox}" files-metadata-console ../../../../scripts/md5.sh "$doi"
+  docker-compose run --rm -w /gigadb/app/tools/files-metadata-console/tests/_data/dropbox/"${dropbox}" files-metadata-console ../../../../scripts/md5.sh "${doi}"
 
   echo -e "Updating file sizes and MD5 values in database for ${doi}"
   "${WORKING_DIR}"/../../../../scripts/filesMetaToDb.sh "${doi}"
