@@ -17,7 +17,7 @@ MD5_FILE="$doi.md5"
 FILESIZE_FILE="$doi.filesizes"
 
 # Create doi.md5 file containing md5 checksum values for files
-find .  -type f ! -name "$MD5_FILE" ! -name "$FILESIZE_FILE" -exec md5sum {} \; > "$MD5_FILE"
+gum spin --title "Waiting for md5 file calculations to finish..." -- find .  -type f ! -name "$MD5_FILE" ! -name "$FILESIZE_FILE" -exec md5sum {} \; > "$MD5_FILE"
 echo "Created $MD5_FILE"
 
 # Create out.txt file containing file size information
