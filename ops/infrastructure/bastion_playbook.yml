@@ -156,7 +156,7 @@
 
     - name: Copy dataset upload tool shell post upload script
       ansible.builtin.copy:
-        src: "../../../../gigadb/app/tools/excel-spreadsheet-uploader/postUpload.sh"
+        src: "../../../../gigadb/app/tools/files-metadata-console/scripts/postUpload.sh"
         dest: /usr/local/bin/postUpload
         owner: centos
         group: centos
@@ -164,7 +164,7 @@
 
     - name: Copy script for updating the md5 values and file size to db
       ansible.builtin.copy:
-        src: "../../../../gigadb/app/tools/excel-spreadsheet-uploader/filesMetaToDb.sh"
+        src: "../../../../gigadb/app/tools/files-metadata-console/scripts/filesMetaToDb.sh"
         dest: /usr/local/bin/filesMetaToDb
         owner: centos
         group: centos

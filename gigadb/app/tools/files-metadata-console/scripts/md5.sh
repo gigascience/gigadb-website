@@ -7,7 +7,7 @@ set -e
 if [[ -z "$1" ]]; then
     echo "Error: DOI is required!"
     echo "Usage: $0 <DOI>"
-    echo "Calculates and uploads MD5 checksums values and file sizes for the given DOI to the aws s3 bucket - gigadb-datasets-metadata."
+    echo "Calculates MD5 checksums values and file sizes for a given DOI."
     exit 1
 fi
 
@@ -15,18 +15,14 @@ fi
 doi="$1"
 MD5_FILE="$doi.md5"
 FILESIZE_FILE="$doi.filesizes"
-S3_BUCKET="gigadb-datasets-metadata"
 
 # Create doi.md5 file containing md5 checksum values for files
-find .  -type f ! -name "$MD5_FILE" ! -name "$FILESIZE_FILE" -exec md5sum {} \; > "$MD5_FILE"
+gum spin --title "Waiting for md5 file calculations to finish..." -- find .  -type f ! -name "$MD5_FILE" ! -name "$FILESIZE_FILE" -exec md5sum {} \; > "$MD5_FILE"
 echo "Created $MD5_FILE"
 
-# Create doi.filesizes file containing file size information
-find . -type f ! -name "$MD5_FILE" ! -name "$FILESIZE_FILE" -exec wc -c {} \; > "$FILESIZE_FILE"
+# Create out.txt file containing file size information
+find . -type f ! -name "$MD5_FILE" ! -name "$FILESIZE_FILE" ! -name out.txt -exec wc -c {} \; > out.txt
+# Transform any space delimiters in out.txt into tabs
+tr " " "\t" < out.txt > "$FILESIZE_FILE"
+rm out.txt
 echo "Created $FILESIZE_FILE"
-
-# In case we are on the bastion
-if [[ $(uname -n) =~ compute ]];then
-  /usr/local/bin/rclone copy -v "$FILESIZE_FILE" aws_metadata:"$S3_BUCKET"
-  /usr/local/bin/rclone copy -v "$MD5_FILE" aws_metadata:"$S3_BUCKET"
-fi

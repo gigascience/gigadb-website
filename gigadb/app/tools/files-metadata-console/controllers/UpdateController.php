@@ -7,8 +7,6 @@ namespace app\controllers;
 use app\components\DatasetFilesUpdater;
 use app\components\DatasetFilesURLUpdater;
 use Exception;
-use GigaDB\services\URLsService;
-use GuzzleHttp\Client;
 use yii\console\Controller;
 use yii\console\ExitCode;
 use yii\helpers\Console;
@@ -50,6 +48,26 @@ final class UpdateController extends Controller
     public string $stop = '0';
 
     /**
+     * Console command for updating md5 values for all files in a given dataset
+     *
+     * ./yii update/md5-values --doi=100039
+     *
+     * @return int
+     */
+    public function actionMd5Values(): int
+    {
+        try {
+            $dfu = new DatasetFilesUpdater(["doi" => $this->doi]);
+            $success = $dfu->updateMD5FileAttributes();
+            $this->stdout("Number of changes: $success" . PHP_EOL);
+        } catch (Exception $e) {
+            $this->stderr($e->getMessage(), Console::FG_RED);
+            return ExitCode::DATAERR;
+        }
+        return ExitCode::OK;
+    }
+
+    /**
      * Console command for updating size for all files in a given dataset
      *
      * ./yii update/file-sizes --doi=100142
@@ -58,28 +76,14 @@ final class UpdateController extends Controller
      */
     public function actionFileSizes(): int
     {
-        $webClient = new Client([ 'allow_redirects' => false ]);
-        $us = new URLsService();
-        $dfu = new DatasetFilesUpdater(["doi" => $this->doi, "us" => $us, "webClient" => $webClient]);
-        $success = $dfu->updateFileSizes();
-        $this->stdout("Number of changes: $success" . PHP_EOL);
-        return ExitCode::OK;
-    }
-
-    /**
-     * Console command for updating files' size for the given dataset
-     *
-     * ./yii update/file-size --doi=100142
-     *
-     * @return int
-     */
-    public function actionFileSize(): int
-    {
-        $webClient = new Client([ 'allow_redirects' => false ]);
-        $us = new URLsService();
-        $dfu = new DatasetFilesUpdater(["doi" => $this->doi, "us" => $us, "webClient" => $webClient]);
-        $success = $dfu->updateFileSize();
-        $this->stdout("nb. changes: $success" . PHP_EOL, Console::FG_GREEN);
+        try {
+            $dfu = new DatasetFilesUpdater(["doi" => $this->doi]);
+            $success = $dfu->updateFileSizes();
+            $this->stdout("Number of changes: $success" . PHP_EOL);
+        } catch (Exception $e) {
+            $this->stderr($e->getMessage(), Console::FG_RED);
+            return ExitCode::DATAERR;
+        }
         return ExitCode::OK;
     }
 
