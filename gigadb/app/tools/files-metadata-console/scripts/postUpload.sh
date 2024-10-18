@@ -60,6 +60,12 @@ if [[ $(uname -n) =~ compute ]]; then  # Running on staging or live environment
   
   # Source centos user's login shell settings
   . /home/centos/.bash_profile
+  
+  # Check working directory is a user dropbox
+    if [[ ! "${WORKING_DIR}" == *"/share/dropbox/user"* ]]; then
+      err "postUpload script should only be used in a user directory located at /share/dropbox"
+      exit 1
+    fi
 
   # Execute create readme script
   echo -e "Creating README file for ${doi}"
@@ -90,7 +96,7 @@ else  # Running on dev environment
 
   # Check working directory is a user dropbox
   if [[ ! "${WORKING_DIR}" == *"gigadb-website/gigadb/app/tools/files-metadata-console/tests/_data/dropbox/user"* ]]; then
-    err "Doesn't look like your current working directory is a dev environment user dropbox"
+    err "postUpload.sh script should only be used in a files-metadata-console/tests/_data/dropbox/user* directory in dev environment"
     exit 1
   fi
 
