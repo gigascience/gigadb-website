@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1968: Add curators manual for operating tools on bastion server
 - Feat #1903: Allow user to upload dataset files to wasabi bucket and also s3 glacier bucket for backup
 - Feat #1771: Automatically mount EFS access point to bastion and webapp servers
 - Fix #1861: Remove user suffix from wasabi profile and improve curators docs
