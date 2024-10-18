@@ -55,12 +55,8 @@ else
 fi
 
 if [[ $# -eq 0 ]];then
-  if [[ $(uname -n) =~ compute ]];then
-    echo -e "$usage_message"
-  else
-    echo -e "$usage_message"
+  echo -e "$usage_message"
   exit 1
-  fi
 fi
 
 # Parse command line parameters
@@ -112,7 +108,7 @@ function set_up_logging() {
   else
     LOGDIR="${APP_DIR}/log"
   fi
-  LOGFILE="$LOGDIR/readme.log"
+  LOGFILE="${LOGDIR}/readme.log"
   mkdir -p "${LOGDIR}"
   touch "${LOGFILE}"
 }
