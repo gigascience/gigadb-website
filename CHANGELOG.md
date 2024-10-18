@@ -2,9 +2,9 @@
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-
-
 ## Unreleased
+
+- Feat #1968: Add curators manual for operating tools on bastion server
 
 ## v4.3.8 - 2024-10-10 - 8f6f0d074 - 
 
