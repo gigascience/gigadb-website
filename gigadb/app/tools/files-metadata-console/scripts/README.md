@@ -1,9 +1,91 @@
-# Transformation of dataset ftp_site and file location URLs
+# Scripts
+
+## md5.sh - Calculation of md5 checksum values
+
+### Dev environment
+
+From a curator's perspective, the md5.sh script is meant to be executed from
+within a user dropbox directory.
+```
+$ pwd
+path/to/gigadb/app/tools/files-metadata-console/tests/_data/dropbox/user4
+# Run tool
+$ ../../../../scripts/md5.sh 102480
+Created 102480.md5
+Created 102480.filesizes
+```
+
+If you list the contents in `tests/_data/user4`, you will see two new metadata
+files have been created:
+```
+# Check metadata files have been created
+$ ls -lh
+-rw-r--r--  1 peterli  staff    68B Oct  3 19:07 102480.filesizes
+-rw-r--r--  1 peterli  staff   118B Oct  3 19:07 102480.md5
+drwxr-xr-x  3 peterli  staff    96B Oct  3 09:33 analysis_data
+-rw-r--r--  1 peterli  staff   3.1K Oct  3 15:38 readme_102480.txt
+```
+
+There is also a bats test script md5.sh:
+```
+$ pwd
+path/to/gigadb/app/tools/files-metadata-console
+$ bats tests/bats/md5.bats
+ ✓ No DOI provided
+ ✓ DOI provided
+ ✓ Confirm md5 and file size values
+ ✓ Execute md5.sh within container
+
+4 tests, 0 failures
+```
+
+## filesMetaToDb.sh - update file sizes and md5 values for files in database
+
+### Dev environment
+
+Like md5.sh, the filesMetaToDb.sh script is designed for curators to use from
+within a user dropbox directory:
+```
+# Change directory
+$ cd gigadb/app/tools/files-metadata-console/tests/_data/dropbox/user2
+# Run script
+$ ../../../../scripts/filesMetaToDb.sh 100039
+Updating md5 checksum values as file attributes for 100039
+Number of changes: 3
+Updating file sizes for 100039
+Number of changes: 3
+Updated file metadata for 100039 in database
+```
+
+## postUpload.sh - Perform post upload operations to create readme file and update file metadata in database
+
+### Dev environment
+
+Like md5.sh and filesMetaToDb.sh, the postUpload.sh script is designed for
+curators to use from within a user dropbox directory:
+```
+# Change directory to a test user dropbox
+$ cd gigadb/app/tools/files-metadata-console/tests/_data/dropbox/user2
+# Run script
+$ ../../../../scripts/postUpload.sh --doi 100039 --dropbox user2
+Creating README file for 100039
+Creating dataset metadata files for 100039
+Created 100039.md5
+Created 100039.filesizes
+Updating file sizes and MD5 values in database for 100039
+Updating md5 checksum values as file attributes for 100039
+Number of changes: 4
+Updating file sizes for 100039
+Number of changes: 4
+Updated file metadata for 100039 in database
+```
+
+## Transformation of dataset ftp_site and file location URLs
 
 The `updateUrl.sh` bash script in this directory can be used to transform the
 URLs in dataset ftp_site and file location table columns in to Wasabi links.
 
-## Dev environment
+### Dev environment
 
 Go to `gigadb/app/tools/files-metadata-console` and create a .env file:
 ```
@@ -104,7 +186,7 @@ ERROR:  No. of row changes in dataset table does not equal no. of rows in datase
 CONTEXT:  PL/pgSQL function inline_code_block line 9 at ASSERT
 ```
 
-### Testing updateUrls.sh using bats-core test
+#### Testing updateUrls.sh using bats-core test
 
 A bats-core test in tests/updateUrls.bats can be used to test updateUrls.sh:
 ```
@@ -114,7 +196,7 @@ $ bats tests
 1 test, 0 failures
 ```
 
-## Staging environment
+### Staging environment
 
 Instantiate the AWS resources for your staging environment:
 ```

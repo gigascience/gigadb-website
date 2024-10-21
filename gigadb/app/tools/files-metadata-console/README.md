@@ -338,7 +338,7 @@ $ docker-compose run --rm files-metadata-console ./vendor/codeception/codeceptio
 
 To run all bats tests in tests/bats/ directory:
 ```
-$ bats tests/bats
+$ bats tests/bats/md5.bats
  ✓ create md5 and filesizes files for dataset
  ✓ transform dataset and file URLs
 Resetting dev database...
