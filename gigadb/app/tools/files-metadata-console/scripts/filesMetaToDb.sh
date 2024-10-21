@@ -65,7 +65,7 @@ else
     exit 1
   fi
 
-  check_files_exist
+  check_files_exist "${DOI}"
 
   echo -e "Updating md5 checksum values as file attributes for ${DOI}"
   docker-compose run --rm -v "${WORKING_DIR}":/gigadb/app/tools/files-metadata-console/metadata files-metadata-console ./yii update/md5-values --doi="${DOI}"
