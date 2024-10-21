@@ -28,16 +28,16 @@ fi
 # Globals:
 #   WORKING_DIR
 # Arguments:
-#   None
+#   doi
 #######################################
 function check_files_exist() {
-  # Check current directory contains doi.md and doi.filesizes
-  if ! test -f "${WORKING_DIR}/${DOI}.md"; then
-    err "A ${DOI}.md file is required in this directory"
+  doi=$1
+  if [ ! -f "${WORKING_DIR}/${doi}.md5" ]; then
+    err "A ${doi}.md5 file is required in this directory"
     exit 1
   fi
-  if ! test -f "${WORKING_DIR}/${DOI}.filesizes"; then
-    err "A ${DOI}.filesizes file is required in this directory"
+  if [ ! -f "${WORKING_DIR}/${doi}.filesizes" ]; then
+    err "A ${doi}.filesizes file is required in this directory"
     exit 1
   fi
 }
@@ -51,7 +51,7 @@ if [[ $(uname -n) =~ compute ]]; then
     exit 1
   fi
 
-  check_files_exist
+  check_files_exist "${DOI}"
 
   echo -e "Updating md5 checksum values as file attributes for ${DOI}"
   docker run --rm -v "${WORKING_DIR}":/gigadb/app/tools/files-metadata-console/metadata "registry.gitlab.com/${GITLAB_PROJECT}/production-files-metadata-console:${GIGADB_ENV}" ./yii update/md5-values --doi="${DOI}"
