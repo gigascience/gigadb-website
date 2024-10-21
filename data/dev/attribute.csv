@@ -18,6 +18,8 @@ id,attribute_name,definition,model,structured_comment_name,value_syntax,allowed_
 347,last_modified,the date the file was last modified,modified,last_modified,date,"",1,"",""
 356,Description,"description of the sample (may include many attributes as human readable text, but these should also be added as independent attribute:value pairs).","",description,text,"",1,"",""
 376,estimated genome size,"An estimate of the size of the genome of the species being studied, in basepairs (Gb, Mb or Kb)","",est_genome_size,text,"",1,"",""
+391,geographic location (latitude),"The geographical latitudinal origin of the sample, the value should be reported in decimal degrees and in WGS84 system","",latitude,number,"","","",""
+392,geographic location (longitude),"The geographical longitudinal origin of the sample, the value should be reported in decimal degrees and in WGS84 system","",longitude,number,"","","",""
 448,alternative accession-biosample,"","",alt_acc_biosample,"","","","",""
 455,keyword,"","",keywords,"","","","",""
 472,camera parameters,"","",camera_parameters,text,"",m,"",""
