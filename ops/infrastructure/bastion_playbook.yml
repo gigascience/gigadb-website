@@ -372,7 +372,6 @@
         state: present
         disable_gpg_check: true
 
-
     - name: Install new wrapper script for files comparison tools
       ansible.builtin.copy:
         src: "../../../../gigadb/app/tools/files-metadata-console/scripts/compare_files.sh"
@@ -381,6 +380,51 @@
         group: centos
         mode: a+x
 
+- name: Set up transfer files tool
+  hosts: name_bastion_server_{{gigadb_env}}*
+  tags:
+    - transfer-tool
+
+  tasks:
+    - name: Create env file for backup
+      ansible.builtin.template:
+        src: ../../../../gigadb/app/tools/transfer-files/config-sources/files-env.j2
+        dest: /home/centos/files-env
+        owner: centos
+        group: centos
+        mode: 0644
+
+    - name: Create directory for storing log output
+      ansible.builtin.file:
+        path: /var/log/gigadb
+        state: directory
+        mode: '0777'
+        owner: centos
+        group: centos
+
+    - name: Create a .aws directory for the centos user
+      ansible.builtin.file:
+        path: "/home/centos/.aws"
+        state: directory
+        mode: '0755'
+        owner: centos
+        group: centos
+
+    - name: Create aws credentials file
+      ansible.builtin.template:
+        src: ../../../../ops/configuration/aws-conf/credentials.j2
+        dest: "/home/centos/.aws/credentials"
+        owner: centos
+        group: centos
+        mode: 0644
+
+    - name: Copy wrapper script to backup files to wasabi bucket and s3 bucket
+      ansible.builtin.copy:
+        src: "../../../../gigadb/app/tools/transfer-files/scripts/transfer.sh"
+        dest: /usr/local/bin/transfer
+        owner: centos
+        group: centos
+        mode: a+x
 
 - name: Set up and configuration of rclone on bastion server
   hosts: name_bastion_server_{{gigadb_env}}*
@@ -396,6 +440,70 @@
         rclone_arch: "amd64"
         install_manpages: "true"
         rclone_config_location: "/home/centos/.config/rclone/rclone.conf"
+
+- name: Mount AWS efs access points
+  hosts: name_bastion_server_{{gigadb_env}}*
+  become: yes
+  tags:
+    - mount-efs
+
+  tasks:
+    - name: Download custom build aws efs utils binary
+      ansible.builtin.get_url:
+        url: https://s3.ap-northeast-1.wasabisys.com/infra-resources/amazon-efs-utils-2.0.4-1.el8.x86_64.rpm
+        dest: /tmp/aws-efs-utils.rpm
+
+    - name: Install the aws efs utils binary
+      dnf:
+        name: /tmp/aws-efs-utils.rpm
+        state: present
+        disable_gpg_check: yes
+
+    - name: Create directories for mounting
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        mode: '0755'
+        owner: centos
+        group: centos
+      loop:
+        - "/share/dropbox"
+        - "/share/config"
+
+    - name: Mount the dropbox access points
+      ansible.posix.mount:
+        path: "/share/dropbox"
+        src: "{{ efs_filesystem_dns_name }}"
+        fstype: efs
+        opts: tls,accesspoint={{ dropbox_area_id }}
+        state: mounted
+
+    - name: Confirm the dropbox access point is mounted
+      ansible.builtin.command:
+        cmd: mountpoint /share/dropbox
+      register: dropbox_mount_check
+      changed_when: false
+      failed_when: dropbox_mount_check.stdout == "/share/dropbox is not a mountpoint"
+
+    - name: Mount the config access points
+      ansible.posix.mount:
+        path: "/share/config"
+        src: "{{ efs_filesystem_dns_name }}"
+        fstype: efs
+        opts: tls,accesspoint={{ configuration_area_id }}
+        state: mounted
+
+    - name: Confirm the config access point is mounted
+      ansible.builtin.command:
+        cmd: mountpoint /share/config
+      register: config_mount_check
+      changed_when: false
+      failed_when: config_mount_check.stdout == "/share/config is not a mountpoint"
+
+    - name: Remove custom build aws efs utils rpm
+      ansible.builtin.file:
+        path: /tmp/aws-efs-utils.rpm
+        state: absent
 
 - name: Load latest DB backup
   hosts: name_bastion_server_{{gigadb_env}}*

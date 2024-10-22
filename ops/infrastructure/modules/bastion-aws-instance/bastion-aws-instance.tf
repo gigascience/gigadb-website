@@ -62,7 +62,6 @@ resource "aws_instance" "bastion" {
   vpc_security_group_ids = [aws_security_group.bastion_sg.id]
   key_name = var.key_name
   subnet_id = var.public_subnet_id
-  user_data     = file("../../mount-efs.sh")
 
   tags = {
     Name = "bastion_server_${var.deployment_target}_${var.owner}",
