@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1993: Update contact address
+
 ## v4.3.8 - 2024-10-10 - 8f6f0d074 - 
 
 - Feat #1903: Allow user to upload dataset files to wasabi bucket and also s3 glacier bucket for backup
