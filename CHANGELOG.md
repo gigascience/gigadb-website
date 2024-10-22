@@ -6,6 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1768: Alphabetically sorted dataset author dropdown options in adminDatasetAuthor form
 - Fix #1843: Add top margin to table footer in dataset page
 - Feat #2034: Maximize input text color contrast
 - Feat #1993: Update contact address
