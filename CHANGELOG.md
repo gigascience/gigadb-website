@@ -2,17 +2,20 @@
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+
+
 ## Unreleased
 
 - Feat #1993: Update contact address
 
-## v4.3.8 - 2024-10-10 - 74ebccaeb -
+## v4.3.8 - 2024-10-10 - 8f6f0d074 - 
 
+- Feat #1903: Allow user to upload dataset files to wasabi bucket and also s3 glacier bucket for backup
+- Feat #1771: Automatically mount EFS access point to bastion and webapp servers
+- Fix #1861: Remove user suffix from wasabi profile and improve curators docs
 - Feat #1893: Move new attribute inputs to the end of the adminFile form
 - Fix #2048: Upgrade database Dockerfiles from buster to bullseye to fix failed pipeline jobs
 - Feat security#2: Upgrade Bootstrap from v3.3.7 to v3.4.1
-
-## v00-kencho51-testing - 2024-10-02 - 1e19c816a -
 
 ## v4.3.7 - 2024-09-24 - 7709c8545 - live since 2024-09-26
 
@@ -41,7 +44,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## v4.3.3 - 2024-08-05 - 7204ee854 - live since 2024-08-07
 
 - Fix #1848: Save modifications to image metafields
-- Feat 1872: Extract stages of postUpload script into separate scripts
+- Feat #1872: Extract stages of postUpload script into separate scripts
 
 ## v4.3.2 - 2024-07-22 - 6531115b7 - live since 2024-07-25
 
