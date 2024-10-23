@@ -491,7 +491,7 @@
 
     - name: Copy rclone config for dropbox sync
       ansible.builtin.copy:
-        src: "../../../../gigadb/app/tools/sync-dropbox/config-sources/rclone.conf.dist"
+        src: "../../../../gigadb/app/tools/sync-dropbox/config/rclone.conf"
         dest: /etc/sync_dropbox/rclone.conf
         owner: centos
         group: centos
