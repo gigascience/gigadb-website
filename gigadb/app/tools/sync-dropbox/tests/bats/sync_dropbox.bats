@@ -1,7 +1,7 @@
 teardown () {
     echo "executing teardown code"
 
-    rm -rf logs/sync_dropbox.log
+    rm -rf log/sync_dropbox.log
     rm -rf data/share/dropbox/*
 }
 
@@ -31,7 +31,7 @@ teardown () {
 
     # Check the log
     for line in "${expected_lines[@]}"; do
-        run grep -F "$line" logs/sync_dropbox.log
+        run grep -F "$line" log/sync_dropbox.log
         [ "$status" -eq 0 ]
     done
 }
@@ -53,7 +53,7 @@ teardown () {
 
     # Check the log
     for line in "${expected_lines[@]}"; do
-        run grep -F "$line" logs/sync_dropbox.log
+        run grep -F "$line" log/sync_dropbox.log
         [ "$status" -eq 0 ]
     done
 }
