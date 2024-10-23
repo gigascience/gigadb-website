@@ -20,12 +20,4 @@ set +a
 # If we are on staging environment override variable name with their remote environment counterpart
 echo "Current environment: $GIGADB_ENV"
 
-set -a
-
-if [[ ! -d "${appSource}/config" ]];then
-  mkdir -p "${appSource}/config"
-fi
-
-cp "${appSource}/config-sources/rclone.conf.dist" "${appSource}/config/rclone.conf"
-
 curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$MISC_VARIABLES_URL/id_rsa_aws_hk_gigadb_pem" | jq -r .value > ~/.ssh/id-rsa-aws-hk-gigadb.pem
