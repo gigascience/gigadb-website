@@ -32,7 +32,7 @@ function set_up_logging() {
     LOGFILE="/var/log/gigadb/sync_dropbox.log"
   else
     currentPath=$(pwd)
-    LOGDIR="$currentPath/logs"
+    LOGDIR="$currentPath/log"
     LOGFILE="$LOGDIR/sync_dropbox.log"
     mkdir -p "${LOGDIR}"
     touch "${LOGFILE}"
