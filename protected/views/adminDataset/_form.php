@@ -606,27 +606,27 @@ echo $form->hiddenField($model, "image_id");
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h2 class="modal-title" id="generateMockup">Generate unique and time-limited mockup url for reviewers</h2>
+                <h2 class="h4 modal-title" id="generateMockup">Generate unique and time-limited mockup url for reviewers</h2>
             </div>
             <?php echo CHtml::beginForm("/adminDataset/mockup/id/" . $model->id, "POST", ["id" => "mockupform"]); ?>
             <div class="modal-body">
-                <label for="reviewerEmail">Reviewer's email</label>
+                <label for="reviewerEmail" class="control-label">Reviewer's email</label>
                 <input type="text" name="revieweremail" id="reviewerEmail" class="form-control" />
-                <div class="btn-group" data-toggle="buttons">
-                    <label class="btn btn-primary active">
+                <div class="btn-group mt-10" data-toggle="buttons">
+                    <label class="btn background-btn active">
                         <input type="radio" name="monthsofvalidity" id="nbMonths1" value="1" autocomplete="off" checked>1 month
                     </label>
-                    <label class="btn btn-primary">
+                    <label class="btn background-btn">
                         <input type="radio" name="monthsofvalidity" id="nbMonths3" value="3" autocomplete="off">3 months
                     </label>
-                    <label class="btn btn-primary">
+                    <label class="btn background-btn">
                         <input type="radio" name="monthsofvalidity" id="nbMonths6" value="6" autocomplete="off">6 months
                     </label>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <?php echo CHtml::submitButton("Generate mockup", ["class" => "btn-green mockup"]); ?>
+                <button type="button" class="btn background-btn-o" data-dismiss="modal">Close</button>
+                <?php echo CHtml::submitButton("Generate mockup", ["class" => "btn background-btn mockup"]); ?>
             </div>
             <?php echo CHtml::endForm(); ?>
         </div><!-- /.modal-content -->
