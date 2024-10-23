@@ -310,12 +310,12 @@ echo $form->hiddenField($model, "image_id");
                             <legend>Dataset metafields:
                               <span class="legend-description">The following fields are specific to the dataset as a whole</span>
                             </legend>
-                            <div class="form-group row <?php echo $form->error($model, 'identifier') ? 'has-error' : ''; ?>" id="doiFormGroup">
+                            <div class="form-group row doi-group <?php echo $form->error($model, 'identifier') ? 'has-error' : ''; ?>" id="doiFormGroup">
                                 <?php echo $form->labelEx($model, 'identifier', array(
                                     'class' => 'control-label col-xs-4',
                                     'id' => 'doiLabel'
                                 )); ?>
-                                <div class="col-xs-6">
+                                <div class="col-xs-5">
                                     <?php echo $form->textField(
                                         $model,
                                         'identifier',
@@ -347,7 +347,7 @@ echo $form->hiddenField($model, "image_id");
                                     <?php echo $form->error($model, 'identifier'); ?>
                                   </div>
                                 </div>
-                                <div class="col-xs-2">
+                                <div class="col-xs-3">
                                     <?php
                                     $status_array = array('Submitted', 'UserStartedIncomplete', 'Curation');
                                     echo CHtml::ajaxButton(
@@ -357,24 +357,10 @@ echo $form->hiddenField($model, "image_id");
                                             'type' => 'POST',
                                             'data' => ['doi' => 'js:$("#Dataset_identifier").val()'],
                                             'dataType' => 'json',
-                                            'success' => new CJavaScriptExpression('function(output) {
-                                                if (output.check_metadata_status == 200 && output.check_doi_status == 200 && output.update_md_status == 201) {
-                                                    $("#minting").addClass("alert alert-info").html("This DOI exists in datacite already, no need to mint, but the metadata is updated!");
-                                                } else if (output.check_metadata_status == 200 && output.check_doi_status == 200 && output.update_md_status == 422) {
-                                                    $("#minting").addClass("alert alert-info").html("This DOI exists in datacite, but failed to update metadata because of: " + output.update_md_response);
-                                                } else if (output.create_md_status == 201 && output.create_doi_status == 201) {
-                                                    $("#minting").addClass("alert alert-success").html("New DOI successfully minted");
-                                                } else if (output.check_metadata_status == 404 && output.check_doi_status == 404 && output.create_md_status == 422 && output.create_doi_status == 422) {
-                                                    $("#minting").addClass("alert alert-danger").html("This DOI cannot be created because of the metadata status: " + output.create_md_status + ", and the doi status: " + output.create_doi_status + " Details can be found at <a href=\'https://support.datacite.org/reference/mds#api-response-codes\' target=\'_blank\'>here</a>");
-                                                } else if ((output.check_metadata_status == 200 && output.check_doi_status == 404) || (output.check_metadata_status == 404 && output.check_doi_status == 200)) {
-                                                    $("#minting").addClass("alert alert-danger").html("Error with metadata status: " + output.check_metadata_status + " and DOI status: " + output.check_doi_status + " Details can be found at <a href=\'https://support.datacite.org/reference/mds#api-response-codes\' target=\'_blank\'>here</a>");
-                                                }
-                                                $("#mint_doi_button").toggleClass("active");
-                                            }'
-                                            ),
+                                            'success' => new CJavaScriptExpression('handleMintingSuccess'),
                                         ],
                                         array(
-                                            'class' => 'btn background-btn m-0',
+                                            'class' => 'btn background-btn m-0 mint-doi-button',
                                             'id' => 'mint_doi_button',
                                             'disabled' => in_array($model->upload_status, $status_array),
                                             'title' => 'This botton will take all the dataset information stored in GigaDB and convert it to the DataCite schema in XML and via an API call, register that information with DataCite',
@@ -393,8 +379,10 @@ echo $form->hiddenField($model, "image_id");
                                     }
                                     ?>
                                 </div>
-                                <div id="minting" class="col-xs-offset-4 col-xs-8" role="alert"></div>
-                            </div>
+                                <div class="col-xs-offset-4 col-xs-8">
+                                  <div id="minting" class="col-xs-12" role="alert"></div>
+                                </div>
+                              </div>
 
 
                         <?php
@@ -682,13 +670,6 @@ echo $form->hiddenField($model, "image_id");
         placeholder: 'Enter keywords (separated by commas) ...',
     });
 
-    $(function() {
-        $('#mint_doi_button').click(function() {
-            $('#minting').html('minting under way, please wait');
-            $(this).toggleClass('active');
-        });
-    });
-
     var image = document.getElementById("showImage");
     if (image.src.match('images/datasets/no_image.png')) {
       image.alt = "Default placeholder image"
@@ -856,3 +837,53 @@ $('#customizeEmailModal').on('hidden.bs.modal', function() {
 });
 </script>
 
+<script>
+$(function() {
+  $('#mint_doi_button').click(function() {
+    $('#minting').html('minting under way, please wait');
+    $(this).toggleClass('active');
+  });
+});
+
+function handleDoiStatus(output) {
+  if (!output) {
+    $("#minting").addClass("alert alert-danger").html("Unexpected error");
+    return
+  }
+  const {
+    check_metadata_status,
+    check_doi_status,
+    update_md_response,
+    create_doi_status,
+    create_md_status
+  } = output
+
+  if (check_metadata_status === 200 && check_doi_status === 200 && update_md_status === 201) {
+    $("#minting").addClass("alert alert-info").html("This DOI exists in DataCite already, so it has now been updated with the current values from GigaDB.");
+    return
+  }
+  if (check_metadata_status === 200 && check_doi_status === 200 && update_md_status === 422) {
+    $("#minting").addClass("alert alert-info").html("This DOI exists in DataCite, but failed to update metadata because of: " + update_md_response);
+    return
+  }
+  if (create_md_status === 201 && create_doi_status === 201) {
+    $("#minting").addClass("alert alert-success").html("New DOI successfully minted");
+    return
+  }
+  if (check_metadata_status === 404 && check_doi_status === 404 && create_md_status === 422 && create_doi_status === 422) {
+    $("#minting").addClass("alert alert-danger").html("This DOI cannot be created because of the metadata status: " + create_md_status + ", and the DOI status: " + create_doi_status + " Details can be found at <a href='https://support.datacite.org/reference/mds#api-response-codes' target='_blank'>here</a>");
+    return
+  }
+  if ((check_metadata_status === 200 && check_doi_status === 404) || (check_metadata_status === 404 && check_doi_status === 200)) {
+    $("#minting").addClass("alert alert-danger").html("Error with metadata status: " + check_metadata_status + " and DOI status: " + check_doi_status + " Details can be found at <a href='https://support.datacite.org/reference/mds#api-response-codes' target='_blank'>here</a>");
+    return
+  }
+  // unhandled cases
+  $("#minting").addClass("alert alert-danger").html("Unexpected error");
+}
+
+function handleMintingSuccess(output) {
+  handleDoiStatus(output)
+  $("#mint_doi_button").toggleClass("active");
+}
+</script>
