@@ -13,8 +13,6 @@ class FilesUploadAction extends CAction
 
     public function run($id)
     {
-        $this->getController()->layout='uploader_layout';
-
         // Instantiate FileUploadService and DatasetUpload
         $webClient = new \GuzzleHttp\Client();
         $fileUploadSrv = new FileUploadService([
@@ -33,15 +31,15 @@ class FilesUploadAction extends CAction
             ]);
 
         $datasetUpload = new DatasetUpload(
-            $fileUploadSrv->dataset, 
-            $fileUploadSrv, 
+            $fileUploadSrv->dataset,
+            $fileUploadSrv,
             Yii::$app->params['dataset_upload']
         );
         // Fetch list of uploaded files
         $uploadedFiles = $fileUploadSrv->getUploads($id);
 
         $this->getController()->render("filesUpload", array(
-        	"identifier" => $id, 
+        	"identifier" => $id,
         	"tusd_path" => Yii::$app->params['dataset_filedrop']['tusd_path'],
         	"uploadsCount" => count($uploadedFiles)
         ));

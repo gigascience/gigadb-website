@@ -37,7 +37,6 @@
 			'model' => $model,
 			'attributeName' => 'genbank_name',
 			'inputOptions' => [
-				'required' => true,
 				'maxlength' => 128
 			],
 		]);
