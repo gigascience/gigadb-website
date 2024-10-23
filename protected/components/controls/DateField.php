@@ -4,7 +4,7 @@ Yii::import('application.components.controls.BaseInput');
 
 class DateField extends BaseInput
 {
-    public $description = 'Format: mm/dd/yyyy';
+    public $description = 'Format: yyyy-mm-dd';
 
     // ** Native date input
     // the native input is accessible, keyboard friendly, screen reader friendly, and overall better than the jQuery datepicker (in my opinion). The only problem is that in Safari + VoiceOver the date input label does not get announced
@@ -30,7 +30,7 @@ class DateField extends BaseInput
                 $this->inputOptions,
                 array(
                   'data-js' => 'datepicker',
-                  'placeholder' => 'mm/dd/yyyy',
+                  'placeholder' => 'yyyy-mm-dd',
                 )
                 )
             );

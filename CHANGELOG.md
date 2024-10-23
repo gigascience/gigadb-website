@@ -3,9 +3,9 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 
-
 ## Unreleased
 
+- Fix #1838: switch datepicker format to yyy-mm-dd
 - Feat #1768: Alphabetically sorted dataset author dropdown options in adminDatasetAuthor form
 - Fix #1843: Add top margin to table footer in dataset page
 - Feat #2034: Maximize input text color contrast
