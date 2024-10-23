@@ -53,7 +53,9 @@ module "db" {
   maintenance_window        = "Mon:00:00-Mon:03:00"
   backup_window             = "03:00-06:00"  # UTC time
   backup_retention_period   = 5  # days
-  skip_final_snapshot       = true  # Create final snapshot
+  skip_final_snapshot       = false  # Create final snapshot
+  final_snapshot_identifier_prefix = "snapshot-final-${var.deployment_target}-${var.owner}-${local.tstamp}"
+  copy_tags_to_snapshot     = true
   delete_automated_backups  = false  # Do not delete backups on RDS instance termination
   apply_immediately         = true
 }
