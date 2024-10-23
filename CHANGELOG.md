@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1867: Update the gitlab static application security testing (SAST) job using the Semgrep-based analyzer
 - Feat #1968: Add curators manual for operating tools on bastion server
 - Feat #1750: Switch to guzzle instead of cURL
 - Fix #2042: Batch deletion of file attributes and samples
