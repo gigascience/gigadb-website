@@ -1,0 +1,7 @@
+version: '3.7'
+
+services:
+
+  ftpd:
+    image: "registry.gitlab.com/$CI_PROJECT_PATH/ftpd:latest"
+

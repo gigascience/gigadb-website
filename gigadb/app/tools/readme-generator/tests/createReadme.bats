@@ -4,7 +4,9 @@ teardown () {
     echo "executing teardown code"
     FILES="runtime/curators/readme_100142.txt
     runtime/curators/readme_100006.txt
-    runtime/curators/readme_100020.txt"
+    runtime/curators/readme_100020.txt
+    uploadDir/readme_100005_"*".log
+    uploadDir/readme_100142_"*".log"
 
     for file in $FILES
     do
@@ -13,6 +15,31 @@ teardown () {
           rm "$file"
       fi
     done
+}
+
+@test "Output usage information" {
+    run ./createReadme.sh
+    [ "$status" -eq 1 ]
+    [[ "$output" =~ "Usage: ./createReadme.sh --doi <DOI>" ]]
+    [[ "$output" =~ "Required:" ]]
+    [[ "$output" =~ "--doi            DOI to process" ]]
+    [[ "$output" =~ "Available Options:" ]]
+    [[ "$output" =~ "--batch          Number of DOI to process" ]]
+    [[ "$output" =~ "--wasabi         (Default) Copy readme file to Wasabi bucket" ]]
+    [[ "$output" =~ "--apply          Escape dry run mode" ]]
+    [[ "$output" =~ "--use-live-data  Copy data to production live bucket" ]]
+}
+
+@test "DOI is required" {
+    run ./createReadme.sh --doi
+    [ "$status" -eq 1 ]
+    [[ "$output" =~ "Error: --doi <DOI> is required." ]]
+}
+
+@test "invalid option is provided" {
+    run ./createReadme.sh 100142
+    [ "$status" -eq 1 ]
+    [[ "$output" =~ "Invalid option: 100142" ]]
 }
 
 @test "create readme file" {

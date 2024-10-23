@@ -10,3 +10,5 @@ collections:
     name: prometheus.prometheus
   - source: https://galaxy.ansible.com
     name: community.grafana
+  - source: https://galaxy.ansible.com
+    name: ansible.posix

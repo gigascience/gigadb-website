@@ -8,6 +8,12 @@
 
 		<p class="note">Fields with <span class="required">*</span> are required.</p>
 
+        <?php if(Yii::app()->user->hasFlash('error')):?>
+            <div class="alert alert-danger">
+                <?php echo Yii::app()->user->getFlash('error'); ?>
+            </div>
+        <?php endif; ?>
+
 		<?php if ($model->hasErrors()) : ?>
 			<div class="alert alert-danger">
 				<?php echo $form->errorSummary($model); ?>
@@ -44,13 +50,21 @@
 		$this->widget('application.components.controls.DropdownField', [
 			'form' => $form,
 			'model' => $model,
-			'attributeName' => 'relationship',
+			'attributeName' => 'relationship_id',
 			'listDataOptions' => [
 				'data' => Relationship::model()->findAll(),
 				'valueField' => 'id',
 				'textField' => 'name',
 			],
 		]);
+        if ('insert' === $model->getScenario()) {
+            $this->widget('application.components.controls.CheckBoxField', [
+                'form' => $form,
+                'model' => $model,
+                'attributeName' => 'add_reciprocal',
+                'label' => 'Do you want to add a reciprocal relation model'
+            ]);
+        }
 		?>
 
 		<div class="pull-right btns-row">
