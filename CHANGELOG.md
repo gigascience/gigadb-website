@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #2000: Make user dropboxes in alternative in sync with live
 - Fix #1838: switch datepicker format to yyy-mm-dd
 - Feat #1768: Alphabetically sorted dataset author dropdown options in adminDatasetAuthor form
 - Fix #1843: Add top margin to table footer in dataset page

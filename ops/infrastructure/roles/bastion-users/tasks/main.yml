@@ -202,5 +202,34 @@
     group: "{{ newuser }}"
     mode: 0644
 
+- name: Ensure user has GIGADB_ENV set
+  ansible.builtin.lineinfile:
+    path: "/home/{{ newuser }}/.bash_profile"
+    insertafter: '# User specific environment and startup programs\n'
+    line: "GIGADB_ENV={{ gigadb_environment }}"
+
+- name: get private key of upstream
+  ansible.builtin.uri:
+    url: "{{ gitlab_misc_url }}/variables/id_rsa_aws_hk_gigadb_pem"
+    method: GET
+    headers:
+      PRIVATE-TOKEN: "{{ gitlab_private_token }}"
+    body_format: json
+  register: private_key_from_gl
+
+- name: copy private key
+  ansible.builtin.copy:
+    content: "{{ private_key_from_gl.json.value  }}"
+    dest: "/home/{{ newuser }}/.ssh/id-rsa-aws-hk-gigadb.pem"
+    owner: "{{ newuser }}"
+    group: "{{ newuser }}"
+    mode: g-rw,o-rw
+
+- name: add user to the gigadb group
+  ansible.builtin.user:
+    name: "{{ newuser }}"
+    groups: gigadb
+    append: yes
+
 - name: Restart systemd sshd service
   command: systemctl restart sshd.service
