@@ -25,6 +25,7 @@ class Project extends CActiveRecord
   const NAMESPACE = "http://gigadb.org/namespaces/project";
 
   public $image;
+  public $image_logo;
 
 	/**
 	 * Returns the static model of the specified AR class.
@@ -58,7 +59,8 @@ class Project extends CActiveRecord
 			array('name', 'length', 'max'=>255),
 			array('image_location', 'length', 'max'=>100),
       array('url','check_duplicate'),
-      array('image', 'file', 'types' => 'jpg, jpeg, png', 'allowEmpty' => true),
+      // array('image', 'file', 'types' => 'jpg, jpeg, png', 'allowEmpty' => true),
+      array('image_logo', 'file', 'types' => 'jpg, jpeg, png', 'allowEmpty' => true),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, url, name, image_location', 'safe', 'on'=>'search'),
@@ -87,6 +89,7 @@ class Project extends CActiveRecord
 			'url' => 'Url',
 			'name' => 'Name',
 			'image_location' => 'Image Location',
+      'image_logo' => 'Image Logo',
 		);
 	}
 
@@ -178,6 +181,7 @@ class Project extends CActiveRecord
           ['visibility' => AdapterInterface::VISIBILITY_PUBLIC]
       )) {
           // $this->logo = sprintf("%s.%s", $fileName, $info['extension']);
+          $this->image_logo = sprintf("%s.%s", $fileName, $info['extension']);
           $this->image_location = sprintf("https://%s/%s", self::BUCKET, $imagePath);
 
           Yii::log("writeLogo: Image successfully written to storage", "info");
@@ -185,7 +189,7 @@ class Project extends CActiveRecord
           return true;
       }
 
-      Yii::log("Error attempting to write image to the storage","error");
+      Yii::log("writeLogo: Error attempting to write image to the storage","error");
 
       return false;
   }

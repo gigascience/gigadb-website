@@ -53,7 +53,7 @@
     </div>
 -->
 
-    <div id="vue-client_project-image-location">
+    <div id="vue-client_project-image-logo">
       <div class="spinner"></div>
     </div>
     <div>

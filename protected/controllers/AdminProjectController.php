@@ -59,6 +59,10 @@ class AdminProjectController extends Controller
       Yii::log("action Create: project form data exists", "warning");
 			$model->attributes = $_POST['Project'];
 
+      Yii::log("action Create: project form data - " . print_r($model->attributes, true), "warning");
+
+      Yii::log("action Create: image_logo - " . print_r($model->image_logo, true), "warning");
+
       $uploadedLogo = CUploadedFile::getInstance($model, 'image_logo');
 
       Yii::log("action Create: uploaded file - " . $uploadedLogo, "warning");
@@ -69,9 +73,10 @@ class AdminProjectController extends Controller
           Yii::log("action Create: logo uploaded successfully", "warning");
             // Logo uploaded successfully
         } else {
-            Yii::log("Failed to write logo to storage for project " . $model->id, "error");
+            Yii::log("action Create: Failed to write logo to storage for project " . $model->id, "error");
         }
       }
+      // $this->redirect(array('create'));
 
 			if($model->save()) {
 				$this->redirect(array('view','id'=>$model->id));
