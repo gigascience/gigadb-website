@@ -443,14 +443,6 @@
         group: centos
         mode: 0644
 
-    - name: Create directory for storing log output
-      ansible.builtin.file:
-        path: /var/log/gigadb
-        state: directory
-        mode: '0777'
-        owner: centos
-        group: centos
-
     - name: Create a .aws directory for the centos user
       ansible.builtin.file:
         path: "/home/centos/.aws"
