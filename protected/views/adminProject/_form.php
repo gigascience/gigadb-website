@@ -51,9 +51,8 @@
         <?php echo $form->error($model, 'image'); ?>
     </div>
 -->
-
     <div id="vue-client_project-image-location">
-      <p>You should not see this text. If you see this text, the Vue app is crashing.</p>
+      <div class="spinner"></div>
     </div>
     <div>
       <script type="module" src="http://localhost:5173/@vite/client"></script>

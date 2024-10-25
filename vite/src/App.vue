@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import LogoUpload from './components/LogoUpload.vue';
-// import UppyDashboard from './components/UppyDashboard.vue';
 </script>
 
 <template>
+  Lorem
   <LogoUpload />
-  <!-- <UppyDashboard /> -->
 </template>
 
 <style scoped>
