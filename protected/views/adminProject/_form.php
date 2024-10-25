@@ -44,14 +44,16 @@
 		// ]);
 		?>
 
+<!-- mock input, vue app should render input with same id
     <div class="form-group">
         <?php echo $form->labelEx($model, 'image'); ?>
         <?php echo $form->fileField($model, 'image'); ?>
         <?php echo $form->error($model, 'image'); ?>
     </div>
+-->
 
     <div id="vue-client_project-image-location">
-      you should not see this text
+      <p>You should not see this text. If you see this text, the Vue app is crashing.</p>
     </div>
     <div>
       <script type="module" src="http://localhost:5173/@vite/client"></script>

@@ -2,7 +2,10 @@
 
 ## Tasks
 
-- [ ] install node_modules in volume
+- [ ] add sr-only text to browse files button: upload logo, please upload one file as logo. maximum height, etc
+- [ ] adapt style to match gigadb theme, in the style.css file or in the component itself, or even better use directly the gigadb styles
+- [ ] the hidden file input should have a specific id for the backend controller (maybe with the metafields option?)
+- [ ] make the upload button displayed after adding file responsive (there's something apparent happening after user clicks it) or remove it (what does it do?)
 
 ## Usage
 
@@ -27,4 +30,13 @@ docker image prune -f
 docker volume prune -f
 # Full cleanup
 docker system prune -a -f --volumes
+```
+
+Dependencies are installed within the container. To install a new dependency:
+
+```bash
+# access the container (run from root folder)
+docker-compose exec vite-project-image-location-dev sh
+# install new dependency
+npm install <package-name>
 ```

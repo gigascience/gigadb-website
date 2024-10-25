@@ -9,6 +9,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@uppy/dashboard": "^4.1.1",
+    "@uppy/drag-drop": "^4.0.3",
+    "@uppy/file-input": "^4.0.2",
+    "@uppy/image-editor": "^3.1.0",
+    "@uppy/progress-bar": "^4.0.0",
+    "@uppy/vue": "^2.0.1",
     "vue": "^3.5.10"
   },
   "devDependencies": {

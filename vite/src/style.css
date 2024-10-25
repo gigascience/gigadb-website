@@ -1,0 +1,29 @@
+.error-message {
+  color: rgb(121, 0, 0);
+  margin-top: 10px;
+}
+
+.uppy-Dashboard-inner {
+  background-color: #f8f9fa; /* Light grey background to match the theme */
+}
+
+.uppy-Dashboard-AddFiles {
+  background-color: #007bff; /* Bootstrap primary blue */
+  color: #fff; /* White text */
+}
+
+.uppy-Dashboard-AddFiles:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
+
+.uppy-Dashboard-note {
+  color: #6c757d; /* Bootstrap secondary text color */
+}
+
+.uppy-DashboardItem-name {
+  color: #343a40; /* Dark grey text to match the theme */
+}
+
+.uppy-DashboardItem-status {
+  color: #6c757d; /* Bootstrap secondary text color */
+}
