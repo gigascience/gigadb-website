@@ -141,15 +141,15 @@ class Project extends CActiveRecord
    *
    * @param Filesystem $targetStorage
    * @param string $enclosingDirectory
-   * @param CUploadedFile $uploadedFile
+   * @param CUploadedFile $uploadedLogo
    * @return bool
    */
-  public function writeLogo(Filesystem $targetStorage, CUploadedFile $uploadedFile): bool
+  public function writeLogo(Filesystem $targetStorage, CUploadedFile $uploadedLogo): bool
   {
       Yii::log("writeLogo: Starting to process the uploaded file", "info");
 
       $slugger = new \Symfony\Component\String\Slugger\AsciiSlugger();
-      $info = pathinfo($uploadedFile->getName());
+      $info = pathinfo($uploadedLogo->getName());
       $fileName = $slugger->slug($info['filename'])->toString();
 
       Yii::log("writeLogo: Generated file name - " . $fileName, "info");
@@ -174,7 +174,7 @@ class Project extends CActiveRecord
       }
 
       if ($targetStorage->put(
-          $imagePath, file_get_contents($uploadedFile->getTempName()),
+          $imagePath, file_get_contents($uploadedLogo->getTempName()),
           ['visibility' => AdapterInterface::VISIBILITY_PUBLIC]
       )) {
           // $this->logo = sprintf("%s.%s", $fileName, $info['extension']);

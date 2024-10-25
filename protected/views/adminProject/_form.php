@@ -44,13 +44,15 @@
 		// ]);
 		?>
 
-<!-- mock input, vue app should render input with same id
+<!-- mock input, vue app should render input with same id -->
+<!--
     <div class="form-group">
-        <?php echo $form->labelEx($model, 'image'); ?>
-        <?php echo $form->fileField($model, 'image'); ?>
-        <?php echo $form->error($model, 'image'); ?>
+        <?php echo $form->labelEx($model, 'image_logo'); ?>
+        <?php echo $form->fileField($model, 'image_logo'); ?>
+        <?php echo $form->error($model, 'image_logo'); ?>
     </div>
 -->
+
     <div id="vue-client_project-image-location">
       <div class="spinner"></div>
     </div>

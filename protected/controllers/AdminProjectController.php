@@ -59,13 +59,13 @@ class AdminProjectController extends Controller
       Yii::log("action Create: project form data exists", "warning");
 			$model->attributes = $_POST['Project'];
 
-      $uploadedFile = CUploadedFile::getInstance($model, 'image');
+      $uploadedLogo = CUploadedFile::getInstance($model, 'image_logo');
 
-      Yii::log("action Create: uploaded file - " . $uploadedFile, "warning");
+      Yii::log("action Create: uploaded file - " . $uploadedLogo, "warning");
 
-      if ($uploadedFile) {
+      if ($uploadedLogo) {
         Yii::log("action Create: image form data exists", "warning");
-        if ($model->writeLogo(Yii::$app->cloudStore, $uploadedFile)) {
+        if ($model->writeLogo(Yii::$app->cloudStore, $uploadedLogo)) {
           Yii::log("action Create: logo uploaded successfully", "warning");
             // Logo uploaded successfully
         } else {
