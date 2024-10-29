@@ -99,3 +99,62 @@ container_scanning:
         CS_IMAGE_SUFFIX: -fips
     - if: $CI_COMMIT_BRANCH || $CI_COMMIT_TAG
 
+docker_scout_scanning:
+  image: docker:latest
+  stage: conformance and security
+  services:
+    - docker:dind
+  before_script:
+    # login to gitlab container registry
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+    # Install curl and the Docker Scout CLI
+    - |
+      apk add --update curl
+      curl -sSfL https://raw.githubusercontent.com/docker/scout-cli/main/install.sh | sh -s --
+      apk del curl
+      rm -rf /var/cache/apk/*
+    # Login to Docker Hub required for Docker Scout CLI
+    - docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
+  script:
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/fuw-admin:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/fuw-worker:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/gigadb-worker:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/fuw-public:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/console:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/ftpd:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/watcher:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/tusd:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/beanstalkd:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/web:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/js:latest || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/production_tideways-daemon:staging || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/production_tideways-daemon:live || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/production_web:staging || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/production_web:live || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/production_app:staging || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/production_app:live || true
+    # Get a CVE report for the built image and fail the pipeline when critical or high CVEs are detected
+    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/test:latest --only-severity critical,high
+    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/application:latest --only-severity critical,high
+    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/fuw-admin:latest --only-severity critical,high
+    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/fuw-worker:latest --only-severity critical,high
+    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/gigadb-worker:latest --only-severity critical,high
+    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/fuw-public:latest --only-severity critical,high
+    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/console:latest --only-severity critical,high
+    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/ftpd:latest --only-severity critical,high
+    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/watcher:latest --only-severity critical,high
+    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/tusd:latest --only-severity critical,high
+    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/beanstalkd:latest --only-severity critical,high
+    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/web:latest --only-severity critical,high
+    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/js:latest --only-severity critical,high
+    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/production_tideways-daemon:staging --only-severity critical,high
+    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/production_tideways-daemon:live --only-severity critical,high
+    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/production_web:staging --only-severity critical,high
+    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/production_web:live --only-severity critical,high
+    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/production_app:staging --only-severity critical,high
+    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/production_app:live --only-severity critical,high
+
+
+
