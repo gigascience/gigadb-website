@@ -29,19 +29,29 @@ flow
 
 - widget props
   - server endpoint url
-
  */
+
+// constants
 
 // image constraints
 const maxHeight = 60; // in pixels
 const maxSize = 1000000; // in bytes
 const maxSizeMb = maxSize / 1e6;
 
+const constraintsMessage = `Please upload one image file (max height ${maxHeight}px, max size ${maxSizeMb} MB)`
+const srOnlyConstraintsMessage = `Please upload one image file. Max height ${maxHeight} pixels, max size ${maxSizeMb} megabyte${maxSizeMb === 1 ? '' : 's'}. Press Enter key to browse your local files, or drag and drop an image into this box.`
+
+// state
+
 const isWrapperFocusable = ref(true);
 const size = reactive({
   height: 0,
   width: 0,
 });
+const errorMessage = ref<string | null>(null);
+const srOnlyErrorMessage = ref<string | null>(null);
+
+// uppy config
 
 const uppy = new Uppy({
   autoProceed: false,
@@ -68,9 +78,9 @@ uppy.use(ImageEditor, {
   },
   actions: {
     revert: true,
-    rotate: true,
+    rotate: false,
     granularRotate: false,
-    flip: true,
+    flip: false,
     zoomIn: true,
     zoomOut: true,
     cropSquare: false,
@@ -79,79 +89,13 @@ uppy.use(ImageEditor, {
   }
 });
 
-uppy.on('complete', (result) => {
-  console.log('Upload complete:', result);
-});
-
-const constraintsMessage = `Please upload one image file (max height ${maxHeight}px, max size ${maxSizeMb} MB)`
-const srOnlyConstraintsMessage = `Please upload one image file. Max height ${maxHeight} pixels, max size ${maxSizeMb} megabyte${maxSizeMb === 1 ? '' : 's'}. Press Enter key to browse your local files, or drag and drop an image into this box.`
-const errorMessage = ref<string | null>(null);
-const srOnlyErrorMessage = ref<string | null>(null);
-
-const handleFileSelection = (file: UppyFile<Meta, Record<string, never>>) => {
-  // selectedFile.value = file;
-  // const fileInfo = {
-  //   id: file.id,
-  //   name: file.name,
-  //   type: file.type,
-  //   size: file.size,
-  //   meta: file.meta
-  // };
-
-
-  // fileData.value = JSON.stringify(fileInfo);
-  // You might want to trigger any necessary form updates here
-}
-
 function openFileEditor(file: UppyFile<Meta, Record<string, never>>) {
   const dashboard = uppy.getPlugin('Dashboard');
   if (dashboard) {
-    // TODO fix typescript error
+    // TODO fix typescript error, avoid using any
     (dashboard as any).openFileEditor(file);
   }
 }
-
-uppy.on('file-added', async (file: UppyFile<Meta, Record<string, never>>) => {
-  console.log('file-added', file);
-
-  isWrapperFocusable.value = false;
-  errorMessage.value = null;
-
-  try {
-    const { height } = await getImgDimension(file);
-    if (height > maxHeight) {
-      // Show warning but don't remove file
-      errorMessage.value = `Image height (${height}px) exceeds ${maxHeight}px - please resize using the editor`;
-      srOnlyErrorMessage.value = `Image height of ${height} pixels exceeds maximum of ${maxHeight} pixels. Please use the editor to resize.`;
-      // Auto-open editor when height exceeds limit
-      openFileEditor(file);
-    } else {
-      handleFileSelection(file);
-    }
-  } catch (error) {
-    errorMessage.value = 'Error getting image dimensions';
-  }
-});
-
-uppy.on('file-removed', () => {
-  isWrapperFocusable.value = true;
-});
-
-uppy.on('file-editor:complete', async (file: UppyFile<Meta, Record<string, never>>) => {
-  try {
-    const { height } = await getImgDimension(file);
-    if (height > maxHeight) {
-      errorMessage.value = `Image still exceeds ${maxHeight}px height - please resize further`;
-      srOnlyErrorMessage.value = `Image height still exceeds ${maxHeight} pixels. Please resize further.`;
-    } else {
-      errorMessage.value = null;
-      srOnlyErrorMessage.value = null;
-      handleFileSelection(file);
-    }
-  } catch (error) {
-    errorMessage.value = 'Error verifying image dimensions';
-  }
-});
 
 async function getImgDimension(imgFile: UppyFile<Meta, Record<string, never>>): Promise<{ width: number; height: number }> {
   return new Promise((resolve, reject) => {
@@ -168,6 +112,51 @@ async function getImgDimension(imgFile: UppyFile<Meta, Record<string, never>>): 
     img.src = url;
   });
 }
+
+// file events
+
+uppy.on('file-added', async (file: UppyFile<Meta, Record<string, never>>) => {
+  console.log('file-added', file);
+
+  isWrapperFocusable.value = false;
+  errorMessage.value = null;
+
+  try {
+    const { height } = await getImgDimension(file);
+    if (height > maxHeight) {
+      // Show warning but don't remove file
+      errorMessage.value = `Image height (${height}px) exceeds ${maxHeight}px - please resize using the editor`;
+      srOnlyErrorMessage.value = `Image height of ${height} pixels exceeds maximum of ${maxHeight} pixels. Please use the editor to resize.`;
+      // Auto-open editor when height exceeds limit
+      openFileEditor(file);
+    }
+  } catch (error) {
+    errorMessage.value = 'Error getting image dimensions';
+  }
+});
+
+uppy.on('file-removed', () => {
+  isWrapperFocusable.value = true;
+});
+
+// file-editor events
+
+uppy.on('file-editor:complete', async (file: UppyFile<Meta, Record<string, never>>) => {
+  try {
+    const { height } = await getImgDimension(file);
+    if (height > maxHeight) {
+      errorMessage.value = `Image still exceeds ${maxHeight}px height - please resize further`;
+      srOnlyErrorMessage.value = `Image height still exceeds ${maxHeight} pixels. Please resize further.`;
+    } else {
+      errorMessage.value = null;
+      srOnlyErrorMessage.value = null;
+    }
+  } catch (error) {
+    errorMessage.value = 'Error verifying image dimensions';
+  }
+});
+
+// methods
 
 function triggerUppyButton() {
   const uppyDashboard = document.querySelector('.uppy-Dashboard-inner');
