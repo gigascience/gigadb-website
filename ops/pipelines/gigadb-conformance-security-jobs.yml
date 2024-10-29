@@ -72,7 +72,7 @@ semgrep-sast:
   stage: conformance and security
 
 variables:
-  CS_ANALYZER_IMAGE: "$CI_TEMPLATE_REGISTRY_HOST/security-products/container-scanning:6"
+  CS_ANALYZER_IMAGE: "$CI_TEMPLATE_REGISTRY_HOST/security-products/container-scanning:7"
   CS_SCHEMA_MODEL: 15
 
 container_scanning:
