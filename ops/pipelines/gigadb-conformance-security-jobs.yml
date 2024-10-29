@@ -126,3 +126,7 @@ docker_scout_scanning:
     - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/production_app:staging --only-severity critical
     - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/production_app:live --only-severity critical
 
+iac-sast:
+  stage: conformance and security
+  variables:
+    SAST_ANALYZER_IMAGE_TAG: "3.7"
