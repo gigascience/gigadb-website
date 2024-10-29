@@ -136,25 +136,23 @@ docker_scout_scanning:
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/production_app:staging || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/production_app:live || true
     # Get a CVE report for the built image and fail the pipeline when critical or high CVEs are detected
-    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/test:latest --only-severity critical,high
-    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/application:latest --only-severity critical,high
-    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/fuw-admin:latest --only-severity critical,high
-    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/fuw-worker:latest --only-severity critical,high
-    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/gigadb-worker:latest --only-severity critical,high
-    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/fuw-public:latest --only-severity critical,high
-    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/console:latest --only-severity critical,high
-    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/ftpd:latest --only-severity critical,high
-    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/watcher:latest --only-severity critical,high
+    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/test:latest --only-severity critical
+    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/application:latest --only-severity critical
+    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/fuw-admin:latest --only-severity critical
+    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/fuw-worker:latest --only-severity critical
+    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/gigadb-worker:latest --only-severity critical
+    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/fuw-public:latest --only-severity critical
+    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/console:latest --only-severity critical
+    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/ftpd:latest --only-severity critical
+    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/watcher:latest --only-severity critical
     - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/tusd:latest --only-severity critical,high
-    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/beanstalkd:latest --only-severity critical,high
-    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/web:latest --only-severity critical,high
-    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/js:latest --only-severity critical,high
-    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/production_tideways-daemon:staging --only-severity critical,high
-    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/production_tideways-daemon:live --only-severity critical,high
-    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/production_web:staging --only-severity critical,high
-    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/production_web:live --only-severity critical,high
-    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/production_app:staging --only-severity critical,high
-    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/production_app:live --only-severity critical,high
-
-
+    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/beanstalkd:latest --only-severity critical
+    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/web:latest --only-severity critical
+    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/js:latest --only-severity critical
+    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/production_tideways-daemon:staging --only-severity critical
+    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/production_tideways-daemon:live --only-severity critical
+    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/production_web:staging --only-severity critical
+    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/production_web:live --only-severity critical
+    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/production_app:staging --only-severity critical
+    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/production_app:live --only-severity critical
 
