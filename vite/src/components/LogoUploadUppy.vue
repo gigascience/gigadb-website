@@ -22,7 +22,7 @@ flow
 - user resizes image in editor and saves
   - dynamically show image dimensions
   - while image height is > 60px, show warning message and keep "save" button disabled
-  - show "autocrop" button. On press:
+  - show "autocrop" button. On press: --> this feature is way too complicated for what it's worth
     - if image height > 60px, auto resize height to 60px keeping image proportions
     - if image height <= 60px, do nothing
 - user clicks upload button -> server endpoint uploads file to S3 and returns url
@@ -177,8 +177,6 @@ function triggerUppyButton() {
       <Dashboard :uppy="uppy" :props="{
         note: constraintsMessage,
         proudlyDisplayPoweredByUppy: false,
-        hideUploadButton: true,
-        // height: '300px', // do not use it because otherwise the image editor looks too small
       }" />
     </button>
     <div v-if="size.width && size.height" class="dimensions-display">
