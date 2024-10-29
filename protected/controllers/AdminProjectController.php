@@ -49,39 +49,16 @@ class AdminProjectController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model = new Project;
+		$model=new Project;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
 		if(isset($_POST['Project']))
 		{
-      Yii::log("action Create: project form data exists", "warning");
-			$model->attributes = $_POST['Project'];
-
-      Yii::log("action Create: project form data - " . print_r($model->attributes, true), "warning");
-
-      Yii::log("action Create: image_logo - " . print_r($model->image_logo, true), "warning");
-
-      $uploadedLogo = CUploadedFile::getInstance($model, 'image_logo');
-
-      Yii::log("action Create: uploaded file - " . $uploadedLogo, "warning");
-
-      if ($uploadedLogo) {
-        Yii::log("action Create: image form data exists", "warning");
-        if ($model->writeLogo(Yii::$app->cloudStore, $uploadedLogo)) {
-          Yii::log("action Create: logo uploaded successfully", "warning");
-            // Logo uploaded successfully
-        } else {
-            Yii::log("action Create: Failed to write logo to storage for project " . $model->id, "error");
-        }
-      }
-      // $this->redirect(array('create'));
-
-			if($model->save()) {
+			$model->attributes=$_POST['Project'];
+			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
-      }
-
 		}
 
 		$this->render('create',array(
