@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import LogoUpload from './components/LogoUpload.vue';
+import LogoUploadUppy from './components/LogoUploadUppy.vue';
 </script>
 
 <template>
-  <LogoUpload />
+  <LogoUploadUppy />
 </template>

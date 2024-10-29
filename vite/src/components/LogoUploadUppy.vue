@@ -1,22 +1,47 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { reactive, ref } from 'vue';
 import Uppy from '@uppy/core';
+import type { UppyFile, Meta } from '@uppy/core';
 import {
   Dashboard
 } from '@uppy/vue';
-import type { UppyFile, Meta } from '@uppy/core';
-import Form from '@uppy/form';
+import ImageEditor from '@uppy/image-editor';
+
 import '@uppy/core/dist/style.css';
 import '@uppy/dashboard/dist/style.css';
+import '@uppy/image-editor/dist/style.min.css';
+
+/**
+
+flow
+
+- user drops or loads file in widget
+- is file height > 60px?
+  - yes: auto open editor
+  - no: do nothing
+- user resizes image in editor and saves
+  - dynamically show image dimensions
+  - while image height is > 60px, show warning message and keep "save" button disabled
+  - show "autocrop" button. On press:
+    - if image height > 60px, auto resize height to 60px keeping image proportions
+    - if image height <= 60px, do nothing
+- user clicks upload button -> server endpoint uploads file to S3 and returns url
+
+- widget props
+  - server endpoint url
+
+ */
 
 // image constraints
-const maxHeight = 60;
-const maxSize = 1000000;
+const maxHeight = 60; // in pixels
+const maxSize = 1000000; // in bytes
 const maxSizeMb = maxSize / 1e6;
 
 const isWrapperFocusable = ref(true);
-const selectedFile = ref<UppyFile<Meta, Record<string, never>> | null>(null);
-const fileData = ref<string | null>(null);
+const size = reactive({
+  height: 0,
+  width: 0,
+});
 
 const uppy = new Uppy({
   autoProceed: false,
@@ -28,10 +53,30 @@ const uppy = new Uppy({
   }
 })
 
-uppy.use(Form, {
-  target: '#project-form',
-  resultName: 'Project[image_logo]',
-  addResultToForm: true
+uppy.use(ImageEditor, {
+  quality: 0.8,
+  cropperOptions: {
+    viewMode: 1,
+    background: false,
+    autoCropArea: 1,
+    responsive: true,
+    // Show current dimensions in the cropper
+    crop(event) {
+      size.width = Math.round(event.detail.width);
+      size.height = Math.round(event.detail.height);
+    }
+  },
+  actions: {
+    revert: true,
+    rotate: true,
+    granularRotate: false,
+    flip: true,
+    zoomIn: true,
+    zoomOut: true,
+    cropSquare: false,
+    cropWidescreen: false,
+    cropWidescreenVertical: false,
+  }
 });
 
 uppy.on('complete', (result) => {
@@ -58,18 +103,29 @@ const handleFileSelection = (file: UppyFile<Meta, Record<string, never>>) => {
   // You might want to trigger any necessary form updates here
 }
 
+function openFileEditor(file: UppyFile<Meta, Record<string, never>>) {
+  const dashboard = uppy.getPlugin('Dashboard');
+  if (dashboard) {
+    // TODO fix typescript error
+    (dashboard as any).openFileEditor(file);
+  }
+}
+
 uppy.on('file-added', async (file: UppyFile<Meta, Record<string, never>>) => {
   console.log('file-added', file);
 
+  isWrapperFocusable.value = false;
+  errorMessage.value = null;
+
   try {
     const { height } = await getImgDimension(file);
-    if (height > 60) {
-      uppy.removeFile(file.id);
-      srOnlyErrorMessage.value = 'Image height exceeds 60 pixels';
-      errorMessage.value = 'Image height exceeds 60px';
+    if (height > maxHeight) {
+      // Show warning but don't remove file
+      errorMessage.value = `Image height (${height}px) exceeds ${maxHeight}px - please resize using the editor`;
+      srOnlyErrorMessage.value = `Image height of ${height} pixels exceeds maximum of ${maxHeight} pixels. Please use the editor to resize.`;
+      // Auto-open editor when height exceeds limit
+      openFileEditor(file);
     } else {
-      isWrapperFocusable.value = false;
-      errorMessage.value = null;
       handleFileSelection(file);
     }
   } catch (error) {
@@ -79,6 +135,22 @@ uppy.on('file-added', async (file: UppyFile<Meta, Record<string, never>>) => {
 
 uppy.on('file-removed', () => {
   isWrapperFocusable.value = true;
+});
+
+uppy.on('file-editor:complete', async (file: UppyFile<Meta, Record<string, never>>) => {
+  try {
+    const { height } = await getImgDimension(file);
+    if (height > maxHeight) {
+      errorMessage.value = `Image still exceeds ${maxHeight}px height - please resize further`;
+      srOnlyErrorMessage.value = `Image height still exceeds ${maxHeight} pixels. Please resize further.`;
+    } else {
+      errorMessage.value = null;
+      srOnlyErrorMessage.value = null;
+      handleFileSelection(file);
+    }
+  } catch (error) {
+    errorMessage.value = 'Error verifying image dimensions';
+  }
 });
 
 async function getImgDimension(imgFile: UppyFile<Meta, Record<string, never>>): Promise<{ width: number; height: number }> {
@@ -117,22 +189,23 @@ function triggerUppyButton() {
         note: constraintsMessage,
         proudlyDisplayPoweredByUppy: false,
         hideUploadButton: true,
-        height: '300px',
+        // height: '300px', // do not use it because otherwise the image editor looks too small
       }" />
     </button>
+    <div v-if="size.width && size.height" class="dimensions-display">
+      <span>Current dimensions: {{ size.width }}px &times; {{ size.height }}px</span>
+      <span role="status" aria-live="polite">
+        <span v-if="size.height > maxHeight" class="dimension-warning">
+          (Height exceeds {{ maxHeight }}px limit)
+        </span>
+      </span>
+    </div>
     <div role="alert">
-      <div v-if="errorMessage" class="control-error help-block" id="logo-upload-error" aria-hidden="true">{{ errorMessage }}</div>
+      <div v-if="errorMessage" class="control-error help-block" id="logo-upload-error" aria-hidden="true">{{
+        errorMessage }}</div>
       <span v-if="srOnlyErrorMessage" class="sr-only">{{ srOnlyErrorMessage }}</span>
     </div>
   </div>
-  <!-- <div v-if="selectedFile"> -->
-    <!-- <p>Selected file</p> -->
-    <!-- <pre>{{ JSON.stringify(selectedFile, null, 2) }}</pre> -->
-    <!-- Use a hidden input to store the file information and send it to the controller on form submission -->
-    <!-- <input type="hidden" :value="fileData ?? ''" name="Project[image_logo]" id="Project_image_logo" /> -->
-    <!-- Display file name for visual representation -->
-    <!-- <div>Selected file: {{ selectedFile.name }}</div> -->
-  <!-- </div> -->
 </template>
 
 <style scoped lang="less">
@@ -194,6 +267,18 @@ function triggerUppyButton() {
     }
   }
 
+  .uppy-DashboardContent-save {
+    color: #08893e;
+    &:focus {
+      background: #08893e;
+      color: #fff;
+    }
+    &:hover {
+      background: #08893e;
+      color: #fff;
+    }
+  }
+
   .uppy-Dashboard-Item-action {
 
     // color: white;
@@ -229,6 +314,33 @@ function triggerUppyButton() {
       box-shadow: none;
     }
   }
+
+  .uppy-ImageCropper-controls {
+    padding-top: 0;
+  }
+}
+
+.dimensions-display {
+  margin-top: 12px;
+  font-size: 0.875rem;
+  color: #4a5568;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: #f7fafc;
+  border-radius: 6px;
+}
+
+.dimension-warning {
+  color: #e53e3e;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  background: #fff5f5;
+  border-radius: 4px;
+  border: 1px solid #feb2b2;
 }
 </style>
 <!-- Ref logo w h = 138px 58px -->
