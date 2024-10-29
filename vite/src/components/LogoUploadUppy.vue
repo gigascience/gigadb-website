@@ -6,13 +6,13 @@ import {
   Dashboard
 } from '@uppy/vue';
 import ImageEditor from '@uppy/image-editor';
+import XHR from '@uppy/xhr-upload';
 
 import '@uppy/core/dist/style.css';
 import '@uppy/dashboard/dist/style.css';
 import '@uppy/image-editor/dist/style.min.css';
 
 /**
-
 flow
 
 - user drops or loads file in widget
@@ -22,13 +22,10 @@ flow
 - user resizes image in editor and saves
   - dynamically show image dimensions
   - while image height is > 60px, show warning message and keep "save" button disabled
-  - show "autocrop" button. On press: --> this feature is way too complicated for what it's worth
-    - if image height > 60px, auto resize height to 60px keeping image proportions
-    - if image height <= 60px, do nothing
 - user clicks upload button -> server endpoint uploads file to S3 and returns url
 
 - widget props
-  - server endpoint url
+  - server endpoint url (?)
  */
 
 // constants
@@ -89,10 +86,17 @@ uppy.use(ImageEditor, {
   }
 });
 
+uppy.use(XHR, {
+  endpoint: `/adminProject/uploadLogo`,
+  formData: true,
+  fieldName: 'logo_image',
+  withCredentials: true
+});
+
 function openFileEditor(file: UppyFile<Meta, Record<string, never>>) {
   const dashboard = uppy.getPlugin('Dashboard');
   if (dashboard) {
-    // TODO fix typescript error, avoid using any
+    // TODO fix typescript error, avoid using `any`
     (dashboard as any).openFileEditor(file);
   }
 }
@@ -116,15 +120,12 @@ async function getImgDimension(imgFile: UppyFile<Meta, Record<string, never>>): 
 // file events
 
 uppy.on('file-added', async (file: UppyFile<Meta, Record<string, never>>) => {
-  console.log('file-added', file);
-
   isWrapperFocusable.value = false;
   errorMessage.value = null;
 
   try {
     const { height } = await getImgDimension(file);
     if (height > maxHeight) {
-      // Show warning but don't remove file
       errorMessage.value = `Image height (${height}px) exceeds ${maxHeight}px - please resize using the editor`;
       srOnlyErrorMessage.value = `Image height of ${height} pixels exceeds maximum of ${maxHeight} pixels. Please use the editor to resize.`;
       // Auto-open editor when height exceeds limit
@@ -139,14 +140,45 @@ uppy.on('file-removed', () => {
   isWrapperFocusable.value = true;
 });
 
+uppy.on('upload-success', (file, response) => {
+  console.log('Upload successful', response.body);
+
+  if (response.body?.success) {
+    const customEvent = new CustomEvent('logo-uploaded', {
+      detail: {
+        imageLocation: response.body.image_location
+      },
+      bubbles: true
+    });
+    document.dispatchEvent(customEvent);
+  }
+});
+
+uppy.on('upload-error', (file, error, response) => {
+  if (typeof response === 'string') {
+    try {
+      const errorData = JSON.parse(response);
+      errorMessage.value = errorData.message;
+    } catch {
+      errorMessage.value = 'Failed to upload file. Please try again.';
+    }
+  } else {
+    errorMessage.value = 'Failed to upload file. Please try again.';
+  }
+});
+
+uppy.on('upload-start', () => {
+  errorMessage.value = '';
+});
+
 // file-editor events
 
 uppy.on('file-editor:complete', async (file: UppyFile<Meta, Record<string, never>>) => {
   try {
     const { height } = await getImgDimension(file);
     if (height > maxHeight) {
-      errorMessage.value = `Image still exceeds ${maxHeight}px height - please resize further`;
-      srOnlyErrorMessage.value = `Image height still exceeds ${maxHeight} pixels. Please resize further.`;
+      errorMessage.value = `Image still exceeds ${maxHeight}px height - please crop further`;
+      srOnlyErrorMessage.value = `Image height still exceeds ${maxHeight} pixels. Please crop further.`;
     } else {
       errorMessage.value = null;
       srOnlyErrorMessage.value = null;
@@ -221,9 +253,8 @@ function triggerUppyButton() {
   border-radius: 4px;
 }
 
+/* uppy styles overrides */
 :deep(.uppy-Dashboard-inner) {
-
-  /* overrides */
   .uppy-Dashboard-browse {
     /* duplicating less variable here, would be better to reuse already defined color from variables.less */
     color: #08893e;
@@ -256,10 +287,12 @@ function triggerUppyButton() {
 
   .uppy-DashboardContent-save {
     color: #08893e;
+
     &:focus {
       background: #08893e;
       color: #fff;
     }
+
     &:hover {
       background: #08893e;
       color: #fff;
@@ -267,13 +300,8 @@ function triggerUppyButton() {
   }
 
   .uppy-Dashboard-Item-action {
-
-    // color: white;
-    // background: black;
-    // border: 1px #08893e solid;
     &:hover {
       color: #08893e;
-      // background: #08893e;
     }
 
     &:focus {
@@ -290,7 +318,6 @@ function triggerUppyButton() {
     border: 1px #08893e solid;
 
     &:hover {
-      // color: #fff;
       background: #0d6e36;
     }
 
@@ -330,5 +357,3 @@ function triggerUppyButton() {
   border: 1px solid #feb2b2;
 }
 </style>
-<!-- Ref logo w h = 138px 58px -->
-<!-- height should be fixed, width should be variable and maintain aspect ratio -->

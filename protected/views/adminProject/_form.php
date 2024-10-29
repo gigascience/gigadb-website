@@ -33,25 +33,17 @@
 				'maxlength' => 255
 			]
 		]);
-    // field replaced by vue widget
-		// $this->widget('application.components.controls.TextField', [
-		// 	'form' => $form,
-		// 	'model' => $model,
-		// 	'attributeName' => 'image_location',
-		// 	'inputOptions' => [
-		// 		'maxlength' => 100
-		// 	]
-		// ]);
+    // TODO field replaced by vue widget, should remove / replace by thumbnail
+		$this->widget('application.components.controls.TextField', [
+			'form' => $form,
+			'model' => $model,
+			'attributeName' => 'image_location',
+			'inputOptions' => [
+				'maxlength' => 100,
+        'readonly' => true
+			]
+		]);
 		?>
-
-<!-- mock input, vue app should render input with same id -->
-<!--
-    <div class="form-group">
-        <?php echo $form->labelEx($model, 'image_logo'); ?>
-        <?php echo $form->fileField($model, 'image_logo'); ?>
-        <?php echo $form->error($model, 'image_logo'); ?>
-    </div>
--->
 
     <div id="vue-client_project-image-logo">
       <div class="spinner"></div>
@@ -70,3 +62,15 @@
 	</div>
 
 </div>
+
+<script>
+document.addEventListener('logo-uploaded', function(e) {
+    // handle successfully uploaded logo image from uppy
+    const imageLocation = e.detail.imageLocation;
+
+    const imageLocationInput = document.querySelector('input[name="Project[image_location]"]');
+    if (imageLocationInput instanceof HTMLInputElement) {
+      imageLocationInput.value = imageLocation;
+    }
+});
+</script>

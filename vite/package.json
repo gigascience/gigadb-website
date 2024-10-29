@@ -15,6 +15,7 @@
     "@uppy/image-editor": "^3.1.0",
     "@uppy/progress-bar": "^4.0.0",
     "@uppy/vue": "^2.0.1",
+    "@uppy/xhr-upload": "^4.2.1",
     "vue": "^3.5.10"
   },
   "devDependencies": {
