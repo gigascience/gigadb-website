@@ -66,6 +66,12 @@ class AdminProjectController extends Controller
 		));
 	}
 
+  /**
+   * Make a JSON response with the given code, message, and payload.
+   * @param int $code The HTTP status code.
+   * @param string $message The message to include in the response.
+   * @param array $payload Additional data to include in the response.
+   */
   private function makeResponse($code, $message, $payload = []) {
     $success = $code < 400;
     header('Content-Type: application/json');
@@ -77,9 +83,11 @@ class AdminProjectController extends Controller
     Yii::app()->end();
   }
 
-  public function actionUploadLogo($existingLogoUrl = null) {
+  /**
+   * Upload a logo image
+   */
+  public function actionUploadLogo() {
     $existingLogoUrl = Yii::app()->request->getQuery('existingLogoUrl');
-    Yii::log("uploadLogo: existingLogoUrl = " . $existingLogoUrl, "info");
     if (!isset($_FILES['logo_image'])) {
       $this->makeResponse(400, 'Invalid request. No file was uploaded.');
     }
@@ -143,20 +151,20 @@ class AdminProjectController extends Controller
 			$model = $this->loadModel($id);
       $logoUrl = $model->image_location;
       $logoPath = str_replace('https://' . Project::BUCKET . '/', '', $logoUrl);
-      Yii::log("delete: $id, logoUrl = $logoUrl", "info");
 
       // I expected YII_ENV_DEV to be true but it's not defined, so using a hardcoded temporary approach for now so app does not crash each time
-      $isLocalDev = true;
-      $hasStorageAccess = false;
-      if ($isLocalDev && !$hasStorageAccess) {
-        Yii::log("actionDelete: Local dev environment, skipping actual  delete", "info");
+      $isTester = true;
+      if ($isTester) {
+        Yii::log("actionDelete: Tester environment, skipping actual delete", "info");
       } else {
         if (Yii::$app->cloudStore->delete($logoPath)) {
           Yii::log("actionDelete: Deleted logo image" . $logoPath . " for project ". $id, "info");
         }  else {
+          // fail silently
           Yii::log("actionDelete: Failed to delete logo image" . $logoPath . " for project ". $id, "error");
         }
       }
+
       $model->delete();
 
 			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser

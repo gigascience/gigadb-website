@@ -33,23 +33,12 @@
 				'maxlength' => 255
 			]
 		]);
-    // TODO field replaced by vue widget, should remove / replace by thumbnail
-		// $this->widget('application.components.controls.TextField', [
-		// 	'form' => $form,
-		// 	'model' => $model,
-		// 	'attributeName' => 'image_location',
-		// 	'inputOptions' => [
-		// 		'maxlength' => 100,
-    //     'readonly' => true
-		// 	]
-		// ]);
 
-    // current image location in case user uploaded one already
-    $imageLocation = $model->image_location ?: null;
-    $endpoint = Yii::app()->createUrl('/adminProject/uploadLogo');
+    $existingImageLocation = $model->image_location ?: null;
+    $uploadLogoEndpoint = Yii::app()->createUrl('/adminProject/uploadLogo');
 		?>
 
-    <div id="vue-client_project-image-logo" data-image-location="<?php echo $imageLocation; ?>" data-endpoint="<?php echo $endpoint; ?>">
+    <div id="vue-client_project-image-logo" data-image-location="<?php echo $existingImageLocation; ?>" data-endpoint="<?php echo $uploadLogoEndpoint; ?>" data-hidden-input-name="Project[image_location]">
       <div class="spinner"></div>
     </div>
     <div>
@@ -66,16 +55,3 @@
 	</div>
 
 </div>
-
-<script>
-  // TODO should this be removed? probably NOT because that way the Vue widget is more reusable (i.e. if we keep hidden input in the php view)
-document.addEventListener('logo-uploaded', function(e) {
-    // handle successfully uploaded logo image from uppy
-    const imageLocation = e.detail.imageLocation;
-
-    const imageLocationInput = document.querySelector('input[name="Project[image_location]"]');
-    if (imageLocationInput instanceof HTMLInputElement) {
-      imageLocationInput.value = imageLocation;
-    }
-});
-</script>

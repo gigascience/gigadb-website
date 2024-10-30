@@ -149,27 +149,17 @@ class Project extends CActiveRecord
    */
   public static function writeLogo(Filesystem $targetStorage, CUploadedFile $uploadedLogo, $existingLogoUrl = null)
   {
-      Yii::log("writeLogo: Starting to process the uploaded file", "info");
-
       $slugger = new \Symfony\Component\String\Slugger\AsciiSlugger();
       $info = pathinfo($uploadedLogo->getName());
       $fileName = $slugger->slug($info['filename'])->toString();
-
-      Yii::log("writeLogo: Generated file name - " . $fileName, "info");
       $uuid = Uuid::uuid4()->toString();
-
-      Yii::log("writeLogo: Generated UUID - " . $uuid, "info");
-
       $imagePath = sprintf("%s/images/projects/%s/%s.%s", Yii::$app->params['environment'], $uuid, $fileName, $info['extension'] );
-
-      Yii::log("writeLogo: Generated image path - " . $imagePath, "info");
       $image_location = sprintf("https://%s/%s", self::BUCKET, $imagePath);
 
       // I expected YII_ENV_DEV to be true but it's not defined, so using a hardcoded temporary approach for now so app does not crash each time
-      $isLocalDev = true;
-      $hasStorageAccess = false;
-      if ($isLocalDev && !$hasStorageAccess) {
-          Yii::log("writeLogo: Local dev environment, skipping actual storage", "info");
+      $isTester = true;
+      if ($isTester) {
+          Yii::log("writeLogo: Tester environment, skipping actual storage", "info");
 
           if ($existingLogoUrl !== null) {
             $existingLogoPath = str_replace('https://' . self::BUCKET . '/', '', $existingLogoUrl);
@@ -185,21 +175,16 @@ class Project extends CActiveRecord
       )) {
           if ($existingLogoUrl !== null) {
             $existingLogoPath = str_replace('https://' . self::BUCKET . '/', '', $existingLogoUrl);
-            Yii::log("writeLogo: Deleting existing logo image with path " . $existingLogoPath, "info");
-
             if ($targetStorage->delete($existingLogoPath)) {
               Yii::log("writeLogo: Deleted existing logo image" . $existingLogoPath, "info");
             }  else {
+              // fail silently
               Yii::log("writeLogo: Failed to delete existing logo image" . $existingLogoUrl, "error");
             }
           }
 
-          Yii::log("writeLogo: Image successfully written to storage", "info");
-
           return $image_location;
       }
-
-      Yii::log("writeLogo: Error attempting to write image to the storage","error");
 
       return false;
   }

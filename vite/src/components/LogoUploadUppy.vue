@@ -24,6 +24,7 @@ const { maxHeight, maxSize, maxSizeMb } = config;
 const props = defineProps<{
   endpoint: string;
   imageLocation: string | null;
+  hiddenInputName?: string;
 }>();
 
 const constraintsMessage = `Please upload one image file (max height ${maxHeight}px, max size ${maxSizeMb} MB)`
@@ -41,7 +42,6 @@ const endpoint = computed(() => {
   return `${props.endpoint}${uploadedImageLocation.value ? `?existingLogoUrl=${uploadedImageLocation.value}` : ''}`;
 })
 
-// initialize uppy here to avoid complexity
 const uppy = new Uppy({
   autoProceed: false,
   debug: true,
@@ -85,8 +85,7 @@ uppy.use(XHR, {
   withCredentials: true
 });
 
-// file events
-
+// uppy file events
 uppy.on('file-added', async (file: UppyFile<Meta, Record<string, never>>) => {
   isWrapperFocusable.value = false;
   errorMessage.value = null;
@@ -111,23 +110,15 @@ uppy.on('file-removed', () => {
   isWrapperFocusable.value = true;
 });
 
+// uppy upload events
 uppy.on('upload-success', (file, response) => {
-  console.log('Upload successful', response.body);
-
   if (response.body?.success) {
     const { image_location } = response.body;
-    // allows to communicate with parent PHP view
-    const customEvent = new CustomEvent('logo-uploaded', {
-      detail: {
-        imageLocation: image_location
-      },
-      bubbles: true
-    });
-    document.dispatchEvent(customEvent);
     uploadedImageLocation.value = image_location;
   }
 });
 
+// parse response from upload server endpoint
 uppy.on('upload-error', (file, error, response) => {
   if (typeof response === 'string') {
     try {
@@ -145,7 +136,7 @@ uppy.on('upload-start', () => {
   errorMessage.value = '';
 });
 
-// file-editor events
+// file-editor plugin events
 
 uppy.on('file-editor:complete', async (file: UppyFile<Meta, Record<string, never>>) => {
   try {
@@ -165,14 +156,10 @@ uppy.on('file-editor:complete', async (file: UppyFile<Meta, Record<string, never
 </script>
 
 <template>
-  <!-- hidden input -->
-  <HiddenInput :uploaded-image-location="uploadedImageLocation" />
-  <!-- uploaded logo display -->
+  <HiddenInput v-if="hiddenInputName" :uploaded-image-location="uploadedImageLocation" :name="hiddenInputName" />
   <UploadedLogoDisplay v-if="uploadedImageLocation" :uploaded-image-location="uploadedImageLocation" />
-  <!-- UppyDashboardWrapper (a11y button wrapper) -->
   <UppyDashboardWrapper :is-wrapper-focusable="isWrapperFocusable">
     <template #uppy-dashboard>
-      <!-- Uppy Dashboard -->
       <Dashboard :uppy="uppy" :props="{
         note: constraintsMessage,
         proudlyDisplayPoweredByUppy: false,
@@ -180,18 +167,22 @@ uppy.on('file-editor:complete', async (file: UppyFile<Meta, Record<string, never
     </template>
   </UppyDashboardWrapper>
   <StatusDisplay :size="size" :error-message="errorMessage" :sr-only-error-message="srOnlyErrorMessage" />
-  <!-- Status display: dimensions, edit error message, upload error message -->
 </template>
 
 <style scoped lang="less">
+/* duplicating less variable here, would be better to reuse already defined color from variables.less */
+@color-gigadb-green: #08893e;
+@color-true-white: #ffffff;
+@color-gigadb-green-800: #0d6e36;
+
+// uppy dashboard overrides to match the site theme
 :deep(.uppy-Dashboard-inner) {
   .uppy-Dashboard-browse {
-    /* duplicating less variable here, would be better to reuse already defined color from variables.less */
-    color: #08893e;
+    color: @color-gigadb-green;
 
     &:focus,
     &:hover {
-      border-bottom-color: #08893e;
+      border-bottom-color: @color-gigadb-green;
     }
   }
 
@@ -200,42 +191,42 @@ uppy.on('file-editor:complete', async (file: UppyFile<Meta, Record<string, never
   }
 
   .uppy-DashboardContent-back {
-    color: #08893e;
+    color: @color-gigadb-green;
     background: transparent;
-    border: 1px #08893e solid;
+    border: 1px @color-gigadb-green solid;
 
     &:focus {
-      outline: solid 2px #08893e;
+      outline: solid 2px @color-gigadb-green;
       outline-offset: 2px;
     }
 
     &:hover {
-      color: #fff;
-      background: #08893e;
+      color: @color-true-white;
+      background: @color-gigadb-green;
     }
   }
 
   .uppy-DashboardContent-save {
-    color: #08893e;
+    color: @color-gigadb-green;
 
     &:focus {
-      background: #08893e;
-      color: #fff;
+      background: @color-gigadb-green;
+      color: @color-true-white;
     }
 
     &:hover {
-      background: #08893e;
-      color: #fff;
+      background: @color-gigadb-green;
+      color: @color-true-white;
     }
   }
 
   .uppy-Dashboard-Item-action {
     &:hover {
-      color: #08893e;
+      color: @color-gigadb-green;
     }
 
     &:focus {
-      outline: solid 2px #08893e;
+      outline: solid 2px @color-gigadb-green;
       outline-offset: 2px;
       border: none;
       box-shadow: none;
@@ -243,17 +234,17 @@ uppy.on('file-editor:complete', async (file: UppyFile<Meta, Record<string, never
   }
 
   .uppy-StatusBar-actionBtn {
-    color: #fff;
-    background: #08893e;
-    border: 1px #08893e solid;
+    color: @color-true-white;
+    background: @color-gigadb-green;
+    border: 1px @color-gigadb-green solid;
 
     &:hover {
-      background: #0d6e36;
+      background: @color-gigadb-green-800;
     }
 
     &:focus {
-      color: #fff;
-      outline: solid 2px #08893e;
+      color: @color-true-white;
+      outline: solid 2px @color-gigadb-green;
       outline-offset: 2px;
       box-shadow: none;
     }

@@ -6,7 +6,8 @@ const entryEl = document.querySelector(elId)
 if (entryEl && entryEl instanceof HTMLElement) {
   const app = createApp(LogoUploadUppy, {
     endpoint: entryEl.dataset.endpoint,
-    imageLocation: entryEl.dataset.imageLocation
+    imageLocation: entryEl.dataset.imageLocation,
+    hiddenInputName: entryEl.dataset.hiddenInputName
   })
   app.mount(elId)
 }
