@@ -79,30 +79,35 @@ validation output: false
 
 > In the above example error, dataset_type is wrongly spelt as `Genomics` which breaks the ingestion process and therefore needs to be corrected.
 
-## 2. Change directory to /share/dropbox/user directory
+## 2. createReadme
 
-Each dataset has an associated user dropbox directory located at `/share/dropbox/` that contains the files belonging to the dataset. Change directory to this user drop box directory, for example:
+> [!IMPORTANT]
+> To execute the `createReadme` command, change directory to the dataset's associated user dropbox directory located at `/share/dropbox/`:
 ```
-$ cd /share/dropbox/user5
+[peterl@ip-10-99-0-95 ~]$ cd /share/dropbox/user5
 ```
 
-## 3. createReadme
-
-From this the user dropbox directory, a readme file for the dataset can be created using the `createReadme` script by calling it with a DOI; `--wasabi --apply --use-live-data` are parameters required to copy the readme file into Wasabi:
+From this user dropbox directory, a readme file for the dataset can be created using the `createReadme` script by calling it with a DOI; `--wasabi --apply --use-live-data` are parameters required to copy the readme file into Wasabi:
 ```
-[peterl@ip-10-99-0-142 ~]$ pwd
+[peterl@ip-10-99-0-142 user5]$ pwd
 /share/dropbox/user5
-[peterl@ip-10-99-0-88 ~]$ sudo /usr/local/bin/createReadme --doi 102498
+[peterl@ip-10-99-0-88 user5]$ sudo /usr/local/bin/createReadme --doi 102498
 ```
 
 A `readme_<doi>.txt` file will appear in `/share/dropbox/user5` directory.
 ```
-[peterl@ip-10-99-0-142 ~]$ ls
+[peterl@ip-10-99-0-142 user5]$ ls
 DLPFC_69_72_VNS_results.csv  E2_VNS_Ground_Truth.csv  readme_102498.txt
 ```
 The readme file will also have been uploaded into the correct dataset directory in Wasabi live bucket.  The file size and MD5 value for the readme file will also be updated in the database.
 
 ## 4. calculateChecksumSizes
+
+> [!IMPORTANT]
+> To execute the `calculateChecksumSizes` command, change directory to the dataset's associated user dropbox directory located at `/share/dropbox/`:
+```
+[peterl@ip-10-99-0-95 ~]$ cd /share/dropbox/user5
+```
 
 `$doi.md5` and `$doi.filesizes` provide information used to update dataset files with md5 values and file size in the database. These two files can be generated from the user5 dropbox:
 ```
@@ -125,7 +130,13 @@ dc1feb8af3b8c02b0b615e968b87786d  ./DLPFC_69_72_VNS_results.csv
 b5a7e0953d1581077c13818153371918  ./E2_VNS_Ground_Truth.csv
 ```
 
-## 5. Run `filesMetdaToDb` to update file with md5 values and sizes in database
+## 5. filesMetaToDb
+
+> [!IMPORTANT]
+> To execute the `filesMetaToDb` command, change directory to the dataset's associated user dropbox directory located at `/share/dropbox/`:
+```
+[peterl@ip-10-99-0-95 ~]$ cd /share/dropbox/user5
+```
 
 The `fileMetaToDb` script can use `102498.filesizes` and `102498.md5` to update file metadata in the database from the user dropbox folder:
 ```
@@ -144,6 +155,12 @@ You should check the adminfile pages of the files associated with this dataset t
 With the post upload operations complete, you need to go back to the page at https://gigadb.org/adminDataset/update/id/<dataset_id>` in order to continue curation work on the dataset. You will be able to find this link by entering the dataset's DOI, e.g. 102498 into the DOI column header in /adminDataset/admin page.
 
 ## `postUpload`: a wrapper script to create readme file and update file metadata in database
+
+> [!IMPORTANT]
+> To execute the `postUpload` command, change directory to the dataset's associated user dropbox directory located at `/share/dropbox/`:
+```
+[peterl@ip-10-99-0-95 ~]$ cd /share/dropbox/user5
+```
 
 There is a script called `postUpload` which calls `createReadme`, `calculateChecksumSizes` and `fileMetaToDb` in turn so that these three tools do not have to be manually executed one after another:
 ```
