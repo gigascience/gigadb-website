@@ -34,18 +34,22 @@
 			]
 		]);
     // TODO field replaced by vue widget, should remove / replace by thumbnail
-		$this->widget('application.components.controls.TextField', [
-			'form' => $form,
-			'model' => $model,
-			'attributeName' => 'image_location',
-			'inputOptions' => [
-				'maxlength' => 100,
-        'readonly' => true
-			]
-		]);
+		// $this->widget('application.components.controls.TextField', [
+		// 	'form' => $form,
+		// 	'model' => $model,
+		// 	'attributeName' => 'image_location',
+		// 	'inputOptions' => [
+		// 		'maxlength' => 100,
+    //     'readonly' => true
+		// 	]
+		// ]);
+
+    // current image location in case user uploaded one already
+    $imageLocation = $model->image_location ?: null;
+    $endpoint = Yii::app()->createUrl('/adminProject/uploadLogo');
 		?>
 
-    <div id="vue-client_project-image-logo">
+    <div id="vue-client_project-image-logo" data-image-location="<?php echo $imageLocation; ?>" data-endpoint="<?php echo $endpoint; ?>">
       <div class="spinner"></div>
     </div>
     <div>
@@ -64,6 +68,7 @@
 </div>
 
 <script>
+  // TODO should this be removed? probably NOT because that way the Vue widget is more reusable (i.e. if we keep hidden input in the php view)
 document.addEventListener('logo-uploaded', function(e) {
     // handle successfully uploaded logo image from uppy
     const imageLocation = e.detail.imageLocation;

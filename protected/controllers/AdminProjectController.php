@@ -70,16 +70,16 @@ class AdminProjectController extends Controller
     $success = $code < 400;
     header('Content-Type: application/json');
     http_response_code($code);
-    echo CJSON::encode([
+    echo CJSON::encode(array_merge([
       'success' => $success,
       'message' => $message,
-      ...$payload,
-    ]);
+    ], $payload));
     Yii::app()->end();
   }
 
-  // this method should be called by the uploader
-  public function actionUploadLogo() {
+  public function actionUploadLogo($existingLogoUrl = null) {
+    $existingLogoUrl = Yii::app()->request->getQuery('existingLogoUrl');
+    Yii::log("uploadLogo: existingLogoUrl = " . $existingLogoUrl, "info");
     if (!isset($_FILES['logo_image'])) {
       $this->makeResponse(400, 'Invalid request. No file was uploaded.');
     }
@@ -92,7 +92,7 @@ class AdminProjectController extends Controller
       $this->makeResponse(400, $message);
     }
 
-    $image_location = Project::writeLogo(Yii::$app->cloudStore, $uploadedLogo);
+    $image_location = Project::writeLogo(Yii::$app->cloudStore, $uploadedLogo, $existingLogoUrl);
 
     if (!$image_location) {
       $message = 'Failed to save your logo image';
@@ -102,7 +102,7 @@ class AdminProjectController extends Controller
 
     $this->makeResponse(200, 'Logo uploaded successfully', [
       'image_location' => $image_location
-  ]);
+    ]);
   }
 
 	/**
@@ -136,10 +136,28 @@ class AdminProjectController extends Controller
 	 */
 	public function actionDelete($id)
 	{
+    Yii::log("delete: $id");
 		if(Yii::app()->request->isPostRequest)
 		{
 			// we only allow deletion via POST request
-			$this->loadModel($id)->delete();
+			$model = $this->loadModel($id);
+      $logoUrl = $model->image_location;
+      $logoPath = str_replace('https://' . Project::BUCKET . '/', '', $logoUrl);
+      Yii::log("delete: $id, logoUrl = $logoUrl", "info");
+
+      // I expected YII_ENV_DEV to be true but it's not defined, so using a hardcoded temporary approach for now so app does not crash each time
+      $isLocalDev = true;
+      $hasStorageAccess = false;
+      if ($isLocalDev && !$hasStorageAccess) {
+        Yii::log("actionDelete: Local dev environment, skipping actual  delete", "info");
+      } else {
+        if (Yii::$app->cloudStore->delete($logoPath)) {
+          Yii::log("actionDelete: Deleted logo image" . $logoPath . " for project ". $id, "info");
+        }  else {
+          Yii::log("actionDelete: Failed to delete logo image" . $logoPath . " for project ". $id, "error");
+        }
+      }
+      $model->delete();
 
 			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 			if(!isset($_GET['ajax']))

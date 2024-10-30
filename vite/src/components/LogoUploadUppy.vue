@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, ref } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import Uppy from '@uppy/core';
 import type { UppyFile, Meta } from '@uppy/core';
 import {
@@ -7,26 +7,19 @@ import {
 } from '@uppy/vue';
 import ImageEditor from '@uppy/image-editor';
 import XHR from '@uppy/xhr-upload';
+import DebugDisplay from './DebugDisplay.vue';
+import DashboardPlugin from "@uppy/dashboard"
 
 import '@uppy/core/dist/style.css';
 import '@uppy/dashboard/dist/style.css';
 import '@uppy/image-editor/dist/style.min.css';
 
-/**
-flow
+// props
 
-- user drops or loads file in widget
-- is file height > 60px?
-  - yes: auto open editor
-  - no: do nothing
-- user resizes image in editor and saves
-  - dynamically show image dimensions
-  - while image height is > 60px, show warning message and keep "save" button disabled
-- user clicks upload button -> server endpoint uploads file to S3 and returns url
-
-- widget props
-  - server endpoint url (?)
- */
+const props = defineProps<{
+  endpoint: string;
+  imageLocation: string | null;
+}>();
 
 // constants
 
@@ -47,6 +40,10 @@ const size = reactive({
 });
 const errorMessage = ref<string | null>(null);
 const srOnlyErrorMessage = ref<string | null>(null);
+const uploadedImageLocation = ref<string | null>(props.imageLocation);
+const endpoint = computed(() => {
+  return `${props.endpoint}${uploadedImageLocation.value ? `?existingLogoUrl=${uploadedImageLocation.value}` : ''}`;
+})
 
 // uppy config
 
@@ -87,17 +84,16 @@ uppy.use(ImageEditor, {
 });
 
 uppy.use(XHR, {
-  endpoint: `/adminProject/uploadLogo`,
+  endpoint: endpoint.value,
   formData: true,
   fieldName: 'logo_image',
   withCredentials: true
 });
 
 function openFileEditor(file: UppyFile<Meta, Record<string, never>>) {
-  const dashboard = uppy.getPlugin('Dashboard');
+  const dashboard = uppy.getPlugin('Dashboard') as DashboardPlugin<Meta, Record<string, never>>;
   if (dashboard) {
-    // TODO fix typescript error, avoid using `any`
-    (dashboard as any).openFileEditor(file);
+    dashboard.openFileEditor(file);
   }
 }
 
@@ -144,13 +140,16 @@ uppy.on('upload-success', (file, response) => {
   console.log('Upload successful', response.body);
 
   if (response.body?.success) {
+    const { image_location } = response.body;
+    // allows to communicate with parent PHP view
     const customEvent = new CustomEvent('logo-uploaded', {
       detail: {
-        imageLocation: response.body.image_location
+        imageLocation: image_location
       },
       bubbles: true
     });
     document.dispatchEvent(customEvent);
+    uploadedImageLocation.value = image_location;
   }
 });
 
@@ -200,8 +199,13 @@ function triggerUppyButton() {
 </script>
 
 <template>
+  <input type="hidden" name="Project[image_location]" :value="uploadedImageLocation" />
+  <div class="form-group thumbnail-container" v-if="uploadedImageLocation">
+    <div class="control-label">Uploaded Logo</div>
+    <img :src="uploadedImageLocation" alt="Logo" />
+  </div>
   <div :class="`form-group ${errorMessage ? 'has-error' : ''}`">
-    <label class="control-label" for="logo-upload">Image Logo</label>
+    <label class="control-label" for="logo-upload">Upload a logo image</label>
     <!-- <span id="logo-upload-description" class="control-description help-block">Please upload a logo image file.</span> -->
     <!-- <span id="logo-upload-constraints" class="control-description help-block">{{ constraintsMessage }}</span> -->
     <button :tabindex="isWrapperFocusable ? 0 : -1" type="button" class="uppy-dashboard-wrapper"
@@ -225,6 +229,10 @@ function triggerUppyButton() {
       <span v-if="srOnlyErrorMessage" class="sr-only">{{ srOnlyErrorMessage }}</span>
     </div>
   </div>
+  <DebugDisplay v-bind="{
+    endpoint: endpoint,
+    imageLocation: uploadedImageLocation
+  }" />
 </template>
 
 <style scoped lang="less">
@@ -251,6 +259,14 @@ function triggerUppyButton() {
   border: 1px solid #06b34d;
   box-shadow: inset 0 1px 1px rgba(8, 137, 62, 0.075), 0 0 6px rgba(6, 179, 77, 0.5);
   border-radius: 4px;
+}
+
+.thumbnail-container {
+  .control-label {
+    font-weight: normal;
+    font-size: 13px;
+    color: #656565;
+    margin-bottom: 10px;  }
 }
 
 /* uppy styles overrides */

@@ -57,7 +57,7 @@ class Project extends CActiveRecord
       array('url', 'url','message'=>'Please check the URL format'),
 			array('url', 'length', 'max'=>128),
 			array('name', 'length', 'max'=>255),
-			array('image_location', 'length', 'max'=>100),
+			array('image_location', 'length', 'max'=>255),
       array('url','check_duplicate'),
       // array('image', 'file', 'types' => 'jpg, jpeg, png', 'allowEmpty' => true),
       array('image_logo', 'file', 'types' => 'jpg, jpeg, png', 'allowEmpty' => true),
@@ -143,11 +143,11 @@ class Project extends CActiveRecord
    * write a logo image to the desired (Flysystem managed) storage mechanism and update url property with the location
    *
    * @param Filesystem $targetStorage
-   * @param string $enclosingDirectory
    * @param CUploadedFile $uploadedLogo
+   * @param string|null $existingLogoUrl
    * @return bool|string
    */
-  public static function writeLogo(Filesystem $targetStorage, CUploadedFile $uploadedLogo)
+  public static function writeLogo(Filesystem $targetStorage, CUploadedFile $uploadedLogo, $existingLogoUrl = null)
   {
       Yii::log("writeLogo: Starting to process the uploaded file", "info");
 
@@ -163,15 +163,18 @@ class Project extends CActiveRecord
       $imagePath = sprintf("%s/images/projects/%s/%s.%s", Yii::$app->params['environment'], $uuid, $fileName, $info['extension'] );
 
       Yii::log("writeLogo: Generated image path - " . $imagePath, "info");
+      $image_location = sprintf("https://%s/%s", self::BUCKET, $imagePath);
 
       // I expected YII_ENV_DEV to be true but it's not defined, so using a hardcoded temporary approach for now so app does not crash each time
       $isLocalDev = true;
-      $hasBucketAccess = false;
-      if ($isLocalDev && !$hasBucketAccess) {
+      $hasStorageAccess = false;
+      if ($isLocalDev && !$hasStorageAccess) {
           Yii::log("writeLogo: Local dev environment, skipping actual storage", "info");
 
-          // Mock URL for local development
-          $image_location = "https://assets.gigadb-cdn.net/" . Yii::$app->params['environment'] . "/images/projects/" . $uuid . "/" . $fileName . "." . $info['extension'];
+          if ($existingLogoUrl !== null) {
+            $existingLogoPath = str_replace('https://' . self::BUCKET . '/', '', $existingLogoUrl);
+            Yii::log("writeLogo: Mocking deleting existing logo image with path " . $existingLogoPath, "info");
+          }
 
           return $image_location;
       }
@@ -180,7 +183,16 @@ class Project extends CActiveRecord
           $imagePath, file_get_contents($uploadedLogo->getTempName()),
           ['visibility' => AdapterInterface::VISIBILITY_PUBLIC]
       )) {
-          $image_location = sprintf("https://%s/%s", self::BUCKET, $imagePath);
+          if ($existingLogoUrl !== null) {
+            $existingLogoPath = str_replace('https://' . self::BUCKET . '/', '', $existingLogoUrl);
+            Yii::log("writeLogo: Deleting existing logo image with path " . $existingLogoPath, "info");
+
+            if ($targetStorage->delete($existingLogoPath)) {
+              Yii::log("writeLogo: Deleted existing logo image" . $existingLogoPath, "info");
+            }  else {
+              Yii::log("writeLogo: Failed to delete existing logo image" . $existingLogoUrl, "error");
+            }
+          }
 
           Yii::log("writeLogo: Image successfully written to storage", "info");
 

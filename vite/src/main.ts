@@ -1,4 +1,12 @@
 import { createApp } from 'vue'
-import App from './App.vue'
+import LogoUploadUppy from './components/LogoUploadUppy.vue'
 
-createApp(App).mount('#vue-client_project-image-logo')
+const elId = '#vue-client_project-image-logo'
+const entryEl = document.querySelector(elId)
+if (entryEl && entryEl instanceof HTMLElement) {
+  const app = createApp(LogoUploadUppy, {
+    endpoint: entryEl.dataset.endpoint,
+    imageLocation: entryEl.dataset.imageLocation
+  })
+  app.mount(elId)
+}
