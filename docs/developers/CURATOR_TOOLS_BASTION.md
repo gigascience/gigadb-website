@@ -43,6 +43,9 @@ After the Excel file has been ingested, then we are in the post upload stage of 
 $ cd ../files-metadata-console/tests/_data/dropbox/user5
 ```
 
+> [!NOTE]
+> In the gigadb.org live environment, developers need to create user drop boxes on the EFS using the `./make_dropbox.sh` script on the file server which also creates the FTP account for authors to upload files.
+
 Now create the readme file for dataset 102498 using the information that has been uploaded into the database:
 ```
 $ ../../../../../readme-generator/createReadme.sh --doi 102498
