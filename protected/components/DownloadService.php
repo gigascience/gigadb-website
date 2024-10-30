@@ -28,7 +28,7 @@ class DownloadService extends yii\base\Component
 
         if ($response->getStatusCode() === 200) {
             return $response->getBody()->getContents();
-        } else if ($response->getStatusCode() !== 404) {
+        } else {
             throw new \Exception("Error downloading file by DownloadService: status code " . $response->getStatusCode());
         }
     }

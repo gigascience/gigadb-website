@@ -495,7 +495,7 @@ class AdminDatasetController extends Controller
     private function renderNotificationsAccordingToStatus($uploadStatus, $previousStatus, $model)
     {
         // setting DatasetUpload, the busisness object for File uploading
-        $webClient = new \GuzzleHttp\Client();
+        $webClient = \Yii::$container->get('guzzleHttpClient');
         $fileUploadSrv = Yii::app()->fileUploadService->getFileUploadService($webClient, $model->identifier);
         $datasetUpload = new DatasetUpload(
             $fileUploadSrv->dataset,

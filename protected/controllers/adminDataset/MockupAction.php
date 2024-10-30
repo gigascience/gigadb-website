@@ -53,7 +53,7 @@ class MockupAction extends CAction
                                   'users' => new UserDAO(),
                                   'dt' => new DateTime(),
                                 ]),
-            "webClient" => new \GuzzleHttp\Client(),
+            "webClient" => \Yii::$container->get('guzzleHttpClient'),
             "requester" => Yii::app()->user,
             "identifier"=> $model->identifier,
             "dataset" => new DatasetDAO(["identifier" => $model->identifier]),

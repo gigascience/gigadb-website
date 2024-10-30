@@ -4,7 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
-- feat #1750: Switch to guzzle instead of cURL
+- Feat #1750: Switch to guzzle instead of cURL
 - Fix #2042: Batch deletion of file attributes and samples
 
 ## v4.3.9 - 2024-10-28 - 961f7821a -
