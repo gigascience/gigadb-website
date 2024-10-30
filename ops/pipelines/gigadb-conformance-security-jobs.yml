@@ -130,3 +130,4 @@ iac-sast:
   stage: conformance and security
   variables:
     SAST_ANALYZER_IMAGE_TAG: "3.7"
+    SAST_IMAGE_SUFFIX: "-fips"
