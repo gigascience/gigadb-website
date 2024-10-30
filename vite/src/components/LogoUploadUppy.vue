@@ -1,52 +1,47 @@
 <script setup lang="ts">
-import { computed, reactive, ref } from 'vue';
 import Uppy from '@uppy/core';
 import type { UppyFile, Meta } from '@uppy/core';
+import ImageEditor from '@uppy/image-editor';
+import XHR from '@uppy/xhr-upload';
+import DashboardPlugin from "@uppy/dashboard"
 import {
   Dashboard
 } from '@uppy/vue';
-import ImageEditor from '@uppy/image-editor';
-import XHR from '@uppy/xhr-upload';
-import DebugDisplay from './DebugDisplay.vue';
-import DashboardPlugin from "@uppy/dashboard"
+import { computed, reactive, ref } from 'vue';
+import HiddenInput from './HiddenInput.vue';
+import UploadedLogoDisplay from './UploadedLogoDisplay.vue';
+import UppyDashboardWrapper from './UppyDashboardWrapper.vue';
+import { config } from '../config';
+import { getUppyImgDimensions } from '../utils/getUppyImgDimensions';
+import StatusDisplay from './StatusDisplay.vue';
 
 import '@uppy/core/dist/style.css';
 import '@uppy/dashboard/dist/style.css';
 import '@uppy/image-editor/dist/style.min.css';
 
-// props
+const { maxHeight, maxSize, maxSizeMb } = config;
 
 const props = defineProps<{
   endpoint: string;
   imageLocation: string | null;
 }>();
 
-// constants
-
-// image constraints
-const maxHeight = 60; // in pixels
-const maxSize = 1000000; // in bytes
-const maxSizeMb = maxSize / 1e6;
-
 const constraintsMessage = `Please upload one image file (max height ${maxHeight}px, max size ${maxSizeMb} MB)`
-const srOnlyConstraintsMessage = `Please upload one image file. Max height ${maxHeight} pixels, max size ${maxSizeMb} megabyte${maxSizeMb === 1 ? '' : 's'}. Press Enter key to browse your local files, or drag and drop an image into this box.`
-
-// state
 
 const isWrapperFocusable = ref(true);
+const uploadedImageLocation = ref<string | null>(props.imageLocation);
+const errorMessage = ref<string | null>(null);
+const srOnlyErrorMessage = ref<string | null>(null);
 const size = reactive({
   height: 0,
   width: 0,
 });
-const errorMessage = ref<string | null>(null);
-const srOnlyErrorMessage = ref<string | null>(null);
-const uploadedImageLocation = ref<string | null>(props.imageLocation);
+
 const endpoint = computed(() => {
   return `${props.endpoint}${uploadedImageLocation.value ? `?existingLogoUrl=${uploadedImageLocation.value}` : ''}`;
 })
 
-// uppy config
-
+// initialize uppy here to avoid complexity
 const uppy = new Uppy({
   autoProceed: false,
   debug: true,
@@ -90,29 +85,6 @@ uppy.use(XHR, {
   withCredentials: true
 });
 
-function openFileEditor(file: UppyFile<Meta, Record<string, never>>) {
-  const dashboard = uppy.getPlugin('Dashboard') as DashboardPlugin<Meta, Record<string, never>>;
-  if (dashboard) {
-    dashboard.openFileEditor(file);
-  }
-}
-
-async function getImgDimension(imgFile: UppyFile<Meta, Record<string, never>>): Promise<{ width: number; height: number }> {
-  return new Promise((resolve, reject) => {
-    const url = URL.createObjectURL(imgFile.data);
-    const img = new Image();
-    img.onload = () => {
-      URL.revokeObjectURL(img.src);
-      resolve({ width: img.width, height: img.height });
-    };
-    img.onerror = (error) => {
-      URL.revokeObjectURL(img.src);
-      reject(error);
-    };
-    img.src = url;
-  });
-}
-
 // file events
 
 uppy.on('file-added', async (file: UppyFile<Meta, Record<string, never>>) => {
@@ -120,12 +92,15 @@ uppy.on('file-added', async (file: UppyFile<Meta, Record<string, never>>) => {
   errorMessage.value = null;
 
   try {
-    const { height } = await getImgDimension(file);
+    const { height } = await getUppyImgDimensions(file);
     if (height > maxHeight) {
-      errorMessage.value = `Image height (${height}px) exceeds ${maxHeight}px - please resize using the editor`;
+      errorMessage.value = `Image height (${height}px) exceeds ${maxHeight}px - please crop the image using the editor`;
       srOnlyErrorMessage.value = `Image height of ${height} pixels exceeds maximum of ${maxHeight} pixels. Please use the editor to resize.`;
       // Auto-open editor when height exceeds limit
-      openFileEditor(file);
+      const dashboard = uppy.getPlugin('Dashboard') as DashboardPlugin<Meta, Record<string, never>>;
+      if (dashboard) {
+        dashboard.openFileEditor(file);
+      }
     }
   } catch (error) {
     errorMessage.value = 'Error getting image dimensions';
@@ -174,7 +149,7 @@ uppy.on('upload-start', () => {
 
 uppy.on('file-editor:complete', async (file: UppyFile<Meta, Record<string, never>>) => {
   try {
-    const { height } = await getImgDimension(file);
+    const { height } = await getUppyImgDimensions(file);
     if (height > maxHeight) {
       errorMessage.value = `Image still exceeds ${maxHeight}px height - please crop further`;
       srOnlyErrorMessage.value = `Image height still exceeds ${maxHeight} pixels. Please crop further.`;
@@ -187,89 +162,28 @@ uppy.on('file-editor:complete', async (file: UppyFile<Meta, Record<string, never
   }
 });
 
-// methods
-
-function triggerUppyButton() {
-  const uppyDashboard = document.querySelector('.uppy-Dashboard-inner');
-  if (uppyDashboard) {
-    const triggerButton = uppyDashboard.querySelector('.uppy-Dashboard-browse') as HTMLButtonElement;
-    triggerButton?.click();
-  }
-}
 </script>
 
 <template>
-  <input type="hidden" name="Project[image_location]" :value="uploadedImageLocation" />
-  <div class="form-group thumbnail-container" v-if="uploadedImageLocation">
-    <div class="control-label">Uploaded Logo</div>
-    <img :src="uploadedImageLocation" alt="Logo" />
-  </div>
-  <div :class="`form-group ${errorMessage ? 'has-error' : ''}`">
-    <label class="control-label" for="logo-upload">Upload a logo image</label>
-    <!-- <span id="logo-upload-description" class="control-description help-block">Please upload a logo image file.</span> -->
-    <!-- <span id="logo-upload-constraints" class="control-description help-block">{{ constraintsMessage }}</span> -->
-    <button :tabindex="isWrapperFocusable ? 0 : -1" type="button" class="uppy-dashboard-wrapper"
-      :aria-label="`Upload Logo. ${srOnlyConstraintsMessage}`" @keydown.enter="triggerUppyButton">
+  <!-- hidden input -->
+  <HiddenInput :uploaded-image-location="uploadedImageLocation" />
+  <!-- uploaded logo display -->
+  <UploadedLogoDisplay v-if="uploadedImageLocation" :uploaded-image-location="uploadedImageLocation" />
+  <!-- UppyDashboardWrapper (a11y button wrapper) -->
+  <UppyDashboardWrapper :is-wrapper-focusable="isWrapperFocusable">
+    <template #uppy-dashboard>
+      <!-- Uppy Dashboard -->
       <Dashboard :uppy="uppy" :props="{
         note: constraintsMessage,
         proudlyDisplayPoweredByUppy: false,
       }" />
-    </button>
-    <div v-if="size.width && size.height" class="dimensions-display">
-      <span>Current dimensions: {{ size.width }}px &times; {{ size.height }}px</span>
-      <span role="status" aria-live="polite">
-        <span v-if="size.height > maxHeight" class="dimension-warning">
-          (Height exceeds {{ maxHeight }}px limit)
-        </span>
-      </span>
-    </div>
-    <div role="alert">
-      <div v-if="errorMessage" class="control-error help-block" id="logo-upload-error" aria-hidden="true">{{
-        errorMessage }}</div>
-      <span v-if="srOnlyErrorMessage" class="sr-only">{{ srOnlyErrorMessage }}</span>
-    </div>
-  </div>
-  <DebugDisplay v-bind="{
-    endpoint: endpoint,
-    imageLocation: uploadedImageLocation
-  }" />
+    </template>
+  </UppyDashboardWrapper>
+  <StatusDisplay :size="size" :error-message="errorMessage" :sr-only-error-message="srOnlyErrorMessage" />
+  <!-- Status display: dimensions, edit error message, upload error message -->
 </template>
 
 <style scoped lang="less">
-.uppy-dashboard-wrapper {
-  width: 100%;
-  background: none;
-  border: none;
-  padding: 0;
-  margin: 0;
-  font: inherit;
-  color: inherit;
-  cursor: pointer;
-  border-radius: 4px;
-  border: 1px solid transparent;
-  cursor: default;
-}
-
-.uppy-dashboard-wrapper:focus {
-  outline: none;
-}
-
-.uppy-dashboard-wrapper:focus-visible {
-  outline: 1px solid #08893e;
-  border: 1px solid #06b34d;
-  box-shadow: inset 0 1px 1px rgba(8, 137, 62, 0.075), 0 0 6px rgba(6, 179, 77, 0.5);
-  border-radius: 4px;
-}
-
-.thumbnail-container {
-  .control-label {
-    font-weight: normal;
-    font-size: 13px;
-    color: #656565;
-    margin-bottom: 10px;  }
-}
-
-/* uppy styles overrides */
 :deep(.uppy-Dashboard-inner) {
   .uppy-Dashboard-browse {
     /* duplicating less variable here, would be better to reuse already defined color from variables.less */
@@ -348,28 +262,5 @@ function triggerUppyButton() {
   .uppy-ImageCropper-controls {
     padding-top: 0;
   }
-}
-
-.dimensions-display {
-  margin-top: 12px;
-  font-size: 0.875rem;
-  color: #4a5568;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
-  background: #f7fafc;
-  border-radius: 6px;
-}
-
-.dimension-warning {
-  color: #e53e3e;
-  font-weight: 500;
-  display: inline-flex;
-  align-items: center;
-  padding: 4px 8px;
-  background: #fff5f5;
-  border-radius: 4px;
-  border: 1px solid #feb2b2;
 }
 </style>
