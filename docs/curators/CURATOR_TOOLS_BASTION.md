@@ -101,7 +101,7 @@ DLPFC_69_72_VNS_results.csv  E2_VNS_Ground_Truth.csv  readme_102498.txt
 ```
 The readme file will also have been uploaded into the correct dataset directory in Wasabi live bucket.  The file size and MD5 value for the readme file will also be updated in the database.
 
-## 4. calculateChecksumSizes
+## 3. calculateChecksumSizes
 
 > [!IMPORTANT]
 > To execute the `calculateChecksumSizes` command, change directory to the dataset's associated user dropbox directory located at `/share/dropbox/`:
@@ -130,7 +130,7 @@ dc1feb8af3b8c02b0b615e968b87786d  ./DLPFC_69_72_VNS_results.csv
 b5a7e0953d1581077c13818153371918  ./E2_VNS_Ground_Truth.csv
 ```
 
-## 5. filesMetaToDb
+## 4. filesMetaToDb
 
 > [!IMPORTANT]
 > To execute the `filesMetaToDb` command, change directory to the dataset's associated user dropbox directory located at `/share/dropbox/`:
@@ -150,9 +150,11 @@ Updated file metadata for 102498 in database
 
 You should check the adminfile pages of the files associated with this dataset to see if MD5 values and file sizes are visible.
 
-## 6. Go to dataset admin page on gigadb.org
+## 5. Go to dataset admin page on gigadb.org
 
 With the post upload operations complete, you need to go back to the page at https://gigadb.org/adminDataset/update/id/<dataset_id>` in order to continue curation work on the dataset. You will be able to find this link by entering the dataset's DOI, e.g. 102498 into the DOI column header in /adminDataset/admin page.
+
+On the dataset admin page, you will be able to create a mockup page in order to preview the final dataset view page with the information that was added to the database in the previous steps.
 
 ## `postUpload`: a wrapper script to create readme file and update file metadata in database
 
