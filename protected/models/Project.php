@@ -145,9 +145,9 @@ class Project extends CActiveRecord
    * @param Filesystem $targetStorage
    * @param string $enclosingDirectory
    * @param CUploadedFile $uploadedLogo
-   * @return bool
+   * @return bool|string
    */
-  public function writeLogo(Filesystem $targetStorage, CUploadedFile $uploadedLogo): bool
+  public static function writeLogo(Filesystem $targetStorage, CUploadedFile $uploadedLogo)
   {
       Yii::log("writeLogo: Starting to process the uploaded file", "info");
 
@@ -156,7 +156,7 @@ class Project extends CActiveRecord
       $fileName = $slugger->slug($info['filename'])->toString();
 
       Yii::log("writeLogo: Generated file name - " . $fileName, "info");
-      $uuid = $this->getUuid();
+      $uuid = Uuid::uuid4()->toString();
 
       Yii::log("writeLogo: Generated UUID - " . $uuid, "info");
 
@@ -164,29 +164,27 @@ class Project extends CActiveRecord
 
       Yii::log("writeLogo: Generated image path - " . $imagePath, "info");
 
-      // I expected YII_ENV_DEV to be true but it's not defined, so using a hardcoded temporary approach for now
+      // I expected YII_ENV_DEV to be true but it's not defined, so using a hardcoded temporary approach for now so app does not crash each time
       $isLocalDev = true;
       $hasBucketAccess = false;
       if ($isLocalDev && !$hasBucketAccess) {
           Yii::log("writeLogo: Local dev environment, skipping actual storage", "info");
 
           // Mock URL for local development
-          $this->image_location = "https://assets.gigadb-cdn.net/live/images/projects/genome_10k/G10Klogo.jpg";
+          $image_location = "https://assets.gigadb-cdn.net/" . Yii::$app->params['environment'] . "/images/projects/" . $uuid . "/" . $fileName . "." . $info['extension'];
 
-          return true;
+          return $image_location;
       }
 
       if ($targetStorage->put(
           $imagePath, file_get_contents($uploadedLogo->getTempName()),
           ['visibility' => AdapterInterface::VISIBILITY_PUBLIC]
       )) {
-          // $this->logo = sprintf("%s.%s", $fileName, $info['extension']);
-          $this->image_logo = sprintf("%s.%s", $fileName, $info['extension']);
-          $this->image_location = sprintf("https://%s/%s", self::BUCKET, $imagePath);
+          $image_location = sprintf("https://%s/%s", self::BUCKET, $imagePath);
 
           Yii::log("writeLogo: Image successfully written to storage", "info");
 
-          return true;
+          return $image_location;
       }
 
       Yii::log("writeLogo: Error attempting to write image to the storage","error");

@@ -66,77 +66,43 @@ class AdminProjectController extends Controller
 		));
 	}
 
-  private function validateFileSize($file, $maxSizeInBytes) {
-    return $file->getSize() <= $maxSizeInBytes;
+  private function makeResponse($code, $message, $payload = []) {
+    $success = $code < 400;
+    header('Content-Type: application/json');
+    http_response_code($code);
+    echo CJSON::encode([
+      'success' => $success,
+      'message' => $message,
+      ...$payload,
+    ]);
+    Yii::app()->end();
   }
 
   // this method should be called by the uploader
   public function actionUploadLogo() {
     if (!isset($_FILES['logo_image'])) {
-      Yii::log("No logo_image file received in upload request", "warning");
-
-      // TODO research if this is the actual way to respond with 400
-      header('Content-Type: application/json');
-      http_response_code(400);
-      echo CJSON::encode([
-        'success' => false,
-        'message' => 'No file was uploaded',
-      ]);
-      Yii::app()->end();
+      $this->makeResponse(400, 'Invalid request. No file was uploaded.');
     }
 
     $uploadedLogo = CUploadedFile::getInstanceByName('logo_image');
 
-    // Yii::log("action UploadLogo: uploaded file - " . print_r($uploadedLogo, true), "warning");
-    // action UploadLogo: uploaded file - CUploadedFile Object
-    // (
-    //     [_name:CUploadedFile:private] => G10Klogo_renamed.jpg
-    //     [_tempName:CUploadedFile:private] => /tmp/phpe2H3JK
-    //     [_type:CUploadedFile:private] => image/jpeg
-    //     [_size:CUploadedFile:private] => 7702
-    //     [_error:CUploadedFile:private] => 0
-    //     [_e:CComponent:private] =>
-    //     [_m:CComponent:private] =>
-    // )
-
-    // TODO validate file size server side (file size < 1MB)
-    if (!$this->validateFileSize($uploadedLogo, 1_000_000)) {
-      Yii::log("action UploadLogo: file size is greater than 1MB", "warning");
-      header('Content-Type: application/json');
-      http_response_code(400);
-      echo CJSON::encode([
-        'success' => false,
-        'message' => 'File size should be less than 1MB',
-      ]);
-      Yii::app()->end();
+    if ($uploadedLogo->getSize() > 1_000_000) {
+      $message = 'Invalid request. Logo image size should be less than 1MB';
+      Yii::app()->user->setFlash('updateError', $message);
+      $this->makeResponse(400, $message);
     }
-    // TODO store file in S3 bucket
-    // TODO if a new file is uploaded, delete the old one
-    // Yii::log(print_r($_FILES['logo_image'], true), "warning");
-    /**
-     * (
-     *     [name] => G10Klogo_renamed.jpg
-     *     [type] => image/jpeg
-     *     [tmp_name] => /tmp/php4humoH
-     *     [error] => 0
-     *     [size] => 7702
-     * )
-     */
 
-    // Mock async process
-    sleep(1); // Simulate 1 second processing delay
+    $image_location = Project::writeLogo(Yii::$app->cloudStore, $uploadedLogo);
 
-    // Mock response for now
-    $response = [
-        'success' => true,
-        'image_location' => 'https://assets.gigadb-cdn.net/assets/images/' . $_FILES['logo_image']['name']
-    ];
-    // TODO call writeLogo method that writes image to S3 bucket
+    if (!$image_location) {
+      $message = 'Failed to save your logo image';
+      Yii::app()->user->setFlash('updateError', $message);
+      $this->makeResponse(500, $message);
+    }
 
-    // Send JSON response
-    header('Content-Type: application/json');
-    echo CJSON::encode($response);
-    Yii::app()->end();
+    $this->makeResponse(200, 'Logo uploaded successfully', [
+      'image_location' => $image_location
+  ]);
   }
 
 	/**
