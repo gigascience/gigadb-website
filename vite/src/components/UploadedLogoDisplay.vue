@@ -12,11 +12,12 @@ const props = defineProps<{
 </template>
 
 <style scoped lang="less">
+@color-darker-gray: #656565;
 .thumbnail-container {
   .control-label {
     font-weight: normal;
     font-size: 13px;
-    color: #656565;
+    color: @color-darker-gray;
     margin-bottom: 10px;
   }
 }

@@ -1,34 +1,35 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import { config } from '../config';
 
 const { maxHeight } = config;
 
 const props = defineProps<{
   size: { width: number; height: number };
-  errorMessage: string | null;
-  srOnlyErrorMessage: string | null;
 }>();
+
+const errorMessage = computed(() => props.size.height > maxHeight ? `Height exceeds ${maxHeight}px limit` : null)
+const srOnlyErrorMessage = computed(() => props.size.height > maxHeight ? `Image height exceeds ${maxHeight} pixels. Please crop further.` : null)
+const srOnlySuccessMessage = computed(() => props.size.height <= maxHeight ? `Image height is valid` : null)
 
 </script>
 
 <template>
   <div v-if="props.size.width && props.size.height" class="status-display">
     <span>Current dimensions: {{ props.size.width }}px &times; {{ props.size.height }}px</span>
-    <span role="status" aria-live="polite">
-      <span v-if="props.size.height > maxHeight" class="status-error">
-         Height exceeds {{ maxHeight }}px limit
-      </span>
+    <span v-if="errorMessage" class="status-error" aria-hidden="true">
+      {{ errorMessage }}
     </span>
-  </div>
-  <div role="alert">
-    <div v-if="props.errorMessage" class="control-error help-block" id="logo-upload-error" aria-hidden="true">{{
-      props.errorMessage }}</div>
-    <span v-if="props.srOnlyErrorMessage" class="sr-only">{{ props.srOnlyErrorMessage }}</span>
+    <span role="status" aria-live="polite">
+      <span v-if="srOnlyErrorMessage" class="sr-only">{{ srOnlyErrorMessage }}</span>
+      <span v-if="srOnlySuccessMessage" class="sr-only">{{ srOnlySuccessMessage }}</span>
+    </span>
   </div>
 </template>
 
 <style scoped lang="less">
 .status-display {
+  height: 40px;
   margin-top: 12px;
   font-size: 0.875rem;
   color: #4a5568;
@@ -41,7 +42,7 @@ const props = defineProps<{
 }
 
 .status-error {
-  color: #e53e3e;
+  color: #a50f0f;
   font-weight: 500;
   display: inline-flex;
   align-items: center;

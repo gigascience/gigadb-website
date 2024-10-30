@@ -1,19 +1,21 @@
 <script setup lang="ts">
+import { computed, reactive, ref } from 'vue';
+
 import Uppy from '@uppy/core';
 import type { UppyFile, Meta } from '@uppy/core';
+
 import ImageEditor from '@uppy/image-editor';
 import XHR from '@uppy/xhr-upload';
 import DashboardPlugin from "@uppy/dashboard"
-import {
-  Dashboard
-} from '@uppy/vue';
-import { computed, reactive, ref } from 'vue';
+import { Dashboard } from '@uppy/vue';
+
 import HiddenInput from './HiddenInput.vue';
+import DashboardStatusDisplay from './DashboardStatusDisplay.vue';
+import ImageEditorStatusDisplay from './ImageEditorStatusDisplay.vue';
 import UploadedLogoDisplay from './UploadedLogoDisplay.vue';
-import UppyDashboardWrapper from './UppyDashboardWrapper.vue';
+
 import { config } from '../config';
 import { getUppyImgDimensions } from '../utils/getUppyImgDimensions';
-import StatusDisplay from './StatusDisplay.vue';
 
 import '@uppy/core/dist/style.css';
 import '@uppy/dashboard/dist/style.css';
@@ -28,8 +30,18 @@ const props = defineProps<{
 }>();
 
 const constraintsMessage = `Please upload one image file (max height ${maxHeight}px, max size ${maxSizeMb} MB)`
+const srOnlyConstraintsMessage = `Please upload one image file. Maximum height ${maxHeight} pixels, maximum size ${maxSizeMb} megabyte${maxSizeMb === 1 ? '' : 's'}. Press Enter key to browse your local files, or drag and drop an image into this box.`
+
+function triggerUppyButton() {
+  const uppyDashboard = document.querySelector('.uppy-Dashboard-inner');
+  if (uppyDashboard) {
+    const triggerButton = uppyDashboard.querySelector('.uppy-Dashboard-browse') as HTMLButtonElement;
+    triggerButton?.click();
+  }
+}
 
 const isWrapperFocusable = ref(true);
+const isEditing = ref(false);
 const uploadedImageLocation = ref<string | null>(props.imageLocation);
 const errorMessage = ref<string | null>(null);
 const srOnlyErrorMessage = ref<string | null>(null);
@@ -85,22 +97,33 @@ uppy.use(XHR, {
   withCredentials: true
 });
 
+function openFileEditor(file: UppyFile<Meta, Record<string, never>>) {
+  const dashboard = uppy.getPlugin('Dashboard') as DashboardPlugin<Meta, Record<string, never>>;
+  if (dashboard) {
+    dashboard.openFileEditor(file);
+  }
+}
+
+async function handleImageHeightMsgs(file: UppyFile<Meta, Record<string, never>>, cbTooTall?: () => void) {
+  const { height } = await getUppyImgDimensions(file);
+  if (height > maxHeight) {
+    errorMessage.value = `Image height (${height}px) exceeds ${maxHeight}px - please crop the image using the editor`;
+    srOnlyErrorMessage.value = `Image height of ${height} pixels exceeds maximum of ${maxHeight} pixels. Please crop the image using the editor.`;
+    cbTooTall?.();
+  } else {
+    errorMessage.value = null;
+    srOnlyErrorMessage.value = null;
+  }
+}
+
 // uppy file events
 uppy.on('file-added', async (file: UppyFile<Meta, Record<string, never>>) => {
   isWrapperFocusable.value = false;
   errorMessage.value = null;
 
   try {
-    const { height } = await getUppyImgDimensions(file);
-    if (height > maxHeight) {
-      errorMessage.value = `Image height (${height}px) exceeds ${maxHeight}px - please crop the image using the editor`;
-      srOnlyErrorMessage.value = `Image height of ${height} pixels exceeds maximum of ${maxHeight} pixels. Please use the editor to resize.`;
-      // Auto-open editor when height exceeds limit
-      const dashboard = uppy.getPlugin('Dashboard') as DashboardPlugin<Meta, Record<string, never>>;
-      if (dashboard) {
-        dashboard.openFileEditor(file);
-      }
-    }
+    // NOTE when image is added, if it's too tall, open editor automatically. In this instance, it makes sense
+    await handleImageHeightMsgs(file, () => openFileEditor(file));
   } catch (error) {
     errorMessage.value = 'Error getting image dimensions';
   }
@@ -137,19 +160,21 @@ uppy.on('upload-start', () => {
 });
 
 // file-editor plugin events
+uppy.on('file-editor:start', () => {
+  isEditing.value = true;
+});
+uppy.on('file-editor:cancel', async (file: UppyFile<Meta, Record<string, never>>) => {
+  isEditing.value = false;
+});
 
 uppy.on('file-editor:complete', async (file: UppyFile<Meta, Record<string, never>>) => {
   try {
-    const { height } = await getUppyImgDimensions(file);
-    if (height > maxHeight) {
-      errorMessage.value = `Image still exceeds ${maxHeight}px height - please crop further`;
-      srOnlyErrorMessage.value = `Image height still exceeds ${maxHeight} pixels. Please crop further.`;
-    } else {
-      errorMessage.value = null;
-      srOnlyErrorMessage.value = null;
-    }
+    // NOTE not forcefully opening the editor again here either, because user might decide to click "save" with the idea to switch image
+    await handleImageHeightMsgs(file);
   } catch (error) {
     errorMessage.value = 'Error verifying image dimensions';
+  } finally {
+    isEditing.value = false;
   }
 });
 
@@ -158,22 +183,48 @@ uppy.on('file-editor:complete', async (file: UppyFile<Meta, Record<string, never
 <template>
   <HiddenInput v-if="hiddenInputName" :uploaded-image-location="uploadedImageLocation" :name="hiddenInputName" />
   <UploadedLogoDisplay v-if="uploadedImageLocation" :uploaded-image-location="uploadedImageLocation" />
-  <UppyDashboardWrapper :is-wrapper-focusable="isWrapperFocusable">
-    <template #uppy-dashboard>
-      <Dashboard :uppy="uppy" :props="{
-        note: constraintsMessage,
-        proudlyDisplayPoweredByUppy: false,
-      }" />
-    </template>
-  </UppyDashboardWrapper>
-  <StatusDisplay :size="size" :error-message="errorMessage" :sr-only-error-message="srOnlyErrorMessage" />
+  <button :tabindex="isWrapperFocusable ? 0 : -1" type="button" class="uppy-dashboard-wrapper"
+    :aria-label="`Upload Logo. ${srOnlyConstraintsMessage}`" @keydown.enter="triggerUppyButton">
+    <Dashboard :uppy="uppy" :props="{
+      note: constraintsMessage,
+      proudlyDisplayPoweredByUppy: false,
+    }" />
+  </button>
+  <ImageEditorStatusDisplay v-if="isEditing" :size="size" />
+  <DashboardStatusDisplay :size="size" :error-message="errorMessage" :sr-only-error-message="srOnlyErrorMessage" />
 </template>
 
 <style scoped lang="less">
 /* duplicating less variable here, would be better to reuse already defined color from variables.less */
 @color-gigadb-green: #08893e;
-@color-true-white: #ffffff;
+@color-gigadb-green-600: #06b34d;
 @color-gigadb-green-800: #0d6e36;
+@color-true-white: #ffffff;
+
+.uppy-dashboard-wrapper {
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  cursor: default;
+}
+
+.uppy-dashboard-wrapper:focus {
+  outline: none;
+}
+
+.uppy-dashboard-wrapper:focus-visible {
+  outline: 1px solid @color-gigadb-green;
+  border: 1px solid @color-gigadb-green-600;
+  box-shadow: inset 0 1px 1px rgba(8, 137, 62, 0.075), 0 0 6px rgba(6, 179, 77, 0.5);
+  border-radius: 4px;
+}
 
 // uppy dashboard overrides to match the site theme
 :deep(.uppy-Dashboard-inner) {
