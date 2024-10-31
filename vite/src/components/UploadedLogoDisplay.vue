@@ -1,13 +1,14 @@
 <script setup lang="ts">
 const props = defineProps<{
-  uploadedImageLocation: string;
+  uploadedImageLocation?: string | null;
 }>();
 </script>
 
 <template>
   <div class="form-group thumbnail-container">
     <div class="control-label">Uploaded Logo</div>
-    <img :src="props.uploadedImageLocation" alt="Logo" />
+    <img v-if="props.uploadedImageLocation" :src="props.uploadedImageLocation" alt="Logo" />
+    <div v-else class="help-block">You did not yet upload a logo</div>
   </div>
 </template>
 

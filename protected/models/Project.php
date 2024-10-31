@@ -143,49 +143,60 @@ class Project extends CActiveRecord
    * write a logo image to the desired (Flysystem managed) storage mechanism and update url property with the location
    *
    * @param Filesystem $targetStorage
+   * @param string $enclosingDirectory
    * @param CUploadedFile $uploadedLogo
-   * @param string|null $existingLogoUrl
    * @return bool|string
    */
-  public static function writeLogo(Filesystem $targetStorage, CUploadedFile $uploadedLogo, $existingLogoUrl = null)
+  public static function writeLogo(Filesystem $targetStorage, string $enclosingDirectory, CUploadedFile $uploadedLogo)
   {
+      // TODO change this before PR
+      $storageBasePath = Yii::getAlias('@web') . '/files'; // 'https://' . self::BUCKET
+
       $slugger = new \Symfony\Component\String\Slugger\AsciiSlugger();
       $info = pathinfo($uploadedLogo->getName());
+
       $fileName = $slugger->slug($info['filename'])->toString();
-      $uuid = Uuid::uuid4()->toString();
-      $imagePath = sprintf("%s/images/projects/%s/%s.%s", Yii::$app->params['environment'], $uuid, $fileName, $info['extension'] );
-      $image_location = sprintf("https://%s/%s", self::BUCKET, $imagePath);
 
-      // I expected YII_ENV_DEV to be true but it's not defined, so using a hardcoded temporary approach for now so app does not crash each time
-      $isTester = true;
-      if ($isTester) {
-          Yii::log("writeLogo: Tester environment, skipping actual storage", "info");
+      $logoPath = sprintf("%s/%s.%s", $enclosingDirectory, $fileName, $info['extension'] );
 
-          if ($existingLogoUrl !== null) {
-            $existingLogoPath = str_replace('https://' . self::BUCKET . '/', '', $existingLogoUrl);
-            Yii::log("writeLogo: Mocking deleting existing logo image with path " . $existingLogoPath, "info");
-          }
-
-          return $image_location;
-      }
+      $logoUrl = sprintf("%s/%s", $storageBasePath, $logoPath);
 
       if ($targetStorage->put(
-          $imagePath, file_get_contents($uploadedLogo->getTempName()),
+          $logoPath, file_get_contents($uploadedLogo->getTempName()),
           ['visibility' => AdapterInterface::VISIBILITY_PUBLIC]
       )) {
-          if ($existingLogoUrl !== null) {
-            $existingLogoPath = str_replace('https://' . self::BUCKET . '/', '', $existingLogoUrl);
-            if ($targetStorage->delete($existingLogoPath)) {
-              Yii::log("writeLogo: Deleted existing logo image" . $existingLogoPath, "info");
-            }  else {
-              // fail silently
-              Yii::log("writeLogo: Failed to delete existing logo image" . $existingLogoUrl, "error");
-            }
-          }
-
-          return $image_location;
+          return $logoUrl;
       }
 
+      return false;
+  }
+
+  /**
+   * Delete an existing logo from storage
+   *
+   * @param Filesystem $targetStorage
+   * @return bool
+   */
+  public function deleteLogo(Filesystem $targetStorage): bool
+  {
+        // TODO change this before PR
+      $storageBasePath = Yii::getAlias('@web') . '/files'; // 'https://' . self::BUCKET
+      Yii::log("deleteLogo: Storage base path is " . $storageBasePath, "info");
+
+      Yii::log("deleteLogo: No existing logo URL provided, using project UUID", "info");
+      $uuid = $this->getUuid();
+      Yii::log("deleteLogo: Project UUID is " . $uuid, "info");
+      $logoPath = 'images/projects/' . Yii::$app->params['environment'] . '/' . $uuid;
+
+      Yii::log("deleteLogo: Attempting to delete logo directory at " . $logoPath, "info");
+
+      if ($targetStorage->deleteDirectory($logoPath)) {
+          Yii::log("deleteLogo: Successfully deleted logo directory " . $logoPath, "info");
+          return true;
+      }
+
+      // fail silently
+      Yii::log("deleteLogo: Failed to delete logo directory " . $logoPath . ". Target storage returned false.", "error");
       return false;
   }
 

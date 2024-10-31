@@ -1,5 +1,7 @@
 <?php
 
+use Ramsey\Uuid\Uuid;
+
 class AdminProjectController extends Controller
 {
 
@@ -57,6 +59,8 @@ class AdminProjectController extends Controller
 		if(isset($_POST['Project']))
 		{
 			$model->attributes=$_POST['Project'];
+      // save logo in permanent storage
+      $model->writeLogo(Yii::$app->cloudStore, Yii::$app->params['environment'] . '/' . 'images/projects/' . $model->getUuid(), $model->logo_image);
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -87,7 +91,7 @@ class AdminProjectController extends Controller
    * Upload a logo image
    */
   public function actionUploadLogo() {
-    $existingLogoUrl = Yii::app()->request->getQuery('existingLogoUrl');
+    // $existingLogoUrl = Yii::app()->request->getQuery('existingLogoUrl');
     if (!isset($_FILES['logo_image'])) {
       $this->makeResponse(400, 'Invalid request. No file was uploaded.');
     }
@@ -100,7 +104,10 @@ class AdminProjectController extends Controller
       $this->makeResponse(400, $message);
     }
 
-    $image_location = Project::writeLogo(Yii::$app->cloudStore, $uploadedLogo, $existingLogoUrl);
+    $random_uuid = Uuid::uuid4()->toString();
+    $temp_logo_dir = Yii::$app->params['environment'] . '/images/projects/temp/' . $random_uuid;
+    $image_location = Project::writeLogo(Yii::$app->cloudStore, $temp_logo_dir, $uploadedLogo);
+    // no need to delete logs from temp directory, that can be done with cron job
 
     if (!$image_location) {
       $message = 'Failed to save your logo image';
@@ -145,24 +152,25 @@ class AdminProjectController extends Controller
 	public function actionDelete($id)
 	{
     Yii::log("delete: $id");
+    $storageBasePath = ''; // 'https://' . self::BUCKET
 		if(Yii::app()->request->isPostRequest)
 		{
 			// we only allow deletion via POST request
 			$model = $this->loadModel($id);
       $logoUrl = $model->image_location;
-      $logoPath = str_replace('https://' . Project::BUCKET . '/', '', $logoUrl);
+      $logoPath = str_replace($storageBasePath . '/', '', $logoUrl);
 
       // I expected YII_ENV_DEV to be true but it's not defined, so using a hardcoded temporary approach for now so app does not crash each time
-      $isTester = true;
-      if ($isTester) {
-        Yii::log("actionDelete: Tester environment, skipping actual delete", "info");
-      } else {
-        if (Yii::$app->cloudStore->delete($logoPath)) {
-          Yii::log("actionDelete: Deleted logo image" . $logoPath . " for project ". $id, "info");
-        }  else {
-          // fail silently
-          Yii::log("actionDelete: Failed to delete logo image" . $logoPath . " for project ". $id, "error");
-        }
+      // $isTester = false;
+      // if ($isTester) {
+      //   Yii::log("actionDelete: Tester environment, skipping actual delete", "info");
+      // } else {
+      // }
+      if (Yii::$app->cloudStore->delete($logoPath)) {
+        Yii::log("actionDelete: Deleted logo image" . $logoPath . " for project ". $id, "info");
+      }  else {
+        // fail silently
+        Yii::log("actionDelete: Failed to delete logo image" . $logoPath . " for project ". $id, "error");
       }
 
       $model->delete();

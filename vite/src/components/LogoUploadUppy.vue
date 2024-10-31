@@ -182,7 +182,7 @@ uppy.on('file-editor:complete', async (file: UppyFile<Meta, Record<string, never
 
 <template>
   <HiddenInput v-if="hiddenInputName" :uploaded-image-location="uploadedImageLocation" :name="hiddenInputName" />
-  <UploadedLogoDisplay v-if="uploadedImageLocation" :uploaded-image-location="uploadedImageLocation" />
+  <UploadedLogoDisplay :uploaded-image-location="uploadedImageLocation" />
   <button :tabindex="isWrapperFocusable ? 0 : -1" type="button" class="uppy-dashboard-wrapper"
     :aria-label="`Upload Logo. ${srOnlyConstraintsMessage}`" @keydown.enter="triggerUppyButton">
     <Dashboard :uppy="uppy" :props="{
