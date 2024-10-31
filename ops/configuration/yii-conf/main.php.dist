@@ -121,10 +121,7 @@ return CMap::mergeArray(array(
         ),
 
         'session' => array(
-            'class' => 'system.web.CDbHttpSession',
-            'connectionID' => 'db',
-            'timeout' => 3600,
-            'autoCreateSessionTable' => false,
+            'class' => 'CCacheHttpSession',
         ),
         'errorHandler'=>array(
             'errorAction'=>'site/error',
