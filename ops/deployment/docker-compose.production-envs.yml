@@ -89,6 +89,9 @@ services:
     cap_drop:
       - NET_ADMIN
       - SYS_ADMIN
+    volumes:
+      # directories used for tideways daemon log
+      - ${DATA_SAVE_PATH}/tideways:/var/logs
 
   fuw-admin:
     <<: *logging
