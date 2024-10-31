@@ -82,12 +82,12 @@ validation output: false
 ## 2. createReadme
 
 > [!IMPORTANT]
-> To execute the `createReadme` command, change directory to the dataset's associated user dropbox directory located at `/share/dropbox/`:
+> To execute the `createReadme` command, change directory to the dataset's user dropbox directory located at `/share/dropbox/`:
 ```
 [peterl@ip-10-99-0-95 ~]$ cd /share/dropbox/user5
 ```
 
-From this user dropbox directory, a readme file for the dataset can be created using the `createReadme` script by calling it with a DOI; `--wasabi --apply --use-live-data` are parameters required to copy the readme file into Wasabi:
+From this user dropbox directory, a readme file for the dataset can be created using the `createReadme` script by calling it with a DOI:
 ```
 [peterl@ip-10-99-0-142 user5]$ pwd
 /share/dropbox/user5
@@ -99,12 +99,18 @@ A `readme_<doi>.txt` file will appear in `/share/dropbox/user5` directory.
 [peterl@ip-10-99-0-142 user5]$ ls
 DLPFC_69_72_VNS_results.csv  E2_VNS_Ground_Truth.csv  readme_102498.txt
 ```
+
+To create the readme file and copy it into Wasabi, extra parameters need to be provided:
+```
+[peterl@ip-10-99-0-88 user5]$ sudo /usr/local/bin/createReadme --doi 102498 --wasabi --apply --use-live-data
+```
+
 The readme file will also have been uploaded into the correct dataset directory in Wasabi live bucket.  The file size and MD5 value for the readme file will also be updated in the database.
 
 ## 3. calculateChecksumSizes
 
 > [!IMPORTANT]
-> To execute the `calculateChecksumSizes` command, change directory to the dataset's associated user dropbox directory located at `/share/dropbox/`:
+> To execute the `calculateChecksumSizes` command, change directory to the dataset's user dropbox directory located at `/share/dropbox/`:
 ```
 [peterl@ip-10-99-0-95 ~]$ cd /share/dropbox/user5
 ```
@@ -133,7 +139,7 @@ b5a7e0953d1581077c13818153371918  ./E2_VNS_Ground_Truth.csv
 ## 4. filesMetaToDb
 
 > [!IMPORTANT]
-> To execute the `filesMetaToDb` command, change directory to the dataset's associated user dropbox directory located at `/share/dropbox/`:
+> To execute the `filesMetaToDb` command, change directory to the dataset's user dropbox directory located at `/share/dropbox/`:
 ```
 [peterl@ip-10-99-0-95 ~]$ cd /share/dropbox/user5
 ```
@@ -152,7 +158,7 @@ You should check the adminfile pages of the files associated with this dataset t
 
 ## 5. Go to dataset admin page on gigadb.org
 
-With the post upload operations complete, you need to go back to the page at https://gigadb.org/adminDataset/update/id/<dataset_id>` in order to continue curation work on the dataset. You will be able to find this link by entering the dataset's DOI, e.g. 102498 into the DOI column header in /adminDataset/admin page.
+With the post upload operations complete, you need to go back to the page at `https://gigadb.org/adminDataset/update/id/<dataset_id>` in order to continue curation work on the dataset. You will be able to find this link by entering the dataset's DOI, e.g. 102498 into the DOI column header in /adminDataset/admin page.
 
 On the dataset admin page, you will be able to create a mockup page in order to preview the final dataset view page with the information that was added to the database in the previous steps.
 
