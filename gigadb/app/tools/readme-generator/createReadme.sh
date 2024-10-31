@@ -20,6 +20,10 @@ WORKING_DIR=$(pwd)
 BASTION_RCLONE_CONF_LOCATION='/home/centos/.config/rclone/rclone.conf'
 DEV_RCLONE_CONF_LOCATION="${APP_DIR}/../wasabi-migration/config/rclone.conf"
 
+# Source of AWS credentials to supply to rclone on bastion server
+AWS_SHARED_CREDENTIALS_FILE='/home/centos/.aws/credentials'
+AWS_PROFILE='wasabi-transfer'
+
 # Wasabi directory paths
 WASABI_DEV_DIRECTORY="wasabi:gigadb-datasets/dev/pub/10.5524"
 WASABI_STAGING_DIRECTORY="wasabi:gigadb-datasets/staging/pub/10.5524"
@@ -195,6 +199,13 @@ function copy_to_wasabi() {
     rclone_cmd+=" --log-level INFO"
     rclone_cmd+=" --stats-log-level DEBUG"
     rclone_cmd+=" >> ${LOGFILE}"
+  
+    # For informing rclone where AWS credentials are located on bastion server
+    if [[ $(uname -n) =~ compute ]];then
+      export AWS_SHARED_CREDENTIALS_FILE
+      export AWS_PROFILE
+    fi
+
     # Execute command
     eval "${rclone_cmd}"
     # Get exit code for rclone command
