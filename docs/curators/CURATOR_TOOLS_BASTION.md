@@ -171,9 +171,12 @@ When all files in a dataset have been finalised and curated then they can be cop
 
 ## 7. Housekeeping of user dropboxes of published datasets
 
-curator doc should mention curators needs delete user5 and user5.orig after ensuring that the files have been backed up to S3 glacier in previous step
+After dataset files have been copied into Wasabi, the files should also be backed up into S3 Glacier:
+```
+[peterl@ip-10-99-0-95 user5]$ /usr/local/bin/transfer --doi 102498 --sourcePath /share/dropbox/user5/ --backup --apply
+```
 
-that upload dataset files to Wasabi and back them up to S3 glacier
+After you have confirmed the files are safely stored in Wasabi and Glacier then the user and user.orig dropbox directories should be deleted to save storage space.
 
 ## `postUpload`: a wrapper script to create readme file and update file metadata in database
 
