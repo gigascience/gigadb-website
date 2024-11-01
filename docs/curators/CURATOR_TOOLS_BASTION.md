@@ -162,12 +162,13 @@ With the post upload operations complete, you need to go back to the page at `ht
 
 On the dataset admin page, you will be able to create a mockup page in order to preview the final dataset view page with the information that was added to the database in the previous steps.
 
-## 6. transfer
+## 6. `transfer` - copy dataset files into Wasabi
 
-After all files in a dataset have been finalised then they should be copied into Wasabi using the `transfer` tool. The path to the user dropbox directory is provided as the `--sourcePath` parameter with the value of the `--doi` parameter being the DOI for the dataset. The `--wasabi` flag inform the `transfer` tool to copy files into Wasabi storage. The `--apply` flag takes the `transfer` tool out of dry-run mode that results in the actual transfer of files into Wasabi storage from the user drop box directory.
+When all files in a dataset have been finalised and curated then they can be copied into Wasabi using the `transfer` tool. The path to the user dropbox directory is provided as the `--sourcePath` parameter with the value of the `--doi` parameter being the DOI for the dataset. The `--wasabi` flag inform the `transfer` tool to copy files into Wasabi storage. The `--apply` flag takes the `transfer` tool out of dry-run mode that results in the actual transfer of files into Wasabi storage from the user drop box directory.
 ```
 [peterl@ip-10-99-0-95 user5]$ /usr/local/bin/transfer --doi 102498 --sourcePath /share/dropbox/user5/ --wasabi --apply
 ```
+
 ## 7. Housekeeping of user dropboxes of published datasets
 
 curator doc should mention curators needs delete user5 and user5.orig after ensuring that the files have been backed up to S3 glacier in previous step
