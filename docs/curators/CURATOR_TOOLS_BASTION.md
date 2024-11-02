@@ -176,7 +176,7 @@ After dataset files have been copied into Wasabi, the files should also be backe
 [peterl@ip-10-99-0-95 user5]$ /usr/local/bin/transfer --doi 102498 --sourcePath /share/dropbox/user5/ --backup --apply
 ```
 
-After you have confirmed the files are safely stored in Wasabi and Glacier then the user and user.orig dropbox directories should be deleted to save storage space.
+After you have confirmed the files are safely stored in Wasabi and Glacier then the `user` and `user.orig` dropbox directories should be deleted to save storage space after the manuscript has been published.
 
 ## `postUpload`: a wrapper script to create readme file and update file metadata in database
 
@@ -221,7 +221,7 @@ If there are discrepancies between the state of the filesystem in a user dropbox
 
 To solve this problem, it is important to reconcile both sources of files list regularly. To help with that, there is command available on the bastion server, called compare, to compare the list of files in the dataset spreadsheet with the list of files on the filesystem. By default, when running the command, it will show any discrepancies in both direction.
 
-#### How to use the tool
+### How to use the tool
 
 Open the dataset spreadsheet you are working on the files list tab
 
