@@ -24,7 +24,7 @@ Excel files can be uploaded into `uploadDir` using `sftp` tool or [Filezilla](ht
 
 The Excel file can then be ingested using the datasetUpload script in `/usr/local/bin`:
 ```
-[peterl@ip-10-99-0-88 ~]$ sudo /usr/local/bin/datasetUpload
+[peterl@ip-10-99-0-88 ~]$ sudo datasetUpload
 Done.
 ```
 
@@ -91,7 +91,7 @@ From this user dropbox directory, a readme file for the dataset can be created u
 ```
 [peterl@ip-10-99-0-142 user5]$ pwd
 /share/dropbox/user5
-[peterl@ip-10-99-0-88 user5]$ sudo /usr/local/bin/createReadme --doi 102498
+[peterl@ip-10-99-0-88 user5]$ sudo createReadme --doi 102498
 ```
 
 A `readme_<doi>.txt` file will appear in `/share/dropbox/user5` directory.
@@ -102,7 +102,7 @@ DLPFC_69_72_VNS_results.csv  E2_VNS_Ground_Truth.csv  readme_102498.txt
 
 To create the readme file and copy it into Wasabi, extra parameters need to be provided:
 ```
-[peterl@ip-10-99-0-88 user5]$ sudo /usr/local/bin/createReadme --doi 102498 --wasabi --apply --use-live-data
+[peterl@ip-10-99-0-88 user5]$ sudo createReadme --doi 102498 --wasabi --apply --use-live-data
 ```
 
 The readme file will also have been uploaded into the correct dataset directory in Wasabi live bucket.  The file size and MD5 value for the readme file will also be updated in the database.
@@ -118,7 +118,7 @@ The readme file will also have been uploaded into the correct dataset directory 
 `$doi.md5` and `$doi.filesizes` provide information used to update dataset files with md5 values and file size in the database. These two files can be generated from the user5 dropbox:
 ```
 # Provide DOI number as a parameter
-[peterl@ip-10-99-0-95 user5]$ sudo /usr/local/bin/calculateChecksumSizes 102498
+[peterl@ip-10-99-0-95 user5]$ sudo calculateChecksumSizes 102498
 Created 102498.md5
 Created 102498.filesizes
 ```
@@ -146,7 +146,7 @@ b5a7e0953d1581077c13818153371918  ./E2_VNS_Ground_Truth.csv
 
 The `fileMetaToDb` script can use `102498.filesizes` and `102498.md5` to update file metadata in the database from the user dropbox folder:
 ```
-[peterl@ip-10-99-0-95 ~]$ sudo /usr/local/bin/filesMetaToDb 102498
+[peterl@ip-10-99-0-95 ~]$ sudo filesMetaToDb 102498
 Updating md5 checksum values as file attributes for 102498
 Number of changes: 3
 Updating file sizes for 102498
@@ -166,14 +166,14 @@ On the dataset admin page, you will be able to create a mockup page in order to 
 
 When all files in a dataset have been finalised and curated then they can be copied into Wasabi using the `transfer` tool. The path to the user dropbox directory is provided as the `--sourcePath` parameter with the value of the `--doi` parameter being the DOI for the dataset. The `--wasabi` flag inform the `transfer` tool to copy files into Wasabi storage. The `--apply` flag takes the `transfer` tool out of dry-run mode that results in the actual transfer of files into Wasabi storage from the user drop box directory.
 ```
-[peterl@ip-10-99-0-95 user5]$ /usr/local/bin/transfer --doi 102498 --sourcePath /share/dropbox/user5/ --wasabi --apply
+[peterl@ip-10-99-0-95 user5]$ transfer --doi 102498 --sourcePath /share/dropbox/user5/ --wasabi --apply
 ```
 
 ## 7. Housekeeping of user dropboxes of published datasets
 
 After dataset files have been copied into Wasabi, the files should also be backed up into S3 Glacier:
 ```
-[peterl@ip-10-99-0-95 user5]$ /usr/local/bin/transfer --doi 102498 --sourcePath /share/dropbox/user5/ --backup --apply
+[peterl@ip-10-99-0-95 user5]$ transfer --doi 102498 --sourcePath /share/dropbox/user5/ --backup --apply
 ```
 
 After you have confirmed the files are safely stored in Wasabi and Glacier then the `user` and `user.orig` dropbox directories should be deleted to save storage space after the manuscript has been published.
@@ -191,7 +191,7 @@ There is a script called `postUpload` which calls `createReadme`, `calculateChec
 # Ensure you are in the dropbox directory
 [peterl@ip-10-99-0-88 ~]$ pwd
 /share/dropbox/user5
-[peterl@ip-10-99-0-88 ~]$ sudo /usr/local/bin/postUpload --doi 102498 --dropbox user5
+[peterl@ip-10-99-0-88 ~]$ sudo postUpload --doi 102498 --dropbox user5
 Creating README file for 102498
 [DOI]
 10.5524/102498
