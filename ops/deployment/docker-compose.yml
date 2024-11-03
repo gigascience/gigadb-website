@@ -709,6 +709,7 @@ services:
   vite-project-image-location-dev:
     build:
       context: ${APPLICATION}/vite
+      dockerfile: Dockerfile-dev
       args:
         - NODE_VERSION=$NODE_VERSION
     volumes:
@@ -719,8 +720,14 @@ services:
     shm_size: '1gb' # to avoid a known issue
     ports:
       - 5173:5173
-    command: >
-      sh -c "npm install && npm run dev"
+
+  vite-project-image-location-prod:
+    build:
+      context: ${APPLICATION}/vite
+      dockerfile: Dockerfile-prod
+      args:
+        - NODE_VERSION=$NODE_VERSION
+    shm_size: '1gb'
 
 networks:
   web-tier:

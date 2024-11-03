@@ -139,7 +139,7 @@ uppy.on('upload-start', () => {
   errorMessage.value = '';
 });
 
-uppy.on('upload-success', (file, response) => {
+uppy.on('upload-success', (_, response) => {
   if (response.body?.success) {
     const { image_location } = response.body;
     uploadedImageLocation.value = image_location;
@@ -147,7 +147,7 @@ uppy.on('upload-success', (file, response) => {
 });
 
 // parse response from upload server endpoint
-uppy.on('upload-error', (file, error, response) => {
+uppy.on('upload-error', (_, __, response) => {
   const defaultError = 'Failed to upload file. Please try again.';
 
   if (!response) {
@@ -172,7 +172,7 @@ uppy.on('upload-error', (file, error, response) => {
 uppy.on('file-editor:start', () => {
   isEditing.value = true;
 });
-uppy.on('file-editor:cancel', async (file: UppyFile<Meta, Record<string, never>>) => {
+uppy.on('file-editor:cancel', async () => {
   isEditing.value = false;
 });
 

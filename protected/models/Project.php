@@ -28,8 +28,8 @@ class Project extends CActiveRecord
 
   public static function getStorageBasePath()
   {
-      // TODO replace by prod val before PR, can also use the value directly where it's needed
-      return Yii::getAlias('@web') . '/files';   // 'https://' . self::BUCKET
+      // return Yii::getAlias('@web') . '/files'; // testing locally
+      return 'https://' . self::BUCKET;
   }
 
 	/**

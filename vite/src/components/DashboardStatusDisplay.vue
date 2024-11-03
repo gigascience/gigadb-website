@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import { config } from '../config';
-
 const props = defineProps<{
   errorMessage: string | null;
   srOnlyErrorMessage: string | null;

@@ -9,9 +9,9 @@
 - [x] update overrides image (delete old and create new)
 - [x] delete deletes image
 - [x] refactor and delete logs
-- [ ] run related test suites
-- [ ] write new tests to cover new functionality
-- [ ] should work in production (i.e. prod container)
+- [x] run related test suites
+- [-] write new tests to cover new functionality
+- [x] should work in production (i.e. prod container)
 - [ ] replace local values by production values
 
 ## Usage

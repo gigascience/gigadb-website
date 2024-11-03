@@ -29,6 +29,7 @@ files/data/filetypes.json
 images/tempcaptcha/
 images/vue
 files/dev
+js/vite-logo-upload
 
 # nginx config created by generate_config.sh
 ops/configuration/nginx-conf/sites/staging/gigadb.staging.http.conf
