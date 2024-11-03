@@ -8,7 +8,7 @@
 - [x] create adds a new image to project
 - [x] update overrides image (delete old and create new)
 - [x] delete deletes image
-- [ ] refactor and delete logs
+- [x] refactor and delete logs
 - [ ] run related test suites
 - [ ] write new tests to cover new functionality
 - [ ] should work in production (i.e. prod container)

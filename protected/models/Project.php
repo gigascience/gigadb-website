@@ -28,7 +28,7 @@ class Project extends CActiveRecord
 
   public static function getStorageBasePath()
   {
-    // TODO replace by prod val before PR, can also use the value directly where it's needed
+      // TODO replace by prod val before PR, can also use the value directly where it's needed
       return Yii::getAlias('@web') . '/files';   // 'https://' . self::BUCKET
   }
 
@@ -145,69 +145,68 @@ class Project extends CActiveRecord
   }
 
   public static function writeLogoFromFile(Filesystem $storage, string $enclosingDirectory, CUploadedFile $file) {
+      $slugger = new \Symfony\Component\String\Slugger\AsciiSlugger();
+      $info = pathinfo($file->getName());
+      $fileName = $slugger->slug($info['filename'])->toString();
+      $logoPath = sprintf("%s/%s.%s", $enclosingDirectory, $fileName, $info['extension']);
+      $logoUrl = sprintf("%s/%s", Project::getStorageBasePath(), $logoPath);
 
-    // get slugified filename from file
-    $slugger = new \Symfony\Component\String\Slugger\AsciiSlugger();
-    $info = pathinfo($file->getName());
-    $fileName = $slugger->slug($info['filename'])->toString();
+      if ($storage->put(
+        $logoPath,
+        file_get_contents($file->getTempName()),
+        ['visibility' => AdapterInterface::VISIBILITY_PUBLIC]
+      )) {
+        return $logoUrl;
+      }
 
-    // build logo path
-    $logoPath = sprintf("%s/%s.%s", $enclosingDirectory, $fileName, $info['extension']);
-    $logoUrl = sprintf("%s/%s", Project::getStorageBasePath(), $logoPath);
-
-    Yii::log("writeLogoFromFile: logoPath: " . $logoPath . " logoUrl: " . $logoUrl, "info");
-
-    if ($storage->put(
-      $logoPath,
-      file_get_contents($file->getTempName()),
-      ['visibility' => AdapterInterface::VISIBILITY_PUBLIC]
-    )) {
-      return $logoUrl;
-    }
-
-    return false;
+      return false;
   }
 
   public function writeLogoFromUrl(Filesystem $storage, string $url) {
-    // remove the base path from the url to get the path
-    $enclosingDirectory = $this->getLogoPath();
-    $filename = basename($url);
-    $logoPath = sprintf("%s/%s", $enclosingDirectory, $filename);
-    $logoUrl = sprintf("%s/%s", Project::getStorageBasePath(), $logoPath);
+      $enclosingDirectory = $this->getLogoPath();
+      $filename = basename($url);
+      $logoPath = sprintf("%s/%s", $enclosingDirectory, $filename);
+      $logoUrl = sprintf("%s/%s", Project::getStorageBasePath(), $logoPath);
 
-    Yii::log("writeLogoFromUrl: logoPath: " . $logoPath . " logoUrl: " . $logoUrl, "info");
+      $sourcePath = str_replace(Project::getStorageBasePath() . '/', '', $url);
+      $content = $storage->read($sourcePath);
 
-    try {
-        // Get the source path by removing the storage base path from the url
-        $sourcePath = str_replace(Project::getStorageBasePath() . '/', '', $url);
-        Yii::log("writeLogoFromUrl: Reading from source path: " . $sourcePath, "info");
+      if ($content === false) {
+          return false;
+      }
 
-        // Read content from storage
-        $content = $storage->read($sourcePath);
+      if ($storage->put(
+          $logoPath,
+          $content,
+          ['visibility' => AdapterInterface::VISIBILITY_PUBLIC]
+      )) {
+          return $logoUrl;
+      }
 
-        if ($content === false) {
-            Yii::log("writeLogoFromUrl: Failed to read content from source path", "error");
-            return false;
-        }
-
-        // Write to new location
-        if ($storage->put(
-            $logoPath,
-            $content,
-            ['visibility' => AdapterInterface::VISIBILITY_PUBLIC]
-        )) {
-            return $logoUrl;
-        }
-    } catch (\Exception $e) {
-        Yii::log("writeLogoFromUrl: Error processing file: " . $e->getMessage(), "error");
-        return false;
-    }
-
-    return false;
-}
+      return false;
+  }
 
   /**
-   * Delete an existing logo from storage
+   * Delete a temporary logo path from storage
+   *
+   * @param string $tempImageLocation a full URL for the temp logo image
+   * @return bool
+   */
+  public static function deleteTempLogo($tempImageLocation) {
+      $storage = Yii::$app->cloudStore;
+      $tempLogoPath = str_replace(Project::getStorageBasePath() . '/', '', $tempImageLocation);
+      $tempDirectory = dirname($tempLogoPath);
+
+      if ($storage->has($tempLogoPath)) {
+        $storage->deleteDir($tempDirectory);
+        return true;
+      }
+
+      return false;
+  }
+
+  /**
+   * Delete an existing logo path from storage
    *
    * @param Filesystem $targetStorage
    * @return bool
@@ -216,34 +215,22 @@ class Project extends CActiveRecord
   {
       $logoPath = $this->getLogoPath();
 
-      Yii::log("deleteLogo: Attempting to delete logo directory at " . $logoPath, "info");
-
-
-      try {
-          if ($targetStorage->has($logoPath)) {
-              if ($targetStorage->deleteDir($logoPath)) {
-                  Yii::log("deleteLogo: Successfully deleted logo directory at " . $logoPath, "info");
-                  return true;
-              }
-          }
-          Yii::log("deleteLogo: Directory not found at " . $logoPath, "warning");
-          // return true to avoid aborting project deletion
-          return true;
-      } catch (\Exception $e) {
-          Yii::log("deleteLogo: Failed to delete logo directory: " . $e->getMessage(), "error");
-          // return true to avoid aborting project deletion
-          return true;
+      if ($targetStorage->has($logoPath)) {
+          $targetStorage->deleteDir($logoPath);
       }
+
+      // return true always to avoid aborting project deletion
+      return true;
   }
 
   public function getLogoPath(): string
   {
-    return Yii::$app->params['environment'] . '/images/projects/' . $this->getUuid();
+      return Yii::$app->params['environment'] . '/images/projects/' . $this->getUuid();
   }
 
   public static function getTempLogoPath(): string
   {
-    return Yii::$app->params['environment'] . '/images/projects/temp/' . Uuid::uuid4()->toString();
+      return Yii::$app->params['environment'] . '/images/projects/temp/' . Uuid::uuid4()->toString();
   }
 
   /**
@@ -264,7 +251,6 @@ class Project extends CActiveRecord
           return false;
       }
 
-      Yii::log("Project::beforeDelete: Deleting logo for project " . $this->id, "info");
       return $this->deleteLogo(Yii::$app->cloudStore); // if this returns false, project deletion will be aborted
   }
 }
