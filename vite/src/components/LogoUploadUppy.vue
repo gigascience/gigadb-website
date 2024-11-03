@@ -45,7 +45,7 @@ const isEditing = ref(false);
 const uploadedImageLocation = ref<string | null>(props.imageLocation);
 const errorMessage = ref<string | null>(null);
 const srOnlyErrorMessage = ref<string | null>(null);
-const size = reactive({
+const imageDimensions = reactive({
   height: 0,
   width: 0,
 });
@@ -73,8 +73,8 @@ uppy.use(ImageEditor, {
     responsive: true,
     // Show current dimensions in the cropper
     crop(event) {
-      size.width = Math.round(event.detail.width);
-      size.height = Math.round(event.detail.height);
+      imageDimensions.width = Math.round(event.detail.width);
+      imageDimensions.height = Math.round(event.detail.height);
     }
   },
   actions: {
@@ -190,17 +190,19 @@ uppy.on('file-editor:complete', async (file: UppyFile<Meta, Record<string, never
 </script>
 
 <template>
-  <HiddenInput v-if="hiddenInputName" :uploaded-image-location="uploadedImageLocation" :name="hiddenInputName" />
-  <UploadedLogoDisplay :uploaded-image-location="uploadedImageLocation" />
-  <button :tabindex="isWrapperFocusable ? 0 : -1" type="button" class="uppy-dashboard-wrapper"
-    :aria-label="`Upload Logo. ${srOnlyConstraintsMessage}`" @keydown.enter="triggerUppyButton">
-    <Dashboard :uppy="uppy" :props="{
-      note: constraintsMessage,
-      proudlyDisplayPoweredByUppy: false,
-    }" />
-  </button>
-  <ImageEditorStatusDisplay v-if="isEditing" :size="size" />
-  <DashboardStatusDisplay :size="size" :error-message="errorMessage" :sr-only-error-message="srOnlyErrorMessage" />
+  <div class="app-entry-point">
+    <HiddenInput v-if="hiddenInputName" :uploaded-image-location="uploadedImageLocation" :name="hiddenInputName" />
+    <UploadedLogoDisplay :uploaded-image-location="uploadedImageLocation" />
+    <button :tabindex="isWrapperFocusable ? 0 : -1" type="button" class="uppy-dashboard-wrapper"
+      :aria-label="`Upload Logo. ${srOnlyConstraintsMessage}`" @keydown.enter="triggerUppyButton">
+      <Dashboard :uppy="uppy" :props="{
+        note: constraintsMessage,
+        proudlyDisplayPoweredByUppy: false,
+      }" />
+    </button>
+    <ImageEditorStatusDisplay v-if="isEditing" :image-dimensions="imageDimensions" />
+    <DashboardStatusDisplay :image-dimensions="imageDimensions" :error-message="errorMessage" :sr-only-error-message="srOnlyErrorMessage" />
+  </div>
 </template>
 
 <style scoped lang="less">
@@ -237,6 +239,7 @@ uppy.on('file-editor:complete', async (file: UppyFile<Meta, Record<string, never
 
 // uppy dashboard overrides to match the site theme
 :deep(.uppy-Dashboard-inner) {
+  font-family: "Open Sans", Lato, "PT Sans", Arial, "Microsoft Yahei", "Hiragino Sans GB", "WenQuanYi Zen Hei Mono", sans-serif;
   .uppy-Dashboard-browse {
     color: @color-gigadb-green;
 

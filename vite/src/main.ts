@@ -9,5 +9,19 @@ if (entryEl && entryEl instanceof HTMLElement) {
     imageLocation: entryEl.dataset.imageLocation,
     hiddenInputName: entryEl.dataset.hiddenInputName
   })
+  app.config.errorHandler = (err, _, info) => {
+    let msg = ''
+
+    if (err instanceof Error) {
+      msg = `Error: ${err.message}\nInfo: ${info}`
+    } else {
+      msg = `Error: ${err}\nInfo: ${info}`
+    }
+
+    import.meta.env.DEV && console.error(msg)
+    entryEl.textContent = import.meta.env.PROD
+      ? 'An unexpected error occurred. Please try again later.'
+      : msg
+  }
   app.mount(elId)
 }

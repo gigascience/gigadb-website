@@ -5,18 +5,19 @@ import { config } from '../config';
 const { maxHeight } = config;
 
 const props = defineProps<{
-  size: { width: number; height: number };
+  imageDimensions: { width: number; height: number };
 }>();
 
-const errorMessage = computed(() => props.size.height > maxHeight ? `Height exceeds ${maxHeight}px limit` : null)
-const srOnlyErrorMessage = computed(() => props.size.height > maxHeight ? `Image height exceeds ${maxHeight} pixels. Please crop further.` : null)
-const srOnlySuccessMessage = computed(() => props.size.height <= maxHeight ? `Image height is valid` : null)
+const isHeightExceeded = computed(() => props.imageDimensions.height > maxHeight);
+const errorMessage = computed(() => isHeightExceeded.value ? `Height exceeds ${maxHeight}px limit` : null)
+const srOnlyErrorMessage = computed(() => isHeightExceeded.value ? `Image height exceeds ${maxHeight} pixels. Please crop further.` : null)
+const srOnlySuccessMessage = computed(() => !isHeightExceeded.value ? `Image height is valid` : null)
 
 </script>
 
 <template>
-  <div v-if="props.size.width && props.size.height" class="status-display">
-    <span>Current dimensions: {{ props.size.width }}px &times; {{ props.size.height }}px</span>
+  <div v-if="props.imageDimensions.width && props.imageDimensions.height" class="status-display">
+    <span>Current dimensions: {{ props.imageDimensions.width }}px &times; {{ props.imageDimensions.height }}px</span>
     <span v-if="errorMessage" class="status-error" aria-hidden="true">
       {{ errorMessage }}
     </span>
