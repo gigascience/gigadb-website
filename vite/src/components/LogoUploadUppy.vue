@@ -106,6 +106,7 @@ function openFileEditor(file: UppyFile<Meta, Record<string, never>>) {
 
 async function handleImageHeightMsgs(file: UppyFile<Meta, Record<string, never>>, cbTooTall?: () => void) {
   const { height } = await getUppyImgDimensions(file);
+
   if (height > maxHeight) {
     errorMessage.value = `Image height (${height}px) exceeds ${maxHeight}px - please crop the image using the editor`;
     srOnlyErrorMessage.value = `Image height of ${height} pixels exceeds maximum of ${maxHeight} pixels. Please crop the image using the editor.`;
@@ -134,6 +135,10 @@ uppy.on('file-removed', () => {
 });
 
 // uppy upload events
+uppy.on('upload-start', () => {
+  errorMessage.value = '';
+});
+
 uppy.on('upload-success', (file, response) => {
   if (response.body?.success) {
     const { image_location } = response.body;
@@ -143,20 +148,24 @@ uppy.on('upload-success', (file, response) => {
 
 // parse response from upload server endpoint
 uppy.on('upload-error', (file, error, response) => {
+  const defaultError = 'Failed to upload file. Please try again.';
+
+  if (!response) {
+    errorMessage.value = defaultError;
+    return;
+  }
+
   if (typeof response === 'string') {
     try {
-      const errorData = JSON.parse(response);
-      errorMessage.value = errorData.message;
+      const { message } = JSON.parse(response);
+      errorMessage.value = message || defaultError;
     } catch {
-      errorMessage.value = 'Failed to upload file. Please try again.';
+      errorMessage.value = defaultError;
     }
-  } else {
-    errorMessage.value = 'Failed to upload file. Please try again.';
+    return;
   }
-});
 
-uppy.on('upload-start', () => {
-  errorMessage.value = '';
+  errorMessage.value = defaultError;
 });
 
 // file-editor plugin events
@@ -169,7 +178,7 @@ uppy.on('file-editor:cancel', async (file: UppyFile<Meta, Record<string, never>>
 
 uppy.on('file-editor:complete', async (file: UppyFile<Meta, Record<string, never>>) => {
   try {
-    // NOTE not forcefully opening the editor again here either, because user might decide to click "save" with the idea to switch image
+    // NOTE not forcefully opening the editor again here, because user might decide to click "save" with the idea to switch image
     await handleImageHeightMsgs(file);
   } catch (error) {
     errorMessage.value = 'Error verifying image dimensions';

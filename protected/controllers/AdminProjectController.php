@@ -25,7 +25,7 @@ class AdminProjectController extends Controller
 	{
 		return array(
 			array('allow', // admin only
-				'actions'=>array('admin','delete','index','view','create','update','uploadLogo'),
+				'actions'=>array('admin','delete','index','view','create','update','uploadTempLogo'),
 				'roles'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -51,24 +51,99 @@ class AdminProjectController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new Project;
+		Yii::log("actionCreate: Starting project creation", "info");
+		$model = new Project;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
 		if(isset($_POST['Project']))
 		{
+			Yii::log("actionCreate: POST data received - " . print_r($_POST['Project'], true), "info");
 			$model->attributes=$_POST['Project'];
-      // save logo in permanent storage
-      $model->writeLogo(Yii::$app->cloudStore, Yii::$app->params['environment'] . '/' . 'images/projects/' . $model->getUuid(), $model->logo_image);
-			if($model->save())
+      $storage = Yii::$app->cloudStore;
+      $tempImageLocation = $model->image_location;
+      $model->image_location = null;
+
+      Yii::log("actionCreate: Project attributes - " . print_r($model->attributes, true), "info");
+      Yii::log("actionCreate: Temp image location - " . $tempImageLocation, "info");
+
+			if($model->save()) {
+				Yii::log("actionCreate: Project saved successfully with ID " . $model->id, "info");
+         // first we need to get the project id, and then we create the logo path deterministically
+          if ($tempImageLocation) {
+            Yii::log("actionCreate: Processing temp image at " . $tempImageLocation, "info");
+            // get file from url and save it in project folder (instance dependent, deterministic path)
+            $logoUrl = $model->writeLogoFromUrl($storage, $tempImageLocation);
+            Yii::log("actionCreate: Logo URL after writeLogoFromUrl - " . ($logoUrl ?: 'null'), "info");
+            $tempLogoPath = str_replace(Project::getStorageBasePath() . '/', '', $tempImageLocation);
+            $tempDirectory = dirname($tempLogoPath);
+
+            // delete file from payload url (it's always temp url)
+            if ($storage->has($tempLogoPath)) {
+                Yii::log("actionCreate: Attempting to delete temp file at " . $tempLogoPath, "info");
+                if ($storage->deleteDir($tempDirectory)) {
+                    Yii::log("actionCreate: Deleted temp dir " . $tempDirectory, "info");
+                } else {
+                    Yii::log("actionCreate: Failed to delete temp dir " . $tempDirectory, "warning");
+                }
+            } else {
+                Yii::log("actionCreate: Temp image not found at " . $tempImageLocation, "warning");
+            }
+
+            if ($logoUrl) {
+                Yii::log("actionCreate: Updating project with new logo URL - " . $logoUrl, "info");
+                // Update only the image_location and skip validation of other fields
+                $model->image_location = $logoUrl;
+                // Use updateByPk to bypass validation
+                Project::model()->updateByPk($model->id, array('image_location' => $logoUrl));
+                Yii::log("actionCreate: Project updated with logo URL successfully", "info");
+            }
+          }
 				$this->redirect(array('view','id'=>$model->id));
+      } else {
+          Yii::log("actionCreate: Failed to save project - " . print_r($model->getErrors(), true), "error");
+      }
 		}
 
 		$this->render('create',array(
 			'model'=>$model,
 		));
 	}
+
+  public function actionUploadTempLogo() {
+    Yii::log("actionUploadTempLogo: ", "info");
+    if (!isset($_FILES['logo_image'])) {
+      $this->makeResponse(400, 'Invalid request. No file was uploaded.');
+    }
+
+    // get multipart data file from request
+    $uploadedLogoFile = CUploadedFile::getInstanceByName('logo_image');
+
+    if ($uploadedLogoFile->getSize() > 1_000_000) {
+      $message = 'Invalid request. Logo image size should be less than 1MB';
+      Yii::app()->user->setFlash('updateError', $message);
+      $this->makeResponse(400, $message);
+    }
+
+    $storage = Yii::$app->cloudStore;
+
+    // save file to temp folder
+    if ($uploadedLogoFile) {
+      $image_location = Project::writeLogoFromFile($storage, Project::getTempLogoPath(), $uploadedLogoFile);
+    }
+
+    if (!$image_location) {
+      $message = 'Failed to save your logo image';
+      Yii::app()->user->setFlash('updateError', $message);
+      $this->makeResponse(500, $message);
+    }
+
+    // return temp file url
+    $this->makeResponse(200, 'Logo uploaded successfully', [
+      'image_location' => $image_location
+    ]);
+  }
 
   /**
    * Make a JSON response with the given code, message, and payload.
@@ -87,39 +162,6 @@ class AdminProjectController extends Controller
     Yii::app()->end();
   }
 
-  /**
-   * Upload a logo image
-   */
-  public function actionUploadLogo() {
-    // $existingLogoUrl = Yii::app()->request->getQuery('existingLogoUrl');
-    if (!isset($_FILES['logo_image'])) {
-      $this->makeResponse(400, 'Invalid request. No file was uploaded.');
-    }
-
-    $uploadedLogo = CUploadedFile::getInstanceByName('logo_image');
-
-    if ($uploadedLogo->getSize() > 1_000_000) {
-      $message = 'Invalid request. Logo image size should be less than 1MB';
-      Yii::app()->user->setFlash('updateError', $message);
-      $this->makeResponse(400, $message);
-    }
-
-    $random_uuid = Uuid::uuid4()->toString();
-    $temp_logo_dir = Yii::$app->params['environment'] . '/images/projects/temp/' . $random_uuid;
-    $image_location = Project::writeLogo(Yii::$app->cloudStore, $temp_logo_dir, $uploadedLogo);
-    // no need to delete logs from temp directory, that can be done with cron job
-
-    if (!$image_location) {
-      $message = 'Failed to save your logo image';
-      Yii::app()->user->setFlash('updateError', $message);
-      $this->makeResponse(500, $message);
-    }
-
-    $this->makeResponse(200, 'Logo uploaded successfully', [
-      'image_location' => $image_location
-    ]);
-  }
-
 	/**
 	 * Updates a particular model.
 	 * If update is successful, the browser will be redirected to the 'view' page.
@@ -127,16 +169,74 @@ class AdminProjectController extends Controller
 	 */
 	public function actionUpdate($id)
 	{
-		$model=$this->loadModel($id);
+		Yii::log("actionUpdate: Starting update for project ID: $id", "info");
+		$model = $this->loadModel($id);
+		Yii::log("actionUpdate: Loaded model with name: " . $model->name, "info");
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
 		if(isset($_POST['Project']))
 		{
-			$model->attributes=$_POST['Project'];
-			if($model->save())
+      Yii::log("actionUpdate: Processing POST data for project", "info");
+      $prevAttributes = $model->attributes;
+      $newAttributes = $_POST['Project'];
+      Yii::log("actionUpdate: Previous image_location: " . $prevAttributes['image_location'], "info");
+      Yii::log("actionUpdate: New image_location: " . $newAttributes['image_location'], "info");
+
+			$model->attributes = $newAttributes;
+      $storage = Yii::$app->cloudStore;
+
+      // if there is a logo url and it's different from the previous one
+      if ($model->image_location && $model->image_location !== $prevAttributes['image_location']) {
+          Yii::log("actionUpdate: Detected logo change, processing new logo", "info");
+
+          // Delete old logo if it exists
+          if ($prevAttributes['image_location']) {
+              $oldPath = str_replace(Project::getStorageBasePath() . '/', '', $prevAttributes['image_location']);
+              $oldDir = dirname($oldPath);
+              if ($storage->has($oldPath)) {
+                  $deleteResult = $storage->deleteDir($oldDir);
+                  Yii::log("actionUpdate: Old logo deletion result: " . ($deleteResult ? 'success' : 'failed'), "info");
+              } else {
+                  Yii::log("actionUpdate: Old logo file not found at: " . $oldPath, "warning");
+              }
+          }
+
+          // save new file
+          $logoUrl = $model->writeLogoFromUrl($storage, $model->image_location);
+          Yii::log("actionUpdate: New logo URL: " . ($logoUrl ?: 'failed to generate'), "info");
+          if ($logoUrl) {
+              $model->image_location = $logoUrl;
+          } else {
+              Yii::log("actionUpdate: Failed to write new logo from URL", "error");
+          }
+
+          // TODO refactor into helper function
+          $tempImageLocation = $newAttributes['image_location'];
+          $tempLogoPath = str_replace(Project::getStorageBasePath() . '/', '', $tempImageLocation);
+          $tempDirectory = dirname($tempLogoPath);
+
+          // delete temp file
+          if ($storage->has($tempLogoPath)) {
+              Yii::log("actionCreate: Attempting to delete temp file at " . $tempLogoPath, "info");
+              if ($storage->deleteDir($tempDirectory)) {
+                  Yii::log("actionCreate: Deleted temp dir " . $tempDirectory, "info");
+              } else {
+                  Yii::log("actionCreate: Failed to delete temp dir " . $tempDirectory, "warning");
+              }
+          } else {
+              Yii::log("actionCreate: Temp image not found at " . $tempImageLocation, "warning");
+          }
+      }
+
+      // NOTE I think saving the model will trigger validation and thus fail if the URL or name are left unchanged
+			if($model->save()) {
+				Yii::log("actionUpdate: Successfully saved project changes", "info");
 				$this->redirect(array('view','id'=>$model->id));
+			} else {
+				Yii::log("actionUpdate: Failed to save project changes. Errors: " . print_r($model->getErrors(), true), "error");
+			}
 		}
 
 		$this->render('update',array(
@@ -151,36 +251,38 @@ class AdminProjectController extends Controller
 	 */
 	public function actionDelete($id)
 	{
-    Yii::log("delete: $id");
-    $storageBasePath = ''; // 'https://' . self::BUCKET
+		Yii::log("actionDelete: Starting deletion process for project ID: $id", "info");
+
 		if(Yii::app()->request->isPostRequest)
 		{
+			Yii::log("actionDelete: Received valid POST request", "info");
+
 			// we only allow deletion via POST request
 			$model = $this->loadModel($id);
-      $logoUrl = $model->image_location;
-      $logoPath = str_replace($storageBasePath . '/', '', $logoUrl);
+			Yii::log("actionDelete: Loaded project model with name: " . $model->name, "info");
 
-      // I expected YII_ENV_DEV to be true but it's not defined, so using a hardcoded temporary approach for now so app does not crash each time
-      // $isTester = false;
-      // if ($isTester) {
-      //   Yii::log("actionDelete: Tester environment, skipping actual delete", "info");
-      // } else {
-      // }
-      if (Yii::$app->cloudStore->delete($logoPath)) {
-        Yii::log("actionDelete: Deleted logo image" . $logoPath . " for project ". $id, "info");
-      }  else {
-        // fail silently
-        Yii::log("actionDelete: Failed to delete logo image" . $logoPath . " for project ". $id, "error");
-      }
-
-      $model->delete();
+			try {
+				if($model->delete()) {
+					Yii::log("actionDelete: Successfully deleted project with ID: $id", "info");
+				} else {
+					Yii::log("actionDelete: Failed to delete project. Errors: " . print_r($model->getErrors(), true), "error");
+				}
+			} catch(\Exception $e) {
+				Yii::log("actionDelete: Exception while deleting project: " . $e->getMessage(), "error");
+				throw $e;
+			}
 
 			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-			if(!isset($_GET['ajax']))
-				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+			if(!isset($_GET['ajax'])) {
+				$redirectUrl = isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin');
+				Yii::log("actionDelete: Redirecting to: " . print_r($redirectUrl, true), "info");
+				$this->redirect($redirectUrl);
+			}
 		}
-		else
+		else {
+			Yii::log("actionDelete: Invalid request method - must be POST", "error");
 			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+		}
 	}
 
 	/**

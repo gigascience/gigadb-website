@@ -35,7 +35,7 @@
 		]);
 
     $existingImageLocation = $model->image_location ?: null;
-    $uploadLogoEndpoint = Yii::app()->createUrl('/adminProject/uploadLogo');
+    $uploadLogoEndpoint = Yii::app()->createUrl('/adminProject/uploadTempLogo');
 		?>
 
     <div id="vue-client_project-image-logo" data-image-location="<?php echo $existingImageLocation; ?>" data-endpoint="<?php echo $uploadLogoEndpoint; ?>" data-hidden-input-name="Project[image_location]">

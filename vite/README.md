@@ -2,10 +2,17 @@
 
 ## Tasks
 
-- [ ] add sr-only text to browse files button: upload logo, please upload one file as logo. maximum height, etc
-- [ ] adapt style to match gigadb theme, in the style.css file or in the component itself, or even better use directly the gigadb styles
-- [ ] the hidden file input should have a specific id for the backend controller (maybe with the metafields option?)
-- [ ] make the upload button displayed after adding file responsive (there's something apparent happening after user clicks it) or remove it (what does it do?)
+- [x] add sr-only text to browse files button: upload logo, please upload one file as logo. maximum height, etc
+- [x] adapt style to match gigadb theme, in the style.css file or in the component itself, or even better use directly the gigadb styles
+- [ ] try to use variables.less for colors
+- [x] create adds a new image to project
+- [x] update overrides image (delete old and create new)
+- [x] delete deletes image
+- [ ] refactor and delete logs
+- [ ] run related test suites
+- [ ] write new tests to cover new functionality
+- [ ] should work in production (i.e. prod container)
+- [ ] replace local values by production values
 
 ## Usage
 
