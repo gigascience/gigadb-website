@@ -61,7 +61,17 @@ const uppy = new Uppy({
     maxNumberOfFiles: 1,
     allowedFileTypes: ['image/*'],
     maxFileSize: maxSize,
-  }
+  },
+  onBeforeUpload: () => {
+		if (imageDimensions.height > maxHeight) {
+			uppy.log(
+				errorMessage.value ?? ''
+			);
+			uppy.info(errorMessage.value ?? '', 'error');
+			return false;
+		}
+		return true;
+	},
 })
 
 uppy.use(ImageEditor, {
@@ -105,7 +115,10 @@ function openFileEditor(file: UppyFile<Meta, Record<string, never>>) {
 }
 
 async function handleImageHeightMsgs(file: UppyFile<Meta, Record<string, never>>, cbTooTall?: () => void) {
-  const { height } = await getUppyImgDimensions(file);
+  const { height, width } = await getUppyImgDimensions(file);
+
+  imageDimensions.width = width;
+  imageDimensions.height = height;
 
   if (height > maxHeight) {
     errorMessage.value = `Image height (${height}px) exceeds ${maxHeight}px - please crop the image using the editor`;
