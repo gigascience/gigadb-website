@@ -65,7 +65,9 @@ docker-compose run --rm js bash -c "cd /var/www/ops/scripts/ && npm install"
 docker-compose run --rm js
 
 # Build and deploy the vite-project-image-location dev server
-docker-compose up -d --build vite-project-image-location-dev
+# docker-compose run --rm -w /var/www/vite vite-project-image-location-prod bash -c "npm install"
+docker-compose run --rm vite-project-image-location-prod bash -c "npm install"
+docker-compose run --rm vite-project-image-location-prod
 
 # Start Chome web driver container services for acceptance testing
 docker-compose up -d chrome

@@ -36,7 +36,7 @@
 
     $existingImageLocation = $model->image_location ?: null;
     $uploadLogoEndpoint = Yii::app()->createUrl('/adminProject/uploadTempLogo');
-    $manifestPath = Yii::getAlias('js/vite-logo-upload/.vite/manifest.json');
+    $manifestPath = Yii::getAlias('js/vite-logo-upload-1.0.0/.vite/manifest.json');
     $manifest = [];
 
     if (file_exists($manifestPath)) {
@@ -65,13 +65,13 @@
       <!-- CSS for the entry point -->
       <?php if (isset($entry['css'])): ?>
         <?php foreach ($entry['css'] as $cssFile): ?>
-          <link rel="stylesheet" href="/js/vite-logo-upload/<?= $cssFile ?>" />
+          <link rel="stylesheet" href="/js/vite-logo-upload-1.0.0/<?= $cssFile ?>" />
         <?php endforeach; ?>
       <?php endif; ?>
 
       <!-- Main script file -->
       <?php if (isset($entry['file'])): ?>
-        <script type="module" src="/js/vite-logo-upload/<?= $entry['file'] ?>"></script>
+        <script type="module" src="/js/vite-logo-upload-1.0.0/<?= $entry['file'] ?>"></script>
       <?php endif; ?>
     <?php endif; ?>
 

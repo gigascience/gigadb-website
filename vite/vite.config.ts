@@ -13,7 +13,6 @@ export default defineConfig({
     modulePreload: {
       polyfill: false,
     },
-    outDir: '../js/vite-logo-upload',
     emptyOutDir: true,
   },
   server: {

@@ -91,6 +91,7 @@ vault
 staging_vault
 live_vault
 js/fuw-*
+js/vite-logo-upload-*
 
 # docs
 docs/apidocs/phpdoc-cache-*

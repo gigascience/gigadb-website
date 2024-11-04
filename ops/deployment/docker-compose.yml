@@ -721,13 +721,16 @@ services:
     ports:
       - 5173:5173
 
+  # Using similar workflow as js service
   vite-project-image-location-prod:
-    build:
-      context: ${APPLICATION}/vite
-      dockerfile: Dockerfile-prod
-      args:
-        - NODE_VERSION=$NODE_VERSION
+    image: node:$NODE_VERSION-bullseye-slim
+    working_dir: /var/www/vite
+    volumes:
+      - ${APPLICATION}/:/var/www
     shm_size: '1gb'
+    command: bash -c "npm run test:unit ; npm run build ; npm run deploy"
+    networks:
+      - web-tier
 
 networks:
   web-tier:
