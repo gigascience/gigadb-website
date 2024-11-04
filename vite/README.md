@@ -16,34 +16,36 @@
 
 ## Usage
 
-### Dev
+## Local dev
 
-Run `./up.sh` script from root. This should build and run the docker container with the vite dev server and hot reloading
-
-Alternatively, run and build isolated from command line:
-
-Useful docker commands:
+If you need to do local development, simply run the following commands (you will need `node` and `npm` installed on your machine):
 
 ```bash
-# (re)build and run container (e.g. if Dockerfile changed)
-NODE_VERSION=20.11.0 APPLICATION=../.. docker-compose -f ops/deployment/docker-compose.yml up --build vite-project-image-location-dev -d
-# run container
-NODE_VERSION=20.11.0 APPLICATION=../.. docker-compose -f ops/deployment/docker-compose.yml up vite-project-image-location-dev -d
-# stop container
-docker-compose down vite-project-image-location-dev
-# remove dangling images after building
-docker image prune -f
-# remove dangling volumes
-docker volume prune -f
-# Full cleanup
-docker system prune -a -f --volumes
+cd vite
+npm install
+npm run dev
 ```
 
-Dependencies are installed within the container. To install a new dependency:
+The app should be served from http://localhost:5173
+
+Because the vite config is not using a index.html as entry point, no app is visible directly on that URL though.
+
+Then make sure the entry point in the php application is using the local dev server
+
+```php
+<script type="module" src="http://localhost:5173/@vite/client"></script>
+<script type="module" src="http://localhost:5173/src/main.ts"></script>
+```
+
+### Production
+
+Run `./up.sh` script from root. This should bundle the app and copy it to the js folder for the php application to use.
+
+To build the app in isolation from the rest of the commands, you can run the following commands from root:
 
 ```bash
-# access the container (run from root folder)
-docker-compose exec vite-project-image-location-dev sh
-# install new dependency
-npm install <package-name>
+NODE_VERSION=20.11.0 APPLICATION=../.. docker-compose run --rm vite-project-image-location-prod bash -c "npm install"
+NODE_VERSION=20.11.0 APPLICATION=../..docker-compose run --rm vite-project-image-location-prod
 ```
+
+Make sure the entry point of the php application is using the bundled files. You can see an example in `protected/views/adminProject/_form.php`

@@ -705,22 +705,6 @@ services:
       - le_config:/ca
     command: --domains '*.gigasciencejournal.com'
 
-  # Vite dev server for project image location
-  vite-project-image-location-dev:
-    build:
-      context: ${APPLICATION}/vite
-      dockerfile: Dockerfile-dev
-      args:
-        - NODE_VERSION=$NODE_VERSION
-    volumes:
-      # share host source code with the container to allow hot-reloading
-      - ${APPLICATION}/vite:/app:delegated
-      # use local node_modules
-      - /app/node_modules
-    shm_size: '1gb' # to avoid a known issue
-    ports:
-      - 5173:5173
-
   # Using similar workflow as js service
   vite-project-image-location-prod:
     image: node:$NODE_VERSION-bullseye-slim
