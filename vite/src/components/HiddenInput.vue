@@ -6,5 +6,5 @@ const props = defineProps<{
 </script>
 
 <template>
-  <input type="hidden" :name="props.name" :value="props.uploadedImageLocation" />
+  <input type="hidden" :name="props.name" :value="props.uploadedImageLocation || ''" />
 </template>

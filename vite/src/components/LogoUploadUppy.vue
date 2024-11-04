@@ -157,8 +157,8 @@ uppy.on('upload-error', (_, __, response) => {
 
   if (typeof response === 'string') {
     try {
-      const { message } = JSON.parse(response);
-      errorMessage.value = message || defaultError;
+      const parsedResponse = JSON.parse(response);
+      errorMessage.value = parsedResponse?.message || defaultError;
     } catch {
       errorMessage.value = defaultError;
     }
@@ -190,19 +190,17 @@ uppy.on('file-editor:complete', async (file: UppyFile<Meta, Record<string, never
 </script>
 
 <template>
-  <div class="app-entry-point">
-    <HiddenInput v-if="hiddenInputName" :uploaded-image-location="uploadedImageLocation" :name="hiddenInputName" />
-    <UploadedLogoDisplay :uploaded-image-location="uploadedImageLocation" />
-    <button :tabindex="isWrapperFocusable ? 0 : -1" type="button" class="uppy-dashboard-wrapper"
-      :aria-label="`Upload Logo. ${srOnlyConstraintsMessage}`" @keydown.enter="triggerUppyButton">
-      <Dashboard :uppy="uppy" :props="{
-        note: constraintsMessage,
-        proudlyDisplayPoweredByUppy: false,
-      }" />
-    </button>
-    <ImageEditorStatusDisplay v-if="isEditing" :image-dimensions="imageDimensions" />
-    <DashboardStatusDisplay :image-dimensions="imageDimensions" :error-message="errorMessage" :sr-only-error-message="srOnlyErrorMessage" />
-  </div>
+  <HiddenInput v-if="hiddenInputName" :uploaded-image-location="uploadedImageLocation" :name="hiddenInputName" />
+  <UploadedLogoDisplay :uploaded-image-location="uploadedImageLocation" />
+  <button :tabindex="isWrapperFocusable ? 0 : -1" type="button" class="uppy-dashboard-wrapper"
+    :aria-label="`Upload Logo. ${srOnlyConstraintsMessage}`" @keydown.enter="triggerUppyButton">
+    <Dashboard :uppy="uppy" :props="{
+      note: constraintsMessage,
+      proudlyDisplayPoweredByUppy: false,
+    }" />
+  </button>
+  <ImageEditorStatusDisplay v-if="isEditing" :image-dimensions="imageDimensions" />
+  <DashboardStatusDisplay :error-message="errorMessage" :sr-only-error-message="srOnlyErrorMessage" />
 </template>
 
 <style scoped lang="less">

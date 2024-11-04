@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:unit": "vitest"
   },
   "dependencies": {
     "@uppy/dashboard": "^4.1.1",
@@ -20,9 +21,14 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.1.4",
+    "@vue/compiler-dom": "^3.5.12",
+    "@vue/server-renderer": "^3.5.12",
+    "@vue/test-utils": "^2.4.6",
+    "happy-dom": "^15.8.2",
     "less": "^4.2.0",
     "typescript": "^5.5.3",
     "vite": "^5.4.8",
+    "vitest": "^2.1.4",
     "vue-tsc": "^2.1.6"
   }
 }
