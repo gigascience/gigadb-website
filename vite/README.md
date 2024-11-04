@@ -1,22 +1,8 @@
 # Vue client for project image location
 
-## Tasks
-
-- [x] add sr-only text to browse files button: upload logo, please upload one file as logo. maximum height, etc
-- [x] adapt style to match gigadb theme, in the style.css file or in the component itself, or even better use directly the gigadb styles
-- [ ] try to use variables.less for colors
-- [x] create adds a new image to project
-- [x] update overrides image (delete old and create new)
-- [x] delete deletes image
-- [x] refactor and delete logs
-- [x] run related test suites
-- [-] write new tests to cover new functionality
-- [x] should work in production (i.e. prod container)
-- [ ] replace local values by production values
-
 ## Usage
 
-## Local dev
+### Local dev
 
 If you need to do local development, simply run the following commands (you will need `node` and `npm` installed on your machine):
 
