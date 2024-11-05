@@ -1,117 +1,5 @@
-<style>
-  /* Container styles */
-  .news-container {
-    padding: 0;
-  }
-
-  /* Carousel layout */
-  .carousel-inner>.item>.row {
-    display: flex;
-    flex-wrap: wrap;
-    margin-block: 0;
-    /* offset news block padding */
-    margin-inline: -5px;
-  }
-
-  /* News item styles */
-  .news-item {
-    flex: 1 0 auto;
-    padding: 5px;
-    max-width: 100%;
-  }
-
-  .news-block {
-    margin: 0;
-    padding: 15px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    height: 200px;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .news-block h5 {
-    margin-top: 0;
-    margin-bottom: 10px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .news-block p {
-    flex-grow: 1;
-    margin-bottom: 10px;
-    overflow: hidden;
-  }
-
-  /* Carousel controls */
-  .carousel-control {
-    width: 40px;
-    height: 40px;
-    background-color: transparent;
-    color: #08893e;
-    border-radius: 50%;
-    top: 50%;
-    transform: translateY(-50%);
-    opacity: 1;
-    background-image: none !important;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    position: absolute;
-  }
-
-  .carousel-control:hover,
-  .carousel-control:focus {
-    color: #0d6e36;
-    text-decoration: none;
-    outline: none;
-  }
-
-  .carousel-control:focus {
-    outline-offset: 2px;
-    outline: solid 2px #0d6e36;
-  }
-
-  /* Carousel indicators */
-  .carousel-indicators {
-    bottom: -30px;
-    margin-bottom: 0;
-  }
-
-  .carousel-indicators li {
-    border-color: #08893e;
-  }
-
-  .carousel-indicators .active {
-    background-color: #08893e;
-  }
-
-  @media (min-width: 768px) {
-    .news-item {
-      max-width: 50%;
-    }
-  }
-
-  @media (min-width: 992px) {
-    .news-item {
-      max-width: 33.33%;
-    }
-
-    .carousel-control.left {
-      left: -50px;
-    }
-
-    .carousel-control.right {
-      right: -50px;
-    }
-  }
-</style>
-
 <div id="myNews" class="news-container">
   <div id="newsCarousel" class="carousel slide" data-ride="carousel" data-interval="false">
-    <ol class="carousel-indicators"></ol>
 
     <div class="carousel-inner">
       <?php foreach ($news as $index => $temp_news): ?>
@@ -144,6 +32,8 @@
       <span class="fa fa-chevron-right" aria-hidden="true"></span>
       <span class="sr-only">Next news</span>
     </a>
+
+    <ol class="carousel-indicators"></ol>
   </div>
 </div>
 
@@ -174,11 +64,17 @@
         $carouselInner.append($slide);
 
         $indicators.append(
-          $('<li>')
-            .attr({
-              'data-target': '#newsCarousel',
-              'data-slide-to': i / chunkSize
-            })
+          $('<li class="carousel-indicator">')
+            .append(
+              $('<a class="carousel-indicator-link">')
+                .attr({
+                  'href': '#',
+                  'data-target': '#newsCarousel',
+                  'data-slide-to': i / chunkSize,
+                  'role': 'button',
+                  'aria-label': `Go to slide ${i / chunkSize + 1}`
+                })
+            )
             .toggleClass('active', i === 0)
         );
       }

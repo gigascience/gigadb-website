@@ -1,0 +1,124 @@
+.news-section {
+  .news-container {
+    padding: 0;
+  }
+
+  .carousel-inner > .item > .row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-block: 0;
+    /* offset news block padding */
+    margin-inline: -5px;
+  }
+
+  .news-item {
+    flex: 1 0 auto;
+    padding: 5px;
+    max-width: 100%;
+  }
+
+  .news-block {
+    margin: 0;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .news-block h5 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .news-block p {
+    flex-grow: 1;
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+
+  .carousel-control {
+    width: 40px;
+    height: 40px;
+    background-color: transparent;
+    color: @color-gigadb-green;
+    border-radius: 50%;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 1;
+    background-image: none !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    position: absolute;
+  }
+
+  .carousel-control:hover,
+  .carousel-control:focus {
+    color: @color-gigadb-green-800;
+    text-decoration: none;
+    outline: none;
+  }
+
+  .carousel-control:focus {
+    outline-offset: 2px;
+    outline: solid 2px @color-gigadb-green-800;
+  }
+
+  .carousel-indicators {
+    bottom: -30px;
+    margin-bottom: 0;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .carousel-indicators .carousel-indicator {
+    border-color: @color-gigadb-green;
+    scale: 1;
+    transition: scale 0.3s ease-in-out;
+    .carousel-indicator-link {
+      display: block;
+      height: 100%;
+      width: 100%;
+      border-radius: 50%;
+      &:hover {
+        background-color: @color-gigadb-green-800;
+      }
+      &:focus {
+        outline-offset: 2px;
+        outline: solid 2px @color-gigadb-green;
+      }
+    }
+  }
+
+  .carousel-indicators .active {
+    background-color: @color-gigadb-green;
+    scale: 1.1;
+  }
+
+  @media (min-width: 768px) {
+    .news-item {
+      max-width: 50%;
+    }
+  }
+
+  @media (min-width: 992px) {
+    .news-item {
+      max-width: 33.33%;
+    }
+
+    .carousel-control.left {
+      left: -50px;
+    }
+
+    .carousel-control.right {
+      right: -50px;
+    }
+  }
+}
