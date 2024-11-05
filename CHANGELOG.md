@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Fix #2042: Batch deletion of file attributes and samples
+
 ## v4.3.9 - 2024-10-28 - 961f7821a -
 
 - Fix #1838: switch datepicker format to yyy-mm-dd
