@@ -5,8 +5,8 @@
       <?php foreach ($news as $index => $temp_news): ?>
         <div class="news-item">
           <div class="news-block">
-            <h5><?php echo htmlspecialchars($temp_news->title); ?></h5>
-            <p>
+            <h5 class="news-title"><?php echo htmlspecialchars($temp_news->title); ?></h5>
+            <p class="news-body">
               <?php
               $body = htmlspecialchars($temp_news->body);
               if (mb_strlen($body) > 100) {
@@ -17,7 +17,7 @@
               ?>
             </p>
             <?php
-            echo CHtml::link("See More", array("news/view", 'id' => $temp_news->id), array('class' => 'btn btn-link'));
+            echo CHtml::link("See More", array("news/view", 'id' => $temp_news->id), array('class' => 'btn btn-link news-more-link'));
             ?>
           </div>
         </div>

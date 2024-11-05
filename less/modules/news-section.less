@@ -15,30 +15,31 @@
     flex: 1 0 auto;
     padding: 5px;
     max-width: 100%;
-  }
-
-  .news-block {
-    margin: 0;
-    padding: 15px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    height: 200px;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .news-block h5 {
-    margin-top: 0;
-    margin-bottom: 10px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .news-block p {
-    flex-grow: 1;
-    margin-bottom: 10px;
-    overflow: hidden;
+    .news-block {
+      margin: 0;
+      padding: 15px;
+      border: 1px solid @color-medium-gray;
+      border-radius: 4px;
+      height: 200px;
+      display: flex;
+      flex-direction: column;
+      .news-title {
+        margin-top: 0;
+        margin-bottom: 10px;
+        padding-bottom: 5px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .news-body {
+        flex-grow: 1;
+        margin-bottom: 10px;
+        overflow: hidden;
+      }
+      .news-more-link {
+        align-self: flex-end;
+      }
+    }
   }
 
   .carousel-control {
@@ -56,18 +57,16 @@
     justify-content: center;
     text-decoration: none;
     position: absolute;
-  }
-
-  .carousel-control:hover,
-  .carousel-control:focus {
-    color: @color-gigadb-green-800;
-    text-decoration: none;
-    outline: none;
-  }
-
-  .carousel-control:focus {
-    outline-offset: 2px;
-    outline: solid 2px @color-gigadb-green-800;
+    &:hover,
+    &:focus {
+      color: @color-gigadb-green-800;
+      text-decoration: none;
+      outline: none;
+    }
+    &:focus {
+      outline-offset: 2px;
+      outline: solid 2px @color-gigadb-green-800;
+    }
   }
 
   .carousel-indicators {
@@ -76,30 +75,28 @@
     display: flex;
     justify-content: center;
     gap: 8px;
-  }
-
-  .carousel-indicators .carousel-indicator {
-    border-color: @color-gigadb-green;
-    scale: 1;
-    transition: scale 0.3s ease-in-out;
-    .carousel-indicator-link {
-      display: block;
-      height: 100%;
-      width: 100%;
-      border-radius: 50%;
-      &:hover {
-        background-color: @color-gigadb-green-800;
+    .carousel-indicator {
+      border-color: @color-gigadb-green;
+      scale: 1;
+      transition: scale 0.3s ease-in-out;
+      &.active {
+        background-color: @color-gigadb-green;
+        scale: 1.1;
       }
-      &:focus {
-        outline-offset: 2px;
-        outline: solid 2px @color-gigadb-green;
+      .carousel-indicator-link {
+        display: block;
+        height: 100%;
+        width: 100%;
+        border-radius: 50%;
+        &:hover {
+          background-color: @color-gigadb-green-800;
+        }
+        &:focus {
+          outline-offset: 2px;
+          outline: solid 2px @color-gigadb-green;
+        }
       }
     }
-  }
-
-  .carousel-indicators .active {
-    background-color: @color-gigadb-green;
-    scale: 1.1;
   }
 
   @media (min-width: 768px) {
