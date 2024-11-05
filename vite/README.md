@@ -31,7 +31,7 @@ To build the app in isolation from the rest of the commands, you can run the fol
 
 ```bash
 NODE_VERSION=20.11.0 APPLICATION=../.. docker-compose run --rm vite-project-image-location-prod bash -c "npm install"
-NODE_VERSION=20.11.0 APPLICATION=../..docker-compose run --rm vite-project-image-location-prod
+NODE_VERSION=20.11.0 APPLICATION=../.. docker-compose run --rm vite-project-image-location-prod
 ```
 
 Make sure the entry point of the php application is using the bundled files. You can see an example in `protected/views/adminProject/_form.php`
