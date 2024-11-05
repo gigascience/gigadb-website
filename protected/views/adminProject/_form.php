@@ -55,7 +55,7 @@
       <div class="spinner"></div>
     </div>
     <?php
-    $isDev = true; // TODO use a way to detect if we are in dev or prod environment
+    $isDev = false;
     ?>
     <?php if ($isDev): ?>
       <script type="module" src="http://localhost:5173/@vite/client"></script>
