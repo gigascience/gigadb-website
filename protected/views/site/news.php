@@ -8,9 +8,10 @@
             <h3 class="news-title"><?php echo htmlspecialchars($temp_news->title); ?></h3>
             <p class="news-body">
               <?php
+              $excerpt_max_length = 200;
               $body = htmlspecialchars($temp_news->body);
-              if (mb_strlen($body) > 100) {
-                echo mb_substr($body, 0, 100) . "...";
+              if (mb_strlen($body) > $excerpt_max_length) {
+                echo mb_substr($body, 0, $excerpt_max_length) . "...";
               } else {
                 echo $body;
               }
