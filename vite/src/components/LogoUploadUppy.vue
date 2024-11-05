@@ -203,17 +203,19 @@ uppy.on('file-editor:complete', async (file: UppyFile<Meta, Record<string, never
 </script>
 
 <template>
-  <HiddenInput v-if="hiddenInputName" :uploaded-image-location="uploadedImageLocation" :name="hiddenInputName" />
-  <UploadedLogoDisplay :uploaded-image-location="uploadedImageLocation" />
-  <button :tabindex="isWrapperFocusable ? 0 : -1" type="button" class="uppy-dashboard-wrapper"
-    :aria-label="`Upload Logo. ${srOnlyConstraintsMessage}`" @keydown.enter="triggerUppyButton">
-    <Dashboard :uppy="uppy" :props="{
-      note: constraintsMessage,
-      proudlyDisplayPoweredByUppy: false,
-    }" />
-  </button>
-  <ImageEditorStatusDisplay v-if="isEditing" :image-dimensions="imageDimensions" />
-  <DashboardStatusDisplay :error-message="errorMessage" :sr-only-error-message="srOnlyErrorMessage" />
+  <div class="logo-upload-uppy">
+    <HiddenInput v-if="hiddenInputName" :uploaded-image-location="uploadedImageLocation" :name="hiddenInputName" />
+    <UploadedLogoDisplay :uploaded-image-location="uploadedImageLocation" />
+    <button :tabindex="isWrapperFocusable ? 0 : -1" type="button" class="uppy-dashboard-wrapper"
+      :aria-label="`Upload Logo. ${srOnlyConstraintsMessage}`" @keydown.enter="triggerUppyButton">
+      <Dashboard :uppy="uppy" :props="{
+        note: constraintsMessage,
+        proudlyDisplayPoweredByUppy: false,
+      }" />
+    </button>
+    <ImageEditorStatusDisplay v-if="isEditing" :image-dimensions="imageDimensions" />
+    <DashboardStatusDisplay :error-message="errorMessage" :sr-only-error-message="srOnlyErrorMessage" />
+  </div>
 </template>
 
 <style scoped lang="less">
@@ -222,6 +224,10 @@ uppy.on('file-editor:complete', async (file: UppyFile<Meta, Record<string, never
 @color-gigadb-green-600: #06b34d;
 @color-gigadb-green-800: #0d6e36;
 @color-true-white: #ffffff;
+
+.logo-upload-uppy {
+  margin-bottom: 20px;
+}
 
 .uppy-dashboard-wrapper {
   width: 100%;
