@@ -17,7 +17,7 @@
               ?>
             </p>
             <?php
-            echo CHtml::link("See More", array("news/view", 'id' => $temp_news->id), array('class' => 'btn btn-link news-more-link'));
+            echo CHtml::link("Read More", array("news/view", 'id' => $temp_news->id), array('class' => 'btn btn-link news-more-link'));
             ?>
           </div>
         </div>

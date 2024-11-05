@@ -1,4 +1,5 @@
 .news-section {
+  margin-bottom: 40px;
   .news-container {
     padding: 0;
   }
@@ -7,46 +8,89 @@
     display: flex;
     flex-wrap: wrap;
     margin-block: 0;
-    /* offset news block padding */
-    margin-inline: -5px;
+    /* offset news block padding + border */
+    margin-inline: -7px;
   }
 
   .news-item {
     flex: 1 0 auto;
-    padding: 5px;
+    padding: 8px;
     max-width: 100%;
     .news-block {
       margin: 0;
-      padding: 15px;
-      border: 1px solid @color-medium-gray;
-      border-radius: 4px;
-      height: 200px;
+      padding: 24px;
+      background: @color-true-white;
+      border: 1px solid @color-light-gray;
+      height: 220px;
       display: flex;
       flex-direction: column;
+      transition: all 0.2s ease-in-out;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        border-color: @color-gigadb-green-600;
+      }
+
       .news-title {
-        margin-top: 0;
-        margin-bottom: 10px;
-        padding-bottom: 5px;
+        margin: 0 0 16px;
+        color: @color-warm-black;
+        font-size: 1.25rem;
+        font-weight: 600;
+        letter-spacing: -0.01em;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
       }
+
       .news-body {
         flex-grow: 1;
-        margin-bottom: 10px;
+        margin-bottom: 16px;
         overflow: hidden;
+        color: @color-darker-gray;
+        line-height: 1.5;
+        font-size: 0.95rem;
       }
+
       .news-more-link {
         align-self: flex-end;
+        color: @color-gigadb-green;
+        font-weight: 500;
+        text-decoration: none;
+        padding: 6px 0;
+        position: relative;
+
+        &:after {
+          content: '';
+          position: absolute;
+          bottom: 4px;
+          left: 0;
+          width: 100%;
+          height: 1px;
+          background: currentColor;
+          transform: scaleX(0);
+          transition: transform 0.2s ease;
+        }
+
+        &:hover:after {
+          transform: scaleX(1);
+        }
+
+        &:focus {
+          outline-offset: 2px;
+          outline: solid 2px @color-warm-black;
+        }
       }
     }
   }
 
   .carousel-control {
-    width: 40px;
-    height: 40px;
-    background-color: transparent;
+    width: 44px;
+    height: 44px;
+    background-color: @color-true-white;
     color: @color-gigadb-green;
+    border: 1px solid @color-light-gray;
     border-radius: 50%;
     top: 50%;
     transform: translateY(-50%);
@@ -57,43 +101,84 @@
     justify-content: center;
     text-decoration: none;
     position: absolute;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
+
     &:hover,
     &:focus {
-      color: @color-gigadb-green-800;
-      text-decoration: none;
-      outline: none;
+      color: @color-true-white;
+      background-color: @color-gigadb-green;
+      border-color: @color-gigadb-green;
+      box-shadow: 0 4px 12px rgba(8, 137, 62, 0.15);
+      transform: translateY(-50%) scale(1.05);
     }
+
     &:focus {
-      outline-offset: 2px;
-      outline: solid 2px @color-gigadb-green-800;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(8, 137, 62, 0.2);
+    }
+
+    &:active {
+      transform: translateY(-50%) scale(0.98);
+    }
+
+    &.left {
+      left: 10px;
+    }
+
+    &.right {
+      right: 10px;
     }
   }
 
   .carousel-indicators {
-    bottom: -30px;
+    bottom: -40px;
     margin-bottom: 0;
     display: flex;
     justify-content: center;
-    gap: 8px;
+    gap: 10px;
     .carousel-indicator {
-      border-color: @color-gigadb-green;
-      scale: 1;
-      transition: scale 0.3s ease-in-out;
+      @size: 16px;
+      min-width: @size;
+      min-height: @size;
+      border: none;
+      background-color: transparent;
+      border-radius: 50%;
+      margin: 0;
+      padding: 0;
+      transform: scale(1);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       &.active {
-        background-color: @color-gigadb-green;
-        scale: 1.1;
+        .carousel-indicator-link::after {
+          background-color: @color-gigadb-green;
+          transform: scale(1.333);
+        }
       }
       .carousel-indicator-link {
-        display: block;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         height: 100%;
         width: 100%;
         border-radius: 50%;
-        &:hover {
-          background-color: @color-gigadb-green-800;
+        position: relative;
+        &::after {
+          content: '';
+          width: 6px;
+          height: 6px;
+          background-color: fade(@color-gigadb-green, 30%);
+          border-radius: 50%;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        &:hover::after {
+          background-color: fade(@color-gigadb-green, 50%);
         }
         &:focus {
-          outline-offset: 2px;
-          outline: solid 2px @color-gigadb-green;
+          outline: none;
+          box-shadow: 0 0 0 2px fade(@color-gigadb-green, 20%);
+        }
+        &:focus:not(:focus-visible) {
+          box-shadow: none;
         }
       }
     }
@@ -103,6 +188,14 @@
     .news-item {
       max-width: 50%;
     }
+
+    .carousel-control.left {
+      left: -20px;
+    }
+
+    .carousel-control.right {
+      right: -20px;
+    }
   }
 
   @media (min-width: 992px) {
@@ -111,11 +204,11 @@
     }
 
     .carousel-control.left {
-      left: -50px;
+      left: -20px;
     }
 
     .carousel-control.right {
-      right: -50px;
+      right: -20px;
     }
   }
 }
