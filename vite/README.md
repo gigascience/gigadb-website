@@ -35,3 +35,23 @@ NODE_VERSION=20.11.0 APPLICATION=../.. docker-compose run --rm vite-project-imag
 ```
 
 Make sure the entry point of the php application is using the bundled files. You can see an example in `protected/views/adminProject/_form.php`
+
+## Tests
+
+### unit tests
+
+```sh
+npm run test:unit
+```
+
+### e2e tests
+
+From the root folder:
+
+```sh
+cd playwright
+npm install
+npm run test:single admin-project-logo-upload.spec.js
+```
+
+might need to run `npx playwright install` the first time

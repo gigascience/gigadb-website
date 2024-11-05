@@ -105,7 +105,7 @@ test.describe("Project logo upload", () => {
     await sleep(500);
     await expect(page.locator('img[alt="tall-image.png"]')).toBeVisible();
     await page.click('button[aria-label="Upload 1 file"]');
-    await sleep(2000);
+    await sleep(1000);
     await expect(page.locator("img.test-uploaded-project-logo")).not.toBeVisible();
     await expect(page.getByText("You did not yet upload a logo")).toBeVisible();
   });
