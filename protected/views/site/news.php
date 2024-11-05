@@ -60,10 +60,17 @@
         $controls.hide();
         $indicators.hide();
         $carousel.removeClass('with-indicators');
+
+        // Dynamically set max-width when fewer items than chunk size
+        const maxWidth = (100 / Math.min(totalItems, chunkSize)) + '%';
+        $items.css('max-width', maxWidth);
       } else {
         $controls.show();
         $indicators.show();
-        $carousel.addClass('with-indicators')
+        $carousel.addClass('with-indicators');
+
+        // Reset to default responsive max-widths from CSS
+        $items.css('max-width', '');
       }
 
       for (let i = 0; i < $items.length; i += chunkSize) {
