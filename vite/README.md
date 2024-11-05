@@ -23,6 +23,8 @@ Then make sure the entry point in the php application is using the local dev ser
 <script type="module" src="http://localhost:5173/src/main.ts"></script>
 ```
 
+See `protected/views/adminProject/_form.php`, a `$isDev` variable determines whether the local server or the build version is used.
+
 ### Production
 
 Run `./up.sh` script from root. This should bundle the app and copy it to the js folder for the php application to use.

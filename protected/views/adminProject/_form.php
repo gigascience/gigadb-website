@@ -55,6 +55,7 @@
       <div class="spinner"></div>
     </div>
     <?php
+    // Set to true to use the local server version of the Vue app
     $isDev = false;
     ?>
     <?php if ($isDev): ?>
