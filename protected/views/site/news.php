@@ -40,6 +40,25 @@
 
 <script>
   const screenSizes = [768, 992];
+
+  function throttle(func, wait) {
+    let timeout;
+    let lastArgs;
+    return function (...args) {
+      lastArgs = args;
+      if (!timeout) {
+        func.apply(this, args);
+        timeout = setTimeout(() => {
+          timeout = null;
+          if (lastArgs) {
+            func.apply(this, lastArgs);
+            lastArgs = null;
+          }
+        }, wait);
+      }
+    };
+  }
+
   $(document).ready(function () {
     function arrangeSlides() {
       const isMobile = $(window).width() < screenSizes[0];
@@ -102,24 +121,6 @@
       }
 
       $('#newsCarousel').carousel(0);
-    }
-
-    function throttle(func, wait) {
-      let timeout;
-      let lastArgs;
-      return function (...args) {
-        lastArgs = args;
-        if (!timeout) {
-          func.apply(this, args);
-          timeout = setTimeout(() => {
-            timeout = null;
-            if (lastArgs) {
-              func.apply(this, lastArgs);
-              lastArgs = null;
-            }
-          }, wait);
-        }
-      };
     }
 
     $('#newsCarousel').carousel({
