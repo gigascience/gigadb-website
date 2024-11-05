@@ -45,12 +45,26 @@
       const isTablet = $(window).width() >= screenSizes[0] && $(window).width() < screenSizes[1];
       const chunkSize = isMobile ? 1 : isTablet ? 2 : 3;
 
+      const $carousel = $('#newsCarousel');
       const $carouselInner = $('.carousel-inner');
       const $indicators = $('.carousel-indicators');
+      const $controls = $('.carousel-control');
       const $items = $carouselInner.find('.news-item').detach();
+      const totalItems = $items.length;
 
       $carouselInner.empty();
       $indicators.empty();
+
+      // Hide controls and indicators if all items fit on one slide
+      if (totalItems <= chunkSize) {
+        $controls.hide();
+        $indicators.hide();
+        $carousel.removeClass('with-indicators');
+      } else {
+        $controls.show();
+        $indicators.show();
+        $carousel.addClass('with-indicators')
+      }
 
       for (let i = 0; i < $items.length; i += chunkSize) {
         const $slide = $('<div>').addClass('item' + (i === 0 ? ' active' : ''));
