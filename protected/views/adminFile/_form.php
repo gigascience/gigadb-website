@@ -186,7 +186,7 @@
                                 'inputOptions' => [
                                     'class' => 'attr-form',
                                     'rows' => 2,
-                                    'maxlength' => $attribute->getMaxValueLength() || 150
+                                    'max' => $attribute->getMaxValueLength()
                                 ],
                                 'tooltip' => 'The value of the chosen attribute for this file'
                             ]);
