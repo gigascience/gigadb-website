@@ -174,6 +174,20 @@ When all files in a dataset have been finalised and curated then they can be cop
 After dataset files have been copied into Wasabi, the files should also be backed up into S3 Glacier:
 ```
 [peterl@ip-10-99-0-95 user5]$ transfer --doi 102498 --sourcePath /share/dropbox/user5/ --backup --apply
+More details about copying files to s3 bucket, please refer to: /var/log/gigadb/transfer.log
+```
+
+Confirm files have been backed up in S3 Glacier:
+```
+[peterl@ip-10-99-0-56 ~]$ tail /var/log/gigadb/transfer.log
+2024/11/06 07:43:03 INFO  : Start copying files from staging to s3
+2024/11/06 07:43:04 INFO  : 102498.filesizes: Copied (new)
+2024/11/06 07:43:04 INFO  : 102498.md5: Copied (new)
+2024/11/06 07:43:04 INFO  : DLPFC_69_72_VNS_results.csv: Copied (new)
+2024/11/06 07:43:04 INFO  : E2_VNS_Ground_Truth.csv: Copied (new)
+2024/11/06 07:43:04 INFO  : readme_102498.txt: Copied (new)
+2024/11/06 07:43:04 INFO  : Executed: rclone copy --s3-no-check-bucket --s3-profile aws-transfer /share/dropbox/user5/ gigadb-datasetfiles:gigadb-datasetfiles-backup/staging/pub/10.5524/102001_103000/102498 --log-file /var/log/gigadb/transfer.log --log-level INFO --stats-log-level DEBUG >> /var/log/gigadb/transfer.log
+2024/11/06 07:43:04 INFO  : Successfully copied files to s3 bucket for DOI: 102498
 ```
 
 After you have confirmed the files are safely stored in Wasabi and Glacier then the `user` and `user.orig` dropbox directories should be deleted to save storage space after the manuscript has been published.
@@ -213,7 +227,7 @@ Updated file metadata for 102498 in database
 > [!TIP]
 > Take note of the number of changes made by the md5 and file size update tool. This number should be equal to the number of files listed in the metadata files.
 
-To ensure the postUpload script has worked, you should perform checks using the dataset, sample and file admin pages to see if dataset metadata are correctly stored in the database.
+To ensure the postUpload script has worked, you should perform checks using the dataset and file admin pages to see if dataset metadata are correctly stored in the database.
 
 ## compare: How to compare files on the user dropbox with the files in the dataset spreadsheet
 
