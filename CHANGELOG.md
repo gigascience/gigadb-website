@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #2006: Arrange edit file attr fields in a column layout
 - Feat #2066: Extend max length for file attribute values to 150
 - Fix #2042: Batch deletion of file attributes and samples
 
