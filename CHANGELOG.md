@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1892: Update onboarding pages layout
 - Fix #2042: Batch deletion of file attributes and samples
 
 ## v4.3.9 - 2024-10-28 - 961f7821a -
