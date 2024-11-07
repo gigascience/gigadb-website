@@ -20,6 +20,10 @@ RUN docker-php-ext-install pdo_pgsql && \
     docker-php-ext-install pgsql && \
     apt-get install -y postgresql-client-13
 
+# Install gum
+RUN curl -L -o gum_0.14.5_amd64.deb 'https://github.com/charmbracelet/gum/releases/download/v0.14.5/gum_0.14.5_amd64.deb' && \
+    dpkg --install gum_0.14.5_amd64.deb && \
+    rm gum_0.14.5_amd64.deb
 
 # Volume for Yii2 basic app because we need to write there (vendor and runtime)
 VOLUME ["/gigadb/app/tools/files-metadata-console"]
