@@ -19,7 +19,7 @@
 
     - name: Copy dataset upload tool shell post upload script
       ansible.builtin.copy:
-        src: "../../../../gigadb/app/tools/excel-spreadsheet-uploader/postUpload.sh"
+        src: "../../../../gigadb/app/tools/files-metadata-console/scripts/postUpload.sh"
         dest: /usr/local/bin/postUpload
         owner: centos
         group: centos
@@ -27,7 +27,7 @@
 
     - name: Copy script for updating the md5 values and file size to db
       ansible.builtin.copy:
-        src: "../../../../gigadb/app/tools/excel-spreadsheet-uploader/filesMetaToDb.sh"
+        src: "../../../../gigadb/app/tools/files-metadata-console/scripts/filesMetaToDb.sh"
         dest: /usr/local/bin/filesMetaToDb
         owner: centos
         group: centos
@@ -70,50 +70,50 @@
     - setup-uploading-db-dump-to-s3
 
   tasks:
-  - name: Create a /home/centos/.config/rclone directory
-    ansible.builtin.file:
-      path: /home/centos/.config/rclone
-      state: directory
-      mode: '0755'
-      owner: centos
-      group: centos
+    - name: Create a /home/centos/.config/rclone directory
+      ansible.builtin.file:
+        path: /home/centos/.config/rclone
+        state: directory
+        mode: '0755'
+        owner: centos
+        group: centos
 
-  - name: Create AWS S3 configuration for rclone
-    template:
-      src: ../../../../ops/configuration/rclone-conf/rclone.conf.j2
-      dest: /home/centos/.config/rclone/rclone.conf
-      owner: root
-      group: root
-      mode: 0644
+    - name: Create AWS S3 configuration for rclone
+      template:
+        src: ../../../../ops/configuration/rclone-conf/rclone.conf.j2
+        dest: /home/centos/.config/rclone/rclone.conf
+        owner: root
+        group: root
+        mode: 0644
 
-  - name: Create a backups directory for storing database dump files
-    ansible.builtin.file:
-      path: "{{ item }}"
-      state: directory
-      mode: '0755'
-      owner: centos
-      group: centos
-    loop:
-      - "/home/centos/backups"
+    - name: Create a backups directory for storing database dump files
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        mode: '0755'
+        owner: centos
+        group: centos
+      loop:
+        - "/home/centos/backups"
 
-  - name: Setup cronjob to refresh the materialized view of the database
-    ansible.builtin.cron:
-      name: "Refresh the materialized view of the database every day"
-      minute: "00"
-      hour: "20"
-      user: "centos"
-      job: 'echo "$(date +\%y\%m\%d_\%H\%M\%S) - Refresh materialized views start..." >> /home/centos/logs/refresh_materialized_views_daily.log
+    - name: Setup cronjob to refresh the materialized view of the database
+      ansible.builtin.cron:
+        name: "Refresh the materialized view of the database every day"
+        minute: "00"
+        hour: "20"
+        user: "centos"
+        job: 'echo "$(date +\%y\%m\%d_\%H\%M\%S) - Refresh materialized views start..." >> /home/centos/logs/refresh_materialized_views_daily.log
         && docker run --rm  --env-file ./db-env registry.gitlab.com/{{ gitlab_project }}/production_pgclient:{{ gigadb_environment }} -c "REFRESH MATERIALIZED VIEW FILE_FINDER; REFRESH MATERIALIZED VIEW SAMPLE_FINDER; REFRESH MATERIALIZED VIEW DATASET_FINDER;" >> /home/centos/logs/refresh_materialized_views_daily.log 2>&1
         && echo "$(date +\%y\%m\%d_\%H\%M\%S) - Refresh materialized views completed!" >> /home/centos/logs/refresh_materialized_views_daily.log'
 
-  - name: Setup cronjob to automate copying database backup file to S3
-    ansible.builtin.cron:
-      name: "Create database dump file from RDS and upload to S3 every day"
-      minute: "00"
-      hour: "22"
-      user: "centos"
-      job: "docker run --env-file .env -v /home/centos/backups:/backups -v /home/centos/.config/rclone/rclone.conf:/root/.config/rclone/rclone.conf registry.gitlab.com/{{ gitlab_project }}/production_s3backup:{{ gigadb_environment }}"
-      state: "{{ upload_database_backup_to_S3_cronjob_state }}"
+    - name: Setup cronjob to automate copying database backup file to S3
+      ansible.builtin.cron:
+        name: "Create database dump file from RDS and upload to S3 every day"
+        minute: "00"
+        hour: "22"
+        user: "centos"
+        job: "docker run --env-file .env -v /home/centos/backups:/backups -v /home/centos/.config/rclone/rclone.conf:/root/.config/rclone/rclone.conf registry.gitlab.com/{{ gitlab_project }}/production_s3backup:{{ gigadb_environment }}"
+        state: "{{ upload_database_backup_to_S3_cronjob_state }}"
 
 - name: Setup create readme tool
   hosts: name_bastion_server_{{gigadb_env}}*
@@ -160,13 +160,12 @@
         owner: centos
         group: centos
         mode: a+x
-          
+
     - name: Install gum
       ansible.builtin.yum:
         name: https://github.com/charmbracelet/gum/releases/download/v0.14.1/gum-0.14.1-1.x86_64.rpm
         state: present
         disable_gpg_check: true
-
 
     - name: Install new wrapper script for files comparison tools
       ansible.builtin.copy:
@@ -174,8 +173,53 @@
         dest: /usr/local/bin/compare
         owner: centos
         group: centos
-        mode: a+x
+        mode: a+xs
 
+- name: Set up transfer files tool
+  hosts: name_bastion_server_{{gigadb_env}}*
+  tags:
+    - transfer-tool
+
+  tasks:
+    - name: Create env file for backup
+      ansible.builtin.template:
+        src: ../../../../gigadb/app/tools/transfer-files/config-sources/files-env.j2
+        dest: /home/centos/.files-env
+        owner: centos
+        group: centos
+        mode: 0644
+
+    - name: Create directory for storing log output
+      ansible.builtin.file:
+        path: /var/log/gigadb
+        state: directory
+        mode: '0777'
+        owner: centos
+        group: centos
+
+    - name: Create a .aws directory for the centos user
+      ansible.builtin.file:
+        path: "/home/centos/.aws"
+        state: directory
+        mode: '0755'
+        owner: centos
+        group: centos
+
+    - name: Create aws credentials file
+      ansible.builtin.template:
+        src: ../../../../ops/configuration/aws-conf/credentials.j2
+        dest: "/home/centos/.aws/credentials"
+        owner: centos
+        group: centos
+        mode: 0644
+
+    - name: Copy wrapper script to backup files to wasabi bucket and s3 bucket
+      ansible.builtin.copy:
+        src: "../../../../gigadb/app/tools/transfer-files/scripts/transfer.sh"
+        dest: /usr/local/bin/transfer
+        owner: centos
+        group: centos
+        mode: a+x
 
 - name: Load latest DB backup
   hosts: name_bastion_server_{{gigadb_env}}*
