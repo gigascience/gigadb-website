@@ -35,6 +35,11 @@
     <link rel="canonical" href="<?= CHtml::encode($this->canonicalUrl) ?>" />
   <?php } ?>
   <?php $this->renderPartial('//shared/_matomo') ?>
+  <?php
+  if (isset($this->loadThreeJs) && $this->loadThreeJs) {
+    $this->renderPartial('//shared/_three');
+  }
+  ?>
 </head>
 
 <body>
