@@ -113,3 +113,6 @@ params-local.php
 
 # release related artefacts
 VERSION
+
+# temporarily ignore local testing files
+protected/3d-models

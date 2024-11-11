@@ -13,6 +13,13 @@
             </div>
         </div>
     </section>
+    <section>
+      <div class="container">
+        <?php
+          $this->renderPartial('_model_viewer');
+        ?>
+      </div>
+    </section>
     <section class="mb-20">
         <div class="container">
             <div class="row">

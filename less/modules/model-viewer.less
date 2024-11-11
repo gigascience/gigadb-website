@@ -3,20 +3,6 @@
   margin-bottom: 20px;
 }
 
-.controls-info {
-  position: absolute;
-  background: rgba(0, 0, 0, 0.8);
-  color: @color-true-white;
-  top: 0;
-  left: 0;
-  padding: 6px 12px;
-}
-
-.controls-info p {
-  margin: 0;
-  color: @color-true-white;
-}
-
 .model-viewer-container {
   position: relative;
   isolation: isolate;
@@ -30,6 +16,24 @@
   background: @color-lighter-gray;
   z-index: 0;
 }
+
+// controls info
+
+.controls-info {
+  position: absolute;
+  background: #000000cc;
+  color: @color-true-white;
+  top: 0;
+  left: 0;
+  padding: 6px 12px;
+}
+
+.controls-info p {
+  margin: 0;
+  color: @color-true-white;
+}
+
+// play button
 
 .play-button-overlay {
   position: absolute;
@@ -51,7 +55,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: transform 0.2s ease-in-out, background 0.2s ease-in-out;
+  transition: transform 0.2s ease-in-out, background 0.3s ease-in-out;
 }
 
 .play-button:hover {
@@ -65,6 +69,8 @@
   /* make button look visually centered */
   left: 6px;
 }
+
+// loading overlay
 
 .loading-overlay {
   position: absolute;
@@ -91,19 +97,6 @@
   margin-bottom: 10px;
 }
 
-.loading-text {
-  font-size: 16px;
-  color: @color-warm-black;
-}
-
-.error-display {
-  max-width: 100%;
-  position: absolute;
-  inset-inline: 12px;
-  bottom: 12px;
-  margin: 0;
-}
-
 @keyframes spin {
   0% {
     transform: rotate(0deg);
@@ -112,4 +105,19 @@
   100% {
     transform: rotate(360deg);
   }
+}
+
+.loading-text {
+  font-size: 16px;
+  color: @color-warm-black;
+}
+
+// error display
+
+.error-display {
+  max-width: 100%;
+  position: absolute;
+  inset-inline: 12px;
+  bottom: 12px;
+  margin: 0;
 }
