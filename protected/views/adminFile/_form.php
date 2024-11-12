@@ -187,7 +187,8 @@
                                 'class' => 'mb-10'
                             ],
                             'inputOptions' => [
-                                'class' => 'attr-form'
+                                'class' => 'attr-form',
+                                'maxlength' => 1000
                             ],
                             'tooltip' => 'The value of the chosen attribute for this file'
                         ]);
