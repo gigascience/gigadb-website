@@ -34,6 +34,15 @@
     mode: 440
     create: yes
 
+- name: Enable users to not have to specify full path in sudoers
+  ansible.builtin.lineinfile:
+    path: /etc/sudoers.d/89-defaults
+    line: 'Defaults    secure_path = /sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin'
+    owner: root
+    group: root
+    mode: 440
+    create: yes
+
 - name: check if public key exists in GitLab CI environment variable
   ansible.builtin.uri:
     url: "{{ gitlab_url }}/variables/bastion_authorized_keys_{{ newuser }}?filter%5benvironment_scope%5d={{ gigadb_environment }}"
@@ -197,7 +206,7 @@
 - name: Create env file for user to backup
   ansible.builtin.template:
     src: ../../../../gigadb/app/tools/transfer-files/config-sources/files-env.j2
-    dest: "/home/{{ newuser }}/files-env"
+    dest: "/home/{{ newuser }}/.files-env"
     owner: "{{ newuser }}"
     group: "{{ newuser }}"
     mode: 0644

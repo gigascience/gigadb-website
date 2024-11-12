@@ -11,7 +11,7 @@ class AssignFTPBoxAction extends CAction
     public function run($id)
     {
     	$jwt_ttl = 3600 ;
-    	$webClient = new \GuzzleHttp\Client();
+    	$webClient = \Yii::$container->get('guzzleHttpClient');
 
         // Instantiate FiledropService
         $filedropSrv = new FiledropService([
