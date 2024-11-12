@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1867: Update the gitlab static application security testing (SAST) job using the Semgrep-based analyzer
 - Fix #2066: Max length for attribute value set to 1000 in file admin form
 - Feat #1968: Add curators manual for operating tools on bastion server
 - Feat #1750: Switch to guzzle instead of cURL
