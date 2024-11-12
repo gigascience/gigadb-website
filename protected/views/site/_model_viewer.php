@@ -14,12 +14,15 @@ $filenames = [
 $assetsUrl = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('application.3d-models'));
 
 // mock files for testing, this emulates the Files model
+// these files should be provided by the view that rnders this partial
 $files = array_map(function ($filename) use ($assetsUrl) {
+  $location = $assetsUrl . '/' . $filename;
   return [
-    'id' => 1,
+    'id' => $location, // use location as id for now
     'dataset_id' => 123,
-    'location' => $assetsUrl . '/' . $filename,
+    'location' => $location,
     'name' => $filename,
+    // TODO show description in the UI
     'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     'extension' => pathinfo($filename, PATHINFO_EXTENSION),
     'size' => 1000,
@@ -32,48 +35,58 @@ $files = array_map(function ($filename) use ($assetsUrl) {
 }, $filenames);
 ?>
 
-<div class="form-group">
-  <label class="control-label" for="model-selector">Select a model:</label>
-  <select id="model-selector" class="form-control js-model-selector model-selector">
-    <?php foreach ($files as $file): ?>
-      <option value="<?php echo $file['location']; ?>"><?php echo $file['name']; ?></option>
-    <?php endforeach; ?>
-  </select>
+<div id="modelViewerRoot">
+  <div class="form-group">
+    <label class="control-label" for="model-selector">Select a model:</label>
+    <select id="model-selector" class="form-control js-model-selector model-selector">
+      <?php foreach ($files as $index => $file): ?>
+        <!-- consider id as value, however location is likely unique too -->
+        <option value="<?php echo $file['id']; ?>" <?php echo $index === 0 ? 'selected' : ''; ?>>
+          <?php echo $file['name']; ?></option>
+      <?php endforeach; ?>
+    </select>
+  </div>
+  <div class="js-model-description model-description">
+    <p class="js-content"></p>
+  </div>
+
+  <div class="model-viewer-container">
+    <div class="model-view-container js-model-view-container">
+    </div>
+    <div class="controls-info">
+      <p>
+        Left click + drag: Rotate<br>
+        Right click + drag: Pan<br>
+        Mouse wheel: Zoom
+      </p>
+    </div>
+    <div class="play-button-overlay js-play-button-overlay">
+      <button id="play-button" class="play-button js-play-button">
+        <i class="fa fa-play play-button-icon"></i>
+        <span class="sr-only">Load model</span>
+      </button>
+    </div>
+    <div class="loading-overlay js-loading-overlay" style="display: none;">
+      <div class="loading-spinner"></div>
+      <div class="loading-text">Loading model<span aria-hidden="true">...</span></div>
+    </div>
+    <div class="error-display js-error-display" role="alert">
+      <p class="error-content" style="display: none;"></p>
+    </div>
+  </div>
 </div>
-
-<div id="model-viewer-container" class="model-viewer-container">
-  <div id="model-view-container" class="model-view-container js-model-view-container">
-  </div>
-  <div class="controls-info">
-    <p>
-      Left click + drag: Rotate<br>
-      Right click + drag: Pan<br>
-      Mouse wheel: Zoom
-    </p>
-  </div>
-  <div id="play-button-overlay" class="play-button-overlay js-play-button-overlay">
-    <button id="play-button" class="play-button js-play-button">
-      <i class="fa fa-play play-button-icon"></i>
-      <span class="sr-only">Play</span>
-    </button>
-  </div>
-  <div id="loading-overlay" class="loading-overlay js-loading-overlay" style="display: none;">
-    <div class="loading-spinner"></div>
-    <div class="loading-text">Loading model...</div>
-  </div>
-  <div class="error-display js-error-display" role="alert">
-    <p class="error-content" style="display: none;"></p>
-  </div>
-</div>
-
-<script>
-  // print to console the model urls from php
-  console.log(<?php echo json_encode($files); ?>);
-</script>
-
 
 <?php
 Yii::app()->assetManager->forceCopy = YII_DEBUG;
 $jsDir = Yii::getPathOfAlias('application.js.model-viewer');
 $jsUrl = Yii::app()->assetManager->publish($jsDir);
 Yii::app()->clientScript->registerScriptFile($jsUrl . '/index.js', CClientScript::POS_END, ['type' => 'module']);
+?>
+
+<script type="module">
+  import { modelViewer } from "<?php echo $jsUrl; ?>/index.js";
+
+  $(document).ready(function () {
+    modelViewer(<?php echo json_encode($files); ?>);
+  })
+</script>

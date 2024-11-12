@@ -7,7 +7,6 @@ import { createResizer } from "./systems/resizer.js";
 import { load } from "./components/models/index.js";
 import { createCube } from "./components/cube.js";
 import { logger } from "../helpers/logger.js";
-import { createAxesHelper, createGridHelper } from "./helpers.js";
 
 export function createModelViewer(container) {
   let scene;
@@ -22,7 +21,7 @@ export function createModelViewer(container) {
     height: container.innerHeight(),
   };
 
-  function init() {
+  function create() {
     scene = createScene();
     camera = createCamera({
       aspectRatio: containerDimensions.width / containerDimensions.height,
@@ -32,11 +31,10 @@ export function createModelViewer(container) {
     controls = createControls(camera, renderer.domElement);
 
     if (containerDimensions.width === 0 || containerDimensions.height === 0) {
-      logger(
-        "error",
-        "Container size is zero. Please ensure the container has a defined width and height."
-      );
-      return;
+      const msg =
+        "Container size is zero. Please ensure the container has a defined width and height.";
+      logger("error", msg);
+      throw new Error(msg);
     }
 
     logger("info", "Container dimensions:", containerDimensions);
@@ -57,10 +55,9 @@ export function createModelViewer(container) {
       renderer
     );
 
-    scene.add(createAxesHelper(), createGridHelper());
-
     onDestroyCallbacks.push(destroyResizer);
 
+    // re-render when user interacts with the controls
     controls.addEventListener("change", render);
   }
 
@@ -68,30 +65,33 @@ export function createModelViewer(container) {
     renderer.render(scene, camera);
   }
 
-  async function loadModel(url) {
+  async function loadModel({ location, extension }) {
     // unload previously loaded model
     if (model) {
       scene.remove(model);
     }
-
-    model = await load({ url, extension: url.split(".").pop() });
-    // set orbiting center around modle center position
+    // reset controls to undo any orbiting done in previous model
+    controls.reset();
+    model = await load({ url: location, extension });
+    // set orbiting center around model center position
     controls.target.copy(model.position);
-    // set camera to look at model center position
-    camera.lookAt(model.position);
     scene.add(model);
     render();
   }
 
-  function destroy() {
+  function unmount() {
     controls.removeEventListener("change", render);
     onDestroyCallbacks.forEach((callback) => callback());
   }
 
+  create();
+
+  $(window).on("beforeunload", () => {
+    unmount();
+  });
+
   return {
-    init,
     render,
     loadModel,
-    destroy,
   };
 }
