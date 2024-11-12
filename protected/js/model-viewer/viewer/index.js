@@ -7,6 +7,7 @@ import { createResizer } from "./systems/resizer.js";
 import { load } from "./components/models/index.js";
 import { createCube } from "./components/cube.js";
 import { logger } from "../helpers/logger.js";
+import { createAxesHelper, createGridHelper } from "./helpers.js";
 
 export function createModelViewer(container) {
   let scene;
@@ -38,21 +39,26 @@ export function createModelViewer(container) {
       return;
     }
 
-    logger(
-      "info",
-      "Container dimensions:",
-      containerDimensions,
-    );
+    logger("info", "Container dimensions:", containerDimensions);
 
-    const { ambientLight, mainLight } = createLights();
+    const lights = createLights();
+
+    // loading a model for testing
     model = createCube();
-    scene.add(ambientLight, mainLight, model);
+    // set orbiting center around modle center position
+    controls.target.copy(model.position);
+    // set camera to look at model center position
+    camera.lookAt(model.position);
+    scene.add(...lights, model);
 
     const { destroy: destroyResizer } = createResizer(
       containerDimensions,
       camera,
       renderer
     );
+
+    scene.add(createAxesHelper(), createGridHelper());
+
     onDestroyCallbacks.push(destroyResizer);
 
     controls.addEventListener("change", render);
@@ -69,6 +75,10 @@ export function createModelViewer(container) {
     }
 
     model = await load({ url, extension: url.split(".").pop() });
+    // set orbiting center around modle center position
+    controls.target.copy(model.position);
+    // set camera to look at model center position
+    camera.lookAt(model.position);
     scene.add(model);
     render();
   }

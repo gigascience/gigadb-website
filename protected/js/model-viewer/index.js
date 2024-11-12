@@ -42,12 +42,12 @@ $(document).ready(function () {
     }
   }
 
-  setTimeout(() => {
-    setup();
-    init();
-    render();
-    uiState.status = "success";
- }, 100);
+  setup();
+  init();
+
+  // TODO render initial model for testing, remove before PR
+  render();
+  uiState.status = "success";
 
   logger("info", "Model viewer initialized");
 

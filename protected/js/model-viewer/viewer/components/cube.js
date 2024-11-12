@@ -1,17 +1,11 @@
 import {
   BoxGeometry,
   Mesh,
-  MeshStandardMaterial,
   MathUtils,
 } from "three";
+import { createMaterial } from "./models/material.js";
 
 const radiansPerSecond = MathUtils.degToRad(30);
-
-function createMaterial() {
-  const material = new MeshStandardMaterial({ color: 0x00ff00 });
-
-  return material;
-}
 
 function createCube() {
   // create a geometry
@@ -27,7 +21,7 @@ function createCube() {
   // create a Mesh containing the geometry and material
   const cube = new Mesh(geometry, material);
 
-  cube.rotation.set(-0.5, -0.1, 0.8);
+  // cube.rotation.set(-0.5, -0.1, 0.8);
 
   // monkey patching https://en.wikipedia.org/wiki/Monkey_patch
   cube.tick = (delta) => {
