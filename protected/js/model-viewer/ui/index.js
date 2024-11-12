@@ -1,12 +1,12 @@
-function loadModel() {
-  // stub
-}
+import { logger } from "../helpers/logger.js";
 
 export function createUi({
   loadingOverlay,
   playButtonOverlay,
   errorDisplay,
   modelSelector,
+  onSelect,
+  onPlay,
 }) {
   const playButton = playButtonOverlay.find("button");
 
@@ -29,7 +29,7 @@ export function createUi({
   function setError(message) {
     if (message) {
       errorDisplay.addClass("alert", "alert-danger");
-      errorDisplay.find(".error-text").text(message);
+      errorDisplay.find(".error-content").text(message);
     } else {
       errorDisplay.removeClass("alert", "alert-danger");
     }
@@ -37,30 +37,34 @@ export function createUi({
 
   const createUIState = () => {
     const state = {
-      loading: false,
-      loaded: false,
+      status: 'idle', // idle | pending | success | error
       error: null,
+      selected: null
     };
 
     return new Proxy(state, {
       set: function (target, property, value) {
+        logger('info', 'UI state updated', { property, value });
         target[property] = value;
 
-        if (property === "loading") {
-          if (value) {
-            showLoadingOverlay();
-            hidePlayButtonOverlay();
-          } else {
-            hideLoadingOverlay();
-          }
-        }
-
-        if (property === "loaded") {
-          if (value) {
-            hideLoadingOverlay();
-            hidePlayButtonOverlay();
-          } else {
-            showPlayButtonOverlay();
+        if (property === "status") {
+          switch (value) {
+            case 'idle':
+              hideLoadingOverlay();
+              showPlayButtonOverlay();
+              break;
+            case 'pending':
+              showLoadingOverlay();
+              hidePlayButtonOverlay();
+              break;
+            case 'success':
+              hideLoadingOverlay();
+              hidePlayButtonOverlay();
+              break;
+            case 'error':
+              hideLoadingOverlay();
+              showPlayButtonOverlay();
+              break;
           }
         }
 
@@ -77,22 +81,36 @@ export function createUi({
 
   const modelState = createUIState();
 
+  function setSelected() {
+    modelState.selected = modelSelector.val() || null;
+  }
+
+  function handleSelect() {
+    setSelected()
+    onSelect(modelState.selected);
+  }
+
+  function handlePlay() {
+    onPlay(modelState.selected);
+  }
+
   function setup() {
     loadingOverlay.hide();
     playButtonOverlay.show();
-    errorDisplay.hide();
-    modelSelector.on("change", loadModel);
-    playButton.on("click", loadModel);
+    setError(null);
+    setSelected()
+    modelSelector.on("change", handleSelect);
+    playButton.on("click", handlePlay);
   }
 
   function destroy() {
-    modelSelector.off("change", loadModel);
-    playButton.off("click", loadModel);
+    modelSelector.off("change", handleSelect);
+    playButton.off("click", handlePlay);
   }
 
   return {
     setup,
     destroy,
-    modelState,
+    uiState: modelState,
   };
 }

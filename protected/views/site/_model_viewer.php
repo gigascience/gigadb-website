@@ -42,7 +42,8 @@ $files = array_map(function ($filename) use ($assetsUrl) {
 </div>
 
 <div id="model-viewer-container" class="model-viewer-container">
-  <canvas id="3d-model-canvas" class="canvas js-canvas"></canvas>
+  <div id="model-view-container" class="model-view-container js-model-view-container">
+  </div>
   <div class="controls-info">
     <p>
       Left click + drag: Rotate<br>
@@ -56,14 +57,19 @@ $files = array_map(function ($filename) use ($assetsUrl) {
       <span class="sr-only">Play</span>
     </button>
   </div>
-  <div id="loading-overlay" class="loading-overlay js-loading-overlay">
+  <div id="loading-overlay" class="loading-overlay js-loading-overlay" style="display: none;">
     <div class="loading-spinner"></div>
     <div class="loading-text">Loading model...</div>
   </div>
   <div class="error-display js-error-display" role="alert">
-    <p class="error-text"></p>
+    <p class="error-content" style="display: none;"></p>
   </div>
 </div>
+
+<script>
+  // print to console the model urls from php
+  console.log(<?php echo json_encode($files); ?>);
+</script>
 
 
 <?php

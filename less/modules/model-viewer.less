@@ -6,15 +6,15 @@
 .model-viewer-container {
   position: relative;
   isolation: isolate;
-  width: 992px;
-  height: 512px;
+  height: min-content;
+  width: min-content;
 }
 
-.canvas {
-  width: 100%;
-  height: 100%;
-  background: @color-lighter-gray;
-  z-index: 0;
+.model-view-container {
+  width: 992px;
+  height: 512px;
+  background-color: @color-lighter-gray;
+  display: block;
 }
 
 // controls info
