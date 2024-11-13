@@ -114,7 +114,7 @@
         name: "Reset database every day after a new backup is available on the ftp server"
         minute: "05"
         hour: "10"
-        user: "centos"
+        user: "ec2-user"
         job: "/usr/local/bin/databaseReset 2> $HOME/logs/errors.log 1> $HOME/logs/output.log"
         state: "{{ reset_database_cronjob_state }}"
 
@@ -266,7 +266,7 @@
       name: "Refresh the materialized view of the database every day"
       minute: "00"
       hour: "20"
-      user: "centos"
+      user: "ec2-user"
       job: 'echo "$(date +\%y\%m\%d_\%H\%M\%S) - Refresh materialized views start..." >> /home/ec2-user/logs/refresh_materialized_views_daily.log
         && docker run --rm  --env-file ./db-env registry.gitlab.com/{{ gitlab_project }}/production_pgclient:{{ gigadb_environment }} -c "REFRESH MATERIALIZED VIEW FILE_FINDER; REFRESH MATERIALIZED VIEW SAMPLE_FINDER; REFRESH MATERIALIZED VIEW DATASET_FINDER;" >> /home/ec2-user/logs/refresh_materialized_views_daily.log 2>&1
         && echo "$(date +\%y\%m\%d_\%H\%M\%S) - Refresh materialized views completed!" >> /home/ec2-user/logs/refresh_materialized_views_daily.log'
@@ -276,7 +276,7 @@
       name: "Create database dump file from RDS and upload to S3 every day"
       minute: "00"
       hour: "22"
-      user: "centos"
+      user: "ec2-user"
       job: "docker run --env-file .env -v /home/ec2-user/backups:/backups -v /home/ec2-user/.config/rclone/rclone.conf:/root/.config/rclone/rclone.conf registry.gitlab.com/{{ gitlab_project }}/production_s3backup:{{ gigadb_environment }}"
       state: "{{ upload_database_backup_to_S3_cronjob_state }}"
 
@@ -323,7 +323,7 @@
         name: "Check daily the disk usage and notify from 50%"
         minute: "00"
         hour: "23"
-        user: "centos"
+        user: "ec2-user"
         job: "swatch -c swatch.conf -p ./diskUsage"
 
 - name: Setup create readme tool
@@ -395,9 +395,9 @@
     - name: Create env file for backup
       ansible.builtin.template:
         src: ../../../../gigadb/app/tools/transfer-files/config-sources/files-env.j2
-        dest: /home/centos/.files-env
-        owner: centos
-        group: centos
+        dest: /home/ec2-user/.files-env
+        owner: ec2-user
+        group: ec2-user
         mode: 0644
 
     - name: Create directory for storing log output
@@ -405,31 +405,31 @@
         path: /var/log/gigadb
         state: directory
         mode: '0777'
-        owner: centos
-        group: centos
+        owner: ec2-user
+        group: ec2-user
 
-    - name: Create a .aws directory for the centos user
+    - name: Create a .aws directory for the ec2-user user
       ansible.builtin.file:
-        path: "/home/centos/.aws"
+        path: "/home/ec2-user/.aws"
         state: directory
         mode: '0755'
-        owner: centos
-        group: centos
+        owner: ec2-user
+        group: ec2-user
 
     - name: Create aws credentials file
       ansible.builtin.template:
         src: ../../../../ops/configuration/aws-conf/credentials.j2
-        dest: "/home/centos/.aws/credentials"
-        owner: centos
-        group: centos
+        dest: "/home/ec2-user/.aws/credentials"
+        owner: ec2-user
+        group: ec2-user
         mode: 0644
 
     - name: Copy wrapper script to backup files to wasabi bucket and s3 bucket
       ansible.builtin.copy:
         src: "../../../../gigadb/app/tools/transfer-files/scripts/transfer.sh"
         dest: /usr/local/bin/transfer
-        owner: centos
-        group: centos
+        owner: ec2-user
+        group: ec2-user
         mode: a+x
 
 - name: Set up and configuration of rclone on bastion server
@@ -470,8 +470,8 @@
         path: "{{ item }}"
         state: directory
         mode: '0755'
-        owner: centos
-        group: centos
+        owner: ec2-user
+        group: ec2-user
       loop:
         - "/share/dropbox"
         - "/share/config"
