@@ -62,8 +62,8 @@
         path: /share/config
         state: directory
         mode: '0755'
-        owner: centos
-        group: centos
+        owner: ec2-user
+        group: ec2-user
 
     - name: Mount the config access points
       ansible.posix.mount:

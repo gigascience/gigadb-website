@@ -8,15 +8,15 @@
     path: /home/ec2-user/app_data
     state: directory
     mode: 0755
-    owner: centos
-    group: centos
+    owner: ec2-user
+    group: ec2-user
 - name: Create host directories for docker mounts
   file:
     path: "/home/ec2-user/app_data/{{ item }}"
     state: directory
     mode: 0755
-    owner: centos
-    group: centos
+    owner: ec2-user
+    group: ec2-user
   loop:
     - "fuw/flags"
     - "fuw/repo"
