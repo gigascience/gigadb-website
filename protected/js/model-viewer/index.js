@@ -7,7 +7,7 @@ import { invariant } from "./helpers/invariant.js";
  */
 export function modelViewer(files) {
   const root = $("#modelViewerRoot");
-  const container = root.find(".js-model-view-container");
+  const container = root.find(".js-canvas-container");
 
   invariant(container.length !== 0, "Expected element not found");
 

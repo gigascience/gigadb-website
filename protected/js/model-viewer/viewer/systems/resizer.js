@@ -1,19 +1,19 @@
-const setSize = ({ width, height }, camera, renderer) => {
+const setSize = ([width, height], camera, renderer) => {
   camera.aspect = width / height;
   camera.updateProjectionMatrix();
   renderer.setSize(width, height);
   renderer.setPixelRatio(window.devicePixelRatio);
 };
 
-function createResizer(containerDimensions, camera, renderer) {
+function createResizer(getContainerDimensions, camera, renderer) {
   let onResize = () => {};
 
-  setSize(containerDimensions, camera, renderer);
+  setSize(getContainerDimensions(), camera, renderer);
 
   window.addEventListener("resize", handleResize);
 
   function handleResize() {
-    setSize(containerDimensions, camera, renderer);
+    setSize(getContainerDimensions(), camera, renderer);
     onResize();
   }
 

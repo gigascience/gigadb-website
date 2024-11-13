@@ -1,113 +1,42 @@
-import { logger } from "../helpers/logger.js";
+import { createUiState } from "./uiState.js";
+import { createUiView } from "./uiView.js";
 import { invariant } from "../helpers/invariant.js";
 
+/**
+ * Creates and initializes the UI component for the model viewer
+ * @param {Object} param0 Configuration object
+ * @param {JQuery} param0.root Root DOM element containing the model viewer UI
+ * @param {function(string|null): void} param0.onSelect Callback when model is selected from dropdown
+ * @param {function(string|null): void} param0.onPlay Callback when play button is clicked
+ * @param {function({searchBy: string, value: string, key: string}): string|null} param0.getDataProperty Function to get file properties
+ * @returns {Object} UI state object with status, error and selected model properties
+ */
 export function createUi({ root, onSelect, onPlay, getDataProperty }) {
-  const loadingOverlay = root.find(".js-loading-overlay");
-  const playButtonOverlay = root.find(".js-play-button-overlay");
-  const errorDisplay = root.find(".js-error-display");
-  const modelSelector = root.find(".js-model-selector");
-  const modelDescription = root.find(".js-model-description");
+  // mandatory elements
+  const domElements = {
+    loadingOverlay: root.find(".js-loading-overlay"),
+    playButtonOverlay: root.find(".js-play-button-overlay"),
+    errorDisplay: root.find(".js-error-display"),
+    modelSelector: root.find(".js-model-selector"),
+    modelDescription: root.find(".js-model-description"),
+  };
 
-  [
-    loadingOverlay,
-    playButtonOverlay,
-    errorDisplay,
-    modelSelector,
-  ].forEach((el) => {
+  Object.values(domElements).forEach((el) => {
     invariant(el.length !== 0, "Expected element not found");
   });
 
-  const playButton = playButtonOverlay.find("button");
+  // optional elements
+  domElements.controlsInfo = root.find(".js-controls-info")
 
-  function showLoadingOverlay() {
-    loadingOverlay.show();
-  }
+  const uiView = createUiView(domElements, getDataProperty);
 
-  function hideLoadingOverlay() {
-    loadingOverlay.hide();
-  }
-
-  function showPlayButtonOverlay() {
-    playButtonOverlay.show();
-  }
-
-  function hidePlayButtonOverlay() {
-    playButtonOverlay.hide();
-  }
-
-  function setDescription(description) {
-    modelDescription.find(".js-content").text(description);
-  }
-
-  function setError(message) {
-    const errorContent = errorDisplay.find(".error-content");
-    if (message) {
-      errorDisplay.addClass(["alert", "alert-danger"]);
-      errorContent.text(message);
-      errorContent.show();
-      errorDisplay.show();
-    } else {
-      errorDisplay.removeClass(["alert", "alert-danger"]);
-      errorContent.text("");
-      errorContent.hide();
-      errorDisplay.hide();
-    }
-  }
-
-  const createUIState = () => {
-    const state = {
-      status: "idle", // idle | pending | success | error
-      error: null,
-      selected: null, // selected file id
-    };
-
-    return new Proxy(state, {
-      set: function (target, property, value) {
-        logger("info", "UI state updated", { property, value });
-        target[property] = value;
-
-        if (property === "status") {
-          switch (value) {
-            case "idle":
-              hideLoadingOverlay();
-              showPlayButtonOverlay();
-              break;
-            case "pending":
-              showLoadingOverlay();
-              hidePlayButtonOverlay();
-              break;
-            case "success":
-              hideLoadingOverlay();
-              hidePlayButtonOverlay();
-              break;
-            case "error":
-              hideLoadingOverlay();
-              showPlayButtonOverlay();
-              break;
-          }
-        }
-
-        if (property === "error") {
-          setError(value);
-        }
-
-        if (property === "selected") {
-          setDescription(getDataProperty({ searchBy: "id", value: value, key: "description" }));
-        }
-
-        return true;
-      },
-    });
-  };
-
-  const modelState = createUIState();
-
-  function setSelected() {
-    modelState.selected = modelSelector.val() || null;
-  }
+  const modelState = createUiState(
+    { status: "idle", error: null, selected: null },
+    () => uiView.updateUI(modelState)
+  );
 
   function handleSelect() {
-    setSelected();
+    modelState.selected = domElements.modelSelector.val() || null;
     onSelect(modelState.selected);
   }
 
@@ -115,21 +44,22 @@ export function createUi({ root, onSelect, onPlay, getDataProperty }) {
     onPlay(modelState.selected);
   }
 
-  function create() {
-    loadingOverlay.hide();
-    playButtonOverlay.show();
-    setError(null);
-    setSelected();
-    modelSelector.on("change", handleSelect);
-    playButton.on("click", handlePlay);
+  function init() {
+    domElements.loadingOverlay.hide();
+    domElements.controlsInfo.hide();
+    domElements.playButtonOverlay.show();
+    modelState.selected = domElements.modelSelector.val() || null;
+    uiView.updateUI(modelState);
+    domElements.modelSelector.on("change", handleSelect);
+    domElements.playButtonOverlay.find("button").on("click", handlePlay);
   }
 
   function unmount() {
-    modelSelector.off("change", handleSelect);
-    playButton.off("click", handlePlay);
+    domElements.modelSelector.off("change", handleSelect);
+    domElements.playButtonOverlay.find("button").off("click", handlePlay);
   }
 
-  create();
+  init();
 
   $(window).on("beforeunload", () => {
     unmount();

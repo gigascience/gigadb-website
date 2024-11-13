@@ -4,6 +4,7 @@ import { createRenderer } from "./systems/renderer.js";
 import { createControls } from "./systems/controls.js";
 import { createLights } from "./components/lights.js";
 import { createResizer } from "./systems/resizer.js";
+import { createLoop } from "./systems/loop.js";
 import { load } from "./components/models/index.js";
 import { logger } from "../helpers/logger.js";
 
@@ -12,38 +13,43 @@ export function createModelViewer(container) {
   let camera;
   let renderer;
   let controls;
+  let loop;
   let models = [];
   let onDestroyCallbacks = [];
 
-  const containerDimensions = {
-    width: container.innerWidth(),
-    height: container.innerHeight(),
-  };
+  function getContainerDimensions() {
+    return [container.innerWidth(), container.innerHeight()];
+  }
 
   function create() {
     scene = createScene();
     camera = createCamera({
-      aspectRatio: containerDimensions.width / containerDimensions.height,
+      aspectRatio: getContainerDimensions()[0] / getContainerDimensions()[1],
     });
     renderer = createRenderer();
     container.append(renderer.domElement);
     controls = createControls(camera, renderer.domElement);
+    loop = createLoop(camera, scene, renderer);
 
-    if (containerDimensions.width === 0 || containerDimensions.height === 0) {
+    loop.updatables.push(controls);
+
+    if (getContainerDimensions().some((dimension) => dimension === 0)) {
       const msg =
         "Container size is zero. Please ensure the container has a defined width and height.";
       logger("error", msg);
       throw new Error(msg);
     }
 
-    logger("info", "Container dimensions:", containerDimensions);
+    logger("info", "Container dimensions:", getContainerDimensions());
 
     const lights = createLights();
 
     scene.add(...lights);
 
+    loop.start();
+
     const { destroy: destroyResizer } = createResizer(
-      containerDimensions,
+      getContainerDimensions,
       camera,
       renderer
     );
@@ -74,6 +80,7 @@ export function createModelViewer(container) {
   }
 
   function unmount() {
+    loop.stop();
     controls.removeEventListener("change", render);
     onDestroyCallbacks.forEach((callback) => callback());
   }

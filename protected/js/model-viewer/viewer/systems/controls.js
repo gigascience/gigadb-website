@@ -12,5 +12,7 @@ export function createControls(camera, canvas) {
   controls.target.set(0, 0, 0);
   controls.update();
 
+  controls.tick = () => controls.update();
+
   return controls;
 }

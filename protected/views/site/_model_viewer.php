@@ -21,7 +21,7 @@ $filenames = [
   '55_HC5504-3_03.ply',
   '63_K039178_02.ply',
   'scene.gltf',
-  '3D_surface_reconstruction_bitis_dentition.stl'
+  '3D_surface_reconstruction_bitis_dentition.stl',
 ];
 
 $assetsUrl = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('application.3d-models'));
@@ -59,17 +59,17 @@ $files = array_map(function ($filename) use ($assetsUrl) {
     </select>
   </div>
   <div class="js-model-description model-description">
-    <p class="js-content"></p>
+    <p class="js-description-content"></p>
   </div>
 
   <div class="model-viewer-container">
-    <div class="model-view-container js-model-view-container">
+    <div class="canvas-container js-canvas-container">
     </div>
-    <div class="controls-info">
-      <p>
-        Left click + drag: Rotate<br>
-        Right click + drag: Pan<br>
-        Mouse wheel: Zoom
+    <div class="js-controls-info controls-info" style="display: none;">
+      <p class="controls-content">
+        <span>Left click + drag: Rotate</span>
+        <span>Right click + drag: Pan</span>
+        <span>Mouse wheel: Zoom</span>
       </p>
     </div>
     <div class="play-button-overlay js-play-button-overlay">
@@ -83,7 +83,7 @@ $files = array_map(function ($filename) use ($assetsUrl) {
       <div class="loading-text">Loading model<span aria-hidden="true">...</span></div>
     </div>
     <div class="error-display js-error-display" role="alert">
-      <p class="error-content" style="display: none;"></p>
+      <p class="error-content js-error-content" style="display: none;"></p>
     </div>
   </div>
 </div>
