@@ -1,6 +1,7 @@
 import { createUiState } from "./uiState.js";
 import { createUiView } from "./uiView.js";
 import { invariant } from "../helpers/invariant.js";
+import { logger } from "../helpers/logger.js";
 
 /**
  * Creates and initializes the UI component for the model viewer
@@ -14,6 +15,8 @@ import { invariant } from "../helpers/invariant.js";
 export function createUi({ root, onSelect, onPlay, getDataProperty }) {
   // mandatory elements
   const domElements = {
+    viewerContainer: root.find(".js-model-viewer-container"),
+    canvasContainer: root.find(".js-canvas-container"),
     loadingOverlay: root.find(".js-loading-overlay"),
     playButtonOverlay: root.find(".js-play-button-overlay"),
     errorDisplay: root.find(".js-error-display"),
@@ -62,7 +65,45 @@ export function createUi({ root, onSelect, onPlay, getDataProperty }) {
 
   function handleFullscreen(e) {
     e.preventDefault();
-    // TODO: implement fullscreen
+
+    const isFullscreen = document.fullscreenElement != null;
+    const toggleFullscreen = isFullscreen
+      ? document.exitFullscreen()
+      : document.documentElement.requestFullscreen();
+
+    toggleFullscreen.catch((err) =>
+      logger("error", `Error toggling fullscreen: ${err.message}`)
+    );
+  }
+
+  $(document).on("fullscreenchange", function () {
+    const isFullscreen = document.fullscreenElement != null;
+    logger("info", isFullscreen ? "Entered fullscreen" : "Exited fullscreen");
+    domElements.viewerContainer.toggleClass("fullscreen", isFullscreen);
+  });
+
+  function handleKeyDown(e) {
+    if (e.key === "Escape" && helpModal.is(":visible")) {
+      helpModal.fadeOut();
+      return;
+    }
+
+    if (e.key.toLowerCase() === "h") {
+      e.preventDefault();
+      helpModal.is(":visible") ? helpModal.fadeOut() : helpModal.fadeIn();
+    }
+
+    if (e.key.toLowerCase() === "f") {
+      e.preventDefault();
+      const isFullscreen = document.fullscreenElement != null;
+      const toggleFullscreen = isFullscreen
+        ? document.exitFullscreen()
+        : document.documentElement.requestFullscreen();
+
+      toggleFullscreen.catch((err) =>
+        logger("error", `Error toggling fullscreen: ${err.message}`)
+      );
+    }
   }
 
   function init() {
@@ -74,6 +115,7 @@ export function createUi({ root, onSelect, onPlay, getDataProperty }) {
     domElements.modelSelector.on("change", handleSelect);
     playButton.on("click", handlePlay);
     helpButton.on("click", handleHelp);
+    $(document).on("keydown", handleKeyDown);
     fullscreenButton.on("click", handleFullscreen);
     helpModalClose.on("click", handleHelpClose);
   }
@@ -84,6 +126,7 @@ export function createUi({ root, onSelect, onPlay, getDataProperty }) {
     helpButton.off("click", handleHelp);
     fullscreenButton.off("click", handleFullscreen);
     helpModalClose.off("click", handleHelpClose);
+    $(document).off("keydown", handleKeyDown);
   }
 
   init();

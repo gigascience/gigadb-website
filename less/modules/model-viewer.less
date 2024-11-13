@@ -4,6 +4,10 @@
 @stack-order-loading-overlay: 3;
 @stack-order-error-display: 4;
 @stack-order-help-modal: 5;
+@stack-order-fullscreen: 9999;
+@stack-order-fullscreen-controls: 10000;
+@stack-order-fullscreen-help-modal: 10001;
+
 
 .model-selector {
   width: 450px;
@@ -12,7 +16,6 @@
 
 .model-viewer-container {
   position: relative;
-  isolation: isolate;
   width: 912px;
   height: 512px;
   background: transparent;
@@ -49,7 +52,7 @@
 
 .controls .controls-btn {
   text-decoration: none;
-  color: @color-true-white;
+  color: @color-warm-black;
   background: transparent;
   font-size: 18px;
   opacity: 0.8;
@@ -147,6 +150,33 @@
         }
       }
     }
+  }
+}
+
+.model-viewer-container.fullscreen {
+  .canvas-container {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: @stack-order-fullscreen;
+  }
+
+  .controls {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    z-index: @stack-order-fullscreen-controls;
+  }
+
+  .help-modal {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: @stack-order-fullscreen-help-modal;
   }
 }
 

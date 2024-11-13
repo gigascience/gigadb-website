@@ -63,16 +63,16 @@ $files = array_map(function ($filename) use ($assetsUrl) {
     <p class="js-description-content"></p>
   </div>
 
-  <div class="model-viewer-container">
+  <div class="model-viewer-container js-model-viewer-container">
     <div class="canvas-container js-canvas-container">
     </div>
     <div class="js-controls controls" style="display: none;">
       <!-- note: these are links rather than buttons because of bootstrap tooltip -->
-      <a href="#" class="js-controls-info-btn controls-btn" data-toggle="tooltip" title="Help">
+      <a href="#" class="js-controls-info-btn controls-btn" data-toggle="tooltip" title="Help (h)">
         <i class="fa fa-question-circle"></i>
         <span class="sr-only">Help</span>
       </a>
-      <a href="#" class="js-fullscreen-btn controls-btn" data-toggle="tooltip" title="Toggle fullscreen">
+      <a href="#" class="js-fullscreen-btn controls-btn" data-toggle="tooltip" title="Fullscreen (f)">
         <i class="fa fa-expand"></i>
         <span class="sr-only">Toggle fullscreen</span>
       </a>
@@ -93,7 +93,7 @@ $files = array_map(function ($filename) use ($assetsUrl) {
     <div class="js-help-modal help-modal" style="display: none;">
       <div class="help-modal-content">
         <div class="help-modal-header">
-          <h2 class="help-modal-title">NAVIGATION BASICS</h2>
+          <h2 class="help-modal-title">CONTROLS</h2>
           <button class="js-help-modal-close help-modal-close">
             <i class="fa fa-times"></i>
             <span class="sr-only">Close</span>

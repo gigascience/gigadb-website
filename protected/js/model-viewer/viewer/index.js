@@ -4,7 +4,6 @@ import { createRenderer } from "./systems/renderer.js";
 import { createControls } from "./systems/controls.js";
 import { createLights } from "./components/lights.js";
 import { createResizer } from "./systems/resizer.js";
-import { createLoop } from "./systems/loop.js";
 import { load } from "./components/models/index.js";
 import { logger } from "../helpers/logger.js";
 
@@ -13,7 +12,6 @@ export function createModelViewer(container) {
   let camera;
   let renderer;
   let controls;
-  let loop;
   let models = [];
   let onDestroyCallbacks = [];
 
@@ -29,9 +27,6 @@ export function createModelViewer(container) {
     renderer = createRenderer();
     container.append(renderer.domElement);
     controls = createControls(camera, renderer.domElement);
-    loop = createLoop(camera, scene, renderer);
-
-    loop.updatables.push(controls);
 
     if (getContainerDimensions().some((dimension) => dimension === 0)) {
       const msg =
@@ -46,13 +41,12 @@ export function createModelViewer(container) {
 
     scene.add(...lights);
 
-    loop.start();
-
-    const { destroy: destroyResizer } = createResizer(
+    const { destroy: destroyResizer } = createResizer({
       getContainerDimensions,
       camera,
-      renderer
-    );
+      renderer,
+      onResize: render,
+    });
 
     onDestroyCallbacks.push(destroyResizer);
 
@@ -80,7 +74,7 @@ export function createModelViewer(container) {
   }
 
   function unmount() {
-    loop.stop();
+    // loop.stop();
     controls.removeEventListener("change", render);
     onDestroyCallbacks.forEach((callback) => callback());
   }
