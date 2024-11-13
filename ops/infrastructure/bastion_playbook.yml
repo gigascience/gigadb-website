@@ -3,13 +3,13 @@
 
 
 
-- name: Fix Centos EOL issues
+- name: Fix Centos package repos issues
   hosts: name_bastion_server_{{gigadb_env}}*
   tags:
-    - fix-centos-eol-issues
+    - fix-centos-package-repos-issues
 
   roles:
-    - role: ../../roles/centos-eol-fix
+    - role: ../../roles/centos-package-repos
 
 - name: Setup Fail2ban
   hosts: name_bastion_server_{{gigadb_env}}*
