@@ -1,6 +1,6 @@
-- name: Delete cache
+- name: delete cache
   become: yes
-  command: dnf clean all
+  shell: dnf clean all && rm -r /var/cache/dnf
 
 - name: enable code ready linux builder repository
   become: yes
@@ -12,11 +12,11 @@
     name: epel-release
     state: present
 
-- name: install epel-next-release repository
-  become: yes
-  dnf:
-    name: epel-next-release
-    state: present
+#- name: install epel-next-release repository
+#  become: yes
+#  dnf:
+#    name: epel-next-release
+#    state: present
 
 - name: import postgresql repository gpg key
   ansible.builtin.rpm_key:
