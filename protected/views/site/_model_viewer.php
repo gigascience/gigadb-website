@@ -6,8 +6,21 @@ $filenames = [
   'Eiffel_tower_sample.STL',
   'Stanford_Bunny_sample.stl',
   'GeoB8502_825cm_Shell-6.obj',
+  'GeoB8502_865cm_Shell-1.obj',
+  'GeoB8502_865cm_Shell-2.obj',
+  'GeoB8502_865cm_Shell-3.obj',
+  'GeoB8502_825cm_Shell-8.obj',
+  'leaf_05.las',
+  'leaf_06.las',
+  'leaf_07.las',
+  'leaf_08.las',
   'leaf_09.las',
   'NF66_body_resize_v2.ply',
+  '12_K039105_04.ply',
+  '22_K039117_03.ply',
+  '55_HC5504-3_03.ply',
+  '63_K039178_02.ply',
+  'scene.gltf',
   '3D_surface_reconstruction_bitis_dentition.stl'
 ];
 
@@ -22,7 +35,6 @@ $files = array_map(function ($filename) use ($assetsUrl) {
     'dataset_id' => 123,
     'location' => $location,
     'name' => $filename,
-    // TODO show description in the UI
     'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     'extension' => pathinfo($filename, PATHINFO_EXTENSION),
     'size' => 1000,

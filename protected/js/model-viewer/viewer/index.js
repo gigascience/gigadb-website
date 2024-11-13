@@ -5,7 +5,6 @@ import { createControls } from "./systems/controls.js";
 import { createLights } from "./components/lights.js";
 import { createResizer } from "./systems/resizer.js";
 import { load } from "./components/models/index.js";
-import { createCube } from "./components/cube.js";
 import { logger } from "../helpers/logger.js";
 
 export function createModelViewer(container) {
@@ -13,7 +12,7 @@ export function createModelViewer(container) {
   let camera;
   let renderer;
   let controls;
-  let model;
+  let models = [];
   let onDestroyCallbacks = [];
 
   const containerDimensions = {
@@ -41,13 +40,7 @@ export function createModelViewer(container) {
 
     const lights = createLights();
 
-    // loading a model for testing
-    model = createCube();
-    // set orbiting center around modle center position
-    controls.target.copy(model.position);
-    // set camera to look at model center position
-    camera.lookAt(model.position);
-    scene.add(...lights, model);
+    scene.add(...lights);
 
     const { destroy: destroyResizer } = createResizer(
       containerDimensions,
@@ -67,15 +60,16 @@ export function createModelViewer(container) {
 
   async function loadModel({ location, extension }) {
     // unload previously loaded model
-    if (model) {
-      scene.remove(model);
+    if (models.length > 0) {
+      scene.remove(...models);
     }
     // reset controls to undo any orbiting done in previous model
     controls.reset();
-    model = await load({ url: location, extension });
+    models = await load({ url: location, extension });
+    logger("info", "Loaded models", models);
     // set orbiting center around model center position
-    controls.target.copy(model.position);
-    scene.add(model);
+    controls.target.copy(models[0].position);
+    scene.add(...models);
     render();
   }
 

@@ -1,18 +1,34 @@
 import { STLLoader } from "three/addons/loaders/STLLoader.js";
-// import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
-// import { PLYLoader } from "three/addons/loaders/PLYLoader.js";
+import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
+import { PLYLoader } from "three/addons/loaders/PLYLoader.js";
+import { LASLoader } from "https://cdn.jsdelivr.net/npm/@loaders.gl/las@4.3.2/+esm";
+import { load } from "https://cdn.jsdelivr.net/npm/@loaders.gl/core@4.3.2/+esm";
+import { STL, OBJ, LAS, PLY } from "./extensions.js";
 
 const loaders = {
-  stl: STLLoader,
-  // obj: OBJLoader,
-  // ply: PLYLoader,
+  [STL]: STLLoader,
+  [OBJ]: OBJLoader,
+  [PLY]: PLYLoader,
 };
 
-export function createLoader(extension) {
-  const lcExt = extension.toLowerCase();
-  if (loaders[lcExt]) {
-    return new loaders[lcExt]();
+export function createLoader(ext) {
+  switch (ext) {
+    case STL:
+    case OBJ:
+    case PLY:
+      return new loaders[ext]();
+    case LAS:
+      return {
+        loadAsync: async (url) => {
+          const response = await fetch(url);
+          const arrayBuffer = await response.arrayBuffer();
+          return load(arrayBuffer, LASLoader, {
+            shape: "mesh",
+            colorDepth: 16,
+          });
+        },
+      };
   }
 
-  throw new Error(`Unsupported extension: ${extension}`);
+  throw new Error(`Unsupported extension: ${ext}`);
 }
