@@ -54,7 +54,8 @@ $files = array_map(function ($filename) use ($assetsUrl) {
       <?php foreach ($files as $index => $file): ?>
         <!-- consider id as value, however location is likely unique too -->
         <option value="<?php echo $file['id']; ?>" <?php echo $index === 0 ? 'selected' : ''; ?>>
-          <?php echo $file['name']; ?></option>
+          <?php echo $file['name']; ?>
+        </option>
       <?php endforeach; ?>
     </select>
   </div>
@@ -65,15 +66,19 @@ $files = array_map(function ($filename) use ($assetsUrl) {
   <div class="model-viewer-container">
     <div class="canvas-container js-canvas-container">
     </div>
-    <div class="js-controls-info controls-info" style="display: none;">
-      <p class="controls-content">
-        <span>Left click + drag: Rotate</span>
-        <span>Right click + drag: Pan</span>
-        <span>Mouse wheel: Zoom</span>
-      </p>
+    <div class="js-controls controls" style="display: none;">
+      <!-- note: these are links rather than buttons because of bootstrap tooltip -->
+      <a href="#" class="js-controls-info-btn controls-btn" data-toggle="tooltip" title="Help">
+        <i class="fa fa-question-circle"></i>
+        <span class="sr-only">Help</span>
+      </a>
+      <a href="#" class="js-fullscreen-btn controls-btn" data-toggle="tooltip" title="Toggle fullscreen">
+        <i class="fa fa-expand"></i>
+        <span class="sr-only">Toggle fullscreen</span>
+      </a>
     </div>
     <div class="play-button-overlay js-play-button-overlay">
-      <button id="play-button" class="play-button js-play-button">
+      <button class="play-button js-play-button">
         <i class="fa fa-play play-button-icon"></i>
         <span class="sr-only">Load model</span>
       </button>
@@ -85,10 +90,45 @@ $files = array_map(function ($filename) use ($assetsUrl) {
     <div class="error-display js-error-display" role="alert">
       <p class="error-content js-error-content" style="display: none;"></p>
     </div>
+    <div class="js-help-modal help-modal" style="display: none;">
+      <div class="help-modal-content">
+        <div class="help-modal-header">
+          <h2 class="help-modal-title">NAVIGATION BASICS</h2>
+          <button class="js-help-modal-close help-modal-close">
+            <i class="fa fa-times"></i>
+            <span class="sr-only">Close</span>
+          </button>
+        </div>
+        <div class="help-modal-body">
+          <div class="help-control">
+            <i class="fa fa-refresh"></i>
+            <div class="help-control-text">
+              <div>Orbit around</div>
+              <div class="help-control-detail">Left click + drag</div>
+            </div>
+          </div>
+          <div class="help-control">
+            <i class="fa fa-search"></i>
+            <div class="help-control-text">
+              <div>Zoom</div>
+              <div class="help-control-detail">Scroll anywhere</div>
+            </div>
+          </div>
+          <div class="help-control">
+            <i class="fa fa-arrows"></i>
+            <div class="help-control-text">
+              <div>Pan</div>
+              <div class="help-control-detail">Right click + drag</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
 <?php
+// register model-viewer scripts
 Yii::app()->assetManager->forceCopy = YII_DEBUG;
 $jsDir = Yii::getPathOfAlias('application.js.model-viewer');
 $jsUrl = Yii::app()->assetManager->publish($jsDir);
@@ -100,5 +140,6 @@ Yii::app()->clientScript->registerScriptFile($jsUrl . '/index.js', CClientScript
 
   $(document).ready(function () {
     modelViewer(<?php echo json_encode($files); ?>);
+    $('[data-toggle="tooltip"]').tooltip();
   })
 </script>

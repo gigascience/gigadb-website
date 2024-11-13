@@ -5,7 +5,7 @@ export function createUiView(domElements, getDataProperty) {
     playButtonOverlay,
     errorDisplay,
     modelDescription,
-    controlsInfo,
+    controls,
   } = domElements;
 
   function updateUI(state) {
@@ -15,22 +15,22 @@ export function createUiView(domElements, getDataProperty) {
       case "idle":
         loadingOverlay.hide();
         playButtonOverlay.show();
-        controlsInfo.hide();
+        controls.hide();
         break;
       case "pending":
         loadingOverlay.show();
         playButtonOverlay.hide();
-        controlsInfo.hide();
+        controls.hide();
         break;
       case "success":
         loadingOverlay.hide();
         playButtonOverlay.hide();
-        controlsInfo.show();
+        controls.show();
         break;
       case "error":
         loadingOverlay.hide();
         playButtonOverlay.show();
-        controlsInfo.hide();
+        controls.hide();
         break;
     }
 

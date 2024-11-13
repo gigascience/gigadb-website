@@ -58,5 +58,8 @@ export function modelViewer(files) {
     }
   }
 
+  // load the currently selected model for development purposes
+  handleLoadModel(uiState.selected);
+
   logger("info", "Model viewer initialized");
 }

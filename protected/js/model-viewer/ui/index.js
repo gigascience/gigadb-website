@@ -26,7 +26,13 @@ export function createUi({ root, onSelect, onPlay, getDataProperty }) {
   });
 
   // optional elements
-  domElements.controlsInfo = root.find(".js-controls-info")
+  domElements.controls = root.find(".js-controls");
+
+  const playButton = domElements.playButtonOverlay.find(".js-play-button");
+  const helpButton = domElements.controls.find(".js-controls-info-btn");
+  const fullscreenButton = domElements.controls.find(".js-fullscreen-btn");
+  const helpModal = root.find(".js-help-modal");
+  const helpModalClose = helpModal.find(".js-help-modal-close");
 
   const uiView = createUiView(domElements, getDataProperty);
 
@@ -44,19 +50,40 @@ export function createUi({ root, onSelect, onPlay, getDataProperty }) {
     onPlay(modelState.selected);
   }
 
+  function handleHelp(e) {
+    e.preventDefault();
+    helpModal.fadeIn();
+  }
+
+  function handleHelpClose(e) {
+    e.preventDefault();
+    helpModal.fadeOut();
+  }
+
+  function handleFullscreen(e) {
+    e.preventDefault();
+    // TODO: implement fullscreen
+  }
+
   function init() {
     domElements.loadingOverlay.hide();
-    domElements.controlsInfo.hide();
+    domElements.controls.hide();
     domElements.playButtonOverlay.show();
     modelState.selected = domElements.modelSelector.val() || null;
     uiView.updateUI(modelState);
     domElements.modelSelector.on("change", handleSelect);
-    domElements.playButtonOverlay.find("button").on("click", handlePlay);
+    playButton.on("click", handlePlay);
+    helpButton.on("click", handleHelp);
+    fullscreenButton.on("click", handleFullscreen);
+    helpModalClose.on("click", handleHelpClose);
   }
 
   function unmount() {
     domElements.modelSelector.off("change", handleSelect);
-    domElements.playButtonOverlay.find("button").off("click", handlePlay);
+    playButton.off("click", handlePlay);
+    helpButton.off("click", handleHelp);
+    fullscreenButton.off("click", handleFullscreen);
+    helpModalClose.off("click", handleHelpClose);
   }
 
   init();

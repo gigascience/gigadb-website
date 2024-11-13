@@ -3,6 +3,7 @@
 @stack-order-play-button: 2;
 @stack-order-loading-overlay: 3;
 @stack-order-error-display: 4;
+@stack-order-help-modal: 5;
 
 .model-selector {
   width: 450px;
@@ -34,39 +35,116 @@
 
 // controls info
 
-.controls-info {
+.controls {
   position: absolute;
-  background: #000000cc;
+  background: transparent;
   color: @color-true-white;
-  top: 0;
-  left: 0;
-  padding: 6px 12px;
+  bottom: 0;
+  right: 0;
+  padding: 12px;
   z-index: @stack-order-controls-info;
-}
-
-.controls-info .controls-content {
   display: flex;
-  flex-direction: column;
-  gap: 2px;
-  margin: 0;
-  color: @color-true-white;
+  gap: 6px;
 }
 
-@media (max-width: 912px) {
-  .controls-info {
-    top: auto;
-    transform: translateY(-100%);
-    .controls-content {
-      flex-direction: row;
-      span {
-        text-wrap: nowrap;
+.controls .controls-btn {
+  text-decoration: none;
+  color: @color-true-white;
+  background: transparent;
+  font-size: 18px;
+  opacity: 0.8;
+  transition: opacity 0.2s ease, background 0.2s ease;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    opacity: 1;
+    color: @color-true-white;
+    text-decoration: none;
+    background: rgba(0, 0, 0, 0.5);
+  }
+}
+
+// help modal
+
+.help-modal {
+  position: absolute;
+  inset: 0;
+  z-index: @stack-order-help-modal;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: @color-true-white;
+
+  .help-modal-content {
+    background: rgba(0, 0, 0, 0.9);
+    border-radius: 8px;
+    padding: 24px;
+    min-width: 300px;
+    max-width: 90%;
+  }
+
+  .help-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+
+    .help-modal-title {
+      margin: 0;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .help-modal-close {
+      background: transparent;
+      border: none;
+      color: @color-true-white;
+      font-size: 20px;
+      padding: 4px;
+      cursor: pointer;
+      opacity: 0.8;
+
+      &:hover {
+        opacity: 1;
       }
-      span:not(:last-child) {
-        border-right: 1px solid @color-dark-gray;
-        padding-right: 10px;
+    }
+  }
+
+  .help-modal-body {
+    h3 {
+      font-size: 14px;
+      margin: 0 0 16px 0;
+      opacity: 0.8;
+    }
+
+    .help-control {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+
+      i {
+        font-size: 24px;
+        width: 24px;
+        text-align: center;
       }
-      span:not(:first-child) {
-        padding-left: 10px;
+
+      .help-control-text {
+        div:first-child {
+          font-weight: bold;
+          margin-bottom: 4px;
+        }
+
+        .help-control-detail {
+          font-size: 14px;
+          opacity: 0.8;
+        }
       }
     }
   }
