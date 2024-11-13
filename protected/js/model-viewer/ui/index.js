@@ -2,6 +2,7 @@ import { createUiState } from "./uiState.js";
 import { createUiView } from "./uiView.js";
 import { invariant } from "../helpers/invariant.js";
 import { logger } from "../helpers/logger.js";
+import { selector } from "./selectors.js";
 
 /**
  * Creates and initializes the UI component for the model viewer
@@ -15,13 +16,13 @@ import { logger } from "../helpers/logger.js";
 export function createUi({ root, onSelect, onPlay, getDataProperty }) {
   // mandatory elements
   const domElements = {
-    viewerContainer: root.find(".js-model-viewer-container"),
-    canvasContainer: root.find(".js-canvas-container"),
-    loadingOverlay: root.find(".js-loading-overlay"),
-    playButtonOverlay: root.find(".js-play-button-overlay"),
-    errorDisplay: root.find(".js-error-display"),
-    modelSelector: root.find(".js-model-selector"),
-    modelDescription: root.find(".js-model-description"),
+    viewerContainer: root.find(selector.viewerContainer),
+    canvasContainer: root.find(selector.canvasContainer),
+    loadingOverlay: root.find(selector.loadingOverlay),
+    playButtonOverlay: root.find(selector.playButtonOverlay),
+    errorDisplay: root.find(selector.errorDisplay),
+    modelSelector: root.find(selector.modelSelector),
+    modelDescription: root.find(selector.modelDescription),
   };
 
   Object.values(domElements).forEach((el) => {
@@ -29,13 +30,13 @@ export function createUi({ root, onSelect, onPlay, getDataProperty }) {
   });
 
   // optional elements
-  domElements.controls = root.find(".js-controls");
+  domElements.controls = root.find(selector.controls);
 
-  const playButton = domElements.playButtonOverlay.find(".js-play-button");
-  const helpButton = domElements.controls.find(".js-controls-info-btn");
-  const fullscreenButton = domElements.controls.find(".js-fullscreen-btn");
-  const helpModal = root.find(".js-help-modal");
-  const helpModalClose = helpModal.find(".js-help-modal-close");
+  const playButton = domElements.playButtonOverlay.find(selector.playButton);
+  const helpButton = domElements.controls.find(selector.helpButton);
+  const fullscreenButton = domElements.controls.find(selector.fullscreenButton);
+  const helpModal = root.find(selector.helpModal);
+  const helpModalClose = helpModal.find(selector.helpModalClose);
 
   const uiView = createUiView(domElements, getDataProperty);
 
@@ -44,44 +45,70 @@ export function createUi({ root, onSelect, onPlay, getDataProperty }) {
     () => uiView.updateUI(modelState)
   );
 
+  /**
+   * Handles model selection from dropdown, updates state and triggers callback
+   */
   function handleSelect() {
     modelState.selected = domElements.modelSelector.val() || null;
     onSelect(modelState.selected);
   }
 
+  /**
+   * Handles play button click, triggers callback with selected model
+   */
   function handlePlay() {
     onPlay(modelState.selected);
   }
 
+  /**
+   * Shows help modal when help button is clicked
+   * @param {Event} e Click event
+   */
   function handleHelp(e) {
     e.preventDefault();
     helpModal.fadeIn();
   }
 
+  /**
+   * Hides help modal when close button is clicked
+   * @param {Event} e Click event
+   */
   function handleHelpClose(e) {
     e.preventDefault();
     helpModal.fadeOut();
   }
 
-  function handleFullscreen(e) {
-    e.preventDefault();
-
-    const isFullscreen = document.fullscreenElement != null;
-    const toggleFullscreen = isFullscreen
+  /**
+   * Toggles browser fullscreen mode
+   */
+  function toggleFullscreenMode() {
+    document.fullscreenElement != null
       ? document.exitFullscreen()
       : document.documentElement.requestFullscreen();
-
-    toggleFullscreen.catch((err) =>
-      logger("error", `Error toggling fullscreen: ${err.message}`)
-    );
   }
 
-  $(document).on("fullscreenchange", function () {
+  /**
+   * Handles fullscreen button click
+   * @param {Event} e Click event
+   */
+  function handleFullscreen(e) {
+    e.preventDefault();
+    toggleFullscreenMode();
+  }
+
+  /**
+   * Updates UI when fullscreen state changes
+   */
+  function handleFullscreenChange() {
     const isFullscreen = document.fullscreenElement != null;
     logger("info", isFullscreen ? "Entered fullscreen" : "Exited fullscreen");
     domElements.viewerContainer.toggleClass("fullscreen", isFullscreen);
-  });
+  }
 
+  /**
+   * Handles keyboard shortcuts
+   * @param {KeyboardEvent} e Keyboard event
+   */
   function handleKeyDown(e) {
     if (e.key === "Escape" && helpModal.is(":visible")) {
       helpModal.fadeOut();
@@ -95,17 +122,13 @@ export function createUi({ root, onSelect, onPlay, getDataProperty }) {
 
     if (e.key.toLowerCase() === "f") {
       e.preventDefault();
-      const isFullscreen = document.fullscreenElement != null;
-      const toggleFullscreen = isFullscreen
-        ? document.exitFullscreen()
-        : document.documentElement.requestFullscreen();
-
-      toggleFullscreen.catch((err) =>
-        logger("error", `Error toggling fullscreen: ${err.message}`)
-      );
+      toggleFullscreenMode();
     }
   }
 
+  /**
+   * Initializes UI state and event listeners
+   */
   function init() {
     domElements.loadingOverlay.hide();
     domElements.controls.hide();
@@ -118,8 +141,12 @@ export function createUi({ root, onSelect, onPlay, getDataProperty }) {
     $(document).on("keydown", handleKeyDown);
     fullscreenButton.on("click", handleFullscreen);
     helpModalClose.on("click", handleHelpClose);
+    $(document).on("fullscreenchange", handleFullscreenChange);
   }
 
+  /**
+   * Removes all event listeners
+   */
   function unmount() {
     domElements.modelSelector.off("change", handleSelect);
     playButton.off("click", handlePlay);
@@ -127,6 +154,7 @@ export function createUi({ root, onSelect, onPlay, getDataProperty }) {
     fullscreenButton.off("click", handleFullscreen);
     helpModalClose.off("click", handleHelpClose);
     $(document).off("keydown", handleKeyDown);
+    $(document).off("fullscreenchange", handleFullscreenChange);
   }
 
   init();

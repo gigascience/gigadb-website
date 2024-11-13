@@ -2,12 +2,20 @@ import { createUi } from "./ui/index.js";
 import { createModelViewer } from "./viewer/index.js";
 import { logger } from "./helpers/logger.js";
 import { invariant } from "./helpers/invariant.js";
+import { selector } from "./ui/selectors.js";
+
+const defaultOptions = {
+  loadModelOnInit: true,
+};
+
 /**
  * @param {Array} files - Array of file instances expected to follow protected/models/File.php, location is expected to point to a 3D model file, extension is expected to be one of stl, obj, ply, las
  */
-export function modelViewer(files) {
-  const root = $("#modelViewerRoot");
-  const container = root.find(".js-canvas-container");
+export function modelViewer(files, options = {}) {
+  const mergedOptions = { ...defaultOptions, ...options };
+
+  const root = $(selector.root);
+  const container = root.find(selector.canvasContainer);
 
   invariant(container.length !== 0, "Expected element not found");
 
@@ -59,7 +67,9 @@ export function modelViewer(files) {
   }
 
   // load the currently selected model for development purposes
-  handleLoadModel(uiState.selected);
+  if (mergedOptions.loadModelOnInit) {
+    handleLoadModel(uiState.selected);
+  }
 
   logger("info", "Model viewer initialized");
 }

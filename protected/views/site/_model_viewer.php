@@ -70,11 +70,11 @@ $files = array_map(function ($filename) use ($assetsUrl) {
       <!-- note: these are links rather than buttons because of bootstrap tooltip -->
       <a href="#" class="js-controls-info-btn controls-btn" data-toggle="tooltip" title="Help (h)">
         <i class="fa fa-question-circle"></i>
-        <span class="sr-only">Help</span>
+        <span class="sr-only">Toggle help. H key.</span>
       </a>
       <a href="#" class="js-fullscreen-btn controls-btn" data-toggle="tooltip" title="Fullscreen (f)">
         <i class="fa fa-expand"></i>
-        <span class="sr-only">Toggle fullscreen</span>
+        <span class="sr-only">Toggle fullscreen. F key.</span>
       </a>
     </div>
     <div class="play-button-overlay js-play-button-overlay">
@@ -139,7 +139,9 @@ Yii::app()->clientScript->registerScriptFile($jsUrl . '/index.js', CClientScript
   import { modelViewer } from "<?php echo $jsUrl; ?>/index.js";
 
   $(document).ready(function () {
-    modelViewer(<?php echo json_encode($files); ?>);
+    modelViewer(<?php echo json_encode($files); ?>, {
+      loadModelOnInit: false
+    });
     $('[data-toggle="tooltip"]').tooltip();
   })
 </script>
