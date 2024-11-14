@@ -24,8 +24,6 @@ class FileAttributes extends CActiveRecord
      * @return FileAttributes the static model class
      */
 
-    private static $maxValueLength = 150;
-
     public static function model($className = __CLASS__)
     {
         return parent::model($className);
@@ -49,16 +47,12 @@ class FileAttributes extends CActiveRecord
         return array(
             array('file_id, attribute_id', 'required'),
             array('file_id, attribute_id', 'numerical', 'integerOnly' => true),
-            array('value', 'length', 'max' => self::$maxValueLength),
+            array('value', 'length', 'max' => 1000),
             array('unit_id', 'length', 'max' => 30),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
             array('id, file_id, attribute_id, value, unit_id', 'safe', 'on' => 'search'),
         );
-    }
-
-    public static function getMaxValueLength() {
-      return self::$maxValueLength;
     }
 
     /**

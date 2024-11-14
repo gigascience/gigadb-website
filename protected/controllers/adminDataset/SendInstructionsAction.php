@@ -11,7 +11,7 @@ class SendInstructionsAction extends CAction
     public function run(string $id, int $fid)
     {
     	$jwt_ttl = 3600 ;
-    	$webClient = new \GuzzleHttp\Client();
+    	$webClient = \Yii::$container->get('guzzleHttpClient');
 
 
         // Instantiate FiledropService
