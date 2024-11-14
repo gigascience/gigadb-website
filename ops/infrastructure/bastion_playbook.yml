@@ -121,22 +121,12 @@
     - name: Ensure required packages are installed
       dnf:
         name:
-          - curl
-          - jq
+          - pip
         state: present
 
-    - name: Download Docker Compose binary
-      get_url:
-        url: "https://github.com/docker/compose/releases/download/v2.30.0/docker-compose-Linux-x86_64"
-        dest: /usr/local/bin/docker-compose
-        mode: 0755
-
-    - name: Verify Docker Compose installation
-      command: /usr/local/bin/docker-compose --version
-      register: compose_version
-
-    - debug:
-        var: compose_version.stdout
+    - name: Install docker-compose
+      pip:
+        name: docker-compose==1.23
 
     - name: Create .env with RDS DSN
       template:
