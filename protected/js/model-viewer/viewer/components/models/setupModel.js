@@ -14,7 +14,6 @@ function hasNormals(geometry) {
 }
 
 function setupObj(loadedModel) {
-  // Handle OBJ files which return an Object3D containing children
   const meshes = loadedModel.children?.filter((child) => child instanceof Mesh);
   if (!meshes || meshes.length === 0) {
     throw new Error("No meshes found in OBJ file");
@@ -118,6 +117,7 @@ function setupGeometry(geometry) {
   return [mesh];
 }
 
+// all setup functions return an array of meshes for consistency, even if there is only one mesh
 export function setupModel(loadedModel, ext) {
   switch (ext) {
     case OBJ:

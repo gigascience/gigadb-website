@@ -7,6 +7,13 @@ import { createResizer } from "./systems/resizer.js";
 import { load } from "./components/models/index.js";
 import { getContainerDimensions } from "../helpers/getContainerDimensions.js";
 
+/**
+ * Creates and manages a 3D model viewer with scene, camera, renderer, and controls
+ * @param {HTMLElement} container - DOM element to contain the 3D viewer
+ * @returns {Object} Object containing viewer control methods
+ * @returns {Function} returns.loadModel - Async function to load and display a 3D model
+ * @returns {Function} returns.render - Function to render the current scene
+ */
 export function createModelViewer(container) {
   let scene;
   let camera;
@@ -63,7 +70,6 @@ export function createModelViewer(container) {
   }
 
   function unmount() {
-    // loop.stop();
     controls.removeEventListener("change", render);
     onDestroyCallbacks.forEach((callback) => callback());
   }

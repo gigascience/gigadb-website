@@ -9,7 +9,13 @@ const defaultOptions = {
 };
 
 /**
- * @param {Array} files - Array of file instances expected to follow protected/models/File.php, location is expected to point to a 3D model file, extension is expected to be one of stl, obj, ply, las
+ * @param {Array<Object>} files - Array of file objects representing 3D model files
+ * @param {number} files[].id - Unique identifier for the file
+ * @param {string} files[].location - URL pointing to the 3D model file
+ * @param {string} files[].name - Display name of the file
+ * @param {string} files[].extension - File extension, must be one of: 'stl', 'obj', 'ply', 'las'
+ * @param {Object} [options] - Configuration options
+ * @param {boolean} [options.loadModelOnInit=true] - Whether to load the first model immediately on initialization
  */
 export function modelViewer(files, options = {}) {
   const mergedOptions = { ...defaultOptions, ...options };
@@ -66,7 +72,6 @@ export function modelViewer(files, options = {}) {
     }
   }
 
-  // load the currently selected model for development purposes
   if (mergedOptions.loadModelOnInit) {
     handleLoadModel(uiState.selected);
   }
