@@ -39,7 +39,7 @@ If there is any terraform problems, please look for the fix at [here](PRODUCTION
 You should now have been able to successfully execute `terraform output` which will then display the bastion server IP
 address that can then be used to log into the server:
 ```
-$ ssh -i ~/.ssh/id-rsa-aws-hk-gigadb.pem centos@<bastion public ip>
+$ ssh -i ~/.ssh/id-rsa-aws-hk-gigadb.pem ec2-user@<bastion public ip>
 ```
 
 Execute this command to restore the database from a backup taken on YYYYMMDD

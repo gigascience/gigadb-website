@@ -482,16 +482,16 @@ Sometimes, it would be useful to log into dockerhost server manually for debuggi
 Here are the steps:
 ```
 # To check whether bastion server is accessible by logging in
-user@dev-computer: % ssh -i ~/.ssh/<CustomPrivateKey>.pem centos@<bastion_public_ip>
-[centos@<bastion_private_ip> ~]$ ls
+user@dev-computer: % ssh -i ~/.ssh/<CustomPrivateKey>.pem ec2-user@<bastion_public_ip>
+[ec2-user@<bastion_private_ip> ~]$ ls
 database_bootstrap.backup
 # Log in to dockerhost server through bastion by adding ProxyCommand to ssh command using public DNS
-user@dev-computer: % ssh -i ~/.ssh/<CustomPrivateKey>.pem -o ProxyCommand="ssh -W %h:%p -i ~/.ssh/<CustomPrivateKey>.pem  centos@<bastion_public_ip>" centos@ec2-<docker_public_ip>.<region>.compute.amazonaws.com
-[centos@<dockerhost_private_ip> ~]$ ls
+user@dev-computer: % ssh -i ~/.ssh/<CustomPrivateKey>.pem -o ProxyCommand="ssh -W %h:%p -i ~/.ssh/<CustomPrivateKey>.pem  ec2-user@<bastion_public_ip>" ec2-user@ec2-<docker_public_ip>.<region>.compute.amazonaws.com
+[ec2-user@<dockerhost_private_ip> ~]$ ls
 app_data
 # Log in to dockerhost server through bastion by adding ProxyCommand to ssh command using dockerhot private ip
-user@dev-computer: % ssh -i ~/.ssh/<CustomPrivateKey>.pem -o ProxyCommand="ssh -W %h:%p -i ~/.ssh/<CustomPrivateKey>.pem  centos@<bastion_public_ip>" centos@<docker_private_ip>
-[centos@<dockerhost_private_ip> ~]$ ls
+user@dev-computer: % ssh -i ~/.ssh/<CustomPrivateKey>.pem -o ProxyCommand="ssh -W %h:%p -i ~/.ssh/<CustomPrivateKey>.pem  ec2-user@<bastion_public_ip>" ec2-user@<docker_private_ip>
+[ec2-user@<dockerhost_private_ip> ~]$ ls
 app_data
 ```
 
@@ -563,7 +563,7 @@ with the correct server and not a malicious impersonation. We also need to
 authenticate the client with TLS so only clients using the client certificates 
 can use the Docker engine. This is the 2-way certificate-based authentication.
 
->When Ansible generates the client/server certificate, it writes them on the EC2 instance at location ``/home/centos/.docker/``
+>When Ansible generates the client/server certificate, it writes them on the EC2 instance at location ``/home/ec2-user/.docker/``
 
 >If an operator needs to perform a docker action on the EC2 instance from this development machine,
 the three files constituting the client certificates `ca.pem`, `cert.pem` and `key.pem` in `ops/infrastructure/envs/<DEPLOY_ENV>/output/` or from gitlab variables need to be copied to ``~/.docker/`` in development machine.
