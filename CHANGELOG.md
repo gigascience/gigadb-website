@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #701: Code refactoring to separate upload status transitions and notifications to prepare for upload status overhaul
 - Security #1867: Update the gitlab static application security testing (SAST) job using the Semgrep-based analyzer
 
 ## v4.4.0 - 2024-11-13 - ea1a37cc9 -
