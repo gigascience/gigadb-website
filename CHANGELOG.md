@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #2054: Visualize 3D models locally without relying on sketchfab iframe
 - Feat #1968: Add curators manual for operating tools on bastion server
 - Feat #1750: Switch to guzzle instead of cURL
 - Fix #2042: Batch deletion of file attributes and samples
