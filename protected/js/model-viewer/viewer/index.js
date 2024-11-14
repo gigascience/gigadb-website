@@ -6,6 +6,7 @@ import { createLights } from "./components/lights.js";
 import { createResizer } from "./systems/resizer.js";
 import { load } from "./components/models/index.js";
 import { logger } from "../helpers/logger.js";
+import { getContainerDimensions } from "../helpers/getContainerDimensions.js";
 
 export function createModelViewer(container) {
   let scene;
@@ -15,37 +16,36 @@ export function createModelViewer(container) {
   let models = [];
   let onDestroyCallbacks = [];
 
-  function getContainerDimensions() {
-    return [container.innerWidth(), container.innerHeight()];
-  }
-
   function create() {
     scene = createScene();
     camera = createCamera({
-      aspectRatio: getContainerDimensions()[0] / getContainerDimensions()[1],
+      aspectRatio:
+        getContainerDimensions(container)[0] /
+        getContainerDimensions(container)[1],
     });
     renderer = createRenderer();
     container.append(renderer.domElement);
     controls = createControls(camera, renderer.domElement);
 
-    if (getContainerDimensions().some((dimension) => dimension === 0)) {
+    if (
+      getContainerDimensions(container).some((dimension) => dimension === 0)
+    ) {
       const msg =
         "Container size is zero. Please ensure the container has a defined width and height.";
-      logger("error", msg);
-      throw new Error(msg);
+      logger("warn", msg);
     }
 
-    logger("info", "Container dimensions:", getContainerDimensions());
+    logger("debug", "Container dimensions:", getContainerDimensions(container));
 
     const lights = createLights();
 
     scene.add(...lights);
 
     const { destroy: destroyResizer } = createResizer({
-      getContainerDimensions,
       camera,
       renderer,
       onResize: render,
+      container,
     });
 
     onDestroyCallbacks.push(destroyResizer);
@@ -58,15 +58,17 @@ export function createModelViewer(container) {
     renderer.render(scene, camera);
   }
 
-  async function loadModel({ location, extension }) {
+  async function loadModel(data) {
+    logger("debug", "Loading model", { data });
+    const { location, extension } = data;
     // unload previously loaded model
     if (models.length > 0) {
       scene.remove(...models);
     }
     // reset controls to undo any orbiting done in previous model
     controls.reset();
-    models = await load({ url: location, extension });
-    logger("info", "Loaded models", models);
+    models = await load({ location, extension });
+    logger("debug", "Loaded models", models);
     // set orbiting center around model center position
     controls.target.copy(models[0].position);
     scene.add(...models);

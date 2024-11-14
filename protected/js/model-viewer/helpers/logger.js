@@ -51,7 +51,7 @@ export function logger(level = 'debug', message, data) {
 			break
 		default:
 			data
-				? console.log(formattedMessage, JSON.stringify(data))
+				? console.log(formattedMessage, parseDataToLog(data))
 				: console.log(formattedMessage)
 	}
 }

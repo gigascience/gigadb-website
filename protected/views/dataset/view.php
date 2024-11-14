@@ -307,7 +307,7 @@ $sampleDataProvider = $samples->getDataProvider();
                 </ul>
 
 
-                <div class="tab-content">
+                <div class="tab-content dataset-tab-content">
                 <?php
                     if ($sampleDataProvider->getTotalItemCount() > 0) {
                         $samplesPerPage = $sampleDataProvider->getItemCount();
@@ -502,9 +502,12 @@ $sampleDataProvider = $samples->getDataProvider();
                             <?php
                             foreach ($links->getDatasetExternalLinksTypesNames(["Protocols.io", "JBrowse", "3D Models", "Code Ocean"]) as $linkType => $linkCode) {
                             ?>
-                                <div role="tabpanel" class="tab-pane" id="<?= $linkCode ?>">
+                                <div role="tabpanel" class="tab-pane visible" id="<?= $linkCode ?>">
                                     <p><?= $linkType ?>:</p>
                                     <?php
+                                    if (count($links->getDatasetExternalLinks(['3D Models'])) > 0) {
+                                        $this->renderPartial('//shared/_model_viewer', ['data' => $links->getDatasetExternalLinks(['3D Models'])]);
+                                    }
                                     foreach ($links->getDatasetExternalLinks([$linkType]) as $link) {
                                         $p = $link['url'];
                                         switch ($linkType) {
@@ -516,9 +519,6 @@ $sampleDataProvider = $samples->getDataProvider();
                                                 echo "<a href=\"$p\" target=\"_blank\">Open the JBrowse</a>";
                                                 echo "<iframe src=\"$p\" style=\"width: 1000px; height: 520px; border: 1px solid transparent;\"></iframe>";
                                                 echo "<br>";
-                                                break;
-                                            case "3D Models":
-                                                echo "<iframe src=\"$p\" style=\"width: 950px; height: 520px; border: 1px solid transparent;\"></iframe>";
                                                 break;
                                             case "Code Ocean":
                                                 echo "<p>$p</p>";

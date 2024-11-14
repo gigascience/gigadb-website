@@ -200,7 +200,6 @@ class SiteController extends Controller {
             }
 
         }
-    $this->loadThreeJs = true;
 		$this->render('index',array(
 			'datasets'=>$datasetModel,
 			'form'=>$form,

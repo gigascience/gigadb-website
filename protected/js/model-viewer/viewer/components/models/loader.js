@@ -19,8 +19,8 @@ export function createLoader(ext) {
       return new loaders[ext]();
     case LAS:
       return {
-        loadAsync: async (url) => {
-          const response = await fetch(url);
+        loadAsync: async (location) => {
+          const response = await fetch(location);
           const arrayBuffer = await response.arrayBuffer();
           return load(arrayBuffer, LASLoader, {
             shape: "mesh",

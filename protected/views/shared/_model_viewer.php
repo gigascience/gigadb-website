@@ -1,50 +1,23 @@
 <?php
-// sample files
-$filenames = [
-  'Cube_3d_printing_sample.stl',
-  'Menger_sponge_sample.stl',
-  'Eiffel_tower_sample.STL',
-  'Stanford_Bunny_sample.stl',
-  'GeoB8502_825cm_Shell-6.obj',
-  'GeoB8502_865cm_Shell-1.obj',
-  'GeoB8502_865cm_Shell-2.obj',
-  'GeoB8502_865cm_Shell-3.obj',
-  'GeoB8502_825cm_Shell-8.obj',
-  'leaf_05.las',
-  'leaf_06.las',
-  'leaf_07.las',
-  'leaf_08.las',
-  'leaf_09.las',
-  'NF66_body_resize_v2.ply',
-  '12_K039105_04.ply',
-  '22_K039117_03.ply',
-  '55_HC5504-3_03.ply',
-  '63_K039178_02.ply',
-  'scene.gltf',
-  '3D_surface_reconstruction_bitis_dentition.stl',
-];
+/**
+ * @param array $data An array of external links to 3D models, where each item has:
+ *   - id: number (the external link ID)
+ *   - dataset_id: number (the dataset this model belongs to)
+ *   - url: string (URL to the 3D model file)
+ *   - external_link_type_id: number (should be 5 for 3D Models)
+ *   - external_link_type_name: string (should be "3D Models")
+ */
 
-$assetsUrl = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('application.3d-models'));
-
-// mock files for testing, this emulates the Files model
-// these files should be provided by the view that rnders this partial
-$files = array_map(function ($filename) use ($assetsUrl) {
-  $location = $assetsUrl . '/' . $filename;
+$files = array_map(function ($item) {
   return [
-    'id' => $location, // use location as id for now
-    'dataset_id' => 123,
-    'location' => $location,
-    'name' => $filename,
-    'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    'extension' => pathinfo($filename, PATHINFO_EXTENSION),
-    'size' => 1000,
-    'date_stamp' => '2024-01-01',
-    'format_id' => 1,
-    'type_id' => 1,
-    'code' => '1234567890',
-    'index4blast' => '1234567890',
+    'id' => $item['id'],
+    'location' => $item['url'],
+    'name' => pathinfo($item['url'], PATHINFO_BASENAME),
+    'extension' => pathinfo($item['url'], PATHINFO_EXTENSION),
   ];
-}, $filenames);
+}, $data);
+
+
 ?>
 
 <div id="modelViewerRoot">
@@ -52,7 +25,7 @@ $files = array_map(function ($filename) use ($assetsUrl) {
     <label class="control-label" for="model-selector">Select a model:</label>
     <select id="model-selector" class="form-control js-model-selector model-selector">
       <?php foreach ($files as $index => $file): ?>
-        <!-- consider id as value, however location is likely unique too -->
+        <!-- id is numeric -->
         <option value="<?php echo $file['id']; ?>" <?php echo $index === 0 ? 'selected' : ''; ?>>
           <?php echo $file['name']; ?>
         </option>
@@ -128,10 +101,29 @@ $files = array_map(function ($filename) use ($assetsUrl) {
 </div>
 
 <?php
-// register model-viewer scripts
+// register a script that adds the importmap to the head, so that it is only added once and only to the pages that use this partial
+Yii::app()->clientScript->registerScript(
+  'import-map',
+  <<<EOD
+  (function() {
+      const script = document.createElement('script');
+      script.type = 'importmap';
+      script.textContent = JSON.stringify({
+          "imports": {
+              "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+              "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+          }
+      });
+      document.head.appendChild(script);
+  })();
+  EOD,
+  CClientScript::POS_HEAD
+);
+
 Yii::app()->assetManager->forceCopy = YII_DEBUG;
 $jsDir = Yii::getPathOfAlias('application.js.model-viewer');
 $jsUrl = Yii::app()->assetManager->publish($jsDir);
+
 Yii::app()->clientScript->registerScriptFile($jsUrl . '/index.js', CClientScript::POS_END, ['type' => 'module']);
 ?>
 

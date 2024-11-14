@@ -48,6 +48,7 @@ export function modelViewer(files, options = {}) {
   });
 
   async function handleLoadModel(fileId) {
+    logger("debug", "handleLoadModel with fileId", fileId);
     if (!fileId) {
       uiState.status = "idle";
       return;
@@ -57,6 +58,7 @@ export function modelViewer(files, options = {}) {
       uiState.error = null;
       uiState.status = "pending";
       const file = getFileByProperty("id", fileId);
+      logger("debug", "Loading model", file);
       await loadModel(file);
       uiState.status = "success";
     } catch (err) {
@@ -68,8 +70,9 @@ export function modelViewer(files, options = {}) {
 
   // load the currently selected model for development purposes
   if (mergedOptions.loadModelOnInit) {
+    logger("debug", "Loading model on init", uiState.selected);
     handleLoadModel(uiState.selected);
   }
 
-  logger("info", "Model viewer initialized");
+  logger("debug", "Model viewer initialized with files", files);
 }

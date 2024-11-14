@@ -34,7 +34,6 @@ class Controller extends CController
         );
 
     public $loadBaBbqPolyfills = false;
-    public $loadThreeJs = false;
 
     /*
      * An Admin has role == 'admin', that stored in the user obj

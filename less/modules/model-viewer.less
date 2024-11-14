@@ -215,8 +215,9 @@
 
 .play-button:focus {
   outline: none;
-  box-shadow: 0 0 0 4px @color-gigadb-green,
-    0 0 0 8px fade(@color-gigadb-green, 30%);
+  box-shadow: 0 0 0 4px @color-true-white,
+    0 0 0 8px @color-gigadb-green,
+    0 0 0 12px fade(@color-gigadb-green, 30%);
 }
 
 .play-button-icon {
@@ -224,6 +225,18 @@
   position: relative;
   /* make button look visually centered */
   left: 6px;
+}
+
+@media (max-width: 768px) {
+  .play-button {
+    width: 120px;
+    height: 120px;
+    padding: 16px;
+
+    .play-button-icon {
+      font-size: 50px;
+    }
+  }
 }
 
 // loading overlay

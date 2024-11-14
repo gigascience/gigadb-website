@@ -1,8 +1,8 @@
 import { createUiState } from "./uiState.js";
 import { createUiView } from "./uiView.js";
 import { invariant } from "../helpers/invariant.js";
-import { logger } from "../helpers/logger.js";
 import { selector } from "./selectors.js";
+import { coerceSelected } from "../helpers/coerceSelected.js";
 
 /**
  * Creates and initializes the UI component for the model viewer
@@ -49,7 +49,7 @@ export function createUi({ root, onSelect, onPlay, getDataProperty }) {
    * Handles model selection from dropdown, updates state and triggers callback
    */
   function handleSelect() {
-    modelState.selected = domElements.modelSelector.val() || null;
+    modelState.selected = coerceSelected(domElements.modelSelector.val()) || null;
     onSelect(modelState.selected);
   }
 
@@ -101,7 +101,6 @@ export function createUi({ root, onSelect, onPlay, getDataProperty }) {
    */
   function handleFullscreenChange() {
     const isFullscreen = document.fullscreenElement != null;
-    logger("info", isFullscreen ? "Entered fullscreen" : "Exited fullscreen");
     domElements.viewerContainer.toggleClass("fullscreen", isFullscreen);
   }
 
@@ -133,7 +132,7 @@ export function createUi({ root, onSelect, onPlay, getDataProperty }) {
     domElements.loadingOverlay.hide();
     domElements.controls.hide();
     domElements.playButtonOverlay.show();
-    modelState.selected = domElements.modelSelector.val() || null;
+    modelState.selected = coerceSelected(domElements.modelSelector.val()) || null;
     uiView.updateUI(modelState);
     domElements.modelSelector.on("change", handleSelect);
     playButton.on("click", handlePlay);
