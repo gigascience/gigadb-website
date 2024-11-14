@@ -40,7 +40,7 @@ copy the candidate dataset spreadsheets to bastion server using SCP:
 
 ```
 $ cd gigadb/app/tools/excel-spreadsheet-uploader/
-$ scp -i <path to SSH key> uploadDir/GigaDB_v15_GIGA_D_22_00026_DeePVP_102240_v3.xls centos@13.38.58.174:/home/ec2-user/uploadDir/
+$ scp -i <path to SSH key> uploadDir/GigaDB_v15_GIGA_D_22_00026_DeePVP_102240_v3.xls ec2-user@13.38.58.174:/home/ec2-user/uploadDir/
 ```
 
 >Note: the remote ``/home/ec2-user/uploadDir/`` directory is created during execution of the bastion playbook
