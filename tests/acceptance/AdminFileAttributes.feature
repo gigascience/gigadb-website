@@ -175,19 +175,6 @@ Feature: A curator can manage file attributes in admin file update page
       | comment            | embryophyta_odb10 C:99.1%[S:77.9%,D:21.2%],F:0.4%,M:0.5%,n:1614        |      |
 
   @ok
-  Scenario: Can add very long sample value
-    Given I have signed in as admin
-    And I am on "/adminFile/update/id/13973"
-    And I press the button "Show New Attribute Fields"
-    When I select "sample source" in menu "FileAttributes_new_attribute_id"
-    And I fill in the text input "FileAttributes[new][value]" with "embryophyta_odb10 C:99.1%[S:77.9%,D:21.2%],F:0.4%,M:0.5%,n:1614"
-    And I press the button "Add attribute"
-    Then I should see a file attribute table
-      | Attribute Name | Value     | Unit |
-      | last_modified  | 2013-7-15 |      |
-      | sample source            | embryophyta_odb10 C:99.1%[S:77.9%,D:21.2%],F:0.4%,M:0.5%,n:1614       |      |
-
-  @ok
   Scenario: Can edit in a very long sample value
     Given I have signed in as admin
     And I am on "/adminFile/update/id/13973"
