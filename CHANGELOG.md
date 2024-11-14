@@ -4,12 +4,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
-- fix #1848: Separate the status transition from the notification
-- Feat #1867: Update the gitlab static application security testing (SAST) job using the Semgrep-based analyzer
+- Feat #701: Code refactoring to separate upload status transitions and notifications to prepare for upload status overhaul
+- Security #1867: Update the gitlab static application security testing (SAST) job using the Semgrep-based analyzer
+
+## v4.4.0 - 2024-11-13 - ea1a37cc9 -
+
 - Fix #2066: Max length for attribute value set to 1000 in file admin form
-- Feat #1968: Add curators manual for operating tools on bastion server
-- Feat #1750: Switch to guzzle instead of cURL
-- Fix #2042: Batch deletion of file attributes and samples
+- Feat #1968: Add curators manual for operating tools on bastion server and improve tools usage
+- Feat #1750: Switch to guzzle instead of cURL (preliminry work to prepare for DataCite schema upgrade)
+- Fix #2042: Batch deletion of file attributes and samples to make deleting files from the admin dashboard faster
 
 ## v4.3.9 - 2024-10-28 - 961f7821a - 2024-11-06
 
