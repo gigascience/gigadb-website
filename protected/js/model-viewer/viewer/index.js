@@ -5,7 +5,6 @@ import { createControls } from "./systems/controls.js";
 import { createLights } from "./components/lights.js";
 import { createResizer } from "./systems/resizer.js";
 import { load } from "./components/models/index.js";
-import { logger } from "../helpers/logger.js";
 import { getContainerDimensions } from "../helpers/getContainerDimensions.js";
 
 export function createModelViewer(container) {
@@ -26,16 +25,6 @@ export function createModelViewer(container) {
     renderer = createRenderer();
     container.append(renderer.domElement);
     controls = createControls(camera, renderer.domElement);
-
-    if (
-      getContainerDimensions(container).some((dimension) => dimension === 0)
-    ) {
-      const msg =
-        "Container size is zero. Please ensure the container has a defined width and height.";
-      logger("warn", msg);
-    }
-
-    logger("debug", "Container dimensions:", getContainerDimensions(container));
 
     const lights = createLights();
 
@@ -59,7 +48,6 @@ export function createModelViewer(container) {
   }
 
   async function loadModel(data) {
-    logger("debug", "Loading model", { data });
     const { location, extension } = data;
     // unload previously loaded model
     if (models.length > 0) {
@@ -68,7 +56,6 @@ export function createModelViewer(container) {
     // reset controls to undo any orbiting done in previous model
     controls.reset();
     models = await load({ location, extension });
-    logger("debug", "Loaded models", models);
     // set orbiting center around model center position
     controls.target.copy(models[0].position);
     scene.add(...models);
