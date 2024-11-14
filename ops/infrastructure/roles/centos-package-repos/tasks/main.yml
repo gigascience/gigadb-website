@@ -12,11 +12,11 @@
     name: epel-release
     state: present
 
-#- name: install epel-next-release repository
-#  become: yes
-#  dnf:
-#    name: epel-next-release
-#    state: present
+- name: install epel-next-release repository
+  become: yes
+  dnf:
+    name: epel-next-release
+    state: present
 
 - name: import postgresql repository gpg key
   ansible.builtin.rpm_key:
