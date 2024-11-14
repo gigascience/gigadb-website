@@ -1,3 +1,5 @@
+import { selector } from "./selectors.js";
+
 // this module determines how the UI changes when the state changes
 export function createUiView(domElements, getDataProperty) {
   const {
@@ -8,27 +10,34 @@ export function createUiView(domElements, getDataProperty) {
     controls,
   } = domElements;
 
+  const loadingText = loadingOverlay.find(selector.loadingText);
+  const loadingDisplay = loadingOverlay.find(selector.loadingDisplay);
+
   function updateUI(state) {
     const { status, error, selected } = state;
 
     switch (status) {
       case "idle":
-        loadingOverlay.hide();
+        loadingDisplay.hide();
+        loadingText.text("");
         playButtonOverlay.show();
         controls.hide();
         break;
       case "pending":
-        loadingOverlay.show();
+        loadingDisplay.show();
+        loadingText.text("Loading model");
         playButtonOverlay.hide();
         controls.hide();
         break;
       case "success":
-        loadingOverlay.hide();
+        loadingDisplay.hide();
+        loadingText.text("Model loaded");
         playButtonOverlay.hide();
         controls.show();
         break;
       case "error":
-        loadingOverlay.hide();
+        loadingDisplay.hide();
+        loadingText.text("");
         playButtonOverlay.show();
         controls.hide();
         break;

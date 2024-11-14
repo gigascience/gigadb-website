@@ -43,11 +43,11 @@ $files = array_map(function ($item) {
       <!-- note: these are links rather than buttons because of bootstrap tooltip -->
       <a href="#" class="js-controls-info-btn controls-btn" data-toggle="tooltip" title="Help (h)">
         <i class="fa fa-question-circle"></i>
-        <span class="sr-only">Toggle help. H key.</span>
+        <span class="sr-only">Toggle help</span>
       </a>
       <a href="#" class="js-fullscreen-btn controls-btn" data-toggle="tooltip" title="Fullscreen (f)">
         <i class="fa fa-expand"></i>
-        <span class="sr-only">Toggle fullscreen. F key.</span>
+        <span class="sr-only">Toggle fullscreen</span>
       </a>
     </div>
     <div class="play-button-overlay js-play-button-overlay">
@@ -56,9 +56,14 @@ $files = array_map(function ($item) {
         <span class="sr-only">Load model</span>
       </button>
     </div>
-    <div class="loading-overlay js-loading-overlay" style="display: none;">
-      <div class="loading-spinner"></div>
-      <div class="loading-text">Loading model<span aria-hidden="true">...</span></div>
+    <div class="js-loading-overlay">
+      <div role="status" aria-live="polite">
+        <span class="sr-only js-loading-text"></span>
+      </div>
+      <div class="loading-display loading-overlay js-loading-display" style="display: none;">
+        <div class="loading-spinner"></div>
+        <div class="loading-text js-loading-text"></div>
+      </div>
     </div>
     <div class="error-display js-error-display" role="alert">
       <p class="error-content js-error-content" style="display: none;"></p>
@@ -103,8 +108,7 @@ $files = array_map(function ($item) {
 <?php
 // register a script that adds the importmap to the head, so that it is only added once and only to the pages that use this partial
 Yii::app()->clientScript->registerScript(
-  'import-map',
-  <<<EOD
+  'import-map', <<<EOD
   (function() {
       const script = document.createElement('script');
       script.type = 'importmap';

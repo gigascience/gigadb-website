@@ -3,6 +3,8 @@ export const selector = {
   viewerContainer: ".js-model-viewer-container",
   canvasContainer: ".js-canvas-container",
   loadingOverlay: ".js-loading-overlay",
+  loadingDisplay: ".js-loading-display",
+  loadingText: ".js-loading-text",
   playButtonOverlay: ".js-play-button-overlay",
   errorDisplay: ".js-error-display",
   modelSelector: ".js-model-selector",
@@ -12,5 +14,5 @@ export const selector = {
   helpButton: ".js-controls-info-btn",
   fullscreenButton: ".js-fullscreen-btn",
   helpModal: ".js-help-modal",
-  helpModalClose: ".js-help-modal-close"
+  helpModalClose: ".js-help-modal-close",
 };

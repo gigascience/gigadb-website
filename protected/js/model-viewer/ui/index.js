@@ -37,6 +37,7 @@ export function createUi({ root, onSelect, onPlay, getDataProperty }) {
   const fullscreenButton = domElements.controls.find(selector.fullscreenButton);
   const helpModal = root.find(selector.helpModal);
   const helpModalClose = helpModal.find(selector.helpModalClose);
+  const loadingDisplay = domElements.loadingOverlay.find(selector.loadingDisplay);
 
   const uiView = createUiView(domElements, getDataProperty);
 
@@ -129,7 +130,7 @@ export function createUi({ root, onSelect, onPlay, getDataProperty }) {
    * Initializes UI state and event listeners
    */
   function init() {
-    domElements.loadingOverlay.hide();
+    loadingDisplay.hide();
     domElements.controls.hide();
     domElements.playButtonOverlay.show();
     modelState.selected = coerceSelected(domElements.modelSelector.val()) || null;
