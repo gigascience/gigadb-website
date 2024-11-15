@@ -4,10 +4,10 @@
 set -e
 
 if [[ $(uname -n) =~ compute ]]; then
-  source "./files-env"
+  source "${HOME}"/.files-env
 else
-  source "./.env"
-  source "./.secrets"
+  source ./.env
+  source ./.secrets
 fi
 
 usage_message="Usage: $0 --doi <DOI> --sourcePath <Source Path>\n

@@ -70,16 +70,6 @@ class DatasetUploadTest extends CDbTestCase
         $mockDatasetDAO->expects($this->once())
                  ->method('transitionStatus')
                  ->with("DataAvailableForReview", "Submitted")
-                 ->willReturn(true);    
-
-        $mockFileUploadSrv->expects($this->once())
-                 ->method('emailSend')
-                 ->with(
-                 	$config["sender"], 
-                 	"database@gigadb.test", 
-                 	"Dataset has been submitted", 
-                 	$content
-                 )
                  ->willReturn(true);
 
 
@@ -91,7 +81,6 @@ class DatasetUploadTest extends CDbTestCase
 
 	public function testRenderNotificationEmailBody()
 	{
-
 		$config = [
 			"sender" => "admin@gigadb.org",
 			"recipient" => "editorial@gigadb.test",
@@ -108,6 +97,31 @@ class DatasetUploadTest extends CDbTestCase
 		$datasetFileUpload = new DatasetUpload($mockDatasetDAO, $mockFileUploadSrv, $config);
 		$renderedContent = $datasetFileUpload->renderNotificationEmailBody("DataAvailableForReview");
 		$this->assertTrue(1 == preg_match('/dataset with DOI 003000/', $renderedContent));
+	}
+
+	public function testSendNotificationEmailBody()
+	{
+		$config = [
+			'sender'        => 'admin@gigadb.org',
+			"curators_email" => "database@gigadb.test",
+		];
+
+		$mockDatasetDAO = $this->createMock(DatasetDAO::class);
+		$mockFileUploadSrv = $this->createMock(FileUploadService::class);
+
+		$mockFileUploadSrv->expects($this->once())
+			->method('emailSend')
+			->with(
+				$config['sender'],
+				'database@gigadb.test',
+				'Dataset has been Submitted',
+				'test content'
+			)
+			->willReturn(true);
+
+		$datasetFileUpload = new DatasetUpload($mockDatasetDAO, $mockFileUploadSrv, $config);
+		$result = $datasetFileUpload->sendNotificationEmailBody('test content', 'Submitted');
+		$this->assertTrue($result);
 	}
 
 	/**
