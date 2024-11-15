@@ -65,7 +65,6 @@ class AdminProjectController extends Controller
           if ($model->save()) {
               if ($tempImageLocation) {
                   $logoUrl = $model->writeLogoFromUrl($storage, $tempImageLocation);
-                  Project::deleteTempLogo($tempImageLocation);
 
                   if ($logoUrl) {
                       $model->image_location = $logoUrl;
@@ -99,7 +98,7 @@ class AdminProjectController extends Controller
       }
 
       if ($uploadedLogoFile) {
-          $image_location = Project::writeLogoFromFile(Yii::$app->cloudStore, Project::getTempLogoPath(), $uploadedLogoFile);
+          $image_location = Project::writeTmpLogoFromFile($uploadedLogoFile);
 
           if (!$image_location) {
               $this->makeJSONResponse(500, 'Failed to save logo image');
@@ -159,9 +158,6 @@ class AdminProjectController extends Controller
               if ($logoUrl) {
                   $model->image_location = $logoUrl;
               }
-
-              $tempImageLocation = $newAttributes['image_location'];
-              Project::deleteTempLogo($tempImageLocation);
           }
 
           // NOTE I think saving the model will trigger validation and thus fail if the URL or name are left unchanged

@@ -103,6 +103,7 @@ services:
       # access to File Upload Wizard model classes
       - ../../fuw/app:/app
       - ../../gigadb:/gigadb
+      - /tmp:/var/www/datasetfiles
     expose:
       - "9000"
     extra_hosts:
