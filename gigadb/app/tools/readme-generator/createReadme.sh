@@ -21,7 +21,7 @@ BASTION_RCLONE_CONF_LOCATION='/home/ec2-user/.config/rclone/rclone.conf'
 DEV_RCLONE_CONF_LOCATION="${APP_DIR}/../wasabi-migration/config/rclone.conf"
 
 # Source of AWS credentials to supply to rclone on bastion server
-AWS_SHARED_CREDENTIALS_FILE='/home/centos/.aws/credentials'
+AWS_SHARED_CREDENTIALS_FILE='/home/ec2-user/.aws/credentials'
 AWS_PROFILE='wasabi-transfer'
 
 # Wasabi directory paths
@@ -239,7 +239,7 @@ function main {
   while [ "${count}" -lt "${batch}" ] || [ "${batch}" -eq 0 ]; do
     # Conditional for how to generate readme file - dependant on user's environment
     if [[ $(uname -n) =~ compute ]];then
-      . /home/centos/.bash_profile
+      . /home/ec2-user/.bash_profile
       docker run --rm -v "${WORKING_DIR}":/app/readmeFiles registry.gitlab.com/"${GITLAB_PROJECT}"/production_tool:"${GIGADB_ENV}" /app/yii readme/create --doi "${doi}" --outdir /app/readmeFiles --bucketPath "${destination_path}"
     else
       # Create readme file in current working directory by mounting this location at /app/readmeFiles in container
