@@ -144,6 +144,14 @@ class Project extends CActiveRecord
 
   }
 
+  /**
+   * Write a logo file to storage from an uploaded file
+   *
+   * @param Filesystem $storage The storage filesystem to write to
+   * @param string $enclosingDirectory The directory path to store the logo in
+   * @param CUploadedFile $file The uploaded file to write
+   * @return string|false The URL of the written logo file, or false if write failed
+   */
   public static function writeLogoFromFile(Filesystem $storage, string $enclosingDirectory, CUploadedFile $file) {
       $slugger = new \Symfony\Component\String\Slugger\AsciiSlugger();
       $info = pathinfo($file->getName());
@@ -162,6 +170,13 @@ class Project extends CActiveRecord
       return false;
   }
 
+  /**
+   * Write a logo file to storage from a URL
+   *
+   * @param Filesystem $storage The storage filesystem to write to
+   * @param string $url The URL of the source logo file
+   * @return string|false The URL of the written logo file, or false if write failed
+   */
   public function writeLogoFromUrl(Filesystem $storage, string $url) {
       $enclosingDirectory = $this->getLogoPath();
       $filename = basename($url);
