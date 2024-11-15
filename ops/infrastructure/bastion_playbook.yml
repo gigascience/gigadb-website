@@ -6,7 +6,7 @@
 - name: Fix Centos package repos issues
   hosts: name_bastion_server_{{gigadb_env}}*
   tags:
-    - fix-centos-package-repos-issues
+    - fix-centos-repos
 
   roles:
     - role: ../../roles/centos-package-repos
