@@ -15,7 +15,7 @@ if [[ $(uname -n) =~ compute ]];then
 
   if [[ $uploadDir != "/home/ec2-user/uploadDir" ]];then
     mv "$uploadDir"/* /home/ec2-user/uploadDir/
-    chown centos:centos /home/ec2-user/uploadDir/*
+    chown ec2-user:ec2-user /home/ec2-user/uploadDir/*
   fi
 
   docker run --rm -v /home/ec2-user/uploadDir:/tool/uploadDir -v /home/ec2-user/uploadLogs:/tool/logs registry.gitlab.com/$GITLAB_PROJECT/production_xls_uploader:$GIGADB_ENV ./run.sh
