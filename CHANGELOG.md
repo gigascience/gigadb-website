@@ -4,7 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
-- Feat #2066: Extend max length for file attribute values to 150
+- Feat #2066: Update file attribute values form layout and add expand button for long values
 - Feat #701: Code refactoring to separate upload status transitions and notifications to prepare for upload status overhaul
 - Security #1867: Update the gitlab static application security testing (SAST) job using the Semgrep-based analyzer
 
