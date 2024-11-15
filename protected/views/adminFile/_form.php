@@ -122,7 +122,7 @@
                         <caption>Attributes</caption>
                         <thead>
                             <tr>
-                                <th>Attribute Name</th>
+                                <th class="text-nowrap">Attribute Name</th>
                                 <th>Value</th>
                                 <th>Unit</th>
                                 <th>Actions</th>
@@ -135,7 +135,11 @@
                                         <?= $fa->attribute->attribute_name ?>
                                     </td>
                                     <td>
-                                        <?= $fa->value ?>
+                                        <?php $this->renderPartial('//shared/_longTextToggler', array(
+                                            'id' => 'attr_value_' . $fa->id,
+                                            'description' => $fa->value,
+                                            'maxLength' => 50
+                                        )); ?>
                                     </td>
                                     <td>
                                         <?= $fa->unit ? $fa->unit->name : '' ?>
