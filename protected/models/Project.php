@@ -209,9 +209,7 @@ class Project extends CActiveRecord
   public function writeLogoFromUrl(Filesystem $storage, string $url) {
       $enclosingDirectory = $this->getLogoPath();
       $sourcePath = Yii::getAlias('@webroot') . $url;
-      $filename = basename($url);
-      $logoPath = sprintf("%s/%s", $enclosingDirectory, $filename);
-      $logoUrl = sprintf("%s/%s", Project::getStorageBasePath(), $logoPath);
+      $outputPath = sprintf("%s/%s", $enclosingDirectory, basename($url));
 
       if (!file_exists($sourcePath)) {
           Yii::log("Failed to read content from source path: " . $sourcePath, 'error');
@@ -219,14 +217,14 @@ class Project extends CActiveRecord
       }
 
       if ($storage->put(
-          $logoPath,
+          $outputPath,
           file_get_contents($sourcePath),
           ['visibility' => AdapterInterface::VISIBILITY_PUBLIC]
       )) {
-          return $logoUrl;
+          return sprintf("%s/%s", Project::getStorageBasePath(), $outputPath);
       }
 
-      Yii::log("Failed to write logo to storage at: " . $logoPath, 'error');
+      Yii::log("Failed to write logo to storage at: " . $outputPath, 'error');
       return false;
   }
 
