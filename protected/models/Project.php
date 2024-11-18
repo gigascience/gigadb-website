@@ -154,15 +154,16 @@ class Project extends CActiveRecord
       $slugger = new \Symfony\Component\String\Slugger\AsciiSlugger();
       $info = pathinfo($file->getName());
       $fileName = $slugger->slug($info['filename'])->toString();
-      $filepath = '/datasetfiles/' . Uuid::uuid4()->toString() . '/' . $fileName . '.' . $info['extension'];
+      $filepath = sprintf('/datasetfiles/%s/%s.%s',
+        Uuid::uuid4()->toString(),
+        $fileName,
+        $info['extension']
+      );
       $fullTmpPath = Yii::getAlias('@webroot') . $filepath;
 
-      $dir = dirname($fullTmpPath);
-      if (!is_dir($dir)) {
-          if (!mkdir($dir, 0755, true)) {
-              Yii::log("Failed to create directory: " . $dir, 'error');
-              return false;
-          }
+      if (!is_dir($dir = dirname($fullTmpPath)) && !mkdir($dir, 0755, true)) {
+          Yii::log("Failed to create directory: " . $dir, 'error');
+          return false;
       }
 
       if (move_uploaded_file($file->getTempName(), $fullTmpPath)) {

@@ -153,14 +153,14 @@ class AdminProjectController extends Controller
                   $model->deleteLogo($storage);
               }
 
-              $logoUrl = $model->writeLogoFromUrl($storage, $model->image_location);
+              $newLogoUrl = $model->writeLogoFromUrl($storage, $model->image_location);
 
-              if ($logoUrl) {
-                  $model->image_location = $logoUrl;
+              if ($newLogoUrl) {
+                  $model->image_location = $newLogoUrl;
               }
           }
 
-          // NOTE I think saving the model will trigger validation and thus fail if the URL or name are left unchanged
+          // NOTE Saving the model will trigger validation and thus fail if the URL or name are left unchanged, we might not want that in the case where we need to update only the logo
           if($model->save()) {
             $this->redirect(array('view','id'=>$model->id));
           }
