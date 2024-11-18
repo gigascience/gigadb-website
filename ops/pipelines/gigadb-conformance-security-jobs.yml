@@ -70,6 +70,8 @@ check_PHPDoc:
 
 semgrep-sast:
   stage: conformance and security
+  variables:
+    SAST_IMAGE_SUFFIX: "-fips"
   rules:
     - if: $CI_COMMIT_BRANCH || $CI_COMMIT_TAG
 
@@ -127,8 +129,12 @@ docker_scout_scanning:
     - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/production_web:live --only-severity critical
     - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/production_app:staging --only-severity critical
     - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/production_app:live --only-severity critical
+  rules:
+    - if: $CI_COMMIT_BRANCH || $CI_COMMIT_TAG
 
 iac-sast:
   stage: conformance and security
   variables:
     SAST_IMAGE_SUFFIX: "-fips"
+  rules:
+    - if: $CI_COMMIT_BRANCH || $CI_COMMIT_TAG
