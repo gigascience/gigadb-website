@@ -70,9 +70,13 @@ check_PHPDoc:
 
 semgrep-sast:
   stage: conformance and security
+  variables:
+    SAST_IMAGE_SUFFIX: "-fips"
+  rules:
+    - if: $CI_COMMIT_BRANCH || $CI_COMMIT_TAG
 
 variables:
-  CS_ANALYZER_IMAGE: "$CI_TEMPLATE_REGISTRY_HOST/security-products/container-scanning:6"
+  CS_ANALYZER_IMAGE: "$CI_TEMPLATE_REGISTRY_HOST/security-products/container-scanning:7"
   CS_SCHEMA_MODEL: 15
 
 container_scanning:
@@ -99,3 +103,38 @@ container_scanning:
         CS_IMAGE_SUFFIX: -fips
     - if: $CI_COMMIT_BRANCH || $CI_COMMIT_TAG
 
+docker_scout_scanning:
+  image: docker:latest
+  stage: conformance and security
+  services:
+    - docker:dind
+  before_script:
+    # login to gitlab container registry
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+    # Install curl and the Docker Scout CLI
+    - |
+      apk add --update curl
+      curl -sSfL https://raw.githubusercontent.com/docker/scout-cli/main/install.sh | sh -s --
+      apk del curl
+      rm -rf /var/cache/apk/*
+  script:
+    # Login to Docker Hub required for Docker Scout CLI
+    - docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/production_web:staging || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/production_web:live || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/production_app:staging || true
+    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/production_app:live || true
+    # Get a CVE report for the built image and fail the pipeline when critical or high CVEs are detected
+    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/production_web:staging --only-severity critical
+    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/production_web:live --only-severity critical
+    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/production_app:staging --only-severity critical
+    - docker scout cves registry.gitlab.com/$CI_PROJECT_PATH/production_app:live --only-severity critical
+  rules:
+    - if: $CI_COMMIT_BRANCH || $CI_COMMIT_TAG
+
+kics-iac-sast:
+  stage: conformance and security
+  variables:
+    SAST_IMAGE_SUFFIX: "-fips"
+  rules:
+    - if: $CI_COMMIT_BRANCH || $CI_COMMIT_TAG
