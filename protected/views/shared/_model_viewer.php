@@ -10,10 +10,10 @@
 
 $files = array_map(function ($item) {
   return [
-    'id' => trim($item['id']),
-    'location' => trim($item['url']),
-    'name' => trim(pathinfo($item['url'], PATHINFO_BASENAME)),
-    'extension' => trim(pathinfo($item['url'], PATHINFO_EXTENSION)),
+    'id' => $item['id'],
+    'location' => $item['url'],
+    'name' => pathinfo($item['url'], PATHINFO_BASENAME),
+    'extension' => pathinfo($item['url'], PATHINFO_EXTENSION),
   ];
 }, $data);
 
