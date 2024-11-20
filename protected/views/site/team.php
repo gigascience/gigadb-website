@@ -9,7 +9,7 @@
           ]
         ]);
         ?>
-        <div>
+        <div class="mb-20">
             <div class="team-grid">
                 <article class="team-card">
                     <img src="../images/team/chunts.jpg" alt="Chris Hunter's portrait">
