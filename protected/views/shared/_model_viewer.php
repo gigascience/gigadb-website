@@ -10,10 +10,10 @@
 
 $files = array_map(function ($item) {
   return [
-    'id' => $item['id'],
-    'location' => $item['url'],
-    'name' => pathinfo($item['url'], PATHINFO_BASENAME),
-    'extension' => pathinfo($item['url'], PATHINFO_EXTENSION),
+    'id' => trim($item['id']),
+    'location' => trim($item['url']),
+    'name' => trim(pathinfo($item['url'], PATHINFO_BASENAME)),
+    'extension' => trim(pathinfo($item['url'], PATHINFO_EXTENSION)),
   ];
 }, $data);
 
@@ -21,17 +21,17 @@ $files = array_map(function ($item) {
 ?>
 
 <div id="modelViewerRoot">
-  <div class="form-group">
-    <label class="control-label" for="model-selector">Select a model:</label>
-    <select id="model-selector" class="form-control js-model-selector model-selector">
-      <?php foreach ($files as $index => $file): ?>
-        <!-- id is numeric -->
-        <option value="<?php echo $file['id']; ?>" <?php echo $index === 0 ? 'selected' : ''; ?>>
-          <?php echo $file['name']; ?>
-        </option>
-      <?php endforeach; ?>
-    </select>
-  </div>
+  <form>
+    <div class="form-group">
+      <label class="control-label" for="model-selector">Select a model:</label>
+      <select id="model-selector" class="form-control js-model-selector model-selector test-model-selector">
+        <?php foreach ($files as $index => $file): ?>
+          <!-- id is numeric -->
+          <option value="<?php echo $file['id']; ?>" <?php echo $index === 0 ? 'selected' : ''; ?>><?php echo $file['name']; ?></option>
+        <?php endforeach; ?>
+      </select>
+    </div>
+  </form>
   <div class="js-model-description model-description">
     <p class="js-description-content"></p>
   </div>
