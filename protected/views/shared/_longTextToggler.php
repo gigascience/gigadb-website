@@ -10,8 +10,8 @@
 <?php if (strlen($description) <= $maxLength): ?>
     <?php echo $description; ?>
 <?php else: ?>
-    <span class="js-short-<?php echo $id; ?>"><?php echo substr($description, 0, $maxLength) . '...'; ?></span>
-    <span class="js-long-<?php echo $id; ?>" style="display: none;"><?php echo $description; ?></span>
+    <span class="text-break-word js-short-<?php echo $id; ?>"><?php echo substr($description, 0, $maxLength) . '...'; ?></span>
+    <span class="text-break-word js-long-<?php echo $id; ?>" style="display: none;"><?php echo $description; ?></span>
     <button class="js-desc btn btn-subtle"
             data-id="<?php echo $id; ?>"
             aria-label="show more"
