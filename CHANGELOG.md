@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## Unreleased
 
 - Feat #2066: Update file attribute values form layout and add expand button for long values
+- Fix #2094: Make Semgrep-based SAST analyzer available in tagged release
 - Feat #701: Code refactoring to separate upload status transitions and notifications to prepare for upload status overhaul
 - Security #1867: Update the gitlab static application security testing (SAST) job using the Semgrep-based analyzer
 
