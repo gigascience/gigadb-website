@@ -153,17 +153,6 @@ Feature: a user visit the dataset page
 		| National Science Foundation 	| Matthew W. Hahn	| DEB-1249633	| Matthew W Hahn |
 
 	@ok
-	Scenario: 3D Viewer
-		Given I am not logged in to Gigadb web site
-		And I have added "3D Viewer" link "https://s3.ap-northeast-1.wasabisys.com/test-gigadb-datasets/3d-models/100006/GeoB8502_865cm_Shell-4.obj" to dataset "101001"
-		When I go to "/dataset/101001"
-		Then I should see "3D Models" tab with text "3D Models:"
-    When I click on the "3D Models" button
-    Then I should see a "select.test-model-selector" element
-    And I should see a "select.test-model-selector > option" element
-    And I should see "GeoB8502_865cm_Shell-4.obj" in the "select.test-model-selector > option" element
-
-	@ok
 	Scenario:  Protocols.io
 		Given I am not logged in to Gigadb web site
 		When I go to "/dataset/100198"

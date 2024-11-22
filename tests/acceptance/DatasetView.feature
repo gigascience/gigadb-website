@@ -224,7 +224,7 @@ Feature: a user visit the dataset page
     When I am on "/dataset/100006"
     Then I should see "3D Models"
 
-  @wip @issue-2054
+  @ok @issue-2054
   Scenario: 3D model drop down list
     Given I have not signed in
     When I am on "/dataset/100006"
