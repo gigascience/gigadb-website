@@ -510,6 +510,16 @@ $sampleDataProvider = $samples->getDataProvider();
                             <?php
                             }
 
+                            $hicLinks = $links->getDatasetExternalLinks(['Juicebox']);
+                            if (count($hicLinks) > 0) {
+                            ?>
+                                <div role="tabpanel" class="tab-pane visible" id="juicebox">
+                                    <p>Juicebox:</p>
+                                    <?php $this->renderPartial('//shared/_hic_viewer', ['data' => $hicLinks]); ?>
+                                </div>
+                            <?php
+                            }
+
                             foreach ($links->getDatasetExternalLinksTypesNames(["Protocols.io", "JBrowse", "Code Ocean"]) as $linkType => $linkCode) {
                             ?>
                                 <div role="tabpanel" class="tab-pane visible" id="<?= $linkCode ?>">
