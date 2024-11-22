@@ -500,12 +500,21 @@ $sampleDataProvider = $samples->getDataProvider();
                             ?>
 
                             <?php
-                            foreach ($links->getDatasetExternalLinksTypesNames(["Protocols.io", "JBrowse", "3D Models", "Code Ocean", "Juicebox"]) as $linkType => $linkCode) {
+                            $modelLinks = $links->getDatasetExternalLinks(['3D Models']);
+                            if (count($modelLinks) > 0) {
+                            ?>
+                                <div role="tabpanel" class="tab-pane visible" id="3dmodels">
+                                    <p>3D Models:</p>
+                                    <?php $this->renderPartial('//shared/_model_viewer', ['data' => $modelLinks]); ?>
+                                </div>
+                            <?php
+                            }
+
+                            foreach ($links->getDatasetExternalLinksTypesNames(["Protocols.io", "JBrowse", "Code Ocean"]) as $linkType => $linkCode) {
                             ?>
                                 <div role="tabpanel" class="tab-pane visible" id="<?= $linkCode ?>">
                                     <p><?= $linkType ?>:</p>
                                     <?php
-
                                     foreach ($links->getDatasetExternalLinks([$linkType]) as $link) {
                                         $p = $link['url'];
                                         switch ($linkType) {
@@ -520,16 +529,6 @@ $sampleDataProvider = $samples->getDataProvider();
                                                 break;
                                             case "Code Ocean":
                                                 echo "<p>$p</p>";
-                                                break;
-                                            case "3D Models":
-                                                if (count($links->getDatasetExternalLinks(['3D Models'])) > 0) {
-                                                    $this->renderPartial('//shared/_model_viewer', ['data' => $links->getDatasetExternalLinks(['3D Models'])]);
-                                                }
-                                                break;
-                                            case "Juicebox":
-                                                if (count($links->getDatasetExternalLinks(['Juicebox'])) > 0) {
-                                                    $this->renderPartial('//shared/_hic_viewer', ['data' => $links->getDatasetExternalLinks(['Juicebox'])]);
-                                                }
                                                 break;
                                         }
                                     }
