@@ -17,39 +17,69 @@ $files = array_map(function ($item) {
   ];
 }, $data);
 
-
 ?>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/juicebox.js@2.4.8/dist/css/juicebox.css">
 
 <div id="hicViewerRoot">
   <form>
     <div class="form-group">
       <label class="control-label" for="hic-selector">Select a HiC file to view:</label>
       <select id="hic-selector" class="form-control js-hic-selector hic-selector test-hic-selector">
+        <option selected disabled>Select a HiC file to view</option>
         <?php foreach ($files as $index => $file): ?>
           <!-- id is numeric -->
-          <option value="<?php echo $file['id']; ?>" <?php echo $index === 0 ? 'selected' : ''; ?>><?php echo $file['name']; ?></option>
+          <option value="<?php echo $file['id']; ?>">
+            <?php echo $file['name']; ?>
+          </option>
         <?php endforeach; ?>
       </select>
     </div>
   </form>
-  <div class="js-model-description model-description">
-    <p class="js-description-content"></p>
-  </div>
   <div class="js-hic-viewer hic-viewer"></div>
+  <div class="js-hic-error hic-error alert alert-danger mt-10" style="display: none;"></div>
 </div>
 
-<script>
-  $(document).ready(function () {
+<script type="module">
+  import juicebox from "https://cdn.jsdelivr.net/npm/juicebox.js@2.4.8/dist/juicebox.esm.js";
+
+  const files = <?php echo json_encode($files); ?>;
+
+  const defaultConfig = {}
+
+  $(document).ready(async function () {
     const $selector = $('.js-hic-selector');
     const $viewer = $('.js-hic-viewer');
+    const $error = $('.js-hic-error');
 
-    function updateViewer() {
+    function getFileConfig(file) {
+      return {
+        ...defaultConfig,
+        url: file.location,
+        name: file.name
+      }
+    }
+
+    async function updateViewer() {
       const selectedOption = $selector.find('option:selected');
-      const fileName = selectedOption.text();
-      $viewer.text(fileName);
+      const selectedFile = files.find(f => f.id === parseInt(selectedOption.val()));
+
+      $viewer.empty();
+
+      const config = getFileConfig(selectedFile);
+
+      $error.hide();
+      $error.text('');
+      try {
+        const browser = await juicebox.init($viewer[0], config);
+        console.log(`${browser.id} initialized successfully`);
+      } catch (error) {
+        console.error('Error initializing juicebox:', error);
+        $error.text('Error loading HiC viewer');
+        $error.show();
+      }
     }
 
     $selector.on('change', updateViewer);
-    updateViewer(); // Show initial selection
   })
 </script>
