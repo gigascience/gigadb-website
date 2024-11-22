@@ -505,9 +505,7 @@ $sampleDataProvider = $samples->getDataProvider();
                                 <div role="tabpanel" class="tab-pane visible" id="<?= $linkCode ?>">
                                     <p><?= $linkType ?>:</p>
                                     <?php
-                                    if (count($links->getDatasetExternalLinks(['3D Models'])) > 0) {
-                                        $this->renderPartial('//shared/_model_viewer', ['data' => $links->getDatasetExternalLinks(['3D Models'])]);
-                                    }
+
                                     foreach ($links->getDatasetExternalLinks([$linkType]) as $link) {
                                         $p = $link['url'];
                                         switch ($linkType) {
@@ -522,6 +520,11 @@ $sampleDataProvider = $samples->getDataProvider();
                                                 break;
                                             case "Code Ocean":
                                                 echo "<p>$p</p>";
+                                                break;
+                                            case "3D Models":
+                                                if (count($links->getDatasetExternalLinks(['3D Models'])) > 0) {
+                                                    $this->renderPartial('//shared/_model_viewer', ['data' => $links->getDatasetExternalLinks(['3D Models'])]);
+                                                }
                                                 break;
                                         }
                                     }
