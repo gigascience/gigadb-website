@@ -29,7 +29,7 @@
 			'required' => true,
 		],
 		'groupOptions' => [
-			'class' => 'col-md-6'
+			'class' => 'col-md-12'
 		],
 	]);
 	?>
@@ -48,7 +48,7 @@
 			'required' => true,
 		],
 		'groupOptions' => [
-			'class' => 'col-md-6'
+			'class' => 'col-md-12'
 		],
 	]);
 	?>
