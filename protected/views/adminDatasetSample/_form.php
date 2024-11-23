@@ -28,7 +28,7 @@
 			'textField' => 'identifier',
 		],
 		'groupOptions' => [
-			'class' => 'col-md-6'
+			'class' => 'col-md-12'
 		],
 	]);
 	?>
@@ -44,7 +44,7 @@
 			'textField' => 'id',
 		],
 		'groupOptions' => [
-			'class' => 'col-md-6'
+			'class' => 'col-md-12'
 		],
 	]);
 	?>
