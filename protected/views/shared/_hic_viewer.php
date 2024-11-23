@@ -31,9 +31,7 @@ $files = array_map(function ($item) {
             <option selected disabled>Select a HiC file to view</option>
             <?php foreach ($files as $index => $file): ?>
               <!-- id is numeric -->
-              <option value="<?php echo $file['id']; ?>">
-                <?php echo $file['name']; ?>
-              </option>
+              <option value="<?php echo $file['id']; ?>"><?php echo $file['name']; ?></option>
             <?php endforeach; ?>
           </select>
         </div>

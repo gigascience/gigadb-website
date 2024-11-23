@@ -232,3 +232,12 @@ Feature: a user visit the dataset page
     Then I should see "3D Models:"
     And I should see "Select a model"
     And I should see "GeoB8502_865cm_Shell-4.obj"
+
+  @ok @issue-329
+  Scenario: Juicebox tab
+    Given I have not signed in
+    When I am on "/dataset/100020"
+    And I follow "Juicebox"
+    Then I should see "Juicebox:"
+    And I should see "Select a HiC file to view"
+    And I should see "ENCFF718AWL.hic"
