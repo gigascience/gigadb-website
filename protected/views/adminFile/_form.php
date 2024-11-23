@@ -1,15 +1,18 @@
-<div class="section form row">
+<div class="section form">
 
-    <div class="col-md-offset-3 col-md-6">
+    <div>
         <?php $form = $this->beginWidget('CActiveForm', array(
             'id' => 'file-form',
             'enableAjaxValidation' => false,
+            'htmlOptions' => [
+                'class' => 'row'
+            ]
         )); ?>
 
-        <p class="note">Fields with <span class="required">*</span> are required.</p>
+        <p class="note col-md-12">Fields with <span class="required">*</span> are required.</p>
 
         <?php if ($model->hasErrors()) : ?>
-            <div class="alert alert-danger">
+            <div class="alert alert-danger col-md-12">
                 <?php echo $form->errorSummary($model); ?>
             </div>
         <?php endif; ?>
@@ -25,6 +28,9 @@
                 'valueField' => 'id',
                 'textField' => 'identifier',
             ],
+            'groupOptions' => [
+                'class' => 'col-md-6'
+            ],
             'inputOptions' => [
                 'required' => true,
             ],
@@ -34,6 +40,9 @@
             'form' => $form,
             'model' => $model,
             'attributeName' => 'name',
+            'groupOptions' => [
+                'class' => 'col-md-6'
+            ],
             'inputOptions' => [
                 'required' => true,
                 'maxlength' => 100
@@ -44,6 +53,9 @@
             'form' => $form,
             'model' => $model,
             'attributeName' => 'location',
+            'groupOptions' => [
+                'class' => 'col-md-12'
+            ],
             'inputOptions' => [
                 'required' => true,
                 'maxlength' => 200
@@ -54,6 +66,9 @@
             'form' => $form,
             'model' => $model,
             'attributeName' => 'extension',
+            'groupOptions' => [
+                'class' => 'col-md-4'
+            ],
             'inputOptions' => [
                 'required' => true,
                 'maxlength' => 30
@@ -64,31 +79,43 @@
             'form' => $form,
             'model' => $model,
             'attributeName' => 'size',
+            'groupOptions' => [
+                'class' => 'col-md-4'
+            ],
             'inputOptions' => [
                 'required' => true,
             ],
             'tooltip' => 'The size of file on disk in bytes'
         ]);
+        $this->widget('application.components.controls.DateField', [
+            'form' => $form,
+            'model' => $model,
+            'attributeName' => 'date_stamp',
+            'groupOptions' => [
+                'class' => 'col-md-4'
+            ],
+            'tooltip' => 'The date the file is made publicly available, usually the same as the dataset release date. Format: yyyy-mm-dd'
+        ]);
         $this->widget('application.components.controls.TextArea', [
             'form' => $form,
             'model' => $model,
             'attributeName' => 'description',
+            'groupOptions' => [
+                'class' => 'col-md-12'
+            ],
             'inputOptions' => [
                 'rows' => 6,
                 'cols' => 50
             ],
             'tooltip' => 'The description of the files content'
         ]);
-        $this->widget('application.components.controls.DateField', [
-            'form' => $form,
-            'model' => $model,
-            'attributeName' => 'date_stamp',
-            'tooltip' => 'The date the file is made publicly available, usually the same as the dataset release date. Format: yyyy-mm-dd'
-        ]);
         $this->widget('application.components.controls.DropdownField', [
             'form' => $form,
             'model' => $model,
             'attributeName' => 'format_id',
+            'groupOptions' => [
+                'class' => 'col-md-6'
+            ],
             'listDataOptions' => [
                 'data' => FileFormat::model()->findAll(),
                 'valueField' => 'id',
@@ -100,6 +127,9 @@
             'form' => $form,
             'model' => $model,
             'attributeName' => 'type_id',
+            'groupOptions' => [
+                'class' => 'col-md-6'
+            ],
             'listDataOptions' => [
                 'data' => FileType::model()->findAll(),
                 'valueField' => 'id',
@@ -111,33 +141,36 @@
             'form' => $form,
             'model' => $model,
             'attributeName' => 'sample_name',
+            'groupOptions' => [
+                'class' => 'col-md-12'
+            ],
             'tooltip' => 'If the file is directly and solely related to a single Sample entity named in GigaDB, a link to that sample can be added here by entering the exact name of the sample'
         ]);
         ?>
 
         <?php if (!$model->isNewRecord) { ?>
-            <div class="control-group">
+            <div class="control-group col-md-12">
             <?php if ($model->fileAttributes) { ?>
                     <table class="table table-attr">
                         <caption>Attributes</caption>
                         <thead>
                             <tr>
-                                <th>Attribute Name</th>
-                                <th>Value</th>
-                                <th>Unit</th>
-                                <th>Actions</th>
+                                <th style="width: 25%">Attribute Name</th>
+                                <th style="width: 40%">Value</th>
+                                <th style="width: 15%">Unit</th>
+                                <th style="width: 20%">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php foreach ($model->fileAttributes as $fa) { ?>
                                 <tr class="row-edit-<?= $fa->id ?>">
-                                    <td>
+                                    <td class="text-nowrap">
                                         <?= $fa->attribute->attribute_name ?>
                                     </td>
                                     <td>
                                         <?= $fa->value ?>
                                     </td>
-                                    <td>
+                                    <td class="text-nowrap">
                                         <?= $fa->unit ? $fa->unit->name : '' ?>
                                     </td>
                                     <td>
@@ -155,7 +188,7 @@
                 <button type="button" class="btn background-btn-o js-btn-attr" aria-expanded="false" aria-controls="newAttrForm" data-test="new-attr-btn" data-toggle="tooltip" title="Show and/or Add file attributes"><span class="js-btn-attr-label">Show New Attribute Fields</span> <i class="fa fa-caret-down js-caret-type" aria-hidden="true"></i></button>
                 <br />
                 <fieldset id="newAttrForm" class="js-new-attr mt-10 mb-20 row" aria-label="New attribute fields" style="display:none;">
-                    <div class="col-xs-5">
+                    <div class="col-md-4">
                         <?php
                         $this->widget('application.components.controls.DropdownField', [
                             'form' => $form,
@@ -177,7 +210,7 @@
                         ]);
                         ?>
                     </div>
-                    <div class="col-xs-3">
+                    <div class="col-md-4">
                         <?php
                         $this->widget('application.components.controls.TextField', [
                             'form' => $form,
@@ -194,7 +227,7 @@
                         ]);
                         ?>
                     </div>
-                    <div class="col-xs-4">
+                    <div class="col-md-4">
                         <?php
                         $this->widget('application.components.controls.DropdownField', [
                             'form' => $form,
@@ -225,9 +258,11 @@
                 </fieldset>
             </div>
         <?php } ?>
-        <div class="pull-right btns-row">
-            <a href="/adminFile/admin" class="btn background-btn-o">Cancel</a>
-            <?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => 'btn background-btn')); ?>
+        <div class="col-md-12">
+            <div class="pull-right btns-row">
+                <a href="/adminFile/admin" class="btn background-btn-o btn-min-width">Cancel</a>
+                <?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => 'btn background-btn btn-min-width')); ?>
+            </div>
         </div>
 
         <?php $this->endWidget(); ?>
