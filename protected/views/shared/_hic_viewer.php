@@ -21,23 +21,29 @@ $files = array_map(function ($item) {
 
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/juicebox.js@2.4.8/dist/css/juicebox.css">
 
-<div id="hicViewerRoot">
-  <form>
-    <div class="form-group">
-      <label class="control-label" for="hic-selector">Select a HiC file to view:</label>
-      <select id="hic-selector" class="form-control js-hic-selector hic-selector test-hic-selector">
-        <option selected disabled>Select a HiC file to view</option>
-        <?php foreach ($files as $index => $file): ?>
-          <!-- id is numeric -->
-          <option value="<?php echo $file['id']; ?>">
-            <?php echo $file['name']; ?>
-          </option>
-        <?php endforeach; ?>
-      </select>
+<div id="hicViewerRoot" class="hic-viewer-root">
+  <div class="row">
+    <div class="col-md-4">
+      <form>
+        <div class="form-group">
+          <label class="control-label" for="hic-selector">Select a HiC file to view:</label>
+          <select id="hic-selector" class="form-control js-hic-selector hic-selector test-hic-selector">
+            <option selected disabled>Select a HiC file to view</option>
+            <?php foreach ($files as $index => $file): ?>
+              <!-- id is numeric -->
+              <option value="<?php echo $file['id']; ?>">
+                <?php echo $file['name']; ?>
+              </option>
+            <?php endforeach; ?>
+          </select>
+        </div>
+      </form>
     </div>
-  </form>
-  <div class="js-hic-viewer hic-viewer"></div>
-  <div class="js-hic-error hic-error alert alert-danger mt-10" style="display: none;"></div>
+    <div class="col-md-12">
+      <div class="js-hic-viewer hic-viewer juicebox-app-clone-container"></div>
+      <div class="js-hic-error hic-error alert alert-danger mt-10" style="display: none;"></div>
+    </div>
+  </div>
 </div>
 
 <script type="module">
@@ -75,7 +81,7 @@ $files = array_map(function ($item) {
         console.log(`${browser.id} initialized successfully`);
       } catch (error) {
         console.error('Error initializing juicebox:', error);
-        $error.text('Error loading HiC viewer');
+        $error.text('Error loading HiC viewer: ' + error.message);
         $error.show();
       }
     }
