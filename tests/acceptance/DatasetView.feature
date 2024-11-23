@@ -217,3 +217,27 @@ Feature: a user visit the dataset page
     And I should see "Alternative names:PYGAD"
     When I press the button "-"
     Then I should not see "Alternative names:PYGAD"
+
+  @ok @issue-2054
+  Scenario: 3D Models tab
+    Given I have not signed in
+    When I am on "/dataset/100006"
+    Then I should see "3D Models"
+
+  @ok @issue-2054
+  Scenario: 3D model drop down list
+    Given I have not signed in
+    When I am on "/dataset/100006"
+    And I follow "3D Models"
+    Then I should see "3D Models:"
+    And I should see "Select a model"
+    And I should see "GeoB8502_865cm_Shell-4.obj"
+
+  @ok @issue-329
+  Scenario: Juicebox tab
+    Given I have not signed in
+    When I am on "/dataset/100020"
+    And I follow "Juicebox"
+    Then I should see "Juicebox:"
+    And I should see "Select a HiC file to view"
+    And I should see "ENCFF718AWL.hic"

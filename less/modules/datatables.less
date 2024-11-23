@@ -28,3 +28,13 @@ table.dataTable thead {
 .tab-content {
   overflow: hidden;
 }
+
+.dataset-tab-content {
+  overflow: visible;
+  [role="tabpanel"] {
+    overflow: hidden;
+    &.visible {
+      overflow: visible;
+    }
+  }
+}
