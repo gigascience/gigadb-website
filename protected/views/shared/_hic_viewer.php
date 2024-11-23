@@ -26,7 +26,7 @@ $files = array_map(function ($item) {
     <div class="col-md-4">
       <form>
         <div class="form-group">
-          <label class="control-label" for="hic-selector">Select a HiC file to view:</label>
+          <label class="control-label" for="hic-selector">Select a HiC file to view</label>
           <select id="hic-selector" class="form-control js-hic-selector hic-selector test-hic-selector">
             <option selected disabled>Select a HiC file to view</option>
             <?php foreach ($files as $index => $file): ?>
@@ -40,8 +40,10 @@ $files = array_map(function ($item) {
       </form>
     </div>
     <div class="col-md-12">
+      <div class="hic-error-display js-hic-error-display" role="alert">
+        <p class="hic-error-content js-hic-error-content" style="display: none;"></p>
+      </div>
       <div class="js-hic-viewer hic-viewer juicebox-app-clone-container"></div>
-      <div class="js-hic-error hic-error alert alert-danger mt-10" style="display: none;"></div>
     </div>
   </div>
 </div>
@@ -50,42 +52,63 @@ $files = array_map(function ($item) {
   import juicebox from "https://cdn.jsdelivr.net/npm/juicebox.js@2.4.8/dist/juicebox.esm.js";
 
   const files = <?php echo json_encode($files); ?>;
-
   const defaultConfig = {}
 
+  function getFileConfig(file) {
+    return {
+      ...defaultConfig,
+      url: file.location,
+      name: file.name
+    }
+  }
+
+  function getFileFromId(id) {
+    return files.find(f => f.id === parseInt(id));
+  }
+
   $(document).ready(async function () {
-    const $selector = $('.js-hic-selector');
-    const $viewer = $('.js-hic-viewer');
-    const $error = $('.js-hic-error');
+    const $hicViewer = $('.js-hic-viewer');
+    const $hicSelect = $('.js-hic-selector');
+    const $hicError = $('.js-hic-error-display');
+    const $hicErrorContent = $('.js-hic-error-content');
 
-    function getFileConfig(file) {
-      return {
-        ...defaultConfig,
-        url: file.location,
-        name: file.name
-      }
+    if (!$hicViewer || !$hicSelect) {
+      console.error('Required elements not found');
+      return;
     }
 
-    async function updateViewer() {
-      const selectedOption = $selector.find('option:selected');
-      const selectedFile = files.find(f => f.id === parseInt(selectedOption.val()));
+    const hicBrowser = await juicebox.init($hicViewer[0], defaultConfig);
 
-      $viewer.empty();
+    async function handleSelect() {
+      setError(null);
 
-      const config = getFileConfig(selectedFile);
-
-      $error.hide();
-      $error.text('');
       try {
-        const browser = await juicebox.init($viewer[0], config);
-        console.log(`${browser.id} initialized successfully`);
+        const selectedFile = getFileFromId($hicSelect.val());
+        if (!selectedFile) {
+          throw new Error('No file selected');
+        }
+        await hicBrowser.loadHicFile(getFileConfig(selectedFile));
       } catch (error) {
-        console.error('Error initializing juicebox:', error);
-        $error.text('Error loading HiC viewer: ' + error.message);
-        $error.show();
+        setError(error.message);
       }
     }
 
-    $selector.on('change', updateViewer);
+    function setError(message) {
+      if (message) {
+        $hicError.addClass(['alert', 'alert-danger']);
+        $hicErrorContent.text(message);
+        $hicErrorContent.show();
+      } else {
+        $hicError.removeClass(['alert', 'alert-danger']);
+        $hicErrorContent.text('');
+        $hicErrorContent.hide();
+      }
+    }
+
+    $hicSelect.on('change', handleSelect);
+
+    $(window).on('beforeunload', function () {
+      $hicSelect.off('change', handleSelect);
+    });
   })
 </script>
