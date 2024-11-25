@@ -2,13 +2,21 @@
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-
 ## Unreleased
 
 - Feat #2067: Sort files by size in dataset page
-- Fix #2042: Batch deletion of file attributes and samples
+- Fix #2094: Make Semgrep-based SAST analyzer available in tagged release
+- Feat #701: Code refactoring to separate upload status transitions and notifications to prepare for upload status overhaul
+- Security #1867: Update the gitlab static application security testing (SAST) job using the Semgrep-based analyzer
 
-## v4.3.9 - 2024-10-28 - 961f7821a -
+## v4.4.0 - 2024-11-13 - ea1a37cc9 -
+
+- Fix #2066: Max length for attribute value set to 1000 in file admin form
+- Feat #1968: Add curators manual for operating tools on bastion server and improve tools usage
+- Feat #1750: Switch to guzzle instead of cURL (preliminry work to prepare for DataCite schema upgrade)
+- Fix #2042: Batch deletion of file attributes and samples to make deleting files from the admin dashboard faster
+
+## v4.3.9 - 2024-10-28 - 961f7821a - 2024-11-06
 
 - Fix #1838: switch datepicker format to yyy-mm-dd
 - Feat #1768: Alphabetically sorted dataset author dropdown options in adminDatasetAuthor form

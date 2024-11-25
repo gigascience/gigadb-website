@@ -58,7 +58,7 @@ $sampleDataProvider = $samples->getDataProvider();
                                         try {
                                             $textFile = DownloadService::downloadFile($url);
                                             $showButton = true;
-                                        } catch (\GuzzleHttp\Exception\BadResponseException $e) {
+                                        } catch (\Exception $e) {
                                             $showButton = false;
                                             yii::log($e->getMessage(), "error");
                                         }
