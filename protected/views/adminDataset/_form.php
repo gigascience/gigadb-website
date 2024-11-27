@@ -358,18 +358,22 @@ echo $form->hiddenField($model, "image_id");
                                             'data' => ['doi' => 'js:$("#Dataset_identifier").val()'],
                                             'dataType' => 'json',
                                             'success' => new CJavaScriptExpression('function(output) {
-                                                if (output.check_doi_status == 200 && output.update_md_status == 201) {
+                                                if (output.check_doi_status === 200 && output.update_md_status === 201) {
                                                     $("#minting").addClass("alert alert-info").html("This DOI exists in datacite already, no need to mint, but the metadata is updated!");
-                                                } else if (output.check_doi_status == 200 && output.update_md_status == 422) {
+                                                } else if (output.check_doi_status === 204 && output.create_md_status === 201) {
+                                                    $("#minting").addClass("alert alert-info").html("This DOI exists but is not registered, no need to mint, but the metadata has been created!");
+                                                } else if (output.check_doi_status === 200 && output.update_md_status !== 201) {
                                                     $("#minting").addClass("alert alert-info").html("This DOI exists in datacite, but failed to update metadata because of: " + output.update_md_response);
-                                                } else if (output.create_md_status == 201 && output.create_doi_status == 201) {
-                                                    $("#minting").addClass("alert alert-success").html("New DOI successfully minted");
-                                                } else if (output.check_doi_status == 404 && output.create_md_status == 422) {
+                                                } else if (output.check_doi_status === 204 && output.create_md_status !== 201) {
+                                                    $("#minting").addClass("alert alert-info").html("This DOI exists in datacite, but failed to create metadata because of: " + output.create_md_response);
+                                                } else if (output.check_doi_status === 404 && output.create_md_status !== 201) {
                                                     $("#minting").addClass("alert alert-danger").html("This DOI cannot be created because of the metadata status: " + output.create_md_status + ". Details can be found at <a href=\'https://support.datacite.org/reference/mds#api-response-codes\' target=\'_blank\'>here</a>");
-                                                } else if (output.check_doi_status == 200 && output.update_md_status != 200) {
-                                                    $("#minting").addClass("alert alert-danger").html("Error with metadata status: " + output.update_md_status + " and DOI status: " + output.check_doi_status + " Details can be found at <a href=\'https://support.datacite.org/reference/mds#api-response-codes\' target=\'_blank\'>here</a>");
+                                                } else if (output.create_md_status === 201 && output.create_doi_status !== 201) {
+                                                    $("#minting").addClass("alert alert-success").html("New DOI couldn\'t be minted");
+                                                } else if (output.create_md_status === 201 && output.create_doi_status === 201) {
+                                                    $("#minting").addClass("alert alert-success").html("New DOI successfully minted");
                                                 } else {
-                                                 $("#minting").addClass("alert alert-danger").html("DOI status: " + output.check_doi_status + ". An error occurred");
+                                                 $("#minting").addClass("alert alert-danger").html("An error occurred");
                                                 }
                                                 
                                                 if (output.error) {
@@ -380,10 +384,10 @@ echo $form->hiddenField($model, "image_id");
                                             ),
                                         ],
                                         array(
-                                            'class' => 'btn background-btn m-0',
-                                            'id' => 'mint_doi_button',
-                                            'disabled' => in_array($model->upload_status, $status_array),
-                                            'title' => 'This botton will take all the dataset information stored in GigaDB and convert it to the DataCite schema in XML and via an API call, register that information with DataCite',
+                                            'class'       => 'btn background-btn m-0',
+                                            'id'          => 'mint_doi_button',
+                                            'disabled'    => in_array($model->upload_status, $status_array),
+                                            'title'       => 'This button will take all the dataset information stored in GigaDB and convert it to the DataCite schema in XML and via an API call, register that information with DataCite',
                                             'data-toggle' => 'tooltip'
                                         )
                                     );
