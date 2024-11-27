@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #2066: Update file attribute values form layout and add expand button for long values
 - Feat #2102: Delete outdated apidocs files
 - Feat #1667: Add log entry when minting DOI
 - Fix #2094: Make Semgrep-based SAST analyzer available in tagged release
