@@ -217,3 +217,20 @@ Feature: a user visit the dataset page
     And I should see "Alternative names:PYGAD"
     When I press the button "-"
     Then I should not see "Alternative names:PYGAD"
+
+  @ok @issue-2067
+  Scenario: Files tab can be sort by size in ascending order
+    Given I have not signed in
+    And I am on "/dataset/100035"
+    And I follow "Files"
+    When I follow "[aria-label^='Size']"
+    Then I should see "1.19 kB" in the table "#files_table" cell 1 6
+
+  @ok @issue-2067
+  Scenario: Files tab can be sort by size in descending order
+    Given I have not signed in
+    And I am on "/dataset/100035"
+    And I follow "Files"
+    When I follow "[aria-label^='Size']"
+    And I follow "[aria-label^='Size']"
+    Then I should see "3.88 GB" in the table "#files_table" cell 1 6
