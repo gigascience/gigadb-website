@@ -21,15 +21,6 @@
                     </div>
                 </article>
                 <article class="team-card">
-                    <img src="../images/team/chrisa.jpg" alt="Chris Armit's portrait">
-                    <div class="team-content">
-                        <h2 class="h3">Chris Armit<br />
-                            <small class="member-role">Data Scientist</small>
-                        </h2>
-                        <p>I am a Developmental Biologist with a strong interest in image informatics and next-gen imaging</p>
-                    </div>
-                </article>
-                <article class="team-card">
                     <img src="../images/team/marya.jpg" alt="Mary Ann Tuli's portrait">
                     <div class="team-content">
                         <h2 class="h3">Mary Ann Tuli<br />
