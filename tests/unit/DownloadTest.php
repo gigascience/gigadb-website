@@ -1,10 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Tests DownloadService component
  */
 class DownloadTest extends \Codeception\Test\Unit
 {
+    protected function _before()
+    {
+        $guzzleService = new \GuzzleHttp\Client();
+        Yii::$container->set('guzzleHttpClient', $guzzleService);
+    }
+
+
     /**
      * Test that a remote file can be downloaded
      */

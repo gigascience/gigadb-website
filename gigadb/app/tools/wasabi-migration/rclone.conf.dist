@@ -10,4 +10,3 @@ acl = public-read
 server_side_encryption = 
 storage_class = 
 provider = Other
-

@@ -350,4 +350,3 @@ output "efs_filesystem_access_points" {
     configuration_area = module.gigadb_efs.access_points["configuration_area"].id
   }
 }
-

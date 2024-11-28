@@ -113,7 +113,7 @@ class DatasetDAO extends yii\base\BaseObject
 			$dataset = Dataset::model()->findByAttributes(['identifier' => $this->_identifier]);
 		}
 
-		if (!$toStatus || $fromStatus !== ($previousStatus ?: $dataset->upload_status)) {
+		if ($fromStatus !== ($previousStatus ?: $dataset->upload_status)) {
 			return false;
 		}
 

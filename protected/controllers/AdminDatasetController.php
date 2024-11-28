@@ -207,6 +207,26 @@ class AdminDatasetController extends Controller
         Yii::log('**** new attributes: ' . print_r($postDataset, true), 'warning');
         $uploadStatus = $postDataset['upload_status'];
         $previousUploadStatus = $model->upload_status;
+        $isStatusAvailable = true;
+
+        // setting DatasetUpload, the busisness object for File uploading
+        $datasetUpload = $this->getDatasetUpload($model->identifier);
+
+        if ($uploadStatus && $uploadStatus !== $previousUploadStatus) {
+            $isStatusAvailable = $this->checkAndSetTransition($datasetUpload, $model, $uploadStatus);
+        }
+
+        if (!$isStatusAvailable) {
+            Yii::app()->user->setFlash('updateError', 'Fail to update status!');
+            Yii::log(sprintf('Failed to change status to %s', $uploadStatus), 'error');
+
+            return $this->render('update', array(
+                'model' => $model,
+                'datasetPageSettings' => $datasetPageSettings,
+                'curationlog'=> $dataProvider,
+                'dataset_id'=> $id,
+            ));
+        }
 
         //curator
         $curatorId = $postDataset['curator_id'];
@@ -239,8 +259,9 @@ class AdminDatasetController extends Controller
                 $model->updateDatasetTypes($postDatasetTypes);
             }
 
-            if ($uploadStatus !== $previousUploadStatus) {
-                $this->renderNotificationsAccordingToStatus($uploadStatus, $previousUploadStatus, $model);
+            if ($uploadStatus && $uploadStatus !== $previousUploadStatus) {
+                Yii::log('Status changed to '.$uploadStatus, 'info');
+                $this->renderNotificationsAccordingToStatus($datasetUpload, $model);
             }
 
             // semantic keywords update, using remove all and re-create approach
@@ -376,90 +397,90 @@ class AdminDatasetController extends Controller
      */
     public function actionMint()
     {
+        if (!$doi = Yii::$app->request->post('doi')) {
+            $result['error'] = 'You need to provide a DOI';
+            echo json_encode($result);
+            Yii::app()->end();
+        }
+
         $status_array = array('Submitted', 'UserStartedIncomplete', 'Curation');
 
         $mds_metadata_url= Yii::app()->params['mds_metadata_url'];
         $mds_doi_url= Yii::app()->params['mds_doi_url'];
-
         $mds_username = Yii::app()->params['mds_username'];
         $mds_password = Yii::app()->params['mds_password'];
         $mds_prefix = Yii::app()->params['mds_prefix'];
 
-        if (isset($_POST['doi'])) {
-            $doi = $_POST['doi'];
-            if (stristr($doi, "/")) {
-                $temp = explode("/", $doi);
-                $doi = $temp[1];
+        if (stristr($doi, "/")) {
+            $temp = explode("/", $doi);
+            $doi = $temp[1];
+        }
+
+        $doi = trim($doi);
+        $dataset = Dataset::model()->find("identifier=?", array($doi));
+        $client = Yii::$container->get('guzzleHttpClient');
+
+        if (!$dataset || in_array($dataset->upload_status, $status_array)) {
+            $result['error'] = 'Please, check the dataset and the status';
+            echo json_encode($result);
+            Yii::app()->end();
+        }
+
+        $action = 'DOI Minting';
+        $log = sprintf('Dataset %s', $doi);
+        $doiResponse = $client->request('GET', $mds_doi_url . '/' . $mds_prefix . '/' . $doi, [
+            'http_errors' => false,
+            'auth'        => [$mds_username, $mds_password]
+        ]);
+        $result['doi_response'] = $doiResponse->getBody()->getContents();
+        $result['check_doi_status'] = $doiResponse->getStatusCode();
+        $isPresent = in_array($result['check_doi_status'], [200, 204]);
+        $log .= sprintf(' - Check DOI: %s', $isPresent ? "OK" : "DOI doesn't exist");
+
+        if ($isPresent || $result['check_doi_status'] === 404) {
+            if (!$xml_data = $dataset->toXML()) {
+                $result['error'] = 'An error occurred while transforming the dataset as xml';
+                $log .= ' ERROR: An error occurred while transforming the dataset as xml';
+
+                echo json_encode($result);
+                Yii::app()->end();
             }
+            $options = [
+                'headers'     => [
+                    'Content-Type' => 'text/xml;charset=UTF8',
+                ],
+                'auth'        => [$mds_username, $mds_password],
+                'body'        => $xml_data,
+                'http_errors' => false
+            ];
+            $updateMdResponse = $client->request('POST', $mds_metadata_url . '/' . $mds_prefix . '/' . $doi, $options);
 
-            $doi = trim($doi);
-            $dataset = Dataset::model()->find("identifier=?", array($doi));
+            $keyResponse = sprintf('%s_md_response', $result['check_doi_status'] === 200 ? 'update' : 'create');
+            $keyStatus = sprintf('%s_md_status', $result['check_doi_status'] === 200 ? 'update' : 'create');
+            $result[$keyResponse] = $updateMdResponse->getBody()->getContents();
+            $result[$keyStatus] = $updateMdResponse->getStatusCode();
+            $log .= sprintf(' - %s md response: %s', $result['check_doi_status'] === 200 ? 'update' : 'create', 201 === $result[$keyStatus] ? "OK" : $result[$keyResponse]);
 
-            if ($dataset && ! in_array($dataset->upload_status, $status_array) ) {
-                $checkMeta = curl_init();
-                curl_setopt($checkMeta, CURLOPT_URL, $mds_metadata_url . '/' . $mds_prefix . '/' . $doi);
-                curl_setopt($checkMeta, CURLOPT_RETURNTRANSFER, 1);
-                curl_setopt($checkMeta, CURLOPT_USERPWD, $mds_username . ":" . $mds_password);
-                $checkMetaResponse = curl_exec($checkMeta);
-                $result['metadata_response'] = $checkMetaResponse;
-                $result['check_metadata_status'] = curl_getinfo($checkMeta, CURLINFO_HTTP_CODE);
-                curl_close($checkMeta);
+            if (201 === $updateMdResponse->getStatusCode() && 404 === $result['check_doi_status']) {
+                $result['doi_data'] = 'doi=' . $mds_prefix . '/' . $doi . "\n" . 'url=http://gigadb.org/dataset/' . $doi;
+                $options = [
+                    'headers'     => [
+                        'Content-Type' => 'text/plain; charset=UTF-8',
+                    ],
+                    'auth'        => [$mds_username, $mds_password],
+                    'body'        => $result['doi_data'],
+                    'http_errors' => false
+                ];
 
-                $checkDoi = curl_init();
-                curl_setopt($checkDoi, CURLOPT_URL, $mds_doi_url. '/' . $mds_prefix . '/' . $doi);
-                curl_setopt($checkDoi, CURLOPT_RETURNTRANSFER, 1);
-                curl_setopt($checkDoi, CURLOPT_USERPWD, $mds_username . ":" . $mds_password);
-                $checkDoiResponse = curl_exec($checkDoi);
-                $result['doi_response'] = $checkDoiResponse;
-                $result['check_doi_status'] = curl_getinfo($checkDoi, CURLINFO_HTTP_CODE);
-                curl_close($checkDoi);
-            }
+                $response = $client->request('PUT', $mds_doi_url. '/' . $mds_prefix . '/' . $doi, $options);
 
-            if ( $result['check_metadata_status'] === 200 && $result['check_doi_status'] === 200 ) {
-                $xml_data = $dataset->toXML();
-                $updateMeta= curl_init();
-                curl_setopt($updateMeta, CURLOPT_URL, $mds_metadata_url . '/' . $mds_prefix . '/' . $doi);
-                curl_setopt($updateMeta, CURLOPT_POST, 1);
-                curl_setopt($updateMeta, CURLOPT_RETURNTRANSFER, 1);
-                curl_setopt($updateMeta, CURLOPT_POSTFIELDS, "$xml_data");
-                curl_setopt($updateMeta, CURLOPT_HTTPHEADER, array('Content-Type:application/xml;charset=UTF-8'));
-                curl_setopt($updateMeta, CURLOPT_USERPWD, $mds_username . ":" . $mds_password);
-                $curl_response = curl_exec($updateMeta);
-                $result['update_md_response'] = $curl_response;
-                $result['update_md_status'] = curl_getinfo($updateMeta, CURLINFO_HTTP_CODE);
-                curl_close($updateMeta) ;
-            }
-
-            if ( $result['check_metadata_status'] === 404 && $result['check_doi_status'] ===  404 ) {
-                $xml_data = $dataset->toXML();
-                $createMeta= curl_init();
-                curl_setopt($createMeta, CURLOPT_URL, $mds_metadata_url . '/' . $mds_prefix . '/' . $doi);
-                curl_setopt($createMeta, CURLOPT_POST, 1);
-                curl_setopt($createMeta, CURLOPT_RETURNTRANSFER, 1);
-                curl_setopt($createMeta, CURLOPT_POSTFIELDS, "$xml_data");
-                curl_setopt($createMeta, CURLOPT_HTTPHEADER, array('Content-Type:application/xml;charset=UTF-8'));
-                curl_setopt($createMeta, CURLOPT_USERPWD, $mds_username . ":" . $mds_password);
-                $curl_response = curl_exec($createMeta);
-                $result['create_md_response'] = $curl_response;
-                $result['create_md_status'] = curl_getinfo($createMeta, CURLINFO_HTTP_CODE);
-                curl_close($createMeta) ;
-
-                $doi_data = "doi=".$mds_prefix."/".$doi."\n"."url=http://gigadb.org/dataset/".$doi;
-                $result['doi_data']  = $doi_data;
-                $createDoi= curl_init();
-                curl_setopt($createDoi, CURLOPT_URL, $mds_doi_url. '/' . $mds_prefix . '/' . $doi);
-                curl_setopt($createDoi, CURLOPT_CUSTOMREQUEST, "PUT");
-                curl_setopt($createDoi, CURLOPT_RETURNTRANSFER, 1);
-                curl_setopt($createDoi, CURLOPT_POSTFIELDS, $doi_data);
-                curl_setopt($createDoi, CURLOPT_HTTPHEADER, array('Content-Type:text/plain;charset=UTF-8'));
-                curl_setopt($createDoi, CURLOPT_USERPWD, $mds_username . ":" . $mds_password);
-                $curl_response = curl_exec($createDoi);
-                $result['create_doi_response'] = $curl_response;
-                $result['create_doi_status'] = curl_getinfo($createDoi, CURLINFO_HTTP_CODE);
-                curl_close($createDoi) ;
+                $result['create_doi_response'] = $response->getBody()->getContents();
+                $result['create_doi_status'] = $response->getStatusCode();
+                $log .= sprintf(' - Create DOI: %s', $result['create_doi_status'] === 201 ? 'OK' : $result['create_doi_response']);
             }
         }
 
+        CurationLog::createGeneralCurationLogEntry($dataset->id, $action, $log);
         echo json_encode($result);
         Yii::app()->end();
     }
@@ -504,36 +525,46 @@ class AdminDatasetController extends Controller
         return $model;
     }
 
-    private function renderNotificationsAccordingToStatus($uploadStatus, $previousStatus, $model)
+    private function getDatasetUpload(string $identifier): DatasetUpload
     {
         // setting DatasetUpload, the busisness object for File uploading
-        $webClient = new \GuzzleHttp\Client();
-        $fileUploadSrv = Yii::app()->fileUploadService->getFileUploadService($webClient, $model->identifier);
-        $datasetUpload = new DatasetUpload(
+        $webClient = \Yii::$container->get('guzzleHttpClient');
+        $fileUploadSrv = Yii::app()->fileUploadService->getFileUploadService($webClient, $identifier);
+
+        return new DatasetUpload(
             $fileUploadSrv->dataset,
             $fileUploadSrv,
             Yii::$app->params['dataset_upload']
         );
+    }
 
-        switch ($uploadStatus) {
+    private function checkAndSetTransition(DatasetUpload $datasetUpload, Dataset $model, string $newStatus): bool
+    {
+        switch ($newStatus) {
+            case 'Submitted':
+                return $datasetUpload->setStatusToSubmitted($model->upload_status);
+
+            case 'DataPending':
+                return $datasetUpload->setStatusToDataPending($model->upload_status);
+
+            default:
+                return true;
+        }
+    }
+
+    private function renderNotificationsAccordingToStatus(DatasetUpload $datasetUpload, Dataset $model)
+    {
+        switch ($model->upload_status) {
             case 'Submitted':
                 $contentToSend = $datasetUpload->renderNotificationEmailBody('Submitted');
-                $statusIsSet = $datasetUpload->setStatusToSubmitted($contentToSend, $previousStatus);
+                $statusIsSet = $datasetUpload->sendNotificationEmailBody($contentToSend, $model->upload_status);
 
                 break;
             case 'DataPending':
-                $contentToSend = $datasetUpload->renderNotificationEmailBody('DataPending');
+                $contentToSend = ($emailBody = Yii::$app->request->post('Dataset')['emailBody']) ?
+                    $this->processTemplateString($emailBody, ['identifier' => $model->identifier]) : $datasetUpload->renderNotificationEmailBody('DataPending');
 
-                // If formdata has a defined custom email body, user it instead of the twig template
-                if (isset($_POST['Dataset']['emailBody']) && $_POST['Dataset']['emailBody'] != '') {
-                    $contentToSend = $this->processTemplateString($_POST['Dataset']['emailBody'], [
-                        'identifier' => $model->identifier
-                    ]);
-                }
-
-                $statusIsSet = $datasetUpload->setStatusToDataPending(
-                    $contentToSend, $model->submitter->email, $previousStatus
-                );
+                $statusIsSet = $datasetUpload->sendNotificationEmailBody($contentToSend, $model->upload_status, $model->submitter->email);
 
                 break;
             default:
@@ -541,8 +572,8 @@ class AdminDatasetController extends Controller
         }
 
         if ($statusIsSet) {
-            CurationLog::createlog($uploadStatus, $model->id);
+            CurationLog::createlog($model->upload_status, $model->id);
         }
     }
 }
-?>
+

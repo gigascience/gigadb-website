@@ -20,16 +20,16 @@ class DownloadService extends yii\base\Component
      * Downloads and returns contents of a remote file
      *
      * @return string
-     * @throws \GuzzleHttp\Exception\BadResponseException
      */
     public static function downloadFile(string $url)
     {
-        $webClient = new \GuzzleHttp\Client();
-        $response = $webClient->request('GET', $url);
+        $webClient = Yii::$container->get('guzzleHttpClient');
+        $response = $webClient->request('GET', $url, ['http_errors' => false]);
+
         if ($response->getStatusCode() === 200) {
             return $response->getBody()->getContents();
         } else {
-            throw new BadResponseException("Error downloading file by DownloadService: status code " . $response->getStatusCode());
+            throw new \Exception("Error downloading file by DownloadService: status code " . $response->getStatusCode());
         }
     }
 
@@ -42,11 +42,12 @@ class DownloadService extends yii\base\Component
     public static function fileExists(string $url)
     {
         try {
-            $webClient = new \GuzzleHttp\Client();
-            $webClient->head($url);
-            return true;
-        } catch (GuzzleHttp\Exception\ClientException $e) {
-            echo "No file found at $url" . PHP_EOL;
+            /** @var \GuzzleHttp\Client $webClient */
+            $webClient = Yii::$container->get('guzzleHttpClient');
+            $response = $webClient->head($url);
+
+            return $response->getStatusCode() === 200;
+        } catch (Exception $e) {
             return false;
         }
     }
