@@ -141,6 +141,16 @@
                     </div>
                     <button class="btn toggle-more" aria-expanded="false">Show More</button>
                 </article>
+                <article class="team-card">
+                    <img src="../images/team/molcrette.jpg" alt="Bastien Molcrette's portrait">
+                    <div class="team-content collapsed">
+                        <h2 class="h3">Bastien Molcrette, PhD<br />
+                            <small class="member-role">Data Editor</small>
+                        </h2>
+                        <p>A biophysicist with a background in advanced microscopy and molecular biology. Trained as a physicist, moved into molecular biology, then left academia to work as a freelance biotech consultant. But now combines those experiences, interests and skills by working as a biocurator for GigaDB.</p>
+                    </div>
+                    <button class="btn toggle-more" aria-expanded="false">Show More</button>
+                </article>
 
             </div>
 
