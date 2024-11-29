@@ -148,128 +148,125 @@
     ]);
     ?>
 
-    <?php if (!$model->isNewRecord) { ?>
-      <div class="control-group col-md-12">
-        <?php if ($model->fileAttributes) { ?>
-          <table class="table table-attr">
-            <caption>Attributes</caption>
-            <thead>
-              <tr>
-                <th style="width: 25%">Attribute Name</th>
-                <th style="width: 40%">Value</th>
-                <th style="width: 15%">Unit</th>
-                <th style="width: 20%">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <?php foreach ($model->fileAttributes as $fa) { ?>
-                <tr class="row-edit-<?= $fa->id ?>">
-                  <td class="text-nowrap">
-                    <?= $fa->attribute->attribute_name ?>
-                  </td>
-                  <td>
-                    <?= $fa->value ?>
-                  </td>
-                  <td class="text-nowrap">
-                    <?= $fa->unit ? $fa->unit->name : '' ?>
-                  </td>
-                  <td>
-                    <div class="action-btns">
-                      <button class="btn btn-link btn-edit js-edit" data-test="edit-attr-btn"
-                        data="<?= $fa->id ?>">Edit</button>
-                      <button class="btn btn-link js-delete" name="delete_file_attr" data-test="delete-attr-btn"
-                        data="<?= $fa->id ?>">Delete</button>
+        <?php if (!$model->isNewRecord) { ?>
+            <div class="control-group col-md-12">
+            <?php if ($model->fileAttributes) { ?>
+                    <table class="table table-attr">
+                        <caption>Attributes</caption>
+                        <thead>
+                            <tr>
+                              <th style="width: 25%" class="text-nowrap">Attribute Name</th>
+                              <th style="width: 40%">Value</th>
+                              <th style="width: 15%">Unit</th>
+                              <th style="width: 20%">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($model->fileAttributes as $fa) { ?>
+                                <tr class="row-edit-<?= $fa->id ?>">
+                                    <td>
+                                        <?= $fa->attribute->attribute_name ?>
+                                    </td>
+                                    <td>
+                                        <?php $this->renderPartial('//shared/_longTextToggler', array(
+                                            'id' => 'attr_value_' . $fa->id,
+                                            'description' => $fa->value,
+                                            'maxLength' => 50
+                                        )); ?>
+                                    </td>
+                                    <td class="text-nowrap">
+                                        <?= $fa->unit ? $fa->unit->name : '' ?>
+                                    </td>
+                                    <td>
+                                        <div class="action-btns">
+                                            <button class="btn btn-link btn-edit js-edit" data-test="edit-attr-btn" data="<?= $fa->id ?>">Edit</button>
+                                            <button class="btn btn-link js-delete" name="delete_file_attr" data-test="delete-attr-btn" data="<?= $fa->id ?>">Delete</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php } ?>
+                        </tbody>
+                    </table>
+                <?php } ?>
+                <br />
+                <button type="button" class="btn background-btn-o js-btn-attr" aria-expanded="false" aria-controls="newAttrForm" data-test="new-attr-btn" data-toggle="tooltip" title="Show and/or Add file attributes"><span class="js-btn-attr-label">Show New Attribute Fields</span> <i class="fa fa-caret-down js-caret-type" aria-hidden="true"></i></button>
+                <br />
+                <fieldset id="newAttrForm" class="js-new-attr mt-10 mb-20" aria-label="New attribute fields" style="display:none;">
+                    <div class="row mb-5">
+                        <div class="col-xs-12">
+                            <?php
+                            $this->widget('application.components.controls.DropdownField', [
+                                'form' => $form,
+                                'model' => $attribute,
+                                'attributeName' => '[new]attribute_id',
+                                'listDataOptions' => [
+                                    'data' => Attributes::model()->findAll(),
+                                    'valueField' => 'id',
+                                    'textField' => 'attribute_name',
+                                ],
+                                'inputOptions' => array(
+                                    'empty' => 'Select name',
+                                    'class' => 'attr-form js-new-attr-name',
+                                ),
+                                'tooltip' => 'Choose the appropriate attribute name from the dropdown menu'
+                            ]);
+                            ?>
+                        </div>
                     </div>
-                  </td>
-                </tr>
-              <?php } ?>
-            </tbody>
-          </table>
-        <?php } ?>
-        <br />
-        <button type="button" class="btn background-btn-o js-btn-attr" aria-expanded="false" aria-controls="newAttrForm"
-          data-test="new-attr-btn" data-toggle="tooltip" title="Show and/or Add file attributes"><span
-            class="js-btn-attr-label">Show New Attribute Fields</span> <i class="fa fa-caret-down js-caret-type"
-            aria-hidden="true"></i></button>
-        <br />
-        <fieldset id="newAttrForm" class="js-new-attr mt-10 mb-20 row" aria-label="New attribute fields"
-          style="display:none;">
-          <div class="col-md-4">
-            <?php
-            $this->widget('application.components.controls.DropdownField', [
-              'form' => $form,
-              'model' => $attribute,
-              'attributeName' => '[new]attribute_id',
-              'listDataOptions' => [
-                'data' => Attributes::model()->findAll(),
-                'valueField' => 'id',
-                'textField' => 'attribute_name',
-              ],
-              'groupOptions' => [
-                'class' => 'mb-10'
-              ],
-              'inputOptions' => array(
-                'empty' => 'Select name',
-                'class' => 'attr-form js-new-attr-name',
-              ),
-              'tooltip' => 'Choose the appropriate attribute name from the dropdown menu'
-            ]);
-            ?>
-          </div>
-          <div class="col-md-4">
-            <?php
-            $this->widget('application.components.controls.TextField', [
-              'form' => $form,
-              'model' => $attribute,
-              'attributeName' => '[new]value',
-              'groupOptions' => [
-                'class' => 'mb-10'
-              ],
-              'inputOptions' => [
-                'class' => 'attr-form',
-                'maxlength' => 1000
-              ],
-              'tooltip' => 'The value of the chosen attribute for this file'
-            ]);
-            ?>
-          </div>
-          <div class="col-md-4">
-            <?php
-            $this->widget('application.components.controls.DropdownField', [
-              'form' => $form,
-              'model' => $attribute,
-              'attributeName' => '[new]unit_id',
-              'groupOptions' => [
-                'class' => 'mb-10'
-              ],
-              'listDataOptions' => [
-                'data' => Unit::model()->findAll(),
-                'valueField' => 'id',
-                'textField' => 'name',
-              ],
-              'inputOptions' => array(
-                'empty' => 'Select unit',
-                'class' => 'attr-form'
-              ),
-              'tooltip' => 'If units should be specified, select the appropriate value from the dropdown menu, otherwise leave blank'
-            ]);
-            ?>
-          </div>
-          <div class="col-xs-12">
-            <div class="pull-right btns-row">
-              <input type="submit" class="btn background-btn" name="submit_attr" value="Add attribute" />
+                    <div class="row mb-5">
+                        <div class="col-xs-12">
+                            <?php
+                            $this->widget('application.components.controls.TextArea', [
+                                'form' => $form,
+                                'model' => $attribute,
+                                'attributeName' => '[new]value',
+                                'inputOptions' => [
+                                    'class' => 'attr-form',
+                                    'rows' => 2,
+                                    'max' => 1000
+                                ],
+                                'tooltip' => 'The value of the chosen attribute for this file'
+                            ]);
+                            ?>
+                        </div>
+                    </div>
+                    <div class="row mb-5">
+                        <div class="col-xs-12">
+                            <?php
+                            $this->widget('application.components.controls.DropdownField', [
+                                'form' => $form,
+                                'model' => $attribute,
+                                'attributeName' => '[new]unit_id',
+                                'listDataOptions' => [
+                                    'data' => Unit::model()->findAll(),
+                                    'valueField' => 'id',
+                                    'textField' => 'name',
+                                ],
+                                'inputOptions' => array(
+                                    'empty' => 'Select unit',
+                                    'class' => 'attr-form'
+                                ),
+                                'tooltip' => 'If units should be specified, select the appropriate value from the dropdown menu, otherwise leave blank'
+                            ]);
+                            ?>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="pull-right btns-row">
+                                <input type="submit" class="btn background-btn" name="submit_attr" value="Add attribute" />
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
             </div>
+        <?php } ?>
+        <div class="col-md-12">
+          <div class="pull-right btns-row">
+            <a href="/adminFile/admin" class="btn background-btn-o btn-min-width">Cancel</a>
+            <?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => 'btn background-btn btn-min-width')); ?>
           </div>
-          <br />
-        </fieldset>
-      </div>
-    <?php } ?>
-    <div class="col-md-12">
-      <div class="pull-right btns-row">
-        <a href="/adminFile/admin" class="btn background-btn-o btn-min-width">Cancel</a>
-        <?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => 'btn background-btn btn-min-width')); ?>
-      </div>
-    </div>
+        </div>
 
     <?php $this->endWidget(); ?>
   </div>
