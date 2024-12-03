@@ -152,6 +152,15 @@
                     <button class="btn toggle-more" aria-expanded="false">Show More</button>
                 </article>
 
+                <article class="team-card">
+                    <img src="../images/team/qing.jpg" alt="Qing's portrait">
+                    <div class="team-content">
+                        <h2 class="h3">Qing<br />
+                            <small class="member-role">Assistant Editor</small>
+                        </h2>
+                        <p>Qing is Assistant Editor for GigaScience and GigaByte. She holds a PhD in Genetics, Development, and Disease from University of Texas Southwestern Medical Center at Dallas. Prior to her editorial role, she worked as a bioinformatician at Beijing Genomics Institute in Shenzhen.</p>
+                    </div>
+                </article>
             </div>
 
             <div class="row">
