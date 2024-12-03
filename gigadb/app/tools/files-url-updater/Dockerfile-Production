@@ -1,4 +1,4 @@
-FROM php:7.4-cli-buster
+FROM php:7.4-cli-bullseye
 
 
 # basic dependencies
@@ -48,7 +48,7 @@ RUN apt-get update -yqq && \
     apt-get clean
 
 # Install legacy postgresql library
-RUN echo "deb http://apt.postgresql.org/pub/repos/apt buster-pgdg main" > /etc/apt/sources.list.d/pgdg.list && \
+RUN echo "deb http://apt.postgresql.org/pub/repos/apt bullseye-pgdg main" > /etc/apt/sources.list.d/pgdg.list && \
     curl -sL https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - && \
     apt-get update && \
     apt-get -y install postgresql-9.3 && \

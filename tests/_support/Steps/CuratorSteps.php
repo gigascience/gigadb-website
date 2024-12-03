@@ -236,4 +236,20 @@ class CuratorSteps extends \Codeception\Actor
 
     }
 
+    /**
+     * @When I select :arg1 in menu :arg2
+     */
+    public function iSelectInMenu($arg1, $arg2)
+    {
+        $this->I->selectOption("//*[@id='$arg2']", $arg1);
+    }
+
+    /**
+     * @When I fill in the text input :arg1 with :arg2
+     */
+    public function iFillInTheTextInputWith($arg1, $arg2)
+    {
+        $this->I->fillField(['name' => $arg1], $arg2);
+    }
+
 }

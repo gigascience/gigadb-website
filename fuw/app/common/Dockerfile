@@ -1,4 +1,4 @@
-ARG PHP_BASE_IMAGE_VERSION=7.1-fpm-stretch
+ARG PHP_BASE_IMAGE_VERSION=7.1-fpm-bullseye
 FROM php:${PHP_BASE_IMAGE_VERSION}
 
 
@@ -85,7 +85,7 @@ RUN if [ ${INSTALL_PG_CLIENT} = true ]; then \
     mkdir -p /usr/share/man/man1 && \
     mkdir -p /usr/share/man/man7 && \
     # Add the PostgreSQL Apt Repository
-    echo "deb http://apt.postgresql.org/pub/repos/apt buster-pgdg main" > /etc/apt/sources.list.d/pgdg.list && \
+    echo "deb http://apt.postgresql.org/pub/repos/apt bullseye-pgdg main" > /etc/apt/sources.list.d/pgdg.list && \
     wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - && \
     # Install the pgsql client
     apt-get update -yq && \

@@ -423,8 +423,7 @@ Feature: form to update dataset details
     When I follow "Mint DOI"
     Then I should see "minting under way, please wait"
     And I wait "5" seconds
-    And I should see "Error with metadata status: 200 and DOI status: 404 Details can be found at here"
-    And I should see a link "here" to "https://support.datacite.org/reference/mds#api-response-codes"
+    And I should see "This DOI exists in datacite, but failed to update metadata because of: DOI 10.80027/100039: Missing child element(s)."
 
   @ok @mint-doi
   Scenario: Update metadata with invalid metadata format with existing doi
@@ -440,7 +439,7 @@ Feature: form to update dataset details
     When I follow "Mint DOI"
     Then I should see "minting under way, please wait"
     And I wait "10" seconds
-    And I should see "This DOI cannot be created because of the metadata status: 422, and the doi status: 422 Details can be found at here"
+    And I should see "This DOI cannot be created because of the metadata status: 422. Details can be found at here"
     And I should see a link "here" to "https://support.datacite.org/reference/mds#api-response-codes"
 
   @ok @dataset-status

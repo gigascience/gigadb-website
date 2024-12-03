@@ -2,53 +2,49 @@
 
 namespace tests\functional;
 
-use app\components\DatasetFilesUpdater;
-use GigaDB\services\URLsService;
-use GuzzleHttp\Client;
+use Exception;
 
 class UpdateFileSizeCest
 {
-    private const TEST_URLS = [
-        "https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/dev/pub/10.5524/100001_101000/100142/readme_100142.txt",
-        "https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/dev/pub/10.5524/100001_101000/100142",
-        "https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/dev/pub/10.5524/100001_101000/100142/",
-    ];
-
-    public function tryFetchFileSizeFromFilesUrl(\FunctionalTester $I): void
+    public function _before(\FunctionalTester $I)
     {
-        $expectedLengthList = [
-            1996,
-            0,
-            0,
-        ];
+        // Remove file size values in database
+        $I->updateInDatabase('file', array('size' => 0), array('id' => 453));
+        $I->updateInDatabase('file', array('size' => 0), array('id' => 454));
+        $I->updateInDatabase('file', array('size' => 0), array('id' => 457));
 
-        $u = new URLsService(["urls" => self::TEST_URLS]);
-        $I->assertTrue(is_a($u, "GigaDB\\services\\URLsService"));
-
-        $zeroOutRedirectsAndDirectories = function ($response, $url) {
-            if (403 === $response->getStatusCode() || str_ends_with($url, "/")) {
-                return 0;
-            }
-            return null;
-        };
-        $webClient = new Client([ 'allow_redirects' => false ]);
-        $contentLengthList = $u->fetchResponseHeader("Content-Length", $webClient, $zeroOutRedirectsAndDirectories);
-
-        foreach ($expectedLengthList as $index => $expectedLength) {
-            $I->assertEquals(
-                $expectedLength,
-                array_values($contentLengthList)[$index] ?? 0, // Use 0 if the index is not set in contentLengthList
-                array_keys($contentLengthList)[$index] ?? "Directory has no content length"
-            );
-        }
     }
 
-    public function tryUpdateFileSizeWhenContentLengthInBytes(\FunctionalTester $I): void
+    public function tryUpdateFileSizes(\FunctionalTester $I): void
     {
-        $webClient = new Client([ 'allow_redirects' => false ]);
-        $us = new URLsService();
-        $dfu = new DatasetFilesUpdater(["doi" => "100142", "us" => $us, "webClient" => $webClient]);
-        $success = $dfu->updateFileSize();
-        $I->assertEquals(1, $success, "Not all files were updated successfully");
+        try {
+            $out = shell_exec("./yii_test update/file-sizes --doi=100039");
+            codecept_debug($out);
+            $I->assertEquals('Number of changes: 3' . PHP_EOL, $out);
+        }
+        catch (Exception $e) {
+            codecept_debug($e->getMessage());
+        }
+
+        // Assert expected file sizes in file table
+        $I->seeInDatabase('file', ['id' => 453, 'size' => 4245]);
+        $I->seeInDatabase('file', ['id' => 454, 'size' => 593]);
+        $I->seeInDatabase('file', ['id' => 457, 'size' => 581]);
+    }
+
+    /**
+     * Check dummy DOI is not associated with any dataset
+     */
+    public function tryToUpdateFileSizesWithFakeDOI(\FunctionalTester $I)
+    {
+        try {
+            $out = shell_exec("./yii_test update/file-sizes --doi=888888");
+            codecept_debug($out);
+            # A non-existing DOI will return an error message and null output
+            $I->assertEquals(null, $out, "Did not receive null output");
+        }
+        catch (Exception $e) {
+            codecept_debug($e->getMessage());
+        }
     }
 }

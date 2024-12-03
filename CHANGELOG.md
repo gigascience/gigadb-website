@@ -2,12 +2,51 @@
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-
 ## Unreleased
 
 - Feat #2008: Remove Dimensions citation link
+- Feat #2066: Update file attribute values form layout and add expand button for long values
+- Feat #2102: Delete outdated apidocs files
+- Feat #1667: Add log entry when minting DOI
+- Fix #2094: Make Semgrep-based SAST analyzer available in tagged release
+- Feat #701: Code refactoring to separate upload status transitions and notifications to prepare for upload status overhaul
+- Security #1867: Update the gitlab static application security testing (SAST) job using the Semgrep-based analyzer
 
-## v4.3.5 - 2024-08-23 - 4eaa1cda5 -
+## v4.4.0 - 2024-11-13 - ea1a37cc9 -
+
+- Fix #2066: Max length for attribute value set to 1000 in file admin form
+- Feat #1968: Add curators manual for operating tools on bastion server and improve tools usage
+- Feat #1750: Switch to guzzle instead of cURL (preliminry work to prepare for DataCite schema upgrade)
+- Fix #2042: Batch deletion of file attributes and samples to make deleting files from the admin dashboard faster
+
+## v4.3.9 - 2024-10-28 - 961f7821a - 2024-11-06
+
+- Fix #1838: switch datepicker format to yyy-mm-dd
+- Feat #1768: Alphabetically sorted dataset author dropdown options in adminDatasetAuthor form
+- Fix #1843: Add top margin to table footer in dataset page
+- Feat #2034: Maximize input text color contrast
+- Feat #1993: Update contact address
+
+## v4.3.8 - 2024-10-10 - 8f6f0d074 - live since 2024-10-22
+
+- Feat #1903: Allow user to upload dataset files to wasabi bucket and also s3 glacier bucket for backup
+- Feat #1771: Automatically mount EFS access point to bastion and webapp servers
+- Fix #1861: Remove user suffix from wasabi profile and improve curators docs
+- Feat #1893: Move new attribute inputs to the end of the adminFile form
+- Fix #2048: Upgrade database Dockerfiles from buster to bullseye to fix failed pipeline jobs
+- Feat security#2: Upgrade Bootstrap from v3.3.7 to v3.4.1
+
+## v4.3.7 - 2024-09-24 - 7709c8545 - live since 2024-09-26
+
+- Fix #2015: Error when deleting file on admin dasboard
+- Fix #2029: Add new file attribute even if edit attribute fields are visible
+
+## v4.3.6 - 2024-09-13 - 2d935c496 -
+
+- Feat #1858: Relabel button that saves attribute in adminFile to avoid ambiguity
+- Feat #1849: Able to toggle expand dataset sample attributes field
+
+## v4.3.5 - 2024-08-23 - 4eaa1cda5 - live since 2024-08-29
 
 - Feat #1853: Add tooltips to adminDataset, adminFile and datasetFunder forms
 - Fix #1959: Relation cannot be blank error in Dataset:Relation admin form
@@ -24,7 +63,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## v4.3.3 - 2024-08-05 - 7204ee854 - live since 2024-08-07
 
 - Fix #1848: Save modifications to image metafields
-- Feat 1872: Extract stages of postUpload script into separate scripts
+- Feat #1872: Extract stages of postUpload script into separate scripts
 
 ## v4.3.2 - 2024-07-22 - 6531115b7 - live since 2024-07-25
 

@@ -57,6 +57,11 @@ services:
     build:
       cache_from:
         - "registry.gitlab.com/$CI_PROJECT_PATH/tusd:latest"
+  js:
+    build:
+      cache_from:
+        - "registry.gitlab.com/$CI_PROJECT_PATH/js:latest"
+
 
   console:
     environment:

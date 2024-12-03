@@ -442,8 +442,8 @@ class Dataset extends CActiveRecord
     }
 
     /**
-     * toXML(): fucntion tha treturn Datacite XML for this dataset
-     * @return Datacite XML 4.0 for this dataset
+     * toXML(): function tha return Datacite XML for this dataset
+     * @return bool|string XML 4.0 for this dataset
      */
     public function toXML() {
         $xmlstr = "<?xml version='1.0' ?>\n".
@@ -593,7 +593,6 @@ class Dataset extends CActiveRecord
         $description = $descriptions->addChild('description',str_replace(array('&','>','<','"'), array('&amp;','&gt;','&lt;','&quot;'), $this->description));
         $description->addAttribute('xml:lang','en-US','http://www.w3.org/XML/1998/namespace');
         $description->addAttribute('descriptionType','Abstract');
-
 
         return $xml->asXML();
     }

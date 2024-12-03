@@ -18,7 +18,7 @@ input, select, textarea {
 input:not([type="submit"]):not([type="button"]), select, textarea, .form-control {
   box-shadow: none;
   border-color: @color-medium-gray;
-  color: @color-darker-gray;
+  color: @color-true-black;
   font-size: 13px;
   margin: 0;
   &:focus {
@@ -109,6 +109,10 @@ input[type="checkbox"] {
         }
       }
     }
+  }
+  &.mb-10 {
+    // one-off override in protected/views/adminFile/_form.php
+    margin-bottom: 10px;
   }
   // Used in /adminDataset/create
   .errorMessage {

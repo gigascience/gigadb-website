@@ -19,11 +19,6 @@ class DatasetFiles extends \Yii\base\BaseObject {
     public const NEW_HOST = "https://ftp.cngb.org";
 
     /**
-     * @const the url where to download test data
-     */
-    public const TESTDATA_HOST = "https://gigascience-testdata.rija.dev";
-
-    /**
      * @const to indicate that we want to run the command in dry run mode
      */
     public const DRYRUN_ON = true;

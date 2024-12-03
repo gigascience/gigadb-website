@@ -14,7 +14,7 @@ class FilesUploadAction extends CAction
     public function run($id)
     {
         // Instantiate FileUploadService and DatasetUpload
-        $webClient = new \GuzzleHttp\Client();
+        $webClient = \Yii::$container->get('guzzleHttpClient');
         $fileUploadSrv = new FileUploadService([
             "tokenSrv" => new TokenService([
                                   'jwtTTL' => 3600,
