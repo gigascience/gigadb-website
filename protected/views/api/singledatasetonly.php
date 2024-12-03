@@ -57,7 +57,6 @@ foreach($dataset_types as $dataset_type) {
 }
 $xml.="</data_types>";
 //image
-$image=$model->image;
 $xml.="<image>";
 $xml.="<image_filename>$image->location</image_filename>";
 $xml.="<tag>$image->tag</tag>";

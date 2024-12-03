@@ -57,7 +57,6 @@ foreach($dataset_types as $dataset_type) {
 }
 $xml.="  </data_types>\n";
 //image
-$image=$model->image;
 $xml.="  <image>\n";
 $xml.="   <image_filename>$image->location</image_filename>\n";
 $xml.="   <tag>$image->tag</tag>\n";
@@ -77,18 +76,17 @@ $xml.="  </publication>\n";
 $xml.="  <links>\n";
 $xml.="   <external_links>\n";
 $external_links=$model->externalLinks;
-if(isset($external_links)){
+
 foreach($external_links as $external_link)
 {
     $external_link_type=  ExternalLinkType::model()->findByAttributes(array('id'=>$external_link->external_link_type_id));
     $xml.="    <external_link type=\"$external_link_type->name\">$external_link->url</external_link>\n";
     
 }
-}
+
 $xml.="   </external_links>\n";
 $xml.="   <project_links>\n";
 $project_links=$model->projects;
-if(isset($project_links)){
 foreach($project_links as $project){
     $dataset_project=  DatasetProject::model()->findByAttributes(array('project_id'=>$project->id));
     $xml.="    <project_link>\n";
@@ -96,21 +94,19 @@ foreach($project_links as $project){
     $xml.="     <project_url>$project->url</project_url>\n";
     $xml.="    </project_link>\n";    
 }
-}
+
 $xml.="   </project_links>\n";
 $xml.="   <internal_links>\n";
 $internal_links=$model->relations;
-if(isset($internal_links)){
 foreach($internal_links as $relation)
 {
     $relationship=  Relationship::model()->findByAttributes(array('id'=>$relation->relationship_id));
     $xml.="    <related_DOI relationship=\"$relationship->name\">$relation->related_doi</related_DOI>\n";
 }
-}
+
 $xml.="   </internal_links>\n";
 $xml.="   <manuscript_links>\n";
 $manuscripts=$model->manuscripts;
-if(isset($manuscripts)){
 foreach($manuscripts as $manuscript){
     
     $xml.="    <manuscript_link>\n";
@@ -119,11 +115,10 @@ foreach($manuscripts as $manuscript){
     $xml.="    </manuscript_link>\n";
     
 }
-}
+
 $xml.="   </manuscript_links>\n";
 $xml.="   <alternative_identifiers>\n";
 $alternative_identifiers=$model->links;
-if(isset($alternative_identifiers)){
 foreach($alternative_identifiers as $link){
     $linkname=explode(":", $link->link);
     $name=$linkname[0];
@@ -137,11 +132,10 @@ foreach($alternative_identifiers as $link){
     $xml.="    <alternative_identifier is_primary=\"$link->is_primary\" prefix=\"$linkname[0]\">$linkname[1]</alternative_identifier>\n";    
     }
 }
-}
+
 $xml.="   </alternative_identifiers>\n";
 $xml.="   <funding_links>\n";
 $dataset_funders=$model->datasetFunders;
-if(isset($dataset_funders)){
 foreach($dataset_funders as $dataset_funder){
     $xml.="    <grant>\n";
     $funder=Funder::model()->findByAttributes(array('id'=>$dataset_funder->funder_id));
@@ -151,13 +145,12 @@ foreach($dataset_funders as $dataset_funder){
     $xml.="    <comment>$dataset_funder->comments</comment>\n";
     $xml.="    </grant>\n";
 }
-}
+
 $xml.="   </funding_links>\n";
 $xml.="  </links>\n";
 //dataset attribute
 $xml.="  <ds_attributes>\n";
 $dataset_attributes=$model->datasetAttributes;
-if(isset($dataset_attributes)){
 foreach($dataset_attributes as $dataset_attribute)
 {
     if(isset($dataset_attribute->value) && $dataset_attribute->value!=""){
@@ -179,7 +172,7 @@ foreach($dataset_attributes as $dataset_attribute)
     }
     
 }
-}
+
 $xml.="  </ds_attributes>\n";
 $xml.=" </dataset>\n";
 //samples
@@ -291,4 +284,5 @@ $xml.=" </files>\n";
 $xml.="</gigadb_entry>";
 $xml=preg_replace('/&(?!#?[a-z0-9]+;)/', '&amp;', $xml);
 $output= simplexml_load_string($xml);
+
 echo $output->asXML();
