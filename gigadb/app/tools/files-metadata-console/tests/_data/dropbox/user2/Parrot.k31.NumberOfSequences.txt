@@ -1,0 +1,31 @@
+Files: 4
+
+FileNumber: 0
+	FilePath: Pa9a-MP_1.fastq.gz
+ 	NumberOfSequences: 76663415
+	FirstSequence: 0
+	LastSequence: 76663414
+
+FileNumber: 1
+	FilePath: Pa9a-MP_2.fastq.gz
+ 	NumberOfSequences: 76663415
+	FirstSequence: 76663415
+	LastSequence: 153326829
+
+FileNumber: 2
+	FilePath: Pa9a_1.fastq.gz
+ 	NumberOfSequences: 133631138
+	FirstSequence: 153326830
+	LastSequence: 286957967
+
+FileNumber: 3
+	FilePath: Pa9a_2.fastq.gz
+ 	NumberOfSequences: 133631138
+	FirstSequence: 286957968
+	LastSequence: 420589105
+
+
+Summary
+	NumberOfSequences: 420589106
+	FirstSequence: 0
+	LastSequence: 420589105

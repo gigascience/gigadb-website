@@ -8,6 +8,13 @@ $params = array_merge(
 return [
     'id' => 'GigaDB Web Site',
     'basePath' => '/var/www',
+    'container' => [
+            'definitions' => [
+                'guzzleHttpClient' => [
+                    'class' => 'GuzzleHttp\Client',
+                ],
+            ]
+    ],
     'components' => [
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',

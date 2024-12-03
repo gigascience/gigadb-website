@@ -58,7 +58,7 @@ $sampleDataProvider = $samples->getDataProvider();
                                         try {
                                             $textFile = DownloadService::downloadFile($url);
                                             $showButton = true;
-                                        } catch (\GuzzleHttp\Exception\BadResponseException $e) {
+                                        } catch (\Exception $e) {
                                             $showButton = false;
                                             yii::log($e->getMessage(), "error");
                                         }
@@ -800,7 +800,7 @@ $sampleDataProvider = $samples->getDataProvider();
         });
     </script>
     <script src="https://hypothes.is/embed.js" async></script>
-    <script           >
+    <script>
         document.addEventListener("DOMContentLoaded", function(event) { //This event is fired after deferred scripts are loaded
             $(".js-desc").click(function(e) {
                 e.preventDefault();
