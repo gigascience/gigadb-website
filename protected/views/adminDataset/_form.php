@@ -851,35 +851,34 @@ function handleDoiStatus(output) {
     return
   }
   const {
-    check_metadata_status,
     check_doi_status,
     update_md_response,
     create_doi_status,
-    create_md_status
+    create_md_status,
+    error
   } = output
 
-  if (check_metadata_status === 200 && check_doi_status === 200 && update_md_status === 201) {
-    $("#minting").addClass("alert alert-info").html("This DOI exists in DataCite already, so it has now been updated with the current values from GigaDB.");
-    return
+  if (check_doi_status === 200 && update_md_status === 201) {
+      $("#minting").addClass("alert alert-info").html("This DOI exists in datacite already, no need to mint, but the metadata is updated!");
+  } else if (check_doi_status === 204 && create_md_status === 201) {
+      $("#minting").addClass("alert alert-info").html("This DOI exists but is not registered, no need to mint, but the metadata has been created!");
+  } else if (check_doi_status === 200 && update_md_status !== 201) {
+      $("#minting").addClass("alert alert-info").html("This DOI exists in datacite, but failed to update metadata because of: " + update_md_response);
+  } else if (check_doi_status === 204 && create_md_status !== 201) {
+      $("#minting").addClass("alert alert-info").html("This DOI exists in datacite, but failed to create metadata because of: " + create_md_response);
+  } else if (check_doi_status === 404 && create_md_status !== 201) {
+      $("#minting").addClass("alert alert-danger").html("This DOI cannot be created because of the metadata status: " + create_md_status + ". Details can be found at <a href=\'https://support.datacite.org/reference/mds#api-response-codes\' target=\'_blank\'>here</a>");
+  } else if (create_md_status === 201 && create_doi_status !== 201) {
+      $("#minting").addClass("alert alert-success").html("New DOI couldn\'t be minted");
+  } else if (create_md_status === 201 && create_doi_status === 201) {
+      $("#minting").addClass("alert alert-success").html("New DOI successfully minted");
+  } else {
+    $("#minting").addClass("alert alert-danger").html("An error occurred");
   }
-  if (check_metadata_status === 200 && check_doi_status === 200 && update_md_status === 422) {
-    $("#minting").addClass("alert alert-info").html("This DOI exists in DataCite, but failed to update metadata because of: " + update_md_response);
-    return
+
+  if (error) {
+        $("#minting").addClass("alert alert-danger").html(error)
   }
-  if (create_md_status === 201 && create_doi_status === 201) {
-    $("#minting").addClass("alert alert-success").html("New DOI successfully minted");
-    return
-  }
-  if (check_metadata_status === 404 && check_doi_status === 404 && create_md_status === 422 && create_doi_status === 422) {
-    $("#minting").addClass("alert alert-danger").html("This DOI cannot be created because of the metadata status: " + create_md_status + ", and the DOI status: " + create_doi_status + " Details can be found at <a href='https://support.datacite.org/reference/mds#api-response-codes' target='_blank'>here</a>");
-    return
-  }
-  if ((check_metadata_status === 200 && check_doi_status === 404) || (check_metadata_status === 404 && check_doi_status === 200)) {
-    $("#minting").addClass("alert alert-danger").html("Error with metadata status: " + check_metadata_status + " and DOI status: " + check_doi_status + " Details can be found at <a href='https://support.datacite.org/reference/mds#api-response-codes' target='_blank'>here</a>");
-    return
-  }
-  // unhandled cases
-  $("#minting").addClass("alert alert-danger").html("Unexpected error");
 }
 
 function handleMintingSuccess(output) {
