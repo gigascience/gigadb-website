@@ -859,7 +859,7 @@ function handleDoiStatus(output) {
   } = output
 
   if (check_doi_status === 200 && update_md_status === 201) {
-      $("#minting").addClass("alert alert-info").html("This DOI exists in datacite already, no need to mint, but the metadata is updated!");
+      $("#minting").addClass("alert alert-info").html("This DOI exists in DataCite already, so it has now been updated with the current values from GigaDB.");
   } else if (check_doi_status === 204 && create_md_status === 201) {
       $("#minting").addClass("alert alert-info").html("This DOI exists but is not registered, no need to mint, but the metadata has been created!");
   } else if (check_doi_status === 200 && update_md_status !== 201) {
@@ -877,7 +877,7 @@ function handleDoiStatus(output) {
   }
 
   if (error) {
-        $("#minting").addClass("alert alert-danger").html(error)
+    $("#minting").addClass("alert alert-danger").html(error)
   }
 }
 
