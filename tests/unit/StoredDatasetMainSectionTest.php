@@ -238,7 +238,6 @@ class StoredDatasetMainSectionTest extends CDbTestCase
                 array(
                     'scholar_query' => 'http://scholar.google.com/scholar?q=10.80027/100243',
                     'ePMC_query' => "http://europepmc.org/search?scope=fulltext&query=(REF:'10.80027/100243')",
-                    'dimension_query' => "https://app.dimensions.ai/discover/publication?search_text=10.80027/100243",
                 ),
             ],
             "scholar_argument" => [
@@ -251,12 +250,6 @@ class StoredDatasetMainSectionTest extends CDbTestCase
                 "ePMC_query",
                 array(
                     'ePMC_query' => "http://europepmc.org/search?scope=fulltext&query=(REF:'10.80027/100243')",
-                ),
-            ],
-            "dimension_argument" => [
-                "dimension_query",
-                array(
-                    'dimension_query' => "https://app.dimensions.ai/discover/publication?search_text=10.80027/100243",
                 ),
             ],
         ];

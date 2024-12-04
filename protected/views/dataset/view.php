@@ -101,7 +101,7 @@ $sampleDataProvider = $samples->getDataProvider();
                         ?>
                     </ul>
                 <?php } ?>
-                <div class="pull-right lorem">
+                <div class="pull-right">
                     <p>
                         <?php
                         foreach (array_values($mainSection->getCitationsLinks()) as $citation) {
