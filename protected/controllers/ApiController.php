@@ -83,18 +83,22 @@ class ApiController extends Controller
         $image = $model->image;
         ob_get_clean();
 
+
+        /** @var \GigaDB\services\DatasetToXmlService $datasetXml */
+        $datasetXml = \Yii::$app->datasetToXml;
+
          switch ($result) {
                 case "dataset":
-                    $this->renderPartial('singledatasetonly',array('model'=> $model, 'image' => $image));
+                    $this->renderPartial('datasetAsXml', array('xml'=> $datasetXml->convertToXml($model, $image, false, true)));
                     break;
                 case "sample":
-                    $this->renderPartial('singlesample',array('model'=> $model));
+                    $this->renderPartial('datasetAsXml', array('xml'=> $datasetXml->convertToXml($model, null, false, false, true, false)));
                     break;
                 case "file":
-                    $this->renderPartial('singlefile',array('model'=> $model));
+                    $this->renderPartial('datasetAsXml', array('xml'=> $datasetXml->convertToXml($model, null, false, false, false, true)));
                     break;
                 case "all":
-                    $this->renderPartial('singledataset',array('model'=> $model, 'image' => $image));
+                    $this->renderPartial('datasetAsXml', array('xml'=> $datasetXml->convertToXml($model, $image, true)));
                     break;
                 default:
                     $this->_sendResponse(500, 'A problem occurred');
