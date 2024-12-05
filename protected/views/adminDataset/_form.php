@@ -852,20 +852,21 @@ function handleDoiStatus(output) {
   }
   const {
     check_doi_status,
-    update_md_response,
     create_doi_status,
     create_md_status,
+    update_md_status,
+    update_md_response,
     error
   } = output
 
   if (check_doi_status === 200 && update_md_status === 201) {
-      $("#minting").addClass("alert alert-info").html("This DOI exists in DataCite already, so it has now been updated with the current values from GigaDB.");
+      $("#minting").addClass("alert alert-gigadb-info").html("This DOI exists in DataCite already, so it has now been updated with the current values from GigaDB.");
   } else if (check_doi_status === 204 && create_md_status === 201) {
-      $("#minting").addClass("alert alert-info").html("This DOI exists but is not registered, no need to mint, but the metadata has been created!");
+      $("#minting").addClass("alert alert-gigadb-info").html("This DOI exists but is not registered, no need to mint, but the metadata has been created!");
   } else if (check_doi_status === 200 && update_md_status !== 201) {
-      $("#minting").addClass("alert alert-info").html("This DOI exists in datacite, but failed to update metadata because of: " + update_md_response);
+      $("#minting").addClass("alert alert-gigadb-info").html("This DOI exists in datacite, but failed to update metadata because of: " + update_md_response);
   } else if (check_doi_status === 204 && create_md_status !== 201) {
-      $("#minting").addClass("alert alert-info").html("This DOI exists in datacite, but failed to create metadata because of: " + create_md_response);
+      $("#minting").addClass("alert alert-gigadb-info").html("This DOI exists in datacite, but failed to create metadata because of: " + create_md_response);
   } else if (check_doi_status === 404 && create_md_status !== 201) {
       $("#minting").addClass("alert alert-danger").html("This DOI cannot be created because of the metadata status: " + create_md_status + ". Details can be found at <a href=\'https://support.datacite.org/reference/mds#api-response-codes\' target=\'_blank\'>here</a>");
   } else if (create_md_status === 201 && create_doi_status !== 201) {
