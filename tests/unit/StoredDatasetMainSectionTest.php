@@ -229,29 +229,4 @@ class StoredDatasetMainSectionTest extends CDbTestCase
         $daoUnderTest = new StoredDatasetMainSection($dataset_id, $this->getFixtureManager()->getDbConnection());
         $this->assertEquals($expected, $daoUnderTest->getFunding());
     }
-
-    public function citationsQueriesExamples()
-    {
-        return [
-            "no_argument" => [
-                null,
-                array(
-                    'scholar_query' => 'http://scholar.google.com/scholar?q=10.80027/100243',
-                    'ePMC_query' => "http://europepmc.org/search?scope=fulltext&query=(REF:'10.80027/100243')",
-                ),
-            ],
-            "scholar_argument" => [
-                "scholar_query",
-                array(
-                    'scholar_query' => 'http://scholar.google.com/scholar?q=10.80027/100243',
-                ),
-            ],
-            "ePMC_argument" => [
-                "ePMC_query",
-                array(
-                    'ePMC_query' => "http://europepmc.org/search?scope=fulltext&query=(REF:'10.80027/100243')",
-                ),
-            ],
-        ];
-    }
 }
