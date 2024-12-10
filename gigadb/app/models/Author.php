@@ -74,10 +74,10 @@ class Author extends \yii\db\ActiveRecord
      * @return array
      * @throws \CException
      */
-    public function getAuthorsByDatasetId(int $datasetId, Connection $db = null): array
+    public function getAuthorsByDatasetId(int $datasetId): array
     {
 
-        $db = $db ?: Yii::$app->db;
+        $db = Yii::$app->db;
 
         $sql = "select a.id, a.surname, a.first_name, a.middle_name, a.custom_name from author a, dataset_author da, dataset d where a.id=da.author_id and d.id = da.dataset_id and d.id=:id order by rank ASC, a.surname ASC, a.first_name ASC, a.middle_name ASC";
 
