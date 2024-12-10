@@ -58,7 +58,7 @@ class ReadmeGenerator extends Component
             $firstNameInitial = substr($authors[$i]['first_name'], 0, 1);
             $middleNameInitial = substr($authors[$i]['middle_name'], 0, 1);
             $surname = $authors[$i]['surname'];
-            $fullName = $surname . ', ' . $firstNameInitial . $middleNameInitial;
+            $fullName = $surname . ' ' . $firstNameInitial . $middleNameInitial;
             $lastIndex = $numberOfAuthors - 1;
             if ($i === $lastIndex) {
                 $citation .= $fullName . ' ';
