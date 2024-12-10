@@ -74,7 +74,7 @@ class Author extends \yii\db\ActiveRecord
      * @return array
      * @throws \CException
      */
-    public function getAuthorsByDatasetId(int $datasetId): array
+    public static function getAuthorsByDatasetId(int $datasetId): array
     {
 
         $db = Yii::$app->db;
