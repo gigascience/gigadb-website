@@ -2,6 +2,7 @@
 
 namespace app\components;
 
+use GigaDB\models\Author;
 use GigaDB\models\FileAttributes;
 use GigaDB\models\File;
 use Exception;
@@ -50,14 +51,15 @@ class ReadmeGenerator extends Component
         ];
 
         $citation = '[Citation]' . PHP_EOL;
-        $authors = $dataset->authors;
+        $authorModel = new Author();
+        $authors = $authorModel->getAuthorsByDatasetId($dataset->id);
         $numberOfAuthors = count($authors);
         for ($i = 0; $i < $numberOfAuthors; $i++) {
-            $firstNameInitial = substr($authors[$i]->first_name, 0, 1);
-            $middleNameInitial = substr($authors[$i]->middle_name, 0, 1);
-            $surname = $authors[$i]->surname;
+            $firstNameInitial = substr($authors[$i]['first_name'], 0, 1);
+            $middleNameInitial = substr($authors[$i]['middle_name'], 0, 1);
+            $surname = $authors[$i]['surname'];
             $fullName = $surname . ', ' . $firstNameInitial . $middleNameInitial;
-            $lastIndex = (count($authors) - 1);
+            $lastIndex = $numberOfAuthors - 1;
             if ($i === $lastIndex) {
                 $citation .= $fullName . ' ';
             } else {
