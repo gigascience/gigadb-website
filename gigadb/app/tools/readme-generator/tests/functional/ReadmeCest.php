@@ -29,14 +29,14 @@ class ReadmeCest
      */
     public function tryCreate(FunctionalTester $I)
     {
-        $I->cantSeeInDatabase("file", ["id" => 6300, "dataset_id" => 212, "name" => "readme_100004.txt", "size" => 1997, "location" => "https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/dev/pub/10.5524/100001_101000/100004/readme_100004.txt", "extension" => "txt"]);
+        $I->cantSeeInDatabase("file", ["id" => 6300, "dataset_id" => 212, "name" => "readme_100004.txt", "size" => 2090, "location" => "https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/dev/pub/10.5524/100001_101000/100004/readme_100004.txt", "extension" => "txt"]);
         $I->cantSeeInDatabase("file_attributes", ["file_id" => 6300, "attribute_id" => 605, "value" => "60da98a0c5cb6f872a4576f737089636"]);
         $I->runShellCommand("/app/yii_test readme/create --doi 100004 --outdir=/app/readmeFiles --bucketPath wasabi:gigadb-datasets/dev/pub/10.5524");
         $I->seeInShellOutput("[DOI]\n10.5524/100004\n");
         $I->runShellCommand("ls /app/readmeFiles");
         $I->seeInShellOutput("readme_100004.txt");
-        $I->canSeeInDatabase("file", ["id" => 6300, "dataset_id" => 212, "name" => "readme_100004.txt", "size" => 2095, "location" => "https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/dev/pub/10.5524/100001_101000/100004/readme_100004.txt", "extension" => "txt"]);
-        $I->canSeeInDatabase("file_attributes", ["file_id" => 6300, "attribute_id" => 605, "value" => "3e8d263f9ba4ef7961848317dc7873ca"]);
+        $I->canSeeInDatabase("file", ["id" => 6300, "dataset_id" => 212, "name" => "readme_100004.txt", "size" => 2090, "location" => "https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/dev/pub/10.5524/100001_101000/100004/readme_100004.txt", "extension" => "txt"]);
+        $I->canSeeInDatabase("file_attributes", ["file_id" => 6300, "attribute_id" => 605, "value" => "64b03f6dacde327a2b737416d9681c5c"]);
     }
 
     /**
@@ -52,8 +52,8 @@ class ReadmeCest
         $I->seeInShellOutput("[DOI]\n10.5524/100003\n");
         $I->runShellCommand("ls /app/readmeFiles");
         $I->seeInShellOutput("readme_100003.txt");
-        $I->canSeeInDatabase("file", ["id" => 88266, "dataset_id" => 211, "name" => "readme_100003.txt", "size" => 2327, "location" => "https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/dev/pub/10.5524/100001_101000/100003/readme_100003.txt", "extension" => "txt"]);
-        $I->canSeeInDatabase("file_attributes", ["file_id" => 88266, "attribute_id" => 605, "value" => "b89b1a3d94e05a3fa44bef8b544025f0"]);
+        $I->canSeeInDatabase("file", ["id" => 88266, "dataset_id" => 211, "name" => "readme_100003.txt", "size" => 2322, "location" => "https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/dev/pub/10.5524/100001_101000/100003/readme_100003.txt", "extension" => "txt"]);
+        $I->canSeeInDatabase("file_attributes", ["file_id" => 88266, "attribute_id" => 605, "value" => "d3a0b2fc3949e02ca6b753deaf39bb70"]);
     }
 
     public function tryCompareWithGoldenReadme(FunctionalTester $I)
