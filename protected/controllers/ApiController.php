@@ -64,13 +64,13 @@ class ApiController extends Controller
                 $model = Dataset::model()->findByAttributes(array('id' => $id, 'upload_status' => $status));
 
                 if (!$model) {
-                    $this->_sendResponse(404, sprintf('No items where found for dataset id <b>%s</b>',$id));
+                    $this->_sendResponse(404, sprintf('The dataset with id <b>%s</b> is not found',$id));
                 }
             } elseif ($doi) {
                 $model = Dataset::model()->findByAttributes(array('identifier' => $doi, 'upload_status' => $status));
 
                 if (!$model) {
-                    $this->_sendResponse(404, sprintf('No items where found for dataset doi <b>%s</b>',$doi));
+                    $this->_sendResponse(404, sprintf('The dataset with DOI <b>%s</b> is not found',$doi));
                 }
             }
         } catch (\Exception $e) {

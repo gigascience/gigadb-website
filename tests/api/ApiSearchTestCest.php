@@ -18,7 +18,6 @@ class ApiSearchTestCest
                   HAVING COUNT(s.id) > 3";
 
         $identifier = $this->executeSqlQuery($query, $db)['identifier'];
-
         $I->sendGET(sprintf('/dataset?doi=%s&result=sample', $identifier));
         $I->seeResponseCodeIs(200);
         $I->seeResponseIsXml();
@@ -36,6 +35,40 @@ class ApiSearchTestCest
         rsort($samples);
 
         $I->assertEquals($sortedSamples, $samples, 'not ordered');
+    }
+
+    public function tryToQueryDatasetsWithSamplesAttributesSorted(ApiTester$I)
+    {
+        $I->sendGET('/dataset?doi=100006&result=sample');
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseIsXml();
+
+        $response = $I->grabResponse();
+        $xml = simplexml_load_string(($response));
+
+        $sample = $xml->xpath('//sample/sample_attributes')[0];
+        $firstAttr = $sample->attribute[0];
+        $secondAttr = $sample->attribute[1];
+
+        $I->assertEquals('alternative names', (string) $firstAttr->key, 'not ordered');
+        $I->assertEquals('tissue', (string) $secondAttr->key, 'not ordered');
+    }
+
+    public function tryToQueryDatasetsWithFileAttributesSorted(ApiTester$I)
+    {
+        $I->sendGET('/dataset?doi=100245&result=file');
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseIsXml();
+
+        $response = $I->grabResponse();
+        $xml = simplexml_load_string(($response));
+
+        $file = $xml->xpath('//file[12]/file_attributes')[0];
+        $firstAttr = $file[0]->attribute[0];
+        $secondAttr = $file->attribute[1];
+
+        $I->assertEquals('MD5 checksum', (string) $firstAttr->key, 'not ordered');
+        $I->assertEquals('camera parameters', (string) $secondAttr->key, 'not ordered');
     }
 
     public function tryToQueryDatasetsWithFilesSorted(ApiTester $I, \Codeception\Module\Db $db)
