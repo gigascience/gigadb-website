@@ -63,7 +63,7 @@ class AuthorTest extends \Codeception\Test\Unit
         ];
 
         $datasetId = 5;
-        $authorList = Author::getAuthorsByDatasetId($datasetId);
+        $authorList = Author::listByDatasetId($datasetId);
 
         $this->assertNotEmpty($authorList, 'The author list is empty');
         $this->assertEquals($expectedAuthors, $authorList, 'The author list is incorrect');

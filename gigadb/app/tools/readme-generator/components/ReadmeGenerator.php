@@ -51,7 +51,7 @@ class ReadmeGenerator extends Component
         ];
 
         $citation = '[Citation]' . PHP_EOL;
-        $authors = Author::getAuthorsByDatasetId($dataset->id);
+        $authors = Author::listByDatasetId($dataset->id);
         $numberOfAuthors = count($authors);
         for ($i = 0; $i < $numberOfAuthors; $i++) {
             $firstNameInitial = substr($authors[$i]['first_name'], 0, 1);
