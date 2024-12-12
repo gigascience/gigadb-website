@@ -73,10 +73,7 @@ class StoredDatasetMainSection extends DatasetComponents implements DatasetMainS
         $release_details = [];
         $doi_prefix = Yii::app()->params['mds_prefix'];
 
-        $author_sql = "select a.id, a.surname, a.first_name, a.middle_name, a.custom_name from author a, dataset_author da, dataset d where a.id=da.author_id and d.id = da.dataset_id and d.id=:id order by rank ASC, a.surname ASC, a.first_name ASC, a.middle_name ASC";
-        $command = $this->_db->createCommand($author_sql);
-        $command->bindParam(":id", $this->_id, PDO::PARAM_INT);
-        $authors_result = $command->queryAll();
+        $authors_result = \GigaDB\models\Author::listByDatasetId($this->_id, $this->_db);
         if (!empty($authors_result)) {
             $release_details['authors'] = [];
             foreach ($authors_result as $author) {
