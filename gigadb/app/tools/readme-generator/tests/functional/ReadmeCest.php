@@ -17,6 +17,9 @@ class ReadmeCest
         if (file_exists("/app/readmeFiles/readme_100003.txt")) {
             unlink("/app/readmeFiles/readme_100003.txt");
         }
+        if (file_exists("/app/readmeFiles/readme_100925.txt")) {
+            unlink("/app/readmeFiles/readme_100925.txt");
+        }
 //        if (file_exists("/app/readmeFiles/readme_100142.txt")) {
 //            unlink("/app/readmeFiles/readme_100142.txt");
 //        }
@@ -82,5 +85,19 @@ class ReadmeCest
             $readmeGenerator = new \app\components\ReadmeGenerator();
             $readmeGenerator->getReadme('888888');
         });
+    }
+
+    public function tryGetOrderedAuthorList(FunctionalTester $I)
+    {
+        $I->runShellCommand("/app/yii_test readme/create --doi 100925 --outdir=/app/readmeFiles --bucketPath wasabi:gigadb-datasets/dev/pub/10.5524");
+        $I->canSeeInShellOutput("[DOI]\n10.5524/100925\n");
+        $I->canSeeInShellOutput("[Citation]\nOu M; Huang R; Yang C; Gui B; Luo Q; Zhao J; Li Y; Liao L; Zhu Z; Wang Y; Chen K (2021): Supporting data for \"Chromosome-level genome assemblies of <i>C. argus</i> and <i>C. maculata</i> and comparative analysis of their temperature adaptability\"");
+        $I->cantSeeInShellOutput("[Citation]\nWang, Y; Ou, M; Huang, R; Luo, Q; Zhao, J; Chen, K; Yang, C; Gui, B; Li, Y; Liao, L; Zhu, Z (2021): Supporting data for \"Chromosome-level genome assemblies of <i>C. argus</i> and <i>C. maculata</i> and comparative analysis of their temperature adaptability\"");
+        $I->assertFileExists("/app/readmeFiles/readme_100925.txt", "readme_100925.txt non exists");
+        $generatedReadmeContent = file_get_contents("/app/readmeFiles/readme_100925.txt");
+        $goldenReadmeContent = file_get_contents("tests/_data/golden_readme_100925.txt");
+        $I->assertEquals($goldenReadmeContent, $generatedReadmeContent, "The generated readme file does not match the golden readme file");
+
+
     }
 }
