@@ -87,7 +87,7 @@ class ReadmeCest
         });
     }
 
-    public function tryGetOrderedAuthorList(FunctionalTester $I)
+    public function tryListAuthors(FunctionalTester $I)
     {
         $I->runShellCommand("/app/yii_test readme/create --doi 100925 --outdir=/app/readmeFiles --bucketPath wasabi:gigadb-datasets/dev/pub/10.5524");
         $I->canSeeInShellOutput("[DOI]\n10.5524/100925\n");
