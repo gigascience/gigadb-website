@@ -278,13 +278,13 @@ ec2_bastion_private_ip = "10.88.8.888"
 ec2_bastion_public_ip = "88.888.888.888"
 
 # Log into bastion server
-$ ssh -i ~/.ssh/your-private-key.pem centos@88.888.888.888
+$ ssh -i ~/.ssh/your-private-key.pem ec2-user@88.888.888.888
 ```
 
 Before executing the `createReadme` tool, get the existing values of the `file` table and `file_attributes` table:
 ```
 # check the tables
-[centos@ip-10-99-0-207 ~]$ psql -h $rds_instance_address -U gigadb -c 'select id, name, location, size from file where dataset_id = 200'
+[ec2-user@ip-10-99-0-207 ~]$ psql -h $rds_instance_address -U gigadb -c 'select id, name, location, size from file where dataset_id = 200'
 Password for user gigadb: 
   id   |                      name                       |                                                                   location                                                                    |   size    
 -------+-------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+-----------
@@ -293,7 +293,7 @@ Password for user gigadb:
  87542 | Diagram-SRA-Study-Experiment-Joined-probing.jpg | https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/10.5524/100001_101000/100142/Diagram-SRA-Study-Experiment-Joined-probing.jpg |     81717
  87516 | readme.txt                                      | https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/10.5524/100001_101000/100142/readme.txt                                      |      2351
 (4 rows)
-[centos@ip-10-99-0-207 ~]$ psql -h $rds_instance_address -U gigadb -c 'select * from file_attributes where file_id = 87516'
+[ec2-user@ip-10-99-0-207 ~]$ psql -h $rds_instance_address -U gigadb -c 'select * from file_attributes where file_id = 87516'
 Password for user gigadb: 
   id   | file_id | attribute_id |               value                | unit_id 
 -------+---------+--------------+------------------------------------+---------
@@ -308,7 +308,7 @@ $ docker run --rm -v /home/ec2-user/readmeFiles:/app/readmeFiles registry.gitlab
 
 Check the tables `file` and `file_attribbutes` that `name`, `location`, `size` and `value` have been updated.
 ```
-[centos@ip-10-99-0-207 ~]$ psql -h rds-server-staging-ken.cjizsjwbxkxv.ap-northeast-2.rds.amazonaws.com -U gigadb -c 'select id, name, location, size from file where dataset_id = 200'
+[ec2-user@ip-10-99-0-207 ~]$ psql -h rds-server-staging-ken.cjizsjwbxkxv.ap-northeast-2.rds.amazonaws.com -U gigadb -c 'select id, name, location, size from file where dataset_id = 200'
 Password for user gigadb: 
   id   |                      name                       |                                                                   location                                                                    |   size    
 -------+-------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+-----------
@@ -317,7 +317,7 @@ Password for user gigadb:
  87542 | Diagram-SRA-Study-Experiment-Joined-probing.jpg | https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/10.5524/100001_101000/100142/Diagram-SRA-Study-Experiment-Joined-probing.jpg |     81717
  87517 | Diagram-ALL-FIELDS-Check-annotation.jpg         | https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/10.5524/100001_101000/100142/Diagram-ALL-FIELDS-Check-annotation.jpg         |     55547
 (4 rows)
-[centos@ip-10-99-0-207 ~]$ psql -h rds-server-staging-ken.cjizsjwbxkxv.ap-northeast-2.rds.amazonaws.com -U gigadb -c 'select * from file_attributes where file_id = 87516'
+[ec2-user@ip-10-99-0-207 ~]$ psql -h rds-server-staging-ken.cjizsjwbxkxv.ap-northeast-2.rds.amazonaws.com -U gigadb -c 'select * from file_attributes where file_id = 87516'
 Password for user gigadb: 
   id   | file_id | attribute_id |              value               | unit_id 
 -------+---------+--------------+----------------------------------+---------
@@ -342,8 +342,8 @@ $ /usr/local/bin/createReadme --doi 100142
 
 This time, you can check the log of this create readme file command:
 ```
-$ more uploadLogs/readme_100142_20230901_080216.log 
-2024/06/17 02:40:24 INFO  : Created readme file for DOI 100142 in /usr/local/bin/runtime/curators/readme_100142.txt
+$ more var/log/gigadb/readme.log
+2024/12/13 06:44:13 INFO  : Created readme file for DOI 100925 in /home/ec2-user/readme_100925.txt
 ```
 
 The createReadme.sh script can also be used to copy the newly created readme 
@@ -355,7 +355,7 @@ $ /usr/local/bin/createReadme --doi 100142 --wasabi
 
 And then check the rclone log:
 ```
-[centos@ip-10-99-0-207 ~]$ more /var/log/gigadb/readme.log 
+[ec2-user@ip-10-99-0-207 ~]$ more /var/log/gigadb/readme.log 
 2024/06/17 03:00:29 INFO  : Created readme file for DOI 100142 in /usr/local/bin/runtime/curators/readme_100142.txt
 2024/06/17 03:00:30 NOTICE: readme_100142.txt: Skipped copy as --dry-run is set (size 1.640Ki)
 2024/06/17 03:00:30 NOTICE: 
@@ -377,7 +377,7 @@ $ /usr/local/bin/createReadme --doi 100142 --wasabi --apply
 
 And the rclone log will be:
 ```
-[centos@ip-10-99-0-207 ~]$ more /var/log/gigadb/readme.log 
+[ec2-user@ip-10-99-0-207 ~]$ more /var/log/gigadb/readme.log 
 2024/06/17 03:08:03 INFO  : Created readme file for DOI 100142 in /usr/local/bin/runtime/curators/readme_100142.txt
 2024/06/17 03:08:03 INFO  : readme_100142.txt: Copied (replaced existing)
 2024/06/17 03:08:03 INFO  : Executed: rclone copy --s3-no-check-bucket /home/ec2-user/readmeFiles/readme_100142.txt wasabi:gigadb-datasets/staging/pub/10.5524/100001_101000/100142/ --config /home/ec2-user/.config/rclone/rclone.conf
@@ -399,7 +399,7 @@ You will be able to see in the latest log file in the logs directory that 3
 readme files have been created and copied into Wasabi in dry-run mode.
 
 ```
-[centos@ip-10-99-0-207 ~]$ more /var/log/gigadb/readme.log
+[ec2-user@ip-10-99-0-207 ~]$ more /var/log/gigadb/readme.log
 2024/06/17 03:20:12 INFO  : Created readme file for DOI 100141 in /usr/local/bin/runtime/curators/readme_100141.txt
 2024/06/17 03:20:12 NOTICE: readme_100141.txt: Skipped copy as --dry-run is set (size 3.646Ki)
 2024/06/17 03:20:12 NOTICE: 
@@ -430,7 +430,7 @@ Elapsed time:         0.2s
 2024/06/17 03:20:22 INFO  : Executed: rclone copy --s3-no-check-bucket /home/ec2-user/readmeFiles/readme_100143.txt wasabi:gigadb-datasets/staging/pub/10.5524/100001_101000/100143/ --config /home/ec2-user/.config/rclone/rclone.conf
  --dry-run --log-file /home/ec2-user/uploadDir/readme_100141_20240617_032006.log --log-level INFO --stats-log-level DEBUG >> /home/ec2-user/uploadDir/readme_100141_20240617_032006.log
 2024/06/17 03:20:22 INFO  : Successfully copied file to Wasabi for DOI: 100143
-[centos@ip-10-99-0-207 ~]$ 
+[ec2-user@ip-10-99-0-207 ~]$ 
 
 ```
 
