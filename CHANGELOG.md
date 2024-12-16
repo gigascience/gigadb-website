@@ -4,6 +4,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #549: create commands: check if DOI exists in Datacite + update Datacite api metadata
+
 ## v4.4.10 - 2025-05-16 - 07a8f63b2 - 
 
 - Fix #2294: Add dedicated username variable for authenticating to email service
