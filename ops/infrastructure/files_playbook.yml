@@ -51,8 +51,8 @@
       path: "{{ item }}"
       state: directory
       mode: '0775'
-      owner: centos
-      group: centos
+      owner: ec2-user
+      group: ec2-user
     loop:
       - "/share/dropbox"
       - "/share/config"
@@ -84,8 +84,8 @@
     template:
       src: ../../../configuration/file-server/docker-compose.yml.j2
       dest: /home/ec2-user/docker-compose.yml
-      owner: centos
-      group: centos
+      owner: ec2-user
+      group: ec2-user
       mode: 0644
 
 
