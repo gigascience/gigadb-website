@@ -68,7 +68,7 @@ class ReadmeGenerator extends Component
 
         $publicationYear = substr($dataset->publication_date, 0, 4);
         $citation .= '(' . $publicationYear . '): ';
-        $citation .= $dataset->title . PHP_EOL . 'GigaScience Database. https://dx.doi.org/10.5524/' . $doi;
+        $citation .= $dataset->title . ' ' . 'GigaScience Database. https://dx.doi.org/10.5524/' . $doi;
         $readme[] = $citation .  PHP_EOL;
 
         $datasetType = '[Dataset Type]' . PHP_EOL;

@@ -8,8 +8,7 @@ Supporting data for "Chromosome-level genome assemblies of <i>C. argus</i> and <
 2021-09-01
 
 [Citation]
-Ou M; Huang R; Yang C; Gui B; Luo Q; Zhao J; Li Y; Liao L; Zhu Z; Wang Y; Chen K (2021): Supporting data for "Chromosome-level genome assemblies of <i>C. argus</i> and <i>C. maculata</i> and comparative analysis of their temperature adaptability"
-GigaScience Database. https://dx.doi.org/10.5524/100925
+Ou M; Huang R; Yang C; Gui B; Luo Q; Zhao J; Li Y; Liao L; Zhu Z; Wang Y; Chen K (2021): Supporting data for "Chromosome-level genome assemblies of <i>C. argus</i> and <i>C. maculata</i> and comparative analysis of their temperature adaptability" GigaScience Database. https://dx.doi.org/10.5524/100925
 
 [Dataset Type]
 
