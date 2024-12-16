@@ -20,9 +20,9 @@ class ReadmeCest
         if (file_exists("/app/readmeFiles/readme_100925.txt")) {
             unlink("/app/readmeFiles/readme_100925.txt");
         }
-//        if (file_exists("/app/readmeFiles/readme_100142.txt")) {
-//            unlink("/app/readmeFiles/readme_100142.txt");
-//        }
+        if (file_exists("/app/readmeFiles/readme_100142.txt")) {
+            unlink("/app/readmeFiles/readme_100142.txt");
+        }
     }
 
     /**
