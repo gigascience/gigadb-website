@@ -91,8 +91,8 @@ class ReadmeCest
     {
         $I->runShellCommand("/app/yii_test readme/create --doi 100925 --outdir=/app/readmeFiles --bucketPath wasabi:gigadb-datasets/dev/pub/10.5524");
         $I->canSeeInShellOutput("[DOI]\n10.5524/100925\n");
-        $I->canSeeInShellOutput("[Citation]\nOu M; Huang R; Yang C; Gui B; Luo Q; Zhao J; Li Y; Liao L; Zhu Z; Wang Y; Chen K (2021): Supporting data for \"Chromosome-level genome assemblies of <i>C. argus</i> and <i>C. maculata</i> and comparative analysis of their temperature adaptability\"");
-        $I->cantSeeInShellOutput("[Citation]\nWang, Y; Ou, M; Huang, R; Luo, Q; Zhao, J; Chen, K; Yang, C; Gui, B; Li, Y; Liao, L; Zhu, Z (2021): Supporting data for \"Chromosome-level genome assemblies of <i>C. argus</i> and <i>C. maculata</i> and comparative analysis of their temperature adaptability\"");
+        $I->canSeeInShellOutput("[Citation]\nOu M; Huang R; Yang C; Gui B; Luo Q; Zhao J; Li Y; Liao L; Zhu Z; Wang Y; Chen K (2021): Supporting data for \"Chromosome-level genome assemblies of <i>C. argus</i> and <i>C. maculata</i> and comparative analysis of their temperature adaptability\" GigaScience Database. https://dx.doi.org/10.5524/100925");
+        $I->cantSeeInShellOutput("[Citation]\nWang, Y; Ou, M; Huang, R; Luo, Q; Zhao, J; Chen, K; Yang, C; Gui, B; Li, Y; Liao, L; Zhu, Z (2021): Supporting data for \"Chromosome-level genome assemblies of <i>C. argus</i> and <i>C. maculata</i> and comparative analysis of their temperature adaptability\"\nGigaScience Database. https://dx.doi.org/10.5524/100925");
         $I->assertFileExists("/app/readmeFiles/readme_100925.txt", "readme_100925.txt non exists");
         $generatedReadmeContent = file_get_contents("/app/readmeFiles/readme_100925.txt");
         $goldenReadmeContent = file_get_contents("tests/_data/golden_readme_100925.txt");
