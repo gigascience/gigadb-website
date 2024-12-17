@@ -79,7 +79,7 @@ class StoredDatasetMainSection extends DatasetComponents implements DatasetMainS
         $command = $this->_db->createCommand($publishing_sql);
         $command->bindParam(":id", $this->_id, PDO::PARAM_INT);
         $publishing_result = $command->queryRow();
-        if (!empty($publishing_result)) {
+        if ($publishing_result) {
             $release_details['release_year'] =  $publishing_result['release_year'];
             $release_details['dataset_title'] =  $publishing_result['title'];
             $release_details['publisher'] =  $publishing_result['publisher_name'];

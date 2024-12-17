@@ -38,14 +38,14 @@ class DatasetAsXmlTest  extends CDbTestCase
 
         $creatorChildNodes = $dom->getElementsByTagName('creator')->item(0)->childNodes;
         $this->assertCount(3, $creatorChildNodes);
-        $this->assertEquals('Morten, Schiøtt,', $creatorChildNodes->item(0)->nodeValue);
+        $this->assertEquals('Morten Schiøtt,', $creatorChildNodes->item(0)->nodeValue);
         $this->assertEquals('Morten', $creatorChildNodes->item(1)->nodeValue);
         $this->assertEquals('Schiøtt,', $creatorChildNodes->item(2)->nodeValue);
 
         $creatorChildNodes = $dom->getElementsByTagName('creator')->item(1)->childNodes;
         $this->assertCount(3, $creatorChildNodes);
-        $this->assertEquals("Carlos, Ábel G, Montana,", $creatorChildNodes->item(0)->nodeValue);
-        $this->assertEquals('Carlos, Ábel G', $creatorChildNodes->item(1)->nodeValue);
+        $this->assertEquals("Carlos Ábel G Montana,", $creatorChildNodes->item(0)->nodeValue);
+        $this->assertEquals('Carlos Ábel G', $creatorChildNodes->item(1)->nodeValue);
         $this->assertEquals('Montana,', $creatorChildNodes->item(2)->nodeValue);
 
         $relatedIdentifierManuscript = $dom->getElementsByTagName('relatedIdentifier')->item(0);
