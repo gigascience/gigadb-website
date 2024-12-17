@@ -60,7 +60,7 @@ echo "Sourcing secrets"
 source "./.secrets"
 
 TARGET_FILE=".env.test"
-VARS=("GIGADB_USER" "GIGADB_HOST" "GIGADB_DB" "GIGADB_PORT")
+VARS=("GIGADB_USER" "GIGADB_HOST" "GIGADB_DB" "GIGADB_PORT" "GIGADB_PASSWORD")
 
 > "$TARGET_FILE"
 

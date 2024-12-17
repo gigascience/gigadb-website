@@ -103,7 +103,7 @@ class ApiSearchTestCest
 
     private function executeSqlQuery($query, $db)
     {
-        $dbh = $db->dbh;
+        $dbh = $db->_getDbh();
         $stmt = $dbh->prepare($query);
         $stmt->execute();
 
