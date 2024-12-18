@@ -22,7 +22,7 @@ $this->widget(
                     'type' =>  'text',
                     'value' => function($data) {
                         if (preg_match('/^<\?xml/', $data->comments)) {
-                            return LogCurationFormatter::getDisplayAttr($data->id, $data->comments);
+                            return LogCurationFormatter::getDisplayXmlAttr($data->id, $data->comments);
                         }
 
                         return $data->comments;

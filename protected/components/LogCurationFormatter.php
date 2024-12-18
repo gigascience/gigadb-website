@@ -5,7 +5,7 @@ declare(strict_types=1);
 class LogCurationFormatter extends \yii\base\BaseObject
 {
 
-    public static function getDisplayAttr(int $id, string $xmlData)
+    public static function getDisplayXmlAttr(int $id, string $xmlData): string
     {
         $short = substr($xmlData, 0, 60) . '...</resource>';
         $short = htmlspecialchars($short, ENT_QUOTES, 'UTF-8');
