@@ -291,6 +291,18 @@ Feature: form to update dataset details
     Then I am on "dataset/100006"
     And I should see "bam"
 
+  @ok @issue-2061
+  Scenario: Can delete all keywords on update
+    Given I am on "/adminDataset/update/id/8"
+    And I click on keywords field
+    And I fill in keywords fields with "bam"
+    And I press the button "Save"
+    When I am on "/adminDataset/update/id/8"
+    And I click on delete keyword button
+    And I press the button "Save"
+    Then I am on "dataset/100006"
+    And I should not see "bam"
+
   @ok @curationlog
   Scenario: Create new curation log record for a dataset
     When I am on "/adminDataset/update/id/5"
