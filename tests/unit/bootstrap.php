@@ -12,6 +12,8 @@ require_once($composer);
 $yii = dirname(__FILE__) . '/../../protected/components/Yii.php';
 require_once($yii);
 
+# needed to unit test custom Cformatter
+require_once __DIR__ . '/../../protected/extensions//CTypeFormatter.php';
 # Load and run Yii web application
 Yii::$enableIncludePath = false;
 Yii::createWebApplication($config);

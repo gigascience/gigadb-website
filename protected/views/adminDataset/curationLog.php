@@ -17,7 +17,17 @@ $this->widget(
             'creation_date',
             'created_by',
             'action',
-            'comments',
+            [
+                    'name' => 'comments',
+                    'type' =>  'text',
+                    'value' => function($data) {
+                        if (preg_match('/^<\?xml/', $data->comments)) {
+                            return LogCurationFormatter::getDisplayXmlAttr($data->id, $data->comments);
+                        }
+
+                        return $data->comments;
+                    }
+            ],
             'last_modified_date',
             'last_modified_by',
             [
@@ -61,3 +71,68 @@ $this->widget(
         ],
     ]
 );
+?>
+<div id='modal' class='modal fade' role='dialog'>
+    <div class='modal-dialog modal-lg'>
+        <div class='modal-content'>
+            <div class='modal-header'>
+                <h5 class='modal-title'>Dataset as XML</h5>
+                <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                    <span aria-hidden='true'>&times;</span>
+                </button>
+            </div>
+            <div class='modal-body'>
+                <pre id='xmlData'></pre>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+    $('.js-desc').click(function (e) {
+        e.preventDefault();
+        id = $(this).attr('data');
+        const xmlDataContainer = document.getElementById('xmlData');
+        const hiddenContent = document.getElementsByClassName('js-long-' + id)
+        xmlDataContainer.textContent = formatXML(hiddenContent[0].innerHTML.trim())
+
+        $('#modal').modal('show');
+    });
+
+    $('.close').click(function (e) {
+        e.preventDefault()
+
+        $('#modal').modal('hide');
+
+    });
+    function formatXML(xmlString) {
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(xmlString, 'text/xml');
+        let formatted = '';
+
+        function traverse(node, pad) {
+            const PADDING = '  ';
+            if (node.nodeType === Node.ELEMENT_NODE) {
+                formatted += PADDING.repeat(pad) + `<${node.nodeName}`;
+
+                if (node.attributes.length > 0) {
+                    Array.from(node.attributes).forEach(attr => {
+                        formatted += ` ${attr.name}="${attr.value}"`;
+                    });
+                }
+
+                formatted += '>\n';
+                Array.from(node.childNodes).forEach(child => traverse(child, pad + 1));
+                formatted += PADDING.repeat(pad) + `</${node.nodeName}>\n`;
+            } else if (node.nodeType === Node.TEXT_NODE) {
+                const trimmedContent = node.textContent.trim();
+                if (trimmedContent) {
+                    formatted += PADDING.repeat(pad) + trimmedContent + '\n';
+                }
+            }
+        }
+
+        traverse(xmlDoc.documentElement, 0);
+        return formatted.trim();
+    }
+</script>

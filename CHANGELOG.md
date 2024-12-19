@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## Unreleased
 
 - Feat #2067: Sort files by size in dataset page
+- Feat #372: Save dataset as xml in log
+- Feat #1940: Reminting notification text change
 - Fix #2061: Allow empty keywords in dataset entry
 - Fix #1991: Update and save sample ID when updating
 - Feat #2008: Remove Dimensions citation link
@@ -13,7 +15,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Feat #2066: Update file attribute values form layout and add expand button for long values
 - Feat #2102: Delete outdated apidocs files
 - Feat #1667: Add log entry when minting DOI
-
 - Fix #2094: Make Semgrep-based SAST analyzer available in tagged release
 - Feat #701: Code refactoring to separate upload status transitions and notifications to prepare for upload status overhaul
 - Security #1867: Update the gitlab static application security testing (SAST) job using the Semgrep-based analyzer
