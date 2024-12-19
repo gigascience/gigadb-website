@@ -12,7 +12,7 @@ Feature: curation log entry under the dataset form
     When I am on "/adminDataset/update/id/8"
     And I press the button "Mint DOI"
     And I wait "3" seconds
-    And I should see "This DOI exists in datacite already, no need to mint, but the metadata is updated!"
+    And I should see "This DOI exists in DataCite already, so it has now been updated with the current values from GigaDB."
     Then I am on "/adminDataset/update/id/8"
     And I wait "3" seconds
     And I should see "Dataset 100006 - Check DOI: OK - update md response: OK"
