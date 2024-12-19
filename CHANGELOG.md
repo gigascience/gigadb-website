@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #372: Save dataset as xml in log
 - Feat #1940: Reminting notification text change
 - Fix #2061: Allow empty keywords in dataset entry
 - Fix #1991: Update and save sample ID when updating
