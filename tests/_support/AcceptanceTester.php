@@ -419,4 +419,12 @@ class AcceptanceTester extends \Codeception\Actor
 
         $this->assertNotEquals($expectedRow, $tableRows[$index]);
     }
+
+    /**
+     * @Then I should see :text in the table :table cell :row :column
+     */
+    public function iShouldSeeInTheTableCell($text, $table, $row, $column)
+    {
+        $this->see($text, ['css' => "$table tr:nth-child($row) td:nth-child($column)"]);
+    }
 }
