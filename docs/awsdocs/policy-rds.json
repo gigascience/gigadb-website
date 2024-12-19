@@ -14,8 +14,7 @@
             "Sid": "AllowEC2Describe",
             "Effect": "Allow",
             "Action": [
-                "ec2:Describe*",
-                "ec2:DescribeSubnets"
+                "ec2:Describe*"
             ],
             "Resource": "*"
         },
@@ -155,7 +154,6 @@
                 "ec2:RevokeSecurityGroupIngress",
                 "ec2:DeleteVpc",
                 "ec2:DeleteRoute",
-                "ec2:DisassociateRouteTable",
                 "ec2:DeleteNatGateway"
             ],
             "Resource": "*",
