@@ -260,4 +260,12 @@ class CuratorSteps extends \Codeception\Actor
       $this->I->click('.tag-editor-delete');
     }
 
+    /**
+     * @When I click on :arg1 column header
+     */
+    public function iClickOnColumnHeader($arg1)
+    {
+      $this->I->click("//th/a[contains(text(), '$arg1')]");
+    }
+
 }

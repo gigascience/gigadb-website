@@ -244,5 +244,19 @@ Feature: filter tables on admin page
     And I should not see "100006"
     And I should not see "100094"
 
+  @ok @issue-2127
+  Scenario: Sort datasets by upload status
+    Given I am on "/adminDataset/admin"
+    When I click on "Upload Status" column header
+    And I wait "1" seconds
+    Then I should see "Private" in the table ".test-dataset-table" cell 2 7
 
-
+  @ok @issue-2127
+  Scenario: Filter datasets by upload status
+    Given I am on "/adminDataset/admin"
+    When I fill in the field of "name" "Dataset[upload_status]" with "Incomplete"
+    And I press return on the element "input[name='Dataset[upload_status]']"
+    And I wait "1" seconds
+    Then I should see "Incomplete"
+    And I should not see "Published"
+    And I should not see "Private"
