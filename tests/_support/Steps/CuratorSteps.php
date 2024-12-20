@@ -252,4 +252,12 @@ class CuratorSteps extends \Codeception\Actor
         $this->I->fillField(['name' => $arg1], $arg2);
     }
 
+    /**
+     * @When I click on delete keyword button
+     */
+    public function iClickOnDeleteKeywordButton()
+    {
+      $this->I->click('.tag-editor-delete');
+    }
+
 }

@@ -132,4 +132,23 @@ document.addEventListener("DOMContentLoaded", function () {
       "aria-required": (!isExpanded).toString(),
     });
   });
+
+  function handleBtnClick(id) {
+    $(`.js-desc-${id}`).click(function (e) {
+      e.preventDefault();
+      var id = $(this).attr("data-id");
+      var isExpanded = $(this).attr("aria-expanded") === "true";
+
+      $(this)
+        .text(isExpanded ? "+" : "-")
+        .attr("aria-label", isExpanded ? "Show more" : "Show less")
+        .attr("aria-expanded", !isExpanded);
+
+      $(".js-short-" + id).toggle();
+      $(".js-long-" + id).toggle();
+    });
+  }
+
+  handleBtnClick("attr_value_12467");
+  handleBtnClick("attr_value_674770");
 })
