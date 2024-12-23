@@ -64,6 +64,10 @@ class AdminDatasetSampleController extends Controller
 			try {
 				$sampleIds = (array)$model->sample_id;
 
+				if (empty($sampleIds)) {
+					throw new CException('At least one sample must be selected');
+				}
+
 				foreach($sampleIds as $sampleId) {
 					$datasetSample = new DatasetSample;
 					$datasetSample->dataset_id = $model->dataset_id;

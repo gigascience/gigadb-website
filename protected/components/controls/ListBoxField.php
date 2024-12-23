@@ -51,10 +51,6 @@ class ListboxField extends BaseInput
         if (!isset($this->inputOptions['data-js'])) {
             $this->inputOptions['data-js'] = 'listbox';
         }
-
-        if ($this->inputOptions['multiple'] === 'multiple' && !isset($this->description)) {
-            $this->description = 'Select multiple options by holding Ctrl/Cmd while clicking';
-        }
     }
 
     public function run()
