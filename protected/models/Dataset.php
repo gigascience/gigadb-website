@@ -715,12 +715,14 @@ class Dataset extends CActiveRecord
     public function updateDatasetTypes($postDatasetTypes)
     {
         $actualTypeIdsByDataset = [];
+        //fetch types
         $datasetTypeMaps = $this->datasetTypes;
+        $command = Yii::app()->db->createCommand();
 
         foreach ($datasetTypeMaps as $datasetTypeMap) {
             $actualTypeIdsByDataset[] = $typeId = $datasetTypeMap->id;
             if (!in_array($typeId, $postDatasetTypes, true)) {
-                $datasetTypeMap->delete();
+                $command->delete('dataset_type', 'dataset_id=:dataset_id AND type_id=:type_id ', array(':dataset_id' => $this->id, ':type_id' => $typeId));
             }
         }
 

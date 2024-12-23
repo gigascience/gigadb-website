@@ -496,3 +496,28 @@ Feature: form to update dataset details
     And I press the button "Next >"
     And I wait "1" seconds
     Then I should see "Parrot.k31.NetworkTest.txt"
+
+  @ok
+  Scenario: Check type is not removed when uncheck a dataset type
+    Given I am on "/adminDataset/update/id/8"
+    Then I should see "Workflow"
+    Then I check "Dataset_Workflow" checkbox
+    And I press the button "Save"
+    When I am on "/adminDataset/update/id/8"
+    Then I should see "Dataset_Workflow" checkbox is checked
+    Then I uncheck "Dataset_Workflow" checkbox
+    And I press the button "Save"
+    When I am on "/adminDataset/update/id/8"
+    Then I should see "Workflow"
+
+  @ok
+  Scenario: Check type is not removed from other dataset when uncheck for another dataset
+    Given I am on "/adminDataset/update/id/8"
+    Then I should see "Genomic"
+    Then I should see "Dataset_Genomic" checkbox is checked
+    Then I check "Dataset_Workflow" checkbox
+    Then I uncheck "Dataset_Genomic" checkbox
+    And I press the button "Save"
+    And I wait "5" seconds
+    When I am on "/adminDataset/update/id/5"
+    Then I should see "Dataset_Genomic" checkbox is checked
