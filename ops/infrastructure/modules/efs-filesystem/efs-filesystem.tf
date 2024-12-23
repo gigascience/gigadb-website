@@ -1,5 +1,17 @@
+locals {
+  azs = slice(data.aws_availability_zones.available.names, 0, 3)
+}
+
+data "aws_availability_zones" "available" {
+  state = "available"
+}
+
+data "aws_caller_identity" "current" {}
+
+data "aws_region" "current" {}
+
 resource "aws_security_group" "efs_sg" {
-  name = "gigadb-efs-sg-${var.owner}-${var.deployment_target}"
+  name = "gigadb_efs_sg_${var.owner}_${var.deployment_target}"
   description = "gigadb EFS SG for ${data.aws_caller_identity.current.arn} on ${var.deployment_target}"
   vpc_id = var.vpc.vpc_id
 
@@ -21,20 +33,6 @@ resource "aws_security_group" "efs_sg" {
   }
 }
 
-locals {
-
-  azs = slice(data.aws_availability_zones.available.names, 0, 3)
-
-}
-
-data "aws_availability_zones" "available" {
-  state = "available"
-}
-
-data "aws_caller_identity" "current" {}
-
-data "aws_region" "current" {}
-
 module "efs" {
   source = "terraform-aws-modules/efs/aws"
 
@@ -52,7 +50,7 @@ module "efs" {
   # File system policy
   attach_policy                      = false
   bypass_policy_lockout_safety_check = false
-  
+  create_security_group              = false
 
   # Performance profile
   performance_mode                = "generalPurpose"
@@ -62,7 +60,7 @@ module "efs" {
   mount_targets = {
     for k, v in zipmap(local.azs, var.vpc.private_subnets) : k => {
       subnet_id      = v
-      security_groups = [aws_security_group.efs_sg.id]
+      security_groups = [aws_security_group.efs_sg.id]  # Reference the correct security group
     }
   }
 
@@ -123,6 +121,4 @@ module "efs" {
     Owner   = var.owner
     Environment = var.deployment_target
   }
-
-  depends_on = [aws_security_group.efs_sg] #This ensures the security group is created before EFS
 }
