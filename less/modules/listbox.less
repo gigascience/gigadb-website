@@ -50,4 +50,12 @@ select[multiple] {
       }
     }
   }
+  &:focus option {
+    &[aria-checked="true"]::before {
+      color: @color-true-white;
+    }
+    &[aria-checked="true"].focused::before {
+      color: @color-gigadb-green-50;
+    }
+  }
 }
