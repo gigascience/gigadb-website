@@ -66,6 +66,9 @@ class ListboxField extends BaseInput
                 $dataset = CHtml::listData($data, $valueField, $textField);
             }
 
+            // Sort the dataset alphabetically by values (display text)
+            asort($dataset, SORT_STRING | SORT_FLAG_CASE);
+
             echo CHtml::activeListBox(
                 $this->model,
                 $this->attributeName,
