@@ -1,4 +1,4 @@
-<td colspan="4">
+<div>
   <?php echo CHtml::activeHiddenField($attribute, '[edit]id') ?>
 	<div class="form-container">
 		<div class="form-group">
@@ -13,11 +13,8 @@
 			<label for="FileAttributes_edit_unit_id" class="control-label">Unit</label>
 			<?php echo CHtml::activeDropDownList($attribute, '[edit]unit_id', CHtml::listData(Unit::model()->findAll(), 'id', 'name'), array('class' => 'attr-form form-control', 'empty' => 'Select unit', 'title' => 'Choose the appropriate unit from the dropdown menu', 'data-toggle' => 'tooltip')); ?>
 		</div>
-		<div class="form-actions btns-row btns-row-end">
-			<button type="submit" class="btn background-btn js-save js-save-attr-edit-btn" name="edit_attr">Save Attribute</button>
-		</div>
 	</div>
-</td>
+</div>
 
 <script>
   // run tooltip script when partial is rendered
