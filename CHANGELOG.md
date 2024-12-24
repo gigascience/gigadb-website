@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #2124: Update open sans font to solve tilde (~) rendering issue in windows chrome
 - Feat #2067: Sort files by size in dataset page
 - Feat #372: Save dataset as xml in log
 - Feat #1940: Reminting notification text change
