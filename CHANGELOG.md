@@ -4,8 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
-- Feat #2066: Wrap edit attribute form in a modal
-- Feat #2066: Arrange edit file attr fields in a column layout
+- Feat #2066: Wrap edit file attribute form in a modal
 - Feat #2067: Sort files by size in dataset page
 - Feat #372: Save dataset as xml in log
 - Feat #1940: Reminting notification text change
