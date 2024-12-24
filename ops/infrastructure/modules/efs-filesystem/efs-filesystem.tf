@@ -60,7 +60,7 @@ module "efs" {
   mount_targets = {
     for k, v in zipmap(local.azs, var.vpc.private_subnets) : k => {
       subnet_id      = v
-      security_groups = [aws_security_group.efs_sg.id]  # Reference the correct security group
+      security_groups = [aws_security_group.efs_sg.id]
     }
   }
 
