@@ -24,48 +24,30 @@ Yii::import('application.components.controls.BaseInput');
 
 class ListboxField extends BaseInput
 {
-    public $listDataOptions = [];
-    public $dataset = [];
+    public array $listDataOptions = [];
+    public array $dataset = [];
 
-    public function init()
+    private const DEFAULT_CLASS = 'form-control mb-10';
+    private const DEFAULT_SIZE = 10;
+    private const DEFAULT_DESCRIPTION = 'Select multiple items by holding Ctrl/Cmd while clicking';
+
+    public function init(): void
     {
         parent::init();
 
-        if (!isset($this->inputOptions['class'])) {
-            $this->inputOptions['class'] = 'form-control mb-10';
-        }
-
-        if (!isset($this->inputOptions['multiple'])) {
-            $this->inputOptions['multiple'] = 'multiple';
-        }
-
-        if (!isset($this->inputOptions['size'])) {
-            $this->inputOptions['size'] = 10;
-        }
-
-        if (!isset($this->inputOptions['data-js'])) {
-            $this->inputOptions['data-js'] = 'listbox';
-        }
-
-        if (!isset($this->description)) {
-            $this->description = 'Select multiple items by holding Ctrl/Cmd while clicking';
-        }
+        $this->inputOptions['class'] ??= self::DEFAULT_CLASS;
+        $this->inputOptions['multiple'] ??= 'multiple';
+        $this->inputOptions['size'] ??= self::DEFAULT_SIZE;
+        $this->inputOptions['data-js'] ??= 'listbox';
+        $this->description ??= self::DEFAULT_DESCRIPTION;
     }
 
-    public function run()
+    public function run(): void
     {
-        $this->renderControlGroup(function () {
-            if ($this->dataset) {
-                $dataset = $this->dataset;
-            } else {
-                $data = $this->listDataOptions['data'] ?? [];
-                $valueField = $this->listDataOptions['valueField'] ?? 'id';
-                $textField = $this->listDataOptions['textField'] ?? 'name';
+        $this->renderControlGroup(function (): void {
+            $dataset = $this->getDataset();
 
-                $dataset = CHtml::listData($data, $valueField, $textField);
-            }
-
-            // Sort the dataset alphabetically by values (display text)
+            // Sort the dataset alphabetically by option label
             asort($dataset, SORT_STRING | SORT_FLAG_CASE);
 
             echo CHtml::activeListBox(
@@ -75,5 +57,18 @@ class ListboxField extends BaseInput
                 $this->inputOptions
             );
         });
+    }
+
+    private function getDataset(): array
+    {
+        if (!empty($this->dataset)) {
+            return $this->dataset;
+        }
+
+        $data = $this->listDataOptions['data'] ?? [];
+        $valueField = $this->listDataOptions['valueField'] ?? 'id';
+        $textField = $this->listDataOptions['textField'] ?? 'name';
+
+        return CHtml::listData($data, $valueField, $textField);
     }
 }
