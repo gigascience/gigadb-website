@@ -29,11 +29,6 @@ class ListboxField extends BaseInput
 
     public function init()
     {
-        // NOTE: the script only executes once even with multiple date fields present
-        $jsFile = Yii::getPathOfAlias('application.js.listBox') . '.js';
-        $jsUrl = Yii::app()->assetManager->publish($jsFile);
-        Yii::app()->clientScript->registerScriptFile($jsUrl, CClientScript::POS_END);
-
         parent::init();
 
         if (!isset($this->inputOptions['class'])) {
@@ -50,6 +45,10 @@ class ListboxField extends BaseInput
 
         if (!isset($this->inputOptions['data-js'])) {
             $this->inputOptions['data-js'] = 'listbox';
+        }
+
+        if (!isset($this->description)) {
+            $this->description = 'Select multiple items by holding Ctrl/Cmd while clicking';
         }
     }
 

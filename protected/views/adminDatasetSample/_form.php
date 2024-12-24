@@ -42,7 +42,7 @@
 				'multiple' => 'multiple',
 				'class' => 'form-control mb-10',
 			],
-			'description' => 'Select one or more samples'
+			'description' => 'Select multiple samples by holding Ctrl/Cmd while clicking'
 		]);
 		?>
 
