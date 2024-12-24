@@ -42,7 +42,6 @@ Feature: admin page for samples
 
   @this
   Scenario: Select multiple samples on create form
-    Given I have signed in as admin
     And I am on "/adminDatasetSample/create"
     When I select "100142" from the field "DatasetSample_dataset_id"
     And I multiselect "A. vittata, Pygoscelis_adeliae" from the field "DatasetSample_sample_id"
