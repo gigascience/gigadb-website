@@ -28,15 +28,21 @@
 		?>
 
 		<?php
-		$this->widget('application.components.controls.DropdownField', [
+		$this->widget('application.components.controls.ListBoxField', [
 			'form' => $form,
 			'model' => $model,
 			'attributeName' => 'sample_id',
 			'listDataOptions' => [
 				'data' => Sample::model()->findAll(array('limit' => 10000, 'order' => 'id DESC')),
 				'valueField' => 'id',
-				'textField' => 'id',
+				'textField' => 'name',
 			],
+			'inputOptions' => [
+				'size' => 10,
+				'multiple' => 'multiple',
+				'class' => 'form-control mb-10',
+			],
+			'description' => 'Select multiple samples by holding Ctrl/Cmd while clicking'
 		]);
 		?>
 

@@ -60,8 +60,33 @@ class AdminDatasetSampleController extends Controller
 		if(isset($_POST['DatasetSample']))
 		{
 			$model->attributes=$_POST['DatasetSample'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+			$transaction = Yii::app()->db->beginTransaction();
+			try {
+				$sampleIds = (array)$model->sample_id;
+
+				if (empty($sampleIds)) {
+					throw new CException('At least one sample must be selected');
+				}
+
+				foreach($sampleIds as $sampleId) {
+					$datasetSample = new DatasetSample;
+					$datasetSample->dataset_id = $model->dataset_id;
+					$datasetSample->sample_id = $sampleId;
+
+					if(!$datasetSample->save()) {
+            throw new CException('Failed to save dataset sample');
+					}
+				}
+
+        $transaction->commit();
+
+        $this->redirect(array('admin'));
+
+			} catch(Exception $e) {
+				$transaction->rollback();
+
+        Yii::app()->user->setFlash('error', $e->getMessage());
+			}
 		}
 
 		$this->render('create',array(
@@ -143,7 +168,7 @@ class AdminDatasetSampleController extends Controller
             $sample = new Sample;
             $sample->species_id = $species_id;
             $sample->code = $model->code;
-            //$sample->s_attrs = $model->attribute;
+           // $sample->s_attrs = $model->attribute;
            // $sample_id = 0;
             if (!$sample->save()) {
                 $model->addError('error', 'Sample save error');
