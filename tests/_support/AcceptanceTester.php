@@ -179,6 +179,17 @@ class AcceptanceTester extends \Codeception\Actor
     }
 
     /**
+     * @When I multiselect :options from the field :fieldName
+     */
+    public function iMultiselectFromTheField($options, $fieldName)
+    {
+        $optionsArray = strpos($options, ',') !== false ?
+            array_map('trim', explode(',', $options)) :
+            [$options]; // Wrap single option in array
+        $this->selectOption(["id" => $fieldName], $optionsArray);
+    }
+
+    /**
      * @When I check the field :fieldName
      */
     public function iCheckTheField($fieldName)

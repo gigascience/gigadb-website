@@ -39,3 +39,17 @@ Feature: admin page for samples
     And I follow "DOI"
     And I wait "1" seconds
     Then I should see the table is sorted by column "DOI" in the "desc" order
+
+  @this
+  Scenario: Select multiple samples on create form
+    Given I have signed in as admin
+    And I am on "/adminDatasetSample/create"
+    When I select "100142" from the field "DatasetSample_dataset_id"
+    And I multiselect "A. vittata, Pygoscelis_adeliae" from the field "DatasetSample_sample_id"
+    And I press the button "Create"
+    And I wait "1" seconds
+    And I fill in the field of "name" "DatasetSample[doi_search]" with "100142"
+    And I press return on the element "(//input)[2]"
+    And I wait "1" seconds
+    Then I should see "A. vittata"
+    And I should see "Pygoscelis_adeliae"
