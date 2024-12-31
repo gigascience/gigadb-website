@@ -2,17 +2,17 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-4">
-                <ul class="list-inline base-footer-logo-bar">
-                    <li><a href="http://gigasciencepress.com/"><img src="/images/new_interface_image/gigascience_white.png" alt="Go to GigaScience Journal web site"></a></li>
-                </ul>
+                <div class="base-footer-logo-bar">
+                    <a href="http://gigasciencepress.com/" class="base-footer-link"><img src="/images/new_interface_image/gigascience_white.png" alt="Go to GigaScience Journal web site"></a>
+                </div>
             </div>
             <div class="col-xs-4">
-                <ul class="base-footer-email">
-                    <li><a href="https://raw.githubusercontent.com/gigascience/gigadb-website/develop/CHANGELOG.md"><?php echo Yii::t('app' , 'Version: ' . Yii::app()->params["app_version"]) ?></a></li>
-                </ul>
+                <div class="base-footer-email">
+                    <a href="https://raw.githubusercontent.com/gigascience/gigadb-website/develop/CHANGELOG.md" class="base-footer-link"><?php echo Yii::t('app' , 'Version: ' . Yii::app()->params["app_version"]) ?></a>
+                </div>
             </div>
             <div class="col-xs-4 text-right">
-                <p class="base-footer-email"><a href="/site/contact"><i class="fa fa-envelope"></i> database@gigasciencejournal.com</a></p>
+                <p class="base-footer-email"><a href="/site/contact" class="base-footer-link"><i class="fa fa-envelope"></i> database@gigasciencejournal.com</a></p>
                 <ul class="list-inline base-footer-social-bar">
                     <li>
                         <a class="fa fa-facebook" href="http://facebook.com/GigaScience" title="GigaScience on Facebook" aria-label="GigaScience on Facebook"></a>

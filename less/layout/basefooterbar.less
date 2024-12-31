@@ -1,7 +1,14 @@
 /* footer bar */
 .base-footer-bar {
   background-color: @color-warm-black;
+  color: @gray-on-warm-black;
   height: 135px;
+}
+.base-footer-link {
+  color: @gray-on-warm-black;
+  &:hover {
+    color: white;
+  }
 }
 .base-footer-logo-bar {
   margin: 50.5px 0px;
@@ -37,6 +44,9 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      &:hover {
+        background-color: @color-darker-gray;
+      }
     }
     &__image {
       max-height: 100%;
@@ -62,4 +72,7 @@
   color: @gray-on-warm-black;
   line-height: 20px;
   font-size: 13px;
+  &:hover {
+    background-color: @color-darker-gray;
+  }
 }
