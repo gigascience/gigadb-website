@@ -10,7 +10,7 @@
 
       // boldly assume that if a link contains a sr-only class within, the SR message is already taken care of
       if (!$(this).html().match("sr-only")) {
-        $(this).append('<span class="sr-only">, opens in a new window</span>');
+        $(this).append('<span class="sr-only new-window-sr-only-msg">, opens in a new window</span>');
       }
     });
   });
