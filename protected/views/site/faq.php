@@ -804,6 +804,20 @@ Files:
                         </div>
                     </div>
                 </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h2 class="h4 panel-title" id="heading48">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel48" aria-expanded="false" aria-controls="panel48">
+                                Which version of BUSCO genome completeness analysis should I use?
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="panel48" aria-labelledby="heading48" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <p>We strongly recommend that you conduct your analysis using the most recent version of any software tool available, this includes BUSCO analysis. If for any reason you ran BUSCO analysis a long time before the dataset is being uploaded we may suggest that you re-run the analysis with the newest version. Please visit the <a href="https://busco.ezlab.org/">BUSCO webpage</a> for details of the most recent version. In general, the differences between versions have been minimal so will not impact the conclusions drawn from the analysis, but the exact numbers or percentages will be slightly different.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
     </div>
     </section>
