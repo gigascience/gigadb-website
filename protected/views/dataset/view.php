@@ -304,6 +304,10 @@ $sampleDataProvider = $samples->getDataProvider();
 
                     <li role="presentation" id="p-history"><a href="#history" aria-controls="history" role="tab" data-toggle="tab">History</a></li>
 
+                    <?php if (!empty($locations)) { ?>
+                        <li role="presentation" id="p-map"><a href="#map" aria-controls="map" role="tab" data-toggle="tab">Map</a></li>
+                    <?php } ?>
+
                 </ul>
 
 
@@ -551,6 +555,12 @@ $sampleDataProvider = $samples->getDataProvider();
                                 </table>
 
                             </div>
+
+                            <?php if (!empty($locations)) { ?>
+                                <div role="tabpanel" class="tab-pane" id="map">
+                                    <?php $this->renderPartial('/shared/_mapbrowse', array('locations' => $locations)); ?>
+                                </div>
+                            <?php } ?>
                             </div>
             </section>
         </div>
