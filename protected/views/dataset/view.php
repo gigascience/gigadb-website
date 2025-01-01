@@ -388,7 +388,18 @@ $sampleDataProvider = $samples->getDataProvider();
                             <div role="tabpanel" class="tab-pane" id="files">
                             <?php } else { ?>
                                 <div role="tabpanel" class="tab-pane active" id="files">
-                                <?php   } ?>
+                                <?php }
+                                $file_models = $fileDataProvider->getData();
+                                $readme_file = array_filter($file_models, function($file) {
+                                    return $file['type'] === 'Readme';
+                                });
+                                $readme_file = !empty($readme_file) ? reset($readme_file) : null;
+                                ?>
+                                <?php if ($readme_file): ?>
+                                <div>
+                                  <a href="<?= $readme_file['location'] ?>" target="_blank" aria-label="Open README file for this dataset in a new tab">Open README File for this dataset</a>
+                                </div>
+                                <?php endif; ?>
                                 <p class="pull-left">
                                   Click on a table column to sort the results.
                                 </p>
@@ -410,7 +421,7 @@ $sampleDataProvider = $samples->getDataProvider();
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php $file_models = $fileDataProvider->getData();
+                                        <?php
                                         foreach ($file_models as $file) {
                                         ?>
                                             <tr>
