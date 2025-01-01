@@ -187,30 +187,7 @@ $this->pageTitle = 'GigaDB - FAQ';
                     </div>
                     <div id="panel12" aria-labelledby="heading12" class="panel-collapse collapse">
                         <div class="panel-body">
-                            <p>The readme file is an important part of any dataset and our curators will be able and willing to assist with this if required. We intend to formalise the readme format at some point in the near future, but for now here is an example of the format we try to work to: </p>
-                            <pre>
-filename = readme.txt
-format = ASCII plain text (not RTF, not .doc !)
-
-<Dataset title>
-==========
-<Author list>:<year>, GigaScience database, <DOI>
-summary:
----------
-[optionally you may include a summary text about the dataset or directory structure used here]
-Associated data:
---------------
-[list any URL links or DOIs to other public repository data]
-
-Directories:
-----------
-[list any directories of related files with a description to help users understand why these files are grouped into a directory]
-<directory_name> - <description of the group of files in the directory>
-
-Files:
------
-[list the files available in this dataset with a brief description for each]
-<filename> - <description></pre>
+                            <p>The readme file is an important part of any dataset and as such we will generate it automatically from the information entered into the database. If you are asked to upload data files using FTP a curator may also request you upload a simple readme file listing each of files uploaded with 1 line descriptions of each (these will be used by the curator to add the descriptions to the database).</p>
                         </div>
                     </div>
                 </div>
