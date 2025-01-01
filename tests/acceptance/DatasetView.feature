@@ -228,3 +228,10 @@ Feature: a user visit the dataset page
     When I follow "[aria-label^='Size']"
     And I follow "[aria-label^='Size']"
     Then I should see "3.88 GB" in the table "#files_table" cell 1 6
+
+  @issue-1289
+  Scenario: Link to README file is displayed in files tab
+    Given I have not signed in
+    And I am on "/dataset/100006"
+    When I follow "Files"
+    Then I should see "Open README File for this dataset"
