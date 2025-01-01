@@ -434,7 +434,7 @@ Files:
                     </div>
                     <div id="panel27" aria-labelledby="heading27" class="panel-collapse collapse">
                         <div class="panel-body">
-                            <p>Due to various differences in the BMC's editorial tools and the <em>GigaDB</em> system, unfortunately at this time it is not possible to integrate the submission process, but our editors and curators will do everything they can to make the process as smooth as possible for authors.</p>
+                            <p>Due to various technical differences in the editorial submission tools and the <em>GigaDB</em> system, unfortunately at this time it is not possible to integrate the submission process, but our editors and curators will do everything they can to make the process as smooth as possible for authors.</p>
                         </div>
                     </div>
                 </div>
