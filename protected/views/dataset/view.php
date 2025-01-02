@@ -76,7 +76,7 @@ $sampleDataProvider = $samples->getDataProvider();
                                             </script>
                                         <?php } ?>
                                         <ul class="dropdown-menu" aria-labelledby="CiteDataset">
-                                            <li><a role="link" id="Text" onclick="showText()" target="_blank" tabindex="0" aria-label="Text (opens in a new tab)">Text</a></li>
+                                            <li><a id="Text" onclick="showText()" target="_blank" tabindex="0" aria-label="Text (opens in a new tab)">Text</a></li>
                                             <li><a id="citeRis" href='https://data.datacite.org/application/x-research-info-systems/10.5524/<?php echo $model->identifier; ?>' target="_self" aria-label="Download RIS file">RIS</a></li>
                                             <li><a id="citeBibTeX" href='https://data.datacite.org/application/x-bibtex/10.5524/<?php echo $model->identifier; ?>' target="_self" aria-label="Download bibtex file">BibTeX</a></li>
                                         </ul>
@@ -305,7 +305,7 @@ $sampleDataProvider = $samples->getDataProvider();
                     <li role="presentation" id="p-history"><a href="#history" aria-controls="history" role="tab" data-toggle="tab">History</a></li>
 
                     <?php if (!empty($locations)) { ?>
-                        <li role="presentation" id="p-map"><a href="#map" aria-controls="map" role="tab" data-toggle="tab">Map</a></li>
+                        <li role="presentation" id="p-map"><a href="#map-pane" aria-controls="map-pane" role="tab" data-toggle="tab" class="js-map-view-toggler">Samples Map</a></li>
                     <?php } ?>
 
                 </ul>
@@ -556,19 +556,13 @@ $sampleDataProvider = $samples->getDataProvider();
 
                             </div>
 
-                            <?php if (!empty($locations)) { ?>
-                                <div role="tabpanel" class="tab-pane" id="map">
-                                    <?php $this->renderPartial('/shared/_mapbrowse', array('locations' => $locations)); ?>
-                                </div>
-                            <?php } ?>
+                            <div role="tabpanel" class="tab-pane" id="map-pane">
+                                <?php $this->renderPartial('/shared/_mapbrowse', array('locations' => $locations)); ?>
                             </div>
+                          </div>
             </section>
         </div>
     </div>
-
-
-
-
 
     <div class="clear"></div>
 
