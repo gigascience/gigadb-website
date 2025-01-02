@@ -228,3 +228,10 @@ Feature: a user visit the dataset page
     When I follow "[aria-label^='Size']"
     And I follow "[aria-label^='Size']"
     Then I should see "3.88 GB" in the table "#files_table" cell 1 6
+
+  @issue-718
+  Scenario: Display map samples tab
+    Given I have not signed in
+    And I am on "/dataset/100020"
+    And I follow "Samples Map"
+    Then I should see "OpenStreetMap"
