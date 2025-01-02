@@ -9,7 +9,7 @@
           ]
         ]);
         ?>
-        <div>
+        <div class="mb-20">
             <div class="team-grid">
                 <article class="team-card">
                     <img src="../images/team/chunts.jpg" alt="Chris Hunter's portrait">
@@ -18,15 +18,6 @@
                             <small class="member-role">GigaDB Director</small>
                         </h2>
                         <p>With a background in Genetics/Genomics, non-coding RNA, Cancer genetics, metagenomics and a long career in BioCuration our lead biocurator heads up the team responsible for archiving the data and metadata in GigaDB.</p>
-                    </div>
-                </article>
-                <article class="team-card">
-                    <img src="../images/team/chrisa.jpg" alt="Chris Armit's portrait">
-                    <div class="team-content">
-                        <h2 class="h3">Chris Armit<br />
-                            <small class="member-role">Data Scientist</small>
-                        </h2>
-                        <p>I am a Developmental Biologist with a strong interest in image informatics and next-gen imaging</p>
                     </div>
                 </article>
                 <article class="team-card">
@@ -150,7 +141,26 @@
                     </div>
                     <button class="btn toggle-more" aria-expanded="false">Show More</button>
                 </article>
+                <article class="team-card">
+                    <img src="../images/team/molcrette.jpg" alt="Bastien Molcrette's portrait">
+                    <div class="team-content collapsed">
+                        <h2 class="h3">Bastien Molcrette, PhD<br />
+                            <small class="member-role">Data Editor</small>
+                        </h2>
+                        <p>A biophysicist with a background in advanced microscopy and molecular biology. Trained as a physicist, moved into molecular biology, then left academia to work as a freelance biotech consultant. But now combines those experiences, interests and skills by working as a biocurator for GigaDB.</p>
+                    </div>
+                    <button class="btn toggle-more" aria-expanded="false">Show More</button>
+                </article>
 
+                <article class="team-card">
+                    <img src="../images/team/qing.jpg" alt="Qing's portrait">
+                    <div class="team-content">
+                        <h2 class="h3">Qing<br />
+                            <small class="member-role">Assistant Editor</small>
+                        </h2>
+                        <p>Qing is Assistant Editor for GigaScience and GigaByte. She holds a PhD in Genetics, Development, and Disease from University of Texas Southwestern Medical Center at Dallas. Prior to her editorial role, she worked as a bioinformatician at Beijing Genomics Institute in Shenzhen.</p>
+                    </div>
+                </article>
             </div>
 
             <div class="row">

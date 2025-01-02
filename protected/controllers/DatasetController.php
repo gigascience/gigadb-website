@@ -58,7 +58,7 @@ class DatasetController extends Controller
         $dao = new DatasetDAO(["identifier" => $id]) ;
         $nextDataset =  $dao->getNextDataset() ?? $dao->getFirstDataset();
         $previousDataset =  $dao->getPreviousDataset() ?? $dao->getFirstDataset();
-        $srv = new FileUploadService(["webClient" => new \GuzzleHttp\Client()]);
+        $srv = new FileUploadService(["webClient" => \Yii::$container->get('guzzleHttpClient')]);
 
         $datasetPageSettings = new DatasetPageSettings($model);
 

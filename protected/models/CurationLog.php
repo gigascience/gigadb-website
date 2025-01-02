@@ -81,10 +81,10 @@ class CurationLog extends CActiveRecord
             'last_modified_by' => 'Last Modified By',
         );
     }
-    
+
     /**
      * Factory method to make a new instance of Curation Log
-     * 
+     *
      * @param int $id a Dataset ID associated with the curation log entry
      * @param string $creator The username of who created the curation log entry
      * @return CurationLog the new un-saved instance of curation log
@@ -92,7 +92,7 @@ class CurationLog extends CActiveRecord
     public static function makeNewInstanceForDatasetBy(int $id, string $creator): CurationLog
     {
         $curationlog = new CurationLog();
-        $curationlog->creation_date = date("Y-m-d");
+        $curationlog->creation_date = date("Y-m-d H:i:s");
         $curationlog->last_modified_date = null;
         $curationlog->dataset_id = $id;
         $curationlog->created_by = $creator;
@@ -114,10 +114,19 @@ class CurationLog extends CActiveRecord
         return $curationlog->save();
     }
 
+    public static function createGeneralCurationLogEntry(int $id, string $action, string $content, $author = 'system'): bool
+    {
+        $curationLog = self::makeNewInstanceForCurationLogBy($id, $author);
+        $curationLog->action = $action;
+        $curationLog->comments = $content;
+
+        return $curationLog->save();
+    }
+
     /**
      *
      * alias to allow code from develop up to commit 4ab4399 to work
-     * 
+     *
      * @param int $id
      * @param string $creator
      * @return CurationLog
@@ -129,12 +138,12 @@ class CurationLog extends CActiveRecord
     }
 
     public static function createlog($status,$id) {
-       
+
         $curationlog = self::makeNewInstanceForDatasetBy($id,"System");
         $curationlog->action = "Status changed to ".$status;
         return $curationlog->save();
     }
-    
+
     public static function createlog_assign_curator($id, $curatorId) {
         $User1 = User::model()->find('id=:id', array(':id' => Yii::app()->user->id));
         $username = sprintf('%s %s', $User1->first_name, $User1->last_name);
@@ -185,4 +194,4 @@ class CurationLog extends CActiveRecord
             'criteria' => $criteria,
         ));
     }
-} 
+}
