@@ -1,15 +1,54 @@
 <?php
 if (isset($locations)) {
+  $USE_TEST_LOCATIONS = false;
+  $NUMBER_OF_TEST_LOCATIONS = 1_000;
+
+  if (YII_DEBUG && $USE_TEST_LOCATIONS) {
+    // Generate random locations for testing since locally there are very few locations
+    function generateRandomLocation() {
+      $lat = rand(-90, 90);
+      $lng = rand(-180, 180);
+      $identifier = rand(100000, 999999);
+
+      $species = array(
+        array("name" => "Testius maximus", "common" => "Giant Test Creature"),
+        array("name" => "Debuggus minimus", "common" => "Tiny Debug Bug"),
+        array("name" => "Mockus dataensis", "common" => "Common Mock Beast"),
+        array("name" => "Dummius placeholderus", "common" => "Placeholder Dragon"),
+        array("name" => "Fakeius sampleius", "common" => "Sample Snark")
+      );
+
+      $randomSpecies = $species[array_rand($species)];
+      $sciname = $randomSpecies["name"];
+      $title = "Genomic data from " . $randomSpecies["common"] . " (" . $sciname . ").";
+      $sampleid = rand(1, 1000);
+
+      return array(
+        "identifier" => $identifier,
+        "title" => $title,
+        "value" => sprintf("%.6f,%.6f", $lat, $lng),
+        "sciname" => $sciname,
+        "sampleid" => $sampleid
+      );
+    }
+
+    for ($i = 0; $i < $NUMBER_OF_TEST_LOCATIONS; $i++) {
+      $locations[] = generateRandomLocation();
+    }
+  }
   ?>
 
+  <div class="container">
+    <p>Numbers indicate number of samples in each cluster</p>
+  </div>
   <div class="map-samples-container" id="map-browse-container" tabindex="0"></div>
   <div class="btns-row mt-10 mb-10 ml-10">
     <button id="zoom-out" class="btn background-btn-o">Zoom out</button>
     <button id="zoom-in" class="btn background-btn-o">Zoom in</button>
   </div>
-  <div id="popup" class="map-samples-popup">
-    <a href="/" id="popup-closer">Close</a>
-    <div id="popup-content"></div>
+  <div id="map-samples-popup" class="map-samples-popup js-map-samples-popup">
+    <a href="/" id="map-samples-popup__close-btn" class="js-map-samples-popup__close-btn map-samples-popup__close-btn"><i class="fa fa-times" aria-label="Close popup"></i></a>
+    <div id="map-samples-popup__content" class="js-map-samples-popup__content map-samples-popup__content"></div>
   </div>
 
 
@@ -17,7 +56,7 @@ if (isset($locations)) {
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@v8.1.0/ol.css">
 
   <?php
-  Yii::app()->assetManager->forceCopy = YII_DEBUG;
+  Yii::app()->assetManager->forceCopy = YII_DEBUG; // prevent caching on development
   $jsDir = Yii::getPathOfAlias('application.js.map-browse');
   $jsUrl = Yii::app()->assetManager->publish($jsDir);
 

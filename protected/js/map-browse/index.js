@@ -1,141 +1,181 @@
-export function mapBrowse(geojsonFeatures) {
-  function initializeMap() {
-    var distance = document.getElementById("distance");
-    var source = new ol.source.Vector({
+const MAP_CONFIG = {
+  initialZoom: 2,
+  initialCenter: [0, 0],
+  clusterDistance: 10,
+  circleRadius: 10,
+  styles: {
+    stroke: { color: "#fff" },
+    fill: { color: "#0d6e36" },
+    text: { color: "#fff" },
+  },
+};
+
+export function mapBrowse(geojsonFeatures, config = {}) {
+  const mergedConfig = { ...MAP_CONFIG, ...config };
+  const styleCache = {};
+
+  function createClusterStyle(size) {
+    if (!styleCache[size]) {
+      styleCache[size] = new ol.style.Style({
+        image: new ol.style.Circle({
+          radius: mergedConfig.circleRadius,
+          stroke: new ol.style.Stroke(mergedConfig.styles.stroke),
+          fill: new ol.style.Fill(mergedConfig.styles.fill),
+        }),
+        text: new ol.style.Text({
+          text: size.toString(),
+          fill: new ol.style.Fill(mergedConfig.styles.text),
+        }),
+      });
+    }
+    return styleCache[size];
+  }
+
+  function createVectorSource() {
+    return new ol.source.Vector({
       features: new ol.format.GeoJSON().readFeatures(geojsonFeatures, {
         featureProjection: "EPSG:3857",
       }),
     });
+  }
 
-    var clusterSource = new ol.source.Cluster({
-      distance: 10,
-      source: source,
+  function createClusterLayer(source) {
+    const clusterSource = new ol.source.Cluster({
+      distance: mergedConfig.clusterDistance,
+      source,
     });
-    var styleCache = {};
-    var clusters = new ol.layer.Vector({
+
+    return new ol.layer.Vector({
       source: clusterSource,
-      style: function (feature) {
-        var size = feature.get("features").length;
-        var style = styleCache[size];
-        if (!style) {
-          style = new ol.style.Style({
-            image: new ol.style.Circle({
-              radius: 10,
-              stroke: new ol.style.Stroke({
-                color: "#fff",
-              }),
-              fill: new ol.style.Fill({
-                color: "#006633",
-              }),
-            }),
-            text: new ol.style.Text({
-              text: size.toString(),
-              fill: new ol.style.Fill({
-                color: "#fff",
-              }),
-            }),
-          });
-          styleCache[size] = style;
-        }
-        return style;
-      },
+      style: (feature) => createClusterStyle(feature.get("features").length),
     });
-    var raster = new ol.layer.Tile({
-      source: new ol.source.OSM(),
-    });
-    var map = new ol.Map({
+  }
+
+  function initializeMap() {
+    const source = createVectorSource();
+    const clusters = createClusterLayer(source);
+    const raster = new ol.layer.Tile({ source: new ol.source.OSM() });
+
+    return new ol.Map({
       layers: [raster, clusters],
       target: "map-browse-container",
       view: new ol.View({
-        center: [0, 0],
-        zoom: 2,
+        center: mergedConfig.initialCenter,
+        zoom: mergedConfig.initialZoom,
       }),
     });
+  }
 
-    return map;
+  function setupPopup(map) {
+    const $popup = $(".js-map-samples-popup");
+    const $popupContent = $(".js-map-samples-popup__content");
+    const $popupCloseBtn = $(".js-map-samples-popup__close-btn");
+
+    const overlay = new ol.Overlay({
+      element: $popup[0],
+      autoPan: true,
+      autoPanAnimation: { duration: 250 },
+    });
+
+    map.addOverlay(overlay);
+
+    $popupCloseBtn.on("click", () => {
+      overlay.setPosition(undefined);
+      return false;
+    });
+
+    onClickOutside($popup, () => {
+      overlay.setPosition(undefined);
+    });
+
+    return { overlay, $popupContent };
+  }
+
+  function onClickOutside(element, callback) {
+    element.on("click", (evt) => {
+      if (!element.contains(evt.target)) {
+        callback();
+      }
+    });
+  }
+
+  function renderPopupContent(features) {
+    function createHeading(text) {
+      return $("<h2>")
+        .addClass("map-samples-popup__heading h5")
+        .append($("<strong>").text(text));
+    }
+
+    function createDatasetLink(dataset) {
+      return $("<a>")
+        .attr("href", `http://dx.doi.org/10.5524/${dataset}`)
+        .text(dataset);
+    }
+
+    const $content = $(features.length === 1 ? "<div>" : "<section>").addClass('map-samples-popup__container');
+
+    if (features.length === 1) {
+      const [feature] = features;
+      const $heading = createHeading("")
+        .find("strong")
+        .html("Dataset: ")
+        .append(createDatasetLink(feature.get("Dataset")))
+        .end();
+
+      $content.append($heading).append(feature.get("Scientific name") || "");
+    } else {
+      $content.append(createHeading("Samples"));
+
+      features.forEach((feature) => {
+        const $article = $("<article>")
+          .addClass("map-samples-popup__article")
+          .append(
+            $("<strong>").append(
+              createDatasetLink(feature.get("Dataset")).text(
+                `${feature.get("Dataset")}: ${feature.get("Scientific name")}`
+              )
+            )
+          );
+        $content.append($article);
+      });
+    }
+
+    return $content.prop('outerHTML');
+  }
+
+  function handleMapClick(evt, map, { overlay, $popupContent }) {
+    const feature = map.forEachFeatureAtPixel(evt.pixel, (feature) => feature);
+
+    if (!feature) {
+      overlay.setPosition(undefined);
+      return;
+    }
+
+    const coord = map.getCoordinateFromPixel(evt.pixel);
+    const features = feature.get("features") || [feature];
+
+    $popupContent.html(renderPopupContent(features));
+    $popupContent.scrollTop(0);
+    overlay.setPosition(coord);
+  }
+
+  function initializeControls(map) {
+    $("#zoom-out").on("click", () => {
+      const view = map.getView();
+      view.setZoom(view.getZoom() - 1);
+    });
+
+    $("#zoom-in").on("click", () => {
+      const view = map.getView();
+      view.setZoom(view.getZoom() + 1);
+    });
   }
 
   const map = initializeMap();
+  const popupElements = setupPopup(map);
 
-  document.getElementById("zoom-out").onclick = function () {
-    const view = map.getView();
-    const zoom = view.getZoom();
-    view.setZoom(zoom - 1);
-  };
+  map.on("click", (evt) => handleMapClick(evt, map, popupElements));
+  initializeControls(map);
 
-  document.getElementById("zoom-in").onclick = function () {
-    const view = map.getView();
-    const zoom = view.getZoom();
-    view.setZoom(zoom + 1);
-  };
-
-  function elem_id(id) {
-    return document.getElementById(id);
-  }
-
-  var popup = elem_id("popup");
-  var popup_closer = elem_id("popup-closer");
-  var popup_content = elem_id("popup-content");
-  var olpopup = new ol.Overlay({
-    element: popup,
-    autoPan: true,
-    autoPanAnimation: { duration: 250 },
-  });
-  map.addOverlay(olpopup);
-  popup_closer.onclick = function () {
-    olpopup.setPosition(undefined);
-    return false;
-  };
-  var OpenPopup = function (evt) {
-    var feature = map.forEachFeatureAtPixel(
-      evt.pixel,
-      function (feature, layer) {
-        if (feature) {
-          var coord = map.getCoordinateFromPixel(evt.pixel);
-          if (typeof feature.get("features") === "undefined") {
-            popup_content.innerHTML =
-              '<h5><b>Dataset:<a href="http://dx.doi.org/10.5524/' +
-              feature.get("Dataset") +
-              '">' +
-              feature.get("Dataset") +
-              "</a></b></h5>";
-          } else {
-            var cfeatures = feature.get("features");
-            if (cfeatures.length > 1) {
-              popup_content.innerHTML = '<h5><strong>"Samples"</strong></h5>';
-              for (var i = 0; i < cfeatures.length; i++) {
-                $(popup_content).append(
-                  '<article><strong><a href="http://dx.doi.org/10.5524/' +
-                    cfeatures[i].get("Dataset") +
-                    '">' +
-                    cfeatures[i].get("Dataset") +
-                    ":" +
-                    cfeatures[i].get("Scientific name") +
-                    "</a></article>"
-                );
-              }
-            }
-            if (cfeatures.length == 1) {
-              popup_content.innerHTML =
-                '<h5><b>Dataset:<a href="http://dx.doi.org/10.5524/' +
-                cfeatures[0].get("Dataset") +
-                '">' +
-                cfeatures[0].get("Dataset") +
-                "</a></b></h5>" +
-                cfeatures[0].get("Scientific name");
-            }
-          }
-          popup.scrollTop = 0;
-          olpopup.setPosition(coord);
-        } else {
-          olpopup.setPosition(undefined);
-        }
-      }
-    );
-  };
-  map.on("click", OpenPopup);
-  $('.js-map-view-toggler').on('click', function(){
-    console.log('map-view-toggler clicked');
-    map.updateSize();
-  })
+  return map;
 }

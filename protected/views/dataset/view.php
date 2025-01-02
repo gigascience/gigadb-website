@@ -305,7 +305,7 @@ $sampleDataProvider = $samples->getDataProvider();
                     <li role="presentation" id="p-history"><a href="#history" aria-controls="history" role="tab" data-toggle="tab">History</a></li>
 
                     <?php if (!empty($locations)) { ?>
-                        <li role="presentation" id="p-map"><a href="#map-pane" aria-controls="map-pane" role="tab" data-toggle="tab" class="js-map-view-toggler">Samples Map</a></li>
+                        <li role="presentation" id="p-map"><a href="#map-pane" aria-controls="map-pane" role="tab" data-toggle="tab">Samples Map</a></li>
                     <?php } ?>
 
                 </ul>
