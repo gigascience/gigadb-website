@@ -256,9 +256,16 @@
             }
         },
         {
+            "Sid": "AllowCreateDBSnapshot",
+            "Action": [
+                "rds:CreateDBSnapshot"
+            ],
+            "Effect": "Allow",
+            "Resource": "*"
+        },
+        {
             "Sid": "ManageDBSnapshotWithOwnerTagRestriction",
             "Action": [
-                "rds:CreateDBSnapshot",
                 "rds:DeleteDBSnapshot",
                 "rds:RestoreDBInstanceFromDBSnapshot",
                 "rds:DescribeDBSnapshots"
