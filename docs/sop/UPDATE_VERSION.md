@@ -178,7 +178,7 @@ YII2_VERSION: "2.0.48"
 # make sure staging has been deployed successfully through the gitlab pipeline, eg. sd_gigadb
 # staging now should have the latest datasets, check the RSS feed in staging website
 # log in to the staging bastion
-% ssh -i "$aws.pem" ec2-user@"$basion.ip"
+% ssh -i "$aws.pem" ec2-user@"$bastion-ip"
 [ec2-user@ip-10-xx-x-xx ~]$ pg_dump --version
 pg_dump (PostgreSQL) 14.8
 [ec2-user@ip-10-xx-x-xx ~]$ psql --version
@@ -212,7 +212,7 @@ Yii Migration Tool (based on Yii v2.0.48)
 # make sure live has been deployed successfully through the gitlab pipeline, eg. ld_gigadb
 # live now should have the latest datasets, check the RSS feed in staging website
 # log in to the live bastion
-% ssh -i "$aws.pem" ec2-user@"$basion.ip"
+% ssh -i "$aws.pem" ec2-user@"$bastion-ip"
 [ec2-user@ip-10-xx-x-xx ~]$ pg_dump --version
 pg_dump (PostgreSQL) 14.8
 [ec2-user@ip-10-xx-x-xx ~]$ psql --version
@@ -249,7 +249,7 @@ Yii Migration Tool (based on Yii v2.0.48)
 # make sure upstream live has been re-builded and re-deployed successfully through the gitlab pipeline from the `upstream/gigadb-website/`, eg. build_live, ld_gigadb
 # upstream live now should have the latest datasets, check the RSS feed in the live gigadb website, https://beta.gigadb.org
 # log in to the upstream live bastion server
-% ssh -i "$aws-upstream.pem" ec2-user@"$basion.ip"
+% ssh -i "$aws-upstream.pem" ec2-user@"$bastion-ip"
 [ec2-user@ip-10-xx-x-xx ~]$ pg_dump --version
 pg_dump (PostgreSQL) 14.8
 [ec2-user@ip-10-xx-x-xx ~]$ psql --version
