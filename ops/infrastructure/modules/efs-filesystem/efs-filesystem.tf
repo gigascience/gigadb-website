@@ -1,7 +1,5 @@
 locals {
-
   azs = slice(data.aws_availability_zones.available.names, 0, 3)
-
 }
 
 data "aws_availability_zones" "available" {
@@ -11,6 +9,29 @@ data "aws_availability_zones" "available" {
 data "aws_caller_identity" "current" {}
 
 data "aws_region" "current" {}
+
+resource "aws_security_group" "efs_sg" {
+  name = "gigadb_efs_sg_${var.owner}_${var.deployment_target}"
+  description = "gigadb EFS SG for ${data.aws_caller_identity.current.arn} on ${var.deployment_target}"
+  vpc_id = var.vpc.vpc_id
+
+  ingress {
+    description = "NFS ingress from VPC subnets"
+    from_port = 2049
+    to_port = 2049
+    protocol = "tcp"
+    cidr_blocks = concat(
+      var.vpc.public_subnets_cidr_blocks,
+      var.vpc.private_subnets_cidr_blocks
+    )
+  }
+
+  tags = {
+    Name = "efs_sg_${var.deployment_target}_${var.owner}"
+    Owner = var.owner
+    Environment = var.deployment_target
+  }
+}
 
 module "efs" {
   source = "terraform-aws-modules/efs/aws"
@@ -29,25 +50,17 @@ module "efs" {
   # File system policy
   attach_policy                      = false
   bypass_policy_lockout_safety_check = false
-  
+  create_security_group              = false
 
   # Performance profile
   performance_mode                = "generalPurpose"
   throughput_mode                 = "elastic"
-  
-  # Mount targets / security group
-  mount_targets              = { for k, v in zipmap(local.azs, var.vpc.private_subnets) : k => { subnet_id = v } }
 
-  security_group_description = "gigadb-efs EFS SG for ${data.aws_caller_identity.current.arn} on ${var.deployment_target}"
-  security_group_vpc_id      = var.vpc.vpc_id
-  security_group_rules = {
-    vpc = {
-      # relying on the defaults provided for EFS/NFS (2049/TCP + ingress)
-      description = "NFS ingress from VPC subnets"
-      cidr_blocks = concat(
-        var.vpc.public_subnets_cidr_blocks,
-        var.vpc.private_subnets_cidr_blocks
-      )
+  # Mount targets
+  mount_targets = {
+    for k, v in zipmap(local.azs, var.vpc.private_subnets) : k => {
+      subnet_id      = v
+      security_groups = [aws_security_group.efs_sg.id]
     }
   }
 
