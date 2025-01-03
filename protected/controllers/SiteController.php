@@ -100,7 +100,7 @@ class SiteController extends Controller {
 
         $rss_arr = Yii::app()->newsAndFeedsService->getFeedsData();
 
-        $feed_datasets = Yii::app()->newsAndFeedsService->getFeedDatasets(9);
+        $feed_datasets = Yii::app()->newsAndFeedsService->getFeedDatasets(12);
 
         //Get dataset types number
         $sql_1="select * from homepage_dataset_type";

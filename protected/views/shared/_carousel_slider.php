@@ -31,7 +31,6 @@ $root_id = 'carousel-' . uniqid();
 </div>
 
 <script>
-
   function throttle(func, wait) {
     let timeout;
     let lastArgs;
@@ -51,12 +50,25 @@ $root_id = 'carousel-' . uniqid();
   }
 
   $(document).ready(function () {
-    const screenSizes = [768, 992];
+    const options = <?php echo json_encode([
+      'itemsPerSlide' => isset($itemsPerSlide) ? $itemsPerSlide : [
+        'mobile' => 1,
+        'tablet' => 2,
+        'desktop' => 3
+      ]
+    ]); ?>;
+
+    const breakpoints = {
+      'tablet': 768,
+      'desktop': 992
+    }
 
     function arrangeSlides() {
-      const isMobile = $(window).width() < screenSizes[0];
-      const isTablet = $(window).width() >= screenSizes[0] && $(window).width() < screenSizes[1];
-      const chunkSize = isMobile ? 1 : isTablet ? 2 : 3;
+      const isMobile = $(window).width() < breakpoints.tablet;
+      const isTablet = $(window).width() >= breakpoints.tablet && $(window).width() < breakpoints.desktop;
+      const chunkSize = isMobile ? options.itemsPerSlide.mobile
+        : isTablet ? options.itemsPerSlide.tablet
+          : options.itemsPerSlide.desktop;
 
       const $carousel = $('#<?php echo $root_id; ?>');
       const $carouselInner = $('.carousel-inner', $carousel);
@@ -68,22 +80,19 @@ $root_id = 'carousel-' . uniqid();
       $carouselInner.empty();
       $indicators.empty();
 
+      // Set max-width based on items per slide
+      const maxWidth = (100 / chunkSize) + '%';
+      $items.css('max-width', maxWidth);
+
       // Hide controls and indicators if all items fit on one slide
       if (totalItems <= chunkSize) {
         $controls.hide();
         $indicators.hide();
         $carousel.removeClass('with-indicators');
-
-        // Dynamically set max-width when fewer items than chunk size
-        const maxWidth = (100 / Math.min(totalItems, chunkSize)) + '%';
-        $items.css('max-width', maxWidth);
       } else {
         $controls.show();
         $indicators.show();
         $carousel.addClass('with-indicators');
-
-        // Reset to default responsive max-widths from CSS
-        $items.css('max-width', '');
       }
 
       for (let i = 0; i < $items.length; i += chunkSize) {

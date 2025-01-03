@@ -103,6 +103,7 @@ class NewsAndFeedsService extends CApplicationComponent
 
         $criteria = new CDbCriteria();
         $criteria->addCondition("upload_status = 'Published'");
+        $criteria->order = 'publication_date DESC';
 
         if (isset($_GET['Dataset'])) {
             $model->setAttributes($_GET['Dataset']);

@@ -204,7 +204,7 @@
     <?php if (count($feed_datasets) > 0) { ?>
         <section class="dataset-feed-section">
             <?php
-            $this->renderPartial('datasets_carousel', array('slides' => $feed_datasets));
+            $this->renderPartial('datasets_carousel', array('datasets' => $feed_datasets));
             ?>
         </section>
     <?php } ?>
