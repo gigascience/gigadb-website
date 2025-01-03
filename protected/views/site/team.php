@@ -161,17 +161,6 @@
                         <p>Qing is Assistant Editor for GigaScience and GigaByte. She holds a PhD in Genetics, Development, and Disease from University of Texas Southwestern Medical Center at Dallas. Prior to her editorial role, she worked as a bioinformatician at Beijing Genomics Institute in Shenzhen.</p>
                     </div>
                 </article>
-
-                <article class="team-card">
-                    <img src="../images/team/jessexiao.jpg" alt="Jesse Xiao's portrait">
-                    <div class="team-content">
-                        <h2 class="h3">Jesse (Sezhe) Xiao<br />
-                            <small class="member-role">Advisory Board Member</small>
-                        </h2>
-                        <a class="fa fa-linkedin" href="https://www.linkedin.com/in/jessexiao" aria-label="Jesse (Sezhe) Xiao on LinkedIn. Opens in a new tab"></a>
-                        <p>Jesse (Sezhe) Xiao serves as an Advisory Board Member to GigaScience.</p>
-                    </div>
-                </article>
             </div>
 
             <div class="row">
