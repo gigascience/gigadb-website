@@ -25,6 +25,13 @@ foreach ($news as $temp_news) {
     )
   );
 }
-
-$this->renderPartial('//shared/_carousel_slider', array('slides' => $news_slides));
 ?>
+
+<div class="container">
+  <div class="underline-title">
+    <div>
+      <h2 class="heading">Latest news</h2>
+    </div>
+  </div>
+  <?php $this->renderPartial('//shared/_carousel_slider', array('slides' => $news_slides)); ?>
+</div>

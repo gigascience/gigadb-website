@@ -95,4 +95,23 @@ class NewsAndFeedsService extends CApplicationComponent
 
         return $feed;
     }
+
+    public function getFeedDatasets($limit = 10)
+    {
+        $model = new Dataset();
+        $model->unsetAttributes();
+
+        $criteria = new CDbCriteria();
+        $criteria->addCondition("upload_status = 'Published'");
+
+        if (isset($_GET['Dataset'])) {
+            $model->setAttributes($_GET['Dataset']);
+        }
+
+        $dataProvider = $model->search();
+        $dataProvider->criteria->mergeWith($criteria);
+        $dataProvider->pagination->pageSize = $limit;
+
+        return $dataProvider->getData();
+    }
 }

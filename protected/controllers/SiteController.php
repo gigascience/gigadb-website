@@ -100,6 +100,8 @@ class SiteController extends Controller {
 
         $rss_arr = Yii::app()->newsAndFeedsService->getFeedsData();
 
+        $feed_datasets = Yii::app()->newsAndFeedsService->getFeedDatasets(9);
+
         //Get dataset types number
         $sql_1="select * from homepage_dataset_type";
         $command = Yii::app()->db->createCommand($sql_1);
@@ -208,30 +210,30 @@ class SiteController extends Controller {
 			'dataset_hint'=>$datasettypes_hints ,
 			'rss_arr' => $rss_arr ,
 			'count' => count($publicIds),
-                        'count_sample' => $count_sample[0]['count'],
-                        'count_file' => $count_file[0]['count'],
-                        'number_genome_mapping'=>$number_genome_mapping,
-                        'number_climate' => $number_climate,
-                        'number_ecology'=>$number_ecology,
-                        'number_eeg'=>$number_eeg,
-                        'number_epi'=>$number_epi,
-                        'number_genomic'=>$number_genomic,
-                        'number_imaging'=>$number_imaging,
-                        'number_lipi'=>$number_lipi,
-                        'number_metabarcoding'=>$number_metabarcoding,
-                        'number_metabolomic'=>$number_metabolomic,
-                        'number_metadata'=>$number_metadata,
-                        'number_metagenomic'=>$number_metagenomic,
-                        'number_na'=>$number_na,
-                        'number_ns'=>$number_ns,
-                        'number_pt'=>$number_pt,
-                        'number_proteomic'=>$number_proteomic,
-                        'number_software'=>$number_software,
-                        'number_ts'=>$number_ts,
-                        'number_vm'=>$number_vm,
-                        'number_wf'=>$number_wf,
-
-                        )
+      'count_sample' => $count_sample[0]['count'],
+      'count_file' => $count_file[0]['count'],
+      'number_genome_mapping'=>$number_genome_mapping,
+      'number_climate' => $number_climate,
+      'number_ecology'=>$number_ecology,
+      'number_eeg'=>$number_eeg,
+      'number_epi'=>$number_epi,
+      'number_genomic'=>$number_genomic,
+      'number_imaging'=>$number_imaging,
+      'number_lipi'=>$number_lipi,
+      'number_metabarcoding'=>$number_metabarcoding,
+      'number_metabolomic'=>$number_metabolomic,
+      'number_metadata'=>$number_metadata,
+      'number_metagenomic'=>$number_metagenomic,
+      'number_na'=>$number_na,
+      'number_ns'=>$number_ns,
+      'number_pt'=>$number_pt,
+      'number_proteomic'=>$number_proteomic,
+      'number_software'=>$number_software,
+      'number_ts'=>$number_ts,
+      'number_vm'=>$number_vm,
+      'number_wf'=>$number_wf,
+      'feed_datasets'=>$feed_datasets
+      )
 
 		);
 	}
