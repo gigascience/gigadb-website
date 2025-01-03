@@ -211,6 +211,19 @@
         </section>
     <? } ?>
     <section>
+        <div class="container">
+            <div class="underline-title">
+                <div>
+                    <h2 class="heading">Datasets and tools</h2>
+                </div>
+            </div>
+            <?php
+            $mock_slides = array('<div>1</div>', '<div>2</div>', '<div>3</div>', '<div>4</div>', '<div>5</div>', '<div>6</div>', '<div>7</div>', '<div>8</div>', '<div>9</div>', '<div>10</div>');
+            ?>
+            <? $this->renderPartial('//shared/_carousel_slider', array('slides' => $mock_slides)); ?>
+        </div>
+    </section>
+    <section>
         <h2 class="sr-only">Data Overview Metrics</h2>
         <div class="container">
             <div class="color-background ">

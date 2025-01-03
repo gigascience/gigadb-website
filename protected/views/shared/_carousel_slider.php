@@ -1,37 +1,29 @@
-<div id="myNews" class="news-container">
-  <div id="newsCarousel" class="carousel slide" data-ride="carousel" data-interval="false">
+<?php
+$root_id = 'carousel-' . uniqid();
+?>
+
+<div class="carousel-container">
+  <div id="<?php echo $root_id; ?>" class="carousel slide" data-ride="carousel" data-interval="false">
 
     <div class="carousel-inner">
-      <?php foreach ($news as $index => $temp_news): ?>
-        <div class="news-item">
-          <div class="news-block">
-            <h3 class="news-title"><?php echo htmlspecialchars($temp_news->title); ?></h3>
-            <p class="news-body">
-              <?php
-              $excerpt_max_length = 200;
-              $body = htmlspecialchars($temp_news->body);
-              if (mb_strlen($body) > $excerpt_max_length) {
-                echo mb_substr($body, 0, $excerpt_max_length) . "...";
-              } else {
-                echo $body;
-              }
-              ?>
-            </p>
-            <?php
-            echo CHtml::link("Read More", array("news/view", 'id' => $temp_news->id), array('class' => 'btn btn-link news-more-link', 'aria-label' => "Read more about {$temp_news->title}"));
-            ?>
+      <?php foreach ($slides as $index => $temp_slide): ?>
+        <div class="carousel-item">
+          <div class="carousel-block">
+            <?php echo $temp_slide; ?>
           </div>
         </div>
       <?php endforeach; ?>
     </div>
 
-    <a class="left carousel-control" href="#newsCarousel" role="button" data-slide="prev" title="Previous news">
+    <a class="left carousel-control" href="#<?php echo $root_id; ?>" role="button" data-slide="prev"
+      title="Previous slide">
       <span class="fa fa-chevron-left" aria-hidden="true"></span>
-      <span class="sr-only">Previous news</span>
+      <span class="sr-only">Previous</span>
     </a>
-    <a class="right carousel-control" href="#newsCarousel" role="button" data-slide="next" title="Next news">
+    <a class="right carousel-control" href="#<?php echo $root_id; ?>" role="button" data-slide="next"
+      title="Next slide">
       <span class="fa fa-chevron-right" aria-hidden="true"></span>
-      <span class="sr-only">Next news</span>
+      <span class="sr-only">Next</span>
     </a>
 
     <ol class="carousel-indicators"></ol>
@@ -39,6 +31,7 @@
 </div>
 
 <script>
+
   function throttle(func, wait) {
     let timeout;
     let lastArgs;
@@ -65,11 +58,11 @@
       const isTablet = $(window).width() >= screenSizes[0] && $(window).width() < screenSizes[1];
       const chunkSize = isMobile ? 1 : isTablet ? 2 : 3;
 
-      const $carousel = $('#newsCarousel');
+      const $carousel = $('#<?php echo $root_id; ?>');
       const $carouselInner = $('.carousel-inner', $carousel);
       const $indicators = $('.carousel-indicators', $carousel);
       const $controls = $('.carousel-control', $carousel);
-      const $items = $carouselInner.find('.news-item').detach();
+      const $items = $carouselInner.find('.carousel-item').detach();
       const totalItems = $items.length;
 
       $carouselInner.empty();
@@ -110,7 +103,7 @@
               $('<a class="carousel-indicator-link">')
                 .attr({
                   'href': '#',
-                  'data-target': '#newsCarousel',
+                  'data-target': '#<?php echo $root_id; ?>',
                   'data-slide-to': i / chunkSize,
                   'role': 'button',
                   'aria-label': `Go to slide ${i / chunkSize + 1}`
@@ -120,10 +113,10 @@
         );
       }
 
-      $('#newsCarousel').carousel(0);
+      $('#<?php echo $root_id; ?>').carousel(0);
     }
 
-    $('#newsCarousel').carousel({
+    $('#<?php echo $root_id; ?>').carousel({
       interval: false,
       wrap: true
     });
