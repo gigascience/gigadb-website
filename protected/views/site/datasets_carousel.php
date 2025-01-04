@@ -8,7 +8,7 @@ foreach ($datasets as $dataset) {
   $date_html = '<div class="dataset-date"></div>';
 
   if (empty($imageUrl)) {
-    $imageUrl = Yii::app()->baseUrl . '/images/new_interface_image/No-Image-Placeholder.svg';
+    $imageUrl = Yii::app()->baseUrl . '/images/no_image.png';
   }
 
   if (!empty($dataset['publication_date'])) {
