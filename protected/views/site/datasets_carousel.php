@@ -1,16 +1,16 @@
 <?php
 $html_slides = array();
-$max_title_length = 150;
+$max_title_length = 300;
 
 foreach ($datasets as $dataset) {
-  $title = mb_strlen($dataset['title']) > $max_title_length
-    ? mb_substr($dataset['title'], 0, $max_title_length) . '...'
-    : $dataset['title'];
+  $title = $dataset['title'];
   $imageUrl = $dataset->getImageUrl();
+  $date_html = '<div class="dataset-date"></div>';
+
   if (empty($imageUrl)) {
     $imageUrl = Yii::app()->baseUrl . '/images/new_interface_image/No-Image-Placeholder.svg';
   }
-  $date_html = '';
+
   if (!empty($dataset['publication_date'])) {
     $date_html = sprintf('<div class="dataset-date">%s</div>', date('F j, Y', strtotime($dataset['publication_date'])));
   }
@@ -18,7 +18,7 @@ foreach ($datasets as $dataset) {
   $html_slides[] = sprintf(
     '<div class="dataset-item">
             <div class="dataset-image-wrapper">
-                    <img class="dataset-image" src="%s" alt="%s" />
+              <img class="dataset-image" src="%s" alt="" />
             </div>
             <div class="dataset-doi">
                 DOI: <a href="%s">%s</a>
@@ -27,10 +27,9 @@ foreach ($datasets as $dataset) {
             %s
         </div>',
     CHtml::encode($imageUrl),
-    CHtml::encode($title),
     CHtml::encode($dataset['shorturl']),
     CHtml::encode($dataset['identifier']),
-    CHtml::decode($title),
+    CHtml::decode($dataset['title']),
     $date_html
   );
 }
@@ -45,9 +44,9 @@ foreach ($datasets as $dataset) {
   <?php $this->renderPartial('//shared/_carousel_slider', array(
     'slides' => $html_slides,
     'itemsPerSlide' => [
-        'mobile' => 2,
-        'tablet' => 2,
-        'desktop' => 4
+      'mobile' => 2,
+      'tablet' => 3,
+      'desktop' => 4
     ],
   )); ?>
 </div>

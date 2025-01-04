@@ -1,6 +1,6 @@
 .dataset-feed-section {
   .carousel-block {
-    height: 460px;
+    height: auto;
   }
   .dataset-item {
     .dataset-image-wrapper {
@@ -30,23 +30,20 @@
       margin: 0 0 10px 0;
       line-height: 1.4;
       color: @color-warm-black;
+      // https://developer.mozilla.org/en-US/docs/Web/CSS/-webkit-line-clamp
+      // fixing the height of the title to minimize layout issues
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+      overflow: hidden;
+      line-clamp: 3;
+      height: 4.2em; // line-height * 3
     }
 
     .dataset-date {
       font-size: 14px;
       color: @color-darker-gray;
-    }
-  }
-  @media (min-width: 768px) {
-    .carousel-block {
-      height: 500px;
-    }
-  }
-
-  @media (min-width: 992px) {
-    .carousel-block {
-      height: 460px;
+      height: 1em;
     }
   }
 }
-
