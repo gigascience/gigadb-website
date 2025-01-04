@@ -1,15 +1,17 @@
-<div class="section form">
+<div class="well">
 
   <div>
     <?php $form = $this->beginWidget('CActiveForm', array(
       'id' => 'file-form',
       'enableAjaxValidation' => false,
       'htmlOptions' => [
-        'class' => 'row'
+        'class' => 'form-horizontal'
       ]
     )); ?>
 
-    <p class="note col-md-12">Fields with <span class="required">*</span> are required.</p>
+    <div class="col-md-12 mb-10">
+      <p class="note">Fields with <span class="required">*</span> are required.</p>
+    </div>
 
     <?php if ($model->hasErrors()): ?>
       <div class="alert alert-danger col-md-12">
@@ -28,9 +30,10 @@
         'valueField' => 'id',
         'textField' => 'identifier',
       ],
-      'groupOptions' => [
-        'class' => 'col-md-6'
+      'labelOptions' => [
+        'class' => 'col-xs-3',
       ],
+      'inputWrapperOptions' => 'col-xs-9',
       'inputOptions' => [
         'required' => true,
       ],
@@ -40,9 +43,10 @@
       'form' => $form,
       'model' => $model,
       'attributeName' => 'name',
-      'groupOptions' => [
-        'class' => 'col-md-6'
+      'labelOptions' => [
+        'class' => 'col-xs-3',
       ],
+      'inputWrapperOptions' => 'col-xs-9',
       'inputOptions' => [
         'required' => true,
         'maxlength' => 100
@@ -53,9 +57,10 @@
       'form' => $form,
       'model' => $model,
       'attributeName' => 'location',
-      'groupOptions' => [
-        'class' => 'col-md-12'
+      'labelOptions' => [
+        'class' => 'col-xs-3',
       ],
+      'inputWrapperOptions' => 'col-xs-9',
       'inputOptions' => [
         'required' => true,
         'maxlength' => 200
@@ -66,9 +71,10 @@
       'form' => $form,
       'model' => $model,
       'attributeName' => 'extension',
-      'groupOptions' => [
-        'class' => 'col-md-4'
+      'labelOptions' => [
+        'class' => 'col-xs-3',
       ],
+      'inputWrapperOptions' => 'col-xs-9',
       'inputOptions' => [
         'required' => true,
         'maxlength' => 30
@@ -79,9 +85,10 @@
       'form' => $form,
       'model' => $model,
       'attributeName' => 'size',
-      'groupOptions' => [
-        'class' => 'col-md-4'
+      'labelOptions' => [
+        'class' => 'col-xs-3',
       ],
+      'inputWrapperOptions' => 'col-xs-9',
       'inputOptions' => [
         'required' => true,
       ],
@@ -91,18 +98,20 @@
       'form' => $form,
       'model' => $model,
       'attributeName' => 'date_stamp',
-      'groupOptions' => [
-        'class' => 'col-md-4'
+      'labelOptions' => [
+        'class' => 'col-xs-3',
       ],
+      'inputWrapperOptions' => 'col-xs-9',
       'tooltip' => 'The date the file is made publicly available, usually the same as the dataset release date. Format: yyyy-mm-dd'
     ]);
     $this->widget('application.components.controls.TextArea', [
       'form' => $form,
       'model' => $model,
       'attributeName' => 'description',
-      'groupOptions' => [
-        'class' => 'col-md-12'
+      'labelOptions' => [
+        'class' => 'col-xs-3',
       ],
+      'inputWrapperOptions' => 'col-xs-9',
       'inputOptions' => [
         'rows' => 6,
         'cols' => 50
@@ -113,9 +122,10 @@
       'form' => $form,
       'model' => $model,
       'attributeName' => 'format_id',
-      'groupOptions' => [
-        'class' => 'col-md-6'
+      'labelOptions' => [
+        'class' => 'col-xs-3',
       ],
+      'inputWrapperOptions' => 'col-xs-9',
       'listDataOptions' => [
         'data' => FileFormat::model()->findAll(),
         'valueField' => 'id',
@@ -127,9 +137,10 @@
       'form' => $form,
       'model' => $model,
       'attributeName' => 'type_id',
-      'groupOptions' => [
-        'class' => 'col-md-6'
+      'labelOptions' => [
+        'class' => 'col-xs-3',
       ],
+      'inputWrapperOptions' => 'col-xs-9',
       'listDataOptions' => [
         'data' => FileType::model()->findAll(),
         'valueField' => 'id',
@@ -141,15 +152,18 @@
       'form' => $form,
       'model' => $model,
       'attributeName' => 'sample_name',
-      'groupOptions' => [
-        'class' => 'col-md-12'
+      'labelOptions' => [
+        'class' => 'col-xs-3',
       ],
+      'inputWrapperOptions' => 'col-xs-9',
       'tooltip' => 'If the file is directly and solely related to a single Sample entity named in GigaDB, a link to that sample can be added here by entering the exact name of the sample'
     ]);
     ?>
 
         <?php if (!$model->isNewRecord) { ?>
-            <div class="control-group col-md-12">
+            <div class="row">
+              <div class="col-xs-12">
+                <div class="col-xs-offset-3 col-xs-9">
             <?php if ($model->fileAttributes) { ?>
                     <table class="table table-attr">
                         <caption>Attributes</caption>
@@ -188,85 +202,86 @@
                         </tbody>
                     </table>
                 <?php } ?>
+                </div>
                 <br />
-                <button type="button" class="btn background-btn-o js-btn-attr" aria-expanded="false" aria-controls="newAttrForm" data-test="new-attr-btn" data-toggle="tooltip" title="Show and/or Add file attributes"><span class="js-btn-attr-label">Show New Attribute Fields</span> <i class="fa fa-caret-down js-caret-type" aria-hidden="true"></i></button>
+                <button type="button" class="pull-right mb-10 btn background-btn-o js-btn-attr" aria-expanded="false" aria-controls="newAttrForm" data-test="new-attr-btn" data-toggle="tooltip" title="Show and/or Add file attributes"><span class="js-btn-attr-label">Show New Attribute Fields</span> <i class="fa fa-caret-down js-caret-type" aria-hidden="true"></i></button>
+                <div class="clearfix"></div>
                 <br />
                 <fieldset id="newAttrForm" class="js-new-attr mt-10 mb-20" aria-label="New attribute fields" style="display:none;">
-                    <div class="row mb-5">
-                        <div class="col-xs-12">
-                            <?php
-                            $this->widget('application.components.controls.DropdownField', [
-                                'form' => $form,
-                                'model' => $attribute,
-                                'attributeName' => '[new]attribute_id',
-                                'listDataOptions' => [
-                                    'data' => Attributes::model()->findAll(),
-                                    'valueField' => 'id',
-                                    'textField' => 'attribute_name',
-                                ],
-                                'inputOptions' => array(
-                                    'empty' => 'Select name',
-                                    'class' => 'attr-form js-new-attr-name',
-                                ),
-                                'tooltip' => 'Choose the appropriate attribute name from the dropdown menu'
-                            ]);
-                            ?>
-                        </div>
-                    </div>
-                    <div class="row mb-5">
-                        <div class="col-xs-12">
-                            <?php
-                            $this->widget('application.components.controls.TextArea', [
-                                'form' => $form,
-                                'model' => $attribute,
-                                'attributeName' => '[new]value',
-                                'inputOptions' => [
-                                    'class' => 'attr-form',
-                                    'rows' => 2,
-                                    'max' => 1000
-                                ],
-                                'tooltip' => 'The value of the chosen attribute for this file'
-                            ]);
-                            ?>
-                        </div>
-                    </div>
-                    <div class="row mb-5">
-                        <div class="col-xs-12">
-                            <?php
-                            $this->widget('application.components.controls.DropdownField', [
-                                'form' => $form,
-                                'model' => $attribute,
-                                'attributeName' => '[new]unit_id',
-                                'listDataOptions' => [
-                                    'data' => Unit::model()->findAll(),
-                                    'valueField' => 'id',
-                                    'textField' => 'name',
-                                ],
-                                'inputOptions' => array(
-                                    'empty' => 'Select unit',
-                                    'class' => 'attr-form'
-                                ),
-                                'tooltip' => 'If units should be specified, select the appropriate value from the dropdown menu, otherwise leave blank'
-                            ]);
-                            ?>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div class="pull-right btns-row">
-                                <input type="submit" class="btn background-btn" name="submit_attr" value="Add attribute" />
-                            </div>
-                        </div>
+                      <?php
+                      $this->widget('application.components.controls.DropdownField', [
+                          'form' => $form,
+                          'model' => $attribute,
+                          'labelOptions' => [
+                            'class' => 'col-xs-3',
+                          ],
+                          'inputWrapperOptions' => 'col-xs-9',
+                          'attributeName' => '[new]attribute_id',
+                          'listDataOptions' => [
+                              'data' => Attributes::model()->findAll(),
+                              'valueField' => 'id',
+                              'textField' => 'attribute_name',
+                          ],
+                          'inputOptions' => array(
+                              'empty' => 'Select name',
+                              'class' => 'attr-form js-new-attr-name',
+                          ),
+                          'tooltip' => 'Choose the appropriate attribute name from the dropdown menu'
+                      ]);
+                      ?>
+                      <?php
+                      $this->widget('application.components.controls.TextArea', [
+                          'form' => $form,
+                          'model' => $attribute,
+                          'labelOptions' => [
+                            'class' => 'col-xs-3',
+                          ],
+                          'inputWrapperOptions' => 'col-xs-9',
+                          'attributeName' => '[new]value',
+                          'inputOptions' => [
+                              'class' => 'attr-form',
+                              'rows' => 2,
+                              'max' => 1000
+                          ],
+                          'tooltip' => 'The value of the chosen attribute for this file'
+                      ]);
+                      ?>
+                      <?php
+                      $this->widget('application.components.controls.DropdownField', [
+                          'form' => $form,
+                          'model' => $attribute,
+                          'labelOptions' => [
+                            'class' => 'col-xs-3',
+                          ],
+                          'inputWrapperOptions' => 'col-xs-9',
+                          'attributeName' => '[new]unit_id',
+                          'listDataOptions' => [
+                              'data' => Unit::model()->findAll(),
+                              'valueField' => 'id',
+                              'textField' => 'name',
+                          ],
+                          'inputOptions' => array(
+                              'empty' => 'Select unit',
+                              'class' => 'attr-form'
+                          ),
+                          'tooltip' => 'If units should be specified, select the appropriate value from the dropdown menu, otherwise leave blank'
+                      ]);
+                      ?>
+                      <div class="pull-right btns-row">
+                          <input type="submit" class="btn background-btn m-0" name="submit_attr" value="Add attribute" />
+                      </div>
                     </div>
                 </fieldset>
+                </div>
             </div>
         <?php } ?>
-        <div class="col-md-12">
-          <div class="pull-right btns-row">
-            <a href="/adminFile/admin" class="btn background-btn-o btn-min-width">Cancel</a>
-            <?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => 'btn background-btn btn-min-width')); ?>
-          </div>
+        <hr />
+        <div class="pull-right btns-row">
+          <a href="/adminFile/admin" class="btn background-btn-o btn-min-width">Cancel</a>
+          <?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => 'btn background-btn btn-min-width m-0')); ?>
         </div>
+
+        <div class="clearfix"></div>
 
     <?php $this->endWidget(); ?>
   </div>
