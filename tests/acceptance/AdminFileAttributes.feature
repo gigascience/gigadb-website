@@ -99,8 +99,8 @@ Feature: A curator can manage file attributes in admin file update page
     And I wait "0.3" seconds
     Then I should see a file attribute table
       | Attribute Name    | Value                            | Unit |
-      # | camera parameters | test photo                       |      |
-      | MD5 checksum      | b584eb4ce0947dbf9529acffc3e9f7cc |      |
+      | keyword           | test Bauhinia                       |      |
+      | camera parameters | test photo |      |
 
   @ok @javascript @nonPublished
   Scenario: Delete camera parameters attribute and save, then check for File Attribute Value on admin file view page
@@ -110,8 +110,8 @@ Feature: A curator can manage file attributes in admin file update page
     And I press the button "Save"
     Then I am on "/adminFile/view/id/95354"
     And I should see a view file table
-      | File Attribute | test photo                       |
-      | File Attribute | b584eb4ce0947dbf9529acffc3e9f7cc |
+      | File Attribute | test Bauhinia                       |
+      | File Attribute | test photo |
 
   #TODO: Fix problem why this test can sometimes randomly fail
 #  @javascript @nonPublished

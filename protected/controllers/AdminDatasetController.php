@@ -264,11 +264,10 @@ class AdminDatasetController extends Controller
                 $this->renderNotificationsAccordingToStatus($datasetUpload, $model);
             }
 
-            // semantic kewyords update, using remove all and re-create approach
-            if ($postKeywords = Yii::$app->request->post('keywords')) {
-                $attribute_service = Yii::app()->attributeService;
-                $attribute_service->replaceKeywordsForDatasetIdWithString($id, $postKeywords);
-            }
+            // semantic keywords update, using remove all and re-create approach
+            $postKeywords = Yii::$app->request->post('keywords', '');
+            $attribute_service = Yii::app()->attributeService;
+            $attribute_service->replaceKeywordsForDatasetIdWithString($id, $postKeywords);
 
             $urlToRedirect = Yii::$app->request->post('urltoredirect');
             // retrieve existing redirect
@@ -462,7 +461,11 @@ class AdminDatasetController extends Controller
             $result[$keyStatus] = $updateMdResponse->getStatusCode();
             $log .= sprintf(' - %s md response: %s', $result['check_doi_status'] === 200 ? 'update' : 'create', 201 === $result[$keyStatus] ? "OK" : $result[$keyResponse]);
 
-            if (201 === $updateMdResponse->getStatusCode() && 404 === $result['check_doi_status']) {
+            if (201 === $result[$keyStatus]) {
+                CurationLog::createGeneralCurationLogEntry($dataset->id, 'Sent DataCite XML', $xml_data);
+            }
+
+            if (201 === $result[$keyStatus] && 404 === $result['check_doi_status']) {
                 $result['doi_data'] = 'doi=' . $mds_prefix . '/' . $doi . "\n" . 'url=http://gigadb.org/dataset/' . $doi;
                 $options = [
                     'headers'     => [
