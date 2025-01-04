@@ -1,13 +1,13 @@
-<div class="section form">
+<div class="well">
   <?php $form = $this->beginWidget('CActiveForm', array(
     'id' => 'sample-form',
     'enableAjaxValidation' => false,
     'htmlOptions' => [
-      'class' => 'row'
+      'class' => 'form-horizontal'
     ]
   )); ?>
 
-  <div class="col-md-12">
+  <div class="col-md-12 mb-10">
     <p class="note">Fields with <span class="required">*</span> are required.</p>
 
     <?php if ($model->hasErrors()): ?>
@@ -17,9 +17,9 @@
     <?php endif; ?>
   </div>
 
-  <div class="col-md-6">
-    <div class="form-group">
-      <?php echo $form->labelEx($model, 'species_id', array('class' => 'control-label')); ?>
+  <div class="form-group">
+    <?php echo $form->labelEx($model, 'species_id', array('class' => 'control-label col-xs-3')); ?>
+    <div class="col-xs-9">
       <?php
       $criteria = new CDbCriteria;
       $criteria->select = 't.id, t.common_name';
@@ -44,7 +44,7 @@
       ));
       ?>
 
-      <div role="alert" id="species_id-error">
+      <div class="control-error help-block" role="alert" id="species_id-error">
         <?php echo $form->error($model, 'species_id'); ?>
       </div>
     </div>
@@ -58,9 +58,10 @@
     'inputOptions' => [
       'maxlength' => 50
     ],
-    'groupOptions' => [
-      'class' => 'col-md-6'
-    ]
+    'labelOptions' => [
+      'class' => 'col-xs-3',
+    ],
+    'inputWrapperOptions' => 'col-xs-9'
   ]);
   ?>
 
@@ -74,18 +75,21 @@
       'rows' => 6,
       'cols' => 50
     ],
-    'groupOptions' => [
-      'class' => 'col-md-12'
-    ]
+    'labelOptions' => [
+      'class' => 'col-xs-3',
+    ],
+    'inputWrapperOptions' => 'col-xs-9'
   ]);
   ?>
 
-  <div class="col-md-12">
-    <div class="pull-right btns-row">
-      <a href="/adminSample/admin" class="btn background-btn-o btn-min-width">Cancel</a>
-      <?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => 'btn background-btn btn-min-width')); ?>
-    </div>
+  <hr />
+
+  <div class="pull-right btns-row">
+    <a href="/adminSample/admin" class="btn background-btn-o btn-min-width">Cancel</a>
+    <?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => 'btn background-btn btn-min-width m-0')); ?>
   </div>
+
+  <div class="clearfix"></div>
 
   <?php $this->endWidget(); ?>
 </div>

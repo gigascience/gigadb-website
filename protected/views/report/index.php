@@ -9,36 +9,41 @@
   ]);
   ?>
 
-  <div class="section form">
-
+  <div class="well">
     <!-- NOTE leaving following code as comment as it seems related to missing scripts -->
     <!-- <div class="chart" id="chart_div" style="width: 600px; height: 400px">
         </div>
         <div class="setting"></div> -->
 
-    <form class="form row" method="POST">
-      <div class="form-group col-md-6">
-        <label class="control-label" for="Report_start_date">Start Date</label>
-        <?= CHtml::dateField('Report[start_date]', isset($args['start_date']) ? $args['start_date'] : '', array('class' => 'form-control')) ?>
-      </div>
-      <div class="form-group col-md-6">
-        <label class="control-label" for="Report_end_date">End Date</label>
-        <?= CHtml::dateField('Report[end_date]', isset($args['end_date']) ? $args['end_date'] : '', array('class' => 'form-control')) ?>
-      </div>
-      <div class="form-group col-md-12">
-        <label class="control-label" for="Report_ids">Display for DOI</label>
-        <?php echo CHtml::dropDownList(
-          'Report[ids][]',
-          empty($selectDois) ? 'all' : $selectDois,
-          $dois,
-          array('class' => 'js-multi form-control', 'multiple' => 'multiple', 'data-placeholder' => Yii::t('app', 'Select DOIs'))
-        ); ?>
-      </div>
-      <div class="col-md-12">
-        <div class="pull-right btns-row">
-          <input type="submit" class="btn background-btn btn-min-width" name="report" value="View" />
+    <form class="form-horizontal" method="POST">
+      <div class="form-group">
+        <label class="control-label col-xs-3" for="Report_start_date">Start Date</label>
+        <div class="col-xs-9">
+          <?= CHtml::dateField('Report[start_date]', isset($args['start_date']) ? $args['start_date'] : '', array('class' => 'form-control')) ?>
         </div>
       </div>
+      <div class="form-group">
+        <label class="control-label col-xs-3" for="Report_end_date">End Date</label>
+        <div class="col-xs-9">
+          <?= CHtml::dateField('Report[end_date]', isset($args['end_date']) ? $args['end_date'] : '', array('class' => 'form-control')) ?>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-xs-3" for="Report_ids">Display for DOI</label>
+        <div class="col-xs-9">
+          <?php echo CHtml::dropDownList(
+            'Report[ids][]',
+            empty($selectDois) ? 'all' : $selectDois,
+            $dois,
+            array('class' => 'js-multi form-control', 'multiple' => 'multiple', 'data-placeholder' => Yii::t('app', 'Select DOIs'))
+          ); ?>
+        </div>
+      </div>
+      <hr />
+      <div class="pull-right btns-row">
+        <input type="submit" class="btn background-btn btn-min-width m-0" name="report" value="View" />
+      </div>
+      <div class="clearfix"></div>
     </form>
   </div>
 </div>

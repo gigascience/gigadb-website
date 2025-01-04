@@ -1,13 +1,13 @@
-<div class="section form">
+<div class="well">
   <?php $form = $this->beginWidget('CActiveForm', array(
     'id' => 'dataset-funder-form',
     'enableAjaxValidation' => false,
     'htmlOptions' => [
-      'class' => 'row'
+      'class' => 'form-horizontal'
     ]
   )); ?>
 
-  <div class="col-md-12">
+  <div class="col-md-12 mb-10">
     <p class="note">Fields with <span class="required">*</span> are required.</p>
 
     <?php if ($model->hasErrors()): ?>
@@ -27,9 +27,10 @@
       'required' => true,
     ],
     'tooltip' => 'Select or type the relevant Dataset DOI ID',
-    'groupOptions' => [
-      'class' => 'col-md-6'
-    ]
+    'labelOptions' => [
+      'class' => 'col-xs-3',
+    ],
+    'inputWrapperOptions' => 'col-xs-9'
   ]);
 
   $this->widget('application.components.controls.DropdownField', [
@@ -41,9 +42,10 @@
       'required' => true,
     ],
     'tooltip' => 'Select the Funder name from the drop-down list. If the name is not present, it will need to be added via the Funder Admin page',
-    'groupOptions' => [
-      'class' => 'col-md-6'
-    ]
+    'labelOptions' => [
+      'class' => 'col-xs-3',
+    ],
+    'inputWrapperOptions' => 'col-xs-9'
   ]);
 
   $this->widget('application.components.controls.TextArea', [
@@ -55,9 +57,10 @@
       'cols' => 50
     ],
     'tooltip' => 'Type the Grant/Award ID provided by the submitter',
-    'groupOptions' => [
-      'class' => 'col-md-12'
-    ]
+    'labelOptions' => [
+      'class' => 'col-xs-3',
+    ],
+    'inputWrapperOptions' => 'col-xs-9'
   ]);
 
   $this->widget('application.components.controls.TextArea', [
@@ -69,9 +72,10 @@
       'cols' => 50
     ],
     'tooltip' => 'Insert the Principle Investigators name who was awarded the grant, use format Initials Surname e.g. CI Hunter',
-    'groupOptions' => [
-      'class' => 'col-md-6'
-    ]
+    'labelOptions' => [
+      'class' => 'col-xs-3',
+    ],
+    'inputWrapperOptions' => 'col-xs-9'
   ]);
 
   $this->widget('application.components.controls.TextArea', [
@@ -83,18 +87,21 @@
       'cols' => 50
     ],
     'tooltip' => 'Use this field to include a program name if the award was part of a specific program, or other short details as required',
-    'groupOptions' => [
-      'class' => 'col-md-6'
-    ]
+    'labelOptions' => [
+      'class' => 'col-xs-3',
+    ],
+    'inputWrapperOptions' => 'col-xs-9'
   ]);
   ?>
 
-  <div class="col-md-12">
-    <div class="pull-right btns-row">
-      <a href="/datasetFunder/admin" class="btn background-btn-o btn-min-width">Cancel</a>
-      <?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => 'btn background-btn btn-min-width')); ?>
-    </div>
+  <hr />
+
+  <div class="pull-right btns-row">
+    <a href="/datasetFunder/admin" class="btn background-btn-o btn-min-width">Cancel</a>
+    <?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => 'btn background-btn btn-min-width m-0')); ?>
   </div>
+
+  <div class="clearfix"></div>
 
   <?php $this->endWidget(); ?>
 </div>

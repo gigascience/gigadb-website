@@ -1,13 +1,13 @@
-<div class="section form">
+<div class="well">
   <?php $form = $this->beginWidget('CActiveForm', array(
     'id' => 'author-form',
     'enableAjaxValidation' => false,
     'htmlOptions' => [
-      'class' => 'row'
+      'class' => 'form-horizontal'
     ]
   )); ?>
 
-  <div class="col-md-12">
+  <div class="col-md-12 mb-10">
     <p class="note">Fields with <span class="required">*</span> are required.</p>
 
     <?php if ($model->hasErrors()): ?>
@@ -26,9 +26,10 @@
       'required' => true,
       'maxlength' => 255
     ],
-    'groupOptions' => [
-      'class' => 'col-md-4'
+    'labelOptions' => [
+      'class' => 'col-xs-3',
     ],
+    'inputWrapperOptions' => 'col-xs-9',
   ]);
 
   $this->widget('application.components.controls.TextField', [
@@ -38,9 +39,10 @@
     'inputOptions' => [
       'maxlength' => 255
     ],
-    'groupOptions' => [
-      'class' => 'col-md-4'
+    'labelOptions' => [
+      'class' => 'col-xs-3',
     ],
+    'inputWrapperOptions' => 'col-xs-9',
   ]);
 
   $this->widget('application.components.controls.TextField', [
@@ -50,9 +52,10 @@
     'inputOptions' => [
       'maxlength' => 255
     ],
-    'groupOptions' => [
-      'class' => 'col-md-4'
+    'labelOptions' => [
+      'class' => 'col-xs-3',
     ],
+    'inputWrapperOptions' => 'col-xs-9',
   ]);
 
   $this->widget('application.components.controls.TextField', [
@@ -62,9 +65,10 @@
     'inputOptions' => [
       'maxlength' => 255
     ],
-    'groupOptions' => [
-      'class' => 'col-md-12'
+    'labelOptions' => [
+      'class' => 'col-xs-3',
     ],
+    'inputWrapperOptions' => 'col-xs-9'
   ]);
 
   $this->widget('application.components.controls.TextField', [
@@ -74,9 +78,10 @@
     'inputOptions' => [
       'maxlength' => 128
     ],
-    'groupOptions' => [
-      'class' => 'col-md-6'
+    'labelOptions' => [
+      'class' => 'col-xs-3',
     ],
+    'inputWrapperOptions' => 'col-xs-9',
   ]);
 
   $this->widget('application.components.controls.TextField', [
@@ -86,15 +91,17 @@
     'inputOptions' => [
       'maxlength' => 128
     ],
-    'groupOptions' => [
-      'class' => 'col-md-6'
+    'labelOptions' => [
+      'class' => 'col-xs-3',
     ],
+    'inputWrapperOptions' => 'col-xs-9',
   ]);
   ?>
 
-  <div class="col-md-12">
-    <div class="merge-author-info">
-      <?php
+  <hr />
+
+  <div class="merge-author-info">
+  <?php
       $identical_authors = $model->getIdenticalAuthors();
       if (!empty($identical_authors)) {
         ?>
@@ -121,23 +128,22 @@
       }
       ?>
     </div>
-  </div>
 
-  <div class="col-md-12">
-    <div class="pull-right btns-row">
-      <?php
-      if ($model->id) {
-        echo CHtml::link(
-          'Merge with an author',
-          array('adminAuthor/prepareAuthorMerge', 'origin_author_id' => $model->id),
-          array('class' => 'btn background-btn-o btn-min-width')
-        );
-      }
-      ?>
-      <a href="/adminAuthor/admin" class="btn background-btn-o btn-min-width">Cancel</a>
-      <?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => 'btn background-btn btn-min-width')); ?>
-    </div>
+
+  <div class="pull-right btns-row">
+    <?php
+    if ($model->id) {
+      echo CHtml::link(
+        'Merge with an author',
+        array('adminAuthor/prepareAuthorMerge', 'origin_author_id' => $model->id),
+        array('class' => 'btn background-btn-o btn-min-width')
+      );
+    }
+    ?>
+    <a href="/adminAuthor/admin" class="btn background-btn-o btn-min-width">Cancel</a>
+    <?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => 'btn background-btn btn-min-width m-0')); ?>
   </div>
+  <div class="clearfix"></div>
 
   <?php $this->endWidget(); ?>
 </div>
