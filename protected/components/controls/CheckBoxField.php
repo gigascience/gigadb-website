@@ -24,6 +24,8 @@ class CheckBoxField extends CWidget
   public $labelOptions;
   public $errorOptions;
   public $label = null;
+  public $isHorizontal = false;
+  public $description = null;
 
   private function hasError()
   {
@@ -38,27 +40,67 @@ class CheckBoxField extends CWidget
   public function run()
   {
     $errorId = $this->attributeName . '-error';
-    $this->groupOptions['class'] = $this->mergeCssClasses($this->groupOptions, 'form-group checkbox' . ($this->hasError() ? ' has-error' : ''));
-    $this->labelOptions['class'] = $this->mergeCssClasses($this->labelOptions, 'control-label');
-    $this->errorOptions['class'] = $this->mergeCssClasses($this->errorOptions, 'help-block');
-    $this->errorOptions['id'] = $errorId;
 
-    if ($this->hasError()) {
-      $this->checkboxOptions['aria-describedby'] = $errorId;
-    }
+    if ($this->isHorizontal) {
+      $this->groupOptions['class'] = $this->mergeCssClasses($this->groupOptions, 'form-group checkbox-horizontal' . ($this->hasError() ? ' has-error' : ''));
+      $this->labelOptions['class'] = $this->mergeCssClasses($this->labelOptions, 'col-xs-3 control-label');
 
-    echo CHtml::openTag('div', $this->groupOptions);
-    echo $this->form->checkBox($this->model, $this->attributeName, $this->checkboxOptions);
-    if ($this->label) {
-        echo CHtml::tag('div', [], CHtml::tag(
-            'label',
-            [],
-            CHtml::encode($this->label)
-        ));
-    } else {
+      if ($this->hasError()) {
+        $this->checkboxOptions['aria-describedby'] = $errorId;
+      }
+
+      echo CHtml::openTag('div', $this->groupOptions);
+
+      if ($this->label) {
+        echo CHtml::tag('label', $this->labelOptions, CHtml::encode($this->label));
+      } else {
         echo $this->form->labelEx($this->model, $this->attributeName, $this->labelOptions);
+      }
+
+      echo CHtml::openTag('div', ['class' => 'col-xs-9']);
+      echo $this->form->checkBox($this->model, $this->attributeName, $this->checkboxOptions);
+      echo CHtml::closeTag('div');
+
+      if ($this->description) {
+        echo CHtml::openTag('div', ['class' => 'col-xs-9 help-block']);
+        echo CHtml::tag('p', [], $this->description);
+        echo CHtml::closeTag('div');
+      }
+
+      echo $this->form->error($this->model, $this->attributeName, ['class' => 'help-block', 'id' => $errorId]);
+      echo CHtml::closeTag('div');
+
+    } else {
+      $this->groupOptions['class'] = $this->mergeCssClasses($this->groupOptions, 'form-group checkbox' . ($this->hasError() ? ' has-error' : ''));
+      $this->labelOptions['class'] = $this->mergeCssClasses($this->labelOptions, 'control-label');
+      $this->errorOptions['class'] = $this->mergeCssClasses($this->errorOptions, 'help-block');
+      $this->errorOptions['id'] = $errorId;
+
+      if ($this->hasError()) {
+        $this->checkboxOptions['aria-describedby'] = $errorId;
+      }
+
+      echo CHtml::openTag('div', $this->groupOptions);
+      echo $this->form->checkBox($this->model, $this->attributeName, $this->checkboxOptions);
+      if ($this->label) {
+        echo CHtml::tag('div', [], CHtml::tag(
+          'label',
+          [],
+          CHtml::encode($this->label)
+        ));
+      } else {
+        echo $this->form->labelEx($this->model, $this->attributeName, $this->labelOptions);
+      }
+
+      if ($this->description) {
+        echo CHtml::openTag('div', ['class' => 'help-block']);
+        echo CHtml::tag('p', [], $this->description);
+        echo CHtml::closeTag('div');
+      }
+
+      echo $this->form->error($this->model, $this->attributeName, $this->errorOptions);
+      echo CHtml::closeTag('div');
+
     }
-    echo $this->form->error($this->model, $this->attributeName, $this->errorOptions);
-    echo CHtml::closeTag('div');
   }
 }

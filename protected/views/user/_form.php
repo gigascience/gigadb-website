@@ -1,6 +1,8 @@
- <div class="content col-md-offset-2 col-md-8">
+<div class="content">
+ 	<div class="row">
+    <div class="col-md-12">
 
- 	<?php
+  <?php
 		foreach (Yii::app()->user->getFlashes() as $key => $message) {
 			echo '<div class="flash-' . $key . '">' . $message . "</div>\n";
 		}
@@ -8,7 +10,6 @@
  	<?php
 		$user_command = UserCommand::model()->findByAttributes(array("requester_id" => $model->id, "status" => "pending"));
 		$linked_author = $model->id ? Author::findAttachedAuthorByUserId($model->id) : null;
-
 		?>
 
  	<?php
@@ -75,6 +76,9 @@
 			}
 		}
 		?>
+    </div>
+  </div>
+
 
  	<div>
  		<div class="subsection">
@@ -239,8 +243,8 @@
  					</div>
  				<? } ?>
  				<hr>
- 				<div class="pull-right">
- 					<?= CHtml::submitButton($model->isNewRecord ? Yii::t('app', 'Register') : 'Save', array('class' => 'btn background-btn submit-btn')) ?>
+ 				<div class="pull-right btns-row">
+ 					<?= CHtml::submitButton($model->isNewRecord ? Yii::t('app', 'Register') : 'Save', array('class' => 'btn background-btn submit-btn btn-min-width')) ?>
  				</div>
  				<div class="clearfix"></div>
  				<? $this->endWidget() ?>

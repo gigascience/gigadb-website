@@ -30,6 +30,10 @@ input:not([type="submit"]):not([type="button"]), select, textarea, .form-control
   }
 }
 
+textarea.form-control {
+  resize: vertical;
+}
+
 // Base checkbox styles
 input[type="checkbox"] {
   width: auto;
@@ -122,6 +126,9 @@ input[type="checkbox"] {
 }
 
 .well {
+  label, p, .help-block {
+    color: @color-warm-black;
+  }
   .form-group {
     margin-bottom: 20px;
     &.has-error {
