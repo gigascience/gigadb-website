@@ -3,13 +3,14 @@ $html_slides = array();
 $max_title_length = 300;
 
 foreach ($datasets as $dataset) {
-  $imageUrl = $dataset->getImageUrl();
-  $imageTag = $dataset->image->tag;
+  $image_url = $dataset->getImageUrl();
+  $image_tag = $dataset->image->tag;
   $date_html = '<div class="dataset-date"></div>';
+  $safe_title = Yii::app()->controller->widget('CHtmlPurifier')->purify($dataset['title']);
 
-  if (empty($imageUrl)) {
-    $imageUrl = Yii::app()->baseUrl . '/images/no_image.png';
-    $imageTag = '';
+  if (empty($image_url)) {
+    $image_url = Yii::app()->baseUrl . '/images/no_image.png';
+    $image_tag = '';
   }
 
   if (!empty($dataset['publication_date'])) {
@@ -18,12 +19,12 @@ foreach ($datasets as $dataset) {
 
   $html_slides[] = '<div class="dataset-item">' .
             '<div class="dataset-image-wrapper">' .
-              '<img class="dataset-image" src="' . CHtml::encode($imageUrl) . '" alt="' . CHtml::encode($imageTag) . '" loading="lazy" />' .
+              '<img class="dataset-image" src="' . CHtml::encode($image_url) . '" alt="' . CHtml::encode($image_tag) . '" loading="lazy" />' .
             '</div>' .
             '<div class="dataset-doi">' .
                 '<span aria-hidden="true">DOI: </span><a href="' . CHtml::encode($dataset['shorturl']) . '" aria-label="Dataset with DOI ' . CHtml::encode($dataset['identifier']) . '">' . CHtml::encode($dataset['identifier']) . '</a>' .
             '</div>' .
-            '<h3 class="dataset-title h5">' . $dataset['title'] . '</h3>' .
+            '<h3 class="dataset-title h5">' . $safe_title . '</h3>' .
             $date_html .
         '</div>';
 }
