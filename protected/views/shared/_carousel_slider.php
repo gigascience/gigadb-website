@@ -15,15 +15,11 @@ $root_id = 'carousel-' . uniqid();
       <?php endforeach; ?>
     </div>
 
-    <a class="left carousel-control" href="#<?php echo $root_id; ?>" role="button" data-slide="prev"
-      title="Previous slide">
+    <a class="left carousel-control" href="#<?php echo $root_id; ?>" role="button" data-slide="prev" aria-label="Previous slide">
       <span class="fa fa-chevron-left" aria-hidden="true"></span>
-      <span class="sr-only">Previous</span>
     </a>
-    <a class="right carousel-control" href="#<?php echo $root_id; ?>" role="button" data-slide="next"
-      title="Next slide">
+    <a class="right carousel-control" href="#<?php echo $root_id; ?>" role="button" data-slide="next" aria-label="Next slide">
       <span class="fa fa-chevron-right" aria-hidden="true"></span>
-      <span class="sr-only">Next</span>
     </a>
 
     <ol class="carousel-indicators"></ol>
