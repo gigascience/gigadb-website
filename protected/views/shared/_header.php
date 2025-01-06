@@ -101,7 +101,7 @@
                 <div class="col-xs-4">
                     <a href="/"><img src="/images/new_interface_image/logo.png" class="base-nav-logo-img" alt="GigaDB Logo and tagline: Revolutionizing data dissemination, organization and use"></a>
                 </div>
-                <nav aria-label="primary" class="col-xs-4 col-xs-offset-4">
+                <nav aria-label="primary" class="col-xs-5 col-xs-offset-3">
                     <ul class="nav nav-pills main-nav-bar text-right">
                         <li><a href="/">Home</a></li>
                         <li class="dropdown">
