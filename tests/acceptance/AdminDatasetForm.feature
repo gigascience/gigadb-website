@@ -496,3 +496,11 @@ Feature: form to update dataset details
     And I press the button "Next >"
     And I wait "1" seconds
     Then I should see "Parrot.k31.NetworkTest.txt"
+
+  @ok @issue-2027
+  Scenario: Keywords label not visible if keywords are removed from dataset
+    Given I am on "/adminDataset/update/id/200"
+    And I remove all the keywords
+    And I press the button "Save"
+    When I am on "/dataset/100142"
+    Then I should not see "Keywords:"

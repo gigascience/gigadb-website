@@ -160,6 +160,18 @@ class CuratorSteps extends \Codeception\Actor
     }
 
     /**
+     * @When I remove all the keywords
+     */
+    public function iRemoveAllKeywords()
+    {
+        $deleteButtons = $this->I->grabMultiple('.tag-editor .tag-editor-delete');
+        foreach ($deleteButtons as $button) {
+            $this->I->click('.tag-editor .tag-editor-delete');
+            $this->I->wait(1);
+        }
+    }
+
+    /**
      * @Then I should see the application version
      */
      public function iShouldApplicationVersion()
