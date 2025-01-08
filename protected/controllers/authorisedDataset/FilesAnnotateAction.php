@@ -16,7 +16,7 @@ class FilesAnnotateAction extends CAction
 
     public function run($id)
     {
-        $webClient = new \GuzzleHttp\Client();
+        $webClient = \Yii::$container->get('guzzleHttpClient');
 
         // Instantiate FileUploadService and DatasetUpload
         $fileUploadSrv = new FileUploadService([

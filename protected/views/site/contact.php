@@ -21,7 +21,7 @@ $this->pageTitle = 'GigaDB - Contact Us';
             ]);
             ?>
             <div class="subsection">
-                <img src="../images/new_interface_image/shekmun_map.png" alt="Map highlighting the GigaDB location on 1 On Kwan Street in Sha Tin, Hong Kong">
+                <img src="../images/new_interface_image/w6-science-park-hong-kong.png" alt="Map highlighting the GigaDB location on 708-709, 6W Phase One, Hong Kong Science Park, Pak Shek Kok, Hong Kong">
             </div>
             <section>
                 <div class="row">
@@ -116,10 +116,10 @@ $this->pageTitle = 'GigaDB - Contact Us';
                         </div>
                         <address>
                             <ul class="fa-ul">
-                                <li><i class="fa-li fa fa-home" aria-hidden="true"></i><span class="sr-only">Address:</span> Room A-D, 26/F, Kings Wing Plaza 2, 1 On Kwan Street, Shek Mun, Shatin, NT, Hong Kong</li>
-                                <li><i class="fa-li fa fa-envelope" aria-hidden="true"></i><span class="sr-only">Email:</span> database@gigasciencejournal.com</li>
-                                <li><i class="fa-li fa fa-phone" aria-hidden="true"></i><span class="sr-only">Phone:</span> (852) 36103533</li>
-                                <li><i class="fa-li fa fa-globe" aria-hidden="true"></i><span class="sr-only">Website:</span> http://www.gigadb.org</li>
+                                <li><i class="fa-li fa fa-home" aria-hidden="true"></i><span class="sr-only">Address:</span> 708-709, 6W Phase One, Hong Kong Science Park, Pak Shek Kok, Hong Kong</li>
+                                <li><i class="fa-li fa fa-envelope" aria-hidden="true"></i><span class="sr-only">Email:</span> <a href="mailto:database@gigasciencejournal.com">database@gigasciencejournal.com</a></li>
+                                <li><i class="fa-li fa fa-phone" aria-hidden="true"></i><span class="sr-only">Phone:</span> <a href="tel:+85236103533">+852 3610 3533</a></li>
+                                <li><i class="fa-li fa fa-globe" aria-hidden="true"></i><span class="sr-only">Website:</span> <a href="https://gigadb.org">https://gigadb.org</a></li>
                             </ul>
                         </address>
                     </div>

@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+set -eu
+
+# Running new Codeception api tests suite for main codebase
+docker-compose run --rm test ./vendor/codeception/codeception/codecept run api

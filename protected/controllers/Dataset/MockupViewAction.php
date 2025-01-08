@@ -21,7 +21,7 @@ class MockupViewAction extends CAction
                                   'users' => new UserDAO(),
                                   'dt' => new DateTime(),
                                 ]),
-            "webClient" => new \GuzzleHttp\Client(),
+            "webClient" => \Yii::$container->get('guzzleHttpClient'),
             ]);
 
         $tokenData = $srv->getMockupUrl($uuid);

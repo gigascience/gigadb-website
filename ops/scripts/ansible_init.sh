@@ -93,6 +93,13 @@ gigadb_datasets_metadata_aws_secret_access_key=$(curl -s --header "PRIVATE-TOKEN
 echo "gigadb_dataset_metadata_aws_access_key_id = $gigadb_dataset_metadata_aws_access_key_id" >> ansible.properties
 echo "gigadb_datasets_metadata_aws_secret_access_key = $gigadb_datasets_metadata_aws_secret_access_key" >> ansible.properties
 
+# Required to upload dataset files to S3 bucket - gigadb-datasetfiles-backup
+gigadb_datasetfiles_aws_access_key_id=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$MISC_VARIABLES_URL/gigadb_datasetfiles_aws_access_key_id" | jq -r .value)
+gigadb_datasetfiles_aws_secret_access_key=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$MISC_VARIABLES_URL/gigadb_datasetfiles_aws_secret_access_key" | jq -r .value)
+
+echo "gigadb_datasetfiles_aws_access_key_id = $gigadb_datasetfiles_aws_access_key_id" >> ansible.properties
+echo "gigadb_datasetfiles_aws_secret_access_key = $gigadb_datasetfiles_aws_secret_access_key" >> ansible.properties
+
 # Retrieve ips of provisioned ec2 instances
 bastion_private_ip=$(terraform output ec2_bastion_private_ip | sed 's/"//g')
 bastion_ip=$(terraform output ec2_bastion_public_ip | sed 's/"//g')
@@ -102,6 +109,25 @@ files_private_ip=$(terraform output ec2_files_private_ip | sed 's/"//g')
 files_ip=$(terraform output ec2_files_public_ip | sed 's/"//g')
 
 echo "ec2_bastion_login_account = centos@$bastion_ip" >> ansible.properties
+
+# Retrieve efs ids for mounting
+efs_filesystem_dns_name=$(terraform output efs_filesystem_dns_name | sed 's/"//g')
+configuration_area_id=$(terraform output -json efs_filesystem_access_points | jq -r '.configuration_area')
+dropbox_area_id=$(terraform output -json efs_filesystem_access_points | jq -r '.dropbox_area')
+
+{
+  echo "efs_filesystem_dns_name = $efs_filesystem_dns_name"
+  echo "configuration_area_id = $configuration_area_id"
+  echo "dropbox_area_id = $dropbox_area_id"
+} >> ansible.properties
+
+# Retrieve bucket information
+wasabi_datasetfiles_dir=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$PROJECT_VARIABLES_URL/WASABI_DATASETFILES_DIR?filter%5benvironment_scope%5d=$target_environment" | jq -r .value)
+s3_datasetfiles_dir=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$PROJECT_VARIABLES_URL/S3_DATASETFILES_DIR?filter%5benvironment_scope%5d=$target_environment" | jq -r .value)
+
+echo "wasabi_datasetfiles_dir = $wasabi_datasetfiles_dir" >> ansible.properties
+echo "s3_datasetfiles_dir = $s3_datasetfiles_dir" >> ansible.properties
+
 
 # variables needed by disk-usage-monitor
 gitter_room_id=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$FORK_VARIABLES_URL/GITTER_IT_NOTIFICATION_ROOM_ID" | jq -r .value)
