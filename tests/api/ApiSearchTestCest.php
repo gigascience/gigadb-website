@@ -8,6 +8,22 @@ declare(strict_types=1);
  */
 class ApiSearchTestCest
 {
+    public function tryToQueryASingleDatasetWithAValidXml(ApiTester$I)
+    {
+        $response = $I->sendGET('/dataset?doi=100006');
+        $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
+        $I->seeResponseIsXml();
+        $I->assertStringStartsWith("<?xml", $I->grabResponse());
+    }
+
+    public function tryToQueryASingleDatasetOnlyWithAValidXml(ApiTester $I)
+    {
+        $response = $I->sendGET('/dataset?doi=100006&result=dataset');
+        $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
+        $I->seeResponseIsXml();
+        $I->assertStringStartsWith('<?xml', $I->grabResponse());
+    }
+
     public function tryToQueryDatasetsWithSamplesSorted(ApiTester$I, \Codeception\Module\Db $db)
     {
         $query = "SELECT d.identifier, d.upload_status

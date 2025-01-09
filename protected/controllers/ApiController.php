@@ -2,9 +2,6 @@
 
 class ApiController extends Controller
 {
-    // Members
-
-
     const RESULTS = ['file', 'sample', 'dataset'];
 
 	/**
@@ -81,9 +78,14 @@ class ApiController extends Controller
             $this->_sendResponse(400, 'An error occurred, please check your parameters');
         }
 
+        // needed in order to remove the empty line
+        ob_start();
+        $image = $model->image;
+        ob_get_clean();
+
          switch ($result) {
                 case "dataset":
-                    $this->renderPartial('singledatasetonly',array('model'=> $model));
+                    $this->renderPartial('singledatasetonly',array('model'=> $model, 'image' => $image));
                     break;
                 case "sample":
                     $this->renderPartial('singlesample',array('model'=> $model));
@@ -92,7 +94,7 @@ class ApiController extends Controller
                     $this->renderPartial('singlefile',array('model'=> $model));
                     break;
                 case "all":
-                    $this->renderPartial('singledataset',array('model'=> $model));
+                    $this->renderPartial('singledataset',array('model'=> $model, 'image' => $image));
                     break;
                 default:
                     $this->_sendResponse(500, 'A problem occurred');
