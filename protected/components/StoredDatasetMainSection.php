@@ -145,7 +145,11 @@ class StoredDatasetMainSection extends DatasetComponents implements DatasetMainS
         $flatten = function ($row) {
             return $row['value'];
         };
-        return array_map($flatten, $result);
+        $keywords = array_map($flatten, $result);
+        $filteredKeywords = array_filter($keywords, function ($keyword) {
+            return !empty(trim($keyword));
+        });
+        return $filteredKeywords;
     }
 
     /**
