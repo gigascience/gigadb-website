@@ -434,7 +434,7 @@ $sampleDataProvider = $samples->getDataProvider();
                                                 <td class="button-column">
                                                   <div class="icon-wrapper">
                                                       <?php if ($isPreviewAvailable): ?>
-                                                        <button class="fa fa-eye fa-lg icon icon-view" data-toggle="modal" data-target="#previewModal" data-file-location="<?= $file['location'] ?>" data-file-name="<?= $file['name'] ?>" data-file-type="<?= $file['type'] ?>" data-file-format="<?= $file['format'] ?>" data-file-size="<?= $file['size'] ?>" data-file-id="<?= $file['id'] ?>" data-file-dataset-id="<?= $file['dataset_id'] ?>" data-file-extension="<?= $file['extension'] ?>" data-file-description="<?= $file['description'] ?>" data-file-date-stamp="<?= $file['date_stamp'] ?>" data-file-download-count="<?= $file['download_count'] ?>" aria-label="Preview <?= $file["name"] ?>"></button>
+                                                        <button class="fa fa-eye fa-lg icon icon-view" data-toggle="modal" data-target="#previewModal" data-file-location="<?= $file['location'] ?>" data-file-name="<?= $file['name'] ?>" data-file-type="<?= $file['type'] ?>" data-file-format="<?= $file['format'] ?>" data-file-description="<?= $file['description'] ?>" aria-label="Preview <?= $file["name"] ?>"></button>
                                                       <?php else: ?>
                                                         <i class="fa fa-eye fa-lg icon icon-view icon-disabled" aria-label="Preview not available for <?= $file["name"] ?>"></i>
                                                       <?php endif; ?>
