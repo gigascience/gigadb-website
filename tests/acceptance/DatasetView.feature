@@ -228,3 +228,12 @@ Feature: a user visit the dataset page
     When I follow "[aria-label^='Size']"
     And I follow "[aria-label^='Size']"
     Then I should see "3.88 GB" in the table "#files_table" cell 1 6
+
+  @ok @issue-66
+  Scenario: File preview button displays a preview modal
+    Given I have not signed in
+    And I am on "/dataset/100142"
+    And I follow "Files"
+    When I follow "button.icon-view"
+    And I wait "1" seconds
+    Then I should see "Preview of"
