@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #479: Update FAQ "Why is submission to GigaDB not closely integrated with submission to GigaScience?"
 - Feat #524: Add FAQ for BUSCO genome completeness analysis
 - Feat #456: Improve DataCite metadata by migrating to Datacite version 4.6
 - Fix #1727: Sort files and samples by id in descending order when querying
