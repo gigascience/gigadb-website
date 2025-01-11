@@ -42,7 +42,7 @@ $this->pageTitle = 'GigaDB - FAQ';
                     </div>
                     <div id="panel02" aria-labelledby="heading02" class="panel-collapse collapse">
                         <div class="panel-body">
-                            <p>At the present only GigaScience.</p>
+                            <p>Currently GigaDB work very closly with GigaScience and GigaByte journals. If you have data relating to a publication in another journal you may wish to consider splitting the paper into a research paper and a datanote, the later can be submitted it to GigaByte and we can then host your data in GigaDB which can be referenced in any research article using those data.</p>
                         </div>
                     </div>
                 </div>
