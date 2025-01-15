@@ -23,7 +23,9 @@ use Ramsey\Uuid\Uuid;
 class Image extends CActiveRecord
 {
     /** @const int  database id of the generic image (no_image.png) */
-    const GENERIC_IMAGE_ID = 0 ;
+    const GENERIC_IMAGE_ID  = 0 ;
+    /** @const string database url of the generic image (no_image.png) */
+    const GENERIC_IMAGE_URL = "https://assets.gigadb-cdn.net/images/datasets/no_image.png";
 
     /** @const string bucket name when storage is in the cloud  */
     const BUCKET = "assets.gigadb-cdn.net";
@@ -103,15 +105,24 @@ class Image extends CActiveRecord
      */
     public function write(Filesystem $targetStorage, string $enclosingDirectory, CUploadedFile $uploadedFile): bool
     {
-        $imagePath = Yii::$app->params["environment"]."/images/datasets/$enclosingDirectory/".$uploadedFile->getName();
-        if ( $targetStorage->put($imagePath, file_get_contents($uploadedFile->getTempName()), [
-            'visibility' => AdapterInterface::VISIBILITY_PUBLIC
-        ]) ) {
-            $this->location = $uploadedFile->getName();
-            $this->url = "https://".self::BUCKET."/$imagePath" ;
+        $slugger = new \Symfony\Component\String\Slugger\AsciiSlugger();
+        $info = pathinfo($uploadedFile->getName());
+        $fileName = $slugger->slug($info['filename'])->toString();
+
+        $imagePath = sprintf("%s/images/datasets/%s/%s.%s", Yii::$app->params['environment'], $enclosingDirectory, $fileName, $info['extension'] );
+
+        if ($targetStorage->put(
+            $imagePath, file_get_contents($uploadedFile->getTempName()),
+            ['visibility' => AdapterInterface::VISIBILITY_PUBLIC]
+        )) {
+            $this->location = sprintf("%s.%s", $fileName, $info['extension']);
+            $this->url = sprintf("https://%s/%s", self::BUCKET, $imagePath);
+
             return true;
         }
+
         Yii::log("Error attempting to write image to the storage","error");
+
         return false;
     }
 

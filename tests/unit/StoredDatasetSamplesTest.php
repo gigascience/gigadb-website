@@ -53,7 +53,7 @@ class StoredDatasetSamplesTest extends CDbTestCase
 		$this->assertEquals($doi, $daoUnderTest->getDatasetDOI() ) ;
 	}
 
-	public function testStoredReturnsDatasetSamples()
+	public function testStoredReturnsPaginatedDatasetSamples()
 	{
 		$dataset_id = 1;
 
@@ -120,7 +120,12 @@ class StoredDatasetSamplesTest extends CDbTestCase
 		$daoUnderTest = new StoredDatasetSamples($dataset_id,
 								$this->getFixtureManager()->getDbConnection()
 							);
-		$this->assertEquals($expected, $daoUnderTest->getDatasetSamples() ) ;
+        $this->assertEquals([$expected[1]], $daoUnderTest->getDatasetSamples(1,1)) ;
+        $this->assertEquals([$expected[0]], $daoUnderTest->getDatasetSamples(1,0)) ;
+        $this->assertEquals([$expected[2]], $daoUnderTest->getDatasetSamples(1,2)) ;
+        $this->assertEquals($expected, $daoUnderTest->getDatasetSamples(3)) ;
+        $this->assertEquals($expected, $daoUnderTest->getDatasetSamples("ALL",0)) ;
+        $this->assertEquals($expected, $daoUnderTest->getDatasetSamples()) ;
 	}
 
 }

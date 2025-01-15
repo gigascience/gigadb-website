@@ -1,13 +1,11 @@
-<?php 
+<?php
 class LessCompilerCommand extends CConsoleCommand {
   public function run($args) {
     $less = new lessc;
     $basePath = "/var/www/";
       try {
-          echo "Compiling site.less files at $basePath".PHP_EOL;
-          $less->compileFile($basePath."less/site.less", $basePath."css/site.css");
-          echo "Compiling current.less files at $basePath".PHP_EOL;
-          $less->compileFile($basePath."less/current.less", $basePath."css/current.css");
+          echo "Compiling index.less files at $basePath".PHP_EOL;
+          $less->compileFile($basePath."less/index.less", $basePath."css/index.css");
       } catch (exception $e) {
           echo "fatal error: " . $e->getMessage();
       }

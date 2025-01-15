@@ -47,7 +47,7 @@ class StoredDatasetFiles extends DatasetComponents implements DatasetFilesInterf
      *
      * @return array of files array maps
      */
-    public function getDatasetFiles(): array
+    public function getDatasetFiles(?string $limit = "ALL", ?int $offset = 0): array
     {
         $objectToHash =  function ($file) {
 
@@ -73,13 +73,30 @@ class StoredDatasetFiles extends DatasetComponents implements DatasetFilesInterf
         $sql = "select
 		id, dataset_id, name, location, extension, size, description, date_stamp, format_id, type_id, download_count
 		from file
-		where dataset_id=:id limit " . self::FILES_ROWS_LIMIT ;
+		where dataset_id=:id order by id limit $limit offset $offset" ;
         ;
         $files = File::model()->findAllBySql($sql, array('id' => $this->_id));
         $result = array_map($objectToHash, $files);
         // var_dump($result);
         return $result;
     }
+
+    /**
+     * count number of files associated to a dataset
+     *
+     * @return int how many files are associated with the dataset
+     */
+    public function countDatasetFiles(): int
+    {
+        $criteria=new CDbCriteria;
+        $criteria->join="LEFT join dataset on dataset.id = dataset_id";
+        $criteria->condition='dataset.identifier=:identifier';
+        $criteria->params=array(':identifier'=> $this->getDatasetDOI());
+
+        return  File::model()->count($criteria);
+
+    }
+
 
     /**
      * retrieve the sample information attached to the files associated to a dataset

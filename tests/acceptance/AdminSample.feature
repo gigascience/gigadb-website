@@ -69,6 +69,24 @@ Feature: admin page for samples
     And I should see "Attribute name for the input plant=\rose\ is not valid - please select a valid attribute name!"
 
   @ok
+  Scenario: display updated sample name when update
+    Given I am on "/adminSample/update/id/432"
+    When I fill in the field of "name" "Sample[name]" with "test"
+    And I press the button "Save"
+    And I wait "1" seconds
+    Then I should see "test"
+    Then I am on "/adminSample/view/id/432"
+    And I should see "test"
+
+  @ok
+  Scenario: display error with an empty name
+    Given I am on "/adminSample/update/id/432"
+    When I fill in the field of "name" "Sample[name]" with ""
+    And I press the button "Save"
+    And I wait "1" seconds
+    Then I should see "Sample ID cannot be blank"
+
+  @ok
   Scenario: display error message for non numeric taxon id when create
     Given I am on "/adminSample/create"
     And I should see "Create"
@@ -119,6 +137,6 @@ Feature: admin page for samples
     And I fill in the field of "name" "Sample[attributesList]" with "sex=\"male\",alternative_names=\"Alternative name here\""
     And I press the button "Create"
     And I wait "1" seconds
-    Then I should see "View Sample #433"
+    Then I should see "View Sample #451"
     And I should see "male"
     And I should see "Alternative name here"

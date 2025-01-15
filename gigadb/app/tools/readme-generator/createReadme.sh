@@ -8,16 +8,21 @@
 PATH=/usr/local/bin:$PATH
 export PATH
 
-# Allow all scripts to base themselves from directory where backup script 
-# is located
-APP_SOURCE=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+# Allow all scripts to base themselves in the directory where this createReadme.sh
+# script is located
+APP_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
-# Location where readme files will be created
-SOURCE_PATH="${APP_SOURCE}/runtime/curators"
+# Readme file will be created in the current working directory from where this 
+# createReadme.sh script is called
+WORKING_DIR=$(pwd)
 
 # Locations of rclone.conf
 BASTION_RCLONE_CONF_LOCATION='/home/centos/.config/rclone/rclone.conf'
-DEV_RCLONE_CONF_LOCATION='../wasabi-migration/config/rclone.conf'
+DEV_RCLONE_CONF_LOCATION="${APP_DIR}/../wasabi-migration/config/rclone.conf"
+
+# Source of AWS credentials to supply to rclone on bastion server
+AWS_SHARED_CREDENTIALS_FILE='/home/centos/.aws/credentials'
+AWS_PROFILE='wasabi-transfer'
 
 # Wasabi directory paths
 WASABI_DEV_DIRECTORY="wasabi:gigadb-datasets/dev/pub/10.5524"
@@ -35,6 +40,29 @@ use_live_data=false
 # Default number of DOIs to process
 batch=0
 
+# Usage message
+usage_message="Usage: $0 --doi <DOI>\n
+Required:
+--doi            DOI to process
+
+Available Options:
+--batch          Number of DOI to process
+--wasabi         (Default) Copy readme file to Wasabi bucket
+--apply          Escape dry run mode
+--use-live-data  Copy data to production live bucket"
+
+# Default output directory
+if [[ $(uname -n) =~ compute ]];then
+  wasabi_upload=true
+else
+  wasabi_upload=false
+fi
+
+if [[ $# -eq 0 ]];then
+  echo -e "$usage_message"
+  exit 1
+fi
+
 # Parse command line parameters
 while [[ $# -gt 0 ]]; do
     case "$1" in
@@ -44,10 +72,6 @@ while [[ $# -gt 0 ]]; do
         ;;
     --batch)
         batch=$2
-        shift
-        ;;
-    --outdir)
-        outdir=$2
         shift
         ;;
     --wasabi)
@@ -67,18 +91,28 @@ while [[ $# -gt 0 ]]; do
     shift
 done
 
+# Check if the --doi option is provided
+if [[ -z "$doi" ]]; then
+  echo "Error: --doi <DOI> is required."
+  exit 1
+fi
+
 #######################################
 # Set up logging
 # Globals:
 #   LOGDIR
-#   APP_SOURCE
+#   APP_DIR
 #   doi
 # Arguments:
 #   None
 #######################################
 function set_up_logging() {
-  LOGDIR="$APP_SOURCE/logs"
-  LOGFILE="$LOGDIR/readme_${doi}_$(date +'%Y%m%d_%H%M%S').log"
+  if [[ $(uname -n) =~ compute ]];then
+    LOGDIR="/var/log/gigadb"
+  else
+    LOGDIR="${APP_DIR}/log"
+  fi
+  LOGFILE="${LOGDIR}/readme.log"
   mkdir -p "${LOGDIR}"
   touch "${LOGFILE}"
 }
@@ -86,8 +120,7 @@ function set_up_logging() {
 #######################################
 # Determine path to which directory in bucket readme file should be copied into
 # Globals:
-#   SOURCE_PATH
-#   APP_SOURCE
+#   APP_DIR
 #   destination_path
 #   use_live_data
 # Arguments:
@@ -134,7 +167,6 @@ function get_doi_directory_range() {
 # Globals:
 #   source_dataset_path
 #   doi_directory
-#   SOURCE_PATH
 #   doi
 #   destination_path
 #   dir_range
@@ -145,12 +177,7 @@ function get_doi_directory_range() {
 #######################################
 function copy_to_wasabi() {
   # Create directory path to readme file
-  readme_file=""
-  if [[ $(uname -n) =~ compute ]];then
-    readme_file="/home/centos/readmeFiles/readme_${doi}.txt"
-  else
-    readme_file="${SOURCE_PATH}/readme_${doi}.txt"
-  fi
+  readme_file="${WORKING_DIR}/readme_${doi}.txt"
   doi_directory="${destination_path}/${dir_range}/${doi}/"
   
   # Check readme file exists
@@ -172,6 +199,13 @@ function copy_to_wasabi() {
     rclone_cmd+=" --log-level INFO"
     rclone_cmd+=" --stats-log-level DEBUG"
     rclone_cmd+=" >> ${LOGFILE}"
+  
+    # For informing rclone where AWS credentials are located on bastion server
+    if [[ $(uname -n) =~ compute ]];then
+      export AWS_SHARED_CREDENTIALS_FILE
+      export AWS_PROFILE
+    fi
+
     # Execute command
     eval "${rclone_cmd}"
     # Get exit code for rclone command
@@ -197,7 +231,8 @@ function copy_to_wasabi() {
 #######################################
 function main {
   set_up_logging
-  
+  determine_destination_path
+
   count=0
   # Execute loop if number of readme files created is less than batch number
   # or run loop if batch = 0
@@ -205,13 +240,15 @@ function main {
     # Conditional for how to generate readme file - dependant on user's environment
     if [[ $(uname -n) =~ compute ]];then
       . /home/centos/.bash_profile
-      docker run --rm -v /home/centos/readmeFiles:/app/readmeFiles registry.gitlab.com/$GITLAB_PROJECT/production_tool:$GIGADB_ENV /app/yii readme/create --doi "${doi}" --outdir "${outdir}"
+      docker run --rm -v "${WORKING_DIR}":/app/readmeFiles registry.gitlab.com/"${GITLAB_PROJECT}"/production_tool:"${GIGADB_ENV}" /app/yii readme/create --doi "${doi}" --outdir /app/readmeFiles --bucketPath "${destination_path}"
     else
-      docker-compose run --rm tool /app/yii readme/create --doi "${doi}" --outdir "${outdir}"
+      # Create readme file in current working directory by mounting this location at /app/readmeFiles in container
+      docker-compose -f "${APP_DIR}"/docker-compose.yml run --rm -v "${WORKING_DIR}":/app/readmeFiles tool /app/yii readme/create --doi "${doi}" --outdir /app/readmeFiles --bucketPath "${destination_path}"
     fi
     exitCode=$?
+
     if [ "${exitCode}" -eq 74 ]; then
-      echo "$(date +'%Y/%m/%d %H:%M:%S') ERROR  : Could not save readme file for DOI ${doi} at ${outdir}" >> "$LOGFILE"
+      echo "$(date +'%Y/%m/%d %H:%M:%S') ERROR  : Could not save readme file for DOI ${doi} at ${WORKING_DIR}" >> "$LOGFILE"
       exit 1
     elif [ "${exitCode}" -eq 65 ]; then
       echo "$(date +'%Y/%m/%d %H:%M:%S') WARN  : No dataset for DOI ${doi}" >> "$LOGFILE"
@@ -220,11 +257,10 @@ function main {
         exit 0
       fi
     else
-      echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Created readme file for DOI ${doi} in ${SOURCE_PATH}/readme_${doi}.txt" >> "$LOGFILE"
+      echo "$(date +'%Y/%m/%d %H:%M:%S') INFO  : Created readme file for DOI ${doi} in ${WORKING_DIR}/readme_${doi}.txt" >> "$LOGFILE"
 
       # Readme file can be copied into Wasabi if --wasabi flag is present
       if [ "${wasabi_upload}" ]; then
-        determine_destination_path
         dir_range=""
         get_doi_directory_range
         copy_to_wasabi

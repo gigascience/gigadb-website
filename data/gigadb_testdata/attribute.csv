@@ -4,3 +4,4 @@ id,attribute_name,definition,model,structured_comment_name,value_syntax,allowed_
 422,Source material identifiers,,,,,,,,
 455,keyword,,,keywords,,,,,
 497,urltoredirect,,,urltoredirect,,,,,
+605,MD5 checksum,,,md5sum,,,,,

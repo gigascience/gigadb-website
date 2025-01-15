@@ -2,6 +2,9 @@ id,dataset_id,url,external_link_type_id
 2,5,http://genomes.uprm.edu/parrot/,1
 3,5,http://genomes.uprm.edu/drupal/,1
 9,22,http://foxtailmillet.genomics.org.cn/,2
+10,23,http://projects.ensembl.org/heroic/,1
+11,23,http://www2.cancer.ucl.ac.uk/medicalgenomics/tdg_web/trackList.php,1
+12,23,http://www2.cancer.ucl.ac.uk/medicalgenomics/medusa/,1
 35,144,https://github.com/ShashaankV/CS,1
 36,144,https://github.com/ShashaankV/GD,1
 1525,2342,https://scicrunch.org/resolver/RRID:SCR_021313,1

@@ -20,7 +20,6 @@ Feature: form to update dataset details
     And I should see "Metadata"
     And I should see "Dataset Size *"
     And I should see "Status"
-    And I should see "URL"
     And I should see "Source *"
     And I should see "Tag"
     And I should see "License *"
@@ -44,7 +43,6 @@ Feature: form to update dataset details
     When I am on "/adminDataset/update/id/144"
     And I attach the file "bgi_logo_new.png" to the file input element "datasetImage"
     Then I should see an image located in "blob:http://gigadb.test/"
-    And I should see "URL"
     And I should see "Source"
     And I should see "Tag"
     And I should see "License"
@@ -56,14 +54,13 @@ Feature: form to update dataset details
     And I attach the file "bgi_logo_new.png" to the file input element "datasetImage"
     And I press the button "Save"
     Then I am on "/dataset/100094"
-    And I should see an image located in "/images/datasets/9febbdcf-3f7c-5558-abaa-448e633a109d/bgi_logo_new.png"
+    And I should see an image located in "/images/datasets/9febbdcf-3f7c-5558-abaa-448e633a109d/bgi-logo-new.png"
 
   @ok @datasetimage
   Scenario: Can display dataset image, meta data and remove image button in update page
     When I am on "/adminDataset/update/id/8"
     Then I should see an image located in "https://assets.gigadb-cdn.net/live/images/datasets/images/data/cropped/100006_Pygoscelis_adeliae.jpg"
     And I should see "Remove image"
-    And I should see "URL"
     And I should see "Source"
     And I should see "Tag"
     And I should see "License"
@@ -75,7 +72,6 @@ Feature: form to update dataset details
     And I attach the file "bgi_logo_new.png" to the file input element "datasetImage"
     Then I should see an image located in "blob:http://gigadb.test/"
     And I should not see "Remove image"
-    And I should see "URL"
     And I should see "Source"
     And I should see "Tag"
     And I should see "License"
@@ -117,7 +113,7 @@ Feature: form to update dataset details
     And I fill in the field of "name" "Dataset[title]" with "test dataset"
     And I press the button "Create"
     Then I should see current url contains "/dataset/400789/token/"
-    And I should see an image located in "/images/datasets/e166c2a0-3684-5209-bccd-c4b18ff87be9/bgi_logo_new.png"
+    And I should see an image located in "/images/datasets/e166c2a0-3684-5209-bccd-c4b18ff87be9/bgi-logo-new.png"
 
   @ok @issue-1023
   Scenario: To confirm the upload status of published dataset has changed to incomplete
@@ -144,8 +140,6 @@ Feature: form to update dataset details
     When I am on "/adminDataset/update/id/5"
     And I press the button "Create/Reset Private URL"
     And I wait "1" seconds
-    And I am on "/adminDataset/update/id/5"
-    And I follow "Open Private URL"
     Then I should see current url contains "/dataset/100039/token/"
     And I should see "Genomic data of the Puerto Rican Parrot (Amazona vittata) from a locally funded project."
 
@@ -209,11 +203,9 @@ Feature: form to update dataset details
     And I follow "Remove image"
     And I confirm to "Are you sure? This will take effect immediately"
     And I wait "1" seconds
-    Then I should not see "Image URL"
-    And I should not see "Image Source"
-    And I should not see "Image Tag"
-    And I should not see "Image License"
-    And I should not see "Image Photographer"
+    Then I should see an image field "source" with text "GigaDB"
+    And I should see an image field "license" with text "All rights reserved"
+    And I should see an image field "photographer" with text "n/a"
     And I should see an image located in "/images/datasets/no_image.png"
 
   @ok
@@ -261,20 +253,34 @@ Feature: form to update dataset details
 
   @ok @datasetimage
   Scenario: Delete an image's file and then remove the image record
-    When I am on "/adminDataset/update/id/5"
+    When I am on "/adminDataset/update/id/8"
     And I press the button "X"
     And I confirm to "Are you sure? This will take effect immediately"
     And I wait "2" seconds
     And I follow "Remove image"
     And I confirm to "Are you sure? This will take effect immediately"
     And I wait "1" seconds
-    Then I should not see "URL"
-    And I should not see "Source"
-    And I should not see "Tag"
-    And I should not see "License"
-    And I should not see "Photographer"
+    Then I should see an image field "source" with text "GigaDB"
+    And I should see an image field "license" with text "All rights reserved"
+    And I should see an image field "photographer" with text "n/a"
     And I should see an image located in "/images/datasets/no_image.png"
     And I should not see an input button "X"
+
+  @ok @datasetimage
+  Scenario: Delete an image's file and then update metadata but don't save a new image's file
+    When I am on "/adminDataset/update/id/8"
+    And I press the button "X"
+    And I confirm to "Are you sure? This will take effect immediately"
+    And I wait "2" seconds
+    And I fill in the field of "name" "Image[source]" with "test source"
+    And I fill in the field of "name" "Image[license]" with "test license"
+    And I fill in the field of "name" "Image[photographer]" with "test Joe"
+    And I press the button "Save"
+    Then I am on "/adminDataset/update/id/8"
+    And I should see an image field "source" with text "test source"
+    And I should see an image field "license" with text "test license"
+    And I should see an image field "photographer" with text "test Joe"
+    And I should see an image located in "/images/datasets/no_image.png"
 
   @ok
   Scenario: can save keywords on update
@@ -284,6 +290,18 @@ Feature: form to update dataset details
     And I press the button "Save"
     Then I am on "dataset/100006"
     And I should see "bam"
+
+  @ok @issue-2061
+  Scenario: Can delete all keywords on update
+    Given I am on "/adminDataset/update/id/8"
+    And I click on keywords field
+    And I fill in keywords fields with "bam"
+    And I press the button "Save"
+    When I am on "/adminDataset/update/id/8"
+    And I click on delete keyword button
+    And I press the button "Save"
+    Then I am on "dataset/100006"
+    And I should not see "bam"
 
   @ok @curationlog
   Scenario: Create new curation log record for a dataset
@@ -300,19 +318,19 @@ Feature: form to update dataset details
     And I should see "hello world"
 
   @ok @curationlog
-  Scenario: Click view curation record image with link
+  Scenario: Click view curation record with link
     When I am on "/adminDataset/update/id/22"
-    And I should see an image with alternate text "View" is linked to "http://gigadb.test/curationLog/view/id/3"
-    And I click on image with alternate text "View"
+    And I should see a curation log action "View" is linked to "http://gigadb.test/curationLog/view/id/3"
+    And I click on curation log action "View"
     Then I am on "/curationLog/view/id/3"
     And I should see "View Curation Log #3"
     And I should see a link "Back to this Dataset Curation Log" to "http://gigadb.test/adminDataset/update/id/22"
 
   @ok @curationlog
-  Scenario: Click update curation record image with link
+  Scenario: Click update curation record with link
     When I am on "/adminDataset/update/id/22"
-    And I should see an image with alternate text "Update" is linked to "http://gigadb.test/curationLog/update/id/3"
-    And I click on image with alternate text "Update"
+    And  I should see a curation log action "Update" is linked to "http://gigadb.test/curationLog/update/id/3"
+    And I click on curation log action "Update"
     Then I am on "/curationLog/update/id/3"
     And I should see "Update Curation Log 3"
     And I fill in the field of "name" "CurationLog[comments]" with "cogito, ergo sum"
@@ -323,11 +341,11 @@ Feature: form to update dataset details
     And I should see "cogito, ergo sum"
 
   @ok @curationlog
-  Scenario: Click delete curation record image with link
+  Scenario: Click delete curation record with link
     When I am on "/adminDataset/update/id/22"
     And I should see "Status changed to Published"
-    And I should see an image with alternate text "Delete" is linked to "http://gigadb.test/curationLog/delete/id/3"
-    And I click on image with alternate text "Delete"
+    And I should see a curation log action "Delete" is linked to "http://gigadb.test/curationLog/delete/id/3"
+    And I click on curation log action "Delete"
     And I confirm to "Are you sure you want to delete this item?"
     And I wait "2" seconds
     Then I am on "/adminDataset/update/id/22"
@@ -348,6 +366,7 @@ Feature: form to update dataset details
     Given I am on "/adminDataset/update/id/668"
     And I should see "Private"
     When I fill in the field of "name" "Dataset[dataset_size]" with "1024"
+    When I check the field "Dataset_Epigenomic"
     And I press the button "Save"
     Then I should be on "/adminDataset/update/id/668"
     And I should see "Updated successfully!"
@@ -368,7 +387,7 @@ Feature: form to update dataset details
     And I select <status> from the field "Dataset_upload_status"
     And I press the button "Save"
     And I am on "/dataset/100039"
-    Then I should see "The DOI 100039 cannot be displayed."
+    Then I should see "The DOI 100039 cannot be displayed"
     And I should not see "Genomic data of the Puerto Rican Parrot"
     Examples:
       | status                   |
@@ -401,3 +420,79 @@ Feature: form to update dataset details
     And I press the button "Save"
     And I am on "/dataset/100039"
     Then I should see "Genomic data of the Puerto Rican Parrot"
+
+  @ok @mint-doi
+  Scenario: Update metadata for an existing doi
+    Given I am on "/adminDataset/update/id/8"
+    When I follow "Mint DOI"
+    Then I should see "minting under way, please wait"
+    And I wait "5" seconds
+    And I should see "This DOI exists in DataCite already, so it has now been updated with the current values from GigaDB."
+
+  @ok @mint-doi
+  Scenario: Update metadata for non exist doi
+    Given I am on "/adminDataset/update/id/5"
+    When I follow "Mint DOI"
+    Then I should see "minting under way, please wait"
+    And I wait "5" seconds
+    And I should see "This DOI exists in datacite, but failed to update metadata because of: DOI 10.80027/100039: Missing child element(s)."
+
+  @ok @mint-doi
+  Scenario: Update metadata with invalid metadata format with existing doi
+    Given I am on "adminDataset/update/id/2342"
+    When I follow "Mint DOI"
+    Then I should see "minting under way, please wait"
+    And I wait "5" seconds
+    And I should see "This DOI exists in datacite, but failed to update metadata because of: DOI 10.80027/100935: Missing child element(s). Expected is ( {http://datacite.org/schema/kernel-4}creator ). at line 4, column 0"
+
+  @ok @mint-doi
+  Scenario: Try to create doi with invalid metadata format
+    Given I am on "/adminDataset/update/id/700"
+    When I follow "Mint DOI"
+    Then I should see "minting under way, please wait"
+    And I wait "10" seconds
+    And I should see "This DOI cannot be created because of the metadata status: 422. Details can be found at here"
+    And I should see a link "here" to "https://support.datacite.org/reference/mds#api-response-codes"
+
+  @ok @dataset-status
+  Scenario Outline: Links to create mockup or to open mockup are always present for a non-published dataset
+    Given I am on "/adminDataset/update/id/668"
+    And I select <status> from the field "Dataset_upload_status"
+    And I press the button "Save"
+    And I am on "/adminDataset/update/id/668"
+    Then I should see a link "Create/Reset Private URL" to "/adminDataset/private/identifier/200070"
+    And I should see a link "Open Private URL" to "/dataset/200070/token/ImP3Bbu7ytRSfYFh"
+    Examples:
+      | status                   |
+      | "ImportFromEM"           |
+      | "UserStartedIncomplete"  |
+      | "Rejected"               |
+      | "Not required"           |
+      | "Submitted"              |
+      | "Curation"               |
+      | "AuthorReview"           |
+      | "Private"                |
+      | "AssigningFTPbox"        |
+      | "UserUploadingData"      |
+      | "DataAvailableForReview" |
+      | "DataPending"            |
+
+  @ok @dataset-status
+  Scenario: Links to create mockup or to open mockup are not present for a published dataset
+    Given I am on "/adminDataset/update/id/5"
+    And I select "Published" from the field "Dataset_upload_status"
+    And I press the button "Save"
+    When I am on "/adminDataset/update/id/5"
+    Then I should not see "Create/Reset Private URL"
+    And I should not see "Open Private URL"
+
+
+  @ok @issue-1812 @mockup
+  Scenario: Navigating mockup page tables does not generate errors
+    Given I am on "/adminDataset/update/id/5"
+    When I press the button "Create/Reset Private URL"
+    And I wait "1" seconds
+    And I press the button "Files"
+    And I press the button "Next >"
+    And I wait "1" seconds
+    Then I should see "Parrot.k31.NetworkTest.txt"

@@ -41,18 +41,32 @@ class CachedDatasetSamples extends DatasetComponents implements DatasetSamplesIn
         return $this->_storedDatasetSamples->getDatasetDOI();
     }
 
+    /**
+     * count number of samples associated to a dataset
+     *
+     * @return int how many samples are associated with the dataset
+     */
+    public function countDatasetSamples(): int
+    {
+        $countSamples =  $this->getCachedLocalData($this->getDatasetId());
+        if (!$countSamples) {
+            $countSamples = $this->_storedDatasetSamples->countDatasetSamples();
+            $this->saveLocalDataInCache($this->getDatasetId(), $countSamples);
+        }
+        return $countSamples;
+    }
 
     /**
      * retrieve from cache samples associated to a dataset
      *
      * @return array of samples array maps
      */
-    public function getDatasetSamples(): array
+    public function getDatasetSamples(?string $limit = "ALL", ?int $offset = 0): array
     {
-        $samples =  $this->getCachedLocalData($this->getDatasetId());
-        if (false == $samples) {
-            $samples = $this->_storedDatasetSamples->getDatasetSamples();
-            $this->saveLocaldataInCache($this->getDatasetId(), $samples);
+        $samples =  $this->getCachedLocalData($this->getDatasetId(), $limit."_".$offset);
+        if (!$samples) {
+            $samples = $this->_storedDatasetSamples->getDatasetSamples($limit, $offset);
+            $this->saveLocalDataInCache($this->getDatasetId(), $samples);
         }
         return $samples;
     }

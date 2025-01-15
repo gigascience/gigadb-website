@@ -86,4 +86,21 @@ class Relationship extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+
+    /**
+     * @param $name
+     *
+     * @return void
+     */
+    public function setName($name) {
+        $this->name = $name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName() {
+        return $this->name;
+    }
+
 }

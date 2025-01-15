@@ -1,0 +1,35 @@
+[DOI] 10.5524/102480
+
+[Title] Supporting data for "Genome assembly and annotation of the king ratsnake, Elaphe carinata."
+
+[Release Date] 2023-11-28
+
+[Citation] Fan, J; Huang, R; Yang, D; Gong, Y; Cui, Z; Wang, X; Su, Z; Yu, J; Zhang, Y; Zhang, T; Jiang, Z; Lan, T; Wang, H; Huang, S (2023): Supporting data for "Genome assembly and annotation of the king ratsnake, Elaphe carinata." GigaScience Database. http://dx.doi.org/10.5524/102480
+
+[Data Type] Genomic,Transcriptomic
+
+[Dataset Summary]  The king ratsnake (<i>Elaphe carinata</i>) of the genus Elaphe is a common large, non-venomous snake widely distributed in Southeast and East Asia. It is an economically important farmed species. As a non-venomous snake, the king ratsnake predates venomous snakes, such as cobras and pit vipers. However, the immune and digestive mechanisms of the king ratsnake remain unclear. Despite their economic and research importance, we lack genomic resources that would benefit toxicology, phylogeography, and immunogenetics studies.<br />Here, we present data from single-tube long fragment read (stLFR) sequencing used to generate the first contiguous genome of a king ratsnake from Huangshan City, Anhui province, China. The resulting genome size is 1.56 GB with a scaffold N50 of 6.53M, from which we predicted 22,339 protein-coding genes, including 22,065 with functional annotations that are available here. This genome data is potentially a useful addition to those available for snakes.
+
+[File Location] https://ftp.cngb.org/pub/gigadb/pub/10.5524/102001_103000/102480/
+
+[File name] - [File Description]
+Elaphe_carinata.pep.gz  -  E. carinata coding gene translated sequences
+Elaphe_carinata.pep.KEGG2Gene.csv  -  Gene annotation results for E. carinata - KEGG annotation; underlying data for Figure 4a in the associated manuscript.
+Elaphe_carinata.pep.GO2Gene.csv  -  Gene annotation results for E. carinata - GO enrichment; underlying data for Figure 4b in the associated manuscript.
+Tree_file.txt  -  Phylogenetic tree file.
+ID_comparison_table.txt  -  ID comparison table of functional annotation (KEGG and GO enrichment) and structural annotation.
+genome.repeat.statistics.csv  -  Distribution of transposable elements (TEs) such as DNA transposons (DNA) and RNA transposons in the E. carinata genome. RNA transposons include DNAs, LINEs, LTRs, and SINEs; underlying data for Figure 3a and 3b in the associated manuscript
+Elaphe_carinata.gff.gz  -  E. carinata annotation file
+full_table.tsv  -  BUSCO: full table
+missing_busco_list.tsv  -  Missing BUSCOs
+scaffold_E.carinata_genome.fa.gz  -  E. carinata genome assembly
+short_summary.specific.vertebrata_odb10.vertebrata.txt  -  BUSCO: summary results
+Elaphe_carinata.cds.gz  -  E. carinata coding sequences
+blast.txt.gz  -  Pairwise blast alignment results. Maximum-likelihood tree reconstructed using protein sequences; underlying data for Figure 6 in the associated manuscript.
+
+
+[License]
+All files and data are distributed under the CC0 1.0 Universal (CC0 1.0) Public Domain Dedication (https://creativecommons.org/publicdomain/zero/1.0/), unless specifically stated otherwise, see http://gigadb.org/site/term for more details.
+
+[Comments]
+[End]

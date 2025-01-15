@@ -2,11 +2,7 @@
 
 class DatasetLogController extends Controller
 {
-	/**
-	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
-	 * using two-column layout. See 'protected/views/layouts/column2.php'.
-	 */
-	public $layout='//layouts/column2';
+
 
 	/**
 	 * @return array action filters
@@ -42,8 +38,6 @@ class DatasetLogController extends Controller
 	 */
 	public function actionView()
 	{
-		$this->layout = 'new_datasetpage';
-
 		if(isset($_GET['id'])) {
 			$this->render('view',array(
 				'model'=>$this->loadModel($_GET['id']),
@@ -69,7 +63,6 @@ class DatasetLogController extends Controller
 				$this->redirect(array('view','id'=>$model->id));
 		}
 
-		$this->layout = 'new_datasetpage';
 		$this->render('create',array(
 			'model'=>$model,
 		));
@@ -95,7 +88,6 @@ class DatasetLogController extends Controller
 					$this->redirect(array('view','id'=>$model->id));
 			}
 
-			$this->layout = 'new_datasetpage';
 			$this->render('update',array(
 				'model'=>$model,
 			));
@@ -132,7 +124,6 @@ class DatasetLogController extends Controller
 		if(isset($_GET['DatasetLog']))
 			$model->setAttributes($_GET['DatasetLog']);
 
-		$this->layout = 'new_main';
 		$this->loadBaBbqPolyfills = true;
 		$this->render('admin',array(
 			'model'=>$model,

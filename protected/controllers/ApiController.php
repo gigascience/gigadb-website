@@ -2,13 +2,7 @@
 
 class ApiController extends Controller
 {
-    // Members
-	/**
-	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
-	 * using two-column layout. See 'protected/views/layouts/column2.php'.
-	 */
-	public $layout='//layouts/column2';
-
+    const RESULTS = ['file', 'sample', 'dataset'];
 
 	/**
 	 * @return array action filters
@@ -52,71 +46,60 @@ class ApiController extends Controller
 
     public function actionDataset()
 	{
-                $status='Published';
-                $id = Yii::app()->request->getParam('id');
-                $doi= Yii::app()->request->getParam('doi');
-                $result= Yii::app()->request->getParam('result');
-                if(!isset($result))
-                {
-                  $result='all';
+        $status = 'Published';
+        $id = Yii::app()->request->getParam('id');
+        $doi = Yii::app()->request->getParam('doi');
+        $result = Yii::app()->request->getParam('result');
+        $model = null;
+
+        if (!in_array($result, self::RESULTS)) {
+          $result = 'all';
+        }
+
+        try {
+            if ($id) {
+                $model = Dataset::model()->findByAttributes(array('id' => $id, 'upload_status' => $status));
+
+                if (!$model) {
+                    $this->_sendResponse(404, sprintf('The dataset with id <b>%s</b> is not found',$id));
                 }
-                if(isset($id))
-                {
-                   try{
-                   $model=  Dataset::model()->findByAttributes(array('id'=>$id,'upload_status'=>$status));}
-                   catch(CDbException $e)
-                   {
+            } elseif ($doi) {
+                $model = Dataset::model()->findByAttributes(array('identifier' => $doi, 'upload_status' => $status));
 
-                            $this->_sendResponse(404,
-                            sprintf('No items where found for dataset id <b>%s</b>',$id) );
-                   }
-                    if(!isset($model))
-                   {
-
-                        $this->_sendResponse(404,
-                            sprintf('No items where found for dataset id <b>%s</b>',$id) );
-                   }
+                if (!$model) {
+                    $this->_sendResponse(404, sprintf('The dataset with DOI <b>%s</b> is not found',$doi));
                 }
-                else{
-                    try{
-                    $model=  Dataset::model()->findByAttributes(array('identifier'=>$doi,'upload_status'=>$status));}
-                    catch(CDbException $e)
-                   {
+            }
+        } catch (\Exception $e) {
+            $this->_sendResponse(500, 'An error occurred');
+        }
 
-                            $this->_sendResponse(404,
-                            sprintf('No items where found for dataset doi <b>%s</b>',$doi) );
-                   }
-                   if(!isset($model))
-                   {
+        if (!$model) {
+            $this->_sendResponse(400, 'An error occurred, please check your parameters');
+        }
 
-                       $this->_sendResponse(404,
-                            sprintf('No items where found for dataset doi <b>%s</b>',$doi) );
-                   }
+        // needed in order to remove the empty line
+        ob_start();
+        $image = $model->image;
+        ob_get_clean();
 
-                }
-
-
-
-                 switch ($result) {
-                        case "dataset":
-                            $this->renderPartial('singledatasetonly',array('model'=>$model,));
-                            break;
-                        case "sample":
-                            $this->renderPartial('singlesample',array('model'=>$model,));
-                            break;
-                        case "file":
-                            $this->renderPartial('singlefile',array('model'=>$model,));
-                            break;
-                        case "all":
-                            $this->renderPartial('singledataset',array('model'=>$model,));
-                            break;
-                        default:
-                            break;
-                    }
-               /*
-                $this->renderPartial('singledataset',array(
-			'model'=>$model,
-		));*/
+         switch ($result) {
+                case "dataset":
+                    $this->renderPartial('singledatasetonly',array('model'=> $model, 'image' => $image));
+                    break;
+                case "sample":
+                    $this->renderPartial('singlesample',array('model'=> $model));
+                    break;
+                case "file":
+                    $this->renderPartial('singlefile',array('model'=> $model));
+                    break;
+                case "all":
+                    $this->renderPartial('singledataset',array('model'=> $model, 'image' => $image));
+                    break;
+                default:
+                    $this->_sendResponse(500, 'A problem occurred');
+                    break;
+        }
 	}
 
     public function actionList()
@@ -821,7 +804,7 @@ class ApiController extends Controller
                     $message = 'The requested method is not implemented.';
                     break;
             }
-            // servers don't always have a signature turned on 
+            // servers don't always have a signature turned on
             // (this is an apache directive "ServerSignature On")
             $signature = ($_SERVER['SERVER_SIGNATURE'] == '') ? $_SERVER['SERVER_SOFTWARE'] . ' Server at ' . $_SERVER['SERVER_NAME'] . ' Port ' . $_SERVER['SERVER_PORT'] : $_SERVER['SERVER_SIGNATURE'];
             // this should be templated in a real-world solution

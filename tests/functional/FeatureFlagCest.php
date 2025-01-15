@@ -41,7 +41,10 @@ class featureFlagCest
         $this->featureFlag->setFflagInstanceId($this->config['components']['featureFlag']['fflagInstanceId']);
         $this->featureFlag->init();
 
-        $I->assertTrue($this->featureFlag->isEnabled("fuw"));
+        if ("dev" === $this->config['components']['featureFlag']['fflagAppName'])
+            $I->assertTrue($this->featureFlag->isEnabled("fuw"));
+        else
+            $I->assertFalse($this->featureFlag->isEnabled("fuw"));
     }
 
     /**

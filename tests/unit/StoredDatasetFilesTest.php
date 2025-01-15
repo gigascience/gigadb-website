@@ -59,7 +59,7 @@ class StoredDatasetFilesTest extends CDbTestCase
         $this->assertEquals($doi, $daoUnderTest->getDatasetDOI()) ;
     }
 
-    public function testStoredReturnsDatasetFiles()
+    public function testStoredReturnsPaginatedDatasetFiles()
     {
         $dataset_id = 1;
 
@@ -76,8 +76,8 @@ class StoredDatasetFilesTest extends CDbTestCase
                 'format' => 'TEXT',
                 'type' => 'Text',
                 'file_attributes' => array(
+                    array('number of lines' => '155'),
                     array("keyword" => "some value"),
-                    array("number of lines" => "155"),
                 ),
                 'download_count' => 0,
             ),
@@ -101,6 +101,10 @@ class StoredDatasetFilesTest extends CDbTestCase
             $dataset_id,
             $this->getFixtureManager()->getDbConnection()
         );
+        $this->assertEquals([$expected[1]], $daoUnderTest->getDatasetFiles(1,1)) ;
+        $this->assertEquals([$expected[0]], $daoUnderTest->getDatasetFiles(1,0)) ;
+        $this->assertEquals($expected, $daoUnderTest->getDatasetFiles(2)) ;
+        $this->assertEquals($expected, $daoUnderTest->getDatasetFiles("ALL",0)) ;
         $this->assertEquals($expected, $daoUnderTest->getDatasetFiles()) ;
     }
 

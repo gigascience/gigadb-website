@@ -9,7 +9,7 @@
 <style>
 </style>
 <script>
-import Uppy from '@uppy/core'
+import Uppy from '@uppy/core/lib/Uppy.js';
 import Dashboard from '@uppy/dashboard'
 import Form from '@uppy/form'
 import Tus from '@uppy/tus'
@@ -37,7 +37,7 @@ export default {
         this.uppy.use(Dashboard, {
             inline: true,
             width: 750,
-            height: 450,            
+            height: 450,
             target: '.drag-drop-area',
             hideAfterFinish: true,
             showProgressDetails: true,
@@ -63,7 +63,7 @@ export default {
         this.uppy.use(Checksum, {id: 'Checksum'})
         this.uppy.on('preprocess-progress', (file, data) => {
             eventBus.$emit('checksummed', data.message, file)
-        })        
+        })
         this.uppy.on('complete', (result) => {
 	      	eventBus.$emit('complete',result)
 	    })

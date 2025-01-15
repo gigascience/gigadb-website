@@ -54,4 +54,12 @@ class WebsiteUserSteps extends \Codeception\Actor
             $this->I->seeLink($row[0], $row[1]);
         }
     }
+
+    /**
+     * @Then I should see link element of type :relationship to :destination
+     */
+    public function iShouldSeeLinkElementOfTypeTo($relation, $destination)
+    {
+        $this->I->seeInPageSource('<link rel="' . $relation . '" href="' . $destination . '">');
+    }
 }

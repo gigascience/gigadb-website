@@ -2,7 +2,7 @@
 # Save terraform output in Gitlab variables
 
 - name: Save webapp IP addresses
-  hosts: name_gigadb_server_{{gigadb_env}}*
+  hosts: name_gigadb_webserver_{{gigadb_env}}*
   tags:
     - webapp_ips
   vars:
@@ -22,3 +22,15 @@
     - role: ../../roles/tf-output-to-gl-variables
 
 
+- name: Save files IP addresses
+  hosts: name_gigadb_filesserver_{{gigadb_env}}*
+  tags:
+    - files_ips
+  vars:
+    target_host: "_files"
+
+  tasks:
+    - debug: var=ansible_default_ipv4.address
+
+  roles:
+    - role: ../../roles/tf-output-to-gl-variables

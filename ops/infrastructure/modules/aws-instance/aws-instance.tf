@@ -1,11 +1,11 @@
 resource "aws_security_group" "docker_host_sg" {
-  name        = "docker_host_sg_${var.deployment_target}_${var.owner}"
+  name        = "${var.ec2_usage}_sg_${var.deployment_target}_${var.owner}"
   description = "Allow connection to docker host for ${var.deployment_target}"
   vpc_id      = var.vpc_id
 
   ingress {
-    from_port   = 80
-    to_port     = 80
+    from_port   = var.app_port
+    to_port     = var.app_port
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -67,7 +67,7 @@ resource "aws_security_group" "docker_host_sg" {
   }
 
    tags = {
-     Name = "docker_host_sg_${var.deployment_target}_${var.owner}"
+     Name = "${var.ec2_usage}_sg_${var.deployment_target}_${var.owner}"
    }
 }
 
@@ -89,14 +89,14 @@ data "aws_ami" "centos" {
 
 resource "aws_instance" "docker_host" {
   ami = data.aws_ami.centos.id
-  instance_type = "${var.web_ec2_type}"
+  instance_type = "${var.ec2_type}"
   vpc_security_group_ids = [aws_security_group.docker_host_sg.id]
   key_name = var.key_name
   subnet_id = var.public_subnet_id
 
   tags = {
-    Name = "gigadb_server_${var.deployment_target}_${var.owner}",
-    System = "${var.web_ec2_type}_centos_stream8",
+    Name = "gigadb_${var.ec2_usage}_${var.deployment_target}_${var.owner}",
+    System = "${var.ec2_usage}_${var.ec2_type}_centos_stream8",
   }
 
   root_block_device {
@@ -106,7 +106,7 @@ resource "aws_instance" "docker_host" {
 
   volume_tags = {
     Owner = var.owner
-    Name = "gigadb_server_volume_${var.deployment_target}"
+    Name = "gigadb_${var.ec2_usage}_volume_${var.deployment_target}"
     Environment = var.deployment_target
   }
 }

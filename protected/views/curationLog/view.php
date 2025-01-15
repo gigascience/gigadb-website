@@ -4,11 +4,7 @@
       'pageTitle' => 'View Curation Log #' . $model->id,
       'breadcrumbItems' => [
         ['label' => 'Admin', 'href' => '/site/admin'],
-        ['label' => 'Manage', 'href' => '/adminDataset/admin'],
-        ['label' => 'Dataset', 'href' => $this->createAbsoluteUrl(
-            'adminDataset/update',
-            ['id' => $model->dataset_id],
-        )],
+        ['label' => 'Manage', 'href' => '/curationLog/admin'],
         ['isActive' => true, 'label' => 'View Log'],
       ]
     ]);

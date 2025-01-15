@@ -12,8 +12,6 @@ class AdminDatasetImageCest
         $I->deleteRowByCriteria('dataset',['identifier' =>'346345']);
     }
 
-    // tests
-
     /**
      * Test that dataset can be created without custom image, and therefore use the generic image
      * @param FunctionalTester $I
@@ -75,39 +73,35 @@ class AdminDatasetImageCest
     }
 
     /**
-     * Test that uploading a new image after removing previous one doesn't alter the DB record for the generic image
+     * Test that image metafields are updated
+     *
      * @param FunctionalTester $I
+     *
      * @return void
      */
-    public function tryToRemoveCustomImageThenUploadNewOne(FunctionalTester $I)
+    public function tryToUpdateImageMetafields(FunctionalTester $I)
     {
-        
         //Login as admin
-        $I->amOnPage("/site/login");
-        $I->submitForm('form.form-horizontal',[
+        $I->amOnPage('/site/login');
+        $I->submitForm('form.form-horizontal', [
                 'LoginForm[username]' => 'admin@gigadb.org',
-                'LoginForm[password]' => 'gigadb']
+                'LoginForm[password]' => 'gigadb'
+            ]
         );
-        $I->canSee("Admin");
+        $I->canSee('Admin');
 
         //Remove custom image for dataset of id 8
-        $I->amOnPage("adminDataset/update/id/8");
-        $I->click("Remove image");
-        $I->sendAjaxPostRequest("/adminDataset/removeImage/", ["doi" => "100006" ]); //make the ajax call the button' javascript would have made
+        $I->amOnPage('adminDataset/update/id/8');
 
         // Upload a new one
-        $I->attachFile('#datasetImage', 'bgi_logo_new.png');
-        $I->fillField('Image[source]', 'funky testy');
-        $I->fillField('Image[license]', 'CC0');
-        $I->fillField('Image[photographer]', 'Honky Tonky');
-        $I->click("Save");
+        $I->fillField('Image[source]', 'modified');
+        $I->fillField('Image[license]', 'modified');
+        $I->fillField('Image[photographer]', 'modified');
+        $I->click('Save');
 
-        // Ensure the database record for the generic image is not altered
-        $I->seeInDatabase('image',['id' => 0,
-            'url' => 'https://assets.gigadb-cdn.net/images/datasets/no_image.png',
-            'license' => 'All rights reserved',
-            'photographer' => 'n/a',
-            'source' => 'GigaDB']);
-        
+        $I->seeInDatabase(
+            'image',
+            ['id' => 8, 'license' => 'modified', 'photographer' => 'modified', 'source' => 'modified']
+        );
     }
 }

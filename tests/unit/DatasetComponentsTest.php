@@ -37,7 +37,7 @@ class DatasetComponentsTest extends \Codeception\Test\Unit
         //so instead we test one of its concrete subclasses. We only need to test one.
         $component = new CachedDatasetFiles($mockCache, $mockCacheDep, $mockDatasetFiles);
 
-        $result = $component->saveLocaldataInCache("100001", "hello world");
+        $result = $component->saveLocalDataInCache("100001", "hello world");
         $this->assertNotEquals('select current_time;', $mockCacheDep->sql);
     }
 
@@ -61,12 +61,12 @@ class DatasetComponentsTest extends \Codeception\Test\Unit
             '_cacheDependency' =>  $mockCacheDep,
             '_storedDatasetFiles' => $mockDatasetFiles,
         ], [
-            'isCachedDisabled' => function () {
+            'isCacheDisabled' => function () {
                 return true;
             },
         ]);
 
-        $result = $component->saveLocaldataInCache("100001", "hello world");
+        $result = $component->saveLocalDataInCache("100001", "hello world");
         $this->assertEquals('select current_time;', $mockCacheDep->sql);
     }
 }

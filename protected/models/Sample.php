@@ -57,7 +57,7 @@ class Sample extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('species_id', 'required'),
+			array('species_id, name', 'required'),
 			array('species_id, submitted_id', 'numerical', 'integerOnly'=>true),
 			array('name', 'length', 'max'=>100),
             		array('consent_document, contact_author_name', 'length', 'max'=>45),

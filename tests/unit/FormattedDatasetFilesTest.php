@@ -8,9 +8,14 @@
  */
 class FormattedDatasetFilesTest extends CTestCase
 {
+    private CPagination $pager;
+
     public function setUp()
     {
         parent::setUp();
+        $this->pager = new FilesPagination();
+        $this->pager->setPageSize(2);
+
     }
 
     public function testFormattedReturnsDatasetId()
@@ -28,7 +33,7 @@ class FormattedDatasetFilesTest extends CTestCase
                  ->willReturn(6);
 
 
-        $daoUnderTest = new FormattedDatasetFiles($pageSize, $cachedDatasetFiles);
+        $daoUnderTest = new FormattedDatasetFiles($this->pager, $cachedDatasetFiles);
         $this->assertEquals($dataset_id, $daoUnderTest->getDatasetId()) ;
     }
 
@@ -48,7 +53,7 @@ class FormattedDatasetFilesTest extends CTestCase
                  ->willReturn("100044");
 
 
-        $daoUnderTest = new FormattedDatasetFiles($pageSize, $cachedDatasetFiles);
+        $daoUnderTest = new FormattedDatasetFiles($this->pager, $cachedDatasetFiles);
         $this->assertEquals($doi, $daoUnderTest->getDatasetDOI()) ;
     }
 
@@ -113,7 +118,7 @@ class FormattedDatasetFilesTest extends CTestCase
                             ),
                             'download_count' => 0,
                             'nameHtml' => "<div title=\"just readme\"><a href=\"ftp://foo.bar\" target='_blank'>readme.txt</a></div>",
-                            'sizeUnit' => '1.23 GiB',
+                            'sizeUnit' => '1.32 GB',
                             'attrDesc' => "keyword: some value<br>number of lines: 155<br>",
                         ),
                         array(
@@ -137,19 +142,22 @@ class FormattedDatasetFilesTest extends CTestCase
 
         // create a mock for the CachedDatasetFiles
         $cachedDatasetFiles = $this->getMockBuilder(CachedDatasetFiles::class)
-                         ->setMethods(['getDatasetFiles'])
+                         ->setMethods(['getDatasetFiles','getDatasetId','countDatasetFiles'])
                          ->disableOriginalConstructor()
                          ->getMock();
-        //then we set our expectation
-        $cachedDatasetFiles->expects($this->exactly(2))
+        // then we set our expectations
+        $cachedDatasetFiles->expects($this->once())
                  ->method('getDatasetFiles')
                  ->willReturn($source);
+        $cachedDatasetFiles->expects($this->once())
+            ->method('countDatasetFiles')
+            ->willReturn(2);
 
 
-        $daoUnderTest = new FormattedDatasetFiles($pageSize, $cachedDatasetFiles);
+        $daoUnderTest = new FormattedDatasetFiles($this->pager, $cachedDatasetFiles);
         $this->assertEquals($expected, $daoUnderTest->getDatasetFiles()) ;
-        $this->assertEquals(count($expected), $daoUnderTest->countDatasetFiles()) ;//_nbfiles not set
-        $this->assertEquals(count($expected), $daoUnderTest->countDatasetFiles()) ;//_nbfiles set
+        $this->assertEquals(count($expected), $daoUnderTest->countDatasetFiles()) ;
+
     }
 
     /**
@@ -158,8 +166,8 @@ class FormattedDatasetFilesTest extends CTestCase
      */
     public function testFormattedReturnsDataProvider()
     {
-        $dataset_id = 1;
-        $pageSize = 2;
+        $expectedPageSize = 2;
+        $orderBy = "name ASC";
 
         $expected = array(
                         array(
@@ -179,7 +187,7 @@ class FormattedDatasetFilesTest extends CTestCase
                             ),
                             'download_count' => 0,
                             'nameHtml' => "<div title=\"just readme\"><a href=\"ftp://foo.bar\" target='_blank'>readme.txt</a></div>",
-                            'sizeUnit' => '1.23 GiB',
+                            'sizeUnit' => '1.32 GB',
                             'attrDesc' => "keyword: some value<br>number of lines: 155<br>",
                         ),
                         array(
@@ -202,19 +210,62 @@ class FormattedDatasetFilesTest extends CTestCase
                     );
 
         // create a mock for the CachedDatasetFiles
-        $cachedDatasetFiles = $this->getMockBuilder(CachedDatasetFiles::class)
-                         ->setMethods(['getDatasetFiles'])
+        $cachedDatasetFiles = $this->getMockBuilder(DatasetFilesInterface::class)
+                         ->setMethods(['getDatasetFiles','getDatasetId','getDatasetDOI','getDatasetFilesSamples','countDatasetFiles'])
                          ->disableOriginalConstructor()
                          ->getMock();
         //then we set our expectation
-        $cachedDatasetFiles->expects($this->exactly(2))
+        $cachedDatasetFiles->expects($this->exactly(3))
                  ->method('getDatasetFiles')
                  ->willReturn($expected);
 
 
-        $daoUnderTest = new FormattedDatasetFiles($pageSize, $cachedDatasetFiles);
+        $daoUnderTest = new FormattedDatasetFiles($this->pager, $cachedDatasetFiles);
         $this->assertEquals($expected, $daoUnderTest->getDataProvider()->getData()) ;
-        $this->assertEquals(2, $daoUnderTest->getDataProvider()->getPagination()->getPageSize()) ;
+        $this->assertEquals($expectedPageSize, $daoUnderTest->getDataProvider()->getPagination()->getPageSize()) ;
+        $this->assertEquals($orderBy, $daoUnderTest->getDataProvider()->getSort()->getOrderBy()) ;
+    }
+
+    /**
+     * Test FormattedDatasetFiles' GetDataProvider() calls getDatasetFiles() with the correct parameters based on changes to current page
+     *
+     */
+    public function testFormattedPaginateDataRetrieval()
+    {
+        // create a mock for the CachedDatasetFiles
+        $cachedDatasetFiles = $this->getMockBuilder(DatasetFilesInterface::class)
+            ->setMethods(['getDatasetFiles','getDatasetId','getDatasetDOI','getDatasetFilesSamples','countDatasetFiles'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        //then we set our expectation
+        $cachedDatasetFiles->expects($this->exactly(4))
+            ->method('getDatasetFiles')
+            ->withConsecutive(
+                [$this->pager->getPageSize(), 0*$this->pager->getPageSize()],
+                [$this->pager->getPageSize(), 1*$this->pager->getPageSize()],
+                [$this->pager->getPageSize(), 2*$this->pager->getPageSize()],
+                [$this->pager->getPageSize(), 3*$this->pager->getPageSize()],
+            );
+
+        $mockPager = $this->getMockBuilder(FilesPagination::class)
+            ->setMethods(['getCurrentPage','getPageSize'])
+            ->getMock();
+
+        $mockPager->expects($this->exactly(4))
+            ->method('getCurrentPage')
+            ->will($this->onConsecutiveCalls(0, 1, 2, 3));
+
+        $mockPager->expects($this->any())
+            ->method('getPageSize')
+            ->willReturn(2);
+
+
+        $daoUnderTest = new FormattedDatasetFiles($mockPager, $cachedDatasetFiles);
+        $daoUnderTest->getDataProvider();
+        $daoUnderTest->getDataProvider();
+        $daoUnderTest->getDataProvider();
+        $daoUnderTest->getDataProvider();
+
     }
 
     /**
@@ -329,7 +380,7 @@ class FormattedDatasetFilesTest extends CTestCase
 
 
 
-        $daoUnderTest = new FormattedDatasetFiles($pageSize, $cachedDatasetFiles);
+        $daoUnderTest = new FormattedDatasetFiles($this->pager, $cachedDatasetFiles);
         $this->assertEquals($expected, $daoUnderTest->formatDatasetFilesSamples($sample_threshold)) ;
         $this->assertEquals([$expected[1]], $daoUnderTest->formatDatasetFilesSamples($sample_threshold, 2)) ;
     }

@@ -1,0 +1,323 @@
+//
+// Forms
+// --------------------------------------------------
+
+label {
+  font-weight: normal;
+  font-size: 13px;
+  color: @color-darker-gray;
+  margin-bottom: 10px;
+}
+
+// Base input styles
+input, select, textarea {
+  border: 1px solid @color-medium-gray;
+  border-radius: 4px;
+  background-color: @color-true-white;
+}
+input:not([type="submit"]):not([type="button"]), select, textarea, .form-control {
+  box-shadow: none;
+  border-color: @color-medium-gray;
+  color: @color-true-black;
+  font-size: 13px;
+  margin: 0;
+  &:focus {
+    box-shadow: none;
+    outline: 1px solid @color-gigadb-green;
+    border-color: @color-gigadb-green-600;
+    box-shadow: inset 0 1px 1px fade(@color-gigadb-green, 7.5%),
+      0 0 6px fade(@color-gigadb-green-600, 50%);
+  }
+}
+
+// Base checkbox styles
+input[type="checkbox"] {
+  width: auto;
+  margin-top: 0;
+  position: relative;
+  accent-color: @color-gigadb-green;
+  &:focus {
+    outline: none;
+    box-shadow: inset 0 1px 1px fade(@color-gigadb-green, 7.5%),
+      0 0 6px fade(@color-gigadb-green-600, 50%);
+    &::before {
+      display: block;
+      position: absolute;
+      content: "";
+      inset: -3px;
+      border-width: 1px;
+      border-style: solid;
+      border-color: @color-gigadb-green;
+      border-radius: 4px;
+      pointer-events: none;
+    }
+  }
+}
+
+// NOTE: In Firefox, the above styles for input[type="checkbox"] don't work, so we use an alternative approach
+@-moz-document url-prefix() {
+  input[type="checkbox"]:focus {
+    outline: 2px solid @color-gigadb-green;
+  }
+}
+
+.form-group {
+  .help-block {
+    margin-top: 0px;
+    margin-bottom: 5px;
+  }
+}
+
+.form-group.has-error .form-control:focus {
+  box-shadow: none;
+  outline: 1px solid @brand-danger-on-white!important;
+  border-color: @color-brand-danger-600;
+  box-shadow: inset 0 1px 1px fade(@brand-danger-on-white, 7.5%),
+    0 0 6px fade(@color-brand-danger-600, 50%);
+}
+
+.has-error input[type="checkbox"] {
+  accent-color: @brand-danger-on-white;
+  &:focus {
+    outline: none;
+    accent-color: @brand-danger-on-white;
+    border-color: @brand-danger-on-white;
+    box-shadow: inset 0 1px 1px fade(@brand-danger-on-white, 7.5%),
+      0 0 6px fade(@brand-danger-on-white, 50%);
+    &::before {
+      border-color: @brand-danger-on-white;
+    }
+  }
+}
+
+.form-group {
+  margin-bottom: 20px;
+  &.has-error {
+    color: @brand-danger-on-white;
+    .control-label {
+      color: @brand-danger-on-white;
+    }
+    .form-control {
+      border-color: @brand-danger-on-white;
+    }
+    .help-block {
+      color: @brand-danger-on-white;
+      a {
+        color: @brand-danger-on-white!important;
+        &:hover {
+          color: @color-brand-danger-800!important;
+        }
+      }
+    }
+  }
+  &.mb-10 {
+    // one-off override in protected/views/adminFile/_form.php
+    margin-bottom: 10px;
+  }
+  // Used in /adminDataset/create
+  .errorMessage {
+    margin-top: 2px;
+    color: @brand-danger-on-white;
+  }
+}
+
+.well {
+  .form-group {
+    margin-bottom: 20px;
+    &.has-error {
+      color: @brand-danger-on-lighter-gray;
+      .control-label {
+        color: @brand-danger-on-lighter-gray;
+      }
+      .form-control {
+        border-color: @brand-danger-on-white;
+      }
+      .help-block {
+        color: @brand-danger-on-lighter-gray;
+        a {
+          color: @brand-danger-on-lighter-gray!important;
+          &:hover {
+            color: @color-brand-danger-900!important;
+          }
+        }
+      }
+    }
+    // Used in /adminDataset/create
+    .errorMessage {
+      margin-top: 2px;
+      color: @brand-danger-on-lighter-gray;
+    }
+  }
+}
+
+.form-group.checkbox {
+  .control-label {
+    min-height: 14px;
+    margin-left: 41px;
+    padding-left: 0;
+  }
+  input[type="checkbox"] {
+    margin-left: 0;
+  }
+  .help-block {
+    margin-top: 2px;
+    margin-left: 41px;
+  }
+}
+
+@-moz-document url-prefix() {
+  .has-error input[type="checkbox"]:focus {
+    outline: 2px solid @brand-danger-on-white;
+  }
+}
+
+.form-horizontal {
+  .form-control {
+    margin-top: 0;
+  }
+  .checkbox-horizontal {
+    .control-label {
+      padding-top: 0;
+      margin-bottom: 10px;
+    }
+  }
+  .form-group {
+    .form-control {
+      margin-top: 0;
+    }
+    &.checkbox {
+      .control-label {
+        padding-top: 0;
+        margin-bottom: 10px;
+      }
+    }
+  }
+}
+
+.form-inverted-checkbox {
+  display: flex;
+  width: 100%;
+  margin-bottom: 10px;
+  input[type="checkbox"] {
+    margin: 0 0 0 90px;
+    padding-top: 0px;
+  }
+  label {
+    margin-left: 25px;
+    padding-top: 0px;
+    margin-bottom: 0;
+  }
+}
+
+.form-error {
+  padding-top: 5px;
+  color: @brand-danger-on-lighter-gray;
+}
+
+fieldset {
+  legend {
+    padding-bottom: 4px;
+    font-size: @font-size-base;
+    color: @dark-gray-on-white;
+  }
+  .checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+}
+
+.carousel-doi {
+  left: 30px;
+  border-radius: 23px;
+  color: @color-true-white;
+  margin-top: -26px;
+  position: absolute;
+  top: 65%;
+  font-weight: 100;
+  text-align: center;
+  font-size: 28px;
+  line-height: 20px;
+  width: 20px;
+  height: 20px;
+  border: 0px;
+  filter: alpha(opacity=100);
+  -moz-opacity: 1;
+  -khtml-opacity: 1;
+  opacity: 1;
+  text-decoration: none;
+  background: #a5cc7e;
+  background: -webkit-gradient(
+    linear,
+    0 0,
+    0 bottom,
+    from(#a5cc7e),
+    to(#6ea23a)
+  );
+  background: -webkit-linear-gradient(#a5cc7e, #6ea23a);
+  background: -moz-linear-gradient(#a5cc7e, #6ea23a);
+  background: -ms-linear-gradient(#a5cc7e, #6ea23a);
+  background: -o-linear-gradient(#a5cc7e, #6ea23a);
+  background: linear-gradient(#a5cc7e, #6ea23a);
+  -pie-background: linear-gradient(#a5cc7e, #6ea23a);
+  behavior: url(/css/PIE.htc);
+}
+.form-search {
+  margin: 0px auto 40px auto;
+}
+.form-search.well {
+  text-align: center;
+  background: @color-patina-green;
+  background: -webkit-gradient(
+    linear,
+    0 0,
+    0 bottom,
+    from(@color-patina-green),
+    to(@color-dark-green)
+  );
+  background: -webkit-linear-gradient(@color-patina-green, @color-dark-green);
+  background: -moz-linear-gradient(@color-patina-green, @color-dark-green);
+  background: -ms-linear-gradient(@color-patina-green, @color-dark-green);
+  background: -o-linear-gradient(@color-patina-green, @color-dark-green);
+  background: linear-gradient(@color-patina-green, @color-dark-green);
+  -pie-background: linear-gradient(@color-patina-green, @color-dark-green);
+  behavior: url(/css/PIE.htc);
+}
+.form-search.well .btn-green {
+  font-size: 1.2em;
+  height: 28px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.form-search.well input .btn {
+  height: 28px;
+}
+.form-search.well a {
+  height: 20px;
+}
+.form-search input,
+.form-search textarea,
+.form-search select,
+.form-search .help-inline,
+.form-search .uneditable-input,
+.form-search .input-prepend,
+.form-search .input-append,
+.form-inline input,
+.form-inline textarea,
+.form-inline select,
+.form-inline .help-inline,
+.form-inline .uneditable-input,
+.form-inline .input-prepend,
+.form-inline .input-append,
+.form-horizontal input,
+.form-horizontal textarea,
+.form-horizontal select,
+.form-horizontal .help-inline,
+.form-horizontal .uneditable-input,
+.form-horizontal .input-prepend,
+.form-horizontal .input-append {
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+  margin-top: -30px;
+}

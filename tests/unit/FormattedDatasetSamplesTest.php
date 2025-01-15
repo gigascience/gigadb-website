@@ -8,9 +8,14 @@
  */
 class FormattedDatasetSamplesTest extends CTestCase
 {
+    private CPagination $pager;
+
     public function setUp()
     {
         parent::setUp();
+        $this->pager = new FilesPagination();
+        $this->pager->setPageSize(2);
+
     }
 
     public function testFormattedReturnsDatasetId()
@@ -28,7 +33,7 @@ class FormattedDatasetSamplesTest extends CTestCase
                  ->willReturn(6);
 
 
-        $daoUnderTest = new FormattedDatasetSamples($pageSize, $cachedDatasetSamples);
+        $daoUnderTest = new FormattedDatasetSamples($this->pager, $cachedDatasetSamples);
         $this->assertEquals($dataset_id, $daoUnderTest->getDatasetId()) ;
     }
 
@@ -48,7 +53,7 @@ class FormattedDatasetSamplesTest extends CTestCase
                  ->willReturn("100044");
 
 
-        $daoUnderTest = new FormattedDatasetSamples($pageSize, $cachedDatasetSamples);
+        $daoUnderTest = new FormattedDatasetSamples($this->pager, $cachedDatasetSamples);
         $this->assertEquals($doi, $daoUnderTest->getDatasetDOI()) ;
     }
 
@@ -58,9 +63,6 @@ class FormattedDatasetSamplesTest extends CTestCase
      */
     public function testFormattedReturnsDatasetSamples()
     {
-        $dataset_id = 1;
-        $pageSize = 2;
-
         $source = array(
             array(
                 'sample_id' => 1,
@@ -198,7 +200,7 @@ class FormattedDatasetSamplesTest extends CTestCase
                  ->willReturn($source);
 
 
-        $daoUnderTest = new FormattedDatasetSamples($pageSize, $cachedDatasetSamples);
+        $daoUnderTest = new FormattedDatasetSamples($this->pager, $cachedDatasetSamples);
         $this->assertEquals($expected, $daoUnderTest->getDatasetSamples()) ;
     }
 
@@ -208,8 +210,8 @@ class FormattedDatasetSamplesTest extends CTestCase
      */
     public function testFormattedReturnsDataProvider()
     {
-        $dataset_id = 1;
         $pageSize = 2;
+        $orderBy = "t.name ASC";
 
         $expected = array( // only two items are expected as we've set the pageSize to be 2
             array(
@@ -278,19 +280,60 @@ class FormattedDatasetSamplesTest extends CTestCase
         );
 
         // create a mock for the CachedDatasetSamples
-        $cachedDatasetSamples = $this->getMockBuilder(CachedDatasetSamples::class)
-                         ->setMethods(['getDatasetSamples'])
+        $cachedDatasetSamples = $this->getMockBuilder(DatasetSamplesInterface::class)
+                         ->setMethods(['getDatasetSamples','getDatasetDOI','getDatasetId','countDatasetSamples'])
                          ->disableOriginalConstructor()
                          ->getMock();
         //then we set our expectation
-        $cachedDatasetSamples->expects($this->exactly(2))
+        $cachedDatasetSamples->expects($this->exactly(3))
                  ->method('getDatasetSamples')
                  ->willReturn($expected);
 
-
-        $daoUnderTest = new FormattedDatasetSamples($pageSize, $cachedDatasetSamples);
-        $data = $daoUnderTest->getDataProvider()->getData();
-        $this->assertEquals($expected, $data) ;
+        $daoUnderTest = new FormattedDatasetSamples($this->pager, $cachedDatasetSamples);
+        $this->assertEquals($expected, $daoUnderTest->getDataProvider()->getData()) ;
         $this->assertEquals(2, $daoUnderTest->getDataProvider()->getPagination()->getPageSize()) ;
+        $this->assertEquals($orderBy, $daoUnderTest->getDataProvider()->getSort()->getOrderBy()) ;
+    }
+
+    /**
+     * Test FormattedDatasetSamples' GetDataProvider() calls getDatasetSamples() with the correct parameters based on changes to current page
+     *
+     */
+    public function testFormattedPaginateDataRetrieval()
+    {
+        // create a mock for the CachedDatasetSamples
+        $cachedDatasetSamples = $this->getMockBuilder(DatasetSamplesInterface::class)
+            ->setMethods(['getDatasetSamples','getDatasetId','getDatasetDOI','countDatasetSamples'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        //then we set our expectation
+        $cachedDatasetSamples->expects($this->exactly(4))
+            ->method('getDatasetSamples')
+            ->withConsecutive(
+                [$this->pager->getPageSize(), 0*$this->pager->getPageSize()],
+                [$this->pager->getPageSize(), 1*$this->pager->getPageSize()],
+                [$this->pager->getPageSize(), 2*$this->pager->getPageSize()],
+                [$this->pager->getPageSize(), 3*$this->pager->getPageSize()],
+            );
+
+        $mockPager = $this->getMockBuilder(FilesPagination::class)
+            ->setMethods(['getCurrentPage','getPageSize'])
+            ->getMock();
+
+        $mockPager->expects($this->exactly(4))
+            ->method('getCurrentPage')
+            ->will($this->onConsecutiveCalls(0, 1, 2, 3));
+
+        $mockPager->expects($this->any())
+            ->method('getPageSize')
+            ->willReturn(2);
+
+
+        $daoUnderTest = new FormattedDatasetSamples($mockPager, $cachedDatasetSamples);
+        $daoUnderTest->getDataProvider();
+        $daoUnderTest->getDataProvider();
+        $daoUnderTest->getDataProvider();
+        $daoUnderTest->getDataProvider();
+
     }
 }

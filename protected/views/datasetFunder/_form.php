@@ -23,6 +23,7 @@
 			'inputOptions' => [
 				'required' => true,
 			],
+      'tooltip' => 'Select or type the relevant Dataset DOI ID'
 		]);
 		$this->widget('application.components.controls.DropdownField', [
 			'form' => $form,
@@ -32,6 +33,7 @@
 			'inputOptions' => [
 				'required' => true,
 			],
+      'tooltip' => 'Select the Funder name from the drop-down list. If the name is not present, it will need to be added via the Funder Admin page'
 		]);
 		$this->widget('application.components.controls.TextArea', [
 			'form' => $form,
@@ -41,6 +43,7 @@
 				'rows' => 6,
 				'cols' => 50
 			],
+      'tooltip' => 'Type the Grant/Award ID provided by the submitter'
 		]);
 		$this->widget('application.components.controls.TextArea', [
 			'form' => $form,
@@ -50,6 +53,7 @@
 				'rows' => 6,
 				'cols' => 50
 			],
+      'tooltip' => 'Insert the Principle Investigators name who was awarded the grant, use format Initials Surname e.g. CI Hunter'
 		]);
 		$this->widget('application.components.controls.TextArea', [
 			'form' => $form,
@@ -59,6 +63,7 @@
 				'rows' => 6,
 				'cols' => 50
 			],
+      'tooltip' => 'Use this field to include a program name if the award was part of a specific program, or other short details as required'
 		]);
 		?>
 

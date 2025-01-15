@@ -16,7 +16,7 @@ Feature: Reset password
     Then I am on "/site/forgot"
     And I should see "Please enter your email. A link to reset your password will be sent to you."
     And I should see "Email"
-    And I should see a submit button "Reset"
+    And I should see a submit button "Reset Password"
 
   @ok
   Scenario: Unknown email address will display thanks page

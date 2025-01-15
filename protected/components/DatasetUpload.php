@@ -95,50 +95,37 @@ class DatasetUpload extends yii\base\BaseObject
     }
 
     /**
-     * method to set Dataset Upload status to Submitted,  notify curators and add curation log
+     * method to set Dataset Upload status to Submitted
      *
-     * @param string $content email content of notification
-     * @return bool wether or not operation is successful
+     * @param string|null $previousStatus useful if dataset has already been updated
+     *
+     * @return bool whether operation is successful
      */
-    public function setStatusToSubmitted(string $content): bool
+    public function setStatusToSubmitted(string $previousStatus = null): bool
     {
-        $statusChanged = $this->_datasetDAO->transitionStatus("DataAvailableForReview", "Submitted");
-        if ($statusChanged) {
-            Yii::log("Status changed to Submitted", 'info');
-            $emailSent = $this->_fileUploadSrv->emailSend(
-                $this->_config["sender"],
-                $this->_config["curators_email"],
-                "Dataset has been submitted",
-                $content
-            );
-            return $emailSent;
-        }
-        Yii::log("Failed to change status to Submitted", 'error');
-        return $statusChanged;
+        return $this->_datasetDAO->transitionStatus("DataAvailableForReview", "Submitted", null, $previousStatus);
     }
 
     /**
-     * method to set Dataset Upload status to DataPwnding and notify curators
+     * method to set Dataset Upload status to DataPending
      *
-     * @param string $content email content of notification
-     * @param string $authorEmail email of the author
-     * @return bool wether or not operation is successful
+     * @param string|null $previousStatus useful if dataset has already been updated
+     *
+     * @return bool whether operation is successful
      */
-    public function setStatusToDataPending(string $content, string $authorEmail): bool
+    public function setStatusToDataPending(string $previousStatus = null): bool
     {
-        $statusChanged = $this->_datasetDAO->transitionStatus("Submitted", "DataPending");
-        if ($statusChanged) {
-            Yii::log("Status changed to DataPending", 'info');
-            $emailSent = $this->_fileUploadSrv->emailSend(
-                $this->_config["sender"],
-                $authorEmail,
-                "Dataset has been set to DataPending",
-                $content
-            );
-            return $emailSent;
-        }
-        Yii::log("Failed to change status to DataPending", 'error');
-        return $statusChanged;
+        return $this->_datasetDAO->transitionStatus("Submitted", "DataPending", null, $previousStatus);
+    }
+
+    public function sendNotificationEmailBody(string $content, string $uploadStatus, string $authorEmail = null): bool
+    {
+        return $this->_fileUploadSrv->emailSend(
+            $this->_config['sender'],
+            $authorEmail ?: $this->_config['curators_email'],
+            sprintf('Dataset has been %s', $uploadStatus),
+            $content
+        );
     }
 
     /**

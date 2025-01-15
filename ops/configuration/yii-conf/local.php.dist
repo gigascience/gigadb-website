@@ -53,6 +53,8 @@ return array(
         'sphinx_port' => 9312,
 
         // MDS params
+        'mds_metadata_url' => '${MDS_METADATA_URL}',
+        'mds_doi_url' => '${MDS_DOI_URL}',
         'mds_username' => '${MDS_USERNAME}',
         'mds_password' => '${MDS_PASSWORD}',
         'mds_prefix' => '${MDS_PREFIX}',

@@ -66,10 +66,10 @@ execute procedure refresh_dataset_finder()")->execute();
         Yii::app()->db->createCommand("drop trigger if exists file_finder_trigger on file RESTRICT")->execute();
         Yii::app()->db->createCommand("drop function if exists refresh_file_finder RESTRICT")->execute();
 
-        Yii::app()->db->createCommand("drop trigger if exists sample_finder_trigger on file RESTRICT")->execute();
+        Yii::app()->db->createCommand("drop trigger if exists sample_finder_trigger on sample RESTRICT")->execute();
         Yii::app()->db->createCommand("drop function if exists refresh_sample_finder RESTRICT")->execute();
 
-        Yii::app()->db->createCommand("drop trigger if exists dataset_finder_trigger on file RESTRICT")->execute();
+        Yii::app()->db->createCommand("drop trigger if exists dataset_finder_trigger on dataset RESTRICT")->execute();
         Yii::app()->db->createCommand("drop function if exists refresh_dataset_finder RESTRICT")->execute();
 	}
 

@@ -2,8 +2,6 @@
 
 class SearchController extends Controller
 {
-    public $layout='//layouts/column2';
-
     public function actionEmailNewDatasets() {
         $this->render('emailNewDatasets');
     }
@@ -93,7 +91,7 @@ class SearchController extends Controller
 	}
 
     public function actionNew($keyword = '') {
-        $this->layout="new_main";
+        $this->layout="main";
         if(!$_GET['keyword']) {
             Yii::app()->user->setFlash('keyword','Keyword can not be blank');
             $this->redirect(array("/site/index"));

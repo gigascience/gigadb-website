@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resource xmlns="http://datacite.org/schema/kernel-4" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://datacite.org/schema/kernel-4 http://schema.datacite.org/meta/kernel-4/metadata.xsd">
+    <identifier identifierType="DOI">10.80027/100006</identifier>
+    <creators>
+        <creator>
+            <creatorName>Gieger  Christian</creatorName>
+            <nameIdentifier schemeURI="http://orcid.org/" nameIdentifierScheme="ORCID">0000-0001-6986-9554</nameIdentifier>
+        </creator>
+    </creators>
+    <titles>
+        <title xml:lang="en-US">Testing "Dataset 100006"</title>
+    </titles>
+    <publisher>GigaScience Database</publisher>
+    <publicationYear>2018</publicationYear>
+    <subjects>
+        <subject xml:lang="en-US">Metabolomic</subject>
+        <subject xml:lang="en-US">genome-wide association study</subject>
+        <subject xml:lang="en-US">multivariate model</subject>
+        <subject xml:lang="en-US">metabolomics</subject>
+        <subject xml:lang="en-US">conditional analysis</subject>
+        <subject xml:lang="en-US">pleiotropy</subject>
+    </subjects>
+    <dates>
+        <date dateType="Available">2024-2-27</date>
+    </dates>
+    <language>en-US</language>
+    <resourceType resourceTypeGeneral="Dataset">GigaDB Dataset</resourceType>
+    <relatedIdentifiers>
+        <relatedIdentifier relatedIdentifierType="DOI" relationType="IsReferencedBy">10.1093/gigascience/giy137</relatedIdentifier>
+    </relatedIdentifiers>
+    <fundingReferences>
+        <fundingReference>
+            <funderName>European Union FP7</funderName>
+            <funderIdentifier funderIdentifierType="Crossref Funder ID">unknown</funderIdentifier>
+            <awardNumber>602736</awardNumber>
+        </fundingReference>
+        <fundingReference>
+            <funderName>Ministry of Education and Science of the Russian Federation</funderName>
+            <funderIdentifier funderIdentifierType="Crossref Funder ID">http://dx.doi.org/10.13039/501100003443</funderIdentifier>
+            <awardNumber/>
+        </fundingReference>
+        <fundingReference>
+            <funderName>Federal Agency of Scientific Organisations via the Institute of Cytology and Genetics</funderName>
+            <funderIdentifier funderIdentifierType="Crossref Funder ID">unknown</funderIdentifier>
+            <awardNumber>0324-2018-0017</awardNumber>
+        </fundingReference>
+    </fundingReferences>
+    <sizes>
+        <size>85.66 MB</size>
+    </sizes>
+    <rightsList>
+        <rights rightsURI="http://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0 Universal</rights>
+    </rightsList>
+    <descriptions>
+        <description xml:lang="en-US" descriptionType="Abstract">Testing for dataset 100006</description>
+    </descriptions>
+</resource>

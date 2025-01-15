@@ -11,13 +11,13 @@ class ResetPasswordRequestController extends Controller
             'accessControl',
         );
     }
-    
+
     /**
      * Specifies access control rules.
-     * 
-     * The reset function can be used by anonymous users but it will 
+     *
+     * The reset function can be used by anonymous users but it will
      * only work if a token is provided.
-     * 
+     *
      * @return array access control rules
      */
     public function accessRules()
@@ -35,22 +35,20 @@ class ResetPasswordRequestController extends Controller
 
     /**
      * Display thanks page
-     * 
-     * This page lets the user know their request to reset their password has 
+     *
+     * This page lets the user know their request to reset their password has
      * been successfully submitted.
      */
     public function actionThanks()
     {
-        $this->layout = "new_main";
         $this->render('thanks');
     }
-    
+
     /**
      * Displays request password page
      */
     public function actionForgot()
     {
-        $this->layout = "new_main";
         $forgotPasswordForm = new ForgotPasswordForm;
         if (isset($_POST['ForgotPasswordForm'])) {
             $forgotPasswordForm->email = $_POST['ForgotPasswordForm']['email'];
@@ -88,21 +86,19 @@ class ResetPasswordRequestController extends Controller
             $this->render('forgot', array('model' => $forgotPasswordForm));
         }
     }
-    
+
     /**
-     * Displays password reset page if token is verified for user to access 
+     * Displays password reset page if token is verified for user to access
      * password reset page
-     * 
+     *
      * Token is validated with a database lookup of selector, and
      * re-calculating hash of verifier in URL and compare with
      * hash in database
-     * 
+     *
      * Looks for /resetpasswordrequest/reset?token={token}
      */
     public function actionReset()
     {
-        $this->layout = "new_main";
-        
         if (isset($_GET['token'])) {
             $token = $_GET['token'];
             $userIdentity = new PasswordResetTokenUserIdentity($token);
@@ -125,27 +121,27 @@ class ResetPasswordRequestController extends Controller
                     }
                 }
                 else {
-                    // Display reset password page 
+                    // Display reset password page
                     $model->password = $model->confirmPassword = '';
                     $this->render('reset', array('model' => $model));
                 }
             } else {
                 Yii::log("Token not valid" , "info");
                 Yii::app()->user->setFlash('fail-reset-password','Your password reset token is invalid. Please request another.');
-                // Display request reset password page 
+                // Display request reset password page
                 $this->redirect('forgot');
             }
         }
         else {
             Yii::log("No token provided" , "info");
-            // Display request reset password page 
+            // Display request reset password page
             $this->redirect('forgot');
         }
     }
 
     /**
      * Deletes all ResetPasswordRequests belonging to a user
-     * 
+     *
      * @param $userId
      * @return void
      * @throws CDbException
@@ -158,14 +154,14 @@ class ResetPasswordRequestController extends Controller
     }
 
     /**
-     * Sends an email to a user who has filled in the reset password form page. 
-     * 
-     * The email contains a link to the page that allows the user to reset their 
+     * Sends an email to a user who has filled in the reset password form page.
+     *
+     * The email contains a link to the page that allows the user to reset their
      * password. Used by generateResetToken() function.
      *
      * @param $resetPasswordRequest
      */
-    private function sendPasswordEmail($resetPasswordRequest) 
+    private function sendPasswordEmail($resetPasswordRequest)
     {
         // Create URL for user to verify password reset token
         $url = $this->createAbsoluteUrl('site/reset');

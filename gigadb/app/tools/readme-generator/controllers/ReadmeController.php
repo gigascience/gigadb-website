@@ -30,6 +30,12 @@ class ReadmeController extends Controller
      */
     public $outdir = '';
 
+    /**
+     * The wasabi bucket path that the readme file copied to
+     *
+     * @var string $bucketPath
+     */
+    public $bucketPath = '';
 
     /**
      * Specify options available to console command provided by this controller.
@@ -42,6 +48,7 @@ class ReadmeController extends Controller
         return [
             'doi',
             'outdir',
+            'bucketPath',
         ];
     }
 
@@ -49,7 +56,7 @@ class ReadmeController extends Controller
      * This command will auto-create a readme file for a dataset given a doi
      *
      *  Usage:
-     *      ./yii readme/create --doi
+     *      ./yii readme/create --doi --outdir  --bucketPath
      *
      * @throws Exception When output directory cannot be found.
      * @return integer Exit code
@@ -58,11 +65,16 @@ class ReadmeController extends Controller
     {
         $optDoi    = $this->doi;
         $optOutdir = $this->outdir;
+        $optBucketPath = $this->bucketPath;
 
         // Return usage unless mandatory options are passed.
-        if ($optDoi === '') {
+        if ($optDoi === '' || $optOutdir === '' || $optBucketPath === '') {
             $this->stdout(
-                "\nUsage:\n\t./yii readme/create --doi 100142 | --outdir /home/curators".PHP_EOL
+                "\nUsage:\n\t./yii readme/create --doi <DOI> --outdir <directory path> --bucketPath <bucket path>
+                \nRequired Options:
+                --doi         DOI to process, eg. 100142
+                --outdir      Specify the output directory, eg. /home/curators
+                --bucketPath  Path to the bucket, eg. wasabi:gigadb-datasets/dev/pub/10.5524".PHP_EOL
             );
             return ExitCode::USAGE;
         }
@@ -77,6 +89,9 @@ class ReadmeController extends Controller
             } else if ($optOutdir !== '' && is_dir($optOutdir) === false) {
                 throw new Exception('Cannot save readme file - Output directory does not exist or is not a directory');
             }
+            $md5 = md5_file($filename);
+            $fileSize = filesize($filename);
+            Yii::$app->ReadmeGenerator->updateOrCreate($optDoi, str_replace("$optOutdir/", "", $filename), $fileSize, $md5, $optBucketPath);
         } catch (UserException $e) {
             $this->stderr($e->getMessage().PHP_EOL, Console::FG_YELLOW);
             return ExitCode::DATAERR;

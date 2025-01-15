@@ -1,0 +1,33 @@
+PureFtpdBuildStaging:
+  variables:
+    GIGADB_ENV: "staging"
+    YII_DEBUG: "true"
+    COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
+  stage: staging build
+  tags:
+    - $GITLAB_USER_LOGIN
+  needs: []
+  when: manual
+  environment:
+    name: "staging"
+    url: $REMOTE_HOME_URL
+  script:
+    # Load Base image
+    # - docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
+    # - docker load -i php-8.2.3-cli-bullseye.tar
+    # - docker load -i php-$PHP_VERSION-fpm-buster.tar
+    # - docker load -i php-$PHP_VERSION-cli-buster.tar
+    # - docker load -i alpine-3_14.tar
+    # - docker load -i nginx-$NGINX_VERSION-alpine.tar
+    # - docker load -i node-$NODE_VERSION-buster-slim.tar
+    # login to gitlab container registry
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+    # build for production
+    - time docker pull registry.gitlab.com/$CI_PROJECT_PATH/production_ftpd:latest || true
+    - time docker-compose build production_ftpd
+    - time docker tag ${CI_PROJECT_NAME}_production_ftpd:latest registry.gitlab.com/$CI_PROJECT_PATH/production_ftpd:$GIGADB_ENV
+    - time docker push registry.gitlab.com/$CI_PROJECT_PATH/production_ftpd:$GIGADB_ENV
+  artifacts:
+    untracked: true
+    when: always
+    expire_in: 1 week

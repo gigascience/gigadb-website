@@ -2,11 +2,7 @@
 
 class AdminLinkController extends Controller
 {
-	/**
-	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
-	 * using two-column layout. See 'protected/views/layouts/column2.php'.
-	 */
-	public $layout='//layouts/column2';
+
 
 	/**
 	 * @return array action filters
@@ -46,7 +42,6 @@ class AdminLinkController extends Controller
 	 */
 	public function actionView($id)
 	{
-		$this->layout = 'new_datasetpage';
 		$this->render('view',array(
 			'model'=>$this->loadModel($id),
 		));
@@ -70,7 +65,6 @@ class AdminLinkController extends Controller
 				$this->redirect(array('view','id'=>$model->id));
 		}
 
-		$this->layout = 'new_datasetpage';
 		$this->render('create',array(
 			'model'=>$model,
 		));
@@ -120,7 +114,7 @@ class AdminLinkController extends Controller
         }
         $link_database = $_SESSION['link_database'];
 
-        //update 
+        //update
         if (!isset($_SESSION['links']))
             $_SESSION['links'] = array();
 
@@ -161,7 +155,7 @@ class AdminLinkController extends Controller
             'link_database' => $link_database
         ));
     }
-    
+
         public function actionDelete1($id) {
         if (isset($_SESSION['links'])) {
             $info = $_SESSION['links'];
@@ -198,7 +192,6 @@ class AdminLinkController extends Controller
 				$this->redirect(array('view','id'=>$model->id));
 		}
 
-		$this->layout = 'new_datasetpage';
 		$this->render('update',array(
 			'model'=>$model,
 		));
@@ -245,7 +238,6 @@ class AdminLinkController extends Controller
 		if(isset($_GET['Link']))
 			$model->setAttributes($_GET['Link']);
 
-		$this->layout = 'new_main';
 		$this->loadBaBbqPolyfills = true;
 		$this->render('admin',array(
 			'model'=>$model,
@@ -291,7 +283,7 @@ class AdminLinkController extends Controller
             	if($link) {
             		Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "This link has been added already.")));
             	}
-            	
+
             	$link = new Link;
             	$link->dataset_id = $_POST['dataset_id'];
             	$link->is_primary = true;

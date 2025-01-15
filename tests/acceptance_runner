@@ -12,13 +12,12 @@ if [[ $(uname -m) == 'arm64' ]]; then
   profile="apple-silicon"
 fi
 
-# NOTE Commented out to avoid Gitlab pipeline failure until PR #1656 is merged, see: https://github.com/gigascience/gigadb-website/pull/1642#pullrequestreview-1878247065
-# if [ ${GITLAB_PRIVATE_TOKEN:+1} ] ;then
-#   docker-compose run --rm codecept run --no-redirect -g ok-needs-secrets acceptance
-#   docker-compose run --rm application ./protected/yiic migrate --interactive=0
-#   docker-compose run --rm test ./vendor/behat/behat/bin/behat --profile $profile -v --stop-on-failure
+ if [ ${GITLAB_PRIVATE_TOKEN:+1} ] ;then
+   docker-compose run --rm codecept run --no-redirect -g ok-needs-secrets acceptance
+   docker-compose run --rm application ./protected/yiic migrate --interactive=0
+   docker-compose run --rm test ./vendor/behat/behat/bin/behat --profile $profile -v --stop-on-failure
+ fi
 
-# fi
 docker-compose run --rm codecept run --no-redirect -g ok-can-offline acceptance
 docker-compose run --rm application ./protected/yiic migrate --interactive=0
 docker-compose run --rm test ./vendor/behat/behat/bin/behat --profile no-secrets -v --stop-on-failure

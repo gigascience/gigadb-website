@@ -3,12 +3,6 @@
 class AdminDatasetAuthorController extends Controller
 {
     /**
-     * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
-     * using two-column layout. See 'protected/views/layouts/column2.php'.
-     */
-    public $layout = '//layouts/column2';
-
-    /**
      * @return array action filters
      */
     public function filters()
@@ -49,7 +43,6 @@ class AdminDatasetAuthorController extends Controller
      */
     public function actionView($id)
     {
-        $this->layout = '//layouts/new_column2';
         $this->render('view', array(
             'model' => $this->loadModel($id),
         ));
@@ -72,7 +65,6 @@ class AdminDatasetAuthorController extends Controller
                 $this->redirect(array('view', 'id' => $model->id));
         }
 
-        $this->layout = 'new_datasetpage';
         $this->render('create', array(
             'model' => $model,
         ));
@@ -221,7 +213,6 @@ class AdminDatasetAuthorController extends Controller
                 $this->redirect(array('view', 'id' => $model->id));
         }
 
-        $this->layout = 'new_datasetpage';
         $this->render('update', array(
             'model' => $model,
         ));
@@ -287,7 +278,6 @@ class AdminDatasetAuthorController extends Controller
             $model->setAttributes($_GET['DatasetAuthor']);
 
         $this->loadBaBbqPolyfills = true;
-        $this->layout = '//layouts/new_column2';
         $this->render('admin', array(
             'model' => $model,
         ));

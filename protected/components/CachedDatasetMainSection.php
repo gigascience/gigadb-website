@@ -52,7 +52,7 @@ class CachedDatasetMainSection extends DatasetComponents implements DatasetMainS
         $headline = $this->getCachedLocalData($this->getDatasetId());
         if (false == $headline) {
             $headline = $this->_storedDatasetMainSection->getHeadline() ;
-            $this->saveLocaldataInCache($this->getDatasetId(), $headline);
+            $this->saveLocalDataInCache($this->getDatasetId(), $headline);
         }
 
         return $headline;
@@ -67,7 +67,7 @@ class CachedDatasetMainSection extends DatasetComponents implements DatasetMainS
         $release_details = $this->getCachedLocalData($this->getDatasetId());
         if (false == $release_details) {
             $release_details = $this->_storedDatasetMainSection->getReleaseDetails();
-            $this->saveLocaldataInCache($this->getDatasetId(), $release_details);
+            $this->saveLocalDataInCache($this->getDatasetId(), $release_details);
         }
         return $release_details;
     }
@@ -81,7 +81,7 @@ class CachedDatasetMainSection extends DatasetComponents implements DatasetMainS
         $description =  $this->getCachedLocalData($this->getDatasetId());
         if (false == $description) {
             $description = $this->_storedDatasetMainSection->getDescription();
-            $this->saveLocaldataInCache($this->getDatasetId(), $description);
+            $this->saveLocalDataInCache($this->getDatasetId(), $description);
         }
         return $description;
     }
@@ -108,7 +108,7 @@ class CachedDatasetMainSection extends DatasetComponents implements DatasetMainS
         $keywords  =   $this->getCachedLocalData($this->getDatasetId());
         if (false == $keywords) {
             $keywords = $this->_storedDatasetMainSection->getKeywords();
-            $this->saveLocaldataInCache($this->getDatasetId(), $keywords);
+            $this->saveLocalDataInCache($this->getDatasetId(), $keywords);
         }
         return $keywords;
     }
@@ -122,7 +122,7 @@ class CachedDatasetMainSection extends DatasetComponents implements DatasetMainS
         $history =  $this->getCachedLocalData($this->getDatasetId());
         if (false == $history) {
             $history = $this->_storedDatasetMainSection->getHistory();
-            $this->saveLocaldataInCache($this->getDatasetId(), $history);
+            $this->saveLocalDataInCache($this->getDatasetId(), $history);
         }
         return $history;
     }
@@ -136,7 +136,7 @@ class CachedDatasetMainSection extends DatasetComponents implements DatasetMainS
         $funding =  $this->getCachedLocalData($this->getDatasetId());
         if (false == $funding) {
             $funding = $this->_storedDatasetMainSection->getFunding();
-            $this->saveLocaldataInCache($this->getDatasetId(), $funding);
+            $this->saveLocalDataInCache($this->getDatasetId(), $funding);
         }
         return $funding;
     }

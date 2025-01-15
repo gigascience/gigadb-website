@@ -15,13 +15,13 @@ Feature: main search function
     And I should see a link "Pygoscelis_adeliae" to "/dataset/100006"
     And I should see the files:
     | download link title | download link url| file type | size |
-    | Pygoscelis_adeliae.pep.gz | https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006/phylogeny_study_update/Pygoscelis_adeliae.pep.gz              | Protein sequence | 4.17 MiB |
-    | Pygoscelis_adeliae.gff.gz | https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006/phylogeny_study_update/Pygoscelis_adeliae.gff.gz | Annotation       | 1.59 MiB   |
-    | Pygoscelis_adeliae.fa.gz | https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006/phylogeny_study_update/Pygoscelis_adeliae.fa.gz | Sequence assembly | 350.48 MiB |
-    | Pygoscelis_adeliae.RepeatMasker.out.gz | https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006/phylogeny_study_update/Pygoscelis_adeliae.RepeatMasker.out.gz | Repeat sequence | 7.49 MiB |
-    | Pygoscelis_adeliae.cds.gz | https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006/phylogeny_study_update/Pygoscelis_adeliae.cds.gz              | Coding sequence | 6.43 MiB |
-    | Pygoscelis_adeliae.scaf.fa.gz | https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006/Pygoscelis_adeliae.scaf.fa.gz | Sequence assembly | 350.61 MiB |
-    | readme.txt | https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006/readme.txt | Readme | 138 B |
+    | Pygoscelis_adeliae.pep.gz | https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006/phylogeny_study_update/Pygoscelis_adeliae.pep.gz              | Protein sequence | 4.37 MB |
+    | Pygoscelis_adeliae.gff.gz | https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006/phylogeny_study_update/Pygoscelis_adeliae.gff.gz | Annotation       | 1.67 MB   |
+    | Pygoscelis_adeliae.fa.gz | https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006/phylogeny_study_update/Pygoscelis_adeliae.fa.gz | Sequence assembly | 367.50 MB |
+    | Pygoscelis_adeliae.RepeatMasker.out.gz | https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006/phylogeny_study_update/Pygoscelis_adeliae.RepeatMasker.out.gz | Repeat sequence | 7.86 MB |
+    | Pygoscelis_adeliae.cds.gz | https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006/phylogeny_study_update/Pygoscelis_adeliae.cds.gz              | Coding sequence | 6.75 MB |
+    | Pygoscelis_adeliae.scaf.fa.gz | https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006/Pygoscelis_adeliae.scaf.fa.gz | Sequence assembly | 367.64 MB |
+    | readme_100006.txt | https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/dev/pub/10.5524/100001_101000/100006/readme_100006.txt | Readme | 138 B |
 
   @todo @broken
   Scenario: pagination show correct number of pages
@@ -29,7 +29,7 @@ Feature: main search function
     When I fill in the field of "id" "keyword" with "genome"
     And I press the button "Search"
     And I wait "1" seconds
-    Then I should see "Showing 1 - 2 of 5 datasets"
+    Then I should see "Showing 1 - 2 of 6 datasets"
     And I should see a link "Three Bauhinia species transcriptome sequence data" to "/dataset/100245"
     And I should see a link "Data and software to accompany the paper: Applying compressed sensing to genome-wide association studies." to "/dataset/100094"
     And I should not see "Genome data from foxtail millet (Setaria italica)."
@@ -58,7 +58,7 @@ Feature: main search function
     And I should see a link "Genomic data from Adelie penguin (Pygoscelis adeliae)." to "/dataset/100006"
     And I should see the files:
       | download link title | download link url| file type | size |
-      | readme.txt | https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006/readme.txt | Readme | 138 B |
+      | readme_100006.txt | https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/dev/pub/10.5524/100001_101000/100006/readme_100006.txt | Readme | 138 B |
     And I should not see "Pygoscelis_adeliae."
 
 
@@ -72,7 +72,7 @@ Feature: main search function
     And I should see a link "Genomic data from Adelie penguin (Pygoscelis adeliae)." to "/dataset/100006"
     And I should see the files:
       | download link title | download link url| file type | size |
-      | readme.txt | https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006/readme.txt | Readme | 138 B |
+      | readme_100006.txt | https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/dev/pub/10.5524/100001_101000/100006/readme_100006.txt | Readme | 138 B |
     And I should not see "Pygoscelis_adeliae."
 
   @ok
@@ -85,7 +85,7 @@ Feature: main search function
     And I should see a link "Genomic data from Adelie penguin (Pygoscelis adeliae)." to "/dataset/100006"
     And I should see the files:
       | download link title | download link url| file type | size |
-      | readme.txt | https://ftp.cngb.org/pub/gigadb/pub/10.5524/100001_101000/100006/readme.txt | Readme | 138 B |
+      | readme_100006.txt | https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/dev/pub/10.5524/100001_101000/100006/readme_100006.txt | Readme | 138 B |
     And I should not see "Pygoscelis_adeliae."
 
   @ok

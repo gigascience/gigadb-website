@@ -60,8 +60,8 @@ class FormattedDatasetConnectionsTest extends CTestCase
                             'dataset_doi' => "100044", // 6
                             'related_doi' => "100148", // 7
                             'relationship' => "IsPreviousVersionOf", //10 IsPreviousVersionOf
-                            'full_dataset_doi' => "10.5072/100044",
-                            'full_related_doi' => "10.5072/100148",
+                            'full_dataset_doi' => "10.80027/100044",
+                            'full_related_doi' => "10.80027/100148",
                         )
                     ),
                     true
@@ -74,16 +74,16 @@ class FormattedDatasetConnectionsTest extends CTestCase
                             'related_doi' => "100038", // 5
                             'relationship' => "Compiles", //18 Compiles
                             'extra_html' => "",
-                            'full_dataset_doi' => "10.5072/100044",
-                            'full_related_doi' => "10.5072/100038",
+                            'full_dataset_doi' => "10.80027/100044",
+                            'full_related_doi' => "10.80027/100038",
                         ),
                         array(
                             'dataset_doi' => "100044", // 6
                             'related_doi' => "100148", // 7
                             'relationship' => "IsPreviousVersionOf", //10 IsPreviousVersionOf
                             'extra_html' => "special HTML code for IsPreviousVersionOf",
-                            'full_dataset_doi' => "10.5072/100044",
-                            'full_related_doi' => "10.5072/100148",
+                            'full_dataset_doi' => "10.80027/100044",
+                            'full_related_doi' => "10.80027/100148",
                         )
                     );
 

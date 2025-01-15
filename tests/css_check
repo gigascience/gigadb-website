@@ -4,7 +4,7 @@ set -ex
 docker-compose run --rm test which csslint
 
 echo "Checking for CSS errors..."
-csslint_output=$(docker-compose run --rm test /usr/local/bin/csslint css/current.css)
+csslint_output=$(docker-compose run --rm test /usr/local/bin/csslint css/index.css)
 
 if [[ $(echo "$csslint_output" | grep -c "error" || true) -eq "0" ]]; then
   echo "No CSS errors detected by CSSLint"

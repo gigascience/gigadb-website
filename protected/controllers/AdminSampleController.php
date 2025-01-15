@@ -2,11 +2,7 @@
 
 class AdminSampleController extends Controller
 {
-	/**
-	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
-	 * using two-column layout. See 'protected/views/layouts/column2.php'.
-	 */
-	public $layout='//layouts/column2';
+
 
 	/**
 	 * @return array action filters
@@ -43,7 +39,6 @@ class AdminSampleController extends Controller
 	 */
 	public function actionView($id)
 	{
-		$this->layout = 'new_datasetpage';
 		$this->render('view',array(
 			'model'=>$this->loadModel($id),
 		));
@@ -81,7 +76,6 @@ class AdminSampleController extends Controller
             }
         }
 
-    		$this->layout = 'new_datasetpage';
         $this->render('create', array(
             'model' => $model,
         ));
@@ -199,51 +193,47 @@ class AdminSampleController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->loadModel($id);
-                //$old_code= $model->code;
-        // Uncomment the following line if AJAX validation is needed
-        // $this->performAjaxValidation($model);
 
-        if (isset($_POST['Sample'])) {
-            $model->attributes = $_POST['Sample'];
-                        $model->name = $_POST['Sample']['name'];
+        if ($sampleAttribute = Yii::$app->request->post('Sample')) {
+            $hasErrors = false;
+            $model->name = $sampleAttribute['name'];
 
-            if (strpos($_POST['Sample']['species_id'], ":") !== false) {
-                $array = explode(":", $_POST['Sample']['species_id']);
-                $tax_id = $array[0];
-                if (!empty($tax_id)) {
-                    $species = $this->findSpeciesRecord($tax_id, $model);
-                    $this->updateSampleAttributes($model);
-                    if (!$model->hasErrors()) {
-                        $this->redirect(array('view', 'id' => $model->id));
-                    }
-                } else {
-                    $model->addError('error', 'Taxon ID is empty!');
-                }
-            } else {
+            if (!strpos($sampleAttribute['species_id'], ':')) {
                 $model->addError('error', 'The input format is wrong, should be tax_id:common_name');
+                $hasErrors = true;
+            }
+
+            $array = explode(':', $sampleAttribute['species_id']);
+            $tax_id = $array[0];
+
+            if (!$tax_id) {
+                $model->addError('error', 'Taxon ID is empty!');
+                $hasErrors = true;
+            }
+
+            if (!$this->findSpeciesRecord($tax_id, $model)) {
+                $model->addError('error', 'The species does not exist');
+                $hasErrors = true;
+            }
+
+            if (!$hasErrors && $model->save()) {
+                $this->updateSampleAttributes($model);
+            }
+
+            if (!$model->hasErrors()) {
+                $this->redirect(array('view', 'id' => $model->id));
             }
         }
 
-            $species = Species::model()->findByPk($model->species_id);
+        $species = Species::model()->findByPk($model->species_id);
 
-            $model->species_id = $species->tax_id . ":";
-            $has_common_name = false;
-        if ($species->common_name != null) {
-                   $has_common_name = true;
-                   $model->species_id .= $species->common_name;
-        }
+        $model->species_id = sprintf('%s: %s', $species->tax_id, $species->common_name ?: '');
+        $model->species_id .= sprintf('%s%s', $species->common_name ? ', ' : '', $species->scientific_name ?: '');
 
-        if ($species->scientific_name != null) {
-            if ($has_common_name) {
-                $model->species_id .= ",";
-            }
-                    $model->species_id .= $species->scientific_name;
-        }
-            $this->layout = 'new_datasetpage';
-            $this->render('update', array(
-                'model' => $model,
-                'species' => $species,
-            ));
+        $this->render('update', array(
+            'model'   => $model,
+            'species' => $species,
+        ));
     }
 
 	/**
@@ -289,7 +279,7 @@ class AdminSampleController extends Controller
 			$model->setAttributes($attrs, true);
 		}
 
-        $this->layout = 'new_main';
+
 		$this->loadBaBbqPolyfills = true;
 		$this->render('admin',array(
 			'model'=>$model,

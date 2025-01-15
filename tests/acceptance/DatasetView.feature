@@ -29,18 +29,12 @@ Feature: a user visit the dataset page
   @ok @issue-877
   Scenario: The google scholar link is working
     When I am on "/dataset/100094"
-    Then I should see an image "/images/google_scholar.png" is linked to "https://scholar.google.com/scholar?q=10.5072/100094"
+    Then I should see an image "/images/google_scholar.png" is linked to "https://scholar.google.com/scholar?q=10.80027/100094"
 
   @ok @issue-877
   Scenario: The Euro PubMed Central link is working
     When I am on "/dataset/100094"
-    Then I should see an image "/images/ePMC.jpg" is linked to "https://europepmc.org/search?scope=fulltext&query=(REF:%2710.5072/100094%27)"
-
-  @ok @issue-877
-  Scenario: The dimensions link is working
-    When I am on "/dataset/100094"
-    Then I should see an image "/images/dimensions.jpg" is linked to "https://app.dimensions.ai/discover/publication?search_text=10.5072/100094"
-
+    Then I should see an image "/images/ePMC.jpg" is linked to "https://europepmc.org/search?scope=fulltext&query=(REF:%2710.80027/100094%27)"
 
   @ok
   Scenario: Private dataset not visible
@@ -170,3 +164,67 @@ Feature: a user visit the dataset page
     And I should see "test generic image will be display for no image dataset"
     Then I should not see "Cite Dataset"
 
+  @ok
+  Scenario: Pagination in the sample tab
+    Given I have not signed in
+    And I am on "/dataset/100035"
+    And I follow "Sample"
+    And I should see "SRS173539"
+    When I follow "2"
+    Then I should see "SRS173549"
+    And I should not see "SRS173539"
+
+  @ok @no-double-pagination
+  Scenario: Check there is no double pagination in URL when viewing between samples and files
+    Given I have not signed in
+    And I am on "/dataset/100035"
+    And I follow "Sample"
+    And I should see "SRS173539"
+    When I follow "2"
+    And I follow "Files"
+    And I follow "3"
+    Then I should be on "/dataset/view/id/100035/Files_page/3"
+    # If bug was present, URL would look like:
+    # "/dataset/view/id/100035/Samples_page/2/Files_page/3"
+    And I should see "GSM678699_sample16_mefTDGmm.bam.gz"
+
+  @ok
+  Scenario: Canonical URL is shown in page head block
+    When I am on "/dataset/view/id/100035/Samples_page/2"
+    Then I should see link element of type "canonical" to "http://gigadb.test/dataset/100035"
+
+  @ok @sample-attributes-toggler
+  Scenario: Expand the sample attributes box in sample tab
+    Given I have not signed in
+    And I am on "/dataset/100006"
+    And I follow "Sample"
+    And I should not see "Alternative names:PYGAD"
+    When I press the button "+"
+    Then I should see "Alternative names:PYGAD"
+
+  @ok @sample-attributes-toggler
+  Scenario: Collapse the sample attributes box in sample tab
+    Given I have not signed in
+    And I am on "/dataset/100006"
+    And I follow "Sample"
+    And I press the button "+"
+    And I should see "Alternative names:PYGAD"
+    When I press the button "-"
+    Then I should not see "Alternative names:PYGAD"
+
+  @ok @issue-2067
+  Scenario: Files tab can be sort by size in ascending order
+    Given I have not signed in
+    And I am on "/dataset/100035"
+    And I follow "Files"
+    When I follow "[aria-label^='Size']"
+    Then I should see "1.19 kB" in the table "#files_table" cell 1 6
+
+  @ok @issue-2067
+  Scenario: Files tab can be sort by size in descending order
+    Given I have not signed in
+    And I am on "/dataset/100035"
+    And I follow "Files"
+    When I follow "[aria-label^='Size']"
+    And I follow "[aria-label^='Size']"
+    Then I should see "3.88 GB" in the table "#files_table" cell 1 6

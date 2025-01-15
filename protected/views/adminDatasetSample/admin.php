@@ -1,4 +1,4 @@
-<div class="container">
+<div id="adminDatasetContainer" class="container">
 	<?php
 	$this->widget('TitleBreadcrumb', [
 		'pageTitle' => 'Manage Dataset - Samples',
@@ -29,22 +29,32 @@
 			CustomGridView::getDefaultActionButtonsConfig()
 		),
 	)); ?>
-
-	<?php
-	$clientScript = Yii::app()->clientScript;
-	$register_script = <<<EO_SCRIPT
-      jQuery(".js-desc").click(function(e) {
-        const isExpanded = $(this).attr('aria-expanded') === 'true';
-        e.preventDefault();
-        id = $(this).attr('data');
-        $(this).attr('aria-label', isExpanded ? 'show less' : 'show more');
-        $(this).attr('aria-expanded', !isExpanded);
-        jQuery(this).hide();
-        jQuery('.js-short-'+id).toggle();
-        jQuery('.js-long-'+id).toggle();
-      })
-  EO_SCRIPT;
-	$clientScript->registerScript('register_script', $register_script, CClientScript::POS_READY);
-	?>
-
 </div>
+
+<script>
+function toggleShowMore(btnEl) {
+  const isExpanded = btnEl.attr('aria-expanded') === 'true';
+  id = btnEl.attr('data');
+  btnEl.attr('aria-label', isExpanded ? 'show less' : 'show more');
+  btnEl.attr('aria-expanded', !isExpanded);
+  btnEl.hide();
+  $('.js-short-'+id).toggle();
+  $('.js-long-'+id).toggle();
+}
+
+function handleClick(e) {
+  const target = $(e.target);
+
+  if (!target.hasClass('js-desc')) {
+    return;
+  }
+
+  e.preventDefault();
+  toggleShowMore(target);
+}
+
+$(document).ready(function() {
+  // NOTE targeting container because on filter, content gets rerendered and any event listeners are destroyed
+  $("#adminDatasetContainer").on("click", handleClick)
+})
+</script>

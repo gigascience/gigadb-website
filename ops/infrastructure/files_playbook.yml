@@ -1,0 +1,97 @@
+---
+# build a Centos server running a secure Docker CE install
+
+- name: Fix Centos EOL issues
+  hosts: name_gigadb_filesserver_{{gigadb_env}}*
+  tags:
+    - fix-centos-eol-issues
+  roles:
+    - role: ../../roles/centos-eol-fix
+
+- name: Setup Fail2ban
+  hosts: name_gigadb_filesserver_{{gigadb_env}}*
+  tags:
+    - setup-fail2ban
+
+  tasks:
+    - debug:
+        msg: "remote private ip : {{ ec2_files_private_ip }}"
+
+  roles:
+    - role: ../../roles/fail2ban
+    - role: ../../roles/jail-ssh
+
+- name: Setup Docker CE
+  hosts: name_gigadb_filesserver_{{gigadb_env}}*
+  tags:
+    - setup-docker-ce
+  vars:
+    target_host: "_fileserver"
+
+  roles:
+    - role: ../../roles/docker-install
+    - role: role-secure-docker-daemon
+      dds_host: "{{ ec2_files_public_ip }}"
+      dds_server_cert_path: /etc/docker
+      dds_restart_docker: no
+      dds_client_cert_path: /home/centos/.docker
+    - role: ../../roles/docker-postinstall
+    - role: ../../roles/docker-daemon-enable-start
+    - role: ../../roles/fuw
+
+
+- name: Ensure EFS mount directory exists
+  hosts: name_gigadb_filesserver_{{gigadb_env}}*
+  tags:
+    - efs-mount-points
+
+  tasks:
+  - name: Create directories in /share
+    ansible.builtin.file:
+      path: "{{ item }}"
+      state: directory
+      mode: '0775'
+      owner: centos
+      group: centos
+    loop:
+      - "/share/dropbox"
+      - "/share/config"
+
+  - name: Install EFS utils
+    ansible.builtin.yum:
+      name: https://s3.ap-northeast-1.wasabisys.com/infra-resources/amazon-efs-utils-2.0.1-1.el8.x86_64.rpm
+      state: present
+      disable_gpg_check: true
+
+- name: Configure files container service on the file server
+  hosts: name_gigadb_filesserver_{{gigadb_env}}*
+  tags:
+    - configure-files
+
+  tasks:
+  - name: get remote hostname from GitLab CI environment variable
+    ansible.builtin.uri:
+      url: "{{ gitlab_url }}/variables/remote_fileserver_hostname?filter%5benvironment_scope%5d={{ gigadb_environment }}"
+      method: GET
+      headers:
+        PRIVATE-TOKEN: "{{ gitlab_private_token }}"
+      body_format: json
+      status_code:
+        - 200
+    register: remote_fileserver_hostname
+
+  - name: Create docker-compose on the server
+    template:
+      src: ../../../configuration/file-server/docker-compose.yml.j2
+      dest: /home/centos/docker-compose.yml
+      owner: centos
+      group: centos
+      mode: 0644
+
+
+- name: Install node exporter
+  hosts: name_gigadb_filesserver_{{gigadb_env}}*
+  tags:
+    - node-exporter
+  roles:
+    - prometheus.prometheus.node_exporter

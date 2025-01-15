@@ -11,9 +11,8 @@
  */
 class StoredDatasetSamples extends DatasetComponents implements DatasetSamplesInterface
 {
-    const SAMPLES_ROWS_LIMIT  = 3000 ;
-    private $_id;
-    private $_db;
+    private int $_id;
+    private CDbConnection $_db;
 
     public function __construct(int $dataset_id, CDbConnection $dbConnection)
     {
@@ -47,7 +46,7 @@ class StoredDatasetSamples extends DatasetComponents implements DatasetSamplesIn
      *
      * @return array of files array maps
      */
-    public function getDatasetSamples(): array
+    public function getDatasetSamples(?string $limit = "ALL", ?int $offset = 0): array
     {
 
         $objectToHash =  function ($sample) {
@@ -78,10 +77,27 @@ class StoredDatasetSamples extends DatasetComponents implements DatasetSamplesIn
         $sql = "select
 		ds.sample_id as id, s.name, s.species_id, s.consent_document, s.submitted_id, s.submission_date, s.contact_author_name, s.contact_author_email, s.sampling_protocol
 		from sample s, dataset_sample ds
-		where ds.sample_id = s.id and ds.dataset_id=:id limit " . self::SAMPLES_ROWS_LIMIT ;
+		where ds.sample_id = s.id and ds.dataset_id=:id order by id limit $limit offset $offset" ;
         //In the sql above, make sure that the only 'id' field is ds.sample_id, otherwise ActiveRecord may pick up the wrong id field (e.g: ds.id)
         $samples = Sample::model()->findAllBySql($sql, array('id' => $this->_id));
         $result = array_map($objectToHash, $samples);
         return $result;
     }
+
+    /**
+     * count number of samples associated to a dataset
+     *
+     * @return int how many samples are associated with the dataset
+     */
+    public function countDatasetSamples(): int
+    {
+        $criteria=new CDbCriteria;
+        $criteria->join="LEFT join dataset on dataset.id = dataset_id";
+        $criteria->condition='dataset.identifier=:identifier';
+        $criteria->params=array(':identifier'=> $this->getDatasetDOI());
+
+        return  DatasetSample::model()->count($criteria);
+
+    }
+
 }

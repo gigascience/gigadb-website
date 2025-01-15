@@ -2,11 +2,7 @@
 
 class AdminRelationController extends Controller
 {
-	/**
-	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
-	 * using two-column layout. See 'protected/views/layouts/column2.php'.
-	 */
-	public $layout='//layouts/column2';
+
 
 	/**
 	 * @return array action filters
@@ -46,7 +42,6 @@ class AdminRelationController extends Controller
 	 */
 	public function actionView($id)
 	{
-        $this->layout = 'new_datasetpage';
 		$this->render('view',array(
 			'model'=>$this->loadModel($id),
 		));
@@ -61,24 +56,34 @@ class AdminRelationController extends Controller
 		$model = new Relation();
         $relationDAO = new RelationDAO();
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
-		if(isset($_POST['Relation']))
+		if ($attributes = Yii::$app->request->post('Relation'))
 		{
-			$model->attributes=$_POST['Relation'];
-            if($model->save()) {
-                $related_id=$model->related_doi;
-                $dataset_id=$model->dataset_id;
-                $relationship= $model->relationship;
+            $transaction = Yii::app()->db->beginTransaction();
+            try {
+                $model->attributes = $attributes;
 
-                $relationDAO->createReciprocalTo( $model, new Relation() );
+                if ($model->dataset && $model->dataset->identifier === $attributes['related_doi']) {
+                    throw new CException("Can't refer the same DOI");
+                }
 
-                $this->redirect(array('view','id'=>$model->id));
+                if (!$model->save()) {
+                    throw new CException('Failed to save relation');
+                }
+
+                if ($attributes['add_reciprocal']) {
+                    $relationDAO->createReciprocalTo($model, new Relation());
+                }
+
+                $transaction->commit();
+                $this->redirect(array('view', 'id' => $model->id));
+
+            } catch (Exception $e) {
+                $transaction->rollback();
+
+                Yii::app()->user->setFlash('error', $e->getMessage());
             }
 		}
 
-		$this->layout = 'new_datasetpage';
 		$this->render('create',array(
 			'model'=>$model,
 		));
@@ -186,7 +191,6 @@ class AdminRelationController extends Controller
 				$this->redirect(array('view','id'=>$model->id));
 		}
 
-		$this->layout = 'new_datasetpage';
 		$this->render('update',array(
 			'model'=>$model,
 		));
@@ -252,7 +256,7 @@ class AdminRelationController extends Controller
 		if(isset($_GET['Relation']))
 			$model->setAttributes($_GET['Relation']);
 
-        $this->layout = 'new_main';
+
         $this->loadBaBbqPolyfills = true;
 		$this->render('admin',array(
 			'model'=>$model,
@@ -289,7 +293,7 @@ class AdminRelationController extends Controller
         if(isset($_POST['dataset_id']) && isset($_POST['doi']) && isset($_POST['relationship'])) {
 
             $relation = Relation::model()->findByAttributes(array(
-              'dataset_id'=>$_POST['dataset_id'], 
+              'dataset_id'=>$_POST['dataset_id'],
               'related_doi'=>$_POST['doi'],
               'relationship_id'=>$_POST['relationship'],
               ));

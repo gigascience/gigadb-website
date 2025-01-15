@@ -9,15 +9,14 @@
  */
 class FormattedDatasetFiles extends DatasetComponents implements DatasetFilesInterface
 {
-    private $_cachedDatasetFiles;
-    private $_pageSize;
-    private $_nbFiles;
+    private DatasetFilesInterface $_cachedDatasetFiles;
+    private CPagination $pager;
 
-    public function __construct(int $pageSize, DatasetFilesInterface $datasetFiles)
+    public function __construct(CPagination $pager, DatasetFilesInterface $datasetFiles)
     {
         parent::__construct();
         $this->_cachedDatasetFiles = $datasetFiles;
-        $this->_pageSize = $pageSize;
+        $this->pager = $pager;
     }
 
     /**
@@ -45,13 +44,12 @@ class FormattedDatasetFiles extends DatasetComponents implements DatasetFilesInt
      *
      * @return array of external link array map
      */
-    public function getDatasetFiles(): array
+    public function getDatasetFiles(?string $limit = "ALL", ?int $offset = 0): array
     {
-        $formatted_files = [];
-        $files =   $this->_cachedDatasetFiles->getDatasetFiles();
+        $files =   $this->_cachedDatasetFiles->getDatasetFiles($limit, $offset);
         foreach ($files as &$file) {
             $file['nameHtml'] = "<div title=\"" . $file['description'] . "\"><a href=\"" . $file['location'] . "\" target='_blank'>" . $file['name'] . "</a></div>";
-            $file['sizeUnit'] = File::specifySizeUnits($file['size']);
+            $file['sizeUnit'] = UnitHelper::specifySizeUnits($file['size']);
             $attribute_strings = [];
             foreach ($file['file_attributes'] as $file_attribute) {
                 $attribute_strings[] = implode(array_keys($file_attribute)) . ": " . implode(array_values($file_attribute)) . "<br>";
@@ -68,10 +66,7 @@ class FormattedDatasetFiles extends DatasetComponents implements DatasetFilesInt
      */
     public function countDatasetFiles(): int
     {
-        if (!isset($this->_nbFiles)) {
-            $this->_nbFiles = count($this->_cachedDatasetFiles->getDatasetFiles());
-        }
-        return $this->_nbFiles;
+        return $this->_cachedDatasetFiles->countDatasetFiles();
     }
 
     /**
@@ -91,8 +86,23 @@ class FormattedDatasetFiles extends DatasetComponents implements DatasetFilesInt
      */
     public function getDataProvider(): CArrayDataProvider
     {
-        $files = $this->getDatasetFiles();
-        $dataProvider = new CArrayDataProvider($files, array(
+
+        $totalFileCount = $this->countDatasetFiles() ;
+        $this->pager->setItemCount($totalFileCount);
+        $this->pager->pageVar = "Files_page";
+
+        $currentPage = $this->pager->getCurrentPage();
+        $nbToSkip = $currentPage*$this->pager->getPageSize();
+
+
+        $files = $this->getDatasetFiles($this->pager->getPageSize(), $nbToSkip);
+        if (defined('YII_DEBUG') && true === YII_DEBUG) {
+            Yii::log("Current page: $currentPage", 'info');
+            Yii::log("nb file returned: " . count($files), 'info');
+        }
+
+        $dataProvider = new CArrayDataProvider(null, array(
+            'totalItemCount' => $totalFileCount,
             'sort' => array('defaultOrder' => 'name ASC',
                             'attributes' => array(
                                 'name',
@@ -105,10 +115,12 @@ class FormattedDatasetFiles extends DatasetComponents implements DatasetFilesInt
                         ),
             'pagination' => null
             ));
-        $files_pagination = new FilesPagination(count($files));
-        $files_pagination->setPageSize($this->_pageSize);
-        $files_pagination->pageVar = "Files_page";
-        $dataProvider->setPagination($files_pagination);
+        $dataProvider->setPagination($this->pager);
+        $dataProvider->setData($files);
+        if (defined('YII_DEBUG') && true === YII_DEBUG) {
+            Yii::log("Item count: " . $dataProvider->getItemCount(), "info");
+            Yii::log("Total count: " . $dataProvider->getTotalItemCount(), "info");
+        }
         return $dataProvider;
     }
 

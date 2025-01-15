@@ -75,6 +75,13 @@ class StoredDatasetMainSectionTest extends CDbTestCase
         $expected = array(
                         "authors" => array( //remember authors must be sorted alphabetically on the main section body
                             array(
+                                'id' => 7,
+                                'surname' => 'Schiøtt,',
+                                'first_name' => 'Morten',
+                                'middle_name' => null,
+                                'custom_name' => null,
+                            ),
+                            array(
                                 'id' => 2,
                                 'surname' => 'Montana,',
                                 'first_name' => 'Carlos',
@@ -88,18 +95,11 @@ class StoredDatasetMainSectionTest extends CDbTestCase
                                 'middle_name' => 'GG',
                                 'custom_name' => null,
                             ),
-                            array(
-                                'id' => 7,
-                                'surname' => 'Schiøtt,',
-                                'first_name' => 'Morten',
-                                'middle_name' => null,
-                                'custom_name' => null,
-                            ),
                         ),
                         "release_year" => "2018",
                         "dataset_title" => 'Supporting data for "Analyzing climate variations on multiple timescales can guide Zika virus response measures"',
                         "publisher" => "Gigascience",
-                        "full_doi" => "10.5072/100243",
+                        "full_doi" => "10.80027/100243",
                     );
         $this->assertEquals($expected, $daoUnderTest->getReleaseDetails());
 
@@ -141,17 +141,14 @@ class StoredDatasetMainSectionTest extends CDbTestCase
             'services' => array(
                 'scholar_query' => "View citations on Google Scholar",
                 'ePMC_query' => "View citations on Europe PubMed Central",
-                'dimension_query' => "View citations on Dimensions",
                 ),
             'urls' => array(
-                'scholar_query' => 'https://scholar.google.com/scholar?q=10.5072/100243',
-                'ePMC_query' => "https://europepmc.org/search?scope=fulltext&query=(REF:%2710.5072/100243%27)",
-                'dimension_query' => "https://app.dimensions.ai/discover/publication?search_text=10.5072/100243",
+                'scholar_query' => 'https://scholar.google.com/scholar?q=10.80027/100243',
+                'ePMC_query' => "https://europepmc.org/search?scope=fulltext&query=(REF:%2710.80027/100243%27)",
                 ),
             'images' => array(
                 'scholar_query' => '/images/google_scholar.png',
                 'ePMC_query' => "/images/ePMC.jpg",
-                'dimension_query' => "/images/dimensions.jpg",
             ),
         );
         $this->assertEquals($expected, $daoUnderTest->getCitationsLinks());
@@ -231,37 +228,5 @@ class StoredDatasetMainSectionTest extends CDbTestCase
 
         $daoUnderTest = new StoredDatasetMainSection($dataset_id, $this->getFixtureManager()->getDbConnection());
         $this->assertEquals($expected, $daoUnderTest->getFunding());
-    }
-
-    public function citationsQueriesExamples()
-    {
-        return [
-            "no_argument" => [
-                null,
-                array(
-                    'scholar_query' => 'http://scholar.google.com/scholar?q=10.5072/100243',
-                    'ePMC_query' => "http://europepmc.org/search?scope=fulltext&query=(REF:'10.5072/100243')",
-                    'dimension_query' => "https://app.dimensions.ai/discover/publication?search_text=10.5072/100243",
-                ),
-            ],
-            "scholar_argument" => [
-                "scholar_query",
-                array(
-                    'scholar_query' => 'http://scholar.google.com/scholar?q=10.5072/100243',
-                ),
-            ],
-            "ePMC_argument" => [
-                "ePMC_query",
-                array(
-                    'ePMC_query' => "http://europepmc.org/search?scope=fulltext&query=(REF:'10.5072/100243')",
-                ),
-            ],
-            "dimension_argument" => [
-                "dimension_query",
-                array(
-                    'dimension_query' => "https://app.dimensions.ai/discover/publication?search_text=10.5072/100243",
-                ),
-            ],
-        ];
     }
 }

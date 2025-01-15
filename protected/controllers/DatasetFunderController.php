@@ -2,11 +2,7 @@
 
 class DatasetFunderController extends Controller
 {
-	/**
-	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
-	 * using two-column layout. See 'protected/views/layouts/column2.php'.
-	 */
-	public $layout='//layouts/column2';
+
 
 	/**
 	 * @var CActiveRecord the currently loaded data model instance.
@@ -31,7 +27,7 @@ class DatasetFunderController extends Controller
 	public function accessRules()
 	{
 		return array(
-			
+
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
 				'users'=>array('@'),
 				'roles'=>array('admin'),
@@ -47,7 +43,6 @@ class DatasetFunderController extends Controller
 	 */
 	public function actionView()
 	{
-		$this->layout = 'new_datasetpage';
 		$this->render('view',array(
 			'model'=>$this->loadModel(),
 		));
@@ -100,7 +95,6 @@ class DatasetFunderController extends Controller
 				$this->redirect(array('view','id'=>$model->id));
 		}
 
-		$this->layout = 'new_datasetpage';
 		$this->render('create',array(
 			'model'=>$model,
 			'funders'=>$funders,
@@ -133,7 +127,6 @@ class DatasetFunderController extends Controller
 				$this->redirect(array('view','id'=>$model->id));
 		}
 
-		$this->layout = 'new_datasetpage';
 		$this->render('update',array(
 			'model'=>$model,
 			'datasets' => $datasets,
@@ -181,7 +174,6 @@ class DatasetFunderController extends Controller
 		if(isset($_GET['DatasetFunder']))
 			$model->setAttributes($_GET['DatasetFunder'],true);
 
-		$this->layout = 'new_main';
 		$this->loadBaBbqPolyfills = true;
 		$this->render('admin',array(
 			'model'=>$model,

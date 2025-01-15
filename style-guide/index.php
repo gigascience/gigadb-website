@@ -23,7 +23,7 @@
     <link rel="stylesheet" type="text/css" href="../fonts/open_sans/v13/open_sans.css">
     <link rel="stylesheet" type="text/css" href="../fonts/pt_sans/v8/pt_sans.css">
     <link rel="stylesheet" type="text/css" href="../fonts/lato/v11/lato.css">
-    <link rel="stylesheet" href="../css/current.css">
+    <link rel="stylesheet" href="../css/index.css">
     <link rel="stylesheet" type="text/css" href="/assets/d86acd89/gridview/styles.css">
     <link rel="stylesheet" type="text/css" href="/css/jquery.tag-editor.css">
 
