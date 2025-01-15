@@ -117,9 +117,9 @@ $this->pageTitle = 'GigaDB - Contact Us';
                         <address>
                             <ul class="fa-ul">
                                 <li><i class="fa-li fa fa-home" aria-hidden="true"></i><span class="sr-only">Address:</span> 708-709, 6W Phase One, Hong Kong Science Park, Pak Shek Kok, Hong Kong</li>
-                                <li><i class="fa-li fa fa-envelope" aria-hidden="true"></i><span class="sr-only">Email:</span> database@gigasciencejournal.com</li>
-                                <li><i class="fa-li fa fa-phone" aria-hidden="true"></i><span class="sr-only">Phone:</span> +852 3610 3533</li>
-                                <li><i class="fa-li fa fa-globe" aria-hidden="true"></i><span class="sr-only">Website:</span> http://www.gigadb.org</li>
+                                <li><i class="fa-li fa fa-envelope" aria-hidden="true"></i><span class="sr-only">Email:</span> <a href="mailto:database@gigasciencejournal.com">database@gigasciencejournal.com</a></li>
+                                <li><i class="fa-li fa fa-phone" aria-hidden="true"></i><span class="sr-only">Phone:</span> <a href="tel:+85236103533">+852 3610 3533</a></li>
+                                <li><i class="fa-li fa fa-globe" aria-hidden="true"></i><span class="sr-only">Website:</span> <a href="https://gigadb.org">https://gigadb.org</a></li>
                             </ul>
                         </address>
                     </div>

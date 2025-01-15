@@ -16,7 +16,7 @@ class MoveFilesAction extends CAction
     public function run($doi)
     {
     	$jwt_ttl = 3600 ;
-    	$webClient = new \GuzzleHttp\Client();
+    	$webClient = \Yii::$container->get('guzzleHttpClient');
 
         // Instantiate FiledropService
         $filedropSrv = new FiledropService([

@@ -291,6 +291,18 @@ Feature: form to update dataset details
     Then I am on "dataset/100006"
     And I should see "bam"
 
+  @ok @issue-2061
+  Scenario: Can delete all keywords on update
+    Given I am on "/adminDataset/update/id/8"
+    And I click on keywords field
+    And I fill in keywords fields with "bam"
+    And I press the button "Save"
+    When I am on "/adminDataset/update/id/8"
+    And I click on delete keyword button
+    And I press the button "Save"
+    Then I am on "dataset/100006"
+    And I should not see "bam"
+
   @ok @curationlog
   Scenario: Create new curation log record for a dataset
     When I am on "/adminDataset/update/id/5"
@@ -415,7 +427,7 @@ Feature: form to update dataset details
     When I follow "Mint DOI"
     Then I should see "minting under way, please wait"
     And I wait "5" seconds
-    And I should see "This DOI exists in datacite already, no need to mint, but the metadata is updated!"
+    And I should see "This DOI exists in DataCite already, so it has now been updated with the current values from GigaDB."
 
   @ok @mint-doi
   Scenario: Update metadata for non exist doi
@@ -439,7 +451,7 @@ Feature: form to update dataset details
     When I follow "Mint DOI"
     Then I should see "minting under way, please wait"
     And I wait "10" seconds
-    And I should see "This DOI cannot be created because of the metadata status: 422, and the doi status: 422 Details can be found at here"
+    And I should see "This DOI cannot be created because of the metadata status: 422. Details can be found at here"
     And I should see a link "here" to "https://support.datacite.org/reference/mds#api-response-codes"
 
   @ok @dataset-status
