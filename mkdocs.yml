@@ -1,2 +1,49 @@
 site_name: GigaDB Documentation
-theme: readthedocs
+repo_url: https://github.com/gigascience/gigadb-website/
+nav:
+  - Home: index.md
+  - About: about.md
+  - Release Process: RELEASE_PROCESS.md
+  - Security: SECURITY.md
+  - Setup CICD: SETUP_CI_CD_PIPELINE.md
+  - Setup provisioning: SETUP_PROVISIONING.md
+  - TLS: TLS.md
+  - Uptime status page: UPTIME_STATUS_PAGE.md
+  - Variable: variables.md
+  - AWS:
+      - AWS CLI: awsdocs/awscli.md
+      - IAM Policies: awsdocs/iam_policies.md
+      - Policies:
+        - EC2: awsdocs/policy-ec2.json
+  - Curator Tools: curators/CURATOR_TOOLS_BASTION.md
+  - developers/BRANCHING.md
+  - developers/CURATOR_TOOLS_BASTION.md
+  - developers/DATABASE.md
+  - developers/GUIDE.md
+  - developers/fuw/index.md
+  - developers/fuw/developer_guide.md
+  - developers/fuw/mo.md
+  - developers/fuw/software_architecture.md
+  - developers/fuw/yii2_setup.md
+  - prs/REPORTS.md
+  - sop/AWS_SETUP.md
+  - sop/DATASET_UPLOAD.md
+  - sop/DEPLOY_AND_CONFIGURE_PUBLIC_FTP_SERVER.md
+  - sop/EFS_DATA_MIGRATION.md
+  - sop/MIGRATION_TROUBLESHOOT.md
+  - sop/MONITORING.md
+  - sop/May2024-temp-dataset-creation-workflow.md
+  - sop/PERFORMANCES_TROUBLESHOOT.md
+  - sop/PRODUCTION_DEPLOY.md
+  - sop/PRODUCTION_TROUBLESHOOT.md
+  - sop/RESTORE_DATABASE_AWS_BACKUP.md
+  - sop/RESTORE_DATABASE_AWS_SNAPSHOT.md
+  - sop/RESTORE_DATABASE_BACKUP_IN_S3.md
+  - sop/ROLL_BACK_PREV_DEPLOY.md
+  - sop/UPDATE_VERSION.md
+  - sop/WASABI_DATA_MIGRATION.md
+  - wasabidocs/WASABI_USER_DROPBOXES.md
+
+theme:
+  name: readthedocs
+  highlightjs: true
