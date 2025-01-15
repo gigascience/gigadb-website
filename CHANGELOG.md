@@ -4,6 +4,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Fix #1696: Fix accessibility and styling issues related to the file upload workflow in admin dataset page
+
 ## v4.4.2 - 2025-01-13 - 7ad7a106b
 
 - Fix #1975: Remove empty line at the beginning of the xml result
