@@ -1,12 +1,11 @@
 <?
 $this->pageTitle = 'GigaDB - My GigaDB Page';
 ?>
+
     <? if (Yii::app()->user->hasFlash('keyword')) { ?>
-                                                        <font color="green">
-                                                            <div>
-                                                                <?= Yii::app()->user->getFlash('keyword'); ?>
-                                                            </div>
-                                                        </font>
+                                                          <div class="text-gigadb">
+                                                              <?= Yii::app()->user->getFlash('keyword'); ?>
+                                                          </div>
         <? } ?>
     <? if (Yii::app()->user->hasFlash('error')) { ?>
                                                             <div class="alert alert-danger" role="alert">
