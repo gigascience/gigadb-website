@@ -1,27 +1,19 @@
 # GigaDB Documentation
 
+This page contains the documentation for the GigaDB website. The documentation is written in Markdown and is built using [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/getting-started/),
+which is a well known third party theme for MkDocs, a static site generator geared towards project documentation.
 
-## Start and accessing the documentation server
 
-Install mkdocs. On mac you can use brew:
 
-```
-$ brew install mkdocs
-```
 
-Otherwise you can use Python pip:
+## Start and accessing the documentation server using Docker
 
 ```
-pip install mkdocs
+$ cd gigadb-website/
+$ docker run --rm -it -p 8000:8000 -v ${PWD}:/docs squidfunk/mkdocs-material
 ```
 
-To start the server, from this project root directory, run the command:
-
-```
-$ mkdocs serve
-```
-
-the documentation will be available at: (http://127.0.0.1:8000)
+the documentation will be available at: http://localhost:8000/
 
 ## Building the documentation site
 
@@ -33,4 +25,8 @@ $ ls site
 about  fonts  index.html  license  search.html
 css    img    js          mkdocs   sitemap.xml
 ```
+
+## Deploying the documentation site
+
+## 
 
