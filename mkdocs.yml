@@ -2,48 +2,86 @@ site_name: GigaDB Documentation
 repo_url: https://github.com/gigascience/gigadb-website/
 nav:
   - Home: index.md
-  - About: about.md
   - Release Process: RELEASE_PROCESS.md
-  - Security: SECURITY.md
   - Setup CICD: SETUP_CI_CD_PIPELINE.md
   - Setup provisioning: SETUP_PROVISIONING.md
+  - SOP:
+      - AWS Setup: sop/AWS_SETUP.md
+      - Dataset Upload: sop/DATASET_UPLOAD.md
+      - Deploy and Configure Public FTP Server: sop/DEPLOY_AND_CONFIGURE_PUBLIC_FTP_SERVER.md
+      - EFS Data Migration: sop/EFS_DATA_MIGRATION.md
+      - Migration Troubleshoot: sop/MIGRATION_TROUBLESHOOT.md
+      - Monitoring: sop/MONITORING.md
+      - May2024-temp-dataset-creation-workflow: sop/May2024-temp-dataset-creation-workflow.md
+      - Performances Troubleshoot: sop/PERFORMANCES_TROUBLESHOOT.md
+      - Production Deploy: sop/PRODUCTION_DEPLOY.md
+      - Production Troubleshoot: sop/PRODUCTION_TROUBLESHOOT.md
+      - Restore Database AWS Backup: sop/RESTORE_DATABASE_AWS_BACKUP.md
+      - Restore Database AWS Snapshot: sop/RESTORE_DATABASE_AWS_SNAPSHOT.md
+      - Restore Database Backup in S3: sop/RESTORE_DATABASE_BACKUP_IN_S3.md
+      - Roll Back Prev Deploy: sop/ROLL_BACK_PREV_DEPLOY.md
+      - Update Version: sop/UPDATE_VERSION.md
+      - Wasabi Data Migration: sop/WASABI_DATA_MIGRATION.md
+  - Developers:
+      - Branching: developers/BRANCHING.md
+      - Curator Tools: developers/CURATOR_TOOLS_BASTION.md
+      - Database: developers/DATABASE.md
+      - Guide: developers/GUIDE.md
+      - FUW:
+          - Home: developers/fuw/index.md
+          - Developer: developers/fuw/developer_guide.md
+          - mo: developers/fuw/mo.md
+          - Software-architecture: developers/fuw/software_architecture.md
+          - yii2-setup: developers/fuw/yii2_setup.md
+  - Curator Tools: curators/CURATOR_TOOLS_BASTION.md
+  - System Architecture: SystemArchitectureExport.png
+  - Security: SECURITY.md
   - TLS: TLS.md
   - Uptime status page: UPTIME_STATUS_PAGE.md
   - Variable: variables.md
-  - AWS:
+  - AWSDOCS:
       - AWS CLI: awsdocs/awscli.md
       - IAM Policies: awsdocs/iam_policies.md
       - Policies:
         - EC2: awsdocs/policy-ec2.json
-  - Curator Tools: curators/CURATOR_TOOLS_BASTION.md
-  - developers/BRANCHING.md
-  - developers/CURATOR_TOOLS_BASTION.md
-  - developers/DATABASE.md
-  - developers/GUIDE.md
-  - developers/fuw/index.md
-  - developers/fuw/developer_guide.md
-  - developers/fuw/mo.md
-  - developers/fuw/software_architecture.md
-  - developers/fuw/yii2_setup.md
-  - prs/REPORTS.md
-  - sop/AWS_SETUP.md
-  - sop/DATASET_UPLOAD.md
-  - sop/DEPLOY_AND_CONFIGURE_PUBLIC_FTP_SERVER.md
-  - sop/EFS_DATA_MIGRATION.md
-  - sop/MIGRATION_TROUBLESHOOT.md
-  - sop/MONITORING.md
-  - sop/May2024-temp-dataset-creation-workflow.md
-  - sop/PERFORMANCES_TROUBLESHOOT.md
-  - sop/PRODUCTION_DEPLOY.md
-  - sop/PRODUCTION_TROUBLESHOOT.md
-  - sop/RESTORE_DATABASE_AWS_BACKUP.md
-  - sop/RESTORE_DATABASE_AWS_SNAPSHOT.md
-  - sop/RESTORE_DATABASE_BACKUP_IN_S3.md
-  - sop/ROLL_BACK_PREV_DEPLOY.md
-  - sop/UPDATE_VERSION.md
-  - sop/WASABI_DATA_MIGRATION.md
-  - wasabidocs/WASABI_USER_DROPBOXES.md
+        - RDS: awsdocs/policy-rds.json
+        - S3: awsdocs/policy-s3.json
+        - EFS: awsdocs/policy-efs.json
+        - VPC: awsdocs/policy-vpc.json
+        - Dataset-files: awsdocs/policy-s3-gigadb-dataset-files.json
+        - DB-EC2-VPC: awsdocs/policy-db-ec2-vpc-actions.json
+  - Editorial Manage: prs/REPORTS.md
+  - WASABIDOCS:
+      - Dropboxes: wasabidocs/WASABI_USER_DROPBOXES.md
 
 theme:
-  name: readthedocs
-  highlightjs: true
+  name: material
+  language: en
+  highlights: true
+  color_mode: auto
+  features:
+    - navigation.path
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.top
+    - content.code.copy
+    - content.code.select
+    - content.code.highlight
+  palette:
+    # Palette toggle for automatic mode
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
+
