@@ -317,6 +317,8 @@ services:
       - ${APPLICATION}:/docs:ro
     ports:
       - 8000:8000
+    networks:
+      - web-tier
 
 networks:
   web-tier:
