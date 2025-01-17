@@ -309,6 +309,15 @@ services:
       - web-tier
     command: -H unix:///var/run/docker.sock --admin-password $PORTAINER_BCRYPT
 
+  mkdocs:
+    <<: *logging
+    image: squidfunk/mkdocs-material:latest
+    restart: always
+    volumes:
+      - ${APPLICATION}:/docs:ro
+    ports:
+      - 8000:8000
+
 networks:
   web-tier:
     driver: bridge
