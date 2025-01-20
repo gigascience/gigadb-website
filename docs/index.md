@@ -52,12 +52,12 @@ which is a well known third party theme for MkDocs, a static site generator gear
 
 ```
 $ cd gigadb-website/
-$ docker run --rm -it -p 8000:8000 -v ${PWD}:/docs squidfunk/mkdocs-material
+$ docker run --rm -it -p 8009:8000 -v ${PWD}:/docs squidfunk/mkdocs-material
 or
 $ docker-compose up -d mkdocs
 ```
 
-the documentation will be available at(http://localhost:8000/
+the documentation will be available at(http://localhost:8009/)
 
 ## Building the documentation site
 
