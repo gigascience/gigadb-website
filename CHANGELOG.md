@@ -4,10 +4,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
-## v4.4.2 - 2025-01-13 - 7ad7a106b
-
 - Fix #2053: Update RDS policy to allow createDBSnapshot during destroy
 - Feat #1897: Upgrade OS version to CentOS Stream 9
+
+## v4.4.2 - 2025-01-13 - 7ad7a106b
+
 - Fix #1975: Remove empty line at the beginning of the xml result
 - Feat #456: Improve DataCite metadata by migrating to Datacite version 4.6
 - Fix #1727: Sort files and samples by id in descending order when querying
