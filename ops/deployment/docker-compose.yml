@@ -705,7 +705,7 @@ services:
     volumes:
       - ${APPLICATION}:/docs:ro
     ports:
-      - 8000:8000
+      - 8009:8000
 
   local-cert:
     build:
