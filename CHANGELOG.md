@@ -3,11 +3,12 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
-
 - Feat #474: Update FAQ "What journals are integrated with GigaDB?"
 - Feat #476: Update FAQ "How do I write a ReadMe file?"
 - Feat #479: Update FAQ "Why is submission to GigaDB not closely integrated with submission to GigaScience?"
 - Feat #524: Add FAQ for BUSCO genome completeness analysis
+- Fix #2053: Update RDS policy to allow createDBSnapshot during destroy
+- Feat #1897: Upgrade OS version to CentOS Stream 9
 
 ## v4.4.2 - 2025-01-13 - 7ad7a106b
 
