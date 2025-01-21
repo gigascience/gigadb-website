@@ -1,0 +1,6 @@
+FROM squidfunk/mkdocs-material:latest
+
+COPY docs ./docs
+COPY mkdocs.yml ./mkdocs.yml
+
+EXPOSE 8000
