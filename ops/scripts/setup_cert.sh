@@ -90,7 +90,7 @@ fetch_cert_from_gitlab() {
 
 make_new_cert() {
     echo "Running certbot to make new cert"
-    $DOCKER_COMPOSE run --rm certbot certonly -d $REMOTE_HOSTNAME -d portainer.$REMOTE_HOSTNAME
+    $DOCKER_COMPOSE run --rm certbot certonly -d $REMOTE_HOSTNAME -d portainer.$REMOTE_HOSTNAME -d docs.$REMOTE_HOSTNAME
     echo "Read content of files"
     $DOCKER_COMPOSE run --rm config mkdir -vp /etc/letsencrypt/archive/$REMOTE_HOSTNAME
     $DOCKER_COMPOSE run --rm config mkdir -vp /etc/letsencrypt/live/$REMOTE_HOSTNAME
