@@ -314,7 +314,7 @@ services:
     image: squidfunk/mkdocs-material:latest
     restart: always
     volumes:
-      - ${APPLICATION}:/docs:ro
+      - ${PWD}:/docs:ro
     ports:
       - 8009:8000
     networks:
