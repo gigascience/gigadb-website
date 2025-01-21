@@ -57,20 +57,13 @@ or
 $ docker-compose up -d mkdocs
 ```
 
-the documentation will be available at(http://localhost:8009/)
-
-## Building the documentation site
-
-To create a documentation web pages:
-
-```
-$ mkdocs build
-$ ls site
-about  fonts  index.html  license  search.html
-css    img    js          mkdocs   sitemap.xml
-```
+the documentation page will be available locally at [http://localhost:8009/](http://localhost:8009/)
 
 ## Deploying the documentation site
 
-## 
+The documatation page will be accessible to https://docs.${DOMAIN_NAME} after deployment through the CI/CD pipeline as one of the containerized services 
+in the production environments, eg. https://docs.gigadb.org/ or https://docs.staging.gigadb.org.org/ .
+
+The contaierized service is defined in the `ops/deployment/docker-compose.production-envs.yml` file with its dockerfile at `ops/packaging/Production-Mkdocs-Dockerfile` 
+which with base image from https://github.com/squidfunk/mkdocs-material and will only copy existing `docs/` and the config file `mkdocs.yml` to the container for spinning up the page.
 
