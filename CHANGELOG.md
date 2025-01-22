@@ -3,6 +3,7 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
+
 - Feat #474: Update FAQ "What journals are integrated with GigaDB?"
 - Feat #476: Update FAQ "How do I write a ReadMe file?"
 - Feat #479: Update FAQ "Why is submission to GigaDB not closely integrated with submission to GigaScience?"
@@ -20,7 +21,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Feat #456: Improve DataCite metadata by migrating to Datacite version 4.6
 - Fix #1727: Sort files and samples by id in descending order when querying
 
-## v4.4.1 - 2024-12-24 - 51c426dfe -
+## v4.4.1 - 2024-12-24 - 51c426dfe - live since 2025-01-02
 
 - Feat #2067: Sort files by size in dataset page
 - Feat #372: Save dataset as xml in log
