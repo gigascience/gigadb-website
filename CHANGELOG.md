@@ -13,10 +13,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## v4.4.2 - 2025-01-13 - 7ad7a106b
 
-- Feat #474: Update FAQ "What journals are integrated with GigaDB?"
-- Feat #476: Update FAQ "How do I write a ReadMe file?"
-- Feat #479: Update FAQ "Why is submission to GigaDB not closely integrated with submission to GigaScience?"
-- Feat #524: Add FAQ for BUSCO genome completeness analysis
 - Fix #1975: Remove empty line at the beginning of the xml result
 - Feat #456: Improve DataCite metadata by migrating to Datacite version 4.6
 - Fix #1727: Sort files and samples by id in descending order when querying
