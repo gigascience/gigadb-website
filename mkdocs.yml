@@ -1,7 +1,31 @@
 site_name: GigaDB Documentation
+repo_name: gigascience/gigadb-website
 repo_url: https://github.com/gigascience/gigadb-website/
 nav:
   - Home: index.md
+  - SOP:
+      - sop/index.md
+      - AWS Setup: sop/AWS_SETUP.md
+      - Dataset Upload: sop/DATASET_UPLOAD.md
+      - Deploy and Configure Public FTP Server: sop/DEPLOY_AND_CONFIGURE_PUBLIC_FTP_SERVER.md
+      - EFS Data Migration: sop/EFS_DATA_MIGRATION.md
+      - Local Setup: sop/LOCAL_SETUP.md)
+      - May2024-temp-dataset-creation-workflow: sop/May2024-temp-dataset-creation-workflow.md
+      - Migration Troubleshoot: sop/MIGRATION_TROUBLESHOOT.md
+      - Monitoring: sop/MONITORING.md
+      - Performances Troubleshoot: sop/PERFORMANCES_TROUBLESHOOT.md
+      - Production Deploy: sop/PRODUCTION_DEPLOY.md
+      - Production Troubleshooting Guide: sop/PRODUCTION_TROUBLESHOOT.md
+      - Releases How-To: sop/RELEASE_PROCESS.md
+      - Restore Database AWS Backup: sop/RESTORE_DATABASE_AWS_BACKUP.md
+      - Restore Database AWS Snapshot: sop/RESTORE_DATABASE_AWS_SNAPSHOT.md
+      - Restore Database Backup in S3: sop/RESTORE_DATABASE_BACKUP_IN_S3.md
+      - Roll Back Prev Deploy: sop/ROLL_BACK_PREV_DEPLOY.md
+      - Set up CI/CD pipeline: sop/SETUP_CI_CD_PIPELINE.md
+      - Setup MKDocs: sop/SETUP_MKDOCS.md
+      - Infrastructure Provisioning on AWS: sop/SETUP_PROVISIONING.md
+      - Update Version: sop/UPDATE_VERSION.md
+      - WASABI Data Migration: sop/WASABI_DATA_MIGRATION.md
 
 theme:
   name: material
@@ -21,14 +45,22 @@ theme:
     - content.code.select
     - content.code.highlight
   palette:
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/link
+        name: Switch to light mode
     - media: "(prefers-color-scheme: light)"
       scheme: default
+      primary: "green"
+      accent: "light-green"
       toggle:
-        icon: material/toggle-switch-off-outline
+        icon: material/toggle-switch
         name: Switch to dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
+      primary: "green"
+      accent: "light-green"
       toggle:
-        icon: material/toggle-switch
-        name: Switch to light mode
+        icon: material/toggle-switch-off
+        name: Switch to system preference
 
