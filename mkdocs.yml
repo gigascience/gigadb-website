@@ -3,8 +3,9 @@ repo_name: gigascience/gigadb-website
 repo_url: https://github.com/gigascience/gigadb-website/
 nav:
   - Home: index.md
-  - SOP:
-      - sop/index.md
+  - Developers:
+      - Setup GigaDB Guide: developers/GUIDE.md
+  - SOPs:
       - AWS Setup: sop/AWS_SETUP.md
       - Dataset Upload: sop/DATASET_UPLOAD.md
       - Deploy and Configure Public FTP Server: sop/DEPLOY_AND_CONFIGURE_PUBLIC_FTP_SERVER.md
@@ -26,6 +27,9 @@ nav:
       - Infrastructure Provisioning on AWS: sop/SETUP_PROVISIONING.md
       - Update Version: sop/UPDATE_VERSION.md
       - WASABI Data Migration: sop/WASABI_DATA_MIGRATION.md
+  - Curators:
+      - Curator Guide: curator/CURATOR_GUIDE.md
+      - Curator Guide: curator/CURATOR_GUIDE.md
 
 theme:
   name: material
@@ -63,4 +67,6 @@ theme:
       toggle:
         icon: material/toggle-switch-off
         name: Switch to system preference
+  favicon: assets/favicon.ico
+
 
