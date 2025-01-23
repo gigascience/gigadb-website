@@ -4,13 +4,12 @@ repo_url: https://github.com/gigascience/gigadb-website/
 nav:
   - Home: index.md
   - Developers:
-      - Setup GigaDB Guide: developers/GUIDE.md
+      - Setup GigaDB Guide: sop/LOCAL_SETUP.md
   - SOPs:
       - AWS Setup: sop/AWS_SETUP.md
       - Dataset Upload: sop/DATASET_UPLOAD.md
       - Deploy and Configure Public FTP Server: sop/DEPLOY_AND_CONFIGURE_PUBLIC_FTP_SERVER.md
       - EFS Data Migration: sop/EFS_DATA_MIGRATION.md
-      - Local Setup: sop/LOCAL_SETUP.md)
       - May2024-temp-dataset-creation-workflow: sop/May2024-temp-dataset-creation-workflow.md
       - Migration Troubleshoot: sop/MIGRATION_TROUBLESHOOT.md
       - Monitoring: sop/MONITORING.md
@@ -28,8 +27,7 @@ nav:
       - Update Version: sop/UPDATE_VERSION.md
       - WASABI Data Migration: sop/WASABI_DATA_MIGRATION.md
   - Curators:
-      - Curator Guide: curator/CURATOR_GUIDE.md
-      - Curator Guide: curator/CURATOR_GUIDE.md
+      - Curator tools: curator/CURATOR_TOOLS_BASTION.md
 
 theme:
   name: material
