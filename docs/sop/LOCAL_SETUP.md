@@ -1,4 +1,99 @@
-## Installation
+# Installing GigaDB using Docker
+
+A test instance of the GigaDB website can be automatically installed on your 
+computer as a multi-container application. This involves using 
+[Docker](https://www.docker.com), a computer program which allows separate 
+applications together with their software dependencies and configuration files 
+to be run from within multiple containers. These containers are all isolated 
+from one another yet can communicate with each other through well-defined 
+channels. Containers are run by a single operating-system kernel and are 
+therefore more lightweight than virtual machines which were previously used by 
+GigaDB as a development environment.
+
+Containers are created from images which specify their contents. In GigaDB, 
+several containers are used for implementing the website application and these 
+are specified within the docker-compose.yml file. Most of these are standard 
+images downloaded from the public repositories, for example the PostgreSQL 
+database system, but others such as web are modified before their use. 
+
+## Preparation
+
+The GigaDB code base is available from 
+[GitHub](https://github.com/gigascience/gigadb-website) which can be downloaded
+using git. [Docker](https://www.docker.com) is then used to deploy a local 
+GigaDB web application.
+
+### Linux
+
+If you want to install the basic Git tools on Linux via a binary
+installer, you can generally do so through the basic package
+management tool that comes with your distribution. If you’re on
+Fedora and Centos for example, open a commandline terminal and use yum:
+```bash
+$ sudo yum install git-all
+```
+
+If you’re on a Debian-based distribution like Ubuntu, try apt-get:
+```bash
+$ sudo apt-get install git-all
+```
+
+Running a local GigaDB web application also requires installing a current 
+version of Docker CE and Docker Compose. For Linux Mint 19, this can be done as 
+follows: 
+```
+# Install docker dependencies
+$ sudo apt-get update
+$ sudo apt-get -y install apt-transport-https ca-certificates curl software-properties-common
+# Add Docker GPG key to sign for Docker packages
+$ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+# Add Docker upstream repository to install latest stable release of Docker
+$ sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(. /etc/os-release; echo "$UBUNTU_CODENAME") stable"
+# Install Docker Engine
+$ sudo apt-get update
+$ sudo apt-get -y install docker-ce
+# Add your normal user to the group to run docker commands as non-privileged user
+$ sudo usermod -aG docker $USER
+# Log out and log back in so that your group membership is re-evaluated
+```
+
+In Linux Mint 19, its package manager will install an old version of the Docker 
+Compose tool. A more recent binary can be downloaded from 
+[GitHub](https://github.com/docker/compose/releases/):
+```
+# Install jq command-line JSON processor
+$ sudo apt-get install jq
+$ VERSION=$(curl --silent https://api.github.com/repos/docker/compose/releases/latest | jq .name -r)
+$ DESTINATION=/usr/local/bin/docker-compose
+$ sudo curl -L https://github.com/docker/compose/releases/download/${VERSION}/docker-compose-$(uname -s)-$(uname -m) -o $DESTINATION
+$ sudo chmod 755 $DESTINATION
+# If you get a docker-compose not found in /usr/bin/docker-compose
+$ sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+```
+
+### MacOSX
+
+There are several ways to install Git on a Mac. The easiest is
+probably to install the Xcode Command Line Tools. On Mavericks (10.9)
+or above, you can do this by trying to run git from the Terminal the
+very first time. If you don’t have it installed already, it will
+prompt you to install it.
+
+If you want a more up to date version, you can also install git via a
+binary installer. An OSX Git installer is maintained and available
+for download at the [Git website](http://git-scm.com/download/mac).
+
+Docker for MacOSX can then be installed using these 
+[instructions](https://docs.docker.com/docker-for-mac/install/).
+
+### Windows
+
+We suggest that you install [Babun](http://babun.github.io) which
+provides a Linux-like console on Windows platforms. Babun will provide
+`git` as well as other develop tools.
+
+Docker for Windows can then be installed using these 
+[instructions](https://docs.docker.com/docker-for-windows/install/).
 
 ### Requirements
 
@@ -9,6 +104,31 @@ project locally under `gigadb-website`
 
 >Note to Linux users: This does not provide `docker-compose` which GigaDB deployment relies on from the command-line console. To fix this, you can create a script at /bin/docker-compose with `docker compose "@0"` as its content
 
+## Other requirements
+
+* You have a [GitLab account](https://gitlab.com/), which is a member of the
+  [Gigascience Forks group](https://gitlab.com/gigascience/forks), so you can
+  access the application's
+  [secret variables](https://docs.gitlab.com/ee/api/README.html)
+* You have generated a [personal access token](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html)
+  from your GitLab user settings so your local setup can access the secret
+  variables
+
+## Downloading the GigaDB code repository
+
+After you have git installed, you can now use it to download the GigaDB source 
+code from Github:
+```bash
+$ git clone https://github.com/gigascience/gigadb-website.git
+Cloning into 'gigadb-website'...
+remote: Counting objects: 1657, done.
+remote: Compressing objects: 100% (68/68), done.
+remote: Total 1657 (delta 25), reused 0 (delta 0), pack-reused 1581
+Receiving objects: 100% (1657/1657), 2.33 MiB | 785.00 KiB/s, done.
+Resolving deltas: 100% (516/516), done.
+Checking connectivity... done.
+```
+
 ### Get started quickly
 
 ```
@@ -16,6 +136,26 @@ $ cd gigadb-website
 $ cp ops/configuration/variables/env-sample .env
 $ cp ops/configuration/variables/secrets-sample .secrets
 $ ./up.sh
+...
++ docker ps
+CONTAINER ID   IMAGE                                        COMMAND                  CREATED          STATUS          PORTS                                                        NAMES
+d2505504ebb4   deployment-fuw-worker                        "docker-php-entrypoi…"   32 seconds ago   Up 31 seconds                                                                deployment-fuw-worker-1
+70aa08f11b24   deployment-gigadb-worker                     "docker-php-entrypoi…"   32 seconds ago   Up 31 seconds                                                                deployment-gigadb-worker-1
+31fa6ad57964   deployment-beanstalkd                        "/usr/bin/beanstalkd"    32 seconds ago   Up 31 seconds   0.0.0.0:11300->11300/tcp                                     deployment-beanstalkd-1
+85b29d864571   selenium/standalone-chrome:3.141.59-oxygen   "/opt/bin/entry_poin…"   33 seconds ago   Up 32 seconds   0.0.0.0:4444->4444/tcp                                       deployment-chrome-1
+0e588017157f   deployment-web                               "/docker-entrypoint.…"   46 seconds ago   Up 45 seconds   0.0.0.0:80->80/tcp, 0.0.0.0:443->443/tcp                     deployment-web-1
+698cdda480c2   deployment-fuw-admin                         "docker-php-entrypoi…"   47 seconds ago   Up 46 seconds   9000/tcp, 9002/tcp                                           deployment-fuw-admin-1
+e1d8de7204d9   deployment-fuw-public                        "docker-php-entrypoi…"   47 seconds ago   Up 46 seconds   9000-9001/tcp                                                deployment-fuw-public-1
+7ebccda9050b   deployment-console                           "docker-php-entrypoi…"   47 seconds ago   Up 46 seconds   9000-9001/tcp                                                deployment-console-1
+8797e1f029cb   deployment-application                       "docker-php-entrypoi…"   47 seconds ago   Up 46 seconds   9000/tcp                                                     deployment-application-1
+15c7d360a2fc   deployment-watcher                           "/sbin/boot.sh"          47 seconds ago   Up 46 seconds                                                                deployment-watcher-1
+e8a50ff57b55   deployment-ftpd                              "/run.sh -l puredb:/…"   47 seconds ago   Up 46 seconds   0.0.0.0:30000-30009->30000-30009/tcp, 0.0.0.0:9021->21/tcp   deployment-ftpd-1
+7ab6f776dbd3   deployment-tusd                              "tusd -dir /var/inbo…"   47 seconds ago   Up 46 seconds   1080/tcp                                                     deployment-tusd-1
+ce26ca0dc177   postgres:14.8-alpine                         "docker-entrypoint.s…"   47 seconds ago   Up 46 seconds   0.0.0.0:54321->5432/tcp                                      deployment-database-1
+30bbb511b8a1   portainer/portainer-ce:latest                "/portainer -H unix:…"   51 seconds ago   Up 50 seconds   9443/tcp, 0.0.0.0:8008->8000/tcp, 0.0.0.0:9009->9000/tcp     deployment-portainer-1
+11e40221e1bb   alpine/socat                                 "socat TCP-LISTEN:23…"   53 seconds ago   Up 52 seconds   127.0.0.1:2375->2375/tcp                                     socat
+ae38cee4bd00   squidfunk/mkdocs-material:latest             "/sbin/tini -- mkdoc…"   4 hours ago      Up 4 hours      0.0.0.0:8009->8000/tcp                                       deployment-mkdocs-1
+
 ```
 This will start up all necessary services, perform the database migrations, generate the configuration and reference data feeds.
 It will also select the "dev" set of test data for the local development environment.
@@ -28,9 +168,26 @@ $ ./up.sh gigadb_testdata
 $ ./up.sh production_like
 ```
 
->**Note 1**: You can run the script anytime you want to reset the entire state of the codebase, not just the first time.
+>**Note 1**: 
+> You can run the script anytime you want to reset the entire state of the codebase, not just the first time.
  
->**Note 2**: You can also read, pick and choose the steps in ``up.sh`` for a more manual and adhoc setup or just to understand how it works
+>**Note 2**: 
+> You can also read, pick and choose the steps in ``up.sh`` for a more manual and adhoc setup or just to understand how it works
+
+>**Note 3**:
+> A `.secrets` file will be created automatically and populated using secrets
+variables stored in GitLab.
+
+>**Note 4**:
+> If you are not a member of the Gigascience Forks GitLab group, you will have
+to provide your own values for the necessary variables using
+`ops/configuration/variables/secrets-sample` as starting point:
+
+>```
+>$ cp ops/configuration/variables/secrets-sample .secrets
+>$ vi .secrets
+>```
+
 
 #### About the ``--build`` argument
 
@@ -336,3 +493,8 @@ $ docker-compose pull
 >**Note**:
 >To upgrade the core software to major revision, first change the version 
 *deployment variables* in `.env`.
+
+## Documentation
+
+All documentation can be found in [http://0.0.0.0:8009/](http://0.0.0.0:8009/) after `./up.sh` or 
+at the [docs](../../docs) directory.
