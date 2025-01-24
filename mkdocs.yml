@@ -75,5 +75,6 @@ theme:
         icon: material/toggle-switch-off
         name: Switch to system preference
   favicon: assets/favicon.ico
+  logo: assets/giga.png
 
 
