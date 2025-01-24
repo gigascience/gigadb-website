@@ -354,10 +354,10 @@ they should not be used when we stumble upon them
 ## File: secrets-sample
 
 The above variables are retrieved from GitLab in a step within the `up.sh` 
-script. The [secrets-sample](../ops/configuration/variables/secrets-sample) 
+script. The secrets-sample is at `/gigadb-website/ops/configuration/variables/secrets-sample`
 file provides a template listing of these variables.
 
 # Docker environment variables
 
 Variables used to configure the Docker environment are set in a `.env` file. A
-sample of these variables can be found in [env-sample](../ops/configuration/variables/env-sample).
+sample of these variables can be found in env-sample at `/gigadb-website/ops/configuration/variables/env-sample`.

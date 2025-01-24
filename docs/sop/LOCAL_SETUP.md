@@ -237,7 +237,7 @@ $ docker-compose run --rm  application ./protected/yiic migrate --migrationPath=
   variables
 
 The project can be configured using *deployment variables* managed in `.env`, 
-*application variables* managed in the [docker-compose.yml](ops/deployment/docker-compose.yml) 
+*application variables* managed in the `/gigadb-website/ops/deployment/docker-compose.yml`
 file and its overrides (`docker-compose.*.yml`). There is a second type of variables called secrets for passwords, api keys 
 and tokens and they are stored as *secret variables* in `.secrets` for the application access.
 
@@ -442,7 +442,7 @@ database:
 and `54321` as the `Port` value. The `Maintenance database` is `gigadb`,  
 `username` is `gigadb`, and `password` is `vagrant`.
 
-For further investigation, check out the [docker-compose.yml](ops/deployment/docker-compose.yml) 
+For further investigation, check out the `/gigadb-website/ops/deployment/docker-compose.yml`
 to see how the services are assembled and what scripts they run.
 
 ### Restore dev database
@@ -468,7 +468,7 @@ $ docker-compose restart|start|stop <service name>	# e.g: docker-compose restart
 ```
 
 To rebuild the local containers (**application** and **test**), e.g: because of 
-changes made to the [Dockerfile](ops/packaging/Dockerfile) or because the base 
+changes made to the `/gigadb-website/ops/packaging/Dockerfile` or because the base 
 image has been upgraded (see below):
 
 ```
@@ -497,4 +497,4 @@ $ docker-compose pull
 ## Documentation
 
 All documentation can be found in [http://0.0.0.0:8009/](http://0.0.0.0:8009/) after `./up.sh` or 
-at the [docs](../../docs) directory.
+at the `/gigadb-website/docs` directory.
