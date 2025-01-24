@@ -51,8 +51,7 @@ theme:
     - navigation.tracking
     - search.suggest
     - search.highlight
-    - search.suggest
-    - search.highlight
+    - search.share
     - content.code.copy
     - content.code.select
     - content.code.highlight
@@ -78,4 +77,5 @@ theme:
   favicon: icons/favicon.ico
   logo: icons/giga.png
 
-
+plugins:
+  - search
