@@ -52,6 +52,7 @@ theme:
     - navigation.tabs.sticky
     - navigation.top
     - navigation.tracking
+    - navigation.footer
     - search.suggest
     - search.highlight
     - search.share
@@ -82,3 +83,9 @@ theme:
 
 plugins:
   - search
+
+extra:
+    social:
+      - icon: fontawesome/brands/github
+        link: https://github.com/gigascience/gigadb-website/
+    generator: false
