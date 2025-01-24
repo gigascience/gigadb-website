@@ -5,6 +5,7 @@ nav:
   - Home: index.md
   - Developers:
       - Setup GigaDB Guide: sop/LOCAL_SETUP.md
+      - Git Workflow: developers/BRANCHING.md
   - SOPs:
       - AWS Setup: sop/AWS_SETUP.md
       - Dataset Upload: sop/DATASET_UPLOAD.md
@@ -27,7 +28,12 @@ nav:
       - Update Version: sop/UPDATE_VERSION.md
       - WASABI Data Migration: sop/WASABI_DATA_MIGRATION.md
   - Curators:
-      - Curator tools: curator/CURATOR_TOOLS_BASTION.md
+      - Bastion tools: curators/CURATOR_TOOLS_BASTION.md
+  - FUW:
+      - Overview: developers/fuw/index.md
+      - Setup Yii2: developers/fuw/yii2_setup.md
+      - Software Architecture: developers/fuw/software_architecture.md
+      - Developer Guide: developers/fuw/developer_guide.md
 
 theme:
   name: material
