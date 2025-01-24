@@ -6,6 +6,8 @@ nav:
   - Developers:
       - Setup GigaDB Guide: sop/LOCAL_SETUP.md
       - Git Workflow: developers/BRANCHING.md
+      - Bastion tools: developers/CURATOR_TOOLS_BASTION.md
+      - Setup database: developers/DATABASE.md
   - SOPs:
       - AWS Setup: sop/AWS_SETUP.md
       - Dataset Upload: sop/DATASET_UPLOAD.md
@@ -29,11 +31,12 @@ nav:
       - WASABI Data Migration: sop/WASABI_DATA_MIGRATION.md
   - Curators:
       - Bastion tools: curators/CURATOR_TOOLS_BASTION.md
-  - FUW:
-      - Overview: developers/fuw/index.md
-      - Setup Yii2: developers/fuw/yii2_setup.md
-      - Software Architecture: developers/fuw/software_architecture.md
-      - Developer Guide: developers/fuw/developer_guide.md
+  - Apps:
+      - FUW:
+          - Overview: developers/fuw/index.md
+          - Setup Yii2: developers/fuw/yii2_setup.md
+          - Software Architecture: developers/fuw/software_architecture.md
+          - Developer Guide: developers/fuw/developer_guide.md
   - Policies:
       - AWS Policies: awsdocs/index.md
       - WASABI Policies: wasabidocs/index.md
