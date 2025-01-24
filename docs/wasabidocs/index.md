@@ -1,6 +1,6 @@
 # Wasabi User Drop Boxes
 
-Wasabi provides some [documentation](https://wasabi-support.zendesk.com/hc/en-us/articles/360000016712-How-do-I-set-up-Wasabi-for-user-access-separation-)
+Wasabi provides some [documentation](https://docs.wasabi.com/docs/how-do-i-set-up-wasabi-for-user-access-separation-1)
 for how to manage submitter users and their dataset file uploads into separate 
 buckets or separate directories within a bucket.
 
@@ -145,7 +145,7 @@ bucket or directory using dropdown menus.
 
 ## Automate infrastructure for private user drop boxes
 
-The setup of the 100 plus user drop boxes can be [automated](https://wasabi-support.zendesk.com/hc/en-us/articles/360057225472).
+The setup of the 100 plus user drop boxes can be [automated](https://docs.wasabi.com/docs/how-to-automate-infrastructure-design-on-wasabi).
 
 ## Currently in effect policies
 
