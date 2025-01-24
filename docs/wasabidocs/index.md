@@ -146,3 +146,18 @@ bucket or directory using dropdown menus.
 ## Automate infrastructure for private user drop boxes
 
 The setup of the 100 plus user drop boxes can be [automated](https://wasabi-support.zendesk.com/hc/en-us/articles/360057225472).
+
+## Currently in effect policies
+
+- [AdminRole](AdminRole.json)
+- [AllowDeleteContentOnCI](AllowDeleteContentOnCI.json)
+- [AllowDeleteContentOnDev](AllowDeleteContentOnDev.json)
+- [AllowDeleteContentOnStaging](AllowDeleteContentOnStaging.json)
+- [AllowListBuckets](AllowListBuckets.json)
+- [AllowReadContentOnLive](AllowReadContentOnLive.json)
+- [AllowReadWriteContentOnCI](AllowReadWriteContentOnCI.json)
+- [AllowReadWriteContentOnDev](AllowReadWriteContentOnDev.json)
+- [AllowReadWriteContentOnStaging](AllowReadWriteContentOnStaging.json)
+- [AllowReadWriteContentOnLive](AllowReadWriteContentOnLive.json)
+- [BucketPolicy](BucketPolicy.json)
+- [DenyDeleteContentOnCI](DenyDeleteContentOnCI.json)
