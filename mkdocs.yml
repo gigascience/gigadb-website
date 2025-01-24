@@ -34,6 +34,9 @@ nav:
       - Setup Yii2: developers/fuw/yii2_setup.md
       - Software Architecture: developers/fuw/software_architecture.md
       - Developer Guide: developers/fuw/developer_guide.md
+  - Policies:
+      - AWS Policies: awsdocs/index.md
+      - WASABI Policies: wasabidocs/index.md
 
 theme:
   name: material
