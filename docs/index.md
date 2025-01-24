@@ -12,9 +12,10 @@ and the SOPs for both the local and production environments.
 - [AWS Setup](sop/AWS_SETUP.md)
 - [Infrastructure Provisioning on AWS](sop/SETUP_PROVISIONING.md)
 - [CI/CD Pipeline Setup](sop/SETUP_CI_CD_PIPELINE.md)
+- [AWS policies](awsdocs/index.md)
+- [WASABI policies](wasabidocs/index.md)
 
 ##### C. Developer SOPs
-- [AWS Setup](sop/AWS_SETUP.md)
 - [Dataset Upload](sop/DATASET_UPLOAD.md)
 - [Deploy and Configure Public FTP Server](sop/DEPLOY_AND_CONFIGURE_PUBLIC_FTP_SERVER.md)
 - [EFS Data Migration](sop/EFS_DATA_MIGRATION.md)
