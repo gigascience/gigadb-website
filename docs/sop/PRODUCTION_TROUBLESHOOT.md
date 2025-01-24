@@ -5,7 +5,7 @@ This page provides solution for the problems when deploying the production GigaD
 ### How to check the servers' status
 
 The status of GigaDB servers can be checked from the UptimeRobot [Dashboard](https://stats.uptimerobot.com/LGVQXSkN1y). 
-The setup of UptimeRobot page can refer to this [doc](../UPTIME_STATUS_PAGE.md).
+The setup of UptimeRobot page can refer to this [doc](../miscellaneous/UPTIME_STATUS_PAGE.md).
 
 ### How to access GigaDB Website Tideways dashboard
 
@@ -75,7 +75,7 @@ app_data
 
 ### How to renew an expiring TLS certificate
 
-The details of TLS setup can refer to the [TLS doc](../TLS.md). Currently, the 
+The details of TLS setup can refer to the [TLS doc](../miscellaneous/TLS.md). Currently, the 
 Let's Encrypt's certificate only last for 90 days, and Let's Encrypt's will 
 start sending out reminder emails of renewing 30 days before expiration.
 

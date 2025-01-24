@@ -275,7 +275,7 @@ $ AWS_PROFILE=gigadb terraform destroy
 
 #### AWS-CLI
 
-See [awsdocs/awscli.md](awsdocs/awscli.md)
+See [awsdocs](../awsdocs/index.md#aws-command-line-interface) for more information on how to install and configure the AWS CLI.
 
 #### Terraform
 

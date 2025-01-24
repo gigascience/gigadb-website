@@ -160,4 +160,4 @@ The setup of the 100 plus user drop boxes can be [automated](https://docs.wasabi
 - [AllowReadWriteContentOnStaging](AllowReadWriteContentOnStaging.json)
 - [AllowReadWriteContentOnLive](AllowReadWriteContentOnLive.json)
 - [BucketPolicy](BucketPolicy.json)
-- [DenyDeleteContentOnCI](DenyDeleteContentOnCI.json)
+- [DenyDeleteContentOnLive](DenyDeleteContentOnLive.json)
