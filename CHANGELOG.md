@@ -4,6 +4,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+## v4.4.3 - 2025-02-03 - c62107e5e
+
 - Feat #474: Update FAQ "What journals are integrated with GigaDB?"
 - Feat #476: Update FAQ "How do I write a ReadMe file?"
 - Feat #479: Update FAQ "Why is submission to GigaDB not closely integrated with submission to GigaScience?"
@@ -11,7 +13,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Fix #2053: Update RDS policy to allow createDBSnapshot during destroy
 - Feat #1897: Upgrade OS version to CentOS Stream 9
 
-## v4.4.2 - 2025-01-13 - 7ad7a106b
+## v4.4.2 - 2025-01-13 - 7ad7a106b - live since 2025-01-15
 
 - Fix #1975: Remove empty line at the beginning of the xml result
 - Feat #456: Improve DataCite metadata by migrating to Datacite version 4.6
