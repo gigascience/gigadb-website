@@ -4,6 +4,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Fix #2099: Add missing permission for CLOCKSS
+
 ## v4.4.3 - 2025-02-03 - c62107e5e
 
 - Feat #474: Update FAQ "What journals are integrated with GigaDB?"
