@@ -5,8 +5,6 @@
  * An ActiveRecord model class to handle data related to users of the system.
  */
 class User extends CActiveRecord {
-    public $password_repeat;
-    public $password_new;
     public $terms;
     # Unhashed password for account verification email
     public $passwordUnHashed;
