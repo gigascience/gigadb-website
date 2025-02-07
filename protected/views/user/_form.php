@@ -224,15 +224,15 @@
 
 
 
- 			<?php
-				$path = "images/tempcaptcha/" . $text . ".png";
-				$files = glob('images/tempcaptcha/*');
-				foreach ($files as $file) {
-					if (is_file($file))
-						if ($file != $path)
-							unlink($file);
-				}
-				?>
+<!-- 			--><?php
+//				$path = "images/tempcaptcha/" . $text . ".png";
+//				$files = glob('images/tempcaptcha/*');
+//				foreach ($files as $file) {
+//					if (is_file($file))
+//						if ($file != $path)
+//							unlink($file);
+//				}
+//				?>
  		</div>
  	</div><!-- user-form -->
  </div>

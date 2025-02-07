@@ -11,10 +11,6 @@ class User extends CActiveRecord {
 
     public $passwordInvalid = false;
     public $sendNewPassword = false;
-    public $verifyCode;
-    /** For the captcha */
-    public $validacion;
-
     public static $linkouts = array(
             'EBI' => 'EBI',
             'NCBI' => 'NCBI',
@@ -58,13 +54,6 @@ class User extends CActiveRecord {
             array('role','safe'),
             array('preferred_link', 'safe'),
         );
-    }
-
-    /**
-    * Validate captcha
-    */
-    public function validateCaptcha($attribute, $params){
-        Yii::app()->captcha->validate($this, $attribute);
     }
 
     /**
