@@ -142,30 +142,6 @@
 							'required' => 'required',
 						],
 					]);
-					$this->widget('application.components.controls.PasswordField', [
-						'form' => $form,
-						'model' => $model,
-						'labelOptions' => [
-							'class' => 'col-xs-3',
-						],
-						'inputWrapperOptions' => 'col-xs-9',
-						'attributeName' => 'password',
-						'inputOptions' => [
-							'required' => 'required',
-						],
-					]);
-					$this->widget('application.components.controls.PasswordField', [
-						'form' => $form,
-						'model' => $model,
-						'labelOptions' => [
-							'class' => 'col-xs-3',
-						],
-						'inputWrapperOptions' => 'col-xs-9',
-						'attributeName' => 'password_repeat',
-						'inputOptions' => [
-							'required' => 'required',
-						],
-					]);
 					?>
 
 

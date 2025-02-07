@@ -49,12 +49,6 @@ class User extends CActiveRecord {
             array('email', 'email'),
             array('email', 'unique'),
 
-            #array('password','length','max'=>128),
-            array('password', 'required', 'on'=>'insert'),
-            array('password', 'compare', 'compareAttribute'=>'password_repeat', 'on'=>'insert'),
-            array('password', 'checkPassword', 'on'=>'update'),
-            array('password', 'safe','on'=>'insert'),
-            array('password_repeat','required'),
             array('first_name, last_name','length','max'=>60),
 
             array('first_name','required'),
