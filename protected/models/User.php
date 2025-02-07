@@ -59,30 +59,8 @@ class User extends CActiveRecord {
             array('terms','compare', 'on'=>'insert', 'compareValue' => TRUE,'message'=>'Tick here to confirm you have read and understood our Terms of use and Privacy policy.'),
             array('role','safe'),
             array('preferred_link', 'safe'),
-            array('verifyCode', 'validateCaptcha'),
         );
     }
-
-    public function checkPassword($attribute, $params) {
-        $password = $this->password_new;
-        $password_repeat = $this->password_repeat;
-
-        if ($password != '') {
-            $password_repeat = $this->password_repeat;
-
-            if ($password != $password_repeat) {
-                $this->addError($attribute,"Password and confirm don't match");
-                return false;
-            }
-            else {
-                Yii::log(__FUNCTION__."> match", 'debug');
-            }
-
-            $this->password = $this->password_new;
-        }
-        return true;
-    }
-
 
     /**
     * Validate captcha
