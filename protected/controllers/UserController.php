@@ -335,17 +335,17 @@ class UserController extends Controller {
         $user = User::model()->findByattributes(array('id'=> Yii::app()->user->id));
         $model->newsletter = $user->newsletter;
 
-        if(isset($_POST['ajax']) && $_POST['ajax']==='ChangePassword-form')
+        if (Yii::$app->request->post('ajax') && 'ChangePassword-form' === Yii::$app->request->post('ajax'))
         {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }
 
-        if(isset($_POST['ChangePasswordForm']))
+        if ($changePasswordFormAttr = Yii::$app->request->post('ChangePasswordForm'))
         {
-            $model->attributes=$_POST['ChangePasswordForm'];
-            $model->newsletter=$_POST['ChangePasswordForm']['newsletter'];
-            if($model->validate() && $model->changePass())
+            $model->attributes = $changePasswordFormAttr;
+            $model->newsletter = $changePasswordFormAttr['newsletter'];
+            if ($model->validate() && $model->changePass())
                 $this->redirect('/user/view_profile');
         }
         $model->password = $model->confirmPassword = '';
