@@ -56,6 +56,15 @@ class AcceptanceTester extends \Codeception\Actor
     }
 
     /**
+     * @Then I should see an error message :message
+     */
+    public function iShouldSeeAnErrorMessage($message)
+    {
+        $actualMessage = $this->grabTextFrom('div.errorMessage');
+        $this->assertEquals(preg_replace("/\\\\/", "", $message), $actualMessage);
+    }
+
+    /**
      * @Then I should not see :text
      */
     public function iShouldNotSee($text)
