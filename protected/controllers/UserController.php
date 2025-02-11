@@ -120,7 +120,6 @@ class UserController extends Controller {
 
     /**
      * Updates a particular user.
-     * If update is successful, the browser will be redirected to the 'show' page.
      */
     public function actionUpdate() {
         $user = $this->loadUser();
@@ -130,9 +129,6 @@ class UserController extends Controller {
         #    throw new CHttpException(403, 'You are not authorized to perform this action.');
         #}
 
-
-
-
         if (isset($_POST['User'])) {
             $user->attributes = $_POST['User'] ;
             $attrs = $_POST['User'];
@@ -141,19 +137,11 @@ class UserController extends Controller {
                 $user->role = 'user';
             }
 
-            if ($user->validate('update')) {
-                if ($user->save(false)) {
-
-                    Yii::app()->user->setFlash('notice', 'Updated');
-                    $this->redirect(array('user/show/id/'.$user->id));
-                }
-                else {
-                    Yii::log(__FUNCTION__."> Update failed", 'warning');
-                }
-
-            }
-            else {
-                Yii::log(__FUNCTION__."> validation failed", 'warning');
+            if ($user->save()) {
+                $this->redirect(array('user/view/id/'.$user->id));
+            } else {
+                Yii::app()->user->setFlash('danger', 'Fail to update!');
+                Yii::log(print_r($user->getErrors(), true), 'error');
             }
         }
         $this->render('update', array('model'=>$user));
