@@ -424,4 +424,9 @@ The following Gitlab variables are needed for the acceptance run, both in the pi
 | AWS_SECRET_ACCESS_KEY | your secret key to AWS | All |
 
 
+## Troubleshooting
 
+### permissions
+
+If you find seeing Unauthorised/authentication errors when the Gitlab variables are downloaded by the configuration script,
+ensure that your membership to the "Gigascience" group has the role "Owner".
