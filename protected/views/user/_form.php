@@ -2,7 +2,7 @@
 
  	<?php
 		foreach (Yii::app()->user->getFlashes() as $key => $message) {
-			echo '<div class="flash-' . $key . '">' . $message . "</div>\n";
+			echo '<div class="alert alert-' . $key . '">' . $message . "</div>\n";
 		}
 		?>
  	<?php
@@ -221,18 +221,6 @@
  				<div class="clearfix"></div>
  				<? $this->endWidget() ?>
  			</div><!--well-->
-
-
-
-<!-- 			--><?php
-//				$path = "images/tempcaptcha/" . $text . ".png";
-//				$files = glob('images/tempcaptcha/*');
-//				foreach ($files as $file) {
-//					if (is_file($file))
-//						if ($file != $path)
-//							unlink($file);
-//				}
-//				?>
  		</div>
  	</div><!-- user-form -->
  </div>
