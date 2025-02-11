@@ -1,0 +1,14 @@
+---
+description: Rules for the file upload wizard (fuw)
+globs: gigadb/app/client/web
+---
+# Widget description
+
+the FUW (File Upload Wizard) widget is a Vue widget that integrates Uppy to allow users to upload large files
+
+# Rules
+
+- Use Vue 2.7 for Vue components
+- Follow standard Vue component-based development practices
+- Keep Vue components modular and self-contained, preferably in single file components
+- Use the vue Options API

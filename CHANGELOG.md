@@ -4,6 +4,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #2188: Add a basic set of rules to provide context to LLMs
+
 ## v4.4.3 - 2025-02-03 - c62107e5e
 
 - Feat #474: Update FAQ "What journals are integrated with GigaDB?"
