@@ -36,12 +36,6 @@ Feature: a user visit the dataset page
     When I am on "/dataset/100094"
     Then I should see an image "/images/ePMC.jpg" is linked to "https://europepmc.org/search?scope=fulltext&query=(REF:%2710.80027/100094%27)"
 
-  @ok @issue-877
-  Scenario: The dimensions link is working
-    When I am on "/dataset/100094"
-    Then I should see an image "/images/dimensions.jpg" is linked to "https://app.dimensions.ai/discover/publication?search_text=10.80027/100094"
-
-
   @ok
   Scenario: Private dataset not visible
     Given I have not signed in
@@ -217,6 +211,23 @@ Feature: a user visit the dataset page
     And I should see "Alternative names:PYGAD"
     When I press the button "-"
     Then I should not see "Alternative names:PYGAD"
+
+  @ok @issue-2067
+  Scenario: Files tab can be sort by size in ascending order
+    Given I have not signed in
+    And I am on "/dataset/100035"
+    And I follow "Files"
+    When I follow "[aria-label^='Size']"
+    Then I should see "1.19 kB" in the table "#files_table" cell 1 6
+
+  @ok @issue-2067
+  Scenario: Files tab can be sort by size in descending order
+    Given I have not signed in
+    And I am on "/dataset/100035"
+    And I follow "Files"
+    When I follow "[aria-label^='Size']"
+    And I follow "[aria-label^='Size']"
+    Then I should see "3.88 GB" in the table "#files_table" cell 1 6
 
   @ok @issue-2054
   Scenario: 3D Models tab

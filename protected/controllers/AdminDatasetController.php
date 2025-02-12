@@ -264,11 +264,10 @@ class AdminDatasetController extends Controller
                 $this->renderNotificationsAccordingToStatus($datasetUpload, $model);
             }
 
-            // semantic kewyords update, using remove all and re-create approach
-            if ($postKeywords = Yii::$app->request->post('keywords')) {
-                $attribute_service = Yii::app()->attributeService;
-                $attribute_service->replaceKeywordsForDatasetIdWithString($id, $postKeywords);
-            }
+            // semantic keywords update, using remove all and re-create approach
+            $postKeywords = Yii::$app->request->post('keywords', '');
+            $attribute_service = Yii::app()->attributeService;
+            $attribute_service->replaceKeywordsForDatasetIdWithString($id, $postKeywords);
 
             $urlToRedirect = Yii::$app->request->post('urltoredirect');
             // retrieve existing redirect
@@ -427,18 +426,28 @@ class AdminDatasetController extends Controller
             Yii::app()->end();
         }
 
+        $action = 'DOI Minting';
+        $log = sprintf('Dataset %s', $doi);
         $doiResponse = $client->request('GET', $mds_doi_url . '/' . $mds_prefix . '/' . $doi, [
             'http_errors' => false,
             'auth'        => [$mds_username, $mds_password]
         ]);
         $result['doi_response'] = $doiResponse->getBody()->getContents();
         $result['check_doi_status'] = $doiResponse->getStatusCode();
+        $isPresent = in_array($result['check_doi_status'], [200, 204]);
+        $log .= sprintf(' - Check DOI: %s', $isPresent ? "OK" : "DOI doesn't exist");
 
-        if ($result['check_doi_status'] === 200 || $result['check_doi_status'] === 204  || $result['check_doi_status'] === 404) {
-            $xml_data = $dataset->toXML();
+        if ($isPresent || $result['check_doi_status'] === 404) {
+            if (!$xml_data = $dataset->toXML()) {
+                $result['error'] = 'An error occurred while transforming the dataset as xml';
+                $log .= ' ERROR: An error occurred while transforming the dataset as xml';
+
+                echo json_encode($result);
+                Yii::app()->end();
+            }
             $options = [
                 'headers'     => [
-                    'Content-Type' => 'text/xml; charset=UTF8',
+                    'Content-Type' => 'text/xml;charset=UTF8',
                 ],
                 'auth'        => [$mds_username, $mds_password],
                 'body'        => $xml_data,
@@ -450,8 +459,13 @@ class AdminDatasetController extends Controller
             $keyStatus = sprintf('%s_md_status', $result['check_doi_status'] === 200 ? 'update' : 'create');
             $result[$keyResponse] = $updateMdResponse->getBody()->getContents();
             $result[$keyStatus] = $updateMdResponse->getStatusCode();
+            $log .= sprintf(' - %s md response: %s', $result['check_doi_status'] === 200 ? 'update' : 'create', 201 === $result[$keyStatus] ? "OK" : $result[$keyResponse]);
 
-            if (201 === $updateMdResponse->getStatusCode() && 404 === $result['check_doi_status']) {
+            if (201 === $result[$keyStatus]) {
+                CurationLog::createGeneralCurationLogEntry($dataset->id, 'Sent DataCite XML', $xml_data);
+            }
+
+            if (201 === $result[$keyStatus] && 404 === $result['check_doi_status']) {
                 $result['doi_data'] = 'doi=' . $mds_prefix . '/' . $doi . "\n" . 'url=http://gigadb.org/dataset/' . $doi;
                 $options = [
                     'headers'     => [
@@ -466,9 +480,11 @@ class AdminDatasetController extends Controller
 
                 $result['create_doi_response'] = $response->getBody()->getContents();
                 $result['create_doi_status'] = $response->getStatusCode();
+                $log .= sprintf(' - Create DOI: %s', $result['create_doi_status'] === 201 ? 'OK' : $result['create_doi_response']);
             }
         }
 
+        CurationLog::createGeneralCurationLogEntry($dataset->id, $action, $log);
         echo json_encode($result);
         Yii::app()->end();
     }

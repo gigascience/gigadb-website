@@ -697,6 +697,16 @@ $sampleDataProvider = $samples->getDataProvider();
                     ]
                 });
 
+        $.fn.dataTable.ext.type.order['file-size-pre'] = function(data) {
+            const units = {
+                'B': 1,
+                'kB': 1024,
+                'MB': 1048576,
+                'GB': 1073741824
+            };
+            const match = data.match(/^(\d+(?:\.\d+)?)\s*(B|kB|MB|GB)$/);
+            return match ? parseFloat(match[1]) * (units[match[2]] || 1) : 0;
+        };
 
         $('#files_table').DataTable({
             "initComplete": function () {
@@ -715,7 +725,7 @@ $sampleDataProvider = $samples->getDataProvider();
                 { "visible": <?= in_array('sample_id', $setting) ? 'true' : 'false' ?> },
                 { "visible": <?= in_array('type_id', $setting) ? 'true' : 'false' ?> },
                 { "visible": <?= in_array('format_id', $setting) ? 'true' : 'false' ?> },
-                { "visible": <?= in_array('size', $setting) ? 'true' : 'false' ?> },
+                { "type": "file-size", "visible": <?= in_array('size', $setting) ? 'true' : 'false' ?> },
                 { "visible": <?= in_array('date_stamp', $setting) ? 'true' : 'false' ?> },
                 { "visible": <?= in_array('attribute', $setting) ? 'true' : 'false' ?> },
                 { "visible": <?= in_array('location', $setting) ? 'true' : 'false' ?> },
@@ -807,7 +817,7 @@ $sampleDataProvider = $samples->getDataProvider();
         });
     </script>
     <script src="https://hypothes.is/embed.js" async></script>
-    <script           >
+    <script>
         document.addEventListener("DOMContentLoaded", function(event) { //This event is fired after deferred scripts are loaded
             $(".js-desc").click(function(e) {
                 e.preventDefault();

@@ -247,8 +247,8 @@ $ env TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-pla
 $ env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories bastion_playbook.yml --extra-vars="gigadb_env=staging" --tags files-url-updater,rclone-tool
 $ env TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories webapp_playbook.yml --extra-vars="gigadb_env=staging" --tags setup-docker-ce
 # skip selected plays
-$ env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories bastion_playbook.yml -e "backupDate=latest" --extra-vars="gigadb_env=staging" --skip-tags fix-centos-eol-issues,setup-fail2ban,setup-docker-ce,restore-db-on-rds,load-latest-db
-$ env TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories webapp_playbook.yml --extra-vars="gigadb_env=staging" --skip-tags fix-centos-eol-issues,setup-fail2ban
+$ env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories bastion_playbook.yml -e "backupDate=latest" --extra-vars="gigadb_env=staging" --skip-tags fix-centos-package-repos-issues,setup-fail2ban,setup-docker-ce,restore-db-on-rds,load-latest-db
+$ env TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories webapp_playbook.yml --extra-vars="gigadb_env=staging" --skip-tags fix-centos-package-repos-issues,setup-fail2ban
 ```
 
 
@@ -350,7 +350,7 @@ UTC (after the CNGB backup of day before is made available).
 $ terraform output
 
 # ssh into it
-$ ssh -i ~/.ssh/id-rsa-aws-hk-gigadb.pem centos@<bastion public ip>
+$ ssh -i ~/.ssh/id-rsa-aws-hk-gigadb.pem ec2-user@<bastion public ip>
 ```
 
 Also to confirm a customized `/etc/aws/credentials` file has been created, this credentials 
@@ -358,7 +358,7 @@ is for the user to manage the AWS S3 bucket `gigadb-datasets-metadata`, the secr
 equal to the gigadb_dataset_metadata_aws_access_key_id and gigadb_datasets_metadata_aws_secret_access_key 
 found in [Gitlab cnhk-infra variables page](https://gitlab.com/gigascience/cnhk-infra/-/settings/ci_cd):
 ```
-$ ssh -i ~/.ssh/id-rsa-aws-hk-gigadb.pem centos@<bastion public ip>
+$ ssh -i ~/.ssh/id-rsa-aws-hk-gigadb.pem ec2-user@<bastion public ip>
 $ cat /etc/aws/credentials
 ```
 
@@ -381,8 +381,8 @@ $ env TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-pla
 $ env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories bastion_playbook.yml --extra-vars="gigadb_env=live" --tags files-url-updater,rclone-tool
 $ env TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories webapp_playbook.yml --extra-vars="gigadb_env=live" --tags setup-docker-ce
 # skip selected plays
-$ env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories bastion_playbook.yml -e "backupDate=latest" --extra-vars="gigadb_env=live" --skip-tags fix-centos-eol-issues,setup-fail2ban,setup-docker-ce,restore-db-on-rds,load-latest-db
-$ env TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories webapp_playbook.yml --extra-vars="gigadb_env=live" --skip-tags fix-centos-eol-issues,setup-fail2ban
+$ env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories bastion_playbook.yml -e "backupDate=latest" --extra-vars="gigadb_env=live" --skip-tags fix-centos-package-repos-issues,setup-fail2ban,setup-docker-ce,restore-db-on-rds,load-latest-db
+$ env TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories webapp_playbook.yml --extra-vars="gigadb_env=live" --skip-tags fix-centos-package-repos-issues,setup-fail2ban
 ```
 
 ## Deploy to gigadb.org using CI/CD pipeline
