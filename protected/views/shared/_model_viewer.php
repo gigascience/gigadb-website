@@ -125,7 +125,7 @@ Yii::app()->clientScript->registerScript(
 );
 
 Yii::app()->assetManager->forceCopy = YII_DEBUG;
-$jsDir = Yii::getPathOfAlias('application.js.model-viewer');
+$jsDir = Yii::getAlias('/gigadb/app/client/js/model-viewer');
 $jsUrl = Yii::app()->assetManager->publish($jsDir);
 
 Yii::app()->clientScript->registerScriptFile($jsUrl . '/index.js', CClientScript::POS_END, ['type' => 'module']);
