@@ -1,0 +1,6 @@
+---
+description: Rules that apply to Yii components
+globs: protected/components
+---
+# Component rules
+- protected/components/controls contains form input components that incorporate accessibility features out of the box

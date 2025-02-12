@@ -14,6 +14,7 @@ globs:
 # Tech Stack
 - PHP version 7.4+
 - Yii 1.1 Framework
+- Frontend libraries: jquery 3, jquery-ui 1, bootstrap 3, font-awesome 4
 - Composer for dependency management
 - Docker and Docker Compose for containerized development and deployment
 - Nginx as the web server
@@ -33,6 +34,8 @@ globs:
     - `search`: search page and partials related to the search
     - `dataset`: dataset page and partials related to the dataset view
     - `admin*`: private pages belonging to the admin panel
+  - `components`: reusable Yii 1.1 components
+    - `controls`: resuable form inputs with built-in accessibility capabilities
   - `js`: reusable JS scripts
 - `less`: UI styles, following SMACSS architecture
 - `gigadb/app/client/web`: Vue 2.7 widget to upload large files with Uppy
