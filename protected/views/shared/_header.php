@@ -92,6 +92,29 @@
                         </li>
                     </ul>
                 </div>
+              </div>
+            <div class="row search-bar-mobile">
+              <div class="col-xs-12">
+                <form action="/search/new" method="GET" role="search" class="search-form" aria-label="Datasets">
+                    <?php
+                    $this->widget('application.components.DeferrableCJuiAutoComplete', array(
+                        'name' => 'keyword',
+                        'source' => array_values(array()),
+                        'options' => array(
+                            'minLength' => '2',
+                        ),
+                        'htmlOptions' => array(
+                            'aria-label'=>'Search GigaDB',
+                            'class' => 'search-input',
+                            'placeholder'=>'e.g. Chicken, brain, etc...',
+                        ),
+                    ));
+                    ?>
+                    <button class="btn-search" type="submit">
+                        <span class="fa fa-search"><span class="sr-only">Search</span></span>
+                    </button>
+                </form>
+              </div>
             </div>
         </div>
     </div>
