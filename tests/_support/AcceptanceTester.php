@@ -427,4 +427,12 @@ class AcceptanceTester extends \Codeception\Actor
     {
         $this->see($text, ['css' => "$table tr:nth-child($row) td:nth-child($column)"]);
     }
+
+    /**
+     * @When I fill in the field of :attribute :fieldName with the word :value repeated :numberOfTimes times
+     */
+    public function iFillInTheFieldOfWithWords($attribute, $fieldName, $value, $numberOfTimes)
+    {
+        $this->fillField([$attribute => $fieldName], str_repeat($value . ' ', $numberOfTimes - 1) . $value);
+    }
 }

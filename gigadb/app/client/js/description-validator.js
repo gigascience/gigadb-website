@@ -2,6 +2,8 @@
 
 const WORD_COUNT_WARNING = 250
 const WORD_COUNT_ERROR = 500
+const WARNING_MESSAGE = `Warning: Your description is over ${WORD_COUNT_WARNING} words long, you should reduce it if possible.`
+const ERROR_MESSAGE = `Your description must be less than ${WORD_COUNT_ERROR} words long.`
 
 /**
  * Counts words in a string, handling whitespace and empty strings
@@ -69,13 +71,13 @@ function initDescriptionValidator(selector) {
 			const descriptors = [wordCountId]
 
 			if (count > WORD_COUNT_WARNING && count <= WORD_COUNT_ERROR) {
-				warning.content.text(`Warning: Your description exceeds ${WORD_COUNT_WARNING} words.`)
+				warning.content.text(WARNING_MESSAGE)
 				error.content.text('')
 				descriptors.push(warningId)
 			}
 			else if (count > WORD_COUNT_ERROR) {
 				warning.content.text('')
-				error.content.text(`Error: Maximum allowed words are ${WORD_COUNT_ERROR}.`)
+				error.content.text(ERROR_MESSAGE)
 				descriptors.push(errorId)
 			}
 			else {
@@ -101,7 +103,7 @@ function initDescriptionValidator(selector) {
 			if (count > WORD_COUNT_ERROR && !isPublished) {
 				e.preventDefault()
 				$textarea.focus()
-				error.content.text(`Error: Maximum allowed words are ${WORD_COUNT_ERROR}. Please reduce the description length before submitting.`)
+				error.content.text(ERROR_MESSAGE)
 			}
 		})
 	})
