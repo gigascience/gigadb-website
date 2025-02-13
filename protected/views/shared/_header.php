@@ -121,10 +121,13 @@
     <div class="base-nav-bar">
         <div class="container">
             <div class="row">
-                <div class="col-xs-4">
+                <div class="col-xs-8 col-md-4">
                     <a href="/"><img src="/images/new_interface_image/logo.png" class="base-nav-logo-img" alt="GigaDB Logo and tagline: Revolutionizing data dissemination, organization and use"></a>
                 </div>
-                <nav aria-label="primary" class="col-xs-4 col-xs-offset-4">
+                <nav aria-label="primary" class="col-md-4 col-md-offset-4">
+                    <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#mobileNavigation" aria-controls="mobileNavigation" aria-expanded="false">
+                        <i class="fa fa-bars fa-lg"></i>
+                    </button>
                     <ul class="nav nav-pills main-nav-bar text-right">
                         <li><a href="/">Home</a></li>
                         <li class="dropdown">

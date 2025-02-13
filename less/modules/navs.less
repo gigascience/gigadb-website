@@ -271,11 +271,14 @@
 
 // main nav bar
 
-.main-nav-bar{
+.main-nav-bar {
   box-sizing: border-box;
   width: 100%;
   height: 34px;
   margin: 33px 0;
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: nowrap;
   /*background: @color-gigadb-green;*/
   /*color: @color-true-white;*/
 }
@@ -288,7 +291,7 @@
   height: 34px;
   color: @dark-gray-on-light-gray;
   text-decoration: none !important;
-
+  text-wrap: nowrap;
 }
 .main-nav-bar li button.dropdown-toggle {
   height: 34px;
@@ -300,6 +303,7 @@
   padding: 8px 12px;
   margin: 2px 2px 0 0;
   outline-offset: -2px;
+  text-wrap: nowrap;
   &:hover, &:focus {
     background-color: @color-light-gray;
   }
@@ -375,5 +379,25 @@
   }
   .dropdown-menu {
     margin-top: 5px;
+  }
+}
+
+.navbar-toggle {
+  display: none;
+  background: none;
+  border: none;
+  padding: 33px 0;
+  float: right;
+  .fa {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 992px) {
+  .main-nav-bar {
+    display: none;
+  }
+  .navbar-toggle {
+    display: block;
   }
 }
