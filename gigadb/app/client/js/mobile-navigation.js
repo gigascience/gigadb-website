@@ -1,3 +1,5 @@
+import { trapFocus } from './trap-focus.js';
+
 export function initMobileNavigation() {
   const $mobileNav = $("#mobileNavigation");
   const $toggleButton = $(".navbar-toggle");
@@ -12,6 +14,7 @@ export function initMobileNavigation() {
   $toggleButton.on("click", function () {
     $mobileNav.addClass("is-visible");
     $body.css("overflow", "hidden");
+    trapFocus($mobileNav);
   });
 
   $closeButton.on("click", function () {
