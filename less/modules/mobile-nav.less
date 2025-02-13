@@ -1,0 +1,88 @@
+.mobile-navigation {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: @color-true-white;
+  overflow-y: auto;
+
+  &.is-visible {
+    display: block;
+  }
+
+  &__close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    padding: 15px;
+    cursor: pointer;
+    color: @color-warm-black;
+    transition: color 0.2s ease;
+    z-index: 2;
+
+    .fa {
+      font-size: 24px;
+    }
+
+    &:hover {
+      color: @gigadb-green-on-white;
+    }
+  }
+
+  &__content {
+    min-height: 100vh;
+    width: 100%;
+    max-width: 360px;
+    margin: 0 auto;
+    padding: 60px 20px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  &__nav {
+    text-align: center;
+    opacity: 0;
+    transform: translateY(10px);
+    animation: slide-in 0.3s ease forwards;
+  }
+
+  &__group {
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  &__link {
+    display: block;
+    padding: 12px 0;
+    color: @color-warm-black;
+    font-size: 18px;
+    font-weight: 300;
+    text-decoration: none;
+
+    &:hover,
+    &:focus {
+      color: @gigadb-green-on-white;
+      text-decoration: none;
+    }
+  }
+}
+
+@keyframes slide-in {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (min-width: 992px) {
+  .mobile-navigation {
+    display: none !important;
+  }
+}
