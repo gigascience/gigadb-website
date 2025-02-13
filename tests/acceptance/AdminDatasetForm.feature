@@ -496,3 +496,33 @@ Feature: form to update dataset details
     And I press the button "Next >"
     And I wait "1" seconds
     Then I should see "Parrot.k31.NetworkTest.txt"
+
+  @ok @issue-2177
+  Scenario: Descriptions longer than 250 words display a warning
+    Given I am on "/adminDataset/update/id/5"
+    When I fill in the field of "name" "Dataset[description]" with the word "Lorem" repeated 251 times
+    Then I should see "Warning: Your description is over 250 words long, you should reduce it if possible."
+
+  @ok @issue-2177
+  Scenario: Descriptions longer than 500 words display an error
+    Given I am on "/adminDataset/update/id/5"
+    When I fill in the field of "name" "Dataset[description]" with the word "Lorem" repeated 501 times
+    Then I should see "Your description must be less than 500 words long."
+
+  @ok @issue-2177
+  Scenario: Submission of pre-published dataset with description longer than 500 words is prevented
+    Given I am on "/adminDataset/update/id/5"
+    When I fill in the field of "name" "Dataset[description]" with the word "Lorem" repeated 501 times
+    And I press the button "Save"
+    And I wait "2" seconds
+    Then I should see "Your description must be less than 500 words long."
+
+  @ok @issue-2177
+  Scenario: Submission of published dataset with description longer than 500 words is not prevented
+    Given I am on "/adminDataset/update/id/63"
+    When I fill in the field of "name" "Dataset[description]" with the word "Lorem" repeated 501 times
+    And I press the button "Save"
+    And I wait "4" seconds
+    Then I should not see "Your description must be less than 500 words long."
+    And I should see "Lorem"
+

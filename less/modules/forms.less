@@ -321,3 +321,31 @@ fieldset {
   *zoom: 1;
   margin-top: -30px;
 }
+
+.description-warning-container .description-warning-content {
+  &:not(:empty) {
+    margin-top: 8px;
+    background-color: @color-brand-warning-100;
+    border: 1px solid @color-brand-warning-400;
+    color: @color-brand-warning-800;
+    padding: 8px;
+    border-radius: 4px;
+  }
+}
+
+.description-error-container .description-error-content {
+  &:not(:empty) {
+    margin-top: 8px;
+    background-color: @color-brand-danger-100;
+    border: 1px solid @color-brand-danger-400;
+    color: @color-brand-danger-800;
+    padding: 8px;
+    border-radius: 4px;
+  }
+}
+
+.word-count-display {
+  margin-top: 4px;
+  color: @color-warm-black;
+  font-size: 0.9em;
+}

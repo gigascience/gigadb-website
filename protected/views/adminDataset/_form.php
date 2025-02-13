@@ -479,7 +479,8 @@ echo $form->hiddenField($model, "image_id");
                     'inputWrapperOptions' => 'input-wrapper col-xs-6',
                     'inputOptions' => [
                         'rows' => 8,
-                        'cols' => 50
+                        'cols' => 50,
+                        'class' => 'form-control description-field'
                     ],
                     'tooltip' => 'This field holds the dataset description, at present we are using the manuscript abstract as the basis of this, in future we want to move towards a more specific description of the actual dataset hosted'
                   ]);
@@ -886,4 +887,19 @@ function handleMintingSuccess(output) {
   handleDoiStatus(output)
   $("#mint_doi_button").toggleClass("active");
 }
+</script>
+
+<?php
+Yii::app()->assetManager->forceCopy = YII_DEBUG;
+$jsDir = Yii::getAlias('/gigadb/app/client/js');
+$jsUrl = Yii::app()->assetManager->publish($jsDir);
+Yii::app()->clientScript->registerScriptFile($jsUrl . '/description-validator.js', CClientScript::POS_END, ['type' => 'module']);
+?>
+
+<script type="module">
+  import { initDescriptionValidator } from '<?php echo $jsUrl; ?>/description-validator.js';
+
+  $(document).ready(function() {
+    initDescriptionValidator('.description-field')
+  });
 </script>
