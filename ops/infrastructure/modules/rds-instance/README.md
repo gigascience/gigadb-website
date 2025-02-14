@@ -51,14 +51,14 @@ rds_instance_address = "rds-server-staging.cfkc0cbc20ii.ap-east-1.rds.amazonaws.
 $ cd <path to>/gigadb-website
 
 # Copy pgdmp file from your local machine to bastion server
-$ sftp -i ~/.ssh/id-rsa-aws.pem  centos@18.162.xxx.xxx
+$ sftp -i ~/.ssh/id-rsa-aws.pem  ec2-user@18.162.xxx.xxx
 sftp> put sql/gigadbv3_20210901_9.6.22.pgdmp
 sftp> exit
 
 # Use bastion server to restore database using pgdmp file - will need your gigadb database password
-$ ssh -i ~/.ssh/id-rsa-aws.pem  centos@18.162.xxx.xxx "psql -h rds-server-staging.cfkc0cbc20ii.ap-east-1.rds.amazonaws.com -U gigadb -d postgres -c 'drop database gigadb'"
-$ ssh -i ~/.ssh/id-rsa-aws.pem  centos@18.162.xxx.xxx "psql -h rds-server-staging.cfkc0cbc20ii.ap-east-1.rds.amazonaws.com -U gigadb -d postgres -c 'create database gigadb owner gigadb'"
-$ ssh -i ~/.ssh/id-rsa-aws.pem  centos@18.162.xxx.xxx 'pg_restore -c --if-exists -h rds-server-staging.cfkc0cbc20ii.ap-east-1.rds.amazonaws.com -d gigadb -U gigadb /home/ec2-user/gigadbv3_20210901_9.6.22.pgdmp'
+$ ssh -i ~/.ssh/id-rsa-aws.pem  ec2-user@18.162.xxx.xxx "psql -h rds-server-staging.cfkc0cbc20ii.ap-east-1.rds.amazonaws.com -U gigadb -d postgres -c 'drop database gigadb'"
+$ ssh -i ~/.ssh/id-rsa-aws.pem  ec2-user@18.162.xxx.xxx "psql -h rds-server-staging.cfkc0cbc20ii.ap-east-1.rds.amazonaws.com -U gigadb -d postgres -c 'create database gigadb owner gigadb'"
+$ ssh -i ~/.ssh/id-rsa-aws.pem  ec2-user@18.162.xxx.xxx 'pg_restore -c --if-exists -h rds-server-staging.cfkc0cbc20ii.ap-east-1.rds.amazonaws.com -d gigadb -U gigadb /home/ec2-user/gigadbv3_20210901_9.6.22.pgdmp'
 
 # In GitLab, click sd_start_app button in pipeline
 ```
