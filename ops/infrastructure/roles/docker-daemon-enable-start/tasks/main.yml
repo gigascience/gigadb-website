@@ -1,4 +1,4 @@
-- name: Allow centos user to use docker (add centos to group)
+- name: Allow ec2-user user to use docker (add ec2-user to group)
   command: usermod -aG docker ec2-user
 
 - name: Enable systemd service
