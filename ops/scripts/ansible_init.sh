@@ -159,10 +159,9 @@ ssh-keygen -R $bastion_ip
 ssh-keygen -R $webapp_private_ip
 ssh-keygen -R $files_private_ip
 # Add the new key
-# Add the new key
 ssh-keyscan -t ecdsa $bastion_ip >> ~/.ssh/known_hosts
 web_host=$(ssh -i $aws_ssh_key ec2-user"@$bastion_ip" ssh-keyscan -t ecdsa "$webapp_private_ip")
-files_host=$(ssh -i $aws_ssh_key ec2-user"@$bastion_ip" ssh-keyscan -t ecdsa "$files_private_ip")
+files_host=$(ssh -i $aws_ssh_key ec2-user@"$bastion_ip" ssh-keyscan -t ecdsa "$files_private_ip")
 echo "$web_host"  >> ~/.ssh/known_hosts
 echo "$files_host"  >> ~/.ssh/known_hosts
 
