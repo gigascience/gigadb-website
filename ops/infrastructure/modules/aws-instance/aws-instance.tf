@@ -71,7 +71,7 @@ resource "aws_security_group" "docker_host_sg" {
    }
 }
 
-data "aws_ami" "centos" {
+data "aws_ami" "ec2-user" {
   most_recent = true
 
   filter {
@@ -88,7 +88,7 @@ data "aws_ami" "centos" {
 }
 
 resource "aws_instance" "docker_host" {
-  ami = data.aws_ami.centos.id
+  ami = data.aws_ami.ec2-user.id
   instance_type = "${var.ec2_type}"
   vpc_security_group_ids = [aws_security_group.docker_host_sg.id]
   key_name = var.key_name
@@ -96,7 +96,7 @@ resource "aws_instance" "docker_host" {
 
   tags = {
     Name = "gigadb_${var.ec2_usage}_${var.deployment_target}_${var.owner}",
-    System = "${var.ec2_usage}_${var.ec2_type}_centos_stream8",
+    System = "${var.ec2_usage}_${var.ec2_type}_ec2-user_stream8",
   }
 
   root_block_device {

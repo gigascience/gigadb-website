@@ -104,7 +104,7 @@ updated by consulting the [big dataset spreadsheet](https://docs.google.com/spre
 Drop database triggers otherwise tool will hang due to memory issues:
 ```
 # Log into bastion server using SSH
-$ ssh -i ~/.ssh/id-rsa-aws-tokyo-peter.pem centos@bastion-ip 
+$ ssh -i ~/.ssh/id-rsa-aws-tokyo-peter.pem ec2-user@bastion-ip 
 $ docker run --rm  --env-file ./db-env registry.gitlab.com/$GITLAB_PROJECT/production_pgclient:$GIGADB_ENV -c 'drop trigger if exists file_finder_trigger on file RESTRICT'
 $ docker run --rm  --env-file ./db-env registry.gitlab.com/$GITLAB_PROJECT/production_pgclient:$GIGADB_ENV -c 'drop trigger if exists sample_finder_trigger on sample RESTRICT'
 $ docker run --rm  --env-file ./db-env registry.gitlab.com/$GITLAB_PROJECT/production_pgclient:$GIGADB_ENV -c 'drop trigger if exists dataset_finder_trigger on dataset RESTRICT'
