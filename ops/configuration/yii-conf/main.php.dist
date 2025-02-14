@@ -9,6 +9,8 @@ $pre_config = require(dirname(__FILE__).'/local.php');
 Yii::setPathOfAlias('uploadPath',dirname(__FILE__).DIRECTORY_SEPARATOR.'../../images/uploads');
 Yii::setPathOfAlias('uploadURL', '/images/uploads/');
 
+Yii::setPathOfAlias('\GigaDB\models', '/gigadb/app/models');
+
 return CMap::mergeArray(array(
     'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
     'name'=>'GigaDB',
