@@ -2,7 +2,7 @@
 
 set -exu
 
-source /home/centos/.env
+source /home/ec2-user/.env
 
 # Calculate dates
 latest=$(date --date="1 days ago" +"%Y%m%d")
@@ -31,17 +31,17 @@ PGPASSWORD=$PGPASSWORD psql -h $PGHOST -U $PGUSER -d $PGDATABASE -t -c "$dropcon
 PGPASSWORD=$PGPASSWORD psql -h $PGHOST -U $PGUSER -d $PGDATABASE -t -c "$addconstraints" > /tmp/addconstraints.sql
 
 # Download the upstream backup and load it into RDS
-docker run --rm --env-file .env -v /home/centos/.config/rclone/rclone.conf:/root/.config/rclone/rclone.conf -v /home/centos/restore:/restore --entrypoint /restore_database_from_s3_backup.sh registry.gitlab.com/$GITLAB_PROJECT_NAME/production_s3backup:$GIGADB_ENVIRONMENT "$backupDate"
+docker run --rm --env-file .env -v /home/ec2-user/.config/rclone/rclone.conf:/root/.config/rclone/rclone.conf -v /home/ec2-user/restore:/restore --entrypoint /restore_database_from_s3_backup.sh registry.gitlab.com/$GITLAB_PROJECT_NAME/production_s3backup:$GIGADB_ENVIRONMENT "$backupDate"
 
 # Drop constraints/indexes/triggers before running migrations
 PGPASSWORD=$PGPASSWORD psql -h $PGHOST -U $PGUSER -d $PGDATABASE < /tmp/dropconstraints.sql
 
 # Run migrations
-docker run --rm -e YII_PATH=/var/www/vendor/yiisoft/yii -v /home/centos:/var/www/protected/runtime registry.gitlab.com/$GITLAB_PROJECT_NAME/production_app:$GIGADB_ENVIRONMENT /var/www/protected/scripts/updateDBSchema.sh
+docker run --rm -e YII_PATH=/var/www/vendor/yiisoft/yii -v /home/ec2-user:/var/www/protected/runtime registry.gitlab.com/$GITLAB_PROJECT_NAME/production_app:$GIGADB_ENVIRONMENT /var/www/protected/scripts/updateDBSchema.sh
 
 # Restore constraints/indexes/triggers
 PGPASSWORD=$PGPASSWORD psql -h $PGHOST -U $PGUSER -d $PGDATABASE < /tmp/addconstraints.sql
 
 # Housekeeping
-rm -f /home/centos/restore/gigadb*.backup
+rm -f /home/ec2-user/restore/gigadb*.backup
 rm /tmp/*constraints.sql
