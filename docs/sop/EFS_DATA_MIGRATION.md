@@ -67,7 +67,7 @@ go version go1.22.2 linux/amd64
 [ken@cngb-gigadb-ftp rclone-v1.66.0-linux-amd64]$ cd ..
 [ken@cngb-gigadb-ftp ~]$ rclone version
 rclone v1.66.0
-- os/version: centos 7.5.1804 (64 bit)
+- os/version: ec2-user 7.5.1804 (64 bit)
 - os/kernel: 3.10.0-862.14.4.el7.x86_64 (x86_64)
 - os/type: linux
 - os/arch: amd64

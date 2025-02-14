@@ -9,10 +9,10 @@
 - name: Fix Centos EOL issues
   hosts: name_bastion_server_{{gigadb_env}}*
   tags:
-    - fix-centos-eol-issues
+    - fix-ec2-user-eol-issues
 
   roles:
-    - role: ../../roles/centos-eol-fix
+    - role: ../../roles/ec2-user-eol-fix
 
 - name: Setup Fail2ban
   hosts: name_bastion_server_{{gigadb_env}}*
@@ -49,7 +49,7 @@
       dds_host: "{{ ec2_bastion_public_ip }}"
       dds_server_cert_path: /etc/docker
       dds_restart_docker: no
-      dds_client_cert_path: /home/centos/.docker
+      dds_client_cert_path: /home/ec2-user/.docker
     - role: ../../roles/docker-postinstall
     - role: ../../roles/docker-daemon-enable-start
 
@@ -88,8 +88,8 @@
     - name: Copy specified backup file from files-url-updater tool to bastion server
       ansible.builtin.copy:
         src: '{{ backup_file }}'
-        dest: "/home/centos/database_bootstrap.backup"
-        owner: centos
+        dest: "/home/ec2-user/database_bootstrap.backup"
+        owner: ec2-user
         group:
       when: backup_file
 
@@ -106,28 +106,28 @@
         path: "{{ item }}"
         state: directory
         mode: '0755'
-        owner: centos
-        group: centos
+        owner: ec2-user
+        group: ec2-user
       loop:
-        - "/home/centos/downloads"
-        - "/home/centos/converted"
-        - "/home/centos/restore"
+        - "/home/ec2-user/downloads"
+        - "/home/ec2-user/converted"
+        - "/home/ec2-user/restore"
 
     - name: Install new wrapper script to reset database
       ansible.builtin.copy:
         src: "../../../../gigadb/app/tools/files-url-updater/databaseReset.sh"
         dest: /usr/local/bin/databaseReset
-        owner: centos
-        group: centos
+        owner: ec2-user
+        group: ec2-user
         mode: a+x
 
     - name: Create a bin and log directory (for composer and cronjob logging) if it does not exist
       ansible.builtin.file:
-        path: "/home/centos/{{ item }}"
+        path: "/home/ec2-user/{{ item }}"
         state: directory
         mode: '0755'
-        owner: centos
-        group: centos
+        owner: ec2-user
+        group: ec2-user
       loop:
         - "logs"
 
@@ -136,7 +136,7 @@
         name: "Reset database every day after a new backup is available on the ftp server"
         minute: "05"
         hour: "10"
-        user: "centos"
+        user: "ec2-user"
         job: "/usr/local/bin/databaseReset 2> $HOME/logs/errors.log 1> $HOME/logs/output.log"
         state: "{{ reset_database_cronjob_state }}"
 
@@ -147,7 +147,7 @@
     - name: Create .env with RDS DSN
       template:
         src: ../../../../gigadb/app/tools/files-url-updater/bastion-env.j2
-        dest: /home/centos/.env
+        dest: /home/ec2-user/.env
         owner: root
         group: root
         mode: 0644
@@ -165,15 +165,15 @@
       path: "/etc/aws"
       state: directory
       mode: '0755'
-      owner: centos
-      group: centos
+      owner: ec2-user
+      group: ec2-user
 
   - name: Create AWS credential file for access to AWS S3 metadata bucket
     template:
       src: ../../../../ops/configuration/aws-conf/credentials.j2
       dest: "/etc/aws/credentials"
-      owner: centos
-      group: centos
+      owner: ec2-user
+      group: ec2-user
       mode: 0644
 
 - name: Set up and configuration of rclone on bastion server
@@ -189,7 +189,7 @@
         rclone_version: "1.60.0"
         rclone_arch: "amd64"
         install_manpages: "true"
-        rclone_config_location: "/home/centos/.config/rclone/rclone.conf"
+        rclone_config_location: "/home/ec2-user/.config/rclone/rclone.conf"
 
 - name: Mount AWS efs access points
   hosts: name_bastion_server_{{gigadb_env}}*
@@ -214,8 +214,8 @@
         path: "{{ item }}"
         state: directory
         mode: '0755'
-        owner: centos
-        group: centos
+        owner: ec2-user
+        group: ec2-user
       loop:
         - "/share/dropbox"
         - "/share/config"
