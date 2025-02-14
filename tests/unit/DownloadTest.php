@@ -33,6 +33,8 @@ class DownloadTest extends \Codeception\Test\Unit
 
     /**
      * Test that a remote file exists
+     *
+     * @skip as the uniprot service is unavailable now
      */
     public function testFileExists()
     {
