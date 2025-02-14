@@ -130,14 +130,14 @@ Or, it can be installed/updated separately as below:
 ```
 2. The production servers have been spun up by following the [SETUP_PROVISIONING.md](../../../../docs/SETUP_PROVISIONING.md)
 
-### As a centos user in staging
+### As a ec2-user user in staging
 ```
-% ssh -i path/to/staging/pem centos@$staging-bastion-ip
+% ssh -i path/to/staging/pem ec2-user@$staging-bastion-ip
 Activate the web console with: systemctl enable --now cockpit.socket
 
 Last login: Tue Jul  9 05:35:15 2024 from 3.36.204.163
 # Confirm access points are mounted 
-[centos@ip-10-99-0-151 ~]$ df -hT
+[ec2-user@ip-10-99-0-151 ~]$ df -hT
 Filesystem     Type      Size  Used Avail Use% Mounted on
 devtmpfs       devtmpfs  339M     0  339M   0% /dev
 tmpfs          tmpfs     372M     0  372M   0% /dev/shm
@@ -148,24 +148,24 @@ tmpfs          tmpfs      75M     0   75M   0% /run/user/1000
 127.0.0.1:/    nfs4      8.0E     0  8.0E   0% /share/dropbox
 127.0.0.1:/    nfs4      8.0E     0  8.0E   0% /share/config
 tmpfs          tmpfs      75M     0   75M   0% /run/user/1001
-[centos@ip-10-99-0-151 ~]$ ls -al /share/
+[ec2-user@ip-10-99-0-151 ~]$ ls -al /share/
 $ ls -al /share/
 total 8
-drwxr-xr-x.  4 centos centos   35 Jul 29 03:37 .
+drwxr-xr-x.  4 ec2-user ec2-user   35 Jul 29 03:37 .
 dr-xr-xr-x. 18 root   root    237 Jul 29 03:37 ..
-drwxr-xr-x.  2 centos centos 6144 Jul 30 04:01 config
-drwxr-xr-x.  2 centos centos 6144 Jul 30 04:01 dropbox
+drwxr-xr-x.  2 ec2-user ec2-user 6144 Jul 30 04:01 config
+drwxr-xr-x.  2 ec2-user ec2-user 6144 Jul 30 04:01 dropbox
 
-[centos@ip-10-99-0-240 ~]$ 
-[centos@ip-10-99-0-212 ~]$ cat files-env 
+[ec2-user@ip-10-99-0-240 ~]$ 
+[ec2-user@ip-10-99-0-212 ~]$ cat files-env 
 GIGADB_ENV=staging
 WASABI_DATASETFILES_DIR=wasabi:gigadb-datasets/staging/pub/10.5524
 S3_DATASETFILES_DIR=gigadb-datasetfiles:gigadb-datasetfiles-backup/staging/pub/10.5524
-[centos@ip-10-99-0-212 ~]$ ls /share/dropbox/user101/
+[ec2-user@ip-10-99-0-212 ~]$ ls /share/dropbox/user101/
 analysis_data  readme_102480.txt
-[centos@ip-10-99-0-212 ~]$ ls /share/dropbox/user101/analysis_data/
+[ec2-user@ip-10-99-0-212 ~]$ ls /share/dropbox/user101/analysis_data/
 Tree_file.txt
-[centos@ip-10-99-0-212 ~]$ /usr/local/bin/transfer
+[ec2-user@ip-10-99-0-212 ~]$ /usr/local/bin/transfer
 Usage: /usr/local/bin/transfer --doi <DOI> --sourcePath <Source Path>
 
 Required:
@@ -184,7 +184,7 @@ Example usages:
 /usr/local/bin/transfer --doi 100148 --sourcePath /share/dropbox/user101 --backup --apply
 /usr/local/bin/transfer --doi 100148 --sourcePath /share/dropbox/user101 --wasabi --backup
 /usr/local/bin/transfer --doi 100148 --sourcePath /share/dropbox/user101 --wasabi --backup --apply
-[centos@ip-10-99-0-212 ~]$ /usr/local/bin/transfer --doi 102480 --sourcePath /share/dropbox/user101/
+[ec2-user@ip-10-99-0-212 ~]$ /usr/local/bin/transfer --doi 102480 --sourcePath /share/dropbox/user101/
 Error: please specify --wasabi or --backup or both
 Usage: /usr/local/bin/transfer --doi <DOI> --sourcePath <Source Path>
 
@@ -204,13 +204,13 @@ Example usages:
 /usr/local/bin/transfer --doi 100148 --sourcePath /share/dropbox/user101 --backup --apply
 /usr/local/bin/transfer --doi 100148 --sourcePath /share/dropbox/user101 --wasabi --backup
 /usr/local/bin/transfer --doi 100148 --sourcePath /share/dropbox/user101 --wasabi --backup --apply
-[centos@ip-10-99-0-212 ~]$ 
-[centos@ip-10-99-0-212 ~]$ /usr/local/bin/transfer --doi 102480 --sourcePath /share/dropbox/user101/ --wasabi --backup
+[ec2-user@ip-10-99-0-212 ~]$ 
+[ec2-user@ip-10-99-0-212 ~]$ /usr/local/bin/transfer --doi 102480 --sourcePath /share/dropbox/user101/ --wasabi --backup
 More details about copying files to Wasabi bucket, please refer to: /var/log/gigadb/transfer.log
 More details about copying files to s3 bucket, please refer to: /var/log/gigadb/transfer.log
-[centos@ip-10-99-0-212 ~]$ ls /var/log/gigadb/
+[ec2-user@ip-10-99-0-212 ~]$ ls /var/log/gigadb/
 transfer.log
-[centos@ip-10-99-0-212 ~]$ cat /var/log/gigadb/transfer.log 
+[ec2-user@ip-10-99-0-212 ~]$ cat /var/log/gigadb/transfer.log 
 2024/09/16 04:23:08 INFO  : Start copying files from staging to Wasabi
 2024/09/16 04:23:09 NOTICE: readme_102480.txt: Skipped update modification time as --dry-run is set (size 3.127Ki)
 2024/09/16 04:23:09 NOTICE: analysis_data/Tree_file.txt: Skipped update modification time as --dry-run is set (size 359)
@@ -234,7 +234,7 @@ Elapsed time:         0.3s
 2024/09/16 04:23:09 INFO  : Executed: rclone copy --s3-no-check-bucket --s3-profile aws-transfer /share/dropbox/user101/ gigadb-datasetfiles:gigadb-datasetfiles-backup/staging/pub/10.5524/102001_103000/102480 --dry-run --log-file /var/log/gigadb/transfer.log --log-level INFO --stats-log-level DEBUG >> /var/log/gigadb/transfer.log
 2024/09/16 04:23:09 INFO  : Successfully copied files to s3 bucket for DOI: 102480
 
-[centos@ip-10-99-0-212 ~]$ 
+[ec2-user@ip-10-99-0-212 ~]$ 
 ```
 
 ### As a user lily in staging
@@ -326,13 +326,13 @@ Elapsed time:         0.2s
 
 ```
 
-### As a centos user in live
+### As a ec2-user user in live
 ```
-% ssh -i path/to/live/pem centos@$live-bastion-ip
+% ssh -i path/to/live/pem ec2-user@$live-bastion-ip
 Activate the web console with: systemctl enable --now cockpit.socket
 
 Last login: Mon Aug  5 04:48:09 2024 from 54.180.33.208
-[centos@ip-10-99-0-253 ~]$ df -hT
+[ec2-user@ip-10-99-0-253 ~]$ df -hT
 Filesystem     Type      Size  Used Avail Use% Mounted on
 devtmpfs       devtmpfs  339M     0  339M   0% /dev
 tmpfs          tmpfs     372M     0  372M   0% /dev/shm
@@ -342,15 +342,15 @@ tmpfs          tmpfs     372M     0  372M   0% /sys/fs/cgroup
 tmpfs          tmpfs      75M     0   75M   0% /run/user/1000
 127.0.0.1:/    nfs4      8.0E     0  8.0E   0% /share/dropbox
 127.0.0.1:/    nfs4      8.0E     0  8.0E   0% /share/config
-[centos@ip-10-99-0-253 ~]$ cat files-env 
+[ec2-user@ip-10-99-0-253 ~]$ cat files-env 
 GIGADB_ENV=live
 WASABI_DATASETFILES_DIR=wasabi:gigadb-datasets/live/pub/10.5524
 S3_DATASETFILES_DIR=gigadb-datasetfiles:gigadb-datasetfiles-backup/live/pub/10.5524
-[centos@ip-10-99-0-253 ~]$ ls /share/dropbox/user101/
+[ec2-user@ip-10-99-0-253 ~]$ ls /share/dropbox/user101/
 analysis_data  readme_102480.txt
-[centos@ip-10-99-0-253 ~]$ ls /share/dropbox/user101/analysis_data/
+[ec2-user@ip-10-99-0-253 ~]$ ls /share/dropbox/user101/analysis_data/
 Tree_file.txt
-[centos@ip-10-99-0-253 ~]$ /usr/local/bin/transfer
+[ec2-user@ip-10-99-0-253 ~]$ /usr/local/bin/transfer
 Usage: /usr/local/bin/transfer --doi <DOI> --sourcePath <Source Path>
 
 Required:
@@ -369,7 +369,7 @@ Example usages:
 /usr/local/bin/transfer --doi 100148 --sourcePath /share/dropbox/user101 --backup --apply
 /usr/local/bin/transfer --doi 100148 --sourcePath /share/dropbox/user101 --wasabi --backup
 /usr/local/bin/transfer --doi 100148 --sourcePath /share/dropbox/user101 --wasabi --backup --apply
-[centos@ip-10-99-0-253 ~]$ /usr/local/bin/transfer --doi 102480 --sourcePath /share/dropbox/user101/
+[ec2-user@ip-10-99-0-253 ~]$ /usr/local/bin/transfer --doi 102480 --sourcePath /share/dropbox/user101/
 Error: please specify --wasabi or --backup or both
 Usage: /usr/local/bin/transfer --doi <DOI> --sourcePath <Source Path>
 
@@ -389,11 +389,11 @@ Example usages:
 /usr/local/bin/transfer --doi 100148 --sourcePath /share/dropbox/user101 --backup --apply
 /usr/local/bin/transfer --doi 100148 --sourcePath /share/dropbox/user101 --wasabi --backup
 /usr/local/bin/transfer --doi 100148 --sourcePath /share/dropbox/user101 --wasabi --backup --apply
-[centos@ip-10-99-0-253 ~]$ ls /var/log/gigadb/
-[centos@ip-10-99-0-253 ~]$ /usr/local/bin/transfer --doi 102480 --sourcePath /share/dropbox/user101/ --wasabi --backup
-[centos@ip-10-99-0-253 ~]$ ls /var/log/gigadb/
+[ec2-user@ip-10-99-0-253 ~]$ ls /var/log/gigadb/
+[ec2-user@ip-10-99-0-253 ~]$ /usr/local/bin/transfer --doi 102480 --sourcePath /share/dropbox/user101/ --wasabi --backup
+[ec2-user@ip-10-99-0-253 ~]$ ls /var/log/gigadb/
 transfer_20240805_054904.log
-[centos@ip-10-99-0-253 ~]$ cat /var/log/gigadb/transfer_20240805_054904.log 
+[ec2-user@ip-10-99-0-253 ~]$ cat /var/log/gigadb/transfer_20240805_054904.log 
 2024/08/05 05:49:04 INFO  : Start copying files from live to Wasabi
 2024/08/05 05:49:05 NOTICE: readme_102480.txt: Skipped copy as --dry-run is set (size 3.127Ki)
 2024/08/05 05:49:05 NOTICE: analysis_data/Tree_file.txt: Skipped update modification time as --dry-run is set (size 359)
@@ -415,7 +415,7 @@ Elapsed time:         0.2s
 
 2024/08/05 05:49:06 INFO  : Executed: rclone copy --s3-no-check-bucket --s3-profile aws-transfer/share/dropbox/user101/ gigadb-datasetfiles:gigadb-datasetfiles-backup/live/pub/10.5524/102001_103000/102480 --dry-run --log-file /var/log/gigadb/transfer_20240805_054904.log --log-level INFO --stats-log-level DEBUG >> /var/log/gigadb/transfer_20240805_054904.log
 2024/08/05 05:49:06 INFO  : Successfully copied files to s3 bucket for DOI: 102480
-[centos@ip-10-99-0-253 ~]$ 
+[ec2-user@ip-10-99-0-253 ~]$ 
 ```
 
 ### As a user lily in live

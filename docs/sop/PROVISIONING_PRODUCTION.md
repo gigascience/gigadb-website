@@ -485,6 +485,6 @@ $ env TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-pla
 $ env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories bastion_playbook.yml --extra-vars="gigadb_env=live" --tags files-url-updater,rclone-tool
 $ env TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories webapp_playbook.yml --extra-vars="gigadb_env=live" --tags setup-docker-ce
 # skip selected plays
-$ env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories bastion_playbook.yml -e "backupDate=latest" --extra-vars="gigadb_env=live" --skip-tags fix-centos-eol-issues,setup-fail2ban,setup-docker-ce,restore-db-on-rds,load-latest-db
-$ env TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories webapp_playbook.yml --extra-vars="gigadb_env=live" --skip-tags fix-centos-eol-issues,setup-fail2ban
+$ env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories bastion_playbook.yml -e "backupDate=latest" --extra-vars="gigadb_env=live" --skip-tags fix-ec2-user-eol-issues,setup-fail2ban,setup-docker-ce,restore-db-on-rds,load-latest-db
+$ env TF_KEY_NAME=private_ip OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories webapp_playbook.yml --extra-vars="gigadb_env=live" --skip-tags fix-ec2-user-eol-issues,setup-fail2ban
 ```
