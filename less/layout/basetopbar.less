@@ -8,6 +8,8 @@
   margin: 0px;
   padding: 0px;
   height: 40px;
+  display: flex;
+  align-items: center;
 }
 .base-top-bar .list-inline a {
   color: @color-true-white;
@@ -43,6 +45,7 @@
   font-size: 12px;
   line-height: 15px;
   text-decoration: none;
+  text-wrap: nowrap;
 }
 .base-top-account-bar li a i {
   margin-right: 5px;
@@ -59,5 +62,18 @@
   .base-top-bar .container {
     // adding this to avoid the hypothes sidebar to overlap with the top bar
     padding-right: 50px;
+  }
+}
+
+@media (max-width: 576px) {
+  .base-top-bar .list-inline {
+    height: auto;
+    min-height: 40px;
+    flex-wrap: wrap;
+    gap: 0 15px;
+  }
+  .base-top-account-bar li a {
+    padding: 0;
+    border: 0;
   }
 }
