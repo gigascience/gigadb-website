@@ -4,6 +4,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Fix #2178: save xml payload even if minting DOI fails
+
 ## v4.4.5 - 2025-02-24 - cfe6bc63c - live since 2025-02-26
 
 - Fix #1119: Fix filename column width in dataset page
