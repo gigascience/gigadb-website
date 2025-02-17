@@ -28,6 +28,27 @@
       <div class="mobile-navigation__group">
         <a href="/site/term" class="mobile-navigation__link">Terms of use</a>
       </div>
+
+      <!-- Social Media Links -->
+      <div class="mobile-navigation__group mobile-navigation__social">
+        <div class="social-icons">
+          <a href="http://facebook.com/GigaScience" class="social-icon" title="GigaScience on Facebook" aria-label="GigaScience on Facebook">
+            <i class="fa fa-facebook"></i>
+          </a>
+          <a href="http://x.com/GigaScience" class="social-icon" title="GigaScience on X" aria-label="GigaScience on X">
+            <img src="/images/icons/x-logo.svg" alt="" class="x-icon">
+          </a>
+          <a href="http://weibo.com/gigasciencejournal" class="social-icon" title="Gigascience on Weibo" aria-label="GigaScience on Weibo">
+            <i class="fa fa-weibo"></i>
+          </a>
+          <a href="https://mastodon.social/@GigaScience" class="social-icon" title="GigaScience on Mastodon" aria-label="GigaScience on Mastodon">
+            <img src="/images/icons/mastodon-logo.svg" alt="" class="mastodon-icon">
+          </a>
+          <a href="http://gigasciencejournal.com/blog/" class="social-icon" title="Gigascience Blog" aria-label="GigaScience Blog">
+            <i class="fa fa-rss"></i>
+          </a>
+        </div>
+      </div>
     </nav>
   </div>
 </div>
