@@ -1,7 +1,7 @@
 <div class="base-top-bar">
   <div class="container">
     <div class="row">
-      <nav aria-label="account" class="col-xs-12 col-md-5">
+      <nav aria-label="account" class="col-xs-12 col-md-5 account-navigation">
         <ul class="list-inline text-left base-top-account-bar">
           <? if (Yii::app()->user->isGuest) { ?>
             <li><a href="/site/login"><i class="fa fa-sign-in"></i> Login / Signup</a></li>

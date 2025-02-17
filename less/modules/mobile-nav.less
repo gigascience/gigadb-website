@@ -47,11 +47,6 @@
     margin-bottom: 30px;
   }
 
-  &__logo-link {
-    display: inline-block;
-    width: 100%;
-  }
-
   &__logo-image {
     width: 350px;
     max-width: 100%;
@@ -77,15 +72,24 @@
   &__link {
     display: block;
     padding: 12px 0;
-    color: @color-warm-black;
+    color: @color-true-black;
     font-size: 18px;
     font-weight: 300;
     text-decoration: none;
+
+    .fa {
+      color: @color-darker-gray;
+      margin-right: 10px;
+    }
 
     &:hover,
     &:focus {
       color: @gigadb-green-on-white;
       text-decoration: none;
+
+      .fa {
+        color: @gigadb-green-on-white;
+      }
     }
   }
 

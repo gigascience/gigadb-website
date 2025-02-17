@@ -4,11 +4,30 @@
   </button>
   <div class="mobile-navigation__content">
     <div class="mobile-navigation__logo">
-      <a href="/" class="mobile-navigation__logo-link">
-        <img src="/images/new_interface_image/logo.png" alt="GigaDB Logo" class="mobile-navigation__logo-image">
-      </a>
+      <img src="/images/new_interface_image/logo.png" alt="GigaDB Logo" class="mobile-navigation__logo-image">
     </div>
     <nav class="mobile-navigation__nav" aria-label="Mobile Navigation">
+      <!-- Account Navigation -->
+      <div class="mobile-navigation__group">
+        <? if (Yii::app()->user->isGuest) { ?>
+          <a href="/site/login" class="mobile-navigation__link"><i class="fa fa-sign-in"></i> Login / Signup</a>
+        <? } else {
+          $name = Yii::app()->user->getFirst_Name();
+          if (substr($name, -1) === 's') {
+            $name = $name . '\'';
+          } else {
+            $name = $name . "'s";
+          }
+        ?>
+          <a href="/user/view_profile" class="mobile-navigation__link"><i class="fa fa-sign-in"></i><?= Yii::t('app', $name . " GigaDB Page") ?></a>
+          <? if (Yii::app()->user->checkAccess('admin')) { ?>
+            <a href="/site/admin" class="mobile-navigation__link"><?= Yii::t('app', 'Admin') ?></a>
+          <? } ?>
+          <a href="/site/logout" class="mobile-navigation__link"><i class="fa fa-sign-in"></i><?= Yii::t('app', 'LogOut') ?></a>
+          <a href="/site/mapbrowse" class="mobile-navigation__link"><i class="fa fa-sign-in"></i><?= Yii::t('app', "Browse Samples") ?></a>
+        <? } ?>
+      </div>
+
       <div class="mobile-navigation__group">
         <a href="/" class="mobile-navigation__link">Home</a>
       </div>
