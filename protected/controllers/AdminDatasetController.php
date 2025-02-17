@@ -483,7 +483,10 @@ class AdminDatasetController extends Controller
             }
         }
 
+        $curationLog = CurationLog::model()->searchByDatasetId($dataset->id);
         CurationLog::createGeneralCurationLogEntry($dataset->id, $action, $log);
+
+        $result['html'] = $this->renderPartial('curationLog', array('dataset_id' => $dataset->id, 'model' => $curationLog), true);
         echo json_encode($result);
         Yii::app()->end();
     }
