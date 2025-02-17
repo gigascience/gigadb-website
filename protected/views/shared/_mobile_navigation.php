@@ -3,6 +3,11 @@
     <i class="fa fa-times"></i>
   </button>
   <div class="mobile-navigation__content">
+    <div class="mobile-navigation__logo">
+      <a href="/" class="mobile-navigation__logo-link">
+        <img src="/images/new_interface_image/logo.png" alt="GigaDB Logo" class="mobile-navigation__logo-image">
+      </a>
+    </div>
     <nav class="mobile-navigation__nav" aria-label="Mobile Navigation">
       <div class="mobile-navigation__group">
         <a href="/" class="mobile-navigation__link">Home</a>
