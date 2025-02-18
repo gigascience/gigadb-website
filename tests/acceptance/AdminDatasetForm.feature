@@ -521,3 +521,18 @@ Feature: form to update dataset details
     And I wait "5" seconds
     When I am on "/adminDataset/update/id/5"
     Then I should see "Dataset_Genomic" checkbox is checked
+
+  @ok
+  Scenario: Check checkbox for type is working
+    Given I am on "/adminDataset/update/id/8"
+    And I should see "Dataset_Genomic" checkbox is checked
+    When I uncheck "Dataset_Genomic" checkbox
+    Then I should see "Dataset_Genomic" checkbox is unchecked
+    And I should see "Dataset_Workflow" checkbox is unchecked
+    When I check "Dataset_Workflow" checkbox
+    Then I should see "Dataset_Workflow" checkbox is checked
+    When I press the button "Save"
+    And I wait "5" seconds
+    And I am on "/adminDataset/update/id/8"
+    Then I should see "Dataset_Workflow" checkbox is checked
+    Then I should see "Dataset_Genomic" checkbox is unchecked
