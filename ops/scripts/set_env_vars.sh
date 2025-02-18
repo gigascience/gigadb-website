@@ -7,7 +7,7 @@
 #
 # Prerequisites:
 #   - .secrets file with GITLAB_PRIVATE_TOKEN and GITLAB_PROJECT_ID defined
-#   - .gitlab-env-vars file containing variable definitions
+#   - .gitlab-env-vars file containing variable definitions, of which you can find an example in .gitlab-env-vars.example
 #
 # .gitlab-env-vars file format:
 #   VARIABLE_NAME=value|environment|visibility

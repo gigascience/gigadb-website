@@ -173,6 +173,8 @@ section in the CI/CD Settings page.
 Make sure the "Protect variable" and "Expand variable reference" checkboxes are unchecked.
 the Visibility radio input should be set to "Visible" except for the passwords and tokens that should be set to "Masked".
 
+> The script ops/scripts/set_env_vars.sh can be used to setup gitlab environment variables programmatically.
+
 | Variable Name          | Value     | Environment |
 |---|---|---|
 | DOCKER_HUB_USERNAME    | Your login on Docker hub | All |
