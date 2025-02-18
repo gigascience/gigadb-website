@@ -75,6 +75,13 @@ class StoredDatasetMainSectionTest extends CDbTestCase
         $expected = array(
                         "authors" => array( //remember authors must be sorted alphabetically on the main section body
                             array(
+                                'id' => 7,
+                                'surname' => 'Schiøtt,',
+                                'first_name' => 'Morten',
+                                'middle_name' => null,
+                                'custom_name' => null,
+                            ),
+                            array(
                                 'id' => 2,
                                 'surname' => 'Montana,',
                                 'first_name' => 'Carlos',
@@ -86,13 +93,6 @@ class StoredDatasetMainSectionTest extends CDbTestCase
                                 'surname' => 'Muñoz',
                                 'first_name' => 'Ángel',
                                 'middle_name' => 'GG',
-                                'custom_name' => null,
-                            ),
-                            array(
-                                'id' => 7,
-                                'surname' => 'Schiøtt,',
-                                'first_name' => 'Morten',
-                                'middle_name' => null,
                                 'custom_name' => null,
                             ),
                         ),

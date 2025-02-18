@@ -1,0 +1,35 @@
+- name: delete cache
+  become: yes
+  shell: dnf clean all && rm -r /var/cache/dnf
+
+- name: enable code ready linux builder repository
+  become: yes
+  command: dnf config-manager --set-enabled crb
+
+- name: install epel-release repository
+  become: yes
+  dnf:
+    name: epel-release
+    state: present
+
+- name: install epel-next-release repository
+  become: yes
+  dnf:
+    name: epel-next-release
+    state: present
+
+- name: import postgresql repository gpg key
+  ansible.builtin.rpm_key:
+    key: https://download.postgresql.org/pub/repos/yum/keys/PGDG-RPM-GPG-KEY-RHEL
+    state: present
+
+- name: install postgresql repository
+  become: yes
+  dnf:
+    name: https://download.postgresql.org/pub/repos/yum/reporpms/EL-9-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+    state: present
+
+- name: enable Docker-CE stable repo
+  become: yes
+  command: dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+

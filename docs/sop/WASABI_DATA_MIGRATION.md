@@ -240,7 +240,7 @@ in the `logs` directory.
 If the `--use-live-data` flag is used and the script determines that it is not
 running on the CNGB server then the script will exit with an error message:
 ```
-[centos@ip-xxx-xx-x-x]$ sudo docker-compose run --rm rclone /app/rclone_copy.sh --use-live-data --starting-doi 100002 --ending-doi 100020
+[ec2-user@ip-xxx-xx-x-x]$ sudo docker-compose run --rm rclone /app/rclone_copy.sh --use-live-data --starting-doi 100002 --ending-doi 100020
 Cannot copy live data because we are not on backup server - exiting...
 ```
 

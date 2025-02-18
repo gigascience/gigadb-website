@@ -58,8 +58,8 @@ fi
 
 if [[ $(uname -n) =~ compute ]]; then  # Running on staging or live environment
   
-  # Source centos user's login shell settings
-  . /home/centos/.bash_profile
+  # Source ec2-user user's login shell settings
+  . /home/ec2-user/.bash_profile
   
   # Check working directory is a user dropbox
   if [[ ! "${WORKING_DIR}" == "/share/dropbox/${dropbox}" ]]; then
