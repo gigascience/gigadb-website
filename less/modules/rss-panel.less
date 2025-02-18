@@ -1,0 +1,15 @@
+.rss-panel {
+  overflow:scroll;
+  &.is-expanded {
+    height: 500px;
+  }
+  &.is-collapsed {
+    height: 300px;
+  }
+}
+
+@media (max-width: 768px) {
+  .rss-panel {
+    height: 500px!important;
+  }
+}
