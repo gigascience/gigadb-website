@@ -5,10 +5,6 @@
                     <div class="row">
                         <div class="col-xs-10 col-xs-offset-1 text-center">
                             <h1 class="home-search-bar-title">GIGADB DATASETS</h1>
-                             <p class="home-search-bar-subtitle"></p>
-                             <br>
-                             <br>
-                             <br>
                              <? $this->renderPartial('_search', array('model' => $model))?>
 
                         </div>
