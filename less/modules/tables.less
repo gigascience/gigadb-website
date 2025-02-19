@@ -248,3 +248,31 @@ table.dataset-view-table > tbody > tr {
     margin-top: 5px;
   }
 }
+
+@media (max-width: @screen-xs-max) {
+  .table-footer {
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+
+    .pagination-wrapper {
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+
+      .yiiPager {
+        margin-bottom: 10px;
+      }
+
+      .page-selector {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    .summary {
+      text-align: center;
+    }
+  }
+}
