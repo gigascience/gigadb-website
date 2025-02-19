@@ -166,17 +166,19 @@
                         </li>
                     </ul>
                 </div>
-                <div class="col-xs-12 col-md-4 rss-panel is-collapsed">
+                <div class="col-xs-12 col-md-4 rss-panel">
                     <div class="underline-title">
                         <div>
                             <h2 class="heading">RSS</h2>
                         </div>
                     </div>
+                    <ul class="rss-panel-list is-collapsed">
                     <?php $flag = 1;
                     foreach ($rss_arr as $item) { ?>
                         <? if ($flag > 10) {
                             break;
                         }
+                        echo CHtml::openTag('li', array('class' => 'rss-panel-item'));
                         if (get_class($item) == 'Dataset') { ?>
                             <p style="margin-bottom: 0px;">New dataset added on
                                 <?= $item->publication_date ?>:
@@ -189,9 +191,10 @@
                                 <?= $item->message ?>
                             </p>
                         <?php } ?>
-                        <hr style="border-style: dashed; border-color: #e5e5e5;">
+                        <? echo CHtml::closeTag('li'); ?>
                     <?php $flag++;
                     } ?>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -281,13 +284,13 @@
                 if (showAllDatasetTypes) {
                     $(this).text('- less');
                     $(this).attr('aria-label', 'Show less dataset types')
-                    $(".rss-panel").addClass("is-expanded");
-                    $(".rss-panel").removeClass("is-collapsed");
+                    $(".rss-panel-list").addClass("is-expanded");
+                    $(".rss-panel-list").removeClass("is-collapsed");
                 } else {
                     $(this).text('+ more');
                     $(this).attr('aria-label', 'Show more dataset types')
-                    $(".rss-panel").removeClass("is-expanded");
-                    $(".rss-panel").addClass("is-collapsed");
+                    $(".rss-panel-list").removeClass("is-expanded");
+                    $(".rss-panel-list").addClass("is-collapsed");
                 }
             });
         });
