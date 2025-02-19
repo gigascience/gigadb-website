@@ -31,7 +31,7 @@
             ?>
 
             <span class="input-group-btn">
-                <button class="btn background-btn" type="submit"><i class="fa fa-search"></i> Search</button>
+                <button class="btn background-btn search-btn" type="submit"><i class="fa fa-search"></i> Search</button>
             </span>
 
         </div>

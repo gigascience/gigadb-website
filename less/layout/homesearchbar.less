@@ -42,6 +42,7 @@
     border-top-right-radius: 0!important;
     border-bottom-right-radius: 0!important;
     transition: box-shadow 0s ease;
+    font-size: 14px;
     &:focus {
       outline: 3px solid black!important;
       outline: 3px solid @color-gigadb-green!important;
@@ -49,7 +50,6 @@
     }
   }
 }
-
 
 .visually-hidden {
   border: 0;
@@ -60,4 +60,31 @@
   padding: 0;
   position: absolute;
   width: 1px;
+}
+
+@media (max-width: 576px) {
+  .home-search-bar-title {
+    font-size: 28px;
+  }
+  .home-search-bar-subtitle {
+    font-size: 22px;
+  }
+  .home-search-bar-group {
+    .search-bar-group {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 10px;
+      .form-control {
+        border-radius: 4px!important;
+      }
+      .input-group-btn {
+        width: 100%;
+        .search-btn {
+          width: 100%;
+          border-radius: 4px;
+        }
+      }
+    }
+  }
 }
