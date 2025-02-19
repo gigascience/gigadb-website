@@ -21,8 +21,8 @@ $sampleDataProvider = $samples->getDataProvider();
 <div class="content">
     <div class="container dataset-view-container">
         <div class="subsection">
-            <div class="media">
-                <div class="media-left">
+            <div class="media dataset-media">
+                <div class="media-left dataset-media-left">
                     <?php if ($model->image) {
                         $url = $model->image->isUrlValid() ? $model->image->url : "https://assets.gigadb-cdn.net/live/images/datasets/no_image.png";
 
@@ -40,7 +40,7 @@ $sampleDataProvider = $samples->getDataProvider();
                     <?php } ?>
 
                 </div>
-                <div class="media-body">
+                <div class="media-body dataset-media-body">
                     <h1 class="left-border-title left-border-title-lg"><?= $mainSection->getHeadline()['title']; ?></h1>
                     <p class="dataset-release-date-text">Dataset type: <?= $mainSection->getHeadline()['types']; ?> <br> Data released on <?= $mainSection->getHeadline()['release_date'] ?></p>
                     <div class="color-background color-background-block dataset-color-background-block">

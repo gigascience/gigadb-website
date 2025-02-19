@@ -2,6 +2,9 @@
 .dataset-view-container {
   margin-top: 40px;
 }
+.dataset-media {
+  margin-bottom: 20px;
+}
 .media-left {
   padding-right: 20px;
 }
@@ -40,38 +43,41 @@ p.dataset-release-date-text {
   border-radius: 4px 0px 0px 4px;
 }
 
-#dataset_slider{
-  h2{
+#dataset_slider {
+  h2 {
     display: inline-block;
     margin-right: 20px;
   }
-  .carousel{ margin-bottom: 0;}
-  .carousel-inner{
-    width:auto;
+  .carousel {
+    margin-bottom: 0;
   }
-  .data-block{
+  .carousel-inner {
+    width: auto;
+  }
+  .data-block {
     width: 172px;
     float: left;
     margin: 10px 0 10px 20px;
-    img{
-      width:auto;
+    img {
+      width: auto;
       margin: 0 auto 10px auto;
       display: block;
-      max-width:172px;
-      min-height:172px;
-      height:172;
+      max-width: 172px;
+      min-height: 172px;
+      height: 172;
     }
   }
-  .carousel-control.right{
-    right:0px;
-    top:-18px;
+  .carousel-control.right {
+    right: 0px;
+    top: -18px;
   }
-  .carousel-control.left{
-    right:25px;
-    top:-18px;
+  .carousel-control.left {
+    right: 25px;
+    top: -18px;
     left: auto;
   }
-  .carousel-control.right, .carousel-control.left {
+  .carousel-control.right,
+  .carousel-control.left {
     font-size: 28px !important;
     line-height: 18px;
   }
@@ -82,11 +88,13 @@ p.dataset-release-date-text {
   line-height: 18px;
 }
 
-.left-border-title-lg i{ font-size:15px;}
+.left-border-title-lg i {
+  font-size: 15px;
+}
 
 #dataset-block-wrapper {
   width: 100%;
-  margin : 0;
+  margin: 0;
 }
 /* Provides horizontal scrolling in dataset table */
 .dataset-datatables-wrapper {
@@ -96,11 +104,11 @@ p.dataset-release-date-text {
 }
 #badge-div {
   margin-right: 10px;
-  float : left ;
+  float: left;
 }
 #dropdown-div {
-  margin : 0;
-  float : left ;
+  margin: 0;
+  float: left;
 }
 .dropdown-box {
   position: absolute;
@@ -130,7 +138,9 @@ p.dataset-release-date-text {
   font-size: 13px;
   cursor: pointer;
 }
-#dropdown-div li a:hover {background-color: #F3FAF6;}
+#dropdown-div li a:hover {
+  background-color: #f3faf6;
+}
 
 .citation-list {
   display: flex;
@@ -138,4 +148,20 @@ p.dataset-release-date-text {
   gap: 12px;
   color: @dark-gray-on-white;
   line-height: 1.3;
+}
+
+@media (max-width: 768px) {
+  .dataset-media {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    .dataset-media-left {
+      padding-right: 0;
+    }
+    .dataset-media-body {
+      width: initial;
+      display: block;
+    }
+  }
 }
