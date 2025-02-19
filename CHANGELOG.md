@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #2189: Make homepage responsive
 - Feat #2189: Make layout (header and footer) responsive
 - Fix #2099: Add missing permission for CLOCKSS
 
