@@ -2,13 +2,13 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: 2rem;
-  @media (min-width: 576px) {
+  @media (min-width: @screen-xs-min) {
     grid-template-columns: repeat(2, 1fr);
   }
-  @media (min-width: 992px) {
+  @media (min-width: @screen-md-min) {
     grid-template-columns: repeat(3, 1fr);
   }
-  @media (min-width: 1200px) {
+  @media (min-width: @screen-lg-min) {
     grid-template-columns: repeat(4, 1fr);
   }
   .team-card {
@@ -19,10 +19,10 @@
     img {
       width: 100%;
       height: 400px;
-      @media (min-width: 576px) {
+      @media (min-width: @screen-xs-min) {
         height: 300px;
       }
-      @media (min-width: 992px) {
+      @media (min-width: @screen-md-min) {
         height: 270px;
       }
       object-fit: cover;
