@@ -391,14 +391,72 @@ again in subsequent runs. ``ops/scripts/ansible_init.sh`` will also source that 
 with a Docker daemon. In addition, a PostgreSQL database is created on the RDS
 instance using `sql/production_like.pgdmp`.
 
-You can install Ansible on macOS using [HomeBrew](https://brew.sh) with the commands
+Details of the Ansible changelog can be found at [here](https://docs.ansible.com/ansible/latest/reference_appendices/release_and_maintenance.html#ansible-community-changelogs).
+
+You can install the latest Ansible on macOS with the commands:
 ```
-$ brew install ansible@9
-$ echo 'export PATH="/opt/homebrew/opt/ansible@9/bin:$PATH"' >> ~/.profile
+$ brew update
+$ brew install ansible
+$ ansible --version
+ansible [core 2.18.1]
+  config file = None
+  configured module search path = ['/Users/kencho/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
+  ansible python module location = /opt/homebrew/Cellar/ansible/11.1.0/libexec/lib/python3.13/site-packages/ansible
+  ansible collection location = /Users/kencho/.ansible/collections:/usr/share/ansible/collections
+  executable location = /opt/homebrew/bin/ansible
+  python version = 3.13.0 (main, Oct  7 2024, 05:02:14) [Clang 16.0.0 (clang-1600.0.26.4)] (/opt/homebrew/Cellar/ansible/11.1.0/libexec/bin/python)
+  jinja version = 3.1.4
+  libyaml = True
 ```
 
->**Note:** if you have installed the latest version (Ansible 10+, ansible-core 2.17+), it's not going to work for now.
-You will need to uninstall it with `brew uninstall ansible` and re-install the specific version as described above.
+>**Note:** if you have installed the latest version, you can uninstall it with `brew uninstall ansible` and re-install the specific version as described below.
+>**Note:** but not any ansible version will be working, as you can see from the following issues reported by the internal developers who use mac with apple chip:
+
+| version                         | reported issues/warnings/descriptions                                                                                                                       | install this version    |
+|---------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------|
+| Ansible 11, ansible-core 2.18.1 | [WARNING]: Collection prometheus.prometheus does not support Ansible version 2.18.1, reported to https://github.com/prometheus-community/ansible/issues/490 | Yes                     |
+| Ansible 10, ansible-core 2.17+  | Not working because of python dependency                                                                                                                    | No                      | 
+| Ansible 9, ansibpe-core 2.16+   | urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1000)                        | No                      |
+| Ansible 8, ansible-core 2.15+   | [WARNING]: ansible@8 has been deprecated! It will be disabled on 2024-12-14.                                                                                | No, because EOL already |
+
+
+You can install Ansible (not the latest version) using [HomeBrew](https://brew.sh) with the commands
+```
+$ brew update
+$ brew search ansible
+==> Formulae
+ansible ✔                                    ansible-cmdb                                 ansible-language-server                      ansible@10                                   ansible@8
+ansible-builder                              ansible-creator                              ansible-lint                                 ansible@7                                    ansible@9
+
+==> Casks
+ansible-dk
+
+$ brew install ansible@8
+$ echo 'export PATH="/opt/homebrew/opt/ansible@8/bin:$PATH"' >> ~/.profile
+$ ansible-config --version
+ansible-config [core 2.15.12]
+  config file = None
+  configured module search path = ['/Users/kencho/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
+  ansible python module location = /Users/kencho/Library/Python/3.9/lib/python/site-packages/ansible
+  ansible collection location = /Users/kencho/.ansible/collections:/usr/share/ansible/collections
+  executable location = /Users/kencho/Library/Python/3.9/bin/ansible-config
+  python version = 3.9.6 (default, Oct  4 2024, 08:01:31) [Clang 16.0.0 (clang-1600.0.26.4)] (/Library/Developer/CommandLineTools/usr/bin/python3)
+  jinja version = 3.1.4
+  libyaml = True
+```
+
+Here are the steps to uninstall Ansible (not the latest version):
+```
+$ brew list --versions | grep ansible
+ansible@8 8.7.0_1
+$ brew uninstall ansible@8
+Uninstalling /opt/homebrew/Cellar/ansible@8/8.7.0_1... (31,284 files, 470.3MB)
+==> Autoremoving 2 unneeded formulae:
+aspell
+libyaml
+Uninstalling /opt/homebrew/Cellar/libyaml/0.2.5... (11 files, 354.5KB)
+Uninstalling /opt/homebrew/Cellar/aspell/0.60.8.1_1... (767 files, 322.9MB)
+```
 
 ##### Ansible setup and configuration
 
@@ -482,16 +540,16 @@ Sometimes, it would be useful to log into dockerhost server manually for debuggi
 Here are the steps:
 ```
 # To check whether bastion server is accessible by logging in
-user@dev-computer: % ssh -i ~/.ssh/<CustomPrivateKey>.pem centos@<bastion_public_ip>
-[centos@<bastion_private_ip> ~]$ ls
+user@dev-computer: % ssh -i ~/.ssh/<CustomPrivateKey>.pem ec2-user@<bastion_public_ip>
+[ec2-user@<bastion_private_ip> ~]$ ls
 database_bootstrap.backup
 # Log in to dockerhost server through bastion by adding ProxyCommand to ssh command using public DNS
-user@dev-computer: % ssh -i ~/.ssh/<CustomPrivateKey>.pem -o ProxyCommand="ssh -W %h:%p -i ~/.ssh/<CustomPrivateKey>.pem  centos@<bastion_public_ip>" centos@ec2-<docker_public_ip>.<region>.compute.amazonaws.com
-[centos@<dockerhost_private_ip> ~]$ ls
+user@dev-computer: % ssh -i ~/.ssh/<CustomPrivateKey>.pem -o ProxyCommand="ssh -W %h:%p -i ~/.ssh/<CustomPrivateKey>.pem  ec2-user@<bastion_public_ip>" ec2-user@ec2-<docker_public_ip>.<region>.compute.amazonaws.com
+[ec2-user@<dockerhost_private_ip> ~]$ ls
 app_data
 # Log in to dockerhost server through bastion by adding ProxyCommand to ssh command using dockerhot private ip
-user@dev-computer: % ssh -i ~/.ssh/<CustomPrivateKey>.pem -o ProxyCommand="ssh -W %h:%p -i ~/.ssh/<CustomPrivateKey>.pem  centos@<bastion_public_ip>" centos@<docker_private_ip>
-[centos@<dockerhost_private_ip> ~]$ ls
+user@dev-computer: % ssh -i ~/.ssh/<CustomPrivateKey>.pem -o ProxyCommand="ssh -W %h:%p -i ~/.ssh/<CustomPrivateKey>.pem  ec2-user@<bastion_public_ip>" ec2-user@<docker_private_ip>
+[ec2-user@<dockerhost_private_ip> ~]$ ls
 app_data
 ```
 
@@ -563,7 +621,7 @@ with the correct server and not a malicious impersonation. We also need to
 authenticate the client with TLS so only clients using the client certificates 
 can use the Docker engine. This is the 2-way certificate-based authentication.
 
->When Ansible generates the client/server certificate, it writes them on the EC2 instance at location ``/home/centos/.docker/``
+>When Ansible generates the client/server certificate, it writes them on the EC2 instance at location ``/home/ec2-user/.docker/``
 
 >If an operator needs to perform a docker action on the EC2 instance from this development machine,
 the three files constituting the client certificates `ca.pem`, `cert.pem` and `key.pem` in `ops/infrastructure/envs/<DEPLOY_ENV>/output/` or from gitlab variables need to be copied to ``~/.docker/`` in development machine.

@@ -76,8 +76,8 @@ class StoredDatasetFilesTest extends CDbTestCase
                 'format' => 'TEXT',
                 'type' => 'Text',
                 'file_attributes' => array(
+                    array('number of lines' => '155'),
                     array("keyword" => "some value"),
-                    array("number of lines" => "155"),
                 ),
                 'download_count' => 0,
             ),

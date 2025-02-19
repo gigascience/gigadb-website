@@ -94,7 +94,7 @@ class File extends CActiveRecord
 			'fileSamples' => array(self::HAS_MANY, 'FileSample', 'file_id'),
 			'fileRelationships' => array(self::HAS_MANY, 'FileRelationship', 'file_id'),
 			'fileExperiments' => array(self::HAS_MANY, 'FileExperiment', 'file_id'),
-			'fileAttributes' => array(self::HAS_MANY, 'FileAttributes', 'file_id', 'order'=>'id ASC'),
+			'fileAttributes' => array(self::HAS_MANY, 'FileAttributes', 'file_id', 'order'=>'id DESC'),
 		);
 	}
 
