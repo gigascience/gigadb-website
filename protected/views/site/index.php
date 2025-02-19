@@ -216,9 +216,9 @@
     <section>
         <h2 class="sr-only">Data Overview Metrics</h2>
         <div class="container">
-            <div class="color-background ">
+            <div class="color-background">
                 <div class="row home-color-background-grid">
-                    <div class="col-xs-3">
+                    <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 home-color-background-block-wrapper">
                         <div class="home-color-background-block">
                             <div class="text-icon text-icon-o text-icon-lg">
                                 <img src="/images/new_interface_image/datasets.svg" alt="">
@@ -227,7 +227,7 @@
                             <div aria-hidden="true" class="content">Datasets</div>
                         </div>
                     </div>
-                    <div class="col-xs-3">
+                    <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 home-color-background-block-wrapper">
                         <div class="home-color-background-block">
                             <div class="text-icon text-icon-o text-icon-lg">
                                 <img src="/images/new_interface_image/samples.svg" alt="">
@@ -241,7 +241,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xs-3">
+                    <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 home-color-background-block-wrapper">
                         <div class="home-color-background-block">
                             <div class="text-icon text-icon-o text-icon-lg">
                                 <img src="/images/new_interface_image/files.svg" alt="">
@@ -250,7 +250,7 @@
                             <div aria-hidden="true" class="content">Files</div>
                         </div>
                     </div>
-                    <div class="col-xs-3">
+                    <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 home-color-background-block-wrapper">
                         <div class="home-color-background-block">
                             <div class="text-icon text-icon-o text-icon-lg">
                                 <img src="/images/new_interface_image/volume.svg" alt="">
