@@ -77,7 +77,10 @@
                             <a class="dataset-types-link" href="/search/new?keyword=Genome-Mapping&type%5B%5D=dataset&dataset_type%5B%5D=Genome-Mapping">
                                 <div class="text-icon text-icon-yellow">
                                     <img src="/images/new_interface_image/Genome-Mapping.svg" alt="">
-                                </div>Genome mapping<span class="sr-only"> datasets</span> (<span><? echo $number_genome_mapping ?></span>)
+                                </div>
+                                <div class="dataset-types-label">
+                                  <span>Genome mapping</span><span class="sr-only"> datasets</span>(<span><? echo $number_genome_mapping ?></span>)
+                                </div>
                             </a>
                         </li>
                         <li>
