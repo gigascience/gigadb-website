@@ -11,3 +11,16 @@
     color: @color-warm-black;
   }
 }
+
+@media (max-width: @screen-xs-max) {
+  .modal-dialog {
+    position: fixed;
+    inset: 10px;
+    transform: initial;
+    transition: initial;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
