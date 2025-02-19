@@ -14,7 +14,7 @@
             <div class="container">
                 <div class="row">
 
-                    <div class="col-xs-4 search-filter-sidebar">
+                    <div class="col-xs-12 col-sm-4 search-filter-sidebar">
                         <h2 class="search-result-title">Search result for <span class="search-result-keyword"><i><?php echo $model->keyword ?></i></span></h2>
                           <p><?php $this->renderPartial('_range', array(
                                     'total_dataset'=>$datasets['total'],
@@ -30,7 +30,7 @@
                             </div>
                              </div>
 
-                    <div class="col-xs-8">
+                    <div class="col-xs-12 col-sm-8">
                         <div class="span9 result" id="result">
         <!--<span class='pull-right'><?= Yii::t('app', 'Selected all files') ?> <input type="checkbox" class="select-all"/></span> -->
                             <?php $this->renderPartial("_new_result", array(
