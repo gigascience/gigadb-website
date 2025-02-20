@@ -137,6 +137,14 @@ table.submitted-table > tbody > tr > td:nth-child(9) > a:first-child {
     }
   }
 }
+.guide-table {
+  @media (max-width: @screen-md-max) {
+    width: 100%;
+    td {
+      line-height: 1.5;
+    }
+  }
+}
 table.dataset-view-table > tbody > tr {
   &.odd {
     background-color: @color-lighter-gray;
