@@ -400,6 +400,16 @@
   }
 }
 
+.nav-tabs {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  & > li {
+    text-wrap: nowrap;
+  }
+}
+
 @media (max-width: @screen-sm-max) {
   .main-nav-bar {
     display: none;
