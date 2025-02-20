@@ -397,6 +397,16 @@ class AdminDatasetController extends Controller
      */
     public function actionMint()
     {
+        $user = User::model()->findByPk(Yii::app()->user->id);
+
+        if (!$user) {
+            $result['error'] = 'An error occurred';
+            echo json_encode($result);
+            Yii::app()->end();
+        }
+
+        $userName = sprintf('%s %s', $user->first_name, $user->last_name);
+
         if (!$doi = Yii::$app->request->post('doi')) {
             $result['error'] = 'You need to provide a DOI';
             echo json_encode($result);
@@ -462,7 +472,7 @@ class AdminDatasetController extends Controller
             $log .= sprintf(' - %s md response: %s', $result['check_doi_status'] === 200 ? 'update' : 'create', 201 === $result[$keyStatus] ? "OK" : $result[$keyResponse]);
 
             $logMessageXml = 201 === $result[$keyStatus] ? 'Sent DataCite XML' : 'Failed to send DataCite XML';
-            CurationLog::createGeneralCurationLogEntry($dataset->id, $logMessageXml, $xml_data);
+            CurationLog::createGeneralCurationLogEntry($dataset->id, $logMessageXml, $xml_data, $userName);
 
             if (201 === $result[$keyStatus] && 404 === $result['check_doi_status']) {
                 $result['doi_data'] = 'doi=' . $mds_prefix . '/' . $doi . "\n" . 'url=http://gigadb.org/dataset/' . $doi;
@@ -484,7 +494,7 @@ class AdminDatasetController extends Controller
         }
 
         $curationLog = CurationLog::model()->searchByDatasetId($dataset->id);
-        CurationLog::createGeneralCurationLogEntry($dataset->id, $action, $log);
+        CurationLog::createGeneralCurationLogEntry($dataset->id, $action, $log, $userName);
 
         $result['html'] = $this->renderPartial('curationLog', array('dataset_id' => $dataset->id, 'model' => $curationLog), true);
         echo json_encode($result);
