@@ -5,8 +5,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## Unreleased
 
 - Fix #1119: Fix filename column width in dataset page
+- Feat #2138: Avoid deleting a type when deleting a dataset type
 
-## v4.4.4 - 2025-02-17 - c17c44843 -
+## v4.4.4 - 2025-02-17 - c17c44843 - 
 
 - Fix #2099: Add missing permission for CLOCKSS
 
