@@ -325,6 +325,14 @@ class AcceptanceTester extends \Codeception\Actor
     }
 
     /**
+     * @Then I should see :checkbox checkbox is unchecked
+     */
+    public function iShouldSeeCheckboxIsUnchecked($checkbox)
+    {
+        $this->dontSeeCheckboxIsChecked("//input[@id='$checkbox']");
+    }
+
+    /**
      * @Then I check :checkbox checkbox
      */
     public function iCheckCheckbox($checkbox)
