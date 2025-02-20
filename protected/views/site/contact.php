@@ -29,7 +29,7 @@ $this->pageTitle = 'GigaDB - Contact Us';
             </div>
             <section>
                 <div class="row">
-                    <div class="col-xs-9">
+                    <div class="col-xs-12 col-sm-12 col-md-9">
                         <div class="underline-title">
                             <div>
                                 <h2 class="h4">Contact form</h2>
@@ -40,8 +40,8 @@ $this->pageTitle = 'GigaDB - Contact Us';
                             <p aria-hidden="true">Fields with <span>*</span> are required.</p>
                         </div>
 
-                        <? $form = $this->beginWidget('CActiveForm', array('htmlOptions' => array('class' => 'form contact-form'))); ?>
-                        <div class="col-xs-7">
+                        <? $form = $this->beginWidget('CActiveForm', array('htmlOptions' => array('class' => 'form contact-form row'))); ?>
+                        <div class="col-xs-12 col-sm-10 col-md-7">
                             <div class="form-group">
                                 <?php
                                 CHtml::$afterRequiredLabel = '<span aria-hidden="true"> *</span>';
@@ -55,7 +55,7 @@ $this->pageTitle = 'GigaDB - Contact Us';
                             </div>
                         </div>
 
-                        <div class="col-xs-7">
+                        <div class="col-xs-12 col-sm-10 col-md-7">
                             <div class="form-group">
                                 <?= $form->labelEx($model, 'email', array('class' => 'control-label')); ?>
 
@@ -66,7 +66,7 @@ $this->pageTitle = 'GigaDB - Contact Us';
                             </div>
                         </div>
 
-                        <div class="col-xs-7">
+                        <div class="col-xs-12 col-sm-10 col-md-7">
                             <div class="form-group">
                                 <?= $form->labelEx($model, 'subject', array('class' => 'control-label')); ?>
 
@@ -77,7 +77,7 @@ $this->pageTitle = 'GigaDB - Contact Us';
                             </div>
                         </div>
 
-                        <div class="col-xs-12">
+                        <div class="col-xs-12 col-sm-10 col-md-7">
                             <div class="form-group">
                                 <?= $form->labelEx($model, 'body', array('class' => 'control-label')); ?>
 
@@ -88,7 +88,7 @@ $this->pageTitle = 'GigaDB - Contact Us';
                             </div>
                         </div>
 
-                        <div class="col-xs-7">
+                        <div class="col-xs-12 col-sm-10 col-md-7">
                             <div class="form-group">
                                 <?php echo $form->labelEx($model, 'verifyCode'); ?>
 
@@ -98,7 +98,7 @@ $this->pageTitle = 'GigaDB - Contact Us';
                                 <br>
                                 <br>
                                 <?php echo $form->textField($model, 'verifyCode', array('class' => 'form-control', 'required' => true, 'aria-required' => 'true', 'aria-describedby' => $model->hasErrors('verifyCode') ? 'verifyCodeHint verifyCodeError' : 'verifyCodeHint')); ?>
-                                <div class="hint" id="verifyCodeHint">Please enter the letters as they are shown in the image above.
+                                <div class="hint mt-5" id="verifyCodeHint">Please enter the letters as they are shown in the image above.
                                     <br />Letters are case-sensitive.
                                 </div>
                                 <div id="verifyCodeError">
@@ -107,12 +107,12 @@ $this->pageTitle = 'GigaDB - Contact Us';
                             </div>
                         </div>
 
-                        <div class="span8 offset2"><?= CHtml::submitButton('Submit', array('class' => 'btn background-btn')); ?></div>
+                        <div class="col-xs-12"><?= CHtml::submitButton('Submit', array('class' => 'btn background-btn')); ?></div>
 
                         <? $this->endWidget(); ?>
-                    </div><!-- form -->
+                    </div>
 
-                    <div class="col-xs-3">
+                    <div class="col-xs-12 col-sm-12 col-md-3 mt-sm-30">
                         <div class="underline-title">
                             <div>
                                 <h2 class="h4">Contacts</h2>

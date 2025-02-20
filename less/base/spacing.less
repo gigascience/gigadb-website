@@ -1,156 +1,235 @@
-// Spacing
+// Spacing Utilities
 // --------------------------------------------------
 
-// Naming:
-// .{spacing}-{value-in-pixels}
-// Negative values: .-{spacing}-{value-in-pixels}
+// Variables
+// -------------------------
+@spacer: 5px;
 
-// Margins
+// Spacing values
+@space-0: 0;
+@space-5: @spacer;
+@space-10: @spacer * 2;
+@space-20: @spacer * 4;
+@space-30: @spacer * 6;
+
+// Breakpoint values (Bootstrap 3 defaults)
+@screen-xs-max: 767px;  // Extra small devices
+@screen-sm-max: 991px;  // Small devices
+@screen-md-max: 1199px; // Medium devices
+@screen-lg-max: 1399px; // Large devices
+@screen-xl-max: 1600px; // Extra large devices
+
+// Mixins
 // -------------------------
 
-.m-0 {
-  margin: 0!important;
+// Base spacing utilities
+.margin-all(@size, @value) {
+  .m-@{size} { margin: @value !important; }
 }
 
-.m-5 {
-  margin: 5px;
+.margin-direction(@size, @value) {
+  .mt-@{size} { margin-top: @value !important; }
+  .mr-@{size} { margin-right: @value !important; }
+  .mb-@{size} { margin-bottom: @value !important; }
+  .ml-@{size} { margin-left: @value !important; }
 }
 
-.m-10 {
-  margin: 10px;
+.padding-all(@size, @value) {
+  .p-@{size} { padding: @value !important; }
 }
 
-.m-20 {
-  margin: 20px;
+.padding-direction(@size, @value) {
+  .pt-@{size} { padding-top: @value !important; }
+  .pr-@{size} { padding-right: @value !important; }
+  .pb-@{size} { padding-bottom: @value !important; }
+  .pl-@{size} { padding-left: @value !important; }
 }
 
-.mb-5 {
-  margin-bottom: 5px;
+// Responsive spacing utilities
+.margin-all-responsive(@size, @value, @bp) {
+  .m-@{bp}-@{size} { margin: @value !important; }
 }
 
-.mb-10 {
-  margin-bottom: 10px;
+.margin-direction-responsive(@size, @value, @bp) {
+  .mt-@{bp}-@{size} { margin-top: @value !important; }
+  .mr-@{bp}-@{size} { margin-right: @value !important; }
+  .mb-@{bp}-@{size} { margin-bottom: @value !important; }
+  .ml-@{bp}-@{size} { margin-left: @value !important; }
 }
 
-.mb-20 {
-  margin-bottom: 20px;
+.padding-all-responsive(@size, @value, @bp) {
+  .p-@{bp}-@{size} { padding: @value !important; }
 }
 
-.mb-30 {
-  margin-bottom: 30px;
+.padding-direction-responsive(@size, @value, @bp) {
+  .pt-@{bp}-@{size} { padding-top: @value !important; }
+  .pr-@{bp}-@{size} { padding-right: @value !important; }
+  .pb-@{bp}-@{size} { padding-bottom: @value !important; }
+  .pl-@{bp}-@{size} { padding-left: @value !important; }
 }
 
-.mt-5 {
-  margin-top: 5px;
-}
-
-.mt-10 {
-  margin-top: 10px;
-}
-
-.mt-20 {
-  margin-top: 20px;
-}
-
-.mt-30 {
-  margin-top: 30px;
-}
-
-.ml-5 {
-  margin-left: 5px;
-}
-
-.ml-10 {
-  margin-left: 10px;
-}
-
-.ml-20 {
-  margin-left: 20px;
-}
-
-.ml-30 {
-  margin-left: 30px;
-}
-
-.mr-5 {
-  margin-right: 5px;
-}
-
-.mr-10 {
-  margin-right: 10px;
-}
-
-.mr-20 {
-  margin-right: 20px;
-}
-
-.mr-30 {
-  margin-right: 30px;
-}
-
-// Padding
+// Base Classes
 // -------------------------
 
-.p-0 {
-  padding: 0!important;
+// Generate spacing utilities for each size
+.margin-all(0, @space-0);
+.margin-all(5, @space-5);
+.margin-all(10, @space-10);
+.margin-all(20, @space-20);
+.margin-all(30, @space-30);
+
+.margin-direction(0, @space-0);
+.margin-direction(5, @space-5);
+.margin-direction(10, @space-10);
+.margin-direction(20, @space-20);
+.margin-direction(30, @space-30);
+
+.padding-all(0, @space-0);
+.padding-all(5, @space-5);
+.padding-all(10, @space-10);
+.padding-all(20, @space-20);
+.padding-all(30, @space-30);
+
+.padding-direction(0, @space-0);
+.padding-direction(5, @space-5);
+.padding-direction(10, @space-10);
+.padding-direction(20, @space-20);
+.padding-direction(30, @space-30);
+
+// Responsive Classes
+// -------------------------
+
+// XS breakpoint
+@media (max-width: @screen-xs-max) {
+  .margin-all-responsive(0, @space-0, xs);
+  .margin-all-responsive(5, @space-5, xs);
+  .margin-all-responsive(10, @space-10, xs);
+  .margin-all-responsive(20, @space-20, xs);
+  .margin-all-responsive(30, @space-30, xs);
+
+  .margin-direction-responsive(0, @space-0, xs);
+  .margin-direction-responsive(5, @space-5, xs);
+  .margin-direction-responsive(10, @space-10, xs);
+  .margin-direction-responsive(20, @space-20, xs);
+  .margin-direction-responsive(30, @space-30, xs);
+
+  .padding-all-responsive(0, @space-0, xs);
+  .padding-all-responsive(5, @space-5, xs);
+  .padding-all-responsive(10, @space-10, xs);
+  .padding-all-responsive(20, @space-20, xs);
+  .padding-all-responsive(30, @space-30, xs);
+
+  .padding-direction-responsive(0, @space-0, xs);
+  .padding-direction-responsive(5, @space-5, xs);
+  .padding-direction-responsive(10, @space-10, xs);
+  .padding-direction-responsive(20, @space-20, xs);
+  .padding-direction-responsive(30, @space-30, xs);
 }
 
-.p-5 {
-  padding: 5px;
+// SM breakpoint
+@media (max-width: @screen-sm-max) {
+  .margin-all-responsive(0, @space-0, sm);
+  .margin-all-responsive(5, @space-5, sm);
+  .margin-all-responsive(10, @space-10, sm);
+  .margin-all-responsive(20, @space-20, sm);
+  .margin-all-responsive(30, @space-30, sm);
+
+  .margin-direction-responsive(0, @space-0, sm);
+  .margin-direction-responsive(5, @space-5, sm);
+  .margin-direction-responsive(10, @space-10, sm);
+  .margin-direction-responsive(20, @space-20, sm);
+  .margin-direction-responsive(30, @space-30, sm);
+
+  .padding-all-responsive(0, @space-0, sm);
+  .padding-all-responsive(5, @space-5, sm);
+  .padding-all-responsive(10, @space-10, sm);
+  .padding-all-responsive(20, @space-20, sm);
+  .padding-all-responsive(30, @space-30, sm);
+
+  .padding-direction-responsive(0, @space-0, sm);
+  .padding-direction-responsive(5, @space-5, sm);
+  .padding-direction-responsive(10, @space-10, sm);
+  .padding-direction-responsive(20, @space-20, sm);
+  .padding-direction-responsive(30, @space-30, sm);
 }
 
-.p-10 {
-  padding: 10px;
+// MD breakpoint
+@media (max-width: @screen-md-max) {
+  .margin-all-responsive(0, @space-0, md);
+  .margin-all-responsive(5, @space-5, md);
+  .margin-all-responsive(10, @space-10, md);
+  .margin-all-responsive(20, @space-20, md);
+  .margin-all-responsive(30, @space-30, md);
+
+  .margin-direction-responsive(0, @space-0, md);
+  .margin-direction-responsive(5, @space-5, md);
+  .margin-direction-responsive(10, @space-10, md);
+  .margin-direction-responsive(20, @space-20, md);
+  .margin-direction-responsive(30, @space-30, md);
+
+  .padding-all-responsive(0, @space-0, md);
+  .padding-all-responsive(5, @space-5, md);
+  .padding-all-responsive(10, @space-10, md);
+  .padding-all-responsive(20, @space-20, md);
+  .padding-all-responsive(30, @space-30, md);
+
+  .padding-direction-responsive(0, @space-0, md);
+  .padding-direction-responsive(5, @space-5, md);
+  .padding-direction-responsive(10, @space-10, md);
+  .padding-direction-responsive(20, @space-20, md);
+  .padding-direction-responsive(30, @space-30, md);
 }
 
-.p-20 {
-  padding: 20px;
+// LG breakpoint
+@media (max-width: @screen-lg-max) {
+  .margin-all-responsive(0, @space-0, lg);
+  .margin-all-responsive(5, @space-5, lg);
+  .margin-all-responsive(10, @space-10, lg);
+  .margin-all-responsive(20, @space-20, lg);
+  .margin-all-responsive(30, @space-30, lg);
+
+  .margin-direction-responsive(0, @space-0, lg);
+  .margin-direction-responsive(5, @space-5, lg);
+  .margin-direction-responsive(10, @space-10, lg);
+  .margin-direction-responsive(20, @space-20, lg);
+  .margin-direction-responsive(30, @space-30, lg);
+
+  .padding-all-responsive(0, @space-0, lg);
+  .padding-all-responsive(5, @space-5, lg);
+  .padding-all-responsive(10, @space-10, lg);
+  .padding-all-responsive(20, @space-20, lg);
+  .padding-all-responsive(30, @space-30, lg);
+
+  .padding-direction-responsive(0, @space-0, lg);
+  .padding-direction-responsive(5, @space-5, lg);
+  .padding-direction-responsive(10, @space-10, lg);
+  .padding-direction-responsive(20, @space-20, lg);
+  .padding-direction-responsive(30, @space-30, lg);
 }
 
-.pb-5 {
-  padding-bottom: 5px;
-}
+// XL breakpoint
+@media (max-width: @screen-xl-max) {
+  .margin-all-responsive(0, @space-0, xl);
+  .margin-all-responsive(5, @space-5, xl);
+  .margin-all-responsive(10, @space-10, xl);
+  .margin-all-responsive(20, @space-20, xl);
+  .margin-all-responsive(30, @space-30, xl);
 
-.pb-10 {
-  padding-bottom: 10px;
-}
+  .margin-direction-responsive(0, @space-0, xl);
+  .margin-direction-responsive(5, @space-5, xl);
+  .margin-direction-responsive(10, @space-10, xl);
+  .margin-direction-responsive(20, @space-20, xl);
+  .margin-direction-responsive(30, @space-30, xl);
 
-.pb-20 {
-  padding-bottom: 20px;
-}
+  .padding-all-responsive(0, @space-0, xl);
+  .padding-all-responsive(5, @space-5, xl);
+  .padding-all-responsive(10, @space-10, xl);
+  .padding-all-responsive(20, @space-20, xl);
+  .padding-all-responsive(30, @space-30, xl);
 
-.pt-5 {
-  padding-top: 5px;
-}
-
-.pt-10 {
-  padding-top: 10px;
-}
-
-.pt-20 {
-  padding-top: 20px;
-}
-
-.pl-5 {
-  padding-left: 5px;
-}
-
-.pl-10 {
-  padding-left: 10px;
-}
-
-.pl-20 {
-  padding-left: 20px;
-}
-
-.pr-5 {
-  padding-right: 5px;
-}
-
-.pr-10 {
-  padding-right: 10px;
-}
-
-.pr-20 {
-  padding-right: 20px;
+  .padding-direction-responsive(0, @space-0, xl);
+  .padding-direction-responsive(5, @space-5, xl);
+  .padding-direction-responsive(10, @space-10, xl);
+  .padding-direction-responsive(20, @space-20, xl);
+  .padding-direction-responsive(30, @space-30, xl);
 }
