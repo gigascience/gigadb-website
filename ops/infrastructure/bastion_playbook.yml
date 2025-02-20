@@ -6,13 +6,13 @@
 # a given environment
 
 
-- name: Fix Centos EOL issues
+- name: Fix Centos package repos issues
   hosts: name_bastion_server_{{gigadb_env}}*
   tags:
-    - fix-ec2-user-eol-issues
+    - fix-centos-package-repos-issues
 
   roles:
-    - role: ../../roles/ec2-user-eol-fix
+    - role: ../../roles/centos-package-repos
 
 - name: Setup Fail2ban
   hosts: name_bastion_server_{{gigadb_env}}*
@@ -63,16 +63,6 @@
     - name: Disable postgresql module in AppStream
       command: dnf -qy module disable postgresql
       become: yes
-
-    - rpm_key:
-        state: present
-        key: https://download.postgresql.org/pub/repos/yum/keys/PGDG-RPM-GPG-KEY-RHEL
-
-    - name: Install PostgreSQL repo
-      become: yes
-      dnf:
-        name: https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm
-        state: present
 
     - name: Install PostgreSQL 14 client packages
       become: yes
@@ -139,6 +129,12 @@
         user: "ec2-user"
         job: "/usr/local/bin/databaseReset 2> $HOME/logs/errors.log 1> $HOME/logs/output.log"
         state: "{{ reset_database_cronjob_state }}"
+
+    - name: Ensure required packages are installed
+      dnf:
+        name:
+          - pip
+        state: present
 
     - name: Install docker-compose
       pip:
