@@ -112,7 +112,7 @@ $this->pageTitle = 'GigaDB - Contact Us';
                         <? $this->endWidget(); ?>
                     </div>
 
-                    <div class="col-xs-12 col-sm-12 col-md-3 mt-sm-30">
+                    <div class="col-xs-12 col-sm-12 col-md-3 mt-xs-20 mt-sm-20">
                         <div class="underline-title">
                             <div>
                                 <h2 class="h4">Contacts</h2>
