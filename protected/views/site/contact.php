@@ -21,7 +21,11 @@ $this->pageTitle = 'GigaDB - Contact Us';
             ]);
             ?>
             <div class="subsection">
-                <img src="../images/new_interface_image/w6-science-park-hong-kong.png" alt="Map highlighting the GigaDB location on 708-709, 6W Phase One, Hong Kong Science Park, Pak Shek Kok, Hong Kong">
+                <picture>
+                    <source media="(max-width: 576px)" srcset="../images/new_interface_image/w6-science-park-hong-kong-mobile.png">
+                    <source media="(max-width: 992px)" srcset="../images/new_interface_image/w6-science-park-hong-kong-tablet.png">
+                    <img src="../images/new_interface_image/w6-science-park-hong-kong.png" alt="Map highlighting the GigaDB location on 708-709, 6W Phase One, Hong Kong Science Park, Pak Shek Kok, Hong Kong">
+                </picture>
             </div>
             <section>
                 <div class="row">
