@@ -196,7 +196,7 @@ RUN if [ ${INSTALL_APCU} = true ]; then \
 RUN usermod -u 1000 www-data
 
 COPY ./protected /var/www/protected/
-COPY ./gigadb/app/models /var/www/gigadb/app/models/
+COPY ./gigadb/app/models /gigadb/app/models/
 COPY ./vendor /var/www/vendor/
 COPY ./images /var/www/images/
 COPY ./files /var/www/files/
