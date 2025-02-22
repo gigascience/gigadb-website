@@ -28,49 +28,49 @@
                             <a class="dataset-types-link" href="/search/new?keyword=Genomic&type%5B%5D=dataset&dataset_type%5B%5D=Genomic">
                                 <div class="text-icon text-icon-green">
                                     <img src="/images/new_interface_image/Genomic.svg" alt="">
-                                </div>Genomic<span class="sr-only"> datasets</span> (<span><? echo $number_genomic ?></span>)
+                                </div>Genomic<span class="sr-only"> datasets</span> (<span class="dataset-types-count"><? echo $number_genomic ?></span>)
                             </a>
                         </li>
                         <li>
                             <a class="dataset-types-link" href="/search/new?keyword=Software&type%5B%5D=dataset&dataset_type%5B%5D=Software">
                                 <div class="text-icon text-icon-blue">
                                     <img src="/images/new_interface_image/Software.svg" alt="">
-                                </div>Software<span class="sr-only"> datasets</span> (<span><? echo $number_software ?></span>)
+                                </div>Software<span class="sr-only"> datasets</span> (<span class="dataset-types-count"><? echo $number_software ?></span>)
                             </a>
                         </li>
                         <li>
                             <a class="dataset-types-link" href="/search/new?keyword=Transcriptomic&type%5B%5D=dataset&dataset_type%5B%5D=Transcriptomic">
                                 <div class="text-icon text-icon-blue">
                                     <img src="/images/new_interface_image/Transcriptomic.svg" alt="">
-                                </div>Transcriptomic<span class="sr-only"> datasets</span> (<span><? echo $number_ts ?></span>)
+                                </div>Transcriptomic<span class="sr-only"> datasets</span> (<span class="dataset-types-count"><? echo $number_ts ?></span>)
                             </a>
                         </li>
                         <li>
                             <a class="dataset-types-link" href="/search/new?keyword=Imaging&type%5B%5D=dataset&dataset_type%5B%5D=Imaging">
                                 <div class="text-icon text-icon-blue">
                                     <img src="/images/new_interface_image/Imaging.svg" alt="">
-                                </div>Imaging<span class="sr-only"> datasets</span> (<span><? echo $number_imaging ?></span>)
+                                </div>Imaging<span class="sr-only"> datasets</span> (<span class="dataset-types-count"><? echo $number_imaging ?></span>)
                             </a>
                         </li>
                         <li>
                             <a class="dataset-types-link" href="/search/new?keyword=Neuroscience&type%5B%5D=dataset&dataset_type%5B%5D=Neuroscience">
                                 <div class="text-icon text-icon-yellow">
                                     <img src="/images/new_interface_image/Neuroscience.svg" alt="">
-                                </div>Neuroscience<span class="sr-only"> datasets</span> (<span><? echo $number_ns ?></span>)
+                                </div>Neuroscience<span class="sr-only"> datasets</span> (<span class="dataset-types-count"><? echo $number_ns ?></span>)
                             </a>
                         </li>
                         <li>
                             <a class="dataset-types-link" href="/search/new?keyword=Epigenomic&type%5B%5D=dataset&dataset_type%5B%5D=Epigenomic">
                                 <div class="text-icon text-icon-red">
                                     <img src="/images/new_interface_image/Epigenomic.svg" alt="">
-                                </div>Epigenomic<span class="sr-only"> datasets</span> (<span><? echo $number_epi ?></span>)
+                                </div>Epigenomic<span class="sr-only"> datasets</span> (<span class="dataset-types-count"><? echo $number_epi ?></span>)
                             </a>
                         </li>
                         <li>
                             <a class="dataset-types-link" href="/search/new?keyword=Metagenomic&type%5B%5D=dataset&dataset_type%5B%5D=Metagenomic">
                                 <div class="text-icon text-icon-green">
                                     <img src="/images/new_interface_image/Metagenomic.svg" alt="">
-                                </div>Metagenomic<span class="sr-only"> datasets</span> (<span><? echo $number_metagenomic ?></span>)
+                                </div>Metagenomic<span class="sr-only"> datasets</span> (<span class="dataset-types-count"><? echo $number_metagenomic ?></span>)
                             </a>
                         </li>
                         <li>
@@ -79,7 +79,7 @@
                                     <img src="/images/new_interface_image/Genome-Mapping.svg" alt="">
                                 </div>
                                 <div class="dataset-types-label">
-                                  <span>Genome mapping</span><span class="sr-only"> datasets</span>(<span><? echo $number_genome_mapping ?></span>)
+                                  <span class="dataset-types-label-text">Genome mapping</span><span class="sr-only"> datasets</span>(<span class="dataset-types-count"><? echo $number_genome_mapping ?></span>)
                                 </div>
                             </a>
                         </li>
@@ -87,84 +87,84 @@
                             <a class="dataset-types-link" href="/search/new?keyword=Workflow&type%5B%5D=dataset&dataset_type%5B%5D=Workflow">
                                 <div class="text-icon text-icon-red">
                                     <img src="/images/new_interface_image/Workflow.svg" alt="">
-                                </div>Workflow<span class="sr-only"> datasets</span> (<span><? echo $number_wf ?></span>)
+                                </div>Workflow<span class="sr-only"> datasets</span> (<span class="dataset-types-count"><? echo $number_wf ?></span>)
                             </a>
                         </li>
                         <li>
                             <a class="dataset-types-link" href="/search/new?keyword=Proteomic&type%5B%5D=dataset&dataset_type%5B%5D=Proteomic">
                                 <div class="text-icon text-icon-yellow">
                                     <img src="/images/new_interface_image/Proteomic.svg" alt="">
-                                </div>Proteomic<span class="sr-only"> datasets</span> (<span><? echo $number_proteomic ?></span>)
+                                </div>Proteomic<span class="sr-only"> datasets</span> (<span class="dataset-types-count"><? echo $number_proteomic ?></span>)
                             </a>
                         </li>
                         <li>
                             <a class="dataset-types-link" href="/search/new?keyword=Metabarcoding&type%5B%5D=dataset&dataset_type%5B%5D=Metabarcoding">
                                 <div class="text-icon text-icon-yellow">
                                     <img src="/images/new_interface_image/Metabarcoding.svg" alt="">
-                                </div>Metabarcoding<span class="sr-only"> datasets</span> (<span><? echo $number_metabarcoding ?></span>)
+                                </div>Metabarcoding<span class="sr-only"> datasets</span> (<span class="dataset-types-count"><? echo $number_metabarcoding ?></span>)
                             </a>
                         </li>
                         <li>
                             <a class="dataset-types-link" href="/search/new?keyword=Metadata&type%5B%5D=dataset&dataset_type%5B%5D=Metadata">
                                 <div class="text-icon text-icon-red">
                                     <img src="/images/new_interface_image/Metadata.svg" alt="">
-                                </div>Metadata<span class="sr-only"> datasets</span> (<span><? echo $number_metadata ?></span>)
+                                </div>Metadata<span class="sr-only"> datasets</span> (<span class="dataset-types-count"><? echo $number_metadata ?></span>)
                             </a>
                         </li>
                         <li class="toggleable">
                             <a class="dataset-types-link" href="/search/new?keyword=climate&type%5B%5D=dataset&dataset_type%5B%5D=climate">
                                 <div class="text-icon text-icon-green">
                                     <img src="/images/new_interface_image/Climate.svg" alt="">
-                                </div>Climate<span class="sr-only"> datasets</span> (<span><? echo $number_climate ?></span>)
+                                </div>Climate<span class="sr-only"> datasets</span> (<span class="dataset-types-count"><? echo $number_climate ?></span>)
                             </a>
                         </li>
                         <li class="toggleable">
                             <a class="dataset-types-link" href="/search/new?keyword=Network-Analysis&type%5B%5D=dataset&dataset_type%5B%5D=12">
                                 <div class="text-icon text-icon-blue">
                                     <img src="/images/new_interface_image/Network-Analysis.svg" alt="">
-                                </div>Network-Analysis<span class="sr-only"> datasets</span> (<span><? echo $number_na ?></span>)
+                                </div>Network-Analysis<span class="sr-only"> datasets</span> (<span class="dataset-types-count"><? echo $number_na ?></span>)
                             </a>
                         </li>
                         <li class="toggleable">
                             <a class="dataset-types-link" href="/search/new?keyword=ElectroEncephaloGraphy(EEG)&type%5B%5D=dataset&dataset_type%5B%5D=15">
                                 <div class="text-icon text-icon-yellow">
                                     <img src="/images/new_interface_image/EEG.svg" alt="">
-                                </div>EEG<span class="sr-only"> datasets</span> (<span><? echo $number_eeg ?></span>)
+                                </div>EEG<span class="sr-only"> datasets</span> (<span class="dataset-types-count"><? echo $number_eeg ?></span>)
                             </a>
                         </li>
                         <li class="toggleable">
                             <a class="dataset-types-link" href="/search/new?keyword=Phenotyping&type%5B%5D=dataset&dataset_type%5B%5D=21">
                                 <div class="text-icon text-icon-red">
                                     <img src="/images/new_interface_image/Phenotyping.svg" alt="">
-                                </div>Phenotyping<span class="sr-only"> datasets</span> (<span><? echo $number_pt ?></span>)
+                                </div>Phenotyping<span class="sr-only"> datasets</span> (<span class="dataset-types-count"><? echo $number_pt ?></span>)
                             </a>
                         </li>
                         <li class="toggleable">
                             <a class="dataset-types-link" href="/search/new?keyword=Metabolomic&type%5B%5D=dataset&dataset_type%5B%5D=8">
                                 <div class="text-icon text-icon-yellow">
                                     <img src="/images/new_interface_image/Metabolomic.svg" alt="">
-                                </div>Metabolomic<span class="sr-only"> datasets</span> (<span><? echo $number_metabolomic ?></span>)
+                                </div>Metabolomic<span class="sr-only"> datasets</span> (<span class="dataset-types-count"><? echo $number_metabolomic ?></span>)
                             </a>
                         </li>
                         <li class="toggleable">
                             <a class="dataset-types-link" href="/search/new?keyword=Lipidomic&type%5B%5D=dataset&dataset_type%5B%5D=20">
                                 <div class="text-icon text-icon-green">
                                     <img src="/images/new_interface_image/Lipidomic.svg" alt="">
-                                </div>Lipidomic<span class="sr-only"> datasets</span> (<span><? echo $number_lipi ?></span>)
+                                </div>Lipidomic<span class="sr-only"> datasets</span> (<span class="dataset-types-count"><? echo $number_lipi ?></span>)
                             </a>
                         </li>
                         <li class="toggleable">
                             <a class="dataset-types-link" href="/search/new?keyword=ecology&type%5B%5D=dataset&dataset_type%5B%5D=19">
                                 <div class="text-icon text-icon-blue">
                                     <img src="/images/new_interface_image/Ecology.svg" alt="">
-                                </div>Ecology<span class="sr-only"> datasets</span> (<span><? echo $number_ecology ?></span>)
+                                </div>Ecology<span class="sr-only"> datasets</span> (<span class="dataset-types-count"><? echo $number_ecology ?></span>)
                             </a>
                         </li>
                         <li class="toggleable">
                             <a class="dataset-types-link" href="/search/new?keyword=Virtual-Machine&type%5B%5D=dataset&dataset_type%5B%5D=14">
                                 <div class="text-icon text-icon-green">
                                     <img src="/images/new_interface_image/Virtual-Machine.svg" alt="">
-                                </div>Virtual-Machine<span class="sr-only"> datasets</span> (<span><? echo $number_vm ?></span>)
+                                </div>Virtual-Machine<span class="sr-only"> datasets</span> (<span class="dataset-types-count"><? echo $number_vm ?></span>)
                             </a>
                         </li>
                     </ul>
