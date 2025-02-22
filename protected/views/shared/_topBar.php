@@ -44,6 +44,7 @@
                 'aria-label' => 'Search GigaDB',
                 'class' => 'search-input',
                 'placeholder' => 'e.g. Chicken, brain, etc...',
+                'id' => 'desktopSearchbar',
               ),
             ));
             ?>
@@ -94,6 +95,7 @@
               'aria-label' => 'Search GigaDB',
               'class' => 'search-input',
               'placeholder' => 'e.g. Chicken, brain, etc...',
+              'id' => 'mobileSearchbar',
             ),
           ));
           ?>
