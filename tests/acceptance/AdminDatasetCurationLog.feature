@@ -13,7 +13,9 @@ Feature: curation log entry under the dataset form
     And I press the button "Mint DOI"
     And I wait "3" seconds
     And I should see "This DOI exists in DataCite already, so it has now been updated with the current values from GigaDB."
-    And I should see "Dataset 100006 - Check DOI: OK - update md response: OK"
+    Then I am on "/adminDataset/update/id/8"
+    And I wait "3" seconds
+    And I should see "Dataset 100006 | Check DOI: OK | update metadata response: OK"
     And I should see "<?xml"
     When I press the button "+"
     And I wait "3" seconds

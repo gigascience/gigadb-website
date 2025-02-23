@@ -445,7 +445,7 @@ class AdminDatasetController extends Controller
         $result['doi_response'] = $doiResponse->getBody()->getContents();
         $result['check_doi_status'] = $doiResponse->getStatusCode();
         $isPresent = in_array($result['check_doi_status'], [200, 204]);
-        $log .= sprintf(' - Check DOI: %s', $isPresent ? "OK" : "DOI doesn't exist");
+        $log .= sprintf(' | Check DOI: %s', $isPresent ? "OK" : "DOI doesn't exist");
 
         if ($isPresent || $result['check_doi_status'] === 404) {
             if (!$xml_data = $dataset->toXML()) {
@@ -469,7 +469,7 @@ class AdminDatasetController extends Controller
             $keyStatus = sprintf('%s_md_status', $result['check_doi_status'] === 200 ? 'update' : 'create');
             $result[$keyResponse] = $updateMdResponse->getBody()->getContents();
             $result[$keyStatus] = $updateMdResponse->getStatusCode();
-            $log .= sprintf(' - %s md response: %s', $result['check_doi_status'] === 200 ? 'update' : 'create', 201 === $result[$keyStatus] ? "OK" : $result[$keyResponse]);
+            $log .= sprintf(' | %s metadata response: %s', $result['check_doi_status'] === 200 ? 'update' : 'create', 201 === $result[$keyStatus] ? "OK" : $result[$keyResponse]);
 
             $logMessageXml = 201 === $result[$keyStatus] ? 'Sent DataCite XML' : 'Failed to send DataCite XML';
             CurationLog::createGeneralCurationLogEntry($dataset->id, $logMessageXml, $xml_data, $userName);
@@ -489,7 +489,7 @@ class AdminDatasetController extends Controller
 
                 $result['create_doi_response'] = $response->getBody()->getContents();
                 $result['create_doi_status'] = $response->getStatusCode();
-                $log .= sprintf(' - Create DOI: %s', $result['create_doi_status'] === 201 ? 'OK' : $result['create_doi_response']);
+                $log .= sprintf(' | Create DOI: %s', $result['create_doi_status'] === 201 ? 'OK' : $result['create_doi_response']);
             }
         }
 
