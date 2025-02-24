@@ -161,7 +161,7 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
                                                     <? $this->endWidget() ?>
                                                     </div>
 
-                                              <div>
+                                              <div class="user-profile-action-btns">
                                                 <div class="btns-row pull-right">
                                                   <button id="edit-btn" type="button" class="btn background-btn">Edit Profile</button>
                                                   <a href="/user/changePassword" class="btn background-btn">
