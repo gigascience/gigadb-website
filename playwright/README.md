@@ -2,7 +2,7 @@
 
 ## Run tests locally
 
-- First, make sure project is running locally on [http://gigadb.gigasciencejournal.com:9170](http://gigadb.gigasciencejournal.com:9170)
+- First, make sure project is running locally on [http://gigadb.gigasciencejournal.com](http://gigadb.gigasciencejournal.com)
 
 ```sh
 # cd to this folder
