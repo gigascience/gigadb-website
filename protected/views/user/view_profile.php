@@ -88,8 +88,8 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
                                                           'class' => 'js-toggle-editable',
                                                           'required' => true,
                                                         ],
-                                                        'labelOptions' => ['class' => 'col-xs-5'],
-                                                        'inputWrapperOptions' => 'col-xs-7'
+                                                        'labelOptions' => ['class' => 'col-xs-12 col-md-5'],
+                                                        'inputWrapperOptions' => 'col-xs-12 col-md-7'
                                                       ]);
                                                       $this->widget('application.components.controls.TextField', [
                                                         'form' => $form,
@@ -100,8 +100,8 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
                                                           'maxlength' => 60,
                                                           'required' => true,
                                                         ],
-                                                        'labelOptions' => ['class' => 'col-xs-5'],
-                                                        'inputWrapperOptions' => 'col-xs-7'
+                                                        'labelOptions' => ['class' => 'col-xs-12 col-md-5'],
+                                                        'inputWrapperOptions' => 'col-xs-12 col-md-7'
                                                       ]);
                                                       $this->widget('application.components.controls.TextField', [
                                                         'form' => $form,
@@ -112,8 +112,8 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
                                                           'maxlength' => 60,
                                                           'required' => true,
                                                         ],
-                                                        'labelOptions' => ['class' => 'col-xs-5'],
-                                                        'inputWrapperOptions' => 'col-xs-7'
+                                                        'labelOptions' => ['class' => 'col-xs-12 col-md-5'],
+                                                        'inputWrapperOptions' => 'col-xs-12 col-md-7'
                                                       ]);
                                                       $this->widget('application.components.controls.TextField', [
                                                         'form' => $form,
@@ -124,8 +124,8 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
                                                           'maxlength' => 60,
                                                           'required' => true,
                                                         ],
-                                                        'labelOptions' => ['class' => 'col-xs-5'],
-                                                        'inputWrapperOptions' => 'col-xs-7'
+                                                        'labelOptions' => ['class' => 'col-xs-12 col-md-5'],
+                                                        'inputWrapperOptions' => 'col-xs-12 col-md-7'
                                                       ]);
                                                       ?>
                                                       <?php
@@ -137,16 +137,16 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
                                                         'inputOptions' => [
                                                           'class' => 'js-toggle-editable',
                                                         ],
-                                                        'labelOptions' => ['class' => 'col-xs-5'],
-                                                        'inputWrapperOptions' => 'col-xs-7'
+                                                        'labelOptions' => ['class' => 'col-xs-12 col-md-5'],
+                                                        'inputWrapperOptions' => 'col-xs-12 col-md-7'
                                                       ]);
                                                       ?>
                                                       <div class="form-group checkbox-horizontal <?= $model->hasErrors('newsletter') ? 'has-error' : '' ?>">
-                                                        <?= $form->label($model, 'newsletter', array('class' => 'col-xs-5 control-label')) ?>
-                                                        <div class="col-xs-7">
+                                                        <?= $form->label($model, 'newsletter', array('class' => 'col-md-5 control-label')) ?>
+                                                        <div class="col-md-7 input-wrapper">
                                                           <?php echo $form->checkbox($model, 'newsletter', array('aria-describedby' => $model->hasErrors('newsletter') ? 'newsletterError' : '')); ?>
                                                         </div>
-                                                        <div class="col-xs-7" id="newsletterError" role="alert">
+                                                        <div class="col-md-7 checkbox-error" id="newsletterError" role="alert">
                                                           <?php echo $form->error($model, 'newsletter', array('class' => 'control-error help-block')); ?>
                                                         </div>
                                                       </div>
