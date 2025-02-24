@@ -209,10 +209,25 @@ input[type="checkbox"] {
         display: block;
         width: 100%;
       }
-
-      .col-sm-9, .col-sm-10 {
-        padding-left: 0;
-        padding-right: 0;
+    }
+    .checkbox-horizontal {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      grid-template-rows: auto auto;
+      grid-template-areas: "input label" "error error" "desc desc";
+      gap: 4px;
+      .control-label {
+        grid-area: label;
+        margin-bottom: 0;
+      }
+      .input-wrapper {
+        grid-area: input;
+      }
+      .checkbox-error {
+        grid-area: error;
+      }
+      .checkbox-desc {
+        grid-area: desc;
       }
     }
   }
@@ -344,4 +359,11 @@ fieldset {
   *display: inline;
   *zoom: 1;
   margin-top: -30px;
+}
+
+.captcha {
+  width: 100%;
+  .captcha-image {
+    max-width: 200px;
+  }
 }
