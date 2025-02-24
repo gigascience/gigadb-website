@@ -267,7 +267,7 @@
         </div>
     </section>
 </div>
-<script src="https://hypothes.is/embed.js" async></script>
+<script src="https://hypothes.is/embed.js" async onload="document.body.classList.add('with-hypothesis');"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function(event) {
         $("#dataset-hint").popover();

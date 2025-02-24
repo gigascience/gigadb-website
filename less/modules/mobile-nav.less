@@ -13,7 +13,7 @@
   &__close {
     position: absolute;
     top: 20px;
-    right: 40px;
+    right: 20px;
     background: none;
     border: none;
     padding: 15px;
@@ -150,5 +150,11 @@
 @media (min-width: @screen-md-min) {
   .mobile-navigation {
     display: none !important;
+  }
+}
+
+.with-hypothesis {
+  .mobile-navigation__close {
+    right: 40px;
   }
 }
