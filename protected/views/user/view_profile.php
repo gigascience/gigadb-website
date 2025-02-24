@@ -35,7 +35,7 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
                           ]);
                           ?>
                             <section>
-                              <div class="tabs" role="tablist">
+                              <div class="tabs nav-tabs" role="tablist">
                                   <a id="liedit" class="active" href="#edit" aria-controls="edit" role="tab" aria-selected="true" data-toggle="tab">Personal details</a>
                                   <a id="lisubmitted" href="#submitted" aria-controls="submitted" role="tab" aria-selected="false" tabindex="-1" data-toggle="tab">Your Uploaded Datasets</a>
                                   <a id="liauthored" href="#authored" aria-controls="authored" role="tab" aria-selected="false" tabindex="-1" data-toggle="tab">Your Authored Datasets</a>
@@ -46,7 +46,7 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
                                 <div class="tab-content">
                                     <div role="tabpanel" class="tab-pane" id="edit">
                                         <div class="row">
-                                            <div class="col-xs-8 col-xs-offset-2">
+                                            <div class="col-xs-12 col-sm-8 col-sm-offset-2">
                                                 <div class="form well user-profile-box">
                                                     <div class="js-readonly-data">
                                                       <ul class="list-unstyled readonly-profile">
@@ -59,7 +59,7 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
                                                             $value = $value ? 'Yes' : 'No';
                                                           }
                                                           ?>
-                                                          <li class="row">
+                                                          <li class="row readonly-profile-item">
                                                             <div class="col-xs-5 readonly-profile-key"><?= $label ?></div>
                                                             <div class="col-xs-7 readonly-profile-value"><?= $value ?></div>
                                                           </li>
