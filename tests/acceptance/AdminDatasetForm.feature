@@ -291,6 +291,18 @@ Feature: form to update dataset details
     Then I am on "dataset/100006"
     And I should see "bam"
 
+  @ok @issue-2061
+  Scenario: Can delete all keywords on update
+    Given I am on "/adminDataset/update/id/8"
+    And I click on keywords field
+    And I fill in keywords fields with "bam"
+    And I press the button "Save"
+    When I am on "/adminDataset/update/id/8"
+    And I click on delete keyword button
+    And I press the button "Save"
+    Then I am on "dataset/100006"
+    And I should not see "bam"
+
   @ok @curationlog
   Scenario: Create new curation log record for a dataset
     When I am on "/adminDataset/update/id/5"
@@ -415,7 +427,7 @@ Feature: form to update dataset details
     When I follow "Mint DOI"
     Then I should see "minting under way, please wait"
     And I wait "5" seconds
-    And I should see "This DOI exists in datacite already, no need to mint, but the metadata is updated!"
+    And I should see "This DOI exists in DataCite already, so it has now been updated with the current values from GigaDB."
 
   @ok @mint-doi
   Scenario: Update metadata for non exist doi
@@ -484,3 +496,43 @@ Feature: form to update dataset details
     And I press the button "Next >"
     And I wait "1" seconds
     Then I should see "Parrot.k31.NetworkTest.txt"
+
+  @ok
+  Scenario: Check type is not removed when uncheck a dataset type
+    Given I am on "/adminDataset/update/id/8"
+    Then I should see "Workflow"
+    Then I check "Dataset_Workflow" checkbox
+    And I press the button "Save"
+    When I am on "/adminDataset/update/id/8"
+    Then I should see "Dataset_Workflow" checkbox is checked
+    Then I uncheck "Dataset_Workflow" checkbox
+    And I press the button "Save"
+    When I am on "/adminDataset/update/id/8"
+    Then I should see "Workflow"
+
+  @ok
+  Scenario: Check type is not removed from other dataset when uncheck for another dataset
+    Given I am on "/adminDataset/update/id/8"
+    Then I should see "Genomic"
+    Then I should see "Dataset_Genomic" checkbox is checked
+    Then I check "Dataset_Workflow" checkbox
+    Then I uncheck "Dataset_Genomic" checkbox
+    And I press the button "Save"
+    And I wait "5" seconds
+    When I am on "/adminDataset/update/id/5"
+    Then I should see "Dataset_Genomic" checkbox is checked
+
+  @ok
+  Scenario: Check checkbox for type is working
+    Given I am on "/adminDataset/update/id/8"
+    And I should see "Dataset_Genomic" checkbox is checked
+    When I uncheck "Dataset_Genomic" checkbox
+    Then I should see "Dataset_Genomic" checkbox is unchecked
+    And I should see "Dataset_Workflow" checkbox is unchecked
+    When I check "Dataset_Workflow" checkbox
+    Then I should see "Dataset_Workflow" checkbox is checked
+    When I press the button "Save"
+    And I wait "5" seconds
+    And I am on "/adminDataset/update/id/8"
+    Then I should see "Dataset_Workflow" checkbox is checked
+    Then I should see "Dataset_Genomic" checkbox is unchecked

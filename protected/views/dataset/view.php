@@ -395,10 +395,10 @@ $sampleDataProvider = $samples->getDataProvider();
                                 <a id="files_table_settings" class="btn btn-default pull-right" data-toggle="modal" data-target="#files_settings" href="#"><span class="glyphicon glyphicon-adjust"></span>Table Settings</a>
                                 <br>
                                 <br>
-                                <table id="files_table" class="table table-striped table-bordered" style="width:100%">
+                                <table id="files_table" class="table table-striped table-bordered dataset-files-table" style="width:100%">
                                     <thead>
                                         <tr>
-                                            <th title="The name of the file. Click header to sort by A-Z/Z-A.">File Name</th>
+                                            <th class="filename-column" title="The name of the file. Click header to sort by A-Z/Z-A.">File Name</th>
                                             <th title="Short description of file contents. Click header to sort by A-Z/Z-A.">Description</th>
                                             <th title="Name or ID of sample used to generate this file.">Sample ID</th>
                                             <th title="The type of data in the file, see [help](http://gigadb.org/site/help#vocabulary) page for definitions of individual data types.  Click header to sort by A-Z/Z-A.">Data Type</th>
@@ -414,7 +414,7 @@ $sampleDataProvider = $samples->getDataProvider();
                                         foreach ($file_models as $file) {
                                         ?>
                                             <tr>
-                                                <td><?= $file['nameHtml'] ?></td>
+                                                <td class="text-break-word"><?= $file['nameHtml'] ?></td>
                                                 <td><?= $file['description'] ?></td>
                                                 <td><?php
                                                     //TODO: huge performance issue with large numbers of fileDatasetKeywordsTest.php:49, manifesting when disabling cache
@@ -690,6 +690,16 @@ $sampleDataProvider = $samples->getDataProvider();
                     ]
                 });
 
+        $.fn.dataTable.ext.type.order['file-size-pre'] = function(data) {
+            const units = {
+                'B': 1,
+                'kB': 1024,
+                'MB': 1048576,
+                'GB': 1073741824
+            };
+            const match = data.match(/^(\d+(?:\.\d+)?)\s*(B|kB|MB|GB)$/);
+            return match ? parseFloat(match[1]) * (units[match[2]] || 1) : 0;
+        };
 
         $('#files_table').DataTable({
             "initComplete": function () {
@@ -708,7 +718,7 @@ $sampleDataProvider = $samples->getDataProvider();
                 { "visible": <?= in_array('sample_id', $setting) ? 'true' : 'false' ?> },
                 { "visible": <?= in_array('type_id', $setting) ? 'true' : 'false' ?> },
                 { "visible": <?= in_array('format_id', $setting) ? 'true' : 'false' ?> },
-                { "visible": <?= in_array('size', $setting) ? 'true' : 'false' ?> },
+                { "type": "file-size", "visible": <?= in_array('size', $setting) ? 'true' : 'false' ?> },
                 { "visible": <?= in_array('date_stamp', $setting) ? 'true' : 'false' ?> },
                 { "visible": <?= in_array('attribute', $setting) ? 'true' : 'false' ?> },
                 { "visible": <?= in_array('location', $setting) ? 'true' : 'false' ?> },
@@ -800,7 +810,7 @@ $sampleDataProvider = $samples->getDataProvider();
         });
     </script>
     <script src="https://hypothes.is/embed.js" async></script>
-    <script           >
+    <script>
         document.addEventListener("DOMContentLoaded", function(event) { //This event is fired after deferred scripts are loaded
             $(".js-desc").click(function(e) {
                 e.preventDefault();

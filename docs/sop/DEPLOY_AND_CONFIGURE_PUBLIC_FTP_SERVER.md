@@ -49,7 +49,7 @@ efs_filesystem_id = "fs-zzzzzz"
 
 Log in to the file server with SSH using the value of `ec2_bastion_public_ip` and `ec2_files_private_ip` as below:
 ```
-$ ssh -i /path/to/your/secret.pem -o ProxyCommand="ssh -W %h:%p -i /path/to/your/secret.pem  centos@13.35.67.79" centos@10.97.0.123
+$ ssh -i /path/to/your/secret.pem -o ProxyCommand="ssh -W %h:%p -i /path/to/your/secret.pem  ec2-user@13.35.67.79" ec2-user@10.97.0.123
 ```
 
 Mount the EFS file system for /share/dropbox and /share/config using the values gathered by `terraform output`:
@@ -63,7 +63,7 @@ $ df -T -h
 
 ## How to start and stop the server
 
-on the file server, there is a docker compose file at `/home/centos/docker-compose.yml`.
+on the file server, there is a docker compose file at `/home/ec2-user/docker-compose.yml`.
 Start the server with:
 ```
 $ docker compose up -d

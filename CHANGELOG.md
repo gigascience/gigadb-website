@@ -5,10 +5,49 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## Unreleased
 
 - Feat #376: Uppy logo uploader for admin projects
+
+## v4.4.5 - 2025-02-24 - cfe6bc63c -
+
+- Fix #1119: Fix filename column width in dataset page
+- Feat #2138: Avoid deleting a type when deleting a dataset type
+
+## v4.4.4 - 2025-02-17 - c17c44843 - live since 2025-02-19
+
+- Fix #2099: Add missing permission for CLOCKSS
+
+## v4.4.3 - 2025-02-03 - c62107e5e - live since 2025-02-05
+
+- Feat #474: Update FAQ "What journals are integrated with GigaDB?"
+- Feat #476: Update FAQ "How do I write a ReadMe file?"
+- Feat #479: Update FAQ "Why is submission to GigaDB not closely integrated with submission to GigaScience?"
+- Feat #524: Add FAQ for BUSCO genome completeness analysis
+- Fix #2053: Update RDS policy to allow createDBSnapshot during destroy
+- Feat #1897: Upgrade OS version to CentOS Stream 9
+
+## v4.4.2 - 2025-01-13 - 7ad7a106b - live since 2025-01-15
+
+- Fix #1975: Remove empty line at the beginning of the xml result
+- Feat #456: Improve DataCite metadata by migrating to Datacite version 4.6
+- Fix #1727: Sort files and samples by id in descending order when querying
+
+## v4.4.1 - 2024-12-24 - 51c426dfe - live since 2025-01-02
+
+- Feat #2067: Sort files by size in dataset page
+- Feat #372: Save dataset as xml in log
+- Feat #1940: Reminting notification text change
+- Fix #2061: Allow empty keywords in dataset entry
+- Fix #1991: Update and save sample ID when updating
+- Feat #2008: Remove Dimensions citation link
+- Fix #2074: Update contact website URL
+- Feat #2089: Update team members
+- Feat #2066: Update file attribute values form layout and add expand button for long values
+- Feat #2102: Delete outdated apidocs files
+- Feat #1667: Add log entry when minting DOI
+- Fix #2094: Make Semgrep-based SAST analyzer available in tagged release
 - Feat #701: Code refactoring to separate upload status transitions and notifications to prepare for upload status overhaul
 - Security #1867: Update the gitlab static application security testing (SAST) job using the Semgrep-based analyzer
 
-## v4.4.0 - 2024-11-13 - ea1a37cc9 -
+## v4.4.0 - 2024-11-13 - ea1a37cc9 - live since 2024-12-12
 
 - Fix #2066: Max length for attribute value set to 1000 in file admin form
 - Feat #1968: Add curators manual for operating tools on bastion server and improve tools usage

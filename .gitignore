@@ -71,6 +71,7 @@ composer.json
 
 # deployment
 .env
+.env.*
 .secrets
 .data
 vsftpd
