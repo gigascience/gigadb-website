@@ -223,6 +223,9 @@ input[type="checkbox"] {
       .input-wrapper {
         grid-area: input;
       }
+      .form-control {
+        width: auto;
+      }
       .checkbox-error {
         grid-area: error;
       }
@@ -235,16 +238,34 @@ input[type="checkbox"] {
 
 .form-inverted-checkbox {
   display: flex;
+  align-items: center;
   width: 100%;
   margin-bottom: 10px;
-  input[type="checkbox"] {
+  input[type="checkbox"].form-control {
     margin: 0 0 0 90px;
     padding-top: 0px;
   }
-  label {
+  label.control-label {
     margin-left: 25px;
     padding-top: 0px;
     margin-bottom: 0;
+  }
+}
+
+@media (max-width: @screen-sm-max) {
+  .form-horizontal .form-inverted-checkbox {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    input[type="checkbox"].form-control {
+      margin: 0;
+      width: auto;
+      height: auto;
+    }
+    label.control-label {
+      margin: 0;
+    }
   }
 }
 
