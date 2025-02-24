@@ -192,6 +192,30 @@ input[type="checkbox"] {
       }
     }
   }
+
+  @media (max-width: @screen-sm-max) {
+    .form-group {
+      margin-left: 0;
+      margin-right: 0;
+
+      .control-label {
+        float: none;
+        width: 100%;
+        text-align: left;
+        margin-bottom: 10px;
+      }
+
+      .form-control {
+        display: block;
+        width: 100%;
+      }
+
+      .col-sm-9, .col-sm-10 {
+        padding-left: 0;
+        padding-right: 0;
+      }
+    }
+  }
 }
 
 .form-inverted-checkbox {
