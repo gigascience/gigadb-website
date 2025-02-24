@@ -4,6 +4,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+## v4.4.5 - 2025-02-24 - cfe6bc63c - 
+
 - Fix #1119: Fix filename column width in dataset page
 - Feat #2138: Avoid deleting a type when deleting a dataset type
 
