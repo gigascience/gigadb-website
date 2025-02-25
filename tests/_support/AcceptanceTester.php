@@ -435,4 +435,12 @@ class AcceptanceTester extends \Codeception\Actor
     {
         $this->see($text, ['css' => "$table tr:nth-child($row) td:nth-child($column)"]);
     }
+
+    /**
+     * @Then I should see option :option selected in :select
+     */
+    public function iShouldSeeOptionSelected($option, $select)
+    {
+        $this->seeOptionIsSelected($select, $option);
+    }
 }

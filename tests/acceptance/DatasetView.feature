@@ -228,3 +228,27 @@ Feature: a user visit the dataset page
     When I follow "[aria-label^='Size']"
     And I follow "[aria-label^='Size']"
     Then I should see "3.88 GB" in the table "#files_table" cell 1 6
+
+  @broken @issue-2212
+  # the default values in the test and local env are different from the ones used in live, i.e. protected/components/DatasetPageSettings.php:16, in such setup this cannot be tested effectively. For this reason, the test does not pass, although it represents the expected live behavior
+  Scenario: Files settings default checked values
+    Given I have not signed in
+    When I am on "/dataset/100035"
+    And I follow "Files"
+    And I click the table settings for "files_table_settings"
+    Then I should see "description" checkbox is checked
+    And I should see "sample_id" checkbox is not checked
+    And I should see "type_id" checkbox is not checked
+    And I should see "format_id" checkbox is checked
+    And I should see "size" checkbox is checked
+    And I should see "date_stamp" checkbox is not checked
+    And I should see "location" checkbox is checked
+    And I should see "attribute" checkbox is not checked
+
+  @ok @issue-2212
+  Scenario: Files settings default items per page is 50
+    Given I have not signed in
+    When I am on "/dataset/100035"
+    And I follow "Files"
+    And I click the table settings for "files_table_settings"
+    Then I should see option "50" selected in "#selectPageSizeFilesSetting"
