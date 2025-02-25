@@ -1,0 +1,27 @@
+---
+description: Rules for javascript scripts and widgets
+globs: *.js
+---
+# Rules for Javascript files and widgets
+
+- Some widgets are located under protected/js, the protected folder will be deprecated, do not add files in this folder
+- New js files should be added to gigadb/app/client/js folder and imported in php files as follows
+```php
+Yii::app()->assetManager->forceCopy = YII_DEBUG; // needed during development 
+jsDir = Yii::getAlias('/gigadb/app/client/js/path-to-js-folder');
+$jsUrl = Yii::app()->assetManager->publish($jsDir);
+$jsPath = $jsUrl . '/filename.js';
+
+Yii::app()->clientScript->registerScriptFile($jsPath, CClientScript::POS_END, ['type' => 'module']);
+
+<script type="module">
+  import { myJsFunction } from '<?php echo $jsPath; ?>';
+
+  $(document).ready(function() {
+    myJsFunction()
+  });
+</script>
+```
+- New js files should be structured as js modules
+- Write JS using best coding practices and modern JS (ES6)
+- Always use jquery 3 instead of JS DOM to interact with the DOM

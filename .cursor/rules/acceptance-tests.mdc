@@ -1,9 +1,11 @@
 ---
 description: Guidelines for acceptance tests
-globs: tests/acceptance/**/*.feature
+globs: tests/acceptance/**/*.feature, tests/_support/**/*.php
 ---
 
 # Acceptance test guides
+- Acceptance tests are written using Gherkin syntax 
+- Always add new acceptance tests to tests/acceptance folder in feature files
 - For each test scenario, implement it in a way that it only contains 1 Given, 1 When and 1 Then. Add additional lines if needed with "And". Example:
 ```
 Scenario: sample attributes full description
@@ -12,3 +14,5 @@ Scenario: sample attributes full description
   And I should see "Geographic location (country and/or sea,region):Antarctica, Inexpressible Island, Ross Sea"
   And I should see "Alternative names:PYGAD"
 ```
+- Support functions for acceptance tests are located in tests/_support folder
+- Do not add new support functions unless there is no alternative, always attempt to leverage existing functions first

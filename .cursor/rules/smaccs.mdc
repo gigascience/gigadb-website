@@ -1,0 +1,147 @@
+---
+description: Rules to apply SMACCS CSS methodology
+globs: less/**/*.less
+---
+
+# Rules for SMACCS
+SMACCS is a CSS methodology for organizing styles into five categories, promoting maintainable and scalable codebases.
+
+## Core Principles
+
+### 1. Base Styles
+- What: Default element styles (no classes/IDs)
+- Examples: 
+  ```css
+  body { margin: 0; }
+  a { color: blue; }
+  a:hover { text-decoration: underline; }
+  ```
+
+### 2. Layout (.l-*)
+- Use Layouts when creating the *skeleton* of the page, managing how regions are positioned relative to one another
+- Rules:
+  - Name classes by purpose (not semantics)
+  - Use `#ids` for single-use elements
+  - Prefer classes `.l-grid` over semantic tags
+- Why: Separate layout from content
+- Example:
+  ```css
+  .l-grid {
+    display: grid;
+    gap: 20px;
+  }
+  ```
+
+### 3. Modules (.module)
+- Create a Module for reusable components that don’t dictate page structure but define their own appearance/behavior
+- Rules:
+  - Self-contained components
+  - Avoid element selectors (`h2` → `.card-title`)
+  - Variations use sub-classes (`.card-featured`)
+  - Designed to function anywhere in the layout
+  - Avoid dependency on parent context (e.g., `margin: 0 auto` breaks reusability)
+- Example:
+  ```css
+  .card { /* base styles */ }
+  .card-title { /* module child */ }
+  .card-featured { /* variation */ }
+  ```
+
+### 4. State (.is-*)
+- Rules:
+  - Toggle via JavaScript
+  - Can use `!important`
+  - Indicate UI state changes
+- Examples:
+  ```css
+  .is-expanded { max-height: 1000px; }
+  .is-hidden { display: none; }
+  ```
+
+### 5. Theme
+- Rules:
+  - Theme overrides via classes
+  - Separate theme styles
+- Example:
+  ```css
+  .theme-dark {
+    background: #333;
+    color: white;
+  }
+  ```
+
+## Best Practices
+- Avoid: 
+  - Deep nesting (`nav ul li a`)
+  - Semantic layout classes (`.blue-box` → `.l-sidebar`)
+  - Table-based layouts
+- Organize:
+  ```
+  styles/
+  ├── base/
+  ├── layout/
+  ├── modules/
+  ├── states/
+  └── themes/
+  ```
+- Group properties:
+  ```css
+  .card {
+    /* Box Model */
+    display: block;
+    width: 300px;
+    
+    /* Typography */
+    font-size: 1rem;
+    
+    /* Visual */
+    background: white;
+    border: 1px solid #ccc;
+  }
+  ```
+
+## Complete Example
+```html
+<div class="l-container card is-expanded theme-dark">
+  <h2 class="card-title">Card Title</h2>
+  <img src="image.jpg" class="card-image is-thumbnail">
+  <a href="#" class="card-link">Read More</a>
+  <p class="card-text">Card content</p>
+</div>
+```
+
+```css
+/* LAYOUT */
+.l-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* MODULE */
+.card {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 20px;
+}
+
+.card-title { font-size: 1.5rem; }
+.card-link { color: #007bff; }
+
+/* STATE */
+.is-expanded { padding: 40px; }
+.is-thumbnail { border-radius: 50%; }
+
+/* THEME */
+.theme-dark {
+  background: #333;
+  color: white;
+}
+.theme-dark .card-link { color: #a1caff; }
+```
+
+## Key Benefits
+- ✅ Clear style categorization
+- ✅ Reduced selector specificity
+- ✅ Theme switching support
+- ✅ Team-friendly conventions
+- ✅ Scales from small to enterprise projects

@@ -1,0 +1,20 @@
+---
+description: rules for CSS styles
+globs: less/**/*.less
+---
+# CSS / Less styling rules
+- Use SMACSS architecture
+- Always style the UI as designed by a world-class web designer
+- Keep the UI sleek and minimalistic
+- Never hardcode colors, use the variables in the `less/base/variables.less` file
+- Styles are desktop-first. When implementing responsive styles, use media queries to add mobile styles. Example:
+```less
+.desktop-styles {
+  // ...
+}
+@media (max-width: @screen-sm-max) {
+  .mobile-styles {
+    // ...
+  }
+}
+```
