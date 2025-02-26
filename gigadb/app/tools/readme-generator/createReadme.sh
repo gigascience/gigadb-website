@@ -109,12 +109,15 @@ fi
 function set_up_logging() {
   if [[ $(uname -n) =~ compute ]];then
     LOGDIR="/var/log/gigadb"
+    user=$(whoami)
+    LOGFILE="${LOGDIR}/readme_${user}.log"
+    touch "${LOGFILE}"
   else
     LOGDIR="${APP_DIR}/log"
+    LOGFILE="${LOGDIR}/readme.log"
+    mkdir -p "${LOGDIR}"
+    touch "${LOGFILE}"
   fi
-  LOGFILE="${LOGDIR}/readme.log"
-  mkdir -p "${LOGDIR}"
-  touch "${LOGFILE}"
 }
 
 #######################################
