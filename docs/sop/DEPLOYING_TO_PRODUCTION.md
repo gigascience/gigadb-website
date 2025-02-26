@@ -17,13 +17,9 @@ Together they represent an implementation of:
 * A failover strategy, AWS calls "Portfolio failover" [3]
 
 The two infrastructures are meant to be identical and independent, and must run on two distinct regions. Each infrastructure has a role and they will swap roles upon blue/green deployment or incident failover.
+A dashboard tracking that information is available on our wiki:
 
-| Gitlab project     | AWS profile | Local checkout name | AWS region              | current role | current release | status |
-|--------------------| --- |---------------------|-------------------------| --- |-----------------|--------|
-| gigadb-website     | Upstream | gigadb-upstream     | ap-east-1 (HK)          | current production             | v4.3.4          | OK     |
-| alt-gigadb-website | UpstreamAlt | gigadb-alt-upstream | ap-southeast-2 (Sydney) | hot stand-by   | v0337-alt-upstream-beta          | OK     |
-
->**Note**: this table needs updating after each deployment or incident failover
+https://github.com/gigascience/gigadb-website/wiki/Production-and-Releases-Dashboard
 
 
 
