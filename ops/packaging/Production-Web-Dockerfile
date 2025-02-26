@@ -21,6 +21,7 @@ COPY less /var/www/less
 COPY style-guide /var/www/style-guide
 COPY files/examples /var/www/files/examples
 COPY files/templates /var/www/files/templates
+COPY gigadb/app/client/js /gigadb/app/client/js
 
 RUN apk --no-cache add openssl && \
     mkdir -vp /etc/ssl/nginx && chmod 700 /etc/ssl/nginx && \
