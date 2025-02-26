@@ -239,7 +239,7 @@ function main {
   while [ "${count}" -lt "${batch}" ] || [ "${batch}" -eq 0 ]; do
     # Conditional for how to generate readme file - dependant on user's environment
     if [[ $(uname -n) =~ compute ]];then
-      . /home/ec2-user/.bash_profile
+      source "${HOME}"/.files-env
       docker run --rm -v "${WORKING_DIR}":/app/readmeFiles registry.gitlab.com/"${GITLAB_PROJECT}"/production_tool:"${GIGADB_ENV}" /app/yii readme/create --doi "${doi}" --outdir /app/readmeFiles --bucketPath "${destination_path}"
     else
       # Create readme file in current working directory by mounting this location at /app/readmeFiles in container
