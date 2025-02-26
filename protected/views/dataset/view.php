@@ -399,14 +399,14 @@ $sampleDataProvider = $samples->getDataProvider();
                                     <thead>
                                         <tr>
                                             <th class="filename-column" title="The name of the file. Click header to sort by A-Z/Z-A.">File Name</th>
-                                            <th title="Short description of file contents. Click header to sort by A-Z/Z-A.">Description</th>
-                                            <th title="Name or ID of sample used to generate this file.">Sample ID</th>
-                                            <th title="The type of data in the file, see [help](http://gigadb.org/site/help#vocabulary) page for definitions of individual data types.  Click header to sort by A-Z/Z-A.">Data Type</th>
-                                            <th title="The format of the file, see [help](http://gigadb.org/site/help#vocabulary) page for definitions of individual file formats. Click header to sort by A-Z/Z-A.">File Format</th>
-                                            <th title="The size on disk of the file. Click header to sort by A-Z/Z-A.">Size</th>
-                                            <th title="Date of release of the file, see the history log for details of any changes made after initial release date. Click header to sort by A-Z/Z-A.">Release Date</th>
-                                            <th title="Additional information about the file presented as Key:Value pairs.">File Attributes</th>
-                                            <th title="The direct link to the files server location.">Download</th>
+                                            <th class="description-column" title="Short description of file contents. Click header to sort by A-Z/Z-A.">Description</th>
+                                            <th class="sample-id-column" title="Name or ID of sample used to generate this file.">Sample ID</th>
+                                            <th class="data-type-column" title="The type of data in the file, see [help](http://gigadb.org/site/help#vocabulary) page for definitions of individual data types.  Click header to sort by A-Z/Z-A.">Data Type</th>
+                                            <th class="file-format-column" title="The format of the file, see [help](http://gigadb.org/site/help#vocabulary) page for definitions of individual file formats. Click header to sort by A-Z/Z-A.">File Format</th>
+                                            <th class="size-column" title="The size on disk of the file. Click header to sort by A-Z/Z-A.">Size</th>
+                                            <th class="release-date-column" title="Date of release of the file, see the history log for details of any changes made after initial release date. Click header to sort by A-Z/Z-A.">Release Date</th>
+                                            <th class="attributes-column" title="Additional information about the file presented as Key:Value pairs.">File Attributes</th>
+                                            <th class="download-column" title="The direct link to the files server location.">Download</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -427,7 +427,7 @@ $sampleDataProvider = $samples->getDataProvider();
                                                 <td><?= $file['format'] ?></td>
                                                 <td><?= $file['sizeUnit'] ?></td>
                                                 <td><?= $file['date_stamp'] ?></td>
-                                                <td><?= $file['attrDesc'] ?></td>
+                                                <td class="text-break-word"><?= $file['attrDesc'] ?></td>
                                                 <td class="button-column">
                                                     <div class="icon-wrapper">
                                                         <a class="js-download-count fa fa-download fa-lg icon icon-download" href="<?= $file['location'] ?>" aria-label="Download <?= $file["name"] ?>"></a>
@@ -939,6 +939,7 @@ $sampleDataProvider = $samples->getDataProvider();
           console.log("Error, return to " + _min);
           return _min;
         }
+        return _min;
       }
 
       function goToFilesPage() {
@@ -988,8 +989,8 @@ $sampleDataProvider = $samples->getDataProvider();
       }
 
       $(document).ready(function() {
-        handleInitPagination()
-        handlePaginationCssClasses()
+        handleInitPagination();
+        handlePaginationCssClasses();
       });
 
     </script>
