@@ -17,12 +17,7 @@ APP_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 WORKING_DIR=$(pwd)
 
 # Locations of rclone.conf
-BASTION_RCLONE_CONF_LOCATION='/home/ec2-user/.config/rclone/rclone.conf'
 DEV_RCLONE_CONF_LOCATION="${APP_DIR}/../wasabi-migration/config/rclone.conf"
-
-# Source of AWS credentials to supply to rclone on bastion server
-AWS_SHARED_CREDENTIALS_FILE='/home/ec2-user/.aws/credentials'
-AWS_PROFILE='wasabi-transfer'
 
 # Wasabi directory paths
 WASABI_DEV_DIRECTORY="wasabi:gigadb-datasets/dev/pub/10.5524"
@@ -188,9 +183,9 @@ function copy_to_wasabi() {
     # Continue running script if there is an error executing rclone copy
     set +e
     # Construct rclone command to copy readme file to Wasabi
-    rclone_cmd="rclone copy --s3-no-check-bucket ${readme_file} ${doi_directory}"
+    rclone_cmd="rclone copy --s3-no-check-bucket --s3-profile wasabi-transfer ${readme_file} ${doi_directory}"
     if [[ $(uname -n) =~ compute ]];then
-      rclone_cmd+=" --config ${BASTION_RCLONE_CONF_LOCATION}"
+      rclone_cmd+=" --config ${HOME}/.config/rclone/rclone.conf"
     else
       rclone_cmd+=" --config ${DEV_RCLONE_CONF_LOCATION}"
     fi
@@ -202,12 +197,6 @@ function copy_to_wasabi() {
     rclone_cmd+=" --log-level INFO"
     rclone_cmd+=" --stats-log-level DEBUG"
     rclone_cmd+=" >> ${LOGFILE}"
-
-    # For informing rclone where AWS credentials are located on bastion server
-    if [[ $(uname -n) =~ compute ]];then
-      export AWS_SHARED_CREDENTIALS_FILE
-      export AWS_PROFILE
-    fi
 
     # Execute command
     eval "${rclone_cmd}"
