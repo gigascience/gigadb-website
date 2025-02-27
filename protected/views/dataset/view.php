@@ -395,10 +395,10 @@ $sampleDataProvider = $samples->getDataProvider();
                                 <a id="files_table_settings" class="btn btn-default pull-right" data-toggle="modal" data-target="#files_settings" href="#"><span class="glyphicon glyphicon-adjust"></span>Table Settings</a>
                                 <br>
                                 <br>
-                                <table id="files_table" class="table table-striped table-bordered" style="width:100%">
+                                <table id="files_table" class="table table-striped table-bordered dataset-files-table" style="width:100%">
                                     <thead>
                                         <tr>
-                                            <th title="The name of the file. Click header to sort by A-Z/Z-A.">File Name</th>
+                                            <th class="filename-column" title="The name of the file. Click header to sort by A-Z/Z-A.">File Name</th>
                                             <th title="Short description of file contents. Click header to sort by A-Z/Z-A.">Description</th>
                                             <th title="Name or ID of sample used to generate this file.">Sample ID</th>
                                             <th title="The type of data in the file, see [help](http://gigadb.org/site/help#vocabulary) page for definitions of individual data types.  Click header to sort by A-Z/Z-A.">Data Type</th>
@@ -414,7 +414,7 @@ $sampleDataProvider = $samples->getDataProvider();
                                         foreach ($file_models as $file) {
                                         ?>
                                             <tr>
-                                                <td><?= $file['nameHtml'] ?></td>
+                                                <td class="text-break-word"><?= $file['nameHtml'] ?></td>
                                                 <td><?= $file['description'] ?></td>
                                                 <td><?php
                                                     //TODO: huge performance issue with large numbers of fileDatasetKeywordsTest.php:49, manifesting when disabling cache

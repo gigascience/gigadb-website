@@ -253,7 +253,7 @@ class AdminDatasetController extends Controller
         if ($model->save()) {
             $postDatasetTypes = array_keys(Yii::$app->request->post('datasettypes'));
             if (!$postDatasetTypes) {
-                Yii::app()->user->setFlash('updateError', 'Fail to update your types');
+                Yii::app()->user->setFlash('updateError', 'Fail to update your types. You need to select at least one type');
                 $hasPartialError = true;
             } else {
                 $model->updateDatasetTypes($postDatasetTypes);
