@@ -119,6 +119,18 @@ ld_reset_migration:
     when: on_failure
     expire_in: 1 week
 
+.certbot_certificates:
+  extends: .remote_compose
+  stage: operations
+  script:
+    - *configure-docker-compose
+    - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml run --rm certbot certificates
+  when: manual
+  artifacts:
+    untracked: true
+    when: on_failure
+    expire_in: 1 week
+
 sd_teardown:
   variables:
     GIGADB_ENV: "staging"
@@ -148,6 +160,14 @@ sd_refresh_search:
   variables:
     GIGADB_ENV: "staging"
   extends: .refresh_search
+  stage: staging deploy
+  environment:
+    name: staging
+
+sd_certbot_certificates:
+  variables:
+    GIGADB_ENV: "staging"
+  extends: .certbot_certificates
   stage: staging deploy
   environment:
     name: staging
