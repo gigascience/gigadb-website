@@ -6,7 +6,7 @@
 # Variables are read from a .gitlab-env-vars file in the current directory.
 #
 # Prerequisites:
-#   - .secrets file with GITLAB_PRIVATE_TOKEN and GITLAB_PROJECT_ID defined
+#   - .env file with GITLAB_PRIVATE_TOKEN and PROJECT_VARIABLES_URL defined
 #   - .gitlab-env-vars file containing variable definitions, of which you can find an example in ops/configuration/variables/.gitlab-env-vars.example
 #
 # .gitlab-env-vars file format:
@@ -27,15 +27,21 @@
 # Usage:
 #   ./set_env_vars.sh
 
-source .secrets
+source .env
 
 if [ -z "$GITLAB_PRIVATE_TOKEN" ]; then
-  echo "Error: GITLAB_PRIVATE_TOKEN is not set. Check your .secrets file."
+  echo "Error: GITLAB_PRIVATE_TOKEN is not set. Check your .env file."
   exit 1
 fi
 
-if [ -z "$GITLAB_PROJECT_ID" ]; then
-  echo "Error: GITLAB_PROJECT_ID is not set. Check your .secrets file."
+if [ -z "$PROJECT_VARIABLES_URL" ]; then
+  echo "Error: PROJECT_VARIABLES_URL is not set. Check your .env file."
+  exit 1
+fi
+
+# even if PROJECT_VARIABLES_URL is set, make sure REPO_NAME is also set
+if [ -z "$REPO_NAME" ]; then
+  echo "Error: REPO_NAME is not set. Check your .env file."
   exit 1
 fi
 
@@ -55,9 +61,6 @@ while IFS="=" read -r key value || [ -n "$key" ]; do
   value=$(echo "$value" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
   ENV_VARS["$key"]="$value"
 done < ".gitlab-env-vars"
-
-# GitLab API endpoint
-GITLAB_API="https://gitlab.com/api/v4/projects/$GITLAB_PROJECT_ID/variables"
 
 # Loop through and set each variable
 for KEY in "${!ENV_VARS[@]}"; do
@@ -92,7 +95,7 @@ for KEY in "${!ENV_VARS[@]}"; do
   }"
 
   # Make the API call and capture the response
-  RESPONSE=$(curl --fail -sS --request POST "$GITLAB_API" \
+  RESPONSE=$(curl --fail -sS --request POST "$PROJECT_VARIABLES_URL" \
     --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" \
     --header "Content-Type: application/json" \
     --data "$JSON_DATA" 2>&1)
