@@ -228,3 +228,18 @@ Feature: a user visit the dataset page
     When I follow "[aria-label^='Size']"
     And I follow "[aria-label^='Size']"
     Then I should see "3.88 GB" in the table "#files_table" cell 1 6
+
+  @ok @issue-2054
+  Scenario: 3D Models tab
+    Given I have not signed in
+    When I am on "/dataset/100006"
+    Then I should see "3D Models"
+
+  @ok @issue-2054
+  Scenario: 3D model drop down list
+    Given I have not signed in
+    When I am on "/dataset/100006"
+    And I follow "3D Models"
+    Then I should see "3D Models:"
+    And I should see "Select a model"
+    And I should see "GeoB8502_865cm_Shell-4.obj"
