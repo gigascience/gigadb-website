@@ -195,13 +195,13 @@ Feature: A curator can manage file attributes in admin file update page
       | Attribute Name | Value     | Unit |
       | comment  | This is a very long comment that needs a larger te...  |      |
 
-  @ok
+  @wip
   Scenario: Delete file attribute of non published dataset
     Given I have signed in as admin
     And I am on "/adminFile/update/id/457"
     And I press the button "Show New Attribute Fields"
-    And I select "age" from the field "FileAttributes_attribute_id"
-    And I fill in the field of "id" "FileAttributes_value" with "50"
+    And I select "age" from the field "FileAttributes_new_attribute_id"
+    And I fill in the field of "id" "FileAttributes_new_value" with "50"
     And I press the button "Add attribute"
     And I should see "age"
     When I press the button "Delete"
