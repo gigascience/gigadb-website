@@ -11,20 +11,20 @@
   <?php } ?>
     <!-- Primary Meta Tags -->
     <title>Meta Tags — Preview, Edit and Generate</title>
-    <meta name="title" content="GigaDB Dataset - DOI 10.5524/<?php echo $this->metaData['doi'];?> - <?php echo $this->metaData['title'];?>"/>
+    <meta name="title" content="GigaDB Dataset - DOI 10.5524/<?php echo $this->metaData['doi'];?> - <?php echo $this->metaData['title']; ?>"/>
     <meta name="description" content="<?php echo $this->metaData['description']; ?>"/>
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website"/>
     <meta property="og:url" content="<?php echo $this->metaData['doiUrl']; ?>"/>
-    <meta property="og:title" content="<?php echo $this->metaData['title']; ?>"/>
+    <meta property="og:title" content="GigaDB Dataset - DOI 10.5524/<?php echo $this->metaData['doi'];?> - <?php echo $this->metaData['title']; ?>"/>
     <meta property="og:description" content="<?php echo $this->metaData['description']; ?>"/>
     <meta property="og:image" content="<?php echo $this->metaData['imageUrl']; ?>"/>
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image"/>
     <meta property="twitter:url" content="<?php echo $this->metaData['doiUrl']; ?>"/>
-    <meta property="twitter:title" content="<?php echo $this->metaData['title']; ?>"/>
+    <meta property="twitter:title" content="GigaDB Dataset - DOI 10.5524/<?php echo $this->metaData['doi'];?> - <?php echo $this->metaData['title']; ?>"/>
     <meta property="twitter:description" content="<?php echo $this->metaData['description']; ?>"/>
     <meta property="twitter:image" content="<?php echo $this->metaData['imageUrl']; ?>"/>
 
