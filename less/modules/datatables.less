@@ -34,3 +34,13 @@ table.dataTable thead {
     width: 20ch;
   }
 }
+
+.dataset-tab-content {
+  overflow: visible;
+  [role="tabpanel"] {
+    overflow: hidden;
+    &.visible {
+      overflow: visible;
+    }
+  }
+}
