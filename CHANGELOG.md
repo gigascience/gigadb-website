@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Fix #2178: save xml payload even if minting DOI fails
 - Feat #2054: Visualize 3D models locally without relying on sketchfab iframe
 
 ## v4.4.5 - 2025-02-24 - cfe6bc63c - live since 2025-02-26
