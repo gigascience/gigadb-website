@@ -348,6 +348,7 @@ Feature: form to update dataset details
     And I wait "2" seconds
     Then I am on "/curationLog/view/id/5"
     And I should see "View Curation Log #5"
+    And I should see "Joe Bloggs"
     And I should see "hello world"
 
   @ok @curationlog
