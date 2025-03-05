@@ -8,8 +8,7 @@ Supporting scripts and data for "Investigation into the annotation of protocol s
 2015-05-11
 
 [Citation]
-Alnasir, J; Shanahan, H (2015): Supporting scripts and data for "Investigation into the annotation of protocol sequencing steps in the Sequence Read Archive".
-GigaScience Database. https://dx.doi.org/10.5524/100142
+Alnasir J; Shanahan H (2015): Supporting scripts and data for "Investigation into the annotation of protocol sequencing steps in the Sequence Read Archive". GigaScience Database. https://dx.doi.org/10.5524/100142
 
 [Dataset Type]
 Metadata

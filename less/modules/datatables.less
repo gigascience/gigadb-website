@@ -28,3 +28,19 @@ table.dataTable thead {
 .tab-content {
   overflow: hidden;
 }
+
+.dataset-files-table {
+  .filename-column {
+    width: 20ch;
+  }
+}
+
+.dataset-tab-content {
+  overflow: visible;
+  [role="tabpanel"] {
+    overflow: hidden;
+    &.visible {
+      overflow: visible;
+    }
+  }
+}

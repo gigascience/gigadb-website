@@ -4,7 +4,7 @@
   ansible.builtin.user:
     name: "{{ newuser }}"
     shell: /bin/bash
-    groups: ec2-user
+    groups: ec2-user,docker
     append: yes
 
 - name: Create a .ssh and uploadDir directories
