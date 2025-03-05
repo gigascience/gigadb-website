@@ -2,6 +2,9 @@ id,name,description,edam_ontology_id
 1,TEXT,"(.doc, .readme, .text, .txt) - a text file",data_3671
 2,FASTA,"A text-based format which begins with a single-line description, followed by lines of sequence data",format_1929
 4,EXCEL,"(.xls, .xlsx) - Microsoft office spreadsheet files",format_3508
+6,phy,"",
+34,TIF,Tagged Image File Format,format_3591
+37,CSV,Comma Separated Variables table,
 41,FASTA,"A text-based format which begins with a single-line description, followed by lines of sequence data",format_1929
 42,GFF,"The General Feature Format (GFF) is used for describing genes and other features of DNA, RNA and protein sequences",
 43,TEXT,"(.doc, .readme, .text, .txt) - a text file",
