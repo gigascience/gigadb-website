@@ -27,8 +27,8 @@
   artifacts:
     when: on_failure
     expire_in: 1 week
-  rules:
-    - if: '$CI_PROJECT_PATH == "gigascience/upstream/gigadb-website"'
+#  rules:
+#    - if: '$CI_PROJECT_PATH == "gigascience/upstream/gigadb-website"'
 
 TidewaysBuildStaging:
   stage: staging build
@@ -56,8 +56,8 @@ TidewaysBuildLive:
     deployment_tier: production
     url: $REMOTE_HOME_URL
   when: manual
-  rules:
-    - if: $CI_COMMIT_TAG
+#  rules:
+#    - if: $CI_COMMIT_TAG
 
 .deploy_tideways:
   variables:
@@ -100,8 +100,8 @@ TidewaysBuildLive:
   artifacts:
     when: on_failure
     expire_in: 1 week
-  rules:
-    - if: '$CI_PROJECT_PATH == "gigascience/upstream/gigadb-website"'
+#  rules:
+#    - if: '$CI_PROJECT_PATH == "gigascience/upstream/gigadb-website"'
 
 TidewaysDeployStaging:
   stage: staging deploy
@@ -128,5 +128,5 @@ TidewaysDeployLive:
     name: "live"
     url: $REMOTE_HOME_URL
   when: manual
-  rules:
-    - if: $CI_COMMIT_TAG
+#  rules:
+#    - if: $CI_COMMIT_TAG
