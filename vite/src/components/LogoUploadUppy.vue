@@ -56,7 +56,7 @@ const endpoint = computed(() => {
 
 const uppy = new Uppy({
   autoProceed: false,
-  debug: true,
+  debug: false,
   restrictions: {
     maxNumberOfFiles: 1,
     allowedFileTypes: ['image/*'],

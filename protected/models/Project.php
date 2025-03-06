@@ -143,6 +143,37 @@ class Project extends CActiveRecord
         if($db_name !=null){
         $this->addError('name','Duplicate Project Name');}
 
+
+    }
+
+    /**
+     * Write a logo file to the server's /tmp directory from an uploaded file
+     *
+     * @param CUploadedFile $file The uploaded file to write
+     * @return string|false The path of the written temp file, or false if write failed
+     */
+    public static function writeTmpLogoFromFile(CUploadedFile $file) {
+        $slugger = new \Symfony\Component\String\Slugger\AsciiSlugger();
+        $info = pathinfo($file->getName());
+        $fileName = $slugger->slug($info['filename'])->toString();
+        $filepath = sprintf('/datasetfiles/%s/%s.%s',
+            Uuid::uuid4()->toString(),
+            $fileName,
+            $info['extension']
+        );
+        $fullTmpPath = Yii::getAlias('@webroot') . $filepath;
+
+        if (!is_dir($dir = dirname($fullTmpPath)) && !mkdir($dir, 0755, true)) {
+            Yii::log("Failed to create directory: " . $dir, 'error');
+            return false;
+        }
+
+        if (move_uploaded_file($file->getTempName(), $fullTmpPath)) {
+            return $filepath;
+        }
+
+        Yii::log("Failed to move uploaded file to: " . $fullTmpPath, 'error');
+        return false;
     }
 
     /**
@@ -180,44 +211,23 @@ class Project extends CActiveRecord
      */
     public function writeLogoFromUrl(Filesystem $storage, string $url) {
         $enclosingDirectory = $this->getLogoPath();
-        $filename = basename($url);
-        $logoPath = sprintf("%s/%s", $enclosingDirectory, $filename);
-        $logoUrl = sprintf("%s/%s", Project::getStorageBasePath(), $logoPath);
+        $sourcePath = Yii::getAlias('@webroot') . $url;
+        $outputPath = sprintf("%s/%s", $enclosingDirectory, basename($url));
 
-        $sourcePath = str_replace(Project::getStorageBasePath() . '/', '', $url);
-        $content = $storage->read($sourcePath);
-
-        if ($content === false) {
+        if (!file_exists($sourcePath)) {
+            Yii::log("Failed to read content from source path: " . $sourcePath, 'error');
             return false;
         }
 
         if ($storage->put(
-            $logoPath,
-            $content,
+            $outputPath,
+            file_get_contents($sourcePath),
             ['visibility' => AdapterInterface::VISIBILITY_PUBLIC]
         )) {
-            return $logoUrl;
+            return sprintf("%s/%s", Project::getStorageBasePath(), $outputPath);
         }
 
-        return false;
-    }
-
-    /**
-     * Delete a temporary logo path from storage
-     *
-     * @param string $tempImageLocation a full URL for the temp logo image
-     * @return bool
-     */
-    public static function deleteTempLogo($tempImageLocation) {
-        $storage = Yii::$app->cloudStore;
-        $tempLogoPath = str_replace(Project::getStorageBasePath() . '/', '', $tempImageLocation);
-        $tempDirectory = dirname($tempLogoPath);
-
-        if ($storage->has($tempLogoPath)) {
-            $storage->deleteDir($tempDirectory);
-            return true;
-        }
-
+        Yii::log("Failed to write logo to storage at: " . $outputPath, 'error');
         return false;
     }
 
@@ -242,11 +252,6 @@ class Project extends CActiveRecord
     public function getLogoPath(): string
     {
         return Yii::$app->params['environment'] . '/images/projects/' . $this->getUuid();
-    }
-
-    public static function getTempLogoPath(): string
-    {
-        return Yii::$app->params['environment'] . '/images/projects/temp/' . Uuid::uuid4()->toString();
     }
 
     /**
