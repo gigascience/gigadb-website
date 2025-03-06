@@ -19,7 +19,11 @@ export default defineConfig({
     port: 5173,
     origin: 'http://localhost:5173',
     strictPort: true,
-    host: true
+    host: true,
+    cors: {
+      origin: 'http://gigadb.gigasciencejournal.com',
+      methods: ['GET', 'OPTIONS']
+    }
   },
   test: {
     globals: true,
