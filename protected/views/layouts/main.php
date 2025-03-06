@@ -5,13 +5,16 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="language" content="en" />
-  <?php if ($this->metaData['private'] === true || getenv('GIGADB_ENV') !== 'live') { ?>
+  <?php if ($this->metaData['private'] === true || in_array(getenv('GIGADB_ENV'), ['dev', 'CI', 'staging'])) { ?>
     <meta name="robots" content="noindex, nofollow">
     <meta name="googlebot" content="noindex, nofollow">
-  <?php } else { ?>
+  <?php } ?>
+
+  <?php if ($this->metaData['private'] === false && getenv('GIGADB_ENV') === 'live') { ?>
       <meta name="robots" content="all">
       <meta name="googlebot" content="all">
   <?php } ?>
+
     <!-- Primary Meta Tags -->
     <title>Meta Tags — Preview, Edit and Generate</title>
     <meta name="title" content="GigaDB Dataset - DOI 10.5524/<?php echo $this->metaData['doi'];?> - <?php echo $this->metaData['title']; ?>"/>
