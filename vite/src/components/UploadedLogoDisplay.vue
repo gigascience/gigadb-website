@@ -15,6 +15,7 @@ const props = defineProps<{
 <style scoped lang="less">
 @color-darker-gray: #656565;
 .thumbnail-container {
+  margin-bottom: 10px;
   .control-label {
     font-weight: normal;
     font-size: 13px;

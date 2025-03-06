@@ -63,15 +63,15 @@ const uppy = new Uppy({
     maxFileSize: maxSize,
   },
   onBeforeUpload: () => {
-		if (imageDimensions.height > maxHeight) {
-			uppy.log(
-				errorMessage.value ?? ''
-			);
-			uppy.info(errorMessage.value ?? '', 'error');
-			return false;
-		}
-		return true;
-	},
+    if (imageDimensions.height > maxHeight) {
+      uppy.log(
+        errorMessage.value ?? ''
+      );
+      uppy.info(errorMessage.value ?? '', 'error');
+      return false;
+    }
+    return true;
+  },
 })
 
 uppy.use(ImageEditor, {
@@ -114,6 +114,10 @@ function openFileEditor(file: UppyFile<Meta, Record<string, never>>) {
   }
 }
 
+function canUploadImage(file: UppyFile<Meta, Record<string, never>>) {
+  return imageDimensions.height <= maxHeight && file.size != null && file.size <= maxSize;
+}
+
 async function handleImageHeightMsgs(file: UppyFile<Meta, Record<string, never>>, cbTooTall?: () => void) {
   const { height, width } = await getUppyImgDimensions(file);
 
@@ -130,14 +134,28 @@ async function handleImageHeightMsgs(file: UppyFile<Meta, Record<string, never>>
   }
 }
 
+function resetUploader() {
+  uppy.cancelAll();
+  uploadedImageLocation.value = null;
+  errorMessage.value = null;
+  srOnlyErrorMessage.value = null;
+  isWrapperFocusable.value = true;
+  isEditing.value = false;
+  imageDimensions.height = 0;
+  imageDimensions.width = 0;
+}
+
 // uppy file events
 uppy.on('file-added', async (file: UppyFile<Meta, Record<string, never>>) => {
   isWrapperFocusable.value = false;
   errorMessage.value = null;
 
   try {
-    // NOTE when image is added, if it's too tall, open editor automatically. In this instance, it makes sense
     await handleImageHeightMsgs(file, () => openFileEditor(file));
+
+    if (canUploadImage(file)) {
+      uppy.upload();
+    }
   } catch (error) {
     errorMessage.value = 'Error getting image dimensions';
   }
@@ -191,26 +209,31 @@ uppy.on('file-editor:cancel', async () => {
 
 uppy.on('file-editor:complete', async (file: UppyFile<Meta, Record<string, never>>) => {
   try {
-    // NOTE not forcefully opening the editor again here, because user might decide to click "save" with the idea to switch image
     await handleImageHeightMsgs(file);
+
+    if (canUploadImage(file)) {
+      uppy.upload();
+    }
   } catch (error) {
     errorMessage.value = 'Error verifying image dimensions';
   } finally {
     isEditing.value = false;
   }
 });
-
 </script>
 
 <template>
   <div class="logo-upload-uppy">
     <HiddenInput v-if="hiddenInputName" :uploaded-image-location="uploadedImageLocation" :name="hiddenInputName" />
     <UploadedLogoDisplay :uploaded-image-location="uploadedImageLocation" />
+    <button type="button" class="btn background-btn-o mb-20" v-show="!!uploadedImageLocation"
+      @click="resetUploader">Upload a different logo</button>
     <button :tabindex="isWrapperFocusable ? 0 : -1" type="button" class="uppy-dashboard-wrapper"
       :aria-label="`Upload Logo. ${srOnlyConstraintsMessage}`" @keydown.enter="triggerUppyButton">
       <Dashboard :uppy="uppy" :props="{
         note: constraintsMessage,
         proudlyDisplayPoweredByUppy: false,
+        hideProgressAfterFinish: true,
       }" />
     </button>
     <ImageEditorStatusDisplay v-if="isEditing" :image-dimensions="imageDimensions" />
@@ -257,6 +280,7 @@ uppy.on('file-editor:complete', async (file: UppyFile<Meta, Record<string, never
 // uppy dashboard overrides to match the site theme
 :deep(.uppy-Dashboard-inner) {
   font-family: "Open Sans", Lato, "PT Sans", Arial, "Microsoft Yahei", "Hiragino Sans GB", "WenQuanYi Zen Hei Mono", sans-serif;
+
   .uppy-Dashboard-browse {
     color: @color-gigadb-green;
 
