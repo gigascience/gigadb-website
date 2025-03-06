@@ -4,7 +4,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
-- Feat #376: Use tmp folder to store temp uploaded logos in project admin form
 - Feat #376: Uppy logo uploader for admin projects
 - Fix #1290: Update and save project url and name
 - Fix #2187: Make FAQ buttons responsive
