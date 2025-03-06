@@ -47,21 +47,10 @@ RUN apt-get update -yqq && \
 ARG INSTALL_TIDEWAYSPHP=false
 
 # install tideways extension
+COPY --from=ghcr.io/tideways/php:5.18.6 /tideways/ /tideways/
 RUN if [ ${INSTALL_TIDEWAYSPHP} = true ]; then \
-    export DEBIAN_FRONTEND="noninteractive"; \
-    apt-get update; \
-    apt-get install -y --no-install-recommends; \
-    curl -fsSL "https://tideways.s3.amazonaws.com/extension/5.18.6/tideways-php-5.18.6-x86_64.tar.gz" -o tideways-php.tar.gz; \
-    mkdir -p /tmp/tideways/; \
-    tar xvf tideways-php.tar.gz --strip-components=1 -C /tmp/tideways/; \
-    cp /tmp/tideways/*.so /tideways/; \
-    rm -r /tmp/tideways/; \
-    rm tideways-php.tar.gz; \
-    apt-get purge -y --auto-remove \
-    rm -rf /var/lib/apt/lists/* \
+    docker-php-ext-enable --ini-name tideways.ini "$(php /tideways/get-ext-path.php)" \
 ;fi
-
-
 
 ARG INSTALL_OPCACHE=false
 
@@ -216,8 +205,6 @@ COPY ./index.php /var/www/index.php
 COPY fuw/app/common/models/Upload.php /app/common/models/
 COPY fuw/app/backend/models/FiledropAccount.php /app/backend/models/
 COPY ./VERSION /var/www/
-COPY ./gigadb/app/client/js /gigadb/app/client/js/
-
 
 ARG TARGET_PHP_VERSION=7.0
 COPY ops/configuration/php-conf/php-production.ini /usr/local/etc/php/php.ini
