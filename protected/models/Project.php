@@ -19,20 +19,22 @@ use Ramsey\Uuid\Uuid;
  */
 class Project extends CActiveRecord
 {
+    const SCENARIO_CREATE = 'create';
 
-  /** @const string bucket name when storage is in the cloud  */
-  const BUCKET = "assets.gigadb-cdn.net";
-  const NAMESPACE = "http://gigadb.org/namespaces/project";
-  public $image;
-  public $image_logo;
 
-  public static function getStorageBasePath()
-  {
-      // return Yii::getAlias('@web') . '/files'; // testing locally
-      return 'https://' . self::BUCKET;
-  }
+    /** @const string bucket name when storage is in the cloud  */
+    const BUCKET = "assets.gigadb-cdn.net";
+    const NAMESPACE = "http://gigadb.org/namespaces/project";
+    public $image;
+    public $image_logo;
 
-	/**
+    public static function getStorageBasePath()
+    {
+        // return Yii::getAlias('@web') . '/files'; // testing locally
+        return 'https://' . self::BUCKET;
+    }
+
+    /**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
 	 * @return Project the static model class
@@ -59,13 +61,13 @@ class Project extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('url', 'required'),
-      array('url', 'url','message'=>'Please check the URL format'),
+            array('url', 'url','message'=>'Please check the URL format'),
 			array('url', 'length', 'max'=>128),
 			array('name', 'length', 'max'=>255),
-			array('image_location', 'length', 'max'=>255),
-      array('url','check_duplicate'),
-      // array('image', 'file', 'types' => 'jpg, jpeg, png', 'allowEmpty' => true),
-      array('image_logo', 'file', 'types' => 'jpg, jpeg, png', 'allowEmpty' => true),
+			array('image_location', 'length', 'max'=>100),
+            array('url', 'unique', 'message' => 'This url already exists.'),
+            array('name', 'unique', 'message' => 'This name already exists.'),
+            array('image_logo', 'file', 'types' => 'jpg, jpeg, png', 'allowEmpty' => true),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, url, name, image_location', 'safe', 'on'=>'search'),
@@ -120,152 +122,151 @@ class Project extends CActiveRecord
 	}
 
 	public static function getListProjects(){
-      $models=Species::model()->findAll();
-      $list=array();
-      foreach (array_values($models) as $model){
-          $list[$model->id] = $model->common_name;
-      }
-      return $list;
-  }
+        $models=Species::model()->findAll();
+        $list=array();
+        foreach (array_values($models) as $model){
+            $list[$model->id] = $model->common_name;
+        }
+        return $list;
+    }
 
-  function check_duplicate(){
-
-
-      $db_url= Project::model()->findBySql("select name from project where url='$this->url'");
-
-      if($db_url !=null){
-      $this->addError('url','Duplicate URL');}
-
-      $db_name= Project::model()->findBySql("select url from project where name='$this->name'");
-
-      if($db_name !=null){
-      $this->addError('name','Duplicate Project Name');}
+    function check_duplicate(){
 
 
-  }
+        $db_url= Project::model()->findBySql("select name from project where url='$this->url'");
 
-  /**
-   * Write a logo file to storage from an uploaded file
-   *
-   * @param Filesystem $storage The storage filesystem to write to
-   * @param string $enclosingDirectory The directory path to store the logo in
-   * @param CUploadedFile $file The uploaded file to write
-   * @return string|false The URL of the written logo file, or false if write failed
-   */
-  public static function writeLogoFromFile(Filesystem $storage, string $enclosingDirectory, CUploadedFile $file) {
-      $slugger = new \Symfony\Component\String\Slugger\AsciiSlugger();
-      $info = pathinfo($file->getName());
-      $fileName = $slugger->slug($info['filename'])->toString();
-      $logoPath = sprintf("%s/%s.%s", $enclosingDirectory, $fileName, $info['extension']);
-      $logoUrl = sprintf("%s/%s", Project::getStorageBasePath(), $logoPath);
+        if($db_url !=null){
+        $this->addError('url','Duplicate URL');}
 
-      if ($storage->put(
-        $logoPath,
-        file_get_contents($file->getTempName()),
-        ['visibility' => AdapterInterface::VISIBILITY_PUBLIC]
-      )) {
-        return $logoUrl;
-      }
+        $db_name= Project::model()->findBySql("select url from project where name='$this->name'");
 
-      return false;
-  }
+        if($db_name !=null){
+        $this->addError('name','Duplicate Project Name');}
 
-  /**
-   * Write a logo file to storage from a URL
-   *
-   * @param Filesystem $storage The storage filesystem to write to
-   * @param string $url The URL of the source logo file
-   * @return string|false The URL of the written logo file, or false if write failed
-   */
-  public function writeLogoFromUrl(Filesystem $storage, string $url) {
-      $enclosingDirectory = $this->getLogoPath();
-      $filename = basename($url);
-      $logoPath = sprintf("%s/%s", $enclosingDirectory, $filename);
-      $logoUrl = sprintf("%s/%s", Project::getStorageBasePath(), $logoPath);
+    }
 
-      $sourcePath = str_replace(Project::getStorageBasePath() . '/', '', $url);
-      $content = $storage->read($sourcePath);
+    /**
+     * Write a logo file to storage from an uploaded file
+     *
+     * @param Filesystem $storage The storage filesystem to write to
+     * @param string $enclosingDirectory The directory path to store the logo in
+     * @param CUploadedFile $file The uploaded file to write
+     * @return string|false The URL of the written logo file, or false if write failed
+     */
+    public static function writeLogoFromFile(Filesystem $storage, string $enclosingDirectory, CUploadedFile $file) {
+        $slugger = new \Symfony\Component\String\Slugger\AsciiSlugger();
+        $info = pathinfo($file->getName());
+        $fileName = $slugger->slug($info['filename'])->toString();
+        $logoPath = sprintf("%s/%s.%s", $enclosingDirectory, $fileName, $info['extension']);
+        $logoUrl = sprintf("%s/%s", Project::getStorageBasePath(), $logoPath);
 
-      if ($content === false) {
-          return false;
-      }
+        if ($storage->put(
+            $logoPath,
+            file_get_contents($file->getTempName()),
+            ['visibility' => AdapterInterface::VISIBILITY_PUBLIC]
+        )) {
+            return $logoUrl;
+        }
 
-      if ($storage->put(
-          $logoPath,
-          $content,
-          ['visibility' => AdapterInterface::VISIBILITY_PUBLIC]
-      )) {
-          return $logoUrl;
-      }
+        return false;
+    }
 
-      return false;
-  }
+    /**
+     * Write a logo file to storage from a URL
+     *
+     * @param Filesystem $storage The storage filesystem to write to
+     * @param string $url The URL of the source logo file
+     * @return string|false The URL of the written logo file, or false if write failed
+     */
+    public function writeLogoFromUrl(Filesystem $storage, string $url) {
+        $enclosingDirectory = $this->getLogoPath();
+        $filename = basename($url);
+        $logoPath = sprintf("%s/%s", $enclosingDirectory, $filename);
+        $logoUrl = sprintf("%s/%s", Project::getStorageBasePath(), $logoPath);
 
-  /**
-   * Delete a temporary logo path from storage
-   *
-   * @param string $tempImageLocation a full URL for the temp logo image
-   * @return bool
-   */
-  public static function deleteTempLogo($tempImageLocation) {
-      $storage = Yii::$app->cloudStore;
-      $tempLogoPath = str_replace(Project::getStorageBasePath() . '/', '', $tempImageLocation);
-      $tempDirectory = dirname($tempLogoPath);
+        $sourcePath = str_replace(Project::getStorageBasePath() . '/', '', $url);
+        $content = $storage->read($sourcePath);
 
-      if ($storage->has($tempLogoPath)) {
-        $storage->deleteDir($tempDirectory);
+        if ($content === false) {
+            return false;
+        }
+
+        if ($storage->put(
+            $logoPath,
+            $content,
+            ['visibility' => AdapterInterface::VISIBILITY_PUBLIC]
+        )) {
+            return $logoUrl;
+        }
+
+        return false;
+    }
+
+    /**
+     * Delete a temporary logo path from storage
+     *
+     * @param string $tempImageLocation a full URL for the temp logo image
+     * @return bool
+     */
+    public static function deleteTempLogo($tempImageLocation) {
+        $storage = Yii::$app->cloudStore;
+        $tempLogoPath = str_replace(Project::getStorageBasePath() . '/', '', $tempImageLocation);
+        $tempDirectory = dirname($tempLogoPath);
+
+        if ($storage->has($tempLogoPath)) {
+            $storage->deleteDir($tempDirectory);
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Delete an existing logo path from storage
+     *
+     * @param Filesystem $targetStorage
+     * @return bool
+     */
+    public function deleteLogo(Filesystem $targetStorage): bool
+    {
+        $logoPath = $this->getLogoPath();
+
+        if ($targetStorage->has($logoPath)) {
+            $targetStorage->deleteDir($logoPath);
+        }
+
+        // return true always to avoid aborting project deletion
         return true;
-      }
+    }
 
-      return false;
-  }
+    public function getLogoPath(): string
+    {
+        return Yii::$app->params['environment'] . '/images/projects/' . $this->getUuid();
+    }
 
-  /**
-   * Delete an existing logo path from storage
-   *
-   * @param Filesystem $targetStorage
-   * @return bool
-   */
-  public function deleteLogo(Filesystem $targetStorage): bool
-  {
-      $logoPath = $this->getLogoPath();
+    public static function getTempLogoPath(): string
+    {
+        return Yii::$app->params['environment'] . '/images/projects/temp/' . Uuid::uuid4()->toString();
+    }
 
-      if ($targetStorage->has($logoPath)) {
-          $targetStorage->deleteDir($logoPath);
-      }
+    /**
+     * Return a UUID based on the project id
+     *
+     * @return string
+     */
+    public function getUuid()
+    {
+        $uuid = Uuid::uuid5(Uuid::NAMESPACE_URL, self::NAMESPACE."/id/".$this->id);
+        return $uuid;
+    }
 
-      // return true always to avoid aborting project deletion
-      return true;
-  }
+    // this should ensure that logo file is cleaned up before project deletion
+    protected function beforeDelete()
+    {
+        if (!parent::beforeDelete()) {
+            return false;
+        }
 
-  public function getLogoPath(): string
-  {
-      return Yii::$app->params['environment'] . '/images/projects/' . $this->getUuid();
-  }
-
-  public static function getTempLogoPath(): string
-  {
-      return Yii::$app->params['environment'] . '/images/projects/temp/' . Uuid::uuid4()->toString();
-  }
-
-  /**
-   * Return a UUID based on the project id
-   *
-   * @return string
-   */
-  public function getUuid()
-  {
-      $uuid = Uuid::uuid5(Uuid::NAMESPACE_URL, self::NAMESPACE."/id/".$this->id);
-      return $uuid;
-  }
-
-  // this should ensure that logo file is cleaned up before project deletion
-  protected function beforeDelete()
-  {
-      if (!parent::beforeDelete()) {
-          return false;
-      }
-
-      return $this->deleteLogo(Yii::$app->cloudStore); // if this returns false, project deletion will be aborted
-  }
+        return $this->deleteLogo(Yii::$app->cloudStore); // if this returns false, project deletion will be aborted
+    }
 }

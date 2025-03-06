@@ -5,8 +5,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## Unreleased
 
 - Feat #376: Uppy logo uploader for admin projects
+- Fix #1290: Update and save project url and name
+- Fix #2187: Make FAQ buttons responsive
+- Fix #2116: Make authors ordered as shown in the DOI page in the readme file
 
-## v4.4.5 - 2025-02-24 - cfe6bc63c -
+## v4.4.6 - 2025-03-04 - 996f55f0e -
+
+- Fix #2178: save xml payload even if minting DOI fails
+- Feat #2054: Visualize 3D models locally without relying on sketchfab iframe
+
+## v4.4.5 - 2025-02-24 - cfe6bc63c - live since 2025-02-26
 
 - Fix #1119: Fix filename column width in dataset page
 - Feat #2138: Avoid deleting a type when deleting a dataset type

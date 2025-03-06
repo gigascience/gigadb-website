@@ -461,9 +461,8 @@ class AdminDatasetController extends Controller
             $result[$keyStatus] = $updateMdResponse->getStatusCode();
             $log .= sprintf(' - %s md response: %s', $result['check_doi_status'] === 200 ? 'update' : 'create', 201 === $result[$keyStatus] ? "OK" : $result[$keyResponse]);
 
-            if (201 === $result[$keyStatus]) {
-                CurationLog::createGeneralCurationLogEntry($dataset->id, 'Sent DataCite XML', $xml_data);
-            }
+            $logMessageXml = 201 === $result[$keyStatus] ? 'Sent DataCite XML' : 'Failed to send DataCite XML';
+            CurationLog::createGeneralCurationLogEntry($dataset->id, $logMessageXml, $xml_data);
 
             if (201 === $result[$keyStatus] && 404 === $result['check_doi_status']) {
                 $result['doi_data'] = 'doi=' . $mds_prefix . '/' . $doi . "\n" . 'url=http://gigadb.org/dataset/' . $doi;
