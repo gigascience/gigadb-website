@@ -5,15 +5,19 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="language" content="en" />
-  <?php if ($this->metaData['private'] === true || in_array(getenv('GIGADB_ENV'), ['dev', 'CI', 'staging'])) { ?>
-    <meta name="robots" content="noindex, nofollow">
-    <meta name="googlebot" content="noindex, nofollow">
-  <?php } ?>
+  <?php
+  $isPrivate = $this->metaData['private'] === true;
+  $isNonLiveEnv = in_array(getenv('GIGADB_ENV'), ['dev', 'CI', 'staging']);
+  $isLiveEnv = getenv('GIGADB_ENV') === 'live';
 
-  <?php if ($this->metaData['private'] === false && getenv('GIGADB_ENV') === 'live') { ?>
-      <meta name="robots" content="all">
-      <meta name="googlebot" content="all">
-  <?php } ?>
+  if ($isPrivate || $isNonLiveEnv) {
+      echo '<meta name="robots" content="noindex, nofollow">';
+      echo '<meta name="googlebot" content="noindex, nofollow">';
+  } elseif (!$isPrivate && $isLiveEnv) {
+      echo '<meta name="robots" content="all">';
+      echo '<meta name="googlebot" content="all">';
+  }
+  ?>
 
     <!-- Primary Meta Tags -->
     <title>Meta Tags — Preview, Edit and Generate</title>
