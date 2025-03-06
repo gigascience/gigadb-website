@@ -48,14 +48,17 @@ ARG INSTALL_TIDEWAYSPHP=false
 
 # install tideways extension
 RUN if [ ${INSTALL_TIDEWAYSPHP} = true ]; then \
-    apt-get update -yq && \
-    apt-get install -yq --no-install-recommends gpg wget ca-certificates && \
-    echo 'deb [signed-by=/usr/share/keyrings/tideways.gpg] https://packages.tideways.com/apt-packages-main any-version main' | tee /etc/apt/sources.list.d/tideways.list && \
-    wget -qO - 'https://packages.tideways.com/key.gpg' | gpg --dearmor > /usr/share/keyrings/tideways.gpg && \
-    apt-get update -yq && \
-    apt-get install -yq tideways-php=5.18.6 && \
-    apt-get clean -yq \
+    curl -fsSL "https://tideways.s3.amazonaws.com/extension/5.18.6/tideways-php-5.18.6-x86_64.tar.gz" -o tideways-php.tar.gz; \
+    mkdir -p /tmp/tideways/; \
+    tar xvf tideways-php.tar.gz --strip-components=1 -C /tmp/tideways/; \
+    cp /tmp/tideways/*.so /tideways/; \
+    rm -r /tmp/tideways/; \
+    rm tideways-php.tar.gz; \
+    apt-get purge -y --auto-remove \
+    rm -rf /var/lib/apt/lists/*; \
 ;fi
+
+
 
 ARG INSTALL_OPCACHE=false
 
