@@ -58,7 +58,7 @@ RUN if [ ${INSTALL_TIDEWAYSPHP} = true ]; then \
     rm -r /tmp/tideways/; \
     rm tideways-php.tar.gz; \
     apt-get purge -y --auto-remove \
-    rm -rf /var/lib/apt/lists/*; \
+    rm -rf /var/lib/apt/lists/* \
 ;fi
 
 
