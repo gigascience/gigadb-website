@@ -8,18 +8,25 @@
 			['isActive' => true, 'label' => 'View'],
 		]
 	]);
-	$this->widget('zii.widgets.CDetailView', array(
+	$this->widget('zii.widgets.CDetailView', [
 		'data' => $model,
-		'attributes' => array(
+		'attributes' => [
 			'id',
 			'url',
 			'name',
-			'image_location',
-		),
-		'htmlOptions' => array('class' => 'table table-striped table-bordered dataset-view-table'),
-		'itemCssClass' => array('odd', 'even'),
+			[
+				'name' => 'image_location',
+				'label' => 'Image',
+				'type' => 'raw',
+				'value' => !empty($model->image_location) ?
+					CHtml::image($model->image_location, CHtml::encode($model->name), ['style' => 'max-width: auto; max-height: 60px;']) :
+					'<span>(not set)</span>'
+			],
+		],
+		'htmlOptions' => ['class' => 'table table-striped table-bordered dataset-view-table'],
+		'itemCssClass' => ['odd', 'even'],
 		'itemTemplate' => '<tr class="{class}"><th scope="row">{label}</th><td>{value}</td></tr>'
-	));
+	]);
 	?>
 
 </div>
