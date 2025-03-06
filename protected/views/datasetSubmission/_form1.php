@@ -12,25 +12,25 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/caret/1.0.0/jquery.caret.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tag-editor/1.0.20/jquery.tag-editor.min.js"></script>
-<div class="span12 form well">
-    <div class="form-horizontal">
+<div class="span12 form well container">
+    <div class="form-horizontal row">
         <p class="note">Fields with <span class="required">*</span> are required.</p>
         <div class="clear"></div>
         <?php echo $form->errorSummary($model); ?>
-        <div class="span5">
-            <div class="control-group">
+        <div class="col-md-4 col-sm-12">
+            <div class="form-group">
                 <?php echo $form->labelEx($model, 'submitter_id', array('class' => 'control-label')); ?>
-                <div class="controls">
+                <div class="">
 
                     <?php
                     $email = Yii::app()->user->getEmail();
-                    echo CHtml::textField("email", $email, array('size' => 60, 'maxlength' => 300, 'readonly' => "readonly")
+                    echo CHtml::textField("email", $email, array('size' => 60, 'maxlength' => 300, 'readonly' => "readonly", "class" => "form-control")
                     );
                     ?>
                 </div>
             </div>
 
-            <div class="control-group">
+            <div class="form-group">
                 <?php echo $form->labelEx($model, 'types', array('class' => 'control-label')); ?>
                 <a class="myHint" data-content="Select the type of data to be included 
                    in this submission, you may select more than 1. If a 
@@ -46,17 +46,17 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                 </div>
             </div>
 
-            <div class="control-group">
+            <div class="form-group">
                 <?php echo $form->labelEx($model, 'title', array('class' => 'control-label')); ?>
                 <a class="myHint" data-content="This should be a short descriptive title
                    of the dataset to be submitted"></a>
-                <div class="controls">
-                    <?php echo $form->textField($model, 'title', array('size' => 60, 'maxlength' => 300)); ?>
+                <div class="">
+                    <?php echo $form->textField($model, 'title', array('size' => 60, 'maxlength' => 300, 'class' => "form-control")); ?>
                     <?php echo $form->error($model, 'title'); ?>
                 </div>
             </div>
 
-            <div class="control-group">
+            <div class="form-group">
 
                 <?php echo CHtml::label('Estimated Dataset Size', '', array('class' => 'control-label'));
                 ?>
@@ -64,9 +64,9 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                    combined size of all the files that you intend to submit"></a>
                    <?php //echo $form->labelEx($model, 'dataset_size', array('class' => 'control-label'));
                    ?>
-                <div class="controls">
-                    <?php echo $form->textField($model, 'dataset_size', array('size' => 60, 'maxlength' => 200));
-                          echo CHtml::activeDropDownList($model,'union', array('B'=>'Bytes','M'=>'MB','G'=>'GB','T'=>'TB'));?>
+                <div class="">
+                    <?php echo $form->textField($model, 'dataset_size', array('size' => 60, 'maxlength' => 200,'class' => 'form-control'));
+                          echo CHtml::activeDropDownList($model,'union', array('B'=>'Bytes','M'=>'MB','G'=>'GB','T'=>'TB'), array('class' => 'form-control'));?>
                     <?php echo $form->error($model, 'dataset_size'); ?>
                 </div>
             </div>
@@ -74,72 +74,72 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
 
         <?php echo $form->hiddenField($image, 'location', array('size' => 60, 'maxlength' => 200, 'readonly' => "readonly", 'class' => 'image')); ?>
 
-        <div class="span6">
-            <div class="control-group">
+        <div class="col-md-4 col-sm-12">
+            <div class="form-group">
                 <font class="control-label">No image</font>
                 <a class="myHint" data-content="check it if you don't want to upload an image"></a>
-                <div class="controls">
+                <div class="">
                     <?php echo $form->checkBox($image,'is_no_image', array('id'=>'image-upload')); ?>
                     <!--input id="image-upload" type="checkbox" name="Images[is_no_image]"
                            style="margin-right:5px"/-->
                 </div>
             </div>
 
-            <div class="control-group">
+            <div class="form-group">
                 <label class="control-label">Image Upload</label>
                 <a class="myHint" data-content="upload an image from your local computer/network"></a>
-                <div class="controls">
-                    <?php echo $form->fileField($image, 'image_upload', array('class'=>'image')); ?>
+                <div class="">
+                    <?php echo $form->fileField($image, 'image_upload', array('class'=>'image', 'class' => 'form-control')); ?>
                     <?php echo $form->error($image, 'image_upload'); ?>
                 </div>
             </div>
 
-            <div class="control-group">
+            <div class="form-group">
                 <?php echo $form->labelEx($image, 'source', array('class' => 'control-label')); ?>
                 <a class="myHint" data-content= "from where did you get the image, e.g. wikipedia"></a>
-                <div class="controls">
-                    <?php echo $form->textField($image, 'source', array('size' => 60, 'maxlength' => 200, 'class' => 'image')); ?>
+                <div class="">
+                    <?php echo $form->textField($image, 'source', array('size' => 60, 'maxlength' => 200, 'class' => 'image form-control')); ?>
                     <?php echo $form->error($image, 'source'); ?>
                 </div>
             </div>
 
-            <div class="control-group">
+            <div class="form-group">
                 <?php echo $form->labelEx($image, 'tag', array('class' => 'control-label')); ?>
                 <a class="myHint" data-content="A brief descriptive title of the image, 
                    this will be shown to users if they hover over the image."></a>
-                <div class="controls">
-                    <?php echo $form->textField($image, 'tag', array('size' => 60, 'maxlength' => 200, 'class' => 'image')); ?>
+                <div class="">
+                    <?php echo $form->textField($image, 'tag', array('size' => 60, 'maxlength' => 200, 'class' => 'image form-control')); ?>
                     <?php echo $form->error($image, 'tag'); ?>
                 </div>
             </div>
 
-            <div class="control-group">
+            <div class="form-group">
                 <?php echo $form->labelEx($image, 'license', array('class' => 'control-label')); ?>
                 <a class="myHint" data-content="GigaScience database will
                    only use images that are free for others to re-use,
                    primarily this is Creative Commons 0 license (CC0)
                    please see <a target='_blank' href='http://creativecommons.org/about/cc0'>here</a> 
                    for further reading on creative commons licenses."></a>
-                <div class="controls">
-                    <?php echo $form->textField($image, 'license', array('size' => 60, 'maxlength' => 200, 'class' => 'image')); ?>
+                <div class="">
+                    <?php echo $form->textField($image, 'license', array('size' => 60, 'maxlength' => 200, 'class' => 'image form-control')); ?>
                     <?php echo $form->error($image, 'license'); ?>
                 </div>
             </div>
 
-            <div class="control-group">
+            <div class="form-group">
                 <?php echo $form->labelEx($image, 'photographer', array('class' => 'control-label')); ?>
                 <a class="myHint" data-content="The person(s) that should 
                    be credited for the image"></a>
-                <div class="controls">
-                    <?php echo $form->textField($image, 'photographer', array('size' => 60, 'maxlength' => 200, 'class' => 'image')); ?>
+                <div class="">
+                    <?php echo $form->textField($image, 'photographer', array('size' => 60, 'maxlength' => 200, 'class' => 'image form-control')); ?>
                     <?php echo $form->error($image, 'photographer'); ?>
                 </div>
             </div>
         </div>
 
 
-        <div class="span10">
-            <div class="control-group">
+        <div class="col-md-12 col-sm-12">
+            <div class="form-group">
                 <?php echo $form->labelEx($model, 'description', array('class' => 'control-label')); ?>
                 <a class="myHint" data-content="Please provide a full description of the datatset, this may 
                    look like an article abstract giving a brief background of the research and a 
@@ -149,27 +149,26 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                    so you may use &quot;&lt; br &gt;&quot; for line breaks, &quot;&lt; em &gt;&QUOT; <em>for italics</em> &quot;
                    &lt; em /&gt;&quot; 
                    and &quot;&lt; b &gt;&quot; <b>for bold</b> &quot;&lt; b/ &gt;&quot;"></a>
-                <div class="controls">
-                    <?php echo $form->textArea($model, 'description', array('rows' => 6, 'cols' => 100, 'style' => 'resize:vertical;width:610px')); ?>
+                <div class="">
+                    <?php echo $form->textArea($model, 'description', array('rows' => 6, 'cols' => 100, 'style' => 'resize:vertical;width:610px', 'class' => 'form-control')); ?>
                     <?php echo $form->error($model, 'description'); ?>
                 </div>
             </div>
         </div>
-        <div class="span10">
-            <div class="control-group">
+        <div class="col-md-4 col-sm-12">
+            <div class="form-group">
                 <?php echo CHtml::label('Keywords','keywords', array('class'=>'control-label')); ?>
-                <div class="controls">
-                    <?php echo CHtml::textField('keywords', '', array('class'=>'span10', 'size'=>60,'maxlength'=>300)); ?>
+                <div class="">
+                    <?php echo CHtml::textField('keywords', '', array('class'=>'form-control', 'size'=>60,'maxlength'=>300)); ?>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="span12" style="text-align:center">
+    <div class="col-md-12" style="text-align:center">
         <a href="<?= Yii::app()->createUrl('/user/view_profile') ?>" class="btn"/>Cancel</a>
         <?php echo CHtml::submitButton('Next', array('class' => 'btn-green', 'id' => 'next-btn')); ?>
     </div>
-
 </div>
 
 <script>
