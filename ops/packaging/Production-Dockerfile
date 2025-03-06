@@ -48,6 +48,9 @@ ARG INSTALL_TIDEWAYSPHP=false
 
 # install tideways extension
 RUN if [ ${INSTALL_TIDEWAYSPHP} = true ]; then \
+    export DEBIAN_FRONTEND="noninteractive"; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends; \
     curl -fsSL "https://tideways.s3.amazonaws.com/extension/5.18.6/tideways-php-5.18.6-x86_64.tar.gz" -o tideways-php.tar.gz; \
     mkdir -p /tmp/tideways/; \
     tar xvf tideways-php.tar.gz --strip-components=1 -C /tmp/tideways/; \
