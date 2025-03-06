@@ -1,6 +1,8 @@
 /// <reference types="vitest/config" />
+/// <reference types="node" />
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
+import {resolve} from 'path';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -28,5 +30,13 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'happy-dom'
+  },
+  css: {
+    preprocessorOptions: {
+      less: {
+        additionalData: `@import "${resolve(__dirname, '../less/base/variables.less')}";`,
+        javascriptEnabled: true,
+      },
+    }
   }
 })

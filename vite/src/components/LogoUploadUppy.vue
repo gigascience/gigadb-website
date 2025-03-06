@@ -242,12 +242,6 @@ uppy.on('file-editor:complete', async (file: UppyFile<Meta, Record<string, never
 </template>
 
 <style scoped lang="less">
-/* duplicating less variable here, would be better to reuse already defined color from variables.less */
-@color-gigadb-green: #08893e;
-@color-gigadb-green-600: #06b34d;
-@color-gigadb-green-800: #0d6e36;
-@color-true-white: #ffffff;
-
 .logo-upload-uppy {
   margin-bottom: 20px;
 }
@@ -273,7 +267,7 @@ uppy.on('file-editor:complete', async (file: UppyFile<Meta, Record<string, never
 .uppy-dashboard-wrapper:focus-visible {
   outline: 1px solid @color-gigadb-green;
   border: 1px solid @color-gigadb-green-600;
-  box-shadow: inset 0 1px 1px rgba(8, 137, 62, 0.075), 0 0 6px rgba(6, 179, 77, 0.5);
+  box-shadow: inset 0 1px 1px fade(@color-gigadb-green, 7.5%), 0 0 6px fade(@color-gigadb-green-600, 50%);
   border-radius: 4px;
 }
 
@@ -295,7 +289,7 @@ uppy.on('file-editor:complete', async (file: UppyFile<Meta, Record<string, never
   }
 
   .uppy-DashboardContent-back {
-    color: @color-gigadb-green;
+    color: @gigadb-green-on-lighter-gray;
     background: transparent;
     border: 1px @color-gigadb-green solid;
 
@@ -306,15 +300,15 @@ uppy.on('file-editor:complete', async (file: UppyFile<Meta, Record<string, never
 
     &:hover {
       color: @color-true-white;
-      background: @color-gigadb-green;
+      background: @gigadb-green-on-lighter-gray;
     }
   }
 
   .uppy-DashboardContent-save {
-    color: @color-gigadb-green;
+    color: @gigadb-green-on-lighter-gray;
 
     &:focus {
-      background: @color-gigadb-green;
+      background: @gigadb-green-on-lighter-gray;
       color: @color-true-white;
     }
 
