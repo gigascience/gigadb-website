@@ -106,7 +106,9 @@ class StoredDatasetMainSectionTest extends CDbTestCase
         // no result from database
         $dataset_id = 567;
         $daoUnderTest = new StoredDatasetMainSection($dataset_id, $this->getFixtureManager()->getDbConnection());
-        $expected = [];
+        $expected = [
+            "authors" => [],
+        ];
 
         $this->assertEquals($expected, $daoUnderTest->getReleaseDetails());
     }

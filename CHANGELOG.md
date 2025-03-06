@@ -27,8 +27,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## v4.4.1 - 2024-12-24 - 51c426dfe - live since 2025-01-02
 
-## v4.4.4 - 2025-02-17 - c17c44843 -
-
 - Fix #2099: Add missing permission for CLOCKSS
 
 ## v4.4.3 - 2025-02-03 - c62107e5e - live since 2025-02-05
