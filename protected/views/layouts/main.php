@@ -5,9 +5,12 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="language" content="en" />
-  <?php if (true || $this->metaData['private']) {//TODO: remove true|| when going to prod. or get env ?>
+  <?php if ($this->metaData['private'] === true || getenv('GIGADB_ENV') !== 'live') { ?>
     <meta name="robots" content="noindex, nofollow">
     <meta name="googlebot" content="noindex, nofollow">
+  <?php } else { ?>
+      <meta name="robots" content="all">
+      <meta name="googlebot" content="all">
   <?php } ?>
     <!-- Primary Meta Tags -->
     <title>Meta Tags — Preview, Edit and Generate</title>
