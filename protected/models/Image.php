@@ -22,6 +22,7 @@ use Ramsey\Uuid\Uuid;
  */
 class Image extends CActiveRecord
 {
+    public $image_upload;
     public bool $is_no_image = false;
 
     /** @const int  database id of the generic image (no_image.png) */
@@ -183,5 +184,16 @@ class Image extends CActiveRecord
         }
         return false;
 
+    }
+
+    public function setUploadedImage(): CUploadedFile
+    {
+        $uploadedFile = CUploadedFile::getInstance($this, 'image_upload');
+
+        if (!$uploadedFile) {
+            throw new \Exception("No image uploaded");
+        }
+
+        return $uploadedFile;
     }
 }

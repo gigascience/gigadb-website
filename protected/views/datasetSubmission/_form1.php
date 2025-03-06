@@ -13,6 +13,14 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
 <script src="https://cdnjs.cloudflare.com/ajax/libs/caret/1.0.0/jquery.caret.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tag-editor/1.0.20/jquery.tag-editor.min.js"></script>
 <div class="span12 form well container">
+    <div id='imagePreviewWrapper' class='image-preview-wrapper pull-right' style='max-width: 100px; max-height: 200px;'>
+        <?php
+        if ($model->image) {
+            echo CHtml::image($model->image->url, $model->image->isUrlValid() ? $model->image->tag : '', array('id' => 'showImage', 'class' => 'dataset-image'));
+        }
+        echo CHtml::image('', '', array('id' => 'imagePreview', 'alt' => ''));
+        ?>
+    </div>
     <div class="form-horizontal row">
         <p class="note">Fields with <span class="required">*</span> are required.</p>
         <div class="clear"></div>
@@ -71,7 +79,6 @@ $cs->registerCssFile('/css/jquery.tag-editor.css');
                 </div>
             </div>
         </div>
-
         <?php echo $form->hiddenField($image, 'location', array('size' => 60, 'maxlength' => 200, 'readonly' => "readonly", 'class' => 'image')); ?>
 
         <div class="col-md-4 col-sm-12">

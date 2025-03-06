@@ -25,9 +25,9 @@ $form = $this->beginWidget('CActiveForm', array(
 <a href="/adminFile/create1/id/<?= $model->id ?>" class="btn nomargin"><?= Yii::t('app' , 'File')?></a>
 <? } ?>
 
-<? 
-    $this->renderPartial('_form1', array('model'=>$model, 'form'=>$form, 'image'=>$image));     
-?>
+    <?
+    $this->renderPartial('_form1', array('model'=>$model, 'form'=>$form, 'image'=>$image));
+    ?>
 
 <?php $this->endWidget(); ?>
 

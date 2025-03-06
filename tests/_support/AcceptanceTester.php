@@ -32,6 +32,18 @@ class AcceptanceTester extends \Codeception\Actor
     */
 
     /**
+     * @Given I sign in as the user :email
+     */
+    public function iSignInAsTheUser($email)
+    {
+        $this->amOnPage('/site/login');
+        $this->fillField(['name' => 'LoginForm[username]'], $email);
+        $this->fillField(['name' => 'LoginForm[password]'], 'gigadb');
+        $this->click('Login');
+    }
+
+
+    /**
      * @Given I am on :page
      */
     public function iAmOn($page)
@@ -255,11 +267,29 @@ class AcceptanceTester extends \Codeception\Actor
     }
 
     /**
+     * Files need to be made available for tests in _data directory
+     *
+     * @When I attach the file :file to the file input element by id :id
+     */
+    public function iAttachTheFileToTheFileInputElementById($file, $file_input_element_id)
+    {
+        $this->attachFile("#$file_input_element_id", $file);
+    }
+
+    /**
      * @Then I should see an image field :field with text :value
      */
     public function iShuldSeeAnImageFieldWithText($field, $value)
     {
         $this->seeElement('input', ['name' => "Image[$field]", 'type' => "text", 'value' => "$value"]);
+    }
+
+    /**
+     * @Then I should see a dataset text field :field with text :value
+     */
+    public function iShouldSeeADatasetTextFieldWithText($field, $value)
+    {
+        $this->seeElement('input', ['name' => "Dataset[$field]", 'type' => 'text', 'value' => "$value"]);
     }
 
     /**

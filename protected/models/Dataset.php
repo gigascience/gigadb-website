@@ -744,11 +744,11 @@ class Dataset extends CActiveRecord
      *
      * @return bool
      */
-    public function updateImageAndMetafields(CUploadedFile $datasetImage = null): bool
+    public function updateImageAndMetafields(CUploadedFile $datasetImage = null, ?array $postImage = null): bool
     {
         if ($datasetImage) {
             $this->image = new Image();
-            $this->image->attributes = Yii::app()->request->getPost('Image');
+            $this->image->attributes = $postImage ?: Yii::app()->request->getPost('Image');
             if (!$this->image->write(Yii::$app->cloudStore, $this->getUuid(), $datasetImage)) {
                 Yii::log('Error writing file to storage for dataset ' . $this->identifier, 'error');
                 Yii::app()->user->setFlash('updateError', 'Fail to update your image');
@@ -777,5 +777,17 @@ class Dataset extends CActiveRecord
         $this->image_id = !$this->image->url ? Image::GENERIC_IMAGE_ID : $this->image->id;
 
         return true;
+    }
+
+    public function setDatasetSizeInBytesFromUnit(string $datasetSize, int $unit) {
+        if ($unit === 'B') {
+            $this->dataset_size = $datasetSize;
+        } elseif ($unit === 'M') {
+            $this->dataset_size = $datasetSize*1024*1024;
+        } elseif ($unit === 'G') {
+            $this->dataset_size = $datasetSize*1024*1024*1024;
+        } elseif ($unit === 'T') {
+            $this->dataset_size = $datasetSize*1024*1024*1024*1024;
+        }
     }
 }
