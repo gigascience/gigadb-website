@@ -1,22 +1,22 @@
 # How to set up CI/CD pipelines on gitlab.com
 
-Application development may involve implementing small code changes which are 
-frequently checked into version control. Continuous Integration (CI) provides a 
-consistent and automated way to build, package and test the application under 
-development. Furthermore, Continuous Delivery (CD) automates the deployment of 
-applications to specific infrastructure environments such as staging and 
+Application development may involve implementing small code changes which are
+frequently checked into version control. Continuous Integration (CI) provides a
+consistent and automated way to build, package and test the application under
+development. Furthermore, Continuous Delivery (CD) automates the deployment of
+applications to specific infrastructure environments such as staging and
 production servers.
 
 ## Use of GitLab for Continuous Integration
 
-GitLab provides a CI service used by GigaDB. The CI/CD pipeline is described in 
+GitLab provides a CI service used by GigaDB. The CI/CD pipeline is described in
 the [`.gitlab-ci.yml`](https://github.com/gigascience/gigadb-website/blob/develop/.gitlab-ci.yml)
-file located at the root of the repository. A Runner in GitLab triggers the CI 
-pipeline every time there is a code commit or push. GitLab.com allows you to use 
-Shared Runners provided by GitLab Inc which are virtual machines running on 
+file located at the root of the repository. A Runner in GitLab triggers the CI
+pipeline every time there is a code commit or push. GitLab.com allows you to use
+Shared Runners provided by GitLab Inc which are virtual machines running on
 GitLab's infrastructure to build any project.
 
-The GigaDB `gitlab-ci.yml` configuration file tells the GitLab Runner to run a pipeline job 
+The GigaDB `gitlab-ci.yml` configuration file tells the GitLab Runner to run a pipeline job
 with these stages:
 * build for test
 * test
@@ -37,22 +37,22 @@ ops/pipelines/
 └── gigadb-test-jobs.yml #jobs for running tests as part of continuous integration
 ```
 
-The above steps support testing and deployment of GigaDB, but assumes that the 
+The above steps support testing and deployment of GigaDB, but assumes that the
 set up of the Docker server is already done separately.
 
 ### Mirroring your forked gigadb-website repository from GitHub
 
-To begin, mirror your forked GitHub gigadb-website repository as a GitLab 
-project. This is done by adding your GitHub gigadb-website repository to the 
+To begin, mirror your forked GitHub gigadb-website repository as a GitLab
+project. This is done by adding your GitHub gigadb-website repository to the
 GitLab Gigascience Forks organisation. To do this:
 
-* Log into GitLab and go to the 
+* Log into GitLab and go to the
 [gigascience/Forks page](https://gitlab.com/gigascience/forks).
- 
-* Click on *New Project* button in the top-right corner, then on the next screen click on *Run CI/CD for external repository* 
 
-* Fill in the **Git repository URL** field, e.g. https://github.com/pli888/gigadb-website. 
-* Check the Mirror repository checkbox and check Public visibility Level option. 
+* Click on *New Project* button in the top-right corner, then on the next screen click on *Run CI/CD for external repository*
+
+* Fill in the **Git repository URL** field, e.g. https://github.com/pli888/gigadb-website.
+* Check the Mirror repository checkbox and check Public visibility Level option.
 * Finally click the **Create project** button
 
 ### Understanding environments
@@ -60,7 +60,7 @@ GitLab Gigascience Forks organisation. To do this:
 Environmments are the foundation of the pipeline.
 There are used in two contexts:
 * When getting and setting variables
-* When deploying the code 
+* When deploying the code
 
 
 #### When deploying the code
@@ -74,7 +74,7 @@ There are two types of environments: development and production.
 | staging | production | an environmment hosted on AWS cloud for final acceptance of a version of the web site product that's like the real live in every aspect |
 | live | production | the real live web site product hosted on AWS cloud |
 
-The local environment is on the developer's machine, that's what the dev environment refers to. 
+The local environment is on the developer's machine, that's what the dev environment refers to.
 The CI environment is implicitly created by the CI part of GitLab, that's where the code is deployed for the execution of the automated tests.
 The CI is a gate-keeper for the production environments: deployment to staging and live can only happen if the tests pass in CI.
 
@@ -85,7 +85,7 @@ The CI is a gate-keeper for the production environments: deployment to staging a
 ##### Environment attribute
 
 A functionality of Gitlab is to store environment variables, so that we can use them in our deployed applications.
-Because there is multiple deployment environments and the variables often differ from one to the other, 
+Because there is multiple deployment environments and the variables often differ from one to the other,
 Gitlab variables can be categoriseinto different environment which are:
 * dev
 * staging
@@ -94,17 +94,17 @@ Gitlab variables can be categoriseinto different environment which are:
 
 The environment is associated upon creation to each variable as one of its attributes.
 
->By convention the `staging` and `live` environments for variables are associated with the `staging` and `live` deployments respectively. 
->(i.e: a staging variable is only to be used on staging deployment environment, 
+>By convention the `staging` and `live` environments for variables are associated with the `staging` and `live` deployments respectively.
+>(i.e: a staging variable is only to be used on staging deployment environment,
 >and a live variable is to be used only on live deployment environment).
->`All` class of variables are needed in applications regardless of their deployment environments, 
+>`All` class of variables are needed in applications regardless of their deployment environments,
 >while the `dev` class of variables are equally used on a developer's local environments and on CI deployment environment.
 
 Furthermore, variables have a hierarchal organisation that map to groups and projects.
-So that, when there are variables is needed by all developers with the same value, such variable can be defined in a parent group, 
+So that, when there are variables is needed by all developers with the same value, such variable can be defined in a parent group,
 which allow sub-groups or sub-projects to access it without having to define it.
 
-##### Group and projects 
+##### Group and projects
 
 The diagram below show the hierarchy we have in place.
 
@@ -143,7 +143,7 @@ This token is rotated regularly. If you are a contractor or contributor, that's 
 You can ask the core team to have the latest one sent to you.
 
 The last one, temporary token, is an ephemeral token created by Gitlab when a pipeline is run.
-It is scoped for the duration of a pipeline jobs peformed on a Gitlab runner 
+It is scoped for the duration of a pipeline jobs peformed on a Gitlab runner
 and provide authentication to API calls needed by jobs configuration.
 
 
@@ -153,25 +153,34 @@ and provide authentication to API calls needed by jobs configuration.
 
 Your new GitLab `gigadb-website` project requires configuration:
 
-* The default branch needs to be selected for your project to allow you to 
-perform CI/CD on this branch. Go to the Repository settings for your project, 
+* The default branch needs to be selected for your project to allow you to
+perform CI/CD on this branch. Go to the Repository settings for your project,
 *e.g.*
 [https://gitlab.com/gigascience/forks/pli888-gigadb-website/-/settings/repository],
- click on the *Expand* button next to the "Branch defaults" section header for the `Default Branch` settings. 
-Use the drop-down menu to select the default branch and click the *Save changes* green 
-button. Whatever branch you select requires a .gitlab-ci.yml file at the root of 
+ click on the *Expand* button next to the "Branch defaults" section header for the `Default Branch` settings.
+Use the drop-down menu to select the default branch and click the *Save changes* green
+button. Whatever branch you select requires a .gitlab-ci.yml file at the root of
 the repository project for CI/CD to work.
 
 * Go to the CI/CD Settings for your project, *e.g.*
-[https://gitlab.com/gigascience/forks/pli888-gigadb-website/-/settings/ci_cd]. In 
-the *General pipelines* section, ensure that the *Public pipelines* checkbox is 
+[https://gitlab.com/gigascience/forks/pli888-gigadb-website/-/settings/ci_cd]. In
+the *General pipelines* section, ensure that the *Public pipelines* checkbox is
 **NOT** ticked, otherwise variables will leak into the logs.
 Click on the *Save changes* green button.
- 
-* The variables below need to be created for your project in the `Environment variables` 
-section in the CI/CD Settings page.   
+
+* The variables below need to be created for your project in the `Environment variables`
+section in the CI/CD Settings page.
 Make sure the "Protect variable" and "Expand variable reference" checkboxes are unchecked.
 the Visibility radio input should be set to "Visible" except for the passwords and tokens that should be set to "Masked".
+
+> The script ops/scripts/set_env_vars.sh can be used to setup gitlab environment variables programmatically.
+> To use the script:
+> 1. Make sure in your .env file you have the following variables properly set:
+>    * GITLAB_PRIVATE_TOKEN
+>    * PROJECT_VARIABLES_URL
+> 2. Make sure you have a .gitlab-env-vars file in the root directory
+>    An example file can be found in ops/configuration/variables/.gitlab-env-vars.example
+> 3. Run the script ./ops/scripts/set_env_vars.sh
 
 | Variable Name          | Value     | Environment |
 |---|---|---|
@@ -193,47 +202,47 @@ the Visibility radio input should be set to "Visible" except for the passwords a
 | REVIEW_DB_DATABASE | reviewdb | dev |
 | GITLAB_PRIVATE_TOKEN | Ask tech team | All |
 
-Those environment variables together with those in the Forks group are exported 
-to the `.secrets` file and are listed 
-[here](https://github.com/gigascience/gigadb-website/blob/develop/ops/configuration/variables/secrets-sample). 
-All these GitLab CI/CD environment variables are referred to in the 
+Those environment variables together with those in the Forks group are exported
+to the `.secrets` file and are listed
+[here](https://github.com/gigascience/gigadb-website/blob/develop/ops/configuration/variables/secrets-sample).
+All these GitLab CI/CD environment variables are referred to in the
 `gitlab-ci.yml` file or used in the CI/CD pipeline.
 
 
 ### Executing a Continuous Integration run
- 
+
 Your CI/CD pipeline can now be executed up to and including the **test** stage:
 
 * Go to your pipelines page and click on *Run Pipeline*.
 
-* In the *Create for* text field, confirm the name of the branch you want to run 
-the CI/CD pipeline. The default branch should already be pre-selected for you. 
-Then click on the *Create pipeline* button. 
+* In the *Create for* text field, confirm the name of the branch you want to run
+the CI/CD pipeline. The default branch should already be pre-selected for you.
+Then click on the *Create pipeline* button.
 
-* Refresh the pipelines page, you should see the CI/CD pipeline running. 
-If the set up of your pipeline is successful, you will see it run the build, test, 
+* Refresh the pipelines page, you should see the CI/CD pipeline running.
+If the set up of your pipeline is successful, you will see it run the build, test,
 security and conformance stages defined in the `.gitlab-ci.yml` file.
- 
+
 ## Continuous Deployment in the CI/CD pipeline
 
 The deployment of `gigadb-website` code to staging and to live environments are all parts of the same pipeline described in the previous chapter.
-While the jobs for continuous integration were performed in the stages up to the `test` stage, 
-the deployment to staging and live environment are performed by the stages after that: 
+While the jobs for continuous integration were performed in the stages up to the `test` stage,
+the deployment to staging and live environment are performed by the stages after that:
 for each environments there are two stages involved, the build stage and the deployment stage.
 
 The jobs to deploy to the staging environment are fully automated and will trigger for every branch that are pushed to the Github remote.
 The jobs for deploying to live environment are manually triggered and are enabled only for tags that are pushed to the Github remote.
 
-The deployment of the code from the pipeline is dependent on the cloud infrastructure to be existing. 
+The deployment of the code from the pipeline is dependent on the cloud infrastructure to be existing.
 So prior to this,  host machines have to be instantiated with a secure Docker daemon
-on which the GigaDB application will be deployed. In addition, an RDS machine 
+on which the GigaDB application will be deployed. In addition, an RDS machine
 is created to provide a PostgreSQL database for GigaDB. Both these machines can
 be used for a specific environment, most likely staging or live.
 
-There are three pre-requisites to fulfill beforehand: 
+There are three pre-requisites to fulfill beforehand:
 * First, GitLab needs be configured for build and deployment to production (staging and live).
 * Second, an AWS account need to be set up and elastic IP addresses created
-* Third, several tools are needed to set up a Docker-enabled server on the AWS cloud: 
+* Third, several tools are needed to set up a Docker-enabled server on the AWS cloud:
 AWS-CLI, Terraform, and Ansible.
 
 The rest of this document will guide you for the first requirement.
@@ -258,7 +267,7 @@ Ensure the following variables are set for their respective environments in the 
 Make sure the "Protect variable" and "Expand variable reference" checkboxes are unchecked.
 the Visibility radio input should be set to "Visible" except for the passwords and tokens that should be set to "Masked".
 
-| Name | value | 
+| Name | value |
 | --- | --- |
 | DEPLOYMENT_ENV | deployment environment goes here |
 | REMOTE_HOME_URL | URL to the home website as https://yoursubodmain.gigadb.host |
@@ -283,7 +292,7 @@ the Visibility radio input should be set to "Visible" except for the passwords a
 | REVIEW_DB_USERNAME | reviewdb |
 | REVIEW_DB_HOST | reviewdb |
 | PORTAINER_PASSWORD | Pick a password |
-| remote_fileserver_hostname | files.yoursubdomain.gigadb.host | 
+| remote_fileserver_hostname | files.yoursubdomain.gigadb.host |
 
 so, there should be 2 versions of each variable, one for each deployment environment (staging or live).
 
@@ -342,21 +351,21 @@ but as they already have default values, one needs to change their values only i
 to depart from the default.
 
 | Key                 | Role                                      | Default on Dev/CI | Default on Staging | Default on Live |
-|---------------------|-------------------------------------------|-------------------|--------------------|-----------------| 
+|---------------------|-------------------------------------------|-------------------|--------------------|-----------------|
 | YII_DEBUG           | enable debug mode for extra logging       | true              | true               | false           |
-| YII_TRACE_LEVEL     | how many lines of context for log entries | 3                 | 0                  | 0               | 
+| YII_TRACE_LEVEL     | how many lines of context for log entries | 3                 | 0                  | 0               |
 | DISABLE_CACHE       | whether to disable caching of DB queries  | false             | false              | false           |
 | SEARCH_RESULT_LIMIT | Nb. of results per page                   | 10                | 10                 | 10              |
 
->**Note:** the value of each of the first three variables has impact on website performances. 
->The default values for the live environment offer the maximum performance. 
+>**Note:** the value of each of the first three variables has impact on website performances.
+>The default values for the live environment offer the maximum performance.
 >While the default values for Dev/CI provide the most debugging information.
 
 >**Note:** those three variables set the values for PHP constants of the same names that are
->defined in the Yii web application's ``index.php`` file 
+>defined in the Yii web application's ``index.php`` file
 >(generated from templates  ``ops/configuration/yii-conf/index.$GIGADB_ENV.php.dist``)
 
->**Note:** Although caching is on by default for all environments, 
+>**Note:** Although caching is on by default for all environments,
 >DISABLE_CACHE variable will still be available to provide flexibility if some specific development work needs it off.
 >DISABLE_CACHE can be manually configured to true in .env to turn off caching in dev environment.
 
@@ -364,12 +373,12 @@ to depart from the default.
 #### Jobs and stages in GitLab configuration files
 
 Every job defined in the configuration need to have their stage and environment specified.
-The former enables the execution order of the pipeline, and the latter ensures the variables for the selected 
+The former enables the execution order of the pipeline, and the latter ensures the variables for the selected
 environment only is made available to the pipeline's jobs.
 
->The name of valid stages to be used in GitLab configuration are listed at the top of the file ``.gitlab-ci.yml``  
+>The name of valid stages to be used in GitLab configuration are listed at the top of the file ``.gitlab-ci.yml``
 
->Ensure the value of ``environment:name:`` in GitLab configuration matches the environment that 
+>Ensure the value of ``environment:name:`` in GitLab configuration matches the environment that
 >you have created in Gitlab dashboard under ``Operate > Environments``
 
 
@@ -387,7 +396,7 @@ build_live:
     deployment_tier: production
     url: $REMOTE_HOME_URL
 ```
- 
+
  * from the ``.gitlab-ci.yml`` file:
 ```
 sd_gigadb:
@@ -402,11 +411,11 @@ sd_gigadb:
 ```
 
 
->**Note:** Make sure you have a Docker Hub account and that its username and access token 
+>**Note:** Make sure you have a Docker Hub account and that its username and access token
 >(which can be created in Docker Hub's security settings)
->are used as value for GitLab variables DOCKER_HUB_USERNAME and DOCKER_HUB_PASSWORD 
+>are used as value for GitLab variables DOCKER_HUB_USERNAME and DOCKER_HUB_PASSWORD
 >(set for the "All (default)" environment)
->as the ``before_script`` section of ``.gitlab-ci.yml`` uses them to login to Docker Hub 
+>as the ``before_script`` section of ``.gitlab-ci.yml`` uses them to login to Docker Hub
 >and pull the main base image to speed up the build stage
 
 ### Acceptance tests
@@ -424,4 +433,9 @@ The following Gitlab variables are needed for the acceptance run, both in the pi
 | AWS_SECRET_ACCESS_KEY | your secret key to AWS | All |
 
 
+## Troubleshooting
 
+### permissions
+
+If you find seeing Unauthorised/authentication errors when the Gitlab variables are downloaded by the configuration script,
+ensure that your membership to the "Gigascience" group has the role "Owner".

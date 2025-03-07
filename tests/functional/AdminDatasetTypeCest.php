@@ -18,7 +18,7 @@ class AdminDatasetTypeCest
         $I->uncheckOption("#Dataset_Genomic");
         $I->click('Save');
 
-        $I->canSee('Fail to update your types');
+        $I->canSee('Fail to update your types. You need to select at least one type');
     }
 
     public function tryToAddADatasetType(FunctionalTester $I)

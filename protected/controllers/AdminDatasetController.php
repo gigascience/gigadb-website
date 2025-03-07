@@ -253,7 +253,7 @@ class AdminDatasetController extends Controller
         if ($model->save()) {
             $postDatasetTypes = array_keys(Yii::$app->request->post('datasettypes'));
             if (!$postDatasetTypes) {
-                Yii::app()->user->setFlash('updateError', 'Fail to update your types');
+                Yii::app()->user->setFlash('updateError', 'Fail to update your types. You need to select at least one type');
                 $hasPartialError = true;
             } else {
                 $model->updateDatasetTypes($postDatasetTypes);
@@ -461,9 +461,8 @@ class AdminDatasetController extends Controller
             $result[$keyStatus] = $updateMdResponse->getStatusCode();
             $log .= sprintf(' - %s md response: %s', $result['check_doi_status'] === 200 ? 'update' : 'create', 201 === $result[$keyStatus] ? "OK" : $result[$keyResponse]);
 
-            if (201 === $result[$keyStatus]) {
-                CurationLog::createGeneralCurationLogEntry($dataset->id, 'Sent DataCite XML', $xml_data);
-            }
+            $logMessageXml = 201 === $result[$keyStatus] ? 'Sent DataCite XML' : 'Failed to send DataCite XML';
+            CurationLog::createGeneralCurationLogEntry($dataset->id, $logMessageXml, $xml_data);
 
             if (201 === $result[$keyStatus] && 404 === $result['check_doi_status']) {
                 $result['doi_data'] = 'doi=' . $mds_prefix . '/' . $doi . "\n" . 'url=http://gigadb.org/dataset/' . $doi;
@@ -484,7 +483,10 @@ class AdminDatasetController extends Controller
             }
         }
 
+        $curationLog = CurationLog::model()->searchByDatasetId($dataset->id);
         CurationLog::createGeneralCurationLogEntry($dataset->id, $action, $log);
+
+        $result['html'] = $this->renderPartial('curationLog', array('dataset_id' => $dataset->id, 'model' => $curationLog), true);
         echo json_encode($result);
         Yii::app()->end();
     }
