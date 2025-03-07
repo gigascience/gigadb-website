@@ -508,7 +508,7 @@ echo $form->hiddenField($model, "image_id");
             <?php if (isset($dataset_id)) {
             ?>
                 <hr />
-                <div class="form-block-6">
+                <div class="form-block-6" id="curationLogId">
                     <?php
                     echo $this->renderPartial("curationLog", array('dataset_id' => $dataset_id, 'model' => $curationlog));
                     ?>
@@ -856,7 +856,8 @@ function handleDoiStatus(output) {
     create_md_status,
     update_md_status,
     update_md_response,
-    error
+    error,
+    html,
   } = output
 
   if (check_doi_status === 200 && update_md_status === 201) {
@@ -879,6 +880,10 @@ function handleDoiStatus(output) {
 
   if (error) {
     $("#minting").addClass("alert alert-danger").html(error)
+  }
+
+  if (html) {
+      $('#curationLogId').html(html);
   }
 }
 
