@@ -10,6 +10,10 @@
   $isNonLiveEnv = in_array(getenv('GIGADB_ENV'), ['dev', 'CI', 'staging']);
   $isLiveEnv = getenv('GIGADB_ENV') === 'live';
 
+  var_dump($isPrivate);
+  var_dump($isNonLiveEnv);
+  var_dump($isLiveEnv);
+
   if ($isPrivate || $isNonLiveEnv) {
       echo '<meta name="robots" content="noindex, nofollow">';
       echo '<meta name="googlebot" content="noindex, nofollow">';
