@@ -64,7 +64,7 @@ class Project extends CActiveRecord
             array('url', 'url','message'=>'Please check the URL format'),
 			array('url', 'length', 'max'=>128),
 			array('name', 'length', 'max'=>255),
-			array('image_location', 'length', 'max'=>100),
+			array('image_location', 'length', 'max'=>255),
             array('url', 'unique', 'message' => 'This url already exists.'),
             array('name', 'unique', 'message' => 'This name already exists.'),
             array('image_logo', 'file', 'types' => 'jpg, jpeg, png', 'allowEmpty' => true),
