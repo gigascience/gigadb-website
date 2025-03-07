@@ -48,14 +48,6 @@ services:
         - APCU_VERSION=$APCU_VERSION
         - INSTALL_TIDEWAYSPHP=true
 
-  production_tideways-daemon:
-    environment:
-      TIDEWAYS_ENVIRONMENT: $GIGADB_ENV
-    image: ghcr.io/tideways/daemon:1.9.34
-    expose:
-      - "9135"
-
-
   production_gigadb-worker:
     build:
       context: ../..

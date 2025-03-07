@@ -79,7 +79,7 @@ services:
 
   tideways-daemon:
     <<: *logging
-    image: registry.gitlab.com/$CI_PROJECT_PATH/production_tideways-daemon:$GIGADB_ENV
+    image: ghcr.io/tideways/daemon:1.9.34
     environment:
       TIDEWAYS_ENVIRONMENT: $GIGADB_ENV
     expose:
