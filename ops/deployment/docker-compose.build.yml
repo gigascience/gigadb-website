@@ -7,7 +7,6 @@ services:
 
   production_web:
     environment:
-      GIGADB_ENV: ${GIGADB_ENV}
       YII_PATH: ${YII_PATH}
       YII2_PATH: ${YII2_PATH}
     build:
@@ -23,7 +22,6 @@ services:
 
   production_app:
     environment:
-      GIGADB_ENV: ${GIGADB_ENV}
       PHP_VERSION: ${PHP_VERSION}
       TIDEWAYS_APIKEY: ${TIDEWAYS_APIKEY}
       TIDEWAYS_SERVICE: ${TIDEWAYS_SERVICE}

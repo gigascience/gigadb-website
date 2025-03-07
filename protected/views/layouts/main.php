@@ -7,8 +7,8 @@
   <meta name="language" content="en" />
   <?php
   $isPrivate = $this->metaData['private'] === true;
-  $isNonLiveEnv = in_array(getenv('GIGADB_ENV'), ['dev', 'CI', 'staging']);
-  $isLiveEnv = getenv('GIGADB_ENV') === 'live';
+  $isNonLiveEnv = in_array(YII_ENV, ['dev', 'CI', 'staging']);
+  $isLiveEnv = YII_ENV === 'live';
 
   if ($isPrivate || $isNonLiveEnv) {
       echo '<meta name="robots" content="noindex, nofollow">';
