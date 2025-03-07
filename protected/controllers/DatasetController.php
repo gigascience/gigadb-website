@@ -114,15 +114,14 @@ class DatasetController extends Controller
             // Rendering section
             $this->metaData['title'] = rtrim(strip_tags($assembly->getDataset()->title));
             $this->metaData['description'] = rtrim(strip_tags($assembly->getDataset()->description));
-            $this->metaData['doi'] = $assembly->getDataset()->identifier;
-            $this->metaData['doiUrl'] = 'http://dx.doi.org/10.5524/' . $assembly->getDataset()->identifier;
+            $this->metaData['doiUrl'] = 'https://doi.org/10.5524/' . $assembly->getDataset()->identifier;
             $this->metaData['imageUrl'] = $assembly->getDataset()->getImageUrl();
 
             $urlToRedirect = trim($assembly->getDataset()->getUrlToRedirectAttribute());
             $currentAbsoluteFullUrl = Yii::app()->request->getBaseUrl(true) . Yii::app()->request->url ;
 
             if ($urlToRedirect && $currentAbsoluteFullUrl === $urlToRedirect) {
-                $this->metaData['redirect'] = 'http://dx.doi.org/10.5524/' . $assembly->getDataset()->identifier ;
+                $this->metaData['redirect'] = 'https://dx.doi.org/10.5524/' . $assembly->getDataset()->identifier ;
                 return $this->render('interstitial', array(
                     'model' => $assembly->getDataset()
                 ));
