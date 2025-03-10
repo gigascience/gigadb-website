@@ -255,7 +255,14 @@ class AdminDatasetController extends Controller
 
             if ($uploadStatus && $uploadStatus !== $previousUploadStatus) {
                 Yii::log('Status changed to '.$uploadStatus, 'info');
-                $this->renderNotificationsAccordingToStatus($datasetUpload, $model);
+                $user = User::model()->findByPk(Yii::app()->user->id);
+
+                if (!$user) {
+                    throw new CHttpException(404, 'User not found.');
+                }
+
+                $userName = sprintf('%s %s', $user->first_name, $user->last_name);
+                $this->renderNotificationsAccordingToStatus($datasetUpload, $model, $previousUploadStatus, $userName);
             }
 
             // semantic keywords update, using remove all and re-create approach
@@ -584,8 +591,12 @@ class AdminDatasetController extends Controller
         }
     }
 
-    private function renderNotificationsAccordingToStatus(DatasetUpload $datasetUpload, Dataset $model)
-    {
+    private function renderNotificationsAccordingToStatus(
+        DatasetUpload $datasetUpload,
+        Dataset $model,
+        string $previousUplaodStatus,
+        string $user
+    ) {
         switch ($model->upload_status) {
             case 'Submitted':
                 $contentToSend = $datasetUpload->renderNotificationEmailBody('Submitted');
@@ -608,7 +619,12 @@ class AdminDatasetController extends Controller
         }
 
         if ($statusIsSet) {
-            CurationLog::createlog($model->upload_status, $model->id);
+            CurationLog::createGeneralCurationLogEntry(
+                $model->id,
+                sprintf('Status changed from %s to %s ', $previousUplaodStatus, $model->upload_status),
+                null,
+                $user
+            );
         }
     }
 
