@@ -122,6 +122,8 @@ api_tests:
     when: on_failure
     expire_in: 1 week
   script:
+    # login to gitlab container registry
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
     # appending dev variables at the end of the .env and .secrets
     - env | grep "^HOME_URL" >> $APPLICATION/.env
     - env | grep "^GIGADB_" >> $APPLICATION/.secrets
