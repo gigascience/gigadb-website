@@ -233,8 +233,26 @@
             <?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => 'btn background-btn')); ?>
         </div>
 
+        <!-- Edit Attribute Modal -->
+        <div id="file_attr_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="fileAttrModalTitle">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h2 class="h4 modal-title" id="fileAttrModalTitle">Edit Attribute</h2>
+                    </div>
+                    <div class="modal-body">
+                    </div>
+                    <div class="modal-footer modal-footer-flex">
+                        <button type="button" class="btn background-btn-o" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn background-btn js-save js-save-attr-edit-btn" name="edit_attr">Save Attribute</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <?php $this->endWidget(); ?>
     </div>
+
 
 </div>
 
@@ -275,6 +293,8 @@
           expandNewAttrForm();
       }
     }
+
+
     // NOTE click listener on the document because the button is in a partial view
     $(document).on('click', '.js-save-attr-edit-btn', function(e) {
       collapseNewAttrForm();
@@ -294,7 +314,8 @@
                 'id': id
             }, function(result) {
                 if (result.success) {
-                    row.html(result.data);
+                  $('#file_attr_modal').modal('show');
+                  $('#file_attr_modal .modal-body').html(result.data);
                 }
             }, 'json');
         }
@@ -319,5 +340,33 @@
             window.location.reload();
         }, 200);
     })
+
+    $('.js-cancel-attr-edit-btn').click(function(e) {
+        e.preventDefault();
+        collapseNewAttrForm();
+    })
   })
+</script>
+
+
+<?php
+$jsFile = Yii::getPathOfAlias('application.js.trap-focus') . '.js';
+$jsUrl = Yii::app()->assetManager->publish($jsFile);
+Yii::app()->clientScript->registerScriptFile($jsUrl, CClientScript::POS_END);
+?>
+
+<script>
+	$('#file_attr_modal').on('shown.bs.modal', function() {
+    lastFocusedElement = document.activeElement;
+
+    $('#FileAttributes_edit_attribute_id').focus();
+    trapFocus($(this));
+	});
+
+	$('#file_attr_modal').on('hidden.bs.modal', function() {
+    $(this).off('keydown');
+    if (lastFocusedElement) {
+        lastFocusedElement.focus();
+    }
+	});
 </script>
