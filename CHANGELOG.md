@@ -4,6 +4,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat security#13: Upgrade Tideways PHP extension version to `5.19.0` and Daemon version to `1.9.36`
+
 ## v4.4.11 - 2025-05-21 - 4fdb2fb13 - 
 
 - Fix #531: Calculate the total volume of files and display it on the homepage
