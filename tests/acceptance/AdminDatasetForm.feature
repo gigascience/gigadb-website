@@ -436,7 +436,7 @@ Feature: form to update dataset details
       | "Curation"               |
       | "AuthorReview"           |
       | "Private"                |
-      | "AssigningFTPbox"        |
+      | "CuratorInitialReview"        |
       | "UserUploadingData"      |
       | "DataAvailableForReview" |
       | "UserProvidedData"       |
@@ -507,7 +507,7 @@ Feature: form to update dataset details
       | "Curation"               |
       | "AuthorReview"           |
       | "Private"                |
-      | "AssigningFTPbox"        |
+      | "CuratorInitialReview"   |
       | "UserUploadingData"      |
       | "DataAvailableForReview" |
       | "UserProvidedData"       |

@@ -42,7 +42,7 @@ class AdminDatasetAssignFTPBoxActionTest extends FunctionalTesting
         try {
             $this->setUpUsers($this->dbh_gigadb, "Erin","Dot","admin","erin_dot@gigadb.org");
             $this->setUpUserIdentity($this->dbh_fuw, "erin_dot@gigadb.org");
-            $this->setUpDatasetUploadStatus($this->dbh_gigadb, "100005","AssigningFTPbox");
+            $this->setUpDatasetUploadStatus($this->dbh_gigadb, "100005","CuratorInitialReview");
             $this->changeUserRole($this->dbh_gigadb, "user","admin@gigadb.org");
             $this->url = "http://gigadb.dev/adminDataset/assignFTPBox/id/100005" ;
         }

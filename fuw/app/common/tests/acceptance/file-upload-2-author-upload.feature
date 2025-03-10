@@ -31,7 +31,7 @@ Scenario: Upload files button when dataset has appropriate status (DataPreparati
 @ok
 Scenario: No Upload files button when dataset hasn't got to the appropriate status yet
 	Given there is "user" "Chloe" "Decker"
-	And a dataset with DOI "100008" owned by user "Chloe" "Decker" has status "AssigningFTPbox"
+	And a dataset with DOI "100008" owned by user "Chloe" "Decker" has status "CuratorInitialReview"
 	And I sign in as the user "Chloe" "Decker"
 	And I wait "2" seconds
 	When I go to "/user/view_profile#submitted"

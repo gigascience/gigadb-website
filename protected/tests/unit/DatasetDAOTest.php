@@ -92,15 +92,15 @@ class DatasetDAOTest extends CDbTestCase {
         $datasetDAO = new DatasetDAO();
 
         $datasetDAO->setIdentifier('100243');
-        $success = $datasetDAO->transitionStatus('Published', 'AssigningFTPbox', 'foobar');
+        $success = $datasetDAO->transitionStatus('Published', 'CuratorInitialReview', 'foobar');
 
         $datasetDAO->setIdentifier('100249');
-        $failure = $datasetDAO->transitionStatus('Pending', 'AssigningFTPBox', 'foobar');
+        $failure = $datasetDAO->transitionStatus('Pending', 'CuratorInitialReview', 'foobar');
 
         $this->assertTrue($success);
         $this->assertFalse($failure);
         $changedDataset = Dataset::model()->findByAttributes(['identifier' => '100243']);
-        $this->assertEquals('AssigningFTPbox', $changedDataset->upload_status);
+        $this->assertEquals('CuratorInitialReview', $changedDataset->upload_status);
 
     }
 

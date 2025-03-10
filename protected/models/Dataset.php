@@ -41,7 +41,7 @@ class Dataset extends CActiveRecord
     ];
 
     public const FUW_UPLOAD_STATUS_LIST = [
-        'AssigningFTPbox'        => 'AssigningFTPbox',
+        'CuratorInitialReview'   => 'CuratorInitialReview',
         'UserUploadingData'      => 'UserUploadingData',
         'UserProvidedData'       => 'UserProvidedData',
         'DataPreparation'        => 'DataPreparation',

@@ -148,7 +148,7 @@ $('.search-form form').submit(function(){
 						'imageUrl' => false,
 						'url' => 'Yii::app()->createUrl("adminDataset/assignFTPBox" , array("id" => $data->identifier))',
 						'label' => '',
-						'visible' => '"AssigningFTPbox" === $data->upload_status',
+						'visible' => '"CuratorInitialReview" === $data->upload_status',
 						'options' => array(
 							'title' => 'New Dropbox for this dataset',
 							"class" => "fa fa-inbox fa-lg icon icon-dropbox",
