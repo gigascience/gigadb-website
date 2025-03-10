@@ -41,7 +41,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## v4.4.1 - 2024-12-24 - 51c426dfe - live since 2025-01-02
 
-- Feat #2066: Wrap edit file attribute form in a modal
 - Feat #2067: Sort files by size in dataset page
 - Feat #372: Save dataset as xml in log
 - Feat #1940: Reminting notification text change
