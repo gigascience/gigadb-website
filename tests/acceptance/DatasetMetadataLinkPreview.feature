@@ -36,3 +36,11 @@ Feature: Add the metadata schema on dataset page to allow other web sites to mak
     When I am on "/dataset/100016"
     Then I should see "HTML" meta-tags
       | robots | noindex, nofollow |
+      | googlebot | noindex, nofollow |
+
+  @wip
+  Scenario: Confirm robots txt is blocking indexing of non live environment
+    When I am on "/robots.txt"
+    Then I should see "# Block all web crawlers from crawling of all content on dev"
+    And I should see "User-agent: *"
+    And I should see "Disallow: /"
