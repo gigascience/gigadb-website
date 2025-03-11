@@ -8,10 +8,10 @@ COPY ops/configuration/nginx-conf/phplimit.conf.${CONN_LIMIT_STATE} /etc/nginx/p
 COPY ops/configuration/nginx-conf/nginx.production.conf /etc/nginx/nginx.conf
 COPY ops/configuration/nginx-conf/upstream.conf /etc/nginx/conf.d/upstream.conf
 COPY ops/configuration/nginx-conf/enable_sites /usr/local/bin/enable_sites
+COPY ops/configuration/gigadb-public/robots-${GIGADB_ENV}.txt /var/www/robots.txt
 COPY css /var/www/css
 COPY docs /var/www/docs
 COPY favicon.ico /var/www/favicon.ico
-COPY robots.txt /var/www/robots.txt
 COPY lockss.txt /var/www/lockss.txt
 COPY fonts /var/www/fonts
 COPY images /var/www/images
