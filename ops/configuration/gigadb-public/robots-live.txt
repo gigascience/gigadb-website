@@ -1,0 +1,7 @@
+# Allow all web crawlers from crawling on live, but except for the following
+User-agent: *
+Disallow: /api/
+Disallow: /site/login
+Disallow: /site/admin
+Disallow: /admin*/
+Disallow: /curationLog/
