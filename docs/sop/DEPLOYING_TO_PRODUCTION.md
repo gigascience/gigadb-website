@@ -36,7 +36,7 @@ You now need two new profiles:
 * `[Upstream]`: for the `gigadb-website` project
 * `[UpstreamAlt]`: for the `alt-gigadb-website` project
 
-You populate these sections with AWS access keys for the `Gigadb` and `GigadbAlt` users respectively.
+You populate these sections with AWS access keys for the `Gigadb` IAM user.
 
 
 ```
@@ -50,9 +50,12 @@ aws_secret_access_key=<upstream_alt_aws_secret_access_key>
 ```
 
 The values for `upstream_aws_access_key_id`, `upstream_aws_secret_access_key`, `upstream_alt_aws_access_key_id`,
-and `upstream_alt_aws_secret_access_key` are stored in Gitlab variables for the `cngb-infra` project.
+and `upstream_alt_aws_secret_access_key` are stored in Gitlab variables for the `cngb-infra` project (we use GigaDB's keys in both case)
 
->**Note**: Do not use the same keys for both sections, as if that key led to the compromise of one infrastructure, then the other one is done for too. For similar reason, do not use the keys you are using on your AWS developers deployment.
+>**Note 1**: Do not use the keys you are using on your AWS developers deployment as that would weaken security on production environment
+>**Note 1**: In a previous version of this doc, we used two different IAM users for each deployment but that's the wrong separation of concerns
+> because active and standby are two parts of the same infrastructure. Also having different users would complicate quick switchover.
+> Finally a better separation (TODO in the future) is having different IAM users for staging environment and for live environment as staging environments are more permissive by nature.
 
 Then, still in the IAM dashboard, you will need to create two pairs of SSH public keys for each infrastructure. Try make the name easily identifiable as you will be using both keys often. E.g:
 
