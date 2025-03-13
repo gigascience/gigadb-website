@@ -1,6 +1,9 @@
 ARG TARGET_PHP_VERSION
-FROM php:${TARGET_PHP_VERSION}-fpm-buster
+ARG TIDEWAYS_PHP_EXTENSION_VERSION=latest
 
+FROM ghcr.io/tideways/php:${TIDEWAYS_PHP_EXTENSION_VERSION} AS tideways_php
+
+FROM php:${TARGET_PHP_VERSION}-fpm-buster
 
 # basic dependencies
 RUN apt-get update -yq && \
@@ -45,10 +48,9 @@ RUN apt-get update -yqq && \
     pecl channel-update pecl.php.net
 
 ARG INSTALL_TIDEWAYSPHP=false
-ARG TIDEWAYS_PHP_EXTENSION_VERSION=latest
 
 # install tideways extension
-COPY --from=ghcr.io/tideways/php:${TIDEWAYS_PHP_EXTENSION_VERSION} /tideways/ /tideways/
+COPY --from=tideways_php /tideways/ /tideways/
 RUN if [ ${INSTALL_TIDEWAYSPHP} = true ]; then \
     docker-php-ext-enable --ini-name tideways.ini "$(php /tideways/get-ext-path.php)" \
 ;fi
