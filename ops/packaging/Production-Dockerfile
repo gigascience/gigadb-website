@@ -45,9 +45,10 @@ RUN apt-get update -yqq && \
     pecl channel-update pecl.php.net
 
 ARG INSTALL_TIDEWAYSPHP=false
+ARG TIDEWAYS_PHP_EXTENSION_VERSION=latest
 
 # install tideways extension
-COPY --from=ghcr.io/tideways/php:5.18.6 /tideways/ /tideways/
+COPY --from=ghcr.io/tideways/php:${TIDEWAYS_PHP_EXTENSION_VERSION} /tideways/ /tideways/
 RUN if [ ${INSTALL_TIDEWAYSPHP} = true ]; then \
     docker-php-ext-enable --ini-name tideways.ini "$(php /tideways/get-ext-path.php)" \
 ;fi

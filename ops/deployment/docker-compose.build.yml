@@ -47,6 +47,7 @@ services:
         - INSTALL_APCU=true
         - APCU_VERSION=$APCU_VERSION
         - INSTALL_TIDEWAYSPHP=true
+        - TIDEWAYS_PHP_EXTENSION_VERSION=${TIDEWAYS_PHP_EXTENSION_VERSION}
 
   production_tideways-daemon:
     environment:
@@ -56,6 +57,8 @@ services:
       dockerfile: ops/packaging/Tideways-Dockerfile
       cache_from:
         - "registry.gitlab.com/$CI_PROJECT_PATH/production_tideways-daemon:${GIGADB_ENV}"
+      args:
+        - TIDEWAYS_DAEMON_VERSION=${TIDEWAYS_DAEMON_VERSION}
     expose:
       - "9135"
 
