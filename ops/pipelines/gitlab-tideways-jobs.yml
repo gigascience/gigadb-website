@@ -1,3 +1,64 @@
+.pb_tideways:
+  variables:
+    GIGADB_ENV: $DEPLOYMENT_ENV
+    COMPOSE_FILE: "ops/deployment/docker-compose.build.yml"
+    REMOTE_WEBAPP_DOCKER: "$remote_public_ip:2376"
+    DATA_SAVE_PATH: "/home/ec2-user/app_data"
+    CSV_DIR: "prod_like"
+    PORTAINER_BCRYPT: ""
+    REMOTE_DOCKER_HOSTNAME: ""
+    PHP_VERSION: "7.4.33"
+  stage: production build
+  allow_failure: false
+  script:
+    # Load Base image
+    - docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
+    # login to gitlab container registry
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+    # pulling production build of images from registry to use as cache
+    - time docker pull registry.gitlab.com/$CI_PROJECT_PATH/production_tideways-daemon:$GIGADB_ENV || true
+    # build tideways container and push it registry
+    - time docker-compose build production_tideways-daemon
+    - time docker tag ${CI_PROJECT_NAME}_production_tideways-daemon registry.gitlab.com/$CI_PROJECT_PATH/production_tideways-daemon:$GIGADB_ENV
+    - time docker push registry.gitlab.com/$CI_PROJECT_PATH/production_tideways-daemon:$GIGADB_ENV
+  environment:
+    name: $DEPLOYMENT_ENV
+    url: $REMOTE_HOME_URL
+  artifacts:
+    when: on_failure
+    expire_in: 1 week
+#  rules:
+#    - if: '$CI_PROJECT_PATH == "gigascience/upstream/gigadb-website"'
+
+TidewaysBuildStaging:
+  stage: staging build
+  variables:
+    GIGADB_ENV: "staging"
+  extends: .pb_tideways
+  tags:
+    - $GITLAB_USER_LOGIN
+  needs: ["build_staging"]
+  environment:
+    name: "staging"
+    url: $REMOTE_HOME_URL
+
+TidewaysBuildLive:
+  stage: live build
+  variables:
+    GIGADB_ENV: "live"
+  extends:
+    - .pb_tideways
+  tags:
+    - $GITLAB_USER_LOGIN
+  needs: ["build_live"]
+  environment:
+    name: "live"
+    deployment_tier: production
+    url: $REMOTE_HOME_URL
+  when: manual
+#  rules:
+#    - if: $CI_COMMIT_TAG
+
 .deploy_tideways:
   variables:
     GIGADB_ENV: $DEPLOYMENT_ENV
@@ -28,6 +89,7 @@
     # Pull production container from the registry
     - docker --tlsverify -H=$REMOTE_WEBAPP_DOCKER info
     - docker --tlsverify -H=$REMOTE_WEBAPP_DOCKER login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+    - docker --tlsverify -H=$REMOTE_WEBAPP_DOCKER pull registry.gitlab.com/$CI_PROJECT_PATH/production_tideways-daemon:$GIGADB_ENV
     # Redeploy all containers but the web container
     - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER up -d tideways-daemon
     # Debug
@@ -48,7 +110,7 @@ TidewaysDeployStaging:
   extends: .deploy_tideways
   tags:
     - $GITLAB_USER_LOGIN
-  needs: ["sd_gigadb"]
+  needs: ["sd_gigadb","TidewaysBuildStaging"]
   environment:
     name: "staging"
     url: $REMOTE_HOME_URL
@@ -61,7 +123,7 @@ TidewaysDeployLive:
     - .deploy_tideways
   tags:
     - $GITLAB_USER_LOGIN
-  needs: ["ld_gigadb"]
+  needs: ["ld_gigadb","TidewaysBuildLive"]
   environment:
     name: "live"
     url: $REMOTE_HOME_URL
