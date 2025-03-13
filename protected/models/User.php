@@ -92,8 +92,6 @@ class User extends CActiveRecord {
 
             return;
         }
-
-        $this->password = $this->password_new;
     }
 
 

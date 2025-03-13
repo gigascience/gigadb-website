@@ -143,12 +143,14 @@ class UserController extends Controller {
                 $user->role = 'user';
             }
 
-            if ($user->validate('update')) {
+            $user->scenario = 'update';
+            if ($user->validate()) {
+                $user->password = $user->password_new;
                 $user->encryptPassword();
 
-                if ($user->save(false)) {
+                if ($user->save()) {
                     Yii::app()->user->setFlash('notice', 'Updated');
-                    $this->redirect(array('user/show/id/'.$user->id));
+                    $this->redirect(array('user/view/id/'.$user->id));
                 }
                 else {
                     Yii::log(__FUNCTION__."> Update failed", 'warning');
