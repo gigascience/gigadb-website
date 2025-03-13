@@ -89,7 +89,6 @@ services:
     cap_drop:
       - NET_ADMIN
       - SYS_ADMIN
-    command: "--env=${GIGADB_ENV}"
 
   fuw-admin:
     <<: *logging
