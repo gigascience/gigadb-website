@@ -412,7 +412,7 @@ class Dataset extends CActiveRecord
     }
 
     public function getIsPublic() {
-        return $this->upload_status == "Published";
+        return $this->upload_status === "Published";
     }
 
     public function getAllSamples() {

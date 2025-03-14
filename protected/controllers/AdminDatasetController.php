@@ -140,8 +140,8 @@ class AdminDatasetController extends Controller
                     }
 
                     Yii::app()->user->setFlash('saveSuccess', 'saveSuccess');
-                    if ($dataset->upload_status=='AuthorReview') {
-                        $this->redirect('/adminDataset/private/identifier/'.$dataset->identifier);
+                    if ($dataset->upload_status==='AuthorReview') {
+                        $this->private($dataset);
                     }
                     $this->redirect(array('/dataset/'.$dataset->identifier));
                 }
@@ -186,8 +186,11 @@ class AdminDatasetController extends Controller
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id the ID of the model to be updated
      */
-    public function actionUpdate($id)
+    public function actionUpdate(int $id)
     {
+        $isCreateOrResetPrivateUrl = Yii::$app->request->post('createReset');
+        $isOpenUrl = Yii::$app->request->post('openUrl');
+
         $hasPartialError = false;
         $model = $this->loadModel($id);
         $datasetPageSettings = new DatasetPageSettings($model);
@@ -285,18 +288,17 @@ class AdminDatasetController extends Controller
                  $this->redirect(array('/adminDataset/update/id/' . $model->id));
             }
 
-            Yii::app()->user->setFlash('updateSuccess', 'Updated successfully!');
-            switch ($datasetPageSettings->getPageType()) {
-                case "draft":
-                    $this->redirect('/adminDataset/admin/');
-                    break;
-                case "public":
-                    $this->redirect('/dataset/' . $model->identifier);
-                    break;
-                case "hidden":
-                    $this->redirect(array('/adminDataset/update/id/' . $model->id));
-                    break;
+            if ($isOpenUrl) {
+                return $this->redirect('/dataset/'.$model->identifier.'/token/'.$model->token);
             }
+            if ($isCreateOrResetPrivateUrl) {
+                return $this->private($model);
+            }
+            if ($model->getIsPublic()) {
+                return $this->redirect('/dataset/' . $model->identifier);
+            }
+            Yii::app()->user->setFlash('updateSuccess', 'Updated successfully!');
+            return $this->redirect(array('/adminDataset/update/id/' . $model->id));
 
         } else {
             Yii::app()->user->setFlash('updateError', 'Fail to update!');
@@ -305,6 +307,7 @@ class AdminDatasetController extends Controller
 
         $this->loadBaBbqPolyfills = true;
         $this->registerTooltipScript();
+
         $this->render('update', array(
             'model' => $model,
             'datasetPageSettings' => $datasetPageSettings,
@@ -313,35 +316,31 @@ class AdminDatasetController extends Controller
         ));
     }
 
-
     /**
      * One-off access to a private dataset
      *
      */
-    public function actionPrivate()
+    private function private(Dataset $model)
     {
-        $id = Yii::$app->request->get('identifier');
-        $model= Dataset::model()->find("identifier=?", array($id));
         $datasetPageSettings = new DatasetPageSettings($model);
         $pageType = $datasetPageSettings->getPageType();
 
         if (!in_array($pageType, ['invalid', 'public', 'hidden', 'draft', 'mockup'])) {
             throw new CHttpException(404, 'Page type not found');
         }
-
         if ("invalid" === $pageType) {
-            $this->redirect('/site/index');
-        } elseif ("public" === $pageType) {
-            $this->redirect('/dataset/'.$model->identifier);
-        } else {
-            $model->token = Yii::$app->security->generateRandomString(16);
-
-            if (!$model->save()) {
-                throw new CHttpException(500, 'Fail to update dataset token');
-            }
-
-            $this->redirect('/dataset/'.$model->identifier.'/token/'.$model->token);
+            return $this->redirect('/site/index');
         }
+        if ("public" === $pageType) {
+            return $this->redirect('/dataset/'.$model->identifier);
+        }
+        $model->token = Yii::$app->security->generateRandomString(16);
+        if (!$model->save()) {
+            throw new CHttpException(500, 'Fail to update dataset token');
+        }
+
+        return $this->redirect('/dataset/'.$model->identifier.'/token/'.$model->token);
+
     }
 
 
