@@ -24,7 +24,7 @@ services:
     environment:
       PHP_VERSION: ${PHP_VERSION}
       TIDEWAYS_APIKEY: ${TIDEWAYS_APIKEY}
-      TIDEWAYS_SERVICE: $CI_PROJECT_PATH
+      TIDEWAYS_SERVICE: "GigaDB"
       TIDEWAYS_SAMPLERATE: 25
       TIDEWAYS_CONNECTION: tcp://tideways-daemon:9135
     build:
@@ -51,7 +51,7 @@ services:
 
   production_tideways-daemon:
     environment:
-      TIDEWAYS_ENVIRONMENT: $GIGADB_ENV
+      TIDEWAYS_ENVIRONMENT: ${TIDEWAYS_ENVIRONMENT}
     build:
       context: ../..
       dockerfile: ops/packaging/Tideways-Dockerfile
