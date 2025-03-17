@@ -24,7 +24,7 @@ services:
     environment:
       PHP_VERSION: ${PHP_VERSION}
       TIDEWAYS_APIKEY: ${TIDEWAYS_APIKEY}
-      TIDEWAYS_SERVICE: "GigaDB"
+      TIDEWAYS_SERVICE: ${TIDEWAYS_SERVICE}
       TIDEWAYS_SAMPLERATE: 25
       TIDEWAYS_CONNECTION: tcp://tideways-daemon:9135
     build:
