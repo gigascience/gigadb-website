@@ -245,6 +245,20 @@ Feature: a user visit the dataset page
     And I should see "GeoB8502_865cm_Shell-4.obj"
 
   @ok
+  Scenario: Sketchfab tab
+    Given I have not signed in
+    When I am on "/dataset/100006"
+    Then I should see "Sketchfab"
+
+  @ok
+  Scenario: Sketchfab tab content
+    Given I have not signed in
+    When I am on "/dataset/100006"
+    And I follow "Sketchfab"
+    Then I should see "Sketchfab:"
+
+
+  @ok
   Scenario: List ordered author list
     Given I have not signed in
     When I am on "/dataset/100020"
