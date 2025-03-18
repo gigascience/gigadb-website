@@ -4,6 +4,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Fix #2241: Restore Sketchfab visualisations alongside 3D models files visualisations
+
 ## v4.4.7 - 2025-03-18 - c9bccd170 -
 - Fix #2180: Add user in curation log when minting the DOI
 - Feat #2066: Wrap edit file attribute form in a modal
