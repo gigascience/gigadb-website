@@ -13,7 +13,7 @@ Feature: EditUser
     And I fill in the field of "id" "User_first_name" with "modified"
     And I check the field "User_terms"
     And I press the button "Save"
-    Then I should see "View User 8"
+    Then I should see "View User #8"
     And I should see "modified"
 
   @ok
@@ -23,7 +23,7 @@ Feature: EditUser
     And I fill in the field of "id" "User_password_repeat" with "Azertyu2@"
     And I check the field "User_terms"
     And I press the button "Save"
-    Then I should not see "View User 8"
+    Then I should not see "View User #8"
 
   @ok
   Scenario: Ensure I can't edit a user without matching password regex
@@ -32,7 +32,7 @@ Feature: EditUser
     And I fill in the field of "id" "User_password_repeat" with "123"
     And I check the field "User_terms"
     And I press the button "Save"
-    Then I should not see "View User 8"
+    Then I should not see "View User #8"
 
   @ok
   Scenario: Ensure I can edit a user with matching password
@@ -41,4 +41,4 @@ Feature: EditUser
     And I fill in the field of "id" "User_password_repeat" with "Azertyu1@"
     And I check the field "User_terms"
     And I press the button "Save"
-    Then I should see "View User 8"
+    Then I should see "View User #8"
