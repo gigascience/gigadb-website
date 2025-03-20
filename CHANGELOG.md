@@ -4,6 +4,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #331: Create 'Pre-Print' external link type
+- Feat #1239: Create 'Software Heritage Archive (SWHA)' external link type
+- Feat #1142: Rename 'Github Links' to 'Created GitHub repo' and create 'Referenced GitHub repo' external link type
 - Feat #299: Add 'description' - 'prefix' - 'displayed as' - 'multiple' - 'relationship_id' columns to the external_link_type table
 - Feat #299: Admin pages to manage externalLink types
 - Feat #2236: Display pre print manuscript on dataset page

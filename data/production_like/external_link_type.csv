@@ -5,6 +5,9 @@ id,name,description,prefix,displayed_as,multiple,relationship_id
 4,JBrowse,,,tab,false,2
 5,3D Models,,,link,false,2
 6,Code Ocean,,,link,false,2
-7,Github links,,,tab,false,2
+7,Created GitHub repo,,,tab,false,2
 8,USCS Tumour Map Viewer,,,link,false,2
 9,3D Sketchfab,,,link,false,2
+10,Pre-Print,,,link,false,2
+11,Software Heritage Archive (SWHA),,,link,false,2
+12,Referenced GitHub repo,,,link,false,2

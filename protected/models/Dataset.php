@@ -596,10 +596,16 @@ class Dataset extends CActiveRecord
 
         foreach ($externalLinks as $externalLink) {
             switch ($externalLink['name']) {
-                case 'Github links':
+                case 'Created GitHub repo':
                     $relatedIdentifier = $externalLink['url'];
                     $resourceTypeGeneral = 'Software';
                     $relatedIdentifierType = 'URL';
+
+                case 'Referenced GitHub repo':
+                    $relatedIdentifier = $externalLink['url'];
+                    $resourceTypeGeneral = 'Software';
+                    $relatedIdentifierType = 'URL';
+                    $relationType = 'References';
 
                     break;
                 case 'Protocols.io':

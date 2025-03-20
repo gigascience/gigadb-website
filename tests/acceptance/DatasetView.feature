@@ -133,10 +133,10 @@ Feature: a user visit the dataset page
     And I should see an image "https://assets.gigadb-cdn.net/live/images/projects/the_avian_phylogenomic_project/phylogenomiclogo.png" is linked to "http://avian.genomics.cn/en/index.html"
 
   @ok
-  Scenario: Github links are displayed on dataset page
+  Scenario: Created GitHub repo are displayed on dataset page
     Given I have not signed in
     When I am on "/dataset/100935"
-    Then I should see "Github links"
+    Then I should see "Created GitHub repo"
     And I should see "https://github.com/cihga39871/Atria"
 
   @ok @cite-dataset-button
