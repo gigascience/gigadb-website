@@ -131,10 +131,10 @@ Feature: a user visit the dataset page
     And I should see an image "https://assets.gigadb-cdn.net/live/images/projects/the_avian_phylogenomic_project/phylogenomiclogo.png" is linked to "http://avian.genomics.cn/en/index.html"
 
   @ok
-  Scenario: Github links are displayed on dataset page
+  Scenario: Created GitHub repo are displayed on dataset page
     Given I have not signed in
     When I am on "/dataset/100935"
-    Then I should see "Github links"
+    Then I should see "Authors code repositories"
     And I should see "https://github.com/cihga39871/Atria"
 
   @ok @cite-dataset-button
@@ -255,7 +255,6 @@ Feature: a user visit the dataset page
     And I follow "3D Sketchfab"
     Then I should see "3D Sketchfab:"
 
-
   @ok
   Scenario: List ordered author list
     Given I have not signed in
@@ -263,7 +262,7 @@ Feature: a user visit the dataset page
     Then I should see "Liu X; Quan Z; Cheng S; Xu X; Pan S; Zeng P; Xie M; Yue Z; Zhan D; Li Y; Wang J; Zhao Z; Zhang G (2011)"
     And I should not see "Wang, J; Quan, Z; Zhao, Z; Cheng, S; Liu, X; Li, Y; Pan, S; Xie, M; Xu, X; Yue, Z; Zeng, P; Zhan, D; Zhang, G (2011)"
 
-    @ok
+  @ok
   Scenario: Show pre print publications
     Given I have not signed in
     When I am on "/dataset/100142"
