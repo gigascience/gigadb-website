@@ -245,17 +245,17 @@ Feature: a user visit the dataset page
     And I should see "GeoB8502_865cm_Shell-4.obj"
 
   @ok
-  Scenario: Sketchfab tab
+  Scenario: 3D Sketchfab tab
     Given I have not signed in
     When I am on "/dataset/100006"
-    Then I should see "Sketchfab"
+    Then I should see "3D Sketchfab"
 
   @ok
-  Scenario: Sketchfab tab content
+  Scenario: 3D Sketchfab tab content
     Given I have not signed in
     When I am on "/dataset/100006"
-    And I follow "Sketchfab"
-    Then I should see "Sketchfab:"
+    And I follow "3D Sketchfab"
+    Then I should see "3D Sketchfab:"
 
 
   @ok
