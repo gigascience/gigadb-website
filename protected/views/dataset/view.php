@@ -227,7 +227,7 @@ $linksAsTab = [];
                 <?php } ?>
                 <p>
                     <?php
-                    $mainbodyExternalLinks = $links->getDatasetExternalLinksTypesAndCount(["Additional information", "Genome browser", "Github links"]);
+                    $mainbodyExternalLinks = $links->getDatasetExternalLinksTypesAndCount(["Additional information", "Genome browser", "Authors code repositories"]);
                     foreach (array_keys($mainbodyExternalLinks) as $linkType) {
                         echo "<h3 class=\"h5\"><strong>${linkType}:</strong></h3>";
                         foreach ($links->getDatasetExternalLinks([$linkType]) as $link) {
