@@ -8,6 +8,7 @@ class UpdateDatasetDataciteCommand extends CConsoleCommand
     private ?\GuzzleHttp\Client $client = null;
     private array $options = [];
     private $db = null;
+    private bool $hasError = false;
 
     public function init()
     {
@@ -49,6 +50,12 @@ class UpdateDatasetDataciteCommand extends CConsoleCommand
             $this->processBatch($datasets, $mds_metadata_url, $mds_prefix);
             $offset += $batchSize;
         }
+
+        if ($this->hasError) {
+            echo "check the logs: some errors have been detected";
+        } else {
+            echo 'All good';
+        }
     }
 
     private function processBatch($datasets, $mds_metadata_url, $mds_prefix) {
@@ -65,6 +72,7 @@ class UpdateDatasetDataciteCommand extends CConsoleCommand
             $xmlData = $dataset->toXml();
 
             if (!$xmlData) {
+                $this->hasError = true;
                 Yii::log(sprintf('empty xml for dataset %s', $dataset->identifier), 'info');
                 continue;
             }
@@ -79,9 +87,11 @@ class UpdateDatasetDataciteCommand extends CConsoleCommand
                         return $xmlByIds;
                     }
 
+                    $this->hasError = true;
                     Yii::log(sprintf('call datacite api returns %s for dataset %s', $response->getStatusCode(), $dataset->identifier), 'info');
                 },
                 function ($exception) use ($dataset) {
+                    $this->hasError = true;
                     Yii::log(sprintf('call api - exception for dataset %s: %s', $dataset->identifier, $exception->getMessage()), 'info');
                 }
             );
@@ -93,6 +103,7 @@ class UpdateDatasetDataciteCommand extends CConsoleCommand
             $xmlByIds = \GuzzleHttp\Promise\Utils::settle($promises)->wait();
             $this->updateEntityStatus($xmlByIds);
         } catch(\Exception $e) {
+            $this->hasError = true;
             Yii::log('Error while handling promises %s: %s', 'error');
         }
     }

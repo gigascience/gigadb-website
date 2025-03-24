@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 class CheckDoiExistsInDataciteApiCommand extends CConsoleCommand
 {
+    private bool $hasError = false;
+
     public function actionIndex($doi = null)
     {
         $mds_doi_url = Yii::app()->params['mds_doi_url'];
@@ -27,11 +29,13 @@ class CheckDoiExistsInDataciteApiCommand extends CConsoleCommand
             $promises[] = $client->getAsync($mds_doi_url . '/' . $mds_prefix . '/' . $dataset->identifier, $options)->then(
                 function ($response) use ($dataset) {
                     if ($response->getStatusCode() !== 200) {
+                        $this->hasError = true;
                         Yii::log(sprintf('DOI not found for dataset %s', $dataset->identifier), 'info');
                     }
                 },
                 function ($exception) use ($dataset) {
                     $errors[$dataset->id] = $dataset->identifier;
+                    $this->hasError = true;
                     Yii::log(sprintf('Error while checking DOI for dataset %s: %s', $dataset->identifier, $e->getMessage()), 'error');
                 }
             );
@@ -41,7 +45,14 @@ class CheckDoiExistsInDataciteApiCommand extends CConsoleCommand
         try {
             \GuzzleHttp\Promise\Utils::settle($promises)->wait();
         } catch(\Exception $e) {
+            $this->hasError = true;
             Yii::log('Error while handling promises %s: %s', 'error');
+        }
+
+        if ($this->hasError) {
+            echo 'check the logs: some errors have been detected';
+        } else {
+            echo 'All good';
         }
     }
 }
