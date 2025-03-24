@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #2235: Add a checkbox to determine whether if a manuscript should be considered a pre-print link
 - Fix #2294: Add dedicated username variable for authenticating to email service
 
 ## v4.4.9 - 2025-04-30 - fd51be0df - live since 2025-05-14

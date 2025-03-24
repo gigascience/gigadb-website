@@ -51,14 +51,12 @@ class AdminManuscriptController extends Controller
 	{
 		$model=new Manuscript;
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
-		if(isset($_POST['Manuscript']))
+		if ($attrs = Yii::$app->request->post('Manuscript'))
 		{
-			$model->attributes=$_POST['Manuscript'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+			$model->attributes = $attrs;
+
+			if ($model->save())
+				return $this->redirect(array('view','id'=>$model->id));
 		}
 
 		$this->render('create',array(
@@ -75,14 +73,11 @@ class AdminManuscriptController extends Controller
 	{
 		$model=$this->loadModel($id);
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
-		if(isset($_POST['Manuscript']))
+        if ($attrs = Yii::$app->request->post('Manuscript'))
 		{
-			$model->attributes=$_POST['Manuscript'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+			$model->attributes = $attrs;
+			if ($model->save())
+				return $this->redirect(array('view','id'=>$model->id));
 		}
 
 		$this->render('update',array(
