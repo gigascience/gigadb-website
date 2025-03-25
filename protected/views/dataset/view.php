@@ -295,7 +295,7 @@ $sampleDataProvider = $samples->getDataProvider();
                     <?php }
                     ?>
                     <?php
-                    foreach ($links->getDatasetExternalLinksTypesNames(["Protocols.io", "JBrowse", "3D Models", "Code Ocean"]) as $linkType => $linkCode) {
+                    foreach ($links->getDatasetExternalLinksTypesNames(["Protocols.io", "JBrowse", "3D Models", "Code Ocean","3D Sketchfab"]) as $linkType => $linkCode) {
                     ?>
                         <li role="presentation" id="p-<?= $linkCode ?>"><a href="#<?= $linkCode ?>" aria-controls="<?= $linkCode ?>" role="tab" data-toggle="tab"><?= $linkType ?></a></li>
                     <?php
@@ -510,7 +510,7 @@ $sampleDataProvider = $samples->getDataProvider();
                             <?php
                             }
 
-                            foreach ($links->getDatasetExternalLinksTypesNames(["Protocols.io", "JBrowse", "Code Ocean"]) as $linkType => $linkCode) {
+                            foreach ($links->getDatasetExternalLinksTypesNames(["Protocols.io", "JBrowse", "Code Ocean","3D Sketchfab"]) as $linkType => $linkCode) {
                             ?>
                                 <div role="tabpanel" class="tab-pane visible" id="<?= $linkCode ?>">
                                     <p><?= $linkType ?>:</p>
@@ -529,6 +529,9 @@ $sampleDataProvider = $samples->getDataProvider();
                                                 break;
                                             case "Code Ocean":
                                                 echo "<p>$p</p>";
+                                                break;
+                                            case "3D Sketchfab":
+                                                echo "<iframe src=\"$p\" style=\"width: 950px; height: 520px; border: 1px solid transparent;\"></iframe>";
                                                 break;
                                         }
                                     }
