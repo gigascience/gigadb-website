@@ -116,6 +116,7 @@ class FormattedDatasetConnectionsTest extends CTestCase
                                             'dataset_id' => 1,
                                             'citation' => "full citation fetched remotely. doi:10.1186/gb-2012-13-10-r100",
                                             'pmurl' => "http://www.ncbi.nlm.nih.gov/pubmed/23075480",
+                                            'is_pre_print' => false
                                         ),
                                         array(
                                             'id' => 2,
@@ -124,11 +125,12 @@ class FormattedDatasetConnectionsTest extends CTestCase
                                             'dataset_id' => 1,
                                             'citation' => "Another full citation fetched remotely. doi:10.1038/nature10158",
                                             'pmurl' => null,
+                                            'is_pre_print' => false
                                         ),
                                     )
                                 );
 
-        $expected = array(
+        $expected = array(array(
                         array(
                             'id' => 1,
                             'identifier' => "10.1186/gb-2012-13-10-r100",
@@ -136,6 +138,7 @@ class FormattedDatasetConnectionsTest extends CTestCase
                             'dataset_id' => 1,
                             'citation' => 'full citation fetched remotely. <a href="https://doi.org/10.1186/gb-2012-13-10-r100">doi:10.1186/gb-2012-13-10-r100</a>',
                             'pmurl' => '(PubMed:<a href="http://www.ncbi.nlm.nih.gov/pubmed/23075480">23075480</a>)',
+                            'is_pre_print' => false
                         ),
                         array(
                             'id' => 2,
@@ -144,8 +147,9 @@ class FormattedDatasetConnectionsTest extends CTestCase
                             'dataset_id' => 1,
                             'citation' => 'Another full citation fetched remotely. <a href="https://doi.org/10.1038/nature10158">doi:10.1038/nature10158</a>',
                             'pmurl' => null,
+                            'is_pre_print' => false
                         ),
-                    );
+                    ), array());
         $daoUnderTest = new FormattedDatasetConnections($controller, $cachedDatasetConnections);
         $this->assertEquals($expected, $daoUnderTest->getPublications());
     }

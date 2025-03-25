@@ -187,18 +187,31 @@ $sampleDataProvider = $samples->getDataProvider();
                     </div>
                 </div>
                 <?php
-                $publications = $connections->getPublications();
-                if (!empty($publications)) { ?>
+                [$peerReviews, $prePrints] = $connections->getPublications();
+                if ($peerReviews) { ?>
                     <h3 class="h5"><strong><?= Yii::t('app', 'Read the peer-reviewed publication(s):') ?></strong></h3>
                     <ul class="list-unstyled citation-list">
-                        <? foreach ($publications as $publication) {
+                        <? foreach ($peerReviews as $peerReview) {
                           ?>
                           <li>
                           <?
-                            echo $publication['citation'] . $publication['pmurl'];
+                            echo $peerReview['citation'] . $peerReview['pmurl'];
                           ?>
                           </li>
                           <?
+                        }
+                        ?>
+                    </ul>
+                <?php } if ($prePrints) { ?>
+                    <h3 class='h5'><strong><?= Yii::t('app', 'Read the pre-print publication(s):') ?></strong></h3>
+                        <ul class="list-unstyled citation-list">
+                        <? foreach ($prePrints as $prePrint) { ?>
+                            <li>
+                            <?
+                                echo $prePrint['citation'] . $prePrint['pmurl'];
+                            ?>
+                            </li>
+                        <?
                         }
                         ?>
                     </ul>
