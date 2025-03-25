@@ -1,6 +1,6 @@
 <?php
 
-class m250319_104853_add_sketchfab_externa_link_type extends CDbMigration
+class m250319_104853_add_sketchfab_external_link_type extends CDbMigration
 {
 	public function up()
 	{
