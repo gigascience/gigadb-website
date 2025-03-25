@@ -88,8 +88,7 @@ class StoredDatasetConnections extends DatasetComponents implements DatasetConne
     */
     public function getPublications(): array
     {
-
-        $sql = "select id, identifier, pmid, dataset_id from manuscript where dataset_id = :id order by id";
+;        $sql = "select id, identifier, pmid, dataset_id, is_pre_print from manuscript where dataset_id = :id order by id";
         $command = $this->_db->createCommand($sql);
         $command->bindParam(":id", $this->_id, PDO::PARAM_INT);
         $rows = $command->queryAll();
