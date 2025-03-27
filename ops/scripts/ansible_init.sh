@@ -152,6 +152,13 @@ echo "grafana_contact_smtp_password = $grafana_contact_smtp_password" >> ansible
 echo "grafana_contact_smtp_from_address = $grafana_contact_smtp_from_address" >> ansible.properties
 echo "grafana_contact_smtp_from_name = $grafana_contact_smtp_from_name" >> ansible.properties
 
+# variables needed for renewing SSL certificates
+remote_hostname=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$PROJECT_VARIABLES_URL/REMOTE_HOSTNAME?filter%5benvironment_scope%5d=$target_environment" | jq -r .value)
+echo "remote_hostname = $remote_hostname" >> ansible.properties
+
+PROJECT_VARIABLES_URL=$(echo $PROJECT_VARIABLES_URL | sed -e 's/\%2F/\//g')
+echo "project_variables_url = $PROJECT_VARIABLES_URL" >> ansible.properties
+
 echo  "\nRemove old key and add newly created vms to known host file"
 
 ssh-keygen -R $bastion_ip

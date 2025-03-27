@@ -26,6 +26,8 @@ ansible_become = "true"
 database_bootstrap = "../../../../sql/production_like.pgdmp"
 gitlab_private_token = "{{ lookup('ini', 'gitlab_private_token type=properties file=ansible.properties') }}"
 gigadb_environment = "{{ lookup('ini', 'deployment_target type=properties file=ansible.properties') }}"
+project_variables_url="{{ lookup('ini', 'project_variables_url type=properties file=ansible.properties') }}"
+remote_hostname = "{{ lookup('ini', 'remote_hostname type=properties file=ansible.properties') }}"
 
 pg_host = "{{ lookup('ini', 'gigadb_db_host type=properties file=ansible.properties') }}"
 pg_user = "{{ lookup('ini', 'gigadb_db_user type=properties file=ansible.properties') }}"
