@@ -40,9 +40,15 @@ class ExternalLinkType extends CActiveRecord
 		return array(
 			array('name', 'required'),
 			array('name', 'length', 'max'=>45),
-			// The following rule is used by search().
+            array('name', 'length', 'max'=>250),
+            array('name', 'unique', 'message'=> 'Duplicate entry'),
+            array('description', 'length', 'max'=>250),
+            array('multiple', 'boolean'),
+            array('displayed_as', 'in', 'range' => array('link', 'tab')),
+            array('relationship_id', 'required'),
+            // The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, name', 'safe', 'on'=>'search'),
+			array('id, name, description, multiple, displayed_as', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -55,6 +61,7 @@ class ExternalLinkType extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'externalLinks' => array(self::HAS_MANY, 'ExternalLink', 'external_link_type_id'),
+            'relationship' => [self::BELONGS_TO, 'Relationship', 'relationship_id'],
 		);
 	}
 
@@ -66,6 +73,9 @@ class ExternalLinkType extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'name' => 'Name',
+            'description' => 'Description',
+            'multiple' => 'Can be multiple instances of that external link type per dataset ',
+            'displayed_as' => 'Displayed As',
 		);
 	}
 
@@ -82,6 +92,7 @@ class ExternalLinkType extends CActiveRecord
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('name',$this->name,true);
+        $criteria->compare('description',$this->description,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

@@ -34,6 +34,7 @@ class Relationship extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
+            array('id', 'unique'),
 			array('name', 'length', 'max'=>100),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
@@ -53,6 +54,7 @@ class Relationship extends CActiveRecord
 			'relations' => array(self::HAS_MANY, 'Relation', 'relationship_id'),
 			'sample_rels' => array(self::HAS_MANY, 'SampleRel', 'relationship_id'),
             'fileRelationships' => array(self::HAS_MANY, 'FileRelationship', 'relationship_id'),
+            'externalLinkTypes' => [self::HAS_MANY, 'ExternalLinkType', 'relationship_id'],
 		);
 	}
 
