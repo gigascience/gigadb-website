@@ -51,19 +51,21 @@ class AdminExternalLinkController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new ExternalLink;
+		$model = new ExternalLink;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['ExternalLink']))
+		if ($attr = Yii::$app->request->post('ExternalLink'))
 		{
-			$model->attributes=$_POST['ExternalLink'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+			$model->attributes = $attr;
+            $model->scenario='create';
+
+            if ($model->save())
+				return $this->redirect(array('view','id'=>$model->id));
 		}
 
-		$this->render('create',array(
+		return $this->render('create',array(
 			'model'=>$model,
 		));
 	}
@@ -187,14 +189,17 @@ class AdminExternalLinkController extends Controller
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['ExternalLink']))
+		if ($attr = Yii::$app->request->post('ExternalLink'))
 		{
-			$model->attributes=$_POST['ExternalLink'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+			$model->attributes = $attr;
+            $model->scenario='update';
+
+            if ($model->save()) {
+                return $this->redirect(array('view','id'=>$model->id));
+            }
 		}
 
-		$this->render('update',array(
+		return $this->render('update',array(
 			'model'=>$model,
 		));
 	}
