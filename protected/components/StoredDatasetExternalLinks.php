@@ -51,7 +51,7 @@ class StoredDatasetExternalLinks extends DatasetComponents implements DatasetExt
     public function getDatasetExternalLinks(array $types = null): array
     {
         $results = $this->_db->createCommand()
-                                ->select('l.id, dataset_id, url, external_link_type_id, t.name as external_link_type_name')
+                                ->select('l.id, dataset_id, url, external_link_type_id, t.name as external_link_type_name, t.multiple')
                                 ->from('external_link l')
                                 ->join('external_link_type t', 'l.external_link_type_id = t.id')
                                 ->where('dataset_id = :id', array(':id' => $this->_id))

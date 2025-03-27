@@ -1,10 +1,10 @@
-id,name
-1,Additional information
-2,Genome browser
-3,Protocols.io
-4,JBrowse
-5,3D Models
-6,Code Ocean
-7,Github links
-8,USCS Tumour Map Viewer
-9,3D Sketchfab
+id,name,description,prefix,displayed_as,multiple,relationship_id
+1,Additional information,,https://doi.org/,link,true,2
+2,Genome browser,,,link,false,2
+3,Protocols.io,,,tab,false,2
+4,JBrowse,,,tab,false,2
+5,3D Models,,,link,false,2
+6,Code Ocean,,,link,false,2
+7,Github links,,,tab,false,2
+8,USCS Tumour Map Viewer,,,link,false,2
+9,3D Sketchfab,,,link,false,2

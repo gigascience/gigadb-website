@@ -384,9 +384,10 @@ class Dataset extends CActiveRecord
     public function getExternalLinks()
     {
         $projects = Yii::app()->db->createCommand()
-            ->select('el.url, elt.name')
+            ->select('el.url, elt.name, r.name as relationshipname')
             ->from('external_link el')
             ->join('external_link_type elt', 'el.external_link_type_id = elt.id')
+            ->join('relationship r', 'elt.relationship_id = r.id')
             ->where('el.dataset_id = :id', array(':id' => $this->id))
             ->queryAll();
 
@@ -599,14 +600,12 @@ class Dataset extends CActiveRecord
                     $relatedIdentifier = $externalLink['url'];
                     $resourceTypeGeneral = 'Software';
                     $relatedIdentifierType = 'URL';
-                    $relationType = 'HasPart';
 
                     break;
                 case 'Protocols.io':
                     $relatedIdentifier = $externalLink['url'];
                     $resourceTypeGeneral = 'Workflow';
                     $relatedIdentifierType = 'DOI';
-                    $relationType = 'References';
 
                     break;
 
@@ -614,19 +613,17 @@ class Dataset extends CActiveRecord
                     $relatedIdentifier = $externalLink['url'];
                     $resourceTypeGeneral = 'Image';
                     $relatedIdentifierType = 'URL';
-                    $relationType = 'References';
 
                     break;
                 default:
                     $relatedIdentifier = $externalLink['url'];
                     $resourceTypeGeneral = 'Other';
                     $relatedIdentifierType = 'URL';
-                    $relationType = 'References';
             }
 
             $related_identifier = $related_identifiers->addchild('relatedIdentifier', htmlspecialchars($relatedIdentifier, ENT_QUOTES, 'UTF-8'));
             $related_identifier->addAttribute('relatedIdentifierType', $relatedIdentifierType);
-            $related_identifier->addAttribute('relationType', $relationType);
+            $related_identifier->addAttribute('relationType', $externalLink['relationshipname']);
             $related_identifier->addAttribute('resourceTypeGeneral', $resourceTypeGeneral);
         }
 
