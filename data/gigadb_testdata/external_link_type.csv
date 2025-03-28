@@ -1,6 +1,6 @@
 id,name,description,prefix,displayed_as,multiple,relationship_id
 3,Additional information,,https://doi.org/,link,true,2
 4,Genome browser,,,link,false,2
-5,Protocols.io,,,tab,false,2
-6,JBrowse,,,link,false,2
-7,3D Models,,,link,false,2
+5,Protocols.io,,,link,false,2
+6,JBrowse,,,tab,false,2
+7,3D Models,,,tab,false,2

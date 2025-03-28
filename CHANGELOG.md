@@ -4,6 +4,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #299: Add 'description' - 'prefix' - 'displayed as' - 'multiple' - 'relationship_id' columns to the external_link_type table
+- Feat #299: Admin pages to manage externalLink types
 - Feat #2236: Display pre print manuscript on dataset page
 - Feat #2235: Add a checkbox to determine whether if a manuscript should be considered a pre-print link
 
