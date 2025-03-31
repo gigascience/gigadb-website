@@ -4,6 +4,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #491: Update FAQ entry about service costs
+- Feat #489: Add new FAQ entry "What are the benefits of using GigaDB?"
+
 ## v4.4.7 - 2025-03-26 - 4c548f037 -
 
 - Fix #2241: Restore Sketchfab visualisations alongside 3D models files visualisations
