@@ -25,6 +25,7 @@
     name: $DEPLOYMENT_ENV
     url: $REMOTE_HOME_URL
   artifacts:
+    untracked: true
     when: on_failure
     expire_in: 1 week
 
@@ -97,6 +98,7 @@ TidewaysBuildLive:
     name: $DEPLOYMENT_ENV
     url: $REMOTE_HOME_URL
   artifacts:
+    untracked: true
     when: on_failure
     expire_in: 1 week
 
