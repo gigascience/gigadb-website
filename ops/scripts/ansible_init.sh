@@ -158,6 +158,8 @@ echo "remote_hostname = $remote_hostname" >> ansible.properties
 
 PROJECT_VARIABLES_URL=$(echo $PROJECT_VARIABLES_URL | sed -e 's/\%2F/\//g')
 echo "project_variables_url = $PROJECT_VARIABLES_URL" >> ansible.properties
+REPO_NAME=$(echo $REPO_NAME)
+echo "repo_name = $REPO_NAME" >> ansible.properties
 
 echo  "\nRemove old key and add newly created vms to known host file"
 
