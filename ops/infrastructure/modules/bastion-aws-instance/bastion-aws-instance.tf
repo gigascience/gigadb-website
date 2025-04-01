@@ -39,7 +39,7 @@ resource "aws_security_group" "bastion_sg" {
    }
 }
 
-data "aws_ami" "ec2-user" {
+data "aws_ami" "centos" {
   most_recent = true
 
   filter {
@@ -56,7 +56,7 @@ data "aws_ami" "ec2-user" {
 }
 
 resource "aws_instance" "bastion" {
-  ami = data.aws_ami.ec2-user.id
+  ami = data.aws_ami.centos.id
   associate_public_ip_address = true
   instance_type = "${var.bastion_ec2_type}"
   vpc_security_group_ids = [aws_security_group.bastion_sg.id]
@@ -65,7 +65,7 @@ resource "aws_instance" "bastion" {
 
   tags = {
     Name = "bastion_server_${var.deployment_target}_${var.owner}",
-    System = "${var.bastion_ec2_type}_ec2-user_stream8",
+    System = "${var.bastion_ec2_type}_centos_stream8",
   }
 
   root_block_device {
