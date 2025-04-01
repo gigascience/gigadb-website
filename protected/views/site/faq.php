@@ -17,6 +17,7 @@ $this->pageTitle = 'GigaDB - FAQ';
         ]);
         ?>
         <section>
+          <?php $this->renderPartial('//faq/_faqSearch'); ?>
           <div class="panel-group" id="accordion">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -796,14 +797,18 @@ $this->pageTitle = 'GigaDB - FAQ';
                     </div>
                 </div>
             </div>
+        <?php
+        Yii::app()->controller->renderPartial('//faq/_submitQuestion');
+        ?>
     </div>
     </section>
 
 </div>
 </div>
 
-<script type="text/javascript">
+<script type="module">
     $(document).ready(function() {
+        // handle initial active panel
         let idToShow = "#panel01"
 
         if (location.hash != null && location.hash != "") {
