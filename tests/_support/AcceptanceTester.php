@@ -435,4 +435,20 @@ class AcceptanceTester extends \Codeception\Actor
     {
         $this->see($text, ['css' => "$table tr:nth-child($row) td:nth-child($column)"]);
     }
+
+    /**
+     * @Then I should see :cssSelector with text :text
+     */
+    public function iShouldSeeCssSelectorWithText($cssSelector, $text)
+    {
+        $this->see($text, ['css' => $cssSelector]);
+    }
+
+    /**
+     * @Then I should not see :cssSelector with text :text
+     */
+    public function iShouldNotSeeCssSelectorWithText($cssSelector, $text)
+    {
+        $this->dontSee($text, ['css' => $cssSelector]);
+    }
 }
