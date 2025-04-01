@@ -98,7 +98,7 @@ class Dataset extends CActiveRecord
             array('description, publication_date, modification_date, image_id, fairnuse, types', 'safe'),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            array('id, manuscript_id, submitter_id, image_id, identifier, title, description, publisher, dataset_size, ftp_site, upload_status, excelfile, excelfile_md5, publication_date, modification_date', 'safe', 'on'=>'search'),
+            array('id, manuscript_id, submitter_id, image_id, identifier, title, description, publisher, dataset_size, ftp_site, upload_status, excelfile, excelfile_md5, publication_date, modification_date, curator_id', 'safe', 'on'=>'search'),
 #            array('projectIDs , sampleIDs , authorIDs , datasetTypeIDs' , 'safe'),
         );
     }
@@ -250,9 +250,26 @@ class Dataset extends CActiveRecord
         $criteria->compare('LOWER(excelfile_md5)',strtolower($this->excelfile_md5),true);
         $criteria->compare('publication_date',$this->publication_date);
         $criteria->compare('modification_date',$this->modification_date);
+        // $criteria->compare('manuscript_id', $this->manuscript_id);
+        $criteria->compare('upload_status', $this->upload_status);
+
+        if (!empty($this->curator_id)) {
+            $criteria->addCondition("exists (
+                select 1 from gigadb_user u
+                where u.id = t.curator_id
+                and lower(concat(coalesce(u.first_name, ''), ' ', coalesce(u.last_name, ''))) like :curator_name
+            )");
+            $criteria->params[':curator_name'] = '%' . strtolower($this->curator_id) . '%';
+        }
+
 
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
+            'sort' => array(
+                'defaultOrder' => array(
+                    'id' => CSort::SORT_DESC
+                ),
+            ),
         ));
     }
 

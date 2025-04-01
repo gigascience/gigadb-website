@@ -77,86 +77,86 @@ $('.search-form form').submit(function(){
 	</p>
 
 	<?php $this->widget('CustomGridView', array(
-		'id'=>'dataset-grid',
-    'afterAjaxUpdate' => 'afterAjaxUpdate',
-		'dataProvider'=>$dataProvider,
-		'itemsCssClass'=>"table table-bordered table-fixed dataset-table",
+		'id' => 'dataset-grid',
+        'afterAjaxUpdate' => 'afterAjaxUpdate',
+		'dataProvider' => $dataProvider,
+		'itemsCssClass' => "table table-bordered table-fixed dataset-table",
 		'rowCssClassExpression' => '"dataset-".$data["identifier"]',
-		'filter'=>$model,
-		'columns'=>array(
+		'filter' => $model,
+		'columns' => array(
 			'id',
 			'identifier',
-			'manuscript_id',
-      array(
-        'name' => 'title',
-        'type' => 'raw',
-        'value' => 'Yii::app()->controller->widget("CHtmlPurifier")->purify($data->title)',
-        ),
-			// 'publisher',
-			// 'dataset_size',
-			// 'ftp_site',
-			// 'upload_status',
-			// 'excelfile',
-			// 'excelfile_md5',
-			'publication_date',
-			// array('name'=> 'curator_id', 'value'=>'$data->getCuratorName()'),
-			'modification_date',
 			array(
-				'class'=>'CDataColumn',
-				'header' => "Upload Status",
-				'headerHtmlOptions'=>array('style'=>'width: 150px'),
-				'value'  => '$data->upload_status'
-			),
-			array(
-				'class'=>'CButtonColumn',
-				'header' => "Actions",
-				'headerHtmlOptions'=>array('style'=>'width: 120px'),
-				'template' => '{view}{update}{dropbox}{delete}',
-				'buttons' => array(
-					'view' => array(
-						'imageUrl' => false,
-						'url' => 'Yii::app()->createUrl("dataset/view" , array("id" => $data->identifier))',
-						'label' => '',
-						'options' => array(
-							"title" => "View Dataset",
-							"class" => "fa fa-eye fa-lg icon icon-view",
-							"aria-label" => "View Dataset"
-						),
-					),
-					'update' => array(
-						'imageUrl' => false,
-						'label' => '',
-						'options' => array(
-							"title" => "Update Dataset",
-							"class" => "fa fa-pencil fa-lg icon icon-update",
-							"aria-label" => "Update Dataset"
-						),
-					),
+                'name' => 'manuscript_id',
+                'filter' => false,
+            ),
+            array(
+                'name' => 'title',
+                'type' => 'raw',
+                'value' => 'Yii::app()->controller->widget("CHtmlPurifier")->purify($data->title)',
+            ),
+            'publication_date',
+            array(
+                'name' => 'curator_id',
+                'header' => "Curator",
+                'value' => '$data->getCuratorName()',
+            ),
+            array(
+                'name' => 'upload_status',
+                'header' => "Upload Status",
+                'headerHtmlOptions' => array('style' => 'width: 150px'),
+                'value' => '$data->upload_status',
+            ),
+            array(
+                'class' => 'CButtonColumn',
+                'header' => "Actions",
+                'headerHtmlOptions' => array('style'=>'width: 120px'),
+                'template' => '{view}{update}{dropbox}{delete}',
+                'buttons' => array(
+                    'view' => array(
+                        'imageUrl' => false,
+                        'url' => 'Yii::app()->createUrl("dataset/view" , array("id" => $data->identifier))',
+                        'label' => '',
+                        'options' => array(
+                            "title" => "View Dataset",
+                            "class" => "fa fa-eye fa-lg icon icon-view",
+                            "aria-label" => "View Dataset"
+                        ),
+                    ),
+                    'update' => array(
+                        'imageUrl' => false,
+                        'label' => '',
+                        'options' => array(
+                            "title" => "Update Dataset",
+                            "class" => "fa fa-pencil fa-lg icon icon-update",
+                            "aria-label" => "Update Dataset"
+                        ),
+                    ),
 
-					'delete' => array(
-						'imageUrl' => false,
-						'label' => '',
-						'options' => array(
-							"title" => "Delete Dataset",
-							"class" => "fa fa-trash fa-lg icon icon-delete",
-							"aria-label" => "Delete Dataset"
-						),
-					),
+                    'delete' => array(
+                        'imageUrl' => false,
+                        'label' => '',
+                        'options' => array(
+                            "title" => "Delete Dataset",
+                            "class" => "fa fa-trash fa-lg icon icon-delete",
+                            "aria-label" => "Delete Dataset"
+                        ),
+                    ),
 
-					'dropbox' => array(
-						'imageUrl' => false,
-						'url' => 'Yii::app()->createUrl("adminDataset/assignFTPBox" , array("id" => $data->identifier))',
-						'label' => '',
-						'visible' => '"AssigningFTPbox" === $data->upload_status',
-						'options' => array(
-							'title' => 'New Dropbox for this dataset',
-							"class" => "fa fa-inbox fa-lg icon icon-dropbox",
-							"aria-label" => "New Dropbox for this dataset"
-						),
-					)
+                    'dropbox' => array(
+                        'imageUrl' => false,
+                        'url' => 'Yii::app()->createUrl("adminDataset/assignFTPBox" , array("id" => $data->identifier))',
+                        'label' => '',
+                        'visible' => '"AssigningFTPbox" === $data->upload_status',
+                        'options' => array(
+                            'title' => 'New Dropbox for this dataset',
+                            "class" => "fa fa-inbox fa-lg icon icon-dropbox",
+                            "aria-label" => "New Dropbox for this dataset"
+                        ),
+                    )
 
-				),
-			),
+                ),
+            ),
 		),
 	)); ?>
 
