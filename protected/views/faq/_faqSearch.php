@@ -40,6 +40,12 @@ Yii::app()->clientScript->registerScriptFile($jsUrl . '/utils/debounce.js', CCli
         const $clearButton = $('#clearSearch');
         const $panels = $('.panel');
         const $searchResults = $('#searchResults');
+        const $contactPanel = $('#panelContact');
+
+        // if form panel is expanded (because it has server validation errors), scroll to it
+        if ($contactPanel.hasClass('in')) {
+            $contactPanel[0].scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
 
         const clearSearch = () => {
             $faqSearch.val('').trigger('input');

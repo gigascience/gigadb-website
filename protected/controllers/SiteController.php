@@ -352,14 +352,13 @@ class SiteController extends Controller {
 		$this->render('advisory');
 	}
 	public function actionFaq() {
-        // Yii::log("FAQ action started", "info");
         $model = new ContactForm;
+        // used to scroll the form into view after refresh, in case of server validation errors
+        $hasValidationErrors = false;
 
         if (isset($_POST['ContactForm'])) {
-            // Yii::log("FAQ form submitted", "info");
             $model->attributes = $_POST['ContactForm'];
             if ($model->validate()) {
-                // Yii::log("FAQ form validation passed", "info");
                 try {
                     Yii::app()->mailService->sendEmail(
                         Yii::app()->params['adminEmail'],
@@ -371,11 +370,17 @@ class SiteController extends Controller {
                     Yii::log("Problem sending email from FAQ page - " . $ste->getMessage(), "error");
                 }
                 Yii::app()->user->setFlash('submit-question', 'Thank you for contacting us. We will respond to you as soon as possible.');
+                $hasValidationErrors = false;
                 $this->refresh();
+            } else {
+                $hasValidationErrors = true;
             }
         }
 
-		$this->render('faq', array('model' => $model));
+		$this->render('faq', array(
+            'model' => $model,
+            'hasValidationErrors' => $hasValidationErrors)
+        );
 	}
 
 	public function actionTerm() {

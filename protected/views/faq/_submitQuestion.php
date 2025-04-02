@@ -5,12 +5,12 @@
 <div class="panel panel-default js-panel-always-visible" id="contact-panel">
     <div class="panel-heading">
         <h2 class="h4 panel-title" id="headingContact">
-            <button data-toggle="collapse" data-parent="#accordion" data-target="#panelContact" aria-expanded="false" aria-controls="panelContact">
+            <button data-toggle="collapse" data-parent="#accordion" data-target="#panelContact" aria-expanded="<?php echo $hasValidationErrors ? 'true' : 'false'; ?>" aria-controls="panelContact">
                 Can't Find What You're Looking For?
             </button>
         </h2>
     </div>
-    <div id="panelContact" class="panel-collapse collapse" role="region" aria-labelledby="headingContact">
+    <div id="panelContact" class="panel-collapse collapse <?php echo $hasValidationErrors ? 'in' : ''; ?>" role="region" aria-labelledby="headingContact">
         <div class="panel-body">
             <p>Have you tried our <a href="/site/help">help pages</a>? If you still can't find the answers you are looking for, submit a question to our team here.</p>
             <?php $form = $this->beginWidget('CActiveForm', array('htmlOptions' => array('class' => 'form contact-form', 'id' => 'faqContactForm'))); ?>

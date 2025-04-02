@@ -803,7 +803,10 @@ $this->pageTitle = 'GigaDB - FAQ';
                 </div>
             </div>
         <?php
-        Yii::app()->controller->renderPartial('//faq/_submitQuestion', array('model' => $model));
+        Yii::app()->controller->renderPartial('//faq/_submitQuestion', array(
+            'model' => $model,
+            'hasValidationErrors' => $hasValidationErrors
+        ));
         ?>
     </div>
     </section>
@@ -820,7 +823,6 @@ $this->pageTitle = 'GigaDB - FAQ';
             idToShow = location.hash
         }
 
-        $('.collapse').removeClass('in');
         $(idToShow + '.collapse').collapse('show');
     });
 </script>
