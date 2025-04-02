@@ -210,7 +210,7 @@
                         <h2 class="heading">Latest news</h2>
                     </div>
                 </div>
-                <div id="news_slider" class="row">
+                <div id="news_slider" class="row ml-0 mr-0">
                     <? $this->renderPartial('news', array('news' => $news)); ?>
                 </div>
             </div>
