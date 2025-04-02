@@ -28,15 +28,15 @@ class CheckDoiExistsInDataciteApiCommand extends CConsoleCommand
         foreach ($datasets as $dataset) {
             $promises[] = $client->getAsync($mds_doi_url . '/' . $mds_prefix . '/' . $dataset->identifier, $options)->then(
                 function ($response) use ($dataset) {
-                    if ($response->getStatusCode() !== 200) {
+                    if (!in_array($response->getStatusCode(), [200, 204])) {
                         $this->hasError = true;
                         Yii::log(sprintf('DOI not found for dataset %s', $dataset->identifier), 'info');
                     }
                 },
-                function ($exception) use ($dataset) {
+                function ($exception) use ($dataset, $errors) {
                     $errors[$dataset->id] = $dataset->identifier;
                     $this->hasError = true;
-                    Yii::log(sprintf('Error while checking DOI for dataset %s: %s', $dataset->identifier, $e->getMessage()), 'error');
+                    Yii::log(sprintf('Error while checking DOI for dataset %s: %s', $dataset->identifier, $exception->getMessage()), 'error');
                 }
             );
             $var++;
