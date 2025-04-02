@@ -166,6 +166,8 @@ echo "web_ec2_type=$web_ec2_type" >> .init_env_vars
 echo "bastion_ec2_type=$bastion_ec2_type" >> .init_env_vars
 echo "rds_ec2_type=$rds_ec2_type" >> .init_env_vars
 
+PROJECT_VARIABLES_URL="https://gitlab.com/api/v4/projects/$encoded_gitlab_project/variables"
+echo "PROJECT_VARIABLES_URL: $PROJECT_VARIABLES_URL"
 # Update terraform.tfvars file with values from GitLab so Terraform can configure RDS instance
 gigadb_db_database=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$PROJECT_VARIABLES_URL/gigadb_db_database?filter%5benvironment_scope%5d=$target_environment" | jq -r .value)
 echo "gigadb_db_database=\"$gigadb_db_database\"" >> terraform.tfvars
