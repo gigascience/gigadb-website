@@ -12,6 +12,11 @@ variable "aws_region" {
   default = "ap-east-1"
 }
 
+variable "aws_profile" {
+  type = string
+  description = "AWS profile"
+}
+
 variable "deployment_target" {
   type = string
   description = "Environment to build"
@@ -86,7 +91,7 @@ variable "rds_ec2_type" {
 
 
 data "external" "callerUserName" {
-  program = ["${path.module}/getIAMUserNameToJSON.sh"]
+  program = ["${path.module}/getIAMUserNameToJSON.sh", var.aws_profile]
 }
 
 data "aws_availability_zones" "available" {
