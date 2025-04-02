@@ -156,8 +156,6 @@ echo "grafana_contact_smtp_from_name = $grafana_contact_smtp_from_name" >> ansib
 remote_hostname=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$PROJECT_VARIABLES_URL/REMOTE_HOSTNAME?filter%5benvironment_scope%5d=$target_environment" | jq -r .value)
 echo "remote_hostname = $remote_hostname" >> ansible.properties
 
-PROJECT_VARIABLES_URL=$(echo $PROJECT_VARIABLES_URL | sed -e 's/\%2F/\//g')
-echo "project_variables_url = $PROJECT_VARIABLES_URL" >> ansible.properties
 REPO_NAME=$(echo $REPO_NAME)
 echo "repo_name = $REPO_NAME" >> ansible.properties
 
