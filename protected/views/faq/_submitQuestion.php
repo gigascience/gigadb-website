@@ -1,3 +1,7 @@
+<? if (!Yii::app()->user->hasFlash('submit-question')) {
+    Yii::app()->captcha->generate();
+?>
+
 <div class="panel panel-default js-panel-always-visible" id="contact-panel">
     <div class="panel-heading">
         <h2 class="h4 panel-title" id="headingContact">
@@ -9,23 +13,54 @@
     <div id="panelContact" class="panel-collapse collapse" role="region" aria-labelledby="headingContact">
         <div class="panel-body">
             <p>Have you tried our <a href="/site/help">help pages</a>? If you still can't find the answers you are looking for, submit a question to our team here.</p>
-            <form id="faqContactForm" method="post">
+            <?php $form = $this->beginWidget('CActiveForm', array('htmlOptions' => array('class' => 'form contact-form', 'id' => 'faqContactForm'))); ?>
+                <?php
+                $this->widget('application.components.controls.TextField', array(
+                    'form' => $form,
+                    'model' => $model,
+                    'attributeName' => 'name',
+                    'inputOptions' => array('required' => true),
+                ));
+
+                $this->widget('application.components.controls.TextField', array(
+                    'form' => $form,
+                    'model' => $model,
+                    'attributeName' => 'email',
+                    'inputOptions' => array('required' => true, 'type' => 'email'),
+                ));
+
+                $this->widget('application.components.controls.TextField', array(
+                    'form' => $form,
+                    'model' => $model,
+                    'attributeName' => 'subject',
+                    'inputOptions' => array('required' => true),
+                ));
+
+                $this->widget('application.components.controls.TextArea', array(
+                    'form' => $form,
+                    'model' => $model,
+                    'attributeName' => 'body',
+                    'inputOptions' => array('required' => true),
+                ));
+                ?>
                 <div class="form-group">
-                    <label for="contactName">Your Name<span aria-hidden="true"> *</span></label>
-                    <input type="text" class="form-control" id="contactName" name="contactName" required aria-required="true">
+                    <img src="<?php echo Yii::app()->captcha->output(); ?>" alt="Type the word in the image">
                 </div>
-                <div class="form-group">
-                    <label for="contactEmail">Your Email Address<span aria-hidden="true"> *</span></label>
-                    <input type="email" class="form-control" id="contactEmail" name="contactEmail" required aria-required="true">
-                </div>
-                <div class="form-group">
-                    <label for="contactQuestion">Your Question<span aria-hidden="true"> *</span></label>
-                    <textarea class="form-control" id="contactQuestion" name="contactQuestion" rows="4" required aria-required="true"></textarea>
-                </div>
+                <?php
+                $this->widget('application.components.controls.TextField', array(
+                    'form' => $form,
+                    'model' => $model,
+                    'attributeName' => 'verifyCode',
+                    'description' => 'Please enter the letters as they are shown in the image above.',
+                    'inputOptions' => array('required' => true),
+                ));
+                ?>
+
                 <div class="btns-row btns-row-end">
-                    <button type="submit" class="btn background-btn">Submit your question</button>
+                    <?php echo CHtml::submitButton('Submit your question', array('class' => 'btn background-btn')); ?>
                 </div>
-            </form>
+            <?php $this->endWidget(); ?>
         </div>
     </div>
 </div>
+<? } ?>

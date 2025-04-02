@@ -1,7 +1,12 @@
 <?php
 $this->pageTitle = 'GigaDB - FAQ';
+?>
 
-//echo $this->renderInternal('Yii::app()->basePath'.'/../files/html/about.html');
+<? if (Yii::app()->user->hasFlash('submit-question')) { ?>
+    <div class="flash-success alert alert-success">
+        <?= Yii::app()->user->getFlash('submit-question'); ?>
+    </div>
+<? }
 ?>
 
 <div class="clear"></div>
@@ -798,7 +803,7 @@ $this->pageTitle = 'GigaDB - FAQ';
                 </div>
             </div>
         <?php
-        Yii::app()->controller->renderPartial('//faq/_submitQuestion');
+        Yii::app()->controller->renderPartial('//faq/_submitQuestion', array('model' => $model));
         ?>
     </div>
     </section>
