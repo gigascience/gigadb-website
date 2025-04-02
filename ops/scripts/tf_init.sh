@@ -94,6 +94,10 @@ if [ -z $AWS_REGION ];then
   read -p "You need to specify an AWS region: " AWS_REGION
 fi
 
+if [ -z $AWS_PROFILE ];then
+  read -p "You need to specify an AWS profile: " AWS_PROFILE
+fi
+
 # Output values and ask for confirmation
 
 echo ""
@@ -122,6 +126,9 @@ case "$choice" in
     exit 1
     ;;
 esac
+
+# export AWS profile for the terraform command
+export AWS_PROFILE
 
 # RDS backup restoration requires null restore_to_point_in_time variable in
 # terraform.tf to be overridden with real config code block in override.tf
@@ -158,6 +165,7 @@ echo "rds_ec2_type = \"$rds_ec2_type\"" >> terraform.tfvars
 echo "gitlab_project=$gitlab_project" > .init_env_vars
 echo "GITLAB_USERNAME=$GITLAB_USERNAME" >> .init_env_vars
 echo "GITLAB_PRIVATE_TOKEN=$GITLAB_PRIVATE_TOKEN" >> .init_env_vars
+echo "AWS_PROFILE=$AWS_PROFILE" >> .init_env_vars
 echo "aws_ssh_key=$aws_ssh_key" >> .init_env_vars
 echo "deployment_target=$target_environment" >> .init_env_vars
 echo "backup_file=$backup_file" >> .init_env_vars
@@ -175,7 +183,7 @@ gigadb_db_user=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$PROJE
 echo "gigadb_db_user=\"$gigadb_db_user\"" >> terraform.tfvars
 gigadb_db_password=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$PROJECT_VARIABLES_URL/gigadb_db_password?filter%5benvironment_scope%5d=$target_environment" | jq -r .value)
 echo "gigadb_db_password=\"$gigadb_db_password\"" >> terraform.tfvars
-
+echo "aws_profile=\"$AWS_PROFILE\"" >> terraform.tfvars
 
 # Check that if the gitlab project is in the Forks group, it must match .env's $REPO_NAME to avoid overwriting some else remote TF state
 if [[ $gitlab_project =~ /forks/ && ! $gitlab_project =~ $REPO_NAME ]];then
