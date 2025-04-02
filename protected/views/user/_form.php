@@ -224,7 +224,7 @@
  						<?php echo $form->labelEx($model, 'verifyCode', array('class' => 'col-md-3 control-label')); ?>
  						<div class="col-md-9 input-wrapper">
  							<div class="captcha mb-10">
- 								<img class="captcha-image" src="<?php echo Yii::app()->captcha->output(); ?>" alt="Type the word in the image">
+ 								<img class="captcha-image test-captcha-image" src="<?php echo Yii::app()->captcha->output(); ?>" alt="Type the word in the image">
  							</div>
  							<?php echo $form->textField($model, 'verifyCode', array('class' => 'form-control', 'aria-describedby' => $model->hasErrors('verifyCode') ? 'verifyCode-error verifyCode-desc' : 'verifyCode-desc')); ?>
  							<div id="verifyCode-desc" class="hint control-description help-block">Please enter the letters as they are shown in the image above.
