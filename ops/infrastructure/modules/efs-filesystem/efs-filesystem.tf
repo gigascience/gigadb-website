@@ -14,6 +14,7 @@ data "aws_region" "current" {}
 
 module "efs" {
   source = "terraform-aws-modules/efs/aws"
+  version = "1.7.0"
 
   # File system
   name           = "gigadb-efs ${var.owner} ${var.deployment_target}"
