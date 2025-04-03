@@ -58,6 +58,11 @@ module "db" {
   copy_tags_to_snapshot     = true
   delete_automated_backups  = false  # Do not delete backups on RDS instance termination
   apply_immediately         = true
+
+
+  tags = {
+      Owner                 = var.owner
+  }
 }
 
 resource "aws_db_parameter_group" "gigadb-db-param-group" {
