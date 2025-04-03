@@ -363,8 +363,8 @@ class SiteController extends Controller {
                     Yii::app()->mailService->sendEmail(
                         Yii::app()->params['adminEmail'],
                         Yii::app()->params['adminEmail'],
-                        Yii::app()->params['email_prefix'] . $model->subject,
-                        "New FAQ question from: " . $model->name . " <" . $model->email . ">\n\n" . $model->body
+                        Yii::app()->params['email_prefix'] . "FAQ query: " . $model->subject,
+                        $model->name . " <" . $model->email . ">\n\n" . $model->body
                     );
                 } catch (Swift_TransportException $ste) {
                     Yii::log("Problem sending email from FAQ page - " . $ste->getMessage(), "error");

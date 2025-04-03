@@ -72,6 +72,14 @@ class AcceptanceTester extends \Codeception\Actor
     }
 
     /**
+     * @Then I should see a field of type :type with id :id
+     */
+    public function iShouldSeeAFieldOfTypeWithId($type, $id)
+    {
+        $this->seeElement('input', ['id' => $id, 'type' => $type]);
+    }
+
+    /**
      * @Then I should see a password field :id
      */
     public function iShouldSeeAPasswordField($id)
@@ -435,4 +443,14 @@ class AcceptanceTester extends \Codeception\Actor
     {
         $this->see($text, ['css' => "$table tr:nth-child($row) td:nth-child($column)"]);
     }
+
+    /**
+     * @Then I should see less than :count FAQ panels
+     */
+    public function iShouldSeeLessThanFAQPanels($count)
+    {
+        $actualCount = $this->grabMultiple('.panel.panel-default:not([style*="display: none"])');
+        $this->assertLessThan((int)$count, count($actualCount), "Expected to see less than $count FAQ panels, but found " . count($actualCount));
+    }
+
 }
