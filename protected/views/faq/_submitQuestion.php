@@ -6,7 +6,7 @@
     <div class="panel-heading">
         <h2 class="h4 panel-title" id="headingContact">
             <button data-toggle="collapse" data-parent="#accordion" data-target="#panelContact" aria-expanded="<?php echo $hasValidationErrors ? 'true' : 'false'; ?>" aria-controls="panelContact">
-                Can't Find What You're Looking For?
+                Can't find what you're looking for?
             </button>
         </h2>
     </div>
