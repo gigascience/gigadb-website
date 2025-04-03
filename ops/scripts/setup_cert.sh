@@ -8,11 +8,16 @@ set -e
 
 # configure docker cmd
 if [[ $(uname -n) =~ compute ]];then
+  echo "Running on productions, using docker"
   source "${HOME}"/.tls-certs-secrets
 	DOCKER_CMD="docker run --rm -v ${REPO_NAME}_le_config:/etc/letsencrypt -v ${REPO_NAME}_assets:/var/www/assets registry.gitlab.com/$CI_PROJECT_PATH/production_config:$GIGADB_ENV"
 else
+  echo "Running on non-productions, using docker-compose"
   source "./.env"
+  cat ./.env
   source "./.secrets"
+  cat ./.secrets
+  ls -al
 	DOCKER_CMD="docker-compose run --rm config"
 fi
 
