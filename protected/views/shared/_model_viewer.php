@@ -125,14 +125,16 @@ Yii::app()->clientScript->registerScript(
 );
 
 Yii::app()->assetManager->forceCopy = YII_DEBUG;
-$jsDir = Yii::getAlias('/gigadb/app/client/js/model-viewer');
+$jsDir = Yii::getAlias('/gigadb/app/client/js');
 $jsUrl = Yii::app()->assetManager->publish($jsDir);
 
-Yii::app()->clientScript->registerScriptFile($jsUrl . '/index.js', CClientScript::POS_END, ['type' => 'module']);
+Yii::app()->clientScript->registerScriptFile($jsUrl . '/model-viewer/index.js', CClientScript::POS_END, ['type' => 'module']);
 ?>
 
 <script type="module">
-  import { modelViewer } from "<?php echo $jsUrl; ?>/index.js";
+  import { modelViewer } from "<?php echo $jsUrl; ?>/model-viewer/index.js";
+
+  console.log("modelViewer");
 
   $(document).ready(function () {
     modelViewer(<?php echo json_encode($files); ?>, {

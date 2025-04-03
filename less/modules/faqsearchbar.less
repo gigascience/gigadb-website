@@ -1,15 +1,21 @@
-.faq-search-bar > input,
-.faq-search-bar > input:hover,
-.faq-search-bar > input:focus {
-  height: 49px;
-  box-shadow: none;
-  font-size: 13px;
-  padding: 18px;
-  border-color: @color-light-gray;
-}
-.faq-search-bar button {
-  font-size: 20px;
-  height: 49px;
-  line-height: 49px;
-  padding: 0px 20px;
+.faq-search-container {
+  .faq-search-controls {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    position: relative;
+
+    .form-control {
+      padding-left: 32px; // Make room for the icon
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #666;
+      pointer-events: none;
+    }
+  }
 }

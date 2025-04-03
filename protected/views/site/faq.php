@@ -1,7 +1,12 @@
 <?php
 $this->pageTitle = 'GigaDB - FAQ';
+?>
 
-//echo $this->renderInternal('Yii::app()->basePath'.'/../files/html/about.html');
+<? if (Yii::app()->user->hasFlash('submit-question')) { ?>
+    <div class="flash-success alert alert-success">
+        <?= Yii::app()->user->getFlash('submit-question'); ?>
+    </div>
+<? }
 ?>
 
 <div class="clear"></div>
@@ -17,6 +22,7 @@ $this->pageTitle = 'GigaDB - FAQ';
         ]);
         ?>
         <section>
+          <?php $this->renderPartial('//faq/_faqSearch'); ?>
           <div class="panel-group" id="accordion">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -796,21 +802,27 @@ $this->pageTitle = 'GigaDB - FAQ';
                     </div>
                 </div>
             </div>
+        <?php
+        Yii::app()->controller->renderPartial('//faq/_submitQuestion', array(
+            'model' => $model,
+            'hasValidationErrors' => $hasValidationErrors
+        ));
+        ?>
     </div>
     </section>
 
 </div>
 </div>
 
-<script type="text/javascript">
+<script type="module">
     $(document).ready(function() {
+        // handle initial active panel
         let idToShow = "#panel01"
 
         if (location.hash != null && location.hash != "") {
             idToShow = location.hash
         }
 
-        $('.collapse').removeClass('in');
         $(idToShow + '.collapse').collapse('show');
     });
 </script>

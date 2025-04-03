@@ -1,4 +1,4 @@
-import { debounce } from "../../helpers/debounce.js";
+import { debounce } from "../../../utils/debounce.js";
 import { getContainerDimensions } from "../../helpers/getContainerDimensions.js";
 
 const setSize = ([width, height], camera, renderer) => {
