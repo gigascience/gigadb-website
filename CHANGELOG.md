@@ -6,8 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Fix #2033: Create a mockup for all upload statuses except published
 
-## v4.4.7 - 2025-03-18 - c9bccd170 -
+## v4.4.7 - 2025-03-26 - 4c548f037 - live since 2025-04-03
 
+- Fix #2241: Restore Sketchfab visualisations alongside 3D models files visualisations
 - Fix #2180: Add user in curation log when minting the DOI
 - Feat #2066: Wrap edit file attribute form in a modal
 - Fix #2203: Update the curation log without requiring a page refresh when minting a DOI

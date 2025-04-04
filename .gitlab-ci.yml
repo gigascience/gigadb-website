@@ -41,7 +41,7 @@ variables:
   NODE_VERSION: "20.11.0"
   YII_VERSION: "1.1.28"
   YII2_VERSION: "2.0.48"
-  POSTGRES_VERSION: "14.8"
+  POSTGRES_VERSION: "14.15"
   HOME_URL: "gigadb.gigasciencejournal.com"
   FILES_PUBLIC_URL: "http://gigadb.gigasciencejournal.com"
   PUBLIC_HTTP_PORT: "80"
