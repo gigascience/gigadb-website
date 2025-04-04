@@ -7,5 +7,6 @@
 
 set -e
 aws_profile=$1
-userName=$(aws --profile=$aws_profile sts get-caller-identity --output text --query Arn | cut -d"/" -f2 | tr '[:upper:]' '[:lower:]')
-jq -n --arg userName "$userName" '{"userName":$userName}'
+arn=$(aws --profile=$aws_profile sts get-caller-identity --output text --query Arn)
+userName=$(echo $arn | cut -d"/" -f2 | tr '[:upper:]' '[:lower:]')
+jq -n --arg userName "$userName" --arg arn "$arn" '{"userName":$userName, "arn":$arn}'
