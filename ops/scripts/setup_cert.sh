@@ -113,19 +113,22 @@ cert_files_local_exists=$($DOCKER_CMD bash -c "test -f $FULLCHAIN_PEM && test -f
 echo "cert_files_local_exists: $cert_files_local_exists"
 
 echo "To see if they could be found in gitlab"
-if ! [ -z "$tls_fullchain_pem" ];then
+tls_fullchain_pem_response_code=$(curl --silent --output /dev/null --write-out "%{http_code}" --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$CI_API_V4_URL/projects/$encoded_gitlab_project/variables/tls_fullchain_pem?filter%5benvironment_scope%5d=$GIGADB_ENV")
+if [[ $tls_fullchain_pem_response_code == 200 ]];then
   fullchain_pem_remote_exists="true"
 else
   fullchain_pem_remote_exists="false"
 fi
 
-if ! [ -z "$tls_privkey_pem" ];then
+tls_privkey_pem_response_code=$(curl --silent --output /dev/null --write-out "%{http_code}" --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$CI_API_V4_URL/projects/$encoded_gitlab_project/variables/tls_privkey_pem?filter%5benvironment_scope%5d=$GIGADB_ENV")
+if [[ $tls_privkey_pem_response_code == 200 ]];then
   privkey_pem_remote_exists="true"
 else
   privkey_pem_remote_exists="false"
 fi
 
-if ! [ -z "$tls_chain_pem" ];then
+tls_chain_pem_response_code=$(curl --silent --output /dev/null --write-out "%{http_code}" --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$CI_API_V4_URL/projects/$encoded_gitlab_project/variables/tls_chain_pem?filter%5benvironment_scope%5d=$GIGADB_ENV")
+if [[ $tls_chain_pem_response_code == 200 ]];then
   chain_pem_remote_exists="true"
 else
   chain_pem_remote_exists="false"
