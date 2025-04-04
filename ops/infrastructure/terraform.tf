@@ -329,7 +329,7 @@ module "gigadb_efs" {
 
   vpc = module.vpc
   deployment_target = var.deployment_target
-  owner = data.external.callerUserName.result.userName
+  identity = data.external.callerUserName.result
   
 }
 
