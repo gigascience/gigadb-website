@@ -17,7 +17,7 @@
     Click on a table column to sort the results.
     </p>
     <div class="btns-row btns-row-end">
-        <button id="clear_samples_filters" class="btn btn-default" type="button">
+        <button id="clear_samples_filters" class="btn btn-default" type="button" onClick="clearFilters()">
             <span class="glyphicon glyphicon-remove"></span> Clear All Filters
         </button>
         <a id="samples_table_settings" class="btn btn-default" data-toggle="modal" data-target="#samples_settings" href="#">
@@ -37,22 +37,22 @@
             </tr>
             <tr class="table-filters-row">
                 <th>
-                    <input type="text" class="form-control" aria-label="Filter by Sample ID" />
+                    <input id="sample_id_filter" type="text" class="form-control" aria-label="Filter by Sample ID" />
                 </th>
                 <th>
-                    <input type="text" class="form-control" aria-label="Filter by Common Name" />
+                    <input id="common_name_filter" type="text" class="form-control" aria-label="Filter by Common Name" />
                 </th>
                 <th>
-                    <input type="text" class="form-control" aria-label="Filter by Scientific Name" />
+                    <input id="scientific_name_filter" type="text" class="form-control" aria-label="Filter by Scientific Name" />
                 </th>
                 <th>
-                    <input type="text" class="form-control" aria-label="Filter by Sample Attributes" />
+                    <input id="attribute_filter" type="text" class="form-control" aria-label="Filter by Sample Attributes" />
                 </th>
                 <th>
-                    <input type="text" class="form-control" aria-label="Filter by Taxonomic ID" />
+                    <input id="taxonomic_id_filter" type="text" class="form-control" aria-label="Filter by Taxonomic ID" />
                 </th>
                 <th>
-                    <input type="text" class="form-control" aria-label="Filter by Genbank Name" />
+                    <input id="genbank_name_filter" type="text" class="form-control" aria-label="Filter by Genbank Name" />
                 </th>
             </tr>
         </thead>
@@ -102,6 +102,7 @@
 ?>
 
 <script>
+    // filters
     function handleFilter() {
         console.log('Enter key pressed on filter input');
         const filterState = getFilterState();
@@ -112,29 +113,28 @@
         const filterState = {};
         $('.table-filters-row input').each(function() {
             const input = $(this);
-            const filterType = input.attr('aria-label').replace('Filter by ', '').toLowerCase()
-                .replace(/\s+/g, '');
+            const filterType = input.attr('id').replace('filter-', '');
             filterState[filterType] = input.val();
         });
         return filterState;
     }
 
-    function onPageChange() {
-        const params = {
-            maxPage: <?php echo $sampleDataProvider->getPagination()->getPageCount() ?>,
-            targetPageNumber: document.getElementById('samplesPageInput').value,
-            pathPart: 'Samples_page'
-        }
-        goToPage(params);
+    function setFilterState(newFilterState) {
+        $('.table-filters-row input').each(function() {
+            const input = $(this);
+            const filterType = input.attr('id');
+            const value = newFilterState[filterType] || '';
+            input.val(value);
+        });
+        console.log('Filter state set:', getFilterState());
     }
 
-    function onPageInputKeyPress(event) {
-        const isEnter =  event.which === 13 || event.keyCode === 13 || event.key === "Enter"
-        if (isEnter) {
-            onPageChange();
-        }
+    function clearFilters() {
+        console.log('Clearing filters');
+        setFilterState({});
     }
 
+    // init table
     $(document).ready(function() {
         $('#samples_table').DataTable({
             "initComplete": function () {
@@ -142,11 +142,11 @@
 
                 // Add event listeners for filter inputs
                 $('.table-filters-row input').on('keypress', function(e) {
-                    if (e.which === 13 || e.keyCode === 13) {
+                    const isEnter =  e.which === 13 || e.keyCode === 13 || e.key === "Enter"
+                    if (isEnter) {
                         handleFilter();
                     }
                 });
-
                 $('.table-filters-row input').on('blur', function() {
                     handleFilter();
                 });
@@ -181,5 +181,21 @@
         });
 
 
+        // pagination
+        function onPageChange() {
+        const params = {
+            maxPage: <?php echo $sampleDataProvider->getPagination()->getPageCount() ?>,
+            targetPageNumber: document.getElementById('samplesPageInput').value,
+            pathPart: 'Samples_page'
+        }
+        goToPage(params);
+        }
+
+        function onPageInputKeyPress(event) {
+            const isEnter =  event.which === 13 || event.keyCode === 13 || event.key === "Enter"
+            if (isEnter) {
+                onPageChange();
+            }
+        }
     });
 </script>
