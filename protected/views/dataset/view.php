@@ -702,6 +702,21 @@ $sampleDataProvider = $samples->getDataProvider();
                 $('#samples_table').DataTable({
                     "initComplete": function () {
                         $("#samples_table").wrap("<div class='dataset-datatables-wrapper'></div>");
+
+                        function handleFilter() {
+                            console.log('Enter key pressed on filter input');
+                        }
+
+                        // Add event listeners for filter inputs
+                        $('.table-filters-row input').on('keypress', function(e) {
+                            if (e.which === 13 || e.keyCode === 13) {
+                                handleFilter();
+                            }
+                        });
+
+                        $('.table-filters-row input').on('blur', function() {
+                            handleFilter();
+                        });
                     },
                     "paging": false,
                     "ordering": true,
