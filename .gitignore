@@ -59,6 +59,7 @@ nbproject/project.properties
 tests/fixtures/affiliate_users_credentials
 sql/temp_command.sql
 sql/before-run.pgdmp
+sql/gigadb_gigascience-upstream-gigadb-website_live_*.backup
 test_users.txt
 .php_cs.cache
 phpcs.xml
@@ -115,3 +116,11 @@ params-local.php
 
 # release related artefacts
 VERSION
+
+# Cursor
+.cursor
+.cursorignore
+.cursorindexingignore
+
+# local context for LLMs
+memory-bank
