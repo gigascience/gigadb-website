@@ -323,13 +323,33 @@ $sampleDataProvider = $samples->getDataProvider();
                             <a id="samples_table_settings" class="btn btn-default pull-right" data-toggle="modal" data-target="#samples_settings" href="#"><span class="glyphicon glyphicon-adjust"></span>Table Settings</a>
                             <table id="samples_table" class="table table-striped table-bordered" style="width:100%">
                                 <thead>
-                                    <tr>
-                                        <th title="User-specified name or identifier of the sample object. Note: a DNA sample and an RNA sample from the same donor are classed as two separate samples.">Sample ID</th>
-                                        <th title="A well recognized commonly used name of the species, usually this is a synonym held in the NCBI taxonomy for the tax ID provided.">Common Name</th>
-                                        <th title="The scientific binomial name of the species, usually this is in direct accordance with the NCBI taxonomy ID provided.">Scientific Name</th>
-                                        <th title="This is a list of Key:Value pairs, where the Keys are from our Attributes list, and the Value is the specific value for the sample. See our metadata guide for the Attributes list with definitions of all available attributes.">Sample Attributes</th>
-                                        <th title="Species taxonomy ID of the sampled species, we currently use the NCBI taxonomy as the source of this identifier.">Taxonomic ID</th>
-                                        <th title="The preferred display name used by NCBI taxonomy for the tax ID provided">Genbank Name</th>
+                                    <tr class="table-headers-row">
+                                        <th scope="col" title="User-specified name or identifier of the sample object. Note: a DNA sample and an RNA sample from the same donor are classed as two separate samples." style="width: 100px;">Sample ID</th>
+                                        <th scope="col" title="A well recognized commonly used name of the species, usually this is a synonym held in the NCBI taxonomy for the tax ID provided.">Common Name</th>
+                                        <th scope="col" title="The scientific binomial name of the species, usually this is in direct accordance with the NCBI taxonomy ID provided.">Scientific Name</th>
+                                        <th scope="col" title="This is a list of Key:Value pairs, where the Keys are from our Attributes list, and the Value is the specific value for the sample. See our metadata guide for the Attributes list with definitions of all available attributes.">Sample Attributes</th>
+                                        <th scope="col" title="Species taxonomy ID of the sampled species, we currently use the NCBI taxonomy as the source of this identifier.">Taxonomic ID</th>
+                                        <th scope="col" title="The preferred display name used by NCBI taxonomy for the tax ID provided">Genbank Name</th>
+                                    </tr>
+                                    <tr class="table-filters-row">
+                                        <th>
+                                            <input type="text" class="form-control" aria-label="Filter by Sample ID" />
+                                        </th>
+                                        <th>
+                                            <input type="text" class="form-control" aria-label="Filter by Common Name" />
+                                        </th>
+                                        <th>
+                                            <input type="text" class="form-control" aria-label="Filter by Scientific Name" />
+                                        </th>
+                                        <th>
+                                            <input type="text" class="form-control" aria-label="Filter by Sample Attributes" />
+                                        </th>
+                                        <th>
+                                            <input type="text" class="form-control" aria-label="Filter by Taxonomic ID" />
+                                        </th>
+                                        <th>
+                                            <input type="text" class="form-control" aria-label="Filter by Genbank Name" />
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -672,8 +692,12 @@ $sampleDataProvider = $samples->getDataProvider();
                 }
 
                 $('#samples_table').DataTable({
+                    "initComplete": function () {
+                        $("#samples_table").wrap("<div class='dataset-datatables-wrapper'></div>");
+                    },
                     "paging": false,
                     "ordering": true,
+                    orderCellsTop: true,
                     "info": false,
                     "searching": false,
                     "lengthChange": false,
