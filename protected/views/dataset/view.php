@@ -320,7 +320,15 @@ $sampleDataProvider = $samples->getDataProvider();
                             <p class="pull-left">
                               Click on a table column to sort the results.
                             </p>
-                            <a id="samples_table_settings" class="btn btn-default pull-right" data-toggle="modal" data-target="#samples_settings" href="#"><span class="glyphicon glyphicon-adjust"></span>Table Settings</a>
+                            <div class="btns-row btns-row-end">
+                                <button id="clear_samples_filters" class="btn btn-default" type="button">
+                                    <span class="glyphicon glyphicon-remove"></span> Clear All Filters
+                                </button>
+                                <a id="samples_table_settings" class="btn btn-default" data-toggle="modal" data-target="#samples_settings" href="#">
+                                    <span class="glyphicon glyphicon-adjust"></span>Table Settings
+                                </a>
+                            </div>
+                            <div class="clearfix"></div>
                             <table id="samples_table" class="table table-striped table-bordered" style="width:100%">
                                 <thead>
                                     <tr class="table-headers-row">
