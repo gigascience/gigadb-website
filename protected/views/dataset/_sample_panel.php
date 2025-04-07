@@ -37,22 +37,58 @@
             </tr>
             <tr class="table-filters-row">
                 <th>
-                    <input data-filter="sample_id" type="text" class="form-control" aria-label="Filter by Sample ID" />
+                    <input
+                        data-filter="sample_id"
+                        type="text"
+                        class="form-control"
+                        aria-label="Filter by Sample ID"
+                        value="<?php echo CHtml::encode(Yii::app()->request->getParam('sample_id', '')); ?>"
+                    />
                 </th>
                 <th>
-                    <input data-filter="common_name" type="text" class="form-control" aria-label="Filter by Common Name" />
+                    <input
+                        data-filter="common_name"
+                        type="text"
+                        class="form-control"
+                        aria-label="Filter by Common Name"
+                        value="<?php echo CHtml::encode(Yii::app()->request->getParam('common_name', '')); ?>"
+                    />
                 </th>
                 <th>
-                    <input data-filter="scientific_name" type="text" class="form-control" aria-label="Filter by Scientific Name" />
+                    <input
+                        data-filter="scientific_name"
+                        type="text"
+                        class="form-control"
+                        aria-label="Filter by Scientific Name"
+                        value="<?php echo CHtml::encode(Yii::app()->request->getParam('scientific_name', '')); ?>"
+                    />
                 </th>
                 <th>
-                    <input data-filter="attribute" type="text" class="form-control" aria-label="Filter by Sample Attributes" />
+                    <input
+                        data-filter="attribute"
+                        type="text"
+                        class="form-control"
+                        aria-label="Filter by Sample Attributes"
+                        value="<?php echo CHtml::encode(Yii::app()->request->getParam('attribute', '')); ?>"
+                    />
                 </th>
                 <th>
-                    <input data-filter="taxonomic_id" type="text" class="form-control" aria-label="Filter by Taxonomic ID" />
+                    <input
+                        data-filter="taxonomic_id"
+                        type="text"
+                        class="form-control"
+                        aria-label="Filter by Taxonomic ID"
+                        value="<?php echo CHtml::encode(Yii::app()->request->getParam('taxonomic_id', '')); ?>"
+                    />
                 </th>
                 <th>
-                    <input data-filter="genbank_name" type="text" class="form-control" aria-label="Filter by Genbank Name" />
+                    <input
+                        data-filter="genbank_name"
+                        type="text"
+                        class="form-control"
+                        aria-label="Filter by Genbank Name"
+                        value="<?php echo CHtml::encode(Yii::app()->request->getParam('genbank_name', '')); ?>"
+                    />
                 </th>
             </tr>
         </thead>
@@ -102,11 +138,14 @@
 ?>
 
 <script>
+    const filterKeys = ['sample_id', 'common_name', 'scientific_name', 'attribute', 'taxonomic_id', 'genbank_name'];
+
     // filter helpers
     function handleFilter() {
         console.log('Enter key pressed on filter input');
         const filterState = getFilterState();
         console.log('Current filter state:', filterState);
+        submitFilters();
     }
 
     function getFilterState() {
@@ -148,10 +187,44 @@
         setFilterState({});
     }
 
+    function submitFilters() {
+        const filterState = getFilterState();
+
+        let url = new URL(window.location.href);
+        url.searchParams.set('samples_filter', 'true');
+
+        Object.entries(filterState).forEach(([key, value]) => {
+            if (value) {
+                url.searchParams.set(key, value);
+            } else {
+                url.searchParams.delete(key);
+            }
+        });
+
+        // submit a GET request to the controller with the filter params (page refresh)
+        window.location.href = url.toString();
+    }
+
+    function initializeFilters() {
+        // the initial values are initialized directly in the inputs, here we only remove the query params to clean up the url, this means that a page refresh resets the filters
+        const url = new URL(window.location.href);
+
+        // this needs to be done in two separate steps
+        const keysToRemove = [...url.searchParams.keys()].filter(key =>
+            [...filterKeys, 'samples_filter'].includes(key)
+        );
+        keysToRemove.forEach(key => {
+            url.searchParams.delete(key);
+        });
+
+        window.history.replaceState({}, '', url.toString());
+    }
+
     // init table
     $(document).ready(function() {
+        initializeFilters();
         $('#samples_table').DataTable({
-            "initComplete": function () {
+            initComplete: function () {
                 $("#samples_table").wrap("<div class='dataset-datatables-wrapper'></div>");
 
                 // Add event listeners for filter inputs
@@ -165,15 +238,15 @@
                     handleFilter();
                 });
             },
-            "paging": false,
-            "ordering": true,
+            paging: false,
+            ordering: true,
             orderCellsTop: true,
-            "info": false,
-            "searching": false,
-            "lengthChange": false,
-            "pageLength": <?php echo $sampleDataProvider->getPagination()->getPageSize() ?>,
-            "pagingType": "simple_numbers",
-            "columns": [{
+            info: false,
+            searching: false,
+            lengthChange: false,
+            pageLength: <?php echo $sampleDataProvider->getPagination()->getPageSize() ?>,
+            pagingType: "simple_numbers",
+            columns: [{
                     "visible": <?php echo in_array('name', $columns) ? 'true' : 'false' ?>
                 },
                 {
@@ -197,12 +270,12 @@
 
         // pagination
         function onPageChange() {
-        const params = {
-            maxPage: <?php echo $sampleDataProvider->getPagination()->getPageCount() ?>,
-            targetPageNumber: document.getElementById('samplesPageInput').value,
-            pathPart: 'Samples_page'
-        }
-        goToPage(params);
+            const params = {
+                maxPage: <?php echo $sampleDataProvider->getPagination()->getPageCount() ?>,
+                targetPageNumber: document.getElementById('samplesPageInput').value,
+                pathPart: 'Samples_page'
+            }
+            goToPage(params);
         }
 
         function onPageInputKeyPress(event) {

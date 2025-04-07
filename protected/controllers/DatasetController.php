@@ -53,6 +53,22 @@ class DatasetController extends Controller
 
     public function actionView($id)
     {
+        if (Yii::app()->request->getParam('samples_filter')) {
+            $filters = [];
+            $filterFields = ['sample_id', 'common_name', 'scientific_name', 'attribute', 'taxonomic_id', 'genbank_name'];
+
+            foreach ($filterFields as $field) {
+                $value = Yii::app()->request->getParam($field);
+                if ($value !== null && $value !== '') {
+                    $filters[$field] = $value;
+                }
+            }
+
+            $sampleFilters = $filters;
+        } else {
+            $sampleFilters = [];
+        }
+
         // Retrieving the data
         $model = Dataset::model()->find("identifier=?", array($id));
         $dao = new DatasetDAO(["identifier" => $id]) ;
@@ -103,7 +119,7 @@ class DatasetController extends Controller
                 ->setDatasetConnections()
                 ->setDatasetExternalLinks()
                 ->setDatasetFiles($fileSettings["pageSize"], "stored")
-                ->setDatasetSamples($sampleSettings["pageSize"])
+                ->setDatasetSamples($sampleSettings["pageSize"], $sampleFilters)
                 ->setSearchForm();
 
             // Rendering section

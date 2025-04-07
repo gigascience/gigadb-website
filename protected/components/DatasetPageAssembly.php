@@ -344,8 +344,11 @@ class DatasetPageAssembly extends yii\base\Component
      * @param int $pageSize item per page settings
      * @return DatasetPageAssembly
      */
-    public function setDatasetSamples(int $pageSize): DatasetPageAssembly
+    public function setDatasetSamples(int $pageSize, ?array $filters = []): DatasetPageAssembly
     {
+        // TODO handle filters
+        // Yii::log("Filters: " . print_r($filters, true), 'info');
+
         switch($this->_skip_cache) {
             case true:
                 $dataSource = new StoredDatasetSamples(
