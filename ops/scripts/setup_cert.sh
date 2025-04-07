@@ -15,7 +15,7 @@ else
   echo "Running on non-productions, using docker-compose"
   source "./.env"
   source "./.secrets"
-	DOCKER_CMD="docker-compose run --rm -f ops/deployment/docker-compose.production-envs.yml config"
+	DOCKER_CMD="docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml run --rm config"
 fi
 
 # Path to the certs
