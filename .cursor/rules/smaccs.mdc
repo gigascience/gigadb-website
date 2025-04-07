@@ -1,6 +1,7 @@
 ---
 description: Rules to apply SMACCS CSS methodology
 globs: less/**/*.less
+alwaysApply: false
 ---
 
 # Rules for SMACCS

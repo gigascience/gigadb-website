@@ -1,0 +1,9 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+
+# Project architecture
+
+- Sensitive credentials and environment variables are managed via .env and .secrets files

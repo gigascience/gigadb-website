@@ -1,6 +1,7 @@
 ---
 description: Guidelines for acceptance tests
-globs: tests/acceptance/**/*.feature, tests/_support/**/*.php
+globs: tests/acceptance/**/*.feature
+alwaysApply: false
 ---
 
 # Acceptance test guides

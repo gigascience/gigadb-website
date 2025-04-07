@@ -114,3 +114,11 @@ params-local.php
 
 # release related artefacts
 VERSION
+
+# LLM related
+# uncomment if we decide each dev should have their own completely separate setup (I am inclined to think the answer is yes)
+# leaving it commented to commit to the repo and showcase as example
+# .cursor/**/*
+# .cursorignore
+# .cursorindexingignore
+# memory-bank

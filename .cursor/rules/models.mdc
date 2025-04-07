@@ -1,9 +1,0 @@
----
-description: Rules that apply to Yii models
-globs: protected/models
----
-
-# Model Rules
-- Models must extend from the CActiveRecord class
-- Implement essential methods such as tableName(), rules(), relations(), and attributeLabels()
-- Encapsulate business logic, data validations, and relational mapping within models

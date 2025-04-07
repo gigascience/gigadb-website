@@ -1,0 +1,1 @@
+I will provide the outline for a task. Your job is to review the codebase and find what files contain the code relevant to the task, then report back. Provide a list of files, a line number where to look for, and a short description on why such file is relevant

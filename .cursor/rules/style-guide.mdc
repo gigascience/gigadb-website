@@ -1,0 +1,15 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+
+# Coding style guides
+
+- Adhere to standard PHP coding styles enforced by PHP CodeSniffer (PSR2 and PHPDoc rules)
+- Adhere to Yii’s MVC architecture. Controllers, models, and views should be organized and follow the repository pattern
+- Separation of Concerns: Maintain clear boundaries between different parts of the application
+- Use Docker and environment variables to manage deployment-specific configurations
+- Adhere to WCAG 2.2 standards for the user interface
+- Avoid making files longer than 300 lines
+- Avoid creating functions longer than 30 lines

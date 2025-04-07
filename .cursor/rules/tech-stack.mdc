@@ -1,0 +1,18 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+
+# Tech Stack
+
+- PHP version 7.4+
+- Yii 1.1 Framework (will be udpated to Yii 2 eventually)
+- Frontend libraries: jquery 3, jquery-ui 1, bootstrap 3, font-awesome 4
+- Composer for dependency management
+- Docker and Docker Compose for containerized development and deployment
+- Nginx as the web server
+- PostgreSQL database
+- Testing tools: Codeception and PHPUnit for unit, functional, and acceptance tests
+- GitLab CI/CD for continuous integration and deployment
+- Vue.js for reactive frontend widgets
