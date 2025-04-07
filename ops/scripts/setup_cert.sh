@@ -109,6 +109,8 @@ echo "Checking whether the certificate exists locally"
 cert_files_local_exists=$($DOCKER_CMD bash -c "test -f $FULLCHAIN_PEM && test -f $PRIVATE_PEM && test -f $CHAIN_PEM && echo 'true' || echo 'false'")
 echo "cert_files_local_exists: $cert_files_local_exists"
 
+encoded_gitlab_project=$(echo $CI_PROJECT_PATH | sed -e 's/\//%2F/g')
+
 echo "To see if they could be found in gitlab"
 tls_fullchain_pem_response_code=$(curl --silent --output /dev/null --write-out "%{http_code}" --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$CI_API_V4_URL/projects/$encoded_gitlab_project/variables/tls_fullchain_pem?filter%5benvironment_scope%5d=$GIGADB_ENV")
 if [[ $tls_fullchain_pem_response_code == 200 ]];then
@@ -134,8 +136,6 @@ fi
 echo "fullchain_pem_remote_exists: $fullchain_pem_remote_exists"
 echo "privkey_pem_remote_exists: $privkey_pem_remote_exists"
 echo "chain_pem_remote_exists: $chain_pem_remote_exists"
-
-encoded_gitlab_project=$(echo $CI_PROJECT_PATH | sed -e 's/\//%2F/g')
 
 if [[ $cert_files_local_exists == 'true' ]];then
   renew_cert
