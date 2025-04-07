@@ -14,11 +14,8 @@ if [[ $(uname -n) =~ compute ]];then
 else
   echo "Running on non-productions, using docker-compose"
   source "./.env"
-  cat ./.env
   source "./.secrets"
-  cat ./.secrets
-  ls -al
-	DOCKER_CMD="docker-compose run --rm config"
+	DOCKER_CMD="docker-compose run --rm -f ops/deployment/docker-compose.production-envs.yml config"
 fi
 
 # Path to the certs
