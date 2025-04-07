@@ -37,22 +37,22 @@
             </tr>
             <tr class="table-filters-row">
                 <th>
-                    <input id="sample_id_filter" type="text" class="form-control" aria-label="Filter by Sample ID" />
+                    <input data-filter="sample_id" type="text" class="form-control" aria-label="Filter by Sample ID" />
                 </th>
                 <th>
-                    <input id="common_name_filter" type="text" class="form-control" aria-label="Filter by Common Name" />
+                    <input data-filter="common_name" type="text" class="form-control" aria-label="Filter by Common Name" />
                 </th>
                 <th>
-                    <input id="scientific_name_filter" type="text" class="form-control" aria-label="Filter by Scientific Name" />
+                    <input data-filter="scientific_name" type="text" class="form-control" aria-label="Filter by Scientific Name" />
                 </th>
                 <th>
-                    <input id="attribute_filter" type="text" class="form-control" aria-label="Filter by Sample Attributes" />
+                    <input data-filter="attribute" type="text" class="form-control" aria-label="Filter by Sample Attributes" />
                 </th>
                 <th>
-                    <input id="taxonomic_id_filter" type="text" class="form-control" aria-label="Filter by Taxonomic ID" />
+                    <input data-filter="taxonomic_id" type="text" class="form-control" aria-label="Filter by Taxonomic ID" />
                 </th>
                 <th>
-                    <input id="genbank_name_filter" type="text" class="form-control" aria-label="Filter by Genbank Name" />
+                    <input data-filter="genbank_name" type="text" class="form-control" aria-label="Filter by Genbank Name" />
                 </th>
             </tr>
         </thead>
@@ -102,7 +102,7 @@
 ?>
 
 <script>
-    // filters
+    // filter helpers
     function handleFilter() {
         console.log('Enter key pressed on filter input');
         const filterState = getFilterState();
@@ -113,16 +113,30 @@
         const filterState = {};
         $('.table-filters-row input').each(function() {
             const input = $(this);
-            const filterType = input.attr('id').replace('filter-', '');
+            const filterType = input.attr('data-filter');
             filterState[filterType] = input.val();
         });
         return filterState;
     }
 
+    /**
+     * Set filter input values programmatically
+     * @param {Object} newFilterState - The new filter state to set
+     * @example
+     * setFilterState({
+     *     sample_id: '123',
+     *     common_name: 'Dog',
+     *     scientific_name: 'Canis lupus familiaris',
+     *     attribute: 'color:brown',
+     *     taxonomic_id: '9606',
+     *     genbank_name: 'NC_000001.10'
+     * });
+     * if a property is not provided, it is set to an empty string
+     */
     function setFilterState(newFilterState) {
         $('.table-filters-row input').each(function() {
             const input = $(this);
-            const filterType = input.attr('id');
+            const filterType = input.attr('data-filter');
             const value = newFilterState[filterType] || '';
             input.val(value);
         });
