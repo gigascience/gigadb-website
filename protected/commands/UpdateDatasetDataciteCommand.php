@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// docker-compose run --rm application ./protected/yiic updatedatasetdatacite --limit --offset --doi
+// docker-compose run --rm application ./protected/yiic updatedatasetdatacite --limit --offset --doi > my_log.txt 2>&1
 class UpdateDatasetDataciteCommand extends CConsoleCommand
 {
     private ?\GuzzleHttp\Client $client = null;
@@ -14,28 +14,31 @@ class UpdateDatasetDataciteCommand extends CConsoleCommand
     {
         parent::init();
         $this->client = new \GuzzleHttp\Client();
-        $mds_username = Yii::app()->params['mds_username'];
-        $mds_password = Yii::app()->params['mds_password'];
         $this->options = [
             'headers'     => [
                 'Content-Type' => 'text/xml;charset=UTF8',
             ],
-            'auth'        => [$mds_username, $mds_password],
+            'auth'        => [
+                Yii::app()->params['mds_username'],
+                Yii::app()->params['mds_password']
+            ],
             'http_errors' => false
         ];
-        $this->db = $db = Yii::app()->db;
+        $this->db = Yii::app()->db;
     }
 
-    public function actionIndex($batchSize = 50, $offset = 0, $doi = null) {
-        $mds_metadata_url= Yii::app()->params['mds_metadata_url'];
+    public function actionIndex($batchSize = 50, $offset = 0, $doi = null)
+    {
+        $mds_metadata_url = Yii::app()->params['mds_metadata_url'];
         $mds_prefix = Yii::app()->params['mds_prefix'];
-        $count = 0;
 
-        while(true) {
+        $processed = 0;
+
+        while (true) {
             $criteria = new CDbCriteria();
             $criteria->addCondition("upload_status = 'Published'");
             if ($doi) {
-                $criteria->addCondition("identifier = :doi");
+                $criteria->addCondition('identifier = :doi');
                 $criteria->params = [':doi' => $doi];
             }
             $criteria->limit = $batchSize;
@@ -47,92 +50,123 @@ class UpdateDatasetDataciteCommand extends CConsoleCommand
                 break;
             }
 
+            $count = count($datasets);
+            fwrite(STDOUT, sprintf("Processing %d datasets \n", $count));
             $this->processBatch($datasets, $mds_metadata_url, $mds_prefix);
             $offset += $batchSize;
+            $processed += $count;
         }
 
+        fwrite(STDOUT, sprintf("Finished processing %d datasets\n", $processed));
+
         if ($this->hasError) {
-            echo "check the logs: some errors have been detected";
+            fwrite(STDERR, "Some errors occurred. See details above.\n");
         } else {
-            echo 'All good';
+            fwrite(STDOUT, "All datasets processed successfully.\n");
         }
     }
 
-    private function processBatch($datasets, $mds_metadata_url, $mds_prefix) {
+    private function processBatch($datasets, $mds_metadata_url, $mds_prefix)
+    {
         $promises = [];
-        if (!$this->options) {
-            Yii::log('no options defined', 'info');
-
-            return;
-        }
-
-        $xmlByIds = [];
-        $i = 0;
         foreach ($datasets as $dataset) {
-            $xmlData = $dataset->toXml();
 
+            $xmlData = $dataset->toXml();
             if (!$xmlData) {
                 $this->hasError = true;
-                Yii::log(sprintf('empty xml for dataset %s', $dataset->identifier), 'info');
+                fwrite(STDERR, sprintf("[ERROR] Empty XML for dataset: %s\n", $dataset->identifier));
+
                 continue;
             }
 
+            $url = $mds_metadata_url . '/' . $mds_prefix . '/' . $dataset->identifier;
+            $options = $this->options;
             $options['body'] = $xmlData;
 
-            $promises[] = $this->client->postAsync($mds_metadata_url . '/' . $mds_prefix . '/' . $dataset->identifier, $this->options)->then(
-                function ($response) use ($dataset, $xmlData, $xmlByIds, $i) {
-                    if ($response->getStatusCode() === 201) {
-                        $xmlByIds[] = [$dataset->id, $xmlData];
+            $promises[] = $this->client->postAsync($url, $options)->then(
+                function ($response) use ($dataset, $xmlData) {
+                    $code = $response->getStatusCode();
+                    $message = $response->getBody()->getContents();
 
-                        return $xmlByIds;
+                    if ($code !== 201) {
+                        $this->hasError = true;
+                        fwrite(STDERR, sprintf("[ERROR] Failed for dataset %s: %d - %s\n", $dataset->identifier, $code, $message));
+
+                        return [
+                            $dataset->id,
+                            $xmlData,
+                            'Failed to send DataCite XML',
+                            $code,
+                            $message
+                        ];
                     }
 
-                    $this->hasError = true;
-                    Yii::log(sprintf('call datacite api returns %s for dataset %s', $response->getStatusCode(), $dataset->identifier), 'info');
+                    fwrite(STDOUT, sprintf("[OK] Dataset %s successfully updated.\n", $dataset->identifier));
+
+                    return [
+                        $dataset->id,
+                        $xmlData,
+                        'Sent DataCite XML',
+                        $code,
+                        $message
+                    ];
                 },
-                function ($exception) use ($dataset) {
+                function ($e) use ($dataset) {
                     $this->hasError = true;
-                    Yii::log(sprintf('call api - exception for dataset %s: %s', $dataset->identifier, $exception->getMessage()), 'info');
+                    fwrite(STDERR, sprintf("[ERROR] Exception for dataset %s: %s\n", $dataset->identifier, $e->getMessage()));
+
+                    return null;
                 }
             );
-
-            $i++;
         }
 
         try {
-            $xmlByIds = \GuzzleHttp\Promise\Utils::settle($promises)->wait();
-            $this->updateEntityStatus($xmlByIds);
-        } catch(\Exception $e) {
+            $results = \GuzzleHttp\Promise\Utils::settle($promises)->wait();
+            $this->updateEntityStatus($results);
+        } catch (\Exception $e) {
             $this->hasError = true;
-            Yii::log('Error while handling promises %s: %s', 'error');
+            fwrite(STDERR, '[CRITICAL] Error while waiting for promises: ' . $e->getMessage() . "\n");
         }
     }
 
-    private function updateEntityStatus($xmlByIds) {
-        $values = '';
-        $count = count($xmlByIds);
-        $sql = '';
+    private function updateEntityStatus(array $xmlByIds)
+    {
         $params = [];
+        $params2 = [];
+        $sql = '';
+        $sql2 = '';
 
-        foreach ($xmlByIds as $k => $xmlById) {
-            if (is_null($xmlById['value'])) {
-                Yii::log($xmlById['state'], 'info');
+        foreach ($xmlByIds as $entry) {
+            if (!isset($entry['value'])) {
                 continue;
             }
 
-            $key = $xmlById['value'][0][0];
-            $xml = $xmlById['value'][0][1];
-            $sql .= sprintf('(:id%s, :action%s, :comments%s)%s', $key, $key, $key, $k + 1 !== $count ? ',' : '');
-            $params += [":id$key" => $key, ":action$key" => 'xml', ":comments$key" => $xml];
+            list($id, $xml, $action, $code, $message) = $entry['value'];
+
+            $sql .= "(:id$id, :action$id, :comments$id),";
+            $params += [
+                ":id$id"       => $id,
+                ":action$id"   => $action,
+                ":comments$id" => $xml
+            ];
+
+            $sql2 .= "(:cid$id, :cmessage$id),";
+            $params2 += [
+                ":cid$id"       => $id,
+                ":cmessage$id"   => sprintf('DOI Minting - Metadata response: %s - %s', $code, $message),
+            ];
         }
 
-        if (!$sql) {
-            return;
+        if ($sql) {
+            $sql = rtrim($sql, ',');
+            $command = $this->db->createCommand("INSERT INTO curation_log (dataset_id, action, comments) VALUES $sql");
+            $command->execute($params);
         }
 
-        $sql = rtrim($sql, ',');
-        $sql = 'INSERT INTO curation_log (dataset_id, action, comments) VALUES ' . $sql;
-        $command = $this->db->createCommand($sql);
-        $command->execute($params);
+        if ($sql2) {
+            $sql2 = rtrim($sql2, ',');
+            $command = $this->db->createCommand("INSERT INTO dataset_log (dataset_id, message) VALUES $sql2");
+            $command->execute($params2);
+        }
     }
 }
