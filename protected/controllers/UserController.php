@@ -59,8 +59,23 @@ class UserController extends Controller {
 
     # Create new account
     public function actionCreate() {
+        $from = Yii::$app->request->get('from');
+        $prefillUserForm = [];
+
+        if (isset($from) && $from === 'site/faq') {
+            $name = Yii::app()->user->getFlash('contact_name');
+            $email = Yii::app()->user->getFlash('contact_email');
+            $prefillUserForm['first_name'] = $name;
+            $prefillUserForm['email'] = $email;
+        }
+
         $user = new User;
-        $user->newsletter=false;
+        $user->newsletter = false;
+
+        if (!empty($prefillUserForm)) {
+            $user->attributes = $prefillUserForm;
+        }
+
         $this->performAjaxValidation($user);
         if (isset($_POST['User'])) {
             //$user->attributes = $_POST['User'];
@@ -108,7 +123,7 @@ class UserController extends Controller {
                 Yii::log(__FUNCTION__."> validation failed", 'warning');
             }
         }
-        $this->render('create', array('model'=>$user)) ;
+        $this->render('create', array('model'=>$user, 'from' => $from)) ;
     }
 
     protected function performAjaxValidation($model) {

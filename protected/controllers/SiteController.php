@@ -358,20 +358,25 @@ class SiteController extends Controller {
 
         if (isset($_POST['ContactForm'])) {
             $model->attributes = $_POST['ContactForm'];
+            Yii::app()->user->setFlash('contact_name', $model->name);
+            Yii::app()->user->setFlash('contact_email', $model->email);
+
             if ($model->validate()) {
-                try {
-                    Yii::app()->mailService->sendEmail(
-                        Yii::app()->params['adminEmail'],
-                        Yii::app()->params['adminEmail'],
-                        Yii::app()->params['email_prefix'] . "FAQ query: " . $model->subject,
-                        $model->name . " <" . $model->email . ">\n\n" . $model->body
-                    );
-                } catch (Swift_TransportException $ste) {
-                    Yii::log("Problem sending email from FAQ page - " . $ste->getMessage(), "error");
+                // in dev env skip mailer and just redirect
+                $localDev = $_SERVER['GIGADB_ENV'] === 'dev';
+                if (!$localDev) {
+                    try {
+                        Yii::app()->mailService->sendEmail(
+                            Yii::app()->params['adminEmail'],
+                            Yii::app()->params['adminEmail'],
+                            Yii::app()->params['email_prefix'] . "FAQ query: " . $model->subject,
+                            $model->name . " <" . $model->email . ">\n\n" . $model->body
+                        );
+                    } catch (Swift_TransportException $ste) {
+                        Yii::log("Problem sending email from FAQ page - " . $ste->getMessage(), "error");
+                    }
                 }
-                Yii::app()->user->setFlash('submit-question', 'Thank you for contacting us. We will respond to you as soon as possible.');
-                $hasValidationErrors = false;
-                $this->refresh();
+                $this->redirect('/user/create?from=' . urlencode(Yii::app()->request->getPathInfo()));
             } else {
                 $hasValidationErrors = true;
             }

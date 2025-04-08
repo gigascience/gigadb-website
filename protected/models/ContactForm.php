@@ -19,11 +19,10 @@ class ContactForm extends CFormModel {
 	 * Declares the validation rules.
 	 */
 	public function rules() {
-	
 		return array(
 			array('name, email, subject, body', 'required'),
 			array('email', 'email'),
-			array('verifyCode', 'validateCaptcha'),			
+			array('verifyCode', 'validateCaptcha'),
 		);
 	}
 	/**

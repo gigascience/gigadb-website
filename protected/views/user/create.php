@@ -15,6 +15,14 @@
 	]);
 	?>
 
+    <?php if (isset($from) && $from === 'site/faq'): ?>
+        <div class="alert alert-gigadb-info">
+            <p>
+                Thank you for submitting your question, someone will get back to you as soon as possible. Why not create an account and subscribe to the GigaDB mailing list?
+            </p>
+        </div>
+    <?php endif; ?>
+
 	<?= $this->renderPartial('_form', array(
 		'model' => $model,
 		'scenario' => 'create',
