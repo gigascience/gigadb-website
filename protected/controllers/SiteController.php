@@ -376,7 +376,11 @@ class SiteController extends Controller {
                         Yii::log("Problem sending email from FAQ page - " . $ste->getMessage(), "error");
                     }
                 }
-                $this->redirect('/user/create?from=' . urlencode(Yii::app()->request->getPathInfo()));
+                if (Yii::app()->user->isGuest) {
+                    $this->redirect('/user/create?from=' . urlencode(Yii::app()->request->getPathInfo()));
+                } else {
+                    Yii::app()->user->setFlash('submit-question', 'Thank you for submitting your question, someone will get back to you as soon as possible.');
+                }
             } else {
                 $hasValidationErrors = true;
             }
