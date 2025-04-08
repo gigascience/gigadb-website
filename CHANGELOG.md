@@ -4,6 +4,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Fix #2251: Add a size validation rule when updating a file
+
 ## v4.4.9 - 2025-04-30 - fd51be0df
 
 - Fix #2270: Allow transitions to 'Submitted' and 'DataPending' from any upload status.
