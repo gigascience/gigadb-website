@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1137: Distinguish the display of tabs and links for external links
 - Feat #665: Create 'RRID' external link type
 - Feat #1239: Create 'Software Heritage Archive (SWHA)' external link type
 - Feat #1142: Rename 'Github Links' to 'Authors code repositories' and create 'Cited code repository' external link type
