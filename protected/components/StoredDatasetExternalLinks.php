@@ -75,19 +75,22 @@ class StoredDatasetExternalLinks extends DatasetComponents implements DatasetExt
     {
         $results = [];
         $reader = $this->_db->createCommand()
-                                ->select('t.name, count(*) as number')
-                                ->from('external_link l')
-                                ->join('external_link_type t', 'l.external_link_type_id = t.id')
-                                ->where('dataset_id = :id', array(':id' => $this->_id))
-                                ->andWhere(array('in','t.name', $types))
-                                ->group('t.name')
-                                ->query();
+            ->select('t.name, t.displayed_as, count(*) as number')
+            ->from('external_link l')
+            ->join('external_link_type t', 'l.external_link_type_id = t.id')
+            ->where('dataset_id = :id', array(':id' => $this->_id))
+            ->andWhere(array('in','t.name', $types))
+            ->group('t.name, t.displayed_as')
+            ->query();
 
         $reader->bindColumn(1, $type);
-        $reader->bindColumn(2, $count);
+        $reader->bindColumn(2, $displayed_as);
+        $reader->bindColumn(3, $count);
+
         while ($reader->read() !== false) {
-            $results[$type] = $count;
+            $results[$type] = [$count, $displayed_as];
         }
+
         return $results;
     }
 }

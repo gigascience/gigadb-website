@@ -227,14 +227,23 @@ $linksAsTab = [];
                 <?php } ?>
                 <p>
                     <?php
-                    $mainbodyExternalLinks = $links->getDatasetExternalLinksTypesAndCount(["Additional information", "Genome browser", "Authors code repositories"]);
-                    foreach (array_keys($mainbodyExternalLinks) as $linkType) {
+                    $mainbodyExternalLinks = $links->getDatasetExternalLinksTypesAndCount();
+
+                    foreach ($mainbodyExternalLinks as $linkType => $countAndDisplayedAs) {
+
+                        if (!$countAndDisplayedAs[0]) {
+                            continue;
+                        }
+
+                        $linksAsArray = $links->getDatasetExternalLinks([$linkType]);
+                        if ('tab' === $countAndDisplayedAs[1]) {
+                            $linksAsTab[$linkType] = $linksAsArray;
+
+                            continue;
+                        }
+
                         echo "<h3 class=\"h5\"><strong>${linkType}:</strong></h3>";
-                        foreach ($links->getDatasetExternalLinks([$linkType]) as $link) {
-                            if ($link['multiple']) {
-                                $linksAsTab[$link['external_link_type_name']] = $link;
-                                continue;
-                            }
+                        foreach ($linksAsArray as $link) {
                             echo '<p>' . CHtml::link($link['url'], $link['url'], array("title" => $linkType . " for dataset " . $model->identifier)) . '</p>';
                         }
                     }
@@ -313,9 +322,11 @@ $linksAsTab = [];
                     <?php }
                     ?>
                     <?php
-                    foreach ($links->getDatasetExternalLinksTypesNames(["Protocols.io", "JBrowse", "3D Models", "Code Ocean","3D Sketchfab"]) as $linkType => $linkCode) {
+
+                    foreach ($linksAsTab as $linkCode => $allLinksAsTab) {
+                        $linkCodeWithoutSpace = preg_replace('/[ .]+/', '', $linkCode);
                         ?>
-                        <li role="presentation" id="p-<?= $linkCode ?>"><a href="#<?= $linkCode ?>" aria-controls="<?= $linkCode ?>" role="tab" data-toggle="tab"><?= $linkType ?></a></li>
+                        <li role="presentation" id="p-tab-<?= $linkCode ?>"><a href="#<?= $linkCodeWithoutSpace ?>" aria-controls="<?= $linkCode ?>" role="tab" data-toggle="tab"><?= $linkCode ?></a></li>
                     <?php
                     }
                     ?>
@@ -527,32 +538,38 @@ $linksAsTab = [];
                                 </div>
                             <?php
                             }
+
+                            foreach ($linksAsTab as $tabType => $linksAssociated) {
+                                $id = preg_replace('/[ .]+/', '', $tabType);
                             ?>
-                                <div role="tabpanel" class="tab-pane visible" id="<?= $linkCode ?>">
-                                    <p><?= $linkType ?>:</p>
+                                <div role='tabpanel' class='tab-pane fade' id="<?= $id ?>">
+                                    <p><?= $tabType ?>:</p>
                                     <?php
-                                    foreach ($linksAsTab as $linkType => $link) {
-                                        $p = $link['url'];
-                                        switch ($linkType) {
-                                            case "Protocols.io":
-                                                $ps = HTTPSHelper::httpsize($p);
-                                                echo "<iframe src=\"$ps\" style=\"width: 850px; height: 320px; border: 1px solid transparent;\"></iframe>";
-                                                break;
-                                            case "JBrowse":
-                                                echo "<a href=\"$p\" target=\"_blank\">Open the JBrowse</a>";
-                                                echo "<iframe src=\"$p\" style=\"width: 1000px; height: 520px; border: 1px solid transparent;\"></iframe>";
-                                                echo "<br>";
-                                                break;
-                                            case "3D Sketchfab":
-                                                echo "<iframe src=\"$p\" style=\"width: 950px; height: 520px; border: 1px solid transparent;\"></iframe>";
-                                                break;
-                                            default:
-                                                echo "<p>$p</p>";
-                                                break;
-                                        }
+
+                                    foreach ($linksAssociated as $l) {
+                                    $p = $l['url'];
+                                    switch ($l['external_link_type_name']) {
+                                        case 'Protocols.io':
+                                            $ps = HTTPSHelper::httpsize($p);
+                                            echo "<iframe src=\"$ps\" style=\"width: 850px; height: 320px; border: 1px solid transparent;\"></iframe>";
+                                            break;
+                                        case 'JBrowse':
+                                            echo "<a href=\"$p\" target=\"_blank\">Open the JBrowse</a>";
+                                            echo "<iframe src=\"$p\" style=\"width: 1000px; height: 520px; border: 1px solid transparent;\"></iframe>";
+                                            echo '<br>';
+                                            break;
+                                        case '3D Sketchfab':
+                                            echo "<iframe src=\"$p\" style=\"width: 950px; height: 520px; border: 1px solid transparent;\"></iframe>";
+                                            break;
+                                        default:
+                                            echo "<p>$p</p>";
+                                            break;
+                                    }
                                     }
                                     ?>
                                 </div>
+                            <?php }
+                            ?>
 
                             <div role="tabpanel" class="tab-pane" id="history">
 
