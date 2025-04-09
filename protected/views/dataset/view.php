@@ -529,15 +529,6 @@ $linksAsTab = [];
                             ?>
 
                             <?php
-                            $modelLinks = $links->getDatasetExternalLinks(['3D Models']);
-                            if (count($modelLinks) > 0) {
-                            ?>
-                                <div role="tabpanel" class="tab-pane visible" id="3dmodels">
-                                    <p>3D Models:</p>
-                                    <?php $this->renderPartial('//shared/_model_viewer', ['data' => $modelLinks]); ?>
-                                </div>
-                            <?php
-                            }
 
                             foreach ($linksAsTab as $tabType => $linksAssociated) {
                                 $id = preg_replace('/[ .]+/', '', $tabType);
@@ -545,6 +536,17 @@ $linksAsTab = [];
                                 <div role='tabpanel' class='tab-pane fade' id="<?= $id ?>">
                                     <p><?= $tabType ?>:</p>
                                     <?php
+
+                                    if ($tabType === "3D Models") {
+                                        if (count($linksAssociated) > 0) {
+                                            $this->renderPartial('//shared/_model_viewer', ['data' => $linksAssociated]);
+                                        }
+
+                                    ?>
+                                        </div>
+                                    <?
+                                        continue;
+                                    }
 
                                     foreach ($linksAssociated as $l) {
                                     $p = $l['url'];

@@ -239,6 +239,7 @@ Feature: a user visit the dataset page
     Given I have not signed in
     When I am on "/dataset/100006"
     And I follow "3D Models"
+    And I wait "2" seconds
     Then I should see "3D Models:"
     And I should see "Select a model"
     And I should see "GeoB8502_865cm_Shell-4.obj"
