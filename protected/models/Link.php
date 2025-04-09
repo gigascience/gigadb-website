@@ -106,23 +106,42 @@ class Link extends CActiveRecord implements LinkInterface
 	}
 
       public function getFullUrl(string $source = ''): string {
-        $temp = explode(":", trim($this->link));
-        $prefix = $temp[0];
-        $value = $temp[1];
+        $trimmedLink = trim($this->link);
 
-        $model = Prefix::model()->find("lower(prefix) = :p and source = :s",
-        	array(':p'=>strtolower($prefix), ':s'=>$source));
+        // if link does not contain a (:) we cannot build it
+        if (empty($trimmedLink) || !str_contains($trimmedLink, ':')) {
+            return "#";
+        }
 
-        // find url with preferred source
-        if($model)
-        	return $model->url . $value;
+        $linkParts = explode(":", $trimmedLink);
+        $prefix = strtolower($linkParts[0]);
+        $value = $linkParts[1];
 
-        // if not get available url
-        $model = Prefix::model()->find("lower(prefix) = :p", array(':p'=>strtolower($prefix)));
-        if($model)
-        	return $model->url. $value;
+        $prefixModel = null;
 
-        return "#";
+        if (!empty($source)) {
+            $prefixModel = Prefix::model()->find(
+                "lower(prefix) = :p and source = :s",
+                array(':p' => $prefix, ':s' => $source)
+            );
+        }
+
+        if (!$prefixModel) {
+            $prefixModel = Prefix::model()->find(
+                'lower(prefix) = :p',
+                array(':p' => $prefix)
+            );
+        }
+
+        if (!$prefixModel || !isset($prefixModel->url)) {
+            return "#";
+        }
+
+        if (str_contains($prefixModel->url, '$1')) {
+            return str_replace('$1', $value, $prefixModel->url);
+        }
+
+        return $prefixModel->url . $value;
     }
 
     public function behaviors() {

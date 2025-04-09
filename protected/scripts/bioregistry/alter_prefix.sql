@@ -1,0 +1,2 @@
+ALTER TABLE public.prefix
+ALTER COLUMN prefix TYPE VARCHAR(25);
