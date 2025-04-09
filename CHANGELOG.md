@@ -46,6 +46,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## v4.4.8 - 2025-04-08 - 01de0477b - not deployed to live
 
+- Fix #1069: Setting up automated renewal of TLS certificates for productions
 - Fix #2033: Create a mockup for all upload statuses except published
 
 ## v4.4.7 - 2025-03-26 - 4c548f037 - live since 2025-04-03
