@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #17: Use bioregistry to resolve link prefixes
 - Fix #2033: Create a mockup for all upload statuses except published
 
 ## v4.4.7 - 2025-03-26 - 4c548f037 - live since 2025-04-03
