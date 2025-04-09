@@ -37,7 +37,7 @@ renew_cert() {
     chain=$($DOCKER_CMD cat $CHAIN_PEM)
 
   	echo "Renewing the certificate for $REMOTE_HOSTNAME"
-  	docker run --rm certbot/certbot renew
+  	docker run --rm -v ${REPO_NAME}_le_config:/etc/letsencrypt -v ${REPO_NAME}_le_webrootpath:/var/www/.le certbot/certbot renew
   	echo "Backup the fullchain cert to gitlab variable"
   	if [ $fullchain_pem_remote_exists == "true" ];then
   	  echo "/usr/bin/curl --show-error --silent --request PUT --write-out 'HTTP Response code: %{http_code}' --url '$CI_API_V4_URL/projects/$encoded_gitlab_project/variables/tls_fullchain_pem?filter%5benvironment_scope%5d=$GIGADB_ENV' --header 'PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN' --form 'environment_scope=$GIGADB_ENV' --form 'value=\$fullchain'"
@@ -93,7 +93,7 @@ fetch_cert_from_gitlab() {
 
 make_new_cert() {
     echo "Running certbot to make new cert"
-    docker run --rm certbot/certbot certonly -d $REMOTE_HOSTNAME -d portainer.$REMOTE_HOSTNAME
+    docker run --rm -v ${REPO_NAME}_le_config:/etc/letsencrypt -v ${REPO_NAME}_le_webrootpath:/var/www/.le certbot/certbot certonly -d $REMOTE_HOSTNAME -d portainer.$REMOTE_HOSTNAME
     echo "Read content of files"
     $DOCKER_CMD mkdir -vp /etc/letsencrypt/archive/$REMOTE_HOSTNAME
     $DOCKER_CMD mkdir -vp /etc/letsencrypt/live/$REMOTE_HOSTNAME
