@@ -105,13 +105,18 @@ class Link extends CActiveRecord implements LinkInterface
 		));
 	}
 
-      public function getFullUrl(string $source = ''): string {
+    // See protected/scripts/bioregistry/README.md for more info on this function
+    public function getFullUrl(string $source = ''): string {
         $trimmedLink = trim($this->link);
 
         // if link does not contain a (:) we cannot build it
         if (empty($trimmedLink) || !str_contains($trimmedLink, ':')) {
             return "#";
         }
+
+        // Option A
+        return "https://bioregistry.io/$trimmedLink";
+        // Option B: everything below is ignored unless previous line is commented out.
 
         $linkParts = explode(":", $trimmedLink);
         $prefix = strtolower($linkParts[0]);
