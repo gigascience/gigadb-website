@@ -38,6 +38,7 @@ Note: `cd` into this directory to run the scripts
 1. Fetch bioregistry urls from bioregistry.io API and paste them into a file
   - bioregistries are already fetched and this script takes a while to complete because it involves almost 2,000 API calls, only do this if you need to refretch them for some reason
   - `python fetch-bioregistries.py > bioregistries.txt`
+  - Unclear what is the optimal way to resolve the uri_formats as each resource has multiple providers. The script assumes it is just the `uri_format` property from the response
 2. Generate SQL from bioregistries `python process-bioregistries.py`
 3. Retrieve character count of longest prefix found in the bioregistry (`awk -F: '{ if (length($1) > max) max = length($1) } END { print max }' bioregistries.txt`)
 4. Alter prefix table to have enough room for longest prefix (run `alter_prefix.sql`, make sure the max column length is above the longest prefix --24)

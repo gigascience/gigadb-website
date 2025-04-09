@@ -11,7 +11,8 @@ uri_formats = {}
 for prefix in prefixes:
     prefix_response = requests.get(f'https://bioregistry.io/api/registry/{prefix}')
     prefix_data = prefix_response.json()
-    uri_format = prefix_data.get('uri_format', None)  # Extract uri_format if available
+    # assuming the optimal uri_format is the "root" uri_format, but some registries have multiple providers
+    uri_format = prefix_data.get('uri_format', None)
     uri_formats[prefix] = uri_format
 
 for prefix, uri_format in uri_formats.items():
