@@ -17,6 +17,7 @@ else
   echo "Running on non-productions, using docker-compose"
   source "./.env"
   source "./.secrets"
+  REPO_NAME=$(echo $CI_PROJECT_PATH | cut -d'/' -f3)
 	DOCKER_CMD="docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml run --rm config"
 fi
 
