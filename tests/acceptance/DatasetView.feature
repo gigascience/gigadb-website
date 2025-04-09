@@ -21,7 +21,6 @@ Feature: a user visit the dataset page
   Scenario: pagination widget is shown when total number of file greater than the page size setting
     Given I have not signed in
     And I have set the page size setting to 5
-    When I am on "/dataset/100006"
     And I follow "Files"
     Then I should see "Next >"
     Then I should see "Go to page"
