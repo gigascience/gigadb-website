@@ -59,7 +59,6 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
   'rowHtmlOptionsExpression' => 'array("data-userid" => $data->id)',
   'itemsCssClass' => 'table table-bordered dataset-table-wide',
   'template' => '<div class="dataset-table-wide-container">{items}</div>{pager}',
-  'selectionChanged' => "function(id){open_controls($.fn.yiiGridView.getSelection(id));}",
   'columns' => array(
     'id',
     'email',
