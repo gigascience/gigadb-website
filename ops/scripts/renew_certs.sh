@@ -59,6 +59,32 @@ renew_cert() {
   	fi
 }
 
+fetch_cert_from_gitlab() {
+    echo "Making the directories to store the certificate files"
+    $DOCKER mkdir -vp /etc/letsencrypt/archive/$REMOTE_HOSTNAME
+    $DOCKER mkdir -vp /etc/letsencrypt/live/$REMOTE_HOSTNAME
+    echo "Get fullchain cert from gitlab"
+    $DOCKER bash -c "/usr/bin/curl --show-error --silent \
+      --request GET --url '$CI_API_V4_URL/projects/$encoded_gitlab_project/variables/tls_fullchain_pem?filter%5benvironment_scope%5d=$GIGADB_ENV' \
+      --header 'PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN' | cat | jq -r '.value' > /etc/letsencrypt/archive/$REMOTE_HOSTNAME/fullchain1.pem"
+    $DOCKER ln -fs /etc/letsencrypt/archive/$REMOTE_HOSTNAME/fullchain1.pem /etc/letsencrypt/live/$REMOTE_HOSTNAME/fullchain.pem
+
+    echo "Get private cert from gitlab"
+    $DOCKER bash -c "/usr/bin/curl --show-error --silent \
+      --request GET --url '$CI_API_V4_URL/projects/$encoded_gitlab_project/variables/tls_privkey_pem?filter%5benvironment_scope%5d=$GIGADB_ENV' \
+      --header 'PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN' | cat | jq -r '.value' > /etc/letsencrypt/archive/$REMOTE_HOSTNAME/privkey1.pem"
+    $DOCKER ln -fs /etc/letsencrypt/archive/$REMOTE_HOSTNAME/privkey1.pem /etc/letsencrypt/live/$REMOTE_HOSTNAME/privkey.pem
+
+    echo "Get chain cert from gitlab"
+    $DOCKER bash -c "/usr/bin/curl --show-error --silent \
+      --request GET --url '$CI_API_V4_URL/projects/$encoded_gitlab_project/variables/tls_chain_pem?filter%5benvironment_scope%5d=$GIGADB_ENV' \
+      --header 'PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN' | cat | jq -r '.value' > /etc/letsencrypt/archive/$REMOTE_HOSTNAME/chain1.pem"
+    $DOCKER ln -fs /etc/letsencrypt/archive/$REMOTE_HOSTNAME/chain1.pem /etc/letsencrypt/live/$REMOTE_HOSTNAME/chain.pem
+
+    $DOCKER ls -alrt /etc/letsencrypt/archive/$REMOTE_HOSTNAME
+    $DOCKER ls -alrt /etc/letsencrypt/live/$REMOTE_HOSTNAME
+}
+
 echo "Checking whether the certificate exists locally"
 cert_files_local_exists=$($DOCKER bash -c "test -f $FULLCHAIN_PEM && test -f $PRIVATE_PEM && test -f $CHAIN_PEM && echo 'true' || echo 'false'")
 echo "cert_files_local_exists: $cert_files_local_exists"
@@ -93,4 +119,17 @@ echo "chain_pem_remote_exists: $chain_pem_remote_exists"
 
 if [[ $cert_files_local_exists == 'true' ]];then
   renew_cert
+else
+  echo "Certs do not exist in the filesystem"
+  if [[ $fullchain_pem_remote_exists == "true" && $privkey_pem_remote_exists == "true" && $chain_pem_remote_exists == "true" ]];then
+    echo "Certs fullchain, privkey and chain could be found in gitlab"
+    fetch_cert_from_gitlab
+    echo "now that the cert files are present locally, lets renew them"
+    renew_cert
+  else
+    echo "Certs could not be found in gitlab, please check the gitlab variables"
+    exit 1
+  fi
 fi
+
+echo "Finishing renew tls certs at $(date +%Y-%m-%dT%H:%M:%S)"
