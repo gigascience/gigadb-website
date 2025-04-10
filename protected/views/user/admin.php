@@ -23,35 +23,6 @@ Yii::app()->clientScript->registerScript('customize-close-button', '
 ');
 ?>
 
-<?php $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
-  'id' => 'controls',
-  // additional javascript options for the dialog plugin
-  'options' => array(
-    'title' => 'Managing User',
-    'autoOpen' => false,
-    'modal' => true,
-  ),
-));
-
-?>
-
-<h2 class="h5">Basic Operations</h2>
-<div class="btns-row">
-  <button class="btn background-btn-o" title="view" onclick="goto_userview();">View</button>
-  <button class="btn background-btn-o" title="update" onclick="goto_userupdate();">Update</button>
-  <button class="btn danger-btn-o delete" title="delete" onclick="goto_userdelete();">Delete</button>
-</div>
-
-<h2 class="h5">Advanced Operations</h2>
-<button class="btn background-btn-o" title="link" onclick="goto_userlinkauthor();">Link this user to an author</button>
-
-
-<div id="status" class="mt-10"></div>
-
-<?
-$this->endWidget('zii.widgets.jui.CJuiDialog');
-?>
-
 <?php $this->widget('CustomGridView', array(
   'id' => 'news-grid',
   'dataProvider' => $model->search(),
@@ -135,19 +106,6 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
 
 
 <script>
-  function handleManageClick(e) {
-    const userId = String($(e.target).closest('tr').attr('data-userid'));
-    open_controls(userId)
-  }
-
-  function open_controls(user_id) {
-    console.log(user_id)
-    $("#controls").data('user_id', user_id);
-    $("#controls").dialog("option", "title", "Manage User Id: " + user_id);
-    $("#controls").dialog("open");
-    return false;
-  }
-
   function goto_userview() {
     <?
     echo 'var userview_url = "' . Yii::app()->urlManager->createUrl('user/view', array('id' => '')) . '";'
