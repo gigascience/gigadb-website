@@ -8,5 +8,5 @@ set +a
 
 ./tests/unit_runner
 ./tests/functional_runner
-#./tests/coverage_runner
+./tests/coverage_runner
 
