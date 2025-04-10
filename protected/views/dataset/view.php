@@ -470,30 +470,29 @@ $sampleDataProvider = $samples->getDataProvider();
 
                                 <div role="tabpanel" class="tab-pane" id="funding">
 
-
-                                    <table class="table table-bordered text-center">
-                                        <thead>
-                                            <tr>
-                                                <th title="The name of the funding agency providing funding. Where possible this should be from the FundRef list of funding bodies (https://www.e-sciencecentral.org/funder/).">Funding body</th>
-                                                <th title="The name of the person responsible for getting the award.">Awardee</th>
-                                                <th title="The grant or contract number of the project that sponsored the effort.">Award ID</th>
-                                                <th title="Some agencies have multiple award programs through which they distribute funding, if appropriate that information can be added here.">Comments</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-
-                                            <?php foreach ($funding as $funder) { ?>
+                                    <div class="dataset-datatables-wrapper">
+                                        <table class="table table-bordered text-center">
+                                            <thead>
                                                 <tr>
-                                                    <td><?= $funder['funder_name'] ?></td>
-                                                    <td><?= $funder['awardee'] ?></td>
-                                                    <td><?= $funder['grant_award'] ?></td>
-                                                    <td><?= $funder['comments'] ?></td>
+                                                    <th title="The name of the funding agency providing funding. Where possible this should be from the FundRef list of funding bodies (https://www.e-sciencecentral.org/funder/).">Funding body</th>
+                                                    <th title="The name of the person responsible for getting the award.">Awardee</th>
+                                                    <th title="The grant or contract number of the project that sponsored the effort.">Award ID</th>
+                                                    <th title="Some agencies have multiple award programs through which they distribute funding, if appropriate that information can be added here.">Comments</th>
                                                 </tr>
-                                            <?php } ?>
-                                        </tbody>
-                                    </table>
+                                            </thead>
+                                            <tbody>
 
-
+                                                <?php foreach ($funding as $funder) { ?>
+                                                    <tr>
+                                                        <td><?= $funder['funder_name'] ?></td>
+                                                        <td><?= $funder['awardee'] ?></td>
+                                                        <td><?= $funder['grant_award'] ?></td>
+                                                        <td><?= $funder['comments'] ?></td>
+                                                    </tr>
+                                                <?php } ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             <?php }
                             ?>
@@ -542,23 +541,24 @@ $sampleDataProvider = $samples->getDataProvider();
 
                             <div role="tabpanel" class="tab-pane" id="history">
 
-                                <table class="table table-bordered text-center">
-                                    <thead>
-                                        <tr>
-                                            <th>Date</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php foreach ($mainSection->getHistory() as $log) { ?>
+                                <div class="dataset-datatables-wrapper">
+                                    <table class="table table-bordered text-center">
+                                        <thead>
                                             <tr>
-                                                <td><?= date('F j, Y', strtotime($log['created_at'])) ?></td>
-                                                <td><?= $log['message'] ?></td>
+                                                <th>Date</th>
+                                                <th>Action</th>
                                             </tr>
-                                        <?php } ?>
-                                    </tbody>
-                                </table>
-
+                                        </thead>
+                                        <tbody>
+                                            <?php foreach ($mainSection->getHistory() as $log) { ?>
+                                                <tr>
+                                                    <td><?= date('F j, Y', strtotime($log['created_at'])) ?></td>
+                                                    <td><?= $log['message'] ?></td>
+                                                </tr>
+                                            <?php } ?>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                             </div>
             </section>
@@ -671,6 +671,9 @@ $sampleDataProvider = $samples->getDataProvider();
                 }
 
                 $('#samples_table').DataTable({
+                    "initComplete": function () {
+                        $("#samples_table").wrap("<div class='dataset-datatables-wrapper'></div>");
+                    },
                     "paging": false,
                     "ordering": true,
                     "info": false,
