@@ -435,4 +435,12 @@ class AcceptanceTester extends \Codeception\Actor
     {
         $this->see($text, ['css' => "$table tr:nth-child($row) td:nth-child($column)"]);
     }
+
+    /**
+     * @Then I click on :cssSelector
+     */
+    public function iClickOn($cssSelector)
+    {
+        $this->click($cssSelector);
+    }
 }

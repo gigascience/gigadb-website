@@ -214,6 +214,13 @@ Feature: filter tables on admin page
     And I should not see "user@gigadb.org"
     And I should not see "test+8@gigasciencejournal.com"
 
+  @ok @issue-2252
+  Scenario: Link users
+    Given I am on "/user/admin"
+    When I click on "[title='Link to Author']"
+    Then I should be on "/adminAuthor/admin"
+    And I should see "Click on a row or on the button to proceed with linking that author with user"
+
   @ok
   Scenario: News items
     Given I am on "/news/admin"

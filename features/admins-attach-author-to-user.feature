@@ -45,16 +45,6 @@ Scenario: populate author form with a user id already used triggers error
 	Then I should be on "/adminAuthor/update/id/3791"
 	And I should see "Gigadb User \"345\" has already been taken"
 
-
-@ok @javascript @admin-link-author-from-user
-Scenario: On user list, there is a button to start the process for linking to an author
-	Given default admin user exists
-	And I sign in as an admin
-	And I am on "/user/admin"
-	When I click on the row for user id "345"
-	And I wait "2" seconds
-	Then I should see "Link this user to an author"
-
 @ok @admin-link-author-from-user
 Scenario: On user view, there is no  button to start the process for linking to an author
 	Given default admin user exists

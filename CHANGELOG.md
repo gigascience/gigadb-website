@@ -4,6 +4,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #2252: Remove config popup from user admin page
+
 ## v4.4.8 - 2025-04-08 - 01de0477b -
 
 - Fix #2033: Create a mockup for all upload statuses except published
