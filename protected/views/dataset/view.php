@@ -223,7 +223,6 @@ $sampleDataProvider = $samples->getDataProvider();
                     ?>
                 </p>
 
-
                 <?php if (count($accessions) > 0) { ?>
                     <?php
                     $primary_links = $accessions->getPrimaryLinks();
@@ -265,7 +264,7 @@ $sampleDataProvider = $samples->getDataProvider();
 
             </div>
 
-            <section>
+            <section class="tab-nav-container">
                 <?php
                 $protocol = array();
                 $jb = array();

@@ -1,4 +1,4 @@
-<nav aria-label="Submission Guidelines" class="guide-nav" id="guideNav">
+<nav aria-label="Submission Guidelines" class="guide-nav tab-nav-container" id="guideNav">
     <ul class="nav nav-tabs nav-border-tabs">
         <li class="<?= $isActiveGeneral ? 'active' : '' ?>">
             <a href="/site/guide">General Submission Guidelines</a>
