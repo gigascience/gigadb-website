@@ -94,6 +94,27 @@
       .search-result-icon-container {
         padding: 10px 10px 10px 20px;
       }
+      .search-result-content {
+        width: auto;
+        margin-inline: 0;
+        &.file-content {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 5px;
+          padding-block: 5px;
+          .file-name,
+          .file-type,
+          .file-size {
+            width: 100%;
+            text-align: left;
+            padding-left: 0;
+            max-width: none;
+          }
+          .file-name {
+            padding-block: 0;
+          }
+        }
+      }
     }
   }
 }
