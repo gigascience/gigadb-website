@@ -6,7 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Feat #2189: Make public pages responsive
 
-## v4.4.7 - 2025-03-26 - 4c548f037 -
+## v4.4.8 - 2025-04-08 - 01de0477b -
+
+- Fix #2033: Create a mockup for all upload statuses except published
+
+## v4.4.7 - 2025-03-26 - 4c548f037 - live since 2025-04-03
 
 - Fix #2241: Restore Sketchfab visualisations alongside 3D models files visualisations
 - Fix #2180: Add user in curation log when minting the DOI

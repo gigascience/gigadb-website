@@ -326,16 +326,26 @@ class AdminDatasetController extends Controller
      */
     public function actionPrivate()
     {
-        $id = $_GET['identifier'];
+        $id = Yii::$app->request->get('identifier');
         $model= Dataset::model()->find("identifier=?", array($id));
         $datasetPageSettings = new DatasetPageSettings($model);
-        if ( "invalid" === $datasetPageSettings->getPageType() ) {
+        $pageType = $datasetPageSettings->getPageType();
+
+        if (!in_array($pageType, ['invalid', 'public', 'hidden', 'draft', 'mockup'])) {
+            throw new CHttpException(404, 'Page type not found');
+        }
+
+        if ("invalid" === $pageType) {
             $this->redirect('/site/index');
-        } elseif ( "public" === $datasetPageSettings->getPageType() ) {
+        } elseif ("public" === $pageType) {
             $this->redirect('/dataset/'.$model->identifier);
-        } elseif ( "hidden" === $datasetPageSettings->getPageType() || "draft" === $datasetPageSettings->getPageType() ) {
+        } else {
             $model->token = Yii::$app->security->generateRandomString(16);
-            $model->save();
+
+            if (!$model->save()) {
+                throw new CHttpException(500, 'Fail to update dataset token');
+            }
+
             $this->redirect('/dataset/'.$model->identifier.'/token/'.$model->token);
         }
     }
