@@ -264,7 +264,7 @@ $sampleDataProvider = $samples->getDataProvider();
 
             </div>
 
-            <section class="tab-nav-container">
+            <section class="">
                 <?php
                 $protocol = array();
                 $jb = array();
