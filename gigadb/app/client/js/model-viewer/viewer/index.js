@@ -83,5 +83,6 @@ export function createModelViewer(container) {
   return {
     render,
     loadModel,
+    renderer
   };
 }

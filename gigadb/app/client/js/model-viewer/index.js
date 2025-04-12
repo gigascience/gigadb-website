@@ -44,13 +44,14 @@ export function modelViewer(files, options = {}) {
     return file[key];
   }
 
-  const { loadModel } = createModelViewer(container);
+  const { loadModel, renderer } = createModelViewer(container);
 
   const uiState = createUi({
     root,
     onSelect: handleLoadModel,
     onPlay: handleLoadModel,
     getDataProperty: getFileProperty,
+    renderer,
   });
 
   async function handleLoadModel(fileId) {

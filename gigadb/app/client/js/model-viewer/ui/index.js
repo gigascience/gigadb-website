@@ -3,6 +3,7 @@ import { createUiView } from "./uiView.js";
 import { invariant } from "../helpers/invariant.js";
 import { selector } from "./selectors.js";
 import { coerceSelected } from "../helpers/coerceSelected.js";
+import { VRButton } from 'three/addons/webxr/VRButton.js';
 
 /**
  * Creates and initializes the UI component for the model viewer
@@ -11,9 +12,10 @@ import { coerceSelected } from "../helpers/coerceSelected.js";
  * @param {function(string|null): void} param0.onSelect Callback when model is selected from dropdown
  * @param {function(string|null): void} param0.onPlay Callback when play button is clicked
  * @param {function({searchBy: string, value: string, key: string}): string|null} param0.getDataProperty Function to get file properties
+ * @param {THREE.WebGLRenderer} param0.renderer Three.js WebGL renderer instance for WebXR support
  * @returns {Object} UI state object with status, error and selected model properties
  */
-export function createUi({ root, onSelect, onPlay, getDataProperty }) {
+export function createUi({ root, onSelect, onPlay, getDataProperty, renderer }) {
   // mandatory elements
   const domElements = {
     viewerContainer: root.find(selector.viewerContainer),
@@ -31,7 +33,6 @@ export function createUi({ root, onSelect, onPlay, getDataProperty }) {
 
   // optional elements
   domElements.controls = root.find(selector.controls);
-  domElements.vrButton = domElements.controls.find(selector.vrButton);
 
   const playButton = domElements.playButtonOverlay.find(selector.playButton);
   const helpButton = domElements.controls.find(selector.helpButton);
@@ -43,7 +44,12 @@ export function createUi({ root, onSelect, onPlay, getDataProperty }) {
   const uiView = createUiView(domElements, getDataProperty);
 
   const modelState = createUiState(
-    { status: "idle", error: null, selected: null },
+    {
+      status: "idle",
+      error: null,
+      selected: null,
+      renderer // Store renderer in state for WebXR access
+    },
     () => uiView.updateUI(modelState)
   );
 
@@ -112,9 +118,10 @@ export function createUi({ root, onSelect, onPlay, getDataProperty }) {
    */
   function handleVR(e) {
     e.preventDefault();
-    if (modelState.webXRSupported) {
+    if (modelState.webXRSupported && modelState.renderer) {
       // For now just log that VR was requested - actual VR session handling will be implemented later
       console.log('VR mode requested for model:', modelState.selected);
+      console.log('Using renderer:', modelState.renderer);
     }
   }
 
@@ -162,14 +169,17 @@ export function createUi({ root, onSelect, onPlay, getDataProperty }) {
     modelState.selected = coerceSelected(domElements.modelSelector.val()) || null;
     uiView.updateUI(modelState);
 
-    // Check WebXR support and store it in the model state
     checkWebXRSupport().then(supported => {
       modelState.webXRSupported = supported;
       console.log('WebXR VR support:', supported ? 'available' : 'not available');
 
-      // Show/hide VR button based on support
-      if (domElements.vrButton.length) {
-        supported ? domElements.vrButton.show() : domElements.vrButton.hide();
+      if (supported && modelState.renderer) {
+        const vrButton = VRButton.createButton(modelState.renderer);
+        domElements.canvasContainer.append(vrButton);
+      }
+
+      if (modelState.renderer) {
+        domElements.controls.show();
       }
     });
 
@@ -180,7 +190,6 @@ export function createUi({ root, onSelect, onPlay, getDataProperty }) {
     fullscreenButton.on("click", handleFullscreen);
     helpModalClose.on("click", handleHelpClose);
     $(document).on("fullscreenchange", handleFullscreenChange);
-    domElements.vrButton.on("click", handleVR);
   }
 
   /**
@@ -194,7 +203,7 @@ export function createUi({ root, onSelect, onPlay, getDataProperty }) {
     helpModalClose.off("click", handleHelpClose);
     $(document).off("keydown", handleKeyDown);
     $(document).off("fullscreenchange", handleFullscreenChange);
-    domElements.vrButton.off("click", handleVR);
+    // Note: VRButton handles its own cleanup
   }
 
   init();

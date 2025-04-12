@@ -13,7 +13,6 @@ export const selector = {
   playButton: ".js-play-button",
   helpButton: ".js-controls-info-btn",
   fullscreenButton: ".js-fullscreen-btn",
-  vrButton: ".js-vr-btn",
   helpModal: ".js-help-modal",
   helpModalClose: ".js-help-modal-close",
 };

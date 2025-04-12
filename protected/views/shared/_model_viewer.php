@@ -49,10 +49,6 @@ $files = array_map(function ($item) {
         <i class="fa fa-expand"></i>
         <span class="sr-only">Toggle fullscreen</span>
       </a>
-      <a href="#" class="js-vr-btn controls-btn" data-toggle="tooltip" title="View in VR">
-        <i class="fa fa-cube"></i>
-        <span class="sr-only">View in VR</span>
-      </a>
     </div>
     <div class="play-button-overlay js-play-button-overlay">
       <button class="play-button js-play-button">
