@@ -31,6 +31,7 @@ export function createUi({ root, onSelect, onPlay, getDataProperty }) {
 
   // optional elements
   domElements.controls = root.find(selector.controls);
+  domElements.vrButton = domElements.controls.find(selector.vrButton);
 
   const playButton = domElements.playButtonOverlay.find(selector.playButton);
   const helpButton = domElements.controls.find(selector.helpButton);
@@ -127,6 +128,19 @@ export function createUi({ root, onSelect, onPlay, getDataProperty }) {
   }
 
   /**
+   * Checks if WebXR VR mode is supported by the browser
+   * @returns {Promise<boolean>} Promise that resolves to true if WebXR VR is supported
+   */
+  async function checkWebXRSupport() {
+    try {
+      return navigator.xr && await navigator.xr.isSessionSupported('immersive-vr');
+    } catch (error) {
+      console.warn('WebXR VR support check failed:', error);
+      return false;
+    }
+  }
+
+  /**
    * Initializes UI state and event listeners
    */
   function init() {
@@ -135,6 +149,18 @@ export function createUi({ root, onSelect, onPlay, getDataProperty }) {
     domElements.playButtonOverlay.show();
     modelState.selected = coerceSelected(domElements.modelSelector.val()) || null;
     uiView.updateUI(modelState);
+
+    // Check WebXR support and store it in the model state
+    checkWebXRSupport().then(supported => {
+      modelState.webXRSupported = supported;
+      console.log('WebXR VR support:', supported ? 'available' : 'not available');
+
+      // Show/hide VR button based on support
+      if (domElements.vrButton.length) {
+        supported ? domElements.vrButton.show() : domElements.vrButton.hide();
+      }
+    });
+
     domElements.modelSelector.on("change", handleSelect);
     playButton.on("click", handlePlay);
     helpButton.on("click", handleHelp);
