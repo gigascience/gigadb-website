@@ -107,6 +107,18 @@ export function createUi({ root, onSelect, onPlay, getDataProperty }) {
   }
 
   /**
+   * Handles VR button click, initiates WebXR VR session
+   * @param {Event} e Click event
+   */
+  function handleVR(e) {
+    e.preventDefault();
+    if (modelState.webXRSupported) {
+      // For now just log that VR was requested - actual VR session handling will be implemented later
+      console.log('VR mode requested for model:', modelState.selected);
+    }
+  }
+
+  /**
    * Handles keyboard shortcuts
    * @param {KeyboardEvent} e Keyboard event
    */
@@ -168,6 +180,7 @@ export function createUi({ root, onSelect, onPlay, getDataProperty }) {
     fullscreenButton.on("click", handleFullscreen);
     helpModalClose.on("click", handleHelpClose);
     $(document).on("fullscreenchange", handleFullscreenChange);
+    domElements.vrButton.on("click", handleVR);
   }
 
   /**
@@ -181,6 +194,7 @@ export function createUi({ root, onSelect, onPlay, getDataProperty }) {
     helpModalClose.off("click", handleHelpClose);
     $(document).off("keydown", handleKeyDown);
     $(document).off("fullscreenchange", handleFullscreenChange);
+    domElements.vrButton.off("click", handleVR);
   }
 
   init();
