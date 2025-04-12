@@ -248,3 +248,13 @@ table.dataset-view-table > tbody > tr {
     margin-top: 5px;
   }
 }
+
+// prevent table overflowing cells with very long words without breaks (e.g. long URLs)
+table.table-fixed {
+  table-layout: fixed;
+  width: 100%;
+  border-collapse: collapse;
+  th, td {
+    overflow-wrap: break-word;
+  }
+}

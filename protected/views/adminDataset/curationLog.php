@@ -11,7 +11,7 @@ $this->widget(
     [
         'id'            => 'dataset-grid',
         'dataProvider'  => $model,
-        'itemsCssClass' => 'table table-bordered',
+        'itemsCssClass' => 'table table-bordered table-fixed',
         'enableSorting'  => false,
         'columns'       => [
             'creation_date',
@@ -26,7 +26,8 @@ $this->widget(
                         }
 
                         return $data->comments;
-                    }
+                    },
+                    'headerHtmlOptions' => array('style' => 'width: 30%'),
             ],
             'last_modified_date',
             'last_modified_by',
