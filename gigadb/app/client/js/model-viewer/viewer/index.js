@@ -31,7 +31,7 @@ export function createModelViewer(container) {
     });
     renderer = createRenderer();
     container.append(renderer.domElement);
-    controls = createControls(camera, renderer.domElement);
+    controls = createControls(camera, renderer.domElement, renderer);
 
     const lights = createLights();
 
