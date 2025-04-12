@@ -12,24 +12,30 @@ export function createControls(camera, canvas, renderer = null) {
   controls.target.set(0, 0, 0);
   controls.update();
 
-  // Only set up VR controls if renderer is provided and has XR support
-  if (renderer?.xr) {
-    // Function to toggle controls based on VR state
-    const updateControlsState = () => {
-      controls.enabled = !renderer.xr.isPresenting;
-    };
+  const updateControlsState = () => {
+    controls.enabled = !renderer.xr.isPresenting;
+  };
 
-    // Subscribe to VR session changes
+  // toggle controls based on xr non-xr use
+  if (renderer?.xr) {
     renderer.xr.addEventListener('sessionstart', updateControlsState);
     renderer.xr.addEventListener('sessionend', updateControlsState);
 
-    // Initial state check
     updateControlsState();
   }
 
   controls.tick = () => {
     if (controls.enabled !== false) {
       controls.update();
+    }
+  };
+
+  controls.destroy = () => {
+    controls.dispose();
+
+    if (renderer?.xr) {
+      renderer.xr.removeEventListener('sessionstart', updateControlsState);
+      renderer.xr.removeEventListener('sessionend', updateControlsState);
     }
   };
 
