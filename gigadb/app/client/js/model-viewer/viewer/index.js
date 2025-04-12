@@ -46,8 +46,11 @@ export function createModelViewer(container) {
 
     onDestroyCallbacks.push(destroyResizer);
 
-    // re-render when user interacts with the controls
-    controls.addEventListener("change", render);
+    // Set up animation loop that works for both standard and XR rendering
+    renderer.setAnimationLoop(() => {
+      controls.update();
+      render();
+    });
   }
 
   function render() {
@@ -66,11 +69,10 @@ export function createModelViewer(container) {
     // set orbiting center around model center position
     controls.target.copy(models[0].position);
     scene.add(...models);
-    render();
   }
 
   function unmount() {
-    controls.removeEventListener("change", render);
+    renderer.setAnimationLoop(null);
     onDestroyCallbacks.forEach((callback) => callback());
   }
 
