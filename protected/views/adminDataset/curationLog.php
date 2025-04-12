@@ -27,7 +27,7 @@ $this->widget(
 
                         return $data->comments;
                     },
-                    'headerHtmlOptions' => array('style' => 'width: 300px'),
+                    'headerHtmlOptions' => array('style' => 'width: 30%'),
             ],
             'last_modified_date',
             'last_modified_by',
