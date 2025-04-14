@@ -113,19 +113,6 @@ export function createUi({ root, onSelect, onPlay, getDataProperty, renderer }) 
   }
 
   /**
-   * Handles VR button click, initiates WebXR VR session
-   * @param {Event} e Click event
-   */
-  function handleVR(e) {
-    e.preventDefault();
-    if (modelState.webXRSupported && modelState.renderer) {
-      // For now just log that VR was requested - actual VR session handling will be implemented later
-      console.log('VR mode requested for model:', modelState.selected);
-      console.log('Using renderer:', modelState.renderer);
-    }
-  }
-
-  /**
    * Handles keyboard shortcuts
    * @param {KeyboardEvent} e Keyboard event
    */
