@@ -171,7 +171,6 @@ export function createUi({ root, onSelect, onPlay, getDataProperty, renderer }) 
 
     checkWebXRSupport().then(supported => {
       modelState.webXRSupported = supported;
-      console.log('WebXR VR support:', supported ? 'available' : 'not available');
 
       if (supported && modelState.renderer) {
         const vrButton = VRButton.createButton(modelState.renderer);
