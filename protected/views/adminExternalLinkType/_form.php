@@ -67,7 +67,14 @@
             'form' => $form,
             'model' => $model,
             'attributeName' => 'multiple',
-            'label' => 'can be multiple instances of that external_link per dataset'
+            'label' => 'Can be multiple instances of that external_link per dataset'
+        ]);
+
+        $this->widget('application.components.controls.CheckBoxField', [
+            'form' => $form,
+            'model' => $model,
+            'attributeName' => 'can_self_referred',
+            'label' => 'Can be linked to another external link url'
         ]);
         ?>
 

@@ -22,6 +22,12 @@
                     return $data->multiple? 'Yes' : 'No';
                 },
             ),
+            array(
+                'name' => 'can_self_referred',
+                'value' => function($data) {
+                    return $data->can_self_referred ? 'Yes' : 'No';
+                },
+            ),
         ),
         'htmlOptions'  => array('class' => 'table table-striped table-bordered dataset-view-table'),
         'itemCssClass' => array('odd', 'even'),

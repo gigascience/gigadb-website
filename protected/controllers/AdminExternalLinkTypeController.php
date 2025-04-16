@@ -78,8 +78,7 @@ class AdminExternalLinkTypeController extends Controller
     {
         $model = $this->loadModel($id);
 
-        if ($attr = Yii::$app->request->post('ExternalLinkType'))
-        {
+        if ($attr = Yii::$app->request->post('ExternalLinkType')) {
             $model->attributes = $attr;
             if ($model->save())
                 $this->redirect(array('view','id' => $model->id));
