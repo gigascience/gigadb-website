@@ -4,6 +4,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1841: Specific display for archives attached to a main external link
+- Feat #1841: Allow certain external links of a specific type to be considered as archives of other external links of a different type, based on an origin URL
+- Feat #1841: Add a checkbox to the admin External Link Type form to specify whether a link of this type can be referred to
+- Feat #1841: Add columns in 'external link' and 'external link type' tables to allow linking certain external links together
 - Feat #1137: Distinguish the display of tabs and links for external links
 - Feat #665: Create 'RRID' external link type
 - Feat #1239: Create 'Software Heritage Archive (SWHA)' external link type

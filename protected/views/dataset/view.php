@@ -244,7 +244,35 @@ $linksAsTab = [];
 
                         echo "<h3 class=\"h5\"><strong>${linkType}:</strong></h3>";
                         foreach ($linksAsArray as $link) {
+                            //links that are an archive of other links
+                            if ($countAndDisplayedAs[2]) {
+                                continue;
+                            }
+
+                            if ($link['multiple']) {
+                                $linksAsTab[$link['external_link_type_name']] = $link;
+                                continue;
+                            }
                             echo '<p>' . CHtml::link($link['url'], $link['url'], array("title" => $linkType . " for dataset " . $model->identifier)) . '</p>';
+                            if ($link['is_referred']) {
+                                $el = ExternalLink::model()->findByPk($link['id']);
+
+                                foreach($el->referencedBy as $item) {
+                                    echo ' <div style="display: flex; width: fit-content; font-family: sans-serif;">
+                                            <span style="background-color: #eee; padding: 4px 8px; color: #555; border-top-left-radius: 4px; border-bottom-left-radius: 4px;">
+                                                Archived:
+                                            </span>'.
+                                        CHtml::link(
+                                            $item->url,
+                                            $item->url,
+                                            array(
+                                                'style' => 'background-color: #007BFF; color: white; padding: 4px 8px; text-decoration: none; border-top-right-radius: 4px; border-bottom-right-radius: 4px;',
+                                                'target' => '_blank',
+                                            )
+                                        ) .
+                                        '.</div>';
+                                }
+                            }
                         }
                     }
                     ?>

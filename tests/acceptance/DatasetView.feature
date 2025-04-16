@@ -269,3 +269,9 @@ Feature: a user visit the dataset page
     When I am on "/dataset/100142"
     Then I should see "Read the pre-print publication(s):"
 
+  @ok
+  Scenario: Show archived link
+    Given I have not signed in
+    When I am on "/dataset/100935"
+    Then I should see "Archived"
+    And I should see "https://archive.softwareheritage.org/browse/directory/d9323c56a707dc8e9fbea583c86fbec8d40b50c5/?origin_url=https://github.com/cihga39871/Atria"

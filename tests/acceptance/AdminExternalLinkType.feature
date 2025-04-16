@@ -26,8 +26,10 @@ Feature: form to update externalLink types details
     And I should see "Prefix"
     And I should see "Displayed as"
     And I should see "Relationship Id"
-    And I should see "can be multiple instances of that external_link per dataset"
+    And I should see "Can be multiple instances of that external_link per dataset"
     And I should see "ExternalLinkType_multiple" checkbox is unchecked
+    And I should see "Can be linked to an other external link url"
+    And I should see "ExternalLinkType_can_self_referred" checkbox is unchecked
 
   @ok
   Scenario: Can create a new ExternalLinkType as link
@@ -98,3 +100,10 @@ Feature: form to update externalLink types details
     When I press the button "Create"
     Then I should see "Can't be multiple instances of that external_link per dataset"
 
+  @ok
+  Scenario: Can toggle whether it is self-referred
+    Given I am on "/adminExternalLinkType/update/id/11"
+    And I uncheck "ExternalLinkType_can_self_referred" checkbox
+    When I press the button "Save"
+    Then I should see "Can Self Referred"
+    And I should not see "yes"
