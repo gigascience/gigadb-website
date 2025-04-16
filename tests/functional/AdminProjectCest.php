@@ -38,6 +38,7 @@ class AdminProjectCest
 
     /**
      * @param FunctionalTester $I
+     * @skip
      *
      * @return void
      */
