@@ -44,11 +44,12 @@ class ExternalLinkType extends CActiveRecord
             array('name', 'unique', 'message'=> 'Duplicate entry'),
             array('description', 'length', 'max'=>250),
             array('multiple', 'boolean'),
+            array('can_self_referred', 'boolean'),
             array('displayed_as', 'in', 'range' => array('link', 'tab')),
             array('relationship_id', 'required'),
             // The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, name, description, multiple, displayed_as', 'safe', 'on'=>'search'),
+			array('id, name, description, multiple, displayed_as, can_self_referred', 'safe', 'on'=>'search'),
 		);
 	}
 

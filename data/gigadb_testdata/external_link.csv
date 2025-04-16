@@ -1,5 +1,7 @@
-id,dataset_id,url,external_link_type_id
-2,5,http://genomes.uprm.edu/parrot/,3
-3,5,http://genomes.uprm.edu/drupal/,3
-60,212,https://github.com/ShashaankV/CS,3
-61,212,https://github.com/ShashaankV/GD,3
+id,dataset_id,url,external_link_type_id,related_id,is_referred
+2,5,http://genomes.uprm.edu/parrot/,3,,
+3,5,http://genomes.uprm.edu/drupal/,3,,
+60,212,https://github.com/ShashaankV/CS,3,,
+61,212,https://github.com/ShashaankV/GD,3,,
+1526,2342,https://github.com/cihga39871/Atria,7,,true
+15332,2342,https://archive.softwareheritage.org/browse/directory/d9323c56a707dc8e9fbea583c86fbec8d40b50c5/?origin_url=https://github.com/cihga39871/Atria,11,1526,
