@@ -61,8 +61,14 @@ class AdminExternalLinkController extends Controller
 			$model->attributes = $attr;
             $model->scenario='create';
 
-            if ($model->save())
-				return $this->redirect(array('view','id'=>$model->id));
+            $type = ExternalLinkType::model()->findByPk($attr['external_link_type_id']);
+            if ($type && $type->can_self_referred) {
+                $this->setRelatedId($model);
+            }
+
+            if (!$model->getErrors() && $model->save()) {
+                return $this->redirect(array('view','id'=>$model->id));
+            }
 		}
 
 		return $this->render('create',array(
@@ -193,8 +199,25 @@ class AdminExternalLinkController extends Controller
 		{
 			$model->attributes = $attr;
             $model->scenario='update';
+            $relatedId = null;
 
-            if ($model->save()) {
+            $type = ExternalLinkType::model()->findByPk($attr['external_link_type_id']);
+            if ($type && $type->can_self_referred) {
+                $relatedId = $model->related_id;
+
+                $this->setRelatedId($model);
+            }
+
+            if (!$model->getErrors() && $model->save()) {
+                if ($relatedId) {
+                    $related = ExternalLink::model()->findByPk($relatedId);
+                    $count = $related->referencedBy;
+
+                    if ($related && !$count) {
+                        $related->is_referred = false;
+                        $related->save();
+                    }
+                }
                 return $this->redirect(array('view','id'=>$model->id));
             }
 		}
@@ -312,4 +335,34 @@ class AdminExternalLinkController extends Controller
                  Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Delete Error.")));
             }
         }
+
+    private function setRelatedId(ExternalLink $model): void
+    {
+        $softwareArchiveService = Yii::$app->get('softwareArchive');
+        $origin = $softwareArchiveService->getOriginUrl($model->url);
+
+        if (!$origin) {
+            $model->addError('error', 'Invalid archived link - no origin url found');
+
+            return;
+        }
+
+        $users = User::model()->findAll($criteria);
+        $externalLink = ExternalLink::model()->findByAttributes(
+            [
+                'url' => $origin,
+                'dataset_id' => $model->dataset_id,
+
+            ]
+        );
+
+        if ($externalLink) {
+            $externalLink->is_referred = true;
+            if ($externalLink->save()) {
+                //todo
+            }
+        }
+
+        $model->related_id = $externalLink ?  $externalLink->id : null;
+    }
 }

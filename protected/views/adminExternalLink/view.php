@@ -16,6 +16,14 @@
 			'dataset_id',
 			'url',
 			'external_link_type_id',
+            array(
+                'name' => 'related_id',
+                'label' => 'Related Link',
+                'visible' => !empty($model->related_id),
+                'value' => function($data) {
+                    return ExternalLink::model()->findByPk($data->related_id)->url;
+                },
+            ),
 		),
 		'htmlOptions' => array('class' => 'table table-striped table-bordered dataset-view-table'),
 		'itemCssClass' => array('odd', 'even'),
