@@ -32,7 +32,8 @@ renew_cert() {
     chain=$($DOCKER cat $CHAIN_PEM)
 
   	echo "Renewing the certificate for $REMOTE_HOSTNAME"
-  	docker run --rm -v ${REPO_NAME}_le_config:/etc/letsencrypt -v ${REPO_NAME}_le_webrootpath:/var/www/.le certbot/certbot renew
+  	docker run --rm -v ${REPO_NAME}_le_config:/etc/letsencrypt -v ${REPO_NAME}_le_webrootpath:/var/www/.le certbot/certbot certificates \
+  	&& docker run --rm -v ${REPO_NAME}_le_config:/etc/letsencrypt -v ${REPO_NAME}_le_webrootpath:/var/www/.le certbot/certbot renew --cert-name $REMOTE_HOSTNAME
   	echo "Backup the fullchain cert to gitlab variable"
   	if [ $fullchain_pem_remote_exists == "true" ];then
   	  echo "/usr/bin/curl --show-error --silent --request PUT --write-out 'HTTP Response code: %{http_code}' --url '$CI_API_V4_URL/projects/$encoded_gitlab_project/variables/tls_fullchain_pem?filter%5benvironment_scope%5d=$GIGADB_ENV' --header 'PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN' --form 'environment_scope=$GIGADB_ENV' --form 'value=\$fullchain'"
@@ -118,14 +119,14 @@ echo "privkey_pem_remote_exists: $privkey_pem_remote_exists"
 echo "chain_pem_remote_exists: $chain_pem_remote_exists"
 
 if [[ $cert_files_local_exists == 'true' ]];then
-  renew_cert
+  renew_cert && docker restart ${REPO_NAME}_web_1
 else
   echo "Certs do not exist in the filesystem"
   if [[ $fullchain_pem_remote_exists == "true" && $privkey_pem_remote_exists == "true" && $chain_pem_remote_exists == "true" ]];then
     echo "Certs fullchain, privkey and chain could be found in gitlab"
     fetch_cert_from_gitlab
     echo "now that the cert files are present locally, lets renew them"
-    renew_cert
+    renew_cert && docker restart ${REPO_NAME}_web_1
   else
     echo "Certs could not be found in gitlab, please check the gitlab variables"
     exit 1
