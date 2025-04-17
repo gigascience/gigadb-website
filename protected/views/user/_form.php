@@ -151,7 +151,7 @@
 						'inputWrapperOptions' => 'col-xs-12 col-md-9',
 						'attributeName' => 'password',
 						'inputOptions' => [
-							'required' => 'required',
+							'required' => 'update' !== $scenario ? 'required' : false,
 						],
 					]);
 					$this->widget('application.components.controls.PasswordField', [
@@ -163,7 +163,7 @@
 						'inputWrapperOptions' => 'col-xs-12 col-md-9',
 						'attributeName' => 'password_repeat',
 						'inputOptions' => [
-							'required' => 'required',
+							'required' => 'update' !== $scenario ? 'required' : false,
 						],
 					]);
 					?>
