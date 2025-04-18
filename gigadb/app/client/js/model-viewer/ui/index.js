@@ -115,12 +115,29 @@ export function createUi({ root, onSelect, onPlay, getDataProperty }) {
       return;
     }
 
-    if (e.key.toLowerCase() === "h") {
+    const is3dModelTabActive = $("#3dmodels[role='tabpanel']").is(".visible.active");
+
+    if (
+      is3dModelTabActive &&
+      e.key.toLowerCase() === "h" &&
+      !e.ctrlKey &&
+      !e.shiftKey &&
+      !e.altKey &&
+      !e.metaKey
+    ) {
       e.preventDefault();
       helpModal.is(":visible") ? helpModal.fadeOut() : helpModal.fadeIn();
     }
 
-    if (e.key.toLowerCase() === "f") {
+    if (
+      is3dModelTabActive &&
+      modelState.status === 'success' &&
+      e.key.toLowerCase() === "f" &&
+      !e.ctrlKey &&
+      !e.shiftKey &&
+      !e.altKey &&
+      !e.metaKey
+    ) {
       e.preventDefault();
       toggleFullscreenMode();
     }
