@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## Unreleased
 
 - Feat #376: Uppy logo uploader for admin projects
+- Fix #1955: Edit user without being forced to enter a password + add a password regex
 
 ## v4.4.8 - 2025-04-08 - 01de0477b -
 
