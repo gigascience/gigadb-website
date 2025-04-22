@@ -173,6 +173,11 @@ TARGET=${APP_SOURCE}/protected/config/db.json
 VARS='$GIGADB_DB:$GIGADB_HOST:$GIGADB_USER:$GIGADB_PASSWORD'
 envsubst $VARS < $SOURCE > $TARGET
 
+SOURCE=${APP_SOURCE}/ops/configuration/yii-conf/db.json.dist
+TARGET=${APP_SOURCE}/protected/config/yii2/db.json
+VARS='$GIGADB_DB:$GIGADB_HOST:$GIGADB_USER:$GIGADB_PASSWORD'
+envsubst $VARS < $SOURCE > $TARGET
+
 # Email configuration in web.php differs in dev, CI compared to staging, live 
 if [ $GIGADB_ENV = "dev" ] || [ $GIGADB_ENV = "CI" ];
 then

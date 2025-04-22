@@ -1,5 +1,6 @@
 <?php
 
+$dbConfig = json_decode(file_get_contents(dirname(__FILE__).'/db.json'), true);
 $params = array_merge(
     require __DIR__ . '/params.php',
     require __DIR__ . '/params-local.php'
@@ -16,6 +17,19 @@ return [
         ]
     ],
     'components' => [
+        'db' => [
+            'class' => 'yii\db\Connection',
+            'dsn' => "pgsql:dbname={$dbConfig['database']};host={$dbConfig['host']}",
+            'username'=>$dbConfig['user'],
+            'password'=>$dbConfig['password'],
+            'charset'=>'utf8',
+            'enableSchemaCache' => true,
+            'attributes' => [
+                PDO::ATTR_PERSISTENT => true,
+            ],
+            'enableLogging' => true,
+            'enableProfiling' => true,
+        ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
             'useFileTransport' => false,
