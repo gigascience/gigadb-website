@@ -88,6 +88,7 @@ class Dataset extends CActiveRecord
             array('submitter_id, identifier, title, dataset_size, ftp_site', 'required'),
             array('submitter_id, image_id, publisher_id', 'numerical', 'integerOnly'=>true),
             array('dataset_size', 'numerical'),
+            array('identifier', 'unique', 'message' => 'Already exists'),
             array('identifier, excelfile_md5', 'length', 'max'=>32),
             array('title', 'length', 'max'=>300),
             array('upload_status', 'length', 'max'=>45),
@@ -114,10 +115,10 @@ class Dataset extends CActiveRecord
             'projects' => array(self::MANY_MANY, 'Project', 'dataset_project(dataset_id,project_id)'),
             'submitter' => array(self::BELONGS_TO, 'User', 'submitter_id'),
             'image' => array(self::BELONGS_TO, 'Image', 'image_id'),
-            'samples' => array(self::MANY_MANY, 'Sample', 'dataset_sample(dataset_id,sample_id)'),
+            'samples' => array(self::MANY_MANY, 'Sample', 'dataset_sample(dataset_id,sample_id)', 'order' => 'samples.id DESC'),
             'externalLinks' => array(self::HAS_MANY, 'ExternalLink', 'dataset_id'),
             'datasetTypes' => array(self::MANY_MANY, 'Type', 'dataset_type(dataset_id,type_id)'),
-            'files' => array(self::HAS_MANY, 'File', 'dataset_id'),
+            'files' => array(self::HAS_MANY, 'File', 'dataset_id', 'order' => 'files.id DESC'),
             'relations' => array(self::HAS_MANY, 'Relation', 'dataset_id'),
             'links' => array(self::HAS_MANY, 'Link', 'dataset_id'),
             'manuscripts' => array(self::HAS_MANY, 'Manuscript', 'dataset_id'),
@@ -312,12 +313,9 @@ class Dataset extends CActiveRecord
     }
 
     public function getDatasetTypes(){
-        $list=array();
+        $types = $this->datasetTypes;
 
-        foreach (array_values($this->datasetTypes) as $type) {
-            $list[]=$type->name;
-        }
-        return $list;
+        return array_map(function ($el) { return $el->name; }, $types);
     }
 
     public function getImageUrl($default='') {
@@ -340,21 +338,20 @@ class Dataset extends CActiveRecord
     }
 
     /**
-     * Get all authors in dataset
+     * Get all authors in dataset by dataset id and ordered by rank
+     *
      * @return array
      */
-    public function getAuthor()
+    public function getAuthors(): array
     {
-        $authors = Yii::app()->db->createCommand()
-                            ->select('a.id, a.surname, a.first_name')
-                            ->from('author a')
-                            ->join('dataset_author da', 'a.id = da.author_id')
-                            ->where('dataset_id = :id', array(':id' => $this->id))
-                            ->queryAll();
-
-        return $authors ? $authors : array();
+        return Yii::app()->db->createCommand()
+            ->select('a.id, a.surname, a.first_name, da.rank, a.orcid, a.middle_name, a.custom_name, a.gigadb_user_id')
+            ->from('author a')
+            ->join('dataset_author da', 'a.id = da.author_id')
+            ->where('dataset_id = :id', array(':id' => $this->id))
+            ->order('da.rank ASC, a.surname ASC, a.first_name ASC, a.middle_name')
+            ->queryAll();
     }
-
     /**
      * Get all samples in dataset
      * @return array
@@ -369,9 +366,31 @@ class Dataset extends CActiveRecord
                             ->where('ds.dataset_id = :id', array(':id' => $this->id))
                             ->queryAll();
 
-        var_dump(count($samples)); die;
+        return $samples ?: array();
+    }
 
-        return $samples ? $samples : array();
+    public function getProjects()
+    {
+        $projects = Yii::app()->db->createCommand()
+            ->select('p.name, p.url, p.image_location')
+            ->from('project p')
+            ->join('dataset_project dp', 'p.id = dp.project_id')
+            ->where('dp.dataset_id = :id', array(':id' => $this->id))
+            ->queryAll();
+
+        return $projects ?: array();
+    }
+
+    public function getExternalLinks()
+    {
+        $projects = Yii::app()->db->createCommand()
+            ->select('el.url, elt.name')
+            ->from('external_link el')
+            ->join('external_link_type elt', 'el.external_link_type_id = elt.id')
+            ->where('el.dataset_id = :id', array(':id' => $this->id))
+            ->queryAll();
+
+        return $projects ?: array();
     }
 
     public function getIsProteomic() {
@@ -442,12 +461,14 @@ class Dataset extends CActiveRecord
     }
 
     /**
-     * toXML(): fucntion tha treturn Datacite XML for this dataset
-     * @return Datacite XML 4.0 for this dataset
+     * toXML(): function tha return Datacite XML for this dataset
+     *
+     * @return bool|string XML 4.0 for this dataset
      */
-    public function toXML() {
-        $xmlstr = "<?xml version='1.0' ?>\n".
-              '<resource xmlns="http://datacite.org/schema/kernel-4"
+    public function toXML()
+    {
+        $xmlstr = "<?xml version='1.0' ?>\n" .
+            '<resource xmlns="http://datacite.org/schema/kernel-4"
                         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                         xsi:schemaLocation="http://datacite.org/schema/kernel-4 http://schema.datacite.org/meta/kernel-4/metadata.xsd"
                 >
@@ -457,112 +478,174 @@ class Dataset extends CActiveRecord
         $xml = new SimpleXMLElement($xmlstr);
 
         // <identifier identifierType="DOI">$mds_prefix/example-full</identifier>
-        $identifier = $xml->addChild("identifier", Yii::app()->params['mds_prefix']."/".$this->identifier);
-        $identifier->addAttribute("identifierType", "DOI");
+        $identifier = $xml->addChild('identifier', Yii::app()->params['mds_prefix'] . '/' . $this->identifier);
+        $identifier->addAttribute('identifierType', 'DOI');
 
         //<creators>
-        $creators = $xml->addChild("creators");
+        $creators = $xml->addChild('creators');
 
         // <creator>
-        $authors=$this->authors;
-        foreach($authors as $author)
-        {
+        $authors = $this->getAuthors();
+        foreach ($authors as $author) {
             $creator = $creators->addChild('creator');
-            $creator->addChild('creatorName',$author->surname." ".$author->middle_name." ". $author->first_name);
+            $nameType = strpos($author['surname'], 'Consortium') ? 'Organizational' : 'Personal';
+            $fullName = $author['middle_name'] ? $author['first_name'] . ', ' . $author['middle_name'] . ', ' . $author['surname'] : $author['first_name'] . ', ' . $author['surname'];
+            $creatorName = $creator->addChild('creatorName', $fullName);
+            $creatorName->addAttribute('nameType', $nameType);
+            $givenName = $author['middle_name'] ? $author['first_name'] . ', ' . $author['middle_name'] : $author['first_name'];
+            $creator->addChild('givenName', $givenName);
+            $creator->addChild('familyName', $author['surname']);
 
-            if ( $author->orcid != null ) {
-                $name_identifier = $creator->addChild('nameIdentifier',$author->orcid);
-                $name_identifier->addAttribute('schemeURI','http://orcid.org/');
-                    $name_identifier->addAttribute('nameIdentifierScheme','ORCID');
+            if ($author['orcid'] !== null) {
+                $name_identifier = $creator->addChild('nameIdentifier', $author['orcid']);
+                $name_identifier->addAttribute('schemeURI', 'http://orcid.org/');
+                $name_identifier->addAttribute('nameIdentifierScheme', 'ORCID');
             }
-            if( $author->gigadb_user_id != null ) {
-                $user = User::model()->find("id=?", array($author->gigadb_user_id));
-                $creator->addChild('affiliation',$user->affiliation);
+            if ($author['gigadb_user_id'] != null) {
+                $user = User::model()->find('id=?', array($author['gigadb_user_id']));
+                $creator->addChild('affiliation', $user->affiliation);
             }
         }
 
         //<titles>
-        $titles = $xml->addChild("titles");
+        $titles = $xml->addChild('titles');
 
         //<title xml:lang="en-us">Full DataCite XML Example</title>
-        $title = $titles->addChild('title',$this->title);
-        $title->addAttribute('xml:lang','en-US','http://www.w3.org/XML/1998/namespace');
+        $title = $titles->addChild('title', htmlspecialchars($this->title, ENT_QUOTES, 'UTF-8'));
+        $title->addAttribute('xml:lang', 'en-US', 'http://www.w3.org/XML/1998/namespace');
 
         //<publisher>GigaScience Database</publisher>
-        $xml->addChild('publisher',$this->publisher->name);
+        $publisher = $xml->addChild('publisher', $this->publisher->name);
+        $publisher->addAttribute('xml:lang', 'en-US', 'http://www.w3.org/XML/1998/namespace');
+        $publisher->addAttribute('publisherIdentifier', 'http://doi.org/10.17616/R3TG83');
+        $publisher->addAttribute('publisherIdentifierScheme', 're3data');
+        $publisher->addAttribute('schemeURI', 'https://www.re3data.org/');
 
         //<publicationYear>2014</publicationYear>
         $publication_date = new DateTime($this->publication_date);
-        $xml->addChild('publicationYear',$publication_date->format('Y'));
-
+        $xml->addChild('publicationYear', $publication_date->format('Y'));
 
         //<subjects>
-        $subjects = $xml->addChild("subjects");
+        $subjects = $xml->addChild('subjects');
 
         //<subject xml:lang="en-US">dataset type</subject>
         foreach ($this->getDatasetTypes() as $dataset_type) {
-            $subject = $subjects->addChild('subject',$dataset_type);
-            $subject->addAttribute('xml:lang','en-US','http://www.w3.org/XML/1998/namespace');
+            $subject = $subjects->addChild('subject', $dataset_type);
+            $subject->addAttribute('xml:lang', 'en-US', 'http://www.w3.org/XML/1998/namespace');
         }
 
         //<subject xml:lang="en-US">keywords</subject>
         foreach ($this->getSemanticKeywords() as $keyword) {
-            $subject = $subjects->addChild('subject',$keyword);
-            $subject->addAttribute('xml:lang','en-US','http://www.w3.org/XML/1998/namespace');
+            $subject = $subjects->addChild('subject', $keyword);
+            $subject->addAttribute('xml:lang', 'en-US', 'http://www.w3.org/XML/1998/namespace');
         }
 
         //<dates>
-    	//	<date dateType="Available">2014-10-17</date>
-        $dates = $xml->addChild("dates");
-        $date = $dates->addChild('date',$publication_date->format('Y-m-d'));
-        $date->addAttribute('dateType','Available');
+        //	<date dateType="Available">2014-10-17</date>
+        $dates = $xml->addChild('dates');
+        $date = $dates->addChild('date', $publication_date->format('Y-m-d'));
+        $date->addAttribute('dateType', 'Available');
 
         //<language>en-us</language>
-        $xml->addChild('language','en-US');
+        $xml->addChild('language', 'en-US');
 
         //<resourceType resourceTypeGeneral="Dataset">GigaDB Dataset</resourceType>
-        $resource_type = $xml->addChild('resourceType','GigaDB Dataset');
-        $resource_type->addAttribute('resourceTypeGeneral','Dataset');
+        $resource_type = $xml->addChild('resourceType', 'GigaDB Dataset');
+        $resource_type->addAttribute('resourceTypeGeneral', 'Dataset');
 
         //<relatedIdentifiers>
-        $manuscripts=$this->manuscripts;
-        $internal_links=$this->relations;
-        
-        $fundings=$this->datasetFunders;
+        $manuscripts = $this->manuscripts;
+        $links = $this->links;
+        $projects = $this->getProjects();
+        $externalLinks = $this->getExternalLinks();
 
-        $related_identifiers = $xml->addChild("relatedIdentifiers");
+        $internal_links = $this->relations;
+        $fundings = $this->datasetFunders;
 
-        if ( isset($manuscripts) ){
-            foreach($manuscripts as $manuscript){
-                $related_identifier = $related_identifiers->addchild("relatedIdentifier", $manuscript->identifier);
-                $related_identifier->addAttribute('relatedIdentifierType','DOI');
-                $related_identifier->addAttribute('relationType','IsReferencedBy');
-            }
+        $related_identifiers = $xml->addChild('relatedIdentifiers');
 
-        }
-        if ( isset($internal_links) ){
-            foreach($internal_links as $relation){
-                $related_identifier = $related_identifiers->addchild("relatedIdentifier",$relation->related_doi);
-                $related_identifier->addAttribute('relatedIdentifierType','DOI');
-                $related_identifier->addAttribute('relationType',$relation->relationship->name);
-            }
-
+        foreach ($manuscripts as $manuscript) {
+            $related_identifier = $related_identifiers->addchild('relatedIdentifier', $manuscript->identifier);
+            $related_identifier->addAttribute('relatedIdentifierType', 'DOI');
+            $related_identifier->addAttribute('relationType', 'IsCitedBy');
+            $related_identifier->addAttribute('resourceTypeGeneral', 'JournalArticle');
         }
 
-        $funding_References = $xml->addChild("fundingReferences");
-
-        if (isset($fundings)){
-            foreach($fundings as $funding){
-
-                $funder =  Funder::model()-> findByAttributes(array('id'=>$funding->funder_id));
-                $fundingReference = $funding_References->addChild("fundingReference");
-                $fundingReference->addChild('funderName',str_replace(array('&','>','<','"'), array('&amp;','&gt;','&lt;','&quot;'), $funder->primary_name_display));
-                $funderidentifier= $fundingReference->addChild('funderIdentifier',$funder->uri);
-                $funderidentifier->addAttribute('funderIdentifierType','Crossref Funder ID');
-                $fundingReference->addChild('awardNumber',$funding->grant_award);
-
+        foreach ($links as $link) {
+            if (!$link->is_primary) {
+                continue;
             }
 
+            $linkname = explode(':', $link->link);
+            $name = $linkname[0];
+            $modelurl = Prefix::model()->find('lower(prefix) = :p', array(':p' => strtolower($name)));
+            $relatedIdentifier = $modelurl ? sprintf('%s%s', $modelurl->url, $linkname[1]) : $linkname[1];
+            $related_identifier = $related_identifiers->addchild('relatedIdentifier', htmlspecialchars($relatedIdentifier, ENT_QUOTES, 'UTF-8'));
+            $related_identifier->addAttribute('resourceTypeGeneral', 'Dataset');
+            $related_identifier->addAttribute('relatedIdentifierType', 'URL');
+            $related_identifier->addAttribute('relationType', 'References');
+        }
+
+        foreach ($projects as $project) {
+            $related_identifier = $related_identifiers->addchild('relatedIdentifier', $project['url']);
+            $related_identifier->addAttribute('relatedIdentifierType', 'URL');
+            $related_identifier->addAttribute('relationType', 'IsPartOf');
+            $related_identifier->addAttribute('resourceTypeGeneral', 'Project');
+        }
+
+        foreach ($externalLinks as $externalLink) {
+            switch ($externalLink['name']) {
+                case 'Github links':
+                    $relatedIdentifier = $externalLink['url'];
+                    $resourceTypeGeneral = 'Software';
+                    $relatedIdentifierType = 'URL';
+                    $relationType = 'HasPart';
+
+                    break;
+                case 'Protocols.io':
+                    $relatedIdentifier = $externalLink['url'];
+                    $resourceTypeGeneral = 'Workflow';
+                    $relatedIdentifierType = 'DOI';
+                    $relationType = 'References';
+
+                    break;
+
+                case '3D Models':
+                    $relatedIdentifier = $externalLink['url'];
+                    $resourceTypeGeneral = 'Image';
+                    $relatedIdentifierType = 'URL';
+                    $relationType = 'References';
+
+                    break;
+                default:
+                    $relatedIdentifier = $externalLink['url'];
+                    $resourceTypeGeneral = 'Other';
+                    $relatedIdentifierType = 'URL';
+                    $relationType = 'References';
+            }
+
+            $related_identifier = $related_identifiers->addchild('relatedIdentifier', htmlspecialchars($relatedIdentifier, ENT_QUOTES, 'UTF-8'));
+            $related_identifier->addAttribute('relatedIdentifierType', $relatedIdentifierType);
+            $related_identifier->addAttribute('relationType', $relationType);
+            $related_identifier->addAttribute('resourceTypeGeneral', $resourceTypeGeneral);
+        }
+
+        foreach ($internal_links as $relation) {
+            $related_identifier = $related_identifiers->addchild('relatedIdentifier', $relation->related_doi);
+            $related_identifier->addAttribute('relatedIdentifierType', 'DOI');
+            $related_identifier->addAttribute('relationType', $relation->relationship->name);
+            $related_identifier->addAttribute('resourceTypeGeneral', 'Other');
+        }
+
+        $funding_References = $xml->addChild('fundingReferences');
+
+        foreach ($fundings as $funding) {
+            $funder = Funder::model()->findByAttributes(array('id' => $funding->funder_id));
+            $fundingReference = $funding_References->addChild('fundingReference');
+            $fundingReference->addChild('funderName', str_replace(array('&', '>', '<', '"'), array('&amp;', '&gt;', '&lt;', '&quot;'), $funder->primary_name_display));
+            $funderidentifier = $fundingReference->addChild('funderIdentifier', $funder->uri);
+            $funderidentifier->addAttribute('funderIdentifierType', 'Crossref Funder ID');
+            $fundingReference->addChild('awardNumber', htmlentities($funding->grant_award, ENT_QUOTES, 'UTF-8'));
         }
 
         //<sizes><size>
@@ -572,7 +655,7 @@ class Dataset extends CActiveRecord
         $bytes = max($this->dataset_size, 0);
         $pow = floor(($this->dataset_size ? log($this->dataset_size) : 0) / log(1024));
         $pow = min($pow, count($units) - 1);
-        $precision=2;
+        $precision = 2;
 
         // Uncomment one of the following alternatives
         $bytes /= pow(1024, $pow);
@@ -580,20 +663,27 @@ class Dataset extends CActiveRecord
 
         $size = round($bytes, $precision) . ' ' . $units[$pow];
 
-        $sizes = $xml->addChild("sizes");
-        $sizes->addChild('size',$size);
+        $sizes = $xml->addChild('sizes');
+        $sizes->addChild('size', $size);
 
         //<rightsList>
-        $rights_list = $xml->addChild("rightsList");
-        $rights = $rights_list->addChild('rights','CC0 1.0 Universal');
-        $rights->addAttribute('rightsURI','http://creativecommons.org/publicdomain/zero/1.0/');
+        $rights_list = $xml->addChild('rightsList');
+        $rights = $rights_list->addChild('rights', 'CC0 1.0 Universal');
+        $rights->addAttribute('xml:lang', 'en', 'http://www.w3.org/XML/1998/namespace');
+        $rights->addAttribute('rightsURI', 'http://creativecommons.org/publicdomain/zero/1.0/');
+        $rights->addAttribute('rightsIdentifier', 'CC0 1.0 Universal');
 
         //<descriptions><description xml:lang="en-US" descriptionType="Abstract">
-        $descriptions = $xml->addChild("descriptions");
-        $description = $descriptions->addChild('description',str_replace(array('&','>','<','"'), array('&amp;','&gt;','&lt;','&quot;'), $this->description));
-        $description->addAttribute('xml:lang','en-US','http://www.w3.org/XML/1998/namespace');
-        $description->addAttribute('descriptionType','Abstract');
-
+        $descriptions = $xml->addChild('descriptions');
+        $desc = str_replace('<br>', '<br />', $this->description);
+        if (!mb_check_encoding($desc, 'UTF-8')) {
+            $text = mb_convert_encoding($desc, 'UTF-8');
+        }
+        $desc = preg_replace('/[^\x09\x0A\x0D\x20-\xD7FF\xE000-\xFFFD]/u', '', $desc);
+        $desc = htmlspecialchars($desc, ENT_XML1, 'UTF-8');
+        $description = $descriptions->addChild('description', $desc);
+        $description->addAttribute('xml:lang', 'en-US', 'http://www.w3.org/XML/1998/namespace');
+        $description->addAttribute('descriptionType', 'Abstract');
 
         return $xml->asXML();
     }
@@ -625,12 +715,14 @@ class Dataset extends CActiveRecord
     public function updateDatasetTypes($postDatasetTypes)
     {
         $actualTypeIdsByDataset = [];
+        //fetch types
         $datasetTypeMaps = $this->datasetTypes;
+        $command = Yii::app()->db->createCommand();
 
         foreach ($datasetTypeMaps as $datasetTypeMap) {
             $actualTypeIdsByDataset[] = $typeId = $datasetTypeMap->id;
             if (!in_array($typeId, $postDatasetTypes, true)) {
-                $datasetTypeMap->delete();
+                $command->delete('dataset_type', 'dataset_id=:dataset_id AND type_id=:type_id ', array(':dataset_id' => $this->id, ':type_id' => $typeId));
             }
         }
 

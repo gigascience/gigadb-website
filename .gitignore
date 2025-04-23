@@ -70,6 +70,7 @@ composer.json
 
 # deployment
 .env
+.env.*
 .secrets
 .data
 vsftpd
@@ -80,6 +81,7 @@ features.xml
 sql/gigadb_testdata.pgdmp
 sql/production_like.pgdmp
 sql/gigadb.pgdmp
+.gitlab-env-vars
 
 .terraform
 terraform.tfstate*

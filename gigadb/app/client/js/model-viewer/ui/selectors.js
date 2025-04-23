@@ -1,0 +1,18 @@
+export const selector = {
+  root: "#modelViewerRoot",
+  viewerContainer: ".js-model-viewer-container",
+  canvasContainer: ".js-canvas-container",
+  loadingOverlay: ".js-loading-overlay",
+  loadingDisplay: ".js-loading-display",
+  loadingText: ".js-loading-text",
+  playButtonOverlay: ".js-play-button-overlay",
+  errorDisplay: ".js-error-display",
+  modelSelector: ".js-model-selector",
+  modelDescription: ".js-model-description",
+  controls: ".js-controls",
+  playButton: ".js-play-button",
+  helpButton: ".js-controls-info-btn",
+  fullscreenButton: ".js-fullscreen-btn",
+  helpModal: ".js-help-modal",
+  helpModalClose: ".js-help-modal-close",
+};

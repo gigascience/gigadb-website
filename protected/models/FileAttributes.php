@@ -23,6 +23,7 @@ class FileAttributes extends CActiveRecord
      * @param string $className active record class name.
      * @return FileAttributes the static model class
      */
+
     public static function model($className = __CLASS__)
     {
         return parent::model($className);
@@ -46,7 +47,7 @@ class FileAttributes extends CActiveRecord
         return array(
             array('file_id, attribute_id', 'required'),
             array('file_id, attribute_id', 'numerical', 'integerOnly' => true),
-            array('value', 'length', 'max' => 50),
+            array('value', 'length', 'max' => 1000),
             array('unit_id', 'length', 'max' => 30),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.

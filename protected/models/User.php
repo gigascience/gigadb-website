@@ -23,6 +23,8 @@ class User extends CActiveRecord {
             'DDBJ' => 'DDBJ'
     );
 
+    public const PASSWORD_REGEX = '/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/';
+
     /**
      * Returns the static model of the specified AR class.
      * @return MyActiveRecord the static model class
@@ -48,15 +50,12 @@ class User extends CActiveRecord {
             array('email', 'required'),
             array('email', 'email'),
             array('email', 'unique'),
-
-            #array('password','length','max'=>128),
-            array('password', 'required', 'on'=>'insert'),
-            array('password', 'compare', 'compareAttribute'=>'password_repeat', 'on'=>'insert'),
-            array('password', 'checkPassword', 'on'=>'update'),
-            array('password', 'safe','on'=>'insert'),
-            array('password_repeat','required'),
+            array('password', 'checkPassword'), // need to be checked first
+            array('password', 'required', 'on' => 'insert'),
+            array('password', 'match', 'pattern' => self::PASSWORD_REGEX, 'message' => 'Make sure your password contains at least 8 characters with 1 uppercase character, 1 number and 1 special character.', 'on' => 'insert'),
+            array('password', 'compare', 'compareAttribute'=>'password_repeat', 'on' => 'insert'),
+            array('password','length','max' => 128),
             array('first_name, last_name','length','max'=>60),
-
             array('first_name','required'),
             array('last_name','required'),
             array('affiliation','required'),
@@ -65,28 +64,34 @@ class User extends CActiveRecord {
             array('terms','compare', 'on'=>'insert', 'compareValue' => TRUE,'message'=>'Tick here to confirm you have read and understood our Terms of use and Privacy policy.'),
             array('role','safe'),
             array('preferred_link', 'safe'),
-            array('verifyCode', 'validateCaptcha'),
+            array('verifyCode', 'validateCaptcha', 'on'=>'insert'),
         );
     }
 
     public function checkPassword($attribute, $params) {
+        if ($this->scenario === "insert") {
+            return;
+        }
+
         $password = $this->password_new;
         $password_repeat = $this->password_repeat;
 
-        if ($password != '') {
-            $password_repeat = $this->password_repeat;
-
-            if ($password != $password_repeat) {
-                $this->addError($attribute,"Password and confirm don't match");
-                return false;
-            }
-            else {
-                Yii::log(__FUNCTION__."> match", 'debug');
-            }
-
-            $this->password = $this->password_new;
+        if (!$password) {
+            return;
         }
-        return true;
+
+        if (!preg_match(self::PASSWORD_REGEX, $password)) {
+            $this->addError($attribute, "Make sure your password contains at least 8 characters with 1 uppercase character,  1 number and 1 special character.");
+
+            return;
+
+        }
+
+        if ($password !== $password_repeat) {
+            $this->addError($attribute,"Passwords must match");
+
+            return;
+        }
     }
 
 
@@ -114,7 +119,6 @@ class User extends CActiveRecord {
             'username' => 'Username',
             'terms'=> 'Terms and Conditions',
             'email' => Yii::t('app' , 'Email'),
-            'terms'=> 'Terms and Conditions',
             'first_name' => Yii::t('app' , 'First Name'),
             'last_name' => Yii::t('app' , 'Last Name'),
             'password' => Yii::t('app' , 'Password'),
