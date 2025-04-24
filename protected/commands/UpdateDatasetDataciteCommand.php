@@ -133,40 +133,55 @@ class UpdateDatasetDataciteCommand extends CConsoleCommand
     {
         $params = [];
         $params2 = [];
+        $params3 = [];
         $sql = '';
         $sql2 = '';
+        $sql3 = '';
 
         foreach ($xmlByIds as $entry) {
             if (!isset($entry['value'])) {
                 continue;
             }
+            $date = date('Y-m-d H:i:s');
 
             list($id, $xml, $action, $code, $message) = $entry['value'];
 
-            $sql .= "(:id$id, :action$id, :comments$id),";
+            $sql .= "(:id$id, :action$id, :comments$id, :creation_date$id),";
             $params += [
-                ":id$id"       => $id,
-                ":action$id"   => $action,
-                ":comments$id" => $xml
+                ":id$id"            => $id,
+                ":action$id"        => $action,
+                ":comments$id"      => $xml,
+                ":creation_date$id" => $date
             ];
 
-            $sql2 .= "(:cid$id, :cmessage$id),";
+            $sql2 .= "(:cid$id, :caction$id, :ccomments$id, :ccreation_date$id),";
             $params2 += [
+                ":cid$id"           => $id,
+                ":caction$id"       => 'DOI Minting',
+                ":ccomments$id"     =>sprintf('Metadata response: %s - %s', $code, $message),
+                "ccreation_date$id" => $date
+            ];
+
+            $sql3 .= "(:cid$id, :cmessage$id),";
+            $result = in_array($code, [200, 201]) ? 'OK' : 'ERROR';
+            $params3 += [
                 ":cid$id"       => $id,
-                ":cmessage$id"   => sprintf('DOI Minting - Metadata response: %s - %s', $code, $message),
+                ":cmessage$id"  => sprintf('Metadata response: %s', $result),
             ];
         }
 
-        if ($sql) {
+        if ($sql && $sql2) {
             $sql = rtrim($sql, ',');
-            $command = $this->db->createCommand("INSERT INTO curation_log (dataset_id, action, comments) VALUES $sql");
-            $command->execute($params);
+            $sql2 = rtrim($sql2, ',');
+            $command = $this->db->createCommand("INSERT INTO curation_log (dataset_id, action, comments, creation_date) VALUES $sql, $sql2");
+            $command->execute(array_merge($params, $params2));
         }
 
-        if ($sql2) {
-            $sql2 = rtrim($sql2, ',');
-            $command = $this->db->createCommand("INSERT INTO dataset_log (dataset_id, message) VALUES $sql2");
-            $command->execute($params2);
+        if ($sql3) {
+
+            $sql3 = rtrim($sql3, ',');
+            $command = $this->db->createCommand("INSERT INTO dataset_log (dataset_id, message) VALUES $sql3");
+            $command->execute($params3);
         }
     }
 }
