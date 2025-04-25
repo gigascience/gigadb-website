@@ -10,7 +10,29 @@ The setup of UptimeRobot page can refer to this [doc](../UPTIME_STATUS_PAGE.md).
 ### How to access GigaDB Website Tideways dashboard
 
 [Tideways](https://tideways.com/) is used to monitor, profile and track exceptions of GigaDB Website.
-After login [Tideways](https://app.tideways.io/login) with the credentials for `tech@gigasciencejournal.com`, you would see a dashboard of `Gigadb` organization with a service monitoring the staging and live of `gigascience/upstream/gigadb-website`.
+After login [Tideways](https://app.tideways.io/login) with the credentials for `tech@gigasciencejournal.com`, you would see a dashboard of `Gigadb` organization with a service monitoring the staging and live of `GigaDB`.
+
+Our subscription tier with Tideways entitles us to 2 services and 4 environments.
+In theory since we are entitled to 2 services and 4 active environments, we should be able to support 8 pipelines being monitored by Tideways.
+
+The service and the environment can be set in the gitlab variable page as below:
+
+| TIDEWAYS_SERVICE | TIDEWAYS_ENVIRONMENT   |
+|------------------|------------------------| 
+| GigaDB-dev       | staging-ken            |
+| GigaDB-dev       | staging-rija           |
+| GigaDB-dev       | staging-peter          |
+| GigaDB-dev       | staging-allison        |
+| GigaDB-dev       | staging-luis           |
+| GigaDB-dev       | live-ken               |
+| GigaDB-dev       | live-rija              |
+| GigaDB-dev       | live-peter             |
+| GigaDB-dev       | live-allison           |
+| GigaDB-dev       | live-luis              |
+| GigaDB           | production-staging     |
+| GigaDB           | production-live        |
+| GigaDB           | alt-production-staging |
+| GigaDB           | alt-production-live    |
 
 ### How to access GigaDB Website Grafana dashboard
 
