@@ -38,7 +38,7 @@ class DatasetLogTest extends CDbTestCase
 
         // To assert the delete message will be generated as expected
         $datasetlog = \GigaDB\models\DatasetLog::findOne(['dataset_id' => $datasetId]);
-        $this->assertEquals('File Tinamus_guttatus.fa.gz: file attribute deleted', $datasetlog->message, 'Delete message was generated in different format');
+        $this->assertEquals('File Tinamus_guttatus.fa.gz', $datasetlog->message, 'Delete message was generated in different format');
     }
 
     public function testSaveValidDatasetLog()

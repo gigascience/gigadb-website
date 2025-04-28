@@ -97,7 +97,6 @@ class DatasetLog extends ActiveRecord
         ?int    $fileId = null
     ): bool {
         $datasetLog = self::makeNewInstanceForDatasetLogBy($datasetId, $fileName, $fileModel, $modelId, $fileId);
-        $datasetLog->message = $fileName . ': file attribute deleted';
 
         return $datasetLog->save();
     }
