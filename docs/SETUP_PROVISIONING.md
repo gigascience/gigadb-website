@@ -163,6 +163,7 @@ $ AWS_PROFILE=gigadb terraform refresh
 #### 2. Connect provisioning with Gitlab pipeline
 
 ```
+$ ansible-galaxy install -r ../../../infrastructure/requirements.yml
 $ ../../../scripts/ansible_init.sh --env staging
 ```
 This will save the information Terraform retrieved from the just created AWS resources into Gitlab variables.
