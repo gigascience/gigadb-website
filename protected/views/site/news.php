@@ -8,13 +8,7 @@
             <h3 class="news-title"><?php echo Yii::app()->controller->widget("CHtmlPurifier")->purify($temp_news->title); ?></h3>
             <p class="news-body">
               <?php
-              $excerpt_max_length = 200;
-              $body = Yii::app()->controller->widget("CHtmlPurifier")->purify($temp_news->body);
-              if (mb_strlen($body) > $excerpt_max_length) {
-                echo mb_substr($body, 0, $excerpt_max_length) . "...";
-              } else {
-                echo $body;
-              }
+              echo Yii::app()->controller->widget("CHtmlPurifier")->purify($temp_news->body);
               ?>
             </p>
             <?php
