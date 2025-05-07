@@ -32,7 +32,7 @@ renew_cert() {
     chain=$($DOCKER cat $CHAIN_LINK)
 
   	echo "Renewing the certificate for $REMOTE_HOSTNAME"
-  	docker run --rm -v ${REPO_NAME}_le_config:/etc/letsencrypt -v ${REPO_NAME}_le_webrootpath:/var/www/.le certbot/certbot renew
+  	docker run --rm -v /usr/bin/docker:/usr/bin/docker -v /var/run/docker.sock:/var/run/docker.sock -v ${REPO_NAME}_le_config:/etc/letsencrypt -v ${REPO_NAME}_le_webrootpath:/var/www/.le certbot/certbot renew --deply-hook "docker restart ${REPO_NAME}_web_1"
   	echo "Backup the fullchain cert to gitlab variable"
   	if [ $fullchain_pem_remote_exists == "true" ];then
   	  echo "/usr/bin/curl --show-error --silent --request PUT --write-out 'HTTP Response code: %{http_code}' --url '$CI_API_V4_URL/projects/$encoded_gitlab_project/variables/tls_fullchain_pem?filter%5benvironment_scope%5d=$GIGADB_ENV' --header 'PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN' --form 'environment_scope=$GIGADB_ENV' --form 'value=\$fullchain'"
@@ -92,7 +92,7 @@ echo "privkey_pem_remote_exists: $privkey_pem_remote_exists"
 echo "chain_pem_remote_exists: $chain_pem_remote_exists"
 
 if [[ $certbot_configured_correctly == 'true' ]];then
-  renew_cert && docker restart ${REPO_NAME}_web_1
+  renew_cert
 else
   echo "Certbot is not working correctly!"
 fi
