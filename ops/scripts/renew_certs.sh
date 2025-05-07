@@ -6,7 +6,7 @@ set -u
 # bail out as soon as there is an error
 set -e
 
-echo "Starting renew tls certs at $(date +%Y-%m-%dT%H:%M:%S)"
+echo -e "Starting renew tls certs at $(date +%Y-%m-%dT%H:%M:%S)\n"
 
 # configure docker cmd
 if [[ $(uname -n) =~ compute ]];then
@@ -32,7 +32,7 @@ renew_cert() {
     chain=$($DOCKER cat $CHAIN_LINK)
 
   	echo "Renewing the certificate for $REMOTE_HOSTNAME"
-  	docker run --rm -v /usr/bin/docker:/usr/bin/docker -v /var/run/docker.sock:/var/run/docker.sock -v ${REPO_NAME}_le_config:/etc/letsencrypt -v ${REPO_NAME}_le_webrootpath:/var/www/.le certbot/certbot renew --deply-hook "docker restart ${REPO_NAME}_web_1"
+  	docker run --rm -v /usr/bin/docker:/usr/bin/docker -v /var/run/docker.sock:/var/run/docker.sock -v ${REPO_NAME}_le_config:/etc/letsencrypt -v ${REPO_NAME}_le_webrootpath:/var/www/.le certbot/certbot renew --deploy-hook "/usr/bin/docker restart ${REPO_NAME}_web_1"
   	echo "Backup the fullchain cert to gitlab variable"
   	if [ $fullchain_pem_remote_exists == "true" ];then
   	  echo "/usr/bin/curl --show-error --silent --request PUT --write-out 'HTTP Response code: %{http_code}' --url '$CI_API_V4_URL/projects/$encoded_gitlab_project/variables/tls_fullchain_pem?filter%5benvironment_scope%5d=$GIGADB_ENV' --header 'PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN' --form 'environment_scope=$GIGADB_ENV' --form 'value=\$fullchain'"
@@ -61,7 +61,7 @@ renew_cert() {
 
 echo "Checking whether the certbot is configured correctly in local"
 certbot_configured_correctly=$(docker run --rm -v ${REPO_NAME}_le_config:/etc/letsencrypt -v ${REPO_NAME}_le_webrootpath:/var/www/.le certbot/certbot certificates 2>&1 | grep -q $REMOTE_HOSTNAME && echo 'true' || echo 'false')
-echo "certbot_configured_correctly: $certbot_configured_correctly"
+echo -e "certbot_configured_correctly: $certbot_configured_correctly\n"
 
 encoded_gitlab_project=$(echo $CI_PROJECT_PATH | sed -e 's/\//%2F/g')
 
@@ -94,7 +94,7 @@ echo "chain_pem_remote_exists: $chain_pem_remote_exists"
 if [[ $certbot_configured_correctly == 'true' ]];then
   renew_cert
 else
-  echo "Certbot is not working correctly!"
+  echo -e "Certbot is not working correctly!\n"
 fi
 
-echo "Finishing renew tls certs at $(date +%Y-%m-%dT%H:%M:%S)"
+echo -e "Finishing renew tls certs at $(date +%Y-%m-%dT%H:%M:%S)\n"
