@@ -29,8 +29,14 @@ class UpdateDatasetDataciteCommand extends CConsoleCommand
 
     public function actionIndex($batchSize = 50, $offset = 0, $doi = null)
     {
+        $batchSize = $batchSize > 450 ?  450 : $batchSize;
         $mds_metadata_url = Yii::app()->params['mds_metadata_url'];
         $mds_prefix = Yii::app()->params['mds_prefix'];
+        $dataciteLimit = 450;
+        // 5 minutes period
+        $window = 300;
+        $sentInWindow = 0;
+        $windowStart = time();
 
         $processed = 0;
 
@@ -43,6 +49,7 @@ class UpdateDatasetDataciteCommand extends CConsoleCommand
             }
             $criteria->limit = $batchSize;
             $criteria->offset = $offset;
+            $criteria->order = 'identifier DESC';
 
             $datasets = Dataset::model()->findAll($criteria);
 
@@ -53,8 +60,21 @@ class UpdateDatasetDataciteCommand extends CConsoleCommand
             $count = count($datasets);
             fwrite(STDOUT, sprintf("Processing %d datasets \n", $count));
             $this->processBatch($datasets, $mds_metadata_url, $mds_prefix);
-            $offset += $batchSize;
-            $processed += $count;
+
+            $sentInWindow += $count;
+            $processed    += $count;
+            $offset       += $batchSize;
+
+            if ($sentInWindow >= $dataciteLimit) {
+                $elapsed = time() - $windowStart;
+                if ($elapsed < $window) {
+                    $sleep = $window - $elapsed;
+                    fwrite(STDOUT, sprintf("[THROTTLE] limit reached: Sleeping %d seconds\n", $sleep));
+                    sleep($sleep);
+                }
+                $windowStart  = time();
+                $sentInWindow = 0;
+            }
         }
 
         fwrite(STDOUT, sprintf("Finished processing %d datasets\n", $processed));

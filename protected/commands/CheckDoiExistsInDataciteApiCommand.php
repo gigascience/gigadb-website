@@ -5,10 +5,13 @@ declare(strict_types=1);
 class CheckDoiExistsInDataciteApiCommand extends CConsoleCommand
 {
     private bool $hasError = false;
-    private array $errors = [];
 
-    public function actionIndex($doi = null)
+    public function actionIndex(int $batchSize = 50, int $offset = 0, $doi = null)
     {
+        $batchSize = $batchSize >= 450 ?  450 : $batchSize;
+        $throttleLimit = 450;
+        $throttleWindow = 300;
+
         $mds_doi_url = Yii::app()->params['mds_doi_url'];
         $mds_username = Yii::app()->params['mds_username'];
         $mds_password = Yii::app()->params['mds_password'];
@@ -19,53 +22,88 @@ class CheckDoiExistsInDataciteApiCommand extends CConsoleCommand
             ? ['upload_status' => 'Published', 'identifier' => $doi]
             : ['upload_status' => 'Published'];
 
-        $datasets = Dataset::model()->findAllByAttributes($condition);
+        $processed = 0;
+        $sentInWindow = 0;
+        $windowStart = time();
 
-        if (!$datasets) {
-            fwrite(STDOUT, "No datasets found.\n");
+        while (true) {
+            $criteria = new CDbCriteria();
+            foreach($condition as $k => $v) {
+                $criteria->addCondition("$k = :$k");
+                $criteria->params[":$k"] = $v;
+            }
+            $criteria->limit = $batchSize;
+            $criteria->offset = $offset;
+            $criteria->order = 'identifier DESC';
 
-            return;
-        }
+            $datasets = Dataset::model()->findAll($criteria);
 
-        $options = [
-            'http_errors' => false,
-            'auth'        => [$mds_username, $mds_password],
-        ];
+            if (!$datasets) {
+                fwrite(STDOUT, "No datasets found.\n");
 
-        $promises = [];
+                break;
+            }
 
-        foreach ($datasets as $dataset) {
-            $url = $mds_doi_url . '/' . $mds_prefix . '/' . $dataset->identifier;
+            $count = count($datasets);
+            fwrite(STDOUT, sprintf("Processing batch of %d datasets with offset %d\n", $count, $offset));
 
-            $promises[] = $client->getAsync($url, $options)->then(
-                function ($response) use ($dataset, $url) {
-                    $code = $response->getStatusCode();
+            $options = [
+                'http_errors' => false,
+                'auth'        => [$mds_username, $mds_password],
+            ];
 
-                    if (!in_array($code, [200, 204])) {
+            $promises = [];
+
+            foreach ($datasets as $dataset) {
+                $url = $mds_doi_url . '/' . $mds_prefix . '/' . $dataset->identifier;
+
+                $promises[] = $client->getAsync($url, $options)->then(
+                    function ($response) use ($dataset, $url) {
+                        $code = $response->getStatusCode();
+
+                        if (!in_array($code, [200, 204])) {
+                            $this->hasError = true;
+                            fwrite(STDERR, sprintf("[ERROR] DOI not found for dataset %s: %s\n", $dataset->identifier, $code));
+                        } else {
+                            fwrite(STDOUT, sprintf("[OK] DOI exists for dataset %s\n", $dataset->identifier));
+                        }
+                    },
+                    function ($exception) use ($dataset, $url) {
                         $this->hasError = true;
-                        fwrite(STDERR, sprintf("[ERROR] DOI not found for dataset %s: %s\n", $dataset->identifier, $code));
-                    } else {
-                        fwrite(STDOUT, sprintf("[OK] DOI exists for dataset %s\n", $dataset->identifier));
+                        fwrite(STDERR, sprintf("[ERROR] Error checking DOI for dataset %s: %s\n", $dataset->identifier, $exception->getMessage()));
                     }
-                },
-                function ($exception) use ($dataset, $url) {
-                    $this->hasError = true;
-                    fwrite(STDERR, sprintf("[ERROR] Error checking DOI for dataset %s: %s\n", $dataset->identifier, $exception->getMessage()));
+                );
+            }
+
+            try {
+                \GuzzleHttp\Promise\Utils::settle($promises)->wait();
+            } catch (\Exception $e) {
+                $this->hasError = true;
+                fwrite(STDERR, '[ERROR] Error during request promises: ' . $e->getMessage() . "\n");
+            }
+
+
+            $sentInWindow += $count;
+            $processed    += $count;
+            $offset       += $batchSize;
+
+            if ($sentInWindow >= $throttleLimit) {
+                $elapsed = time() - $windowStart;
+                if ($elapsed < $throttleWindow) {
+                    $sleep = $throttleWindow - $elapsed;
+                    fwrite(STDOUT, sprintf("[THROTTLE] reached %d requests; sleeping %d seconds\n", $throttleLimit, $sleep));
+                    sleep($sleep);
                 }
-            );
-        }
+                $windowStart  = time();
+                $sentInWindow = 0;
+            }
 
-        try {
-            \GuzzleHttp\Promise\Utils::settle($promises)->wait();
-        } catch (\Exception $e) {
-            $this->hasError = true;
-            fwrite(STDERR, '[ERROR] Error during request promises: ' . $e->getMessage() . "\n");
-        }
 
-        if ($this->hasError) {
-            fwrite(STDERR, "[ERROR] Some errors were detected. Please check details above.\n");
-        } else {
-            fwrite(STDOUT, "[OK] All DOIs are correctly found in the DataCite API.\n");
+            if ($this->hasError) {
+                fwrite(STDERR, "[ERROR] Some errors were detected. Please check details above.\n");
+            } else {
+                fwrite(STDOUT, "[OK] All DOIs are correctly found in the DataCite API.\n");
+            }
         }
     }
 }
