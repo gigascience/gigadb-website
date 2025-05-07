@@ -36,4 +36,3 @@ Feature: Add the metadata schema on dataset page to allow other web sites to mak
     When I am on "/dataset/100016"
     Then I should see "HTML" meta-tags
       | robots | noindex, nofollow |
-      | googlebot | noindex, nofollow |
