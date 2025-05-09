@@ -107,6 +107,14 @@
         group: ec2-user
         mode: a+x
 
+    - name: Create directory for renew detection
+      ansible.builtin.file:
+        path: "/home/ec2-user/cert_renew_detection"
+        state: directory
+        owner: ec2-user
+        group: ec2-user
+        mode: g-rw,o-rw
+
     - name: Create log file
       ansible.builtin.file:
         path: /var/log/renew_certs.log
