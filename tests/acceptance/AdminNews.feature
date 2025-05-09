@@ -1,5 +1,3 @@
-
-@ok-can-offline
 Feature: News items
   As a curator
   I want to be able to create news items
