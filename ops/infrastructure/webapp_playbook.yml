@@ -85,7 +85,7 @@
         path: /tmp/aws-efs-utils.rpm
         state: absent
 
-- name: CCopy script to renew TLS certificates
+- name: Copy script to renew TLS certificates
   hosts: name_gigadb_webserver_{{gigadb_env}}*
   tags:
     - setup-tls-certs
