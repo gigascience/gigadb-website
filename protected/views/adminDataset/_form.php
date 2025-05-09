@@ -5,7 +5,7 @@
 <?php } ?>
 
 <?php if ($flashError = Yii::app()->user->getFlash('updateError')) { ?>
-    <div class="alert alert-danger" role="alert">
+    <div id="flashError" class="alert alert-danger" role="alert">
         <?= $flashError ?>
     </div>
 <?php } ?>
@@ -532,7 +532,7 @@ echo $form->hiddenField($model, "image_id");
 
       if ($showCreateResetUrlBtn) {
         ?>
-        <a class="btn background-btn-o" href="<?php echo Yii::app()->createUrl('/adminDataset/private/identifier/' . $model->identifier) ?>" title="This will save any changes made on this page AND create a new mockup page URL/token link" data-toggle="tooltip">Create/Reset Private URL</a>
+        <a id="mockup" class="btn background-btn-o" href="<?php echo Yii::app()->createUrl('/adminDataset/private/identifier/' . $model->identifier) ?>" title="This will save any changes made on this page AND create a new mockup page URL/token link" data-toggle="tooltip">Create/Reset Private URL</a>
         <?php
       }
       if ($showMockupBtn) {
@@ -621,6 +621,32 @@ echo $form->hiddenField($model, "image_id");
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 <script>
+    $(document).ready(function () {
+        $('#mockup').on('click', function (event) {
+            event.preventDefault();
+
+            mockupUrl = $(this).attr("href");
+            form = $('#dataset-form');
+
+            $.ajax({
+                url: form.attr('action'),
+                method: 'POST',
+                data: form.serialize(),
+                success: function (response, textStatus, xhr) {
+                    if (200 === xhr.status) {
+                        window.location.href = mockupUrl;
+                    } else {
+                        $('#flashError').html('An error occurred while trying to save the dataset')
+                    }
+
+                },
+                error: function (error) {
+                    $('#flashError').html('An error occurred while trying to save the dataset')
+                }
+            })
+        });
+    });
+
     $(function() {
 
         var publication_date = $('.js-date-pub');

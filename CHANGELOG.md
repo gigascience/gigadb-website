@@ -5,12 +5,27 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## Unreleased
 
 - Feat #208: Homepage news items section rework
+
+## v4.4.9 - 2025-04-30 - fd51be0df
+
+- Fix #2270: Allow transitions to 'Submitted' and 'DataPending' from any upload status.
+- Fix #1955: Edit user without being forced to enter a password + add a password regex
+
+## v4.4.8 - 2025-04-08 - 01de0477b - not deployed to live
+
+- Fix #2033: Create a mockup for all upload statuses except published
+
+## v4.4.7 - 2025-03-26 - 4c548f037 - live since 2025-04-03
+
+- Fix #2241: Restore Sketchfab visualisations alongside 3D models files visualisations
+- Fix #2180: Add user in curation log when minting the DOI
+- Feat #2066: Wrap edit file attribute form in a modal
 - Fix #2203: Update the curation log without requiring a page refresh when minting a DOI
 - Fix #1290: Update and save project url and name
 - Fix #2187: Make FAQ buttons responsive
 - Fix #2116: Make authors ordered as shown in the DOI page in the readme file
 
-## v4.4.6 - 2025-03-04 - 996f55f0e -
+## v4.4.6 - 2025-03-04 - 996f55f0e - live since 2025-03-14
 
 - Fix #2178: save xml payload even if minting DOI fails
 - Feat #2054: Visualize 3D models locally without relying on sketchfab iframe

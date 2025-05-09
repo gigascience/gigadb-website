@@ -131,9 +131,15 @@ Feature: form to update dataset details
   Scenario: Can create/reset private url
     When I am on "/adminDataset/update/id/5"
     And I press the button "Create/Reset Private URL"
-    And I wait "1" seconds
+    And I wait "3" seconds
     Then I should see current url contains "/dataset/100039/token/"
     And I should see "Genomic data of the Puerto Rican Parrot (Amazona vittata) from a locally funded project."
+
+  @ok @dataset-status
+  Scenario: Can't see create/reset private url for a published dataset
+    When I am on "/adminDataset/update/id/8"
+    Then I should not see "Create/Reset Private URL"
+    And I should not see "Open Private URL"
 
   @ok @issue-1023
   Scenario: Open private url is working
@@ -189,6 +195,7 @@ Feature: form to update dataset details
     And I fill in the field of "name" "Dataset[title]" with "test dataset"
     And I fill in the field of "name" "Dataset[identifier]" with "123789"
     And I fill in the field of "name" "Dataset[ftp_site]" with "ftp://test"
+    When I check the field "Dataset_Epigenomic"
     And I press the button "Create"
     And I wait "1" seconds
     And I am on "/adminDataset/update/id/2741"
@@ -477,15 +484,20 @@ Feature: form to update dataset details
       | "DataAvailableForReview" |
       | "DataPending"            |
 
-  @ok @dataset-status
-  Scenario: Links to create mockup or to open mockup are not present for a published dataset
+  @ok
+  Scenario: Links to create mockup is present for a submitted dataset
     Given I am on "/adminDataset/update/id/5"
-    And I select "Published" from the field "Dataset_upload_status"
+    And I select "DataAvailableForReview" from the field "Dataset_upload_status"
     And I press the button "Save"
     When I am on "/adminDataset/update/id/5"
-    Then I should not see "Create/Reset Private URL"
-    And I should not see "Open Private URL"
-
+    And I select "Submitted" from the field "Dataset_upload_status"
+    And I press the button "Save"
+    When I am on "/adminDataset/update/id/5"
+    Then I should see "Create/Reset Private URL"
+    And I press the button "Create/Reset Private URL"
+    And I wait "3" seconds
+    Then I should see current url contains "/dataset/100039/token/"
+    And I should see "Genomic data of the Puerto Rican Parrot (Amazona vittata) from a locally funded project."
 
   @ok @issue-1812 @mockup
   Scenario: Navigating mockup page tables does not generate errors
@@ -536,3 +548,23 @@ Feature: form to update dataset details
     And I am on "/adminDataset/update/id/8"
     Then I should see "Dataset_Workflow" checkbox is checked
     Then I should see "Dataset_Genomic" checkbox is unchecked
+
+  @ok
+  Scenario: Check upload status can be set to submitted from any previous upload status
+    Given I am on "/adminDataset/update/id/5"
+    And I cannot see the option "Submitted" selected for "Dataset_upload_status"
+    When I select "Submitted" from the field "Dataset_upload_status"
+    And I press the button "Save"
+    And I am on "/adminDataset/update/id/5"
+    Then I can see the option "Submitted" selected for "Dataset_upload_status"
+
+  @ok
+  Scenario: Check upload status can be set to DataPending from any previous upload status
+    Given I am on "/adminDataset/update/id/5"
+    And I cannot see the option "DataPending" selected for "Dataset_upload_status"
+    When I select "DataPending" from the field "Dataset_upload_status"
+    And I press the button "Save"
+    And I wait "3" seconds
+    And I press the button "Save and send email"
+    And I am on "/adminDataset/update/id/5"
+    Then I can see the option "DataPending" selected for "Dataset_upload_status"
