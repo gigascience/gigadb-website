@@ -25,7 +25,11 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
         <? } ?>
                     <div class="content">
                         <div class="container">
-                          <?php
+                            <?php if ($flashSuccess = Yii::app()->user->getFlash('success')) { ?>
+                                <div id="flashSuccess" class="alert alert-success" role="alert">
+                                    <?= $flashSuccess ?>
+                                </div>
+                            <?php }
                           $this->widget('TitleBreadcrumb', [
                             'pageTitle' => 'Your profile page',
                             'breadcrumbItems' => [
@@ -145,6 +149,9 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
                                                         <?= $form->label($model, 'newsletter', array('class' => 'col-md-5 control-label')) ?>
                                                         <div class="col-md-7 input-wrapper">
                                                           <?php echo $form->checkbox($model, 'newsletter', array('aria-describedby' => $model->hasErrors('newsletter') ? 'newsletterError' : '')); ?>
+                                                            <p id='newsletterHint'>Please tick here to join the GigaDB
+                                                                mailing list to receive news, updates and quarterly
+                                                                newsletters about GigaDB</p>
                                                         </div>
                                                         <div class="col-md-7 checkbox-error" id="newsletterError" role="alert">
                                                           <?php echo $form->error($model, 'newsletter', array('class' => 'control-error help-block')); ?>
@@ -159,6 +166,10 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
                                                       </div>
                                                     </div>
                                                     <? $this->endWidget() ?>
+                                                </div>
+                                            </div>
+                                            <div class='col-xs-8 col-xs-offset-2'>
+                                              <div>
                                                     </div>
 
                                               <div class="user-profile-action-btns">

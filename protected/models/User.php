@@ -51,7 +51,7 @@ class User extends CActiveRecord {
             array('email', 'email'),
             array('email', 'unique'),
             array('password', 'checkPassword'), // need to be checked first
-            array('password', 'required', 'on' => 'insert'),
+            array('password, terms', 'required', 'on' => 'insert'),
             array('password', 'match', 'pattern' => self::PASSWORD_REGEX, 'message' => 'Make sure your password contains at least 8 characters with 1 uppercase character, 1 number and 1 special character.', 'on' => 'insert'),
             array('password', 'compare', 'compareAttribute'=>'password_repeat', 'on' => 'insert'),
             array('password','length','max' => 128),
@@ -60,8 +60,7 @@ class User extends CActiveRecord {
             array('last_name','required'),
             array('affiliation','required'),
             array('newsletter','boolean'),
-            array('terms','required'),
-            array('terms','compare', 'on'=>'insert', 'compareValue' => TRUE,'message'=>'Tick here to confirm you have read and understood our Terms of use and Privacy policy.'),
+            array('terms','compare', 'on'=>'insert', 'compareValue' => true,'message'=>'Tick here to confirm you have read and understood our Terms of use and Privacy policy.'),
             array('role','safe'),
             array('preferred_link', 'safe'),
             array('verifyCode', 'validateCaptcha', 'on'=>'insert'),
@@ -93,7 +92,6 @@ class User extends CActiveRecord {
             return;
         }
     }
-
 
     /**
     * Validate captcha
