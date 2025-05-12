@@ -59,7 +59,7 @@
     <div class="alert alert-gigadb-info alert-flex">
     <span>Click on a row or on the <span class="fa fa-compress fa-lg" ></span> button to proceed with merging that author with author <?php echo $origin_author->getDisplayName(); ?></span>
 
-    <?php echo CHtml::link('&times;', array('adminAuthor/prepareAuthorMerge', 'origin_author_id' => $origin_author->id, 'abort' => 'yes'), array('class' => 'close close-btn', 'data-dismiss' => 'alert', 'aria-label' => 'close')); ?>
+    <?php echo CHtml::link('&times;', array('adminAuthor/prepareAuthorMerge', 'origin_author_id' => $origin_author->id, 'abort' => true), array('class' => 'close close-btn', 'data-dismiss' => 'alert', 'aria-label' => 'close')); ?>
 
     </div>
   <?php } ?>
@@ -287,7 +287,7 @@
 				<button type="button" class="btn background-btn" title="link" onclick="merge_authors();">Yes, merge authors</button>
 				<?php echo CHtml::link('No, abort and clear session', array(
 						'adminAuthor/prepareAuthorMerge',
-						'origin_author_id' => $origin_author->id, 'abort' => 'yes'
+						'origin_author_id' => $origin_author->id, 'abort' => true
 					), array('class' => 'btn background-btn-o')); ?>
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 			</div>

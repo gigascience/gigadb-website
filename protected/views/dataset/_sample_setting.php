@@ -12,6 +12,9 @@
                 <div class="divForForm">
                     <form id="sampleSettingsForm" name="mySamplesSettingform" method="POST" class="table-settings-form">
                         <input type='hidden' name='columns[]' value="name" />
+                        <input type='hidden'
+                               name='<?php echo CHtml::encode(Yii::app()->request->csrfTokenName); ?>'
+                               value='<?php echo CHtml::encode(Yii::app()->request->csrfToken); ?>'/>
                         <div class="attribute-setting-item form-group">
                             <label class="table-settings-form-label" for="selectPageSizeSampleSetting">
                                 Items per page:

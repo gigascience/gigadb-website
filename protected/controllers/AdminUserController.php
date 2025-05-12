@@ -151,7 +151,6 @@ class AdminUserController extends Controller
 
     public function actionNewsletter()
     {
-
         $result = User::model()->findAllBySql('select email,first_name, last_name, affiliation from gigadb_user where newsletter=true order by id;');
 
         $this->renderPartial('newsletter', array(

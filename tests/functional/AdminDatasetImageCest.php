@@ -59,8 +59,9 @@ class AdminDatasetImageCest
 
         //Remove custom image for dataset of id 8
         $I->amOnPage("adminDataset/update/id/8");
+        $csrf = $I->grabAttributeFrom('meta[name="csrf-token"]', 'content');
         $I->click("Remove image");
-        $I->sendAjaxPostRequest("/adminDataset/removeImage/", ["doi" => "100006" ]); //make the ajax call the button' javascript would have made
+        $I->sendAjaxPostRequest("/adminDataset/removeImage/", ["doi" => "100006", 'YII_CSRF_TOKEN' => $csrf,]);
         $I->canSeeInSource('{"status":true}');
         // Ensure dataset of id 8 is now linked to the generic image
         $I->seeInDatabase("dataset", ["id" => 8, "image_id" => 0]);
