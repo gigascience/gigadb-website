@@ -101,8 +101,8 @@
 
     - name: Copy script
       ansible.builtin.copy:
-        src: "../../../../ops/scripts/renew_certs.sh"
-        dest: /usr/local/bin/renew_certs
+        src: "../../../../ops/scripts/renew_cert.sh"
+        dest: /usr/local/bin/renew_cert
         owner: ec2-user
         group: ec2-user
         mode: a+x
