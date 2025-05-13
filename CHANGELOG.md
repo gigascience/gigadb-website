@@ -5,9 +5,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## Unreleased
 
 - Feat #1892: Update onboarding pages layout
+
+## v4.4.9 - 2025-04-30 - fd51be0df
+
+- Fix #2270: Allow transitions to 'Submitted' and 'DataPending' from any upload status.
 - Fix #1955: Edit user without being forced to enter a password + add a password regex
 
-## v4.4.8 - 2025-04-08 - 01de0477b -
+## v4.4.8 - 2025-04-08 - 01de0477b - not deployed to live
 
 - Fix #2033: Create a mockup for all upload statuses except published
 
