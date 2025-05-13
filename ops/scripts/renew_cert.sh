@@ -6,7 +6,7 @@ set -u
 # bail out as soon as there is an error
 set -e
 
-echo -e "Starting renew tls certs at $(date +%Y-%m-%dT%H:%M:%S)\n"
+echo -e "Starting renew certificate at $(date +%Y-%m-%dT%H:%M:%S)\n"
 
 # configure docker cmd
 if [[ $(uname -n) =~ compute ]];then
