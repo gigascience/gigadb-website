@@ -90,7 +90,7 @@ class EmailCest
         // Pressing Register button results in GigaDB website
         // going to /user/welcome page
         $I->seeInCurrentUrl("/user/welcome");
-        $I->see('Welcome!', 'h2');
+        $I->see('Welcome!', 'h1');
         // Now extract URLs from activation email sent to new user
         $urls = $I->grabUrlsFromLastEmail();
         codecept_debug($urls);
@@ -125,7 +125,7 @@ class EmailCest
         $I->click('Register');
         // Check /user/welcome page
         $I->seeInCurrentUrl("/user/welcome");
-        $I->see('Welcome!', 'h2');
+        $I->see('Welcome!', 'h1');
         // Extract user activation link
         $urls = $I->grabUrlsFromLastEmail();
         $url_matches = preg_grep('/^http:\/\/gigadb.test\/user\/confirm\/key\/\d+?/', $urls);
