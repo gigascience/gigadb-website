@@ -197,6 +197,7 @@ RUN usermod -u 1000 www-data
 
 COPY ./protected /var/www/protected/
 COPY ./gigadb/app/models /gigadb/app/models/
+COPY ./gigadb/app/behaviors /gigadb/app/behaviors/
 COPY ./vendor /var/www/vendor/
 COPY ./images /var/www/images/
 COPY ./files /var/www/files/
