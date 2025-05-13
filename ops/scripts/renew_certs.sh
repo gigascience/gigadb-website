@@ -119,5 +119,6 @@ echo "chain_pem_remote_exists: $chain_pem_remote_exists"
 if [[ $certbot_configured_correctly == 'true' ]];then
   renew_cert
 else
-  echo -e "Certbot is not working correctly!\n"
+  echo -e "Certbot is not configured correctly!\n"
+  exit 1
 fi
