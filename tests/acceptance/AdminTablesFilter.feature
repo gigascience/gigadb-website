@@ -1,4 +1,3 @@
-@ok-can-offline
 Feature: filter tables on admin page
   As a curator
   I want to filter the tables on the admin pages

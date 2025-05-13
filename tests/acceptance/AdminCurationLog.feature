@@ -1,4 +1,3 @@
-@ok-can-offline
 Feature: Manage curation log
   As an curator
   I want a form to manage curation log
