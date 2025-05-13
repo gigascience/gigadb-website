@@ -27,7 +27,6 @@ CHAIN_LINK=/etc/letsencrypt/live/$REMOTE_HOSTNAME/chain.pem
 # Renew detection directory
 renew_detection_dir=/home/ec2-user/cert_renew_detection
 
-# Definition of functions
 renew_cert() {
     echo "Renewing the certificate for $REMOTE_HOSTNAME"
   	docker run --rm -v $renew_detection_dir:/renew_detect -v ${REPO_NAME}_le_config:/etc/letsencrypt -v ${REPO_NAME}_le_webrootpath:/var/www/.le certbot/certbot renew --deploy-hook "touch /renew_detect/cert_renewed_successfully"
@@ -79,6 +78,12 @@ renew_cert() {
         echo -e " Web container could not be restarted!\n"
         exit 1
       fi
+
+      # Make sure the file cert_renewed_successfully is not present for the next renewal process
+      # this is to avoid any false positives in case the script is run multiple times
+      # and make the state clean
+      echo "Removing the file cert_renewed_successfully"
+      rm -f $renew_detection_dir/cert_renewed_successfully
     else
       echo -e "Certificate for $REMOTE_HOSTNAME was not renewed!\n"
     fi
