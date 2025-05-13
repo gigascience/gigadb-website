@@ -4,7 +4,7 @@
   ansible.builtin.user:
     name: "{{ newuser }}"
     shell: /bin/bash
-    groups: centos
+    groups: ec2-user,docker
     append: yes
 
 - name: Create a .ssh and uploadDir directories
@@ -20,15 +20,24 @@
 
 - name: Create directory to store keys
   ansible.builtin.file:
-    path: "/home/centos/{{ newuser }}.keys"
+    path: "/home/ec2-user/{{ newuser }}.keys"
     state: directory
-    owner: centos
-    group: centos
+    owner: ec2-user
+    group: ec2-user
 
 - name: Add curator to sudoers
   ansible.builtin.lineinfile:
     path: "/etc/sudoers.d/91-add-{{ newuser }}"
     line: "{{ newuser }} ALL=(ALL)       NOPASSWD: /usr/local/bin/datasetUpload, /usr/local/bin/postUpload, /usr/local/bin/calculateChecksumSizes, /usr/local/bin/createReadme, /usr/local/bin/filesMetaToDb, /usr/local/bin/transfer\n"
+    owner: root
+    group: root
+    mode: 440
+    create: yes
+
+- name: Enable users to not have to specify full path in sudoers
+  ansible.builtin.lineinfile:
+    path: /etc/sudoers.d/89-defaults
+    line: 'Defaults    secure_path = /sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin'
     owner: root
     group: root
     mode: 440
@@ -60,8 +69,8 @@
   block:
     - name: generate key pair
       community.crypto.openssh_keypair:
-        path: "/home/centos/{{ newuser }}.keys/id_ssh_rsa"
-        owner: centos
+        path: "/home/ec2-user/{{ newuser }}.keys/id_ssh_rsa"
+        owner: ec2-user
       register: pk
 
     - debug:
@@ -69,7 +78,7 @@
 
     - name: download private key
       ansible.builtin.fetch:
-        src: "/home/centos/{{ newuser }}.keys/id_ssh_rsa"
+        src: "/home/ec2-user/{{ newuser }}.keys/id_ssh_rsa"
         dest: "output/privkeys-{{ inventory_hostname }}/{{ newuser }}"
         flat: yes
       when: pk.failed == false
@@ -197,7 +206,7 @@
 - name: Create env file for user to backup
   ansible.builtin.template:
     src: ../../../../gigadb/app/tools/transfer-files/config-sources/files-env.j2
-    dest: "/home/{{ newuser }}/files-env"
+    dest: "/home/{{ newuser }}/.files-env"
     owner: "{{ newuser }}"
     group: "{{ newuser }}"
     mode: 0644

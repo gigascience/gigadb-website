@@ -46,7 +46,6 @@ class DatasetPageAssembly extends yii\base\Component
         $this->_fileUploadService = $srv;
         $this->_cacheDependency = new CDbCacheDependency();
         $this->_skip_cache = (bool)$config['skip_cache'];
-
     }
 
     /**

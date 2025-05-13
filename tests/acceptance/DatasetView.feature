@@ -36,12 +36,6 @@ Feature: a user visit the dataset page
     When I am on "/dataset/100094"
     Then I should see an image "/images/ePMC.jpg" is linked to "https://europepmc.org/search?scope=fulltext&query=(REF:%2710.80027/100094%27)"
 
-  @ok @issue-877
-  Scenario: The dimensions link is working
-    When I am on "/dataset/100094"
-    Then I should see an image "/images/dimensions.jpg" is linked to "https://app.dimensions.ai/discover/publication?search_text=10.80027/100094"
-
-
   @ok
   Scenario: Private dataset not visible
     Given I have not signed in
@@ -217,3 +211,56 @@ Feature: a user visit the dataset page
     And I should see "Alternative names:PYGAD"
     When I press the button "-"
     Then I should not see "Alternative names:PYGAD"
+
+  @ok @issue-2067
+  Scenario: Files tab can be sort by size in ascending order
+    Given I have not signed in
+    And I am on "/dataset/100035"
+    And I follow "Files"
+    When I follow "[aria-label^='Size']"
+    Then I should see "1.19 kB" in the table "#files_table" cell 1 6
+
+  @ok @issue-2067
+  Scenario: Files tab can be sort by size in descending order
+    Given I have not signed in
+    And I am on "/dataset/100035"
+    And I follow "Files"
+    When I follow "[aria-label^='Size']"
+    And I follow "[aria-label^='Size']"
+    Then I should see "3.88 GB" in the table "#files_table" cell 1 6
+
+  @ok @issue-2054
+  Scenario: 3D Models tab
+    Given I have not signed in
+    When I am on "/dataset/100006"
+    Then I should see "3D Models"
+
+  @ok @issue-2054
+  Scenario: 3D model drop down list
+    Given I have not signed in
+    When I am on "/dataset/100006"
+    And I follow "3D Models"
+    Then I should see "3D Models:"
+    And I should see "Select a model"
+    And I should see "GeoB8502_865cm_Shell-4.obj"
+
+  @ok
+  Scenario: 3D Sketchfab tab
+    Given I have not signed in
+    When I am on "/dataset/100006"
+    Then I should see "3D Sketchfab"
+
+  @ok
+  Scenario: 3D Sketchfab tab content
+    Given I have not signed in
+    When I am on "/dataset/100006"
+    And I follow "3D Sketchfab"
+    Then I should see "3D Sketchfab:"
+
+
+  @ok
+  Scenario: List ordered author list
+    Given I have not signed in
+    When I am on "/dataset/100020"
+    Then I should see "Liu X; Quan Z; Cheng S; Xu X; Pan S; Zeng P; Xie M; Yue Z; Zhan D; Li Y; Wang J; Zhao Z; Zhang G (2011)"
+    And I should not see "Wang, J; Quan, Z; Zhao, Z; Cheng, S; Liu, X; Li, Y; Pan, S; Xie, M; Xu, X; Yue, Z; Zeng, P; Zhan, D; Zhang, G (2011)"

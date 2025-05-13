@@ -2,13 +2,79 @@
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-
 ## Unreleased
 
 - Feat #1892: Update onboarding pages layout
-- Fix #2042: Batch deletion of file attributes and samples
+- Fix #1955: Edit user without being forced to enter a password + add a password regex
 
-## v4.3.9 - 2024-10-28 - 961f7821a -
+## v4.4.8 - 2025-04-08 - 01de0477b -
+
+- Fix #2033: Create a mockup for all upload statuses except published
+
+## v4.4.7 - 2025-03-26 - 4c548f037 - live since 2025-04-03
+
+- Fix #2241: Restore Sketchfab visualisations alongside 3D models files visualisations
+- Fix #2180: Add user in curation log when minting the DOI
+- Feat #2066: Wrap edit file attribute form in a modal
+- Fix #2203: Update the curation log without requiring a page refresh when minting a DOI
+- Fix #1290: Update and save project url and name
+- Fix #2187: Make FAQ buttons responsive
+- Fix #2116: Make authors ordered as shown in the DOI page in the readme file
+
+## v4.4.6 - 2025-03-04 - 996f55f0e - live since 2025-03-14
+
+- Fix #2178: save xml payload even if minting DOI fails
+- Feat #2054: Visualize 3D models locally without relying on sketchfab iframe
+
+## v4.4.5 - 2025-02-24 - cfe6bc63c - live since 2025-02-26
+
+- Fix #1119: Fix filename column width in dataset page
+- Feat #2138: Avoid deleting a type when deleting a dataset type
+
+## v4.4.4 - 2025-02-17 - c17c44843 - live since 2025-02-19
+
+- Fix #2099: Add missing permission for CLOCKSS
+
+## v4.4.3 - 2025-02-03 - c62107e5e - live since 2025-02-05
+
+- Feat #474: Update FAQ "What journals are integrated with GigaDB?"
+- Feat #476: Update FAQ "How do I write a ReadMe file?"
+- Feat #479: Update FAQ "Why is submission to GigaDB not closely integrated with submission to GigaScience?"
+- Feat #524: Add FAQ for BUSCO genome completeness analysis
+- Fix #2053: Update RDS policy to allow createDBSnapshot during destroy
+- Feat #1897: Upgrade OS version to CentOS Stream 9
+
+## v4.4.2 - 2025-01-13 - 7ad7a106b - live since 2025-01-15
+
+- Fix #1975: Remove empty line at the beginning of the xml result
+- Feat #456: Improve DataCite metadata by migrating to Datacite version 4.6
+- Fix #1727: Sort files and samples by id in descending order when querying
+
+## v4.4.1 - 2024-12-24 - 51c426dfe - live since 2025-01-02
+
+- Feat #2067: Sort files by size in dataset page
+- Feat #372: Save dataset as xml in log
+- Feat #1940: Reminting notification text change
+- Fix #2061: Allow empty keywords in dataset entry
+- Fix #1991: Update and save sample ID when updating
+- Feat #2008: Remove Dimensions citation link
+- Fix #2074: Update contact website URL
+- Feat #2089: Update team members
+- Feat #2066: Update file attribute values form layout and add expand button for long values
+- Feat #2102: Delete outdated apidocs files
+- Feat #1667: Add log entry when minting DOI
+- Fix #2094: Make Semgrep-based SAST analyzer available in tagged release
+- Feat #701: Code refactoring to separate upload status transitions and notifications to prepare for upload status overhaul
+- Security #1867: Update the gitlab static application security testing (SAST) job using the Semgrep-based analyzer
+
+## v4.4.0 - 2024-11-13 - ea1a37cc9 - live since 2024-12-12
+
+- Fix #2066: Max length for attribute value set to 1000 in file admin form
+- Feat #1968: Add curators manual for operating tools on bastion server and improve tools usage
+- Feat #1750: Switch to guzzle instead of cURL (preliminry work to prepare for DataCite schema upgrade)
+- Fix #2042: Batch deletion of file attributes and samples to make deleting files from the admin dashboard faster
+
+## v4.3.9 - 2024-10-28 - 961f7821a - 2024-11-06
 
 - Fix #1838: switch datepicker format to yyy-mm-dd
 - Feat #1768: Alphabetically sorted dataset author dropdown options in adminDatasetAuthor form

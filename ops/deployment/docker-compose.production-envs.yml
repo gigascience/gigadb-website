@@ -104,7 +104,7 @@ services:
       - ${DATA_SAVE_PATH}/fuw/repo:/var/repo
       - ${DATA_SAVE_PATH}/fuw/credentials:/var/private
       # mount client certificates for connecting to docker daemon
-      - /home/centos/.docker:/etc/certs:ro
+      - /home/ec2-user/.docker:/etc/certs:ro
     depends_on:
       - console
       - ftpd
@@ -132,7 +132,7 @@ services:
       - ${DATA_SAVE_PATH}/fuw/repo:/var/repo
       - ${DATA_SAVE_PATH}/fuw/credentials:/var/private
       # mount client certificates for connecting to docker daemon
-      - /home/centos/.docker:/etc/certs:ro
+      - /home/ec2-user/.docker:/etc/certs:ro
     depends_on:
       - console
       - ftpd
@@ -208,7 +208,7 @@ services:
       - ${DATA_SAVE_PATH}/fuw/repo:/var/repo
       - ${DATA_SAVE_PATH}/fuw/credentials:/var/private
       # mount client certificates for connecting to docker daemon
-      - /home/centos/.docker:/etc/certs:ro
+      - /home/ec2-user/.docker:/etc/certs:ro
     networks:
       - web-tier
     extra_hosts:

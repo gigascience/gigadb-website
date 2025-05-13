@@ -140,7 +140,7 @@ b_gigadb:
     GIGADB_ENV: $DEPLOYMENT_ENV
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
     REMOTE_WEBAPP_DOCKER: "$remote_public_ip:2376"
-    DATA_SAVE_PATH: "/home/centos/app_data"
+    DATA_SAVE_PATH: "/home/ec2-user/app_data"
     CSV_DIR: "prod_like"
     PORTAINER_BCRYPT: ""
     REMOTE_DOCKER_HOSTNAME: ""
@@ -260,7 +260,7 @@ build_staging:
   stage: staging build
   tags:
     - $GITLAB_USER_LOGIN
-  needs: ["base_images","legacy_tests","unit_func_tests","integration_tests"]
+  needs: ["base_images","legacy_tests","unit_func_tests","api_tests","integration_tests"]
   environment:
     name: "staging"
     url: $REMOTE_HOME_URL

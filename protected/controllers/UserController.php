@@ -125,34 +125,32 @@ class UserController extends Controller {
     public function actionUpdate() {
         $user = $this->loadUser();
         $this->performAjaxValidation($user);
-        #if (!Yii::app()->user->checkAccess('updateOwnUser', array('user'=>$user))) {
-        #    Yii::log(__FUNCTION__."> Unauthorized", 'debug');
-        #    throw new CHttpException(403, 'You are not authorized to perform this action.');
-        #}
 
-
-
-
-        if (isset($_POST['User'])) {
-            $user->attributes = $_POST['User'] ;
-            $attrs = $_POST['User'];
-
-            $password = $user->password_new = $attrs['password'];
+        if ($attrs = Yii::$app->request->post('User')) {
+            $user->email = $user->username = strtolower(trim($attrs['email']));
+            $user->first_name = trim($attrs['first_name']);
+            $user->last_name = trim($attrs['last_name']);
+            $user->password_new = $attrs['password'];
             $user->password_repeat = $attrs['password_repeat'];
+            $user->role = $attrs['role'];
+            $user->affiliation = $attrs['affiliation'];
+            $user->preferred_link = $attrs['preferred_link'];
+            $user->newsletter = $attrs['newsletter'];
+            $user->terms = $attrs['terms'];
+
 
             if (!Yii::app()->user->checkAccess('admin')) {
                 $user->role = 'user';
             }
 
-            if ($user->validate('update')) {
-                if ($password != '') {
-                    $user->encryptPassword();
-                }
+            $user->scenario = 'update';
+            if ($user->validate()) {
+                $user->password = $user->password_new;
+                $user->encryptPassword();
 
-                if ($user->save(false)) {
-
+                if ($user->save()) {
                     Yii::app()->user->setFlash('notice', 'Updated');
-                    $this->redirect(array('user/show/id/'.$user->id));
+                    $this->redirect(array('user/view/id/'.$user->id));
                 }
                 else {
                     Yii::log(__FUNCTION__."> Update failed", 'warning');
@@ -163,6 +161,7 @@ class UserController extends Controller {
                 Yii::log(__FUNCTION__."> validation failed", 'warning');
             }
         }
+
         $user->password = $user->password_repeat = '';
         $this->render('update', array('model'=>$user));
 
@@ -338,17 +337,17 @@ class UserController extends Controller {
         $user = User::model()->findByattributes(array('id'=> Yii::app()->user->id));
         $model->newsletter = $user->newsletter;
 
-        if(isset($_POST['ajax']) && $_POST['ajax']==='ChangePassword-form')
+        if (Yii::$app->request->post('ajax') && 'ChangePassword-form' === Yii::$app->request->post('ajax'))
         {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }
 
-        if(isset($_POST['ChangePasswordForm']))
+        if ($changePasswordFormAttr = Yii::$app->request->post('ChangePasswordForm'))
         {
-            $model->attributes=$_POST['ChangePasswordForm'];
-            $model->newsletter=$_POST['ChangePasswordForm']['newsletter'];
-            if($model->validate() && $model->changePass())
+            $model->attributes = $changePasswordFormAttr;
+            $model->newsletter = $changePasswordFormAttr['newsletter'];
+            if ($model->validate() && $model->changePass())
                 $this->redirect('/user/view_profile');
         }
         $model->password = $model->confirmPassword = '';
@@ -404,15 +403,20 @@ EO_MAIL;
      * If the data model is not found, an HTTP exception will be raised.
      * @param integer the primary key value. Defaults to null, meaning using the 'id' GET variable
      */
-    private function loadUser($id=null) {
-        if ($this->_user===null) {
-            if ($id!==null || isset($_GET['id'])) {
-                $this->_user=User::model()->findbyPk($id!==null ? $id : $_GET['id']) ;
-            }
-            if ($this->_user===null)
-                throw new CHttpException(500,'The requested user does not exist.') ;
+    private function loadUser($id = null) {
+        if ($this->_user instanceof User) {
+            return $this->_user;
         }
-        return $this->_user ;
+
+        if ($id || Yii::$app->request->get('id')) {
+            $this->_user = User::model()->findbyPk($id ? (int) $id : (int) $_GET['id']) ;
+        }
+
+        if (!$this->_user) {
+            throw new CHttpException(500,'The requested user does not exist.') ;
+        }
+
+        return $this->_user;
     }
 
 

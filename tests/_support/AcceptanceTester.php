@@ -325,6 +325,14 @@ class AcceptanceTester extends \Codeception\Actor
     }
 
     /**
+     * @Then I should see :checkbox checkbox is unchecked
+     */
+    public function iShouldSeeCheckboxIsUnchecked($checkbox)
+    {
+        $this->dontSeeCheckboxIsChecked("//input[@id='$checkbox']");
+    }
+
+    /**
      * @Then I check :checkbox checkbox
      */
     public function iCheckCheckbox($checkbox)
@@ -418,5 +426,13 @@ class AcceptanceTester extends \Codeception\Actor
         $tableRows = array_slice($tableRows, 2);
 
         $this->assertNotEquals($expectedRow, $tableRows[$index]);
+    }
+
+    /**
+     * @Then I should see :text in the table :table cell :row :column
+     */
+    public function iShouldSeeInTheTableCell($text, $table, $row, $column)
+    {
+        $this->see($text, ['css' => "$table tr:nth-child($row) td:nth-child($column)"]);
     }
 }

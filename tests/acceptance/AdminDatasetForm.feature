@@ -131,9 +131,15 @@ Feature: form to update dataset details
   Scenario: Can create/reset private url
     When I am on "/adminDataset/update/id/5"
     And I press the button "Create/Reset Private URL"
-    And I wait "1" seconds
+    And I wait "3" seconds
     Then I should see current url contains "/dataset/100039/token/"
     And I should see "Genomic data of the Puerto Rican Parrot (Amazona vittata) from a locally funded project."
+
+  @ok @dataset-status
+  Scenario: Can't see create/reset private url for a published dataset
+    When I am on "/adminDataset/update/id/8"
+    Then I should not see "Create/Reset Private URL"
+    And I should not see "Open Private URL"
 
   @ok @issue-1023
   Scenario: Open private url is working
@@ -189,6 +195,7 @@ Feature: form to update dataset details
     And I fill in the field of "name" "Dataset[title]" with "test dataset"
     And I fill in the field of "name" "Dataset[identifier]" with "123789"
     And I fill in the field of "name" "Dataset[ftp_site]" with "ftp://test"
+    When I check the field "Dataset_Epigenomic"
     And I press the button "Create"
     And I wait "1" seconds
     And I am on "/adminDataset/update/id/2741"
@@ -290,6 +297,18 @@ Feature: form to update dataset details
     And I press the button "Save"
     Then I am on "dataset/100006"
     And I should see "bam"
+
+  @ok @issue-2061
+  Scenario: Can delete all keywords on update
+    Given I am on "/adminDataset/update/id/8"
+    And I click on keywords field
+    And I fill in keywords fields with "bam"
+    And I press the button "Save"
+    When I am on "/adminDataset/update/id/8"
+    And I click on delete keyword button
+    And I press the button "Save"
+    Then I am on "dataset/100006"
+    And I should not see "bam"
 
   @ok @curationlog
   Scenario: Create new curation log record for a dataset
@@ -415,7 +434,7 @@ Feature: form to update dataset details
     When I follow "Mint DOI"
     Then I should see "minting under way, please wait"
     And I wait "5" seconds
-    And I should see "This DOI exists in datacite already, no need to mint, but the metadata is updated!"
+    And I should see "This DOI exists in DataCite already, so it has now been updated with the current values from GigaDB."
 
   @ok @mint-doi
   Scenario: Update metadata for non exist doi
@@ -439,7 +458,7 @@ Feature: form to update dataset details
     When I follow "Mint DOI"
     Then I should see "minting under way, please wait"
     And I wait "10" seconds
-    And I should see "This DOI cannot be created because of the metadata status: 422, and the doi status: 422 Details can be found at here"
+    And I should see "This DOI cannot be created because of the metadata status: 422. Details can be found at here"
     And I should see a link "here" to "https://support.datacite.org/reference/mds#api-response-codes"
 
   @ok @dataset-status
@@ -465,15 +484,20 @@ Feature: form to update dataset details
       | "DataAvailableForReview" |
       | "DataPending"            |
 
-  @ok @dataset-status
-  Scenario: Links to create mockup or to open mockup are not present for a published dataset
+  @ok
+  Scenario: Links to create mockup is present for a submitted dataset
     Given I am on "/adminDataset/update/id/5"
-    And I select "Published" from the field "Dataset_upload_status"
+    And I select "DataAvailableForReview" from the field "Dataset_upload_status"
     And I press the button "Save"
     When I am on "/adminDataset/update/id/5"
-    Then I should not see "Create/Reset Private URL"
-    And I should not see "Open Private URL"
-
+    And I select "Submitted" from the field "Dataset_upload_status"
+    And I press the button "Save"
+    When I am on "/adminDataset/update/id/5"
+    Then I should see "Create/Reset Private URL"
+    And I press the button "Create/Reset Private URL"
+    And I wait "3" seconds
+    Then I should see current url contains "/dataset/100039/token/"
+    And I should see "Genomic data of the Puerto Rican Parrot (Amazona vittata) from a locally funded project."
 
   @ok @issue-1812 @mockup
   Scenario: Navigating mockup page tables does not generate errors
@@ -484,3 +508,43 @@ Feature: form to update dataset details
     And I press the button "Next >"
     And I wait "1" seconds
     Then I should see "Parrot.k31.NetworkTest.txt"
+
+  @ok
+  Scenario: Check type is not removed when uncheck a dataset type
+    Given I am on "/adminDataset/update/id/8"
+    Then I should see "Workflow"
+    Then I check "Dataset_Workflow" checkbox
+    And I press the button "Save"
+    When I am on "/adminDataset/update/id/8"
+    Then I should see "Dataset_Workflow" checkbox is checked
+    Then I uncheck "Dataset_Workflow" checkbox
+    And I press the button "Save"
+    When I am on "/adminDataset/update/id/8"
+    Then I should see "Workflow"
+
+  @ok
+  Scenario: Check type is not removed from other dataset when uncheck for another dataset
+    Given I am on "/adminDataset/update/id/8"
+    Then I should see "Genomic"
+    Then I should see "Dataset_Genomic" checkbox is checked
+    Then I check "Dataset_Workflow" checkbox
+    Then I uncheck "Dataset_Genomic" checkbox
+    And I press the button "Save"
+    And I wait "5" seconds
+    When I am on "/adminDataset/update/id/5"
+    Then I should see "Dataset_Genomic" checkbox is checked
+
+  @ok
+  Scenario: Check checkbox for type is working
+    Given I am on "/adminDataset/update/id/8"
+    And I should see "Dataset_Genomic" checkbox is checked
+    When I uncheck "Dataset_Genomic" checkbox
+    Then I should see "Dataset_Genomic" checkbox is unchecked
+    And I should see "Dataset_Workflow" checkbox is unchecked
+    When I check "Dataset_Workflow" checkbox
+    Then I should see "Dataset_Workflow" checkbox is checked
+    When I press the button "Save"
+    And I wait "5" seconds
+    And I am on "/adminDataset/update/id/8"
+    Then I should see "Dataset_Workflow" checkbox is checked
+    Then I should see "Dataset_Genomic" checkbox is unchecked
