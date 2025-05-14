@@ -6,6 +6,7 @@
     "license": "GPL-3.0-or-later",
     "require": {
         "php": "7.4.33",
+        "aws/aws-sdk-php": "3.212.1",
         "yidas/yii2-composer-bower-skip": "~2.0.13",
         "yiisoft/yii": "~1.1.28",
         "yiisoft/yii2": "~2.0.48.1",
