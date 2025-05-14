@@ -4,6 +4,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Fix #561: An admin can activate the user account
+- Fix #561: Enable csrf protection
 - Fix #561: Generate a token for account activation by email
 - Fix #561: Separate admin user page from non admin user page
 - Security: bump the composer group across 2 directories with 6 updates

@@ -55,7 +55,6 @@ class UserController extends Controller
         $this->performAjaxValidation($user);
         if ($attrs = Yii::$app->request->post('User')) {
             $user->setScenario('insert');
-            $user->attributes = $attrs;
             $user->email = strtolower(trim($attrs['email']));
             $user->username = $user->email;
             $user->first_name = trim($attrs['first_name']);
@@ -175,6 +174,10 @@ class UserController extends Controller
         $current = $user->newsletter;
 
         if ($attrs = Yii::$app->request->post('EditProfileForm')) {
+            $authorised_attr = ['email', 'first_name', 'last_name', 'affiliation', 'preferred_link', 'newsletter'];
+            if (array_diff(array_keys($attrs), $authorised_attr)) {
+                throw new CHttpException(400, 'Invalid attributes');
+            }
             $model->attributes = $attrs;
             $model->scenario = 'update';
 

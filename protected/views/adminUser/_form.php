@@ -77,7 +77,6 @@
 
  	<div>
  		<div class="subsection">
- 			<?php Yii::app()->captcha->generate(); ?>
  			<div class="well">
  				<? $form = $this->beginWidget('CActiveForm', array(
 						'id' => 'admin-user-form',
@@ -175,16 +174,17 @@
  						<p>Please tick here to join the GigaDB mailing list to receive news, updates and quarterly newsletters about GigaDB</p>
  					</div>
  				</div>
-                <? if ('create' === $scenario) { ?>
- 				<div class="form-group checkbox-horizontal <?= $model->hasErrors('terms') ? 'has-error' : '' ?>">
- 					<?= $form->labelEx($model, 'terms', array('class' => 'col-xs-3 control-label')) ?>
- 					<div class="col-xs-9">
- 						<?php echo $form->checkbox($model, 'terms', array('aria-describedby' => $model->hasErrors('terms') ? 'terms-error terms-desc' : 'terms-desc', 'required' => true, 'aria-required' => 'true')); ?>
- 						<div id="terms-error"><?= $form->error($model, 'terms', array('class' => 'control-error help-block')) ?></div>
- 						<p id="terms-desc" class="help-block">Please tick here to confirm you have read and understood our <a href="/site/term#policies">Terms of use</a> and <a href="/site/term#privacy">Privacy Policy</a></p>
- 					</div>
- 				</div>
-                <? } ?>
+
+                <div class='form-group checkbox-horizontal'>
+                    <label class='col-xs-3 control-label'
+                           for='User_is_activated'><?= Yii::t('app', 'Activate the user account') ?></label>
+                    <div class="col-xs-9">
+                        <?php echo $form->checkbox($model, 'is_activated', array('aria-describedby' => 'activation-desc')); ?>
+                    </div>
+                    <div class="col-xs-9" id="activation-desc">
+                        <p>Please tick here to activate the user account</p>
+                    </div>
+                </div>
 
  				<hr>
  				<div class="pull-right">

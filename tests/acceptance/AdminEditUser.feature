@@ -25,6 +25,7 @@ Feature: AdminEditUser
     And I should see "Affiliation *"
     And I should see "Preferred Link"
     And I should see "Mailing List"
+    And I should see "Activate the user"
     And I should see a submit button "Save"
     And I should see a button "Link this user to an author" with author link
     And I should not see "Terms and Conditions *"
@@ -44,6 +45,16 @@ Feature: AdminEditUser
     And I should see "test@test.fr"
     And I should see "lastName modified"
     And I should see "admin"
+
+    @ok
+  Scenario: Ensure I can activate an account
+    Given I am on "/adminUser/update/id/8"
+    And I should see "User_is_activated" checkbox is unchecked
+    And I check "User_is_activated" checkbox
+    And I press the button "Save"
+    And I should see "View User #8"
+    And I am on "/adminUser/update/id/8"
+    And I should see "User_is_activated" checkbox is checked
 
   @ok
   Scenario: Ensure I can link and unlink an user to an author

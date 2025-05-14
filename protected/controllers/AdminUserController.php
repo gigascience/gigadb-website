@@ -64,7 +64,7 @@ class AdminUserController extends Controller
             $user->affiliation = $attrs['affiliation'];
             $user->preferred_link = $attrs['preferred_link'];
             $user->newsletter = $attrs['newsletter'];
-            $user->terms = $attrs['terms'];
+            $user->is_activated = $attrs['is_activated'];
 
             $user->scenario = 'update';
             if ($user->save()) {

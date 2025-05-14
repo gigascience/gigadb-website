@@ -9,6 +9,6 @@ class m250506_041933_update_gigadb_user_token extends CDbMigration
     }
 
     public function safeDown() {
-        $this->dropColumn('gigadb_user', 'activation_expires');
+        $this->dropColumn('gigadb_user', 'activation_token');
     }
 }
