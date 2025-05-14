@@ -34,7 +34,8 @@
          "unleash/client": "v1.1.173",
          "cache/filesystem-adapter": "^1.2.0",
          "kriswallsmith/buzz": "^1.2.1",
-         "symfony/string": "^5.4"
+         "symfony/string": "^5.4",
+        "symfony/translation-contracts": "^2.5"
     },
     "require-dev": {
         "behat/behat": "^3.5",
