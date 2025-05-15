@@ -134,10 +134,10 @@ class AdminAuthorController extends Controller
     /**
      * Create a session to allow admin to search an author to link to the session-saved user
      */
-    public function actionPrepareUserLink(int $user_id, $abort = false)
+    public function actionPrepareUserLink(int $user_id, bool $abort = false)
     {
         if ($user_id && !$abort) {
-            if (preg_match("/^\d+$/", $user_id)) {
+            if (preg_match("/^\d+$/", (string) $user_id)) {
                 Yii::app()->session['attach_user'] = $user_id;
                 Yii::log(__FUNCTION__ . "> new session var: attach_user = " . $user_id, 'info');
                 if (!empty(Yii::app()->session['merge_author'])) {
@@ -159,10 +159,10 @@ class AdminAuthorController extends Controller
     /**
      * Create a session to allow admin to search an author to link to the author
      */
-    public function actionPrepareAuthorMerge(int $origin_author_id, $abort = false)
+    public function actionPrepareAuthorMerge(int $origin_author_id, bool $abort = false)
     {
         if ($origin_author_id && !$abort) {
-            if (preg_match("/^\d+$/", $origin_author_id)) {
+            if (preg_match("/^\d+$/", (string) $origin_author_id)) {
                 Yii::app()->session['merge_author'] = $origin_author_id;
                 Yii::log(__FUNCTION__ . "> new session var: merge_author = " . $origin_author_id, 'info');
                 if (!empty(Yii::app()->session['attach_user'])) {
@@ -221,15 +221,14 @@ class AdminAuthorController extends Controller
     {
         $model = $this->loadModel($id);
         $user = User::model()->findByPk($user_id);
-        if (!$model) {
-            Yii::log(__FUNCTION__ . "> no author model could be loaded", 'warning');
-            $this->redirect(array('site/admin'));
-        } else if (!$user) {
-            Yii::log(__FUNCTION__ . "> no user model could be loaded", 'warning');
-            $this->redirect(array('adminUser/update', 'id' => $user->id));
-        } else if ($user_id !== $model->gigadb_user_id) {
+
+        if (!$model || !$user) {
+            throw new CHttpException(400, 'Invalid request');
+        }
+
+         if ($user_id !== $model->gigadb_user_id) {
             Yii::log(__FUNCTION__ . "> mismatch between loaded user and user id in author model", 'warning');
-            $this->redirect(array('adminUser/update', 'id' => $user->id));
+            Yii::app()->user->setFlash('alert', 'Mismatch between users');
         } else {
             $model->gigadb_user_id = null;
             if ($model->save()) {
@@ -237,13 +236,13 @@ class AdminAuthorController extends Controller
                     __FUNCTION__ . "> author (" . $model->id . ")/user (." . $user->id . ".) linking has been removed",
                     'info'
                 );
-                $this->redirect(array('adminUser/update', 'id' => $user->id));
             } else {
                 Yii::log(__FUNCTION__ . "> error while updating gigadb_user_id in author. " . implode(" ", $model->getErrors()['gigadb_user_id']), 'error');
+                Yii::app()->user->setFlash('alert', 'An error occured');
             }
         }
 
-        $this->redirect(array('site/admin'));
+        $this->redirect(array('adminUser/update', 'id' => $user->id));
     }
 
     public function actionMergeAuthors(int $origin_author, int $target_author)
@@ -266,6 +265,8 @@ class AdminAuthorController extends Controller
         } else {
             Yii::log(__FUNCTION__ . "> merge_author is not set in session", 'error');
         }
+
+        Yii::app()->user->setFlash('error', 'An error occured');
         $this->redirect(array('adminAuthor/admin'));
     }
 
@@ -284,15 +285,10 @@ class AdminAuthorController extends Controller
     public function actionIdenticalAuthorsGraph(int $id)
     {
         $author = $this->loadModel($id);
-        if (!$author) {
-            echo "";
-            Yii::app()->end();
-        } else {
-            $authors = $author->getIdenticalAuthorsDisplayName();
-            echo implode(", ", $authors);
-            Yii::app()->end();
-        }
+        $authors = $author->getIdenticalAuthorsDisplayName();
 
+        echo implode(", ", $authors);
+        Yii::app()->end();
     }
 
     /**
@@ -345,7 +341,7 @@ class AdminAuthorController extends Controller
     protected function performAjaxValidation($model)
     {
         $ajax = Yii::$app->request->post('ajax');
-        if ($ajax && $ajax === 'author-form') {
+        if ($ajax === 'author-form') {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }

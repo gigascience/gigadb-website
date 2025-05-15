@@ -94,7 +94,10 @@ return CMap::mergeArray(array(
 		),
         'request' => array(
             'enableCookieValidation' => true,
-            'enableCsrfValidation' => true,
+            'enableCsrfValidation' => true
+        ),
+        'securityManager' => array(
+            'validationKey' => '${COOKIE_VALIDATION_KEY}',
         ),
 
         'clientScript'=>array(

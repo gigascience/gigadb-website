@@ -27,7 +27,7 @@ class AdminUserController extends Controller
 
             array(
                 'allow', # admins
-                'actions' => array('list', 'delete', 'admin', 'update', 'view', 'newsletter'),
+                'actions' => array('list', 'show', 'delete', 'admin', 'update', 'view', 'newsletter'),
                 'roles'   => array('admin'),
             ),
             array(
@@ -41,12 +41,22 @@ class AdminUserController extends Controller
     {
         $ajax = Yii::$app->request->post('ajax');
 
-        if ($ajax && $ajax === 'admin-user-form') {
+        if ($ajax === 'admin-user-form') {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }
     }
 
+    /**
+     * Shows a particular user.
+     */
+    public function actionShow() {
+        if (!$id = Yii::$app->request->get('id')) {
+            throw new CHttpException(400, 'Invalid request');
+        }
+
+        $this->render('show',array('user'=> $this->loadModel((int)$id)));
+    }
     /**
      * Updates a particular user.
      * If update is successful, the browser will be redirected to the 'show' page.
@@ -180,7 +190,6 @@ class AdminUserController extends Controller
 
         return $model;
     }
-
 }
 
 

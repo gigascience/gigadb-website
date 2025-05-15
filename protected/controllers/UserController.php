@@ -7,11 +7,6 @@ class UserController extends Controller
     const PAGE_SIZE = 10;
 
     /**
-     * @var CActiveRecord the currently loaded data model instance.
-     */
-    private $_user;
-
-    /**
      * @return array action filters
      */
     public function filters() {
@@ -31,7 +26,7 @@ class UserController extends Controller
             array(
                 'allow',  # all users
                 'actions' => array(
-                    'create', 'confirm', 'welcome',
+                    'create', 'confirm', 'welcome', 'sendActivationEmail',
                     'emailWelcome'
                 ),
                 'users'   => array('*'),
@@ -61,13 +56,13 @@ class UserController extends Controller
             $user->last_name = trim($attrs['last_name']);
             $user->password = $attrs['password'];
             $user->password_repeat = $attrs['password_repeat'];
-            $user->first_name = $attrs['first_name'];
-            $user->last_name = $attrs['last_name'];
             $user->affiliation = $attrs['affiliation'];
             $user->preferred_link = $attrs['preferred_link'];
+            $user->terms = $attrs['terms'];
+            $user->newsletter = $attrs['newsletter'];
+            $user->verifyCode = $attrs['verifyCode'];
             $user->role = 'user';
 
-            $user->newsletter = $attrs['newsletter'];
             $user->previous_newsletter_state = !$user->newsletter;
 
             if (in_array($_SERVER['GIGADB_ENV'], ["dev", "CI"]) && "testCaptcha" !== $attrs['verifyCode']) {
@@ -97,8 +92,9 @@ class UserController extends Controller
                     }
 
                     $this->sendActivationEmail($user, $token);
-                    if ($user->newsletter)
+                    if ($user->newsletter) {
                         Yii::app()->newsletter->addToMailing($user->email);
+                    }
 
                     $this->redirect(array('welcome', 'id' => $user->id));
                 } else {
@@ -113,7 +109,7 @@ class UserController extends Controller
 
     protected function performAjaxValidation($model) {
         $ajax = Yii::$app->request->post('ajax');
-        if ($ajax && $ajax === 'user-form') {
+        if ($ajax === 'user-form') {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }
@@ -199,13 +195,6 @@ class UserController extends Controller
             }
         }
 
-        // # query to return datasets authored by the user
-        // $adCriteria= new CDbCriteria;
-        // $adCriteria->join = "JOIN dataset_author da on da.dataset_id = t.id join author a on da.author_id = a.id join gigadb_user u on a.gigadb_user_id = u.id";
-        // $adCriteria->condition = "u.id=:user_id";
-        // $adCriteria->params=array(':user_id'=>Yii::app()->user->id);
-        // $authoredDatasets = Dataset::model()->findAll($adCriteria);
-
         # query to return the author ids linked ot the user
         $linkedAuthors = array();
         $authoredDatasets = array();
@@ -215,18 +204,14 @@ class UserController extends Controller
         if (!empty($linked_author)) {
             $linkedAuthors = $linked_author->getIdenticalAuthors();
             $linkedAuthors[] = $linked_author->id;
-            // Yii::log(print_r($linkedAuthors, true), 'debug');
 
             # return datasets associated to linked authors
-            // Yii::log(print_r($authoredDatasets, true), 'debug');
             foreach ($linkedAuthors as $author) {
                 $authoredDatasets = array_merge($authoredDatasets, Author::model()->findByPk($author)->datasets);
             }
-            // Yii::log(print_r($authoredDatasets, true), 'debug');
         }
 
         $searchRecord = SearchRecord::model()->findAllByAttributes(array('user_id' => Yii::app()->user->id));
-        //Yii::log(print_r($searchRecord, true), 'debug');
 
         $uploadedDatasets = Dataset::model()->findAllByAttributes(array('submitter_id' => Yii::app()->user->id), array('order' => 'upload_status'));
         $this->render('view_profile', array('model' => $model, 'searchRecord' => $searchRecord, 'uploadedDatasets' => $uploadedDatasets, 'authoredDatasets' => $authoredDatasets, 'linkedAuthors' => $linkedAuthors));
@@ -238,7 +223,7 @@ class UserController extends Controller
         $model->user_id = Yii::app()->user->id;
         $user = User::model()->findByattributes(array('id' => Yii::app()->user->id));
 
-        if (Yii::$app->request->post('ajax') && 'ChangePassword-form' === Yii::$app->request->post('ajax')) {
+        if ('ChangePassword-form' === Yii::$app->request->post('ajax')) {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }
@@ -266,9 +251,24 @@ class UserController extends Controller
             throw new CHttpException(404,'User not found');
         }
 
-        $isSuccessful = $this->sendActivationEmail($user);
+        $securityManager = new \yii\base\Security();
+        $data = json_encode(
+            [
+                'id' => $user->id,
+                'ts' => time(),
+                'rand' => $securityManager->generateRandomString(32),
+            ]);
 
-        if($isSuccessful) {
+        $token = $securityManager->hashData($data, Yii::$app->params['secretEmailKey']);
+        $user->activation_token = $token;
+
+        if(!$user->save()) {
+            throw new CHttpException(500, 'An error occurred');
+        }
+
+        $isSuccessful = $this->sendActivationEmail($user, $token);
+
+        if ($isSuccessful) {
             Yii::app()->user->setFlash('success', 'A confirmation email has been resent!');
         } else {
             Yii::app()->user->setFlash('danger', 'Unable to send confirmation email!');
@@ -278,7 +278,7 @@ class UserController extends Controller
     }
 
     # Send account activation email
-    private function sendActivationEmail(User $user, string $token) {
+    private function sendActivationEmail(User $user, string $token): bool {
         $url = $this->createAbsoluteUrl('user/confirm', array('key' => $token));
 
         $recipient = $user->email;
@@ -302,10 +302,10 @@ class UserController extends Controller
 
 
     # Send notification email to admins about new user
-    private function sendNotificationEmail($user) {
+    private function sendNotificationEmail(User $user) {
         $recipient = Yii::app()->params['notify_email'];
         $subject = Yii::app()->params['email_prefix'] . "New user registration";
-        $url = $this->createAbsoluteUrl('user/show', array('id' => $user->id));
+        $url = $this->createAbsoluteUrl('adminUser/show', array('id' => $user->id));
         $body = <<<EO_MAIL
 New user registration
 Email: {$user->email}
@@ -330,7 +330,6 @@ EO_MAIL;
 
         return $model;
     }
-
 }
 
 
