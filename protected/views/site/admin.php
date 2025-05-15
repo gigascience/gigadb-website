@@ -45,8 +45,6 @@
 
                 <li><a class="btn background-btn" title="Add/update attribute" href="/attribute/admin">Attribute</a></li>
 
-                <li><a class="btn background-btn" title="Add/update list of logs" href="/report/index">Google Analytics</a></li>
-
                 <li><a class="btn background-btn" title="Add/update types of datasets supported by GigaDB" href="/adminDatasetType/admin">Dataset Types</a></li>
 
                 <li><a class="btn background-btn" title="Add/update types of files supported by GigaDB" href="/adminFileType/admin">Data Types</a></li>
