@@ -611,20 +611,13 @@ $this->pageTitle = 'GigaDB - FAQ';
                     <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading40">
                             <button data-toggle="collapse" data-parent="#accordion" data-target="#panel40" aria-expanded="false" aria-controls="panel40">
-                                What's the relationship between <i>GigaScience</i> and <em>GigaDB</em>?
+                                What's the relationship between <i>GigaScience Press</i> and <em>GigaDB</em>?
                             </button>
                         </h2>
                     </div>
                     <div id="panel40" aria-labelledby="heading40" class="panel-collapse collapse">
                         <div class="panel-body">
-                            <p>GigaDB - is the data repository. <i>GigaScience</i> - is the journal that created the GigaDB platform and has been used for the initial test case application of GigaDB.
-                                Additionally other organisations involved with <i>GigaScience</i> and GigaDB include:
-                                BGI Group - formerly the Beijing Genomics Institute, but now based in Shenzhen and known as just BGI. BGI is the institution that has provided all the funding for the journal and GigaDB development to date.</p>
-                            <p>Oxford University Press (OUP) - the publisher with which BGI currently has a partnership to run <i>GigaScience</i> journal.</p>
-                            <p>BGI Hong Kong Tech Ltd. - A member of the BGI group of companies that is a legal entity in Hong Kong, this is where the metadata is hosted, and most of the GigaDB staff are employed.</p>
-                            <p><a href="https://www.cngb.org/aboutUs.html?i18nlang=en_US">CNGB (China National GeneBank)</a> - A government funded institute constructed by BGI and administered by the Development and Reform Commission of Shenzhen Municipality, that provides most of the informatics infrastructure (storage) for GigaDB.
-                                Aliyun - A Chinese cloud services provider that CNGB have contracted out their IT infrastructure to, and is currently hosting the GigaDB’s data in their servers
-                            </p>
+                            <p>GigaScience Press currently publishes two journal; <em><a href="https://www.gigasciencejournal.com" target="_blank">GigaScience</a></em> and <em><a href="https://www.gigabytejournal.com" target="_blank">GigaByte</a></em>, as well as one data archive; GigaDB. The GigaDB platform has been created with the intention of hosting all the data associated with articles published in GigaScience Press journals to ensure full transparency and reproducibility of those scientific articles and promote data sharing and data reuse in line with the FAIR sharing principles. It should be noted that GigaScience Press is a part of the BGI Group, who provided the start up funding for the journal and GigaDB development.</p>
                         </div>
                     </div>
                 </div>
@@ -806,26 +799,44 @@ $this->pageTitle = 'GigaDB - FAQ';
                     </div>
                     <div id="panel49" aria-labelledby="heading49" class="panel-collapse collapse">
                         <div class="panel-body">
-                            <p>GigaDB biocurators will enhance metadata about your submitted data files by inclusion of a dataset title, author list, description and keywords. The following actions, checks and enhancements are undertaken during the curation process:</p>
+                            <p>GigaDB biocurators will enhance metadata for your submitted data files by including a dataset title, author list, description and keywords. The following actions, checks and enhancements are undertaken during the curation process:</p>
                             <ul class="content-text">
-                                <li>Check the consistency and completeness of data provided, with respect to the associated manuscript</li>
+                                <li>Check the consistency and completeness of the data provided, with respect to the associated manuscript</li>
                                 <li>Carry out file integrity checks</li>
                                 <li>Ensure accessibility of data to end users</li>
                                 <li>Ensure transparency of data files including file descriptions and where appropriate additional metadata.</li>
                                 <li>Extract sample metadata to be hosted in GigaDB</li>
-                                <li>Check for presence of sensitive or identifying information</li>
-                                <li>Check methodology is complete and discoverable</li>
-                                <li>Recommend appropriate external repositories and appropriate details to include with those data</li>
-                                <li>Provide assistance with data upload to GigaDB repository (with up to 1TB free storage)</li>
+                                <li>Check for the presence of sensitive or identifying information</li>
+                                <li>Check that the methodology is complete and discoverable</li>
+                                <li>Recommend appropriate external repositories and the appropriate details to include with those data</li>
+                                <li>Provide assistance with data upload to the GigaDB repository (with up to 1TB free storage)</li>
                                 <li>Organise files into a logical structure and collections</li>
-                                <li>Content assigned to appropriate SRAO categories</li>
+                                <li>Content is assigned to appropriate SRAO categories</li>
                                 <li>A Digital Object Identifier (DOI) is generated for each dataset</li>
                                 <li>Pre-publication embargoes with private, anonymous access can be enabled</li>
-                                <li>Link and synchronize dataset release to associated publications</li>
+                                <li>Link and synchronize the dataset release with associated publications</li>
                             </ul>
                         </div>
                     </div>
                 </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h2 class="h4 panel-title" id="heading50">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel50" aria-expanded="false" aria-controls="panel50">
+                                Who can use GigaDB's data support services?
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="panel50" aria-labelledby="heading50" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <p>The scope of GigaDB is all of the life sciences, so as long as your research is Open, involves life sciences in some way, and is in a state that forms a complete <i>unit-of-work*</i>, then contact us to discuss how we can help.</p><p>*By <i>unit-of-work</i> we just mean something that could be written up as a scientific paper, that could be a data-note, technical-note or a research article.</p>
+                        </div>
+                    </div>
+                </div>
+
+
+
             </div>
     </div>
     </section>
