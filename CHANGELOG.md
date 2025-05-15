@@ -4,7 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
-- Feat #490 #486 #483 #477 #475: Update FAQ page
+- Feat #490 #486 #483 #477 #475: Update FAQ page text content
 
 ## v4.4.9 - 2025-04-30 - fd51be0df
 
