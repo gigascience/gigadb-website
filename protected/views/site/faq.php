@@ -795,6 +795,37 @@ $this->pageTitle = 'GigaDB - FAQ';
                         </div>
                     </div>
                 </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h2 class="h4 panel-title" id="heading49">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel49" aria-expanded="false" aria-controls="panel49">
+                            What is involved in data curation?
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="panel49" aria-labelledby="heading49" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <p>GigaDB biocurators will enhance metadata about your submitted data files by inclusion of a dataset title, author list, description and keywords. The following actions, checks and enhancements are undertaken during the curation process:</p>
+                            <ul class="content-text">
+                                <li>Check the consistency and completeness of data provided, with respect to the associated manuscript</li>
+                                <li>Carry out file integrity checks</li>
+                                <li>Ensure accessibility of data to end users</li>
+                                <li>Ensure transparency of data files including file descriptions and where appropriate additional metadata.</li>
+                                <li>Extract sample metadata to be hosted in GigaDB</li>
+                                <li>Check for presence of sensitive or identifying information</li>
+                                <li>Check methodology is complete and discoverable</li>
+                                <li>Recommend appropriate external repositories and appropriate details to include with those data</li>
+                                <li>Provide assistance with data upload to GigaDB repository (with up to 1TB free storage)</li>
+                                <li>Organise files into a logical structure and collections</li>
+                                <li>Content assigned to appropriate SRAO categories</li>
+                                <li>A Digital Object Identifier (DOI) is generated for each dataset</li>
+                                <li>Pre-publication embargoes with private, anonymous access can be enabled</li>
+                                <li>Link and synchronize dataset release to associated publications</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
     </div>
     </section>
