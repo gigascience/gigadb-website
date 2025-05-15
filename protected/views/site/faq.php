@@ -168,12 +168,8 @@ $this->pageTitle = 'GigaDB - FAQ';
                     </div>
                     <div id="panel11" aria-labelledby="heading11" class="panel-collapse collapse">
                         <div class="panel-body">
-                            <p>All data submissions should be approved before being started, please contact <a href="mailto:editorial@gigasciencejournal.com">editorial@gigasciencejournal.com</a> to discuss your article and associated data with our editors.Once approved, there are two possible routes to provide the metadata about your data:
-                            <ol>
-                                <li> use the online <a href="http://gigadb.org/dataset/upload">submission wizard</a> - this is a good option for datasets with few authors, and few files. The wizard currently does not have functionality to upload tabular information so everything must be typed in individually.</li>
-                                <li> use the template spreadsheet (excel, but compatible with open office too) downloadable from here: <a href="http://www.google.com/url?q=http%3A%2F%2Fgigadb.org%2Ffiles%2FGigaDBUploadForm.xls&amp;sa=D&amp;sntz=1&amp;usg=AFrqEzf6cPyp-vGxxVTE9OEq2TPsJqU7fg">Link to template excel file</a> - This option is better where there are multiple authors and/or multiple files and/or samples. NB. the spreadsheet contains macros, but these are only to allow the forward and back buttons to work so can be disabled, you can just click the relevant tabs at the bottom of the spreadsheet.</li>
-                            </ol>
-                            <p>For more details on submitting using the Spreadsheet please see here.</p>
+                            <p>All data submissions should be approved before being started, please contact <a href="mailto:editorial@gigasciencejournal.com">editorial@gigasciencejournal.com</a> to discuss your article and associated data with our editors.</p>
+                            <p>Once approved, the curation team will liaise with you and the editorial team to import relevant information from <em>GigaScience</em> or <em>GigaByte</em> submission systems into GigaDB, and you will be asked to complete the submission of the dataset using the online wizard.</p>
                         </div>
                     </div>
                 </div>
@@ -268,24 +264,6 @@ $this->pageTitle = 'GigaDB - FAQ';
                     <div id="panel17" aria-labelledby="heading17" class="panel-collapse collapse">
                         <div class="panel-body">
                             <p>No. All data provided by <em>GigaDB</em> is free to download and use. On occasion when datasets are very large and internet connections are slow, some user may request data to be sent by hard disk, <em>GigaDB</em> cannot bare the cost of this but we will assist in the copy of the data onto the disks and help arrange shipment, but the user will be required to cover the cost of the disks and shipment. </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h2 class="h4 panel-title" id="heading18">
-                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel18" aria-expanded="false" aria-controls="panel18">
-                                How do I download a large dataset with my slow internet connection?
-                            </button>
-                        </h2>
-                    </div>
-                    <div id="panel18" aria-labelledby="heading18" class="panel-collapse collapse">
-                        <div class="panel-body">
-                            <p>There are 2 ways to download data from <em>GigaDB</em>:</p>
-                            <ol>
-                                <li>FTP. This is the "normal" method, click the download button on any dataset page and this is how your data will be sent.</li>
-                                <li>Hard drive shipment. On occasion when datasets are very large and internet connections are slow, some user may request data to be sent by hard disk, <em>GigaDB</em> cannot bare the cost of this but we will assist in the copy of the data onto the disks and help arrange shipment, but the user will be required to cover the cost of the disks and shipment.</li>
-                            </ol>
                         </div>
                     </div>
                 </div>
@@ -617,7 +595,7 @@ $this->pageTitle = 'GigaDB - FAQ';
                     </div>
                     <div id="panel40" aria-labelledby="heading40" class="panel-collapse collapse">
                         <div class="panel-body">
-                            <p>GigaScience Press currently publishes two journal; <em><a href="https://www.gigasciencejournal.com" target="_blank">GigaScience</a></em> and <em><a href="https://www.gigabytejournal.com" target="_blank">GigaByte</a></em>, as well as one data archive; GigaDB. The GigaDB platform has been created with the intention of hosting all the data associated with articles published in GigaScience Press journals to ensure full transparency and reproducibility of those scientific articles and promote data sharing and data reuse in line with the FAIR sharing principles. It should be noted that GigaScience Press is a part of the BGI Group, who provided the start up funding for the journal and GigaDB development.</p>
+                            <p>GigaScience Press currently publishes two journals; <em><a href="https://www.gigasciencejournal.com" target="_blank">GigaScience</a></em> and <em><a href="https://www.gigabytejournal.com" target="_blank">GigaByte</a></em>, as well as one data archive; GigaDB. The GigaDB platform has been created with the intention of hosting all the data associated with articles published in GigaScience Press journals to ensure full transparency and reproducibility of those scientific articles and promote data sharing and data reuse in line with the FAIR sharing principles. It should be noted that GigaScience Press is a part of the BGI Group, who provided the start up funding for the journal and GigaDB development.</p>
                         </div>
                     </div>
                 </div>
@@ -631,7 +609,7 @@ $this->pageTitle = 'GigaDB - FAQ';
                     </div>
                     <div id="panel41" aria-labelledby="heading41" class="panel-collapse collapse">
                         <div class="panel-body">
-                            <p>The agreements with CNGB and BGI ensures GigaDB will be actively maintained for the foreseeable future. The linking of GigaDB to datasets accompanying open access journal articles with included article and data processing charges to help cover storage and curation costs also provides a model to enable the sustained growth of GigaDB. </p>
+                            <p>The fact that BGI covers the majority of the costs of running GigaDB means that it will be actively maintained for the foreseeable future. In the longer term, it is envisaged that the article (and/or) data processing charges levied on submitters will cover storage and curation costs to enable the maintenance and sustained growth of GigaDB.</p>
                         </div>
                     </div>
                 </div>
