@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 class ApiController extends Controller
 {
     const RESULTS = ['file', 'sample', 'dataset'];
@@ -233,178 +235,172 @@ class ApiController extends Controller
     public function actionSearch()
 	{
 		$status='Published';
-                ini_set('log_errors', true);
-                ini_set('error_log', dirname(__FILE__).'/php_errors.log');
-                $keyword = Yii::app()->request->getParam('keyword');
-                $result= Yii::app()->request->getParam('result');
-                $taxno= Yii::app()->request->getParam('taxno');
-                $taxname= Yii::app()->request->getParam('taxname');
-                $author= Yii::app()->request->getParam('author');
-                $manuscript= Yii::app()->request->getParam('manuscript');
-                $token= Yii::app()->request->getParam('token');
-                $datasettype= Yii::app()->request->getParam('datasettype');
-                $project= Yii::app()->request->getParam('project');
-                $connection=Yii::app()->db;
-                if(!isset($result))
-                {
-                  $result='dataset';
+        ini_set('log_errors', 'true');
+        ini_set('error_log', dirname(__FILE__).'/php_errors.log');
+        $keyword = Yii::app()->request->getParam('keyword');
+        $result= Yii::app()->request->getParam('result') ? : 'dataset';
+        $taxno= Yii::app()->request->getParam('taxno');
+        $taxname= Yii::app()->request->getParam('taxname');
+        $author= Yii::app()->request->getParam('author');
+        $manuscript= Yii::app()->request->getParam('manuscript');
+        $token= Yii::app()->request->getParam('token');
+        $datasettype= Yii::app()->request->getParam('datasettype');
+        $project= Yii::app()->request->getParam('project');
+        $connection=Yii::app()->db;
+
+        $schema = Dataset::model()->getTableSchema();
+        $allowedFields = array_keys($schema->columns);
+
+        if ($keyword) {
+            if(strpos($keyword, ':')) {
+                $pieces = explode(":", $keyword);
+                if (!isset($pieces[0]) || !isset($pieces[1]) || !in_array($pieces[0], $allowedFields, true)) {
+                    throw new Exception('Invalid field name.');
                 }
 
-                if(isset($keyword))
+                $sql="SELECT * from dataset where " .$pieces[0]. " like :piece ";
+                $params = [':piece' => "%$pieces[1]%"];
+                try {
+                    $models = Dataset::model()->findAllBySql($sql, $params);
+                } catch (CDbException $e) {
+                    return $this->_sendResponse(404, sprintf('No items where found for keyword <b>%s</b>',$keyword) );
+                }
+
+                $this->renderByResult($result, $models);
+            }
+            else {
+
+                $ds = new DatabaseSearch();
+                $data = $ds->searchByKey($keyword);
+                $datasets=[];
+                $samples=[];
+                $files=[];
+
+                /*
+                if(isset($_GET['type']))
                 {
-                    if(strpos($keyword, ':'))
-                    {
-                        $pieces = explode(":", $keyword);
-                        $sql="SELECT * from dataset where ".$pieces[0]." like '%".$pieces[1]."%'";
-                        try{
-                            $models= Dataset::model()->findAllBySql($sql);}
-                        catch(CDbException $e)
-                        {
+                    $type=$_GET['type'];
+                     for($int=0;$int<count($type);$int++)
+                     {
+                         if($type[$int]=='sample'){
 
-                            $this->_sendResponse(404,
-                            sprintf('No items where found for keyword <b>%s</b>',$keyword) );
-                        }
+                         foreach($data['samples']['data'] as $sampleid)
+                         {
+                             $id = DatasetSample::model()->findByAttributes(array('sample_id'=>$sampleid));
+                             $datasets[] = $id->dataset_id;
+                         }
+                        // $datasets[] = $data['samples']['data'];
+                         continue;
+                         }
+                         if($type[$int]=='file'){
+                          foreach($data['files']['data'] as $fileid)
+                         {
+                             $id = File::model()->findByAttributes(array('id'=>$fileid));
+                             $datasets[] = $id->dataset_id;
+                         }
+                         continue;
+                         }
+                         if($type[$int]=='dataset'){
+                         foreach($data['datasets']['data'] as $datasetid)
+                         {
 
-                        if (ob_get_contents()){
+                             $datasets[] = $datasetid;
+                         }
+                         continue;
+                         }
+                         if($type[$int] !=='sample' || $type[$int] !=='file' || $type[$int] !=='dataset'){
 
-                        }
+                         $this->_sendResponse(404,
+                         sprintf('Parameter type[] is wrong <b>%s</b>',$type[$int]) );
+                         }
+                     }
+                }*/
+                foreach($data['datasets']['data'] as $datasetid)
+                {
+                    $datasets[] = $datasetid;
+                }
 
-                        $this->renderByResult($result,$models);
-
-                    }
-                    else {
-
-                        $ds = new DatabaseSearch();
-                        $data = $ds->searchByKey($keyword);
-                        $datasets=[];
-                        $samples=[];
-                        $files=[];
-
-                        /*
-                        if(isset($_GET['type']))
-                        {
-                            $type=$_GET['type'];
-                             for($int=0;$int<count($type);$int++)
-                             {
-                                 if($type[$int]=='sample'){
-
-                                 foreach($data['samples']['data'] as $sampleid)
-                                 {
-                                     $id = DatasetSample::model()->findByAttributes(array('sample_id'=>$sampleid));
-                                     $datasets[] = $id->dataset_id;
-                                 }
-                                // $datasets[] = $data['samples']['data'];
-                                 continue;
-                                 }
-                                 if($type[$int]=='file'){
-                                  foreach($data['files']['data'] as $fileid)
-                                 {
-                                     $id = File::model()->findByAttributes(array('id'=>$fileid));
-                                     $datasets[] = $id->dataset_id;
-                                 }
-                                 continue;
-                                 }
-                                 if($type[$int]=='dataset'){
-                                 foreach($data['datasets']['data'] as $datasetid)
-                                 {
-
-                                     $datasets[] = $datasetid;
-                                 }
-                                 continue;
-                                 }
-                                 if($type[$int] !=='sample' || $type[$int] !=='file' || $type[$int] !=='dataset'){
-
-                                 $this->_sendResponse(404,
-                                 sprintf('Parameter type[] is wrong <b>%s</b>',$type[$int]) );
-                                 }
-                             }
-                        }*/
-                        foreach($data['datasets']['data'] as $datasetid)
-                        {
-                            $datasets[] = $datasetid;
-                        }
-
-                        foreach($data['samples']['data'] as $sampleid)
-                        {
-                            $samples[] = $sampleid;
-                        }
-                        foreach($data['files']['data'] as $fileid)
-                        {
-                            $files[] = $fileid;
-                        }
+                foreach($data['samples']['data'] as $sampleid)
+                {
+                    $samples[] = $sampleid;
+                }
+                foreach($data['files']['data'] as $fileid)
+                {
+                    $files[] = $fileid;
+                }
 
 
-                        if(empty($datasets)&&empty($samples)&&empty($files)){
+                if(empty($datasets)&&empty($samples)&&empty($files)){
 
-                            if (ob_get_contents()){
-                             }
-                          $this->_sendResponse(404,
-                          sprintf('No items where found for keyword <b>%s</b>',$keyword) );
-                        }
-                       // print_r($datasets);
-                       // print_r($samples);
-                      //  print_r($files);
+                    if (ob_get_contents()){
+                     }
+                  $this->_sendResponse(404,
+                  sprintf('No items where found for keyword <b>%s</b>',$keyword) );
+                }
+               // print_r($datasets);
+               // print_r($samples);
+              //  print_r($files);
 
 
 
 
-                        if(!isset($_GET['result']))
-                        {
+                if(!isset($_GET['result']))
+                {
 
-                             $this->renderPartial('keyword',array(
-                                'datasetids'=>$datasets,
-                                'sampleids'=>$samples,
-                                'fileids'=>$files));
-
-                        }
-                        else{
-                            switch ($result) {
-                                case "dataset":
-                                     if(empty($datasets)){
-
-
-                                  $this->_sendResponse(404,
-                                  sprintf('No items where found for keyword <b>%s</b> in dataset, Please search in sample or file',$keyword) );
-                                     }
-                                    $this->renderPartial('keywordalldataset',array(
-                                    'datasetids'=>$datasets,));
-                                    break;
-                                case "sample":
-                                  if(empty($samples)){
-
-
-                                  $this->_sendResponse(404,
-                                  sprintf('No items where found for keyword <b>%s</b> in sample, Please search in dataset or file',$keyword) );
-                                     }
-
-                                    $this->renderPartial('keywordallsample',array(
-                                    'sampleids'=>$samples,));
-                                    break;
-                                case "file":
-
-                                    if(empty($files)){
-
-
-                                  $this->_sendResponse(404,
-                                  sprintf('No items where found for keyword <b>%s</b> in file, Please search in dataset or sample',$keyword) );
-                                     }
-                                    $this->renderPartial('keywordallfile',array(
-                                    'fileids'=>$files,));
-                                    break;
-
-                                default:
-                                    break;
-                            }
-                        }
-                   /*
                      $this->renderPartial('keyword',array(
-                            'datasetids'=>$datasets,
-                            'sampleids'=>$samples,
-                            'fileids'=>$files));
-                    */
+                        'datasetids'=>$datasets,
+                        'sampleids'=>$samples,
+                        'fileids'=>$files));
 
+                }
+                else{
+                    switch ($result) {
+                        case "dataset":
+                             if(empty($datasets)){
+
+
+                          $this->_sendResponse(404,
+                          sprintf('No items where found for keyword <b>%s</b> in dataset, Please search in sample or file',$keyword) );
+                             }
+                            $this->renderPartial('keywordalldataset',array(
+                            'datasetids'=>$datasets,));
+                            break;
+                        case "sample":
+                          if(empty($samples)){
+
+
+                          $this->_sendResponse(404,
+                          sprintf('No items where found for keyword <b>%s</b> in sample, Please search in dataset or file',$keyword) );
+                             }
+
+                            $this->renderPartial('keywordallsample',array(
+                            'sampleids'=>$samples,));
+                            break;
+                        case "file":
+
+                            if(empty($files)){
+
+
+                          $this->_sendResponse(404,
+                          sprintf('No items where found for keyword <b>%s</b> in file, Please search in dataset or sample',$keyword) );
+                             }
+                            $this->renderPartial('keywordallfile',array(
+                            'fileids'=>$files,));
+                            break;
+
+                        default:
+                            break;
                     }
                 }
+           /*
+             $this->renderPartial('keyword',array(
+                    'datasetids'=>$datasets,
+                    'sampleids'=>$samples,
+                    'fileids'=>$files));
+            */
+
+            }
+        }
 
                 if(isset($taxno))
                 {
@@ -862,18 +858,18 @@ class ApiController extends Controller
     * render a partial base on the value of result URL query string paramter
     *
     * @param string $result query string to select which section of dataset to display
-    * @param string $models database resulset
+    * @param array $models database resulset
     */
-    private function renderByResult($result,$models) {
+    private function renderByResult(string $result, array $models) {
         switch ($result) {
             case "dataset":
-                $this->renderPartial('keyworddataset',array('models'=>$models,));
+                $this->renderPartial('keyworddataset',array('models'=>$models));
                 break;
             case "sample":
-                $this->renderPartial('keywordsample',array('models'=>$models,));
+                $this->renderPartial('keywordsample',array('models'=>$models));
                 break;
             case "file":
-                $this->renderPartial('keywordfile',array('models'=>$models,));
+                $this->renderPartial('keywordfile',array('models'=>$models));
                 break;
             default:
                 break;

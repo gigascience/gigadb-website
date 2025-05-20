@@ -23,6 +23,10 @@ modules:
         - Asserts
         - PhpBrowser:
               url: 'http://gigadb.test'
+        - REST:
+            depends: PhpBrowser
+            url: http://gigadb.test
+            shortDebugResponse: 300
     step_decorators: ~
 bootstrap:
     initdb.php

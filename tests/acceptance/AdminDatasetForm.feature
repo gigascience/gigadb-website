@@ -642,3 +642,13 @@ Feature: form to update dataset details
     And I am on "/adminDataset/update/id/5"
     Then I can see the option "Published" selected for "Dataset_upload_status"
     And I should see "Status changed to Published"
+
+
+  @ok
+  Scenario: Check upload status can be set to Rejected from any previous upload status
+    Given I am on "/adminDataset/update/id/5"
+    And I cannot see the option "Rejected" selected for "Dataset_upload_status"
+    When I select "Rejected" from the field "Dataset_upload_status"
+    And I press the button "Save"
+    And I am on "/adminDataset/update/id/5"
+    Then I can see the option "Rejected" selected for "Dataset_upload_status"

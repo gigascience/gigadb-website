@@ -60,7 +60,10 @@ foreach($dataset_types as $dataset_type) {
 }
 $xml.="</data_types>";
 //image
-$image=$model->image;
+// needed in order to remove the empty line
+ob_start();
+$image = $model->image;
+ob_get_clean();
 $xml.="<image>";
 $xml.="<image_filename>$image->location</image_filename>";
 $xml.="<tag>$image->tag</tag>";

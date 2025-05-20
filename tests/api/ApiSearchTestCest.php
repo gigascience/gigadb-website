@@ -21,10 +21,102 @@ class ApiSearchTestCest
         $response = $I->sendGET('/dataset?doi=100006&result=dataset');
         $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
         $I->seeResponseIsXml();
-        $I->assertStringStartsWith('<?xml', $I->grabResponse());
+        $response = $I->grabResponse();
+        $I->assertStringStartsWith('<?xml', $response);
+
+        $responseAsSimpleXml = new SimpleXMLElement($response);
+        $I->assertEquals('Genomic data from Adelie penguin (Pygoscelis adeliae). ', $responseAsSimpleXml->dataset->title);
+        $I->assertNull($responseAsSimpleXml->samples->sample);
+        $I->assertNull($responseAsSimpleXml->files->file);
     }
 
-    public function tryToQueryDatasetsWithSamplesSorted(ApiTester$I, \Codeception\Module\Db $db)
+    public function tryToQueryASingleDatasetWithOutputSamplesOnly(ApiTester $I)
+    {
+        $response = $I->sendGET('/dataset?doi=100006&result=sample');
+        $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
+        $I->seeResponseIsXml();
+        $response = $I->grabResponse();
+        $I->assertStringStartsWith('<?xml', $response);
+
+        $responseAsSimpleXml = new SimpleXMLElement($response);
+        $I->assertEquals('Pygoscelis_adeliae', $responseAsSimpleXml->samples->sample[0]->name);
+        $I->assertEquals('9238', $responseAsSimpleXml->samples->sample[0]->species->tax_id);
+        $I->assertNull($responseAsSimpleXml->files->file);
+        $I->assertNull($responseAsSimpleXml->dataset->title);
+    }
+
+    public function tryToQueryASingleDatasetWithOutputFilesOnly(ApiTester $I)
+    {
+        $response = $I->sendGET('/dataset?doi=100006&result=file');
+        $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
+        $I->seeResponseIsXml();
+        $response = $I->grabResponse();
+        $I->assertStringStartsWith('<?xml', $response);
+
+        $responseAsSimpleXml = new SimpleXMLElement($response);
+        $I->assertEquals('Pygoscelis_adeliae.scaf.fa.gz', $responseAsSimpleXml->files->file[5]->name);
+        $I->assertNull($responseAsSimpleXml->samples->sample);
+        $I->assertNull($responseAsSimpleXml->dataset->title);
+    }
+
+    public function tryToQueryASingleDatasetWithFullOutput(ApiTester $I)
+    {
+        $response = $I->sendGET('/dataset?doi=100006');
+        $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
+        $I->seeResponseIsXml();
+        $response = $I->grabResponse();
+        $I->assertStringStartsWith('<?xml', $response);
+
+        $responseAsSimpleXml = new SimpleXMLElement($response);
+        $I->assertEquals('Genomic data from Adelie penguin (Pygoscelis adeliae). ', $responseAsSimpleXml->dataset->title);
+        $I->assertEquals('9238', $responseAsSimpleXml->samples->sample[0]->species->tax_id);
+        $I->assertEquals('Pygoscelis_adeliae.scaf.fa.gz', $responseAsSimpleXml->files->file[5]->name);
+    }
+
+    public function tryToSearchWithKeywordAndOutputDatasetOnly(ApiTester $I)
+    {
+        $response = $I->sendGET('/search?keyword=description:Antartica');
+        $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
+        $I->seeResponseIsXml();
+        $response = $I->grabResponse();
+        $I->assertStringStartsWith('<?xml', $response);
+
+        $responseAsSimpleXml = new SimpleXMLElement($response);
+        $I->assertEquals('Genomic data from Adelie penguin (Pygoscelis adeliae). ', $responseAsSimpleXml->gigadb_entry->dataset->title);
+        $I->assertNull($responseAsSimpleXml->gigadb_entry->samples->sample);
+        $I->assertNull($responseAsSimpleXml->gigadb_entry->files->file);
+    }
+
+    public function tryToSearchWithKeywordAndOutputFileOnly(ApiTester $I)
+    {
+        $response = $I->sendGET('/search?keyword=description:Antartica&result=file');
+        $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
+        $I->seeResponseIsXml();
+        $response = $I->grabResponse();
+        $I->assertStringStartsWith('<?xml', $response);
+
+        $responseAsSimpleXml = new SimpleXMLElement($response);
+        $I->assertEquals('Pygoscelis_adeliae.scaf.fa.gz', $responseAsSimpleXml->gigadb_entry->files->file[5]->name);
+        $I->assertNull($responseAsSimpleXml->gigadb_entry->samples->sample);
+        $I->assertNull($responseAsSimpleXml->gigadb_entry->dataset->title);
+    }
+
+    public function tryToSearchWithKeywordAndOutputSampleOnly(ApiTester $I)
+    {
+        $response = $I->sendGET('/search?keyword=description:Antartica&result=sample');
+        $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
+        $I->seeResponseIsXml();
+        $response = $I->grabResponse();
+        $I->assertStringStartsWith('<?xml', $response);
+
+        $responseAsSimpleXml = new SimpleXMLElement($response);
+        $I->assertEquals('Pygoscelis_adeliae', $responseAsSimpleXml->gigadb_entry->samples->sample[0]->name);
+        $I->assertNull($responseAsSimpleXml->gigadb_entry->files->file);
+        $I->assertNull($responseAsSimpleXml->gigadb_entry->dataset->title);
+    }
+
+
+    public function tryToQueryDatasetsWithSamplesSorted(ApiTester $I, \Codeception\Module\Db $db)
     {
         $query = "SELECT d.identifier, d.upload_status
                   FROM Dataset d
@@ -53,7 +145,7 @@ class ApiSearchTestCest
         $I->assertEquals($sortedSamples, $samples, 'not ordered');
     }
 
-    public function tryToQueryDatasetsWithSamplesAttributesSorted(ApiTester$I)
+    public function tryToQueryDatasetsWithSamplesAttributesSorted(ApiTester $I)
     {
         $I->sendGET('/dataset?doi=100006&result=sample');
         $I->seeResponseCodeIs(200);
@@ -70,7 +162,7 @@ class ApiSearchTestCest
         $I->assertEquals('tissue', (string) $secondAttr->key, 'not ordered');
     }
 
-    public function tryToQueryDatasetsWithFileAttributesSorted(ApiTester$I)
+    public function tryToQueryDatasetsWithFileAttributesSorted(ApiTester $I)
     {
         $I->sendGET('/dataset?doi=100245&result=file');
         $I->seeResponseCodeIs(200);
