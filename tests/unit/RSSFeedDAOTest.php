@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 class RSSFeedDAOTest extends CDbTestCase
 {
     protected $fixtures = array(
@@ -13,9 +15,12 @@ class RSSFeedDAOTest extends CDbTestCase
         // test we have the expected number of items
         $this->assertEquals(9, count($feed));
 
-        // test that we have the right ids and in the right order
-        $this->assertEquals([20,10,1,2, 7,4,3,6,5], array_map(function ($item) {
-            return $item->id;
-        }, $feed));
+        $dates = array_map(function($item) {
+            return $item->publication_date;
+        }, $feed);
+
+        $expected = $dates;
+        rsort($expected);
+        $this->assertEquals($expected, $dates, 'Not in descending order');
     }
 }

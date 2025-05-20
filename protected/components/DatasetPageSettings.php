@@ -28,7 +28,7 @@ class DatasetPageSettings extends yii\base\BaseObject
     /** @var string $_fileSettings */
     private $_fileSettings;
 
-    public function __construct(?Dataset $model, DatasetDAO $dao = null, $config = [])
+    public function __construct(?Dataset $model = null, DatasetDAO $dao = null, $config = [])
     {
         parent::__construct();
         $this->_dao = $dao;

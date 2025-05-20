@@ -66,11 +66,11 @@ class NewsletterService extends CApplicationComponent
      */
     public function addToMailing($email, $first_name = null, $last_name = null)
     {
-
         // pre-check email
-        $username = explode("@", $email)[0];
-        $domain = explode("@", $email)[1];
-        if (! ($username && $domain)) {
+        $emailParts = explode('@', $email);
+        $username = $emailParts && isset($emailParts[0]) ? $emailParts[0] : null;
+        $domain = $emailParts && isset($emailParts[1]) ? $emailParts[1] : null;
+        if (!$username || !$domain) {
             return false;
         }
         $latinised_username = idn_to_ascii($username);
@@ -115,12 +115,12 @@ class NewsletterService extends CApplicationComponent
      * Remove the email address from the subscription list $list_id
      *
      * @param string $email email address to add
+     *
      * @return boolean whether the subscription was successful or not
      */
-    public function removeFromMailing($email)
+    public function removeFromMailing(string $email) : bool
     {
         $subscriber_hash =  $this->newsletter_api->subscriberHash($email);
-
         $result = $this->newsletter_api->delete("lists/" . $this->list_id . "/members/$subscriber_hash");
 
         if ($this->newsletter_api->success() || 404 == $result['status']) {

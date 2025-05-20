@@ -30,7 +30,7 @@ class DatasetAsXmlTest  extends CDbTestCase
         'types' => 'Type'
     );
 
-    public function testUploadStatusValidation()
+    public function testDatasetAAsXml()
     {
         $myDataset = $this->datasets(0);
         $dom = new DomDocument();
