@@ -5,8 +5,8 @@ class ChangePasswordForm extends CFormModel
 	public $password;
 	public $confirmPassword;
 	public $user_id;
-        public $terms;
-        public $newsletter;
+    public $terms;
+    public $newsletter;
 
 	/**
 	 * Declares the validation rules.
@@ -18,8 +18,9 @@ class ChangePasswordForm extends CFormModel
 		return array(
 			// username and password are required
 			array('password, confirmPassword, user_id, terms', 'required'),
-                        array('password', 'compare', 'compareAttribute'=>'confirmPassword'),
-                        array('terms','compare', 'compareValue' => TRUE,'message'=>'Tick here to confirm you have read and understood our Terms of use and Privacy policy.'),
+            array('password', 'match', 'pattern' => User::PASSWORD_REGEX, 'message' => 'Make sure your password contains at least 8 characters with 1 uppercase character, 1 number and 1 special character.'),
+            array('password', 'compare', 'compareAttribute'=>'confirmPassword'),
+            array('terms','compare', 'compareValue' => TRUE,'message'=>'Tick here to confirm you have read and understood our Terms of use and Privacy policy.'),
                     
 		);
 	}
@@ -37,16 +38,18 @@ class ChangePasswordForm extends CFormModel
 
     public function changePass(){
         $user = User::model()->findByPk($this->user_id);
-        if(isset($user)){
+        if ($user){
             $user->password = $this->password;
             $user->password_repeat = $this->confirmPassword;
             $user->newsletter = $this->newsletter;
+            $user->terms = $this->terms;
             $user->encryptPassword();
 
-            if($user->save(false)) {
+            if ($user->save()) {
                 return true;
             }
         }
+
         return false;
     }
 }

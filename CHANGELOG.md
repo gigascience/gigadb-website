@@ -5,8 +5,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## Unreleased
 
 - Fix #2248: List operation in GigaDB API take into account publication_date as a start data and/or end date
+- Feat #549: create commands: check if DOI exists in Datacite + update Datacite api metadata
 
-## v4.4.7 - 2025-03-26 - 4c548f037 -
+## v4.4.10 - 2025-05-16 - 07a8f63b2 - live since 2025-05-19 
+
+- Fix #2294: Add dedicated username variable for authenticating to email service
+
+## v4.4.9 - 2025-04-30 - fd51be0df - live since 2025-05-14
+
+- Fix #2270: Allow transitions to 'Submitted' and 'DataPending' from any upload status.
+- Fix #1955: Edit user without being forced to enter a password + add a password regex
+
+## v4.4.8 - 2025-04-08 - 01de0477b - not deployed to live
+
+- Fix #2033: Create a mockup for all upload statuses except published
+
+## v4.4.7 - 2025-03-26 - 4c548f037 - live since 2025-04-03
 
 - Fix #2241: Restore Sketchfab visualisations alongside 3D models files visualisations
 - Fix #2180: Add user in curation log when minting the DOI

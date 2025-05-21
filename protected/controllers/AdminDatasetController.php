@@ -207,26 +207,9 @@ class AdminDatasetController extends Controller
         Yii::log('**** new attributes: ' . print_r($postDataset, true), 'warning');
         $uploadStatus = $postDataset['upload_status'];
         $previousUploadStatus = $model->upload_status;
-        $isStatusAvailable = true;
 
         // setting DatasetUpload, the busisness object for File uploading
         $datasetUpload = $this->getDatasetUpload($model->identifier);
-
-        if ($uploadStatus && $uploadStatus !== $previousUploadStatus) {
-            $isStatusAvailable = $this->checkAndSetTransition($datasetUpload, $model, $uploadStatus);
-        }
-
-        if (!$isStatusAvailable) {
-            Yii::app()->user->setFlash('updateError', 'Fail to update status!');
-            Yii::log(sprintf('Failed to change status to %s', $uploadStatus), 'error');
-
-            return $this->render('update', array(
-                'model' => $model,
-                'datasetPageSettings' => $datasetPageSettings,
-                'curationlog'=> $dataProvider,
-                'dataset_id'=> $id,
-            ));
-        }
 
         //curator
         $curatorId = $postDataset['curator_id'];
@@ -326,16 +309,26 @@ class AdminDatasetController extends Controller
      */
     public function actionPrivate()
     {
-        $id = $_GET['identifier'];
+        $id = Yii::$app->request->get('identifier');
         $model= Dataset::model()->find("identifier=?", array($id));
         $datasetPageSettings = new DatasetPageSettings($model);
-        if ( "invalid" === $datasetPageSettings->getPageType() ) {
+        $pageType = $datasetPageSettings->getPageType();
+
+        if (!in_array($pageType, ['invalid', 'public', 'hidden', 'draft', 'mockup'])) {
+            throw new CHttpException(404, 'Page type not found');
+        }
+
+        if ("invalid" === $pageType) {
             $this->redirect('/site/index');
-        } elseif ( "public" === $datasetPageSettings->getPageType() ) {
+        } elseif ("public" === $pageType) {
             $this->redirect('/dataset/'.$model->identifier);
-        } elseif ( "hidden" === $datasetPageSettings->getPageType() || "draft" === $datasetPageSettings->getPageType() ) {
+        } else {
             $model->token = Yii::$app->security->generateRandomString(16);
-            $model->save();
+
+            if (!$model->save()) {
+                throw new CHttpException(500, 'Fail to update dataset token');
+            }
+
             $this->redirect('/dataset/'.$model->identifier.'/token/'.$model->token);
         }
     }
@@ -573,15 +566,19 @@ class AdminDatasetController extends Controller
         switch ($model->upload_status) {
             case 'Submitted':
                 $contentToSend = $datasetUpload->renderNotificationEmailBody('Submitted');
-                $statusIsSet = $datasetUpload->sendNotificationEmailBody($contentToSend, $model->upload_status);
+                $statusIsSet = true;
+                if (Yii::app()->featureFlag->isEnabled('fuw')) {
+                    $statusIsSet = $datasetUpload->sendNotificationEmailBody($contentToSend, $model->upload_status);
+                }
 
                 break;
             case 'DataPending':
                 $contentToSend = ($emailBody = Yii::$app->request->post('Dataset')['emailBody']) ?
                     $this->processTemplateString($emailBody, ['identifier' => $model->identifier]) : $datasetUpload->renderNotificationEmailBody('DataPending');
-
-                $statusIsSet = $datasetUpload->sendNotificationEmailBody($contentToSend, $model->upload_status, $model->submitter->email);
-
+                $statusIsSet = true;
+                if (Yii::app()->featureFlag->isEnabled('fuw')) {
+                    $statusIsSet = $datasetUpload->sendNotificationEmailBody($contentToSend, $model->upload_status, $model->submitter->email);
+                }
                 break;
             default:
                 $statusIsSet = true;
