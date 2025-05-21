@@ -115,6 +115,17 @@ Feature: form to update dataset details
     Then I should see current url contains "/dataset/400789/token/"
     And I should see an image located in "/images/datasets/e166c2a0-3684-5209-bccd-c4b18ff87be9/bgi-logo-new.png"
 
+    @ok
+  Scenario: Can update dataset with redirect url
+    When I am on "adminDataset/update/id/8"
+    And I fill in the field of "name" "urltoredirect" with "http://gigadb.test/dataset/view/id/100006"
+    And I press the button "Save"
+    And I am on "/dataset/view/id/100006"
+    Then I should see current url contains "dataset/view/id/100006"
+    Then I should see "Redirect notice"
+    And I wait "10" seconds
+    And I should not see "Redirect notice"
+
   @ok @issue-1023
   Scenario: To confirm the upload status of published dataset has changed to incomplete
     When I am on "/adminDataset/update/id/5"

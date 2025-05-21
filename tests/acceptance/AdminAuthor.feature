@@ -38,12 +38,6 @@ Feature: a curator can fill in user id in an author record
     And I press the button "Save"
     Then I should see "has already been taken"
 
-  @ok @javascript @admin-link-author-from-user-edit-form @pending
-  Scenario: On user edit form, if user has pending claim, link to pending claims
-    Given I am on "/user/update/id/400"
-    Then I should not see "Link this user to an author"
-    And I should see "This user has a pending claim"
-
   @ok @admin-link-author-from-user
   Scenario: loading the author list directly doesn't show the user specific controls for selecting author to link
     Given I am on "/adminAuthor/admin"

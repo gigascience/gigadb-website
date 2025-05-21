@@ -159,6 +159,59 @@ Feature: AdminEditUser
     Then I should see "This user is linked to author: Wang J (14)"
     And I am on "/adminUser/view/id/8"
     Then I should see "This user is linked to author: Wang J (14)"
+    And I should not see "Link this user to an author"
+    And I should not see "This user has a pending claim. Click for details"
+
+  @ok
+  Scenario: After a user has been linked to an author, ensure that the session is cleaned up
+    Given I am on "/adminUser/update/id/8"
+    And I should see "Link this user to an author"
+    And I press the button "Link this user to an author"
+    And I should see "Click on a row or on the button to proceed with linking that author with user Guojie Zhang"
+    And I click on row "1" column "6" and icon "4"
+    And I wait "3" seconds
+    And I should see "Confirm linking this author to the user?"
+    When I follow "Link user Guojie Zhang to that author"
+    Then I should see "This user is linked to author: Wang J (14)"
+    And I am on "/adminAuthor/admin"
+    Then I should not see "Click on a row or on the button to proceed with linking that author"
+
+
+  @ok
+  Scenario: On user edit form, if user has pending claim, link to pending claims
+    Given I am on "/user/update/id/401"
+    Then I should not see "Link this user to an author"
+    And I should see "This user has a pending claim"
+    And I should see "Validate"
+    And I should see "Reject"
+    And I should see "Author info"
+
+  @ok
+  Scenario: On user edit form, if user has pending claim, admin can reject a claim
+    Given I am on "/user/update/id/401"
+    And I follow "Reject"
+    Then I should see "Claimed rejected. No linking performed"
+
+  @ok
+  Scenario: On user edit form, if user has pending claim, admin can validate a claim
+    Given I am on "/user/update/id/401"
+    And I follow "Validate"
+    Then I should see "This user is linked to author: Lambert DM (3371)"
+
+  @ok
+  Scenario:  On user view, when pending claim, admin sees a note about pending claim on author and a link to user edit form
+    Given I am on "/user/view/id/401"
+    Then I should see "This user has a pending claim on Lambert DM (3371)"
+    And I follow "Edit user to validate/reject the claim"
+    Then I should see "Update User 401"
+
+    @ok
+  Scenario: On user view, when no pending claim, no linked author, no message is displayed
+    Given I am on "/user/view/id/8"
+    Then I should not see "This user has a pending claim"
+    And I should not see "Edit user to validate/reject the claim"
+    And I should not see "This user is linked to author"
+
 
   @ok
   Scenario: a user can be associated to an author and validated

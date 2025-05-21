@@ -4,6 +4,16 @@ Feature: a user visit the dataset page
   So that I can use it to further my research or education
 
   @ok
+  Scenario: Keywords are displayed are displayed
+    Given I have not signed in
+    When I am on "dataset/100142"
+    Then I should see "Keywords:"
+    And I should see "Sequence Read Archive"
+    And I should see "metadata"
+    And I should see "SQL"
+    And I should see "experimental protocol"
+
+  @ok
   Scenario: number of files in current page and total number of files are displayed
     Given I have not signed in
     When I am on "dataset/100142"
@@ -23,6 +33,103 @@ Feature: a user visit the dataset page
     And I follow "Files"
     Then I should see "Next >"
     Then I should see "Go to page"
+
+    @ok
+  Scenario: Don't give guest a button to claim a dataset
+    Given I have not signed in
+    When I am on "/dataset/100006"
+    Then I should not see "Your dataset?"
+
+  @ok
+  Scenario: Give users a button to claim a dataset they have authored
+    Given I have signed in as user
+    When I am on "/dataset/100006"
+    Then I should see "Your dataset?"
+
+  @ok @javascript
+  Scenario: a user is shown a modal to claim his/her dataset by reconcilling his/her author identity to his/her account
+    Given I have signed in as user
+    And I am on "/dataset/100006"
+    When I follow "Your dataset?"
+    And I wait "2" seconds
+    Then I should see "David M Lambert"
+    And I should see "Guojie Zhang"
+    And I should see "Jun Wang"
+    And I should see "Select an author to link to your Gigadb User ID"
+
+  @ok @javascript @insulate
+  Scenario: a user select an author to claim and submit the claim form
+    Given I have signed in as user
+    And I am on "/dataset/100006"
+    When I follow "Your dataset?"
+    And I wait "2" seconds
+    And I follow "Guojie Zhang"
+    And I wait "3" seconds
+    Then I should see "Your claim has been submitted to the administrators."
+    And I should see "You can close this box now."
+
+  @ok @javascript @insulate
+  Scenario: a user with a pending claim visit dataset page and attempt to re claim the author
+    Given I have signed in as user
+    And I am on "/dataset/100006"
+    When I follow "Your dataset?"
+    And I wait "2" seconds
+    And I follow "David M Lambert"
+    And I wait "3" seconds
+    Then I should see "We cannot submit the claim: You already have a pending claim."
+
+  @ok @javascript @claim-error-path
+  Scenario: a user with a rejected claim visit dataset page and attempt to re claim the author
+    Given I have signed in as admin
+    And I am on "/user/update/id/401"
+    And I follow "Reject"
+    And I should see "Claimed rejected. No linking performed"
+    And I have not signed in
+    And I have signed in as user
+    And I am on "/dataset/100006"
+    When I follow "Your dataset?"
+    And I wait "1" seconds
+    And I follow "David M Lambert"
+    And I wait "3" seconds
+    Then I should see "We cannot submit the claim: Your claim on this author has already been rejected."
+    And I should see "You can close this box now."
+
+  @ok @javascript @claim-error-path
+  Scenario: a user with a rejected claim visit dataset page and attempt to claim an author
+    Given I have signed in as admin
+    And I am on "/user/update/id/401"
+    And I follow "Reject"
+    And I should see "Claimed rejected. No linking performed"
+    And I have not signed in
+    And I have signed in as user
+    And I am on "/dataset/100006"
+    When I follow "Your dataset?"
+    And I wait "1" seconds
+    And I follow "Guojie Zhang"
+    And I wait "3" seconds
+    Then I should see "Your claim has been submitted to the administrators."
+    And I should see "You can close this box now."
+
+  @ok @javascript @claim-error-path
+  Scenario:a user already associated to an author cannot claim another author
+    Given I have signed in as admin
+    And I am on "/user/update/id/401"
+    And I follow "Validate"
+    And I should see "This user is linked to author: Lambert DM (3371)"
+    And I have not signed in
+    And I have signed in as user
+    And I am on "/dataset/100006"
+    Then I should not see "Your dataset?"
+
+  @ok @javascript
+  Scenario: a user with a pending claim can cancel the claim
+    Given I have signed in as user
+    And I am on "/dataset/100006"
+    When I follow "Your dataset?"
+    And I wait "1" seconds
+    And I follow "Cancel current claim"
+    And I wait "1" seconds
+    Then I should see "Your claim has been successfully canceled."
 
   @ok @issue-877
   Scenario: The google scholar link is working
