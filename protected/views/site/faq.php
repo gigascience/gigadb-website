@@ -813,6 +813,26 @@ $this->pageTitle = 'GigaDB - FAQ';
                     </div>
                 </div>
 
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h2 class="h4 panel-title" id="heading51">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel51" aria-expanded="false" aria-controls="panel51">
+                            How do I calculate the MD5 checksum of the files I am uploading for a GigaDB submission?
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="panel51" aria-labelledby="heading51" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <p>We ensure data files provided are not corrupt in transfer by use of the MD5 checksums whenever files are received or moved. We also publish the MD5 checksum value of every file we host so that anyone who downloads a file from us can also check its integrity. Each operating system has a variety of tools/apps to calculate the MD5 value, here are some that we are aware of:</p>
+                            <ul class="content-text">
+                                <li>Windows: <a href="https://apps.microsoft.com/detail/9nblggh4rrr2" target="_blank" rel="noopener noreferrer">Hash Tool</a></li>
+                                <li>macOS: <a href="https://osxdaily.com/2009/10/13/check-md5-hash-on-your-mac/" target="_blank" rel="noopener noreferrer">md5</a></li>
+                                <li>Linux: <a href="https://en.wikipedia.org/wiki/Md5sum" target="_blank" rel="noopener noreferrer">md5sum</a></li>
+                            </ul>
+                            <p>Whichever tool you use, please ensure the output of the tool is saved to a single file with a relevant filename and the extension ".md5", e.g., "submitted-files.md5"</p>
+                        </div>
+                    </div>
+                </div>
 
 
             </div>
