@@ -45,6 +45,23 @@ Feature: AdminEditUser
     And I should see "lastName modified"
     And I should see "admin"
 
+  @ok @javascript @admin-link-author-from-user
+  Scenario: On user list, there is a button to start the process for linking to an author
+    Given I am on "/adminUser/admin"
+    And I click on row "1" column "14" and icon "3"
+    And I wait "2" seconds
+    Then I should see "Link this user to an author"
+
+  @ok @admin-link-author-from-user
+  Scenario: On user view, there is no button to start the process for linking to an author
+    Given I am on "/adminUser/view/id/14"
+    Then I should not see "Link this user to an author"
+
+  @ok @admin-link-author-from-user
+  Scenario: On user edit form, there is a button to start the process for linking to an author
+    Given I am on "/adminUser/update/id/14"
+    Then I should see "Link this user to an author"
+
     @ok
   Scenario: Ensure I can activate an account
     Given I am on "/adminUser/update/id/8"
@@ -64,6 +81,19 @@ Feature: AdminEditUser
     And I click on row "1" column "6" and icon "4"
     And I wait "3" seconds
     And I should see "Confirm linking this author to the user?"
+    And I should see "User to link to author"
+    And I should see "Author to be linked to user"
+    And I should see "ID:"
+    And I should see "8"
+    And I should see "14"
+    And I should see "Surname:"
+    And I should see "Zhang"
+    And I should see "Wang"
+    And I should see "First name:"
+    And I should see "Guojie"
+    And I should see "Middle name:"
+    And I should see "Orcid:"
+    And I should see "Already merged with:"
     When I follow "Link user Guojie Zhang to that author"
     Then I should see "This user is linked to author: Wang J (14)"
     And I am on "/adminUser/update/id/8"
@@ -74,11 +104,38 @@ Feature: AdminEditUser
     And I should see "Update User 8"
 
   @ok
+  Scenario: After a user has been linked to an author, ensure that the session is cleaned up
+    Given I am on "/adminUser/update/id/8"
+    And I should see "Link this user to an author"
+    And I press the button "Link this user to an author"
+    And I should see "Click on a row or on the button to proceed with linking that author with user Guojie Zhang"
+    And I click on row "1" column "6" and icon "4"
+    And I wait "3" seconds
+    And I should see "Confirm linking this author to the user?"
+    When I follow "Link user Guojie Zhang to that author"
+    Then I should see "This user is linked to author: Wang J (14)"
+    And I am on "/adminAuthor/admin"
+    And I should not see "Click on a row or on the button to proceed with linking"
+
+  @ok @admin-link-author-from-user @javascript
+  Scenario: From author list with the user specific controls, click an author row, then abort the linking
+    Given I am on "/adminUser/update/id/8"
+    And I should see "Link this user to an author"
+    And I press the button "Link this user to an author"
+    And I should see "Click on a row or on the button to proceed with linking that author with user Guojie Zhang"
+    And I click on row "1" column "6" and icon "4"
+    And I wait "3" seconds
+    And I should see "Confirm linking this author to the user?"
+    When I follow "Abort and clear selected user"
+    And I wait "3" seconds
+    Then I should not see "This user is linked to author: Wang J (14)"
+
+  @ok
   Scenario: Ensure a warning is given if an user is already linked to an author
     Given I am on "/adminUser/update/id/8"
     And I should see "Link this user to an author"
     And I press the button "Link this user to an author"
-    And I should see "Click on a row or on the  button to proceed with linking that author with user Guojie Zhang"
+    And I should see "Click on a row or on the button to proceed with linking that author with user Guojie Zhang"
     And I click on row "1" column "6" and icon "4"
     And I wait "3" seconds
     And I should see "Confirm linking this author to the user?"
@@ -88,6 +145,20 @@ Feature: AdminEditUser
     And I click on row "1" column "14" and icon "3"
     And I press the button "Link this user to an author"
     Then I should see "The user Guojie Zhang is already associated to author Wang J (14)"
+
+  @ok
+  Scenario: On user view, if user is already attached to an author, show author name
+    Given I am on "/adminUser/update/id/8"
+    And I should see "Link this user to an author"
+    And I press the button "Link this user to an author"
+    And I should see "Click on a row or on the button to proceed with linking that author with user Guojie Zhang"
+    And I click on row "1" column "6" and icon "4"
+    And I wait "3" seconds
+    And I should see "Confirm linking this author to the user?"
+    When I follow "Link user Guojie Zhang to that author"
+    Then I should see "This user is linked to author: Wang J (14)"
+    And I am on "/adminUser/view/id/8"
+    Then I should see "This user is linked to author: Wang J (14)"
 
   @ok
   Scenario: a user can be associated to an author and validated

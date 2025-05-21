@@ -9,7 +9,7 @@ class DatabaseSearch extends CApplicationComponent
         $command = Yii::app()->db->createCommand();
         $command->select = "f.id, f.name, f.location, f.size, f.dataset_id, f.sample_id, f.file_type, f.file_format";
         $command->from = "file_finder f";
-        $command->where("to_tsvector('english',f.document) @@ to_tsquery('$keyword')");
+        $command->where("to_tsvector('english',f.document) @@ to_tsquery(:keyword)", array(':keyword' => $keyword));
 
         if ($filetypes) {
             $command->andWhere(array('in', 'f.type_id', $filetypes));
@@ -42,7 +42,7 @@ class DatabaseSearch extends CApplicationComponent
             $namesStr = implode(" ", $names);
             $searchQuery .= " &  $namesStr";
         }
-        $command->where("to_tsvector('english',s.document) @@ to_tsquery('$searchQuery')");
+        $command->where("to_tsvector('english',s.document) @@ to_tsquery(:searchQuery)", array(':searchQuery' => $searchQuery));
 
         $command->andWhere("s.upload_status = 'Published'", array());
 
@@ -101,7 +101,7 @@ class DatabaseSearch extends CApplicationComponent
             $authorName = Author::model()->findByPk($author_id)->getDisplayName();
             $searchQuery .= " & $authorName";
         }
-        $command->where("to_tsvector('english',d.document) @@ to_tsquery('$searchQuery')");
+        $command->where("to_tsvector('english',d.document) @@ to_tsquery(:searchQuery)", array(':searchQuery' => $searchQuery));
 
 
 
@@ -165,6 +165,7 @@ class DatabaseSearch extends CApplicationComponent
 
     public function search($criteria, $resultType = "ids")
     {
+        $criteria['keyword'] = trim($criteria['keyword']);
         $files = $this->findFile($criteria['keyword'], $criteria['filetypes'], $criteria['formats'], $criteria['size']);
         $file_ids = $this->getListByKey($files);
 
@@ -211,9 +212,10 @@ class DatabaseSearch extends CApplicationComponent
         $criteria = array();
 
         if (true === CompatibilityHelper::str_contains($keyword, "&")) {
-            $criteria['keyword'] = $keyword;
+            $criteria['keyword'] = trim($keyword);
         } else {
-            $criteria['keyword'] = preg_replace("/\s+/", " & ", $keyword);
+
+            $criteria['keyword'] = preg_replace("/\s+/", " & ", trim($keyword));
         }
 
         $model->keyword = $criteria['keyword'];
