@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Fix #2282: Resend email from welcome page
 - Fix #2248: List operation in GigaDB API take into account publication_date as a start data and/or end date
 - Feat #549: create commands: check if DOI exists in Datacite + update Datacite api metadata
 
