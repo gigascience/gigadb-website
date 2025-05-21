@@ -21,7 +21,7 @@ class FileTest extends \Codeception\Test\Unit
      */
     public function testItShouldReturnSizeWithFormat($unit, $precision, $expectation)
     {
-        $result = $this->systemUnderTest->getSizeWithFormat($unit, $precision);
+        $result = $precision ? $this->systemUnderTest->getSizeWithFormat($unit, $precision) : $this->systemUnderTest->getSizeWithFormat($unit);
         $this->assertEquals($expectation, $result);
     }
 
@@ -33,12 +33,12 @@ class FileTest extends \Codeception\Test\Unit
         $this->assertEquals($expectation, $result);
     }
 
-    public function testItShouldReturnNegativeByteAsItIs()
+    public function testItShouldThrowErrorIfNegativeByte()
     {
+        $this->expectException(InvalidArgumentException::class);
+
         $this->systemUnderTest->size = "-1";
         $result = $this->systemUnderTest->getSizeWithFormat();
-        $expectation = "-1";
-        $this->assertEquals($expectation, $result);
     }
 
     /**
