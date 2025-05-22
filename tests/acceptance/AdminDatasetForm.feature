@@ -103,6 +103,7 @@ Feature: form to update dataset details
     When I am on "adminDataset/create"
     And I select "test+14@gigasciencejournal.com" from the field "Dataset_submitter_id"
     And I fill in the field of "name" "Dataset[dataset_size]" with "1024"
+    And I check the field "Dataset_Epigenomic"
     And I attach the file "bgi_logo_new.png" to the file input element "datasetImage"
     And I fill in the field of "name" "Image[source]" with "test source"
     And I fill in the field of "name" "Image[license]" with "test license"
@@ -361,12 +362,12 @@ Feature: form to update dataset details
 
   @ok @flashmessage
   Scenario: Display error message when updating published dataset
-    Given I am on "/adminDataset/update/id/22"
+    Given I am on "/adminDataset/update/id/8"
     And I should see "Published"
     When I fill in the field of "name" "Dataset[dataset_size]" with "lorem ipsum"
     And I press the button "Save"
     And I wait 3 seconds
-    Then I should be on "/adminDataset/update/id/22"
+    Then I should be on "/adminDataset/update/id/8"
     And I should see "Fail to update!"
     And I should see "Dataset Size must be a number."
 
@@ -426,12 +427,8 @@ Feature: form to update dataset details
 
   @ok @dataset-status
   Scenario: Check dataset page with Published status is publicly visible
-    Given I am on "/adminDataset/update/id/5"
-    And I select "Published" from the field "Dataset_upload_status"
-    And I press the button "Save"
-    And I wait 3 seconds
-    And I am on "/dataset/100039"
-    Then I should see "Genomic data of the Puerto Rican Parrot"
+    Given I am on "/dataset/100006"
+    Then I should see "Genomic data from Adelie penguin"
 
   @ok @mint-doi
   Scenario: Update metadata for an existing doi
@@ -521,17 +518,31 @@ Feature: form to update dataset details
     When I follow "Mint DOI"
     Then I should see "minting under way, please wait"
     And I wait "5" seconds
-    Then I should see "Please, check the metadata for the DOI"
-    Then I should see "No metadata registered: DOI 10.80027/200070: Missing child element(s)"
+    Then I should see "Unable to generate XML for Datacite, please check"
 
   @ok
   Scenario: Show a modal and acknowledge the DOI has not been minted when trying to publish a dataset
     When I am on "adminDataset/create"
+    And I fill in the field of "name" "Dataset[dataset_size]" with "1024"
+    And I check the field "Dataset_Epigenomic"
+    And I fill in the field of "name" "Dataset[identifier]" with "400789"
+    And I fill in the field of "name" "Dataset[ftp_site]" with "ftp://test"
+    And I fill in the field of "name" "Dataset[title]" with "test dataset"
+    And I press the button "Create"
+    And I should see "test dataset"
+    And I am on "adminDataset/update/id/2741"
     And I select "Published" from the field "Dataset_upload_status"
     And I wait "2" seconds
     Then I should see "The DOI does not exist. Please mint the DOI before saving your dataset: Mint DOI"
     And I press the button "Ok"
     And I should see "AuthorReview"
+
+    @ok
+  Scenario: Don't show a modal if the DOI has been minted when trying to publish a dataset
+    When I am on "adminDataset/update/id/5"
+    And I select "Published" from the field "Dataset_upload_status"
+    And I wait "4" seconds
+    Then I should not see "The DOI does not exist. Please mint the DOI before saving your dataset: Mint DOI"
 
   @ok
   Scenario: Check type is not removed when uncheck a dataset type

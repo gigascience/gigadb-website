@@ -205,7 +205,7 @@ class AdminDatasetController extends Controller
         }
 
         Yii::log('**** new attributes: ' . print_r($postDataset, true), 'warning');
-        Yii::app()->user->setFlash('updateError', null);
+        Yii::app()->user->setFlash('updateError', '');
         $uploadStatus = $postDataset['upload_status'];
         $previousUploadStatus = $model->upload_status;
 
@@ -225,7 +225,7 @@ class AdminDatasetController extends Controller
 
         if ($model->upload_status === 'Published' && !$model->is_publishable) {
             Yii::app()->user->setFlash('updateError', 'You can\'t update published datasets without minting the DOI.');
-            $this->render('update', array(
+           return  $this->render('update', array(
                 'model' => $model,
                 'datasetPageSettings' => $datasetPageSettings,
                 'curationlog'=> $dataProvider,
@@ -436,7 +436,8 @@ class AdminDatasetController extends Controller
         $client = Yii::$container->get('guzzleHttpClient');
 
         if (!$dataset || in_array($dataset->upload_status, $status_array)) {
-            $result['error'] = 'Please, check the dataset and the status';
+            $reason = !$dataset ? 'Please, save your dataset before trying to mint a DOI' : 'Please, check the upload status of your dataset';
+            $result['error'] = $reason;
             echo json_encode($result);
             Yii::app()->end();
         }

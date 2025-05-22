@@ -985,6 +985,8 @@ Yii::app()->clientScript->registerScriptFile($jsUrl, CClientScript::POS_END);
             return
         }
         let shouldBlock = false
+        let datasetFormSaveButton = $('#datasetFormSaveButton')[0]
+        datasetFormSaveButton.disabled = false;
 
         const {
             check_doi_status,
@@ -992,6 +994,7 @@ Yii::app()->clientScript->registerScriptFile($jsUrl, CClientScript::POS_END);
             create_md_status,
             update_md_status,
             update_md_response,
+            create_md_response,
             xml,
             html,
             error
@@ -1022,8 +1025,6 @@ Yii::app()->clientScript->registerScriptFile($jsUrl, CClientScript::POS_END);
             $("#minting").addClass("alert alert-danger").html(error)
             shouldBlock = true
         }
-
-        let datasetFormSaveButton = $('#datasetFormSaveButton')[0]
         if (!shouldBlock) {
             let myConfirmation = $('#check-confirmation')[0];
             myConfirmation.innerHTML = ''
@@ -1032,23 +1033,10 @@ Yii::app()->clientScript->registerScriptFile($jsUrl, CClientScript::POS_END);
             if (!xml) {
                 $('#check_doi_modal').modal('show')
                 let el = document.createElement('div')
-                el.textContent = 'Please, check the metadata for the DOI'
+                el.textContent = "Unable to generate XML for Datacite, please check"
                 el.className = 'alert alert-info'
 
-                let elXml = document.createElement('div')
-                elXml.textContent = 'Metadata: preview'
-                elXml.className = 'mb-20'
-                let reason = ''
-                if (update_md_response || create_md_response) {
-                    reason = update_md_response ? update_md_response : create_md_response
-                }
-
-                let preTag = document.createElement('p')
-                preTag.textContent = 'No metadata registered: ' + reason
-
                 myConfirmation.appendChild(el)
-                myConfirmation.appendChild(elXml)
-                myConfirmation.appendChild(preTag)
             }
 
             datasetFormSaveButton.disabled = false
