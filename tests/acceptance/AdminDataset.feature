@@ -1,4 +1,3 @@
-@ok-can-offline
 Feature: Dataset dashboard
   As a curator
   I want the list of datasets to show in a useful way
