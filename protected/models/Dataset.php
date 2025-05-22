@@ -250,7 +250,6 @@ class Dataset extends CActiveRecord
         $criteria->compare('LOWER(excelfile_md5)',strtolower($this->excelfile_md5),true);
         $criteria->compare('publication_date',$this->publication_date);
         $criteria->compare('modification_date',$this->modification_date);
-        // $criteria->compare('manuscript_id', $this->manuscript_id);
         $criteria->compare('upload_status', $this->upload_status);
 
         if (!empty($this->curator_id)) {

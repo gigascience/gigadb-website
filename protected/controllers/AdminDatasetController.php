@@ -174,12 +174,10 @@ class AdminDatasetController extends Controller
             $model->setAttributes($_GET['Dataset']);
         }
 
-        $dataProvider = $model->search();
-
         $this->loadBaBbqPolyfills = true;
         $this->render('admin', array(
             'model'=>$model,
-            'dataProvider'=>$dataProvider,
+            'dataProvider'=>$model->search(),
         ));
     }
 
