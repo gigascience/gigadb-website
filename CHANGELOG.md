@@ -6,7 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Feat #1892: Update onboarding pages layout
 
-## v4.4.9 - 2025-04-30 - fd51be0df
+## v4.4.11 - 2025-05-21 - 4fdb2fb13 -
+
+- Fix #531: Calculate the total volume of files and display it on the homepage
+- Fix #2282: Resend email from welcome page
+- Fix #2248: List operation in GigaDB API take into account publication_date as a start data and/or end date
+- Feat #549: create commands: check if DOI exists in Datacite + update Datacite api metadata
+
+## v4.4.10 - 2025-05-16 - 07a8f63b2 - live since 2025-05-19
+
+- Fix #2294: Add dedicated username variable for authenticating to email service
+
+## v4.4.9 - 2025-04-30 - fd51be0df - live since 2025-05-14
 
 - Fix #2270: Allow transitions to 'Submitted' and 'DataPending' from any upload status.
 - Fix #1955: Edit user without being forced to enter a password + add a password regex

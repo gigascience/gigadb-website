@@ -1,4 +1,4 @@
-<? $this->pageTitle = Yii::app()->name . ' - Welcome' ?>
+<?php $this->pageTitle = Yii::app()->name . ' - Welcome' ?>
 
 <div class="container">
   <?php
@@ -9,6 +9,10 @@
       ['isActive' => true, 'label' => 'Welcome'],
     ]
   ]);
+
+  foreach (Yii::app()->user->getFlashes() as $key => $message) {
+    echo '<div class="alert alert-' . $key . ' flash-' . $key .'">' . $message . "</div>\n";
+  }
   ?>
   <p>
     <?= Yii::t('app', 'Thank you for registering with GigaDB. An account activation email will be sent to your email address shortly. To complete your account\'s activation, please click on the activation link in the account activation email.') ?><br />
