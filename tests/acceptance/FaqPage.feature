@@ -1,4 +1,3 @@
-@ok-can-offline
 Feature: FAQ Search and Contact Form
   As a Website user
   I want to be able to find info I want easily
