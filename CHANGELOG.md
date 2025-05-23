@@ -4,7 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
-- Feat #2124: Update open sans font to solve tilde (~) rendering issue in windows chrome
+- Fix #2124: Update Open Sans font to solve tilde (~) rendering issue in Windows Chrome
 
 ## v4.4.11 - 2025-05-21 - 4fdb2fb13 -
 
