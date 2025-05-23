@@ -162,6 +162,16 @@ class CuratorSteps extends \Codeception\Actor
     }
 
     /**
+     * @When I fill in keywords fields of name keywords with :keyword
+     */
+    public function iFillInKeywordsFieldsOfNameKeywordsWith($keyword) {
+        $this->I->executeJS(
+            "$('#keywords').tagEditor('addTag', " . json_encode($keyword) . ');'
+        );
+        $this->I->waitForText('abcd', 5, '.tag-editor-tag');
+    }
+
+    /**
      * @When I fill in keywords fields with :keyword
      */
     public function iFillInKeywordsFieldsWith($keyword)
