@@ -3,8 +3,8 @@
 set -e
 
 # default for EC2 types
-web_ec2_type="t3.micro"
-bastion_ec2_type="t3.micro"
+web_ec2_type="t3.small"
+bastion_ec2_type="t3.small"
 rds_ec2_type="t3.micro"
 
 source ../../../../.env

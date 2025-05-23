@@ -2,9 +2,6 @@
 
 class ApiController extends Controller
 {
-    // Members
-
-
     const RESULTS = ['file', 'sample', 'dataset'];
 
 	/**
@@ -81,9 +78,14 @@ class ApiController extends Controller
             $this->_sendResponse(400, 'An error occurred, please check your parameters');
         }
 
+        // needed in order to remove the empty line
+        ob_start();
+        $image = $model->image;
+        ob_get_clean();
+
          switch ($result) {
                 case "dataset":
-                    $this->renderPartial('singledatasetonly',array('model'=> $model));
+                    $this->renderPartial('singledatasetonly',array('model'=> $model, 'image' => $image));
                     break;
                 case "sample":
                     $this->renderPartial('singlesample',array('model'=> $model));
@@ -92,7 +94,7 @@ class ApiController extends Controller
                     $this->renderPartial('singlefile',array('model'=> $model));
                     break;
                 case "all":
-                    $this->renderPartial('singledataset',array('model'=> $model));
+                    $this->renderPartial('singledataset',array('model'=> $model, 'image' => $image));
                     break;
                 default:
                     $this->_sendResponse(500, 'A problem occurred');
@@ -102,16 +104,29 @@ class ApiController extends Controller
 
     public function actionList()
     {
+        $status = 'Published';
+        $startDate = Yii::app()->request->getParam('start_date');
+        $endDate = Yii::app()->request->getParam('end_date');
 
-      $status='Published';
-      $datasets = Dataset::model()-> findAllByAttributes(array('upload_status'=>$status));
+        $criteria = new CDbCriteria;
+        $criteria->condition = 'upload_status = :upload_status';
+        $criteria->params = array(':upload_status' => $status);
+
+        if ($startDate) {
+            $criteria->condition .=' AND publication_date >= :start_date';
+            $criteria->params[':start_date'] = $startDate;
+        }
+        if ($endDate) {
+            $criteria->condition .=' AND publication_date <= :end_date';
+            $criteria->params[':end_date'] = $endDate;
+        }
+        $criteria->order = 'publication_date DESC';
+
+        $datasets = Dataset::model()->findAll($criteria);
 
        $this->renderPartial('list',array(
-                    'models'=>$datasets,
-            ));
-
-
-
+            'models'=>$datasets,
+        ));
     }
 
     public function actionFile()

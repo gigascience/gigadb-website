@@ -413,10 +413,7 @@ class DatasetViewContext implements Context
      */
     public function iHaveAddedLinkToDataset($arg1, $arg2, $arg3)
     {
-        if ("3D Viewer" == $arg1 ) {
-            $this->gigadbWebsiteContext->loadUserData("3D_Viewer_${arg3}_test_data");
-        }
-        elseif ("Code Ocean" == $arg1 ) {
+        if ("Code Ocean" == $arg1 ) {
             $this->gigadbWebsiteContext->loadUserData("Code_Ocean_${arg3}_test_data");
         }
         else {
