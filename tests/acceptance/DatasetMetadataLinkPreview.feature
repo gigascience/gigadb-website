@@ -38,7 +38,7 @@ Feature: Add the metadata schema on dataset page to allow other web sites to mak
       | robots | noindex, nofollow |
       | googlebot | noindex, nofollow |
 
-  @wip
+  @ok
   Scenario: Confirm robots txt is blocking indexing of non live environment
     When I am on "/robots.txt"
     Then I should see "# Block all web crawlers from crawling of all content on dev"
