@@ -14,7 +14,7 @@ $this->pageTitle = 'GigaDB - Help';
         ]);
         ?>
         <div class="subsection">
-            <p>The GigaDB website allows any user to browse, search, view datasets and access data files. If you want to submit a dataset, save searches or be alerted of new content of interest we request that you <a href="/user/create" target="_blank">create an account</a>.</p>
+            <p>The GigaDB website allows any user to browse, search, view datasets and access data files. If you want to submit a dataset, save searches or be alerted of new content of interest we request that you <a href="/user/create">create an account</a>.</p>
             <p>A 'Latest news' section will be visible to announce any updates or new features to the database and the RSS feed automatically announces each new dataset release.</p>
             <p>The GigaDB homepage allows you to browse datasets by type eg Genomic, Metagenomic, Transcriptomic. Clicking on the DOI (digital object identifier) or image will take you directly to the webpage for the dataset of interest.</p>
             <p>Alternatively you can use the search functions to find datasets, samples or files of interest.</p>
