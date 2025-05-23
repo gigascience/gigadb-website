@@ -42,7 +42,7 @@ $this->pageTitle = 'GigaDB - FAQ';
                     </div>
                     <div id="panel02" aria-labelledby="heading02" class="panel-collapse collapse">
                         <div class="panel-body">
-                            <p>At the present only GigaScience.</p>
+                            <p>Currently, GigaDB works very closely with GigaScience and GigaByte journals. If you have data relating to a publication in another journal, you may wish to consider splitting the paper into a research paper and a data note; the latter can be submitted to GigaByte then we can host your data in GigaDB which can be referenced in any research article using those data.</p>
                         </div>
                     </div>
                 </div>
@@ -187,30 +187,7 @@ $this->pageTitle = 'GigaDB - FAQ';
                     </div>
                     <div id="panel12" aria-labelledby="heading12" class="panel-collapse collapse">
                         <div class="panel-body">
-                            <p>The readme file is an important part of any dataset and our curators will be able and willing to assist with this if required. We intend to formalise the readme format at some point in the near future, but for now here is an example of the format we try to work to: </p>
-                            <pre>
-filename = readme.txt
-format = ASCII plain text (not RTF, not .doc !)
-
-<Dataset title>
-==========
-<Author list>:<year>, GigaScience database, <DOI>
-summary:
----------
-[optionally you may include a summary text about the dataset or directory structure used here]
-Associated data:
---------------
-[list any URL links or DOIs to other public repository data]
-
-Directories:
-----------
-[list any directories of related files with a description to help users understand why these files are grouped into a directory]
-<directory_name> - <description of the group of files in the directory>
-
-Files:
------
-[list the files available in this dataset with a brief description for each]
-<filename> - <description></pre>
+                            <p>The readme file is an important part of any dataset and as such we will generate it automatically from the information entered into the database. If you are asked to upload data files using FTP a curator may also request you upload a simple readme file listing each of files uploaded with 1 line descriptions of each (these will be used by the curator to add the descriptions to the database).</p>
                         </div>
                     </div>
                 </div>
@@ -434,7 +411,7 @@ Files:
                     </div>
                     <div id="panel27" aria-labelledby="heading27" class="panel-collapse collapse">
                         <div class="panel-body">
-                            <p>Due to various differences in the BMC's editorial tools and the <em>GigaDB</em> system, unfortunately at this time it is not possible to integrate the submission process, but our editors and curators will do everything they can to make the process as smooth as possible for authors.</p>
+                            <p>Due to various technical differences in the editorial submission tools and the <em>GigaDB</em> system, unfortunately at this time it is not possible to integrate the submission process, but our editors and curators will do everything they can to make the process as smooth as possible for authors.</p>
                         </div>
                     </div>
                 </div>
@@ -801,6 +778,20 @@ Files:
                                     </dl>
                                 </figcaption>
                             </figure>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h2 class="h4 panel-title" id="heading48">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel48" aria-expanded="false" aria-controls="panel48">
+                                Which version of BUSCO genome completeness analysis should I use?
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="panel48" aria-labelledby="heading48" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <p>We strongly recommend that you conduct your analysis using the most recent version of any software tool available, this includes BUSCO analysis. If for any reason you ran BUSCO analysis a long time before the dataset is being uploaded we may suggest that you re-run the analysis with the newest version. Please visit the <a href="https://busco.ezlab.org/">BUSCO webpage</a> for details of the most recent version. In general, the differences between versions have been minimal so will not impact the conclusions drawn from the analysis, but the exact numbers or percentages will be slightly different.</p>
                         </div>
                     </div>
                 </div>

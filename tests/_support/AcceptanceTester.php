@@ -325,6 +325,14 @@ class AcceptanceTester extends \Codeception\Actor
     }
 
     /**
+     * @Then I should see :checkbox checkbox is unchecked
+     */
+    public function iShouldSeeCheckboxIsUnchecked($checkbox)
+    {
+        $this->dontSeeCheckboxIsChecked("//input[@id='$checkbox']");
+    }
+
+    /**
      * @Then I check :checkbox checkbox
      */
     public function iCheckCheckbox($checkbox)
@@ -426,5 +434,21 @@ class AcceptanceTester extends \Codeception\Actor
     public function iShouldSeeInTheTableCell($text, $table, $row, $column)
     {
         $this->see($text, ['css' => "$table tr:nth-child($row) td:nth-child($column)"]);
+    }
+
+    /**
+     * @Then I can see the option :value selected for :id
+     */
+    public function iCanSeeTheOptionSelectedFor($value, $id)
+    {
+        $this->seeOptionIsSelected("#dataset-form select[id='$id']", $value);
+    }
+
+    /**
+     * @Then I cannot see the option :value selected for :id
+     */
+    public function iCannotSeeTheOptionSelectedFor($value, $id)
+    {
+        $this->dontSeeOptionIsSelected("#dataset-form select[id='$id']", $value);
     }
 }
