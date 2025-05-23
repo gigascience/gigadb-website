@@ -196,6 +196,7 @@ RUN if [ ${INSTALL_APCU} = true ]; then \
 RUN usermod -u 1000 www-data
 
 COPY ./protected /var/www/protected/
+COPY ./gigadb/app/models /gigadb/app/models/
 COPY ./vendor /var/www/vendor/
 COPY ./images /var/www/images/
 COPY ./files /var/www/files/
@@ -209,6 +210,8 @@ COPY ./index.php /var/www/index.php
 COPY fuw/app/common/models/Upload.php /app/common/models/
 COPY fuw/app/backend/models/FiledropAccount.php /app/backend/models/
 COPY ./VERSION /var/www/
+COPY ./gigadb/app/client/js /gigadb/app/client/js/
+
 
 ARG TARGET_PHP_VERSION=7.0
 COPY ops/configuration/php-conf/php-production.ini /usr/local/etc/php/php.ini

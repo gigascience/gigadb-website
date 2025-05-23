@@ -295,7 +295,7 @@ $sampleDataProvider = $samples->getDataProvider();
                     <?php }
                     ?>
                     <?php
-                    foreach ($links->getDatasetExternalLinksTypesNames(["Protocols.io", "JBrowse", "3D Models", "Code Ocean"]) as $linkType => $linkCode) {
+                    foreach ($links->getDatasetExternalLinksTypesNames(["Protocols.io", "JBrowse", "3D Models", "Code Ocean","3D Sketchfab"]) as $linkType => $linkCode) {
                     ?>
                         <li role="presentation" id="p-<?= $linkCode ?>"><a href="#<?= $linkCode ?>" aria-controls="<?= $linkCode ?>" role="tab" data-toggle="tab"><?= $linkType ?></a></li>
                     <?php
@@ -307,7 +307,7 @@ $sampleDataProvider = $samples->getDataProvider();
                 </ul>
 
 
-                <div class="tab-content">
+                <div class="tab-content dataset-tab-content">
                 <?php
                     if ($sampleDataProvider->getTotalItemCount() > 0) {
                         $samplesPerPage = $sampleDataProvider->getItemCount();
@@ -395,10 +395,10 @@ $sampleDataProvider = $samples->getDataProvider();
                                 <a id="files_table_settings" class="btn btn-default pull-right" data-toggle="modal" data-target="#files_settings" href="#"><span class="glyphicon glyphicon-adjust"></span>Table Settings</a>
                                 <br>
                                 <br>
-                                <table id="files_table" class="table table-striped table-bordered" style="width:100%">
+                                <table id="files_table" class="table table-striped table-bordered dataset-files-table" style="width:100%">
                                     <thead>
                                         <tr>
-                                            <th title="The name of the file. Click header to sort by A-Z/Z-A.">File Name</th>
+                                            <th class="filename-column" title="The name of the file. Click header to sort by A-Z/Z-A.">File Name</th>
                                             <th title="Short description of file contents. Click header to sort by A-Z/Z-A.">Description</th>
                                             <th title="Name or ID of sample used to generate this file.">Sample ID</th>
                                             <th title="The type of data in the file, see [help](http://gigadb.org/site/help#vocabulary) page for definitions of individual data types.  Click header to sort by A-Z/Z-A.">Data Type</th>
@@ -417,7 +417,7 @@ $sampleDataProvider = $samples->getDataProvider();
                                           $isPreviewAvailable = in_array($file['format'], $previewableFormats) || in_array($file['type'], $previewableTypes);
                                         ?>
                                             <tr>
-                                                <td><?= $file['nameHtml'] ?></td>
+                                                <td class="text-break-word"><?= $file['nameHtml'] ?></td>
                                                 <td><?= $file['description'] ?></td>
                                                 <td><?php
                                                     //TODO: huge performance issue with large numbers of fileDatasetKeywordsTest.php:49, manifesting when disabling cache
@@ -508,9 +508,19 @@ $sampleDataProvider = $samples->getDataProvider();
                             ?>
 
                             <?php
-                            foreach ($links->getDatasetExternalLinksTypesNames(["Protocols.io", "JBrowse", "3D Models", "Code Ocean"]) as $linkType => $linkCode) {
+                            $modelLinks = $links->getDatasetExternalLinks(['3D Models']);
+                            if (count($modelLinks) > 0) {
                             ?>
-                                <div role="tabpanel" class="tab-pane" id="<?= $linkCode ?>">
+                                <div role="tabpanel" class="tab-pane visible" id="3dmodels">
+                                    <p>3D Models:</p>
+                                    <?php $this->renderPartial('//shared/_model_viewer', ['data' => $modelLinks]); ?>
+                                </div>
+                            <?php
+                            }
+
+                            foreach ($links->getDatasetExternalLinksTypesNames(["Protocols.io", "JBrowse", "Code Ocean","3D Sketchfab"]) as $linkType => $linkCode) {
+                            ?>
+                                <div role="tabpanel" class="tab-pane visible" id="<?= $linkCode ?>">
                                     <p><?= $linkType ?>:</p>
                                     <?php
                                     foreach ($links->getDatasetExternalLinks([$linkType]) as $link) {
@@ -525,11 +535,11 @@ $sampleDataProvider = $samples->getDataProvider();
                                                 echo "<iframe src=\"$p\" style=\"width: 1000px; height: 520px; border: 1px solid transparent;\"></iframe>";
                                                 echo "<br>";
                                                 break;
-                                            case "3D Models":
-                                                echo "<iframe src=\"$p\" style=\"width: 950px; height: 520px; border: 1px solid transparent;\"></iframe>";
-                                                break;
                                             case "Code Ocean":
                                                 echo "<p>$p</p>";
+                                                break;
+                                            case "3D Sketchfab":
+                                                echo "<iframe src=\"$p\" style=\"width: 950px; height: 520px; border: 1px solid transparent;\"></iframe>";
                                                 break;
                                         }
                                     }
