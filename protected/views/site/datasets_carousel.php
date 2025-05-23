@@ -1,10 +1,9 @@
 <?php
 $html_slides = array();
-$max_title_length = 300;
 
 foreach ($datasets as $dataset) {
   $image_url = $dataset->getImageUrl();
-  $image_tag = $dataset->image->tag;
+  $image_tag = isset($dataset->image) ? $dataset->image->tag : '';
   $date_html = '<div class="dataset-date"></div>';
   $safe_title = Yii::app()->controller->widget('CHtmlPurifier')->purify($dataset['title']);
 

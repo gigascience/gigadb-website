@@ -96,6 +96,12 @@ class NewsAndFeedsService extends CApplicationComponent
         return $feed;
     }
 
+    /**
+     * Returns a limited number of published datasets sorted by publication date
+     *
+     * @param int $limit Maximum number of datasets to return
+     * @return array Array of Dataset models
+     */
     public function getFeedDatasets($limit = 10)
     {
         $model = new Dataset();
