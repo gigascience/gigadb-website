@@ -120,9 +120,11 @@ class DatasetController extends Controller
             }
         }
 
+        $locations = SampleLocationHelper::getLocations($id);
+
         // Final rendering phase
 
-        $mainRenderer = function ($assembly, $datasetPageSettings, $previousDataset, $nextDataset, $fileSettings, $sampleSettings, $flag) {
+        $mainRenderer = function ($assembly, $datasetPageSettings, $previousDataset, $nextDataset, $fileSettings, $sampleSettings, $flag, $locations) {
             $this->render('view', array(
                 'datasetPageSettings' => $datasetPageSettings,
                 'model' => $assembly->getDataset(),
@@ -141,6 +143,7 @@ class DatasetController extends Controller
                 'setting' => $fileSettings["columns"],
                 'columns' => $sampleSettings["columns"],
                 'flag' => $flag,
+                'locations' => $locations,
             ));
         };
 
@@ -152,7 +155,7 @@ class DatasetController extends Controller
             $this->metaData['private'] = true;
 
             if (preg_match("/dataset\/$id\/token/",$_SERVER['REQUEST_URI']) || preg_match("/dataset\/view\/id\/$id\/token\/.+/",$_SERVER['REQUEST_URI']) ) { //access using mockup page url
-                $mainRenderer($assembly, $datasetPageSettings, $previousDataset, $nextDataset, $fileSettings, $sampleSettings, $flag);
+                $mainRenderer($assembly, $datasetPageSettings, $previousDataset, $nextDataset, $fileSettings, $sampleSettings, $flag, $locations);
             } else {
                 Yii::log('Request is invalid for URI: '.$_SERVER['REQUEST_URI'],'error');
                 $this->render('invalid', array('model' => new Dataset('search'), 'keyword' => $id));
@@ -160,7 +163,7 @@ class DatasetController extends Controller
         } else { //page type is public
             // specify canonical URL due to samples and files pagination generating multiple URLs with the same main content
             $this->canonicalUrl = Yii::app()->request->hostInfo . '/dataset/' . $model->identifier;
-            $mainRenderer($assembly, $datasetPageSettings, $previousDataset, $nextDataset, $fileSettings, $sampleSettings, $flag);
+            $mainRenderer($assembly, $datasetPageSettings, $previousDataset, $nextDataset, $fileSettings, $sampleSettings, $flag, $locations);
         }
     }
 }

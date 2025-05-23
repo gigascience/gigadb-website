@@ -264,3 +264,10 @@ Feature: a user visit the dataset page
     When I am on "/dataset/100020"
     Then I should see "Liu X; Quan Z; Cheng S; Xu X; Pan S; Zeng P; Xie M; Yue Z; Zhan D; Li Y; Wang J; Zhao Z; Zhang G (2011)"
     And I should not see "Wang, J; Quan, Z; Zhao, Z; Cheng, S; Liu, X; Li, Y; Pan, S; Xie, M; Xu, X; Yue, Z; Zeng, P; Zhan, D; Zhang, G (2011)"
+
+  @issue-718
+  Scenario: Display map samples tab
+    Given I have not signed in
+    And I am on "/dataset/100020"
+    And I follow "Samples Map"
+    Then I should see "OpenStreetMap"
