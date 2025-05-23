@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #2190: Create environment-specific robots.txt
 - Feat #513,#2190: Create meta tags based on environments
 - Feat #199: Add dataset feed to homepage
 - Feat #208: Homepage news items section rework
