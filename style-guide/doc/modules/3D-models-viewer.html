@@ -1,0 +1,508 @@
+<section class="container">
+  <h3>Model selector</h3>
+  <form>
+    <div class="form-group">
+      <label class="control-label" for="model-selector">Select a model:</label>
+      <select id="model-selector" class="form-control model-selector">
+        <option value="model1" selected="">Example_Model_A.obj</option>
+        <option value="model2">Sample_Structure.stl</option>
+        <option value="model3">Demo_Scan.las</option>
+      </select>
+    </div>
+  </form>
+  <h3>Model description</h3>
+  <div class="model-description">
+    <p class="">This detailed 3D model showcases a complex biological structure modelled using precision software.</p>
+  </div>
+
+  <h3>Model viewer</h3>
+  <h4 class="mb-5 mt-10">Idle state</h4>
+
+  <div class="model-viewer-container js-model-viewer-container">
+    <div class="canvas-container js-canvas-container">
+      <canvas
+        data-engine="three.js r170"
+        width="912"
+        height="512"
+        style="display: block; touch-action: none; width: 912px; height: 512px"
+      ></canvas>
+    </div>
+    <div class="js-controls controls" style="display: none">
+      <!-- note: these are links rather than buttons because of bootstrap tooltip -->
+      <a
+        href="#"
+        class="js-controls-info-btn controls-btn"
+        data-toggle="tooltip"
+        title=""
+        data-original-title="Help (h)"
+      >
+        <i class="fa fa-question-circle"></i>
+        <span class="sr-only">Toggle help</span>
+      </a>
+      <a
+        href="#"
+        class="js-fullscreen-btn controls-btn"
+        data-toggle="tooltip"
+        title=""
+        data-original-title="Fullscreen (f)"
+      >
+        <i class="fa fa-expand"></i>
+        <span class="sr-only">Toggle fullscreen</span>
+      </a>
+    </div>
+    <div class="play-button-overlay js-play-button-overlay">
+      <button class="play-button js-play-button">
+        <i class="fa fa-play play-button-icon"></i>
+        <span class="sr-only">Load model</span>
+      </button>
+    </div>
+    <div class="js-loading-overlay">
+      <div role="status" aria-live="polite">
+        <span class="sr-only js-loading-text"></span>
+      </div>
+      <div
+        class="loading-display loading-overlay js-loading-display"
+        style="display: none"
+      >
+        <div class="loading-spinner"></div>
+        <div class="loading-text js-loading-text"></div>
+      </div>
+    </div>
+    <div
+      class="error-display js-error-display"
+      role="alert"
+      style="display: none"
+    >
+      <p class="error-content js-error-content" style="display: none"></p>
+    </div>
+    <div class="js-help-modal help-modal" style="display: none">
+      <div class="help-modal-content">
+        <div class="help-modal-header">
+          <h2 class="help-modal-title">CONTROLS</h2>
+          <button class="js-help-modal-close help-modal-close">
+            <i class="fa fa-times"></i>
+            <span class="sr-only">Close</span>
+          </button>
+        </div>
+        <div class="help-modal-body">
+          <div class="help-control">
+            <i class="fa fa-refresh"></i>
+            <div class="help-control-text">
+              <div>Orbit around</div>
+              <div class="help-control-detail">Left click + drag</div>
+            </div>
+          </div>
+          <div class="help-control">
+            <i class="fa fa-search"></i>
+            <div class="help-control-text">
+              <div>Zoom</div>
+              <div class="help-control-detail">Scroll anywhere</div>
+            </div>
+          </div>
+          <div class="help-control">
+            <i class="fa fa-arrows"></i>
+            <div class="help-control-text">
+              <div>Pan</div>
+              <div class="help-control-detail">Right click + drag</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h4 class="mb-5 mt-10">Success state</h4>
+  <div class="model-viewer-container js-model-viewer-container">
+    <div class="canvas-container js-canvas-container">
+      <canvas
+        id="successCanvas"
+        data-engine="three.js r170"
+        width="912"
+        height="512"
+        style="display: block; touch-action: none; width: 912px; height: 512px"
+      ></canvas>
+    </div>
+    <div class="js-controls controls" style="">
+      <!-- note: these are links rather than buttons because of bootstrap tooltip -->
+      <a
+        href="#"
+        class="js-controls-info-btn controls-btn"
+        data-toggle="tooltip"
+        title=""
+        data-original-title="Help (h)"
+      >
+        <i class="fa fa-question-circle"></i>
+        <span class="sr-only">Toggle help</span>
+      </a>
+      <a
+        href="#"
+        class="js-fullscreen-btn controls-btn"
+        data-toggle="tooltip"
+        title=""
+        data-original-title="Fullscreen (f)"
+      >
+        <i class="fa fa-expand"></i>
+        <span class="sr-only">Toggle fullscreen</span>
+      </a>
+    </div>
+    <div class="play-button-overlay js-play-button-overlay" style="display: none">
+      <button class="play-button js-play-button">
+        <i class="fa fa-play play-button-icon"></i>
+        <span class="sr-only">Load model</span>
+      </button>
+    </div>
+    <div class="js-loading-overlay">
+      <div role="status" aria-live="polite">
+        <span class="sr-only js-loading-text">Model loaded</span>
+      </div>
+      <div
+        class="loading-display loading-overlay js-loading-display"
+        style="display: none"
+      >
+        <div class="loading-spinner"></div>
+        <div class="loading-text js-loading-text">Model loaded</div>
+      </div>
+    </div>
+    <div
+      class="error-display js-error-display"
+      role="alert"
+      style="display: none"
+    >
+      <p class="error-content js-error-content" style="display: none"></p>
+    </div>
+    <div class="js-help-modal help-modal" style="display: none">
+      <div class="help-modal-content">
+        <div class="help-modal-header">
+          <h2 class="help-modal-title">CONTROLS</h2>
+          <button class="js-help-modal-close help-modal-close">
+            <i class="fa fa-times"></i>
+            <span class="sr-only">Close</span>
+          </button>
+        </div>
+        <div class="help-modal-body">
+          <div class="help-control">
+            <i class="fa fa-refresh"></i>
+            <div class="help-control-text">
+              <div>Orbit around</div>
+              <div class="help-control-detail">Left click + drag</div>
+            </div>
+          </div>
+          <div class="help-control">
+            <i class="fa fa-search"></i>
+            <div class="help-control-text">
+              <div>Zoom</div>
+              <div class="help-control-detail">Scroll anywhere</div>
+            </div>
+          </div>
+          <div class="help-control">
+            <i class="fa fa-arrows"></i>
+            <div class="help-control-text">
+              <div>Pan</div>
+              <div class="help-control-detail">Right click + drag</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById("successCanvas");
+    const ctx = canvas.getContext("2d");
+
+    ctx.fillStyle = "#f5f5f5";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = "#4a90e2";
+    ctx.fillRect(canvas.width / 2 - 100, canvas.height / 2 - 100, 200, 200);
+
+    ctx.font = "20px Arial";
+    ctx.fillStyle = "#333";
+    ctx.textAlign = "center";
+    ctx.fillText("Model Loaded", canvas.width / 2, canvas.height / 2 + 150);
+  </script>
+
+  <h4 class="mb-5 mt-10">Error state</h4>
+  <div class="model-viewer-container js-model-viewer-container">
+    <div class="canvas-container js-canvas-container">
+      <canvas
+        data-engine="three.js r170"
+        width="912"
+        height="512"
+        style="display: block; touch-action: none; width: 912px; height: 512px"
+      ></canvas>
+    </div>
+    <div class="js-controls controls" style="display: none">
+      <!-- note: these are links rather than buttons because of bootstrap tooltip -->
+      <a
+        href="#"
+        class="js-controls-info-btn controls-btn"
+        data-toggle="tooltip"
+        title=""
+        data-original-title="Help (h)"
+      >
+        <i class="fa fa-question-circle"></i>
+        <span class="sr-only">Toggle help</span>
+      </a>
+      <a
+        href="#"
+        class="js-fullscreen-btn controls-btn"
+        data-toggle="tooltip"
+        title=""
+        data-original-title="Fullscreen (f)"
+      >
+        <i class="fa fa-expand"></i>
+        <span class="sr-only">Toggle fullscreen</span>
+      </a>
+    </div>
+    <div class="play-button-overlay js-play-button-overlay" style="">
+      <button class="play-button js-play-button">
+        <i class="fa fa-play play-button-icon"></i>
+        <span class="sr-only">Load model</span>
+      </button>
+    </div>
+    <div class="js-loading-overlay">
+      <div role="status" aria-live="polite">
+        <span class="sr-only js-loading-text"></span>
+      </div>
+      <div
+        class="loading-display loading-overlay js-loading-display"
+        style="display: none"
+      >
+        <div class="loading-spinner"></div>
+        <div class="loading-text js-loading-text"></div>
+      </div>
+    </div>
+    <div
+      class="error-display js-error-display alert alert-danger"
+      role="alert"
+      style=""
+    >
+      <p class="error-content js-error-content" style="">
+        Error: fetch for
+        "http://gigadb.gigasciencejournal.com/dataset/notfound.obj" responded with
+        404: Not Found
+      </p>
+    </div>
+    <div class="js-help-modal help-modal" style="display: none">
+      <div class="help-modal-content">
+        <div class="help-modal-header">
+          <h2 class="help-modal-title">CONTROLS</h2>
+          <button class="js-help-modal-close help-modal-close">
+            <i class="fa fa-times"></i>
+            <span class="sr-only">Close</span>
+          </button>
+        </div>
+        <div class="help-modal-body">
+          <div class="help-control">
+            <i class="fa fa-refresh"></i>
+            <div class="help-control-text">
+              <div>Orbit around</div>
+              <div class="help-control-detail">Left click + drag</div>
+            </div>
+          </div>
+          <div class="help-control">
+            <i class="fa fa-search"></i>
+            <div class="help-control-text">
+              <div>Zoom</div>
+              <div class="help-control-detail">Scroll anywhere</div>
+            </div>
+          </div>
+          <div class="help-control">
+            <i class="fa fa-arrows"></i>
+            <div class="help-control-text">
+              <div>Pan</div>
+              <div class="help-control-detail">Right click + drag</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h4 class="mb-5 mt-10">Pending state</h4>
+  <div class="model-viewer-container js-model-viewer-container">
+    <div class="canvas-container js-canvas-container">
+      <canvas
+        data-engine="three.js r170"
+        width="912"
+        height="512"
+        style="display: block; touch-action: none; width: 912px; height: 512px"
+      ></canvas>
+    </div>
+    <div class="js-controls controls" style="display: none">
+      <!-- note: these are links rather than buttons because of bootstrap tooltip -->
+      <a
+        href="#"
+        class="js-controls-info-btn controls-btn"
+        data-toggle="tooltip"
+        title=""
+        data-original-title="Help (h)"
+      >
+        <i class="fa fa-question-circle"></i>
+        <span class="sr-only">Toggle help</span>
+      </a>
+      <a
+        href="#"
+        class="js-fullscreen-btn controls-btn"
+        data-toggle="tooltip"
+        title=""
+        data-original-title="Fullscreen (f)"
+      >
+        <i class="fa fa-expand"></i>
+        <span class="sr-only">Toggle fullscreen</span>
+      </a>
+    </div>
+    <div class="play-button-overlay js-play-button-overlay" style="display: none">
+      <button class="play-button js-play-button">
+        <i class="fa fa-play play-button-icon"></i>
+        <span class="sr-only">Load model</span>
+      </button>
+    </div>
+    <div class="js-loading-overlay">
+      <div role="status" aria-live="polite">
+        <span class="sr-only js-loading-text">Loading model</span>
+      </div>
+      <div class="loading-display loading-overlay js-loading-display" style="">
+        <div class="loading-spinner"></div>
+        <div class="loading-text js-loading-text">Loading model</div>
+      </div>
+    </div>
+    <div
+      class="error-display js-error-display"
+      role="alert"
+      style="display: none"
+    >
+      <p class="error-content js-error-content" style="display: none"></p>
+    </div>
+    <div class="js-help-modal help-modal" style="display: none">
+      <div class="help-modal-content">
+        <div class="help-modal-header">
+          <h2 class="help-modal-title">CONTROLS</h2>
+          <button class="js-help-modal-close help-modal-close">
+            <i class="fa fa-times"></i>
+            <span class="sr-only">Close</span>
+          </button>
+        </div>
+        <div class="help-modal-body">
+          <div class="help-control">
+            <i class="fa fa-refresh"></i>
+            <div class="help-control-text">
+              <div>Orbit around</div>
+              <div class="help-control-detail">Left click + drag</div>
+            </div>
+          </div>
+          <div class="help-control">
+            <i class="fa fa-search"></i>
+            <div class="help-control-text">
+              <div>Zoom</div>
+              <div class="help-control-detail">Scroll anywhere</div>
+            </div>
+          </div>
+          <div class="help-control">
+            <i class="fa fa-arrows"></i>
+            <div class="help-control-text">
+              <div>Pan</div>
+              <div class="help-control-detail">Right click + drag</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h4 class="mb-5 mt-10">Controls modal</h4>
+  <div class="model-viewer-container js-model-viewer-container">
+    <div class="canvas-container js-canvas-container">
+      <canvas
+        data-engine="three.js r170"
+        width="912"
+        height="512"
+        style="display: block; touch-action: none; width: 912px; height: 512px"
+      ></canvas>
+    </div>
+    <div class="js-controls controls" style="">
+      <!-- note: these are links rather than buttons because of bootstrap tooltip -->
+      <a
+        href="#"
+        class="js-controls-info-btn controls-btn"
+        data-toggle="tooltip"
+        title=""
+        data-original-title="Help (h)"
+      >
+        <i class="fa fa-question-circle"></i>
+        <span class="sr-only">Toggle help</span>
+      </a>
+      <a
+        href="#"
+        class="js-fullscreen-btn controls-btn"
+        data-toggle="tooltip"
+        title=""
+        data-original-title="Fullscreen (f)"
+      >
+        <i class="fa fa-expand"></i>
+        <span class="sr-only">Toggle fullscreen</span>
+      </a>
+    </div>
+    <div class="play-button-overlay js-play-button-overlay" style="display: none">
+      <button class="play-button js-play-button">
+        <i class="fa fa-play play-button-icon"></i>
+        <span class="sr-only">Load model</span>
+      </button>
+    </div>
+    <div class="js-loading-overlay">
+      <div role="status" aria-live="polite">
+        <span class="sr-only js-loading-text">Model loaded</span>
+      </div>
+      <div
+        class="loading-display loading-overlay js-loading-display"
+        style="display: none"
+      >
+        <div class="loading-spinner"></div>
+        <div class="loading-text js-loading-text">Model loaded</div>
+      </div>
+    </div>
+    <div
+      class="error-display js-error-display"
+      role="alert"
+      style="display: none"
+    >
+      <p class="error-content js-error-content" style="display: none"></p>
+    </div>
+    <div class="js-help-modal help-modal" style="">
+      <div class="help-modal-content">
+        <div class="help-modal-header">
+          <h2 class="help-modal-title">CONTROLS</h2>
+          <button class="js-help-modal-close help-modal-close">
+            <i class="fa fa-times"></i>
+            <span class="sr-only">Close</span>
+          </button>
+        </div>
+        <div class="help-modal-body">
+          <div class="help-control">
+            <i class="fa fa-refresh"></i>
+            <div class="help-control-text">
+              <div>Orbit around</div>
+              <div class="help-control-detail">Left click + drag</div>
+            </div>
+          </div>
+          <div class="help-control">
+            <i class="fa fa-search"></i>
+            <div class="help-control-text">
+              <div>Zoom</div>
+              <div class="help-control-detail">Scroll anywhere</div>
+            </div>
+          </div>
+          <div class="help-control">
+            <i class="fa fa-arrows"></i>
+            <div class="help-control-text">
+              <div>Pan</div>
+              <div class="help-control-detail">Right click + drag</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>

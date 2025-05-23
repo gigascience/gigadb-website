@@ -15,19 +15,19 @@ else
 fi
 
 # Download the upstream backup and load it into RDS
-docker run --rm --env-file .env -v /home/centos/.config/rclone/rclone.conf:/root/.config/rclone/rclone.conf -v /home/centos/restore:/restore --entrypoint /restore_database_from_s3_backup.sh registry.gitlab.com/$GITLAB_PROJECT_NAME/production_s3backup:$GIGADB_ENVIRONMENT "$backupDate"
+docker run --rm --env-file .env -v /home/ec2-user/.config/rclone/rclone.conf:/root/.config/rclone/rclone.conf -v /home/ec2-user/restore:/restore --entrypoint /restore_database_from_s3_backup.sh registry.gitlab.com/$GITLAB_PROJECT_NAME/production_s3backup:$GIGADB_ENVIRONMENT "$backupDate"
 
 # Create the drop and add constraints queries that need to be run before and after schema migration respectively
-docker run --rm -e YII_PATH=/var/www/vendor/yiisoft/yii -v /home/centos:/var/www/protected/runtime registry.gitlab.com/$GITLAB_PROJECT_NAME/production_app:$GIGADB_ENVIRONMENT /var/www/protected/scripts/prepareConstraints.sh
+docker run --rm -e YII_PATH=/var/www/vendor/yiisoft/yii -v /home/ec2-user:/var/www/protected/runtime registry.gitlab.com/$GITLAB_PROJECT_NAME/production_app:$GIGADB_ENVIRONMENT /var/www/protected/scripts/prepareConstraints.sh
 
 # Drop constraints/indexes/triggers before running migrations
-docker run --rm --env-file .env -v /home/centos:/sql --entrypoint /dropConstraints.sh registry.gitlab.com/$GITLAB_PROJECT_NAME/production_s3backup:$GIGADB_ENVIRONMENT
+docker run --rm --env-file .env -v /home/ec2-user:/sql --entrypoint /dropConstraints.sh registry.gitlab.com/$GITLAB_PROJECT_NAME/production_s3backup:$GIGADB_ENVIRONMENT
 
 # Run migrations
-docker run --rm -e YII_PATH=/var/www/vendor/yiisoft/yii -v /home/centos:/var/www/protected/runtime registry.gitlab.com/$GITLAB_PROJECT_NAME/production_app:$GIGADB_ENVIRONMENT /var/www/protected/scripts/updateDBSchema.sh
+docker run --rm -e YII_PATH=/var/www/vendor/yiisoft/yii -v /home/ec2-user:/var/www/protected/runtime registry.gitlab.com/$GITLAB_PROJECT_NAME/production_app:$GIGADB_ENVIRONMENT /var/www/protected/scripts/updateDBSchema.sh
 
 # Restore constraints/indexes/triggers
-docker run --rm --env-file .env -v /home/centos:/sql --entrypoint /addConstraints.sh registry.gitlab.com/$GITLAB_PROJECT_NAME/production_s3backup:$GIGADB_ENVIRONMENT
+docker run --rm --env-file .env -v /home/ec2-user:/sql --entrypoint /addConstraints.sh registry.gitlab.com/$GITLAB_PROJECT_NAME/production_s3backup:$GIGADB_ENVIRONMENT
 
 # Housekeeping
-rm -f /home/centos/restore/gigadb*.backup
+rm -f /home/ec2-user/restore/gigadb*.backup

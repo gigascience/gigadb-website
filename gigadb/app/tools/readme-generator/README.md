@@ -278,13 +278,13 @@ ec2_bastion_private_ip = "10.88.8.888"
 ec2_bastion_public_ip = "88.888.888.888"
 
 # Log into bastion server
-$ ssh -i ~/.ssh/your-private-key.pem centos@88.888.888.888
+$ ssh -i ~/.ssh/your-private-key.pem ec2-user@88.888.888.888
 ```
 
 Before executing the `createReadme` tool, get the existing values of the `file` table and `file_attributes` table:
 ```
 # check the tables
-[centos@ip-10-99-0-207 ~]$ psql -h $rds_instance_address -U gigadb -c 'select id, name, location, size from file where dataset_id = 200'
+[ec2-user@ip-10-99-0-207 ~]$ psql -h $rds_instance_address -U gigadb -c 'select id, name, location, size from file where dataset_id = 200'
 Password for user gigadb: 
   id   |                      name                       |                                                                   location                                                                    |   size    
 -------+-------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+-----------
@@ -293,7 +293,7 @@ Password for user gigadb:
  87542 | Diagram-SRA-Study-Experiment-Joined-probing.jpg | https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/10.5524/100001_101000/100142/Diagram-SRA-Study-Experiment-Joined-probing.jpg |     81717
  87516 | readme.txt                                      | https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/10.5524/100001_101000/100142/readme.txt                                      |      2351
 (4 rows)
-[centos@ip-10-99-0-207 ~]$ psql -h $rds_instance_address -U gigadb -c 'select * from file_attributes where file_id = 87516'
+[ec2-user@ip-10-99-0-207 ~]$ psql -h $rds_instance_address -U gigadb -c 'select * from file_attributes where file_id = 87516'
 Password for user gigadb: 
   id   | file_id | attribute_id |               value                | unit_id 
 -------+---------+--------------+------------------------------------+---------
@@ -303,12 +303,12 @@ Password for user gigadb:
 
 Using docker command to access tool:
 ```
-$ docker run --rm -v /home/centos/readmeFiles:/app/readmeFiles registry.gitlab.com/$GITLAB_PROJECT/production_tool:$GIGADB_ENV /app/yii readme/create --doi 100142 --outdir /app/readmeFiles --bucketPath wasabi:gigadb-datasets/$GIGADB_ENV/pub/10.5524
+$ docker run --rm -v /home/ec2-user/readmeFiles:/app/readmeFiles registry.gitlab.com/$GITLAB_PROJECT/production_tool:$GIGADB_ENV /app/yii readme/create --doi 100142 --outdir /app/readmeFiles --bucketPath wasabi:gigadb-datasets/$GIGADB_ENV/pub/10.5524
 ```
 
 Check the tables `file` and `file_attribbutes` that `name`, `location`, `size` and `value` have been updated.
 ```
-[centos@ip-10-99-0-207 ~]$ psql -h rds-server-staging-ken.cjizsjwbxkxv.ap-northeast-2.rds.amazonaws.com -U gigadb -c 'select id, name, location, size from file where dataset_id = 200'
+[ec2-user@ip-10-99-0-207 ~]$ psql -h rds-server-staging-ken.cjizsjwbxkxv.ap-northeast-2.rds.amazonaws.com -U gigadb -c 'select id, name, location, size from file where dataset_id = 200'
 Password for user gigadb: 
   id   |                      name                       |                                                                   location                                                                    |   size    
 -------+-------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+-----------
@@ -317,7 +317,7 @@ Password for user gigadb:
  87542 | Diagram-SRA-Study-Experiment-Joined-probing.jpg | https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/10.5524/100001_101000/100142/Diagram-SRA-Study-Experiment-Joined-probing.jpg |     81717
  87517 | Diagram-ALL-FIELDS-Check-annotation.jpg         | https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/live/pub/10.5524/100001_101000/100142/Diagram-ALL-FIELDS-Check-annotation.jpg         |     55547
 (4 rows)
-[centos@ip-10-99-0-207 ~]$ psql -h rds-server-staging-ken.cjizsjwbxkxv.ap-northeast-2.rds.amazonaws.com -U gigadb -c 'select * from file_attributes where file_id = 87516'
+[ec2-user@ip-10-99-0-207 ~]$ psql -h rds-server-staging-ken.cjizsjwbxkxv.ap-northeast-2.rds.amazonaws.com -U gigadb -c 'select * from file_attributes where file_id = 87516'
 Password for user gigadb: 
   id   | file_id | attribute_id |              value               | unit_id 
 -------+---------+--------------+----------------------------------+---------
@@ -335,15 +335,25 @@ $ head readmeFiles/readme_100142.txt
 protocol sequencing steps in the Sequence Read Archive".
 ```
 
-Use shell script to run readme tool:
+Check the rclone cmd is working:
+```
+$ rclone copy --s3-no-check-bucket --s3-profile wasabi-transfer /home/ec2-user/readmeFiles/readme_100925.txt wasabi:gigadb-datasets/staging/pub/10.5524/100001_101000/100142/ --config /home/ec2-user/.config/rclone/rclone.conf --dry-run
+2025/02/27 03:20:01 NOTICE: readme_100142.txt: Skipped copy as --dry-run is set (size 9.729Ki)
+2025/02/27 03:20:01 NOTICE: 
+Transferred:        9.729 KiB / 9.729 KiB, 100%, 0 B/s, ETA -
+Transferred:            1 / 1, 100%
+Elapsed time:         1.3s
+```
+
+Use shell wrapper script to run readme tool and copy readme file to Wasabi:
 ```
 $ /usr/local/bin/createReadme --doi 100142
 ```
 
 This time, you can check the log of this create readme file command:
 ```
-$ more uploadLogs/readme_100142_20230901_080216.log 
-2024/06/17 02:40:24 INFO  : Created readme file for DOI 100142 in /usr/local/bin/runtime/curators/readme_100142.txt
+$ more var/log/gigadb/readme_ec2-user.log
+2024/12/13 06:44:13 INFO  : Created readme file for DOI 100142 in /home/ec2-user/readme_100142.txt
 ```
 
 The createReadme.sh script can also be used to copy the newly created readme 
@@ -355,17 +365,17 @@ $ /usr/local/bin/createReadme --doi 100142 --wasabi
 
 And then check the rclone log:
 ```
-[centos@ip-10-99-0-207 ~]$ more /var/log/gigadb/readme.log 
-2024/06/17 03:00:29 INFO  : Created readme file for DOI 100142 in /usr/local/bin/runtime/curators/readme_100142.txt
-2024/06/17 03:00:30 NOTICE: readme_100142.txt: Skipped copy as --dry-run is set (size 1.640Ki)
-2024/06/17 03:00:30 NOTICE: 
-Transferred:        1.640 KiB / 1.640 KiB, 100%, 0 B/s, ETA -
+[ec2-user@ip-10-99-0-207 ~]$ more /var/log/gigadb/readme_ec2-user.log
+22025/02/27 03:23:05 INFO  : Created readme file for DOI 100142 in /home/ec2-user/readme_100142.txt
+2025/02/27 03:23:08 NOTICE: readme_100142.txt: Skipped copy as --dry-run is set (size 2.022Ki)
+2025/02/27 03:23:08 NOTICE: 
+Transferred:        2.022 KiB / 2.022 KiB, 100%, 0 B/s, ETA -
 Transferred:            1 / 1, 100%
-Elapsed time:         1.0s
+Elapsed time:         2.2s
 
-2024/06/17 03:00:30 INFO  : Executed: rclone copy --s3-no-check-bucket /home/centos/readmeFiles/readme_100142.txt wasabi:gigadb-datasets/staging/pub/10.5524/100001_101000/100142/ --config /home/centos/.config/rclone/rclone.conf
- --dry-run --log-file /home/centos/uploadDir/readme_100142_20240617_030024.log --log-level INFO --stats-log-level DEBUG >> /home/centos/uploadDir/readme_100142_20240617_030024.log
-2024/06/17 03:00:30 INFO  : Successfully copied file to Wasabi for DOI: 100142
+2025/02/27 03:23:08 INFO  : Executed: rclone copy --s3-no-check-bucket --s3-profile wasabi-transfer /home/ec2-user/readme_100142.txt wasabi:gigadb-datasets/staging/pub/10.5524/100001_101000/100142/ --config /home/ec2-user/.conf
+ig/rclone/rclone.conf --dry-run --log-file /var/log/gigadb/readme_ec2-user.log --log-level INFO --stats-log-level DEBUG >> /var/log/gigadb/readme_ec2-user.log
+2025/02/27 03:23:08 INFO  : Successfully copied file to Wasabi for DOI: 100142
 ```
 
 If you look at the latest log file in the logs directory, you will see the
@@ -377,12 +387,12 @@ $ /usr/local/bin/createReadme --doi 100142 --wasabi --apply
 
 And the rclone log will be:
 ```
-[centos@ip-10-99-0-207 ~]$ more /var/log/gigadb/readme.log 
-2024/06/17 03:08:03 INFO  : Created readme file for DOI 100142 in /usr/local/bin/runtime/curators/readme_100142.txt
-2024/06/17 03:08:03 INFO  : readme_100142.txt: Copied (replaced existing)
-2024/06/17 03:08:03 INFO  : Executed: rclone copy --s3-no-check-bucket /home/centos/readmeFiles/readme_100142.txt wasabi:gigadb-datasets/staging/pub/10.5524/100001_101000/100142/ --config /home/centos/.config/rclone/rclone.conf
- --log-file /home/centos/uploadDir/readme_100142_20240617_030758.log --log-level INFO --stats-log-level DEBUG >> /home/centos/uploadDir/readme_100142_20240617_030758.log
-2024/06/17 03:08:03 INFO  : Successfully copied file to Wasabi for DOI: 100142
+[ec2-user@ip-10-99-0-207 ~]$ more /var/log/gigadb/readme_ec2-user.log
+2025/02/27 03:24:19 INFO  : Created readme file for DOI 100142 in /home/ec2-user/readme_100142.txt
+2025/02/27 03:24:21 INFO  : readme_100142.txt: Copied (replaced existing)
+2025/02/27 03:24:21 INFO  : Executed: rclone copy --s3-no-check-bucket --s3-profile wasabi-transfer /home/ec2-user/readme_100142.txt wasabi:gigadb-datasets/staging/pub/10.5524/100001_101000/100142/ --config /home/ec2-user/.conf
+ig/rclone/rclone.conf --log-file /var/log/gigadb/readme_ec2-user.log --log-level INFO --stats-log-level DEBUG >> /var/log/gigadb/readme_ec2-user.log
+2025/02/27 03:24:21 INFO  : Successfully copied file to Wasabi for DOI: 100142
 ```
 
 You can confirm that the presence of the new readme file in the 100142 directory
@@ -399,39 +409,38 @@ You will be able to see in the latest log file in the logs directory that 3
 readme files have been created and copied into Wasabi in dry-run mode.
 
 ```
-[centos@ip-10-99-0-207 ~]$ more /var/log/gigadb/readme.log
-2024/06/17 03:20:12 INFO  : Created readme file for DOI 100141 in /usr/local/bin/runtime/curators/readme_100141.txt
-2024/06/17 03:20:12 NOTICE: readme_100141.txt: Skipped copy as --dry-run is set (size 3.646Ki)
-2024/06/17 03:20:12 NOTICE: 
-Transferred:        3.646 KiB / 3.646 KiB, 100%, 0 B/s, ETA -
+[ec2-user@ip-10-99-0-207 ~]$ more /var/log/gigadb/readme_ec2-user.log
+2025/02/27 03:25:47 INFO  : Created readme file for DOI 100141 in /home/ec2-user/readme_100141.txt
+2025/02/27 03:25:49 NOTICE: readme_100141.txt: Skipped copy as --dry-run is set (size 5.443Ki)
+2025/02/27 03:25:49 NOTICE: 
+Transferred:        5.443 KiB / 5.443 KiB, 100%, 0 B/s, ETA -
 Transferred:            1 / 1, 100%
-Elapsed time:         0.2s
+Elapsed time:         1.3s
 
-2024/06/17 03:20:12 INFO  : Executed: rclone copy --s3-no-check-bucket /home/centos/readmeFiles/readme_100141.txt wasabi:gigadb-datasets/staging/pub/10.5524/100001_101000/100141/ --config /home/centos/.config/rclone/rclone.conf
- --dry-run --log-file /home/centos/uploadDir/readme_100141_20240617_032006.log --log-level INFO --stats-log-level DEBUG >> /home/centos/uploadDir/readme_100141_20240617_032006.log
-2024/06/17 03:20:12 INFO  : Successfully copied file to Wasabi for DOI: 100141
-2024/06/17 03:20:16 INFO  : Created readme file for DOI 100142 in /usr/local/bin/runtime/curators/readme_100142.txt
-2024/06/17 03:20:17 NOTICE: readme_100142.txt: Skipped copy as --dry-run is set (size 1.640Ki)
-2024/06/17 03:20:17 NOTICE: 
-Transferred:        1.640 KiB / 1.640 KiB, 100%, 0 B/s, ETA -
+2025/02/27 03:25:49 INFO  : Executed: rclone copy --s3-no-check-bucket --s3-profile wasabi-transfer /home/ec2-user/readme_100141.txt wasabi:gigadb-datasets/staging/pub/10.5524/100001_101000/100141/ --config /home/ec2-user/.conf
+ig/rclone/rclone.conf --dry-run --log-file /var/log/gigadb/readme_ec2-user.log --log-level INFO --stats-log-level DEBUG >> /var/log/gigadb/readme_ec2-user.log
+2025/02/27 03:25:49 INFO  : Successfully copied file to Wasabi for DOI: 100141
+2025/02/27 03:25:52 INFO  : Created readme file for DOI 100142 in /home/ec2-user/readme_100142.txt
+2025/02/27 03:25:54 NOTICE: readme_100142.txt: Skipped copy as --dry-run is set (size 2.039Ki)
+2025/02/27 03:25:54 NOTICE: 
+Transferred:        2.039 KiB / 2.039 KiB, 100%, 0 B/s, ETA -
 Transferred:            1 / 1, 100%
-Elapsed time:         0.2s
+Elapsed time:         1.3s
 
-2024/06/17 03:20:17 INFO  : Executed: rclone copy --s3-no-check-bucket /home/centos/readmeFiles/readme_100142.txt wasabi:gigadb-datasets/staging/pub/10.5524/100001_101000/100142/ --config /home/centos/.config/rclone/rclone.conf
- --dry-run --log-file /home/centos/uploadDir/readme_100141_20240617_032006.log --log-level INFO --stats-log-level DEBUG >> /home/centos/uploadDir/readme_100141_20240617_032006.log
-2024/06/17 03:20:17 INFO  : Successfully copied file to Wasabi for DOI: 100142
-2024/06/17 03:20:22 INFO  : Created readme file for DOI 100143 in /usr/local/bin/runtime/curators/readme_100143.txt
-2024/06/17 03:20:22 NOTICE: readme_100143.txt: Skipped copy as --dry-run is set (size 5.145Ki)
-2024/06/17 03:20:22 NOTICE: 
-Transferred:        5.145 KiB / 5.145 KiB, 100%, 0 B/s, ETA -
+2025/02/27 03:25:54 INFO  : Executed: rclone copy --s3-no-check-bucket --s3-profile wasabi-transfer /home/ec2-user/readme_100142.txt wasabi:gigadb-datasets/staging/pub/10.5524/100001_101000/100142/ --config /home/ec2-user/.conf
+ig/rclone/rclone.conf --dry-run --log-file /var/log/gigadb/readme_ec2-user.log --log-level INFO --stats-log-level DEBUG >> /var/log/gigadb/readme_ec2-user.log
+2025/02/27 03:25:54 INFO  : Successfully copied file to Wasabi for DOI: 100142
+2025/02/27 03:25:58 INFO  : Created readme file for DOI 100143 in /home/ec2-user/readme_100143.txt
+2025/02/27 03:26:00 NOTICE: readme_100143.txt: Skipped copy as --dry-run is set (size 12.636Ki)
+2025/02/27 03:26:00 NOTICE: 
+Transferred:       12.636 KiB / 12.636 KiB, 100%, 0 B/s, ETA -
 Transferred:            1 / 1, 100%
-Elapsed time:         0.2s
+Elapsed time:         1.3s
 
-2024/06/17 03:20:22 INFO  : Executed: rclone copy --s3-no-check-bucket /home/centos/readmeFiles/readme_100143.txt wasabi:gigadb-datasets/staging/pub/10.5524/100001_101000/100143/ --config /home/centos/.config/rclone/rclone.conf
- --dry-run --log-file /home/centos/uploadDir/readme_100141_20240617_032006.log --log-level INFO --stats-log-level DEBUG >> /home/centos/uploadDir/readme_100141_20240617_032006.log
-2024/06/17 03:20:22 INFO  : Successfully copied file to Wasabi for DOI: 100143
-[centos@ip-10-99-0-207 ~]$ 
-
+2025/02/27 03:26:00 INFO  : Executed: rclone copy --s3-no-check-bucket --s3-profile wasabi-transfer /home/ec2-user/readme_100143.txt wasabi:gigadb-datasets/staging/pub/10.5524/100001_101000/100143/ --config /home/ec2-user/.conf
+ig/rclone/rclone.conf --dry-run --log-file /var/log/gigadb/readme_ec2-user.log --log-level INFO --stats-log-level DEBUG >> /var/log/gigadb/readme_ec2-user.log
+2025/02/27 03:26:00 INFO  : Successfully copied file to Wasabi for DOI: 100143
+[ec2-user@ip-10-99-0-171 ~]$
 ```
 
 To copy the readme file to the live data directory, use the `--use-live-data`
@@ -442,4 +451,62 @@ $ /usr/local/bin/createReadme --doi 100142 --wasabi --use-live-data --apply
 
 Now check the directory for dataset 100142 in relevant location in
 gigadb-datasets/live bucket in Wasabi.
+
+## Using readme generator tool on Bastion server as a user
+
+Execute the following command to create a user in the bastion server if needed:
+
+```
+$ cd ops/infrastructure/envs/staging
+% ansible-playbook -i ../../inventories users_playbook.yml -e "newuser=lily" -e "credentials_csv_path=/path/to/user/wasabi/credential/file" --extra-vars="gigadb_env=staging"
+```
+
+Log into the bastion server as the new user:
+```
+$ ssh -i output/privkeys-88.888.888.888/lily lily@88.888.888.888
+
+# check the rclone cmd is working
+[lily@ip-10-99-0-171 ~]$ rclone copy --s3-no-check-bucket --s3-profile wasabi-transfer /home/lily/readme_100925.txt wasabi:gigadb-datasets/staging/pub/10.5524/100001_101000/100925/ --config /home/lily/.config/rclone/rclone.conf --dry-run 
+2025/02/27 03:12:04 NOTICE: readme_100925.txt: Skipped copy as --dry-run is set (size 9.731Ki)
+2025/02/27 03:12:04 NOTICE: 
+Transferred:        9.731 KiB / 9.731 KiB, 100%, 0 B/s, ETA -
+Transferred:            1 / 1, 100%
+Elapsed time:         2.2s
+[lily@ip-10-99-0-171 ~]$ /usr/local/bin/createReadme 
+Usage: /usr/local/bin/createReadme --doi <DOI>
+
+Required:
+--doi            DOI to process
+
+Available Options:
+--batch          Number of DOI to process
+--wasabi         (Default) Copy readme file to Wasabi bucket
+--apply          Escape dry run mode
+--use-live-data  Copy data to production live bucket
+[lily@ip-10-99-0-171 ~]$ ls /var/log/gigadb/
+readme_ec2-user.log
+[lily@ip-10-99-0-171 ~]$ /usr/local/bin/createReadme --doi 100925
+[lily@ip-10-99-0-171 ~]$ ls /var/log/gigadb/
+readme_ec2-user.log  readme_lily.log
+[lily@ip-10-99-0-171 ~]$ ls /var/log/gigadb/
+readme_ec2-user.log  readme_lily.log
+[lily@ip-10-99-0-171 ~]$ more /var/log/gigadb/readme_lily.log
+2025/02/27 03:37:42 INFO  : Created readme file for DOI 100925 in /home/lily/readme_100925.txt
+2025/02/27 03:37:43 NOTICE: readme_100925.txt: Skipped copy as --dry-run is set (size 9.731Ki)
+2025/02/27 03:37:43 NOTICE: 
+Transferred:        9.731 KiB / 9.731 KiB, 100%, 0 B/s, ETA -
+Transferred:            1 / 1, 100%
+Elapsed time:         1.3s
+
+2025/02/27 03:37:43 INFO  : Executed: rclone copy --s3-no-check-bucket --s3-profile wasabi-transfer /home/lily/readme_100925.txt wasabi:gigadb-datasets/staging/pub/10.5524/100001_101000/100925/ --config /home/lily/.config/rclone/rclone.conf --dry-run --log-file /var/log/gigadb/readme_lily.log --log-level INFO --stats-log-level DEBUG >> /var/log/gigadb/readme_lily.log
+2025/02/27 03:37:43 INFO  : Successfully copied file to Wasabi for DOI: 100925
+[lily@ip-10-99-0-171 ~]$ 
+# execute the script with --apply flag
+[lily@ip-10-99-0-171 ~]$ /usr/local/bin/createReadme --doi 100925 --apply
+[lily@ip-10-99-0-171 ~]$ more /var/log/gigadb/readme_lily.log
+2025/02/27 03:39:56 INFO  : Created readme file for DOI 100925 in /home/lily/readme_100925.txt
+2025/02/27 03:39:57 INFO  : readme_100925.txt: Copied (replaced existing)
+2025/02/27 03:39:57 INFO  : Executed: rclone copy --s3-no-check-bucket --s3-profile wasabi-transfer /home/lily/readme_100925.txt wasabi:gigadb-datasets/staging/pub/10.5524/100001_101000/100925/ --config /home/lily/.config/rclone/rclone.conf --log-file /var/log/gigadb/readme_lily.log --log-level INFO --stats-log-level DEBUG >> /var/log/gigadb/readme_lily.log
+2025/02/27 03:39:57 INFO  : Successfully copied file to Wasabi for DOI: 100925
+```
 

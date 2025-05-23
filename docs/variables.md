@@ -39,7 +39,7 @@ values can differ depending on deployment environment:
 
 | Variable                        | Example value | Used in | Comments |
 |---------------------------------|---------------|---------|----------|
-| ANALYTICS_CLIENT_EMAIL          | | local.php.dist for Google analytics  | Use 2 Google analytics accounts, one for live GigaDB deployment and one for staging deployment |
+| ANALYTICS_CLIENT_EMAIL          | | local.php.dist for Google analytics | Use 2 Google analytics accounts, one for live GigaDB deployment and one for staging deployment |
 | ANALYTICS_CLIENT_ID             | | local.php.dist | As above |
 | ANALYTICS_KEYFILE_PATH          | | Cannot find where it is used | Keep for now in line with above |
 | ANALYTICS_PRIVATE_KEY           | | docker-compose.ci.yml | As above |
@@ -138,7 +138,8 @@ values can differ depending on deployment environment:
 | REMOTE_SMTP_PASSWORD            | | main.php.dist | Set at project-level with same values for staging and live deployments |
 | REMOTE_SMTP_PORT                | | main.php.dist | As above |
 | REMOTE_SMTP_USERNAME            | | main.php.dist | As above |
-| SERVER_EMAIL                    | | test.php.dist, local.php.dist, web.php.dist | Set in at project-level so live server has specific email sending functionality. Use test@gigasciencejournal.com for staging |
+| SERVER_EMAIL                    | | test.php.dist, local.php.dist | Set in at project-level so live server has specific email sending functionality. Use test@gigasciencejournal.com for staging |
+| SERVER_EMAIL_USERNAME           | | test.php.dist, web.php.dist   | Set in at project-level with different values for staging and live deployments |
 | SERVER_EMAIL_SMTP_HOST          | | test.php.dist, web.php.dist | Set at project-level with different values for staging and live deployments |
 | SERVER_EMAIL_PASSWORD           | | test.php.dist, web.php.dist | Set at project-level with same values for staging and live deployments |
 | SERVER_EMAIL_SMTP_PORT          | | test.php.dist, web.php.dist | As above |
