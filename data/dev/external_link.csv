@@ -9,3 +9,7 @@ id,dataset_id,url,external_link_type_id
 36,144,https://github.com/ShashaankV/GD,1
 1525,2342,https://scicrunch.org/resolver/RRID:SCR_021313,1
 1526,2342,https://github.com/cihga39871/Atria,7
+1527,8,https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/dev/tests/3d-models/100006/leaf_01.las,5
+1528,8,https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/dev/tests/3d-models/100006/beet_03.stl,5
+1529,8,https://s3.ap-northeast-1.wasabisys.com/gigadb-datasets/dev/tests/3d-models/100006/GeoB8502_865cm_Shell-4.obj,5
+1530,8,https://sketchfab.com/models/cdcff60649b040afa1ee66fef1196da8/embed,9

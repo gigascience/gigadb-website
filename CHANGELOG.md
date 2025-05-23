@@ -5,6 +5,129 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## Unreleased
 
 - Feat #2124: Update open sans font to solve tilde (~) rendering issue in windows chrome
+
+## v4.4.11 - 2025-05-21 - 4fdb2fb13 -
+
+- Fix #531: Calculate the total volume of files and display it on the homepage
+- Fix #2282: Resend email from welcome page
+- Fix #2248: List operation in GigaDB API take into account publication_date as a start data and/or end date
+- Feat #549: create commands: check if DOI exists in Datacite + update Datacite api metadata
+
+## v4.4.10 - 2025-05-16 - 07a8f63b2 - live since 2025-05-19
+
+- Fix #2294: Add dedicated username variable for authenticating to email service
+
+## v4.4.9 - 2025-04-30 - fd51be0df - live since 2025-05-14
+
+- Fix #2270: Allow transitions to 'Submitted' and 'DataPending' from any upload status.
+- Fix #1955: Edit user without being forced to enter a password + add a password regex
+
+## v4.4.8 - 2025-04-08 - 01de0477b - not deployed to live
+
+- Fix #2033: Create a mockup for all upload statuses except published
+
+## v4.4.7 - 2025-03-26 - 4c548f037 - live since 2025-04-03
+
+- Fix #2241: Restore Sketchfab visualisations alongside 3D models files visualisations
+- Fix #2180: Add user in curation log when minting the DOI
+- Feat #2066: Wrap edit file attribute form in a modal
+- Fix #2203: Update the curation log without requiring a page refresh when minting a DOI
+- Fix #1290: Update and save project url and name
+- Fix #2187: Make FAQ buttons responsive
+- Fix #2116: Make authors ordered as shown in the DOI page in the readme file
+
+## v4.4.6 - 2025-03-04 - 996f55f0e - live since 2025-03-14
+
+- Fix #2178: save xml payload even if minting DOI fails
+- Feat #2054: Visualize 3D models locally without relying on sketchfab iframe
+
+## v4.4.5 - 2025-02-24 - cfe6bc63c - live since 2025-02-26
+
+- Fix #1119: Fix filename column width in dataset page
+- Feat #2138: Avoid deleting a type when deleting a dataset type
+
+## v4.4.4 - 2025-02-17 - c17c44843 - live since 2025-02-19
+
+- Fix #2099: Add missing permission for CLOCKSS
+
+## v4.4.3 - 2025-02-03 - c62107e5e - live since 2025-02-05
+
+- Feat #474: Update FAQ "What journals are integrated with GigaDB?"
+- Feat #476: Update FAQ "How do I write a ReadMe file?"
+- Feat #479: Update FAQ "Why is submission to GigaDB not closely integrated with submission to GigaScience?"
+- Feat #524: Add FAQ for BUSCO genome completeness analysis
+- Fix #2053: Update RDS policy to allow createDBSnapshot during destroy
+- Feat #1897: Upgrade OS version to CentOS Stream 9
+
+## v4.4.2 - 2025-01-13 - 7ad7a106b - live since 2025-01-15
+
+- Fix #1975: Remove empty line at the beginning of the xml result
+- Feat #456: Improve DataCite metadata by migrating to Datacite version 4.6
+- Fix #1727: Sort files and samples by id in descending order when querying
+
+## v4.4.1 - 2024-12-24 - 51c426dfe - live since 2025-01-02
+
+## v4.4.11 - 2025-05-21 - 4fdb2fb13 -
+
+- Fix #531: Calculate the total volume of files and display it on the homepage
+- Fix #2282: Resend email from welcome page
+- Fix #2248: List operation in GigaDB API take into account publication_date as a start data and/or end date
+- Feat #549: create commands: check if DOI exists in Datacite + update Datacite api metadata
+
+## v4.4.10 - 2025-05-16 - 07a8f63b2 - live since 2025-05-19
+
+- Fix #2294: Add dedicated username variable for authenticating to email service
+
+## v4.4.9 - 2025-04-30 - fd51be0df - live since 2025-05-14
+
+- Fix #2270: Allow transitions to 'Submitted' and 'DataPending' from any upload status.
+- Fix #1955: Edit user without being forced to enter a password + add a password regex
+
+## v4.4.8 - 2025-04-08 - 01de0477b - not deployed to live
+
+- Fix #2033: Create a mockup for all upload statuses except published
+
+## v4.4.7 - 2025-03-26 - 4c548f037 - live since 2025-04-03
+
+- Fix #2241: Restore Sketchfab visualisations alongside 3D models files visualisations
+- Fix #2180: Add user in curation log when minting the DOI
+- Feat #2066: Wrap edit file attribute form in a modal
+- Fix #2203: Update the curation log without requiring a page refresh when minting a DOI
+- Fix #1290: Update and save project url and name
+- Fix #2187: Make FAQ buttons responsive
+- Fix #2116: Make authors ordered as shown in the DOI page in the readme file
+
+## v4.4.6 - 2025-03-04 - 996f55f0e - live since 2025-03-14
+
+- Fix #2178: save xml payload even if minting DOI fails
+- Feat #2054: Visualize 3D models locally without relying on sketchfab iframe
+
+## v4.4.5 - 2025-02-24 - cfe6bc63c - live since 2025-02-26
+
+- Fix #1119: Fix filename column width in dataset page
+- Feat #2138: Avoid deleting a type when deleting a dataset type
+
+## v4.4.4 - 2025-02-17 - c17c44843 - live since 2025-02-19
+
+- Fix #2099: Add missing permission for CLOCKSS
+
+## v4.4.3 - 2025-02-03 - c62107e5e - live since 2025-02-05
+
+- Feat #474: Update FAQ "What journals are integrated with GigaDB?"
+- Feat #476: Update FAQ "How do I write a ReadMe file?"
+- Feat #479: Update FAQ "Why is submission to GigaDB not closely integrated with submission to GigaScience?"
+- Feat #524: Add FAQ for BUSCO genome completeness analysis
+- Fix #2053: Update RDS policy to allow createDBSnapshot during destroy
+- Feat #1897: Upgrade OS version to CentOS Stream 9
+
+## v4.4.2 - 2025-01-13 - 7ad7a106b - live since 2025-01-15
+
+- Fix #1975: Remove empty line at the beginning of the xml result
+- Feat #456: Improve DataCite metadata by migrating to Datacite version 4.6
+- Fix #1727: Sort files and samples by id in descending order when querying
+
+## v4.4.1 - 2024-12-24 - 51c426dfe - live since 2025-01-02
+
 - Feat #2067: Sort files by size in dataset page
 - Feat #372: Save dataset as xml in log
 - Feat #1940: Reminting notification text change

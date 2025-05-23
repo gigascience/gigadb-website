@@ -1,12 +1,12 @@
 ---
 # build a Centos server running a secure Docker CE install
 
-- name: Fix Centos EOL issues
+- name: Fix Centos package repos issues
   hosts: name_gigadb_webserver_{{gigadb_env}}*
   tags:
-    - fix-centos-eol-issues
+    - fix-centos-package-repos-issues
   roles:
-    - role: ../../roles/centos-eol-fix
+    - role: ../../roles/centos-package-repos
 
 - name: Setup Fail2ban
   hosts: name_gigadb_webserver_{{gigadb_env}}*
@@ -34,7 +34,7 @@
       dds_host: "{{ ec2_public_ip }}"
       dds_server_cert_path: /etc/docker
       dds_restart_docker: no
-      dds_client_cert_path: /home/centos/.docker
+      dds_client_cert_path: /home/ec2-user/.docker
     - role: ../../roles/docker-postinstall
     - role: ../../roles/docker-daemon-enable-start
     - role: ../../roles/fuw
@@ -62,8 +62,8 @@
         path: /share/config
         state: directory
         mode: '0755'
-        owner: centos
-        group: centos
+        owner: ec2-user
+        group: ec2-user
 
     - name: Mount the config access points
       ansible.posix.mount:

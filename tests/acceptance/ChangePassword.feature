@@ -17,32 +17,21 @@ Feature: Change password
     And I should see a submit button "Save"
 
   @ok
-  Scenario: Filling in form to provide new password
+  Scenario: Filling out the form to provide a new password, but the password does not meet the regex requirements
     Given I sign in as a user
     When I am on "/user/changePassword"
     And I fill in the field of "id" "ChangePasswordForm_password" with "123456787"
     And I fill in the field of "id" "ChangePasswordForm_confirmPassword" with "123456787"
     And I check the field "ChangePasswordForm_terms"
     And I press the button "Save"
-    Then I am on "user/view_profile"
-    And I should see "Your profile page"
-    And I should see "user@gigadb.org"
-    And I should see "John"
-    And I should see "Smith"
+    Then I should see "Make sure your password contains at least 8 characters with 1 uppercase character, 1 number and 1 special character."
 
   @ok
-  Scenario: Filling in form to provide user@gigadb.org with original password
-    Given I am on "/site/login"
-    And I fill in the field of "name" "LoginForm[username]" with "user@gigadb.org"
-    And I fill in the field of "name" "LoginForm[password]" with "gigadb"
-    And I press the button "Login"
+  Scenario: Filling out the form to provide a new password, and the password does meet the regex requirements
+    Given I sign in as a user
     When I am on "/user/changePassword"
-    And I fill in the field of "id" "ChangePasswordForm_password" with "gigadb"
-    And I fill in the field of "id" "ChangePasswordForm_confirmPassword" with "gigadb"
+    And I fill in the field of "id" "ChangePasswordForm_password" with "Admintest123?"
+    And I fill in the field of "id" "ChangePasswordForm_confirmPassword" with "Admintest123?"
     And I check the field "ChangePasswordForm_terms"
     And I press the button "Save"
-    Then I am on "user/view_profile"
-    And I should see "Your profile page"
-    And I should see "user@gigadb.org"
-    And I should see "John"
-    And I should see "Smith"
+    Then I should see "Your profile page"

@@ -17,12 +17,12 @@ procedure of how this TLS certificate was created is documented below.
 Log into live web ec2 instance:
 ```
 $ cd ops/infrastructure/envs/live
-$ ssh -i ~/.ssh/id-rsa-aws-hk-gigadb.pem -o ProxyCommand="ssh -W %h:%p -i ~/.ssh/id-rsa-aws-hk-gigadb.pem centos@ec2_bastion_public_ip" centos@ec2_private_ip
+$ ssh -i ~/.ssh/id-rsa-aws-hk-gigadb.pem -o ProxyCommand="ssh -W %h:%p -i ~/.ssh/id-rsa-aws-hk-gigadb.pem ec2-user@ec2_bastion_public_ip" ec2-user@ec2_private_ip
 ```
 
 When you list available docker images, you will see a certbot docker image:
 ```
-[centos@ip-10-99-0-229 ~]$ docker images
+[ec2-user@ip-10-99-0-229 ~]$ docker images
 REPOSITORY                                                                           TAG       IMAGE ID       CREATED         SIZE
 registry.gitlab.com/gigascience/upstream/gigadb-website/production_app               live      5471da52eb3e   13 hours ago    611MB
 registry.gitlab.com/gigascience/upstream/gigadb-website/production_web               live      2e84a1281100   13 hours ago    111MB
@@ -36,7 +36,7 @@ Certbot is a free, open source tool for creating Let's Encrypt certificates that
 can be used by websites to enable HTTPS. We can create and run a new container
 using certbot docker image:
 ```
-[centos@ip-10-99-0-229 ~]$ docker run -it certbot/certbot:latest --version
+[ec2-user@ip-10-99-0-229 ~]$ docker run -it certbot/certbot:latest --version
 certbot 2.7.4
 ```
 
@@ -44,9 +44,9 @@ The keys and certificates created by Certbot can be found in `/etc/letsencrypt/l
 We need to mount this Docker container directory with a directory on the host
 machine. Let's create 3 new directories for this:
 ```
-[centos@ip-10-99-0-229 ~]$ mkdir -p /home/centos/data/certbot/letsencrypt
-[centos@ip-10-99-0-229 ~]$ mkdir -p /home/centos/data/certbot/www
-[centos@ip-10-99-0-229 ~]$ mkdir -p /home/centos/data/certbot/log
+[ec2-user@ip-10-99-0-229 ~]$ mkdir -p /home/ec2-user/data/certbot/letsencrypt
+[ec2-user@ip-10-99-0-229 ~]$ mkdir -p /home/ec2-user/data/certbot/www
+[ec2-user@ip-10-99-0-229 ~]$ mkdir -p /home/ec2-user/data/certbot/log
 ```
 
 There are rate limits to the number of certificates that Let's Encrypt will
@@ -55,10 +55,10 @@ week before you will be allowed to create more certificates. For this reason,
 use the Let's Encrypt test staging API to learn how to create TLS certificates
 by using `--test-cert` flag:
 ```
-[centos@ip-10-99-0-229 ~]$ docker run -it --rm --name temp_certbot \
-  -v /home/centos/data/certbot/letsencrypt:/etc/letsencrypt \
-  -v /home/centos/data/certbot/www:/tmp/letsencrypt \
-  -v /home/centos/data/certbot/log:/var/log \
+[ec2-user@ip-10-99-0-229 ~]$ docker run -it --rm --name temp_certbot \
+  -v /home/ec2-user/data/certbot/letsencrypt:/etc/letsencrypt \
+  -v /home/ec2-user/data/certbot/www:/tmp/letsencrypt \
+  -v /home/ec2-user/data/certbot/log:/var/log \
   certbot/certbot:latest \
   certonly --test-cert --manual \
   --preferred-challenges dns \
@@ -70,10 +70,10 @@ To create TLS certificates for use in live production site:
 ```
 # -rm remove container when it exits, -it starts interactive shell
 # Uses DNS authentication before cert creation
-[centos@ip-10-99-0-229 ~]$ docker run -it --rm --name temp_certbot \
-  -v /home/centos/data/certbot/letsencrypt:/etc/letsencrypt \
-  -v /home/centos/data/certbot/www:/tmp/letsencrypt \
-  -v /home/centos/data/certbot/log:/var/log \
+[ec2-user@ip-10-99-0-229 ~]$ docker run -it --rm --name temp_certbot \
+  -v /home/ec2-user/data/certbot/letsencrypt:/etc/letsencrypt \
+  -v /home/ec2-user/data/certbot/www:/tmp/letsencrypt \
+  -v /home/ec2-user/data/certbot/log:/var/log \
   certbot/certbot:latest \
   certonly --manual \
   --preferred-challenges dns \
@@ -88,11 +88,11 @@ name consisting of the hostname for which you want a certificate issued,
 prepended by `_acme-challenge`. You will need to access the [Alibaba DNS manager](https://www.alibabacloud.com)
 to do this because the gigadb.org domain is managed by this service.
 
-The new certificates can be viewed in the `/home/centos/data/certbot/letsencrypt/live/gigadb.org`
+The new certificates can be viewed in the `/home/ec2-user/data/certbot/letsencrypt/live/gigadb.org`
 directory:
 ```
-[centos@ip-10-99-0-229 ~]$ cd /home/centos/data/certbot/letsencrypt/live/gigadb.org
-[centos@ip-10-99-0-229 ~]$ ls
+[ec2-user@ip-10-99-0-229 ~]$ cd /home/ec2-user/data/certbot/letsencrypt/live/gigadb.org
+[ec2-user@ip-10-99-0-229 ~]$ ls
 README  cert.pem  chain.pem  fullchain.pem  privkey.pem
 ```
 

@@ -34,7 +34,12 @@ foreach($samples as $sample){
     $xml.="</related_samples>";
     
     $xml.="<sample_attributes>";
-    $sa_attributes=  SampleAttribute::model()->findAllByAttributes(array('sample_id'=>$sample->id));
+    $criteria = new CDbCriteria();
+    $criteria->addCondition('sample_id = :id');
+    $criteria->params = array(':id' => $sample->id);
+    $criteria->order = 'id DESC';
+    $sa_attributes= SampleAttribute::model()->findAll($criteria);
+
     foreach($sa_attributes as $sa_attribute){
         $saattribute=  Attributes::model()->findByAttributes(array('id'=>$sa_attribute->attribute_id));
         $xml.="<attribute>";

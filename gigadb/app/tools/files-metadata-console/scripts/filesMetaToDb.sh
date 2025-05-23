@@ -43,7 +43,7 @@ function check_files_exist() {
 }
 
 if [[ $(uname -n) =~ compute ]]; then
-  . /home/centos/.bash_profile
+  . /home/ec2-user/.bash_profile
   
   # Check current directory is a user dropbox
   if [[ ! "${WORKING_DIR}" == *"/share/dropbox/user"* ]]; then

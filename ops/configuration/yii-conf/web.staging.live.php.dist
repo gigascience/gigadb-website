@@ -25,7 +25,7 @@ return [
                 'encryption' => 'ssl',
                 'host' => '${SERVER_EMAIL_SMTP_HOST}',
                 'port' => '${SERVER_EMAIL_SMTP_PORT}',
-                'username' => '${SERVER_EMAIL}',
+                'username' => '${SERVER_EMAIL_USERNAME}',
                 'password' => '${SERVER_EMAIL_PASSWORD}',
             ],
         ],
