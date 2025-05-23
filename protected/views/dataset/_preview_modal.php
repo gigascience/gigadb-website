@@ -38,7 +38,7 @@
     };
 
     const createLoadingSpinner = () => (
-      $('<div>').addClass('loading-spinner')
+      $('<div>').addClass('preview-modal-loading-spinner')
         .append($('<i>').addClass('fa fa-spinner fa-spin fa-3x').attr('aria-hidden', 'true'))
         .append($('<p>').text('Loading preview...'))
     );
@@ -70,7 +70,9 @@
         .attr({
           src: fileData.location,
           class: 'preview-iframe',
-          title: `Preview of ${fileData.name}`
+          title: `Preview of ${fileData.name}`,
+          sandbox: '', // empty sandbox attribute provides maximum security (most restrictive)
+          referrerpolicy: 'no-referrer' // maximum privacy and security
         })
         .on('load', function () {
           $(this).show();
