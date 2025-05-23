@@ -837,7 +837,8 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242&lt;</pre>
                                 Retrieve file information from a known DOI<br />
                                 <a href="http://gigadb.org/api/file?doi=100051" target="_blank">http://gigadb.org/api/file?doi=100051</a>
                             </li>
-                            <li>
+                            <!-- commented out, see issue #2314 -->
+                            <!-- <li>
                                 Search all <span class="text-italic">GigaDB</span> by keyword, return only the top level dataset
                                 metadata<br />
                                 <a href="http://gigadb.org/api/search?keyword=chimp&amp;result=dataset" target="_blank">http://gigadb.org/api/search?keyword=chimp&amp;result=dataset</a>
@@ -879,7 +880,7 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242&lt;</pre>
                             <li>
                                 Refine search to dataset types<br />
                                 <a href="http://gigadb.org/api/search?datasettype=Genomic" target="_blank">http://gigadb.org/api/search?datasettype=Genomic</a>
-                            </li>
+                            </li> -->
                             <li>
                                 Refine search to project names<br />
                                 <a href="http://gigadb.org/api/search?project=Genome%2010K&amp;result=sample" target="_blank">http://gigadb.org/api/search?project=Genome%2010K&amp;result=sample</a>
@@ -888,10 +889,11 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242&lt;</pre>
                                 List all published dataset DOIs (listed in publication date order)<br />
                                 <a href="http://gigadb.org/api/list" target="_blank">http://gigadb.org/api/list</a>
                             </li>
-                            <li>
+                            <!-- commented out, see issue #2314 -->
+                            <!-- <li>
                                 Dump the database<br />
                                 <a href="http://gigadb.org/api/dump" target="_blank">http://gigadb.org/api/dump</a>
-                            </li>
+                            </li> -->
                             <li>
                                 List all dataset DOI's published in a date range (results ordered by
                                 publication date)<br />
