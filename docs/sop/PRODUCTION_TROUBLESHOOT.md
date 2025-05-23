@@ -43,11 +43,11 @@ rds_instance_address = "rds-server-live-gigadb.xxxxxxxxx.ap-east-1.rds.amaxonaws
 vpc_database_subnet_group = "vpc-ap-east-1-live-gigadb-gigadb"
 vpc_id = "vpc-xxxxxxxxxxxxxxxx"
 # login webapp server
-$ ssh -i path/to/id-rsa-aws-hk-gigadb.pem -o ProxyCommand='ssh -i ~path/to/id-rsa-aws-hk-gigadb.pem -W %h:%p centos@$ec2_bastion_public_ip' centos@$ec2_private_ip
+$ ssh -i path/to/id-rsa-aws-hk-gigadb.pem -o ProxyCommand='ssh -i ~path/to/id-rsa-aws-hk-gigadb.pem -W %h:%p ec2-user@$ec2_bastion_public_ip' ec2-user@$ec2_private_ip
 Activate the web console with: systemctl enable --now cockpit.socket
 
 Last login: Tue Oct 10 02:11:34 2023 from 10.99.0.86
-[centos@ip-10-99-0-235 ~]$ ls
+[ec2-user@ip-10-99-0-235 ~]$ ls
 app_data
 ```
 
@@ -59,7 +59,7 @@ start sending out reminder emails of renewing 30 days before expiration.
 
 ```
 # login webapp server
-$ ssh -i path/to/id-rsa-aws-hk-gigadb.pem -o ProxyCommand='ssh -i ~path/to/id-rsa-aws-hk-gigadb.pem -W %h:%p centos@$ec2_bastion_public_ip' centos@$ec2_private_ip
+$ ssh -i path/to/id-rsa-aws-hk-gigadb.pem -o ProxyCommand='ssh -i ~path/to/id-rsa-aws-hk-gigadb.pem -W %h:%p ec2-user@$ec2_bastion_public_ip' ec2-user@$ec2_private_ip
 $ docker ps -a
 CONTAINER ID   IMAGE                                                                                     COMMAND                  CREATED      STATUS      PORTS                                                                                            NAMES
 2798970abde7   registry.gitlab.com/gigascience/upstream/gigadb-website/production_tideways-daemon:live   "tideways-daemon --h…"   6 days ago   Up 6 days   9135/tcp                                                                                         gigadb-website_tideways-daemon_1
@@ -160,17 +160,17 @@ $ cd ops/infrastructure/envs/live
 # get all IP information of the servers
 $ terraform output
 # release usage in bastion server
-$ ssh -i ~path/to/id-rsa-aws-hk-gigadb.pem centos@$ec2_bastion_public_ip
+$ ssh -i ~path/to/id-rsa-aws-hk-gigadb.pem ec2-user@$ec2_bastion_public_ip
 activate the web console with: systemctl enable --now cockpit.socket
 .
 .
-[centos@ip-10-99-0-235 ~]$ docker systems prune --all
+[ec2-user@ip-10-99-0-235 ~]$ docker systems prune --all
 # release usage in webapp server
-$ ssh -i path/to/id-rsa-aws-hk-gigadb.pem -o ProxyCommand='ssh -i ~path/to/id-rsa-aws-hk-gigadb.pem -W %h:%p centos@$ec2_bastion_public_ip' centos@$ec2_private_ip
+$ ssh -i path/to/id-rsa-aws-hk-gigadb.pem -o ProxyCommand='ssh -i ~path/to/id-rsa-aws-hk-gigadb.pem -W %h:%p ec2-user@$ec2_bastion_public_ip' ec2-user@$ec2_private_ip
 Activate the web console with: systemctl enable --now cockpit.socket
 .
 .
-[centos@ip-10-99-0-216 ~]$ docker systems prune --all
+[ec2-user@ip-10-99-0-216 ~]$ docker systems prune --all
 ```
 
 After a while, a `Resolved` email will be sent to `tech@gigasciencejournal.com`.
@@ -335,8 +335,8 @@ which will generate a new pair of ssh keys, the new private key will then be sen
 
 This may be because the sshd service in the bastion server has not been started properly, tech team will:
 ```
-# login bastion server as a centos user
-% ssh -i /path/to/id-rsa-aws-hk-gigadb.pem centos@$bastion-ip
+# login bastion server as a ec2-user user
+% ssh -i /path/to/id-rsa-aws-hk-gigadb.pem ec2-user@$bastion-ip
 # restart the sshd service
 systemctl restart sshd.service
 ```
@@ -411,33 +411,33 @@ efs_filesystem_id = "fs-00073d99cb4083b87"
 Below are the details for mounting and listing the access points:
 ```
 # mounting can only be done by a sudoer
-# login bastion server as a sudoer, eg. centos
-% ssh -i output/privkeys-$bastion-ip/centos centos@$bastion-ip
+# login bastion server as a sudoer, eg. ec2-user
+% ssh -i output/privkeys-$bastion-ip/ec2-user ec2-user@$bastion-ip
 Activate the web console with: systemctl enable --now cockpit.socket
 
 Last login: Tue Apr 23 13:40:56 2024 from 14.199.148.232
-[centos@ip-10-99-0-157 ~]$ ls -al
+[ec2-user@ip-10-99-0-157 ~]$ ls -al
 total 16
-drwx------.  6 centos centos  124 Apr 25 02:29 .
+drwx------.  6 ec2-user ec2-user  124 Apr 25 02:29 .
 drwxr-xr-x.  4 root   root     32 Apr 25 02:12 ..
-drwx------.  3 centos centos   17 Apr 25 02:12 .ansible
--rw-r--r--.  1 centos centos   18 Feb 10 08:05 .bash_logout
--rw-r--r--.  1 centos centos  141 Feb 10 08:05 .bash_profile
--rw-r--r--.  1 centos centos  376 Feb 10 08:05 .bashrc
-drwx------.  2 centos centos   
-[centos@ip-10-99-0-157 ~]$ 
+drwx------.  3 ec2-user ec2-user   17 Apr 25 02:12 .ansible
+-rw-r--r--.  1 ec2-user ec2-user   18 Feb 10 08:05 .bash_logout
+-rw-r--r--.  1 ec2-user ec2-user  141 Feb 10 08:05 .bash_profile
+-rw-r--r--.  1 ec2-user ec2-user  376 Feb 10 08:05 .bashrc
+drwx------.  2 ec2-user ec2-user   
+[ec2-user@ip-10-99-0-157 ~]$ 
 # confirm the dir for mounting exists
-[centos@ip-10-99-0-157 ~]$ ls -al /share
+[ec2-user@ip-10-99-0-157 ~]$ ls -al /share
 total 0
-drwxr-xr-x.  4 centos centos  35 Apr 25 02:00 .
+drwxr-xr-x.  4 ec2-user ec2-user  35 Apr 25 02:00 .
 dr-xr-xr-x. 18 root   root   237 Apr 25 02:00 ..
-drwxr-xr-x.  2 centos centos   6 Apr 25 02:00 config
-drwxr-xr-x.  2 centos centos   6 Apr 25 02:00 dropbox
-[centos@ip-10-99-0-157 ~]$ ls -al /share/dropbox/
+drwxr-xr-x.  2 ec2-user ec2-user   6 Apr 25 02:00 config
+drwxr-xr-x.  2 ec2-user ec2-user   6 Apr 25 02:00 dropbox
+[ec2-user@ip-10-99-0-157 ~]$ ls -al /share/dropbox/
 total 0
-drwxr-xr-x. 2 centos centos  6 Apr 25 02:00 .
-drwxr-xr-x. 4 centos centos 35 Apr 25 02:00 ..
-[[macentosry@ip-10-99-0-157 ~]$ df -hT
+drwxr-xr-x. 2 ec2-user ec2-user  6 Apr 25 02:00 .
+drwxr-xr-x. 4 ec2-user ec2-user 35 Apr 25 02:00 ..
+[ec2-user@ip-10-99-0-157 ~]$ df -hT
 Filesystem     Type      Size  Used Avail Use% Mounted on
 devtmpfs       devtmpfs  838M     0  838M   0% /dev
 tmpfs          tmpfs     871M     0  871M   0% /dev/shm
@@ -445,9 +445,9 @@ tmpfs          tmpfs     871M  8.5M  862M   1% /run
 tmpfs          tmpfs     871M     0  871M   0% /sys/fs/cgroup
 /dev/nvme0n1p1 xfs        30G  1.6G   29G   6% /
 tmpfs          tmpfs     175M     0  175M   0% /run/user/1001
-[centos@ip-10-99-0-157 ~]$ sudo mount -t efs -o tls,accesspoint=fsap-03cba147d08a9405c fs-00073d99cb4083b87 /share/dropbox
-[centos@ip-10-99-0-157 ~]$ sudo mount -t efs -o tls,accesspoint=fsap-02000d2d873a159be fs-00073d99cb4083b87 /share/config
-[centos@ip-10-99-0-157 ~]$ df -hT
+[ec2-user@ip-10-99-0-157 ~]$ sudo mount -t efs -o tls,accesspoint=fsap-03cba147d08a9405c fs-00073d99cb4083b87 /share/dropbox
+[ec2-user@ip-10-99-0-157 ~]$ sudo mount -t efs -o tls,accesspoint=fsap-02000d2d873a159be fs-00073d99cb4083b87 /share/config
+[ec2-user@ip-10-99-0-157 ~]$ df -hT
 Filesystem     Type      Size  Used Avail Use% Mounted on
 devtmpfs       devtmpfs  838M     0  838M   0% /dev
 tmpfs          tmpfs     871M     0  871M   0% /dev/shm
@@ -458,10 +458,10 @@ tmpfs          tmpfs     175M     0  175M   0% /run/user/1001
 tmpfs          tmpfs     175M     0  175M   0% /run/user/1000
 127.0.0.1:/    nfs4      8.0E     0  8.0E   0% /share/dropbox
 127.0.0.1:/    nfs4      8.0E     0  8.0E   0% /share/config
-[centos@ip-10-99-0-157 ~]$ mount | grep /share
+[ec2-user@ip-10-99-0-157 ~]$ mount | grep /share
 127.0.0.1:/ on /share/dropbox type nfs4 (rw,relatime,vers=4.1,rsize=1048576,wsize=1048576,namlen=255,hard,noresvport,proto=tcp,port=20450,timeo=600,retrans=2,sec=sys,clientaddr=127.0.0.1,local_lock=none,addr=127.0.0.1)
 127.0.0.1:/ on /share/config type nfs4 (rw,relatime,vers=4.1,rsize=1048576,wsize=1048576,namlen=255,hard,noresvport,proto=tcp,port=20162,timeo=600,retrans=2,sec=sys,clientaddr=127.0.0.1,local_lock=none,addr=127.0.0.1)
-[centos@ip-10-99-0-157 ~]$ 
+[ec2-user@ip-10-99-0-157 ~]$ 
 ```
 
 Below are the details for listing the access points as a user:
@@ -479,12 +479,12 @@ drwx------. 2 mary mary  29 Apr 25 02:13 .ssh
 drwx------. 2 mary mary   6 Apr 25 02:12 uploadDir
 [mary@ip-10-99-0-157 ~]$ ls -al /share/dropbox
 total 4
-drwxr-xr-x. 2 centos centos 6144 Apr 25 02:37 .
-drwxr-xr-x. 4 centos centos   35 Apr 25 02:00 ..
+drwxr-xr-x. 2 ec2-user ec2-user 6144 Apr 25 02:37 .
+drwxr-xr-x. 4 ec2-user ec2-user   35 Apr 25 02:00 ..
 [mary@ip-10-99-0-157 ~]$ ls -al /share/config/
 total 4
-drwx------. 2 centos centos 6144 Apr 25 02:37 .
-drwxr-xr-x. 4 centos centos   35 Apr 25 02:00 ..
+drwx------. 2 ec2-user ec2-user 6144 Apr 25 02:37 .
+drwxr-xr-x. 4 ec2-user ec2-user   35 Apr 25 02:00 ..
 [mary@ip-10-99-0-157 ~]$
 [mary@ip-10-99-0-157 ~]$ df -hT
 Filesystem     Type      Size  Used Avail Use% Mounted on
