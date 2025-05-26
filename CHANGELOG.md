@@ -4,7 +4,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
-## v4.4.11 - 2025-05-21 - 4fdb2fb13 - 
+- Feat #950: Add Jesse Xiao to team page
+
+## v4.4.11 - 2025-05-21 - 4fdb2fb13 - live since 2025-05-26
 
 - Fix #531: Calculate the total volume of files and display it on the homepage
 - Fix #2282: Resend email from welcome page
