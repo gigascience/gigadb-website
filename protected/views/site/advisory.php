@@ -22,25 +22,29 @@ $this->pageTitle = 'GigaDB - Advisory Board';
         </div>
         <section>
             <div class="row">
-                <div class="col-xs-2 advisory-img-block">
+                <div class="col-xs-6 col-sm-6 col-md-4 col-lg-2 advisory-img-block">
                     <img alt="Dr Paul Flicek" src="/images/profile/Paul.png">
                     <p><a href="http://www.ebi.ac.uk/about/people/paul-flicek">Dr Paul Flicek</a></p>
                 </div>
-                <div class="col-xs-2 advisory-img-block">
+                <div class="col-xs-6 col-sm-6 col-md-4 col-lg-2 advisory-img-block">
                     <img alt="Prof Carole Goble" src="/images/profile/Carole.png">
                     <p><a href="http://www.manchester.ac.uk/research/Carole.goble/">Prof Carole Goble</a></p>
                 </div>
-                <div class="col-xs-2 advisory-img-block">
+                <div class="col-xs-6 col-sm-6 col-md-4 col-lg-2 advisory-img-block">
                     <img alt="Dr Paul Horton" src="/images/profile/Paul.H.png">
                     <p><a href="http://www.cbrc.jp/eng/intro/index.eng.html">Dr Paul Horton</a></p>
                 </div>
-                <div class="col-xs-2 advisory-img-block">
+                <div class="col-xs-6 col-sm-6 col-md-4 col-lg-2 advisory-img-block">
                     <img alt="Dr B F Francis Ouellette" src="/images/profile/Francis.png">
                     <p><a href="http://oicr.on.ca/person/researcher/francis-ouellette">Dr B F Francis Ouellette</a></p>
                 </div>
-                <div class="col-xs-2 advisory-img-block">
-                    <img alt="Dr Xin Zhou" src="/images/profile//ZhouXin.png">
+                <div class="col-xs-6 col-sm-6 col-md-4 col-lg-2 advisory-img-block">
+                    <img alt="Dr Xin Zhou" src="/images/profile/ZhouXin.png">
                     <p><a href="https://www.linkedin.com/profile/view?id=157662709&trk=nav_responsive_tab_profile_pic">Dr Xin Zhou</a></p>
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-4 col-lg-2 advisory-img-block">
+                    <img alt="Jesse Xiao's portrait" src="/images/profile/jessexiao.jpg">
+                    <p><a href="https://www.linkedin.com/in/jessexiao">Jesse (Sezhe) Xiao</a></p>
                 </div>
             </div>
         </section>
