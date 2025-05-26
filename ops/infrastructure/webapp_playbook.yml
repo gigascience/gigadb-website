@@ -130,7 +130,7 @@
         minute: "0"
         hour: "0"
         user: "ec2-user"
-        job: "/usr/local/bin/renew_certs > /var/log/renew_certs.log 2>&1"
+        job: "/usr/local/bin/renew_cert > /var/log/renew_certs.log 2>&1"
         state: present
 
 - name: Install node exporter
