@@ -153,22 +153,24 @@ class CuratorSteps extends \Codeception\Actor
     }
 
     /**
+     * @Given I have signed in as user with email :email
+     */
+    public function iHaveSignedInAsUserWithEmail($email) {
+        $this->I->amOnUrl('http://gigadb.test');
+        $this->I->amOnPage('/site/login');
+        $this->I->fillField(['name' => 'LoginForm[username]'], $email);
+        $this->I->fillField(['name' => 'LoginForm[password]'], 'gigadb');
+        $this->I->click('Login');
+        $this->I->waitForText('Home', 10);
+    }
+
+    /**
      * @When I click on keywords field
      */
     public function iClickOnKeywordsField()
     {
 //        $this->I->click('keywords');
         $this->I->click(['css' => '.placeholder']);
-    }
-
-    /**
-     * @When I fill in keywords fields of name keywords with :keyword
-     */
-    public function iFillInKeywordsFieldsOfNameKeywordsWith($keyword) {
-        $this->I->executeJS(
-            "$('#keywords').tagEditor('addTag', " . json_encode($keyword) . ');'
-        );
-        $this->I->waitForText('abcd', 5, '.tag-editor-tag');
     }
 
     /**
@@ -300,4 +302,36 @@ class CuratorSteps extends \Codeception\Actor
         $this->I->wait(3);
     }
 
+    /**
+     * @When author :origin_author is merged with author row :row column :column icon :icon
+     */
+    public function authorIsMergedWithAuthor($origin_author, $row, $column, $icon) {
+        $this->iHaveSignedInAsAdmin();
+        $this->I->amOnPage("/adminAuthor/update/id/{$origin_author}");
+        $this->I->click('Merge with an author');
+        $this->I->wait(2);
+        $this->I->iClickOnRow($row, $column, $icon);
+        $this->I->wait(2);
+        $this->I->see('Confirm merging these two authors?');
+        $this->I->click('Yes, merge authors');
+        $this->I->wait(1);
+        $this->I->iShouldBeOn("/adminAuthor/view/id/{$origin_author}");
+        $this->I->iShouldSee('merging authors completed successfully');
+    }
+
+    /**
+     * @When user :id name :name lastname :lastname is linked to author row :row column :column icon :icon
+     */
+    public function userIsLinkedToAuthor($id, $name, $lastname, $row, $column, $icon) {
+        $this->iHaveSignedInAsAdmin();
+        $this->I->amOnPage("/user/update/id/{$id}");
+        $this->I->click('Link this user to an author');
+        $this->I->wait(2);
+        $this->I->iClickOnRow($row, $column, $icon);
+        $this->I->wait(2);
+        $this->I->see('Confirm linking this author to the user?');
+        $this->I->click("Link user $name $lastname to that author");
+        $this->I->wait(1);
+        $this->I->see('This user is linked to author: Wang J (14)');
+    }
 }
