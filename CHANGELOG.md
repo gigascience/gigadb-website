@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat security#13: Upgrade Tideways PHP extension version to `5.19.0` and Daemon version to `1.9.36`
 - Feat #798: Update Genomic Dataset Checklist text
 - Feat #950: Add Jesse Xiao to team page
 
