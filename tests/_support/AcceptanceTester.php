@@ -507,4 +507,24 @@ class AcceptanceTester extends \Codeception\Actor
     {
         $this->click(['xpath' => '//table/tbody/tr['.$row.']/td['.$column.']//a['.$icon.']']);
     }
+
+    /**
+     * @When I click the dropdown toggle :id
+     */
+    public function iClickTheDropdownToggleId($id)
+    {
+        $this->click('.dropdown > #' . $id);
+    }
+
+
+    /**
+     * @Then the meta tag should contain :name with :value
+     */
+    public function theMetaTagShouldContain($name, $value)
+    {
+        $content = $this->grabAttributeFrom("meta[name='$name']", 'content');
+        if (false === strpos($content, $value)) {
+            throw new \Exception("The meta tag '$name' does not contain '$value'");
+        }
+    }
 }

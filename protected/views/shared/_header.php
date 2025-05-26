@@ -31,7 +31,7 @@
                             </ul>
                         </li>
                         <li class="dropdown">
-                            <button class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <button id="dropdown-help" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="dropdown-toggle-label">
                                     Help&nbsp;<i class="fa fa-angle-down" aria-hidden="true"></i>
                                 </span>
