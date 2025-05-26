@@ -90,12 +90,16 @@ class SearchController extends Controller
 		echo json_encode($result);
 	}
 
-    public function actionNew($keyword = '') {
+    /** TODO: rewrite the method and sub methods */
+    public function actionNew() {
         $this->layout="main";
-        if(!$_GET['keyword']) {
-            Yii::app()->user->setFlash('keyword','Keyword can not be blank');
-            $this->redirect(array("/site/index"));
+        $request = Yii::$app->request;
+
+        if(!$keyword = $request->get('keyword')) {
+            Yii::app()->user->setFlash('danger','Keyword can not be blank');
+            return $this->redirect(array("/site/index"));
         }
+
         $ds = new DatabaseSearch();
         $offset = 0;
         $limit = Yii::app()->params['search_result_limit'];
@@ -106,17 +110,10 @@ class SearchController extends Controller
             $datasets = $data['datasets'];
             $datasets['data'] = array_slice($datasets['data'], $offset, $limit);
             $data['datasets'] = $datasets;
-            $this->render('new', $data);
-        }
 
-        else {
-            try {
-                $page = intVal($_POST['page']);
-            }
-            catch (Exception $e) {
-                $page = 1;
-            }
-
+            return $this->render('new', $data);
+        } else {
+            $page = intVal($request->post('page')) ?: 1;
 
             $offset = ($page-1)*$limit;
             $datasets = $data['datasets'];
