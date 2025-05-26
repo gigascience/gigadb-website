@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #798: Update Genomic Dataset Checklist text
 - Feat #950: Add Jesse Xiao to team page
 
 ## v4.4.11 - 2025-05-21 - 4fdb2fb13 - live since 2025-05-26
@@ -13,7 +14,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Fix #2248: List operation in GigaDB API take into account publication_date as a start data and/or end date
 - Feat #549: create commands: check if DOI exists in Datacite + update Datacite api metadata
 
-## v4.4.10 - 2025-05-16 - 07a8f63b2 - live since 2025-05-19 
+## v4.4.10 - 2025-05-16 - 07a8f63b2 - live since 2025-05-19
 
 - Fix #2294: Add dedicated username variable for authenticating to email service
 
