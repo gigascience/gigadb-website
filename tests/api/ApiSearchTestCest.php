@@ -125,4 +125,30 @@ class ApiSearchTestCest
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+    public function tryToQueryListDatasetWithStartDateAndEndDate(ApiTester $I)
+    {
+        $response = $I->sendGET('/list?start_date=2011-07-06&end_date=2013-09-11');
+        $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
+        $I->seeResponseIsXml();
+        $I->assertStringStartsWith('<?xml', $I->grabResponse());
+
+        $response = $I->grabResponse();
+        $xml = simplexml_load_string(($response));
+
+        $I->assertCount(3, $xml->doi);
+    }
+
+    public function tryToQueryListDatasetWithOnlyStartDate(ApiTester $I)
+    {
+        $response = $I->sendGET('/list?start_date=2013-07-06');
+        $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
+        $I->seeResponseIsXml();
+        $I->assertStringStartsWith('<?xml', $I->grabResponse());
+
+        $response = $I->grabResponse();
+        $xml = simplexml_load_string(($response));
+
+        $I->assertCount(6, $xml->doi);
+    }
 }
