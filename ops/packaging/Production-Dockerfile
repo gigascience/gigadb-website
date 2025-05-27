@@ -1,6 +1,9 @@
 ARG TARGET_PHP_VERSION
-FROM php:${TARGET_PHP_VERSION}-fpm-buster
+ARG TIDEWAYS_PHP_EXTENSION_VERSION=latest
 
+FROM ghcr.io/tideways/php:${TIDEWAYS_PHP_EXTENSION_VERSION} AS tideways_php
+
+FROM php:${TARGET_PHP_VERSION}-fpm-buster
 
 # basic dependencies
 RUN apt-get update -yq && \
@@ -47,14 +50,9 @@ RUN apt-get update -yqq && \
 ARG INSTALL_TIDEWAYSPHP=false
 
 # install tideways extension
+COPY --from=tideways_php /tideways/ /tideways/
 RUN if [ ${INSTALL_TIDEWAYSPHP} = true ]; then \
-    apt-get update -yq && \
-    apt-get install -yq --no-install-recommends gpg wget ca-certificates && \
-    echo 'deb [signed-by=/usr/share/keyrings/tideways.gpg] https://packages.tideways.com/apt-packages-main any-version main' | tee /etc/apt/sources.list.d/tideways.list && \
-    wget -qO - 'https://packages.tideways.com/key.gpg' | gpg --dearmor > /usr/share/keyrings/tideways.gpg && \
-    apt-get update -yq && \
-    apt-get install -yq tideways-php && \
-    apt-get clean -yq \
+    docker-php-ext-enable --ini-name tideways.ini "$(php /tideways/get-ext-path.php)" \
 ;fi
 
 ARG INSTALL_OPCACHE=false
@@ -210,8 +208,6 @@ COPY ./index.php /var/www/index.php
 COPY fuw/app/common/models/Upload.php /app/common/models/
 COPY fuw/app/backend/models/FiledropAccount.php /app/backend/models/
 COPY ./VERSION /var/www/
-COPY ./gigadb/app/client/js /gigadb/app/client/js/
-
 
 ARG TARGET_PHP_VERSION=7.0
 COPY ops/configuration/php-conf/php-production.ini /usr/local/etc/php/php.ini
