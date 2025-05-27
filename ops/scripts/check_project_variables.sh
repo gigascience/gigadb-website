@@ -5,6 +5,12 @@
 source .env
 source .secrets
 
+# Check if jq is installed
+if ! command -v jq >/dev/null 2>&1; then
+  echo "Error: jq is not installed. Please install jq to use this script." >&2
+  exit 2
+fi
+
 # Function: fetch_project_variables
 # Uses GITLAB_API_TOKEN and GITLAB_PROJECT_ID to fetch variables from GitLab API
 fetch_project_variables() {
