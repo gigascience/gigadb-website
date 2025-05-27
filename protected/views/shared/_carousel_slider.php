@@ -1,4 +1,26 @@
 <?php
+/**
+ * Carousel slider partial for displaying an array of slides responsively.
+ *
+ * @param array $slides Array of HTML strings for each slide
+ * @param array $itemsPerSlide (optional) Number of items per slide for 'mobile', 'tablet', 'desktop'
+ *
+ * Example usage:
+ * $this->renderPartial('//shared/_carousel_slider', [
+ *   'slides' => $html_slides,
+ *   'itemsPerSlide' => [
+ *     'mobile' => 2,
+ *     'tablet' => 3,
+ *     'desktop' => 4
+ *   ],
+ * ]);
+ *
+ * glossary:
+ *
+ * - item: each repeated "unit of content" within one slide
+ * - indicator: "dot" buttons to select the current slide on display
+ * - control: left / right arrow buttons to cycle slides sequentially
+ */
 $root_id = 'carousel-' . uniqid();
 ?>
 
@@ -27,6 +49,13 @@ $root_id = 'carousel-' . uniqid();
 </div>
 
 <script>
+  /**
+   * Creates a throttled version of the given function that only invokes the function at most once every specified wait period.
+   *
+   * @param {Function} func - The function to throttle.
+   * @param {number} wait - The number of milliseconds to throttle invocations to.
+   * @returns {Function} A throttled version of the input function.
+   */
   function throttle(func, wait) {
     let timeout;
     let lastArgs;
@@ -57,15 +86,59 @@ $root_id = 'carousel-' . uniqid();
     const breakpoints = {
       'tablet': 768,
       'desktop': 992
+    };
+
+    function getChunkSize() {
+      const width = $(window).width();
+      if (width < breakpoints.tablet) return options.itemsPerSlide.mobile;
+      if (width < breakpoints.desktop) return options.itemsPerSlide.tablet;
+      return options.itemsPerSlide.desktop;
+    }
+
+    function setItemMaxWidth({ $items, chunkSize }) {
+      const maxWidth = (100 / chunkSize) + '%';
+      $items.css('max-width', maxWidth);
+    }
+
+    function updateControlsAndIndicators({ $controls, $indicators, $carousel, totalItems, chunkSize }) {
+      if (totalItems <= chunkSize) {
+        $controls.hide();
+        $indicators.hide();
+        $carousel.removeClass('with-indicators');
+      } else {
+        $controls.show();
+        $indicators.show();
+        $carousel.addClass('with-indicators');
+      }
+    }
+
+    function buildSlide({ $items, startIdx, chunkSize, isActive }) {
+      const $slide = $('<div>').addClass('item' + (isActive ? ' active' : ''));
+      const $row = $('<div>').addClass('row');
+      $items.slice(startIdx, startIdx + chunkSize).each(function () {
+        $row.append($(this));
+      });
+      $slide.append($row);
+      return $slide;
+    }
+
+    function buildIndicator({ slideIdx, isActive }) {
+      return $('<li class="carousel-indicator">')
+        .append(
+          $('<a class="carousel-indicator-link">')
+            .attr({
+              'href': '#',
+              'data-target': '#<?php echo $root_id; ?>',
+              'data-slide-to': slideIdx,
+              'role': 'button',
+              'aria-label': `Go to slide ${slideIdx + 1}`
+            })
+        )
+        .toggleClass('active', isActive);
     }
 
     function arrangeSlides() {
-      const isMobile = $(window).width() < breakpoints.tablet;
-      const isTablet = $(window).width() >= breakpoints.tablet && $(window).width() < breakpoints.desktop;
-      const chunkSize = isMobile ? options.itemsPerSlide.mobile
-        : isTablet ? options.itemsPerSlide.tablet
-          : options.itemsPerSlide.desktop;
-
+      const chunkSize = getChunkSize();
       const $carousel = $('#<?php echo $root_id; ?>');
       const $carouselInner = $('.carousel-inner', $carousel);
       const $indicators = $('.carousel-indicators', $carousel);
@@ -76,49 +149,17 @@ $root_id = 'carousel-' . uniqid();
       $carouselInner.empty();
       $indicators.empty();
 
-      // Set max-width based on items per slide
-      const maxWidth = (100 / chunkSize) + '%';
-      $items.css('max-width', maxWidth);
+      setItemMaxWidth({ $items, chunkSize });
+      updateControlsAndIndicators({ $controls, $indicators, $carousel, totalItems, chunkSize });
 
-      // Hide controls and indicators if all items fit on one slide
-      if (totalItems <= chunkSize) {
-        $controls.hide();
-        $indicators.hide();
-        $carousel.removeClass('with-indicators');
-      } else {
-        $controls.show();
-        $indicators.show();
-        $carousel.addClass('with-indicators');
+      let slideIdx = 0;
+      for (let i = 0; i < $items.length; i += chunkSize, slideIdx++) {
+        const isActive = i === 0;
+        $carouselInner.append(buildSlide({ $items, startIdx: i, chunkSize, isActive }));
+        $indicators.append(buildIndicator({ slideIdx, isActive }));
       }
 
-      for (let i = 0; i < $items.length; i += chunkSize) {
-        const $slide = $('<div>').addClass('item' + (i === 0 ? ' active' : ''));
-        const $row = $('<div>').addClass('row');
-
-        $items.slice(i, i + chunkSize).each(function () {
-          $row.append($(this));
-        });
-
-        $slide.append($row);
-        $carouselInner.append($slide);
-
-        $indicators.append(
-          $('<li class="carousel-indicator">')
-            .append(
-              $('<a class="carousel-indicator-link">')
-                .attr({
-                  'href': '#',
-                  'data-target': '#<?php echo $root_id; ?>',
-                  'data-slide-to': i / chunkSize,
-                  'role': 'button',
-                  'aria-label': `Go to slide ${i / chunkSize + 1}`
-                })
-            )
-            .toggleClass('active', i === 0)
-        );
-      }
-
-      $('#<?php echo $root_id; ?>').carousel(0);
+      $carousel.carousel(0);
     }
 
     $('#<?php echo $root_id; ?>').carousel({
