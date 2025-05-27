@@ -322,8 +322,8 @@ Feature: form to update dataset details
     And I fill in the field of "name" "CurationLog[comments]" with "hello world"
     And I press the button "Create"
     And I wait "2" seconds
-    Then I am on "/curationLog/view/id/4"
-    And I should see "View Curation Log #4"
+    Then I am on "/curationLog/view/id/5"
+    And I should see "View Curation Log #5"
     And I should see "hello world"
 
   @ok @curationlog
@@ -539,8 +539,9 @@ Feature: form to update dataset details
 
     @ok
   Scenario: Don't show a modal if the DOI has been minted when trying to publish a dataset
-    When I am on "adminDataset/update/id/5"
-    And I select "Published" from the field "Dataset_upload_status"
+    Given I am on "adminDataset/update/id/5"
+    And I should see "DOI Minting"
+    When I select "Published" from the field "Dataset_upload_status"
     And I wait "4" seconds
     Then I should not see "The DOI does not exist. Please mint the DOI before saving your dataset: Mint DOI"
 
@@ -603,3 +604,15 @@ Feature: form to update dataset details
     And I press the button "Save and send email"
     And I am on "/adminDataset/update/id/5"
     Then I can see the option "DataPending" selected for "Dataset_upload_status"
+
+  @ok
+  Scenario: Check upload status can be set to Published from any previous upload status
+    Given I am on "/adminDataset/update/id/5"
+    And I cannot see the option "Published" selected for "Dataset_upload_status"
+    When I select "Published" from the field "Dataset_upload_status"
+    And I wait "3" seconds
+    And I press the button "Save"
+    And I wait "3" seconds
+    And I am on "/adminDataset/update/id/5"
+    Then I can see the option "Published" selected for "Dataset_upload_status"
+    And I should see "Status changed to Published"
