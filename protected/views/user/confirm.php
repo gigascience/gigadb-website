@@ -22,8 +22,7 @@
 
 
     ?>
-    <p>You are now registered. We will contact you shortly. Feel free to
-      or <?= CHtml::link("contact us", "mailto:" . Yii::app()->params['support_email']) ?>&nbsp;if you prefer.</p>
+    <p>You are now registered. We will contact you shortly. Feel free to <?= CHtml::link("contact us", "mailto:" . Yii::app()->params['support_email']) ?>&nbsp;if you prefer.</p>
   <? } ?>
 
 </div>
