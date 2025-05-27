@@ -104,16 +104,29 @@ class ApiController extends Controller
 
     public function actionList()
     {
+        $status = 'Published';
+        $startDate = Yii::app()->request->getParam('start_date');
+        $endDate = Yii::app()->request->getParam('end_date');
 
-      $status='Published';
-      $datasets = Dataset::model()-> findAllByAttributes(array('upload_status'=>$status));
+        $criteria = new CDbCriteria;
+        $criteria->condition = 'upload_status = :upload_status';
+        $criteria->params = array(':upload_status' => $status);
+
+        if ($startDate) {
+            $criteria->condition .=' AND publication_date >= :start_date';
+            $criteria->params[':start_date'] = $startDate;
+        }
+        if ($endDate) {
+            $criteria->condition .=' AND publication_date <= :end_date';
+            $criteria->params[':end_date'] = $endDate;
+        }
+        $criteria->order = 'publication_date DESC';
+
+        $datasets = Dataset::model()->findAll($criteria);
 
        $this->renderPartial('list',array(
-                    'models'=>$datasets,
-            ));
-
-
-
+            'models'=>$datasets,
+        ));
     }
 
     public function actionFile()
