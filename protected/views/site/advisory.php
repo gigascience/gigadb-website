@@ -42,6 +42,10 @@ $this->pageTitle = 'GigaDB - Advisory Board';
                     <img alt="Dr Xin Zhou" src="/images/profile//ZhouXin.png" class="img-responsive">
                     <p><a href="https://www.linkedin.com/profile/view?id=157662709&trk=nav_responsive_tab_profile_pic">Dr Xin Zhou</a></p>
                 </div>
+                <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 advisory-img-block">
+                    <img alt="Jesse Xiao" src="/images/profile/jessexiao.jpg" class="img-responsive">
+                    <p><a href="https://www.linkedin.com/in/jessexiao">Jesse (Sezhe) Xiao</a></p>
+                </div>
             </div>
         </section>
     </div>

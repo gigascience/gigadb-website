@@ -435,4 +435,20 @@ class AcceptanceTester extends \Codeception\Actor
     {
         $this->see($text, ['css' => "$table tr:nth-child($row) td:nth-child($column)"]);
     }
+
+    /**
+     * @Then I can see the option :value selected for :id
+     */
+    public function iCanSeeTheOptionSelectedFor($value, $id)
+    {
+        $this->seeOptionIsSelected("#dataset-form select[id='$id']", $value);
+    }
+
+    /**
+     * @Then I cannot see the option :value selected for :id
+     */
+    public function iCannotSeeTheOptionSelectedFor($value, $id)
+    {
+        $this->dontSeeOptionIsSelected("#dataset-form select[id='$id']", $value);
+    }
 }

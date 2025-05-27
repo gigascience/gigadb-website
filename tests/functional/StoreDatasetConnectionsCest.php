@@ -15,7 +15,7 @@ class StoreDatasetConnectionsCest
                 'LoginForm[password]' => 'gigadb']);
         $notFoundIdentifier = "10.1186/s13742-015-9999-9";
         $I->amOnPage("/adminManuscript/update/id/281");
-        $I->fillField(['id' => 'Manuscript_identifier'], "$notFoundIdentifier");
+        $I->fillField(['id' => 'LegacyManuscriptForm_identifier'], "$notFoundIdentifier");
         $I->click("Save");
 
         # go to the dataset page
