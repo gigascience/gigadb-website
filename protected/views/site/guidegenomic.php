@@ -117,7 +117,7 @@ $this->pageTitle = 'GigaDB - Genomic Dataset checklists';
                                 </tr>
                                 <tr>
                                     <td>
-                                        Full (not summary) BUSCO results output files (text)
+                                        BUSCO result output files from the latest version of BUSCO; Please provide the 3 files under the "run_lineage_name" folder as shown in the documentation: <a href="https://busco.ezlab.org/busco_userguide.html#outputs">https://busco.ezlab.org/busco_userguide.html#outputs</a>, namely: short_summary.*.txt ,  full_table.tsv , and missing_busco_list.tsv
                                     </td>
                                     <td>
                                         text

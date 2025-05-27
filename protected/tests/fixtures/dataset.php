@@ -12,6 +12,7 @@ return array(
 		'upload_status'=>'Published',
 		'publication_date'=>'2018-08-23',
 		'publisher_id'=>1,
+        'manuscript_id' => 1
 	),
 	array(
 		'id'=>2,

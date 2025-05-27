@@ -75,6 +75,13 @@ class StoredDatasetMainSectionTest extends CDbTestCase
         $expected = array(
                         "authors" => array( //remember authors must be sorted alphabetically on the main section body
                             array(
+                                'id' => 7,
+                                'surname' => 'Schiøtt,',
+                                'first_name' => 'Morten',
+                                'middle_name' => null,
+                                'custom_name' => null,
+                            ),
+                            array(
                                 'id' => 2,
                                 'surname' => 'Montana,',
                                 'first_name' => 'Carlos',
@@ -88,13 +95,6 @@ class StoredDatasetMainSectionTest extends CDbTestCase
                                 'middle_name' => 'GG',
                                 'custom_name' => null,
                             ),
-                            array(
-                                'id' => 7,
-                                'surname' => 'Schiøtt,',
-                                'first_name' => 'Morten',
-                                'middle_name' => null,
-                                'custom_name' => null,
-                            ),
                         ),
                         "release_year" => "2018",
                         "dataset_title" => 'Supporting data for "Analyzing climate variations on multiple timescales can guide Zika virus response measures"',
@@ -106,7 +106,9 @@ class StoredDatasetMainSectionTest extends CDbTestCase
         // no result from database
         $dataset_id = 567;
         $daoUnderTest = new StoredDatasetMainSection($dataset_id, $this->getFixtureManager()->getDbConnection());
-        $expected = [];
+        $expected = [
+            "authors" => [],
+        ];
 
         $this->assertEquals($expected, $daoUnderTest->getReleaseDetails());
     }

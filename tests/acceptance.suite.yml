@@ -55,4 +55,6 @@ gherkin:
         - \Steps\WebsiteUserSteps
       developer:
         - \Steps\DeveloperSteps
+      "third party system":
+        - \Steps\ThirdPartySteps
 bootstrap: initdb.php

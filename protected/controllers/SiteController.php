@@ -83,56 +83,44 @@ class SiteController extends Controller {
 	#        $this->redirect(array('user/accountBalance', 'id'=>Yii::app()->user->_id));
 	#    }
 	#}
-		$form=new SearchForm;  // Use for Form
+		$form = new SearchForm;  // Use for Form
 		$dataset = new Dataset; // Use for auto suggestion
 
-		$datasetModel=$this->getDatasetByType(0);  // Use for image slider content
+		$datasetModel = $this->getDatasetByType(0);  // Use for image slider content
 
-		$publicIds = Yii::app()->db->createCommand()
-	                ->select("id")
-	                ->from("dataset")
-	                ->where("upload_status = 'Published'")
-	                ->queryAll();
+        $publicIdsCount = Yii::app()->db->createCommand()
+            ->select('COUNT(id)')
+            ->from('dataset')
+            ->where("upload_status = 'Published'")
+            ->queryScalar();
 
 		$datasettypes_hints = Type::model()->findAll(array('order'=>'name ASC'));
 
         $news = Yii::app()->newsAndFeedsService->getTodaysNews();
-
         $rss_arr = Yii::app()->newsAndFeedsService->getFeedsData();
 
+        $db = Yii::app()->db;
         //Get dataset types number
         $sql_1="select * from homepage_dataset_type";
-        $command = Yii::app()->db->createCommand($sql_1);
+        $command = $db->createCommand($sql_1);
         $results = $command->queryAll();
 
         $sql_2="select * from sample_number";
-        $command = Yii::app()->db->createCommand($sql_2);
-        $count_sample = $command->queryAll();
+        $command = $db->createCommand($sql_2);
+        $count_sample = $command->queryScalar();
 
         $sql_3="select * from file_number";
-        $command = Yii::app()->db->createCommand($sql_3);
-        $count_file = $command->queryAll();
+        $command = $db->createCommand($sql_3);
+        $count_file = $command->queryScalar();
 
-        $number_genome_mapping=0;
-        $number_ecology=0;
-        $number_eeg=0;
-        $number_epi=0;
-        $number_genomic=0;
-        $number_imaging=0;
-        $number_lipi=0;
-        $number_metabarcoding=0;
-        $number_metagenomic=0;
-        $number_metadata=0;
-        $number_metabolomic=0;
-        $number_climate=0;
-        $number_na=0;
-        $number_ns=0;
-        $number_pt=0;
-        $number_proteomic=0;
-        $number_software=0;
-        $number_ts=0;
-        $number_vm=0;
-        $number_wf=0;
+        $command = Yii::app()->db->createCommand()
+            ->select('SUM(f.size)')
+            ->from('file f')
+            ->join('dataset d', 'd.id = f.dataset_id')
+            ->where('d.upload_status = :status', [':status' => 'Published']);
+
+        $bytes = $command->queryScalar();
+        $bytesFormatted = UnitHelper::specifySizeUnits($bytes);
 
         foreach($results as $result) {
             switch ($result['name']) {
@@ -196,43 +184,40 @@ class SiteController extends Controller {
                 case "Workflow":
                      $number_wf=$result['count'];
                      break;
-
             }
-
         }
 		$this->render('index',array(
 			'datasets'=>$datasetModel,
+            'size'=>$bytesFormatted,
 			'form'=>$form,
 			'dataset'=>$dataset,
 			'news'=>$news,
 			'dataset_hint'=>$datasettypes_hints ,
 			'rss_arr' => $rss_arr ,
-			'count' => count($publicIds),
-                        'count_sample' => $count_sample[0]['count'],
-                        'count_file' => $count_file[0]['count'],
-                        'number_genome_mapping'=>$number_genome_mapping,
-                        'number_climate' => $number_climate,
-                        'number_ecology'=>$number_ecology,
-                        'number_eeg'=>$number_eeg,
-                        'number_epi'=>$number_epi,
-                        'number_genomic'=>$number_genomic,
-                        'number_imaging'=>$number_imaging,
-                        'number_lipi'=>$number_lipi,
-                        'number_metabarcoding'=>$number_metabarcoding,
-                        'number_metabolomic'=>$number_metabolomic,
-                        'number_metadata'=>$number_metadata,
-                        'number_metagenomic'=>$number_metagenomic,
-                        'number_na'=>$number_na,
-                        'number_ns'=>$number_ns,
-                        'number_pt'=>$number_pt,
-                        'number_proteomic'=>$number_proteomic,
-                        'number_software'=>$number_software,
-                        'number_ts'=>$number_ts,
-                        'number_vm'=>$number_vm,
-                        'number_wf'=>$number_wf,
-
-                        )
-
+			'count' => $publicIdsCount,
+                'count_sample' => $count_sample,
+                'count_file' => $count_file,
+                'number_genome_mapping'=>$number_genome_mapping ?? 0,
+                'number_climate' => $number_climate ?? 0,
+                'number_ecology'=>$number_ecology ?? 0,
+                'number_eeg'=>$number_eeg ?? 0,
+                'number_epi'=>$number_epi ?? 0,
+                'number_genomic'=>$number_genomic ?? 0,
+                'number_imaging'=>$number_imaging ?? 0,
+                'number_lipi'=>$number_lipi ?? 0,
+                'number_metabarcoding'=>$number_metabarcoding ?? 0,
+                'number_metabolomic'=>$number_metabolomic ?? 0,
+                'number_metadata'=>$number_metadata ?? 0,
+                'number_metagenomic'=>$number_metagenomic ?? 0,
+                'number_na'=>$number_na ?? 0,
+                'number_ns'=>$number_ns ?? 0,
+                'number_pt'=>$number_pt ?? 0,
+                'number_proteomic'=>$number_proteomic ?? 0,
+                'number_software'=>$number_software ?? 0,
+                'number_ts'=>$number_ts ?? 0,
+                'number_vm'=>$number_vm ?? 0,
+                'number_wf'=>$number_wf ?? 0,
+        )
 		);
 	}
 
