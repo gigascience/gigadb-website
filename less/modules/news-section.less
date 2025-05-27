@@ -13,10 +13,19 @@
   .news-body {
     flex-grow: 1;
     margin-bottom: 16px;
-    overflow: hidden;
+
     color: @darker-gray-on-white;
-    line-height: 1.5;
     font-size: 0.95rem;
+    line-height: 1.5;
+
+    // multiline line-clamp
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-height: calc(1.5em * 4);
   }
 
   .news-more-link {
