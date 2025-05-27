@@ -32,6 +32,7 @@ class AdminDatasetImageCest
         $I->click("Datasets");
         $I->click("Create Dataset");
         $I->fillField('#Dataset_identifier', 346345);
+        $I->checkOption('#Dataset_Genomic');
         $I->fillField('#Dataset_ftp_site', "ftp://location");
         $I->fillField('#Dataset_dataset_size', 7896);
         $I->fillField('#Dataset_title', "Abracadabra");

@@ -83,75 +83,98 @@ class AdminDatasetController extends Controller
 
         $datasetPageSettings = new DatasetPageSettings($dataset);
 
-        if (!empty($_POST['Dataset']) && !empty($_POST['Image'])) {
-        	Yii::log("Processing submitted data", 'info');
-        	$dataset_post_data = $_POST['Dataset'];
-        	if (isset($dataset_post_data['publication_date']) && $dataset_post_data['publication_date'] == "" ) {
-        		$dataset_post_data['publication_date'] = null;
-        	}
-        	if (isset($dataset_post_data['modification_date']) && $dataset_post_data['modification_date'] == "" ) {
-        		$dataset_post_data['modification_date'] = null;
-        	}
-        	if (isset($dataset_post_data['fairnuse']) && $dataset_post_data['fairnuse'] == "" ) {
-        		$dataset_post_data['fairnuse'] = null;
-        	}
+        $request = Yii::$app->request;
+        $dataset_post_data = $request->post('Dataset');
+        $postImage = $request->post('Image');
 
-            $dataset->setAttributes($dataset_post_data, true);
-            if( !$dataset->validate() ) {
-                Yii::log("Dataset instance is not valid", 'info');
-            }
-
-            $datasetImage = CUploadedFile::getInstanceByName('datasetImage');
-
-            if($datasetImage && !empty($_POST['Image'])) { //User has uploaded an image
-                Yii::log("action Create: image form data exists and a file has been uploaded, so creating a new image object","warning");
-                $dataset->image->attributes = $_POST['Image'];
-                Yii::log($datasetImage->getTempName(), "warning");
-                if( ! $dataset->image->write(Yii::$app->cloudStore, $dataset->getUuid(), $datasetImage) ) {
-                    Yii::log("Error writing file to storage for dataset ".$dataset->identifier, "error");
-                }
-            } else { //we use the generic image
-                $dataset->image = Image::model()->findByPk(Image::GENERIC_IMAGE_ID);
-                Yii::log("action Create: Using generic image","warning");
-            }
-
-
-           	if ( !$dataset->hasErrors() && $dataset->image->validate('update') ) {
-            	Yii::log("Image data associated to new dataset is valid", "info");
-                // save image
-                if( $dataset->image->save() ) {
-	                $dataset->image_id = $dataset->image->id;
-                }
-                else {
-                    Yii::log(print_r($dataset->image->getErrors(), true), "error");
-                }
-
-                // save dataset
-                if( $dataset->save() ) {
-                    // link datatypes
-                    if (isset($_POST['datasettypes'])) {
-                        $datasettypes = $_POST['datasettypes'];
-                        foreach (array_keys($datasettypes) as $id) {
-                            $newDatasetTypeRelationship = new DatasetType;
-                            $newDatasetTypeRelationship->dataset_id = $dataset->id;
-                            $newDatasetTypeRelationship->type_id = $id;
-                            $newDatasetTypeRelationship->save();
-                        }
-                    }
-
-                    Yii::app()->user->setFlash('saveSuccess', 'saveSuccess');
-                    if ($dataset->upload_status=='AuthorReview') {
-                        $this->redirect('/adminDataset/private/identifier/'.$dataset->identifier);
-                    }
-                    $this->redirect(array('/dataset/'.$dataset->identifier));
-                }
-            }
-
-            Yii::log(print_r($dataset->getErrors(), true), 'error');
-
+        if (!$dataset_post_data || !$postImage) {
+            $this->render('create', array('model'=>$dataset,'datasetPageSettings' => $datasetPageSettings));
+            Yii::app()->end();
         }
 
-        $this->render('create', array('model'=>$dataset,'datasetPageSettings' => $datasetPageSettings)) ;
+        Yii::log("Processing submitted data", 'info');
+        $dataset_post_data['publication_date'] = !empty($dataset_post_data['publication_date']) ? $dataset_post_data['publication_date'] : null;
+        $dataset_post_data['modification_date'] = !empty($dataset_post_data['modification_date']) ? $dataset_post_data['modification_date'] : null;
+        $dataset_post_data['fairnuse'] = !empty($dataset_post_data['fairnuse']) ? $dataset_post_data['fairnuse'] : null;
+
+        $dataset->setAttributes($dataset_post_data, true);
+        if (!$dataset->validate()) {
+            Yii::log("Dataset instance is not valid", 'info');
+            Yii::log(print_r($dataset->getErrors(), true), 'error');
+
+            $this->render('create', array('model'=>$dataset,'datasetPageSettings' => $datasetPageSettings));
+            Yii::app()->end();
+        }
+
+        $datasetImage = CUploadedFile::getInstanceByName('datasetImage');
+        if ($datasetImage && $postImage) { //User has uploaded an image
+            Yii::log("action Create: image form data exists and a file has been uploaded, so creating a new image object","warning");
+            $dataset->image->attributes = $postImage;
+            Yii::log($datasetImage->getTempName(), "warning");
+
+            if (!$dataset->image->write(Yii::$app->cloudStore, $dataset->getUuid(), $datasetImage)) {
+                Yii::log("Error writing file to storage for dataset ".$dataset->identifier, "error");
+            }
+        } else { //we use the generic image
+            $dataset->image = Image::model()->findByPk(Image::GENERIC_IMAGE_ID);
+            Yii::log("action Create: Using generic image","warning");
+        }
+
+        $transaction = Yii::app()->db->beginTransaction();
+
+        if (!$dataset->image->save()) {
+            Yii::log(print_r($dataset->getErrors(), true), 'error');
+            $transaction->rollBack();
+            $this->render('create', array('model'=>$dataset,'datasetPageSettings' => $datasetPageSettings));
+            Yii::app()->end();
+        }
+
+        Yii::log("Image data associated to new dataset is valid", "info");
+        $dataset->image_id = $dataset->image->id;
+
+        // save dataset
+        if (!$dataset->save() ) {
+            Yii::log(print_r($dataset->getErrors(), true), 'error');
+            $transaction->rollBack();
+            $this->render('create', array('model'=>$dataset,'datasetPageSettings' => $datasetPageSettings));
+            Yii::app()->end();
+        }
+        // link datatypes
+        $datasettypes =  array_keys($request->post('datasettypes'));
+        if (!$datasettypes) {
+            $transaction->rollBack();
+            $dataset->addError('datasettypes', 'Fail to update your types. You need to select at least one type');
+
+            $this->render('create', array('model'=>$dataset,'datasetPageSettings' => $datasetPageSettings));
+            Yii::app()->end();
+        }
+        $count = count($datasettypes);
+        $register = 0;
+        foreach ($datasettypes as $id) {
+            $newDatasetTypeRelationship = new DatasetType;
+            $newDatasetTypeRelationship->dataset_id = $dataset->id;
+            $newDatasetTypeRelationship->type_id = $id;
+
+            if ($newDatasetTypeRelationship->save()) {
+                $register++;
+            }
+        }
+
+        if ($register < 1) {
+            $dataset->addError('datasettypes', 'You need to select at least one type');
+            $transaction->rollBack();
+            $this->render('create', array('model'=>$dataset,'datasetPageSettings' => $datasetPageSettings));
+            Yii::app()->end();
+        }
+
+
+        $transaction->commit();
+        Yii::app()->user->setFlash('saveSuccess', 'saveSuccess');
+        if ($dataset->upload_status === 'AuthorReview') {
+            $this->redirect('/adminDataset/private/identifier/'.$dataset->identifier);
+        }
+
+        $this->redirect(array('/dataset/'.$dataset->identifier));
     }
 
     /**
@@ -204,6 +227,7 @@ class AdminDatasetController extends Controller
             ));
         }
 
+        $transaction = Yii::app()->db->beginTransaction();
         Yii::log('**** new attributes: ' . print_r($postDataset, true), 'warning');
         Yii::app()->user->setFlash('updateError', '');
         $uploadStatus = $postDataset['upload_status'];
@@ -282,9 +306,11 @@ class AdminDatasetController extends Controller
             }
 
             if ($hasPartialError) {
-                 $this->redirect(array('/adminDataset/update/id/' . $model->id));
+                $transaction->rollBack();
+                $this->redirect(array('/adminDataset/update/id/' . $model->id));
             }
 
+            $transaction->commit();
             Yii::app()->user->setFlash('updateSuccess', 'Updated successfully!');
             switch ($datasetPageSettings->getPageType()) {
                 case "draft":
@@ -300,6 +326,7 @@ class AdminDatasetController extends Controller
 
         } else {
             Yii::app()->user->setFlash('updateError', 'Fail to update!');
+            $transaction->rollBack();
             Yii::log(print_r($model->getErrors(), true), 'error');
         }
 
