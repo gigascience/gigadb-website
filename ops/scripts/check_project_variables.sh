@@ -2,8 +2,11 @@
 # check_project_variables.sh
 # Fetches existing GitLab project variables using the GitLab API
 
-source .env
-source .secrets
+# source env variable files only when running locally
+if [[ -z "$CI" ]]; then
+  [ -f .env ] && source .env
+  [ -f .secrets ] && source .secrets
+fi
 
 # Check if jq is installed
 if ! command -v jq >/dev/null 2>&1; then
