@@ -48,31 +48,16 @@ $root_id = 'carousel-' . uniqid();
   </div>
 </div>
 
-<script>
-  /**
-   * Creates a throttled version of the given function that only invokes the function at most once every specified wait period.
-   *
-   * @param {Function} func - The function to throttle.
-   * @param {number} wait - The number of milliseconds to throttle invocations to.
-   * @returns {Function} A throttled version of the input function.
-   */
-  function throttle(func, wait) {
-    let timeout;
-    let lastArgs;
-    return function (...args) {
-      lastArgs = args;
-      if (!timeout) {
-        func.apply(this, args);
-        timeout = setTimeout(() => {
-          timeout = null;
-          if (lastArgs) {
-            func.apply(this, lastArgs);
-            lastArgs = null;
-          }
-        }, wait);
-      }
-    };
-  }
+<?php
+Yii::app()->assetManager->forceCopy = YII_DEBUG;
+$jsDir = Yii::getAlias('/gigadb/app/client/js');
+$jsUrl = Yii::app()->assetManager->publish($jsDir);
+
+Yii::app()->clientScript->registerScriptFile($jsUrl . '/throttle.js', CClientScript::POS_END, ['type' => 'module']);
+?>
+
+<script type="module">
+  import { throttle } from "<?php echo $jsUrl; ?>/throttle.js";
 
   $(document).ready(function () {
     const options = <?php echo json_encode([
