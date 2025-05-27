@@ -89,7 +89,9 @@
             "common\\models\\" : "/app/common/models",     
             "backend\\models\\" : "/app/backend/models",
             "GigaDB\\models\\" : "/gigadb/app/models",
-            "GigaDB\\services\\" : "/gigadb/app/services"
+            "GigaDB\\services\\" : "/gigadb/app/services",
+            "GigaDB\\behaviors\\" : "/gigadb/app/behaviors",
+            "GigaDB\\views\\" : "/gigadb/app/views"
         }
     },
     "repositories": [
