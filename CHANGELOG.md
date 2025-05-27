@@ -4,6 +4,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #2235: Use temporary directory for database volume in CI legacy_test job
+- Feat #2235: Create Manuscript and DatasetLog Yii2 models and create a wrapper to use Manuscript Yii2 model with yii1 Form
+- Feat #2235: Add a checkbox to determine whether if a manuscript should be considered a pre-print link
 - Feat security#13: Upgrade Tideways PHP extension version to `5.19.0` and Daemon version to `1.9.36`
 - Feat #798: Update Genomic Dataset Checklist text
 - Feat #950: Add Jesse Xiao to team page
