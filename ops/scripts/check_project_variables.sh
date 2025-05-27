@@ -17,4 +17,16 @@ fetch_project_variables() {
     "https://gitlab.com/api/v4/projects/${CI_PROJECT_ID}/variables"
 }
 
+# Function: parse_required_variables
+# Extracts required project-level variable names from docs/variables.md
+parse_required_variables() {
+  awk '/^\| [A-Za-z0-9_]+[ ]*\|/ { gsub(/^\| /, ""); gsub(/ .*/, ""); print $1 }' docs/variables.md | grep -v '^Variable$'
+}
+
 # ... existing code ...
+
+# testing
+if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+  echo "Extracted required variable names from docs/variables.md:"
+  parse_required_variables
+fi
