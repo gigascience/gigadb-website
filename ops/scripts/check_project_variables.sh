@@ -58,11 +58,9 @@ compare_variables() {
   fi
 }
 
-# testing
 if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
-  # echo "Extracted required variable names from docs/variables.md:"
-  # parse_required_variables
-  # echo
   echo "Comparing required variables with those in GitLab project:"
   compare_variables
+  echo "Done"
+  exit $?
 fi
