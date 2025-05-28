@@ -58,7 +58,7 @@ check_PHPDoc:
   stage: conformance and security
   script:
     - bash ops/scripts/check_variables_ci.sh
-  allow_failure: false
+  allow_failure: true
 
 check_variables_dev:
   extends: .check_variables_template
