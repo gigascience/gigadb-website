@@ -1,6 +1,7 @@
 #!/bin/bash
-# check_project_variables.sh
-# Fetches existing GitLab project variables using the GitLab API
+# check_variables.sh
+# Fetches existing GitLab project variables using the GitLab API and compares them against the specified variables file
+# Usage: bash ops/scripts/check_variables_local.sh [-e staging|live|dev|CI]
 
 # set -x
 
@@ -8,7 +9,7 @@
 [ -f .secrets ] && source .secrets
 
 # Config
-VARIABLES_MD_PATH="docs/vars.md"
+VARIABLES_MD_PATH="docs/variables.md"
 GITLAB_API_URL="https://gitlab.com/api/v4"
 token=$GITLAB_PRIVATE_TOKEN
 project_id=$GITLAB_PROJECT_ID

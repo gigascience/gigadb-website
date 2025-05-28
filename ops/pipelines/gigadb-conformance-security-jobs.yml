@@ -54,12 +54,12 @@ check_PHPDoc:
   allow_failure: true
   when: manual
 
-check_project_variables:
+check_variables:
   stage: conformance and security
   script:
     - docker load -i alpine-3_14.tar
-    - apk add --no-cache bash curl jq
-    - bash ops/scripts/check_project_variables_ci.sh
+    - apk add --no-cache bash curl
+    - bash ops/scripts/check_variables_ci.sh
   allow_failure: false
 
 .check_coverage:
