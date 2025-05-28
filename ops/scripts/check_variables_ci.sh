@@ -16,7 +16,7 @@ VARIABLES_MD_PATH="docs/variables.md"
 # Set DEBUG to true to enable verbose output for debugging
 : "${DEBUG:=false}"
 
-if [[ -n "$CI_ENVIRONMENT_NAME" ]]; then
+if [[ -n "${CI_ENVIRONMENT_NAME:-}" ]]; then
   ENVIRONMENT="$CI_ENVIRONMENT_NAME"
 else
   ENVIRONMENT="dev"

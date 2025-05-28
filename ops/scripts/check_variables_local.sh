@@ -49,7 +49,7 @@ done
 # Determine environment
 if [[ -n "$ENV_ARG" ]]; then
   ENVIRONMENT="$ENV_ARG"
-elif [[ -n "$GIGADB_ENV" ]]; then
+elif [[ -n "${GIGADB_ENV:-}" ]]; then
   ENVIRONMENT="$GIGADB_ENV"
 else
   ENVIRONMENT="dev"
@@ -72,7 +72,7 @@ fetch_project_variables() {
   local per_page=100
   local all_vars="[]"
   while :; do
-    response=$(curl --silent --header "PRIVATE-TOKEN: $token" \
+    response=$(curl --silent --fail --show-error --header "PRIVATE-TOKEN: $token" \
       --header "Accept: application/json" \
       "$GITLAB_API_URL/projects/${project_id}/variables?per_page=$per_page&page=$page")
     if [[ -z "$response" ]] || [[ "$response" == "[]" ]]; then
