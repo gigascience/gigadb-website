@@ -78,8 +78,7 @@ check_variables_live:
     GIGADB_ENV: "live"
   environment:
     name: live
-  rules:
-    - if: manual
+  when: manual
 
 .check_coverage:
   stage: conformance and security
