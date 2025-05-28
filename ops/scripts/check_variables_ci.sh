@@ -6,13 +6,16 @@ IFS=$'\n\t'
 # if run locally, this script will compare against local variables in .env and .secrets, this would be usually done for testing / debugging the script itself. To locally check missing variables from the gitlab environments, use check_variables_local.sh instead
 
 # if running this script locally and not in a ci/cd gitlab env, then source the .env and .secrets to populate variables
-if [[ -z "$CI_JOB_TOKEN" ]]; then
+if [[ -z "${CI_JOB_TOKEN-}" ]]; then
   [ -f .env ] && source .env
   [ -f .secrets ] && source .secrets
 fi
 
 # Config
 VARIABLES_MD_PATH="docs/variables.md"
+
+# Set DEBUG to true to enable debug output
+: "${DEBUG:=false}"
 
 # Remove argument parsing; use only $GIGADB_ENV to determine environment
 if [[ -n "$GIGADB_ENV" ]]; then
@@ -41,10 +44,12 @@ parse_required_variables() {
 # Checks if required variables are set in the environment
 check_env_variables() {
   required_vars=( $(parse_required_variables) )
-  echo "[DEBUG] Required variables parsed from $VARIABLES_MD_PATH:" >&2
-  for var in "${required_vars[@]}"; do
-    echo "  $var" >&2
-  done
+  if [[ "$DEBUG" == "true" ]]; then
+    echo "[DEBUG] Required variables parsed from $VARIABLES_MD_PATH:" >&2
+    for var in "${required_vars[@]}"; do
+      echo "  $var" >&2
+    done
+  fi
 
   missing_vars=()
   for req in "${required_vars[@]}"; do
@@ -55,20 +60,26 @@ check_env_variables() {
   done
 
   if [[ ${#missing_vars[@]} -gt 0 ]]; then
-    echo "Missing required variables:" >&2
+    echo "Error: ${#missing_vars[@]} required CI/CD variable(s) are missing or empty in the '$ENVIRONMENT' environment." >&2
+    echo "These variables are defined as required in '$VARIABLES_MD_PATH' and are expected to be available in the CI job environment." >&2
+    echo "Please ensure they are correctly set and populated in your GitLab CI/CD project or group settings for this environment:" >&2
     for var in "${missing_vars[@]}"; do
-      echo "  $var" >&2
+      echo "  - $var" >&2
     done
     return 1
   else
-    echo "All required variables are present."
+    echo "Success: All required CI/CD variables defined in '$VARIABLES_MD_PATH' are present and non-empty in the '$ENVIRONMENT' environment."
     return 0
   fi
 }
 
 if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
-  echo "Checking required variables in environment (environment: $ENVIRONMENT):"
-  check_env_variables
-  echo "Done"
+  if [[ "$DEBUG" == "true" ]]; then
+    echo "Checking required variables in environment (environment: $ENVIRONMENT):"
+  fi
+  check_env_variables # ENVIRONMENT is globally available
+  if [[ "$DEBUG" == "true" ]]; then
+    echo "Done"
+  fi
   exit $?
 fi
