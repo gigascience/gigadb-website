@@ -17,8 +17,8 @@ VARIABLES_MD_PATH="docs/variables.md"
 # Set DEBUG to true to enable debug output
 : "${DEBUG:=false}"
 
-if [[ -n "$GIGADB_ENV" ]]; then
-  ENVIRONMENT="$GIGADB_ENV"
+if [[ -n "$CI_ENVIRONMENT_NAME" ]]; then
+  ENVIRONMENT="$CI_ENVIRONMENT_NAME"
 else
   ENVIRONMENT="dev"
 fi
