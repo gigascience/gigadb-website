@@ -1,9 +1,9 @@
 #!/bin/bash
+set -euo pipefail
+IFS=$'\n\t'
 # check_variables.sh
 # Fetches existing GitLab project variables using the GitLab API and compares them against the specified variables file
 # Usage: bash ops/scripts/check_variables_local.sh [-e staging|live|dev|CI]
-
-# set -x
 
 [ -f .env ] && source .env
 [ -f .secrets ] && source .secrets
@@ -11,8 +11,11 @@
 # Config
 VARIABLES_MD_PATH="docs/variables.md"
 GITLAB_API_URL="https://gitlab.com/api/v4"
-token=$GITLAB_PRIVATE_TOKEN
-project_id=$GITLAB_PROJECT_ID
+token="$GITLAB_PRIVATE_TOKEN"
+project_id="$GITLAB_PROJECT_ID"
+
+# Set DEBUG to true to enable debug output
+: "${DEBUG:=false}"
 
 # Check for required environment variables
 if [[ -z "$token" ]]; then
@@ -73,7 +76,6 @@ fetch_project_variables() {
     response=$(curl --silent --header "PRIVATE-TOKEN: $token" \
       --header "Accept: application/json" \
       "$GITLAB_API_URL/projects/${project_id}/variables?per_page=$per_page&page=$page")
-    # If response is empty or not an array, break
     if [[ -z "$response" ]] || [[ "$response" == "[]" ]]; then
       break
     fi
@@ -90,7 +92,7 @@ fetch_project_variables() {
 }
 
 # Function: parse_required_variables
-# Extracts required project-level variable names from the variables documentation file
+# Extracts required project-level variable names from the variables documentation file, variables are expected to exist in this format: `| MY_VAR     | var description   | value   |`, number of white spaces after each field is arbitrary
 parse_required_variables() {
   awk '/^\| [A-Za-z0-9_]+[ ]*\|/ { gsub(/^\| /, ""); gsub(/ .*/, ""); print $1 }' "$VARIABLES_MD_PATH" | grep -v '^Variable$'
 }
@@ -100,9 +102,13 @@ parse_required_variables() {
 compare_variables() {
   local ENVIRONMENT="$1"
   required_vars=( $(parse_required_variables) )
-  echo "[DEBUG] Required variables parsed from $VARIABLES_MD_PATH:" >&2
+  if [[ "$DEBUG" == "true" ]]; then
+    echo "[DEBUG] Required variables parsed from $VARIABLES_MD_PATH:" >&2
+  fi
   for var in "${required_vars[@]}"; do
-    echo "  $var" >&2
+    if [[ "$DEBUG" == "true" ]]; then
+      echo "  $var" >&2
+    fi
   done
 
   api_vars_json=$(fetch_project_variables)
@@ -110,20 +116,28 @@ compare_variables() {
   filtered_api_vars_json=$(echo "$api_vars_json" | jq --arg env "$ENVIRONMENT" '[.[] | select(.environment_scope == "*" or .environment_scope == $env)]')
   # Print the count of variables retrieved
   var_count=$(echo "$filtered_api_vars_json" | jq 'length')
-  echo "[INFO] Retrieved $var_count variables from GitLab API for environment '$ENVIRONMENT'." >&2
-  echo "[DEBUG] Filtered JSON response from GitLab API:" >&2
-  echo "$filtered_api_vars_json" | jq '.' >&2
+  if [[ "$DEBUG" == "true" ]]; then
+    echo "[INFO] Retrieved $var_count variables from GitLab API for environment '$ENVIRONMENT'." >&2
+  fi
+  if [[ "$DEBUG" == "true" ]]; then
+    echo "[DEBUG] Filtered JSON response from GitLab API:" >&2
+    echo "$filtered_api_vars_json" | jq '.' >&2
+  fi
 
   if ! api_vars=( $(echo "$filtered_api_vars_json" | jq -r '.[].key') ); then
     echo "Error: Failed to parse project variables from GitLab API. Response was:" >&2
-    echo "$filtered_api_vars_json" >&2
+    if [[ "$DEBUG" == "true" ]]; then
+      echo "$filtered_api_vars_json" >&2
+    fi
     exit 3
   fi
 
-  echo "[DEBUG] Variables retrieved from GitLab API (filtered):" >&2
-  for var in "${api_vars[@]}"; do
-    echo "  $var" >&2
-  done
+  if [[ "$DEBUG" == "true" ]]; then
+    echo "[DEBUG] Variables retrieved from GitLab API (filtered):" >&2
+    for var in "${api_vars[@]}"; do
+      echo "  $var" >&2
+    done
+  fi
 
   missing_vars=()
   for req in "${required_vars[@]}"; do
@@ -140,20 +154,26 @@ compare_variables() {
   done
 
   if [[ ${#missing_vars[@]} -gt 0 ]]; then
-    echo "Missing required variables:" >&2
+    echo "Error: ${#missing_vars[@]} required variable(s) are missing in the '$ENVIRONMENT' environment (Project ID: $project_id)." >&2
+    echo "These variables are defined as required in '$VARIABLES_MD_PATH'." >&2
+    echo "Please ensure they are set in your GitLab CI/CD project variables or locally in '.env' / '.secrets' files:" >&2
     for var in "${missing_vars[@]}"; do
-      echo "  $var" >&2
+      echo "  - $var" >&2
     done
     return 1
   else
-    echo "All required variables are present."
+    echo "Success: All required variables defined in '$VARIABLES_MD_PATH' are present in the '$ENVIRONMENT' environment (Project ID: $project_id)."
     return 0
   fi
 }
 
 if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
-  echo "Comparing required variables with those in GitLab project (environment: $ENVIRONMENT):"
+  if [[ "$DEBUG" == "true" ]]; then
+    echo "Comparing required variables with those in GitLab project (environment: $ENVIRONMENT):"
+  fi
   compare_variables "$ENVIRONMENT"
-  echo "Done"
+  if [[ "$DEBUG" == "true" ]]; then
+    echo "Done"
+  fi
   exit $?
 fi

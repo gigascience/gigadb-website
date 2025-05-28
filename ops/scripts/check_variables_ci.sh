@@ -1,4 +1,6 @@
 #!/bin/bash
+set -euo pipefail
+IFS=$'\n\t'
 # check_variables_ci.sh
 # Checks that all required GitLab project variables are set in the environment (for CI/CD)
 # if run locally, this script will compare against local variables in .env and .secrets, this would be usually done for testing / debugging the script itself. To locally check missing variables from the gitlab environments, use check_variables_local.sh instead
@@ -30,7 +32,7 @@ case "$ENVIRONMENT" in
 esac
 
 # Function: parse_required_variables
-# Extracts required project-level variable names from the variables documentation file
+# Extracts required project-level variable names from the variables documentation file, variables are expected to exist in this format: `| MY_VAR     | var description   | value   |`, number of white spaces after each field is arbitrary
 parse_required_variables() {
   awk '/^\| [A-Za-z0-9_]+[ ]*\|/ { gsub(/^\| /, ""); gsub(/ .*/, ""); print $1 }' "$VARIABLES_MD_PATH" | grep -v '^Variable$'
 }
