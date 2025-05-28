@@ -17,25 +17,14 @@ VARIABLES_MD_PATH="docs/variables.md"
 # Set DEBUG to true to enable debug output
 : "${DEBUG:=false}"
 
-# Remove argument parsing; use only $GIGADB_ENV to determine environment
 if [[ -n "$GIGADB_ENV" ]]; then
   ENVIRONMENT="$GIGADB_ENV"
 else
   ENVIRONMENT="dev"
 fi
 
-# Validate environment
-case "$ENVIRONMENT" in
-  staging|live|dev|CI)
-    ;;
-  *)
-    echo "Error: Invalid environment '$ENVIRONMENT'. Must be one of: staging, live, dev, CI." >&2
-    exit 2
-    ;;
-esac
-
 # Function: parse_required_variables
-# Extracts required project-level variable names from the variables documentation file, variables are expected to exist in this format: `| MY_VAR     | var description   | value   |`, number of white spaces after each field is arbitrary
+# Extracts **all** variable names from the variables documentation file, variables are expected to exist in this format: `| MY_VAR     | var description   | value   |`, number of white spaces after each field is arbitrary
 parse_required_variables() {
   awk '/^\| [A-Za-z0-9_]+[ ]*\|/ { gsub(/^\| /, ""); gsub(/ .*/, ""); print $1 }' "$VARIABLES_MD_PATH" | grep -v '^Variable$'
 }
