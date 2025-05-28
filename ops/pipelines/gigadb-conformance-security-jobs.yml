@@ -57,8 +57,6 @@ check_PHPDoc:
 .check_variables_template:
   stage: conformance and security
   script:
-    # - docker load -i alpine-3_14.tar
-    # - apk add --no-cache bash curl
     - echo "Running check_variables for environment: $CI_ENVIRONMENT_NAME"
     - bash ops/scripts/check_variables_ci.sh
   allow_failure: false
