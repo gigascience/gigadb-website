@@ -60,6 +60,15 @@ check_PHPDoc:
     - bash ops/scripts/check_variables_ci.sh
   allow_failure: false
 
+check_variables_dev:
+  extends: .check_variables_template
+  variables:
+    GIGADB_ENV: "dev"
+  environment:
+    name: dev
+  rules:
+    - if: '$CI_COMMIT_BRANCH || $CI_COMMIT_TAG'
+
 check_variables_staging:
   extends: .check_variables_template
   variables:
