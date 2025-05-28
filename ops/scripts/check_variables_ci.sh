@@ -1,11 +1,10 @@
 #!/bin/bash
 set -euo pipefail
 IFS=$'\n\t'
-# check_variables_ci.sh
 # Checks that all required GitLab project variables are set in the environment (for CI/CD)
 # if run locally, this script will compare against local variables in .env and .secrets, this would be usually done for testing / debugging the script itself. To locally check missing variables from the gitlab environments, use check_variables_local.sh instead
 
-# if running this script locally and not in a ci/cd gitlab env, then source the .env and .secrets to populate variables
+# if running this script locally and not in a gitlab pipeline, then source the .env and .secrets to populate variables
 if [[ -z "${CI_JOB_TOKEN-}" ]]; then
   [ -f .env ] && source .env
   [ -f .secrets ] && source .secrets
@@ -14,7 +13,7 @@ fi
 # Config
 VARIABLES_MD_PATH="docs/variables.md"
 
-# Set DEBUG to true to enable debug output
+# Set DEBUG to true to enable verbose output for debugging
 : "${DEBUG:=false}"
 
 if [[ -n "$CI_ENVIRONMENT_NAME" ]]; then
@@ -24,7 +23,9 @@ else
 fi
 
 # Function: parse_required_variables
-# Extracts **all** variable names from the variables documentation file, variables are expected to exist in this format: `| MY_VAR     | var description   | value   |`, number of white spaces after each field is arbitrary
+# Extracts **all** variable names from the variables documentation file, variables are expected to exist in this format:
+# `| MY_VAR     | description   | value   |`
+# number of white spaces after each field is arbitrary
 parse_required_variables() {
   awk '/^\| [A-Za-z0-9_]+[ ]*\|/ { gsub(/^\| /, ""); gsub(/ .*/, ""); print $1 }' "$VARIABLES_MD_PATH" | grep -v '^Variable$'
 }

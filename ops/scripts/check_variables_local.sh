@@ -1,7 +1,6 @@
 #!/bin/bash
 set -euo pipefail
 IFS=$'\n\t'
-# check_variables.sh
 # Fetches existing GitLab project variables using the GitLab API and compares them against the specified variables file
 # Usage: bash ops/scripts/check_variables_local.sh [-e staging|live|dev|CI]
 
@@ -14,7 +13,7 @@ GITLAB_API_URL="https://gitlab.com/api/v4"
 token="$GITLAB_PRIVATE_TOKEN"
 project_id="$GITLAB_PROJECT_ID"
 
-# Set DEBUG to true to enable debug output
+# Set DEBUG to true to enable verbose output for debugging
 : "${DEBUG:=false}"
 
 # Check for required environment variables
@@ -94,7 +93,9 @@ fetch_project_variables() {
 # Function: parse_required_variables
 # Extracts required project-level variable names from the variables documentation file,
 # specifically from the literal "## PROJECT: *-gigadb-website" heading.
-# Variables are expected to be in markdown table format: `| MY_VAR     | description | value   |`
+# Variables are expected to be in markdown table format:
+# `| MY_VAR     | description   | value   |`
+# number of white spaces after each field is arbitrary
 parse_required_variables() {
   awk '
   # Switch to target section processing mode
