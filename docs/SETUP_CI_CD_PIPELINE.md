@@ -31,7 +31,7 @@ Thus, ``gitlab-ci.yml`` includes other configuration files to maintain a clear o
 ```
 ops/pipelines/
 ├── gigadb-build-jobs.yml #build jobs for CI and production go here
-├── gigadb-conformance-security-jobs.yml #jobs that check for vulnerabilites and conformance to coding guidelines
+├── gigadb-conformance-security-jobs.yml #jobs that check for vulnerabilites, environment variables and conformance to coding guidelines
 ├── gigadb-deploy-jobs.yml #jobs for deploying to production environments (staging and live)
 ├── gigadb-operations-jobs.yml #jobs for utilities and convenience for operating/debugging the pipelines
 └── gigadb-test-jobs.yml #jobs for running tests as part of continuous integration
