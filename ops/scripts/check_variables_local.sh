@@ -92,9 +92,43 @@ fetch_project_variables() {
 }
 
 # Function: parse_required_variables
-# Extracts required project-level variable names from the variables documentation file, variables are expected to exist in this format: `| MY_VAR     | var description   | value   |`, number of white spaces after each field is arbitrary
+# Extracts required project-level variable names from the variables documentation file,
+# specifically from the literal "## PROJECT: *-gigadb-website" heading.
+# Variables are expected to be in markdown table format: `| MY_VAR     | description | value   |`
 parse_required_variables() {
-  awk '/^\| [A-Za-z0-9_]+[ ]*\|/ { gsub(/^\| /, ""); gsub(/ .*/, ""); print $1 }' "$VARIABLES_MD_PATH" | grep -v '^Variable$'
+  awk '
+  # Switch to target section processing mode
+  /^## PROJECT: \*-gigadb-website$/ {
+    in_project_vars_section = 1;
+    next; # Skip the heading line itself from further processing
+  }
+
+  # If we encounter any other heading (##, ###, etc.) while in target section mode, stop.
+  # This signifies the end of the current variable table.
+  /^#+ / && in_project_vars_section {
+    exit;
+  }
+
+  # If in target section mode and the line looks like a markdown table row
+  in_project_vars_section && /^\|/ {
+    var_candidate = $0; # Work on a copy
+
+    # 1. Remove leading pipe and any initial whitespace: e.g., "| MY_VAR   |..." -> "MY_VAR   |..."
+    sub(/^\|[ \t]*/, "", var_candidate);
+
+    # 2. Isolate the first column content by removing from the next pipe onwards:
+    #    e.g., "MY_VAR   |..." -> "MY_VAR   "
+    sub(/[ \t]*\|.*/, "", var_candidate);
+
+    # 3. Trim trailing whitespace from the isolated first column: "MY_VAR   " -> "MY_VAR"
+    gsub(/[ \t]+$/, "", var_candidate);
+
+    # Ensure it is not the header "Variable", not empty, and contains typical variable characters (alphanumeric or underscore)
+    if (var_candidate != "" && var_candidate != "Variable" && var_candidate ~ /[a-zA-Z0-9_]/) {
+      print var_candidate;
+    }
+  }
+' "$VARIABLES_MD_PATH"
 }
 
 # Function: compare_variables
@@ -155,8 +189,8 @@ compare_variables() {
 
   if [[ ${#missing_vars[@]} -gt 0 ]]; then
     echo "Error: ${#missing_vars[@]} required variable(s) are missing in the '$ENVIRONMENT' environment (Project ID: $project_id)." >&2
-    echo "These variables are defined as required in '$VARIABLES_MD_PATH'." >&2
-    echo "Please ensure they are set in your GitLab CI/CD project variables or locally in '.env' / '.secrets' files:" >&2
+    echo "These variables are defined as required in '$VARIABLES_MD_PATH' under the '## PROJECT: *-gigadb-website' heading." >&2
+    echo "Please ensure they are set in your GitLab CI/CD project variables:" >&2
     for var in "${missing_vars[@]}"; do
       echo "  - $var" >&2
     done
