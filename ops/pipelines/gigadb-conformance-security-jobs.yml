@@ -59,7 +59,7 @@ check_project_variables:
   script:
     - docker load -i alpine-3_14.tar
     - apk add --no-cache bash curl jq
-    - bash ops/scripts/check_project_variables.sh
+    - bash ops/scripts/check_project_variables_ci.sh
   allow_failure: false
 
 .check_coverage:

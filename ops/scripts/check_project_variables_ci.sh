@@ -2,11 +2,12 @@
 # check_project_variables.sh
 # Fetches existing GitLab project variables using the GitLab API
 
-# source env variable files only when running locally
-if [[ -z "$CI" ]]; then
-  [ -f .env ] && source .env
-  [ -f .secrets ] && source .secrets
-fi
+# set -x
+
+# Config
+VARIABLES_MD_PATH="docs/vars.md"
+GITLAB_API_URL="https://gitlab.com/api/v4"
+token=$CI_JOB_TOKEN
 
 # Check if jq is installed
 if ! command -v jq >/dev/null 2>&1; then
@@ -25,21 +26,52 @@ fetch_project_variables() {
     echo "Error: GITLAB_PROJECT_ID is not set." >&2
     return 1
   fi
-  curl --silent --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" \
-    "https://gitlab.com/api/v4/projects/${GITLAB_PROJECT_ID}/variables"
+
+  local page=1
+  local per_page=100
+  local all_vars="[]"
+  local next_page=1
+
+  while [[ $next_page -ne 0 ]]; do
+    response=$(curl --silent --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" \
+      --header "Accept: application/json" \
+      --write-out "\n%{http_code}\n%{redirect_url}\n%{size_download}\n%{content_type}\n%{response_code}\n%{url_effective}\nX-Next-Page: %{header:X-Next-Page}\n" \
+      "$GITLAB_API_URL/projects/${GITLAB_PROJECT_ID}/variables?per_page=$per_page&page=$page" -D -)
+
+    # Extract headers and body
+    body=$(echo "$response" | sed '/^X-Next-Page:/q')
+    x_next_page=$(echo "$response" | grep -i '^X-Next-Page:' | awk '{print $2}' | tr -d '\r')
+
+    # Merge this page's variables into all_vars
+    all_vars=$(jq -s 'add' <(echo "$all_vars") <(echo "$body"))
+
+    if [[ -n "$x_next_page" && "$x_next_page" != "0" ]]; then
+      page=$x_next_page
+      next_page=$x_next_page
+    else
+      next_page=0
+    fi
+  done
+
+  echo "$all_vars"
 }
 
 # Function: parse_required_variables
-# Extracts required project-level variable names from docs/variables.md
+# Extracts required project-level variable names from the variables documentation file
 parse_required_variables() {
-  awk '/^\| [A-Za-z0-9_]+[ ]*\|/ { gsub(/^\| /, ""); gsub(/ .*/, ""); print $1 }' docs/variables.md | grep -v '^Variable$'
+  awk '/^\| [A-Za-z0-9_]+[ ]*\|/ { gsub(/^\| /, ""); gsub(/ .*/, ""); print $1 }' "$VARIABLES_MD_PATH" | grep -v '^Variable$'
 }
 
 # Function: compare_variables
 # Compares required variables with those fetched from GitLab API and prints missing ones
 compare_variables() {
   required_vars=( $(parse_required_variables) )
-  api_vars=( $(fetch_project_variables | jq -r '.[].key') )
+  api_vars_json=$(fetch_project_variables)
+  if ! api_vars=( $(echo "$api_vars_json" | jq -r '.[].key') ); then
+    echo "Error: Failed to parse project variables from GitLab API. Response was:" >&2
+    echo "$api_vars_json" >&2
+    exit 3
+  fi
 
   missing_vars=()
   for req in "${required_vars[@]}"; do
