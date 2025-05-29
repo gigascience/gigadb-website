@@ -7,7 +7,7 @@
   ?>
   <?php if ($isServerError): ?>
     <div class="error">
-      <p>The site is momentarily under maintenance. Please, come back later</p>
+      <p>The site is under maintenance. Please come back later or contact <a href="mailto:database@gigasciencejournal.com">database@gigasciencejournal.com</a> for support</p>
       <div class="mt-10">
         <a href="/">
           Go to the home page
