@@ -4,6 +4,8 @@ IFS=$'\n\t'
 # Checks that all required GitLab project variables are set in the environment (for CI/CD)
 # if run locally, this script will compare against local variables in .env and .secrets, this would be usually done for testing / debugging the script itself. To locally check missing variables from the gitlab environments, use check_variables_local.sh instead
 
+source config.sh
+
 # if running this script locally and not in a gitlab pipeline, then source the .env and .secrets to populate variables
 if [[ -z "${CI_JOB_TOKEN-}" ]]; then
   [ -f .env ] && source .env
@@ -11,7 +13,7 @@ if [[ -z "${CI_JOB_TOKEN-}" ]]; then
 fi
 
 # Config
-VARIABLES_MD_PATH="docs/variables.md"
+
 
 # Set DEBUG to true to enable verbose output for debugging
 : "${DEBUG:=false}"
