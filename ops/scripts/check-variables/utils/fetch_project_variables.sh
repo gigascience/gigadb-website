@@ -13,7 +13,7 @@ fetch_project_variables() {
     exit 1
   fi
 
-  if [[ -z "$GITLAB_PRIVATE_TOKEN" ]]; then
+  if [[ -z "$PROJECT_VARIABLES_URL" ]]; then
     echo "Error: PROJECT_VARIABLES_URL is not defined. Please set the PROJECT_VARIABLES_URL environment variable." >&2
     exit 1
   fi
@@ -26,7 +26,7 @@ fetch_project_variables() {
   while :; do
     response=$(curl --silent --fail --show-error --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" \
       --header "Accept: application/json" \
-      "$GITLAB_PRIVATE_TOKEN?per_page=$per_page&page=$page")
+      "$PROJECT_VARIABLES_URL?per_page=$per_page&page=$page")
     if [[ -z "$response" ]] || [[ "$response" == "[]" ]]; then
       break
     fi

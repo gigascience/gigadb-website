@@ -17,7 +17,7 @@ parse_variables_table() {
 
   # If we encounter another heading (##, ###, etc.) while in target section mode, stop.
   # This signifies the end of the current variable table.
-  /^## / && in_section && $0 != heading {
+  /^#+ / && in_section && $0 != heading {
     exit
   }
 
