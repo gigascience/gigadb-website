@@ -29,7 +29,12 @@ ENV_ARG=""
 while [[ $# -gt 0 ]]; do
   case $1 in
     -e|--env)
-      ENV_ARG="$2"
+      if [[ -n "${2:-}" && ! "${2}" =~ ^- ]]; then
+        ENV_ARG="$2"
+      else
+        echo "Error: '-e|--env' requires a non-empty argument." >&2
+        exit 2
+      fi
       shift 2
       ;;
     *)
@@ -61,16 +66,13 @@ source "$LOCAL_DIR/utils/fetch_project_variables.sh"
 source "$LOCAL_DIR/utils/parse_variables_table.sh"
 source "$LOCAL_DIR/utils/compare_variables.sh"
 
-if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
-  if [[ "$DEBUG" == "true" ]]; then
-    echo "Comparing required variables with those in GitLab project (environment: $ENVIRONMENT):"
-  fi
-  var_heading="## PROJECT: *-gigadb-website"
-  required_vars=( $(parse_variables_table "$var_heading") )
-  api_vars_json=$(fetch_project_variables)
-  compare_variables
-  if [[ "$DEBUG" == "true" ]]; then
-    echo "Done"
-  fi
-  exit $?
+if [[ "$DEBUG" == "true" ]]; then
+  echo "Comparing required variables with those in GitLab project (environment: $ENVIRONMENT):"
 fi
+required_vars=( $(parse_variables_table) )
+api_vars_json=$(fetch_project_variables)
+compare_variables
+if [[ "$DEBUG" == "true" ]]; then
+  echo "Done"
+fi
+exit $?

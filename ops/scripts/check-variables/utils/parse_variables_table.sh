@@ -1,11 +1,14 @@
-# Usage: parse_variables_table "## HEADING_STRING"
+#!/usr/bin/env bash
+set -euo pipefail
+IFS=$'\n\t'
+# Usage: parse_variables_table
 # Parses a markdown file (defaults to docs/variables.md) and extracts variable names
 # from the first column of a markdown table found under the specified HEADING_STRING.
 parse_variables_table() {
-  local heading_pattern="$1"
   : "${VARIABLES_MD_PATH:="docs/variables.md"}"
+  : "${VAR_HEADING:="## PROJECT: *-gigadb-website"}"
 
-  awk -v heading="$heading_pattern" '
+  awk -v heading="$VAR_HEADING" '
   # Switch to target section processing mode
   $0 == heading {
     in_section = 1
@@ -42,9 +45,5 @@ parse_variables_table() {
 
 # Call the function if the script is executed directly
 if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
-  if [[ $# -eq 0 ]]; then
-    echo "Usage: $0 \"## HEADING_STRING\"" >&2
-    exit 1
-  fi
-  parse_variables_tables "$@"
+  parse_variables_table
 fi

@@ -4,7 +4,8 @@ IFS=$'\n\t'
 # Checks that all required GitLab project variables are set in the environment (for CI/CD)
 # if run locally, this script will compare against local variables in .env and .secrets, this would be usually done for testing / debugging the script itself. To locally check missing variables from the gitlab environments, use check_variables_local.sh instead
 
-source config.sh
+LOCAL_DIR="$(dirname "$0")"
+source "$LOCAL_DIR/config.sh"
 
 # if running this script locally and not in a gitlab pipeline, then source the .env and .secrets to populate variables
 if [[ -z "${CI_JOB_TOKEN-}" ]]; then
@@ -12,30 +13,20 @@ if [[ -z "${CI_JOB_TOKEN-}" ]]; then
   [ -f .secrets ] && source .secrets
 fi
 
-# Config
-
-
-# Set DEBUG to true to enable verbose output for debugging
-: "${DEBUG:=false}"
-
+# Retrieve gitlab environment or default to "dev"
 if [[ -n "${CI_ENVIRONMENT_NAME:-}" ]]; then
   ENVIRONMENT="$CI_ENVIRONMENT_NAME"
 else
   ENVIRONMENT="dev"
 fi
 
-# Function: parse_required_variables
-# Extracts **all** variable names from the variables documentation file, variables are expected to exist in this format:
-# `| MY_VAR     | description   | value   |`
-# number of white spaces after each field is arbitrary
-parse_required_variables() {
-  awk '/^\| [A-Za-z0-9_]+[ ]*\|/ { gsub(/^\| /, ""); gsub(/ .*/, ""); print $1 }' "$VARIABLES_MD_PATH" | grep -v '^Variable$'
-}
+source "$LOCAL_DIR/utils/parse_variables_table.sh"
 
-# Function: check_env_variables
+# Function: check_shell_variables
 # Checks if required variables are set in the environment
-check_env_variables() {
-  required_vars=( $(parse_required_variables) )
+check_shell_variables() {
+  : "${VAR_HEADING:="## PROJECT: *-gigadb-website"}"
+  required_vars=( $(parse_variables_table "$VAR_HEADING") )
   if [[ "$DEBUG" == "true" ]]; then
     echo "[DEBUG] Required variables parsed from $VARIABLES_MD_PATH:" >&2
     for var in "${required_vars[@]}"; do
@@ -53,25 +44,24 @@ check_env_variables() {
 
   if [[ ${#missing_vars[@]} -gt 0 ]]; then
     echo "Error: ${#missing_vars[@]} required CI/CD variable(s) are missing or empty in the '$ENVIRONMENT' environment." >&2
-    echo "These variables are defined as required in '$VARIABLES_MD_PATH' and are expected to be available in the CI job environment." >&2
-    echo "Please ensure they are correctly set and populated in your GitLab CI/CD project or group settings for this environment:" >&2
+    echo "These variables are defined as required in '$VARIABLES_MD_PATH' under the '$VAR_HEADING' heading." >&2
+    echo "Please ensure they are set in your GitLab CI/CD project variables:" >&2
     for var in "${missing_vars[@]}"; do
-      echo "  - $var" >&2
+      echo "$var" >&2
     done
     return 1
   else
-    echo "Success: All required CI/CD variables defined in '$VARIABLES_MD_PATH' are present and non-empty in the '$ENVIRONMENT' environment."
+    echo "Success: All required variables defined in '$VARIABLES_MD_PATH' are present in the '$ENVIRONMENT' environment."
     return 0
   fi
 }
 
-if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
-  if [[ "$DEBUG" == "true" ]]; then
-    echo "Checking required variables in environment (environment: $ENVIRONMENT):"
-  fi
-  check_env_variables # ENVIRONMENT is globally available
-  if [[ "$DEBUG" == "true" ]]; then
-    echo "Done"
-  fi
-  exit $?
+
+if [[ "$DEBUG" == "true" ]]; then
+  echo "Checking required variables in environment (environment: $ENVIRONMENT):"
 fi
+check_shell_variables
+if [[ "$DEBUG" == "true" ]]; then
+  echo "Done"
+fi
+exit $?

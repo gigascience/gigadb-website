@@ -1,3 +1,6 @@
+#!/usr/bin/env bash
+set -euo pipefail
+IFS=$'\n\t'
 # Function: fetch_project_variables
 # Fetch variables from GitLab API
 fetch_project_variables() {
@@ -5,16 +8,13 @@ fetch_project_variables() {
   local per_page=100
   local all_vars="[]"
 
-  : "${gitlab_token:="$GITLAB_PRIVATE_TOKEN"}"
-  : "${gitlab_api_url:="$PROJECT_VARIABLES_URL"}"
-
-  if [[ -z "$gitlab_token" ]]; then
+  if [[ -z "$GITLAB_PRIVATE_TOKEN" ]]; then
     echo "Error: GITLAB_PRIVATE_TOKEN is not defined. Please set the GITLAB_PRIVATE_TOKEN environment variable." >&2
     exit 1
   fi
 
-  if [[ -z "$gitlab_api_url" ]]; then
-    echo "Error: GITLAB_API_URL is not defined. Please set the GITLAB_API_URL environment variable." >&2
+  if [[ -z "$GITLAB_PRIVATE_TOKEN" ]]; then
+    echo "Error: PROJECT_VARIABLES_URL is not defined. Please set the PROJECT_VARIABLES_URL environment variable." >&2
     exit 1
   fi
 
@@ -24,9 +24,9 @@ fetch_project_variables() {
   fi
 
   while :; do
-    response=$(curl --silent --fail --show-error --header "PRIVATE-TOKEN: $gitlab_token" \
+    response=$(curl --silent --fail --show-error --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" \
       --header "Accept: application/json" \
-      "$gitlab_api_url?per_page=$per_page&page=$page")
+      "$GITLAB_PRIVATE_TOKEN?per_page=$per_page&page=$page")
     if [[ -z "$response" ]] || [[ "$response" == "[]" ]]; then
       break
     fi

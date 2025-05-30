@@ -1,13 +1,17 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
+IFS=$'\n\t'
 
 # Function: compare_variables
 # Compares required variables with those fetched from GitLab API and prints missing ones
 compare_variables() {
-  : "${required_vars:=""}"
-  : "${ENVIRONMENT:="dev"}"
-  : "${VARIABLES_MD_PATH:="docs/variables.md"}"
-  : "${DEBUG:="false"}"
-  : "${api_vars_json:=""}"
+  : "${ENVIRONMENT:=dev}"
+  : "${VARIABLES_MD_PATH:=docs/variables.md}"
+  : "${DEBUG:=false}"
+  : "${api_vars_json:=}"
+  : "${VAR_HEADING:="--undefined--"}"
+  # Ensure required_vars is an array
+  required_vars=("${required_vars[@]:-}")
 
   if [[ "$DEBUG" == "true" ]]; then
     echo "[DEBUG] Required variables parsed from $VARIABLES_MD_PATH:" >&2
@@ -61,10 +65,10 @@ compare_variables() {
 
   if [[ ${#missing_vars[@]} -gt 0 ]]; then
     echo "Error: ${#missing_vars[@]} required variable(s) are missing in the '$ENVIRONMENT' environment." >&2
-    echo "These variables are defined as required in '$VARIABLES_MD_PATH' under the '## PROJECT: *-gigadb-website' heading." >&2
+    echo "These variables are defined as required in '$VARIABLES_MD_PATH' under the '$VAR_HEADING' heading." >&2
     echo "Please ensure they are set in your GitLab CI/CD project variables:" >&2
     for var in "${missing_vars[@]}"; do
-      echo "  - $var" >&2
+      echo "$var" >&2
     done
     return 1
   else
