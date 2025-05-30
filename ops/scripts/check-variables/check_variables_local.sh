@@ -10,11 +10,19 @@ IFS=$'\n\t'
 LOCAL_DIR="$(dirname "$0")"
 source "$LOCAL_DIR/config.sh"
 
-# Check if jq is installed
-if ! command -v jq >/dev/null 2>&1; then
-  echo "Error: jq is not installed. Please install jq to use this script." >&2
+gitlab_token="$GITLAB_PRIVATE_TOKEN"
+gitlab_api_url="$PROJECT_VARIABLES_URL"
+
+# Check for required environment variables
+if [[ -z "$gitlab_token" ]]; then
+  echo "Error: GITLAB_PRIVATE_TOKEN is not set. Aborting." >&2
   exit 1
 fi
+if [[ -z "$gitlab_api_url" ]]; then
+  echo "Error: PROJECT_VARIABLES_URL is not set. Aborting." >&2
+  exit 1
+fi
+
 
 # Argument parsing
 ENV_ARG=""
@@ -50,7 +58,7 @@ case "$ENVIRONMENT" in
 esac
 
 source "$LOCAL_DIR/utils/fetch_project_variables.sh"
-source "$LOCAL_DIR/utils/parse_variables_tables.sh"
+source "$LOCAL_DIR/utils/parse_variables_table.sh"
 source "$LOCAL_DIR/utils/compare_variables.sh"
 
 if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
@@ -58,7 +66,7 @@ if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
     echo "Comparing required variables with those in GitLab project (environment: $ENVIRONMENT):"
   fi
   var_heading="## PROJECT: *-gigadb-website"
-  required_vars=( $(parse_variables_tables "$var_heading" "$VARIABLES_MD_PATH") )
+  required_vars=( $(parse_variables_table "$var_heading") )
   api_vars_json=$(fetch_project_variables)
   compare_variables
   if [[ "$DEBUG" == "true" ]]; then

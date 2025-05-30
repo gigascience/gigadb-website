@@ -1,9 +1,9 @@
-# Usage: parse_variables_tables "## HEADING_STRING" [path/to/variables.md]
+# Usage: parse_variables_table "## HEADING_STRING"
 # Parses a markdown file (defaults to docs/variables.md) and extracts variable names
 # from the first column of a markdown table found under the specified HEADING_STRING.
-parse_variables_tables() {
+parse_variables_table() {
   local heading_pattern="$1"
-  local variables_md_path="${2:-"docs/variables.md"}" # Default to docs/variables.md if not provided
+  : "${VARIABLES_MD_PATH:="docs/variables.md"}"
 
   awk -v heading="$heading_pattern" '
   # Switch to target section processing mode
@@ -37,13 +37,13 @@ parse_variables_tables() {
       print var_candidate
     }
   }
-' "$variables_md_path"
+' "$VARIABLES_MD_PATH"
 }
 
 # Call the function if the script is executed directly
 if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
   if [[ $# -eq 0 ]]; then
-    echo "Usage: $0 \"## HEADING_STRING\" [path/to/variables.md]" >&2
+    echo "Usage: $0 \"## HEADING_STRING\"" >&2
     exit 1
   fi
   parse_variables_tables "$@"

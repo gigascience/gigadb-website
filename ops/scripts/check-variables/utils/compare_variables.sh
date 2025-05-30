@@ -1,8 +1,5 @@
 #!/bin/bash
 
-source "$(dirname "${BASH_SOURCE[0]}")/parse_variables_tables.sh"
-source "$(dirname "${BASH_SOURCE[0]}")/fetch_project_variables.sh"
-
 # Function: compare_variables
 # Compares required variables with those fetched from GitLab API and prints missing ones
 compare_variables() {
@@ -63,7 +60,7 @@ compare_variables() {
   done
 
   if [[ ${#missing_vars[@]} -gt 0 ]]; then
-    echo "Error: ${#missing_vars[@]} required variable(s) are missing in the '$ENVIRONMENT' environment (Project ID: $project_id)." >&2
+    echo "Error: ${#missing_vars[@]} required variable(s) are missing in the '$ENVIRONMENT' environment." >&2
     echo "These variables are defined as required in '$VARIABLES_MD_PATH' under the '## PROJECT: *-gigadb-website' heading." >&2
     echo "Please ensure they are set in your GitLab CI/CD project variables:" >&2
     for var in "${missing_vars[@]}"; do
@@ -71,7 +68,7 @@ compare_variables() {
     done
     return 1
   else
-    echo "Success: All required variables defined in '$VARIABLES_MD_PATH' are present in the '$ENVIRONMENT' environment (Project ID: $project_id)."
+    echo "Success: All required variables defined in '$VARIABLES_MD_PATH' are present in the '$ENVIRONMENT' environment."
     return 0
   fi
 }
