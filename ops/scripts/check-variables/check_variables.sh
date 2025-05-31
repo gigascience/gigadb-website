@@ -159,7 +159,7 @@ else
     api_vars_json=$(fetch_project_variables)
     compare_variables
   else
-    echo "Running this script locally, for the locally set variables"
+    echo "Running this script locally, for the current local shell environment"
     check_shell_variables
   fi
 fi
