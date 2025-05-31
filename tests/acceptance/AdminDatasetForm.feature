@@ -548,3 +548,23 @@ Feature: form to update dataset details
     And I am on "/adminDataset/update/id/8"
     Then I should see "Dataset_Workflow" checkbox is checked
     Then I should see "Dataset_Genomic" checkbox is unchecked
+
+  @ok
+  Scenario: Check upload status can be set to submitted from any previous upload status
+    Given I am on "/adminDataset/update/id/5"
+    And I cannot see the option "Submitted" selected for "Dataset_upload_status"
+    When I select "Submitted" from the field "Dataset_upload_status"
+    And I press the button "Save"
+    And I am on "/adminDataset/update/id/5"
+    Then I can see the option "Submitted" selected for "Dataset_upload_status"
+
+  @ok
+  Scenario: Check upload status can be set to DataPending from any previous upload status
+    Given I am on "/adminDataset/update/id/5"
+    And I cannot see the option "DataPending" selected for "Dataset_upload_status"
+    When I select "DataPending" from the field "Dataset_upload_status"
+    And I press the button "Save"
+    And I wait "3" seconds
+    And I press the button "Save and send email"
+    And I am on "/adminDataset/update/id/5"
+    Then I can see the option "DataPending" selected for "Dataset_upload_status"
