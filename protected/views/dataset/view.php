@@ -427,7 +427,7 @@ $sampleDataProvider = $samples->getDataProvider();
                                                 <td><?= $file['format'] ?></td>
                                                 <td><?= $file['sizeUnit'] ?></td>
                                                 <td><?= $file['date_stamp'] ?></td>
-                                                <td><?= $file['attrDesc'] ?></td>
+                                                <td><?= HtmlStringHelper::autoLinkUrls($file['attrDesc']) ?></td>
                                                 <td class="button-column">
                                                     <div class="icon-wrapper">
                                                         <a class="js-download-count fa fa-download fa-lg icon icon-download" href="<?= $file['location'] ?>" aria-label="Download <?= $file["name"] ?>"></a>
