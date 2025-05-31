@@ -121,9 +121,8 @@ check_shell_variables() {
   done
 
   if [[ ${#missing_vars[@]} -gt 0 ]]; then
-    echo "Error: ${#missing_vars[@]} required CI/CD variable(s) are missing or empty in the '$ENVIRONMENT' environment." >&2
-    echo "These variables are defined as required in '$VARIABLES_MD_PATH' under the '$VAR_HEADING' heading." >&2
-    echo "Please ensure they are set in your GitLab CI/CD project variables:" >&2
+    echo "Error: ${#missing_vars[@]} required variable(s) are missing or empty in the '$ENVIRONMENT' environment." >&2
+    echo "These variables are defined as required in '$VARIABLES_MD_PATH' under the '$VAR_HEADING' heading:" >&2
     for var in "${missing_vars[@]}"; do
       echo "$var" >&2
     done
