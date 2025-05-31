@@ -14,8 +14,6 @@ compare_variables() {
 
   # Filter variables by environment_scope
   filtered_api_vars_json=$(echo "$api_vars_json" | jq --arg env "$ENVIRONMENT" '[.[] | select(.environment_scope == "*" or .environment_scope == $env)]')
-  # Print the count of variables retrieved
-  var_count=$(echo "$filtered_api_vars_json" | jq 'length')
 
   if ! api_vars=( $(echo "$filtered_api_vars_json" | jq -r '.[].key') ); then
     echo "Error: Failed to parse project variables from GitLab API. Response was:" >&2

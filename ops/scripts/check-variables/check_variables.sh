@@ -1,8 +1,36 @@
 #!/bin/bash
 set -euo pipefail
 IFS=$'\n\t'
-# Compares project variables against the specified variables file and finds missing ones
-echo "Usage: $0 [-e|--env <environment>] [--fetch-gitlab]"
+
+# Function to display usage
+show_usage() {
+  echo "Usage: $0 [options...]
+Compares project variables against variables documented in docs/variables.md and finds missing ones.
+
+Options:
+  -e, --env <environment>  Specify the environment (e.g., staging, live, dev, CI).
+                           Defaults to 'dev' or GIGADB_ENV if set. Only used in combination with --fetch-gitlab.
+  --fetch-gitlab           Fetch variables from GitLab API instead of local environment.
+                           Requires GITLAB_PRIVATE_TOKEN and PROJECT_VARIABLES_URL to be set.
+  -h, --help               Display this help message and exit.
+
+Behavior:
+  1. In a CI/CD pipeline:
+     - Arguments are ignored.
+     - Variables are checked against the current CI job's shell environment.
+     - The environment is automatically detected from CI_ENVIRONMENT_NAME.
+  2. Running locally (default behavior):
+     - Variables are checked against the current local shell environment.
+     - This includes variables sourced from .env and .secrets if they exist.
+     - Example: ./ops/scripts/check-variables/check_variables.sh
+     - Environment argument is ignored.
+  3. Running locally with --fetch-gitlab:
+     - Variables are fetched from the GitLab project via API for the specified environment.
+     - This mode requires GITLAB_PRIVATE_TOKEN and PROJECT_VARIABLES_URL to be set.
+     - Example: ./ops/scripts/check-variables/check_variables.sh --fetch-gitlab -e staging
+
+The list of required variables to check against is always parsed from docs/variables.md."
+}
 
 # Argument parsing
 ENV_ARG=""
@@ -15,6 +43,7 @@ while [[ $# -gt 0 ]]; do
         ENV_ARG="$2"
         shift 2
       else
+        show_usage >&2
         echo "Error: '-e|--env' requires a non-empty argument." >&2
         exit 2
       fi
@@ -23,9 +52,14 @@ while [[ $# -gt 0 ]]; do
       FETCH_GITLAB=true
       shift
       ;;
+    -h|--help)
+      show_usage
+      exit 0
+      ;;
     *)
+      show_usage >&2
       echo "Unknown option: $1" >&2
-      echo "Usage: $0 [-e|--env <environment>] [--fetch-gitlab]" >&2
+      # echo "Usage: $0 [-e|--env <environment>] [--fetch-gitlab]" >&2 # Removed this line
       exit 2
       ;;
   esac

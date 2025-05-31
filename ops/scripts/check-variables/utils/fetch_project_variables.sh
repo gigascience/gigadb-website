@@ -23,6 +23,11 @@ fetch_project_variables() {
     exit 1
   fi
 
+  if ! command -v curl >/dev/null 2>&1; then
+    echo "Error: curl is not installed. Please install curl to use this script." >&2
+    exit 1
+  fi
+
   while :; do
     response=$(curl --silent --fail --show-error --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" \
       --header "Accept: application/json" \

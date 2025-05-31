@@ -1,3 +1,7 @@
+#!/usr/bin/env bash
+set -euo pipefail
+IFS=$'\n\t'
+
 # Function: parse_all_variables
 # Extracts **all** variable names from the variables documentation file
 # number of white spaces after each field is arbitrary
