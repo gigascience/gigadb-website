@@ -21,14 +21,14 @@ reviews:
     - path: "**/*.php"
       instructions: |
         - HTML follows web accessibility WCAG 2 standards
-    - path: "**/*.{js}"
+    - path: "**/*.js"
       instructions: |
         - New JavaScript must live in `giga/app/client/js/` (not in `protected/js/`).
         - Write ES-module code (`import…export`) only—no global scripts.
         - Functions needing >2 logical params must take a single options object.
         - Rely on jQuery 3 or Vue for DOM work; avoid direct DOM APIs unless impossible.
         - No Console.log
-    - path: "**/*.{less}"
+    - path: "**/*.less"
       instructions: |
         - Follow SMACSS:
           - Base: Default element styles
