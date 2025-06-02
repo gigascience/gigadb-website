@@ -17,8 +17,17 @@ class HtmlStringHelper
 
         return preg_replace_callback($unwrappedUrlRe, function($matches) {
             $url = $matches[0];
+            $urlParts = parse_url($url);
+            $urlDomain = isset($urlParts['host']) ? strtolower($urlParts['host']) : '';
+            $urlDomain = preg_replace('/^www\./', '', $urlDomain);
+            $isExternal = ($urlDomain !== 'gigadb.org');
+            $attributes = '';
 
-            return '<a href="' . htmlspecialchars($url, ENT_QUOTES, 'UTF-8') . '" target="_blank" rel="noopener noreferrer">' . htmlspecialchars($url, ENT_QUOTES, 'UTF-8') . '</a>';
+            if ($isExternal) {
+                $attributes = ' rel="noopener noreferrer"';
+            }
+
+            return '<a href="' . htmlspecialchars($url, ENT_QUOTES, 'UTF-8') . '"' . $attributes . '>' . htmlspecialchars($url, ENT_QUOTES, 'UTF-8') . '</a>';
         }, $sanitizedText);
     }
 }
