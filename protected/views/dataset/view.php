@@ -340,7 +340,13 @@ $sampleDataProvider = $samples->getDataProvider();
                                             <td><?= $sample['linkName'] ?></td>
                                             <td><?= $sample['common_name'] ?></td>
                                             <td><?= $sample['scientific_name'] ?></td>
-                                            <td><?= $sample['displayAttr'] ?></td>
+                                            <td>
+                                            <?php $this->renderPartial('//shared/_longTextToggler', array(
+                                            'id' => 'sample_attr_value_' . $sample['id'],
+                                            'text' => HtmlStringHelper::autoLinkUrls($sample['displayAttr']),
+                                            'maxLines' => 3
+                                        )); ?>
+                                            </td>
                                             <td><?= $sample['taxonomy_link'] ?></td>
                                             <td><?= $sample['genbank_name'] ?></td>
                                         </tr>

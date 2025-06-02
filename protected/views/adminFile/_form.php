@@ -137,8 +137,8 @@
                                     <td>
                                         <?php $this->renderPartial('//shared/_longTextToggler', array(
                                             'id' => 'attr_value_' . $fa->id,
-                                            'description' => $fa->value,
-                                            'maxLength' => 50
+                                            'text' => $fa->value,
+                                            'maxLines' => 2
                                         )); ?>
                                     </td>
                                     <td>

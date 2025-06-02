@@ -1,37 +1,68 @@
 <?php
 /**
- * Widget for toggling between short and long text descriptions
- * @param string $id Unique identifier for this toggle instance
- * @param string $description Full description text
- * @param int $maxLength Maximum length before truncating
+ * @param string $id Unique identifier
+ * @param string $text Content to display
+ * @param int $maxLines Number of lines to clamp
  */
+$height = 1.4 * $maxLines . 'em'; // 1.4 is the line-height
 ?>
+<span class="long-text-toggler-container">
+  <div
+    id="long-text-<?= $id ?>"
+    class="long-text-toggler"
+    style="-webkit-line-clamp: <?= $maxLines ?>; line-clamp: <?= $maxLines ?>; max-height: <?= $height ?>;"
+  >
+    <?= $text ?>
+  </div><button
+    class="long-text-toggler__toggle btn btn-subtle"
+    type="button"
+    aria-expanded="false"
+    aria-controls="long-text-<?= $id ?>"
+    aria-label="show more"
+    data-target="long-text-<?= $id ?>"
+    style="display: none;"
+  ><i class="fa fa-caret-down"></i></button>
+</span>
 
-<?php if (strlen($description) <= $maxLength): ?>
-    <?php echo $description; ?>
-<?php else: ?>
-    <span class=" js-short-<?php echo $id; ?>"><?php echo substr($description, 0, $maxLength) . '...'; ?></span>
-    <span class=" js-long-<?php echo $id; ?>" style="display: none;"><?php echo $description; ?></span>
-    <button class="js-desc-<?php echo $id; ?> btn btn-subtle"
-            data-id="<?php echo $id; ?>"
-            aria-label="show more"
-            aria-expanded="false"
-            aria-controls="js-long-<?php echo $id; ?>">+</button>
+<script>
+$(document).ready(function() {
+  // Check if the text actually needs truncation
+  var $text = $('#long-text-<?= $id ?>');
+  var $btn = $('.long-text-toggler__toggle[data-target="long-text-<?= $id ?>"]');
+  var $container = $text.closest('.long-text-toggler-container');
 
-    <script>
-    $(document).ready(function() {
-        $(".js-desc-<?php echo $id; ?>").click(function(e) {
-            e.preventDefault();
-            var id = $(this).attr('data-id');
-            var isExpanded = $(this).attr('aria-expanded') === 'true';
+  // Temporarily remove line-clamp to measure full height
+  var originalStyle = $text.attr('style');
+  $text.css({
+    '-webkit-line-clamp': 'unset',
+    'line-clamp': 'unset',
+    'max-height': 'none'
+  });
 
-            $(this).text(isExpanded ? '+' : '-')
-              .attr('aria-label', isExpanded ? 'Show more' : 'Show less')
-              .attr('aria-expanded', !isExpanded);
+  var fullHeight = $text.outerHeight();
+  var maxHeight = parseFloat('<?= $height ?>') * parseFloat($('body').css('font-size'));
 
-            $('.js-short-' + id).toggle();
-            $('.js-long-' + id).toggle();
-        });
+  // Restore original styling
+  $text.attr('style', originalStyle);
+
+  // Only show button if content exceeds max height
+  if (fullHeight > maxHeight) {
+    $btn.show();
+
+    // Set up click handler
+    $btn.click(function(e) {
+      e.preventDefault();
+      var $btn = $(this);
+      var $text = $('#' + $btn.data('target'));
+      var $container = $text.closest('.long-text-toggler-container');
+      var expanded = $container.hasClass('is-expanded');
+
+      $container.toggleClass('is-expanded');
+      $btn.attr('aria-expanded', !expanded)
+          .attr('aria-label', expanded ? 'show more' : 'show less')
+          .find('i').removeClass('fa-caret-down fa-caret-up')
+          .addClass(expanded ? 'fa-caret-down' : 'fa-caret-up');
     });
-    </script>
-<?php endif; ?>
+  }
+});
+</script>

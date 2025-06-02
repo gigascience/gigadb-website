@@ -1,0 +1,38 @@
+.long-text-toggler-container {
+  position: relative;
+  display: inline;
+
+  .long-text-toggler {
+    margin: 0;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.4;
+    transition: height 0.2s ease;
+  }
+
+  .long-text-toggler__toggle {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    margin-left: 2px;
+    padding: 0 4px;
+    min-width: 18px;
+    vertical-align: baseline;
+    line-height: 1;
+  }
+
+  &.is-expanded {
+    .long-text-toggler {
+      display: inline;
+      overflow: visible;
+      height: auto;
+      -webkit-line-clamp: unset;
+      line-clamp: unset;
+    }
+
+    .long-text-toggler__toggle {
+      left: 100%;
+    }
+  }
+}
