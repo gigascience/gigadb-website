@@ -4,6 +4,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1341: Show maintenance error on 500 errors
+
 ## v4.4.12 - 2025-05-27 - 6c1271813 - 
 
 - Feat #1892: Update onboarding pages layout
