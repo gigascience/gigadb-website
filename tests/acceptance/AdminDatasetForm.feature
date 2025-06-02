@@ -48,7 +48,7 @@ Feature: form to update dataset details
   @ok @datasetimage
   Scenario: Can save image to no image dataset update page
     When I am on "/adminDataset/update/id/2342"
-    When I check the field "Dataset_Epigenomic"
+    And I check the field "Dataset_Epigenomic"
     And I attach the file "bgi_logo_new.png" to the file input element "datasetImage"
     And I press the button "Save"
     And I wait 3 seconds
@@ -541,6 +541,7 @@ Feature: form to update dataset details
   Scenario: Don't show a modal if the DOI has been minted when trying to publish a dataset
     Given I am on "adminDataset/update/id/5"
     And I should see "DOI Minting"
+    And I should see "Dataset 100039 | Check DOI: OK |"
     When I select "Published" from the field "Dataset_upload_status"
     And I wait "4" seconds
     Then I should not see "The DOI does not exist. Please mint the DOI before saving your dataset: Mint DOI"
