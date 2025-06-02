@@ -42,6 +42,13 @@
 				'required' => true,
 			],
 		]);
+
+        $this->widget('application.components.controls.CheckBoxField', [
+            'form' => $form,
+            'model' => $model,
+            'attributeName' => 'is_pre_print',
+            'label' => 'This link is a pre-print'
+        ]);
 		?>
 
 		<div class="pull-right btns-row">
