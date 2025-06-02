@@ -8,6 +8,9 @@
     display: -webkit-box;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    max-height: calc(var(--lines) * 1.4em);
+    -webkit-line-clamp: var(--lines);
+    line-clamp: var(--lines);
     line-height: 1.4;
     transition: height 0.2s ease;
   }
@@ -25,8 +28,9 @@
 
   &.is-expanded {
     .long-text-toggler {
-      display: inline;
+      display: block;
       overflow: visible;
+      max-height: none;
       height: auto;
       -webkit-line-clamp: unset;
       line-clamp: unset;
