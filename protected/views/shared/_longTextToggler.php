@@ -1,37 +1,50 @@
 <?php
 /**
- * Widget for toggling between short and long text descriptions
- * @param string $id Unique identifier for this toggle instance
- * @param string $description Full description text
- * @param int $maxLength Maximum length before truncating
+ * @param string $id Unique identifier
+ * @param string $text Content to display
+ * @param int $maxLines Number of lines to clamp
  */
 ?>
+<span class="long-text-toggler-container">
+  <div
+    id="long-text-<?php echo $id ?>"
+    class="long-text-toggler"
+    style="--lines:<?php echo $maxLines ?>"
+  >
+    <?php echo $text ?>
+  </div>
+  <button
+    class="long-text-toggler__toggle btn btn-subtle hidden"
+    type="button"
+    aria-expanded="false"
+    aria-controls="long-text-<?php echo $id ?>"
+    aria-label="show more"
+    data-target="long-text-<?php echo $id ?>"
+  ><i class="fa fa-caret-down"></i></button>
+</span>
 
-<?php if (strlen($description) <= $maxLength): ?>
-    <?php echo $description; ?>
-<?php else: ?>
-    <span class=" js-short-<?php echo $id; ?>"><?php echo substr($description, 0, $maxLength) . '...'; ?></span>
-    <span class=" js-long-<?php echo $id; ?>" style="display: none;"><?php echo $description; ?></span>
-    <button class="js-desc-<?php echo $id; ?> btn btn-subtle"
-            data-id="<?php echo $id; ?>"
-            aria-label="show more"
-            aria-expanded="false"
-            aria-controls="js-long-<?php echo $id; ?>">+</button>
+<script>
+// defer operations until fonts are loaded, to determine correct heights
+document.fonts.ready.then(function() {
+  const $text = $('#long-text-<?php echo $id ?>');
+  const $btn = $('.long-text-toggler__toggle[data-target="long-text-<?php echo $id ?>"]');
 
-    <script>
-    $(document).ready(function() {
-        $(".js-desc-<?php echo $id; ?>").click(function(e) {
-            e.preventDefault();
-            var id = $(this).attr('data-id');
-            var isExpanded = $(this).attr('aria-expanded') === 'true';
+  const fullHeight = $text.get(0).scrollHeight;
+  const clampedHeight = $text.get(0).clientHeight;
 
-            $(this).text(isExpanded ? '+' : '-')
-              .attr('aria-label', isExpanded ? 'Show more' : 'Show less')
-              .attr('aria-expanded', !isExpanded);
+  if (fullHeight > clampedHeight) {
+    $btn.removeClass('hidden');
 
-            $('.js-short-' + id).toggle();
-            $('.js-long-' + id).toggle();
-        });
+    $btn.click(function(e) {
+      const $container = $text.closest('.long-text-toggler-container');
+      const expanded = $container.hasClass('is-expanded');
+      $container.toggleClass('is-expanded');
+
+      $btn.attr('aria-expanded', !expanded)
+        .attr('aria-label', expanded ? 'show more' : 'show less')
+        .find('i').removeClass('fa-caret-down fa-caret-up')
+        .addClass(expanded ? 'fa-caret-down' : 'fa-caret-up');
     });
-    </script>
-<?php endif; ?>
+  }
+});
+</script>

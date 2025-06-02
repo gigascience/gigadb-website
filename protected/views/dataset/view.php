@@ -340,7 +340,13 @@ $sampleDataProvider = $samples->getDataProvider();
                                             <td><?= $sample['linkName'] ?></td>
                                             <td><?= $sample['common_name'] ?></td>
                                             <td><?= $sample['scientific_name'] ?></td>
-                                            <td><?= $sample['displayAttr'] ?></td>
+                                            <td>
+                                            <?php $this->renderPartial('//shared/_longTextToggler', array(
+                                            'id' => 'sample_attr_value_' . $sample['id'],
+                                            'text' => HtmlStringHelper::autoLinkUrls($sample['displayAttr']),
+                                            'maxLines' => 3
+                                        )); ?>
+                                            </td>
                                             <td><?= $sample['taxonomy_link'] ?></td>
                                             <td><?= $sample['genbank_name'] ?></td>
                                         </tr>
@@ -427,7 +433,7 @@ $sampleDataProvider = $samples->getDataProvider();
                                                 <td><?= $file['format'] ?></td>
                                                 <td><?= $file['sizeUnit'] ?></td>
                                                 <td><?= $file['date_stamp'] ?></td>
-                                                <td><?= $file['attrDesc'] ?></td>
+                                                <td><?= HtmlStringHelper::autoLinkUrls($file['attrDesc']) ?></td>
                                                 <td class="button-column">
                                                     <div class="icon-wrapper">
                                                         <a class="js-download-count fa fa-download fa-lg icon icon-download" href="<?= $file['location'] ?>" aria-label="Download <?= $file["name"] ?>"></a>
@@ -822,19 +828,7 @@ $sampleDataProvider = $samples->getDataProvider();
     <script src="https://hypothes.is/embed.js" async></script>
     <script>
         document.addEventListener("DOMContentLoaded", function(event) { //This event is fired after deferred scripts are loaded
-            $(".js-desc").click(function(e) {
-                e.preventDefault();
-                id = $(this).attr('data');
-                const isExpanded = $(this).attr('aria-expanded') === 'true';
-                $(this).text(isExpanded ? '+' : '-');
-                $(this).attr('aria-label', isExpanded ? 'Show more' : 'Show less');
-                $(this).attr('aria-expanded', !isExpanded);
-
-                $('.js-short-' + id).toggle();
-                $('.js-long-' + id).toggle();
-            });
-
-            $('#myModal').on('hidden.bs.modal', function() {
+          $('#myModal').on('hidden.bs.modal', function() {
                 $("#message").removeAttr("class").empty();
                 $("#advice").removeAttr("class").empty();
             });

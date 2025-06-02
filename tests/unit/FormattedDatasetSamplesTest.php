@@ -145,7 +145,7 @@ class FormattedDatasetSamplesTest extends CTestCase
                     array("keyword" => "some value"),
                     array("number of lines" => "155"),
                 ),
-                'displayAttr' => "<span class=\"js-long-1\">Keyword:some value<br/>Number of lines:155<br/></span>",
+                'displayAttr' => "Keyword:some value<br/>Number of lines:155<br/>",
             ),
             array(
                 'sample_id' => 2,
@@ -235,7 +235,7 @@ class FormattedDatasetSamplesTest extends CTestCase
                     array("keyword" => "some value"),
                     array("number of lines" => "155"),
                 ),
-                'displayAttr' => "<span class=\"js-long-1\">Keyword:some value<br/>Number of lines:155<br/></span>",
+                'displayAttr' => "Keyword:some value<br/>Number of lines:155<br/>",
             ),
             array(
                 'sample_id' => 2,

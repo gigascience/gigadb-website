@@ -25,36 +25,22 @@
 			array('name' => 'doi_search', 'value' => '$data->dataset->identifier'),
 			'sample_id',
 			array('name' => 'sample_name', 'value' => '$data->sample->name'),
-			array('header' => 'Sample Attributes', 'type' => 'raw', 'value' => 'FormattedDatasetSamples::getDisplayAttr($data->sample->id,$data->sample->getSampleAttributeArrayMap())'),
+			array(
+                'header' => 'Sample Attributes',
+                'type' => 'raw',
+                'value' => function($data) {
+                    return $this->renderPartial(
+                        '//shared/_longTextToggler',
+                        array(
+                            'id' => 'sample_attr_value_' . $data->sample->id,
+                            'text' => HtmlStringHelper::autoLinkUrls(FormattedDatasetSamples::fullAttrDesc($data->sample->getSampleAttributeArrayMap())),
+                            'maxLines' => 3
+                        ),
+                        true
+                    );
+                }
+            ),
 			CustomGridView::getDefaultActionButtonsConfig()
 		),
 	)); ?>
 </div>
-
-<script>
-function toggleShowMore(btnEl) {
-  const isExpanded = btnEl.attr('aria-expanded') === 'true';
-  id = btnEl.attr('data');
-  btnEl.attr('aria-label', isExpanded ? 'show less' : 'show more');
-  btnEl.attr('aria-expanded', !isExpanded);
-  btnEl.hide();
-  $('.js-short-'+id).toggle();
-  $('.js-long-'+id).toggle();
-}
-
-function handleClick(e) {
-  const target = $(e.target);
-
-  if (!target.hasClass('js-desc')) {
-    return;
-  }
-
-  e.preventDefault();
-  toggleShowMore(target);
-}
-
-$(document).ready(function() {
-  // NOTE targeting container because on filter, content gets rerendered and any event listeners are destroyed
-  $("#adminDatasetContainer").on("click", handleClick)
-})
-</script>

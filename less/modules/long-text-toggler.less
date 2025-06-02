@@ -1,0 +1,39 @@
+.long-text-toggler-container {
+  position: relative;
+  display: block;
+  width: 100%;
+
+  .long-text-toggler {
+    margin: 0;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    max-height: calc(var(--lines) * 1.4em);
+    -webkit-line-clamp: var(--lines);
+    line-clamp: var(--lines);
+    line-height: 1.4;
+    transition: height 0.2s ease;
+  }
+
+  .long-text-toggler__toggle {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    margin-left: 2px;
+    padding: 0 4px;
+    min-width: 18px;
+    vertical-align: baseline;
+    line-height: 1;
+  }
+
+  &.is-expanded {
+    .long-text-toggler {
+      display: block;
+      overflow: visible;
+      max-height: none;
+      height: auto;
+      -webkit-line-clamp: unset;
+      line-clamp: unset;
+    }
+  }
+}

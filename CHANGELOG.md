@@ -4,7 +4,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
-## v4.4.12 - 2025-05-27 - 6c1271813 - 
+- Feat #379: Auto hyperlink URLs in dataset file and sample attributes
+
+## v4.4.12 - 2025-05-27 - 6c1271813 -
 
 - Feat #1892: Update onboarding pages layout
 - Feat #2235: Use temporary directory for database volume in CI legacy_test job
