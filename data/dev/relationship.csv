@@ -3,3 +3,5 @@ id,name
 2,Cites
 13,IsReferencedBy
 14,IsIdenticalTo
+15,IsPreviousVersionOf
+3,IsSupplementTo

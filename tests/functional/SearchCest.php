@@ -24,7 +24,7 @@ class SearchCest
 
     public function tryNewGetWithKeywordNotFound(\FunctionalTester  $I)
     {
-        $I->amOnPage('search/new?keyword=test');
+        $I->amOnPage('search/new?keyword=test1');
         $I->seeResponseCodeIs(200);
         $I->cantsee('Showing 1 - 1 of 1 datasets', '#result-search-count');
     }

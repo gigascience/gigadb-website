@@ -86,4 +86,12 @@ class WebsiteUserSteps extends \Codeception\Actor
         $this->I->click('Login');
         $this->I->waitForText('Home', 10);
     }
+
+    /**
+     * @Then the response should contain :text
+     */
+    public function assertResponseContains($text)
+    {
+        $this->I->seeInSource($text);
+    }
 }
