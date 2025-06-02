@@ -25,7 +25,21 @@
 			array('name' => 'doi_search', 'value' => '$data->dataset->identifier'),
 			'sample_id',
 			array('name' => 'sample_name', 'value' => '$data->sample->name'),
-			array('header' => 'Sample Attributes', 'type' => 'raw', 'value' => 'FormattedDatasetSamples::getDisplayAttr($data->sample->id,$data->sample->getSampleAttributeArrayMap())'),
+			array(
+                'header' => 'Sample Attributes',
+                'type' => 'raw',
+                'value' => function($data) {
+                    return $this->renderPartial(
+                        '//shared/_longTextToggler',
+                        array(
+                            'id' => 'sample_attr_value_' . $data->sample->id,
+                            'text' => HtmlStringHelper::autoLinkUrls(FormattedDatasetSamples::fullAttrDesc($data->sample->getSampleAttributeArrayMap())),
+                            'maxLines' => 3
+                        ),
+                        true
+                    );
+                }
+            ),
 			CustomGridView::getDefaultActionButtonsConfig()
 		),
 	)); ?>

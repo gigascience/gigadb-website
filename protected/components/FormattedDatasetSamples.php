@@ -98,20 +98,6 @@ class FormattedDatasetSamples extends DatasetComponents implements DatasetSample
         return $dataProvider;
     }
 
-    public static function shortAttrDesc(array $sample_attributes)
-    {
-        $desc = "";
-        foreach ($sample_attributes as $idx => $nameValue) {
-            $attr = ucfirst(implode(array_keys($nameValue))) . ":" . implode(array_values($nameValue));
-            $short = strlen($attr) > 50 ? substr($attr, 0, 50) . "...<br/>" : $attr . "<br/>";
-            $desc .= $short;
-            if ($idx > 1) {
-                break;
-            }
-        }
-        return $desc . "...";
-    }
-
     public static function fullAttrDesc(array $sample_attributes)
     {
         $desc = "";
@@ -121,24 +107,6 @@ class FormattedDatasetSamples extends DatasetComponents implements DatasetSample
             $desc .= $attr;
         }
         return $desc;
-    }
-
-    public static function getDisplayAttr(int $sample_id, array $sample_attributes)
-    {
-        $num = count($sample_attributes);
-        $shortDesc = self::shortAttrDesc($sample_attributes) ;
-        $fullDesc = self::fullAttrDesc($sample_attributes) ;
-        $display = "";
-        if ($num > 3) {
-            $display = "<span class=\"js-short-$sample_id\">$shortDesc</span>
-        		<span class=\"js-long-$sample_id\" style=\"display: none;\">$fullDesc</span>";
-            if ($shortDesc) {
-                    $display .= "<button class='js-desc btn btn-subtle' data='$sample_id' aria-label='show more' aria-expanded='false' aria-controls='js-long-$sample_id'>+</button>";
-            }
-        } elseif ($num <= 3 && $num > 0) {
-            $display = "<span class=\"js-long-$sample_id\">$fullDesc</span>";
-        }
-        return $display;
     }
 
     /**
