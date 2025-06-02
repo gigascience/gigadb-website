@@ -828,19 +828,7 @@ $sampleDataProvider = $samples->getDataProvider();
     <script src="https://hypothes.is/embed.js" async></script>
     <script>
         document.addEventListener("DOMContentLoaded", function(event) { //This event is fired after deferred scripts are loaded
-            $(".js-desc").click(function(e) {
-                e.preventDefault();
-                id = $(this).attr('data');
-                const isExpanded = $(this).attr('aria-expanded') === 'true';
-                $(this).text(isExpanded ? '+' : '-');
-                $(this).attr('aria-label', isExpanded ? 'Show more' : 'Show less');
-                $(this).attr('aria-expanded', !isExpanded);
-
-                $('.js-short-' + id).toggle();
-                $('.js-long-' + id).toggle();
-            });
-
-            $('#myModal').on('hidden.bs.modal', function() {
+          $('#myModal').on('hidden.bs.modal', function() {
                 $("#message").removeAttr("class").empty();
                 $("#advice").removeAttr("class").empty();
             });

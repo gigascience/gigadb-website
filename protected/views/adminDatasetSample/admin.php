@@ -44,31 +44,3 @@
 		),
 	)); ?>
 </div>
-
-<script>
-function toggleShowMore(btnEl) {
-  const isExpanded = btnEl.attr('aria-expanded') === 'true';
-  id = btnEl.attr('data');
-  btnEl.attr('aria-label', isExpanded ? 'show less' : 'show more');
-  btnEl.attr('aria-expanded', !isExpanded);
-  btnEl.hide();
-  $('.js-short-'+id).toggle();
-  $('.js-long-'+id).toggle();
-}
-
-function handleClick(e) {
-  const target = $(e.target);
-
-  if (!target.hasClass('js-desc')) {
-    return;
-  }
-
-  e.preventDefault();
-  toggleShowMore(target);
-}
-
-$(document).ready(function() {
-  // NOTE targeting container because on filter, content gets rerendered and any event listeners are destroyed
-  $("#adminDatasetContainer").on("click", handleClick)
-})
-</script>
