@@ -120,17 +120,17 @@ $sampleDataProvider = $samples->getDataProvider();
                 </span>
                 <? if (!Yii::app()->user->isGuest && null == Author::findAttachedAuthorByUserId(Yii::app()->user->id)) { ?>
                     <span title="click to claim the dataset and link your user account to an author" data-toggle="tooltip" data-placement="bottom">
-                        <a href="#myModal" role="button" class="btn background-btn-o" data-toggle="modal">
+                        <a href="#settingsModal" role="button" class="btn background-btn-o" data-toggle="modal">
                             Your dataset?
                         </a>
                     </span>
                     <!-- Modal -->
-                    <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div id="settingsModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="settingsModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                    <h2 class="modal-title h4" id="myModalLabel">Select an author to link to your Gigadb User ID</h2>
+                                    <h2 class="modal-title h4" id="settingsModalLabel">Select an author to link to your Gigadb User ID</h2>
                                     <div id="message"></div>
                                     <div id="advice"></div>
                                 </div>
@@ -406,12 +406,15 @@ $sampleDataProvider = $samples->getDataProvider();
                                             <th title="The size on disk of the file. Click header to sort by A-Z/Z-A.">Size</th>
                                             <th title="Date of release of the file, see the history log for details of any changes made after initial release date. Click header to sort by A-Z/Z-A.">Release Date</th>
                                             <th title="Additional information about the file presented as Key:Value pairs.">File Attributes</th>
-                                            <th title="The direct link to the files server location.">Download</th>
+                                            <th title="File actions: preview or download file.">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php $file_models = $fileDataProvider->getData();
                                         foreach ($file_models as $file) {
+                                          $previewableFormats = ['TEXT', 'HTML', 'PDF'];
+                                          $previewableTypes = ['Image'];
+                                          $isPreviewAvailable = in_array($file['format'], $previewableFormats) || in_array($file['type'], $previewableTypes);
                                         ?>
                                             <tr>
                                                 <td class="text-break-word"><?= $file['nameHtml'] ?></td>
@@ -429,9 +432,14 @@ $sampleDataProvider = $samples->getDataProvider();
                                                 <td><?= $file['date_stamp'] ?></td>
                                                 <td><?= $file['attrDesc'] ?></td>
                                                 <td class="button-column">
-                                                    <div class="icon-wrapper">
-                                                        <a class="js-download-count fa fa-download fa-lg icon icon-download" href="<?= $file['location'] ?>" aria-label="Download <?= $file["name"] ?>"></a>
-                                                    </div>
+                                                  <div class="icon-wrapper">
+                                                      <?php if ($isPreviewAvailable): ?>
+                                                        <button class="fa fa-eye fa-lg icon icon-view" data-toggle="modal" data-target="#previewModal" data-file-location="<?= $file['location'] ?>" data-file-name="<?= $file['name'] ?>" data-file-type="<?= $file['type'] ?>" data-file-format="<?= $file['format'] ?>" data-file-description="<?= $file['description'] ?>" aria-label="Preview <?= $file["name"] ?>"></button>
+                                                      <?php else: ?>
+                                                        <i class="fa fa-eye fa-lg icon icon-view icon-disabled" aria-label="Preview not available for <?= $file["name"] ?>"></i>
+                                                      <?php endif; ?>
+                                                      <a class="js-download-count fa fa-download fa-lg icon icon-download" href="<?= $file['location'] ?>" aria-label="Download <?= $file["name"] ?>"></a>
+                                                  </div>
                                                 </td>
                                             </tr>
                                         <?php } ?>
@@ -574,6 +582,8 @@ $sampleDataProvider = $samples->getDataProvider();
 
     <a href="/dataset/<?php echo $previous_doi ?>" class="fixed-btn-left" title="Previous dataset" aria-label="Previous dataset"><span class="fa fa-angle-left"></span></a>
     <a href="/dataset/<?php echo $next_doi ?>" title="Next dataset" class="fixed-btn-right" aria-label="Next dataset"><span class="fa fa-angle-right"></span></a>
+
+    <?php $this->renderPartial('_preview_modal', array('modalId' => 'previewModal')); ?>
 
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" defer></script>
     <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js" defer></script>
@@ -834,7 +844,7 @@ $sampleDataProvider = $samples->getDataProvider();
                 $('.js-long-' + id).toggle();
             });
 
-            $('#myModal').on('hidden.bs.modal', function() {
+            $('#settingsModal').on('hidden.bs.modal', function() {
                 $("#message").removeAttr("class").empty();
                 $("#advice").removeAttr("class").empty();
             });

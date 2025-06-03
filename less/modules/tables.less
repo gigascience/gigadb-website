@@ -163,6 +163,7 @@ table.dataset-view-table > tbody > tr {
   .icon-wrapper {
     display: flex;
     justify-content: center;
+    gap: 5px;
   }
   .icon {
     transition: transform 0.2s;
@@ -179,6 +180,11 @@ table.dataset-view-table > tbody > tr {
       transform: scale(1.2);
     }
   }
+  button.icon {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+  }
   .icon-view,
   .icon-update,
   .icon-dropbox,
@@ -190,6 +196,12 @@ table.dataset-view-table > tbody > tr {
   }
   .icon-delete {
     color: @color-brand-danger-400!important;
+  }
+  .icon-disabled {
+    color: @color-medium-gray!important;
+    &:hover {
+      transform: none;
+    }
   }
 }
 
