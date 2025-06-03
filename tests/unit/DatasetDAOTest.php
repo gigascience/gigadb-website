@@ -2,20 +2,31 @@
 
 declare(strict_types=1);
 
-namespace unit;
+require_once __DIR__ . '/LoadingFixtureTrait.php';
 
-use CDbTestCase;
-use Dataset;
-use DatasetAttributes;
-use DatasetAttributesFactory;
-use DatasetDAO;
+use Codeception\Test\Unit;
 
-class DatasetDAOTest extends CDbTestCase
+class DatasetDAOTest extends Unit
 {
-    protected $fixtures = array(
-        'dataset_attributes' => 'DatasetAttributes',
-    );
+    use LoadingFixtureTrait;
 
+    public function _before()
+    {
+        $db = $this->getModule('Db')->_getDbh();
+        $db->exec('TRUNCATE TABLE gigadb_user CASCADE');
+        $db->exec('TRUNCATE TABLE dataset CASCADE');
+        $db->exec('TRUNCATE TABLE dataset_attributes CASCADE');
+        $db->exec('TRUNCATE TABLE attribute CASCADE');
+        $db->exec('TRUNCATE TABLE relationship CASCADE');
+        $db->exec('TRUNCATE TABLE relation CASCADE');
+
+        $this->loadFixture('relationship', \Relationship::class);
+        $this->loadFixture('gigadb_user', \User::class);
+        $this->loadFixture('dataset', \Dataset::class);
+        $this->loadFixture('relation', \Relation::class);
+        $this->loadFixture('attribute', \Attributes::class);
+        $this->loadFixture('dataset_attributes', \DatasetAttributes::class);
+    }
 
     /**
      * test that keywords in the database are removed
@@ -174,9 +185,9 @@ class DatasetDAOTest extends CDbTestCase
     public function testGetPreviousDatasetWithResult() {
         $datasetDAO = new DatasetDAO(["identifier" => "100249"]);
         $dataset = $datasetDAO->getPreviousDataset();
-        $this->assertEquals(7, $dataset->id);
+        $this->assertEquals(1, $dataset->id);
         $this->assertNotNull($dataset->title);
-        $this->assertEquals("100148", $dataset->identifier);
+        $this->assertEquals("100243", $dataset->identifier);
     }
 
     public function testGetPreviousDatasetNoResult() {
@@ -189,7 +200,6 @@ class DatasetDAOTest extends CDbTestCase
         $this->assertNotNull($dataset->title);
         $this->assertEquals("100038", $dataset->identifier);
     }
-
 
     public function keywordsProvider() {
         return [

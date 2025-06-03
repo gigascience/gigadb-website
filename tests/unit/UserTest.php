@@ -1,20 +1,32 @@
 <?php
 
-namespace GigaDB\Tests\UnitTests;
+declare(strict_types=1);
+
+require_once __DIR__ . '/LoadingFixtureTrait.php';
+
+use Codeception\Test\Unit;
 
 /**
  * unit tests for user class
  */
-class UserTest extends \CDbTestCase
+class UserTest extends Unit
 {
-    protected $fixtures = array(
-        'authors' => 'Author',
-    );
+    use LoadingFixtureTrait;
+
+    public function _before()
+    {
+        $db = $this->getModule('Db')->_getDbh();
+        $db->exec('TRUNCATE TABLE author CASCADE');
+        $db->exec('TRUNCATE TABLE gigadb_user CASCADE');
+
+        $this->loadFixture('gigadb_user', \User::class);
+        $this->loadFixture('author', \Author::class);
+    }
 
     public function testReturnsLinkedAuthor()
     {
         $user = \User::model()->findByPk(345);
-        $this->assertEquals($this->authors(2), $user->getLinkedAuthor(), "Retrieve A3 linked to default user");
+        $this->assertEquals(Author::model()->findByPk(3), $user->getLinkedAuthor(), "Retrieve A3 linked to default user");
     }
 
     public function testReturnsFullName()

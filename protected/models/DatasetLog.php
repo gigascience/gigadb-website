@@ -46,7 +46,7 @@ class DatasetLog extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('dataset_id', 'required'),
+            array('dataset_id, message', 'required'),
             array('dataset_id', 'numerical', 'integerOnly'=>true),
             array('message, created_at, model, model_id', 'safe'),
             // The following rule is used by search().

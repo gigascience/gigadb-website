@@ -1,17 +1,30 @@
 <?php
 
-class SampleTest extends CDbTestCase
-{
-    protected $fixtures = array(
-        'samples' => 'Sample',
-        'attributes' => 'Attributes',
-        'sample_attribute' => 'SampleAttribute',
-    );
+declare(strict_types=1);
 
+require_once __DIR__ . '/LoadingFixtureTrait.php';
+
+use Codeception\Test\Unit;
+
+class SampleTest extends Unit
+{
+    use LoadingFixtureTrait;
+
+    public function _before()
+    {
+        $db = $this->getModule('Db')->_getDbh();
+        $db->exec('TRUNCATE TABLE sample CASCADE');
+        $db->exec('TRUNCATE TABLE attribute CASCADE');
+        $db->exec('TRUNCATE TABLE sample_attribute CASCADE');
+
+        $this->loadFixture('sample', \Sample::class);
+        $this->loadFixture('attribute', \Attributes::class);
+        $this->loadFixture('sample_attribute', \SampleAttribute::class);
+    }
 
     public function testItShouldReturnSampleAttributeArrayMap()
     {
-        $system_under_test = $this->samples(0);
+        $system_under_test = Sample::model()->findByPk(1);
         $result = $system_under_test->getSampleAttributeArrayMap();
         $this->assertArrayHasKey("keyword", $result[0]);
         $this->assertArrayHasKey("number of lines", $result[1]);

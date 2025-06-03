@@ -2,14 +2,26 @@
 
 declare(strict_types=1);
 
-class ManuscriptTest extends CDbTestCase
+require_once __DIR__ . '/LoadingFixtureTrait.php';
+
+use Codeception\Test\Unit;
+
+class ManuscriptTest extends Unit
 {
 
-    protected $fixtures = ['manuscripts' => 'Manuscript'];
+    use LoadingFixtureTrait;
+
+    public function _before()
+    {
+        $db = $this->getModule('Db')->_getDbh();
+        $db->exec('TRUNCATE TABLE manuscript CASCADE');
+
+        $this->loadFixture('manuscript', Manuscript::class);
+    }
 
     public function testSaveValidManuscript()
     {
-        $model = new \GigaDB\models\Manuscript();
+        $model = new Manuscript();
         $model->id = 9;
         $model->identifier = 'test_identifier_123';
         $model->pmid = 123456;
@@ -25,7 +37,7 @@ class ManuscriptTest extends CDbTestCase
 
     public function testValidationFailsWithoutPmidAsInteger()
     {
-        $model = new \GigaDB\models\Manuscript();
+        $model = new Manuscript();
         $model->identifier = 'test_identifier_123';
         $model->pmid = 'abc';
         $model->dataset_id = 1;
@@ -37,7 +49,7 @@ class ManuscriptTest extends CDbTestCase
 
     public function testValidationFailsWithoutIdentifier()
     {
-        $model = new \GigaDB\models\Manuscript();
+        $model = new Manuscript();
         $model->pmid = 123456;
         $model->dataset_id = 1;
 
@@ -47,7 +59,7 @@ class ManuscriptTest extends CDbTestCase
 
     public function testValidationFailsWithoutDatasetId()
     {
-        $model = new \GigaDB\models\Manuscript();
+        $model = new Manuscript();
         $model->identifier = 'test_identifier_123';
         $model->pmid = 123456;
 
@@ -57,7 +69,7 @@ class ManuscriptTest extends CDbTestCase
 
     public function testValidationFailsWithIdentifierOver32character()
     {
-        $model = new \GigaDB\models\Manuscript();
+        $model = new Manuscript();
         $model->identifier = 'azertyuiopmlkjhgfdsqwxcvbnazertyui';
         $model->pmid = 123456;
         $model->dataset_id = 1;
@@ -68,7 +80,7 @@ class ManuscriptTest extends CDbTestCase
 
     public function testSetPrePrintAsFalseByDefault()
     {
-        $model = new \GigaDB\models\Manuscript();
+        $model = new Manuscript();
         $model->identifier = 'test_identifier_123';
         $model->pmid = 123456;
         $model->dataset_id = 1;

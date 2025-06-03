@@ -2,27 +2,25 @@
 
 declare(strict_types=1);
 
-namespace unit;
+require_once __DIR__ . '/LoadingFixtureTrait.php';
 
-use CApplication;
-use CController;
-use CCache;
-use CDbConnection;
-use Dataset;
-use DatasetPageAssembly;
-use FileUploadService;
-use Yii;
+use Codeception\Test\Unit;
 
-class DatasetPageAssemblyTest extends \CDbTestCase
+class DatasetPageAssemblyTest extends Unit
 {
-    protected $fixtures = array(
-        'datasets' => 'Dataset',
-    );
+    use LoadingFixtureTrait;
 
     private FileUploadService $srv;
 
-    public function setUp() {
-        parent::setUp();
+    public function _before()
+    {
+        $db = $this->getModule('Db')->_getDbh();
+        $db->exec('TRUNCATE TABLE dataset CASCADE');
+        $db->exec('TRUNCATE TABLE gigadb_user CASCADE');
+
+        $this->loadFixture('gigadb_user', \User::class);
+        $this->loadFixture('dataset', \Dataset::class);
+
         $this->srv = new FileUploadService();
     }
 

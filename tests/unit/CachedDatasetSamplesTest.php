@@ -1,18 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
+use Codeception\Test\Unit;
 /**
  * Unit tests for CachedDatasetSamples to retrieve from cache,the samples associated to a dataset
  *
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */
-class CachedDatasetSamplesTest extends CTestCase
+class CachedDatasetSamplesTest extends Unit
 {
-    public function setUp()
-    {
-        parent::setUp();
-    }
-
     public function testCachedReturnsDatasetId()
     {
         $dataset_id = 6;
@@ -233,9 +231,9 @@ class CachedDatasetSamplesTest extends CTestCase
                  ->willReturn($expected);
 
         $daoUnderTest = new CachedDatasetSamples($cache, $cacheDependency, $storedDatasetSamples) ;
-        $this->assertEquals($expected, $daoUnderTest->getDatasetSamples(10,0));
-        $this->assertEquals($expected, $daoUnderTest->getDatasetSamples(10,10));
-        $this->assertEquals($expected, $daoUnderTest->getDatasetSamples(10,20));
+        $this->assertEquals($expected, $daoUnderTest->getDatasetSamples("10",0));
+        $this->assertEquals($expected, $daoUnderTest->getDatasetSamples("10",10));
+        $this->assertEquals($expected, $daoUnderTest->getDatasetSamples("10",20));
     }
 
     public function testCachedReturnsDatasetSamplesCacheMiss()

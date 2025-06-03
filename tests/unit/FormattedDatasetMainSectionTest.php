@@ -1,5 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
+use Codeception\Test\Unit;
+
 /**
  * Unit tests for FormattedDatasetMainSection to present to the dataset view main dataset info
  *
@@ -7,13 +11,8 @@
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */
-class FormattedDatasetMainSectionTest extends CTestCase
+class FormattedDatasetMainSectionTest extends Unit
 {
-    public function setUp()
-    {
-        parent::setUp();
-    }
-
     public function testFormattedReturnsDatasetDOI()
     {
         $dataset_id = 1;

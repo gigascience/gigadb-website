@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+require_once __DIR__ . '/LoadingFixtureTrait.php';
+
+use Codeception\Test\Unit;
 /**
  * Test non getter/setter methods from the Dataset model class
  *
@@ -10,29 +13,51 @@ declare(strict_types=1);
  *
  *
 **/
-class DatasetAsXmlTest  extends CDbTestCase
+class DatasetAsXmlTest extends Unit
 {
-    protected $fixtures = array(
-        'datasets' => 'Dataset',
-        'authors' => 'Author',
-        'dataset_authors' => 'DatasetAuthor',
-        'dataset_funders' => 'DatasetFunder',
-        'dataset_projects' => 'DatasetProject',
-        'dataset_samples' => 'DatasetSample',
-        'dataset_types' => 'DatasetType',
-        'external_links' => 'ExternalLink',
-        'funder_names' => 'Funder',
-        'external_link_types' => 'ExternalLinkType',
-        'manuscripts' => 'Manuscript',
-        'projects' => 'Project',
-        'samples' => 'Sample',
-        'species' => 'Species',
-        'types' => 'Type'
-    );
+    use LoadingFixtureTrait;
+
+    public function _before()
+    {
+        $db = $this->getModule('Db')->_getDbh();
+        $db->exec('TRUNCATE TABLE gigadb_user CASCADE');
+        $db->exec('TRUNCATE TABLE dataset CASCADE');
+        $db->exec('TRUNCATE TABLE author CASCADE');
+        $db->exec('TRUNCATE TABLE dataset_author CASCADE');
+        $db->exec('TRUNCATE TABLE dataset_funder CASCADE');
+        $db->exec('TRUNCATE TABLE dataset_project CASCADE');
+        $db->exec('TRUNCATE TABLE dataset_sample CASCADE');
+        $db->exec('TRUNCATE TABLE dataset_type CASCADE');
+        $db->exec('TRUNCATE TABLE external_link CASCADE');
+        $db->exec('TRUNCATE TABLE funder_name CASCADE');
+        $db->exec('TRUNCATE TABLE external_link_type CASCADE');
+        $db->exec('TRUNCATE TABLE manuscript CASCADE');
+        $db->exec('TRUNCATE TABLE project CASCADE');
+        $db->exec('TRUNCATE TABLE sample CASCADE');
+        $db->exec('TRUNCATE TABLE species CASCADE');
+        $db->exec('TRUNCATE TABLE type CASCADE');
+
+        $this->loadFixture('gigadb_user', \User::class);
+        $this->loadFixture('dataset', \Dataset::class);
+        $this->loadFixture('author', \Author::class);
+        $this->loadFixture('manuscript', \Manuscript::class);
+        $this->loadFixture('project', \Project::class);
+        $this->loadFixture('species', \Species::class);
+        $this->loadFixture('sample', \Sample::class);
+        $this->loadFixture('type', \Type::class);
+        $this->loadFixture('dataset_author', \DatasetAuthor::class);
+        $this->loadFixture('funder_name', \Funder::class);
+        $this->loadFixture('dataset_funder', \DatasetFunder::class);
+        $this->loadFixture('dataset_project', \DatasetProject::class);
+        $this->loadFixture('dataset_sample', \DatasetSample::class);
+        $this->loadFixture('dataset_type', \DatasetType::class);
+        $this->loadFixture('external_link_type', \ExternalLinkType::class);
+        $this->loadFixture('external_link', \ExternalLink::class);
+    }
 
     public function testDatasetAAsXml()
     {
-        $myDataset = $this->datasets(0);
+        $myDataset = Dataset::model()->findByPk(1);
         $dom = new DomDocument();
         $dom->loadXML($myDataset->toXml());
 
@@ -56,20 +81,20 @@ class DatasetAsXmlTest  extends CDbTestCase
 
         $relatedIdentifierLink = $dom->getElementsByTagName('relatedIdentifier')->item(3);
         $this->assertEquals('URL', $relatedIdentifierLink->getAttribute('relatedIdentifierType'));
-        $this->assertEquals('References', $relatedIdentifierLink->getAttribute('relationType'));
-        $this->assertEquals('Dataset', $relatedIdentifierLink->getAttribute('resourceTypeGeneral'));
-        $this->assertEquals('http://www.ebi.ac.uk/ena/data/view/PRJEB225', $relatedIdentifierLink->nodeValue);
+        $this->assertEquals('IsPartOf', $relatedIdentifierLink->getAttribute('relationType'));
+        $this->assertEquals('Project', $relatedIdentifierLink->getAttribute('resourceTypeGeneral'));
+        $this->assertEquals('http://avian.genomics.cn/en/index.html', $relatedIdentifierLink->nodeValue);
 
         $relatedIdentifierProject = $dom->getElementsByTagName('relatedIdentifier')->item(8);
-        $this->assertEquals('URL', $relatedIdentifierProject->getAttribute('relatedIdentifierType'));
+        $this->assertEquals('DOI', $relatedIdentifierProject->getAttribute('relatedIdentifierType'));
         $this->assertEquals('References', $relatedIdentifierProject->getAttribute('relationType'));
-        $this->assertEquals('Other', $relatedIdentifierProject->getAttribute('resourceTypeGeneral'));
-        $this->assertEquals('http://foo2.com', $relatedIdentifierProject->nodeValue);
+        $this->assertEquals('Workflow', $relatedIdentifierProject->getAttribute('resourceTypeGeneral'));
+        $this->assertEquals('http://foo4.com', $relatedIdentifierProject->nodeValue);
 
-        $relatedIdentifierExternalLink = $dom->getElementsByTagName('relatedIdentifier')->item(10);
-        $this->assertEquals('DOI', $relatedIdentifierExternalLink->getAttribute('relatedIdentifierType'));
+        $relatedIdentifierExternalLink = $dom->getElementsByTagName('relatedIdentifier')->item(9);
+        $this->assertEquals('URL', $relatedIdentifierExternalLink->getAttribute('relatedIdentifierType'));
         $this->assertEquals('References', $relatedIdentifierExternalLink->getAttribute('relationType'));
-        $this->assertEquals('Workflow', $relatedIdentifierExternalLink->getAttribute('resourceTypeGeneral'));
-        $this->assertEquals('http://foo4.com', $relatedIdentifierExternalLink->nodeValue);
+        $this->assertEquals('Other', $relatedIdentifierExternalLink->getAttribute('resourceTypeGeneral'));
+        $this->assertEquals('http://foo5.com', $relatedIdentifierExternalLink->nodeValue);
     }
 }

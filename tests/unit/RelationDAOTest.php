@@ -1,10 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
+use Codeception\Test\Unit;
+
 /**
  * run with:
  * docker-compose run --rm test ./vendor/codeception/codeception/codecept run unit RelationDAOTest
  */
-class RelationDAOTest extends \CDbTestCase
+class RelationDAOTest extends Unit
 {
     protected $fixtures = array(
         'relationship' => 'Relationship',

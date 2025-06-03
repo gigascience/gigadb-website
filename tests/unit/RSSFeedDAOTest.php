@@ -2,11 +2,21 @@
 
 declare(strict_types=1);
 
-class RSSFeedDAOTest extends CDbTestCase
+require_once __DIR__ . '/LoadingFixtureTrait.php';
+
+use Codeception\Test\Unit;
+
+class RSSFeedDAOTest extends Unit
 {
-    protected $fixtures = array(
-        'rss_messages' => 'RssMessage',
-    );
+    use LoadingFixtureTrait;
+
+    public function _before()
+    {
+        $db = $this->getModule('Db')->_getDbh();
+        $db->exec('TRUNCATE TABLE rss_message CASCADE');
+
+        $this->loadFixture('rss_message', \RssMessage::class);
+    }
 
     function testItShouldGetDataForDatasetAndRssMessage()
     {

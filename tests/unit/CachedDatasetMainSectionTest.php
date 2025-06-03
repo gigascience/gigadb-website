@@ -1,5 +1,8 @@
 <?php
 
+declare(strict_types=1);
+
+use Codeception\Test\Unit;
 /**
  * Unit tests for CachedDatasetMainSection to retrieve from cache the main section of a dataset view page
  *
@@ -7,13 +10,8 @@
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */
-class CachedDatasetMainSectionTest extends CTestCase
+class CachedDatasetMainSectionTest extends Unit
 {
-    public function setUp()
-    {
-        parent::setUp();
-    }
-
     public function testCachedReturnsDatasetDOI()
     {
         $dataset_id = 1;

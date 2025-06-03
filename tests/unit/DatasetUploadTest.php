@@ -2,16 +2,9 @@
 
 declare(strict_types=1);
 
-namespace unit;
+require_once __DIR__ . '/LoadingFixtureTrait.php';
 
-use CDbTestCase;
-use CurationLog;
-use DatasetDAO;
-use DatasetUpload;
-use FileUploadService;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Csv;
-use Yii;
+use Codeception\Test\Unit;
 
 /**
  * Unit tests for DatasetUpload
@@ -19,11 +12,19 @@ use Yii;
  * @author  Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */
-class DatasetUploadTest extends CDbTestCase
+class DatasetUploadTest extends Unit
 {
-	protected $fixtures = array(
-		'datasets' => 'Dataset',
-	);
+	use LoadingFixtureTrait;
+
+	public function _before()
+	{
+		$db = $this->getModule('Db')->_getDbh();
+		$db->exec('TRUNCATE TABLE gigadb_user CASCADE');
+		$db->exec('TRUNCATE TABLE dataset CASCADE');
+
+		$this->loadFixture('gigadb_user', \User::class);
+		$this->loadFixture('dataset', \Dataset::class);
+	}
 
 	public function testSetStatusToDataAvailableForReview() {
 		$config = [
@@ -341,7 +342,7 @@ class DatasetUploadTest extends CDbTestCase
 	public function testParseFromSpreadsheetMissingColumn() {
 		// setup test data
 		//File Name, Data Type, File Format, Description, Sample ID, Attribute 1, Attribute 2, Attribute 3, Attribute 4, Attribute 5
-		$spreadsheet = new Spreadsheet();
+		$spreadsheet = new PhpOffice\PhpSpreadsheet\Spreadsheet();
 		$spreadsheet->setActiveSheetIndex(0)
 					->setCellValue('A1', 'File Name')
 					->setCellValue('B1', 'Data Type')
@@ -362,7 +363,7 @@ class DatasetUploadTest extends CDbTestCase
 					->setCellValue('H2', '')
 					->setCellValue('I2', '')
 					->setCellValue('J2', '');
-		$writer = new Csv($spreadsheet);
+		$writer = new PhpOffice\PhpSpreadsheet\Writer\Csv($spreadsheet);
 		$testFile = sys_get_temp_dir() . Yii::$app->security->generateRandomString(4) . ".csv";
 		$writer->save($testFile);
 
@@ -594,7 +595,7 @@ class DatasetUploadTest extends CDbTestCase
 	public function testParseFromSpreadsheetSupportTsv() {
 		// setup test data
 		//File Name, Data Type, File Format, Description, Sample ID, Attribute 1, Attribute 2, Attribute 3, Attribute 4, Attribute 5
-		$spreadsheet = new Spreadsheet();
+		$spreadsheet = new PhpOffice\PhpSpreadsheet\Spreadsheet();
 		$spreadsheet->setActiveSheetIndex(0)
 					->setCellValue('A1', 'File Name')
 					->setCellValue('B1', 'Data Type')
@@ -616,7 +617,7 @@ class DatasetUploadTest extends CDbTestCase
 					->setCellValue('H2', '')
 					->setCellValue('I2', '')
 					->setCellValue('J2', '');
-		$writer = new Csv($spreadsheet);
+		$writer = new PhpOffice\PhpSpreadsheet\Writer\Csv($spreadsheet);
 		$writer->setDelimiter("\t"); // make it a .TSV file
 		$testFile = sys_get_temp_dir() . Yii::$app->security->generateRandomString(4) . ".tsv";
 		$writer->save($testFile);

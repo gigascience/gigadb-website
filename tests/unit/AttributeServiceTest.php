@@ -1,6 +1,10 @@
 <?php
 
-class AttributeServiceTest extends CTestCase
+declare(strict_types=1);
+
+use Codeception\Test\Unit;
+
+class AttributeServiceTest extends Unit
 {
      /**
      * test it should replace keywords in the database with string of keywords

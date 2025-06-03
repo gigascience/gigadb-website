@@ -2,11 +2,9 @@
 
 declare(strict_types=1);
 
-namespace unit;
-use CTestCase;
-use NewsletterService;
+use Codeception\Test\Unit;
 
-class NewsletterServiceTest extends CTestCase
+class NewsletterServiceTest extends Unit
 {
     /**
      * Test that only valid email can be added to subscriber list

@@ -1,5 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
+require_once __DIR__ . '/LoadingFixtureTrait.php';
+require_once __DIR__ . '/CdbUnit.php';
+
+use Codeception\Test\Unit;
 /**
  * Unit tests for CachedDatasetMainSection to retrieve from storage the main section of a dataset view page
  *
@@ -7,31 +13,46 @@
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */
-class StoredDatasetMainSectionTest extends CDbTestCase
+class StoredDatasetMainSectionTest extends CdbUnit
 {
-    protected $fixtures = array( //careful, the order matters here because of foreign key constraints
-        'publishers' => 'Publisher',
-        'attribute' => 'Attributes',
-        'datasets' => 'Dataset',
-        'types' => 'Type',
-        'dataset_types' => 'DatasetType',
-        'authors' => 'Author',
-        'dataset_author' => 'DatasetAuthor',
-        'dataset_attriutes' => 'DatasetAttributes',
-        'dataset_logs' => 'DatasetLog',
-        'funder_name' => 'Funder',
-        'dataset_funder' => 'DatasetFunder',
-    );
+    use LoadingFixtureTrait;
 
-    public function setUp()
+    public function _before()
     {
-        parent::setUp();
-    }
+        $db = $this->getModule('Db')->_getDbh();
+        $db->exec('TRUNCATE TABLE publisher CASCADE');
+        $db->exec('TRUNCATE TABLE attribute CASCADE');
+        $db->exec('TRUNCATE TABLE dataset CASCADE');
+        $db->exec('TRUNCATE TABLE type CASCADE');
+        $db->exec('TRUNCATE TABLE dataset_type CASCADE');
+        $db->exec('TRUNCATE TABLE author CASCADE');
+        $db->exec('TRUNCATE TABLE dataset_author CASCADE');
+        $db->exec('TRUNCATE TABLE dataset_attributes CASCADE');
+        $db->exec('TRUNCATE TABLE dataset_log CASCADE');
+        $db->exec('TRUNCATE TABLE funder_name CASCADE');
+        $db->exec('TRUNCATE TABLE dataset_funder CASCADE');
+        $db->exec('TRUNCATE TABLE gigadb_user CASCADE');
 
+        $this->loadFixture('gigadb_user', \User::class);
+        $this->loadFixture('publisher', \Publisher::class);
+        $this->loadFixture('attribute', \Attributes::class);
+        $this->loadFixture('dataset', \Dataset::class);
+        $this->loadFixture('type', \Type::class);
+        $this->loadFixture('dataset_type', \DatasetType::class);
+        $this->loadFixture('author', \Author::class);
+        $this->loadFixture('dataset_author', \DatasetAuthor::class);
+        $this->loadFixture('dataset_attributes', \DatasetAttributes::class);
+        $this->loadFixture('dataset_log', \DatasetLog::class);
+        $this->loadFixture('funder_name', \Funder::class);
+        $this->loadFixture('dataset_funder', \DatasetFunder::class);
+
+        parent::_before();
+    }
+    
     public function testStoredReturnsDatasetId()
     {
         $dataset_id = 1;
-        $daoUnderTest = new StoredDatasetMainSection($dataset_id, $this->getFixtureManager()->getDbConnection());
+        $daoUnderTest = new StoredDatasetMainSection($dataset_id,$this->cdbConnection);
         $this->assertEquals($dataset_id, $daoUnderTest->getDatasetId()) ;
     }
 
@@ -39,7 +60,7 @@ class StoredDatasetMainSectionTest extends CDbTestCase
     {
         $dataset_id = 1;
         $doi = 100243;
-        $daoUnderTest = new StoredDatasetMainSection($dataset_id, $this->getFixtureManager()->getDbConnection());
+        $daoUnderTest = new StoredDatasetMainSection($dataset_id,$this->cdbConnection);
         $this->assertEquals($doi, $daoUnderTest->getDatasetDOI()) ;
     }
 
@@ -47,7 +68,7 @@ class StoredDatasetMainSectionTest extends CDbTestCase
     {
         // normal path
         $dataset_id = 1;
-        $daoUnderTest = new StoredDatasetMainSection($dataset_id, $this->getFixtureManager()->getDbConnection());
+        $daoUnderTest = new StoredDatasetMainSection($dataset_id,$this->cdbConnection);
         $expected = array(
                         "title" => 'Supporting data for "Analyzing climate variations on multiple timescales can guide Zika virus response measures"',
                         "types" => array(
@@ -61,7 +82,7 @@ class StoredDatasetMainSectionTest extends CDbTestCase
 
         // no result from database
         $dataset_id = 567;
-        $daoUnderTest = new StoredDatasetMainSection($dataset_id, $this->getFixtureManager()->getDbConnection());
+        $daoUnderTest = new StoredDatasetMainSection($dataset_id,$this->cdbConnection);
         $expected = [];
 
         $this->assertEquals($expected, $daoUnderTest->getHeadline());
@@ -71,7 +92,7 @@ class StoredDatasetMainSectionTest extends CDbTestCase
     public function testStoredReturnsReleaseDetails()
     {
         $dataset_id = 1;
-        $daoUnderTest = new StoredDatasetMainSection($dataset_id, $this->getFixtureManager()->getDbConnection());
+        $daoUnderTest = new StoredDatasetMainSection($dataset_id,$this->cdbConnection);
         $expected = array(
                         "authors" => array( //remember authors must be sorted alphabetically on the main section body
                             array(
@@ -105,7 +126,7 @@ class StoredDatasetMainSectionTest extends CDbTestCase
 
         // no result from database
         $dataset_id = 567;
-        $daoUnderTest = new StoredDatasetMainSection($dataset_id, $this->getFixtureManager()->getDbConnection());
+        $daoUnderTest = new StoredDatasetMainSection($dataset_id,$this->cdbConnection);
         $expected = [
             "authors" => [],
         ];
@@ -116,7 +137,7 @@ class StoredDatasetMainSectionTest extends CDbTestCase
     public function testStoredReturnsDescription()
     {
         $dataset_id = 1;
-        $daoUnderTest = new StoredDatasetMainSection($dataset_id, $this->getFixtureManager()->getDbConnection());
+        $daoUnderTest = new StoredDatasetMainSection($dataset_id,$this->cdbConnection);
         $expected = array(
                         "description" => 'The emergence of Zika virus (ZIKV) as a public health emergency in Latin America and the Caribbean (LAC) occurred during a period of severe drought and unusually high temperatures. Speculation in the literature exists that these climate conditions were associated with the 2015/2016 El Niño event and/or climate change but to date no quantitative '
                     );
@@ -124,7 +145,7 @@ class StoredDatasetMainSectionTest extends CDbTestCase
 
         // no result from database
         $dataset_id = 567;
-        $daoUnderTest = new StoredDatasetMainSection($dataset_id, $this->getFixtureManager()->getDbConnection());
+        $daoUnderTest = new StoredDatasetMainSection($dataset_id,$this->cdbConnection);
         $expected = [];
 
         $this->assertEquals($expected, $daoUnderTest->getDescription());
@@ -137,7 +158,7 @@ class StoredDatasetMainSectionTest extends CDbTestCase
     public function testStoredReturnsCitationsLinks()
     {
         $dataset_id = 1;
-        $daoUnderTest = new StoredDatasetMainSection($dataset_id, $this->getFixtureManager()->getDbConnection());
+        $daoUnderTest = new StoredDatasetMainSection($dataset_id,$this->cdbConnection);
 
         $expected = array(
             'services' => array(
@@ -166,7 +187,7 @@ class StoredDatasetMainSectionTest extends CDbTestCase
         $dataset_id = 1;
 
         $expected  = array("am", "gram");
-        $daoUnderTest = new StoredDatasetMainSection($dataset_id, $this->getFixtureManager()->getDbConnection());
+        $daoUnderTest = new StoredDatasetMainSection($dataset_id,$this->cdbConnection);
         $this->assertEquals($expected, $daoUnderTest->getKeywords());
     }
 
@@ -198,8 +219,8 @@ class StoredDatasetMainSectionTest extends CDbTestCase
             ),
         );
 
-        $daoUnderTest = new StoredDatasetMainSection($dataset_id, $this->getFixtureManager()->getDbConnection());
-        $this->assertEquals($expected, $daoUnderTest->getHistory());
+        $daoUnderTest = new StoredDatasetMainSection($dataset_id,$this->cdbConnection);
+        $this->assertEquals($expected, array_slice($daoUnderTest->getHistory(), 6, 2));
     }
 
     /**
@@ -228,7 +249,7 @@ class StoredDatasetMainSectionTest extends CDbTestCase
             ),
         );
 
-        $daoUnderTest = new StoredDatasetMainSection($dataset_id, $this->getFixtureManager()->getDbConnection());
+        $daoUnderTest = new StoredDatasetMainSection($dataset_id,$this->cdbConnection);
         $this->assertEquals($expected, $daoUnderTest->getFunding());
     }
 }

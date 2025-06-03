@@ -1,44 +1,50 @@
 <?php
+
+declare(strict_types=1);
+
+require_once __DIR__ . '/LoadingFixtureTrait.php';
+require_once __DIR__ . '/CdbUnit.php';
+
+use Codeception\Test\Unit;
+
 /**
  * Unit tests for StoredDatasetSamples to retrieve from storage, the samples for associated dataset
  *
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */
-class StoredDatasetSamplesTest extends CDbTestCase
+class StoredDatasetSamplesTest extends CdbUnit
 {
-	protected $fixtures=array( //careful, the order matters here because of foreign key constraints
-        'species'=>'Species',
-        'datasets'=>'Dataset',
-        'attributes'=>'Attributes',
-        'samples'=>'Sample',
-        'dataset_samples'=>'DatasetSample',
-        'sample_attribute'=>'SampleAttribute',
-    );
+    use LoadingFixtureTrait;
 
-	public function setUp()
-	{
-		// echo "doing parent setup".PHP_EOL;
-		parent::setUp();
-		// echo "done with parent setup".PHP_EOL;
-	}
+    public function _before()
+    {
+        $db = $this->getModule('Db')->_getDbh();
+        $db->exec('TRUNCATE TABLE species CASCADE');
+        $db->exec('TRUNCATE TABLE dataset CASCADE');
+        $db->exec('TRUNCATE TABLE attribute CASCADE');
+        $db->exec('TRUNCATE TABLE sample CASCADE');
+        $db->exec('TRUNCATE TABLE dataset_sample CASCADE');
+        $db->exec('TRUNCATE TABLE sample_attribute CASCADE');
+		$db->exec('TRUNCATE TABLE gigadb_user CASCADE');
 
-	public function tearDown()
-	{
-		// echo "doing parent tearDown".PHP_EOL;
-		parent::tearDown();
-		// echo "done with parent tearDown".PHP_EOL;
-		// var_dump($this->file_samples);
-		// $this->getFixtureManager()->truncateTable("file_sample");
-		$this->getFixtureManager()->truncateTable("sample_attribute");
-	}
+        $this->loadFixture('species', \Species::class);
+		$this->loadFixture('gigadb_user', \User::class);
+        $this->loadFixture('dataset', \Dataset::class); 
+        $this->loadFixture('attribute', \Attributes::class);
+        $this->loadFixture('sample', \Sample::class);
+        $this->loadFixture('dataset_sample', \DatasetSample::class);
+        $this->loadFixture('sample_attribute', \SampleAttribute::class);
+
+        parent::_before();
+    }
 
 	public function testStoredReturnsDatasetId()
 	{
 		$dataset_id = 1;
 
 		$daoUnderTest = new StoredDatasetSamples($dataset_id,
-								$this->getFixtureManager()->getDbConnection()
+								$this->cdbConnection
 							);
 		$this->assertEquals($dataset_id, $daoUnderTest->getDatasetId() ) ;
 	}
@@ -48,7 +54,7 @@ class StoredDatasetSamplesTest extends CDbTestCase
 		$dataset_id = 1;
 		$doi = 100243;
 		$daoUnderTest = new StoredDatasetSamples($dataset_id,
-								$this->getFixtureManager()->getDbConnection()
+								$this->cdbConnection
 							);
 		$this->assertEquals($doi, $daoUnderTest->getDatasetDOI() ) ;
 	}
@@ -118,12 +124,12 @@ class StoredDatasetSamplesTest extends CDbTestCase
 		);
 
 		$daoUnderTest = new StoredDatasetSamples($dataset_id,
-								$this->getFixtureManager()->getDbConnection()
+								$this->cdbConnection
 							);
-        $this->assertEquals([$expected[1]], $daoUnderTest->getDatasetSamples(1,1)) ;
-        $this->assertEquals([$expected[0]], $daoUnderTest->getDatasetSamples(1,0)) ;
-        $this->assertEquals([$expected[2]], $daoUnderTest->getDatasetSamples(1,2)) ;
-        $this->assertEquals($expected, $daoUnderTest->getDatasetSamples(3)) ;
+        $this->assertEquals([$expected[1]], $daoUnderTest->getDatasetSamples("1", 1)) ;
+        $this->assertEquals([$expected[0]], $daoUnderTest->getDatasetSamples("1", 0)) ;
+        $this->assertEquals([$expected[2]], $daoUnderTest->getDatasetSamples("1", 2)) ;
+        $this->assertEquals($expected, $daoUnderTest->getDatasetSamples("3")) ;
         $this->assertEquals($expected, $daoUnderTest->getDatasetSamples("ALL",0)) ;
         $this->assertEquals($expected, $daoUnderTest->getDatasetSamples()) ;
 	}

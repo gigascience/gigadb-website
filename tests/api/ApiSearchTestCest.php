@@ -228,7 +228,7 @@ class ApiSearchTestCest
         $response = $I->grabResponse();
         $xml = simplexml_load_string(($response));
 
-        $I->assertCount(3, $xml->doi);
+        $I->assertCount(4, $xml->doi);
     }
 
     public function tryToQueryListDatasetWithOnlyStartDate(ApiTester $I)

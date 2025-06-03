@@ -1,5 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
+use Codeception\Test\Unit;
+
 /**
  * Unit test for TokenService
  *
@@ -8,7 +12,7 @@
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */
-class TokenServiceTest extends CTestCase
+class TokenServiceTest extends Unit
 {
     public function testCreateToken()
     {

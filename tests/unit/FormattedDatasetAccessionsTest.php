@@ -1,5 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
+require_once __DIR__ . '/LoadingFixtureTrait.php';
+
+use Codeception\Test\Unit;
+
 /**
  * Unit tests for FormattedDatasetAccessions that create HTML snippets for Dataset accessions
  *
@@ -7,17 +13,22 @@
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */
-class FormattedDatasetAccessionsTest extends CDbTestCase
+class FormattedDatasetAccessionsTest extends Unit
 {
-    protected $fixtures = array(
-        'datasets' => 'Dataset',
-        'links' => 'Link',
-        'prefixes' => 'Prefix',
-    );
+    use LoadingFixtureTrait;
 
-    public function setUp()
+    public function _before()
     {
-        parent::setUp();
+        $db = $this->getModule('Db')->_getDbh();
+        $db->exec('TRUNCATE TABLE gigadb_user CASCADE');
+        $db->exec('TRUNCATE TABLE dataset CASCADE');
+        $db->exec('TRUNCATE TABLE link CASCADE');
+        $db->exec('TRUNCATE TABLE prefix CASCADE');
+
+        $this->loadFixture('gigadb_user', \User::class);
+        $this->loadFixture('dataset', \Dataset::class);
+        $this->loadFixture('link', \Link::class);
+        $this->loadFixture('prefix', \Prefix::class);
     }
 
     /**
@@ -32,14 +43,14 @@ class FormattedDatasetAccessionsTest extends CDbTestCase
         //then we set our stub for retrieving the data
         $authorisedDatasetAccessions->method('getPrimaryLinks')
                  ->willReturn([
-                        new LinkWithPreference($this->links(0), 'ENA'),
-                        new LinkWithPreference($this->links(1), 'ENA')
+                        new LinkWithPreference(Link::model()->findByPk(1), 'ENA'),
+                        new LinkWithPreference(Link::model()->findByPk(2), 'ENA')
                     ]);
 
         //setup our expected snippet:
         $expected_snippets = [];
-        $expected_snippets[0] = new LinkWithFormat($this->links(0), 'ENA: <a target="_blank" href="http://www.ebi.ac.uk/ena/data/view/PRJEB225">PRJEB225</a><br>');
-        $expected_snippets[1] = new LinkWithFormat($this->links(1), 'Link: <a target="_blank" href="http://www.ncbi.nlm.nih.gov/projects/SNP/snp_viewBatch.cgi?sbid=1056308">http://www.ncbi.nlm.nih.gov/projects/SNP/snp_viewBatch.cgi?sbid=1056308</a><br>');
+        $expected_snippets[0] = new LinkWithFormat(Link::model()->findByPk(1), 'ENA: <a target="_blank" href="http://www.ebi.ac.uk/ena/data/view/PRJEB225">PRJEB225</a><br>');
+        $expected_snippets[1] = new LinkWithFormat(Link::model()->findByPk(2), 'Link: <a target="_blank" href="http://www.ncbi.nlm.nih.gov/projects/SNP/snp_viewBatch.cgi?sbid=1056308">http://www.ncbi.nlm.nih.gov/projects/SNP/snp_viewBatch.cgi?sbid=1056308</a><br>');
 
         $dao_under_test = new FormattedDatasetAccessions(
             $authorisedDatasetAccessions,
@@ -72,16 +83,16 @@ class FormattedDatasetAccessionsTest extends CDbTestCase
         //then we set our stub for retrieving the data
         $authorisedDatasetAccessions->method('getSecondaryLinks')
                  ->willReturn([
-                    new LinkWithPreference($this->links(2), 'ENA'),
-                    new LinkWithPreference($this->links(3), 'ENA'),
-                     new LinkWithPreference($this->links(4), 'ENA')
+                    new LinkWithPreference(Link::model()->findByPk(3), 'ENA'),
+                    new LinkWithPreference(Link::model()->findByPk(4), 'ENA'),
+                     new LinkWithPreference(Link::model()->findByPk(5), 'ENA')
                  ]);
 
         //setup our expected snippet:
         $expected_snippets = [];
-        $expected_snippets[0] = new LinkWithFormat($this->links(2), 'Link: <a target="_blank" href="http://www.ncbi.nlm.nih.gov/projects/SNP/snp_viewBatch.cgi?sbid=1056306">http://www.ncbi.nlm.nih.gov/projects/SNP/snp_viewBatch.cgi?sbid=1056306</a><br>');
-        $expected_snippets[1] = new LinkWithFormat($this->links(3), 'SRA: <a target="_blank" href="http://www.ncbi.nlm.nih.gov/sra?term=SRP003590">SRP003590</a><br>');
-        $expected_snippets[2] = new LinkWithFormat($this->links(4), 'GEO: <a target="_blank" href="#">GSE30337</a><br>'); //because GEO prefix is not in test database
+        $expected_snippets[0] = new LinkWithFormat(Link::model()->findByPk(3), 'Link: <a target="_blank" href="http://www.ncbi.nlm.nih.gov/projects/SNP/snp_viewBatch.cgi?sbid=1056306">http://www.ncbi.nlm.nih.gov/projects/SNP/snp_viewBatch.cgi?sbid=1056306</a><br>');
+        $expected_snippets[1] = new LinkWithFormat(Link::model()->findByPk(4), 'SRA: <a target="_blank" href="http://www.ncbi.nlm.nih.gov/sra?term=SRP003590">SRP003590</a><br>');
+        $expected_snippets[2] = new LinkWithFormat(Link::model()->findByPk(5), 'GEO: <a target="_blank" href="#">GSE30337</a><br>'); //because GEO prefix is not in test database
 
         $dao_under_test = new FormattedDatasetAccessions(
             $authorisedDatasetAccessions,

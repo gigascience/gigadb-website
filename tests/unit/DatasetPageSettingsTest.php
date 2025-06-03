@@ -2,13 +2,10 @@
 
 declare(strict_types=1);
 
-namespace unit;
+require_once __DIR__ . '/LoadingFixtureTrait.php';
 
-use CDbTestCase;
-use CHttpCookie;
-use CMap;
-use Dataset;
-use DatasetPageSettings;
+use Codeception\Test\Unit;
+
 
 /**
  * Unit tests for DatasetPageSettings
@@ -16,13 +13,23 @@ use DatasetPageSettings;
  * @author  Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */
-class DatasetPageSettingsTest extends CDbTestCase
+class DatasetPageSettingsTest extends Unit
 {
-    protected $fixtures = array(
-        'datasets'       => 'Dataset',
-        'authors'        => 'Author',
-        'dataset_author' => 'DatasetAuthor',
-    );
+    use LoadingFixtureTrait;
+
+    public function _before()
+    {
+        $db = $this->getModule('Db')->_getDbh();
+        $db->exec('TRUNCATE TABLE gigadb_user CASCADE');
+        $db->exec('TRUNCATE TABLE dataset CASCADE');
+        $db->exec('TRUNCATE TABLE author CASCADE');
+        $db->exec('TRUNCATE TABLE dataset_author CASCADE');
+
+        $this->loadFixture('gigadb_user', \User::class);
+        $this->loadFixture('author', \Author::class);
+        $this->loadFixture('dataset', \Dataset::class);
+        $this->loadFixture('dataset_author', \DatasetAuthor::class);
+    }
 
     public function testGetPageTypeNullModel() {
         $model = null;

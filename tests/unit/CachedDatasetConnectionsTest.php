@@ -1,18 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
+use Codeception\Test\Unit;
 /**
  * Unit tests for CachedDatasetConnections to retrieve from cache connected datasets
  *
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */
-class CachedDatasetConnectionsTest extends CTestCase
+class CachedDatasetConnectionsTest extends Unit
 {
-    public function setUp()
-    {
-        parent::setUp();
-    }
-
     public function testCachedReturnsDatasetId()
     {
         $dataset_id = 6;
