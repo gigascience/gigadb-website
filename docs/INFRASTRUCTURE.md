@@ -39,17 +39,16 @@ Automate code validation, testing, and Docker image publishing to ensure quality
 
 ##### Core Components
 
-| Category            | Tools           | 	Functions                                                                      |
-|---------------------|-----------------|---------------------------------------------------------------------------------|
-| CI/CD	              | 	GitLab         | Orchestrate pipeline: Plan → Code → Test → Release → Deploy → Operate → Monitor |
-| Container Registry	 | GitLab 	        | Store and version Docker images built during the pipeline                       |
-| Terraform state     | GitLab          | Manage infrastructure as code (IaC) for consistent environment provisioning     |
-| Pipeline runner     | 	Self - Hosted  | Run CI/CD jobs (e.g., testing, image building)                                  |
-| Infrastructure      | DigitalOcean	   | Provide compute resources for self - hosted runners and pipeline operations     |
-| Pipeline Triggers   | 	GitHub         | Trigger CI/CD pipeline on code changes                                          |
-| Containerization    | 	Docker	        | Build and publish production - ready images                                     |
-| Orchestration       | 	Docker Compose | Define multi-container applications for testing and deployment                  |
-| Testing Framework   | 	Codeception    | Run automated tests to validate code changes                                    |
+| Category           | Tools          | 	Functions                                                              |
+|--------------------|----------------|-----------------------------------------------------------------------------|
+| Container Registry | GitLab 	       | Store and version Docker images built during the pipeline                   |
+| Terraform state    | GitLab         | Manage infrastructure as code (IaC) for consistent environment provisioning |
+| Pipeline runner    | Self - Hosted  | Run CI/CD jobs (e.g., testing, image building)                              |
+| Infrastructure     | DigitalOcean   | Provide compute resources for self - hosted runners and pipeline operations |
+| Pipeline Triggers  | GitHub         | Trigger CI/CD pipeline on code changes                                      |
+| Containerization   | Docker	        | Build and publish production - ready images                                 |
+| Orchestration      | Docker Compose | Define multi-container applications for testing and deployment              |
+| Testing Framework  | Codeception    | Run automated tests to validate code changes                                |
 
 ##### Workflow
 
@@ -64,13 +63,17 @@ Automate code validation, testing, and Docker image publishing to ensure quality
 Run the application securely at scale, with monitoring, configuration management, and integration with third-party services.
 
 ##### Core Components
-| Category          | Tools                                                                                                                                                  | Functions                                                                                                  |
-|-------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------|
-| Storage           | Wasabi S3, S3 bucket, EFS (Elastic File System)	                                                                                                       | Store production assets (Wasabi/S3) and shared files (EFS).                                                | 
-| Containerization	 | Docker	Run production-grade containers (ensures parity with development).                                                                              |                                                                                                            |
-| Infrastructure    | Web Server, Bastion Server, File Server	Serve traffic (Web Server), enable secure admin access (Bastion), and manage file storage (File Server + EFS). |                                                                                                            |
-| Monitoring	       | Prometheus, Grafana, Matomo, Portainer.io, Tideaways                                                                                                   | Collect metrics (Prometheus) and visualize dashboards (Grafana).                                           |
-| IaC/Configuration | Terraform, Ansible                                                                                                                                     | Define infrastructure (Terraform), automate configuration (Ansible), and manage package consistency (Nix). |
+| Category          | Tools                                                                     | Functions                                                        |
+|-------------------|---------------------------------------------------------------------------|------------------------------------------------------------------|
+| Storage           | Wasabi S3, S3 bucket, EFS (Elastic File System)	                          | Store production assets (Wasabi/S3) and shared files (EFS).      | 
+| Containerization	 | Docker	Run production-grade containers (ensures parity with development). |                                                                  |
+| Containers        | Built and shipped from GitLab                                             |                                                                  |
+| Monitoring	       | Prometheus, Grafana                                                       | Collect metrics (Prometheus) and visualize dashboards (Grafana). |
+|                   | Matomo                                                                    | Track user interactions                                          |
+|                   | Portainer                                                                 | manage containers (Portainer)                                    |
+|                   | Tideaways                                                                 | monitor performance (Tideaways)                                  |
+| IaC/Configuration | Terraform                                                                 | Define infrastructure                                            |
+|                   | Ansible                                                                   | automate configuration                                           |
 
 ##### Workflow
 
