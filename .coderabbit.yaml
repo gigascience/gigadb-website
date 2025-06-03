@@ -18,6 +18,7 @@ reviews:
         - Never commit secrets, PII, passwords or API keys—use env-vars and .env files.
         - Flag any file >300 lines or function >30 lines and suggest refactoring.
         - Every new feature or bug-fix must arrive with automated tests; warn if none are touched.
+        - If the PR includes changes to the UI, the style guide should be updated too; warn if not.
     - path: "**/*.php"
       instructions: |
         - HTML follows web accessibility WCAG 2 standards
