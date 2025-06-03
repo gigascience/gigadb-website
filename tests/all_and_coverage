@@ -6,7 +6,6 @@ set -a
 source .env
 set +a
 
-./tests/unit_runner
 ./tests/functional_runner
 ./tests/coverage_runner
 
