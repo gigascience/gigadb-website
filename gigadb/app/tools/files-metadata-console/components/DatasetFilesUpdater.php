@@ -65,7 +65,7 @@ final class DatasetFilesUpdater extends Component
                     # Use % wildcard to ensure location ends with filename and
                     # another file with same filename in different directory is not
                     # accidentally updated
-                    ->where("location LIKE :substr", array(':substr' => "%$filepath"))
+                    ->andwhere("location LIKE :substr", array(':substr' => "%$filepath"))
                     ->one();
                 if(!$file) {
                     echo("$filepath in $this->doi.md5 was not found in database" . PHP_EOL);
@@ -115,7 +115,7 @@ final class DatasetFilesUpdater extends Component
                 # Use % wildcard to ensure location ends with filename and
                 # another file with same filename in different directory is not
                 # accidentally updated
-                ->where("location LIKE :substr", array(':substr' => "%$filepath"))
+                ->andwhere("location LIKE :substr", array(':substr' => "%$filepath"))
                 ->one();
             if($file) {
                 # Update file size
