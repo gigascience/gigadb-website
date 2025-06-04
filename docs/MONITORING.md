@@ -102,8 +102,8 @@ File Server uses EFS for shared, persistent file storage.
 
 Prometheus scrapes metrics from services (Web Server, databases, etc.).
 Grafana visualizes metrics in dashboards for performance monitoring (e.g., latency, error rates).
-UptimeRobot monitors application uptime (alerts if the Web Server or critical services become unreachable).
-Portainer.io tracks Docker container health (e.g., restart loops, resource limits).
+UptimeRobot monitors application uptime (alerts if the Web Server or critical services become unreachable), and its status page is at [here](https://stats.uptimerobot.com/LGVQXSkN1y).
+Portainer tracks Docker container health (e.g., restart loops, resource limits).
 
 ### Summary
 
@@ -111,4 +111,4 @@ Portainer.io tracks Docker container health (e.g., restart loops, resource limit
 2. CI/CD Automation → GitLab CI/CD runs tests, builds/publishes Docker images to the GitLabregistry.
 3. Production Infrastructure Setup → Terraform provisions resources based on the stored state file from GitLab; Ansible configures environments.
 4. Live Deployment → Docker ships the image to the production servers and spins up the application and services.
-5. Post-Deployment → Teams use Portainer (containers), Grafana (monitoring), and Matomo (analytics) to manage and optimize.
+5. Post-Deployment → Teams use Portainer (containers), Grafana (monitoring), Matomo (analytics) to manage and optimize, and UptimeRobot to track uptime.
