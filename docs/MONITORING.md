@@ -42,14 +42,13 @@ Automate code validation, testing, and Docker image publishing to ensure quality
 | Category           | Tools          | 	Functions                                                                                                                   |
 |--------------------|----------------|------------------------------------------------------------------------------------------------------------------------------|
 | Container Registry | GitLab 	       | Store and version Docker images built during the pipeline                                                                    |
-| Terraform state    | GitLab         | Manage infrastructure as code (IaC) for consistent environment provisioning                                                  |
 | Pipeline runner    | Self - Hosted  | Run CI/CD jobs (e.g., testing, image building)                                                                               |
-| Infrastructure     | DigitalOcean   | Provide compute resources for self - hosted runners and pipeline operations                                                  |
+| Runner             | Digital Ocean  | Provide compute resources for self - hosted runners and pipeline operations                                                  |
 | Pipeline Triggers  | GitHub         | Trigger CI/CD pipeline on code changes                                                                                       |
 | Containerization   | Docker	        | Build and publish production - ready images                                                                                  |
 | Orchestration      | Docker Compose | Define multi-container applications for testing and deployment                                                               |
 | Testing Framework  | Codeception    | Run automated tests to validate code changes                                                                                 |
-| Monitoring         |	UptimeRobot	| External monitoring of the CI/CD environment, ensuring that the pipeline infrastructure itself is operational and responsive |
+| Monitoring         | UptimeRobot	   | External monitoring of the CI/CD environment, ensuring that the pipeline infrastructure itself is operational and responsive |
 
 ##### Workflow
 
@@ -75,8 +74,10 @@ Run the application securely at scale, with monitoring, configuration management
 |                   | Portainer                                                                 | Provides a web-based UI for managing Docker containers (deployment, scaling, health checks) |
 |                   | Tideaways                                                                 | Performance profiling and monitoring, error tracking, alerts and notification,              |
 |                   | UptimeRobot                                                               | Uptime and responsiveness monitoring                                                        |
-| IaC/Configuration | Terraform                                                                 | Define infrastructure                                                                       |
-|                   | Ansible                                                                   | automate configuration                                                                      |
+| IaC               | Terraform                                                                 | Define infrastructure                                                                       |
+|                   | GitLab - Terraform state                                                  | Manage infrastructure as code (IaC) for consistent environment provisioning                 |
+|                   | GitLab - Container Registry                                               | Store and version Docker images built during the pipeline                                   |
+|                   | Ansible                                                                   | Automate configuration                                                                      |
 
 ##### Workflow
 
