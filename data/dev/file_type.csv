@@ -75,3 +75,6 @@ id,name,description,edam_ontology_id
 155,fasta,"",
 156,annotation,"",
 157,md5sum values,"",
+260,Config,"A configuration file used by various programs to store settings that are specific to their respective software. Some configuration files are plain text files but others might be stored in a format specific to the program.",
+283,BUSCO,"The type of data output by BUSCO software, may include; full table, missing genes lists, as well as other output files listed here https://busco.ezlab.org/busco_userguide.html#outputs",
+294,Annotation,"",
