@@ -149,6 +149,6 @@ class ApiSearchTestCest
         $response = $I->grabResponse();
         $xml = simplexml_load_string(($response));
 
-        $I->assertCount(6, $xml->doi);
+        $I->assertCount(8, $xml->doi);
     }
 }
