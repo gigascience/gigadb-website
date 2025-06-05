@@ -20,6 +20,7 @@ Provide developers with a consistent local environment for coding, testing, and 
 | Frontend             | Vue.js                   | Build frontend logic, serve traffic, store data, and run automated tests                 |
 | Backend              | Yii Framework            | PHP framework for building web applications, manage routing, and handle requests         |
 | Programming language | PHP                      | Develop backend logic and handle server-side operations                                  |
+| Package Repository   | Packagist                | Manage PHP packages and dependencies                                                     |
 | Web server           | Nginx                    | Serve up website, reverse proxy to backend services                                      |
 | Database             | PostgreSQL               | Store dataset information                                                                |
 | Testing framework    | Codeception              | Run automated tests to validate code changes                                             |
@@ -70,11 +71,12 @@ Run the application securely at scale, with monitoring, configuration management
 | Containers        | Built and shipped from GitLab                                             |                                                                                             |
 | Monitoring	       | Prometheus                                                                | Collect and store system/application metrics (e.g., server CPU, app response time)          |
 |                   | Grafana                                                                   | Visualize metrics via customizable dashboards                                               |
+|                   | AWS CloudWatch                                                            | Monitor AWS resources and applications, collect logs, set alarms, and visualize metrics     |
 |                   | Matomo                                                                    | Tracks user interactions, website traffic, and behavior for analytic                        |
 |                   | Portainer                                                                 | Provides a web-based UI for managing Docker containers (deployment, scaling, health checks) |
 |                   | Tideaways                                                                 | Performance profiling and monitoring, error tracking, alerts and notification,              |
 |                   | UptimeRobot                                                               | Uptime and responsiveness monitoring                                                        |
-| IaC               | Terraform                                                                 | Define infrastructure                                                                       |
+| Infrastructure    | Terraform                                                                 | Define infrastructure                                                                       |
 |                   | GitLab - Terraform state                                                  | Manage infrastructure as code (IaC) for consistent environment provisioning                 |
 |                   | GitLab - Container Registry                                               | Store and version Docker images built during the pipeline                                   |
 |                   | Ansible                                                                   | Automate configuration                                                                      |
