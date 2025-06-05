@@ -15,7 +15,7 @@ nav:
       - EFS Data Migration: sop/EFS_DATA_MIGRATION.md
       - May2024-temp-dataset-creation-workflow: sop/May2024-temp-dataset-creation-workflow.md
       - Migration Troubleshoot: sop/MIGRATION_TROUBLESHOOT.md
-      - Monitoring: sop/MONITORING.md
+      - Monitoring: sop/SETUP_PROMETHEUS_GRAFANA.md
       - Performances Troubleshoot: sop/PERFORMANCES_TROUBLESHOOT.md
       - Production Deploy: sop/PRODUCTION_DEPLOY.md
       - Production Troubleshooting Guide: sop/PRODUCTION_TROUBLESHOOT.md

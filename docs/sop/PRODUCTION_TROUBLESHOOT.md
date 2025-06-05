@@ -38,7 +38,7 @@ The service and the environment can be set in the gitlab variable page as below:
 
 The system resources and performance of GigaDB servers are monitored by [Prometheus](https://prometheus.io/) and [Grafana](https://grafana.com/),
 these two tools work together to detect and alert about possible errors, eg. disk full, low memory utilization.
-The details of GigaDB monitoring system implementation, please refer to this [doc](MONITORING.md).
+The details of GigaDB monitoring system implementation, please refer to this [doc](SETUP_PROMETHEUS_GRAFANA.md).
 
 Here is the grafana [dashboard](http://monitoring.gigadb.host:3000/login), the login credentials can be obtained from [here](https://gitlab.com/groups/gigascience/-/settings/ci_cd).
 

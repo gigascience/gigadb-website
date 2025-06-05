@@ -22,7 +22,7 @@ and the SOPs for both the local and production environments.
 - [Local Setup](sop/LOCAL_SETUP.md)
 - [May2024-temp-dataset-creation-workflow](sop/May2024-temp-dataset-creation-workflow.md)
 - [Migration Troubleshoot](sop/MIGRATION_TROUBLESHOOT.md)
-- [Monitoring](sop/MONITORING.md)
+- [Monitoring](sop/SETUP_PROMETHEUS_GRAFANA.md)
 - [Performances Troubleshoot](sop/PERFORMANCES_TROUBLESHOOT.md)
 - [Production Deploy](sop/PRODUCTION_DEPLOY.md)
 - [Production Troubleshooting Guide](sop/PRODUCTION_TROUBLESHOOT.md)
@@ -41,7 +41,7 @@ and the SOPs for both the local and production environments.
 - [Releases How-To](sop/RELEASE_PROCESS.md)
 
 ##### E. Monitoring
-- [Monitoring](sop/MONITORING.md)
+- [Monitoring](sop/SETUP_PROMETHEUS_GRAFANA.md)
 - [Uptime Status Page](miscellaneous/UPTIME_STATUS_PAGE.md)
 
 ##### F. Troubleshooting
