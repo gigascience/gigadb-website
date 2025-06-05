@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #2315: Create documentation for infrastructure and deployment workflow monitoring
 - Feat #2175: Create GigaDB documentation page using mkdocs
 
 ## v4.4.14 - 2025-07-09- d11b331f1 -
