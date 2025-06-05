@@ -25,6 +25,7 @@ $this->pageTitle = 'GigaDB - Help';
                 <li id="liguideline" role="presentation"><a href="#guidelines" aria-controls="guidelines" role="tab" data-toggle="tab" aria-selected="false">Submission guidelines</a></li>
                 <li id="livocabulary" role="presentation"><a href="#vocabulary" aria-controls="vocabulary" role="tab" data-toggle="tab" aria-selected="false">Controlled vocabulary</a></li>
                 <li id="liapi" role="presentation"><a href="#interface" aria-controls="interface" role="tab" data-toggle="tab" aria-selected="false">Application programming interface</a></li>
+                <li id="licommenting" role="presentation"><a href="#commenting" aria-controls="commenting" role="tab" data-toggle="tab" aria-selected="false">Commenting on Datasets</a></li>
             </ul>
             <div class="tab-content">
                 <div role="tabpanel" class="tab-pane active" id="search" aria-labelledby="lisearch">
@@ -63,7 +64,7 @@ $this->pageTitle = 'GigaDB - Help';
                         </dl>
 
                         <p>Only those objects that have direct matches are displayed in the search results, i.e. the only Files to be displayed in the search results will be those with matches to the search term, all other files within the same dataset will NOT be displayed.</p>
-                        <p>For example, searching for the term "Potato" will return the dataset with the title "Genomic data from the potato" which contains 17 files, however, the search results table will only display 3 of those 17 files because only 3 contain the search term “potato”. To find all data associated with a dataset you must follow the link to the dataset page.</p>
+                        <p>For example, searching for the term "Potato" will return the dataset with the title "Genomic data from the potato" which contains 17 files, however, the search results table will only display 3 of those 17 files because only 3 contain the search term "potato". To find all data associated with a dataset you must follow the link to the dataset page.</p>
                     </section>
                     <hr class="dashed">
                     <section aria-labelledby="filteringResultTitle" class="m-0">
@@ -90,7 +91,7 @@ $this->pageTitle = 'GigaDB - Help';
                 </div>
                 <div role="tabpanel" class="tab-pane" id="guidelines" aria-labelledby="liguideline">
                     <p><a href="http://gigadb.org/"><span class="text-italic">GigaDB</span></a> is an open-access database. As such, all data submitted to <span class="text-italic">GigaDB</span> must be fully consented for public release (for more information about our data policies, please see our <a href="http://gigadb.org/site/term/" target="_blank">Terms of use page</a>).</p>
-                    <p>All sequence, assembly, variation, and microarray data must be deposited in a public database at <a href="http://www.ncbi.nlm.nih.gov/" target="_blank">NCBI</a>, <a href="http://www.ebi.ac.uk/" target="_blank">EBI</a>, or <a href="http://www.ddbj.nig.ac.jp/" target="_blank">DDBJ</a> before you submit them to <a href="http://gigadb.org/" target="_blank"><span class="text-italic">GigaDB</span></a>. In the cases where you would like <span class="text-italic">Giga</span>DB to host files associated with genomic data not fully consented for public release, you must first submit the non-public data to <a href="http://www.ncbi.nlm.nih.gov/gap/" target="_blank">dbGaP</a> or <a href="http://ega-archive.org" target="_blank">EGA</a>.</p>
+                    <p>All sequence, assembly, variation, and microarray data must be deposited in a public database at <a href="http://www.ncbi.nlm.nih.gov/" target="_blank">NCBI</a>, <a href="http://www.ebi.ac.uk/" target="_blank">EBI</a>, or <a href="http://www.ddbj.nig.ac.jp/" target="_blank">DDBJ</a> before you submit them to <a href="http://gigadb.org/" target="_blank"><span class="text-italic">Giga</span>DB</a>. In the cases where you would like <span class="text-italic">Giga</span>DB to host files associated with genomic data not fully consented for public release, you must first submit the non-public data to <a href="http://www.ncbi.nlm.nih.gov/gap/" target="_blank">dbGaP</a> or <a href="http://ega-archive.org" target="_blank">EGA</a>.</p>
                     <p><strong>Step 1</strong> - <a href="http://gigadb.org/user/create" target="_blank">Create an account</a> or <a href="http://gigadb.org/site/login" target="_blank">log in</a> to <a href="http://gigadb.org/" target="_blank"><span class="text-italic">Giga</span>DB</a></p>
                     <p><strong>Step 2</strong> - Download and complete the <a href="/files/templates/GigaDBUploadForm-forWebsite-v22Dec2021.xlsx" target="_blank">Excel template file</a>. Completed example files for the <a href="http://gigadb.org/files/GigaDBUploadForm-example1.xls" aria-label="Example Excel file for E. coli">E. coli</a> (<a href="http://gigadb.org/dataset/100001" target="_blank">10.5524/100001</a>) and <a href="http://gigadb.org/files/GigaDBUploadForm-example2.xls" aria-label="Example Excel file for Sorghum">Sorghum</a> (<a href="http://gigadb.org/dataset/100012" target="_blank">10.5524/100012</a>) datasets are available.</p>
                     <p>The template file contains:</p>
@@ -911,6 +912,9 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242&lt;</pre>
 # or
 # HTTP/1.1 404 Not Found / HTTP/1.1 500 Internal server error</code></pre>
                     </section>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="commenting" aria-labelledby="licommenting">
+                    <?php $this->renderPartial('_help_commenting'); ?>
                 </div>
             </div>
         </div>
