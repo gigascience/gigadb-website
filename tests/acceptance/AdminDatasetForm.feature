@@ -103,7 +103,6 @@ Feature: form to update dataset details
     When I am on "adminDataset/create"
     And I select "test+14@gigasciencejournal.com" from the field "Dataset_submitter_id"
     And I fill in the field of "name" "Dataset[dataset_size]" with "1024"
-    And I check the field "Dataset_Epigenomic"
     And I attach the file "bgi_logo_new.png" to the file input element "datasetImage"
     And I fill in the field of "name" "Image[source]" with "test source"
     And I fill in the field of "name" "Image[license]" with "test license"
