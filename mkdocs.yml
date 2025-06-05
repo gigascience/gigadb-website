@@ -8,6 +8,7 @@ nav:
       - Git Workflow: developers/BRANCHING.md
       - Bastion tools: developers/CURATOR_TOOLS_BASTION.md
       - Setup database: developers/DATABASE.md
+      - Infrastructure and Monitoring: developers/MONITORING.md
   - SOPs:
       - AWS Setup: sop/AWS_SETUP.md
       - Dataset Upload: sop/DATASET_UPLOAD.md
@@ -15,7 +16,6 @@ nav:
       - EFS Data Migration: sop/EFS_DATA_MIGRATION.md
       - May2024-temp-dataset-creation-workflow: sop/May2024-temp-dataset-creation-workflow.md
       - Migration Troubleshoot: sop/MIGRATION_TROUBLESHOOT.md
-      - Monitoring: sop/SETUP_PROMETHEUS_GRAFANA.md
       - Performances Troubleshoot: sop/PERFORMANCES_TROUBLESHOOT.md
       - Production Deploy: sop/PRODUCTION_DEPLOY.md
       - Production Troubleshooting Guide: sop/PRODUCTION_TROUBLESHOOT.md
@@ -25,6 +25,7 @@ nav:
       - Restore Database Backup in S3: sop/RESTORE_DATABASE_BACKUP_IN_S3.md
       - Roll Back Prev Deploy: sop/ROLL_BACK_PREV_DEPLOY.md
       - Set up CI/CD pipeline: sop/SETUP_CI_CD_PIPELINE.md
+      - Set up Prometheus + Grafana: sop/SETUP_PROMETHEUS_GRAFANA.md
       - Setup MKDocs: sop/SETUP_MKDOCS.md
       - Infrastructure Provisioning on AWS: sop/SETUP_PROVISIONING.md
       - Update Version: sop/UPDATE_VERSION.md
