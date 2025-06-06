@@ -10,16 +10,16 @@ and the SOPs for both the local and production environments.
 
 ##### B. Production Environment Setup
 - [AWS Setup](sop/AWS_SETUP.md)
+- [Setup CI/CD Pipeline](sop/SETUP_CI_CD_PIPELINE.md)
 - [Infrastructure Provisioning on AWS](sop/SETUP_PROVISIONING.md)
-- [CI/CD Pipeline Setup](sop/SETUP_CI_CD_PIPELINE.md)
 - [AWS policies](awsdocs/index.md)
 - [WASABI policies](wasabidocs/index.md)
 
 ##### C. Developer SOPs
+- [Local Setup](sop/LOCAL_SETUP.md)
 - [Dataset Upload](sop/DATASET_UPLOAD.md)
 - [Deploy and Configure Public FTP Server](sop/DEPLOY_AND_CONFIGURE_PUBLIC_FTP_SERVER.md)
 - [EFS Data Migration](sop/EFS_DATA_MIGRATION.md)
-- [Local Setup](sop/LOCAL_SETUP.md)
 - [May2024-temp-dataset-creation-workflow](sop/May2024-temp-dataset-creation-workflow.md)
 - [Migration Troubleshoot](sop/MIGRATION_TROUBLESHOOT.md)
 - [Prometheus + Grafana](sop/SETUP_PROMETHEUS_GRAFANA.md)
