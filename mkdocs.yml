@@ -85,6 +85,9 @@ theme:
 plugins:
   - search
 
+markdown_extensions:
+  - tables
+
 extra:
     social:
       - icon: fontawesome/brands/github
