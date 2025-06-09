@@ -64,21 +64,23 @@ Automate code validation, testing, and Docker image publishing to ensure quality
 Run the application securely at scale, with monitoring, configuration management, and integration with third-party services.
 
 ##### Core Components
-| Category          | Tools                                            | Functions                                                                                   |
-|-------------------|--------------------------------------------------|---------------------------------------------------------------------------------------------|
-| Storage           | Wasabi S3, S3 bucket, EFS (Elastic File System)	 | Store production assets (Wasabi/S3) and shared files (EFS).                                 | 
-| Containerization	 | Docker	                                          | Run production-grade containers (ensures parity with development).                          |
-| Monitoring	       | Prometheus                                       | Collect and store system/application metrics (e.g., server CPU, app response time)          |
-|                   | Grafana                                          | Visualize metrics via customizable dashboards                                               |
-|                   | AWS CloudWatch                                   | Monitor AWS resources and applications, collect logs, set alarms, and visualize metrics     |
-|                   | Matomo                                           | Tracks user interactions, website traffic, and behavior for analytic                        |
-|                   | Portainer                                        | Provides a web-based UI for managing Docker containers (deployment, scaling, health checks) |
-|                   | Tideaways                                        | Performance profiling and monitoring, error tracking, alerts and notification,              |
-|                   | UptimeRobot                                      | Uptime and responsiveness monitoring                                                        |
-| Infrastructure    | Terraform                                        | Define infrastructure                                                                       |
-|                   | GitLab - Terraform state                         | Manage infrastructure as code (IaC) for consistent environment provisioning                 |
-|                   | GitLab - Container Registry                      | Store and version Docker images built during the pipeline                                   |
-|                   | Ansible                                          | Automate configuration                                                                      |
+| Category          | Tools                                            | Functions                                                                                   | KPIs                                                                                            |
+|-------------------|--------------------------------------------------|---------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
+| Storage           | Wasabi S3, S3 bucket, EFS (Elastic File System)	 | Store production assets (Wasabi/S3) and shared files (EFS).                                 |                                                                                                 |
+| Containerization	 | Docker	                                          | Run production-grade containers (ensures parity with development).                          |                                                                                                 |
+| Monitoring	       | Prometheus                                       | Collect and store system/application metrics (e.g., server CPU, app response time)          |                                                                                                 |
+|                   | Grafana                                          | Visualize metrics via customizable dashboards                                               |                                                                                                 |
+|                   | AWS CloudWatch                                   | Monitor AWS resources and applications, collect logs, set alarms, and visualize metrics     | All AWS services status                                                                         |
+|                   | Matomo                                           | Tracks user interactions, website traffic, and behavior for analytic                        | Website traffic                                                                                 |
+|                   | Portainer                                        | Provides a web-based UI for managing Docker containers (deployment, scaling, health checks) | Containers log                                                                                  |
+|                   | Tideways                                         | Performance profiling and monitoring, error tracking, alerts and notification,              | Requests, Timeline Traces and Callgraph Profiles, Error and Exception Data, PHP and System Data |
+|                   | UptimeRobot                                      | Uptime and responsiveness monitoring                                                        | uptime percentage                                                                               |
+|                   | Wasabi dashboard                                 | Monitor Wasabi S3 bucket status and performance metrics                                     | All Wasabi buckets status                                                                       |
+|                   | Cloudflare dashboard                             | Monitor Cloudflare CDN performance, security, and analytics                                 | All Cloudflare services status                                                                  |
+| Infrastructure    | Terraform                                        | Define infrastructure                                                                       |                                                                                                 |
+|                   | GitLab - Terraform state                         | Manage infrastructure as code (IaC) for consistent environment provisioning                 |                                                                                                 |
+|                   | GitLab - Container Registry                      | Store and version Docker images built during the pipeline                                   |                                                                                                 |
+|                   | Ansible                                          | Automate configuration                                                                      |                                                                                                 |
 
 ##### Workflow
 
@@ -113,3 +115,5 @@ Portainer tracks Docker container health (e.g., restart loops, resource limits).
 3. Production Infrastructure Setup → Terraform provisions resources based on the stored state file from GitLab; Ansible configures environments.
 4. Live Deployment → Docker ships the image to the production servers and spins up the application and services.
 5. Post-Deployment → Teams use Portainer (containers), Grafana (monitoring), Matomo (analytics) to manage and optimize, and UptimeRobot to track uptime.
+
+
