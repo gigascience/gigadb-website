@@ -700,7 +700,9 @@ services:
 
   mkdocs:
     <<: *logging
-    image: squidfunk/mkdocs-material:latest
+    build:
+      context: .
+      dockerfile: ../packaging/Mkdocs-Dockerfile
     restart: always
     volumes:
       - ${APPLICATION}:/docs:ro
