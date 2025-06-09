@@ -54,7 +54,7 @@ To dockerize the mkdocs page, you can use the `squidfunk/mkdocs-material` image 
 
 ```
 $ cd gigadb-website/
-$ docker build -f ops/packaging/Production-Mkdocs-Dockerfile -t mkdocs-local:latest .
+$ docker build -f ops/packaging/Mkdocs-Dockerfile -t mkdocs-local:latest .
 $ docker run --rm -it -p 8009:8000 -v ${PWD}:/docs mkdocs-local:latest
 or
 $ docker-compose up -d mkdocs
