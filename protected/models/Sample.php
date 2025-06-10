@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This is the model class for table "sample".
  *
@@ -63,11 +65,9 @@ class Sample extends CActiveRecord
             		array('consent_document, contact_author_name', 'length', 'max'=>45),
             		array('contact_author_email, sampling_protocol', 'length', 'max'=>100),
 			array('submission_date', 'safe'),
-			//array('code', 'required'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('species_search, dois_search, name, attr_search', 'safe', 'on'=>'search'),
-			//array('id, species_id, name, consent_document, submitted_id, submission_date, contact_author_name, contact_author_email, sampling_protocol, species_search, dois_search', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -79,7 +79,6 @@ class Sample extends CActiveRecord
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
-            //'files' => array(self::HAS_MANY, 'File', 'sample_id'),
             'species' => array(self::BELONGS_TO, 'Species', 'species_id'),
             'submitted' => array(self::BELONGS_TO, 'GigadbUser', 'submitted_id'),
             'sampleRels' => array(self::HAS_MANY, 'SampleRel', 'sample_id'),
@@ -147,8 +146,8 @@ class Sample extends CActiveRecord
 		$criteria=new CDbCriteria;
 		$criteria->select = 't.*, (SELECT min(d.identifier) from dataset d LEFT JOIN dataset_sample ds ON ds.dataset_id = d.id WHERE ds.sample_id = t.id) as minDoi, (SELECT a.attribute_name from sample_attribute sa LEFT JOIN attribute a ON sa.attribute_id = a.id WHERE sa.sample_id = t.id ORDER BY attribute_name limit 1) as aname';
         		$criteria->with = array('species','datasets');
-		$criteria->compare('LOWER(t.name)',strtolower($this->name),true);
- 		$criteria->compare('LOWER(species.common_name)', strtolower($this->species_search), true);
+		$criteria->compare('LOWER(t.name)',strtolower($this->name ?: ''),true);
+ 		$criteria->compare('LOWER(species.common_name)', strtolower($this->species_search ?: ''), true);
 		if ($this->dois_search) {
             $sql = <<<EO_SQL
 SELECT sample_id FROM dataset_sample

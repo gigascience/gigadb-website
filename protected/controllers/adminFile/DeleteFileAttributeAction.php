@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This action will delete file attributes in admin file update page
  */
@@ -10,8 +13,9 @@ class DeleteFileAttributeAction extends CAction
         if (!Yii::app()->request->isPostRequest)
             throw new CHttpException(404, "The requested page does not exist.");
 
-        if (isset($_POST['id'])) {
-            $attribute = FileAttributes::model()->findByPk($_POST['id']);
+        $id = Yii::$app->request->post('id');
+        if ($id) {
+            $attribute = FileAttributes::model()->findByPk($id);
 
             if ($attribute) {
                 $dataset_id = $attribute->file->dataset_id;

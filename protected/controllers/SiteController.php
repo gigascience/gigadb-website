@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Ramsey\Uuid\Uuid;
 
 use yii\swiftmailer\mailer;
@@ -11,13 +13,6 @@ class SiteController extends Controller {
 	 */
 	public function actions() {
 		return array(
-			# captcha action renders the CAPTCHA image displayed on the contact page
-			// 'captcha'=>array(
-			// 	'class'=>'CCaptchaAction',
-			// 	'backColor'=>0xFFFFFF,
-			// ),
-			// page action renders "static" pages stored under 'protected/views/site/pages'
-			// They can be accessed via: index.php?r=site/page&view=FileName
 			'page'=>array(
 				'class'=>'CViewAction',
 			),
@@ -74,15 +69,6 @@ class SiteController extends Controller {
 	 * when an action is not explicitly requested by users.
 	 */
 	public function actionIndex() {
-	#if (Yii::app()->user->isGuest) {
-	#    $this->render('index');
-	#} else {
-	#    if (Yii::app()->user->checkAccess('admin')) {
-	#        $this->redirect(array('admin/index'));
-	#    } else {
-	#        $this->redirect(array('user/accountBalance', 'id'=>Yii::app()->user->_id));
-	#    }
-	#}
 		$form = new SearchForm;  // Use for Form
 		$dataset = new Dataset; // Use for auto suggestion
 
@@ -121,7 +107,7 @@ class SiteController extends Controller {
             ->where('d.upload_status = :status', [':status' => 'Published']);
 
         $bytes = $command->queryScalar();
-        $bytesFormatted = UnitHelper::specifySizeUnits($bytes);
+        $bytesFormatted = UnitHelper::specifySizeUnits((int) $bytes);
 
         foreach($results as $result) {
             switch ($result['name']) {
@@ -483,13 +469,6 @@ class SiteController extends Controller {
             $form->attributes = $_POST['SuLoginForm'];
             // validate user input and redirect to previous page if valid
             if ($form->validate()) {
-                ## log su
-                #$u= new ActiveRecordLog;
-                #$u->description=  'User ' . Yii::app()->user->Name . ' LOGIN ';
-                #$u->action=       'LOGIN';
-                #$u->creationdate= date('Y-m-d H:i:s');
-                #$u->userid=       Yii::app()->user->id;
-                #$u->save();
                 $this->redirect(Yii::app()->user->returnUrl);
             }
         }

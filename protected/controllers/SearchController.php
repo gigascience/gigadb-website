@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 class SearchController extends Controller
 {
     public function actionEmailNewDatasets() {

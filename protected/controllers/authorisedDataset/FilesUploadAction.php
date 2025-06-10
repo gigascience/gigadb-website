@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This action will load Uppy.io based file uploader for dataset
  *

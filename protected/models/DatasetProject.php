@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This is the model class for table "dataset_project".
  *
@@ -94,8 +96,8 @@ class DatasetProject extends CActiveRecord
 		$criteria->compare('id',$this->id);
 		$criteria->compare('dataset_id',$this->dataset_id);
 		$criteria->compare('project_id',$this->project_id);
-		$criteria->compare('LOWER(dataset.identifier)',strtolower($this->doi_search),true);
-		$criteria->compare('LOWER(project.name)',strtolower($this->project_name_search),true);
+		$criteria->compare('LOWER(dataset.identifier)',strtolower($this->doi_search ?: ''),true);
+		$criteria->compare('LOWER(project.name)',strtolower($this->project_name_search ?: ''),true);
 
         $sort = new CSort();
         $sort->attributes = array(

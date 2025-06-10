@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This is the model class for table "dataset_funder".
  *
@@ -42,7 +44,6 @@ class DatasetFunder extends CActiveRecord
 			array('dataset_id, funder_id', 'required'),
 			array('dataset_id, funder_id', 'numerical', 'integerOnly'=>true),
 			array('grant_award, comments', 'safe'),
-			//array('funder_id', 'checkIsFunderDuplicate', 'on'=>'insert'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, dataset_id, funder_id, grant_award, awardee, comments, doi_search, funder_search', 'safe', 'on'=>'search'),
@@ -97,7 +98,7 @@ class DatasetFunder extends CActiveRecord
                 $criteria->compare('awardee',$this->awardee,true);
 		$criteria->compare('comments',$this->comments,true);
 		$criteria->compare('dataset.identifier', $this->doi_search, true);
-		$criteria->compare('LOWER(funder.primary_name_display)', strtolower($this->funder_search), true);
+		$criteria->compare('LOWER(funder.primary_name_display)', strtolower($this->funder_search ?: ''), true);
 
 		$sort = new CSort();
 		$sort->attributes = array(

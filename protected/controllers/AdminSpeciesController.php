@@ -1,9 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 class AdminSpeciesController extends Controller
 {
-
-
 	/**
 	 * @return array action filters
 	 */

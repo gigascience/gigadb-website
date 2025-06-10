@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Routing, aggregating and composing logic for Dataset submission
  *
@@ -94,7 +97,6 @@ EO_MAIL;
     {
         if (isset($_POST['File'])) {
             $count = count($_POST['File']);
-            //var_dump('count'.$count);
             for ($i = 0; $i < $count; $i++) {
                 $id=$_POST['File'][$i]['id'];
                 $model = File::model()->findByPk($id);
@@ -105,9 +107,8 @@ EO_MAIL;
                 if ($model->date_stamp == "") {
                     $model->date_stamp = null;
                 }
-                // var_dump($model->description);
+
                 if (!$model->save()) {
-                    var_dump($_POST['File'][$i]);
                 }
             }
         }
@@ -209,7 +210,7 @@ EO_MAIL;
             /* prepare attachments */
 
             // boundary
-            $semi_rand = md5(time());
+            $semi_rand = md5((string)time());
             $mime_boundary = "==Multipart_Boundary_x{$semi_rand}x";
 
             // headers for attachment
@@ -252,7 +253,7 @@ EO_MAIL;
             /* prepare attachments */
 
             // boundary
-            $semi_rand = md5(time());
+            $semi_rand = md5((string)time());
             $mime_boundary = "==Multipart_Boundary_x{$semi_rand}x";
 
             // headers for attachment
@@ -300,7 +301,7 @@ EO_MAIL;
             /* prepare attachments */
 
             // boundary
-            $semi_rand = md5(time());
+            $semi_rand = md5((string)time());
             $mime_boundary = "==Multipart_Boundary_x{$semi_rand}x";
 
             // headers for attachment
@@ -344,7 +345,7 @@ EO_MAIL;
             /* prepare attachments */
 
             // boundary
-            $semi_rand = md5(time());
+            $semi_rand = md5((string)time());
             $mime_boundary = "==Multipart_Boundary_x{$semi_rand}x";
 
             // headers for attachment

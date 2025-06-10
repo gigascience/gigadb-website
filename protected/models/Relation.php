@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This is the model class for table "relation".
  *
@@ -95,7 +97,6 @@ class Relation extends CActiveRecord
 		$criteria->compare('t.id',$this->id);
 		$criteria->compare('dataset_id',$this->dataset_id);
 		$criteria->compare('related_doi',$this->related_doi,true);
-		//$criteria->compare('LOWER(relationship)',strtolower($this->relationship),true);
 		$criteria->compare('relationship.name',$this->relationship_name, true);
 		$criteria->compare('dataset.identifier',$this->doi_search,true);
 

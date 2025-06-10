@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This is the model class for table "dataset_sample".
  *
@@ -51,7 +53,7 @@ class DatasetSample extends CActiveRecord
 		return array(
 			array('dataset_id, sample_id', 'required'),
 			array('dataset_id, sample_id', 'numerical', 'integerOnly'=>true),
-                         	array('species,code,attribute','safe'),
+            array('species,code,attribute','safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, dataset_id, sample_id, doi_search, sample_name, attribute', 'safe', 'on'=>'search'),

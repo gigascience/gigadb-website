@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 /**
  * Model class for table "reset_password_request"
  *
@@ -44,18 +45,6 @@ class ResetPasswordRequest extends CActiveRecord
     public function tableName()
     {
         return 'reset_password_request';
-    }
-
-    /**
-     * @return array relational rules.
-     */
-    public function relations()
-    {
-        // NOTE: you may need to adjust the relation name and the related
-        // class name for the relations automatically generated below.
-//        return array(
-//            'users' => array(self::BELONGS_TO, 'User', 'id')
-//        );
     }
 
     /**

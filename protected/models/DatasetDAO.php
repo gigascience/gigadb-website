@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Class to interact with persisted Dataset elements on behalf of the service layer
  *

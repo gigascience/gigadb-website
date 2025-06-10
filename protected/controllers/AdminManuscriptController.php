@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 class AdminManuscriptController extends Controller
 {
-
-
 	/**
 	 * @return array action filters
 	 */

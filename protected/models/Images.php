@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This is the model class for table "image".
  * Note: I have to change this Model to Images instead of Image because of this name is conflict with Image.php in the Extension
@@ -119,15 +121,4 @@ class Images extends ImageHaver
     public function getImageTypeName() {
         return "image_upload";
     }
-
-#    // Or this, for that matter
-#    public function updateImage($type) {
-#        if (!isset($_POST["use_$type"]) or $_POST["use_$type"]!= 'current') {
-#    	    $image = CUploadedFile::getInstanceByName("{$type}_image");
-#	        if ($image !== null) {
-#                  $this->setImage($type, $image);
-#                  $this->location = $this->image($type);
-#            }
-#        }
-#    }
 }

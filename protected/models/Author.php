@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This is the model class for table "author".
  *
@@ -90,10 +92,10 @@ class Author extends CActiveRecord {
         $criteria = new CDbCriteria;
         $criteria->select = 't.*, (SELECT min(d.identifier) from dataset d LEFT JOIN dataset_author da ON da.dataset_id = d.id WHERE da.author_id = t.id) as minDoi';
         $criteria->compare('id', $this->id);
-        $criteria->compare('LOWER(surname)', strtolower($this->surname), true);
-        $criteria->compare('LOWER(middle_name)', strtolower($this->middle_name), true);
-        $criteria->compare('LOWER(first_name)', strtolower($this->first_name), true);
-        $criteria->compare('LOWER(orcid)', strtolower($this->orcid), true);
+        $criteria->compare('LOWER(surname)', strtolower($this->surname ?: ''), true);
+        $criteria->compare('LOWER(middle_name)', strtolower($this->middle_name ?: ''), true);
+        $criteria->compare('LOWER(first_name)', strtolower($this->first_name ?: ''), true);
+        $criteria->compare('LOWER(orcid)', strtolower($this->orcid ?: ''), true);
         $criteria->compare('gigadb_user_id', $this->gigadb_user_id);
 
         if ($this->dois_search) {
@@ -139,7 +141,6 @@ EO_SQL;
     }
 
     public function getFullAuthor() {
-        //return $this->name . ' - ORCID:' . $this->orcid . ' - RANK:' . $this->rank;
         return $this->first_name . ' ' . $this->surname . ' - ORCID:' . $this->orcid;
     }
 
@@ -204,12 +205,12 @@ EO_SQL;
 
     public function getFirstName() {
 
-        return rtrim($this->first_name,",;  ");
+        return $this->first_name ? rtrim($this->first_name,",;  ") : '';
     }
 
     public function getMiddleName() {
 
-        return rtrim($this->middle_name,",;  ");
+        return $this->middle_name ? rtrim($this->middle_name,",;  ") : '';
     }
 
     public function getInitials() {
@@ -264,7 +265,6 @@ EO_SQL;
         $identicalToObj = Relationship::model()->findByAttributes(array("name"=>"IsIdenticalTo"));
         if(null == $identicalToObj){
             Yii::log("Error retrieving the relationship of name 'IsIdenticalTo'",'error');
-            // print_r("Error retrieving the relationship of name 'IsIdenticalTo'");
             return false;
         }
         $rel_id = $identicalToObj->id;
@@ -274,7 +274,7 @@ EO_SQL;
         select author_id as identical from author_rel where related_author_id=:author_id and relationship_id=:rel_id
         ORDER BY identical";
         $query_result = Yii::app()->db->createCommand($sql)->bindParam(":author_id",$author,PDO::PARAM_STR)->bindParam(":rel_id",$rel_id,PDO::PARAM_STR)->queryAll(false);
-        // var_dump($query_result);
+
         $get_row = function ($row) {
             return (int) $row[0];
         };
@@ -285,14 +285,12 @@ EO_SQL;
         $identicalToObj = Relationship::model()->findByAttributes(array("name"=>"IsIdenticalTo"));
         if(null == $identicalToObj){
             Yii::log("Error retrieving the relationship of name 'IsIdenticalTo'",'error');
-            // print_r("Error retrieving the relationship of name 'IsIdenticalTo'");
             return false;
         }
 
         $authorObj = Author::model()->findByPk($author);
         if(null == $authorObj){
             Yii::log("Error retrieving Author({$author}) to merge with",'error');
-            // print_r("Error retrieving Author({$author}) to merge with");
             return false;
         }
         else {
@@ -326,26 +324,6 @@ EO_SQL;
             );
             $inserted_count = $command->execute();
             $success = $success && ( $target_count == $inserted_count ? true : false );
-
-            // foreach ($target_graph as $target_node) {
-
-            //     $author_rel = new AuthorRel();
-            //     $author_rel->author_id = $origin_node;
-            //     $author_rel->related_author_id = $target_node ;
-            //     $author_rel->relationship_id = $identicalToObj->id ;
-
-            //     if($author_rel->save()) {
-            //         Yii::log("Success creating a new AuthorRel({$origin_node},{$target_node})",'info');
-            //         // print_r("Success creating a new AuthorRel({$origin_node},{$target_node})");
-            //         $success = $success && true;
-            //     }
-            //     else {
-            //         Yii::log("Error creating a new AuthorRel({$origin_node},{$target_node})",'error');
-            //         // print_r("Error creating a new AuthorRel({$origin_node},{$target_node})");
-            //         $success = $success && false;
-            //     }
-
-            // }
         }
 
         return $success;
@@ -362,15 +340,11 @@ EO_SQL;
         foreach($outward_edges as $edge) {
             $edge_id = $edge->id;
             if( $edge->delete() ) {
-                // var_dump(AuthorRel::model()->findByPk($edge_id));
                 Yii::log("success deleting edge {$edge_id}",'info');
-                // print_r("success deleting edge {$edge_id}\n");
                 $success = $success && true ;
             }
             else {
-                // var_dump($edge->getErrors());
                 Yii::log("error deleting edge {$edge_id}",'error');
-                // print_r("error deleting edge {$edge_id}\n");
                 $success = $success && false ;
             }
         }

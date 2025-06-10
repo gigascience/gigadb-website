@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * finders for User related information
  *

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This action for AdminDatasetController will generate a mockup access
  *
@@ -23,21 +26,19 @@ class MockupAction extends CAction
            $this->getController()->redirect('/adminDataset/update/id/'.$model->id);
         }
 
+        $reviewerEmail = Yii::$app->request->post('revieweremail');
+        $monthsOfValidity = Yii::$app->request->post('monthsofvalidity');
         // parse form parameter (expects revieweremail and monthsofvalidity)
-        if ( !isset($_POST['revieweremail']) || "" === $_POST['revieweremail']) {
+        if (!$reviewerEmail) {
             Yii::log("revieweremail parameter is missing from _POST","error");
             Yii::app()->user->setFlash('error',"revieweremail parameter is missing from _POST");
             $this->getController()->redirect('/adminDataset/update/id/'.$model->id);
         }
-        elseif ( !isset($_POST['monthsofvalidity']) ) {
+        elseif (!$monthsOfValidity) {
             Yii::log("monthsofvalidity parameter is missing from _POST","error");
             Yii::app()->user->setFlash('error',"monthsofvalidity parameter is missing from _POST");
             $this->getController()->redirect('/adminDataset/update/id/'.$model->id);
         }
-
-        $reviewerEmail = $_POST['revieweremail'];
-        $monthsOfValidity = $_POST['monthsofvalidity'];
-        
 
         $mockupTokenService = new TokenService([
                           'jwtBuilder' => Yii::$app->jwt->getBuilder(),
@@ -60,7 +61,7 @@ class MockupAction extends CAction
             "dryRunMode"=>false,
             ]);
 
-        list($token, $user_id) = $filedropSrv->makeMockupUrl($mockupTokenService, $reviewerEmail, $monthsOfValidity);
+        list($token, $user_id) = $filedropSrv->makeMockupUrl($mockupTokenService, $reviewerEmail, (int) $monthsOfValidity);
 
         // Add entry to curation log
         $curationlog = new CurationLog;

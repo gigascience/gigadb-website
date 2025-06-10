@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Business object to interact with the FileFormat ActiveRecord model.
  *

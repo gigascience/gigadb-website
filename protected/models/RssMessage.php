@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This is the model class for table "rss_message".
  *
@@ -45,17 +47,6 @@ class RssMessage extends CActiveRecord
 	}
 
 	/**
-	 * @return array relational rules.
-	 */
-	public function relations()
-	{
-		// NOTE: you may need to adjust the relation name and the related
-		// class name for the relations automatically generated below.
-		return array(
-		);
-	}
-
-	/**
 	 * @return array customized attribute labels (name=>label)
 	 */
 	public function attributeLabels()
@@ -79,7 +70,7 @@ class RssMessage extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('LOWER(message)',strtolower($this->message),true);
+		$criteria->compare('LOWER(message)',strtolower($this->message ?: ''),true);
 		$criteria->compare('publication_date',$this->publication_date,true);
 
 		return new CActiveDataProvider($this, array(

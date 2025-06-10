@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This action will load the metadata form
  *
@@ -13,7 +14,6 @@ use \yii\web\UploadedFile;
 
 class FilesAnnotateAction extends CAction
 {
-
     public function run($id)
     {
         $webClient = \Yii::$container->get('guzzleHttpClient');
@@ -39,6 +39,7 @@ class FilesAnnotateAction extends CAction
             $fileUploadSrv,
             Yii::$app->params['dataset_upload']
         );
+
         // Fetch list of uploaded files
         $uploadedFiles = $fileUploadSrv->getUploads($id);
 
@@ -59,9 +60,6 @@ class FilesAnnotateAction extends CAction
             list($sheetData, $parseErrors) = $datasetUpload->parseFromSpreadsheet("/var/tmp/$id-".$postedFile->name);
             if (isset($sheetData) && is_array($sheetData) && !empty($sheetData)) {
                 list($newUploads, $attributes, $mergeErrors) = $datasetUpload->mergeMetadata($uploadedFiles, $sheetData);
-                // Yii::log("sheetData: ".var_export($sheetData,true));
-                // Yii::log("newUploads: ".var_export($newUploads,true));
-                // Yii::log("Errors: ".var_export($mergeErrors,true));
                 if (!empty($newUploads)) {
                     $bulkStatus = $fileUploadSrv->updateUploadMultiple($id,$newUploads);
                 }

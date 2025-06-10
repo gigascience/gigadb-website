@@ -1,5 +1,6 @@
-
 <?php
+
+declare(strict_types=1);
 
 use \creocoder\flysystem\Filesystem;
 use League\Flysystem\AdapterInterface;
@@ -98,12 +99,13 @@ class Image extends CActiveRecord
     /**
      * write an image to the desired (Flysystem managed) storage mechanism and update url property with the location
      *
-     * @param Filesystem $targetStorage
-     * @param string $enclosingDirectory
-     * @param CUploadedFile $uploadedFile
+     * @param Filesystem                 $targetStorage
+     * @param \Ramsey\Uuid\UuidInterface $enclosingDirectory
+     * @param CUploadedFile              $uploadedFile
+     *
      * @return bool
      */
-    public function write(Filesystem $targetStorage, string $enclosingDirectory, CUploadedFile $uploadedFile): bool
+    public function write(Filesystem $targetStorage, \Ramsey\Uuid\UuidInterface $enclosingDirectory, CUploadedFile $uploadedFile): bool
     {
         $slugger = new \Symfony\Component\String\Slugger\AsciiSlugger();
         $info = pathinfo($uploadedFile->getName());
@@ -158,7 +160,7 @@ class Image extends CActiveRecord
                 if ($inserted) {
                     $this->url = null;
                     if ( ! $this->save() )
-                        throw new Exception($this->getError());
+                        throw new Exception($this->getErrors());
                 }
                 return true;
             }

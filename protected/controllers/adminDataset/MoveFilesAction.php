@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This action will trigger a post to File Upload Wizard's move file endpoint
  * that create a backend job for moving uploaded files to public ftp

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This is the model class for table "manuscript".
  *
@@ -20,7 +22,7 @@ class Manuscript extends CActiveRecord
 	 * @return Manuscript the static model class
 	 */
     public $doi_search;
-    public ?bool $is_pre_print = false;
+    public ?int $is_pre_print = 0;
 
 	public static function model($className=__CLASS__)
 	{
@@ -99,7 +101,7 @@ class Manuscript extends CActiveRecord
 
         $criteria->with = array( 'dataset' );
 		$criteria->compare('t.id',$this->id);
-		$criteria->compare('LOWER(t.identifier)',strtolower($this->identifier),true);
+		$criteria->compare('LOWER(t.identifier)',strtolower($this->identifier ?: ''),true);
 		$criteria->compare('pmid',$this->pmid);
 		$criteria->compare('dataset_id',$this->dataset_id);
 

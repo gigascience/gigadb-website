@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 class AdminDatasetAuthorController extends Controller
 {
     /**
@@ -94,16 +96,12 @@ class AdminDatasetAuthorController extends Controller
             $namearray = array();
             if ($names != "")
                 $namearray = explode(";", $names);
-            //            var_dump($namearray);
+
             if ($ranks == "")
                 $rankarray = array();
             else
                 $rankarray = explode(";", $ranks);
-            //            var_dump($rankarray);
-            //            if (count($namearray) != count($rankarray)) {
-            //                $model->addError("error", "the number of name and rank are different!");
-            //                $valid = false;
-            //            }
+
             //test names
             if ($valid) {
                 foreach ($namearray as $name) {
@@ -117,11 +115,6 @@ class AdminDatasetAuthorController extends Controller
             //test ranks
             if ($valid) {
                 foreach ($rankarray as $rank) {
-                    //                    if ($rank == "") {
-                    //                        $model->addError("error", "rank can't be blank!");
-                    //                        $valid = false;
-                    //                        break;
-                    //                    }
                     if (!is_numeric($rank)) {
                         $model->addError("rank", "rank should be an integer!");
                         $valid = false;
@@ -129,7 +122,7 @@ class AdminDatasetAuthorController extends Controller
                     }
                 }
             }
-            //            var_dump(count($rankarray)." test");
+
             if ($valid) {
 
                 foreach ($namearray as $index => $name) {
@@ -177,8 +170,6 @@ class AdminDatasetAuthorController extends Controller
 
                             array_push($authors, $newItem);
                             $_SESSION['authors'] = $authors;
-                            //$vars = array('authors');
-                            ////Dataset::storeSession($vars);
                         } else {
                             $model->addError("error", "database operation failure, please log out first and log in again.");
                         }
@@ -186,9 +177,9 @@ class AdminDatasetAuthorController extends Controller
                 }
             }
         }
-        //   $model = new DatasetAuthor;
+
         $author_model = new CArrayDataProvider($authors);
-        //  $model = new DatasetAuthor;
+
         $this->render('create1', array(
             'model' => $model,
             'author_model' => $author_model,
@@ -244,9 +235,6 @@ class AdminDatasetAuthorController extends Controller
                 if ($author['id'] == $id) {
                     unset($authors[$key]);
                     $_SESSION['authors'] = $authors;
-                    // $vars = array('authors');
-                    //Dataset::storeSession($vars);
-                    //delete the record in table dataset_author
                     $condition = "id=" . $id;
                     DatasetAuthor::model()->deleteAll($condition);
 
@@ -337,10 +325,10 @@ class AdminDatasetAuthorController extends Controller
             $rank = $datasetAuthor->rank;
 
             //determine if the model is valid
-            if (!$datasetAuthor->validate())
+            if (!$datasetAuthor->validate()) {
                 return false;
+            }
 
-            //$author = Author::model()->findByAttributes(array('name' => $name, 'rank' => $rank));
 
             $author = Author::model()->findByCompleteName($name);
             if ($author != NULL) {

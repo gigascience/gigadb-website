@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Routing, aggregating and composing logic for making the public dataset view
  *
@@ -8,7 +10,6 @@
  */
 class DatasetController extends Controller
 {
-
     public $canonicalUrl;
 
     /**

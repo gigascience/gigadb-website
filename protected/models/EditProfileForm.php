@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 class EditProfileForm extends CFormModel
 {
 	public $first_name;

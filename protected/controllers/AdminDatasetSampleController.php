@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 class AdminDatasetSampleController extends Controller
 {
 	/**
@@ -87,8 +89,6 @@ class AdminDatasetSampleController extends Controller
                 if ($value['id'] == $id) {
                     unset($info[$key]);
                     $_SESSION['samples'] = $info;
-                    // $vars = array('samples');
-                    //Dataset::storeSession($vars);
                     $condition = 'id=' . $id;
 
                     $sample_id = DatasetSample::model()->findByAttributes(array('id' => $id))->sample_id;
@@ -113,7 +113,6 @@ class AdminDatasetSampleController extends Controller
             $model->sample_id=0;
             //validate
             if (!$model->validate()) {
-                var_dump("here");
                 return false;
             }
             //-1 means it doesn't exit in our database
@@ -134,7 +133,6 @@ class AdminDatasetSampleController extends Controller
                         $model->addError('comment', 'The species you input is not in our database, please
                             input 0:new organism and contact
                         <a href=&quot;mailto:database@gigasciencejournal.com&quot;>database@gigasciencejournal.com</a>.');
-                       //ac $model = new DatasetSample;
                         return false;
                     }
                 }
@@ -143,8 +141,7 @@ class AdminDatasetSampleController extends Controller
             $sample = new Sample;
             $sample->species_id = $species_id;
             $sample->code = $model->code;
-            //$sample->s_attrs = $model->attribute;
-           // $sample_id = 0;
+
             if (!$sample->save()) {
                 $model->addError('error', 'Sample save error');
                 return false;
@@ -178,8 +175,7 @@ class AdminDatasetSampleController extends Controller
 
         $model = new DatasetSample;
         $model->dataset_id = 1;
-        //$model->
-        //update
+
         if (!isset($_SESSION['samples']))
             $_SESSION['samples'] = array();
 
@@ -195,10 +191,8 @@ class AdminDatasetSampleController extends Controller
             $species = 0;
             if (strpos($_POST['DatasetSample']['species'], ":") !== false) {
                 $array = explode(":",$_POST['DatasetSample']['species']);
-//                var_dump($array);
                 $tax_id = $array[0];
                 $species = $_POST['DatasetSample']['species'];
-//                var_dump($tax_id);
             } else {
                 $species = $_POST['DatasetSample']['species'];
             }
@@ -208,7 +202,6 @@ class AdminDatasetSampleController extends Controller
             $model->species = $species;
             $model->tax_id = $tax_id;
             $model->attribute = $attrs;
-          //  var_dump( $model->code, $model->attribute);
 
             $id = 0;
 
@@ -245,12 +238,8 @@ class AdminDatasetSampleController extends Controller
 
 
                 }
-                     $attrs=$attribute_temp;
-                    // $species=$species1;
+                     $attrs=$attribute_temp;;
                      $model->attribute = $attrs;
-                    // $model->tax_id=$tax_id1;
-
-
             }
 
 
@@ -260,8 +249,6 @@ class AdminDatasetSampleController extends Controller
 
                 array_push($samples, $newItem);
                 $_SESSION['samples'] = $samples;
-                // $vars = array('samples');
-                //Dataset::storeSession($vars);
                 $model = new DatasetSample;
             }
             else{

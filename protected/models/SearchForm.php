@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * SearchForm class.
  * SearchForm is the data structure for keeping

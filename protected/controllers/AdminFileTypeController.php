@@ -1,9 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 class AdminFileTypeController extends Controller
 {
-
-
 	/**
 	 * @return array action filters
 	 */

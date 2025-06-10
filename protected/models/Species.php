@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This is the model class for table "species".
  *
@@ -90,9 +92,9 @@ class Species extends CActiveRecord
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('tax_id',$this->tax_id);
-		$criteria->compare('LOWER(common_name)',strtolower($this->common_name),true);
-		$criteria->compare('LOWER(genbank_name)',strtolower($this->genbank_name),true);
-		$criteria->compare('LOWER(scientific_name)',strtolower($this->scientific_name),true);
+		$criteria->compare('LOWER(common_name)',strtolower($this->common_name ?: ''),true);
+		$criteria->compare('LOWER(genbank_name)',strtolower($this->genbank_name ?: ''),true);
+		$criteria->compare('LOWER(scientific_name)',strtolower($this->scientific_name ?: ''),true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

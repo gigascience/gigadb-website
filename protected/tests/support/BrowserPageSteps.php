@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * browser automation steps to visit the web site's HTML and XML endpoint.
  * It optionally assert for content to be present on the page.
@@ -19,17 +21,12 @@ trait BrowserPageSteps
 	 * @param string $url
 	 * @param string $content
 	 */
-	public function visitPageWithSessionAndUrlThenAssertContentHasOrNull($url, $content)
+	public function visitPageWithSessionAndUrlThenAssertContentHasOrNull(string $url, ?string $content = null)
 	{
         $this->session->visit($url);
-
-        // Validate text presence on a page.
-        if (null !== $content) {
-        	if( false == $this->session->getPage()->hasContent($content) )
-		        var_dump($this->session->getPage()->getContent());
-	        $this->assertTrue($this->session->getPage()->hasContent($content));
-        }
-
+		if($content) {
+			$this->assertTrue($this->session->getPage()->hasContent($content));
+		}
 	}
 
 	/**

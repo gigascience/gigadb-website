@@ -1,9 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 class AdminLinkPrefixController extends Controller
 {
-
-
     /**
      * @return array action filters
      */
@@ -56,7 +56,6 @@ class AdminLinkPrefixController extends Controller
 
         if(isset($_POST['Prefix']))
         {
-//            $model->attributes=$_POST['Prefix'];
                         $model->prefix = $_POST['Prefix']['prefix'];
                         $model->url = $_POST['Prefix']['url'];
             if($model->save())

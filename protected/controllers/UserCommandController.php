@@ -1,14 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 use yii\swiftmailer\mailer;
 use yii\swiftmailer\Message;
 
 class UserCommandController extends CController
 {
-    // Members
-
-
-
 	/**
 	 * @return array action filters
 	 */

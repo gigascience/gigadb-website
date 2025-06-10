@@ -1,9 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 class AdminLinkController extends Controller
 {
-
-
 	/**
 	 * @return array action filters
 	 */
@@ -141,8 +141,6 @@ class AdminLinkController extends Controller
                 array_push($links, $newItem);
 
                 $_SESSION['links'] = $links;
-                // $vars = array('links');
-                //Dataset::storeSession($vars);
                 $model = new Link;
             }
         }
@@ -163,8 +161,6 @@ class AdminLinkController extends Controller
                 if ($value['id'] == $id) {
                     unset($info[$key]);
                     $_SESSION['links'] = $info;
-                    // $vars = array('links');
-                    //Dataset::storeSession($vars);
                     $condition = 'id=' . $id;
                     Link::model()->deleteAll($condition);
 
@@ -272,10 +268,6 @@ class AdminLinkController extends Controller
 
 	public function actionAddLink() {
             if(isset($_POST['dataset_id']) && isset($_POST['database']) && isset($_POST['acc_num'])) {
-
-            	// if(!is_numeric($_POST['acc_num'])) {
-            	// 	Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Please enter a number.")));
-            	// }
 
             	$linkVal =  $_POST['database'].":".$_POST['acc_num'];
 

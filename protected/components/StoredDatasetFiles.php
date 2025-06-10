@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * DAO class to retrieve the files associated to a dataset
  *
@@ -77,7 +79,7 @@ class StoredDatasetFiles extends DatasetComponents implements DatasetFilesInterf
         ;
         $files = File::model()->findAllBySql($sql, array('id' => $this->_id));
         $result = array_map($objectToHash, $files);
-        // var_dump($result);
+
         return $result;
     }
 
@@ -105,10 +107,6 @@ class StoredDatasetFiles extends DatasetComponents implements DatasetFilesInterf
      */
     public function getDatasetFilesSamples(): array
     {
-        // 'sample_id' => 1,
-        // 'sample_name' => "Sample 1",
-        // 'file_id' => 1,
-
         $sql = "select s.id as sample_id, s.name as sample_name, f.id as file_id
 		from sample s, file_sample fs, file f
 		where s.id = fs.sample_id and f.id = fs.file_id

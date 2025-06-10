@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * ContactForm class.
  * ContactForm is the data structure for keeping

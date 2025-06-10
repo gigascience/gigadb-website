@@ -8,8 +8,6 @@ class AuthorTest extends CDbTestCase
         'author_rel' => 'AuthorRel',
     );
 
-
-
     function testSurname()
     {
         $expectations = array ("Muñoz",

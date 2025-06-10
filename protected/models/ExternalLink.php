@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This is the model class for table "external_link".
  *
@@ -95,11 +97,11 @@ class ExternalLink extends CActiveRecord
         $criteria->with = array('dataset','external_link_type');
 		$criteria->compare('t.id',$this->id);
 		$criteria->compare('dataset_id',$this->dataset_id);
-		$criteria->compare('LOWER(url)',strtolower($this->url),true);
+		$criteria->compare('LOWER(url)',strtolower($this->url ?: ''),true);
 		$criteria->compare('external_link_type_id',$this->external_link_type_id);
 
 		$criteria->compare('dataset.identifier',$this->doi_search,true);
-		$criteria->compare('LOWER(external_link_type.name)',strtolower($this->external_link_type_search),true);
+		$criteria->compare('LOWER(external_link_type.name)',strtolower($this->external_link_type_search ?: ''),true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

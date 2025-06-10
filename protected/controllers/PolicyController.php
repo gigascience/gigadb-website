@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 class PolicyController extends CController {
 
 	/**
@@ -50,7 +52,6 @@ class PolicyController extends CController {
 			$model->attributes = $args;
 			$model->value = '';
 
-			//$image->attributes = $_POST['Images'];
 			$image->license = "no license";
 			$image->photographer = "no author";
 			$image->source = "gigadb";

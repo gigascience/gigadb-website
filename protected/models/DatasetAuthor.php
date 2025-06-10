@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This is the model class for table "dataset_author".
  *
@@ -104,10 +106,9 @@ class DatasetAuthor extends CActiveRecord
 		$criteria->compare('dataset_id',$this->dataset_id);
 		$criteria->compare('author_id',$this->author_id);
 		$criteria->compare('dataset.identifier',$this->doi_search,true);
-		//$criteria->compare('LOWER(author.name)',strtolower($this->author_name_search),true);
-		$criteria->compare("LOWER(author.surname) || ' ' || LOWER(author.first_name)",strtolower($this->author_name_search),true);
+		$criteria->compare("LOWER(author.surname) || ' ' || LOWER(author.first_name)",strtolower($this->author_name_search ?: ''),true);
 
-		$criteria->compare('LOWER(author.orcid)',strtolower($this->orcid_search),true);
+		$criteria->compare('LOWER(author.orcid)',strtolower($this->orcid_search ?: ''),true);
 		$criteria->compare('rank',$this->rank_search);
 
         $sort = new CSort();

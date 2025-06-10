@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Class to fetch from DB latest data for Dataset and RSS messages
  *
@@ -13,7 +16,6 @@ class RSSFeedDAO
 		$criteria=new CDbCriteria;
 		$criteria->limit = 10;
 		$criteria->condition = "upload_status = 'Published'";
-		#$criteria->order = "id DESC";
 		$criteria->order = 'publication_date DESC';
 		$latest_datasets = Dataset::model()->findAll($criteria);
 

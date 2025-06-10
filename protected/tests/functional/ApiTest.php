@@ -1,21 +1,21 @@
 <?php
 
- /**
+/**
  * Functional test for the API endpoint
  *
  * It tests all combination of parameters and the feed has only the relevant data
  *
- * @uses \BrowserPageSteps::getXMLWithSessionAndUrl()
+ * @uses    \BrowserPageSteps::getXMLWithSessionAndUrl()
  *
- * @author Rija Menage <rija+git@cinecinetique.com>
+ * @author  Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
-*/
+ */
 class ApiTest extends FunctionalTesting
 {
     use BrowserPageSteps;
 
     public function testItShouldOutputDatasetOnly() {
-        $url = "http://gigadb.dev/api/dataset/doi/100006?result=dataset" ;
+        $url = "http://gigadb.dev/api/dataset/doi/100006?result=dataset";
 
         // Go to a page and getting xml content
         $feed = $this->getXMLWithSessionAndUrl($url);
@@ -27,7 +27,7 @@ class ApiTest extends FunctionalTesting
     }
 
     public function testItShouldOutputSamplesOnly() {
-        $url = "http://gigadb.dev/api/dataset/doi/100006?result=sample" ;
+        $url = "http://gigadb.dev/api/dataset/doi/100006?result=sample";
 
         // Go to a page and getting xml content
         $feed = $this->getXMLWithSessionAndUrl($url);
@@ -40,7 +40,7 @@ class ApiTest extends FunctionalTesting
     }
 
     public function testItShouldOutputFilesOnly() {
-        $url = "http://gigadb.dev/api/dataset/doi/100006?result=file" ;
+        $url = "http://gigadb.dev/api/dataset/doi/100006?result=file";
 
         // Go to a page and getting xml content
         $feed = $this->getXMLWithSessionAndUrl($url);
@@ -52,7 +52,7 @@ class ApiTest extends FunctionalTesting
     }
 
     public function testItShouldOutputFullDataset() {
-        $url = "http://gigadb.dev/api/dataset/doi/100006?result=all" ;
+        $url = "http://gigadb.dev/api/dataset/doi/100006?result=all";
 
         // Go to a page and getting xml content
         $feed = $this->getXMLWithSessionAndUrl($url);
@@ -64,7 +64,7 @@ class ApiTest extends FunctionalTesting
     }
 
     public function testItShouldOutputFullDatasetByDefault() {
-        $url = "http://gigadb.dev/api/dataset/doi/100006" ;
+        $url = "http://gigadb.dev/api/dataset/doi/100006";
 
         // Go to a page and getting xml content
         $feed = $this->getXMLWithSessionAndUrl($url);
@@ -76,7 +76,7 @@ class ApiTest extends FunctionalTesting
     }
 
     public function testItShouldSearchWithKeywordAndOutputDatasetOnly() {
-        $url = "http://gigadb.dev/api/search?keyword=description:Antartica" ;
+        $url = "http://gigadb.dev/api/search?keyword=description:Antartica";
 
         // Go to a page and getting xml content
         $feed = $this->getXMLWithSessionAndUrl($url);
@@ -88,7 +88,7 @@ class ApiTest extends FunctionalTesting
     }
 
     public function testItShouldSearchWithKeywordAndOutputFileOnly() {
-        $url = "http://gigadb.dev/api/search?keyword=description:Antartica&result=file" ;
+        $url = "http://gigadb.dev/api/search?keyword=description:Antartica&result=file";
 
         // Go to a page and getting xml content
         $feed = $this->getXMLWithSessionAndUrl($url);
@@ -100,18 +100,16 @@ class ApiTest extends FunctionalTesting
     }
 
     public function testItShouldSearchWithKeywordAndOutputSampleOnly() {
-        $url = "http://gigadb.dev/api/search?keyword=description:Antartica&result=sample" ;
+        $url = "http://gigadb.dev/api/search?keyword=description:Antartica&result=sample";
 
         // Go to a page and getting xml content
         $feed = $this->getXMLWithSessionAndUrl($url);
-        print_r($feed);
 
         // Validate text presence on a page.
         $this->assertEquals("Pygoscelis_adeliae", $feed->gigadb_entry->samples->sample[0]->name);
         $this->assertNull($feed->gigadb_entry->files->file);
         $this->assertNull($feed->gigadb_entry->dataset->title);
     }
-
 }
 
 ?>

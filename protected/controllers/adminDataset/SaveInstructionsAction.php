@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This action will make connection to File Upload Wizard REST API
  * in order to save custom instructions for the new filedrop account
@@ -13,7 +16,7 @@ class SaveInstructionsAction extends CAction
     	$jwt_ttl = 3600 ;
     	$webClient = \Yii::$container->get('guzzleHttpClient');
 
-        $instructions = $_POST['instructions'];
+        $instructions = Yii::$app->request->post('instructions');
 
         // Instantiate FiledropService
         $filedropSrv = new FiledropService([

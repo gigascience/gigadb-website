@@ -258,55 +258,55 @@ echo $form->hiddenField($model, "image_id");
                                 <span class="legend-description">The following fields relate only to the Thumbnail image added above</span>
                             </legend>
                             <?php
-
-                            $this->widget('application.components.controls.TextField', [
-                                'form'                => $form,
-                                'model'               => $model->image,
-                                'attributeName'       => 'source',
-                                'labelOptions'        => ['class' => 'col-xs-4'],
-                                'inputWrapperOptions' => 'col-xs-8',
-                                'inputOptions'        => [
-                                    'required' => true,
-                                    'class'    => 'meta-fields'
-                                ],
-                                'tooltip'             => 'Cite the source of the thumbnail image'
-                            ]);
-                            $this->widget('application.components.controls.TextField', [
-                                'form'                => $form,
-                                'model'               => $model->image,
-                                'attributeName'       => 'tag',
-                                'labelOptions'        => ['class' => 'col-xs-4'],
-                                'inputWrapperOptions' => 'col-xs-8',
-                                'inputOptions'        => [
-                                    'class' => 'meta-fields'
-                                ],
-                                'tooltip'             => 'Add a short title or description of the thumbnail image'
-                            ]);
-                            $this->widget('application.components.controls.TextField', [
-                                'form'                => $form,
-                                'model'               => $model->image,
-                                'attributeName'       => 'license',
-                                'labelOptions'        => ['class' => 'col-xs-4'],
-                                'inputWrapperOptions' => 'col-xs-8',
-                                'inputOptions'        => [
-                                    'required' => true,
-                                    'class'    => 'meta-fields'
-                                ],
-                                'tooltip'             => 'Provide the license underwhich the image is shared, this must be CC0 or CC-BY. Note CC-BY-NC is not acceptable for us.'
-                            ]);
-                            $this->widget('application.components.controls.TextField', [
-                                'form'                => $form,
-                                'model'               => $model->image,
-                                'attributeName'       => 'photographer',
-                                'labelOptions'        => ['class' => 'col-xs-4'],
-                                'inputWrapperOptions' => 'col-xs-8',
-                                'inputOptions'        => [
-                                    'required' => true,
-                                    'class'    => 'meta-fields'
-                                ],
-                                'tooltip'             => 'Add the credit of the person(s) responsible for creating the image'
-                            ]);
-
+                            if ($model->image) {
+                                $this->widget('application.components.controls.TextField', [
+                                    'form'                => $form,
+                                    'model'               => $model->image,
+                                    'attributeName'       => 'source',
+                                    'labelOptions'        => ['class' => 'col-xs-4'],
+                                    'inputWrapperOptions' => 'col-xs-8',
+                                    'inputOptions'        => [
+                                        'required' => true,
+                                        'class'    => 'meta-fields'
+                                    ],
+                                    'tooltip'             => 'Cite the source of the thumbnail image'
+                                ]);
+                                $this->widget('application.components.controls.TextField', [
+                                    'form'                => $form,
+                                    'model'               => $model->image,
+                                    'attributeName'       => 'tag',
+                                    'labelOptions'        => ['class' => 'col-xs-4'],
+                                    'inputWrapperOptions' => 'col-xs-8',
+                                    'inputOptions'        => [
+                                        'class' => 'meta-fields'
+                                    ],
+                                    'tooltip'             => 'Add a short title or description of the thumbnail image'
+                                ]);
+                                $this->widget('application.components.controls.TextField', [
+                                    'form'                => $form,
+                                    'model'               => $model->image,
+                                    'attributeName'       => 'license',
+                                    'labelOptions'        => ['class' => 'col-xs-4'],
+                                    'inputWrapperOptions' => 'col-xs-8',
+                                    'inputOptions'        => [
+                                        'required' => true,
+                                        'class'    => 'meta-fields'
+                                    ],
+                                    'tooltip'             => 'Provide the license underwhich the image is shared, this must be CC0 or CC-BY. Note CC-BY-NC is not acceptable for us.'
+                                ]);
+                                $this->widget('application.components.controls.TextField', [
+                                    'form'                => $form,
+                                    'model'               => $model->image,
+                                    'attributeName'       => 'photographer',
+                                    'labelOptions'        => ['class' => 'col-xs-4'],
+                                    'inputWrapperOptions' => 'col-xs-8',
+                                    'inputOptions'        => [
+                                        'required' => true,
+                                        'class'    => 'meta-fields'
+                                    ],
+                                    'tooltip'             => 'Add the credit of the person(s) responsible for creating the image'
+                                ]);
+                            }
                             ?>
                         </fieldset>
                         <div id="metaFieldsLiveRegion" aria-live="polite" class="sr-only"></div>

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This action will make connection to File Upload Wizard REST API
  * in order to send email instructions for the new filedrop account

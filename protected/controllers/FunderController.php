@@ -1,9 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 class FunderController extends Controller
 {
-
-
 	/**
 	 * @var CActiveRecord the currently loaded data model instance.
 	 */

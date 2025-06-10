@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This action for DatasetController that will display dataset mockup page
  *
@@ -10,8 +13,6 @@ class MockupViewAction extends CAction
 {
     public function run($uuid)
     {
-
-        // Yii::log("MockupAction in DatasetController with uuid: $uuid","info");
         // Retrieve mockup token data (email, validity and dataset DOI) based on url fragment
         $srv = new FileUploadService([
             "tokenSrv" => new TokenService([

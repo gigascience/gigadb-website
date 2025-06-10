@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * User
  * An ActiveRecord model class to handle data related to users of the system.
@@ -126,38 +128,6 @@ class User extends CActiveRecord {
         );
     }
 
-    #public function validate($scenario, $attributes) {
-    #  $valid = parent::validate($scenario, $attributes);
-#
-#      if ($scenario == 'insert' && !$this->attributes['password']) {
-#        $this->addError("password", "Password cannot be blank");
-#        $this->passwordInvalid = true;
-#        $valid = false;
-#      }
-#
-#      return $valid;
-#    }
-
-    #public function beforeSave() {
-    #  // Screw you, MVC
-    #  if ($_POST['_noFillPassword'])
-    #    $this->password = md5($this->attributes['password']);
-#
-#      return true;
-#    }
-
-    protected function beforeValidate() {
-        if ($this->isNewRecord) {
-           // $this->created_at = $this->updated_at = date('Y-m-d H:i:s');
-           //$this->ip_address = $_SERVER['REMOTE_ADDR'];
-        }
-        else {
-           // $this->updated_at = date('Y-m-d H:i:s');
-        }
-
-        return true;
-    }
-
     /**
      * Replace inplace user's password with a hashed version
      *
@@ -166,14 +136,11 @@ class User extends CActiveRecord {
      */
     public function encryptPassword() {
         # TODO: use salt?
-        # if(md5(md5($this->password).$user->salt)!==$user->password)
-        #Yii::log(__FUNCTION__."> encryptPassword password before hash = " . $this->password, 'debug');
         $this->password = sodium_crypto_pwhash_str(
                             $this->password,
                             SODIUM_CRYPTO_PWHASH_OPSLIMIT_INTERACTIVE,
                             SODIUM_CRYPTO_PWHASH_MEMLIMIT_INTERACTIVE
                         );
-        #Yii::log(__FUNCTION__."> encryptPassword password after  hash = " . $this->password, 'debug');
     }
 
     /**
@@ -208,12 +175,12 @@ class User extends CActiveRecord {
         $criteria=new CDbCriteria;
 
         $criteria->compare('id',$this->id);
-        $criteria->compare('LOWER(email)',strtolower($this->email),true);
-        $criteria->compare('LOWER(first_name)',strtolower($this->first_name),true);
-        $criteria->compare('LOWER(last_name)',strtolower($this->last_name),true);
-        $criteria->compare('LOWER(affiliation)',strtolower($this->affiliation),true);
-        $criteria->compare('newsletter',strtolower($this->newsletter));
-        $criteria->compare('is_activated',strtolower($this->is_activated));
+        $criteria->compare('LOWER(email)',strtolower($this->email ?: ''),true);
+        $criteria->compare('LOWER(first_name)',strtolower($this->first_name ?: ''),true);
+        $criteria->compare('LOWER(last_name)',strtolower($this->last_name ?: ''),true);
+        $criteria->compare('LOWER(affiliation)',strtolower($this->affiliation ?: ''),true);
+        $criteria->compare('newsletter',strtolower($this->newsletter ?: ''));
+        $criteria->compare('is_activated',strtolower($this->is_activated ?: ''));
 
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,

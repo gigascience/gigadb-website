@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 class AdminDatasetProjectController extends Controller
 {
 	/**
@@ -99,9 +101,6 @@ class AdminDatasetProjectController extends Controller
 
                 $_SESSION['projects'] = $projects;
 
-                //$vars = array('projects');
-                ////Dataset::storeSession($vars);
-
                 $model = new DatasetProject;
 
             }
@@ -169,8 +168,6 @@ class AdminDatasetProjectController extends Controller
                     unset($info[$key]);
                     $_SESSION['projects'] = $info;
 
-                    //$vars = array('projects');
-                    ////Dataset::storeSession($vars);
                     $condition = "id=" . $id;
                     DatasetProject::model()->deleteAll($condition);
                     $this->redirect("/adminDatasetProject/create1");

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This is the model class for table "news".
  *
@@ -84,8 +86,8 @@ class News extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('LOWER(title)',strtolower($this->title),true);
-		$criteria->compare('LOWER(body)', strtolower($this->body),true);
+		$criteria->compare('LOWER(title)',strtolower($this->title ?: ''),true);
+		$criteria->compare('LOWER(body)', strtolower($this->body ?: ''),true);
 		$criteria->compare('start_date',$this->start_date);
 		$criteria->compare('end_date',$this->end_date);
 

@@ -1,9 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 class AdminUserCommandController extends Controller
 {
-
-
 	/**
 	 * @return array action filters
 	 */
@@ -97,20 +97,6 @@ class AdminUserCommandController extends Controller
 					Yii::app()->user->setFlash('success', "Claimed rejected. No linking performed");
 					Yii::log(__FUNCTION__."> claim " . $claim->id . " updated as 'rejected'", 'warning');
 				}
-				// $author = Author::model()->findbyPk($claim->actionable_id);
-				// if( (null != $author) && ($claim->requester_id == $author->gigadb_user_id) ){
-				// 	$author->gigadb_user_id = null;
-				// 	if($author->save()) {
-				// 		Yii::log(__FUNCTION__."> author ".$author->id." has been unlinked from gigadb_user_id: ".$claim->requester_id , 'warning');
-				// 	}
-				// 	else {
-				// 		Yii::log(__FUNCTION__."> author couldnt be saved",'warning');
-				// 	}
-				// }
-				// else {
-				// 	Yii::log(__FUNCTION__."> author ". $claim->actionable_id . " couldnt be found", 'warning');
-				// 	Yii::log(__FUNCTION__."> claim->requester_id == author->gigadb_user_id ? " .$claim->requester_id." == " . $author->gigadb_user_id, 'warning');
-				// }
 			}
 		}
 

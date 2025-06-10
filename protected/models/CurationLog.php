@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This is the model class for table "dataset_log".
  *
@@ -164,10 +166,10 @@ class CurationLog extends CActiveRecord
         return self::makeNewInstanceForDatasetBy($id,$creator);
     }
 
-    public static function createlog($status,$id)
+    public static function createlog($status, $id)
     {
         $fullName = self::getCurrentUserFullName();
-        $curationlog = self::makeNewInstanceForDatasetBy($id, $fullName);
+        $curationlog = self::makeNewInstanceForDatasetBy((int) $id, $fullName);
         $curationlog->action = "Status changed to ".$status;
         return $curationlog->save();
     }
@@ -179,7 +181,7 @@ class CurationLog extends CActiveRecord
         $displayName = $curatorId ? sprintf('%s %s', $User->first_name, $User->last_name) : 'none';
 
 
-        $curationlog =  self::makeNewInstanceForDatasetBy($id, $username);
+        $curationlog =  self::makeNewInstanceForDatasetBy((int)$id, $username);
         $curationlog->action = "Curator Assigned:"." $displayName";
 
         return $curationlog->save();

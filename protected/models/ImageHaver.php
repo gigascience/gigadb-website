@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 class ImageHaver extends CActiveRecord {
 
     public $size = 600;
@@ -30,7 +32,7 @@ class ImageHaver extends CActiveRecord {
         } else {
             $path = "$dir/{$class}_{$this->id}.png";
         }
-        #Yii::log(__FUNCTION__."> path: $path", 'debug');
+
         return $path;
     }
 
@@ -64,9 +66,7 @@ class ImageHaver extends CActiveRecord {
         $path = $this->getFullPath($type);
         $thumbPath = $this->getFullPath($type, 'thumb');
         $smallThumbPath = $this->getFullPath($type, 'small_thumb');
-        #Yii::log(__FUNCTION__."> path: $path", 'debug');
-        #Yii::log(__FUNCTION__."> thumbPath: $thumbPath", 'debug');
-        #Yii::log(__FUNCTION__."> smallThumbPath: $smallThumbPath", 'debug');
+
         if ($image->getSize() > 0) {
             Yii::log(__FUNCTION__."> attempting to store image : $path",'debug');
             $this->createDirs($type);
@@ -74,8 +74,6 @@ class ImageHaver extends CActiveRecord {
                 Yii::log("Could not save file to path: $path", 'error');
                 return false;
             }
-	    #Yii::log("Got it to: $path", 'debug');
-            //            $this->transformImage($path, $path, $this->size, null);
             $this->transformImage($path, $thumbPath, $this->thumbSize, null);
             $this->transformImage($path, $smallThumbPath, $this->smallThumbSize, null);
         } else {
@@ -89,7 +87,7 @@ class ImageHaver extends CActiveRecord {
         $path = $this->getFullPath($type);
         $thumbPath = $this->getFullPath($type, 'thumb');
         $smallThumbPath = $this->getFullPath($type, 'small_thumb');
-        #Yii::log(__FUNCTION__.'> Path: ' . $path, 'debug');
+
         $this->createDirs($type);
 
         if (file_exists($path)) {
@@ -192,8 +190,6 @@ class ImageHaver extends CActiveRecord {
         $image = Yii::app()->image->load($fromPath);
         if ($image) {
             $image->resize($width, $height);
-            #Yii::log("From path: $fromPath", "error");
-            #Yii::log("Saving to path: $toPath", "error");
             $image->save($toPath);
         }
     }

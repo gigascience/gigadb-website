@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 class PxInfoForm extends CFormModel {
 
 	public $keywords;
@@ -119,7 +121,6 @@ class PxInfoForm extends CFormModel {
 	 */
 	public function rules() {
 		return array(
-			//array('keywords, spp, dpp', 'required'),
 			array('keywords, spp, dpp', 'safe'),
 		);
 	}

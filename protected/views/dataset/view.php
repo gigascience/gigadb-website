@@ -957,13 +957,10 @@ $sampleDataProvider = $samples->getDataProvider();
         }
 
         if (_userInput >= _min && _userInput <= _max) {
-          console.log("Valid page number!");
           return _userInput;
         } else if (_userInput > _max) {
-          console.log("Error, return to " + _max);
           return _max;
         } else if (_userInput < _min) {
-          console.log("Error, return to " + _min);
           return _min;
         }
       }

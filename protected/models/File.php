@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This is the model class for table "file".
  *
@@ -182,17 +184,17 @@ class File extends CActiveRecord
 
     		$criteria->with = array( 'dataset' , 'format' , 'type' );
 		$criteria->compare('t.id',$this->id);
-		$criteria->compare('LOWER(t.name)',strtolower($this->name),true);
+		$criteria->compare('LOWER(t.name)',strtolower($this->name ?: ''), true);
 		$criteria->compare('location',$this->location,true);
 		$criteria->compare('extension',$this->extension,true);
 		$criteria->compare('size',$this->size,true);
 		$criteria->compare('description',$this->description,true);
 		$criteria->compare('date_stamp',$this->date_stamp);
-		$criteria->compare('LOWER(code)',strtolower($this->code),true);
-		$criteria->compare('LOWER(index4blast)',$this->index4blast,true);
-		$criteria->compare('LOWER(dataset.identifier)',strtolower($this->doi_search),true);
-		$criteria->compare('LOWER(format.name)',strtolower($this->format_search),true);
-		$criteria->compare('LOWER(type.name)',strtolower($this->type_search),true);
+		$criteria->compare('LOWER(code)',strtolower($this->code ?: ''), true);
+		$criteria->compare('LOWER(index4blast)',$this->index4blast ?: '' ,true);
+		$criteria->compare('LOWER(dataset.identifier)',strtolower($this->doi_search ?: ''), true);
+		$criteria->compare('LOWER(format.name)',strtolower($this->format_search ?: ''), true);
+		$criteria->compare('LOWER(type.name)',strtolower($this->type_search ?: ''), true);
 		$criteria->compare('download_count',$this->download_count);
 
 		$sort = new CSort();
@@ -244,7 +246,7 @@ class File extends CActiveRecord
 	 **/
 	public function getSizeWithFormat($unit = null, $precision = 2)
 	{
-		return UnitHelper::specifySizeUnits($this->size, $unit, $precision);
+		return UnitHelper::specifySizeUnits((int)$this->size, $unit, $precision);
 	}
 
 
@@ -332,8 +334,8 @@ class File extends CActiveRecord
             $fa->attribute_id = self::DATABASE_ATTRIBUTE_ID_FOR_MD5_CHECKSUM;
         }
         $fa->value = $md5_value;
-        if( ! $fa->save() ) {
-            var_dump($fa->getErrors());
+        if (!$fa->save()) {
+            throw new \yii\base\Exception('Failed to save model: ' . json_encode($fa->getErrors()));
         }
         echo "Saved md5 file attribute with id: ".$fa->id.PHP_EOL;
     }

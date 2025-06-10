@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
  /**
  * Test FiledropService to invoke on FUW REST APU the creation of filedrop account
  *
@@ -240,13 +243,7 @@ class FiledropServiceTest extends FunctionalTesting
             ]);
 
         // invoke the Filedrop Service
-        try {
-
-            $success = $filedropSrv->createAccount();
-        }
-        catch(Exception $e) {
-            // echo \GuzzleHttp\Psr7\str($e->getRequest());
-        }
+        $success = $filedropSrv->createAccount();
 
         // test an authenticated HTTP call was not actually made to the API
         $this->assertTrue(0 == count($container));
@@ -306,8 +303,6 @@ class FiledropServiceTest extends FunctionalTesting
      */
     public function testSaveInstructions()
     {
-
-        // $this->markTestSkipped('wip, not ready to run yet.');
         $api_endpoint = "http://fuw-admin-api/filedrop-accounts";
         $jwt_ttl = 31104000 ;
 
@@ -379,8 +374,6 @@ class FiledropServiceTest extends FunctionalTesting
 
         // Dataset DAO is required to be passed to the service
         $datasetDAO = new DatasetDAO(["identifier" => $this->doi]) ;
-        // var_dump($datasetDAO->getTitleAndStatus());
-        // var_dump(Dataset::model()->findAll());
 
         // Instantiate FiledropService
         $filedropSrv = new FiledropService([
@@ -527,60 +520,52 @@ class FiledropServiceTest extends FunctionalTesting
      */
     public function testMakeMockupUrl()
     {
-        try{
-            $reviewerEmail = "reviewer2@gigadb.org";
-            $monthsOfValidity = 1;
+        $reviewerEmail = "reviewer2@gigadb.org";
+        $monthsOfValidity = 1;
 
-            // Prepare the http client to be traceable for testing
-            $container = [];
-            $history = Middleware::history($container);
+        // Prepare the http client to be traceable for testing
+        $container = [];
+        $history = Middleware::history($container);
 
-            $stack = HandlerStack::create();
-            // Add the history middleware to the handler stack.
-            $stack->push($history);
+        $stack = HandlerStack::create();
+        // Add the history middleware to the handler stack.
+        $stack->push($history);
 
-            $webClient = new Client(['handler' => $stack]);
+        $webClient = new Client(['handler' => $stack]);
 
-            // Instantiate FiledropService
-            $srv = new FileDropService([
-                "tokenSrv" => new TokenService([
-                                      'jwtTTL' => 31104000,
-                                      'jwtBuilder' => Yii::$app->jwt->getBuilder(),
-                                      'jwtSigner' => new \Lcobucci\JWT\Signer\Hmac\Sha256(),
-                                      'users' => new UserDAO(),
-                                      'dt' => new DateTime(),
-                                    ]),
-                "webClient" => $webClient,
-                "requester" => \User::model()->findByPk(344), //admin user
-                "identifier"=> $this->doi,
-                "dataset" => new DatasetDAO(["identifier" => $this->doi]),
-                "dryRunMode"=> false,
-                ]);
+        // Instantiate FiledropService
+        $srv = new FileDropService([
+            "tokenSrv" => new TokenService([
+                                  'jwtTTL' => 31104000,
+                                  'jwtBuilder' => Yii::$app->jwt->getBuilder(),
+                                  'jwtSigner' => new \Lcobucci\JWT\Signer\Hmac\Sha256(),
+                                  'users' => new UserDAO(),
+                                  'dt' => new DateTime(),
+                                ]),
+            "webClient" => $webClient,
+            "requester" => \User::model()->findByPk(344), //admin user
+            "identifier"=> $this->doi,
+            "dataset" => new DatasetDAO(["identifier" => $this->doi]),
+            "dryRunMode"=> false,
+            ]);
 
-            // Another token service to create mockup token
-            $mockupTokenService = new TokenService([
-                                      'jwtBuilder' => Yii::$app->jwt->getBuilder(),
-                                      'jwtSigner' => new \Lcobucci\JWT\Signer\Hmac\Sha256(),
-                                      'dt' => new DateTime(),
-                                    ]);
+        // Another token service to create mockup token
+        $mockupTokenService = new TokenService([
+                                  'jwtBuilder' => Yii::$app->jwt->getBuilder(),
+                                  'jwtSigner' => new \Lcobucci\JWT\Signer\Hmac\Sha256(),
+                                  'dt' => new DateTime(),
+                                ]);
 
-            // invoke the FileUpload Service
-            list($url_fragment, $user_id) = $srv->makeMockupUrl($mockupTokenService, $reviewerEmail,$monthsOfValidity);
+        // invoke the FileUpload Service
+        list($url_fragment, $user_id) = $srv->makeMockupUrl($mockupTokenService, $reviewerEmail,$monthsOfValidity);
 
-            // test the response from the API is successful
-            $this->assertEquals(201, $container[0]['response']->getStatusCode());
-            // test that setAttributes return a value
-            $this->assertNotNull($url_fragment);
-            $this->assertTrue(Uuid::isValid($url_fragment));
-            // Test that a FUW user was created for the reviewer
-            $this->assertNotNull($user_id);
-
-        }
-        catch(Error $e) {
-            throw new Exception($e);
-        }
-
-
+        // test the response from the API is successful
+        $this->assertEquals(201, $container[0]['response']->getStatusCode());
+        // test that setAttributes return a value
+        $this->assertNotNull($url_fragment);
+        $this->assertTrue(Uuid::isValid($url_fragment));
+        // Test that a FUW user was created for the reviewer
+        $this->assertNotNull($user_id);
     }
 
     /**
@@ -589,61 +574,51 @@ class FiledropServiceTest extends FunctionalTesting
      */
     public function testMakeMockupUrlIncorrectParameters()
     {
-        try{
-            $reviewerEmail = "reviewer2@gigadb.org";
-            $monthsOfValidity = 1;
+        $reviewerEmail = "reviewer2@gigadb.org";
+        $monthsOfValidity = 1;
 
-            // Prepare the http client to be traceable for testing
-            $container = [];
-            $history = Middleware::history($container);
+        // Prepare the http client to be traceable for testing
+        $container = [];
+        $history = Middleware::history($container);
 
-            $stack = HandlerStack::create();
-            // Add the history middleware to the handler stack.
-            $stack->push($history);
+        $stack = HandlerStack::create();
+        // Add the history middleware to the handler stack.
+        $stack->push($history);
 
-            $webClient = new Client(['handler' => $stack]);
+        $webClient = new Client(['handler' => $stack]);
 
-            // Instantiate FiledropService
-            $srv = new FileDropService([
-                "tokenSrv" => new TokenService([
-                                      'jwtTTL' => 31104000,
-                                      'jwtBuilder' => Yii::$app->jwt->getBuilder(),
-                                      'jwtSigner' => new \Lcobucci\JWT\Signer\Hmac\Sha256(),
-                                      'users' => new UserDAO(),
-                                      'dt' => new DateTime(),
-                                    ]),
-                "webClient" => $webClient,
-                "requester" => \User::model()->findByPk(344), //admin user
-                "identifier"=> $this->doi,
-                "dataset" => new DatasetDAO(["identifier" => $this->doi]),
-                "dryRunMode"=> false,
-                ]);
+        // Instantiate FiledropService
+        $srv = new FileDropService([
+            "tokenSrv" => new TokenService([
+                                  'jwtTTL' => 31104000,
+                                  'jwtBuilder' => Yii::$app->jwt->getBuilder(),
+                                  'jwtSigner' => new \Lcobucci\JWT\Signer\Hmac\Sha256(),
+                                  'users' => new UserDAO(),
+                                  'dt' => new DateTime(),
+                                ]),
+            "webClient" => $webClient,
+            "requester" => \User::model()->findByPk(344), //admin user
+            "identifier"=> $this->doi,
+            "dataset" => new DatasetDAO(["identifier" => $this->doi]),
+            "dryRunMode"=> false,
+            ]);
 
-            // Another token service to create mockup token
-            $mockupTokenService = new TokenService([
-                                      'jwtBuilder' => Yii::$app->jwt->getBuilder(),
-                                      'jwtSigner' => new \Lcobucci\JWT\Signer\Hmac\Sha256(),
-                                      'dt' => new DateTime(),
-                                    ]);
+        // Another token service to create mockup token
+        $mockupTokenService = new TokenService([
+                                  'jwtBuilder' => Yii::$app->jwt->getBuilder(),
+                                  'jwtSigner' => new \Lcobucci\JWT\Signer\Hmac\Sha256(),
+                                  'dt' => new DateTime(),
+                                ]);
 
-            // invoke the FileUpload Service with incorrect value of months of validity
-            list($url_fragment, $user_id) = $srv->makeMockupUrl($mockupTokenService, $reviewerEmail,2);
-            $this->assertNull($url_fragment);
+        // invoke the FileUpload Service with incorrect value of months of validity
+        list($url_fragment, $user_id) = $srv->makeMockupUrl($mockupTokenService, $reviewerEmail,2);
+        $this->assertNull($url_fragment);
 
-            // invoke the FileUpload Service with malformed reviewer email
-            $url_fragment = $srv->makeMockupUrl($mockupTokenService, "john@",$monthsOfValidity);
-            $this->assertNull($url_fragment);
-            $this->assertNull($user_id);
-
-
-        }
-        catch(Error $e) {
-            throw new Exception($e);
-        }
-
-
+        // invoke the FileUpload Service with malformed reviewer email
+        $url_fragment = $srv->makeMockupUrl($mockupTokenService, "john@",$monthsOfValidity);
+        $this->assertNull($url_fragment);
+        $this->assertNull($user_id);
     }
-
 }
 
 ?>

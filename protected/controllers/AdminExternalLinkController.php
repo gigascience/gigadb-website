@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 class AdminExternalLinkController extends Controller
 {
 	/**
@@ -75,8 +77,6 @@ class AdminExternalLinkController extends Controller
                 if ($value['id'] == $id) {
                     unset($info[$key]);
                     $_SESSION['externalLinks'] = $info;
-                    // $vars = array('externelLinks');
-                    //Dataset::storeSession($vars);
                     $condition = 'id=' . $id;
                     ExternalLink::model()->deleteAll($condition);
                     $this->redirect("/adminExternalLink/create1");
@@ -119,20 +119,11 @@ class AdminExternalLinkController extends Controller
 
 
         if (isset($_POST['ExternalLink'])) {
-            //store the information in session
-//            if (!isset($_SESSION['externalLink_id']))
-//                $_SESSION['externalLink_id'] = 0;
-//            $id = $_SESSION['externalLink_id'];
-//            $_SESSION['externalLink_id'] += 1;
-
-
 
             $url = $_POST['ExternalLink']['url'];
             if (!preg_match("/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i", $url)) {
                 $model->addError('error', 'Error: The Url is not valid!');
             } else {
-
-                //$model->
                 $type_id = 2;
 
                 $model->url = $url;
@@ -147,8 +138,6 @@ class AdminExternalLinkController extends Controller
                     array_push($externalLinks, $newItem);
 
                     $_SESSION['externalLinks'] = $externalLinks;
-                    // $vars = array('externalLinks');
-                    //Dataset::storeSession($vars);
                     $model = new ExternalLink;
                 }
             }

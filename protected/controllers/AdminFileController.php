@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 class AdminFileController extends Controller
 {
 
@@ -78,10 +80,10 @@ class AdminFileController extends Controller
                     return false;
             } else {
                 $count++;
-                //var_dump($info);
+
                 $size = $info[4];
                 $stamp = date("F d Y", ftp_mdtm($conn_id, $name));
-                // var_dump($name);
+
                 $file = new File;
                 $file->dataset_id = $model->dataset_id;
                 $file->name = $name;
@@ -101,8 +103,6 @@ class AdminFileController extends Controller
                 if (!$file->save()) {
                     $model->addError('error', "Files are not saved correctly");
                     return false;
-                    //how to
-//                    var_dump($file->name);
                 } else {
                     $this->setAutoFileAttributes($file);
                 }
@@ -137,7 +137,6 @@ class AdminFileController extends Controller
                 if ($model->location) {
                     $extension = $format = null;
                     $this->getFileExtension($model->name, $extension, $format);
-                   // $this->setAutoFileAttributes($model);
                 }
                 $this->redirect(array('view', 'id' => $model->id));
             }
@@ -219,9 +218,7 @@ class AdminFileController extends Controller
                     $model->attributes = $_POST['File'][$i];
                     if ($model->date_stamp == "")
                         $model->date_stamp = NULL;
-                    //$model->dataset_id = $_POST['File']['dataset_id'];
                     if (!$model->save()) {
-                        var_dump($_POST['File'][$i]);
                     }
                 }
             }
@@ -430,11 +427,6 @@ class AdminFileController extends Controller
                       $temp->delete();
                     }
                 }
-                /*
-                // save file attributes from location
-                if (isset($model->location)) {
-                    $this->setAutoFileAttributes($model, true);
-                }*/
 
                 return $this->redirect(array('view', 'id' => $model->id));
             }
@@ -576,8 +568,6 @@ class AdminFileController extends Controller
             $ftp_server = $ftps[0];
             $ftp_dir = isset($ftps[1]) ? "/" . $ftps[1] : "/";
 
-//            if($ftp_dir=="")
-//                $ftp_dir=
             $ftp_user_name = $_POST['Folder']['username'];
             $ftp_user_pass = $_POST['Folder']['password'];
 
@@ -626,8 +616,6 @@ class AdminFileController extends Controller
                 $submitter = $dataset->submitter;
                 $to = $dataset->submitter->email;
 
-                // $subject = "Files are added to Your dataset: " . $model->dataset_id;
-                //$subject=
                 $subject = "GigaDB submission \"" . $dataset->title . '"' . ' [' . $dataset->id . ']';
                 $receiveNewsletter = $user->newsletter ? 'Yes' : 'No';
                 $link = Yii::app()->params['home_url'] . "/adminFile/create1/id/" . $model->dataset_id;
@@ -654,7 +642,7 @@ EO_MAIL;
                 /* prepare attachments */
 
                 // boundary
-                $semi_rand = md5(time());
+                $semi_rand = md5((string)time());
                 $mime_boundary = "==Multipart_Boundary_x{$semi_rand}x";
 
                 // headers for attachment
@@ -693,7 +681,7 @@ EO_MAIL;
                 /* prepare attachments */
 
                 // boundary
-                $semi_rand = md5(time());
+                $semi_rand = md5((string)time());
                 $mime_boundary = "==Multipart_Boundary_x{$semi_rand}x";
 
                 // headers for attachment
@@ -793,19 +781,13 @@ EO_MAIL;
                 }
 
                 $model = $this->loadModel($_POST['File'][$i]['id']);
-//            $model->dataset_id = $dataset_id;
                 $model->attributes = $_POST['File'][$i];
                 if ($model->date_stamp == "")
                     $model->date_stamp = NULL;
 
                 if (!$model->save()) {
-                    var_dump($_POST['File'][$i]);
                 }
             }
-            //determine if it want to submit
-//             if (isset($_POST['file'])) {
-//                 $this->redirect("/datasetSubmission/submit");
-//             }
         }
         $dataset = Dataset::model()->findByAttributes(array('id' => $dataset_id));
         $samples = $dataset->samples;
@@ -963,8 +945,8 @@ EO_MAIL;
                     $result = ReadFile::readPdfFile($file->name);
                 }
                 $numberOfLines = $numberOfWords = 0;
-                $numberOfWords = str_word_count($result);
-                $numberOfLines = substr_count($result, "\n");
+                $numberOfWords = str_word_count($result ?: '');
+                $numberOfLines = substr_count($result ?: '', "\n");
 
                 // Number of words
                 $numberWords = clone $fileAttribute;

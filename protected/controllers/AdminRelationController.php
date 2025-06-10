@@ -1,9 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 class AdminRelationController extends Controller
 {
-
-
 	/**
 	 * @return array action filters
 	 */
@@ -116,8 +116,6 @@ class AdminRelationController extends Controller
 
 
         $model->dataset_id = 1;
-        //$model->re
-        //update
         if (!isset($_SESSION['relations']))
             $_SESSION['relations'] = array();
 
@@ -129,13 +127,6 @@ class AdminRelationController extends Controller
         );
 
         if (isset($_POST['Relation'])) {
-            //store the information in session
-//            if (!isset($_SESSION['relation_id']))
-//                $_SESSION['relation_id'] = 0;
-//            $id = $_SESSION['relation_id'];
-//            $_SESSION['relation_id'] += 1;
-
-
 
             $related_doi = $_POST['Relation']['related_doi'];
             $relationship = $relation_type[$_POST['Relation']['relationship']];
@@ -153,8 +144,6 @@ class AdminRelationController extends Controller
 
                 $_SESSION['relations'] = $relations;
 
-                // $vars = array('relations');
-                //Dataset::storeSession($vars);
                 $model = new Relation;
             }
         }
@@ -224,8 +213,6 @@ class AdminRelationController extends Controller
                 if ($value['id'] == $id) {
                     unset($info[$key]);
                     $_SESSION['relations'] = $info;
-                    // $vars = array('relations');
-                    //Dataset::storeSession($vars);
                     $condition = 'id=' . $id;
                     Relation::model()->deleteAll($condition);
                     $this->redirect("/adminRelation/create1");

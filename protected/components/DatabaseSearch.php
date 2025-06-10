@@ -1,6 +1,6 @@
 <?php
 
-use CompatibilityHelper;
+declare(strict_types=1);
 
 class DatabaseSearch extends CApplicationComponent
 {

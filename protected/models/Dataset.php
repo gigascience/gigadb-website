@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 Yii::import('application.extensions.CAdvancedArBehavior');
 
 use Ramsey\Uuid\Uuid;
@@ -63,11 +66,6 @@ class Dataset extends CActiveRecord
     {
         return parent::model($className);
     }
-
-#    public function behaviors(){
-#          return array( 'CAdvancedArBehavior' => array(
-#                'class' => 'application.extensions.CAdvancedArBehavior'));
-#    }
 
     /**
      * @return string the associated database table name
@@ -239,15 +237,15 @@ class Dataset extends CActiveRecord
         $criteria->compare('id',$this->id);
         $criteria->compare('submitter_id',$this->submitter_id);
         $criteria->compare('image_id',$this->image_id);
-        $criteria->compare('LOWER(identifier)',strtolower($this->identifier),true);
-        $criteria->compare('LOWER(title)',strtolower($this->title),true);
-        $criteria->compare('LOWER(description)',strtolower($this->description),true);
-        $criteria->compare('LOWER(publisher)',strtolower($this->publisher_id),true);
-        $criteria->compare('LOWER(dataset_size)',strtolower($this->dataset_size),true);
-        $criteria->compare('LOWER(ftp_site)',strtolower($this->ftp_site),true);
-        $criteria->compare('LOWER(upload_status)', strtolower($this->upload_status),true);
-        $criteria->compare('LOWER(excelfile)',strtolower($this->excelfile),true);
-        $criteria->compare('LOWER(excelfile_md5)',strtolower($this->excelfile_md5),true);
+        $criteria->compare('LOWER(identifier)',strtolower($this->identifier ?: ''),true);
+        $criteria->compare('LOWER(title)',strtolower($this->title ?: ''),true);
+        $criteria->compare('LOWER(description)',strtolower($this->description ?: ''),true);
+        $criteria->compare('LOWER(publisher)',strtolower($this->publisher_id ?: ''),true);
+        $criteria->compare('LOWER(dataset_size)',strtolower($this->dataset_size ?: ''),true);
+        $criteria->compare('LOWER(ftp_site)',strtolower($this->ftp_site ?: ''),true);
+        $criteria->compare('LOWER(upload_status)', strtolower($this->upload_status ?: ''),true);
+        $criteria->compare('LOWER(excelfile)',strtolower($this->excelfile ?: ''),true);
+        $criteria->compare('LOWER(excelfile_md5)',strtolower($this->excelfile_md5 ?: ''),true);
         $criteria->compare('publication_date',$this->publication_date);
         $criteria->compare('modification_date',$this->modification_date);
 
@@ -522,8 +520,10 @@ class Dataset extends CActiveRecord
         $publisher->addAttribute('schemeURI', 'https://www.re3data.org/');
 
         //<publicationYear>2014</publicationYear>
-        $publication_date = new DateTime($this->publication_date);
-        $xml->addChild('publicationYear', $publication_date->format('Y'));
+        if ($this->publication_date) {
+            $publication_date = new DateTime($this->publication_date);
+            $xml->addChild('publicationYear', $publication_date->format('Y'));
+        }
 
         //<subjects>
         $subjects = $xml->addChild('subjects');
@@ -543,8 +543,10 @@ class Dataset extends CActiveRecord
         //<dates>
         //	<date dateType="Available">2014-10-17</date>
         $dates = $xml->addChild('dates');
-        $date = $dates->addChild('date', $publication_date->format('Y-m-d'));
-        $date->addAttribute('dateType', 'Available');
+        if ($publication_date) {
+            $date = $dates->addChild('date', $publication_date->format('Y-m-d'));
+            $date->addAttribute('dateType', 'Available');
+        }
 
         //<language>en-us</language>
         $xml->addChild('language', 'en-US');
@@ -659,7 +661,6 @@ class Dataset extends CActiveRecord
 
         // Uncomment one of the following alternatives
         $bytes /= pow(1024, $pow);
-        // $bytes /= (1 << (10 * $pow));
 
         $size = round($bytes, $precision) . ' ' . $units[$pow];
 
@@ -691,10 +692,9 @@ class Dataset extends CActiveRecord
     /**
      * Return a UUID based on the dataset id
      *
-     * @return string
+     * @return \Ramsey\Uuid\UuidInterface
      */
-    public function getUuid(): string
-    {
+    public function getUuid(): \Ramsey\Uuid\UuidInterface {
         return Uuid::uuid5(Uuid::NAMESPACE_URL, self::NAMESPACE."/id/".$this->id);
     }
 

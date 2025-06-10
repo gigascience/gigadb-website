@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 class RssController extends Controller {
 
 	public $title="";
@@ -18,7 +20,6 @@ class RssController extends Controller {
         $criteria=new CDbCriteria;
         $criteria->limit = $this->numberOfLatestDataset;
         $criteria->condition = "upload_status = 'Published'";
-        #$criteria->order = "id DESC";
         $criteria->order = 'publication_date DESC';
         $datasets = Dataset::model()->findAll($criteria);
 

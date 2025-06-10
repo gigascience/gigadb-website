@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 class ApiController extends Controller
 {
     const RESULTS = ['file', 'sample', 'dataset'];
@@ -154,7 +156,6 @@ class ApiController extends Controller
                 }
                 else{
                     $this->redirect(array("api/dataset?doi=$doi&result=file"));
-                  //$this->redirect(array('api/dataset','doi'=>$doi,'result'=>'file'));
                    try{
                    $model=  Dataset::model()->findByAttributes(array('identifier'=>$doi,'upload_status'=>$status));}
                    catch(CDbException $e)
@@ -233,7 +234,7 @@ class ApiController extends Controller
     public function actionSearch()
 	{
 		$status='Published';
-                ini_set('log_errors', true);
+                ini_set('log_errors', (string)true);
                 ini_set('error_log', dirname(__FILE__).'/php_errors.log');
                 $keyword = Yii::app()->request->getParam('keyword');
                 $result= Yii::app()->request->getParam('result');
@@ -280,45 +281,6 @@ class ApiController extends Controller
                         $samples=[];
                         $files=[];
 
-                        /*
-                        if(isset($_GET['type']))
-                        {
-                            $type=$_GET['type'];
-                             for($int=0;$int<count($type);$int++)
-                             {
-                                 if($type[$int]=='sample'){
-
-                                 foreach($data['samples']['data'] as $sampleid)
-                                 {
-                                     $id = DatasetSample::model()->findByAttributes(array('sample_id'=>$sampleid));
-                                     $datasets[] = $id->dataset_id;
-                                 }
-                                // $datasets[] = $data['samples']['data'];
-                                 continue;
-                                 }
-                                 if($type[$int]=='file'){
-                                  foreach($data['files']['data'] as $fileid)
-                                 {
-                                     $id = File::model()->findByAttributes(array('id'=>$fileid));
-                                     $datasets[] = $id->dataset_id;
-                                 }
-                                 continue;
-                                 }
-                                 if($type[$int]=='dataset'){
-                                 foreach($data['datasets']['data'] as $datasetid)
-                                 {
-
-                                     $datasets[] = $datasetid;
-                                 }
-                                 continue;
-                                 }
-                                 if($type[$int] !=='sample' || $type[$int] !=='file' || $type[$int] !=='dataset'){
-
-                                 $this->_sendResponse(404,
-                                 sprintf('Parameter type[] is wrong <b>%s</b>',$type[$int]) );
-                                 }
-                             }
-                        }*/
                         foreach($data['datasets']['data'] as $datasetid)
                         {
                             $datasets[] = $datasetid;
@@ -341,12 +303,6 @@ class ApiController extends Controller
                           $this->_sendResponse(404,
                           sprintf('No items where found for keyword <b>%s</b>',$keyword) );
                         }
-                       // print_r($datasets);
-                       // print_r($samples);
-                      //  print_r($files);
-
-
-
 
                         if(!isset($_GET['result']))
                         {
@@ -396,13 +352,6 @@ class ApiController extends Controller
                                     break;
                             }
                         }
-                   /*
-                     $this->renderPartial('keyword',array(
-                            'datasetids'=>$datasets,
-                            'sampleids'=>$samples,
-                            'fileids'=>$files));
-                    */
-
                     }
                 }
 
@@ -862,9 +811,8 @@ class ApiController extends Controller
     * render a partial base on the value of result URL query string paramter
     *
     * @param string $result query string to select which section of dataset to display
-    * @param string $models database resulset
     */
-    private function renderByResult($result,$models) {
+    private function renderByResult(string $result, array $models) {
         switch ($result) {
             case "dataset":
                 $this->renderPartial('keyworddataset',array('models'=>$models,));

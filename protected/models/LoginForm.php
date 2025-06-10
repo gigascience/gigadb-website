@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * LoginForm class.
  * LoginForm is the data structure for keeping
@@ -50,9 +52,6 @@ class LoginForm extends CFormModel {
 					$duration=$this->rememberMe ? 3600*24*30 : 0; // 30 days
 					Yii::app()->user->login($identity,$duration);
 					break;
-#				case UserIdentity::ERROR_USERNAME_INVALID:
-#					$this->addError('username','Username is incorrect.');
-#					break;
 				case UserIdentity::ERROR_USER_NOT_ACTIVATED:
 					$this->addError('username','User is not activated');
 					break;

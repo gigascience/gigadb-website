@@ -1,9 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 class AdminSampleController extends Controller
 {
-
-
 	/**
 	 * @return array action filters
 	 */
@@ -168,18 +168,9 @@ class AdminSampleController extends Controller
             $this->redirect(array('/dataset/' . $result[1]));
         }
 
-
-//        if (isset($_POST['DatasetSample'])) {
-//            $model->attributes = $_POST['DatasetSample'];
-//            if ($model->save())
-//                $this->redirect(array('view', 'id' => $model->id));
-//        }
-
         if (isset($_GET['Sample']))
             $model->attributes = $_GET['Sample'];
 
-
-//$model->getPagination()->pageSize = $model->count();
         $this->render('choose', array(
             'model' => $model,
         ));
