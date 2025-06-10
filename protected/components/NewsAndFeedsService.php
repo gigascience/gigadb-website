@@ -102,7 +102,7 @@ class NewsAndFeedsService extends CApplicationComponent
      * @param int $limit Maximum number of datasets to return
      * @return array Array of Dataset models
      */
-    public function getFeedDatasets($limit = 10)
+    public function getFeedDatasets(int $limit = 10): array
     {
         $model = new Dataset();
         $model->unsetAttributes();
