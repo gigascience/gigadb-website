@@ -310,72 +310,14 @@ $sampleDataProvider = $samples->getDataProvider();
                 <div class="tab-content dataset-tab-content">
                 <?php
                     if ($sampleDataProvider->getTotalItemCount() > 0) {
-                        $samplesPerPage = $sampleDataProvider->getItemCount();
-                        $totalNbSamples = $sampleDataProvider->getTotalItemCount();
 
                         if (count($model->samples) > 0) {
-                    ?>
-                        <div role="tabpanel" class="tab-pane active" id="sample">
-
-                            <p class="pull-left">
-                              Click on a table column to sort the results.
-                            </p>
-                            <a id="samples_table_settings" class="btn btn-default pull-right" data-toggle="modal" data-target="#samples_settings" href="#"><span class="glyphicon glyphicon-adjust"></span>Table Settings</a>
-                            <table id="samples_table" class="table table-striped table-bordered" style="width:100%">
-                                <thead>
-                                    <tr>
-                                        <th title="User-specified name or identifier of the sample object. Note: a DNA sample and an RNA sample from the same donor are classed as two separate samples.">Sample ID</th>
-                                        <th title="A well recognized commonly used name of the species, usually this is a synonym held in the NCBI taxonomy for the tax ID provided.">Common Name</th>
-                                        <th title="The scientific binomial name of the species, usually this is in direct accordance with the NCBI taxonomy ID provided.">Scientific Name</th>
-                                        <th title="This is a list of Key:Value pairs, where the Keys are from our Attributes list, and the Value is the specific value for the sample. See our metadata guide for the Attributes list with definitions of all available attributes.">Sample Attributes</th>
-                                        <th title="Species taxonomy ID of the sampled species, we currently use the NCBI taxonomy as the source of this identifier.">Taxonomic ID</th>
-                                        <th title="The preferred display name used by NCBI taxonomy for the tax ID provided">Genbank Name</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php $sample_models = $sampleDataProvider->getData();
-
-                                    foreach ($sample_models as $sample) { ?>
-                                        <tr>
-                                            <td><?= $sample['linkName'] ?></td>
-                                            <td><?= $sample['common_name'] ?></td>
-                                            <td><?= $sample['scientific_name'] ?></td>
-                                            <td><?= $sample['displayAttr'] ?></td>
-                                            <td><?= $sample['taxonomy_link'] ?></td>
-                                            <td><?= $sample['genbank_name'] ?></td>
-                                        </tr>
-                                    <?php } ?>
-
-                                </tbody>
-                            </table>
-                            <div class="table-footer">
-                                <?php
-                                if ($samplesPerPage <> $totalNbSamples) {
-                                  ?>
-                                  <div class="pagination-wrapper">
-                                  <?
-                                    $this->widget('SiteLinkPager', array(
-                                        'id' => 'samples-pager',
-                                        'pages' => $sampleDataProvider->getPagination(),
-                                    ));
-                                ?>
-                                <div class="page-selector">
-                                  <button class="btn background-btn-o" id="samplesPageButton" onclick="goToSamplesPage()">Go to page</button>
-                                  <input type="number" id="samplesPageInput" class="page_box" onkeypress="detectEnterKeyPress(event)" min="1" max="<?= $sampleDataProvider->getPagination()->getPageCount() ?>" aria-label="Enter page number">
-                                  <span class="page-selector-label"> of <?php echo $sampleDataProvider->getPagination()->getPageCount() ?></span>
-                                </div>
-                                </div>
-                                <?php
-                              }
-                              ?>
-                                <div class="pull-right">
-                                    <div class="summary">Displaying <?php echo $samplesPerPage ?> samples of <?php echo $totalNbSamples ?></div>
-                                </div>
-                                </div>
-
-                        </div>
-                    <?php
-                      }
+                            $this->renderPartial('_sample_panel', array(
+                                'sampleDataProvider' => $sampleDataProvider,
+                                'model' => $model,
+                                'columns' => $columns
+                            ));
+                        }
                     }
                     ?>
                     <?php
@@ -451,7 +393,7 @@ $sampleDataProvider = $samples->getDataProvider();
                                 ?>
                                 <div class="page-selector">
                                   <button class="btn background-btn-o" id="filesPageButton" onclick="goToFilesPage()">Go to page</button>
-                                  <input type="number" id="filesPageInput" class="page_box" onkeypress="detectEnterKeyPress(event)" min="1" max="<?= $fileDataProvider->getPagination()->getPageCount() ?>" aria-label="Enter page number">
+                                  <input type="number" id="filesPageInput" class="page_box" onkeypress="handleEnterKeyPress(event)" min="1" max="<?= $fileDataProvider->getPagination()->getPageCount() ?>" aria-label="Enter page number">
                                   <span class="page-selector-label"> of <?php echo $fileDataProvider->getPagination()->getPageCount() ?></span>
                                 </div>
                                 </div>
@@ -671,35 +613,7 @@ $sampleDataProvider = $samples->getDataProvider();
                     }
                 }
 
-                $('#samples_table').DataTable({
-                    "paging": false,
-                    "ordering": true,
-                    "info": false,
-                    "searching": false,
-                    "lengthChange": false,
-                    "pageLength": <?= $sampleDataProvider->getPagination()->getPageSize() ?>,
-                    "pagingType": "simple_numbers",
-                    "columns": [{
-                            "visible": <?= in_array('name', $columns) ? 'true' : 'false' ?>
-                        },
-                        {
-                            "visible": <?= in_array('common_name', $columns) ? 'true' : 'false' ?>
-                        },
-                        {
-                            "visible": <?= in_array('scientific_name', $columns) ? 'true' : 'false' ?>
-                        },
-                        {
-                            "visible": <?= in_array('attribute', $columns) ? 'true' : 'false' ?>
-                        },
-                        {
-                            "visible": <?= in_array('taxonomic_id', $columns) ? 'true' : 'false' ?>
-                        },
-                        {
-                            "visible": <?= in_array('genbank_name', $columns) ? 'true' : 'false' ?>
-                        },
-                    ]
-                });
-
+        // order file size column by bytes not by string
         $.fn.dataTable.ext.type.order['file-size-pre'] = function(data) {
             const units = {
                 'B': 1,
@@ -895,35 +809,15 @@ $sampleDataProvider = $samples->getDataProvider();
         });
     </script>
     <script>
-      function handleInitFilesPage() {
-          let currentPageNumber = 1;
-
-          const match = window.location.pathname.match(/Files_page\/(\d+)/);
-          if (match && match[1]) {
-              currentPageNumber = parseInt(match[1], 10);
-          }
-
-          $('#pageNumber').val(currentPageNumber);
-      }
-      function handleInitSamplesPage() {
-          let currentPageNumber = 1;
-
-          const match = window.location.pathname.match(/Samples_page\/(\d+)/);
-          if (match && match[1]) {
-              currentPageNumber = parseInt(match[1], 10);
-          }
-
-          $('#pageNumber').val(currentPageNumber);
-      }
       function handleInitPagination() {
-          let currentPageNumber = 1;
+        let currentPageNumber = 1;
 
-          const match = window.location.pathname.match(/Files_page\/(\d+)/);
-          if (match && match[1]) {
-              currentPageNumber = parseInt(match[1], 10);
-          }
+        const match = window.location.pathname.match(/Files_page\/(\d+)/);
+        if (match && match[1]) {
+            currentPageNumber = parseInt(match[1], 10);
+        }
 
-          $('#pageNumber').val(currentPageNumber);
+        $('#pageNumber').val(currentPageNumber);
       }
 
       function isNumber(value) {
@@ -940,53 +834,49 @@ $sampleDataProvider = $samples->getDataProvider();
         }
 
         if (_userInput >= _min && _userInput <= _max) {
-          console.log("Valid page number!");
           return _userInput;
         } else if (_userInput > _max) {
-          console.log("Error, return to " + _max);
           return _max;
         } else if (_userInput < _min) {
-          console.log("Error, return to " + _min);
           return _min;
         }
       }
 
-      function goToFilesPage() {
-        const pageID = <?php echo $model->identifier ?>;
-        //To validate page number
-        const max = <?php echo $fileDataProvider->getPagination()->getPageCount() ?>;
-        const min = 1;
-        let targetPageNumber = document.getElementById("filesPageInput").value;
-        const userInput = parseInt(targetPageNumber);
-        const targetUrlArray = ["", "dataset", "view", "id", pageID];
+            /**
+       * @param {Object} params
+       * @param {number} params.maxPage - The maximum page number
+       * @param {number} params.targetPageNumber - The page number to navigate to
+       * @param {string} params.pathPart - The part of the path to append to the URL
+       */
+      function goToPage(params) {
+        const { maxPage, targetPageNumber, pathPart } = params
 
-        targetUrlArray.push('Files_page', computePageNumber(userInput, min, max));
-        window.location = window.location.origin + targetUrlArray.join("/");
-      }
-
-      function goToSamplesPage() {
-        const pageID = <?php echo $model->identifier ?>;
-        //To validate page number
-        const max = <?php echo $sampleDataProvider->getPagination()->getPageCount() ?>;
-        const min = 1;
-        let targetPageNumber = document.getElementById("samplesPageInput").value;
-        const userInput = parseInt(targetPageNumber);
-        const targetUrlArray = ["", "dataset", "view", "id", pageID];
-
-        targetUrlArray.push('Samples_page', computePageNumber(userInput, min, max));
-        window.location = window.location.origin + targetUrlArray.join("/");
-      }
-
-      function detectEnterKeyPress(event) {
-        const validIds = ["filesPageInput", "samplesPageInput"];
-        const id = event.target.id;
-
-        if (!validIds.includes(id)) {
-          return
+        if (!maxPage || !targetPageNumber || !pathPart) {
+            console.error("goToPage: Missing required parameters");
+            return;
         }
 
+        const minPage = 1;
+        const pageId = <?php echo $model->identifier ?>;
+        const userInput = parseInt(targetPageNumber);
+        const targetUrlArray = ["", "dataset", "view", "id", pageId];
+
+        targetUrlArray.push(pathPart, computePageNumber(userInput, minPage, maxPage));
+        window.location = window.location.origin + targetUrlArray.join("/");
+      }
+
+      function goToFilesPage() {
+        const params = {
+            maxPage: <?php echo $fileDataProvider->getPagination()->getPageCount() ?>,
+            targetPageNumber: document.getElementById('filesPageInput').value,
+            pathPart: 'Files_page'
+        }
+        goToPage(params);
+      }
+
+      function handleEnterKeyPress(event) {
         if (event.which === 13 || event.keyCode === 13 || event.key === "Enter") {
-          id === "filesPageInput" ? goToFilesPage() : goToSamplesPage();
+            goToFilesPage()
         }
       }
 
