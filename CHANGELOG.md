@@ -5,9 +5,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## Unreleased
 
 - Fix #2011: Specify which fixtures to use for individual test cases
+- Feat gigascience/security#4: Make main composer.json a regular, versioned, manually edited file 
+- Feat gigascience/security#14: decommission top level group variables interpolation
 
-## v4.4.12 - 2025-05-27 - da60e55e3 - 
+## v4.4.12 - 2025-06-09 - 641317b01 -
 
+- Fix #2351: Fix server error page message
 - Feat #1341: Show maintenance error on 500 errors
 - Feat #1892: Update onboarding pages layout
 - Feat #2235: Use temporary directory for database volume in CI legacy_test job
