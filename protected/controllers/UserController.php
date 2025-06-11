@@ -358,6 +358,24 @@ class UserController extends Controller {
         $this->render('passwordChanged') ;
     }
 
+    public function actionSendActivationEmail(int $id) {
+        $user = User::model()->findByPk($id);
+
+        if (!$user) {
+            throw new CHttpException(404,'User not found');
+        }
+
+        $isSuccessful = $this->sendActivationEmail($user);
+
+        if($isSuccessful) {
+            Yii::app()->user->setFlash('success', 'A confirmation email has been resent!');
+        } else {
+            Yii::app()->user->setFlash('danger', 'Unable to send confirmation email!');
+        }
+
+        return $this->redirect(array('welcome', 'id'=>$user->id));
+    }
+
     # Send account activation email
     private function sendActivationEmail($user) {
         $recipient = $user->email;
@@ -365,11 +383,15 @@ class UserController extends Controller {
         $url = $this->createAbsoluteUrl('user/confirm', array('key' => $user->id));
         $body = $this->renderPartial('emailWelcome',array('url'=>$url),true);
         try {
-            Yii::app()->mailService->sendHTMLEmail(Yii::app()->params['adminEmail'], $recipient, $subject, $body);
+            $isSent = Yii::app()->mailService->sendHTMLEmail(Yii::app()->params['adminEmail'], $recipient, $subject, $body);
+            Yii::log("Sent account activation email to $recipient, $subject");
+
+            return $isSent;
+
         } catch (Swift_TransportException $ste) {
             Yii::log("Problem sending account activation email - " . $ste->getMessage(), "error");
+            return false;
         }
-        Yii::log("Sent account activation email to $recipient, $subject");
     }
 
     public function actionEmailWelcome() {

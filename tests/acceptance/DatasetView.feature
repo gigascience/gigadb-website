@@ -155,7 +155,7 @@ Feature: a user visit the dataset page
     And I press the button "Cite Dataset"
     When I follow "Text"
     And I go to the new tab
-    Then I should see "Li, J., Zhang, G., Lambert, D., & Wang, J. (2011). Genomic data from Adelie penguin (Pygoscelis adeliae) [Data set]. GigaScience. https://doi.org/10.5524/100006"
+    Then I should see "Zhang, G., Lambert, D. M., & Wang, J. (2011). Genomic data from Adelie penguin (Pygoscelis adeliae). [Data set]. GigaScience. https://doi.org/10.5524/100006"
 
   @ok @cite-dataset-button
   Scenario: Display no Cite Dataset button when bad request

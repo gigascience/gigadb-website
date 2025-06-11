@@ -24,7 +24,7 @@ services:
     environment:
       PHP_VERSION: ${PHP_VERSION}
       TIDEWAYS_APIKEY: ${TIDEWAYS_APIKEY}
-      TIDEWAYS_SERVICE: $CI_PROJECT_PATH
+      TIDEWAYS_SERVICE: ${TIDEWAYS_SERVICE}
       TIDEWAYS_SAMPLERATE: 25
       TIDEWAYS_CONNECTION: tcp://tideways-daemon:9135
     build:
@@ -47,15 +47,18 @@ services:
         - INSTALL_APCU=true
         - APCU_VERSION=$APCU_VERSION
         - INSTALL_TIDEWAYSPHP=true
+        - TIDEWAYS_PHP_EXTENSION_VERSION=${TIDEWAYS_PHP_EXTENSION_VERSION}
 
   production_tideways-daemon:
     environment:
-      TIDEWAYS_ENVIRONMENT: $GIGADB_ENV
+      TIDEWAYS_ENVIRONMENT: ${TIDEWAYS_ENVIRONMENT}
     build:
       context: ../..
       dockerfile: ops/packaging/Tideways-Dockerfile
       cache_from:
         - "registry.gitlab.com/$CI_PROJECT_PATH/production_tideways-daemon:${GIGADB_ENV}"
+      args:
+        - TIDEWAYS_DAEMON_VERSION=${TIDEWAYS_DAEMON_VERSION}
     expose:
       - "9135"
 

@@ -5,8 +5,34 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## Unreleased
 
 - Fix #2251: Add a size validation rule when updating a file
+- Fix #2011: Specify which fixtures to use for individual test cases
+- Feat gigascience/security#4: Make main composer.json a regular, versioned, manually edited file 
+- Feat gigascience/security#14: decommission top level group variables interpolation
 
-## v4.4.9 - 2025-04-30 - fd51be0df
+## v4.4.12 - 2025-06-09 - 641317b01 -
+
+- Fix #2351: Fix server error page message
+- Feat #1341: Show maintenance error on 500 errors
+- Feat #1892: Update onboarding pages layout
+- Feat #2235: Use temporary directory for database volume in CI legacy_test job
+- Feat #2235: Create Manuscript and DatasetLog Yii2 models and create a wrapper to use Manuscript Yii2 model with yii1 Form
+- Feat #2235: Add a checkbox to determine whether if a manuscript should be considered a pre-print link
+- Feat security#13: Upgrade Tideways PHP extension version to `5.19.0` and Daemon version to `1.9.36`
+- Feat #798: Update Genomic Dataset Checklist text
+- Feat #950: Add Jesse Xiao to team page
+
+## v4.4.11 - 2025-05-21 - 4fdb2fb13 - live since 2025-05-26
+
+- Fix #531: Calculate the total volume of files and display it on the homepage
+- Fix #2282: Resend email from welcome page
+- Fix #2248: List operation in GigaDB API take into account publication_date as a start data and/or end date
+- Feat #549: create commands: check if DOI exists in Datacite + update Datacite api metadata
+
+## v4.4.10 - 2025-05-16 - 07a8f63b2 - live since 2025-05-19
+
+- Fix #2294: Add dedicated username variable for authenticating to email service
+
+## v4.4.9 - 2025-04-30 - fd51be0df - live since 2025-05-14
 
 - Fix #2270: Allow transitions to 'Submitted' and 'DataPending' from any upload status.
 - Fix #1955: Edit user without being forced to enter a password + add a password regex
