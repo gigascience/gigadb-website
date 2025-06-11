@@ -6,6 +6,12 @@
  */
 class RelationDAOTest extends \CDbTestCase
 {
+    protected $fixtures = array(
+        'relationship' => 'Relationship',
+        'datasets' => 'Dataset',
+        'relations' => 'Relation',
+    );
+
     /**
      * @dataProvider relationshipProvider
      */
