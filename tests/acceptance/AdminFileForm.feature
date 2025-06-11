@@ -33,3 +33,24 @@ Feature: form to manage file metadata
     And I am on "/dataset/100006"
     And I follow "Files"
     Then I should see a link "Pygoscelis_adeliae.RepeatMasker.out.gz" to "https://test.org/phylogeny_study_update/Pygoscelis_adeliae.RepeatMasker.out.gz"
+
+  @ok
+  Scenario: Can't have a size of 0
+    Given I am on "/adminFile/update/id/17679"
+    When I fill in the field of "id" "File_size" with "0"
+    And I press the button "Save"
+    Then I should see "You need to indicate a valid size for the file"
+
+  @ok
+  Scenario: Can't have a size with letters
+    Given I am on "/adminFile/update/id/17679"
+    When I fill in the field of "id" "File_size" with "B2"
+    And I press the button "Save"
+    Then I should see "You need to indicate a valid size for the file"
+
+  @ok
+  Scenario: Can update the size
+    Given I am on "/adminFile/update/id/17679"
+    When I fill in the field of "id" "File_size" with "1"
+    And I press the button "Save"
+    Then I should see "View File"
