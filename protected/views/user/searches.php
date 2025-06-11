@@ -1,4 +1,4 @@
-<section>
+<section class="table-responsive">
 
 	<table class="table table-bordered saved-table text-center">
 		<thead>

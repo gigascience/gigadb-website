@@ -9,7 +9,7 @@ Feature: main search function
   Scenario: basic search
     Given I am on "/"
     When I fill in the field of "id" "keyword" with "penguin"
-    And I press the button "Search"
+    And I press the button ".test-main-search-btn"
     And I wait "1" seconds
     Then I should see a link "Genomic data from Adelie penguin (Pygoscelis adeliae)." to "/dataset/100006"
     And I should see a link "Pygoscelis_adeliae" to "/dataset/100006"
@@ -27,7 +27,7 @@ Feature: main search function
   Scenario: pagination show correct number of pages
     Given I am on "/"
     When I fill in the field of "id" "keyword" with "genome"
-    And I press the button "Search"
+    And I press the button ".test-main-search-btn"
     And I wait "1" seconds
     Then I should see "Showing 1 - 2 of 6 datasets"
     And I should see a link "Three Bauhinia species transcriptome sequence data" to "/dataset/100245"
@@ -42,7 +42,7 @@ Feature: main search function
   Scenario: Can navigate to the next page
     Given I am on "/"
     And I fill in the field of "id" "keyword" with "genome"
-    And I press the button "Search"
+    And I press the button ".test-main-search-btn"
     And I wait "1" seconds
     When I follow "2"
     Then I should see a link "Termitomyces sp. J132 fungus genome assembly data." to "/dataset/100056"
@@ -52,7 +52,7 @@ Feature: main search function
   Scenario: Can search compound term without operator
     Given I am on "/"
     When I fill in the field of "id" "keyword" with "penguin readme"
-    And I press the button "Search"
+    And I press the button ".test-main-search-btn"
     And I wait "1" seconds
     Then I should see "Showing 1 - 1 of 1 datasets"
     And I should see a link "Genomic data from Adelie penguin (Pygoscelis adeliae)." to "/dataset/100006"
@@ -66,7 +66,7 @@ Feature: main search function
   Scenario: Can search compound term with operator
     Given I am on "/"
     When I fill in the field of "id" "keyword" with "penguin & readme"
-    And I press the button "Search"
+    And I press the button ".test-main-search-btn"
     And I wait "1" seconds
     Then I should see "Showing 1 - 1 of 1 datasets"
     And I should see a link "Genomic data from Adelie penguin (Pygoscelis adeliae)." to "/dataset/100006"
@@ -79,7 +79,7 @@ Feature: main search function
   Scenario: Can search compound term with double quotes
     Given I am on "/"
     When I fill in the field of "id" "keyword" with "\"penguin readme\""
-    And I press the button "Search"
+    And I press the button ".test-main-search-btn"
     And I wait "1" seconds
     Then I should see "Showing 1 - 1 of 1 datasets"
     And I should see a link "Genomic data from Adelie penguin (Pygoscelis adeliae)." to "/dataset/100006"
@@ -92,7 +92,7 @@ Feature: main search function
   Scenario: can limit search to specific year
     Given I am on "/"
     When I fill in the field of "id" "keyword" with "genome & 2011"
-    And I press the button "Search"
+    And I press the button ".test-main-search-btn"
     And I wait "1" seconds
     Then I should see "Showing 1 - 2 of 2 datasets"
     And I should see a link "Genomic data from Adelie penguin (Pygoscelis adeliae)." to "/dataset/100006"
@@ -102,7 +102,7 @@ Feature: main search function
   Scenario: can limit search to specific month
     Given I am on "/"
     When I fill in the field of "id" "keyword" with "genome & 2011-11"
-    And I press the button "Search"
+    And I press the button ".test-main-search-btn"
     And I wait "1" seconds
     Then I should see "Showing 1 - 1 of 1 datasets"
     And I should see a link "Genome data from foxtail millet (Setaria italica)." to "/dataset/100020"
@@ -112,7 +112,7 @@ Feature: main search function
   Scenario: can limit search to specific day
     Given I am on "/"
     When I fill in the field of "id" "keyword" with "genome & 2011-07-06"
-    And I press the button "Search"
+    And I press the button ".test-main-search-btn"
     And I wait "1" seconds
     Then I should see "Showing 1 - 1 of 1 datasets"
     And I should see a link "Genomic data from Adelie penguin (Pygoscelis adeliae)." to "/dataset/100006"
@@ -122,7 +122,7 @@ Feature: main search function
   Scenario: Limit results to datasets
     Given I am on "/"
     When I fill in the field of "id" "keyword" with "penguin"
-    And I press the button "Search"
+    And I press the button ".test-main-search-btn"
     And I wait "1" seconds
     And I check the field "type_0"
     And I press the button "Apply Filter"
@@ -134,7 +134,7 @@ Feature: main search function
   Scenario: Limit results to samples
     Given I am on "/"
     When I fill in the field of "id" "keyword" with "penguin"
-    And I press the button "Search"
+    And I press the button ".test-main-search-btn"
     And I wait "1" seconds
     And I check the field "type_1"
     And I press the button "Apply Filter"
@@ -148,7 +148,7 @@ Feature: main search function
   Scenario: Limit results to files
     Given I am on "/"
     When I fill in the field of "id" "keyword" with "penguin"
-    And I press the button "Search"
+    And I press the button ".test-main-search-btn"
     And I wait "1" seconds
     And I check the field "type_2"
     And I press the button "Apply Filter"
@@ -161,7 +161,7 @@ Feature: main search function
   Scenario: Show a message when nothing is found
     Given I am on "/"
     When I fill in the field of "id" "keyword" with "teletubbies"
-    And I press the button "Search"
+    And I press the button ".test-main-search-btn"
     And I wait "1" seconds
     Then I should see "No results found for 'teletubbies'"
 
@@ -176,7 +176,7 @@ Feature: main search function
   Scenario: Search for a term that is only in dataset types
     Given I am on "/"
     And I fill in the field of "id" "keyword" with "epigenomic"
-    And I press the button "Search"
+    And I press the button ".test-main-search-btn"
     And I wait "1" seconds
     Then I should see a link "Genome data from foxtail millet (Setaria italica)." to "/dataset/100020"
 

@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #2189: Make public pages responsive
 - Feat #2326: Configure coderabbitai and provide instructions to focus automated code reviews
 - Fix #2251: Add a size validation rule when updating a file
 - Fix #2011: Specify which fixtures to use for individual test cases
