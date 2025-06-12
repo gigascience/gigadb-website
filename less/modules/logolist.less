@@ -1,6 +1,7 @@
 .logo-list {
   margin-top: 40px;
   display: flex;
+  flex-wrap: nowrap;
   align-items: center;
   gap: 20px;
   max-width: 100%;
@@ -8,5 +9,19 @@
   .logo-list-img {
     max-height: 150px;
     width: auto;
+  }
+}
+
+@media (max-width: @screen-sm-max) {
+  .logo-list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: @screen-xs-max) {
+  .logo-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
   }
 }

@@ -1,8 +1,6 @@
-<div id="myNews" class="carousel slide span12" style="width:1100px" >
+<div id="myNews" class="carousel slide col-xs-12 pl-0 pr-0" >
   <!-- Carousel items -->
- 
-  
-  
+
   <div class="module-box">
 
       <br>
@@ -16,11 +14,11 @@
         foreach ($news as $key=>$temp_news){
             if($i%$itemPerSlide==0)  {?>
             <div class="<? echo $active; ?> item">
-            <? }?> 
+            <? }?>
                 <div class="data-block">
                   <h5><?php echo $temp_news->title; ?></h5>
                   <p>
-                    <? 
+                    <?
 
                     if(strlen($temp_news->body) > 100){
                       echo substr($temp_news->body,0,100)." ...";

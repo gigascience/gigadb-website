@@ -21,29 +21,29 @@ $this->pageTitle = 'GigaDB - Advisory Board';
             <p>To further enable transparency, the GigaDB website is under continuous development in <a href="https://github.com/gigascience/gigadb-website">GitHub</a>, and users may comment and contribute any questions, problems or ideas for GigaDB through the website <a href="https://github.com/gigascience/gigadb-website/issues">issue ticketing</a> system.</p>
         </div>
         <section>
-            <div class="row">
-                <div class="col-xs-6 col-sm-6 col-md-4 col-lg-2 advisory-img-block">
-                    <img alt="Dr Paul Flicek" src="/images/profile/Paul.png">
+            <div class="row advisory-img-row">
+                <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 advisory-img-block">
+                    <img alt="Dr Paul Flicek" src="/images/profile/Paul.png" class="img-responsive">
                     <p><a href="http://www.ebi.ac.uk/about/people/paul-flicek">Dr Paul Flicek</a></p>
                 </div>
-                <div class="col-xs-6 col-sm-6 col-md-4 col-lg-2 advisory-img-block">
-                    <img alt="Prof Carole Goble" src="/images/profile/Carole.png">
+                <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 advisory-img-block">
+                    <img alt="Prof Carole Goble" src="/images/profile/Carole.png" class="img-responsive">
                     <p><a href="http://www.manchester.ac.uk/research/Carole.goble/">Prof Carole Goble</a></p>
                 </div>
-                <div class="col-xs-6 col-sm-6 col-md-4 col-lg-2 advisory-img-block">
-                    <img alt="Dr Paul Horton" src="/images/profile/Paul.H.png">
+                <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 advisory-img-block">
+                    <img alt="Dr Paul Horton" src="/images/profile/Paul.H.png" class="img-responsive">
                     <p><a href="http://www.cbrc.jp/eng/intro/index.eng.html">Dr Paul Horton</a></p>
                 </div>
-                <div class="col-xs-6 col-sm-6 col-md-4 col-lg-2 advisory-img-block">
-                    <img alt="Dr B F Francis Ouellette" src="/images/profile/Francis.png">
+                <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 advisory-img-block">
+                    <img alt="Dr B F Francis Ouellette" src="/images/profile/Francis.png" class="img-responsive">
                     <p><a href="http://oicr.on.ca/person/researcher/francis-ouellette">Dr B F Francis Ouellette</a></p>
                 </div>
-                <div class="col-xs-6 col-sm-6 col-md-4 col-lg-2 advisory-img-block">
-                    <img alt="Dr Xin Zhou" src="/images/profile/ZhouXin.png">
+                <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 advisory-img-block">
+                    <img alt="Dr Xin Zhou" src="/images/profile//ZhouXin.png" class="img-responsive">
                     <p><a href="https://www.linkedin.com/profile/view?id=157662709&trk=nav_responsive_tab_profile_pic">Dr Xin Zhou</a></p>
                 </div>
-                <div class="col-xs-6 col-sm-6 col-md-4 col-lg-2 advisory-img-block">
-                    <img alt="Jesse Xiao's portrait" src="/images/profile/jessexiao.jpg">
+                <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 advisory-img-block">
+                    <img alt="Jesse Xiao" src="/images/profile/jessexiao.jpg" class="img-responsive">
                     <p><a href="https://www.linkedin.com/in/jessexiao">Jesse (Sezhe) Xiao</a></p>
                 </div>
             </div>

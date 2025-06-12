@@ -31,9 +31,6 @@ if ! [ -s ./.secrets ];then
       PROJECT_VARIABLES_URL="https://gitlab.com/api/v4/projects/gigascience%2Fupstream%2Fgigadb-website/variables"
     fi
 
-    echo "Retrieving variables from ${GROUP_VARIABLES_URL}"
-    curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "${GROUP_VARIABLES_URL}" | jq -r '.[] | select(.key != "ANALYTICS_PRIVATE_KEY") | .key + "=" + .value' > .group_var
-
     if [[ $CI_PROJECT_URL != "https://gitlab.com/gigascience/upstream/gigadb-website" ]];then
       echo "Retrieving variables from ${FORK_VARIABLES_URL}"
       curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "${FORK_VARIABLES_URL}?per_page=100" | jq -r '.[] | select(.key != "ANALYTICS_PRIVATE_KEY") | .key + "=" + .value' > .fork_var
@@ -53,10 +50,10 @@ if ! [ -s ./.secrets ];then
     # non-existent file
     if [ "$CI_PROJECT_URL" == "https://gitlab.com/gigascience/upstream/gigadb-website" ];
     then
-      cat .group_var .project_var .misc_var > .secrets && rm .group_var && rm .project_var && rm .misc_var && rm .project_var_raw1 && rm .project_var_raw2 && rm .project_vars.json
+      cat .project_var .misc_var > .secrets && rm .project_var && rm .misc_var && rm .project_var_raw1 && rm .project_var_raw2 && rm .project_vars.json
     else
       # Fork configuration
-      cat .group_var .fork_var .project_var .misc_var > .secrets && rm .group_var && rm .fork_var && rm .project_var && rm .misc_var && rm .project_var_raw1 && rm .project_var_raw2 && rm .project_vars.json
+      cat .fork_var .project_var .misc_var > .secrets && rm .fork_var && rm .project_var && rm .misc_var && rm .project_var_raw1 && rm .project_var_raw2 && rm .project_vars.json
     fi
 
     echo "# Some help about this file in ops/configuration/variables/secrets-sample" >> .secrets
