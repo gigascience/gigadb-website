@@ -21,6 +21,14 @@ This document provides background information of rclone mount and s3fs mount, an
 | Community Support | 	Active community, but less frequent updates                                                            | 	Large community, frequent updates, and extensive documentation                                                  | 	rclone for active support             |
 
 Bottom Line: For general-purpose mounting of an R2 bucket, rclone mount is often the better choice due to its superior performance, advanced caching capabilities, and active development.
+s3fs is prone to "busy" mount issues due to its FUSE implementation, and multipart uploads can be problematic.
+s3fs cache eats up a lot of disk space, and it is not as efficient for large datasets or high-throughput workloads.
+```
+[ec2-user@ip-10-99-0-232 ~]$ sudo du -sh /tmp/cache/rclone/
+0       /tmp/cache/rclone/
+[ec2-user@ip-10-99-0-232 ~]$ sudo du -sh /tmp/cache/s3fs/
+4.1G    /tmp/cache/s3fs/
+```
 
 ### Mount Object Storage, eg. R2 Bucket
 
@@ -49,33 +57,31 @@ Bottom Line: For general-purpose mounting of an R2 bucket, rclone mount is often
 -o passwd_file=~/.passwd_file \
 -o url=https://$account-id.r2.cloudflarestorage.com \
 -o allow_other \
--o use_cache=/tmp/cache/s3fs \
--o max_stat_cache_size=100000 \
--o multipart_size=128 \
 -o umask=000 \
+-o nomultipart \
 -o sigv4 \
 -o logfile=/var/log/gigadb/s3fs-r2.log
 ```
 
 -o passwd_file: Specifies the file containing your R2 credentials.
 -o url: Crucially, sets the endpoint to your Cloudflare R2 account.
--o use_cache: Enables local caching of files in the specified directory.
+-o use_cache: Enables local caching of files in the specified directory, whenever s3fs needs to read or write a file on s3 it first downloads the entire file locally to the folder specified by use_cache and operates on it.
 -o max_stat_cache_size: Increases the size of the metadata stat cache to speed up lookups.
 -o endpoint=auto: Required for R2
 -o max_concurrent_requests=100: Increase concurrency
--o multipart_size=128: Better for large files
+-o multipart_size=128: Better for large files, but not supported by R2
+-o parallel_count: will get error: `curl.cpp:RequestPerform(2716): ### CURLE_SEND_ERROR`
 
 #### rclone Mount
 
 ```
 [ec2-user@ip-10-99-0-232 ~]$ rclone mount r2:$your-bucket /rclone \
 --daemon \
---cache-dir /var/cache/rclone \
+--cache-dir /tmp/cache/rclone \
 --vfs-cache-mode full \
 --vfs-cache-max-size 10G \
 --vfs-read-chunk-size 32M \
 --vfs-read-chunk-size-limit 2G \
---buffer-size 32M \
 --allow-other \
 --log-file /var/log/gigadb/rclone-r2.log \
 --log-level INFO
@@ -83,6 +89,7 @@ Bottom Line: For general-purpose mounting of an R2 bucket, rclone mount is often
 
 --allow-other: Allows other users on the system to access the mount.
 --daemon: Runs the mount process in the background.
+--buffer-size 32M: Sets the size of the buffer used for reading files.
 --vfs-cache-mode full: enable read/write caching.
 --vfs-cache-mode writes: Safe write buffering for uploads.
 --vfs-cache-max-size: Sets a limit on the local cache size (adjust based on available disk space).
@@ -96,7 +103,7 @@ Bottom Line: For general-purpose mounting of an R2 bucket, rclone mount is often
 [ec2-user@ip-10-99-0-232 ~]$ df -h | grep s3fs
 s3fs                     64P     0   64P   0% /s3fs
 [ec2-user@ip-10-99-0-232 ~]$ mount | grep s3fs
-s3fs on /s3fs type fuse.s3fs (rw,nosuid,nodev,relatime,user_id=1000,group_id=1000,default_permissions,allow_other)
+s3fs on /s3fs type fuse.s3fs (rw,nosuid,nodev,relatime,user_id=1000,group_id=1000,allow_other)
 [ec2-user@ip-10-99-0-232 ~]$ ls -al /s3fs/share/dropbox/user5/
 total 15
 drwxr-xr-x. 1 ec2-user ec2-user 4096 Jun  6 04:09 .
@@ -123,13 +130,58 @@ drwxr-xr-x. 1 ec2-user ec2-user    0 Jun 11 04:21 ..
 
 ### Performance and Benchmarks
 
-|                                                | Command                                                                                                                                                                                 | s3fs mount                     | rclone mount                    |
-|:-----------------------------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:-------------------------------|:--------------------------------|
-| Large File Throughput (Write)                  | dd if=/rclone/share/dropbox/user999/rclone-test-write.dat of=/dev/null bs=1G count=4; dd if=/dev/zero of=/rclone/share/dropbox/user999/rclone-test-write.dat bs=1G count=4 oflag=direct | 6.052 s, 7.3 MB/s, %CPU: 10-30 | 586.052 s, 7.3 MB/s, %CPU: 7    |  
-| Large File Throughput (Read)                   |                                                                                                                                                                                         |                                |                                 |
-| Many Small Files (Metadata and I/O Operations) |                                                                                                                                                                                         |                                |                                 |
-| Random Read/Write IOPS                         |                                                                                                                                                                                         |                                |                                 |
+#### efs mount performance
 
+| under test                | command                                                                                           | time (s) | throughput (MB/s) | %CPU |
+|:--------------------------|:--------------------------------------------------------------------------------------------------|:---------|:------------------|:-----|
+| 1G File Write             | dd if=/dev/zero of=/share/dropbox/user666/efs-test-write.dat bs=1G count=1 oflag=direct           | 2.68551  | 400               | ~30  |
+| 10G File Write            | dd if=/dev/zero of=/share/dropbox/user666/efs-test-write.dat bs=1G count=10 oflag=direct          | 22.7551  | 472               | ~30  |
+| 1G File Read              | dd if=/share/dropbox/user666/efs-test-write.dat of=/dev/null bs=1G count=1                        | 8.17188  | 131               | ~10  |
+| 10G File Read             | dd if=/share/dropbox/user666/efs-test-write.dat of=/dev/null bs=1G count=10                       | 79.3294  | 135               | ~10  |
+| Move in 5000 small files  | time cp -v /tmp/smallfiles/* /share/dropbox/user666/smallfiles/                                   | 1m8.337  |                   | ~10  |
+| Move out 5000 small files | time cp -v /share/dropbox/user666/smallfiles/* /tmp/smallfiles/                                   | 11.414   |                   | ~10  |
+| md5sum Checksum           | time md5sum /share/dropbox/user666/efs-test-write.dat > /share/dropbox/user666/efs-test-write.md5 | 2m30.059 |                   |      |
+
+```
+[ec2-user@ip-10-99-0-232 ~]$ cat /share/dropbox/user666/efs-test-write.md5
+2dd26c4d4799ebd29fa31e48d49e8e53  /share/dropbox/user666/efs-test-write.dat
+```
+
+##### rclone mount performance
+
+| under test                | command                                                                                                         | time (s) | throughput (MB/s) | %CPU |
+|:--------------------------|:----------------------------------------------------------------------------------------------------------------|:---------|:------------------|:-----|
+| 4G File Write             | dd if=/dev/zero of=/rclone/share/dropbox/user999/rclone-test-write.dat bs=1G count=1 oflag=direct               | 7.04971  | 145               | ~8   |
+| 10G File Write            | dd if=/dev/zero of=/rclone/share/dropbox/user999/rclone-test-write.dat bs=1G count=10 oflag=direct              | 79.6255  | 135               | ~8   |
+| 4G File Read              | dd if=/rclone/share/dropbox/user999/rclone-test-write.dat of=/dev/null bs=1G count=1                            | 7.33058  | 146               | ~10  |
+| 10G File Read             | dd if=/rclone/share/dropbox/user999/rclone-test-write.dat of=/dev/null bs=1G count=10                           | 198.155  | 54.2              | ~10  |
+| Move in 1000 small files  | time cp -v /tmp/smallfiles/* /rclone/share/dropbox/user999/smallfiles/                                          | 13.044   |                   | ~20  |
+| Move out 1000 small files | time cp -v /rclone/share/dropbox/user999/smallfiles/* /tmp/smallfiles/                                          | 10.913   |                   | ~10  |
+| md5sum Checksum           | time md5sum /rclone/share/dropbox/user999/efs-test-write.dat > /rclone/share/dropbox/user999/efs-test-write.md5 | 1m29.463 |                   |      |
+
+```
+[ec2-user@ip-10-99-0-232 ~]$ cp /share/dropbox/user666/efs-test-write.dat /rclone/share/dropbox/user999/
+[ec2-user@ip-10-99-0-232 ~]$ cat /rclone/share/dropbox/user999/efs-test-write.md5
+2dd26c4d4799ebd29fa31e48d49e8e53  /rclone/share/dropbox/user999/efs-test-write.dat
+```
+
+##### s3fs mount performance
+| under test                | Command                                                                           | time (s) | throughput (MB/s) | %CPU |
+|:--------------------------|:----------------------------------------------------------------------------------|:---------|:------------------|:-----|
+| 4G File Write             | dd if=/dev/zero of=/s3fs/share/dropbox/user555/s3fs-test-write.dat bs=1G count=4  | 351.712  | 12.2              | 5-63 |
+| 10G File Write            | dd if=/s3fs/share/dropbox/user555/s3fs-test-write.dat of=/dev/null bs=1G count=10 | 33.5228  | 128               | 5-63 | 
+| 4G File Read              | dd if=/s3fs/share/dropbox/user555/s3fs-test-write.dat of=/dev/null bs=1G count=4  | 45.7526  | 93.9              | 10   |
+| 10G File Read             | dd if=/s3fs/share/dropbox/user555/s3fs-test-write.dat of=/dev/null bs=1G count=10 | 153.519  | 69.9              | 10   |
+| Move in 1000 small files  |                                                                                   |          |                   |      |
+| Move out 1000 small files |                                                                                   |          |                   |      |
+| Random Read/Write IOPS    |
+
+
+```mermaid
+[ec2-user@ip-10-99-0-232 ~]$ mkdir /tmp/smallfiles && for i in {1..5000}; do dd if=/dev/urandom of=/tmp/smallfiles/file$i.dat bs=1k count=4; done
+[ec2-user@ip-10-99-0-232 ~]$ du -sh /tmp/smallfiles/
+20M     /tmp/smallfiles/
+```
 
 ### Testing and Validation
 
