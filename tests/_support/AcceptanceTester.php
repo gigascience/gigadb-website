@@ -241,7 +241,7 @@ class AcceptanceTester extends \Codeception\Actor
      */
     public function iShouldSeeAnElementWith($id, $class)
     {
-        $this->seeElement(['id' => $id], ['class' => $class]);
+        $this->seeElement("#$id.$class");
     }
 
     /**

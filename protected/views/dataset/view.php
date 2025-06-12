@@ -21,8 +21,8 @@ $sampleDataProvider = $samples->getDataProvider();
 <div class="content">
     <div class="container dataset-view-container">
         <div class="subsection">
-            <div class="media">
-                <div class="media-left">
+            <div class="media dataset-media">
+                <div class="media-left dataset-media-left">
                     <?php if ($model->image) {
                         $url = $model->image->isUrlValid() ? $model->image->url : "https://assets.gigadb-cdn.net/live/images/datasets/no_image.png";
 
@@ -40,7 +40,7 @@ $sampleDataProvider = $samples->getDataProvider();
                     <?php } ?>
 
                 </div>
-                <div class="media-body">
+                <div class="media-body dataset-media-body">
                     <h1 class="left-border-title left-border-title-lg"><?= $mainSection->getHeadline()['title']; ?></h1>
                     <p class="dataset-release-date-text">Dataset type: <?= $mainSection->getHeadline()['types']; ?> <br> Data released on <?= $mainSection->getHeadline()['release_date'] ?></p>
                     <div class="color-background color-background-block dataset-color-background-block">
@@ -223,7 +223,6 @@ $sampleDataProvider = $samples->getDataProvider();
                     ?>
                 </p>
 
-
                 <?php if (count($accessions) > 0) { ?>
                     <?php
                     $primary_links = $accessions->getPrimaryLinks();
@@ -265,7 +264,7 @@ $sampleDataProvider = $samples->getDataProvider();
 
             </div>
 
-            <section>
+            <section class="">
                 <?php
                 $protocol = array();
                 $jb = array();
@@ -471,30 +470,29 @@ $sampleDataProvider = $samples->getDataProvider();
 
                                 <div role="tabpanel" class="tab-pane" id="funding">
 
-
-                                    <table class="table table-bordered text-center">
-                                        <thead>
-                                            <tr>
-                                                <th title="The name of the funding agency providing funding. Where possible this should be from the FundRef list of funding bodies (https://www.e-sciencecentral.org/funder/).">Funding body</th>
-                                                <th title="The name of the person responsible for getting the award.">Awardee</th>
-                                                <th title="The grant or contract number of the project that sponsored the effort.">Award ID</th>
-                                                <th title="Some agencies have multiple award programs through which they distribute funding, if appropriate that information can be added here.">Comments</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-
-                                            <?php foreach ($funding as $funder) { ?>
+                                    <div class="dataset-datatables-wrapper">
+                                        <table class="table table-bordered text-center">
+                                            <thead>
                                                 <tr>
-                                                    <td><?= $funder['funder_name'] ?></td>
-                                                    <td><?= $funder['awardee'] ?></td>
-                                                    <td><?= $funder['grant_award'] ?></td>
-                                                    <td><?= $funder['comments'] ?></td>
+                                                    <th title="The name of the funding agency providing funding. Where possible this should be from the FundRef list of funding bodies (https://www.e-sciencecentral.org/funder/).">Funding body</th>
+                                                    <th title="The name of the person responsible for getting the award.">Awardee</th>
+                                                    <th title="The grant or contract number of the project that sponsored the effort.">Award ID</th>
+                                                    <th title="Some agencies have multiple award programs through which they distribute funding, if appropriate that information can be added here.">Comments</th>
                                                 </tr>
-                                            <?php } ?>
-                                        </tbody>
-                                    </table>
+                                            </thead>
+                                            <tbody>
 
-
+                                                <?php foreach ($funding as $funder) { ?>
+                                                    <tr>
+                                                        <td><?= $funder['funder_name'] ?></td>
+                                                        <td><?= $funder['awardee'] ?></td>
+                                                        <td><?= $funder['grant_award'] ?></td>
+                                                        <td><?= $funder['comments'] ?></td>
+                                                    </tr>
+                                                <?php } ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             <?php }
                             ?>
@@ -543,23 +541,24 @@ $sampleDataProvider = $samples->getDataProvider();
 
                             <div role="tabpanel" class="tab-pane" id="history">
 
-                                <table class="table table-bordered text-center">
-                                    <thead>
-                                        <tr>
-                                            <th>Date</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php foreach ($mainSection->getHistory() as $log) { ?>
+                                <div class="dataset-datatables-wrapper">
+                                    <table class="table table-bordered text-center">
+                                        <thead>
                                             <tr>
-                                                <td><?= date('F j, Y', strtotime($log['created_at'])) ?></td>
-                                                <td><?= $log['message'] ?></td>
+                                                <th>Date</th>
+                                                <th>Action</th>
                                             </tr>
-                                        <?php } ?>
-                                    </tbody>
-                                </table>
-
+                                        </thead>
+                                        <tbody>
+                                            <?php foreach ($mainSection->getHistory() as $log) { ?>
+                                                <tr>
+                                                    <td><?= date('F j, Y', strtotime($log['created_at'])) ?></td>
+                                                    <td><?= $log['message'] ?></td>
+                                                </tr>
+                                            <?php } ?>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                             </div>
             </section>
@@ -572,8 +571,10 @@ $sampleDataProvider = $samples->getDataProvider();
 
     <div class="clear"></div>
 
-    <a href="/dataset/<?php echo $previous_doi ?>" class="fixed-btn-left" title="Previous dataset" aria-label="Previous dataset"><span class="fa fa-angle-left"></span></a>
-    <a href="/dataset/<?php echo $next_doi ?>" title="Next dataset" class="fixed-btn-right" aria-label="Next dataset"><span class="fa fa-angle-right"></span></a>
+    <div class="fixed-btn-container">
+        <a href="/dataset/<?php echo $previous_doi ?>" class="fixed-btn-left" title="Previous dataset" aria-label="Previous dataset"><span class="fa fa-angle-left"></span></a>
+        <a href="/dataset/<?php echo $next_doi ?>" title="Next dataset" class="fixed-btn-right" aria-label="Next dataset"><span class="fa fa-angle-right"></span></a>
+    </div>
 
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" defer></script>
     <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js" defer></script>
@@ -672,6 +673,9 @@ $sampleDataProvider = $samples->getDataProvider();
                 }
 
                 $('#samples_table').DataTable({
+                    "initComplete": function () {
+                        $("#samples_table").wrap("<div class='dataset-datatables-wrapper'></div>");
+                    },
                     "paging": false,
                     "ordering": true,
                     "info": false,
@@ -819,7 +823,7 @@ $sampleDataProvider = $samples->getDataProvider();
             });
         });
     </script>
-    <script src="https://hypothes.is/embed.js" async></script>
+    <script src="https://hypothes.is/embed.js" async onload="document.body.classList.add('with-hypothesis');"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function(event) { //This event is fired after deferred scripts are loaded
             $(".js-desc").click(function(e) {
