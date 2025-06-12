@@ -67,7 +67,6 @@ phpcs.xml
 # Composer
 bin
 vendor
-composer.json
 
 # deployment
 .env
@@ -117,3 +116,8 @@ params-local.php
 
 # release related artefacts
 VERSION
+
+.cursor/**/*
+.cursorignore
+.cursorindexingignore
+memory-bank

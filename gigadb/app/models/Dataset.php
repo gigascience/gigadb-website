@@ -296,4 +296,9 @@ class Dataset extends \yii\db\ActiveRecord
         return $this->hasMany(Author::className(), ['id' => 'author_id'])
             ->via('datasetAuthors');
     }
+
+    public function getIsPublic(): bool
+    {
+        return $this->upload_status === 'Published';
+    }
 }
