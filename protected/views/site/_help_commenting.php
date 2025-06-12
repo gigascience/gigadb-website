@@ -5,7 +5,7 @@
 
     <p>We have installed the Hypothes.is app on all GigaDB.org pages, you will see the option to expand it in the top right-hand corner:</p>
 
-    <img src="/images/help/commenting/gigadb-homepage-hypothesis-sidebar-icons.png" alt="GigaDB homepage displaying Hypothes.is sidebar with collapse, view notes, and add new page note icons" />
+    <img src="/images/help/commenting/gigadb-homepage-hypothesis-sidebar-icons.png" alt="GigaDB homepage with Hypothes.is sidebar showing collapse, note list, and new page note icons" />
 
     <p>Anyone can see all public comments and highlighted text without the need for an account. However, in order to post a comment on any webpage (including GigaDB pages) using Hypothes.is you will require a Hypothes.is user account. It should be noted that this is different from a GigaDB user account, you are not required to have a GigaDB user account to make comments. Your Hypothes.is account will be maintained by Hypothes.is and we have no control or influence on their policies, terms, or guidelines.</p>
 
@@ -26,7 +26,7 @@
 
     <p>Select Annotate to add a comment or annotation about the particular word/phrase. Type your comment then post to Public for everyone to be able to see it. If you wish, you can use hypothes.is app to keep your personal annotations about pages by selecting to post to "only me" instead of public, but no-one else will be able to see them if you do that.</p>
 
-    <img src="/images/help/commenting/gigadb-annotation-sidebar-note-editor.png" alt="GigaDB annotation sidebar open with note editor, tags field, and visibility selector while adding a public note to a dataset page" />
+    <img src="/images/help/commenting/gigadb-annotation-sidebar-note-editor.png" alt="GigaDB annotation sidebar with editor, tags field and visibility selector for adding a public note" />
 
     <p>Alternatively, if you wish to simply add a general comment to the page/dataset you can use the "page notes" option, click the "New Page note" button in the top right of the screen:</p>
 
