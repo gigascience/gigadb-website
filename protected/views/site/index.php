@@ -203,19 +203,17 @@
         </div>
     </section>
     <? if (count($news) > 0) { ?>
-        <section>
-            <div class="container">
-                <div class="underline-title">
-                    <div>
-                        <h2 class="heading">Latest news</h2>
-                    </div>
-                </div>
-                <div id="news_slider" class="row ml-0 mr-0">
-                    <? $this->renderPartial('news', array('news' => $news)); ?>
-                </div>
-            </div>
-        </section>
+      <section class="news-section">
+        <?php $this->renderPartial('news', array('news' => $news)); ?>
+      </section>
     <? } ?>
+    <?php if (count($feed_datasets) > 0) { ?>
+        <section class="dataset-feed-section">
+            <?php
+            $this->renderPartial('datasets_carousel', array('datasets' => $feed_datasets));
+            ?>
+        </section>
+    <?php } ?>
     <section>
         <h2 class="sr-only">Data Overview Metrics</h2>
         <div class="container">

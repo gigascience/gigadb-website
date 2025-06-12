@@ -1,4 +1,3 @@
-@ok-needs-secrets
 Feature: Reset password
   As an author
   I want to reset my password
@@ -38,7 +37,7 @@ Feature: Reset password
     When I am on "/site/forgot"
     And I fill in the field of "name" "ForgotPasswordForm[email]" with "user@gigadb.org"
     And I press the button "Reset"
-    Then I am on "/site/thanks" 
+    Then I am on "/site/thanks"
     And I should see "Reset Password Request Submitted"
     And I should see "If it is valid, we will send an email containing a link to where you can reset your password."
 
