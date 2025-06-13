@@ -1,3 +1,0 @@
-# Block all web crawlers from crawling of all content
-User-agent: *
-Disallow: /

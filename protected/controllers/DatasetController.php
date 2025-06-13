@@ -107,13 +107,15 @@ class DatasetController extends Controller
                 ->setSearchForm();
 
             // Rendering section
-            $this->metaData['description'] = $assembly->getDataset()->description;
+            $this->metaData['description'] = rtrim(strip_tags($assembly->getDataset()->description));
+            $this->metaData['doiUrl'] = 'https://doi.org/10.5524/' . $assembly->getDataset()->identifier;
+            $this->metaData['imageUrl'] = $assembly->getDataset()->getImageUrl();
 
             $urlToRedirect = trim($assembly->getDataset()->getUrlToRedirectAttribute());
             $currentAbsoluteFullUrl = Yii::app()->request->getBaseUrl(true) . Yii::app()->request->url ;
 
             if ($urlToRedirect && $currentAbsoluteFullUrl == $urlToRedirect) {
-                $this->metaData['redirect'] = 'http://dx.doi.org/10.5524/' . $assembly->getDataset()->identifier ;
+                $this->metaData['redirect'] = 'https://doi.org/10.5524/' . $assembly->getDataset()->identifier ;
                 $this->render('interstitial', array(
                     'model' => $assembly->getDataset()
                 ));
