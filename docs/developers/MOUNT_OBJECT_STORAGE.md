@@ -23,12 +23,7 @@ This document provides background information of rclone mount and s3fs mount, an
 Bottom Line: For general-purpose mounting of an R2 bucket, rclone mount is often the better choice due to its superior performance, advanced caching capabilities, and active development.
 s3fs is prone to "busy" mount issues due to its FUSE implementation, and multipart uploads can be problematic.
 s3fs cache eats up a lot of disk space, and it is not as efficient for large datasets or high-throughput workloads.
-```
-[ec2-user@ip-10-99-0-232 ~]$ sudo du -sh /tmp/cache/rclone/
-0       /tmp/cache/rclone/
-[ec2-user@ip-10-99-0-232 ~]$ sudo du -sh /tmp/cache/s3fs/
-4.1G    /tmp/cache/s3fs/
-```
+
 
 ### Mount Object Storage, eg. R2 Bucket
 
