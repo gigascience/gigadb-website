@@ -9,7 +9,7 @@
 
     <p>Anyone can see all public comments and highlighted text without the need for an account. However, in order to post a comment on any webpage (including GigaDB pages) using Hypothes.is you will require a Hypothes.is user account. It should be noted that this is different from a GigaDB user account, you are not required to have a GigaDB user account to make comments. Your Hypothes.is account will be maintained by Hypothes.is and we have no control or influence on their policies, terms, or guidelines.</p>
 
-    <p>We use the Public commenting system so that all comments are visible to everyone. You may of-cause make use of the Hypothes.is functionality to create your own groups so that you can share you comments privately with other Hypothes.is users in your group.</p>
+    <p>We use the Public commenting system so that all comments are visible to everyone. You may of-cause make use of the Hypothes.is functionality to create your own groups so that you can share your comments privately with other Hypothes.is users in your group.</p>
 
     <p>Hypothes.is have extensive user guides and information on their website, these are just a few that you might find useful:</p>
 
@@ -20,7 +20,7 @@
 
     <h3>Adding a comment or note</h3>
 
-    <p>Its very simple to add a comment to any dataset, simply highlight the word(s) within the page that you wish to make a comment about and a dialog box appears asking if you want to annotate or highlight your selection.</p>
+    <p>It's very simple to add a comment to any dataset, simply highlight the word(s) within the page that you wish to make a comment about and a dialog box appears asking if you want to annotate or highlight your selection.</p>
 
     <img src="/images/help/commenting/hypothesis-annotation-popup-annotate-highlight-buttons.png" alt="Hypothes.is annotation pop-up with Annotate and Highlight buttons over selected text" />
 
