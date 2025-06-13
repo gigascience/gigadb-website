@@ -130,58 +130,147 @@ drwxr-xr-x. 1 ec2-user ec2-user    0 Jun 11 04:21 ..
 
 ### Performance and Benchmarks
 
-#### efs mount performance
-
-| under test                | command                                                                                           | time (s) | throughput (MB/s) | %CPU |
-|:--------------------------|:--------------------------------------------------------------------------------------------------|:---------|:------------------|:-----|
-| 1G File Write             | dd if=/dev/zero of=/share/dropbox/user666/efs-test-write.dat bs=1G count=1 oflag=direct           | 2.68551  | 400               | ~30  |
-| 10G File Write            | dd if=/dev/zero of=/share/dropbox/user666/efs-test-write.dat bs=1G count=10 oflag=direct          | 22.7551  | 472               | ~30  |
-| 1G File Read              | dd if=/share/dropbox/user666/efs-test-write.dat of=/dev/null bs=1G count=1                        | 8.17188  | 131               | ~10  |
-| 10G File Read             | dd if=/share/dropbox/user666/efs-test-write.dat of=/dev/null bs=1G count=10                       | 79.3294  | 135               | ~10  |
-| Move in 5000 small files  | time cp -v /tmp/smallfiles/* /share/dropbox/user666/smallfiles/                                   | 1m8.337  |                   | ~10  |
-| Move out 5000 small files | time cp -v /share/dropbox/user666/smallfiles/* /tmp/smallfiles/                                   | 11.414   |                   | ~10  |
-| md5sum Checksum           | time md5sum /share/dropbox/user666/efs-test-write.dat > /share/dropbox/user666/efs-test-write.md5 | 2m30.059 |                   |      |
+##### testing environment
+```
+[ec2-user@ip-10-99-0-232 ~]$ uname -a
+Linux ip-10-99-0-232.eu-north-1.compute.internal 5.14.0-587.el9.x86_64 #1 SMP PREEMPT_DYNAMIC Fri May 23 17:57:08 UTC 2025 x86_64 x86_64 x86_64 GNU/Linux
+[ec2-user@ip-10-99-0-232 ~]$ free -h
+               total        used        free      shared  buff/cache   available
+Mem:           1.6Gi       741Mi        88Mi        11Mi       1.0Gi       927Mi
+Swap:             0B          0B          0B
+[ec2-user@ip-10-99-0-232 ~]$
+[ec2-user@ip-10-99-0-232 ~]$ df -h
+[ec2-user@ip-10-99-0-232 ~]$ df -h
+Filesystem              Size  Used Avail Use% Mounted on
+devtmpfs                4.0M     0  4.0M   0% /dev
+tmpfs                   835M     0  835M   0% /dev/shm
+tmpfs                   334M   12M  323M   4% /run
+/dev/nvme0n1p2           30G   5G  25G 16% /
+tmpfs                   167M     0  167M   0% /run/user/1000
+127.0.0.1:/             8.0E   23G  8.0E   1% /share/dropbox
+127.0.0.1:/             8.0E   23G  8.0E   1% /share/config
+r2:test-gigadb-dropbox  1.0P     0  1.0P   0% /rclone
+s3fs                     64P     0   64P   0% /s3fs
 
 ```
-[ec2-user@ip-10-99-0-232 ~]$ cat /share/dropbox/user666/efs-test-write.md5
-2dd26c4d4799ebd29fa31e48d49e8e53  /share/dropbox/user666/efs-test-write.dat
+
+##### Create files for testing
+```
+[ec2-user@ip-10-99-0-232 ~]$ mkdir -p test-mount
+[ec2-user@ip-10-99-0-232 ~]$ dd if=/dev/zero of=./test-mount/1g-file.dat bs=1G count=1
+1+0 records in
+1+0 records out
+1073741824 bytes (1.1 GB, 1.0 GiB) copied, 7.44773 s, 144 MB/s
+[ec2-user@ip-10-99-0-232 ~]$ dd if=/dev/zero of=./test-mount/10g-file.dat bs=1G count=10
+10+0 records in
+10+0 records out
+10737418240 bytes (11 GB, 10 GiB) copied, 79.6953 s, 135 MB/s
+ec2-user@ip-10-99-0-232 ~]$ ls -al test-mount/
+total 11534348
+drwxr-xr-x.  2 ec2-user ec2-user          64 Jun 13 07:09 .
+drwx------. 18 ec2-user ec2-user        4096 Jun 13 06:59 ..
+-rw-r--r--.  1 ec2-user ec2-user 10737418240 Jun 13 07:10 10g-file.dat
+-rw-r--r--.  1 ec2-user ec2-user  1073741824 Jun 13 07:00 1g-file.dat
+[ec2-user@ip-10-99-0-232 ~]$ time md5sum test-mount/1g-file.dat > test-mount/1g-file.md5
+
+real    0m6.966s
+user    0m1.772s
+sys     0m0.426s
+[ec2-user@ip-10-99-0-232 ~]$ cat test-mount/1g-file.md5 
+cd573cfaace07e7949bc0c46028904ff  test-mount/1g-file.dat
+[ec2-user@ip-10-99-0-232 ~]$ time md5sum test-mount/10g-file.dat > test-mount/10g-file.md5
+
+real    1m18.926s
+user    0m17.605s
+sys     0m3.878s
+[ec2-user@ip-10-99-0-232 ~]$ cat test-mount/10g-file.md5 
+2dd26c4d4799ebd29fa31e48d49e8e53  test-mount/10g-file.dat
+[ec2-user@ip-10-99-0-232 ~]$ mkdir /tmp/smallfiles && for i in {1..5000}; do dd if=/dev/urandom of=/tmp/smallfiles/file$i.dat bs=1k count=4; done
+[ec2-user@ip-10-99-0-232 ~]$ du -sh /tmp/smallfiles/
+20M     /tmp/smallfiles/
+```
+
+##### efs mount performance
+
+| under test                 | command                                                                                           | time (s) | throughput (MB/s) | %CPU |
+|:---------------------------|:--------------------------------------------------------------------------------------------------|:---------|:------------------|:-----|
+| 1G File Write              | dd if=/dev/zero of=/share/dropbox/user666/efs-test-write.dat bs=1G count=1 oflag=direct           | 2.68551  | 400               | ~30  |
+| 10G File Write             | dd if=/dev/zero of=/share/dropbox/user666/efs-test-write.dat bs=1G count=10 oflag=direct          | 22.7551  | 472               | ~30  |
+| 1G File Read               | dd if=/share/dropbox/user666/efs-test-write.dat of=/dev/null bs=1G count=1                        | 8.17188  | 131               | ~10  |
+| 10G File Read              | dd if=/share/dropbox/user666/efs-test-write.dat of=/dev/null bs=1G count=10                       | 79.3294  | 135               | ~10  |
+| Move in 5000 small files   | time cp -v /tmp/smallfiles/* /share/dropbox/user666/smallfiles/                                   | 1m8.337  | N/A               | ~10  |
+| Move out 5000 small files  | time cp -v /share/dropbox/user666/smallfiles/* /tmp/smallfiles/                                   | 11.414   | N/A               | ~10  |
+| Move in 1 1G file          | time cp test-mount/1g-file.dat /share/dropbox/user666/                                            | 7.342    | N/A               | ~10  |
+| md5sum Checksum 1G file    | time md5sum /share/dropbox/user666/1g-file.dat > /share/dropbox/user666/1g-file.md5               | 3.268    | N/A               | ~12  |
+| Move out 1 1G file         | time cp /share/dropbox/user666/1g-file.dat /dev/zero                                              | 8.673    | N/A               | ~10  |
+| Move in 1 10G file         | time cp test-mount/10g-file.dat /share/dropbox/user666/                                           | 1m19.174 | N/A               | ~13  |
+| md5sum Checksum 10G file   | time md5sum /share/dropbox/user666/10g-file.dat > /share/dropbox/user666/10g-file.md5             | 2m25.654 | N/A               | ~15  |
+| Move out 1 10G file        | time cp /share/dropbox/user666/10g-file.dat /dev/zero                                             | 1m25.254 | N/A               | ~10  |
+
+
+```
+[ec2-user@ip-10-99-0-232 ~]$ cat /share/dropbox/user666/1g-file.md5 
+cd573cfaace07e7949bc0c46028904ff  /share/dropbox/user666/1g-file.dat
+[ec2-user@ip-10-99-0-232 ~]$ cat /share/dropbox/user666/10g-file.md5 
+2dd26c4d4799ebd29fa31e48d49e8e53  /share/dropbox/user666/10g-file.dat
+[ec2-user@ip-10-99-0-232 ~]$
 ```
 
 ##### rclone mount performance
 
 | under test                | command                                                                                                         | time (s) | throughput (MB/s) | %CPU |
 |:--------------------------|:----------------------------------------------------------------------------------------------------------------|:---------|:------------------|:-----|
-| 4G File Write             | dd if=/dev/zero of=/rclone/share/dropbox/user999/rclone-test-write.dat bs=1G count=1 oflag=direct               | 7.04971  | 145               | ~8   |
+| 1G File Write             | dd if=/dev/zero of=/rclone/share/dropbox/user999/rclone-test-write.dat bs=1G count=1 oflag=direct               | 7.04971  | 145               | ~8   |
 | 10G File Write            | dd if=/dev/zero of=/rclone/share/dropbox/user999/rclone-test-write.dat bs=1G count=10 oflag=direct              | 79.6255  | 135               | ~8   |
-| 4G File Read              | dd if=/rclone/share/dropbox/user999/rclone-test-write.dat of=/dev/null bs=1G count=1                            | 7.33058  | 146               | ~10  |
+| 1G File Read              | dd if=/rclone/share/dropbox/user999/rclone-test-write.dat of=/dev/null bs=1G count=1                            | 7.33058  | 146               | ~10  |
 | 10G File Read             | dd if=/rclone/share/dropbox/user999/rclone-test-write.dat of=/dev/null bs=1G count=10                           | 198.155  | 54.2              | ~10  |
-| Move in 1000 small files  | time cp -v /tmp/smallfiles/* /rclone/share/dropbox/user999/smallfiles/                                          | 13.044   |                   | ~20  |
-| Move out 1000 small files | time cp -v /rclone/share/dropbox/user999/smallfiles/* /tmp/smallfiles/                                          | 10.913   |                   | ~10  |
-| md5sum Checksum           | time md5sum /rclone/share/dropbox/user999/efs-test-write.dat > /rclone/share/dropbox/user999/efs-test-write.md5 | 1m29.463 |                   |      |
+| Move in 5000 small files  | time cp -v /tmp/smallfiles/* /rclone/share/dropbox/user999/smallfiles/                                          | 13.044   | N/A               | ~20  |
+| Move out 5000 small files | time cp -v /rclone/share/dropbox/user999/smallfiles/* /tmp/smallfiles/                                          | 10.913   | N/A               | ~10  |
+| Move in 1 1G file         | time cp test-mount/1g-file.dat /rclone/share/dropbox/user999/                                                   | 15.169   | N/A               | ~10  |
+| md5sum Checksum 1G file   | time md5sum /rclone/share/dropbox/user999/1g-file.dat > /rclone/share/dropbox/user999/1g-file.md5               | 7.013    | N/A               | ~12  |
+| Move out 1 1G file        | time cp /rclone/share/dropbox/user999/1g-file.dat /dev/zero                                                     | 7.538    | N/A               | ~10  |
+| Move in 1 10G file        | time cp test-mount/10g-file.dat /rclone/share/dropbox/user999/                                                  | 2m44.754 | N/A               | ~10  |
+| md5sum Checksum 10G file  | time md5sum /rclone/share/dropbox/user999/efs-test-write.dat > /rclone/share/dropbox/user999/10g-file.md5       | 8m51.821 | N/A               | ~15  |
+| Move out 1 10G file       | time cp /rclone/share/dropbox/user999/10g-file.dat /dev/zero                                                    | 2m38.453 | N/A               | ~15  |
+| md5sum Checksum           | time md5sum /rclone/share/dropbox/user999/efs-test-write.dat > /rclone/share/dropbox/user999/efs-test-write.md5 | 1m29.463 | N/A               |      |
 
 ```
-[ec2-user@ip-10-99-0-232 ~]$ cp /share/dropbox/user666/efs-test-write.dat /rclone/share/dropbox/user999/
-[ec2-user@ip-10-99-0-232 ~]$ cat /rclone/share/dropbox/user999/efs-test-write.md5
+[ec2-user@ip-10-99-0-232 ~]$ cat /rclone/share/dropbox/user999/1g-file.md5 
+cd573cfaace07e7949bc0c46028904ff  /rclone/share/dropbox/user999/1g-file.dat
+[ec2-user@ip-10-99-0-232 ~]$ cat /rclone/share/dropbox/user999/10g-file.md5 
 2dd26c4d4799ebd29fa31e48d49e8e53  /rclone/share/dropbox/user999/efs-test-write.dat
 ```
 
 ##### s3fs mount performance
-| under test                | Command                                                                           | time (s) | throughput (MB/s) | %CPU |
-|:--------------------------|:----------------------------------------------------------------------------------|:---------|:------------------|:-----|
-| 4G File Write             | dd if=/dev/zero of=/s3fs/share/dropbox/user555/s3fs-test-write.dat bs=1G count=4  | 351.712  | 12.2              | 5-63 |
-| 10G File Write            | dd if=/s3fs/share/dropbox/user555/s3fs-test-write.dat of=/dev/null bs=1G count=10 | 33.5228  | 128               | 5-63 | 
-| 4G File Read              | dd if=/s3fs/share/dropbox/user555/s3fs-test-write.dat of=/dev/null bs=1G count=4  | 45.7526  | 93.9              | 10   |
-| 10G File Read             | dd if=/s3fs/share/dropbox/user555/s3fs-test-write.dat of=/dev/null bs=1G count=10 | 153.519  | 69.9              | 10   |
-| Move in 1000 small files  |                                                                                   |          |                   |      |
-| Move out 1000 small files |                                                                                   |          |                   |      |
-| Random Read/Write IOPS    |
+| under test                | Command                                                                                                      | time (s)  | throughput (MB/s) | %CPU |
+|:--------------------------|:-------------------------------------------------------------------------------------------------------------|:----------|:------------------|:-----|
+| 1G File Write             | dd if=/dev/zero of=/s3fs/share/dropbox/user555/s3fs-test-write.dat bs=1G count=1                             | 86.7782   | 12.4              | ~5   |
+| 2G File Write             | dd if=/dev/zero of=/s3fs/share/dropbox/user555/s3fs-test-write.dat bs=1G count=2                             | 133.959   | 16.0              | ~5   |
+| 3G File Write             | dd if=/dev/zero of=/s3fs/share/dropbox/user555/s3fs-test-write.dat bs=1G count=3                             | 201.793   | 16.0              | ~7   |
+| 4G File Write             | dd if=/dev/zero of=/s3fs/share/dropbox/user555/s3fs-test-write.dat bs=1G count=4                             | 330.493   | 13.0              | ~7   |
+| 1G File Read              | dd if=/s3fs/share/dropbox/user555/s3fs-test-write.dat of=/dev/null bs=1G count=1                             | 13.6243   | 78.8              | ~13  |
+| 10G File Read             | dd if=/s3fs/share/dropbox/user555/s3fs-test-write.dat of=/dev/null bs=1G count=10                            | Err       | Err               | Err  |
+| Move in 1000 small files  | time cp -v /tmp/smallfiles/* /s3fs/share/dropbox/user555/smallfiles/                                         | 83m48.366 | N/A               | ~1   |
+| Move out 1000 small files | time cp -v /s3fs/share/dropbox/user555/smallfiles/* /tmp/smallfiles                                          | 28m27.983 | N/A               | ~1   |
+| Move in 1 1G file         | time cp test-mount/1g-file.dat /s3fs/share/dropbox/user555/                                                  | 2m41.359  | N/A               | ~10  |
+| md5sum Checksum 1G file   | time md5sum /s3fs/share/dropbox/user555/1g-file.dat > /s3fs/share/dropbox/user555/1g-file.md5                | 47.796    | N/A               | ~8   |
+| Move out 1 1G file        | time cp /s3fs/share/dropbox/user555/1g-file.dat /dev/zero                                                    | 22.755    | N/A               | ~8   |
+| Move in 1 10G file        | time cp test-mount/10g-file.dat /s3fs/share/dropbox/user555/                                                 | Err       | Err               | ~23  |
+| md5sum Checksum 10G file  | time md5sum /s3fs/share/dropbox/user555/10g-file.dat > /s3fs/share/dropbox/user555/10g-file.md5              | N/A       | N/A               | N/A  |
+| Move out 1 10G file       | time cp /s3fs/share/dropbox/user555/s3fs-test-write.dat /dev/zero                                            | N/A       | N/A               | N/A  |
 
+** Note: When writing file > 5G, always ends up `[ERR] s3fs.cpp:s3fs_release(3061): failed to upload file contentsfor pseudo_fd(2)\n [ERR] curl.cpp:RequestPerform(2716): ### CURLE_SEND_ERROR`.
+** Note: Move in 1000 small files takes a long time, so will not test 5000 case, and the CPU usage is very low, so it seems that s3fs is not efficient for small files. 
+** Note: Move in 1 10G file ends up `[ERR] s3fs.cpp:s3fs_release(3061): failed to upload file contentsfor pseudo_fd(2)\n [ERR] curl.cpp:RequestPerform(2716): ### CURLE_SEND_ERROR`.
 
-```mermaid
-[ec2-user@ip-10-99-0-232 ~]$ mkdir /tmp/smallfiles && for i in {1..5000}; do dd if=/dev/urandom of=/tmp/smallfiles/file$i.dat bs=1k count=4; done
-[ec2-user@ip-10-99-0-232 ~]$ du -sh /tmp/smallfiles/
-20M     /tmp/smallfiles/
 ```
+[ec2-user@ip-10-99-0-232 ~]$ cat /s3fs/share/dropbox/user555/1g-file.md5
+cd573cfaace07e7949bc0c46028904ff  /s3fs/share/dropbox/user555/1g-file.dat
+[ec2-user@ip-10-99-0-232 ~]$ time cp test-mount/10g-file.dat /s3fs/share/dropbox/user555/
+cp: failed to close '/s3fs/share/dropbox/user555/10g-file.dat': Input/output error
+
+```
+
 
 ### Testing and Validation
 
