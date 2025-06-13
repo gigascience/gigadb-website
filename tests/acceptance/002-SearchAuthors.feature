@@ -1,5 +1,4 @@
 # TODO Renaming this test to run first, otherwise it fails. Need to figure out why and fix.
-@ok-can-offline
 Feature:
   As an author
   I want to save keywords from the search bar

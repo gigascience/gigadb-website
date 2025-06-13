@@ -1,4 +1,3 @@
-@ok-can-offline
 Feature: Files dashboard
   As a curator
   I want to be able to delete a file from the dashboard

@@ -1,4 +1,3 @@
-@ok-can-offline
 Feature: A user visit gigadb website
   As a website user
   I want to see useful and consistent navigational controls in the website's static pages area

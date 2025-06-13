@@ -98,6 +98,7 @@ class SiteController extends Controller {
 
         $news = Yii::app()->newsAndFeedsService->getTodaysNews();
         $rss_arr = Yii::app()->newsAndFeedsService->getFeedsData();
+        $feed_datasets = Yii::app()->newsAndFeedsService->getFeedDatasets(12);
 
         $db = Yii::app()->db;
         //Get dataset types number
@@ -217,6 +218,7 @@ class SiteController extends Controller {
                 'number_ts'=>$number_ts ?? 0,
                 'number_vm'=>$number_vm ?? 0,
                 'number_wf'=>$number_wf ?? 0,
+                'feed_datasets'=>$feed_datasets
         )
 		);
 	}

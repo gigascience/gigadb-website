@@ -1,4 +1,3 @@
-@ok-can-offline
 Feature: admin page for samples
   as a curator
   I want to see a table of all samples

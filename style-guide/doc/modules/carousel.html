@@ -1,0 +1,290 @@
+<section class="dataset-feed-section">
+  <div class="container">
+    <div class="carousel-container">
+      <div
+        id="carousel-68357fa8be1a4"
+        class="carousel slide with-indicators"
+        data-ride="carousel"
+        data-interval="false"
+      >
+        <div class="carousel-inner">
+          <div class="item active">
+            <div class="row">
+              <div class="carousel-item" style="max-width: 25%">
+                <div class="carousel-block">
+                  <div class="dataset-item" style="height: 340px; display: flex; align-items: center; justify-content: center; font-size: 2em;">
+                    Item 1
+                  </div>
+                </div>
+              </div>
+              <div class="carousel-item" style="max-width: 25%">
+                <div class="carousel-block">
+                  <div class="dataset-item" style="height: 340px; display: flex; align-items: center; justify-content: center; font-size: 2em;">
+                    Item 2
+                  </div>
+                </div>
+              </div>
+              <div class="carousel-item" style="max-width: 25%">
+                <div class="carousel-block">
+                  <div class="dataset-item" style="height: 340px; display: flex; align-items: center; justify-content: center; font-size: 2em;">
+                    Item 3
+                  </div>
+                </div>
+              </div>
+              <div class="carousel-item" style="max-width: 25%">
+                <div class="carousel-block">
+                  <div class="dataset-item" style="height: 340px; display: flex; align-items: center; justify-content: center; font-size: 2em;">
+                    Item 4
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="row">
+              <div class="carousel-item" style="max-width: 25%">
+                <div class="carousel-block">
+                  <div class="dataset-item" style="height: 340px; display: flex; align-items: center; justify-content: center; font-size: 2em;">
+                    Item 5
+                  </div>
+                </div>
+              </div>
+              <div class="carousel-item" style="max-width: 25%">
+                <div class="carousel-block">
+                  <div class="dataset-item" style="height: 340px; display: flex; align-items: center; justify-content: center; font-size: 2em;">
+                    Item 6
+                  </div>
+                </div>
+              </div>
+              <div class="carousel-item" style="max-width: 25%">
+                <div class="carousel-block">
+                  <div class="dataset-item" style="height: 340px; display: flex; align-items: center; justify-content: center; font-size: 2em;">
+                    Item 7
+                  </div>
+                </div>
+              </div>
+              <div class="carousel-item" style="max-width: 25%">
+                <div class="carousel-block">
+                  <div class="dataset-item" style="height: 340px; display: flex; align-items: center; justify-content: center; font-size: 2em;">
+                    Item 8
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <div class="row">
+              <div class="carousel-item" style="max-width: 25%">
+                <div class="carousel-block">
+                  <div class="dataset-item" style="height: 340px; display: flex; align-items: center; justify-content: center; font-size: 2em;">
+                    Item 9
+                  </div>
+                </div>
+              </div>
+              <div class="carousel-item" style="max-width: 25%">
+                <div class="carousel-block">
+                  <div class="dataset-item" style="height: 340px; display: flex; align-items: center; justify-content: center; font-size: 2em;">
+                    Item 10
+                  </div>
+                </div>
+              </div>
+              <div class="carousel-item" style="max-width: 25%">
+                <div class="carousel-block">
+                  <div class="dataset-item" style="height: 340px; display: flex; align-items: center; justify-content: center; font-size: 2em;">
+                    Item 11
+                  </div>
+                </div>
+              </div>
+              <div class="carousel-item" style="max-width: 25%">
+                <div class="carousel-block">
+                  <div class="dataset-item" style="height: 340px; display: flex; align-items: center; justify-content: center; font-size: 2em;">
+                    Item 12
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <a
+          class="left carousel-control"
+          href="#carousel-68357fa8be1a4"
+          role="button"
+          data-slide="prev"
+          aria-label="Previous slide"
+        >
+          <span class="fa fa-chevron-left" aria-hidden="true"></span>
+        </a>
+        <a
+          class="right carousel-control"
+          href="#carousel-68357fa8be1a4"
+          role="button"
+          data-slide="next"
+          aria-label="Next slide"
+        >
+          <span class="fa fa-chevron-right" aria-hidden="true"></span>
+        </a>
+
+        <ol class="carousel-indicators">
+          <li class="carousel-indicator active">
+            <a
+              class="carousel-indicator-link"
+              href="#"
+              data-target="#carousel-68357fa8be1a4"
+              data-slide-to="0"
+              role="button"
+              aria-label="Go to slide 1"
+            ></a>
+          </li>
+          <li class="carousel-indicator">
+            <a
+              class="carousel-indicator-link"
+              href="#"
+              data-target="#carousel-68357fa8be1a4"
+              data-slide-to="1"
+              role="button"
+              aria-label="Go to slide 2"
+            ></a>
+          </li>
+          <li class="carousel-indicator">
+            <a
+              class="carousel-indicator-link"
+              href="#"
+              data-target="#carousel-68357fa8be1a4"
+              data-slide-to="2"
+              role="button"
+              aria-label="Go to slide 3"
+            ></a>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <script type="module">
+      function throttle(func, wait) {
+        let timeout;
+        let lastArgs;
+        return function (...args) {
+          lastArgs = args;
+          if (!timeout) {
+            func.apply(this, args);
+            timeout = setTimeout(() => {
+              timeout = null;
+              if (lastArgs) {
+                func.apply(this, lastArgs);
+                lastArgs = null;
+              }
+            }, wait);
+          }
+        };
+      }
+
+      $(document).ready(function () {
+        const options = { itemsPerSlide: { mobile: 2, tablet: 3, desktop: 4 } };
+
+        const breakpoints = {
+          tablet: 768,
+          desktop: 992,
+        };
+
+        function getChunkSize() {
+          const width = $(window).width();
+          if (width < breakpoints.tablet) return options.itemsPerSlide.mobile;
+          if (width < breakpoints.desktop) return options.itemsPerSlide.tablet;
+          return options.itemsPerSlide.desktop;
+        }
+
+        function setItemMaxWidth({ $items, chunkSize }) {
+          const maxWidth = 100 / chunkSize + "%";
+          $items.css("max-width", maxWidth);
+        }
+
+        function updateControlsAndIndicators({
+          $controls,
+          $indicators,
+          $carousel,
+          totalItems,
+          chunkSize,
+        }) {
+          if (totalItems <= chunkSize) {
+            $controls.hide();
+            $indicators.hide();
+            $carousel.removeClass("with-indicators");
+          } else {
+            $controls.show();
+            $indicators.show();
+            $carousel.addClass("with-indicators");
+          }
+        }
+
+        function buildSlide({ $items, startIdx, chunkSize, isActive }) {
+          const $slide = $("<div>").addClass(
+            "item" + (isActive ? " active" : "")
+          );
+          const $row = $("<div>").addClass("row");
+          $items.slice(startIdx, startIdx + chunkSize).each(function () {
+            $row.append($(this));
+          });
+          $slide.append($row);
+          return $slide;
+        }
+
+        function buildIndicator({ slideIdx, isActive }) {
+          return $('<li class="carousel-indicator">')
+            .append(
+              $('<a class="carousel-indicator-link">').attr({
+                href: "#",
+                "data-target": "#carousel-68357fa8be1a4",
+                "data-slide-to": slideIdx,
+                role: "button",
+                "aria-label": `Go to slide ${slideIdx + 1}`,
+              })
+            )
+            .toggleClass("active", isActive);
+        }
+
+        function arrangeSlides() {
+          const chunkSize = getChunkSize();
+          const $carousel = $("#carousel-68357fa8be1a4");
+          const $carouselInner = $(".carousel-inner", $carousel);
+          const $indicators = $(".carousel-indicators", $carousel);
+          const $controls = $(".carousel-control", $carousel);
+          const $items = $carouselInner.find(".carousel-item").detach();
+          const totalItems = $items.length;
+
+          $carouselInner.empty();
+          $indicators.empty();
+
+          setItemMaxWidth({ $items, chunkSize });
+          updateControlsAndIndicators({
+            $controls,
+            $indicators,
+            $carousel,
+            totalItems,
+            chunkSize,
+          });
+
+          let slideIdx = 0;
+          for (let i = 0; i < $items.length; i += chunkSize, slideIdx++) {
+            const isActive = i === 0;
+            $carouselInner.append(
+              buildSlide({ $items, startIdx: i, chunkSize, isActive })
+            );
+            $indicators.append(buildIndicator({ slideIdx, isActive }));
+          }
+
+          $carousel.carousel(0);
+        }
+
+        $("#carousel-68357fa8be1a4").carousel({
+          interval: false,
+          wrap: true,
+        });
+
+        arrangeSlides();
+
+        $(window).on("resize", throttle(arrangeSlides, 300));
+      });
+    </script>
+  </div>
+</section>
