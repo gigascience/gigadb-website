@@ -5,7 +5,7 @@
         <ul class="list-inline text-left base-top-account-bar">
           <?php if (Yii::app()->user->isGuest) { ?>
             <li><a href="/site/login"><i class="fa fa-sign-in"></i> Login / Signup</a></li>
-          <? } else {
+          <?php } else {
 
             $name = Yii::app()->user->getFirst_Name();
 
@@ -18,16 +18,16 @@
             ?>
             <li><a href="/user/view_profile"><i class="fa fa-sign-in"></i><?= Yii::t('app', $name . " GigaDB Page") ?></a>
             </li>
-            <? if (Yii::app()->user->checkAccess('admin')) { ?>
+            <?php if (Yii::app()->user->checkAccess('admin')) { ?>
               <li>
                 <a href="/site/admin">
                   <?= Yii::t('app', 'Admin') ?>
                 </a>
               </li>
-            <? } ?>
+            <?php } ?>
             <li><a href="/site/logout"><i class="fa fa-sign-in"></i><?= Yii::t('app', 'LogOut') ?></a></li>
             <li><a href="/site/mapbrowse"><i class="fa fa-sign-in"></i><?= Yii::t('app', "Browse Samples") ?></a></li>
-          <? } ?>
+          <?php } ?>
         </ul>
       </nav>
       <div class="col-xs-7 clearfix top-bar-left">

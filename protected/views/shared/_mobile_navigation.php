@@ -9,7 +9,7 @@
     <nav class="mobile-navigation__nav" aria-label="Mobile Navigation">
       <!-- Account Navigation -->
       <div class="mobile-navigation__group">
-        <? if (Yii::app()->user->isGuest) { ?>
+        <?php if (Yii::app()->user->isGuest) { ?>
           <a href="/site/login" class="mobile-navigation__link"><i class="fa fa-sign-in"></i> Login / Signup</a>
         <? } else {
           $name = Yii::app()->user->getFirst_Name();
