@@ -75,6 +75,12 @@ Feature: A user visit gigadb website
     And I should see "Examples"
     And I should see "Command line usage"
 
+  @ok @issue-2324
+  Scenario: The anchor tag is working for Commenting on Datasets tab
+    Given I am on "/site/help"
+    When I go to a page tab "/site/help#commenting"
+    Then I should see "Commenting on our datasets"
+
   @ok @issue-872
   Scenario: Scroll bar is found in tables in guide page
     When I am on "/site/guide"

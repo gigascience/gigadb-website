@@ -1,0 +1,87 @@
+// styles for blogpost-type content
+.prose {
+  color: @dark-gray-on-white;
+  line-height: 1.6;
+
+  h1 {
+    color: @warm-black-on-white;
+    font-size: (@font-size-page-title * 1.4);
+    margin: 0 0 0.888em;
+  }
+  :is(h2, h3, h4, h5, h6) {
+    color: @darker-gray-on-white;
+    font-size: @font-size-page-subtitle;
+    margin: 1.5em 0 0.8em;
+  }
+
+  a {
+    color: @gigadb-green-on-white;
+    text-decoration: underline;
+    &:hover,
+    &:focus {
+      color: @color-gigadb-green-800;
+    }
+  }
+
+  strong,
+  b {
+    color: @warm-black-on-white;
+    font-weight: 600;
+  }
+
+  img {
+    margin: 2rem 0;
+    max-width: 100%;
+    border-radius: 4px;
+  }
+
+  ol,
+  ul {
+    padding-left: 0;
+    margin: 1rem 0;
+    list-style: none;
+
+    li {
+      margin-bottom: 0.5rem;
+      position: relative;
+      padding-left: 1.2em;
+
+      &::before {
+        position: absolute;
+        left: 0;
+        color: @darker-gray-on-white;
+      }
+    }
+  }
+
+  ul li::before {
+    content: "•";
+  }
+
+  ol {
+    counter-reset: prose-ol;
+
+    li::before {
+      counter-increment: prose-ol;
+      content: counter(prose-ol) ".";
+    }
+  }
+
+  p {
+    margin: 1.33em 0;
+  }
+}
+
+@media (max-width: @screen-sm-max) {
+  .prose {
+    line-height: 1.55;
+
+    h1 {
+      font-size: (@font-size-page-title * 1.1);
+    }
+
+    p {
+      margin: 1.25em 0;
+    }
+  }
+}
