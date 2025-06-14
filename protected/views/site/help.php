@@ -70,22 +70,7 @@ $this->pageTitle = 'GigaDB - Help';
                         <h2 class="page-subtitle" id="filteringResultTitle">Filtering result</h2>
                         <p class="mb-20">On the left of the search results you have the option to further refine the results by using the filters. By default all filters are disabled, allowing you to see all search results for your keyword. If you want to hide some results based on some criteria, choose the filter for your criteria, and select the options that match what you want to see.</p>
                         <h3 class="tabpanel-subtitle">Filter options for Datasets:</h3>
-                        <ol>
-                            <li>Dataset Type (<a href="#datasettypes" onclick="DatasetFunction()">Dataset Type</a> controlled vocabulary eg 'Genomic', 'Proteomic')</li>
-                            <li>Project (eg 'Genome 10K', '1000 Genomes'</li>
-                            <li>External Link Types (Controlled vocabulary: 'Genome Browser' or 'Additional Data')</li>
-                            <li>Publication Date (From and To. Format: dd-mm-yyyy)</li>
-                        </ol>
-                        <h3 class="tabpanel-subtitle">Filter options for Samples:</h3>
-                        <ol>
-                            <li>Common Name (Internally controlled eg 'Human', 'Mouse')</li>
-                        </ol>
-                        <h3 class="tabpanel-subtitle">Filter options for Files:</h3>
-                        <ol>
-                            <li>File Type (<a href="#filetypes" onclick="DatasetFunction()">File Type</a> controlled vocabulary eg 'Alignments', 'Genome sequence', 'SNPs')</li>
-                            <li>File Format (<a href="#fileformats" onclick="DatasetFunction()">File format</a> controlled vocabulary eg 'BIGWIG', 'FASTQ', 'VCF')</li>
-                            <li>File Size (From and To: Format KB, MB, GB, TB)</li>
-                        </ol>
+                        <p>We anticipate adding additional facets to filter the search results in a future release. Please contact us with any specific examples that you would find useful. At present one can filter the results to display only datasets that have matches at the "Dataset" level, "Sample" level or "File" level by clicking the relevant radial button in the menu to the left of the results, followed by the "Apply Filter" button.</p>
                     </section>
                 </div>
                 <div role="tabpanel" class="tab-pane" id="guidelines" aria-labelledby="liguideline">
