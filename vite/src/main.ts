@@ -23,5 +23,5 @@ if (entryEl && entryEl instanceof HTMLElement) {
       ? 'An unexpected error occurred. Please try again later.'
       : msg
   }
-  app.mount(elId)
+  app.mount(entryEl)
 }
