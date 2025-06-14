@@ -1,4 +1,3 @@
-@ok-needs-secrets
 Feature:
   As a developer
   I want to validate the access policies to Wasabi

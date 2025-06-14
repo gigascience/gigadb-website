@@ -5,6 +5,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## Unreleased
 
 - Feat #376: Uppy logo uploader for admin projects
+
+## v4.4.13 - 2025-06-13 - 26083397b -
+
+- Feat #199: Reorder home page sections
+- Feat #199: Add dataset feed to homepage
+- Feat #208: Homepage news items section rework
 - Feat #2189: Make public pages responsive
 - Feat #2326: Configure coderabbitai and provide instructions to focus automated code reviews
 - Fix #2251: Add a size validation rule when updating a file
@@ -12,7 +18,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Feat gigascience/security#4: Make main composer.json a regular, versioned, manually edited file
 - Feat gigascience/security#14: decommission top level group variables interpolation
 
-## v4.4.12 - 2025-06-09 - 641317b01 -
+## v4.4.12 - 2025-06-09 - 641317b01 - live since 2025-06-12
 
 - Fix #2351: Fix server error page message
 - Feat #1341: Show maintenance error on 500 errors

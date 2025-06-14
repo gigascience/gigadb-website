@@ -1,4 +1,3 @@
-@ok-can-offline
 Feature: form to manage file metadata
   As a curator
   I want to access a form to update file metadata
