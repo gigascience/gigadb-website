@@ -24,13 +24,23 @@ class FileUploadComponent extends CApplicationComponent
         ]);
     }
 
-    public function createTokenService(): TokenService {
-        return new TokenService([
+    public function createTokenService(bool $withUser = true, bool $withTtl = true): TokenService
+    {
+        $args = [
             'jwtTTL'     => 3600,
             'jwtBuilder' => Yii::$app->jwt->getBuilder(),
             'jwtSigner'  => new \Lcobucci\JWT\Signer\Hmac\Sha256(),
             'users'      => new UserDAO(),
             'dt'         => new DateTime(),
-        ]);
+        ];
+
+        if(!$withUser) {
+            unset($args['users']);
+        }
+
+        if(!$withTtl) {
+            unset($args['jwtTTL']);
+        }
+        return new TokenService($args);
     }
 }

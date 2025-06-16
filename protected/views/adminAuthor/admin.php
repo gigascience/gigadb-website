@@ -12,6 +12,12 @@
 	]);
 	?>
 
+    <?php
+    foreach (Yii::app()->user->getFlashes() as $key => $message) {
+        echo '<div class="alert alert-' . $key . '">' . $message . "</div>\n";
+    }
+    ?>
+
 	<?php
 	$user = null;
 	if (isset(Yii::app()->session['attach_user'])) {
@@ -186,7 +192,7 @@
 								<td><? echo $user->id ?></td>
 								<td id="target_id"></td>
 							</tr>
-							<tr">
+							<tr>
 								<td>Surname:</td>
 								<td><? echo $user->last_name ?></td>
 								<td id="target_surname"></td>
@@ -255,7 +261,7 @@
 								<td><? echo $origin_author->id ?></td>
 								<td id="target_id"></td>
 							</tr>
-							<tr">
+							<tr>
 								<td>Surname:</td>
 								<td><? echo $origin_author->surname ?></td>
 								<td id="target_surname"></td>

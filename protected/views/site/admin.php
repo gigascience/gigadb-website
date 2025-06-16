@@ -7,6 +7,12 @@
       ]
     ]);
     ?>
+
+    <?php
+    foreach (Yii::app()->user->getFlashes() as $key => $message) {
+        echo '<div class="alert alert-' . $key . '">' . $message . "</div>\n";
+    }
+    ?>
     <div class="row">
         <div class="col-xs-10 col-xs-offset-1">
             <nav class="admin-nav row well" aria-label="admin">

@@ -55,14 +55,10 @@ class AdminAuthorController extends Controller
     {
         $model = new Author;
 
-        // Uncomment the following line if AJAX validation is needed
-        // $this->performAjaxValidation($model);
-
-        if ($attrs = Yii::$app->request->post('Author')) {
-            $model->attributes = $attrs;
-            if ($model->save()) {
+        if ($author = Yii::$app->request->post('Author')) {
+            $model->attributes = $author;
+            if ($model->save())
                 $this->redirect(array('view', 'id' => $model->id));
-            }
         }
 
         $this->render('create', array(
@@ -81,14 +77,10 @@ class AdminAuthorController extends Controller
         $model = $this->loadModel($id);
         $model->custom_name = $model->getDisplayName();
 
-        // Uncomment the following line if AJAX validation is needed
-        // $this->performAjaxValidation($model);
-
-        if ($attrs = Yii::$app->request->post('Author')) {
-            $model->attributes = $attrs;
-            if ($model->save()) {
+        if ($author = Yii::$app->request->post('Author')) {
+            $model->attributes = $author;
+            if ($model->save())
                 $this->redirect(array('view', 'id' => $model->id));
-            }
         }
 
         $this->render('update', array(
@@ -183,39 +175,42 @@ class AdminAuthorController extends Controller
     public function actionLinkUser(int $id)
     {
         $author = $this->loadModel($id);
-        if (isset(Yii::app()->session['attach_user'])) {
-            $user = User::model()->findByPk(Yii::app()->session['attach_user']);
-            if ($user) {
-                $author->gigadb_user_id = $user->id;
-                if ($author->save()) {
-                    Yii::log(
-                        __FUNCTION__ . "> author (" . $author->id . ")/user (." . $user->id . ".) linking has been performed",
-                        'info'
-                    );
-                    if ($user->id === Yii::app()->session['attach_user']) {
-                        unset(Yii::app()->session['attach_user']);
-                    }
+        if (!isset(Yii::app()->session['attach_user'])) {
+            Yii::log(__FUNCTION__ . '> attach_user is not set in session', 'error');
+            Yii::app()->user->setFlash('danger', 'Attached user is not set in session');
 
-                    $this->redirect(array('adminUser/view', 'id' => $user->id));
-                }
-                Yii::log(__FUNCTION__ . "> error while updating gigadb_user_id in author. " . implode(" ", $author->getErrors()['gigadb_user_id']), 'error');
-                Yii::app()->user->setFlash('error', 'Could not link to this author. ' . CHtml::link('View author', ['adminUser/view', 'id' => $user->id]));
+            $this->render('view', array('model' => $author));
+            Yii::app()->end();
+        }
 
-                $this->redirect(array('adminAuthor/admin'));
-
-            }
-            Yii::app()->user->setFlash('error', "user to link doesn't exist");
+        $user = User::model()->findByPk(Yii::app()->session['attach_user']);
+        if (!$user) {
+            Yii::app()->user->setFlash('danger', "user to link doesn't exist");
             Yii::log(__FUNCTION__ . "> user to link doesn't exist", 'error');
 
             $this->render('view', array('model' => $author));
             Yii::app()->end();
         }
 
-        Yii::log(__FUNCTION__ . "> attach_user is not set in session", 'error');
-        Yii::app()->user->setFlash('error', 'An error has occurred');
+        $author->gigadb_user_id = $user->id;
+        if ($author->save()) {
+            Yii::log(
+                __FUNCTION__ . "> author (" . $author->id . ")/user (." . $user->id . ".) linking has been performed",
+                'info'
+            );
+            if ((int)$user->id === (int)Yii::app()->session['attach_user']) {
+                unset(Yii::app()->session['attach_user']);
+            }
 
-        $this->redirect(array('adminAuthor/admin'));
-    }
+            $this->redirect(array('adminUser/view', 'id' => $user->id));
+        }
+        Yii::log(__FUNCTION__ . "> error while updating gigadb_user_id in author. " . implode(" ", $author->getErrors()['gigadb_user_id']), 'error');
+
+        Yii::app()->user->setFlash('danger', 'An error occured while saving the author');
+
+        $this->redirect(array('adminUser/view', 'id' => $user->id));
+
+	}
 
     public function actionUnlinkUser(int $id, int $user_id)
     {
@@ -223,63 +218,82 @@ class AdminAuthorController extends Controller
         $user = User::model()->findByPk($user_id);
 
         if (!$model || !$user) {
-            throw new CHttpException(400, 'Invalid request');
+            Yii::log(__FUNCTION__ . '> no user model could be loaded', 'warning');
+
+            $this->redirect(array('site/admin'));
         }
 
-         if ($user_id !== $model->gigadb_user_id) {
+        if ($user_id !== $model->gigadb_user_id) {
             Yii::log(__FUNCTION__ . "> mismatch between loaded user and user id in author model", 'warning');
-            Yii::app()->user->setFlash('alert', 'Mismatch between users');
-        } else {
-            $model->gigadb_user_id = null;
-            if ($model->save()) {
-                Yii::log(
-                    __FUNCTION__ . "> author (" . $model->id . ")/user (." . $user->id . ".) linking has been removed",
-                    'info'
-                );
-            } else {
-                Yii::log(__FUNCTION__ . "> error while updating gigadb_user_id in author. " . implode(" ", $model->getErrors()['gigadb_user_id']), 'error');
-                Yii::app()->user->setFlash('alert', 'An error occured');
-            }
-        }
+            Yii::app()->user->setFlash('danger', 'mismatch between loaded user and user id in author model');
 
-        $this->redirect(array('adminUser/update', 'id' => $user->id));
-    }
+            $this->redirect(array('adminUser/update', 'id' => $user->id));
+         }
+
+        $model->gigadb_user_id = null;
+        if ($model->save()) {
+            Yii::log(
+                __FUNCTION__ . "> author (" . $model->id . ")/user (." . $user->id . ".) linking has been removed",
+                'info'
+            );
+
+            $this->redirect(array('adminUser/update', 'id' => $user->id));
+        }
+        Yii::log(__FUNCTION__ . "> error while updating gigadb_user_id in author. " . implode(" ", $model->getErrors()['gigadb_user_id']), 'error');
+        Yii::app()->user->setFlash('danger', 'Error while saving the related user in author');
+
+
+
+		$this->redirect(array('site/admin'));
+	}
 
     public function actionMergeAuthors(int $origin_author, int $target_author)
     {
         $origin = $this->loadModel($origin_author);
 
-        if (isset(Yii::app()->session['merge_author'])) {
-            $merge_author = Yii::app()->session['merge_author'];
-            if ($merge_author === $origin_author || $merge_author === $target_author) {
-                if ($origin->mergeAsIdenticalWithAuthor($target_author)) {
-                    Yii::log(__FUNCTION__ . "> merging author {$origin_author} with {$target_author} was successful", 'info');
-                    Yii::app()->user->setFlash('success', "Merging authors completed successfully.");
-                    $this->redirect(array('adminAuthor/view', 'id' => $origin_author));
-                } else {
-                    Yii::log(__FUNCTION__ . "> merging author {$origin_author} with {$target_author} failed", 'error');
-                }
-            } else {
-                Yii::log(__FUNCTION__ . "> merge_author {$merge_author} doesn't match GET parameters ({$origin_author},{$target_author}) to mergeAuthors", 'error');
-            }
-        } else {
-            Yii::log(__FUNCTION__ . "> merge_author is not set in session", 'error');
+        if (!isset(Yii::app()->session['merge_author'])) {
+            Yii::log(__FUNCTION__ . '> merge_author is not set in session', 'error');
+            Yii::app()->user->setFlash('danger', "Merged author is not set in session");
+
+            $this->redirect(array('adminAuthor/admin'));
         }
 
-        Yii::app()->user->setFlash('error', 'An error occured');
-        $this->redirect(array('adminAuthor/admin'));
+        $merge_author = (int)Yii::app()->session['merge_author'];
+        if ($merge_author === $origin_author || $merge_author === $target_author) {
+            if ($origin->mergeAsIdenticalWithAuthor($target_author)) {
+                Yii::log(__FUNCTION__ . "> merging author {$origin_author} with {$target_author} was successful", 'info');
+                Yii::app()->user->setFlash('success', "Merging authors completed successfully.");
+
+                $this->redirect(array('adminAuthor/view', 'id' => $origin_author));
+            } else {
+                Yii::log(__FUNCTION__ . "> merging author {$origin_author} with {$target_author} failed", 'error');
+                Yii::app()->user->setFlash('danger', "Merging authors failed.");
+
+                $this->redirect(array('adminAuthor/admin'));
+            }
+        } else {
+            Yii::log(__FUNCTION__ . "> merge_author {$merge_author} doesn't match GET parameters ({$origin_author},{$target_author}) to mergeAuthors", 'error');
+            Yii::app()->user->setFlash('danger', "Mismatch in origin and target author");
+
+            $this->redirect(array('adminAuthor/admin'));
+        }
+
     }
 
     public function actionUnmerge(int $id)
     {
         $model = $this->loadModel($id);
-        if ($model->unMerge()) {
-            Yii::app()->user->setFlash('success', "author unmerged from other authors");
-            $this->redirect(array('adminAuthor/view', 'id' => $id));
-        } else {
-            Yii::app()->user->setFlash('error', "unmerging from graph has encountered an error");
+
+        if (!$model->unMerge()) {
+            Yii::app()->user->setFlash('error', 'unmerging from graph has encountered an error');
+
             $this->redirect(array('adminAuthor/view', 'id' => $id));
         }
+
+        Yii::app()->user->setFlash('success', "author unmerged from other authors");
+
+        $this->redirect(array('adminAuthor/view', 'id' => $id));
+
     }
 
     public function actionIdenticalAuthorsGraph(int $id)
@@ -299,19 +313,21 @@ class AdminAuthorController extends Controller
         if ($attachUser = Yii::$app->request->get('attach_user')) {
             if (preg_match("/^\d+$/", $attachUser)) {
                 Yii::app()->session['attach_user'] = $attachUser;
-            } else if ("abort" === $attachUser) {
+            } elseif ("abort" === $attachUser) {
                 unset(Yii::app()->session['attach_user']);
+
                 $this->redirect(array('admin'));
             }
         }
 
         $model = new Author('search');
         $model->unsetAttributes();  // clear any default values
-        if ($attrs = Yii::$app->request->get('Author')) {
-            $model->setAttributes($attrs);
+        if ($author = Yii::$app->request->get('Author')) {
+            $model->setAttributes($author);
         }
 
         $this->loadBaBbqPolyfills = true;
+
         $this->render('admin', array(
             'model' => $model,
         ));
@@ -323,9 +339,10 @@ class AdminAuthorController extends Controller
      *
      * @param integer the ID of the model to be loaded
      */
-    public function loadModel(int $id)
+    public function loadModel(int $id): Author
     {
         $model = Author::model()->findByPk($id);
+
         if (!$model) {
             throw new CHttpException(404, 'The requested page does not exist.');
         }
@@ -340,8 +357,7 @@ class AdminAuthorController extends Controller
      */
     protected function performAjaxValidation($model)
     {
-        $ajax = Yii::$app->request->post('ajax');
-        if ($ajax === 'author-form') {
+        if (Yii::$app->request->post('ajax') === 'author-form') {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }

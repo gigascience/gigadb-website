@@ -9,7 +9,7 @@
 		]
 	]);
 	foreach (Yii::app()->user->getFlashes() as $key => $message) {
-		echo '<div class="flash-' . $key . '">' . $message . "</div>\n";
+		echo '<div class="alert alert-' . $key . '">' . $message . "</div>\n";
 	}
 
 	$user_command = UserCommand::model()->findByAttributes(array("actionable_id" => $model->id, "action_label" => "claim_author"));

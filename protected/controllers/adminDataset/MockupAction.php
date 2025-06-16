@@ -40,9 +40,9 @@ class MockupAction extends CAction
             return $this->getController()->redirect('/adminDataset/update/id/'.$model->id);
         }
 
-        $mockupTokenService = Yii::app()->fileUploadService->createTokenService();
+        $mockupTokenService = Yii::app()->fileUploadService->createTokenService(false, false);
         $filedropSrv = new FiledropService([
-            "tokenSrv" => $mockupTokenService,
+            "tokenSrv" =>  Yii::app()->fileUploadService->createTokenService(),
             "webClient" => \Yii::$container->get('guzzleHttpClient'),
             "requester" => Yii::app()->user,
             "identifier"=> $model->identifier,
