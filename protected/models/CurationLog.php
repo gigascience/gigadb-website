@@ -100,6 +100,33 @@ class CurationLog extends CActiveRecord
         return $curationlog;
     }
 
+    /**
+     * Builds a full name from first and last names, trimming whitespace and filtering out empty values.
+     *
+     * @param string $firstName The first name.
+     * @param string $lastName The last name.
+     * @return string The full name, or an empty string if both names are empty.
+     */
+    public static function buildFullName(string $firstName, string $lastName): string
+    {
+        $firstName = trim($firstName);
+        $lastName = trim($lastName);
+        $fullName = implode(' ', array_filter([$firstName, $lastName]));
+        return trim($fullName);
+    }
+
+    /**
+     * Retrieves the full name of the current user.
+     *
+     * @return string The full name of the current user.
+     */
+    public static function getCurrentUserFullName(): string
+    {
+        $firstName = Yii::app()->user->getFirstName();
+        $lastName =Yii::app()->user->getLastName();
+        return self::buildFullName($firstName, $lastName);
+    }
+
 
     /**
      * Retrieves attributes and store them in curation_log table when triggered
@@ -109,7 +136,8 @@ class CurationLog extends CActiveRecord
      */
     public static function createCurationLogEntry(int $id, string $fileName): bool
     {
-        $curationlog = self::makeNewInstanceForCurationLogBy($id, Yii::app()->user->getFirstName() . " " . Yii::app()->user->getLastName());
+        $fullName = self::getCurrentUserFullName();
+        $curationlog = self::makeNewInstanceForCurationLogBy($id, $fullName);
         $curationlog->action = $fileName.": file attribute deleted";
         return $curationlog->save();
     }
@@ -137,9 +165,10 @@ class CurationLog extends CActiveRecord
         return self::makeNewInstanceForDatasetBy($id,$creator);
     }
 
-    public static function createlog($status,$id) {
-       
-        $curationlog = self::makeNewInstanceForDatasetBy($id,Yii::app()->user->getFirstName() . " " . Yii::app()->user->getLastName());
+    public static function createlog($status,$id)
+    {
+        $fullName = self::getCurrentUserFullName();
+        $curationlog = self::makeNewInstanceForDatasetBy($id, $fullName);
         $curationlog->action = "Status changed to ".$status;
         return $curationlog->save();
     }
