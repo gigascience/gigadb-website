@@ -23,6 +23,8 @@ class CurationLogTest extends CTestCase
 
     public function testGetCurrentUserFullName()
     {
+        $originalUser = Yii::app()->getComponent('user');
+
         $mockUser = $this->getMockBuilder(WebUser::class)
             ->setMethods(['getFirstName', 'getLastName'])
             ->disableOriginalConstructor()
@@ -36,6 +38,8 @@ class CurationLogTest extends CTestCase
 
         $fullName = CurationLog::getCurrentUserFullName();
         $this->assertEquals('John Doe', $fullName);
+
+        Yii::app()->setComponent('user', $originalUser);
     }
 
     public function testMakeNewInstance()
