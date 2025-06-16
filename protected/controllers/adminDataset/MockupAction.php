@@ -17,13 +17,13 @@ class MockupAction extends CAction
         $monthsOfValidity = null;
         $model= Dataset::model()->findByPk($id);
         $datasetPageSettings = new DatasetPageSettings($model);
-        if ( "invalid" === $datasetPageSettings->getPageType() ) {
+        if ("invalid" === $datasetPageSettings->getPageType()) {
             Yii::log("dataset is invalid","error");
-            $this->getController()->redirect('/site/index');
-        } elseif ( "public" === $datasetPageSettings->getPageType() ) {
+            return $this->getController()->redirect('/site/index');
+        } elseif ("public" === $datasetPageSettings->getPageType()) {
             Yii::log("Not making mockup for published dataset","error");
             Yii::app()->user->setFlash('error',"Not making mockup for published dataset");
-           $this->getController()->redirect('/adminDataset/update/id/'.$model->id);
+           return $this->getController()->redirect('/adminDataset/update/id/'.$model->id);
         }
 
         $reviewerEmail = Yii::$app->request->post('revieweremail');
@@ -32,28 +32,17 @@ class MockupAction extends CAction
         if (!$reviewerEmail) {
             Yii::log("revieweremail parameter is missing from _POST","error");
             Yii::app()->user->setFlash('error',"revieweremail parameter is missing from _POST");
-            $this->getController()->redirect('/adminDataset/update/id/'.$model->id);
+            return $this->getController()->redirect('/adminDataset/update/id/'.$model->id);
         }
         elseif (!$monthsOfValidity) {
             Yii::log("monthsofvalidity parameter is missing from _POST","error");
             Yii::app()->user->setFlash('error',"monthsofvalidity parameter is missing from _POST");
-            $this->getController()->redirect('/adminDataset/update/id/'.$model->id);
+            return $this->getController()->redirect('/adminDataset/update/id/'.$model->id);
         }
 
-        $mockupTokenService = new TokenService([
-                          'jwtBuilder' => Yii::$app->jwt->getBuilder(),
-                          'jwtSigner' => new \Lcobucci\JWT\Signer\Hmac\Sha256(),
-                          'dt' => new DateTime(),
-                        ]);
-
+        $mockupTokenService = Yii::app()->fileUploadService->createTokenService();
         $filedropSrv = new FiledropService([
-            "tokenSrv" => new TokenService([
-                                  'jwtTTL' => 3600,
-                                  'jwtBuilder' => Yii::$app->jwt->getBuilder(),
-                                  'jwtSigner' => new \Lcobucci\JWT\Signer\Hmac\Sha256(),
-                                  'users' => new UserDAO(),
-                                  'dt' => new DateTime(),
-                                ]),
+            "tokenSrv" => $mockupTokenService,
             "webClient" => \Yii::$container->get('guzzleHttpClient'),
             "requester" => Yii::app()->user,
             "identifier"=> $model->identifier,
@@ -73,12 +62,12 @@ class MockupAction extends CAction
         $curationlog->comments = "Mockup url created for $reviewerEmail for $monthsOfValidity months at " . $mockupUrl;
         if (!$curationlog->save()) {
             Yii::log("Error saving Curation log entry for mockup creation on dataset_id $id","error");
+            Yii::app()->user->setFlash('error',"Error saving Curation log entry for mockup creation");
+        } else {
+            Yii::app()->user->setFlash('success',"Unique ($reviewerEmail), time-limited ($monthsOfValidity months) mockup url ready at <a href=\"$mockupUrl\">$mockupUrl</a>");
         }
 
-        // Show a flash message
-        Yii::app()->user->setFlash('success',"Unique ($reviewerEmail), time-limited ($monthsOfValidity months) mockup url ready at <a href=\"$mockupUrl\">$mockupUrl</a>");
-
-        $this->getController()->redirect("/adminDataset/admin/");
+        return $this->getController()->redirect("/adminDataset/admin/");
     }
 }
 

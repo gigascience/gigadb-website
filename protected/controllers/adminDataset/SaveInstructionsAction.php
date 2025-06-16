@@ -14,19 +14,12 @@ class SaveInstructionsAction extends CAction
     public function run(string $id, int $fid)
     {
     	$jwt_ttl = 3600 ;
-    	$webClient = \Yii::$container->get('guzzleHttpClient');
-
+    	$webClient = Yii::$container->get('guzzleHttpClient');
         $instructions = Yii::$app->request->post('instructions');
 
         // Instantiate FiledropService
         $filedropSrv = new FiledropService([
-            "tokenSrv" => new TokenService([
-                                  'jwtTTL' => $jwt_ttl,
-                                  'jwtBuilder' => Yii::$app->jwt->getBuilder(),
-                                  'jwtSigner' => new \Lcobucci\JWT\Signer\Hmac\Sha256(),
-                                  'users' => new UserDAO(),
-                                  'dt' => new DateTime(),
-                                ]),
+            "tokenSrv" => Yii::app()->fileUploadService->createTokenService(),
             "webClient" => $webClient,
             "requester" => Yii::app()->user,
             "identifier"=> $id,
@@ -43,13 +36,13 @@ class SaveInstructionsAction extends CAction
         if (!$response) {
         	$message = "Error: Filedrop Account ($fid) instructions not saved for dataset ($id)";
         	Yii::app()->user->setFlash('error',$message);
-            $this->getController()->redirect("/adminDataset/admin/");
+            return $this->getController()->redirect("/adminDataset/admin/");
         }
 
         $message = "New instructions saved.";
         Yii::app()->user->setFlash('success',$message);
 
-        $this->getController()->redirect("/adminDataset/admin/");
+        return $this->getController()->redirect("/adminDataset/admin/");
     }
 }
 

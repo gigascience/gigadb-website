@@ -16,7 +16,7 @@ class MoveFilesAction extends CAction
     /**
      * {@inheritdoc}
      */
-    public function run($doi)
+    public function run(string $doi)
     {
     	$jwt_ttl = 3600 ;
     	$webClient = \Yii::$container->get('guzzleHttpClient');

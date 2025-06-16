@@ -16,16 +16,9 @@ class SendInstructionsAction extends CAction
     	$jwt_ttl = 3600 ;
     	$webClient = \Yii::$container->get('guzzleHttpClient');
 
-
         // Instantiate FiledropService
         $filedropSrv = new FiledropService([
-            "tokenSrv" => new TokenService([
-                                  'jwtTTL' => $jwt_ttl,
-                                  'jwtBuilder' => Yii::$app->jwt->getBuilder(),
-                                  'jwtSigner' => new \Lcobucci\JWT\Signer\Hmac\Sha256(),
-                                  'users' => new UserDAO(),
-                                  'dt' => new DateTime(),
-                                ]),
+            "tokenSrv" => Yii::app()->fileUploadService->createTokenService(),
             "webClient" => $webClient,
             "requester" => Yii::app()->user,
             "identifier"=> $id,
@@ -46,7 +39,7 @@ class SendInstructionsAction extends CAction
         if (!$response) {
         	$message = "Error: Filedrop Account ($fid) instructions not sent for dataset ($id)";
         	Yii::app()->user->setFlash('error',$message);
-            $this->getController()->redirect("/adminDataset/admin/");
+            return $this->getController()->redirect("/adminDataset/admin/");
         }
 
         $message = "Instructions sent to $recipient.";
@@ -61,17 +54,18 @@ class SendInstructionsAction extends CAction
             ]);
         if ($log->save()) {
             Yii::log("email instructions saved in curation log",'info');
-        }
-        else {
+            Yii::app()->user->setFlash('success',$message);
+        } else {
             Yii::log("problem saving email instructions in curation log:",'error');
             foreach ($log->getErrors() as $attr => $msg) {
                 Yii::log("$attr: $msg",'error');
             }
+            Yii::app()->user->setFlash('error', 'Problem saving email instructions in curation log');
         }
-        Yii::app()->user->setFlash('success',$message);
+
         unset(Yii::app()->session["filedrop_id_".Yii::app()->user->id]);
 
-        $this->getController()->redirect("/adminDataset/admin/");
+        return $this->getController()->redirect("/adminDataset/admin/");
     }
 }
 

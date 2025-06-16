@@ -15,13 +15,7 @@ class MockupViewAction extends CAction
     {
         // Retrieve mockup token data (email, validity and dataset DOI) based on url fragment
         $srv = new FileUploadService([
-            "tokenSrv" => new TokenService([
-                                  'jwtTTL' => 3600,
-                                  'jwtBuilder' => Yii::$app->jwt->getBuilder(),
-                                  'jwtSigner' => new \Lcobucci\JWT\Signer\Hmac\Sha256(),
-                                  'users' => new UserDAO(),
-                                  'dt' => new DateTime(),
-                                ]),
+            "tokenSrv" => Yii::app()->fileUploadService->createTokenService(),
             "webClient" => \Yii::$container->get('guzzleHttpClient'),
             ]);
 
@@ -62,8 +56,8 @@ class MockupViewAction extends CAction
                         ->setDatasetMainSection()
                         ->setDatasetConnections()
                         ->setDatasetExternalLinks()
-                        ->setDatasetFiles($fileSettings["pageSize"], "resourced")
-                        ->setDatasetSamples($sampleSettings["pageSize"])
+                        ->setDatasetFiles((int) $fileSettings["pageSize"], "resourced")
+                        ->setDatasetSamples((int) $sampleSettings["pageSize"])
                         ->setSearchForm();
         }
 
