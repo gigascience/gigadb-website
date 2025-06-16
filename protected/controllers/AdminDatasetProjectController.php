@@ -40,11 +40,9 @@ class AdminDatasetProjectController extends Controller
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
 	 */
-	public function actionView($id)
+	public function actionView(int $id)
 	{
-		$this->render('view',array(
-			'model'=>$this->loadModel($id),
-		));
+        $this->render('view',array('model' => $this->loadModel($id)));
 	}
 
 	/**
@@ -53,24 +51,20 @@ class AdminDatasetProjectController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new DatasetProject;
+		$model = new DatasetProject;
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
-		if(isset($_POST['DatasetProject']))
-		{
-			$model->attributes=$_POST['DatasetProject'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+		if ($datasetProject = Yii::$app->request->post('DatasetProject')) {
+			$model->attributes = $datasetProject;
+			if ($model->save()) {
+                $this->redirect(array('view','id' => $model->id));
+            }
 		}
 
-		$this->render('create',array(
-			'model'=>$model,
-		));
+        $this->render('create',array('model'=>$model));
 	}
 
-         public function actionCreate1() {
+    //TODO: not used atm
+     public function actionCreate1() {
         $model = new DatasetProject;
 
         // Uncomment the following line if AJAX validation is needed
@@ -121,23 +115,19 @@ class AdminDatasetProjectController extends Controller
 	 * If update is successful, the browser will be redirected to the 'view' page.
 	 * @param integer $id the ID of the model to be updated
 	 */
-	public function actionUpdate($id)
+	public function actionUpdate(int $id)
 	{
-		$model=$this->loadModel($id);
+		$model = $this->loadModel($id);
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
+		if ($datasetProject = Yii::$app->request->post('DatasetProject')) {
 
-		if(isset($_POST['DatasetProject']))
-		{
-			$model->attributes=$_POST['DatasetProject'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+			$model->attributes = $datasetProject;
+			if ($model->save()) {
+                $this->redirect(array('view','id' => $model->id));
+            }
 		}
 
-		$this->render('update',array(
-			'model'=>$model,
-		));
+        $this->render('update',array('model' => $model));
 	}
 
 	/**
@@ -145,22 +135,24 @@ class AdminDatasetProjectController extends Controller
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.
 	 * @param integer $id the ID of the model to be deleted
 	 */
-	public function actionDelete($id)
+	public function actionDelete(int $id)
 	{
-		if(Yii::app()->request->isPostRequest)
-		{
-			// we only allow deletion via POST request
-			$this->loadModel($id)->delete();
+		if (!Yii::app()->request->isPostRequest) {
+            throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+        }
 
-			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-			if(!isset($_GET['ajax']))
-				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
-		}
-		else
-			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+        // we only allow deletion via POST request
+        $this->loadModel($id)->delete();
+
+        // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+        if (!Yii::$app->request->get('ajax')) {
+            $returnUrl = Yii::$app->request->post('returnUrl');
+            $this->redirect($returnUrl ?: array('admin'));
+        }
 	}
 
-         public function actionDelete1($id) {
+    // TODO: not used atm
+     public function actionDelete1($id) {
         if (isset($_SESSION['projects'])) {
             $info = $_SESSION['projects'];
             foreach ($info as $key => $value) {
@@ -181,10 +173,9 @@ class AdminDatasetProjectController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('DatasetProject');
-		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
-		));
+		$dataProvider = new CActiveDataProvider('DatasetProject');
+
+        $this->render('index',array('dataProvider' => $dataProvider));
 	}
 
 	/**
@@ -194,16 +185,18 @@ class AdminDatasetProjectController extends Controller
 	{
 		$model=new DatasetProject('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['DatasetProject']))
-			$model->setAttributes($_GET['DatasetProject']);
+
+        if ($datasetProject = Yii::$app->request->get('DatasetProject')) {
+            $model->setAttributes($datasetProject);
+        }
 
 		$this->loadBaBbqPolyfills = true;
-		$this->render('admin',array(
-			'model'=>$model,
-		));
+
+        $this->render('admin',array('model' => $model));
 	}
 
-          public function storeProject(&$model, &$id) {
+    //TODO: not used atm
+      private function storeProject(&$model, &$id) {
 
 
         if (isset($_SESSION['dataset_id'])) {
@@ -226,12 +219,14 @@ class AdminDatasetProjectController extends Controller
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer the ID of the model to be loaded
 	 */
-	public function loadModel($id)
+	public function loadModel(int $id): DatasetProject
 	{
-		$model=DatasetProject::model()->findByPk($id);
-		if($model===null)
-			throw new CHttpException(404,'The requested page does not exist.');
-		return $model;
+		$model = DatasetProject::model()->findByPk($id);
+		if (!$model) {
+            throw new CHttpException(404,'The requested Dataset Project does not exist.');
+        }
+
+        return $model;
 	}
 
 	/**
@@ -240,44 +235,57 @@ class AdminDatasetProjectController extends Controller
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='dataset-project-form')
-		{
+		if (Yii::$app->request->post('ajax') === 'dataset-project-form') {
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}
 	}
 
-	public function actionAddProject() {
-            if(isset($_POST['dataset_id']) && isset($_POST['project_id'])) {
-            	$project = Project::model()->findByPk($_POST['project_id']);
-            	if(!$project) {
-            		Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Cannot find project.")));
-            	}
 
-            	$dp = DatasetProject::model()->findByAttributes(array('dataset_id'=>$_POST['dataset_id'], 'project_id'=>$_POST['project_id']));
-            	if($dp) {
-            		Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "This project has been added already.")));
-            	}
+	public function actionAddProject()
+    {
+        $datasetId = Yii::$app->request->post('dataset_id');
+        $projectId = Yii::$app->request->post('project_id');
 
-            	$dp = new datasetProject;
-            	$dp->dataset_id = $_POST['dataset_id'];
-            	$dp->project_id = $_POST['project_id'];
-
-            	if($dp->save()) {
-            		Util::returnJSON(array("success"=>true));
-            	}
-
-                 Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Save Error.")));
-            }
+        if (!$datasetId || !$projectId) {
+            throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
         }
 
-        public function actionDeleteProject() {
-            if(isset($_POST['dp_id'])) {
-                $dp = DatasetProject::model()->findByPk($_POST['dp_id']);
-                if($dp->delete()) {
-                    Util::returnJSON(array("success"=>true));
-                   }
-                 Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Delete Error.")));
-            }
+        $project = Project::model()->findByPk($projectId);
+
+        if (!$project) {
+            Util::returnJSON(array("success" => false, "message" => Yii::t("app", "Cannot find project.")));
         }
+
+        $dp = DatasetProject::model()->findByAttributes(array('dataset_id' => $datasetId, 'project_id' => $projectId));
+
+        if($dp) {
+            Util::returnJSON(array("success" => false, "message" => Yii::t("app", "This project has been added already.")));
+        }
+
+        $dp = new datasetProject;
+        $dp->dataset_id = $datasetId;
+        $dp->project_id = $projectId;
+
+        if ($dp->save()) {
+            Util::returnJSON(array("success" => true));
+        }
+
+        Util::returnJSON(array("success" => false, "message" => Yii::t("app", "Save Error.")));
+    }
+
+    public function actionDeleteProject()
+    {
+        if (!$dpId = Yii::$app->request->post('dp_id')) {
+            throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+        }
+
+        $dp = DatasetProject::model()->findByPk($dpId);
+
+        if ($dp->delete()) {
+            Util::returnJSON(array("success" => true));
+        }
+
+        Util::returnJSON(array("success" => false, "message" => Yii::t("app", "Delete Error.")));
+    }
 }

@@ -39,13 +39,11 @@ class AdminDatasetSampleController extends Controller
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
 	 */
-	public function actionView($id)
+	public function actionView(int $id)
 	{
-            $model=$this->loadModel($id);
+        $model = $this->loadModel($id);
 
-            $this->render('view',array(
-			'model'=>$model,
-		));
+        $this->render('view',array('model'=>$model));
 	}
 
 	/**
@@ -54,35 +52,32 @@ class AdminDatasetSampleController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new DatasetSample;
+		$model = new DatasetSample;
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
+		if ($datasetSample = Yii::$app->request->post('DatasetSample')) {
+			$model->attributes = $datasetSample;
+			if ($model->save()) {
+                $this->redirect(array('view','id' => $model->id));
+            }
+        }
 
-		if(isset($_POST['DatasetSample']))
-		{
-			$model->attributes=$_POST['DatasetSample'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
-		}
-
-		$this->render('create',array(
-			'model'=>$model,
-		));
+        $this->render('create',array('model' => $model));
 	}
 
-    public function actionAutocomplete() {
-
-        if (isset($_GET['term'])) {
-            $partial_sample_term = $_GET['term'];
+    public function actionAutocomplete()
+    {
+        if ($partial_sample_term = Yii::$app->request->get('term')) {
             $autoCompleteService = Yii::app()->autocomplete;
             $result = $autoCompleteService->findSpeciesLike($partial_sample_term);
+
             echo CJSON::encode($result);
             Yii::app()->end();
         }
     }
 
-    public function actionDelete1($id) {
+    //TODO: not used atm
+    public function actionDelete1($id)
+    {
         if (isset($_SESSION['samples'])) {
             $info = $_SESSION['samples'];
             foreach ($info as $key => $value) {
@@ -101,7 +96,8 @@ class AdminDatasetSampleController extends Controller
         }
     }
 
-    public function storeSample(&$model, &$id) {
+    //TODO: not used atm
+    private function storeSample(&$model, &$id) {
 
 
         if (isset($_SESSION['dataset_id'])) {
@@ -170,6 +166,8 @@ class AdminDatasetSampleController extends Controller
     /**
      * Creates a new model.
      * If creation is successful, the browser will be redirected to the 'view' page.
+     *
+     * TODO: not used atm
      */
     public function actionCreate1() {
 
@@ -269,23 +267,18 @@ class AdminDatasetSampleController extends Controller
 	 * If update is successful, the browser will be redirected to the 'view' page.
 	 * @param integer $id the ID of the model to be updated
 	 */
-	public function actionUpdate($id)
+	public function actionUpdate(int $id)
 	{
-		$model=$this->loadModel($id);
+		$model = $this->loadModel($id);
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
-		if(isset($_POST['DatasetSample']))
-		{
-			$model->attributes=$_POST['DatasetSample'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+		if ($datasetSample = Yii::$app->request->post('DatasetSample')) {
+			$model->attributes = $datasetSample;
+			if ($model->save()) {
+                $this->redirect(array('view','id' => $model->id));
+            }
 		}
 
-		$this->render('update',array(
-			'model'=>$model,
-		));
+        $this->render('update',array('model' => $model));
 	}
 
 	/**
@@ -293,19 +286,21 @@ class AdminDatasetSampleController extends Controller
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.
 	 * @param integer $id the ID of the model to be deleted
 	 */
-	public function actionDelete($id)
+	public function actionDelete(int $id)
 	{
-		if(Yii::app()->request->isPostRequest)
-		{
-			// we only allow deletion via POST request
-			$this->loadModel($id)->delete();
+		if (!Yii::app()->request->isPostRequest) {
+            throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+        }
 
-			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-			if(!isset($_GET['ajax']))
-				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
-		}
-		else
-			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+        // we only allow deletion via POST request
+        $this->loadModel($id)->delete();
+
+        // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+        if (!Yii::$app->request->get('ajax')) {
+            $returnUrl = Yii::$app->request->post('returnUrl');
+
+            $this->redirect($returnUrl ?: array('admin'));
+        }
 	}
 
 	/**
@@ -313,10 +308,9 @@ class AdminDatasetSampleController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('DatasetSample');
-		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
-		));
+		$dataProvider = new CActiveDataProvider('DatasetSample');
+
+        $this->render('index', array('dataProvider' => $dataProvider));
 	}
 
 	/**
@@ -324,15 +318,16 @@ class AdminDatasetSampleController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new DatasetSample('search');
+		$model = new DatasetSample('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['DatasetSample']))
-			$model->setAttributes($_GET['DatasetSample']);
+
+        if ($datasetSample = Yii::$app->request->get('DatasetSample')) {
+            $model->setAttributes($datasetSample);
+        }
 
         $this->loadBaBbqPolyfills = true;
-		$this->render('admin',array(
-			'model'=>$model,
-		));
+
+        $this->render('admin', array('model' => $model));
 	}
 
 	/**
@@ -340,12 +335,15 @@ class AdminDatasetSampleController extends Controller
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer the ID of the model to be loaded
 	 */
-	public function loadModel($id)
+	public function loadModel(int $id): DatasetSample
 	{
-		$model=DatasetSample::model()->findByPk($id);
-		if($model===null)
-			throw new CHttpException(404,'The requested page does not exist.');
-		return $model;
+		$model = DatasetSample::model()->findByPk($id);
+
+        if (!$model) {
+            throw new CHttpException(404,'The requested page does not exist.');
+        }
+
+        $model;
 	}
 
 	/**
@@ -354,171 +352,190 @@ class AdminDatasetSampleController extends Controller
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='dataset-sample-form')
-		{
+		if (Yii::$app->request->post('ajax') === 'dataset-sample-form') {
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}
 	}
 
-        public function actionAddSample() {
-            if(isset($_POST['dataset_id']) && isset($_POST['sample_name']) && isset($_POST['species'])) {
+    public function actionAddSample()
+    {
 
-                $transaction = Yii::app()->db->beginTransaction();
-                try {
-                    if($_POST['sample_name'] == "") {
-                         Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", 'Cannot add sample, please input "Sample ID" value.')));
-                    }
+        $datasetId = Yii::$app->request->post('dataset_id');
+        $sampleName = Yii::$app->request->post('sample_name');
+        $species = Yii::$app->request->post('species');
 
-                    if($_POST['species'] == "") {
-                        Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", 'Cannot add sample, please input "valid  species" value.')));
-                    }
-
-                    $array = explode(":",$_POST['species']);
-                    $tax_id = $array[0];
-                    $species = Species::model()->findByAttributes(array('tax_id' => $tax_id));
-
-                    if(!$species) {
-                        Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", 'Cannot add sample, please input "valid  species" value.')));
-                    }
-
-                    #create new sample
-                    $sample = new Sample;
-                    $sample->species_id = $species->id;
-                    $sample->name = $_POST['sample_name'];
-                    $sample->submitted_id = Yii::app()->user->id;
-                    $sample->submission_date = date('Y-m-d H:i:s');
-
-                    $user = User::model()->findByPk(Yii::app()->user->id);
-                    if($user) {
-                        $sample->contact_author_name  = $user->first_name." ".$user->last_name;
-                        $sample->contact_author_email = $user->email;
-                    }
-
-                    if($sample->save()) {
-                        #create dataset sample
-                        $ds = new DatasetSample;
-                        $ds->dataset_id = $_POST['dataset_id'];
-                        $ds->sample_id = $sample->id;
-                        if($ds->save()) {
-                            $transaction->commit();
-                            Util::returnJSON(array("success"=>true));
-                        }
-                    }
-
-                    Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Save Error.")));
-
-                } catch(Exception $e) {
-                    $message = $e->getMessage();
-                    Yii::log(print_r($message, true), 'error');
-                    $transaction->rollback();
-                    Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", 'Cannot add sample, please input "valid  species" value.')));
-                }
-
-            }
+        if (!$datasetId || !$sampleName || !$species){
+            Util::returnJSON(array('success' => false, 'message' => Yii::t('app', 'Cannot add sample,Please select some values')));
         }
 
-        public function actionDeleteSample() {
-            if(isset($_POST['ds_id'])) {
-                $transaction = Yii::app()->db->beginTransaction();
-                try {
-                    $ds = DatasetSample::model()->findByPk($_POST['ds_id']);
-                    if($ds->delete()) {
-                        $transaction->commit();
-                        Util::returnJSON(array("success"=>true));
-                    }
-                } catch(Exception $e) {
-                    $message = $e->getMessage();
-                    Yii::log(print_r($message, true), 'error');
-                    $transaction->rollback();
-                    Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Delete Error.")));
+        $transaction = Yii::app()->db->beginTransaction();
+            try {
+                $array = explode(":", $species);
+                $tax_id = $array[0];
+                $species = Species::model()->findByAttributes(array('tax_id' => $tax_id));
+
+                if(!$species) {
+                    Util::returnJSON(array("success" => false,"message" => Yii::t("app", 'Cannot add sample, please input "valid  species" value.')));
                 }
 
-                 Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Delete Error.")));
+                #create new sample
+                $sample = new Sample;
+                $sample->species_id = $species->id;
+                $sample->name = $sampleName;
+                $sample->submitted_id = Yii::app()->user->id;
+                $sample->submission_date = date('Y-m-d H:i:s');
+
+                $user = User::model()->findByPk(Yii::app()->user->id);
+                if ($user) {
+                    $sample->contact_author_name  = $user->first_name ." " . $user->last_name;
+                    $sample->contact_author_email = $user->email;
+                }
+
+
+                if (!$sample->save()) {
+                    Util::returnJSON(array('success' => false, 'message' => Yii::t('app', 'Save Error.')));
+                }
+
+                #create dataset sample
+                $ds = new DatasetSample;
+                $ds->dataset_id = $datasetId;
+                $ds->sample_id = $sample->id;
+                if(!$ds->save()) {
+                    $transaction->rollBack();
+                    Util::returnJSON(array('success' => false, 'message' => Yii::t('app', 'Save Error.')));
+                }
+
+                $transaction->commit();
+                Util::returnJSON(array("success" => true));
+            } catch (Exception $e) {
+                $message = $e->getMessage();
+                Yii::log(print_r($message, true), 'error');
+                $transaction->rollback();
+
+                Util::returnJSON(array("success" => false, "message" => Yii::t("app", 'Cannot add sample, please input "valid  species" value.')));
             }
+    }
+
+    public function actionDeleteSample()
+    {
+       if (!$dsId = Yii::$app->request->post('ds_id')) {
+           Util::returnJSON(array('success' => false, 'message' => Yii::t('app', 'An error occured. Please try again.')));
+       }
+
+        try {
+            $ds = DatasetSample::model()->findByPk($dsId);
+            if ($ds->delete()) {
+                Util::returnJSON(array("success" => true));
+            }
+        } catch(Exception $e) {
+            $message = $e->getMessage();
+            Yii::log(print_r($message, true), 'error');
+
+            Util::returnJSON(array("success" => false, "message" => Yii::t("app", "Delete Error.")));
         }
 
-        public function actionAddSampleAttr() {
-            if(isset($_POST['sample_id']) && isset($_POST['attr_id'])
-                && isset($_POST['attr_value']) && isset($_POST['attr_unit'])) {
+       Util::returnJSON(array("success" => false, "message" => Yii::t("app", "Delete Error.")));
+    }
 
-                if(strlen($_POST['attr_id']) < 3) {
-                    Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Please enter an Attribute name with more than 3 characters.")));
-                }
+    public function actionAddSampleAttr()
+    {
+        $sampleId = Yii::$app->request->post('sample_id');
+        $attrId = Yii::$app->request->post('attr_id');
+        $attrValue = Yii::$app->request->post('attr_value');
+        $attrUnit = Yii::$app->request->post('attr_unit');
 
-                $lastSa = SampleAttribute::model()->find(array('order'=>'id desc'));
-
-                $sa = new SampleAttribute;
-                if($lastSa) {
-                    $sa->id = $lastSa->id+1;
-                }
-
-                // try to find attribute, if not found, create a new one
-               $attr = Attributes::model()->findByAttributes(array('attribute_name'=>$_POST['attr_id']));
-               if(!$attr) {
-                    #create new attribute
-                    $attr = new Attributes;
-                    $attr->attribute_name = $_POST['attr_id'];
-                    $attr->save(false);
-               }
-
-                $sa->sample_id = $_POST['sample_id'];
-                $sa->attribute_id = $attr->id;
-                $sa->value = $_POST['attr_value'];
-
-                if(isset($_POST['attr_unit']) && $_POST['attr_unit'] != "") {
-                    $sa->unit_id = $_POST['attr_unit'];
-                }
-
-                if($sa->save()) {
-                    Util::returnJSON(array("success"=>true));
-                }
-
-                Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Cannot add sample attr.")));
-            }
+        if (!$sampleId || !$attrId || !$attrValue || !$attrUnit) {
+            Util::returnJSON(array('success' => false, 'message' => Yii::t('app', 'Cannot add sample attr.')));
         }
 
-        public function actionDeleteSampleAttr() {
-            if(isset($_POST['sa_id'])) {
-                $sa = SampleAttribute::model()->findByPk($_POST['sa_id']);
-                if($sa->delete()) {
-                    Util::returnJSON(array("success"=>true));
-                }
-                 Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Delete Error.")));
-            }
+        if (strlen($attrId) < 3) {
+            Util::returnJSON(array("success" => false, "message" => Yii::t("app", "Please enter an Attribute name with more than 3 characters.")));
         }
 
-        public function actionUpdateSampleAttribute() {
-            if(isset($_POST['sa_id']) && isset($_POST['sa_value'])) {
-                $sa = SampleAttribute::model()->findByPk($_POST['sa_id']);
-                if(!$sa) {
-                     Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Cannot find the sample attribute.")));
-                }
+        $lastSa = SampleAttribute::model()->find(array('order' => 'id desc'));
 
-                $sa->value = $_POST['sa_value'];
-                if($sa->save()) {
-                     Util::returnJSON(array("success"=>true));
-                }
-
-                Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Update Error.")));
-            }
+        $sa = new SampleAttribute;
+        if ($lastSa) {
+            $sa->id = $lastSa->id + 1;
         }
 
-        public function actionAttributesList() {
-            $attrs = array();
-            $result = array();
+        // try to find attribute, if not found, create a new one
+       $attr = Attributes::model()->findByAttributes(array('attribute_name' => $attrId));
+       if (!$attr) {
+            #create new attribute
+            $attr = new Attributes;
+            $attr->attribute_name = $attrId;
+            $attr->save(false); //TODO: why??
+       }
 
-            if (isset($_GET['term'])) {
-                $criteria = new CDbCriteria;
-                $criteria->addSearchCondition('attribute_name', $_GET['term']);
-                $attrs = Attributes::model()->findAll($criteria);
+        $sa->sample_id = $sampleId;
+        $sa->attribute_id = $attr->id;
+        $sa->value = $attrValue;
 
-                foreach($attrs as $attr) {
-                    $result[$attr->attribute_name] = $attr->attribute_name;
-                }
-
-                echo CJSON::encode($result);
-                Yii::app()->end();
-            }
+        if ($attrUnit && $attrUnit !== "") {
+            $sa->unit_id = $attrUnit;
         }
+
+        if ($sa->save()) {
+            Util::returnJSON(array("success" => true));
+        }
+
+        Util::returnJSON(array("success" => false, "message" =>Yii::t("app", "Cannot add sample attr.")));
+    }
+
+    public function actionDeleteSampleAttr() {
+        if (!$saId = Yii::$app->request->post('sa_id')) {
+            Util::returnJSON(array('success' => false, 'message' => Yii::t('app', 'Delete Error.')));
+        }
+
+        $sa = SampleAttribute::model()->findByPk($saId);
+        if ($sa->delete()) {
+            Util::returnJSON(array("success"=>true));
+        }
+
+        Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Delete Error.")));
+    }
+
+    public function actionUpdateSampleAttribute()
+    {
+        $saId = Yii::$app->request->post('sa_id');
+        $saValue = Yii::$app->request->post('sa_value');
+
+        if (!$saId || !$saValue) {
+            Util::returnJSON(array('success' => false, 'message' => Yii::t('app', 'Update Error.')));
+        }
+
+
+        $sa = SampleAttribute::model()->findByPk($saId);
+        if (!$sa) {
+            Util::returnJSON(array("success" => false, "message" =>Yii::t("app", "Cannot find the sample attribute.")));
+        }
+
+        $sa->value = $saValue;
+        if ($sa->save()) {
+            Util::returnJSON(array("success" => true));
+        }
+
+        Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Update Error.")));
+    }
+
+    public function actionAttributesList()
+    {
+        $attrs = array();
+        $result = array();
+
+        if ($term = Yii::$app->request->get('term')) {
+            $criteria = new CDbCriteria;
+            $criteria->addSearchCondition('attribute_name', $term);
+            $attrs = Attributes::model()->findAll($criteria);
+
+            foreach ($attrs as $attr) {
+                $result[$attr->attribute_name] = $attr->attribute_name;
+            }
+
+            echo CJSON::encode($result);
+            Yii::app()->end();
+        }
+    }
 }

@@ -36,11 +36,9 @@ class AdminFileFormatController extends Controller
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
 	 */
-	public function actionView($id)
+	public function actionView(int $id)
 	{
-		$this->render('view',array(
-			'model'=>$this->loadModel($id),
-		));
+        $this->render('view', array('model' => $this->loadModel($id)));
 	}
 
 	/**
@@ -49,21 +47,16 @@ class AdminFileFormatController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new FileFormat;
+		$model = new FileFormat;
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
-		if(isset($_POST['FileFormat']))
-		{
-			$model->attributes=$_POST['FileFormat'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+		if ($fileFormat = Yii::$app->request->post('FileFormat')) {
+			$model->attributes = $fileFormat;
+			if ($model->save()) {
+                $this->redirect(array('view', 'id' => $model->id));
+            }
 		}
 
-		$this->render('create',array(
-			'model'=>$model,
-		));
+        $this->render('create', array('model' => $model));
 	}
 
 	/**
@@ -71,23 +64,18 @@ class AdminFileFormatController extends Controller
 	 * If update is successful, the browser will be redirected to the 'view' page.
 	 * @param integer $id the ID of the model to be updated
 	 */
-	public function actionUpdate($id)
+	public function actionUpdate(int $id)
 	{
-		$model=$this->loadModel($id);
+		$model = $this->loadModel($id);
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
-		if(isset($_POST['FileFormat']))
-		{
-			$model->attributes=$_POST['FileFormat'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+		if ($fileFormat = Yii::$app->request->post('FileFormat')) {
+			$model->attributes = $fileFormat;
+			if ($model->save()) {
+                $this->redirect(array('view', 'id' => $model->id));
+            }
 		}
 
-		$this->render('update',array(
-			'model'=>$model,
-		));
+        $this->render('update', array('model' => $model));
 	}
 
 	/**
@@ -95,19 +83,20 @@ class AdminFileFormatController extends Controller
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.
 	 * @param integer $id the ID of the model to be deleted
 	 */
-	public function actionDelete($id)
+	public function actionDelete(int $id)
 	{
-		if(Yii::app()->request->isPostRequest)
-		{
-			// we only allow deletion via POST request
-			$this->loadModel($id)->delete();
+		if (!Yii::app()->request->isPostRequest) {
+            throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+        }
 
-			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-			if(!isset($_GET['ajax']))
-				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
-		}
-		else
-			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+        // we only allow deletion via POST request
+        $this->loadModel($id)->delete();
+
+        // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+        if (!Yii::$app->request->get('ajax')) {
+            $returnUrl = Yii::$app->request->post('returnUrl');
+            $this->redirect($returnUrl ?: array('admin'));
+        }
 	}
 
 	/**
@@ -115,10 +104,9 @@ class AdminFileFormatController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('FileFormat');
-		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
-		));
+		$dataProvider = new CActiveDataProvider('FileFormat');
+
+        $this->render('index', array('dataProvider' => $dataProvider));
 	}
 
 	/**
@@ -126,15 +114,15 @@ class AdminFileFormatController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new FileFormat('search');
+		$model = new FileFormat('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['FileFormat']))
-			$model->setAttributes($_GET['FileFormat']);
+		if ($fileFormat = Yii::$app->request->get('FileFormat')) {
+            $model->setAttributes($fileFormat);
+        }
 
 		$this->loadBaBbqPolyfills = true;
-		$this->render('admin',array(
-			'model'=>$model,
-		));
+
+        $this->render('admin', array('model' => $model));
 	}
 
 	/**
@@ -142,11 +130,13 @@ class AdminFileFormatController extends Controller
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer the ID of the model to be loaded
 	 */
-	public function loadModel($id)
+	public function loadModel(int $id): FileFormat
 	{
-		$model=FileFormat::model()->findByPk($id);
-		if($model===null)
-			throw new CHttpException(404,'The requested page does not exist.');
+		$model = FileFormat::model()->findByPk($id);
+		if (!$model) {
+            throw new CHttpException(404,'The requested page does not exist.');
+        }
+
 		return $model;
 	}
 
@@ -156,8 +146,7 @@ class AdminFileFormatController extends Controller
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='file-format-form')
-		{
+		if (Yii::$app->request->post('ajax') ==='file-format-form') {
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}

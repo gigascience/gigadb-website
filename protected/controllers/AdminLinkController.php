@@ -40,11 +40,9 @@ class AdminLinkController extends Controller
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
 	 */
-	public function actionView($id)
+	public function actionView(int $id)
 	{
-		$this->render('view',array(
-			'model'=>$this->loadModel($id),
-		));
+        $this->render('view', array('model' => $this->loadModel($id)));
 	}
 
 	/**
@@ -53,24 +51,21 @@ class AdminLinkController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new Link;
+		$model = new Link;
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
+		if ($link = Yii::$app->request->post('Link')) {
+			$model->attributes = $link;
 
-		if(isset($_POST['Link']))
-		{
-			$model->attributes=$_POST['Link'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+            if ($model->save()) {
+                $this->redirect(array('view','id' => $model->id));
+            }
 		}
 
-		$this->render('create',array(
-			'model'=>$model,
-		));
+        $this->render('create',array('model' => $model));
 	}
 
-           public function storeLink(&$model, &$id) {
+    //TODO: not used atm
+    public function storeLink(&$model, &$id) {
 
 
         if (isset($_SESSION['dataset_id'])) {
@@ -90,6 +85,7 @@ class AdminLinkController extends Controller
         return false;
     }
 
+    //TODO: not used atm
     public function actionCreate1() {
         $model = new Link;
 
@@ -154,7 +150,8 @@ class AdminLinkController extends Controller
         ));
     }
 
-        public function actionDelete1($id) {
+    //TODO: not used atm
+    public function actionDelete1($id) {
         if (isset($_SESSION['links'])) {
             $info = $_SESSION['links'];
             foreach ($info as $key => $value) {
@@ -169,28 +166,24 @@ class AdminLinkController extends Controller
             }
         }
     }
+
 	/**
 	 * Updates a particular model.
 	 * If update is successful, the browser will be redirected to the 'view' page.
 	 * @param integer $id the ID of the model to be updated
 	 */
-	public function actionUpdate($id)
+	public function actionUpdate(int $id)
 	{
-		$model=$this->loadModel($id);
+		$model = $this->loadModel($id);
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
-		if(isset($_POST['Link']))
-		{
-			$model->attributes=$_POST['Link'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+		if ($link = Yii::$app->request->post('Link')) {
+			$model->attributes = $link;
+			if ($model->save()) {
+                $this->redirect(array('view','id' => $model->id));
+            }
 		}
 
-		$this->render('update',array(
-			'model'=>$model,
-		));
+        $this->render('update', array('model' => $model));
 	}
 
 	/**
@@ -198,19 +191,22 @@ class AdminLinkController extends Controller
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.
 	 * @param integer $id the ID of the model to be deleted
 	 */
-	public function actionDelete($id)
+	public function actionDelete(int $id)
 	{
-		if(Yii::app()->request->isPostRequest)
-		{
-			// we only allow deletion via POST request
-			$this->loadModel($id)->delete();
+		if (!Yii::app()->request->isPostRequest) {
+            throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+        }
 
-			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-			if(!isset($_GET['ajax']))
-				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
-		}
-		else
-			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+        // we only allow deletion via POST request
+        $this->loadModel($id)->delete();
+
+        // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+        if(!Yii::$app->request->get('ajax')) {
+            $returnUrl = Yii::$app->request->post('returnUrl');
+
+            $this->redirect($returnUrl ?: array('admin'));
+        }
+
 	}
 
 	/**
@@ -218,10 +214,9 @@ class AdminLinkController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('Link');
-		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
-		));
+		$dataProvider = new CActiveDataProvider('Link');
+
+        $this->render('index', array('dataProvider' => $dataProvider));
 	}
 
 	/**
@@ -229,15 +224,16 @@ class AdminLinkController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new Link('search');
+		$model = new Link('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Link']))
-			$model->setAttributes($_GET['Link']);
+
+        if ($link = Yii::$app->request->get('Link')) {
+            $model->setAttributes($link);
+        }
 
 		$this->loadBaBbqPolyfills = true;
-		$this->render('admin',array(
-			'model'=>$model,
-		));
+
+        $this->render('admin', array('model' => $model));
 	}
 
 	/**
@@ -245,12 +241,14 @@ class AdminLinkController extends Controller
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer the ID of the model to be loaded
 	 */
-	public function loadModel($id)
+	public function loadModel(int $id): Link
 	{
-		$model=Link::model()->findByPk($id);
-		if($model===null)
-			throw new CHttpException(404,'The requested page does not exist.');
-		return $model;
+		$model = Link::model()->findByPk($id);
+		if (!$model) {
+            throw new CHttpException(404, "Can't find the link");
+        }
+
+        return $model;
 	}
 
 	/**
@@ -259,43 +257,52 @@ class AdminLinkController extends Controller
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='link-form')
-		{
+		if (Yii::$app->request->post('ajax') ==='link-form') {
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}
 	}
 
-	public function actionAddLink() {
-            if(isset($_POST['dataset_id']) && isset($_POST['database']) && isset($_POST['acc_num'])) {
+	public function actionAddLink()
+    {
+        $datasetId = Yii::$app->request->post('dataset_id');
+        $database = Yii::$app->request->post('database');
+        $accNum = Yii::$app->request->post('acc_num');
 
-            	$linkVal =  $_POST['database'].":".$_POST['acc_num'];
-
-            	$link = Link::model()->findByAttributes(array('dataset_id'=>$_POST['dataset_id'], 'link'=>$linkVal));
-            	if($link) {
-            		Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "This link has been added already.")));
-            	}
-
-            	$link = new Link;
-            	$link->dataset_id = $_POST['dataset_id'];
-            	$link->is_primary = true;
-            	$link->link = $linkVal;
-
-            	if($link->save()) {
-            		Util::returnJSON(array("success"=>true));
-            	}
-
-                 Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Save Error.")));
-            }
+        if (!$datasetId || !$database || !$accNum) {
+            Util::returnJSON(array('success' => false, 'message' => Yii::t('app', 'Invalid request')));
         }
 
-        public function actionDeleteLink() {
-            if(isset($_POST['link_id'])) {
-                $link = Link::model()->findByPk($_POST['link_id']);
-                if($link->delete()) {
-                    Util::returnJSON(array("success"=>true));
-                   }
-                 Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Delete Error.")));
-            }
+        $linkVal = $database .":". $accNum;
+
+        $link = Link::model()->findByAttributes(array('dataset_id'=> $datasetId, 'link'=> $linkVal));
+        if ($link) {
+            Util::returnJSON(array("success" => false, "message" => Yii::t("app", "This link has been added already.")));
         }
+
+        $link = new Link;
+        $link->dataset_id = $datasetId;
+        $link->is_primary = true;
+        $link->link = $linkVal;
+
+        if ($link->save()) {
+            Util::returnJSON(array("success" => true));
+        }
+
+        Util::returnJSON(array("success" => false, "message" => Yii::t("app", "Save Error.")));
+    }
+
+    public function actionDeleteLink()
+    {
+        if (!$linkId = Yii::$app->request->post('link_id')) {
+            Util::returnJSON(array("success" => false, "message" => Yii::t('app', 'Invalid request')));
+        }
+
+        $link = Link::model()->findByPk($linkId);
+        if ($link->delete()) {
+            Util::returnJSON(array("success" => true));
+        }
+
+        Util::returnJSON(array("success" => false, "message" => Yii::t("app", "Delete Error.")));
+    }
 }

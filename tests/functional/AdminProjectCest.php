@@ -25,8 +25,9 @@ class AdminProjectCest
         $I->click('Admin');
         $I->click('Projects');
         $I->canSee('Create New Project');
-        $I->seeElement('.table tr:first-child td:last-child a.icon-update');
-        $I->click('.table tr:first-child td:last-child a.icon-update');
+        $I->canSee('http://www.genome10k.org/');
+        $I->seeElement('.table tbody tr:first-child td:last-child a.icon-update');
+        $I->click('.table tbody tr:first-child td:last-child a.icon-update');
 
         $I->fillField("#Project_url", 'http://www.genome10kmodified.org/');
         $I->fillField('#Project_name', 'modified name');

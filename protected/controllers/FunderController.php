@@ -43,9 +43,7 @@ class FunderController extends Controller
 	 */
 	public function actionView()
 	{
-		$this->render('view',array(
-			'model'=>$this->loadModel(),
-		));
+        $this->render('view', array('model' => $this->loadModel()));
 	}
 
 	/**
@@ -54,21 +52,16 @@ class FunderController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new Funder;
+		$model = new Funder;
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
-		if(isset($_POST['Funder']))
-		{
-			$model->attributes=$_POST['Funder'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+		if ($funder = Yii::$app->request->post('Funder')) {
+			$model->attributes = $funder;
+			if ($model->save()) {
+                $this->redirect(array('view','id' => $model->id));
+            }
 		}
 
-		$this->render('create',array(
-			'model'=>$model,
-		));
+        $this->render('create', array('model' => $model));
 	}
 
 	/**
@@ -77,21 +70,16 @@ class FunderController extends Controller
 	 */
 	public function actionUpdate()
 	{
-		$model=$this->loadModel();
+		$model = $this->loadModel();
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
-		if(isset($_POST['Funder']))
-		{
-			$model->attributes=$_POST['Funder'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+		if ($funder = Yii::$app->request->post('Funder')) {
+			$model->attributes = $funder;
+			if ($model->save()) {
+                $this->redirect(array('view','id' => $model->id));
+            }
 		}
 
-		$this->render('update',array(
-			'model'=>$model,
-		));
+        $this->render('update', array('model' => $model));
 	}
 
 	/**
@@ -100,17 +88,20 @@ class FunderController extends Controller
 	 */
 	public function actionDelete()
 	{
-		if(Yii::app()->request->isPostRequest)
-		{
-			// we only allow deletion via POST request
-			$this->loadModel()->delete();
+		if (!Yii::app()->request->isPostRequest) {
+            throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+        }
 
-			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-			if(!isset($_GET['ajax']))
-				$this->redirect(array('index'));
-		}
-		else
-			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+        // we only allow deletion via POST request
+        $this->loadModel()->delete();
+
+        // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+        if (!Yii::$app->request->get('ajax')) {
+            $returnUrl = Yii::$app->request->post('returnUrl');
+
+            $this->redirect($returnUrl ?: array('admin'));
+        }
+
 	}
 
 	/**
@@ -118,10 +109,9 @@ class FunderController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('Funder');
-		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
-		));
+		$dataProvider = new CActiveDataProvider('Funder');
+
+        $this->render('index', array('dataProvider' => $dataProvider));
 	}
 
 	/**
@@ -129,29 +119,31 @@ class FunderController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new Funder('search');
+		$model = new Funder('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Funder']))
-			$model->setAttributes($_GET['Funder']);
+
+        if ($funder = Yii::$app->request->get('Funder')) {
+            $model->setAttributes($funder);
+        }
 
 		$this->loadBaBbqPolyfills = true;
-		$this->render('admin',array(
-			'model'=>$model,
-		));
+
+        $this->render('admin', array('model' => $model));
 	}
 
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
 	 */
-	public function loadModel()
+	public function loadModel(): Funder
 	{
-		if($this->_model===null)
-		{
-			if(isset($_GET['id']))
-				$this->_model=Funder::model()->findbyPk($_GET['id']);
-			if($this->_model===null)
-				throw new CHttpException(404,'The requested page does not exist.');
+		if (!$this->_model) {
+			if ($id = Yii::$app->request->get('id')) {
+                $this->_model=Funder::model()->findbyPk($id);
+            }
+			if (!$this->_model) {
+                throw new CHttpException(404,'The requested page does not exist.');
+            }
 		}
 		return $this->_model;
 	}
@@ -162,8 +154,7 @@ class FunderController extends Controller
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='funder-form')
-		{
+		if (Yii::$app->request->post('ajax') ==='funder-form') {
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}

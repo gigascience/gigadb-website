@@ -36,11 +36,9 @@ class AdminImagesController extends Controller
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
 	 */
-	public function actionView($id)
+	public function actionView(int $id)
 	{
-		$this->render('view',array(
-			'model'=>$this->loadModel($id),
-		));
+        $this->render('view',array('model' => $this->loadModel($id)));
 	}
 
 	/**
@@ -49,21 +47,16 @@ class AdminImagesController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new Images;
+		$model = new Images;
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
-		if(isset($_POST['Images']))
-		{
-			$model->attributes=$_POST['Images'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+		if ($images = Yii::$app->request->post('Images')) {
+			$model->attributes = $images;
+			if ($model->save()) {
+                $this->redirect(array('view','id' => $model->id));
+            }
 		}
 
-		$this->render('create',array(
-			'model'=>$model,
-		));
+        $this->render('create',array('model'=>$model));
 	}
 
 	/**
@@ -71,23 +64,18 @@ class AdminImagesController extends Controller
 	 * If update is successful, the browser will be redirected to the 'view' page.
 	 * @param integer $id the ID of the model to be updated
 	 */
-	public function actionUpdate($id)
+	public function actionUpdate(int $id)
 	{
-		$model=$this->loadModel($id);
+		$model = $this->loadModel($id);
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
-		if(isset($_POST['Images']))
-		{
-			$model->attributes=$_POST['Images'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+		if ($images = Yii::$app->request->post('Images')) {
+			$model->attributes = $images;
+			if ($model->save()) {
+                $this->redirect(array('view','id' => $model->id));
+            }
 		}
 
-		$this->render('update',array(
-			'model'=>$model,
-		));
+        $this->render('update',array('model' => $model));
 	}
 
 	/**
@@ -95,19 +83,21 @@ class AdminImagesController extends Controller
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.
 	 * @param integer $id the ID of the model to be deleted
 	 */
-	public function actionDelete($id)
+	public function actionDelete(int $id)
 	{
-		if(Yii::app()->request->isPostRequest)
-		{
-			// we only allow deletion via POST request
-			$this->loadModel($id)->delete();
+		if (!Yii::app()->request->isPostRequest) {
+            throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+        }
 
-			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-			if(!isset($_GET['ajax']))
-				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
-		}
-		else
-			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+        // we only allow deletion via POST request
+        $this->loadModel($id)->delete();
+
+        // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+        if(!Yii::$app->request->get('ajax')) {
+            $returnUrl = Yii::$app->request->post('returnUrl');
+
+            $this->redirect($returnUrl ?: array('admin'));
+        }
 	}
 
 	/**
@@ -115,10 +105,9 @@ class AdminImagesController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('Images');
-		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
-		));
+		$dataProvider = new CActiveDataProvider('Images');
+
+        $this->render('index', array('dataProvider' => $dataProvider));
 	}
 
 	/**
@@ -126,14 +115,14 @@ class AdminImagesController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new Images('search');
+		$model = new Images('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Images']))
-			$model->setAttributes($_GET['Images']);
 
-		$this->render('admin',array(
-			'model'=>$model,
-		));
+        if ($images = Yii::$app->request->get('Images')) {
+            $model->setAttributes($images);
+        }
+
+        $this->render('admin', array('model' => $model));
 	}
 
 	/**
@@ -141,12 +130,15 @@ class AdminImagesController extends Controller
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer the ID of the model to be loaded
 	 */
-	public function loadModel($id)
+	public function loadModel(int $id): Images
 	{
-		$model=Images::model()->findByPk($id);
-		if($model===null)
-			throw new CHttpException(404,'The requested page does not exist.');
-		return $model;
+		$model = Images::model()->findByPk($id);
+
+        if (!$model) {
+            throw new CHttpException(404, "Can't find Images.");
+        }
+
+        return $model;
 	}
 
 	/**
@@ -155,8 +147,7 @@ class AdminImagesController extends Controller
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='images-form')
-		{
+		if (Yii::$app->request->post('ajax') ==='images-form') {
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}

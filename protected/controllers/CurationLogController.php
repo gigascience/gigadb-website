@@ -38,15 +38,15 @@ class CurationLogController extends Controller
 	 */
 	public function actionAdmin()
 	{
-        $model=new CurationLog('search');
+        $model = new CurationLog('search');
         $model->unsetAttributes();  // clear any default values
-        if(isset($_GET['CurationLog']))
-            $model->setAttributes($_GET['CurationLog']);
+        if ($curationLog = Yii::$app->request->get('CurationLog')) {
+            $model->setAttributes($curationLog);
+        }
 
         $this->loadBaBbqPolyfills = true;
-        $this->render('admin',array(
-            'model'=>$model,
-        ));
+
+        $this->render('admin', array('model' => $model));
 	}
 
 	/**
@@ -55,30 +55,24 @@ class CurationLogController extends Controller
 	 */
 	public function actionCreate($id)
 	{
-		$model=new CurationLog;
+		$model = new CurationLog;
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
+		if ($curationLog = Yii::$app->request->post('CurationLog')) {
+			$model->attributes = $curationLog;
+            $model->creation_date = date("Y-m-d");
+            $model->last_modified_date = null;
+            $model->dataset_id = $id;
+            $username = User::model()->find('id=:user_id', array(':user_id' => Yii::app()->user->id));
 
-		if(isset($_POST['CurationLog']))
-		{
-			$model->attributes=$_POST['CurationLog'];
-                        $model->creation_date=date("Y-m-d");
-                        $model->last_modified_date=null;
-                        $model->dataset_id=$id;
-                        $username = User::model()->find('id=:user_id', array(':user_id'=>Yii::app()->user->id));
+            $username = $username->first_name . ' ' . $username->last_name;
+            $model->created_by = $username;
 
-                        $username = $username->first_name.' '.$username->last_name;
-                        $model->created_by = $username;
-
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+			if ($model->save()) {
+                $this->redirect(array('view','id' => $model->id));
+            }
 		}
 
-		$this->render('create',array(
-			'model'=>$model,
-            'dataset_id'=>$id,
-		));
+        $this->render('create',array('model' => $model, 'dataset_id' => $id));
 	}
 
 	/**
@@ -88,30 +82,24 @@ class CurationLogController extends Controller
 	 */
 	public function actionUpdate()
 	{
-		if(isset($_GET['id'])) {
-			$model=$this->loadModel($_GET['id']);
+		if (!$id = Yii::$app->request->get('id')) {
+            throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
+        }
 
-			// Uncomment the following line if AJAX validation is needed
-			// $this->performAjaxValidation($model);
+        $model = $this->loadModel($id);
 
-			if(isset($_POST['CurationLog']))
-			{
-				$model->attributes=$_POST['CurationLog'];
-                                $model->last_modified_date=date("Y-m-d");
+        if ($curationLog = Yii::$app->request->post('CurationLog')) {
+            $model->attributes = $curationLog;
+            $model->last_modified_date = date("Y-m-d");
+            $username = User::model()->find('id=:user_id', array(':user_id' => Yii::app()->user->id));
+            $username = $username->first_name . ' ' . $username->last_name;
+            $model->last_modified_by = $username;
+            if ($model->save()) {
+                $this->redirect(array('view','id' => $model->id));
+            }
+        }
 
-                                $username = User::model()->find('id=:user_id', array(':user_id'=>Yii::app()->user->id));
-
-                                $username = $username->first_name.' '.$username->last_name;
-
-                                $model->last_modified_by = $username;
-				if($model->save())
-					$this->redirect(array('view','id'=>$model->id));
-			}
-
-			$this->render('update',array(
-				'model'=>$model,
-			));
-		}
+        $this->render('update', array('model' => $model));
 	}
 
 	/**
@@ -119,29 +107,29 @@ class CurationLogController extends Controller
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.
 	 * @param integer $id the ID of the model to be deleted
 	 */
-	public function actionDelete($id)
+	public function actionDelete(int $id)
 	{
-		if(Yii::app()->request->isPostRequest)
-		{
-			// we only allow deletion via POST request
-			$this->loadModel($id)->delete();
+		if (!Yii::app()->request->isPostRequest) {
+            throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+        }
 
-			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-			if(!isset($_GET['ajax']))
-				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
-		}
-		else
-			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+        // we only allow deletion via POST request
+        $this->loadModel($id)->delete();
+
+        // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+        if (!Yii::$app->request->get('ajax')) {
+            $returnUrl = Yii::$app->request->post('returnUrl');
+
+            $this->redirect($returnUrl ?: array('admin'));
+        }
 	}
 
 	/**
 	 * Manages all models.
 	 */
-	public function actionView($id) {
-
-        $this->render('view', array(
-            'model' => $this->loadModel($id),
-        ));
+	public function actionView(int $id)
+    {
+        $this->render('view', array('model' => $this->loadModel($id)));
     }
 
     /**
@@ -149,11 +137,13 @@ class CurationLogController extends Controller
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer the ID of the model to be loaded
 	 */
-	public function loadModel($id)
+	public function loadModel(int $id): CurationLog
 	{
-		$model= CurationLog::model()->findByPk($id);
-		if($model===null)
-			throw new CHttpException(404,'The requested page does not exist.');
-		return $model;
+		$model = CurationLog::model()->findByPk($id);
+		if (!$model) {
+            throw new CHttpException(404,'The requested page does not exist.');
+        }
+
+        return $model;
 	}
 }

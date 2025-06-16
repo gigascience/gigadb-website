@@ -36,11 +36,9 @@ class AdminSpeciesController extends Controller
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
 	 */
-	public function actionView($id)
+	public function actionView(int $id)
 	{
-		$this->render('view',array(
-			'model'=>$this->loadModel($id),
-		));
+        $this->render('view', array('model' => $this->loadModel($id)));
 	}
 
 	/**
@@ -49,21 +47,16 @@ class AdminSpeciesController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new Species;
+		$model = new Species;
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
-		if(isset($_POST['Species']))
-		{
-			$model->attributes=$_POST['Species'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+		if ($species = Yii::$app->request->post('Species')) {
+			$model->attributes = $species;
+			if ($model->save()) {
+                $this->redirect(array('view', 'id' => $model->id));
+            }
 		}
 
-		$this->render('create',array(
-			'model'=>$model,
-		));
+        $this->render('create', array('model' => $model));
 	}
 
 	/**
@@ -71,23 +64,18 @@ class AdminSpeciesController extends Controller
 	 * If update is successful, the browser will be redirected to the 'view' page.
 	 * @param integer $id the ID of the model to be updated
 	 */
-	public function actionUpdate($id)
+	public function actionUpdate(int $id)
 	{
 		$model=$this->loadModel($id);
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
-		if(isset($_POST['Species']))
-		{
-			$model->attributes=$_POST['Species'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+		if ($species = Yii::$app->request->post('Species')) {
+			$model->attributes = $species;
+			if ($model->save()) {
+                $this->redirect(array('view', 'id' => $model->id));
+            }
 		}
 
-		$this->render('update',array(
-			'model'=>$model,
-		));
+        $this->render('update', array('model' => $model));
 	}
 
 	/**
@@ -95,19 +83,21 @@ class AdminSpeciesController extends Controller
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.
 	 * @param integer $id the ID of the model to be deleted
 	 */
-	public function actionDelete($id)
+	public function actionDelete(int $id)
 	{
-		if(Yii::app()->request->isPostRequest)
-		{
-			// we only allow deletion via POST request
-			$this->loadModel($id)->delete();
+		if (!Yii::app()->request->isPostRequest) {
+            throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+        }
 
-			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-			if(!isset($_GET['ajax']))
-				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
-		}
-		else
-			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+        // we only allow deletion via POST request
+        $this->loadModel($id)->delete();
+
+        // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+        if (!Yii::$app->request->get('ajax')) {
+            $returnUrl = Yii::$app->request->post('returnUrl');
+
+            $this->redirect($returnUrl ?: array('admin'));
+        }
 	}
 
 	/**
@@ -115,10 +105,9 @@ class AdminSpeciesController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('Species');
-		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
-		));
+		$dataProvider = new CActiveDataProvider('Species');
+
+        $this->render('index', array('dataProvider' => $dataProvider));
 	}
 
 	/**
@@ -126,15 +115,15 @@ class AdminSpeciesController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new Species('search');
+		$model = new Species('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Species']))
-			$model->setAttributes($_GET['Species']);
+		if ($species = Yii::$app->request->get('Species')) {
+            $model->setAttributes($species);
+        }
 
 		$this->loadBaBbqPolyfills = true;
-		$this->render('admin',array(
-			'model'=>$model,
-		));
+
+        $this->render('admin', array('model' => $model));
 	}
 
 	/**
@@ -142,12 +131,15 @@ class AdminSpeciesController extends Controller
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer the ID of the model to be loaded
 	 */
-	public function loadModel($id)
+	public function loadModel(int $id): Species
 	{
-		$model=Species::model()->findByPk($id);
-		if($model===null)
-			throw new CHttpException(404,'The requested page does not exist.');
-		return $model;
+		$model = Species::model()->findByPk($id);
+
+        if (!$model) {
+            throw new CHttpException(404,'The requested page does not exist.');
+        }
+
+        return $model;
 	}
 
 	/**
@@ -156,8 +148,7 @@ class AdminSpeciesController extends Controller
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='species-form')
-		{
+		if (Yii::$app->request->post('ajax') ==='species-form') {
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}

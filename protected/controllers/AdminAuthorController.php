@@ -42,9 +42,7 @@ class AdminAuthorController extends Controller
      */
     public function actionView(int $id)
     {
-        $this->render('view', array(
-            'model' => $this->loadModel($id),
-        ));
+        $this->render('view', array('model' => $this->loadModel($id)));
     }
 
     /**
@@ -61,9 +59,7 @@ class AdminAuthorController extends Controller
                 $this->redirect(array('view', 'id' => $model->id));
         }
 
-        $this->render('create', array(
-            'model' => $model,
-        ));
+        $this->render('create', array('model' => $model));
     }
 
     /**
@@ -83,9 +79,7 @@ class AdminAuthorController extends Controller
                 $this->redirect(array('view', 'id' => $model->id));
         }
 
-        $this->render('update', array(
-            'model' => $model,
-        ));
+        $this->render('update', array('model' => $model));
     }
 
     /**
@@ -99,6 +93,7 @@ class AdminAuthorController extends Controller
         if (!Yii::app()->request->isPostRequest) {
             throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
         }
+
         // we only allow deletion via POST request
         $this->loadModel($id)->delete();
 
@@ -107,6 +102,7 @@ class AdminAuthorController extends Controller
             $returnUrl = Yii::$app->request->post('returnUrl');
             $this->redirect($returnUrl ?: array('admin'));
         }
+
 
         echo CJSON::encode(['success' => 'ok']);
         Yii::app()->end();
@@ -118,9 +114,8 @@ class AdminAuthorController extends Controller
     public function actionIndex()
     {
         $dataProvider = new CActiveDataProvider('Author');
-        $this->render('index', array(
-            'dataProvider' => $dataProvider,
-        ));
+
+        $this->render('index', array('dataProvider' => $dataProvider));
     }
 
     /**
@@ -136,15 +131,18 @@ class AdminAuthorController extends Controller
                     unset(Yii::app()->session['merge_author']);
                 }
             }
-            $this->redirect(array('adminAuthor/admin'));
-        } else if ($user_id && $abort) {
-            unset(Yii::app()->session['attach_user']);
-            Yii::log(__FUNCTION__ . "> unset session var: attach_user", 'info');
-            $this->redirect(array('adminUser/view', 'id' => $user_id));
-        } else {
-            Yii::log(__FUNCTION__ . "> There is a problem with parameters received", 'error');
+
             $this->redirect(array('adminAuthor/admin'));
         }
+        if ($user_id && $abort) {
+            unset(Yii::app()->session['attach_user']);
+            Yii::log(__FUNCTION__ . "> unset session var: attach_user", 'info');
+
+            $this->redirect(array('adminUser/view', 'id' => $user_id));
+        }
+
+        Yii::log(__FUNCTION__ . "> There is a problem with parameters received", 'error');
+        $this->redirect(array('adminAuthor/admin'));
     }
 
 
@@ -161,15 +159,18 @@ class AdminAuthorController extends Controller
                     unset(Yii::app()->session['attach_user']);
                 }
             }
-            $this->redirect(array('adminAuthor/admin'));
-        } else if ($origin_author_id && $abort) {
-            unset(Yii::app()->session['merge_author']);
-            Yii::log(__FUNCTION__ . "> unset session var: merge_author", 'info');
-            $this->redirect(array('adminAuthor/view', 'id' => $origin_author_id));
-        } else {
-            Yii::log(__FUNCTION__ . "> There is a problem with parameters received", 'error');
+
             $this->redirect(array('adminAuthor/admin'));
         }
+        if ($origin_author_id && $abort) {
+            unset(Yii::app()->session['merge_author']);
+            Yii::log(__FUNCTION__ . "> unset session var: merge_author", 'info');
+
+            $this->redirect(array('adminAuthor/view', 'id' => $origin_author_id));
+        }
+
+        Yii::log(__FUNCTION__ . "> There is a problem with parameters received", 'error');
+        $this->redirect(array('adminAuthor/admin'));
     }
 
     public function actionLinkUser(int $id)
@@ -205,11 +206,12 @@ class AdminAuthorController extends Controller
             $this->redirect(array('adminUser/view', 'id' => $user->id));
         }
         Yii::log(__FUNCTION__ . "> error while updating gigadb_user_id in author. " . implode(" ", $author->getErrors()['gigadb_user_id']), 'error');
-
-        Yii::app()->user->setFlash('danger', 'An error occured while saving the author');
+        if ((int)$user->id === (int)Yii::app()->session['attach_user']) {
+            unset(Yii::app()->session['attach_user']);
+        }
+        Yii::app()->user->setFlash('danger', "An error occured while saving the author");
 
         $this->redirect(array('adminUser/view', 'id' => $user->id));
-
 	}
 
     public function actionUnlinkUser(int $id, int $user_id)
@@ -243,9 +245,8 @@ class AdminAuthorController extends Controller
         Yii::app()->user->setFlash('danger', 'Error while saving the related user in author');
 
 
-
-		$this->redirect(array('site/admin'));
-	}
+        $this->redirect(array('site/admin'));
+    }
 
     public function actionMergeAuthors(int $origin_author, int $target_author)
     {
@@ -328,9 +329,7 @@ class AdminAuthorController extends Controller
 
         $this->loadBaBbqPolyfills = true;
 
-        $this->render('admin', array(
-            'model' => $model,
-        ));
+        $this->render('admin', array('model' => $model));
     }
 
     /**

@@ -52,7 +52,7 @@ class DatasetController extends Controller
         return $actions;
     }
 
-    public function actionView($id)
+    public function actionView(int $id)
     {
         // Retrieving the data
         $model = Dataset::model()->find("identifier=?", array($id));
@@ -81,18 +81,17 @@ class DatasetController extends Controller
         $pageSize = Yii::$app->request->post('pageSize');
 
         if ($setting && $pageSize) {
-            $fileSettings = $datasetPageSettings->setFileSettings($setting, $pageSize, $cookies);
+            $fileSettings = $datasetPageSettings->setFileSettings($setting, (int) $pageSize, $cookies);
             $flag = "file";
         }
 
         //configuring samples table
         $sampleSettings = $datasetPageSettings->getSampleSettings($cookies);
 
-        $columns = Yii::$app->request->post('columns');
         $samplePageSize = Yii::$app->request->post('samplePageSize');
-        if (Yii::$app->request->post('columns')) {
-            $sampleSettings = $datasetPageSettings->setSampleSettings($columns, $samplePageSize, $cookies);
-            $flag = "sample";
+        if ($columns = Yii::$app->request->post('columns')) {
+            $sampleSettings = $datasetPageSettings->setSampleSettings($columns, (int)$samplePageSize, $cookies);
+            $flag = 'sample';
         }
 
         // Assembling page components and page settings

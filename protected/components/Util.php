@@ -6,10 +6,7 @@ class Util
     {
         header('Content-type: application/json');
         echo CJSON::encode($data);
-        ob_start();
-        Yii::app()->end(0, false);
-        ob_end_clean();
-        exit(0);
+        Yii::app()->end();
     }
 
     public static function trimText($text)
@@ -21,14 +18,12 @@ class Util
         }
     }
 
-    public static function getDois()
+    public static function getDois(int $option = PDO::FETCH_ASSOC)
     {
-        $dois = Yii::app()->db->createCommand()
+        return Yii::app()->db->createCommand()
                 ->select("id, identifier")
                 ->from("dataset")
                 ->order("id DESC")
-                ->queryAll();
-
-        return $dois;
+                ->queryAll($option);
     }
 }

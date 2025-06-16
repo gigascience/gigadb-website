@@ -778,4 +778,23 @@ class Dataset extends CActiveRecord
 
         return true;
     }
+
+    public function findByStatusAndDate(string $status, string $startDate = null, string $endDate = null)
+    {
+        $criteria = new CDbCriteria;
+        $criteria->condition = 'upload_status = :upload_status';
+        $criteria->params = array(':upload_status' => $status);
+
+        if ($startDate) {
+            $criteria->condition .=' AND publication_date >= :start_date';
+            $criteria->params[':start_date'] = $startDate;
+        }
+        if ($endDate) {
+            $criteria->condition .=' AND publication_date <= :end_date';
+            $criteria->params[':end_date'] = $endDate;
+        }
+        $criteria->order = 'publication_date DESC';
+
+        return Dataset::model()->findAll($criteria);
+    }
 }

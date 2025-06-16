@@ -39,46 +39,35 @@ class PolicyController extends CController {
 			$att = new Attributes;
 			$att->attribute_name = Attributes::FUP;
 			$att->definition = '';
-			$att->save();
+			$att->save(); // TODO: what should we do if it fails
 		}
 		$model->attribute_id = $att->id;
 		$image = new Images;
 
-		if(isset($_POST['DatasetAttributes'])) {
-			$args = $_POST['DatasetAttributes'];
+		if ($args = Yii::$app->request->post('DatasetAttributes')) {
 			$exist = DatasetAttributes::model()->findByAttributes(array('dataset_id'=>$args['dataset_id'], 'attribute_id'=>$att->id));
-			if($exist)
+			if ($exist) {
 				$model = $exist;
+			}
 			$model->attributes = $args;
 			$model->value = '';
 
 			$image->license = "no license";
 			$image->photographer = "no author";
 			$image->source = "gigadb";
-			if($image->validate()) {
-				$image->save();
-			}
-			else {
+			if ($image->validate() && $image->save()) {
+				$model->image_id = $image->id;
+			} else {
 				Yii::log(print_r($image->getErrors(), true), 'debug');
 			}
 
-			if($image) {
-				$model->image_id = $image->id;
-			}
-
-			if($model->validate()) {
-				$model->save();
+			if ($model->validate() && $model->save()) {
 				$this->redirect('/dataset/'.$model->dataset->identifier);
 			}
-			else {
-				Yii::log(print_r($model->getErrors(), true), 'debug');
-			}
-
+			Yii::log(print_r($model->getErrors(), true), 'debug');
 		}
 
-		$this->render('create', array('model'=>$model, 'image'=>$image));
+		$this->render('create', array('model' => $model, 'image' => $image));
 	}
-
 }
-
 ?>

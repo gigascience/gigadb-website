@@ -38,11 +38,11 @@ class DatasetLogController extends Controller
 	 */
 	public function actionView()
 	{
-		if(isset($_GET['id'])) {
-			$this->render('view',array(
-				'model'=>$this->loadModel($_GET['id']),
-			));
-		}
+		if (!$id = Yii::$app->request->get('id')) {
+            throw new CHttpException(400,'Invalid request. No id provided.');
+        }
+
+        $this->render('view', array('model' => $this->loadModel($id)));
 	}
 
 	/**
@@ -51,21 +51,16 @@ class DatasetLogController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new DatasetLog;
+		$model = new DatasetLog;
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
-		if(isset($_POST['DatasetLog']))
-		{
-			$model->attributes=$_POST['DatasetLog'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+		if ($datasetLog = Yii::$app->request->post('DatasetLog')) {
+			$model->attributes = $datasetLog;
+			if ($model->save()) {
+                $this->redirect(array('view', 'id' => $model->id));
+            }
 		}
 
-		$this->render('create',array(
-			'model'=>$model,
-		));
+        $this->render('create', array('model' => $model));
 	}
 
 	/**
@@ -75,23 +70,20 @@ class DatasetLogController extends Controller
 	 */
 	public function actionUpdate()
 	{
-		if(isset($_GET['id'])) {
-			$model=$this->loadModel($_GET['id']);
+		if (!$id = Yii::$app->request->get('id')) {
+            throw new CHttpException(400,'Invalid request. No id provided.');
+        }
 
-			// Uncomment the following line if AJAX validation is needed
-			// $this->performAjaxValidation($model);
+        $model = $this->loadModel($id);
 
-			if(isset($_POST['DatasetLog']))
-			{
-				$model->attributes=$_POST['DatasetLog'];
-				if($model->save())
-					$this->redirect(array('view','id'=>$model->id));
-			}
+        if ($datasetLog = Yii::$app->request->post('DatasetLog')) {
+            $model->attributes = $datasetLog;
+            if ($model->save()) {
+                $this->redirect(array('view', 'id' => $model->id));
+            }
+        }
 
-			$this->render('update',array(
-				'model'=>$model,
-			));
-		}
+        $this->render('update', array('model' => $model));
 	}
 
 	/**
@@ -99,19 +91,21 @@ class DatasetLogController extends Controller
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.
 	 * @param integer $id the ID of the model to be deleted
 	 */
-	public function actionDelete($id)
+	public function actionDelete(int $id)
 	{
-		if(Yii::app()->request->isPostRequest)
-		{
-			// we only allow deletion via POST request
-			$this->loadModel($id)->delete();
+		if(!Yii::app()->request->isPostRequest) {
+            throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+        }
 
-			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-			if(!isset($_GET['ajax']))
-				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
-		}
-		else
-			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+        // we only allow deletion via POST request
+        $this->loadModel($id)->delete();
+
+        // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+        if (!Yii::$app->request->get('ajax')) {
+            $returnUrl = Yii::$app->request->post('returnUrl');
+
+            $this->redirect($returnUrl ?: array('admin'));
+        }
 	}
 
 	/**
@@ -119,15 +113,16 @@ class DatasetLogController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new DatasetLog('search');
+		$model = new DatasetLog('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['DatasetLog']))
-			$model->setAttributes($_GET['DatasetLog']);
+
+        if ($datasetLog = Yii::$app->request->get('DatasetLog')) {
+            $model->setAttributes($datasetLog);
+        }
 
 		$this->loadBaBbqPolyfills = true;
-		$this->render('admin',array(
-			'model'=>$model,
-		));
+
+        $this->render('admin', array('model' => $model));
 	}
 
 	/**
@@ -135,11 +130,14 @@ class DatasetLogController extends Controller
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer the ID of the model to be loaded
 	 */
-	public function loadModel($id)
+	public function loadModel(int $id): DatasetLog
 	{
-		$model=DatasetLog::model()->findByPk($id);
-		if($model===null)
-			throw new CHttpException(404,'The requested page does not exist.');
-		return $model;
+		$model = DatasetLog::model()->findByPk($id);
+
+        if (!$model) {
+            throw new CHttpException(404,'The requested page does not exist.');
+        }
+
+        return $model;
 	}
 }

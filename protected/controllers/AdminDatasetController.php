@@ -85,75 +85,85 @@ class AdminDatasetController extends Controller
 
         $datasetPageSettings = new DatasetPageSettings($dataset);
 
-        if (!empty($_POST['Dataset']) && !empty($_POST['Image'])) {
-        	Yii::log("Processing submitted data", 'info');
-        	$dataset_post_data = $_POST['Dataset'];
-        	if (isset($dataset_post_data['publication_date']) && $dataset_post_data['publication_date'] == "" ) {
-        		$dataset_post_data['publication_date'] = null;
-        	}
-        	if (isset($dataset_post_data['modification_date']) && $dataset_post_data['modification_date'] == "" ) {
-        		$dataset_post_data['modification_date'] = null;
-        	}
-        	if (isset($dataset_post_data['fairnuse']) && $dataset_post_data['fairnuse'] == "" ) {
-        		$dataset_post_data['fairnuse'] = null;
-        	}
-
-            $dataset->setAttributes($dataset_post_data, true);
-            if( !$dataset->validate() ) {
-                Yii::log("Dataset instance is not valid", 'info');
-            }
-
-            $datasetImage = CUploadedFile::getInstanceByName('datasetImage');
-
-            if($datasetImage && !empty($_POST['Image'])) { //User has uploaded an image
-                Yii::log("action Create: image form data exists and a file has been uploaded, so creating a new image object","warning");
-                $dataset->image->attributes = $_POST['Image'];
-                Yii::log($datasetImage->getTempName(), "warning");
-                if( ! $dataset->image->write(Yii::$app->cloudStore, $dataset->getUuid(), $datasetImage) ) {
-                    Yii::log("Error writing file to storage for dataset ".$dataset->identifier, "error");
-                }
-            } else { //we use the generic image
-                $dataset->image = Image::model()->findByPk(Image::GENERIC_IMAGE_ID);
-                Yii::log("action Create: Using generic image","warning");
-            }
-
-
-           	if ( !$dataset->hasErrors() && $dataset->image->validate('update') ) {
-            	Yii::log("Image data associated to new dataset is valid", "info");
-                // save image
-                if( $dataset->image->save() ) {
-	                $dataset->image_id = $dataset->image->id;
-                }
-                else {
-                    Yii::log(print_r($dataset->image->getErrors(), true), "error");
-                }
-
-                // save dataset
-                if( $dataset->save() ) {
-                    // link datatypes
-                    if (isset($_POST['datasettypes'])) {
-                        $datasettypes = $_POST['datasettypes'];
-                        foreach (array_keys($datasettypes) as $id) {
-                            $newDatasetTypeRelationship = new DatasetType;
-                            $newDatasetTypeRelationship->dataset_id = $dataset->id;
-                            $newDatasetTypeRelationship->type_id = $id;
-                            $newDatasetTypeRelationship->save();
-                        }
-                    }
-
-                    Yii::app()->user->setFlash('saveSuccess', 'saveSuccess');
-                    if ($dataset->upload_status=='AuthorReview') {
-                        $this->redirect('/adminDataset/private/identifier/'.$dataset->identifier);
-                    }
-                    $this->redirect(array('/dataset/'.$dataset->identifier));
-                }
-            }
-
-            Yii::log(print_r($dataset->getErrors(), true), 'error');
-
+        $dataset_post_data = Yii::$app->request->post('Dataset');
+        $image = Yii::$app->request->post('Image');
+        if (!$dataset_post_data || !$image) {
+            $this->render('create', array('model'=>$dataset,'datasetPageSettings' => $datasetPageSettings));
         }
 
-        $this->render('create', array('model'=>$dataset,'datasetPageSettings' => $datasetPageSettings)) ;
+        Yii::log("Processing submitted data", 'info');
+        if (isset($dataset_post_data['publication_date']) && $dataset_post_data['publication_date'] === "" ) {
+            $dataset_post_data['publication_date'] = null;
+        }
+        if (isset($dataset_post_data['modification_date']) && $dataset_post_data['modification_date'] === "" ) {
+            $dataset_post_data['modification_date'] = null;
+        }
+        if (isset($dataset_post_data['fairnuse']) && $dataset_post_data['fairnuse'] === "" ) {
+            $dataset_post_data['fairnuse'] = null;
+        }
+
+        $dataset->setAttributes($dataset_post_data, true);
+        if (!$dataset->validate()) {
+            Yii::log("Dataset instance is not valid", 'info');
+            $this->render('create', array('model'=>$dataset,'datasetPageSettings' => $datasetPageSettings));
+        }
+
+        $datasetImage = CUploadedFile::getInstanceByName('datasetImage');
+
+        if ($datasetImage && $image) { //User has uploaded an image
+            Yii::log("action Create: image form data exists and a file has been uploaded, so creating a new image object","warning");
+            $dataset->image->attributes = $image;
+            Yii::log($datasetImage->getTempName(), "warning");
+            if (!$dataset->image->write(Yii::$app->cloudStore, $dataset->getUuid(), $datasetImage)) {
+                Yii::log("Error writing file to storage for dataset ".$dataset->identifier, "error");
+                Yii::app()->user->setFlash('updateError', 'An error occured while writing file to storage.');
+
+                $this->render('create', array('model'=>$dataset,'datasetPageSettings' => $datasetPageSettings));
+            }
+        } else { //we use the generic image
+            $dataset->image = Image::model()->findByPk(Image::GENERIC_IMAGE_ID);
+            Yii::log("action Create: Using generic image","warning");
+        }
+
+        $dataset->image->scenario = 'update';
+        if ($dataset->hasErrors() || !$dataset->image->validate()) {
+            Yii::log(print_r($dataset->getErrors(), true), 'error');
+
+            $this->render('create', array('model'=>$dataset,'datasetPageSettings' => $datasetPageSettings)) ;
+        }
+
+
+        Yii::log("Image data associated to new dataset is valid", "info");
+        // save image
+        if ($dataset->image->save()) {
+            $dataset->image_id = $dataset->image->id;
+        } else {
+            Yii::log(print_r($dataset->image->getErrors(), true), "error");
+        }
+
+        // save dataset
+        if (!$dataset->save()) {
+            Yii::log(print_r($dataset->getErrors(), true), 'error');
+
+            $this->render('create', array('model'=>$dataset,'datasetPageSettings' => $datasetPageSettings)) ;
+        }
+        // link datatypes
+        //TODO: PR - we need at least one datasetType saved
+        if ($datasettypes = Yii::$app->request->post('datasettypes')) {
+            foreach (array_keys($datasettypes) as $id) {
+                $newDatasetTypeRelationship = new DatasetType;
+                $newDatasetTypeRelationship->dataset_id = $dataset->id;
+                $newDatasetTypeRelationship->type_id = $id;
+                $newDatasetTypeRelationship->save();
+            }
+        }
+
+        Yii::app()->user->setFlash('saveSuccess', 'saveSuccess');
+        if ($dataset->upload_status === 'AuthorReview') {
+            $this->redirect('/adminDataset/private/identifier/'.$dataset->identifier);
+        }
+
+        $this->redirect(array('/dataset/'.$dataset->identifier));
     }
 
     /**
@@ -161,26 +171,19 @@ class AdminDatasetController extends Controller
      */
     public function actionAdmin()
     {
+        $criteria = new CDbCriteria(array('order'=>'identifier asc'));
 
-        $criteria=new CDbCriteria(array(
-            'order'=>'identifier asc',
-        ));
+        $dataProvider = new CActiveDataProvider('Dataset', array('criteria'=>$criteria));
 
-        $dataProvider=new CActiveDataProvider('Dataset', array(
-            'criteria'=>$criteria,
-        ));
-
-        $model=new Dataset('search');
+        $model = new Dataset('search');
         $model->unsetAttributes();  // clear any default values
-        if (isset($_GET['Dataset'])) {
-            $model->setAttributes($_GET['Dataset']);
+        if ($dataset = Yii::$app->request->get('Dataset')) {
+            $model->setAttributes($dataset);
         }
 
         $this->loadBaBbqPolyfills = true;
-        $this->render('admin', array(
-            'model'=>$model,
-            'dataProvider'=>$model->search(),
-        ));
+
+        $this->render('admin', array('model'=>$model, 'dataProvider'=>$model->search()));
     }
 
     /**
@@ -188,7 +191,7 @@ class AdminDatasetController extends Controller
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id the ID of the model to be updated
      */
-    public function actionUpdate($id)
+    public function actionUpdate(int $id)
     {
         $hasPartialError = false;
         $model = $this->loadModel($id);
@@ -198,7 +201,7 @@ class AdminDatasetController extends Controller
         if (!$postDataset = Yii::$app->request->post('Dataset')) {
             $this->loadBaBbqPolyfills = true;
 
-            return $this->render('update', array(
+            $this->render('update', array(
                 'model' => $model,
                 'datasetPageSettings' => $datasetPageSettings,
                 'curationlog'=> $dataProvider,
@@ -284,7 +287,7 @@ class AdminDatasetController extends Controller
             }
 
             if ($hasPartialError) {
-                 $this->redirect(array('/adminDataset/update/id/' . $model->id));
+                $this->redirect(array('/adminDataset/update/id/' . $model->id));
             }
 
             Yii::app()->user->setFlash('updateSuccess', 'Updated successfully!');
@@ -307,6 +310,7 @@ class AdminDatasetController extends Controller
 
         $this->loadBaBbqPolyfills = true;
         $this->registerTooltipScript();
+
         $this->render('update', array(
             'model' => $model,
             'datasetPageSettings' => $datasetPageSettings,
@@ -323,7 +327,7 @@ class AdminDatasetController extends Controller
     public function actionPrivate()
     {
         $id = Yii::$app->request->get('identifier');
-        $model= Dataset::model()->find("identifier=?", array($id));
+        $model = Dataset::model()->find("identifier=?", array($id));
         $datasetPageSettings = new DatasetPageSettings($model);
         $pageType = $datasetPageSettings->getPageType();
 
@@ -333,17 +337,17 @@ class AdminDatasetController extends Controller
 
         if ("invalid" === $pageType) {
             $this->redirect('/site/index');
-        } elseif ("public" === $pageType) {
-            $this->redirect('/dataset/'.$model->identifier);
-        } else {
-            $model->token = Yii::$app->security->generateRandomString(16);
-
-            if (!$model->save()) {
-                throw new CHttpException(500, 'Fail to update dataset token');
-            }
-
-            $this->redirect('/dataset/'.$model->identifier.'/token/'.$model->token);
         }
+        if ("public" === $pageType) {
+            $this->redirect('/dataset/'.$model->identifier);
+        }
+        $model->token = Yii::$app->security->generateRandomString(16);
+
+        if (!$model->save()) {
+            throw new CHttpException(500, 'Fail to update dataset token');
+        }
+
+        $this->redirect('/dataset/'.$model->identifier.'/token/'.$model->token);
     }
 
 
@@ -354,14 +358,14 @@ class AdminDatasetController extends Controller
     public function actionClearImageFile()
     {
         $result['status'] = false;
-        if (isset($_POST['doi'])) {
-            $doi = $_POST['doi'];
-            $model = Dataset::model()->findByAttributes([ 'identifier' => $doi ]);
+        if ($doi = Yii::$app->request->post('doi')) {
+            $model = Dataset::model()->findByAttributes(['identifier' => $doi]);
 
-            if ($model->image && $model->image->url && $model->image->deleteFile() )
+            if ($model->image && $model->image->url && $model->image->deleteFile()) {
                 $result['status'] = true;
-            else
-                Yii::log("Failed clearing image file for dataset $doi","error");
+            } else {
+                Yii::log("Failed clearing image file for dataset $doi", 'error');
+            }
         }
 
         echo json_encode($result);
@@ -374,21 +378,21 @@ class AdminDatasetController extends Controller
     public function actionRemoveImage()
     {
         $result['status'] = false;
-        if (isset($_POST['doi'])) {
-            $model = Dataset::model()->findByAttributes([ 'identifier' => $_POST['doi'] ]);
+        if ($doi = Yii::$app->request->post('doi')) {
+            $model = Dataset::model()->findByAttributes(['identifier' => $doi]);
             $oldImageID = $model->image_id;
             $model->image_id = Image::GENERIC_IMAGE_ID;
             if ($model->save()) {
                 try {
-                    if ( Image::model()->findByPk($oldImageID)->delete() )
+                    if (Image::model()->findByPk($oldImageID)->delete()) {
                         $result['status'] = true;
-                    else
-                        Yii::log("Failed deleting image record $oldImageID", "error");
+                    } else {
+                        Yii::log("Failed deleting image record $oldImageID", 'error');
+                    }
                 } catch (CDbException $e) {
                     Yii::log($e->getMessage(),"error");
                 }
-            }
-            else {
+            } else {
                 Yii::log("Failed associating generic image","error");
             }
         }
@@ -527,8 +531,7 @@ class AdminDatasetController extends Controller
     {
         $result = array();
         $result['status'] = false;
-        if (isset($_POST['doi'])) {
-            $doi = $_POST['doi'];
+        if ($doi = Yii::$app->request->post('doi')) {
             if (stristr($doi, "/")) {
                 $temp = explode("/", $doi);
                 $doi = $temp[1];
@@ -549,7 +552,7 @@ class AdminDatasetController extends Controller
      * If the data model is not found, an HTTP exception will be raised.
      * @param integer the ID of the model to be loaded
      */
-    private function loadModel($id)
+    private function loadModel(int $id): Dataset
     {
         $model = Dataset::model()->findByPk($id);
         if ($model === null) {

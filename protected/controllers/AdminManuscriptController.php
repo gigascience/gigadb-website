@@ -36,11 +36,9 @@ class AdminManuscriptController extends Controller
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
 	 */
-	public function actionView($id)
+	public function actionView(int $id)
 	{
-		$this->render('view',array(
-			'model'=>$this->loadModel($id),
-		));
+        $this->render('view', array('model' => $this->loadModel($id)));
 	}
 
 	/**
@@ -58,19 +56,18 @@ class AdminManuscriptController extends Controller
 			$model->attributes = $attrs;
 
 			if ($model->save()) {
-                return $this->redirect(array('view','id'=>$model->id));
-            } else {
-                foreach ($model->getErrors() as $attribute => $errors) {
-                    foreach ($errors as $error) {
-                        $modelWrapper->addError($attribute, $error);
-                    }
+                $this->redirect(array('view','id'=>$model->id));
+            }
+
+            foreach ($model->getErrors() as $attribute => $errors) {
+                foreach ($errors as $error) {
+                    $modelWrapper->addError($attribute, $error);
                 }
             }
+
 		}
 
-		$this->render('create',array(
-			'model'=>$modelWrapper,
-		));
+        $this->render('create', array('model' => $modelWrapper));
 	}
 
 	/**
@@ -78,21 +75,18 @@ class AdminManuscriptController extends Controller
 	 * If update is successful, the browser will be redirected to the 'view' page.
 	 * @param integer $id the ID of the model to be updated
 	 */
-	public function actionUpdate($id)
+	public function actionUpdate(int $id)
 	{
 		$model=$this->loadYii2Model($id);
         $modelWrapper = new LegacyManuscriptForm($model);
 
-        if ($attrs = Yii::$app->request->post('LegacyManuscriptForm'))
-		{
+        if ($attrs = Yii::$app->request->post('LegacyManuscriptForm')) {
 			$model->attributes = $attrs;
 			if ($model->save())
-				return $this->redirect(array('view','id'=>$model->id));
+                $this->redirect(array('view','id' => $model->id));
 		}
 
-		$this->render('update',array(
-			'model'=>$modelWrapper,
-		));
+        $this->render('update', array('model' => $modelWrapper));
 	}
 
 	/**
@@ -100,19 +94,22 @@ class AdminManuscriptController extends Controller
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.
 	 * @param integer $id the ID of the model to be deleted
 	 */
-	public function actionDelete($id)
+	public function actionDelete(int $id)
 	{
-		if(Yii::app()->request->isPostRequest)
-		{
-			// we only allow deletion via POST request
-			$this->loadModel($id)->delete();
+		if (!Yii::app()->request->isPostRequest) {
+            throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+        }
 
-			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-			if(!isset($_GET['ajax']))
-				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
-		}
-		else
-			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+        // we only allow deletion via POST request
+        $this->loadModel($id)->delete();
+
+        // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+        if (!Yii::$app->request->get('ajax')) {
+            $returnUrl = Yii::$app->request->post('returnUrl');
+
+            $this->redirect($returnUrl ?: array('admin'));
+        }
+
 	}
 
 	/**
@@ -120,10 +117,9 @@ class AdminManuscriptController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('Manuscript');
-		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
-		));
+		$dataProvider = new CActiveDataProvider('Manuscript');
+
+        $this->render('index', array('dataProvider' => $dataProvider));
 	}
 
 	/**
@@ -131,15 +127,16 @@ class AdminManuscriptController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new Manuscript('search');
+		$model = new Manuscript('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Manuscript']))
-			$model->setAttributes($_GET['Manuscript']);
+
+        if ($manuscript = Yii::$app->request->get('Manuscript')) {
+            $model->setAttributes($manuscript);
+        }
 
 		$this->loadBaBbqPolyfills = true;
-		$this->render('admin',array(
-			'model'=>$model,
-		));
+
+        $this->render('admin', array('model' => $model));
 	}
 
 	/**
@@ -147,12 +144,14 @@ class AdminManuscriptController extends Controller
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer the ID of the model to be loaded
 	 */
-	public function loadModel($id)
+	public function loadModel(int $id): Manuscript
 	{
-		$model=Manuscript::model()->findByPk($id);
-		if($model===null)
-			throw new CHttpException(404,'The requested page does not exist.');
-		return $model;
+		$model = Manuscript::model()->findByPk($id);
+		if (!$model) {
+            throw new CHttpException(404,'The requested page does not exist.');
+        }
+
+        return $model;
 	}
 
     public function loadYii2Model($id): \GigaDB\models\Manuscript
@@ -172,8 +171,7 @@ class AdminManuscriptController extends Controller
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='manuscript-form')
-		{
+		if (Yii::$app->request->post('ajax') ==='manuscript-form') {
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}

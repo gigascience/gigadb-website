@@ -36,68 +36,77 @@ class AdminUserCommandController extends Controller
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
 	 */
-	public function actionView($id)
+	public function actionView(int $id)
 	{
-		$this->render('view',array(
-			'model'=>$this->loadModel($id),
-		));
+        $this->render('view', array('model' => $this->loadModel($id)));
 	}
 
 	/**
 	 * Validate a claim by linking author with gigadb_user and updating user_command
 	 */
-	public function actionValidate($id)
+	public function actionValidate(int $id)
 	{
-		$claim=$this->loadModel($id);
-		if($claim) {
-			if ("claim_author" == $claim->action_label) {
-				$author = Author::model()->findbyPk($claim->actionable_id);
-				$requester = User::model()->findbyPk($claim->requester_id);
-				$author->gigadb_user_id = $requester->id;
-				if($author->save()) {
-					Yii::log(__FUNCTION__."> author (".$author->id.")/user (".$requester->id. ") linking has been performed", 'warning');
-					$claim->status = "linked";
-					$claim->actioner_id = Yii::app()->user->id;
-					$now = new Datetime();
-					$claim->action_date = $now->format(DateTime::ISO8601);
-					if($claim->save()) {
-						Yii::log(__FUNCTION__."> claim " . $claim->id . " updated as 'linked'", 'warning');
-					}
-					$claim->delete(); //claim record when validated is not needed (job done) and there is log/email for audit
-				}else {
-					Yii::log(__FUNCTION__."> author (".$author->id.")/user (".$requester->id. ") linking failed", 'warning');
-					$claim->status = "validation error";
-					$claim->actioner_id = Yii::app()->user->id;
-					if($claim->save()) {
-						Yii::log(__FUNCTION__."> claim " . $claim->id . " updated as 'validation error'", 'warning');
-					}
-				}
+		$claim = $this->loadModel($id);
 
+        if (!$claim || 'claim_author' !== $claim->action_label) {
+            throw new ChttpException(400, 'Invalid request');
+        }
 
-			}
-		}
+        $author = Author::model()->findbyPk($claim->actionable_id);
+        $requester = User::model()->findbyPk($claim->requester_id);
 
-		$this->redirect(array('adminUser/view/','id' => $requester->id));
+        if ($author || !$requester) {
+            throw new ChttpException(404, 'No author or requester found');
+        }
+
+        $author->gigadb_user_id = $requester->id;
+        if ($author->save()) {
+            Yii::log(__FUNCTION__."> author (".$author->id.")/user (".$requester->id. ") linking has been performed", 'warning');
+            $claim->status = "linked";
+            $claim->actioner_id = Yii::app()->user->id;
+            $now = new Datetime();
+            $claim->action_date = $now->format(DateTime::ISO8601);
+
+            //TODO no rollback?
+            if ($claim->save()) {
+                Yii::log(__FUNCTION__."> claim " . $claim->id . " updated as 'linked'", 'warning');
+            }
+
+            $claim->delete(); //claim record when validated is not needed (job done) and there is log/email for audit
+        } else {
+            Yii::log(__FUNCTION__."> author (".$author->id.")/user (".$requester->id. ") linking failed", 'warning');
+            $claim->status = "validation error";
+            $claim->actioner_id = Yii::app()->user->id;
+            if ($claim->save()) {
+                Yii::log(__FUNCTION__."> claim " . $claim->id . " updated as 'validation error'", 'warning');
+            }
+        }
+
+        $this->redirect(array('adminUser/view/', 'id' => $requester->id));
 
 	}
 
 	/**
 	 * Reject a claim
 	 */
-	public function actionReject($id)
+	public function actionReject(int $id)
 	{
-		$claim=$this->loadModel($id);
-		if($claim) {  //claim record when rejected needs to be kept to prevent someone repeatedly claiming despite rejection
-			if ("claim_author" == $claim->action_label) {
-				$claim->status = "rejected";
-				$claim->actioner_id = Yii::app()->user->id;
-				$now = new Datetime();
-				$claim->action_date = $now->format(DateTime::ISO8601);
-				if($claim->save()) {
-					Yii::app()->user->setFlash('success', "Claimed rejected. No linking performed");
-					Yii::log(__FUNCTION__."> claim " . $claim->id . " updated as 'rejected'", 'warning');
-				}
-			}
+		$claim = $this->loadModel($id);
+
+        if (!$claim) {
+            throw new CHttpException(404, 'No claim found');
+        }
+
+        //claim record when rejected needs to be kept to prevent someone repeatedly claiming despite rejection
+        if ("claim_author" === $claim->action_label) {
+            $claim->status = "rejected";
+            $claim->actioner_id = Yii::app()->user->id;
+            $now = new Datetime();
+            $claim->action_date = $now->format(DateTime::ISO8601);
+            if ($claim->save()) {
+                Yii::app()->user->setFlash('success', "Claimed rejected. No linking performed");
+                Yii::log(__FUNCTION__."> claim " . $claim->id . " updated as 'rejected'", 'warning');
+            }
 		}
 
 		$this->redirect(array('adminUser/update','id' => $claim->requester_id));
@@ -109,23 +118,18 @@ class AdminUserCommandController extends Controller
 	 * If update is successful, the browser will be redirected to the 'view' page.
 	 * @param integer $id the ID of the model to be updated
 	 */
-	public function actionUpdate($id)
+	public function actionUpdate(int $id)
 	{
-		$model=$this->loadModel($id);
+		$model = $this->loadModel($id);
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
-		if(isset($_POST['UserCommand']))
-		{
-			$model->attributes=$_POST['UserCommand'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+		if ($userCommand = Yii::$app->request->post('UserCommand')) {
+			$model->attributes = $userCommand;
+			if ($model->save()) {
+                $this->redirect(array('view','id' => $model->id));
+            }
 		}
 
-		$this->render('update',array(
-			'model'=>$model,
-		));
+        $this->render('update', array('model' => $model));
 	}
 
 	/**
@@ -133,19 +137,21 @@ class AdminUserCommandController extends Controller
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.
 	 * @param integer $id the ID of the model to be deleted
 	 */
-	public function actionDelete($id)
+	public function actionDelete(int $id)
 	{
-		if(Yii::app()->request->isPostRequest)
-		{
-			// we only allow deletion via POST request
-			$this->loadModel($id)->delete();
+		if (!Yii::app()->request->isPostRequest) {
+            throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+        }
 
-			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-			if(!isset($_GET['ajax']))
-				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
-		}
-		else
-			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+        // we only allow deletion via POST request
+        $this->loadModel($id)->delete();
+
+        // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+        if (!Yii::$app->request->get('ajax')) {
+            $returnUrl = Yii::$app->request->post('returnUrl');
+
+            $this->redirect($returnUrl ?: array('admin'));
+        }
 	}
 
 	/**
@@ -153,10 +159,9 @@ class AdminUserCommandController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('UserCommand');
-		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
-		));
+		$dataProvider = new CActiveDataProvider('UserCommand');
+
+        $this->render('index', array('dataProvider' => $dataProvider));
 	}
 
 	/**
@@ -164,14 +169,13 @@ class AdminUserCommandController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new UserCommand('search');
+		$model = new UserCommand('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['UserCommand']))
-			$model->setAttributes($_GET['UserCommand']);
+		if ($userCommand = Yii::$app->request->get('UserCommand')) {
+            $model->setAttributes($userCommand);
+        }
 
-		$this->render('admin',array(
-			'model'=>$model,
-		));
+        $this->render('admin', array('model' => $model));
 	}
 
 	/**
@@ -179,11 +183,13 @@ class AdminUserCommandController extends Controller
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer the ID of the model to be loaded
 	 */
-	public function loadModel($id)
+	public function loadModel(int $id): UserCommand
 	{
-		$model=UserCommand::model()->findByPk($id);
-		if($model===null)
-			throw new CHttpException(404,'The requested page does not exist.');
+		$model = UserCommand::model()->findByPk($id);
+		if (!$model) {
+            throw new CHttpException(404,'The requested page does not exist.');
+        }
+
 		return $model;
 	}
 
@@ -193,8 +199,7 @@ class AdminUserCommandController extends Controller
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='user-command-form')
-		{
+		if (Yii::$app->request->post('ajax') ==='user-command-form') {
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}

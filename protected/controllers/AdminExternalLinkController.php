@@ -40,11 +40,9 @@ class AdminExternalLinkController extends Controller
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
 	 */
-	public function actionView($id)
+	public function actionView(int $id)
 	{
-		$this->render('view',array(
-			'model'=>$this->loadModel($id),
-		));
+        $this->render('view', array('model' => $this->loadModel($id)));
 	}
 
 	/**
@@ -53,24 +51,21 @@ class AdminExternalLinkController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new ExternalLink;
+		$model = new ExternalLink;
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
+		if ($externalLink = Yii::$app->request->post('ExternalLink')) {
+			$model->attributes = $externalLink;
 
-		if(isset($_POST['ExternalLink']))
-		{
-			$model->attributes=$_POST['ExternalLink'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+            if ($model->save()) {
+                $this->redirect(array('view', 'id' => $model->id));
+            }
 		}
 
-		$this->render('create',array(
-			'model'=>$model,
-		));
+        $this->render('create', array('model' => $model));
 	}
 
-         public function actionDelete1($id) {
+    //TODO: not used atm
+     public function actionDelete1($id) {
         if (isset($_SESSION['externalLinks'])) {
             $info = $_SESSION['externalLinks'];
             foreach ($info as $key => $value) {
@@ -85,7 +80,8 @@ class AdminExternalLinkController extends Controller
         }
     }
 
-    public function storeExternalLink(&$model, &$id) {
+    //TODO: not used atm
+    private function storeExternalLink(&$model, &$id) {
 
 
         if (isset($_SESSION['dataset_id'])) {
@@ -103,6 +99,7 @@ class AdminExternalLinkController extends Controller
         return false;
     }
 
+    //TODO: not used atm
     public function actionCreate1() {
         $model = new ExternalLink;
 
@@ -153,12 +150,12 @@ class AdminExternalLinkController extends Controller
         ));
     }
 
-    public function actionAutocomplete() {
-
-        if (isset($_GET['term'])) {
-            $partial_external_link_term = $_GET['term'];
+    public function actionAutocomplete()
+    {
+        if ($partial_external_link_term = Yii::$app->request->get('term')) {
             $autoCompleteServiceForExternalLink = Yii::app()->autocomplete;
             $result = $autoCompleteServiceForExternalLink->findSpeciesLike($partial_external_link_term);
+
             echo CJSON::encode($result);
             Yii::app()->end();
         }
@@ -169,23 +166,18 @@ class AdminExternalLinkController extends Controller
 	 * If update is successful, the browser will be redirected to the 'view' page.
 	 * @param integer $id the ID of the model to be updated
 	 */
-	public function actionUpdate($id)
+	public function actionUpdate(int $id)
 	{
-		$model=$this->loadModel($id);
+		$model = $this->loadModel($id);
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
-		if(isset($_POST['ExternalLink']))
-		{
-			$model->attributes=$_POST['ExternalLink'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+		if ($externalLink = Yii::$app->request->post('ExternalLink')) {
+			$model->attributes = $externalLink;
+			if ($model->save()) {
+                $this->redirect(array('view', 'id' => $model->id));
+            }
 		}
 
-		$this->render('update',array(
-			'model'=>$model,
-		));
+        $this->render('update', array('model'=>$model));
 	}
 
 	/**
@@ -193,19 +185,20 @@ class AdminExternalLinkController extends Controller
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.
 	 * @param integer $id the ID of the model to be deleted
 	 */
-	public function actionDelete($id)
+	public function actionDelete(int $id)
 	{
-		if(Yii::app()->request->isPostRequest)
-		{
-			// we only allow deletion via POST request
-			$this->loadModel($id)->delete();
+		if (!Yii::app()->request->isPostRequest) {
+            throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+        }
 
-			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-			if(!isset($_GET['ajax']))
-				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
-		}
-		else
-			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+        // we only allow deletion via POST request
+        $this->loadModel($id)->delete();
+
+        // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+        if (!Yii::$app->request->get('ajax')) {
+            $returnUrl = Yii::$app->request->post('returnUrl');
+            $this->redirect($returnUrl ?: array('admin'));
+        }
 	}
 
 	/**
@@ -213,10 +206,9 @@ class AdminExternalLinkController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('ExternalLink');
-		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
-		));
+		$dataProvider = new CActiveDataProvider('ExternalLink');
+
+        $this->render('index', array('dataProvider' => $dataProvider));
 	}
 
 	/**
@@ -224,15 +216,16 @@ class AdminExternalLinkController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new ExternalLink('search');
+		$model = new ExternalLink('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['ExternalLink']))
-			$model->setAttributes($_GET['ExternalLink']);
+
+        if ($externalLink = Yii::$app->request->get('ExternalLink')) {
+            $model->setAttributes($externalLink);
+        }
 
 		$this->loadBaBbqPolyfills = true;
-		$this->render('admin',array(
-			'model'=>$model,
-		));
+
+        $this->render('admin', array('model' => $model));
 	}
 
 	/**
@@ -240,11 +233,13 @@ class AdminExternalLinkController extends Controller
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer the ID of the model to be loaded
 	 */
-	public function loadModel($id)
+	public function loadModel(int $id): ExternalLink
 	{
-		$model=ExternalLink::model()->findByPk($id);
-		if($model===null)
-			throw new CHttpException(404,'The requested page does not exist.');
+		$model = ExternalLink::model()->findByPk($id);
+		if (!$model) {
+            throw new CHttpException(404, Yii::t('yii', 'External Link was not found.'));
+        }
+
 		return $model;
 	}
 
@@ -254,46 +249,55 @@ class AdminExternalLinkController extends Controller
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='external-link-form')
-		{
+		if (Yii::$app->request->post('ajax') ==='external-link-form') {
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}
 	}
 
-	public function actionAddExLink() {
-            if(isset($_POST['dataset_id']) && isset($_POST['url']) && isset($_POST['externalLinkType'])) {
+	public function actionAddExLink()
+    {
+        $datasetId = Yii::$app->request->post('dataset_id');
+        $url = Yii::$app->request->post('url');
+        $externalLinkType = Yii::$app->request->post('externalLinkType');
 
-            	$url = $_POST['url'];
-            	if (!preg_match("/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i", $url)) {
-            		Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "The URL is invalid. Please enter a valid URL including http://")));
-	          }
-
-	          $exLink = ExternalLink::model()->findByAttributes(array('dataset_id'=>$_POST['dataset_id'], 'url'=>$url));
-            	if($exLink) {
-            		Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "This external link has been added already.")));
-            	}
-
-            	$exLink = new ExternalLink;
-            	$exLink->dataset_id = $_POST['dataset_id'];
-            	$exLink->url = $url;
-            	$exLink->external_link_type_id = $_POST['externalLinkType'];
-
-            	if($exLink->save()) {
-            		Util::returnJSON(array("success"=>true));
-            	}
-
-                 Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Save Error.")));
-            }
+        if (!$datasetId || !$url || !$externalLinkType) {
+            Util::returnJSON(array('success' => false, 'message' => Yii::t('app', "Can't add the external link")));
         }
 
-        public function actionDeleteExLink() {
-            if(isset($_POST['exLink_id'])) {
-                $exLink = ExternalLink::model()->findByPk($_POST['exLink_id']);
-                if($exLink->delete()) {
-                    Util::returnJSON(array("success"=>true));
-                   }
-                 Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Delete Error.")));
-            }
+
+        if (!preg_match("/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i", $url)) {
+            Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "The URL is invalid. Please enter a valid URL including http://")));
         }
+
+        $exLink = ExternalLink::model()->findByAttributes(array('dataset_id' => $datasetId, 'url' => $url));
+        if ($exLink) {
+            Util::returnJSON(array("success" => false, "message" => Yii::t("app", "This external link has been added already.")));
+        }
+
+        $exLink = new ExternalLink;
+        $exLink->dataset_id = $datasetId;
+        $exLink->url = $url;
+        $exLink->external_link_type_id = $externalLinkType;
+
+        if ($exLink->save()) {
+            Util::returnJSON(array("success" => true));
+        }
+
+        Util::returnJSON(array("success" => false, "message" => Yii::t("app", "Save Error.")));
+
+    }
+
+    public function actionDeleteExLink() {
+        if (!$externalLinkId = Yii::$app->request->post('exLink_id')) {
+            Util::returnJSON(array('success' => false, 'message' => Yii::t('app', 'Delete Error.')));
+        }
+
+        $exLink = ExternalLink::model()->findByPk($externalLinkId);
+        if ($exLink->delete()) {
+            Util::returnJSON(array("success" => true));
+        }
+
+        Util::returnJSON(array("success" => false, "message" =>Yii::t("app", "Delete Error.")));
+    }
 }

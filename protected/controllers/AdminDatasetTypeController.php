@@ -36,11 +36,9 @@ class AdminDatasetTypeController extends Controller
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
 	 */
-	public function actionView($id)
+	public function actionView(int $id)
 	{
-		$this->render('view',array(
-			'model'=>$this->loadModel($id),
-		));
+        $this->render('view', array('model' => $this->loadModel($id)));
 	}
 
 	/**
@@ -49,21 +47,16 @@ class AdminDatasetTypeController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new Type;
+		$model = new Type;
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
-		if(isset($_POST['Type']))
-		{
-			$model->attributes=$_POST['Type'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+		if ($type = Yii::$app->request->post('Type')) {
+			$model->attributes = $type;
+			if ($model->save()) {
+                $this->redirect(array('view','id' => $model->id));
+            }
 		}
 
-		$this->render('create',array(
-			'model'=>$model,
-		));
+        $this->render('create', array('model'=>$model));
 	}
 
 	/**
@@ -71,23 +64,18 @@ class AdminDatasetTypeController extends Controller
 	 * If update is successful, the browser will be redirected to the 'view' page.
 	 * @param integer $id the ID of the model to be updated
 	 */
-	public function actionUpdate($id)
+	public function actionUpdate(int $id)
 	{
-		$model=$this->loadModel($id);
+		$model = $this->loadModel($id);
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
-		if(isset($_POST['Type']))
-		{
-			$model->attributes=$_POST['Type'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+		if ($type = Yii::$app->request->post('Type')) {
+			$model->attributes = $type;
+			if ($model->save()) {
+                $this->redirect(array('view','id' => $model->id));
+            }
 		}
 
-		$this->render('update',array(
-			'model'=>$model,
-		));
+        $this->render('update', array('model' => $model));
 	}
 
 	/**
@@ -95,19 +83,20 @@ class AdminDatasetTypeController extends Controller
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.
 	 * @param integer $id the ID of the model to be deleted
 	 */
-	public function actionDelete($id)
+	public function actionDelete(int $id)
 	{
-		if(Yii::app()->request->isPostRequest)
-		{
-			// we only allow deletion via POST request
-			$this->loadModel($id)->delete();
+		if (!Yii::app()->request->isPostRequest) {
+            throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+        }
+        // we only allow deletion via POST request
+        $this->loadModel($id)->delete();
 
-			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-			if(!isset($_GET['ajax']))
-				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
-		}
-		else
-			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+        // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+        if (!Yii::$app->request->get('ajax')) {
+            $returnUrl = Yii::$app->request->post('returnUrl');
+
+            $this->redirect($returnUrl ?: array('admin'));
+        }
 	}
 
 	/**
@@ -115,10 +104,9 @@ class AdminDatasetTypeController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('Type');
-		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
-		));
+		$dataProvider = new CActiveDataProvider('Type');
+
+        $this->render('index', array('dataProvider' => $dataProvider));
 	}
 
 	/**
@@ -126,15 +114,16 @@ class AdminDatasetTypeController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new Type('search');
+		$model = new Type('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Type']))
-			$model->setAttributes($_GET['Type']);
+
+        if ($type = Yii::$app->request->get('Type')) {
+            $model->setAttributes($type);
+        }
 
 		$this->loadBaBbqPolyfills = true;
-		$this->render('admin',array(
-			'model'=>$model,
-		));
+
+        $this->render('admin',array('model'=>$model));
 	}
 
 	/**
@@ -142,12 +131,15 @@ class AdminDatasetTypeController extends Controller
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer the ID of the model to be loaded
 	 */
-	public function loadModel($id)
+	public function loadModel(int $id): Type
 	{
-		$model=Type::model()->findByPk($id);
-		if($model===null)
-			throw new CHttpException(404,'The requested page does not exist.');
-		return $model;
+		$model = Type::model()->findByPk($id);
+
+        if (!$model) {
+            throw new CHttpException(404,'The requested page does not exist.');
+        }
+
+        return $model;
 	}
 
 	/**
@@ -156,8 +148,7 @@ class AdminDatasetTypeController extends Controller
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='type-form')
-		{
+		if (Yii::$app->request->post('ajax') ==='type-form') {
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}
