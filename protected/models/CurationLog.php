@@ -103,16 +103,15 @@ class CurationLog extends CActiveRecord
     /**
      * Builds a full name from first and last names, trimming whitespace and filtering out empty values.
      *
-     * @param string $firstName The first name.
-     * @param string $lastName The last name.
+     * @param string|null $firstName The first name.
+     * @param string|null $lastName The last name.
      * @return string The full name, or an empty string if both names are empty.
      */
-    public static function buildFullName(string $firstName, string $lastName): string
+    public static function buildFullName(?string $firstName, ?string $lastName): string
     {
         $firstName = trim($firstName);
         $lastName = trim($lastName);
-        $fullName = implode(' ', array_filter([$firstName, $lastName]));
-        return trim($fullName);
+        return implode(' ', array_filter([$firstName, $lastName]));
     }
 
     /**
