@@ -16,7 +16,7 @@ setup () {
   fi
   
   # Run Excel upload tool
-  cd ../../../excel-spreadsheet-uploader || exit
+  cd "${TOOLS_DIR}/excel-spreadsheet-uploader" || exit
   echo '# Ingesting Excel file for dataset 102498' >&3
   run ./execute.sh
 }
