@@ -25,6 +25,7 @@ class CurationLogTest extends CTestCase
     {
         $originalUser = Yii::app()->getComponent('user');
 
+        // Mock the WebUser component to simulate a logged-in user
         $mockUser = $this->getMockBuilder(WebUser::class)
             ->setMethods(['getFirstName', 'getLastName'])
             ->disableOriginalConstructor()
@@ -39,6 +40,7 @@ class CurationLogTest extends CTestCase
         $fullName = CurationLog::getCurrentUserFullName();
         $this->assertEquals('John Doe', $fullName);
 
+        // Restore the original user component
         Yii::app()->setComponent('user', $originalUser);
     }
 
