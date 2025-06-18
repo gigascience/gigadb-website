@@ -262,7 +262,6 @@ class DatabaseSearch extends CApplicationComponent
         $criteria['display'] = $display;
 
         $model->criteria = CJSON::encode($model->attributes, true);
-
         $resultset = nil;
         if ("search" === $searchType) {
             $resultset = $this->search($criteria, "full");

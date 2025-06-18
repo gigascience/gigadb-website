@@ -412,14 +412,12 @@ class AcceptanceTester extends \Codeception\Actor
     public function iShouldSeeTheTableWithTheFollowingRows(\Behat\Gherkin\Node\TableNode $table)
     {
         $rows = $table->getRows();
+        $tableRows = array_filter($this->grabMultiple('table tbody tr'));
         foreach ($rows as $index => $expectedRow) {
             $expectedRow = array_map(function ($item) {
                 return $item === '' ? ' ' : $item;
             }, $expectedRow);
             $expectedRow = implode(' ', $expectedRow);
-            $tableRows = array_filter($this->grabMultiple('table tr'));
-            //remove headers and search bar
-            $tableRows = array_slice($tableRows, 2);
             $toDelete = array("\n", ', opens in a new window');
             $cleanTableRows = array_map(function ($val) use($toDelete) {
                 return str_replace($toDelete, ' ', $val);

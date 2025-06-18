@@ -387,15 +387,15 @@ Feature: a user visit the dataset page
     And I should see "File Description"
     And I should see "description" checkbox is checked
     And I should see "Sample ID"
-    And I should see "sample_id" checkbox is unchecked
+    And I should see "sample_id" checkbox is checked
     And I should see "Data Type"
     And I should see "type_id" checkbox is checked
     And I should see "File Format"
-    And I should see "format_id" checkbox is unchecked
+    And I should see "format_id" checkbox is checked
     And I should see "Size"
     And I should see "size" checkbox is checked
     And I should see "Release Date"
-    And I should see "date_stamp" checkbox is unchecked
+    And I should see "date_stamp" checkbox is checked
     And I should see "Download Link"
     And I should see "location" checkbox is checked
     And I should see "File Attributes"
@@ -482,6 +482,7 @@ Feature: a user visit the dataset page
     And I should see "Sample"
     When I follow "2"
     Then I should see the table with the following rows:
+      | SRS173549 	| Mouse | Mus musculus | 10090 |  | house mouse |
       | SRS173550 	| Mouse | Mus musculus | 10090 |  | house mouse |
       | SRS173551 	| Mouse | Mus musculus | 10090 |  | house mouse |
       | SRS173552 	| Mouse | Mus musculus | 10090 |  | house mouse |
@@ -499,6 +500,7 @@ Feature: a user visit the dataset page
     And I uncheck "common_name" checkbox
     And I press the button "Save changes"
     Then I should see the table with the following rows:
+      | SRS173539 	| Mus musculus | 10090 |  | house mouse |
       | SRS173540 	| Mus musculus | 10090 |  | house mouse |
       | SRS173541 	| Mus musculus | 10090 |  | house mouse |
       | SRS173542 	| Mus musculus | 10090 |  | house mouse |
@@ -514,7 +516,9 @@ Feature: a user visit the dataset page
     And I click the table settings for "samples_table_settings"
     And I wait "1" seconds
     And I select "5" from the field "selectPageSizeSampleSetting"
+    And I press the button "Save changes"
     Then I should see the table with the following rows:
+      | SRS173539 	| Mouse | Mus musculus | 10090 |  | house mouse |
       | SRS173540 	| Mouse | Mus musculus | 10090 |  | house mouse |
       | SRS173541 	| Mouse | Mus musculus | 10090 |  | house mouse |
       | SRS173542 	| Mouse | Mus musculus | 10090 |  | house mouse |

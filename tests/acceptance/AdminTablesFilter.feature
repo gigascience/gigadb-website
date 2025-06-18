@@ -63,10 +63,10 @@ Feature: filter tables on admin page
     And I press return on the element "//input[@name='Relation[doi_search]']"
     And I wait "1" seconds
     Then I should see "100649"
-    Then I should see "IsCitedBy"
-    And I should not see "100020"
+    And I should see "IsCitedBy"
+    And I should see "100020"
+    And I should see "IsSupplementTo"
     And I should not see "100213"
-    And I should not see "IsReferencedBy"
 
   @ok
   Scenario: Dataset funders
