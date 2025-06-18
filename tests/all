@@ -2,5 +2,6 @@
 
 set -e -u
 
+./tests/unit_functional_runner
 ./tests/functional_runner
 ./tests/acceptance_runner
