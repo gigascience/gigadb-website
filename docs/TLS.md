@@ -117,7 +117,7 @@ OR
 
 5.2 Manually in the dockerhost server as below: 
 ```
-[ec2-user@ip-10-99-0-200 ~]$ docker run --rm -v kencho-gigadb-website_le_config:/etc/letsencrypt -v kencho-gigadb-website_le_webrootpath:/var/www/.le certbot/certbot certonly -d ec2-staging.gigadb.link -d portainer.ec2-staging.gigadb.link -d www.ec2-staging.gigadb.link
+[ec2-user@ip-10-99-0-200 ~]$ docker run --rm -v kencho-gigadb-website_le_config:/etc/letsencrypt -v kencho-gigadb-website_le_webrootpath:/var/www/.le certbot/certbot certonly -d ec2-staging.gigadb.link -d portainer.ec2-staging.gigadb.link
 Saving debug log to /var/log/letsencrypt/letsencrypt.log
 Account registered.
 Requesting a certificate for ec2-staging.gigadb.link and portainer.ec2-staging.gigadb.link
