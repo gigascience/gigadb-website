@@ -11,10 +11,12 @@ source "./.env"
 source "./.secrets"
 
 # Path to the certs
+CERT_PEM=/etc/letsencrypt/archive/$REMOTE_HOSTNAME/cert1.pem
 FULLCHAIN_PEM=/etc/letsencrypt/archive/$REMOTE_HOSTNAME/fullchain1.pem
 PRIVATE_PEM=/etc/letsencrypt/archive/$REMOTE_HOSTNAME/privkey1.pem
 CHAIN_PEM=/etc/letsencrypt/archive/$REMOTE_HOSTNAME/chain1.pem
 
+CERT_LINK=/etc/letsencrypt/live/$REMOTE_HOSTNAME/cert.pem
 FULLCHAIN_LINK=/etc/letsencrypt/live/$REMOTE_HOSTNAME/fullchain.pem
 PRIVATE_LINK=/etc/letsencrypt/live/$REMOTE_HOSTNAME/privkey.pem
 CHAIN_LINK=/etc/letsencrypt/live/$REMOTE_HOSTNAME/chain.pem
@@ -29,12 +31,22 @@ fi
 # Definition of functions
 renew_cert() {
     echo "Read content of files"
+    cert=$($DOCKER_COMPOSE run --rm config cat $CERT_PEM)
     fullchain=$($DOCKER_COMPOSE run --rm config cat $FULLCHAIN_PEM)
     privkey=$($DOCKER_COMPOSE run --rm config cat $PRIVATE_PEM)
     chain=$($DOCKER_COMPOSE run --rm config cat $CHAIN_PEM)
 
   	echo "Renewing the certificate for $REMOTE_HOSTNAME"
   	$DOCKER_COMPOSE run --rm certbot renew
+  	echo "Backup the cert to gitlab variable"
+  	if [ $cert_pem_remote_exists == "true" ];then
+  	  echo "/usr/bin/curl --show-error --silent --request PUT --write-out 'HTTP Response code: %{http_code}' --url '$CI_API_V4_URL/projects/$encoded_gitlab_project/variables/tls_cert_pem?filter%5benvironment_scope%5d=$GIGADB_ENV' --header 'PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN' --form 'environment_scope=$GIGADB_ENV' --form 'value=\$cert'"
+      $DOCKER_COMPOSE run --rm config bash -c "/usr/bin/curl --show-error --silent --request PUT --write-out 'HTTP Response code: %{http_code}' --url '$CI_API_V4_URL/projects/$encoded_gitlab_project/variables/tls_cert_pem?filter%5benvironment_scope%5d=$GIGADB_ENV' --header 'PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN' --form 'environment_scope=$GIGADB_ENV' --form 'value=$cert'"
+  	else
+  	  echo "/usr/bin/curl --show-error --silent --request POST --write-out 'HTTP Response code: %{http_code}' --url '$CI_API_V4_URL/projects/$encoded_gitlab_project/variables' --header 'PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN' --form 'environment_scope=$GIGADB_ENV' --form 'key=tls_cert_pem' --form 'value=\$cert'"
+      $DOCKER_COMPOSE run --rm config bash -c "/usr/bin/curl -L --show-error --silent --request POST --write-out 'HTTP Response code: %{http_code}' --url '$CI_API_V4_URL/projects/$encoded_gitlab_project/variables' --header 'PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN' --form 'environment_scope=$GIGADB_ENV' --form 'key=tls_cert_pem' --form 'value=$cert'"
+  	fi
+
   	echo "Backup the fullchain cert to gitlab variable"
   	if [ $fullchain_pem_remote_exists == "true" ];then
   	  echo "/usr/bin/curl --show-error --silent --request PUT --write-out 'HTTP Response code: %{http_code}' --url '$CI_API_V4_URL/projects/$encoded_gitlab_project/variables/tls_fullchain_pem?filter%5benvironment_scope%5d=$GIGADB_ENV' --header 'PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN' --form 'environment_scope=$GIGADB_ENV' --form 'value=\$fullchain'"
@@ -43,6 +55,7 @@ renew_cert() {
   	  echo "/usr/bin/curl --show-error --silent --request POST --write-out 'HTTP Response code: %{http_code}' --url '$CI_API_V4_URL/projects/$encoded_gitlab_project/variables' --header 'PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN' --form 'environment_scope=$GIGADB_ENV' --form 'key=tls_fullchain_pem' --form 'value=\$fullchain'"
       $DOCKER_COMPOSE run --rm config bash -c "/usr/bin/curl -L --show-error --silent --request POST --write-out 'HTTP Response code: %{http_code}' --url '$CI_API_V4_URL/projects/$encoded_gitlab_project/variables' --header 'PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN' --form 'environment_scope=$GIGADB_ENV' --form 'key=tls_fullchain_pem' --form 'value=$fullchain'"
   	fi
+
     echo "Backup the private key to gitlab variable"
   	if [ $privkey_pem_remote_exists == "true" ];then
   	  echo "/usr/bin/curl --show-error --silent --request PUT --write-out 'HTTP Response code: %{http_code}' --url '$CI_API_V4_URL/projects/$encoded_gitlab_project/variables/tls_privkey_pem?filter%5benvironment_scope%5d=$GIGADB_ENV' --header 'PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN' --form 'environment_scope=$GIGADB_ENV' --form 'value=\$privkey'"
@@ -51,6 +64,7 @@ renew_cert() {
   	  echo "/usr/bin/curl --show-error --silent --request POST --write-out 'HTTP Response code: %{http_code}' --url '$CI_API_V4_URL/projects/$encoded_gitlab_project/variables' --header 'PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN' --form 'environment_scope=$GIGADB_ENV' --form 'key=tls_privkey_pem' --form 'value=\$privkey'"
       $DOCKER_COMPOSE run --rm config bash -c "/usr/bin/curl -L --show-error --silent --request POST --write-out 'HTTP Response code: %{http_code}' --url '$CI_API_V4_URL/projects/$encoded_gitlab_project/variables' --header 'PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN' --form 'environment_scope=$GIGADB_ENV' --form 'key=tls_privkey_pem' --form 'value=$privkey'"
   	fi
+
   	echo "Backup the chain cert to gitlab variable"
   	if [ $chain_pem_remote_exists == "true" ];then
   	  echo "/usr/bin/curl --show-error --silent --request PUT --write-out 'HTTP Response code: %{http_code}' --url '$CI_API_V4_URL/projects/$encoded_gitlab_project/variables/tls_chain_pem?filter%5benvironment_scope%5d=$GIGADB_ENV' --header 'PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN' --form 'environment_scope=$GIGADB_ENV' --form 'value=\$chain'"
@@ -65,6 +79,13 @@ fetch_cert_from_gitlab() {
     echo "Making the directories to store the certificate files"
     $DOCKER_COMPOSE run --rm config mkdir -vp /etc/letsencrypt/archive/$REMOTE_HOSTNAME
     $DOCKER_COMPOSE run --rm config mkdir -vp /etc/letsencrypt/live/$REMOTE_HOSTNAME
+
+    echo "Get cert  cert from gitlab"
+    $DOCKER_COMPOSE run --rm config bash -c "/usr/bin/curl --show-error --silent \
+      --request GET --url '$CI_API_V4_URL/projects/$encoded_gitlab_project/variables/tls_cert_pem?filter%5benvironment_scope%5d=$GIGADB_ENV' \
+      --header 'PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN' | cat | jq -r '.value' > /etc/letsencrypt/archive/$REMOTE_HOSTNAME/cert1.pem"
+    $DOCKER_COMPOSE run --rm config ln -fs /etc/letsencrypt/archive/$REMOTE_HOSTNAME/cert1.pem /etc/letsencrypt/live/$REMOTE_HOSTNAME/cert.pem
+
     echo "Get fullchain cert from gitlab"
     $DOCKER_COMPOSE run --rm config bash -c "/usr/bin/curl --show-error --silent \
       --request GET --url '$CI_API_V4_URL/projects/$encoded_gitlab_project/variables/tls_fullchain_pem?filter%5benvironment_scope%5d=$GIGADB_ENV' \
@@ -94,11 +115,13 @@ make_new_cert() {
     echo "Read content of files"
     $DOCKER_COMPOSE run --rm config mkdir -vp /etc/letsencrypt/archive/$REMOTE_HOSTNAME
     $DOCKER_COMPOSE run --rm config mkdir -vp /etc/letsencrypt/live/$REMOTE_HOSTNAME
+    cert=$($DOCKER_COMPOSE run --rm config cat $CERT_PEM)
     fullchain=$($DOCKER_COMPOSE run --rm config cat $FULLCHAIN_PEM)
     privkey=$($DOCKER_COMPOSE run --rm config cat $PRIVATE_PEM)
     chain=$($DOCKER_COMPOSE run --rm config cat $CHAIN_PEM)
     echo "And then backup the newly created cert to GitLab"
     echo "/usr/bin/curl --show-error --silent --request POST --url '$CI_API_V4_URL/projects/$encoded_gitlab_project/variables' --header 'PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN' --form 'environment_scope=$GIGADB_ENV' --form 'key=tls_fullchain_pem' --form 'value=$fullchain'"
+    $DOCKER_COMPOSE run --rm config bash -c "/usr/bin/curl --show-error --silent --request POST --write-out 'HTTP Response code: %{http_code}' --url '$CI_API_V4_URL/projects/$encoded_gitlab_project/variables' --header 'PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN' --form 'environment_scope=$GIGADB_ENV' --form 'key=tls_cert_pem' --form 'value=$cert'"
     $DOCKER_COMPOSE run --rm config bash -c "/usr/bin/curl --show-error --silent --request POST --write-out 'HTTP Response code: %{http_code}' --url '$CI_API_V4_URL/projects/$encoded_gitlab_project/variables' --header 'PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN' --form 'environment_scope=$GIGADB_ENV' --form 'key=tls_fullchain_pem' --form 'value=$fullchain'"
     $DOCKER_COMPOSE run --rm config bash -c "/usr/bin/curl --show-error --silent --request POST --write-out 'HTTP Response code: %{http_code}' --url '$CI_API_V4_URL/projects/$encoded_gitlab_project/variables' --header 'PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN' --form 'environment_scope=$GIGADB_ENV' --form 'key=tls_privkey_pem' --form 'value=$privkey'"
     $DOCKER_COMPOSE run --rm config bash -c "/usr/bin/curl --show-error --silent --request POST --write-out 'HTTP Response code: %{http_code}' --url '$CI_API_V4_URL/projects/$encoded_gitlab_project/variables' --header 'PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN' --form 'environment_scope=$GIGADB_ENV' --form 'key=tls_chain_pem' --form 'value=$chain'"
@@ -109,6 +132,12 @@ cert_files_local_exists=$($DOCKER_COMPOSE run --rm config bash -c "test -f $FULL
 echo "cert_files_local_exists: $cert_files_local_exists"
 
 echo "To see if they could be found in gitlab"
+if ! [ -z "$tls_cert_pem" ]; then
+  cert_pem_remote_exists="true"
+else
+  cert_pem_remote_exists="false"
+fi
+
 if ! [ -z "$tls_fullchain_pem" ];then
   fullchain_pem_remote_exists="true"
 else
@@ -127,6 +156,8 @@ else
   chain_pem_remote_exists="false"
 fi
 
+
+echo "cert_pem_remote_exists: $cert_pem_remote_exists"
 echo "fullchain_pem_remote_exists: $fullchain_pem_remote_exists"
 echo "privkey_pem_remote_exists: $privkey_pem_remote_exists"
 echo "chain_pem_remote_exists: $chain_pem_remote_exists"
@@ -137,8 +168,8 @@ if [[ $cert_files_local_exists == 'true' ]];then
   renew_cert
 else
   echo "Certs do not exist in the filesystem"
-  if [[ $fullchain_pem_remote_exists == "true" && $privkey_pem_remote_exists == "true" && $chain_pem_remote_exists == "true" ]];then
-    echo "Certs fullchain, privkey and chain could be found in gitlab"
+  if [[ $cert_pem_remote_exists == "true" || $fullchain_pem_remote_exists == "true" || $privkey_pem_remote_exists == "true" || $chain_pem_remote_exists == "true" ]];then
+    echo "Certs cert, fullchain, privkey or chain could be found in gitlab"
     fetch_cert_from_gitlab
     echo "now that the cert files are present locally, lets renew them"
     renew_cert
