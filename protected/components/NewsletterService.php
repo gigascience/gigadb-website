@@ -20,7 +20,7 @@ class NewsletterService extends CApplicationComponent
     public $list_id;
 
     /**
-     * @var \DrewM\MailChimp\MailChimp $newsletter_api Mailchimp client object.
+     * @var MailChimpClient $newsletter_api Mailchimp client object.
      * Get value set in __construct or in $this->init
      */
     public $newsletter_api;
@@ -33,7 +33,7 @@ class NewsletterService extends CApplicationComponent
         if (null !== $newsletter_api) {
             $this->newsletter_api = $newsletter_api;
         } elseif (null != $api_key) {
-            $this->newsletter_api = new \DrewM\MailChimp\MailChimp($this->api_key);
+            $this->newsletter_api = new MailChimpClient($this->api_key);
         }
     }
 
@@ -49,7 +49,7 @@ class NewsletterService extends CApplicationComponent
         parent::init();
 
         if (null == $this->newsletter_api) {
-            $this->newsletter_api = new \DrewM\MailChimp\MailChimp($this->api_key);
+            $this->newsletter_api = new MailChimpClient($this->api_key);
         }
     }
 

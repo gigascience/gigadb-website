@@ -16,7 +16,7 @@ class NewsletterServiceTest extends Unit
         $api_key = "abc123abc123abc123abc123abc123-us1";
         $list_id = "123456";
 
-        $mailchimp = $this->getMockBuilder('\DrewM\MailChimp\MailChimp')
+        $mailchimp = $this->getMockBuilder(MailChimpClient::class)
                           ->setConstructorArgs([$api_key])
                           ->setMethods(['post', 'success'])
                           ->getMock();
@@ -45,7 +45,7 @@ class NewsletterServiceTest extends Unit
         $email = "foo@bar.com";
         $hash_string = "sfskdfhsdgsdg";
 
-        $mailchimp = $this->getMockBuilder('\DrewM\MailChimp\MailChimp')
+        $mailchimp = $this->getMockBuilder(MailChimpClient::class)
                           ->setConstructorArgs([$api_key])
                           ->setMethods(['subscriberHash', 'delete', 'success'])
                           ->getMock();
@@ -77,7 +77,7 @@ class NewsletterServiceTest extends Unit
         $email = "foo@bar.com";
         $hash_string = "sfskdfhsdgsdg";
 
-        $mailchimp = $this->getMockBuilder('\DrewM\MailChimp\MailChimp')
+        $mailchimp = $this->getMockBuilder(MailChimpClient::class)
                           ->setConstructorArgs([$api_key])
                           ->setMethods(['get', 'success'])
                           ->getMock();
