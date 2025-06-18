@@ -87,6 +87,7 @@
 
 - name: Copy script to renew TLS certificates
   hosts: name_gigadb_webserver_{{gigadb_env}}*
+  become: yes
   tags:
     - setup-tls-certs
 
@@ -97,7 +98,7 @@
         dest: /home/ec2-user/.tls-certs-secrets
         owner: ec2-user
         group: ec2-user
-        mode: '0644'
+        mode: '0600'
 
     - name: Copy script
       ansible.builtin.copy:
@@ -105,7 +106,7 @@
         dest: /usr/local/bin/renew_cert
         owner: ec2-user
         group: ec2-user
-        mode: a+x
+        mode: '0755'
 
     - name: Create directory for renew detection
       ansible.builtin.file:
@@ -117,7 +118,7 @@
 
     - name: Create log file
       ansible.builtin.file:
-        path: /var/log/renew_certs.log
+        path: /var/log/renew_cert.log
         state: touch
         group: root
         owner: ec2-user
@@ -130,7 +131,7 @@
         minute: "0"
         hour: "0"
         user: "ec2-user"
-        job: "/usr/local/bin/renew_cert > /var/log/renew_certs.log 2>&1"
+        job: "/usr/local/bin/renew_cert > /var/log/renew_cert.log 2>&1"
         state: present
 
 - name: Install node exporter
