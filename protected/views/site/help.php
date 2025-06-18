@@ -26,6 +26,7 @@ $this->pageTitle = 'GigaDB - Help';
                 <li id="livocabulary" role="presentation"><a href="#vocabulary" aria-controls="vocabulary" role="tab" data-toggle="tab" aria-selected="false">Controlled vocabulary</a></li>
                 <li id="liapi" role="presentation"><a href="#interface" aria-controls="interface" role="tab" data-toggle="tab" aria-selected="false">Application programming interface</a></li>
                 <li id="licommenting" role="presentation"><a href="#commenting" aria-controls="commenting" role="tab" data-toggle="tab" aria-selected="false">Commenting on Datasets</a></li>
+                <li id="lirrid" role="presentation"><a href="#rrid" aria-controls="rrid" role="tab" data-toggle="tab" aria-selected="false">RRID</a></li>
             </ul>
             <div class="tab-content">
                 <div role="tabpanel" class="tab-pane active" id="search" aria-labelledby="lisearch">
@@ -915,6 +916,9 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242&lt;</pre>
                 </div>
                 <div role="tabpanel" class="tab-pane" id="commenting" aria-labelledby="licommenting">
                     <?php $this->renderPartial('_help_commenting'); ?>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="rrid" aria-labelledby="lirrid">
+                    <?php $this->renderPartial('_help_rrid'); ?>
                 </div>
             </div>
         </div>
