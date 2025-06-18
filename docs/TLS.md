@@ -54,11 +54,11 @@ The nginx configuration is defined in template ``ops/configuration/nginx-conf/si
 
 #### Pre-requisite
 
-Here are the mamual steps for the developers who want to make certbot work just after freshly spinning up the dockerhost server.
+Here are the manual steps for the developers who want to make certbot work just after freshly spinning up the dockerhost server.
 
 1. Developer's production environments has been up and running as described in [SETUP_PROVISIONING.md](SETUP_PROVISIONING.md) and [SETUP_PROVISIONING.md](SETUP_CI_CD_PIPELINE.md)
 2. Test the certbot commands manually to confirm:
-From developer's production dockerhost server, the certbot certificates and  certbot renew command cannot work properly, because the file /etc/letsencrypt/renewal/$REMOTEHOST_NAME.conf is not exist as mentioned in the [certbot documentation](https://eff-certbot.readthedocs.io/en/stable/using.html#configuration-file).
+From developer's production dockerhost server, the certbot certificates and  certbot renew command cannot work properly, because the file /etc/letsencrypt/renewal/$REMOTE_HOSTNAME.conf is not exist as mentioned in the [certbot documentation](https://eff-certbot.readthedocs.io/en/stable/using.html#configuration-file).
 ```
 [ec2-user@ip-10-99-0-200 ~]$ docker run --rm -v kencho-gigadb-website_le_config:/etc/letsencrypt -v kencho-gigadb-website_le_webrootpath:/var/www/.le certbot/certbot certificates
 Saving debug log to /var/log/letsencrypt/letsencrypt.log
@@ -95,7 +95,7 @@ lrwxrwxrwx. 1 root root 63 May 15 13:54 fullchain.pem -> /etc/letsencrypt/archiv
 lrwxrwxrwx. 1 root root 61 May 15 13:55 privkey.pem -> /etc/letsencrypt/archive/ec2-staging.gigadb.link/privkey1.pem
 ```
 
-4. In order to make certbot work which requires a renewal config file, all the existing certs have to been removed first, which can be done by:
+4. In order to make certbot work which requires a renewal config file, all the existing certs have to be removed first, which can be done by:
 
 4.1 Delete all the existing certs by going to your gitlab pipeline and execute the job sd_teardown or ld_teardown.
 
@@ -117,7 +117,7 @@ OR
 
 5.2 Manually in the dockerhost server as below: 
 ```
-[ec2-user@ip-10-99-0-200 ~]$ docker run --rm -v kencho-gigadb-website_le_config:/etc/letsencrypt -v kencho-gigadb-website_le_webrootpath:/var/www/.le certbot/certbot certonly -d ec2-staging.gigadb.link -d portainer.ec2-staging.gigadb.link
+[ec2-user@ip-10-99-0-200 ~]$ docker run --rm -v kencho-gigadb-website_le_config:/etc/letsencrypt -v kencho-gigadb-website_le_webrootpath:/var/www/.le certbot/certbot certonly -d ec2-staging.gigadb.link -d portainer.ec2-staging.gigadb.link -d www.ec2-staging.gigadb.link
 Saving debug log to /var/log/letsencrypt/letsencrypt.log
 Account registered.
 Requesting a certificate for ec2-staging.gigadb.link and portainer.ec2-staging.gigadb.link
@@ -254,7 +254,7 @@ drwx------. 7 ec2-user ec2-user 4096 May  9 08:27 ..
 
 #### Implementation of `renew_cert.sh` script
 
-The above steps are implemented in the script `op/scripts/renew_cert.sh` which will only serve the purpose of certbot renewal process.
+The above steps are implemented in the script `ops/scripts/renew_cert.sh` which will only serve the purpose of certbot renewal process.
 The script will only work with the presence of the `/etc/letsencrpt/renewal/$REMOTE_HOSTNAME.conf` file, which can created by running the `certbot certonly` command as mentioned in the above step 5.
 The script will also check if the certs are renewed successfully by checking the `cert_renewed_successfully` file in the `cert_renew_detection` folder on the dockerhost server.
 With the presence of the `cert_renewed_successfully` file, the script will 
