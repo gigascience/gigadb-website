@@ -52,25 +52,6 @@ module "efs" {
 
   # Access point(s)
   access_points = {
-    dropbox_area = {
-
-      name = "dropbox-area-${var.identity.arn}-${var.deployment_target}"
-
-      posix_user = {
-        gid            = 1000
-        uid            = 1000
-      }
-
-      root_directory = {
-        path = "/share/dropbox"
-        creation_info = {
-          owner_gid   = 1000
-          owner_uid   = 1000
-          permissions = "755"
-        }
-      }
-
-    }
 
     configuration_area = {
 
