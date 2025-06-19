@@ -18,7 +18,7 @@ server {
     add_header                Access-Control-Allow-Headers '*';
 
 
-    server_name $SERVER_HOSTNAME web gigadb.dev gigadb.test;
+    server_name $SERVER_HOSTNAME alt-$SERVER_HOSTNAME web gigadb.dev gigadb.test gigadb.org staging.gigadb.org alt-staging.gigadb.host alt-live.gigadb.host;
 
 
     root /var/www;
