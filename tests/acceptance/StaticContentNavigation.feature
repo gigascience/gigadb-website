@@ -81,6 +81,12 @@ Feature: A user visit gigadb website
     When I go to a page tab "/site/help#commenting"
     Then I should see "Commenting on our datasets"
 
+  @ok @issue-2325
+  Scenario: The anchor tag is working for RRID tab
+    Given I am on "/site/help"
+    When I go to a page tab "/site/help#rrid"
+    Then I should see "GigaScience RRID list"
+
   @ok @issue-872
   Scenario: Scroll bar is found in tables in guide page
     When I am on "/site/guide"
