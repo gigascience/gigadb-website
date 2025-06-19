@@ -87,11 +87,13 @@ DO \$$
 DECLARE
   bucketdir_value TEXT := current_setting('gigasci.bucketdir');
   expected_row_changes INTEGER;
-  actual_row_changes INTEGER;
+  wasabi_rows INTEGER;
+  -- There are 2 datasets with wasabi links in dev data
+  wasabi_datasets_before_test INTEGER = 2; 
 BEGIN
   SELECT COUNT(*) INTO expected_row_changes FROM dataset_changes;
-  SELECT COUNT(*) INTO actual_row_changes FROM dataset WHERE ftp_site LIKE '%' || bucketdir_value || '%';
-  ASSERT actual_row_changes = expected_row_changes, 'No. of row changes in dataset table does not equal no. of rows in dataset_changes table!';
+  SELECT COUNT(*) INTO wasabi_rows FROM dataset WHERE ftp_site LIKE '%' || bucketdir_value || '%';
+  ASSERT (wasabi_rows - wasabi_datasets_before_test) = expected_row_changes, 'No. of row changes in dataset table does not equal no. of rows in dataset_changes table!';
 END
 \$$;
 \echo Asserted that all rows in temporary table were copied into dataset table
@@ -160,11 +162,13 @@ DO \$$
 DECLARE
   bucketdir_value TEXT := current_setting('gigasci.bucketdir');
   expected_row_changes INTEGER;
-  actual_row_changes INTEGER;
+  wasabi_rows INTEGER;
+  -- There are 4 files with wasabi links in dev data
+  wasabi_files_before_test INTEGER = 4; 
 BEGIN
   SELECT COUNT(*) INTO expected_row_changes FROM file_changes;
-  SELECT COUNT(*) INTO actual_row_changes FROM file WHERE location LIKE '%' || bucketdir_value || '%';
-  ASSERT actual_row_changes = expected_row_changes, 'No. of row changes in file table does not equal no. of rows in file_changes table!';
+  SELECT COUNT(*) INTO wasabi_rows FROM file WHERE location LIKE '%' || bucketdir_value || '%';
+  ASSERT (wasabi_rows - wasabi_files_before_test) = expected_row_changes, 'No. of row changes in file table does not equal no. of rows in file_changes table!';
 END
 \$$;
 \echo Asserted that all rows in temporary table were copied into file table
