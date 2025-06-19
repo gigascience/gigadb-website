@@ -522,7 +522,7 @@ class Dataset extends CActiveRecord
         $publisher->addAttribute('schemeURI', 'https://www.re3data.org/');
 
         //<publicationYear>2014</publicationYear>
-        $publication_date = new DateTime($this->publication_date);
+        $publication_date = new DateTime($this->publication_date ?: 'now');
         $xml->addChild('publicationYear', $publication_date->format('Y'));
 
         //<subjects>
