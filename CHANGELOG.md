@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #2325: Add "GigaScience RRID list" help tab panel
 - Feat #2324: Add "Commenting on our datasets" help tab panel
 
 ## v4.4.13 - 2025-06-13 - 26083397b -
