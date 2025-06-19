@@ -38,6 +38,12 @@ teardown () {
         rm "$file"
     fi
   done
+  
+  echo "Resetting dev database..." >&3
+  cd ${TOOLS_DIR}
+  cd ../../../ 
+  ./ops/scripts/setup_devdb.sh dev  
+  cd gigadb/app/tools/files-metadata-console || exit
 }
 
 @test "Test postUpload.sh" {
