@@ -324,6 +324,48 @@ graph TD
 % env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories mount_object_storage_playbook.yml -e "gigadb_env=staging"
 ```
 
+```
+[ec2-user@ip-10-99-0-97 ~]$ ls -al /rclone
+total 0
+drwxr-xr-x.  1 root root   0 Jun 20 15:26 .
+dr-xr-xr-x. 21 root root 274 Jun 20 09:00 ..
+[ec2-user@ip-10-99-0-97 ~]$ mkdir -p /rclone/share/dropbox
+[ec2-user@ip-10-99-0-97 ~]$ ls -al /rclone/share/dropbox/
+total 0
+drwxr-xr-x. 1 root root 0 Jun 20 15:29 .
+drwxr-xr-x. 1 root root 0 Jun 20 15:29 ..
+[ec2-user@ip-10-99-0-97 ~]$ ls -al /rclone/share/
+total 0
+drwxr-xr-x. 1 root root 0 Jun 20 15:29 .
+drwxr-xr-x. 1 root root 0 Jun 20 15:26 ..
+drwxr-xr-x. 1 root root 0 Jun 20 15:29 dropbox
+[ec2-user@ip-10-99-0-97 ~]$ mkdir -p /rclone/share/dropbox/user101
+[ec2-user@ip-10-99-0-97 ~]$ echo "hello word!" > /rclone/share/dropbox/user101/test.txt
+[ec2-user@ip-10-99-0-97 ~]$ ls -al /rclone/share/dropbox/user101/test.txt
+-rw-r--r--. 1 root root 12 Jun 20 15:30 /rclone/share/dropbox/user101/test.txt
+[ec2-user@ip-10-99-0-97 ~]$ cat /rclone/share/dropbox/user101/test.txt
+hello word!
+[ec2-user@ip-10-99-0-97 ~]$ sudo cat /var/log/gigadb/rclone-r2.log
+2025/06/20 15:26:25 INFO  : S3 bucket test-gigadb-dropbox: poll-interval is not supported by this remote
+2025/06/20 15:26:25 INFO  : vfs cache: cleaned: objects 0 (was 0) in use 0, to upload 0, uploading 0, total size 0 (was 0)
+2025/06/20 15:27:25 INFO  : vfs cache: cleaned: objects 0 (was 0) in use 0, to upload 0, uploading 0, total size 0 (was 0)
+2025/06/20 15:28:25 INFO  : vfs cache: cleaned: objects 0 (was 0) in use 0, to upload 0, uploading 0, total size 0 (was 0)
+2025/06/20 15:29:25 INFO  : vfs cache: cleaned: objects 0 (was 0) in use 0, to upload 0, uploading 0, total size 0 (was 0)
+2025/06/20 15:30:25 INFO  : vfs cache: cleaned: objects 0 (was 0) in use 0, to upload 0, uploading 0, total size 0 (was 0)
+2025/06/20 15:30:36 INFO  : share/dropbox/user101/test.txt: vfs cache: queuing for upload in 5s
+2025/06/20 15:30:44 INFO  : share/dropbox/user101/test.txt: Copied (new)
+2025/06/20 15:30:44 INFO  : share/dropbox/user101/test.txt: vfs cache: upload succeeded try #1
+2025/06/20 15:31:25 INFO  : vfs cache: cleaned: objects 1 (was 1) in use 0, to upload 0, uploading 0, total size 12 (was 12)
+2025/06/20 15:32:25 INFO  : vfs cache: cleaned: objects 1 (was 1) in use 0, to upload 0, uploading 0, total size 12 (was 12)
+2025/06/20 15:33:25 INFO  : vfs cache: cleaned: objects 1 (was 1) in use 0, to upload 0, uploading 0, total size 12 (was 12)
+[ec2-user@ip-10-99-0-97 ~]$ ls -al /tmp/cache/rclone/
+total 0
+drwxr-xr-x. 4 ec2-user ec2-user 32 Jun 20 15:08 .
+drwxr-xr-x. 3 ec2-user ec2-user 20 Jun 20 09:10 ..
+drwx------. 3 root     root     16 Jun 20 15:08 vfs
+drwx------. 3 root     root     16 Jun 20 15:08 vfsMeta
+```
+
 ### References
 - [s3fs-fuse](https://github.com/s3fs-fuse/s3fs-fuse)
 - [rclone mount](https://rclone.org/commands/rclone_mount)

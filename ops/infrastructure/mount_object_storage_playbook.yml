@@ -17,21 +17,28 @@
         - "/tmp/cache/rclone"
         - "/rclone"
 
+    - name: Install fuse package
+      ansible.builtin.dnf:
+        name:
+          - fuse
+          - fuse-devel
+        state: present
+
     - name: Check if rclone is available
-      ansible.builtin.command: rclone --version
+      ansible.builtin.command: /usr/local/bin/rclone --version
       register: rclone_check
       failed_when: rclone_check.rc != 0
       changed_when: false
 
     - name: Check remote object storage is available
-      ansible.builtin.command: usr/local/bin/rclone rclone lsd r2:test-gigadb-dropbox
+      ansible.builtin.command: /usr/local/bin/rclone --config /home/ec2-user/.config/rclone/rclone.conf lsd r2:test-gigadb-dropbox
       register: remote_object_storage_check
       failed_when: remote_object_storage_check.rc != 0
       changed_when: false
 
     - name: Mount object storage using rclone
-      ansible.builtin.command: |
-        usr/local/bin/rclone --config /home/ec2-user/.config/rclone/rclone.conf mount r2:test-gigadb-dropbox /rclone \
+      ansible.builtin.command: >
+        /usr/local/bin/rclone --config /home/ec2-user/.config/rclone/rclone.conf mount r2:test-gigadb-dropbox /rclone \
         --daemon \
         --cache-dir /tmp/cache/rclone \
         --vfs-cache-mode full \
@@ -43,3 +50,10 @@
         --log-level INFO
       register: mount_rclone
       when: rclone_check.rc == 0 and remote_object_storage_check.rc == 0
+
+    - name: Confirm the rclone is mounted
+      ansible.builtin.command:
+        cmd: mountpoint /rclone
+      register: rclone_mount_check
+      changed_when: false
+      failed_when: rclone_mount_check.stdout == "/rclone is not a mountpoint"
