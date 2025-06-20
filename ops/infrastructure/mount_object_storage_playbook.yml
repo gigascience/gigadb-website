@@ -1,0 +1,45 @@
+---
+# use rclone to mount object storage to the bastion server
+
+
+- name: Create mountpoint using rclone
+  hosts: name_bastion_server_{{gigadb_env}}*
+
+  tasks:
+    - name: Create directory for mounting
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        mode: '0755'
+        owner: ec2-user
+        group: ec2-user
+      loop:
+        - "/tmp/cache/rclone"
+        - "/rclone"
+
+    - name: Check if rclone is available
+      ansible.builtin.command: rclone --version
+      register: rclone_check
+      failed_when: rclone_check.rc != 0
+      changed_when: false
+
+    - name: Check remote object storage is available
+      ansible.builtin.command: usr/local/bin/rclone rclone lsd r2:test-gigadb-dropbox
+      register: remote_object_storage_check
+      failed_when: remote_object_storage_check.rc != 0
+      changed_when: false
+
+    - name: Mount object storage using rclone
+      ansible.builtin.command: |
+        usr/local/bin/rclone --config /home/ec2-user/.config/rclone/rclone.conf mount r2:test-gigadb-dropbox /rclone \
+        --daemon \
+        --cache-dir /tmp/cache/rclone \
+        --vfs-cache-mode full \
+        --vfs-cache-max-size 10G \
+        --vfs-read-chunk-size 32M \
+        --vfs-read-chunk-size-limit 2G \
+        --allow-other \
+        --log-file /var/log/gigadb/rclone-r2.log \
+        --log-level INFO
+      register: mount_rclone
+      when: rclone_check.rc == 0 and remote_object_storage_check.rc == 0

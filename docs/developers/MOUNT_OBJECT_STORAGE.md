@@ -318,6 +318,12 @@ graph TD
 
 ```
 
+### Using ansible to mount object storage
+
+```
+% env OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES ansible-playbook -i ../../inventories mount_object_storage_playbook.yml -e "gigadb_env=staging"
+```
+
 ### References
 - [s3fs-fuse](https://github.com/s3fs-fuse/s3fs-fuse)
 - [rclone mount](https://rclone.org/commands/rclone_mount)

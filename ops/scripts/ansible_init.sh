@@ -39,6 +39,7 @@ cp ../../bastion_playbook.yml .
 cp ../../users_playbook.yml .
 cp ../../monitoring_playbook.yml .
 cp ../../bootstrap_playbook.yml .
+cp ../../mount_object_storage_playbook.yml .
 
 # Update Gitlab gigadb_db_host variable with RDS instance address from terraform-inventory
 rds_inst_addr=$(../../inventories/terraform-inventory.sh --list ./ | jq -r '.all.vars.rds_instance_address')
