@@ -4,6 +4,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #2236: Display pre print manuscript on dataset page
+
 ## v4.4.13 - 2025-06-13 - 26083397b - live since 2025-06-16 
 
 - Feat #199: Reorder home page sections
