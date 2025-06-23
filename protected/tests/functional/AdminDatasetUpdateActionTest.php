@@ -110,31 +110,6 @@ class AdminDatasetUpdateActionTest extends FunctionalTesting
         
 
     }
-
-    public function testSetUploadToPublished() {
-
-        $testDOI = "100142";
-        $curationEntry = "Status changed to Published";
-        // set upload status to the  UserUploadingData
-        $this->setUpDatasetUploadStatus($this->dbh_gigadb, "$testDOI","Private");
-        // ensure there is a filedrop_account
-        $filedropAccountId = $this->makeFiledropAccountRecord($this->dbh_fuw,"$testDOI", $curationEntry);
-        //admin user logs in
-        $this->loginToWebSiteWithSessionAndCredentialsThenAssert(
-            "admin@gigadb.org",
-            "gigadb",
-            "Admin");
-        
-        $this->session->visit($this->url);
-        $this->session->getPage()->selectFieldOption("Dataset_upload_status", "Published");
-        $this->session->getPage()->pressButton("Save");
-        $this->session->visit($this->url);
-        $this->assertTrue($this->session->getPage()->hasContent($curationEntry));
-        
-
-    }
-
-
 }
 
 ?>

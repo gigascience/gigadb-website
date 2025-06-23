@@ -205,6 +205,7 @@ class AdminDatasetController extends Controller
         }
 
         Yii::log('**** new attributes: ' . print_r($postDataset, true), 'warning');
+        Yii::app()->user->setFlash('updateError', '');
         $uploadStatus = $postDataset['upload_status'];
         $previousUploadStatus = $model->upload_status;
 
@@ -221,6 +222,16 @@ class AdminDatasetController extends Controller
         $model->manuscript_id = $postDataset['manuscript_id'] ?? null;
 
         $model->setAttributes($postDataset);
+
+        if ($model->upload_status === 'Published' && !$model->is_publishable) {
+            Yii::app()->user->setFlash('updateError', 'You can\'t update published datasets without minting the DOI.');
+           return  $this->render('update', array(
+                'model' => $model,
+                'datasetPageSettings' => $datasetPageSettings,
+                'curationlog'=> $dataProvider,
+                'dataset_id'=> $id,
+            ));
+        }
 
         // Image information
         $datasetImage = CUploadedFile::getInstanceByName('datasetImage');
@@ -390,6 +401,7 @@ class AdminDatasetController extends Controller
      */
     public function actionMint()
     {
+        $onlyDoiChecked = Yii::app()->request->getPost('check');
         $user = User::model()->findByPk(Yii::app()->user->id);
 
         if (!$user) {
@@ -424,7 +436,8 @@ class AdminDatasetController extends Controller
         $client = Yii::$container->get('guzzleHttpClient');
 
         if (!$dataset || in_array($dataset->upload_status, $status_array)) {
-            $result['error'] = 'Please, check the dataset and the status';
+            $reason = !$dataset ? 'Please, save your dataset before trying to mint a DOI' : 'Please, check the upload status of your dataset';
+            $result['error'] = $reason;
             echo json_encode($result);
             Yii::app()->end();
         }
@@ -437,6 +450,20 @@ class AdminDatasetController extends Controller
         ]);
         $result['doi_response'] = $doiResponse->getBody()->getContents();
         $result['check_doi_status'] = $doiResponse->getStatusCode();
+
+        if (200 === $result['check_doi_status']) {
+            $dataset->is_publishable = true;
+            $dataset->upload_status = 'Incomplete' === $dataset->upload_status ? 'ImportFromEM' : $dataset->upload_status;
+            if(!$dataset->save()) {
+                throw new CHttpException(500, "An error occurred: Couldn't save the dataset");
+            }
+        }
+
+        if ($onlyDoiChecked) {
+            echo json_encode($result);
+            Yii::app()->end();
+        }
+
         $isPresent = in_array($result['check_doi_status'], [200, 204]);
         $log .= sprintf(' | Check DOI: %s', $isPresent ? "OK" : "DOI doesn't exist");
 
@@ -466,6 +493,9 @@ class AdminDatasetController extends Controller
 
             $logMessageXml = 201 === $result[$keyStatus] ? 'Sent DataCite XML' : 'Failed to send DataCite XML';
             CurationLog::createGeneralCurationLogEntry($dataset->id, $logMessageXml, $xml_data, $userName);
+            if (201 === $result[$keyStatus]) {
+                $result['xml'] = $xml_data;
+            }
 
             if (201 === $result[$keyStatus] && 404 === $result['check_doi_status']) {
                 $result['doi_data'] = 'doi=' . $mds_prefix . '/' . $doi . "\n" . 'url=http://gigadb.org/dataset/' . $doi;
