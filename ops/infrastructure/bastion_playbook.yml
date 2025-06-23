@@ -437,46 +437,6 @@
         install_manpages: "true"
         rclone_config_location: "/home/ec2-user/.config/rclone/rclone.conf"
 
-- name: Create mount point using rclone
-  hosts: name_bastion_server_{{gigadb_env}}*
-  become: yes
-  tags:
-    - mount-r2
-
-  tasks:
-    - name: Create a directory for mounting rclone remote
-      ansible.builtin.file:
-        path: "{{ item }}"
-        state: directory
-        mode: '0755'
-        owner: ec2-user
-        group: ec2-user
-      loop:
-        - "/rclone"
-        - "/tmp/cache/rclone"
-
-    - name: Mount R2 remote using rclone
-      ansible.builtin.command: |
-        /usr/local/bin/rclone --config /home/ec2-user/.config/rclone/rclone.conf mount r2:test-gigadb-dropbox /rclone \
-          --cache-dir /tmp/cache/rclone \
-          --allow-other \
-          --vfs-cache-mode full \
-          --vfs-cache-max-age 1h \
-          --vfs-cache-max-size 1G \
-          --vfs-read-chunk-size 32M \
-          --vfs-read-chunk-size-limit 2G \
-          --log-file /var/log/gigadb/rclone-r2.log \
-          --log-level INFO \
-          --daemon
-
-    - name: Confirm the rclone is mounted
-      ansible.builtin.command:
-        cmd: mountpoint /rclone
-      register: rclone_mount_check
-      changed_when: false
-      failed_when: rclone_mount_check.stdout == "/rclone is not a mountpoint"
-
-
 - name: Mount AWS efs access points
   hosts: name_bastion_server_{{gigadb_env}}*
   become: yes
