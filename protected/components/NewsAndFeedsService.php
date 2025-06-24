@@ -95,4 +95,30 @@ class NewsAndFeedsService extends CApplicationComponent
 
         return $feed;
     }
+
+    /**
+     * Returns a limited number of published datasets sorted by publication date
+     *
+     * @param int $limit Maximum number of datasets to return
+     * @return array Array of Dataset models
+     */
+    public function getFeedDatasets(int $limit = 10): array
+    {
+        $model = new Dataset();
+        $model->unsetAttributes();
+
+        $criteria = new CDbCriteria();
+        $criteria->addCondition("upload_status = 'Published'");
+        $criteria->order = 'publication_date DESC';
+
+        if (isset($_GET['Dataset'])) {
+            $model->setAttributes($_GET['Dataset']);
+        }
+
+        $dataProvider = $model->search();
+        $dataProvider->criteria->mergeWith($criteria);
+        $dataProvider->pagination->pageSize = $limit;
+
+        return $dataProvider->getData();
+    }
 }

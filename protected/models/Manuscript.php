@@ -20,10 +20,18 @@ class Manuscript extends CActiveRecord
 	 * @return Manuscript the static model class
 	 */
     public $doi_search;
+    public ?bool $is_pre_print = false;
+
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
 	}
+
+    public function init()
+    {
+        parent::init();
+        $this->is_pre_print = 0;
+    }
 
 	/**
 	 * @return string the associated database table name
@@ -44,6 +52,8 @@ class Manuscript extends CActiveRecord
 			array('identifier, dataset_id', 'required'),
 			array('pmid, dataset_id', 'numerical', 'integerOnly'=>true),
 			array('identifier', 'length', 'max'=>32),
+            array('is_pre_print', 'boolean'),
+            array('is_pre_print', 'default', 'value'=>'0'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, identifier, pmid, dataset_id , doi_search', 'safe', 'on'=>'search'),

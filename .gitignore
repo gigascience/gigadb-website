@@ -66,7 +66,6 @@ phpcs.xml
 # Composer
 bin
 vendor
-composer.json
 
 # deployment
 .env

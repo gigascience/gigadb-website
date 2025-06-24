@@ -192,20 +192,80 @@ input[type="checkbox"] {
       }
     }
   }
+
+  @media (max-width: @screen-sm-max) {
+    .form-group {
+      margin-left: 0;
+      margin-right: 0;
+
+      .control-label {
+        float: none;
+        width: 100%;
+        text-align: left;
+        margin-bottom: 10px;
+      }
+
+      .form-control {
+        display: block;
+        width: 100%;
+      }
+    }
+    .checkbox-horizontal {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      grid-template-rows: auto auto;
+      grid-template-areas: "input label" "error error" "desc desc";
+      gap: 4px;
+      .control-label {
+        grid-area: label;
+        margin-bottom: 0;
+      }
+      .input-wrapper {
+        grid-area: input;
+      }
+      .form-control {
+        width: auto;
+      }
+      .checkbox-error {
+        grid-area: error;
+      }
+      .checkbox-desc {
+        grid-area: desc;
+      }
+    }
+  }
 }
 
 .form-inverted-checkbox {
   display: flex;
+  align-items: center;
   width: 100%;
   margin-bottom: 10px;
-  input[type="checkbox"] {
+  input[type="checkbox"].form-control {
     margin: 0 0 0 90px;
     padding-top: 0px;
   }
-  label {
+  label.control-label {
     margin-left: 25px;
     padding-top: 0px;
     margin-bottom: 0;
+  }
+}
+
+@media (max-width: @screen-sm-max) {
+  .form-horizontal .form-inverted-checkbox {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    input[type="checkbox"].form-control {
+      margin: 0;
+      width: auto;
+      height: auto;
+    }
+    label.control-label {
+      margin: 0;
+    }
   }
 }
 
@@ -320,4 +380,11 @@ fieldset {
   *display: inline;
   *zoom: 1;
   margin-top: -30px;
+}
+
+.captcha {
+  width: 100%;
+  .captcha-image {
+    max-width: 200px;
+  }
 }

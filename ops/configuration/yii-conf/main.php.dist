@@ -69,6 +69,10 @@ return CMap::mergeArray(array(
     ),
 
     'components'=>array(
+        'request' => [
+            'enableCsrfValidation' => true,
+            'enableCookieValidation' => true,
+        ],
         'format'=>array(
             'class'=>'application.extensions.CTypeFormatter'
         ),

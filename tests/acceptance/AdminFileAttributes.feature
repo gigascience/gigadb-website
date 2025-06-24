@@ -1,4 +1,4 @@
-@ok-can-offline @admin-file @issue-457
+@admin-file @issue-457
 Feature: A curator can manage file attributes in admin file update page
   As a curator
   I want to manage file attributes from the update form

@@ -1,13 +1,27 @@
-/* advisory */
+.advisory-img-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+@media (max-width: @screen-md-max) {
+  .advisory-img-row {
+    justify-content: flex-start;
+  }
+}
 .advisory-img-block img {
   width: 100%;
   margin-bottom: 10px;
   border: 1px solid @color-light-gray;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 .advisory-img-block {
-  width: 20%;
   text-align: center;
+  margin-bottom: 20px;
 }
 .advisory-img-block p {
   margin-bottom: 30px;
+  text-align: center;
 }
