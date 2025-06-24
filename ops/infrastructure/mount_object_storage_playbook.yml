@@ -26,15 +26,17 @@
 
     - name: Check if rclone is available
       ansible.builtin.command: /usr/local/bin/rclone --version
-      register: rclone_check
-      failed_when: rclone_check.rc != 0
-      changed_when: false
+      register: rclone_status_check
+      failed_when: rclone_status_check.rc != 0
 
     - name: Check remote object storage is available
       ansible.builtin.command: /usr/local/bin/rclone --config /home/ec2-user/.config/rclone/rclone.conf lsd r2:test-gigadb-dropbox
       register: remote_object_storage_check
       failed_when: remote_object_storage_check.rc != 0
-      changed_when: false
+
+    - name: Check whether rclone is already mounted
+      ansible.builtin.command: mountpoint /rclone
+      register: rclone_mount_check
 
     - name: Mount object storage using rclone
       ansible.builtin.command: >
@@ -49,11 +51,11 @@
         --log-file /var/log/gigadb/rclone-r2.log \
         --log-level INFO
       register: mount_rclone
-      when: rclone_check.rc == 0 and remote_object_storage_check.rc == 0
+      when: rclone_status_check.rc == 0 and remote_object_storage_check.rc == 0 and rclone_mount_check.stdout != "/rclone is a mountpoint"
+      changed_when: false
 
     - name: Confirm the rclone is mounted
       ansible.builtin.command:
         cmd: mountpoint /rclone
       register: rclone_mount_check
-      changed_when: false
       failed_when: rclone_mount_check.stdout == "/rclone is not a mountpoint"
