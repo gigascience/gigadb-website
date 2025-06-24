@@ -22,6 +22,11 @@ set +a
 echo "Current environment: $GIGADB_ENV"
 
 set -a
+if [[ $GIGADB_ENV = "dev" ]];then
+    # To avoid set external: true warning message
+    echo -e 'networks:\n  proxy-db-tier:\n    name: deployment_db-tier\n    external: true' > docker-compose.override.yml
+fi
+
 if [[ $GIGADB_ENV != "dev" && $GIGADB_ENV != "CI" ]];then
     GIGADB_HOST=$gigadb_db_host
     GIGADB_USER=$gigadb_db_user

@@ -7,6 +7,16 @@ Go to `gigadb/app/tools/files-metadata-console` and create a .env file:
 $ docker-compose run --rm configure
 ```
 
+> [NOTE]
+> Ensure this step has created a `docker-compose.override.yml` file in the root 
+> of the files-metadata-console directory in your dev environment. This file 
+> will allow you to avoid the `Set external: true` warning message below:
+```bash
+$ ../../../../scripts/filesMetaToDb.sh 102722
+WARN[0000] a network with name deployment_db-tier exists but was not created for project "files-metadata-console".
+Set external: true to use an existing network
+```
+
 Update the .env file with values for REPO_NAME and GITLAB_PRIVATE_TOKEN. Re-run
 `docker-compose run --rm configure` to create a .secrets file and other 
 configuration files in config directory.
