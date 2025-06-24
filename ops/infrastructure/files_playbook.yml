@@ -88,6 +88,28 @@
       group: ec2-user
       mode: 0644
 
+- name: Set up and configuration of rclone on bastion server
+  hosts: name_gigadb_filesserver_{{gigadb_env}}*
+  tags:
+    - rclone-tool
+
+  tasks:
+    - name: Create rclone config
+      template:
+        src: ../../../../ops/configuration/rclone-conf/rclone.conf.j2
+        dest: /home/ec2-user/.config/rclone/rclone.conf
+        owner: ec2-user
+        group: ec2-user
+        mode: 0644
+
+    - name: Install rclone
+      ansible.builtin.include_role:
+        name: ansible-rclone
+      vars:
+        rclone_version: "1.60.0"
+        rclone_arch: "amd64"
+        install_manpages: "true"
+        rclone_config_location: "/home/ec2-user/.config/rclone/rclone.conf"
 
 - name: Install node exporter
   hosts: name_gigadb_filesserver_{{gigadb_env}}*
