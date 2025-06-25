@@ -370,6 +370,160 @@ drwx------. 3 root     root     16 Jun 20 15:08 vfs
 drwx------. 3 root     root     16 Jun 20 15:08 vfsMeta
 ```
 
+### Create ftp user for testing
+
+```
+% ssh -i ~/.ssh/id-rsa-aws-stockholm-ken.pem -o ProxyCommand="ssh -W %h:%p -i ~/.ssh/id-rsa-aws-stockholm-ken.pem ec2-user@$bastion-ip" ec2-user@file-private-ip
+[ec2-user@ip-10-99-0-79 ~]$ ls -al /rclone/
+total 0
+drwxr-xr-x.  1 root root   0 Jun 25 06:57 .
+dr-xr-xr-x. 21 root root 274 Jun 25 06:38 ..
+[ec2-user@ip-10-99-0-79 ~]$ findmnt -n /rclone
+/rclone r2:test-gigadb-dropbox fuse.rclone rw,nosuid,nodev,relatime,user_id=0,group_id=0,allow_other
+[ec2-user@ip-10-99-0-79 ~]$ mountpoint /rclone
+/rclone is a mountpoint
+[ec2-user@ip-10-99-0-79 ~]$ mount | grep 'rclone'
+r2:test-gigadb-dropbox on /rclone type fuse.rclone (rw,nosuid,nodev,relatime,user_id=0,group_id=0,allow_other)
+[ec2-user@ip-10-99-0-79 ~]$ touch make_dropbox_rclone.sh
+[ec2-user@ip-10-99-0-79 ~]$ vi make_dropbox_rclone.sh 
+#!/usr/bin/env bash
+
+set -e
+
+touch ./new_dropboxes_rclone.txt
+date >> ./new_dropboxes.txt
+for username in "$@"; do
+  echo "Generating password for user $username:"
+  password=$(tr -dc A-Za-z0-9 </dev/urandom | head -c 13; echo)
+  echo $password > /tmp/$username.pass
+  echo $password >> /tmp/$username.pass
+  echo "$username:$password" >> ./new_dropboxes_rclone.txt
+  echo "Making directory in /share/dropbox"
+  mkdir -p /rclone/share/dropbox/$username
+  echo "Creating FTP account"
+  docker compose exec -T ftpd pure-pw useradd $username -f /etc/pure-ftpd/passwd/pureftpd.passwd -m -u dropboxuser -d /home/$username < /tmp/$username.pass
+  echo "Cleaning up"
+  rm /tmp/$username.pass
+done
+[ec2-user@ip-10-99-0-79 ~]$ ls -al make_dropbox_rclone.sh 
+-rwxr-xr-x. 1 ec2-user ec2-user 683 Jun 25 07:49 make_dropbox_rclone.sh
+[ec2-user@ip-10-99-0-79 ~]$ ls -al /rclone/
+total 0
+drwxr-xr-x.  1 root root   0 Jun 25 06:57 .
+dr-xr-xr-x. 21 root root 274 Jun 25 06:38 ..
+[ec2-user@ip-10-99-0-79 ~]$ ls
+app_data  docker-compose.yml  make_dropbox_rclone.sh
+[ec2-user@ip-10-99-0-79 ~]$ ./make_dropbox_rclone.sh {11..15}
+Generating password for user 11:
+Making directory in /share/dropbox
+Creating FTP account
+service "ftpd" is not running
+[ec2-user@ip-10-99-0-79 ~]$ docker compose up -d
+[+] Running 12/12
+ ✔ ftpd Pulled                                                                                                                                                                                                                6.2s 
+   ✔ b338562f40a7 Pull complete                                                                                                                                                                                               2.5s 
+   ✔ dd21d4078781 Pull complete                                                                                                                                                                                               4.5s 
+   ✔ e4df48285fb6 Pull complete                                                                                                                                                                                               4.6s 
+   ✔ 729b546ab378 Pull complete                                                                                                                                                                                               4.6s 
+   ✔ 819fe369c981 Pull complete                                                                                                                                                                                               4.7s 
+   ✔ 6d77dc0ebe37 Pull complete                                                                                                                                                                                               4.7s 
+   ✔ c2328a62c72b Pull complete                                                                                                                                                                                               4.7s 
+   ✔ 5a91db8d2c91 Pull complete                                                                                                                                                                                               4.7s 
+   ✔ af3d06e80e55 Pull complete                                                                                                                                                                                               4.8s 
+   ✔ 37f5a7765595 Pull complete                                                                                                                                                                                               4.8s 
+   ✔ ad32252f6ddc Pull complete                                                                                                                                                                                               4.8s 
+[+] Running 2/2
+ ✔ Network ec2-user_default   Created                                                                                                                                                                                         0.1s 
+ ✔ Container ec2-user-ftpd-1  Started                                                                                                                                                                                         0.8s 
+[ec2-user@ip-10-99-0-79 ~]$ docker compose logs ftpd
+ftpd-1  | Setting default port range to: 30000:30009
+ftpd-1  | Setting default max clients to: 5
+ftpd-1  | Setting default max connections per ip to: 5
+ftpd-1  | Starting Pure-FTPd:
+ftpd-1  |   pure-ftpd  -l puredb:/etc/pure-ftpd/pureftpd.pdb -E -j -R -P files-staging.gigadb.link   -p 30000:30009 -c 5 -C 5
+[ec2-user@ip-10-99-0-79 ~]$ ./make_dropbox_rclone.sh user{11..15}
+Generating password for user user11:
+Making directory in /share/dropbox
+Creating FTP account
+Password: 
+Enter it again: 
+Cleaning up
+Generating password for user user12:
+Making directory in /share/dropbox
+Creating FTP account
+Password: 
+Enter it again: 
+Cleaning up
+Generating password for user user13:
+Making directory in /share/dropbox
+Creating FTP account
+Password: 
+Enter it again: 
+Cleaning up
+Generating password for user user14:
+Making directory in /share/dropbox
+Creating FTP account
+Password: 
+Enter it again: 
+Cleaning up
+Generating password for user user15:
+Making directory in /share/dropbox
+Creating FTP account
+Password: 
+Enter it again: 
+Cleaning up
+[ec2-user@ip-10-99-0-79 ~]$ ls
+app_data  docker-compose.yml  make_dropbox_rclone.sh  new_dropboxes_rclone.txt
+[ec2-user@ip-10-99-0-79 ~]$ cat new_dropboxes_rclone.txt 
+Wed Jun 25 08:00:09 AM UTC 2025
+{user11..15}:i94zOAow1koVu
+Wed Jun 25 08:01:02 AM UTC 2025
+user11:CEz0gFWu7fCiA
+user12:4yDRdMmYXM7rz
+user13:djw7ocmzjM96J
+user14:JAqAyg5wNnivg
+user15:q6P2R4KJT7CIg
+[ec2-user@ip-10-99-0-79 ~]$ ls -al /rclone/share/dropbox/
+total 0
+drwxr-xr-x. 1 root root 0 Jun 25 08:01 .
+drwxr-xr-x. 1 root root 0 Jun 25 07:55 ..
+drwxr-xr-x. 1 root root 0 Jun 25 08:01 user11
+drwxr-xr-x. 1 root root 0 Jun 25 08:01 user12
+drwxr-xr-x. 1 root root 0 Jun 25 08:01 user13
+drwxr-xr-x. 1 root root 0 Jun 25 08:01 user14
+drwxr-xr-x. 1 root root 0 Jun 25 08:01 user15
+```
+
+### Connect to the user dropbox via ncftp
+```
+% ncftpput -u user11 -p CEz0gFWu7fCiA files-staging.gigadb.link / ~/Downloads/100006.md5 
+/Users/kencho/Downloads/100006.md5:                    604.00 B     2.23 kB/s 
+% ncftp
+NcFTP 3.2.7 (Jan 01, 2024) by Mike Gleason (http://www.NcFTP.com/contact/).
+ncftp> open -u user11 -p CEz0gFWu7fCiA files-staging.gigadb.link 
+Connecting to 51.20.169.207...                                                                                                                                                                                                     
+--------- Welcome to Pure-FTPd [privsep] [TLS] ----------
+You are user number 1 of 5 allowed.
+Local time is now 08:25. Server port: 21.
+This is a private system - No anonymous login
+IPv6 connections are also welcome on this server.
+You will be disconnected after 15 minutes of inactivity.
+Logging in...                                                                                                                                                                                                                      
+OK. Current directory is /
+Logged in to files-staging.gigadb.link.                                                                                                                                                                                            
+ncftp / > ls
+100006.md5
+ncftp / >                                                                                                                                                                                            
+ncftp / > quit
+[ec2-user@ip-10-99-0-79 ~]$ ls -al /rclone/share/dropbox/user11
+total 0
+drwxr-xr-x. 1 root root 0 Jun 25 08:01 .
+drwxr-xr-x. 1 root root 0 Jun 25 08:01 ..
+
+```
+
+
+
 ### References
 - [s3fs-fuse](https://github.com/s3fs-fuse/s3fs-fuse)
 - [rclone mount](https://rclone.org/commands/rclone_mount)
