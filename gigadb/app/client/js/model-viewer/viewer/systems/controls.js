@@ -1,6 +1,6 @@
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-export function createControls(camera, canvas, renderer = null) {
+export function createControls(camera, canvas) {
   const controls = new OrbitControls(camera, canvas);
 
   controls.enableDamping = true;
@@ -12,18 +12,6 @@ export function createControls(camera, canvas, renderer = null) {
   controls.target.set(0, 0, 0);
   controls.update();
 
-  const updateControlsState = () => {
-    controls.enabled = !renderer.xr.isPresenting;
-  };
-
-  // toggle controls based on xr non-xr use
-  if (renderer?.xr) {
-    renderer.xr.addEventListener('sessionstart', updateControlsState);
-    renderer.xr.addEventListener('sessionend', updateControlsState);
-
-    updateControlsState();
-  }
-
   controls.tick = () => {
     if (controls.enabled !== false) {
       controls.update();
@@ -32,11 +20,6 @@ export function createControls(camera, canvas, renderer = null) {
 
   controls.destroy = () => {
     controls.dispose();
-
-    if (renderer?.xr) {
-      renderer.xr.removeEventListener('sessionstart', updateControlsState);
-      renderer.xr.removeEventListener('sessionend', updateControlsState);
-    }
   };
 
   return controls;

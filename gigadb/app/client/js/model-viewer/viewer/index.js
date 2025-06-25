@@ -6,6 +6,7 @@ import { createLights } from "./components/lights.js";
 import { createResizer } from "./systems/resizer.js";
 import { load } from "./components/models/index.js";
 import { getContainerDimensions } from "../helpers/getContainerDimensions.js";
+import { setupXR } from "./systems/xr.js";
 
 /**
  * Creates and manages a 3D model viewer with scene, camera, renderer, and controls
@@ -31,12 +32,13 @@ export function createModelViewer(container) {
     });
     renderer = createRenderer();
     container.append(renderer.domElement);
-    controls = createControls(camera, renderer.domElement, renderer);
+    controls = createControls(camera, renderer.domElement);
     onDestroyCallbacks.push(controls.destroy);
 
     const lights = createLights();
 
     scene.add(...lights);
+    scene.add(camera);
 
     const { destroy: destroyResizer } = createResizer({
       camera,
@@ -46,10 +48,18 @@ export function createModelViewer(container) {
     });
 
     onDestroyCallbacks.push(destroyResizer);
+    onDestroyCallbacks.push(setupXR({
+      renderer,
+      scene,
+      controls,
+      getModels: () => models
+    }));
 
     // Set up animation loop that works for both standard and XR rendering
     renderer.setAnimationLoop(() => {
-      controls.update();
+      if (controls.enabled) {
+        controls.update();
+      }
       render();
     });
   }
@@ -57,6 +67,8 @@ export function createModelViewer(container) {
   function render() {
     renderer.render(scene, camera);
   }
+
+
 
   async function loadModel(data) {
     const { location, extension } = data;
@@ -67,14 +79,14 @@ export function createModelViewer(container) {
     // reset controls to undo any orbiting done in previous model
     controls.reset();
     models = await load({ location, extension });
-    // set orbiting center around model center position
-    controls.target.copy(models[0].position);
+
     scene.add(...models);
   }
 
   function unmount() {
     renderer.setAnimationLoop(null);
     onDestroyCallbacks.forEach((callback) => callback());
+    onDestroyCallbacks = [];
   }
 
   create();
