@@ -52,7 +52,8 @@ export function createUi({ root, onSelect, onPlay, getDataProperty, renderer }) 
       status: STATUS.IDLE,
       error: null,
       selected: null,
-      renderer // Store renderer in state for WebXR access
+      renderer, // Store renderer in UI state for WebXR access
+      webXRSupported: false,
     },
     () => uiView.updateUI(modelState)
   );

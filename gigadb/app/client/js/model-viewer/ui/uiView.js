@@ -16,7 +16,7 @@ export function createUiView(domElements, getDataProperty) {
     modelDescription,
     controls,
   } = domElements;
-  // vrButton directly from domElements because it is added to the DOM async
+  // access vrButton directly from domElements because it is added to the DOM async
 
 
   const loadingText = loadingOverlay.find(selector.loadingText);
@@ -25,34 +25,42 @@ export function createUiView(domElements, getDataProperty) {
   function updateUI(state) {
     const { status, error, selected } = state;
 
+    function toggleVRButton(show) {
+      if (state.webXRSupported) {
+        domElements.vrButton?.toggle(show);
+      } else {
+        domElements.vrButton?.hide();
+      }
+    }
+
     switch (status) {
       case STATUS.IDLE:
         loadingDisplay.hide();
         loadingText.text("");
         playButtonOverlay.show();
         controls.hide();
-        domElements.vrButton?.hide();
+        toggleVRButton(false);
         break;
       case STATUS.PENDING:
         loadingDisplay.show();
         loadingText.text("Loading model");
         playButtonOverlay.hide();
         controls.hide();
-        domElements.vrButton?.hide();
+        toggleVRButton(false);
         break;
       case STATUS.SUCCESS:
         loadingDisplay.hide();
         loadingText.text("Model loaded");
         playButtonOverlay.hide();
         controls.show();
-        domElements.vrButton?.show();
+        toggleVRButton(true);
         break;
       case STATUS.ERROR:
         loadingDisplay.hide();
         loadingText.text("");
         playButtonOverlay.show();
         controls.hide();
-        domElements.vrButton?.hide();
+        toggleVRButton(false);
         break;
     }
 
