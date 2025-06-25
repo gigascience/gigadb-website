@@ -1,5 +1,12 @@
 import { selector } from "./selectors.js";
 
+export const STATUS = {
+  IDLE: 'idle',
+  PENDING: 'pending',
+  SUCCESS: 'success',
+  ERROR: 'error',
+};
+
 // this module determines how the UI changes when the state changes
 export function createUiView(domElements, getDataProperty) {
   const {
@@ -9,6 +16,8 @@ export function createUiView(domElements, getDataProperty) {
     modelDescription,
     controls,
   } = domElements;
+  // vrButton directly from domElements because it is added to the DOM async
+
 
   const loadingText = loadingOverlay.find(selector.loadingText);
   const loadingDisplay = loadingOverlay.find(selector.loadingDisplay);
@@ -17,29 +26,33 @@ export function createUiView(domElements, getDataProperty) {
     const { status, error, selected } = state;
 
     switch (status) {
-      case "idle":
+      case STATUS.IDLE:
         loadingDisplay.hide();
         loadingText.text("");
         playButtonOverlay.show();
         controls.hide();
+        domElements.vrButton?.hide();
         break;
-      case "pending":
+      case STATUS.PENDING:
         loadingDisplay.show();
         loadingText.text("Loading model");
         playButtonOverlay.hide();
         controls.hide();
+        domElements.vrButton?.hide();
         break;
-      case "success":
+      case STATUS.SUCCESS:
         loadingDisplay.hide();
         loadingText.text("Model loaded");
         playButtonOverlay.hide();
         controls.show();
+        domElements.vrButton?.show();
         break;
-      case "error":
+      case STATUS.ERROR:
         loadingDisplay.hide();
         loadingText.text("");
         playButtonOverlay.show();
         controls.hide();
+        domElements.vrButton?.hide();
         break;
     }
 
