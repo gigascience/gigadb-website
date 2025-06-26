@@ -12,7 +12,15 @@ export function createControls(camera, canvas) {
   controls.target.set(0, 0, 0);
   controls.update();
 
-  controls.tick = () => controls.update();
+  controls.tick = () => {
+    if (controls.enabled !== false) {
+      controls.update();
+    }
+  };
+
+  controls.destroy = () => {
+    controls.dispose();
+  };
 
   return controls;
 }

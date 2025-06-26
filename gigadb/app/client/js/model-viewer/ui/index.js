@@ -1,8 +1,10 @@
+import { VRButton } from 'three/addons/webxr/VRButton.js';
 import { createUiState } from "./uiState.js";
 import { createUiView } from "./uiView.js";
-import { invariant } from "../helpers/invariant.js";
 import { selector } from "./selectors.js";
+import { STATUS } from "./uiView.js";
 import { coerceSelected } from "../helpers/coerceSelected.js";
+import { invariant } from "../helpers/invariant.js";
 
 /**
  * Creates and initializes the UI component for the model viewer
@@ -11,9 +13,10 @@ import { coerceSelected } from "../helpers/coerceSelected.js";
  * @param {function(string|null): void} param0.onSelect Callback when model is selected from dropdown
  * @param {function(string|null): void} param0.onPlay Callback when play button is clicked
  * @param {function({searchBy: string, value: string, key: string}): string|null} param0.getDataProperty Function to get file properties
+ * @param {THREE.WebGLRenderer} param0.renderer Three.js WebGL renderer instance for WebXR support
  * @returns {Object} UI state object with status, error and selected model properties
  */
-export function createUi({ root, onSelect, onPlay, getDataProperty }) {
+export function createUi({ root, onSelect, onPlay, getDataProperty, renderer }) {
   // mandatory elements
   const domElements = {
     viewerContainer: root.find(selector.viewerContainer),
@@ -31,6 +34,8 @@ export function createUi({ root, onSelect, onPlay, getDataProperty }) {
 
   // optional elements
   domElements.controls = root.find(selector.controls);
+  domElements.vrButton = null;
+  let vrButtonUpdateTimer = null;
 
   const playButton = domElements.playButtonOverlay.find(selector.playButton);
   const helpButton = domElements.controls.find(selector.helpButton);
@@ -39,10 +44,17 @@ export function createUi({ root, onSelect, onPlay, getDataProperty }) {
   const helpModalClose = helpModal.find(selector.helpModalClose);
   const loadingDisplay = domElements.loadingOverlay.find(selector.loadingDisplay);
 
+
   const uiView = createUiView(domElements, getDataProperty);
 
   const modelState = createUiState(
-    { status: "idle", error: null, selected: null },
+    {
+      status: STATUS.IDLE,
+      error: null,
+      selected: null,
+      renderer, // Store renderer in UI state for WebXR access
+      webXRSupported: false,
+    },
     () => uiView.updateUI(modelState)
   );
 
@@ -127,6 +139,40 @@ export function createUi({ root, onSelect, onPlay, getDataProperty }) {
   }
 
   /**
+   * Checks if WebXR VR mode is supported by the browser
+   * @returns {Promise<boolean>} Promise that resolves to true if WebXR VR is supported
+   */
+  async function checkWebXRSupport() {
+    try {
+      return navigator.xr && await navigator.xr.isSessionSupported('immersive-vr');
+    } catch (error) {
+      // WebXR VR support check failed - continue without VR support
+      return false;
+    }
+  }
+
+  function initXRUi() {
+    checkWebXRSupport().then(supported => {
+      modelState.webXRSupported = supported;
+
+      if (supported && modelState.renderer) {
+        const vrButton = VRButton.createButton(modelState.renderer);
+        domElements.vrButton = $(vrButton);
+        domElements.canvasContainer.append(domElements.vrButton);
+
+        // delay hiding button since VRButton lib changes style.display async
+        vrButtonUpdateTimer = setTimeout(() => {
+          domElements.vrButton.toggle(modelState.status === STATUS.SUCCESS);
+        }, 60);
+      }
+
+      if (modelState.renderer) {
+        domElements.controls.show();
+      }
+    });
+  }
+
+  /**
    * Initializes UI state and event listeners
    */
   function init() {
@@ -135,6 +181,8 @@ export function createUi({ root, onSelect, onPlay, getDataProperty }) {
     domElements.playButtonOverlay.show();
     modelState.selected = coerceSelected(domElements.modelSelector.val()) || null;
     uiView.updateUI(modelState);
+    initXRUi();
+
     domElements.modelSelector.on("change", handleSelect);
     playButton.on("click", handlePlay);
     helpButton.on("click", handleHelp);
@@ -155,6 +203,11 @@ export function createUi({ root, onSelect, onPlay, getDataProperty }) {
     helpModalClose.off("click", handleHelpClose);
     $(document).off("keydown", handleKeyDown);
     $(document).off("fullscreenchange", handleFullscreenChange);
+    // Note: VRButton element handles its own cleanup
+    if (vrButtonUpdateTimer) {
+      clearTimeout(vrButtonUpdateTimer);
+      vrButtonUpdateTimer = null;
+    }
   }
 
   init();

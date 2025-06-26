@@ -1,10 +1,11 @@
 import { createScene } from "./components/scene.js";
 import { createCamera } from "./components/camera.js";
+import { createLights } from "./components/lights.js";
+import { load } from "./components/models/index.js";
 import { createRenderer } from "./systems/renderer.js";
 import { createControls } from "./systems/controls.js";
-import { createLights } from "./components/lights.js";
 import { createResizer } from "./systems/resizer.js";
-import { load } from "./components/models/index.js";
+import { setupXR } from "./systems/xr.js";
 import { getContainerDimensions } from "../helpers/getContainerDimensions.js";
 
 /**
@@ -32,10 +33,12 @@ export function createModelViewer(container) {
     renderer = createRenderer();
     container.append(renderer.domElement);
     controls = createControls(camera, renderer.domElement);
+    onDestroyCallbacks.push(controls.destroy);
 
     const lights = createLights();
 
     scene.add(...lights);
+    scene.add(camera);
 
     const { destroy: destroyResizer } = createResizer({
       camera,
@@ -45,9 +48,19 @@ export function createModelViewer(container) {
     });
 
     onDestroyCallbacks.push(destroyResizer);
+    onDestroyCallbacks.push(setupXR({
+      renderer,
+      scene,
+      controls,
+      getModels: () => models
+    }));
 
-    // re-render when user interacts with the controls
-    controls.addEventListener("change", render);
+    renderer.setAnimationLoop(() => {
+      if (controls.enabled) {
+        controls.update();
+      }
+      render();
+    });
   }
 
   function render() {
@@ -65,13 +78,14 @@ export function createModelViewer(container) {
     models = await load({ location, extension });
     // set orbiting center around model center position
     controls.target.copy(models[0].position);
+
     scene.add(...models);
-    render();
   }
 
   function unmount() {
-    controls.removeEventListener("change", render);
+    renderer.setAnimationLoop(null);
     onDestroyCallbacks.forEach((callback) => callback());
+    onDestroyCallbacks = [];
   }
 
   create();
@@ -83,5 +97,6 @@ export function createModelViewer(container) {
   return {
     render,
     loadModel,
+    renderer
   };
 }

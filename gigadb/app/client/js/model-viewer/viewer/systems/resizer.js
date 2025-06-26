@@ -2,6 +2,9 @@ import { debounce } from "../../helpers/debounce.js";
 import { getContainerDimensions } from "../../helpers/getContainerDimensions.js";
 
 const setSize = ([width, height], camera, renderer) => {
+  if (renderer.xr?.isPresenting) {
+    return;
+  }
   camera.aspect = width / height;
   camera.updateProjectionMatrix();
   renderer.setSize(width, height);
@@ -29,6 +32,9 @@ function createResizer({
   setSize(getContainerDimensions(container), camera, renderer);
 
   const debouncedResize = debounce(() => {
+    if (renderer.xr?.isPresenting) {
+      return;
+    }
     setSize(getContainerDimensions(container), camera, renderer);
     onResize();
   }, 100);

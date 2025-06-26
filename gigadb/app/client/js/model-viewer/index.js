@@ -3,6 +3,7 @@ import { createModelViewer } from "./viewer/index.js";
 import { logger } from "./helpers/logger.js";
 import { invariant } from "./helpers/invariant.js";
 import { selector } from "./ui/selectors.js";
+import { STATUS } from "./ui/uiView.js";
 
 const defaultOptions = {
   loadModelOnInit: true,
@@ -44,31 +45,32 @@ export function modelViewer(files, options = {}) {
     return file[key];
   }
 
-  const { loadModel } = createModelViewer(container);
+  const { loadModel, renderer } = createModelViewer(container);
 
   const uiState = createUi({
     root,
     onSelect: handleLoadModel,
     onPlay: handleLoadModel,
     getDataProperty: getFileProperty,
+    renderer,
   });
 
   async function handleLoadModel(fileId) {
     if (!fileId) {
-      uiState.status = "idle";
+      uiState.status = STATUS.IDLE;
       return;
     }
 
     try {
       uiState.error = null;
-      uiState.status = "pending";
+      uiState.status = STATUS.PENDING;
       const file = getFileByProperty("id", fileId);
       await loadModel(file);
-      uiState.status = "success";
+      uiState.status = STATUS.SUCCESS;
     } catch (err) {
       logger("error", "Error loading model", err);
       uiState.error = err;
-      uiState.status = "error";
+      uiState.status = STATUS.ERROR;
     }
   }
 
