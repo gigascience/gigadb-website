@@ -58,3 +58,6 @@ gherkin:
       "third party system":
         - \Steps\ThirdPartySteps
 bootstrap: initdb.php
+coverage:
+    enabled: true
+    c3_url: 'http://gigadb.test/index.php'

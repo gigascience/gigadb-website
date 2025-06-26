@@ -12,3 +12,5 @@ modules:
             cleanup: true # run populator before each test
             # Can use --verbose in pg_restore command to output progress messages
             populator: "PGPASSWORD=$password pg_restore -h %GIGADB_HOST% -p $port -U %GIGADB_USER% -d %GIGADB_DB% --no-owner /var/www/sql/gigadb.pgdmp"
+coverage:
+    enabled: false

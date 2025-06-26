@@ -7,6 +7,15 @@ define('YII_TRACE_LEVEL',$YII_TRACE_LEVEL);
 define('DISABLE_CACHE',false);
 defined('YII_ENV') or define('YII_ENV', 'dev');
 
+if (isset($_SERVER['REQUEST_URI']) && strpos($_SERVER['REQUEST_URI'], '/c3') !== false) {
+   require dirname(__FILE__) . '/c3.php';
+   exit;
+}
+
+if (isset($_COOKIE['CODECEPTION_CODECOVERAGE'])) {
+    require __DIR__ . '/c3.php';
+}
+
 # Load the modified root class for Yii1.1/Yii2.0
 $yii=dirname(__FILE__).'/protected/components/Yii.php';
 require_once($yii);

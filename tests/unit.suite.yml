@@ -15,3 +15,5 @@ modules:
         - \Helper\Unit
     step_decorators: ~
 bootstrap: bootstrap.php
+coverage:
+    enabled: true

@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -e
+set -u
+
+
+docker-compose run test php -dpcov.enabled=1 -dpcov.directory=protected ./vendor/codeception/codeception/codecept run unit --coverage
+
+INSTALL_XDEBUG=true docker-compose build --no-cache application
+docker-compose run test ./vendor/codeception/codeception/codecept run functional --coverage
+
+docker-compose run test php ./vendor/codeception/codeception/codecept run acceptance --coverage
+
+docker-compose run test ./vendor/codeception/codeception/codecept run api --coverage

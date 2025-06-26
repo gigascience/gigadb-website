@@ -70,6 +70,7 @@ services:
       context: .
       dockerfile: ../packaging/Dockerfile
       args:
+        - INSTALL_XDEBUG=${INSTALL_XDEBUG:-false}
         - PHP_VERSION=${PHP_VERSION}
         - INSTALL_OPCACHE=true
         - INSTALL_INTL=true
@@ -82,6 +83,8 @@ services:
         - INSTALL_GIT=true
     volumes:
       # Gigadb webapp
+      - ${APPLICATION}/.env.test:/var/www/.env.test
+      - ${APPLICATION}/tests:/var/www/tests
       - ${APPLICATION}/protected:/var/www/protected
       - ${APPLICATION}/vendor:/var/www/vendor
       - ${APPLICATION}/assets:/var/www/assets
@@ -101,6 +104,8 @@ services:
       - ${APPLICATION}/ops/configuration/php-conf/gigadb.pool.conf:/usr/local/etc/php-fpm.d/gigadb.pool.conf
       - ${APPLICATION}/ops/configuration/php-conf/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini
       - ${APPLICATION}/gigadb:/var/www/gigadb
+      - ${APPLICATION}/codeception.yml:/var/www/codeception.yml
+      - ${APPLICATION}/c3.php:/var/www/c3.php # must exist before
       # access to File Upload Wizard model classes
       - ../../fuw/app:/app      
       - ../../gigadb:/gigadb
@@ -229,7 +234,6 @@ services:
       # access to File Upload Wizard model classes
       - ../../fuw/app:/app
       - ../../gigadb:/gigadb
-
     networks:
       - web-tier
       - db-tier
@@ -239,6 +243,8 @@ services:
       - "fuw-admin-api:172.16.238.10"
       - "fuw-public-api:172.16.238.10"
     command: bash -c "pwd"
+    depends_on:
+      - application
 
   playwright:
     build:

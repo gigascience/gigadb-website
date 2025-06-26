@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -e -u
+
+set -a
+source .env
+set +a
+
+./tests/coverage_tests_runner
+
