@@ -117,7 +117,7 @@ $this->pageTitle = 'GigaDB - Genomic Dataset checklists';
                                 </tr>
                                 <tr>
                                     <td>
-                                        BUSCO result output files from the latest version of BUSCO; Please provide the 3 files under the "run_lineage_name" folder as shown in the documentation: <a href="https://busco.ezlab.org/busco_userguide.html#outputs">https://busco.ezlab.org/busco_userguide.html#outputs</a>, namely: short_summary.*.txt ,  full_table.tsv , and missing_busco_list.tsv
+                                        BUSCO result output files from the latest version of BUSCO; Please provide the 3 files under the "run_lineage_name" folder as shown in the <a href="https://busco.ezlab.org/busco_userguide.html#outputs">BUSCO User Guide</a>, namely: short_summary.*.txt ,  full_table.tsv , and missing_busco_list.tsv
                                     </td>
                                     <td>
                                         text
@@ -218,8 +218,8 @@ $this->pageTitle = 'GigaDB - Genomic Dataset checklists';
                         </div>
                         <br>
                         <br>
-                        <p>For genomic and transcriptomic datasets we would expect to see sample metadata that complies with the <a target="_blank" href="http://gensc.org/">Genomic Standards Consortium</a> MIxS checklists, the most common features of which are summarised below.</p>
-                        <p>For transcriptomic datasets we we would expect users to follow the well established <a target="_blank" href="https://doi.org/10.1038/ng1201-365">MIAME</a> (Minimum Information About a Microarray Experiment) and <a target="_blank" href="http://fged.org/projects/minseqe/">MINSEQE</a> (Minimum Information About a Next-generation Sequencing Experiment) guidelines outlining the minimum information that should be included when describing a microarray or sequencing studies.</p>
+                        <p>For genomic and transcriptomic datasets we would expect to see sample metadata that complies with the <a href="http://gensc.org/">Genomic Standards Consortium</a> MIxS checklists, the most common features of which are summarised below.</p>
+                        <p>For transcriptomic datasets we we would expect users to follow the well established <a href="https://doi.org/10.1038/ng1201-365"><abbr>MIAME</abbr></a> (Minimum Information About a Microarray Experiment) and <a href="https://www.fged.org/projects/minseqe/"><abbr>MINSEQE</abbr></a> (Minimum Information About a Next-generation Sequencing Experiment) guidelines outlining the minimum information that should be included when describing a microarray or sequencing studies.</p>
                         <p>The complete list of pre-defined sample attributes are available in the <a href="/">GigaDB home page</a>, and it is possible to include bespoke attributes by communication with us.</p>
                         <br>
                         <br>
