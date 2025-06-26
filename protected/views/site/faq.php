@@ -136,6 +136,26 @@ $this->pageTitle = 'GigaDB - FAQ';
                 </div>
                 <div class="panel panel-default">
                     <div class="panel-heading">
+                        <h2 class="h4 panel-title" id="heading_expectation-file-compression">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel_expectation-file-compression" aria-expanded="false" aria-controls="panel_expectation-file-compression">
+                                What are the expectations on file compression?
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="panel_expectation-file-compression" aria-labelledby="heading_expectation-file-compression" class="panel-collapse collapse">
+                        <div class="panel-body">
+
+                            <p>It is normal to compress large files to reduce transfer times, and we encourage the use of gzip or bzip2 for this. Zip can be acceptable, but for preference if possible use gzip or bzip2 for individual files. Where a file has been compressed there should be two file extensions consecutively e.g. <code>filename.fasta.gz</code>.</p>
+
+                            <p>In some instances it is appropriate to archive multiple files into a single archive file, for this we strongly recommend the use of tar with or without the addition of gzip. Similarly the file extension will reflect this, e.g. <code>directoryName.tar</code> or <code>directoryName.tar.gz</code></p>
+
+                            <p>For tar files we allow for longer descriptions as there could be more required due to the potential for more varied content. You MUST avoid the use of carriage returns within the description.</p>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading07">
                             <button data-toggle="collapse" data-parent="#accordion" data-target="#panel07" aria-expanded="false" aria-controls="panel07">
                                 When should I submit my data?
