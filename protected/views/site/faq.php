@@ -104,6 +104,38 @@ $this->pageTitle = 'GigaDB - FAQ';
                 </div>
                 <div class="panel panel-default">
                     <div class="panel-heading">
+                        <h2 class="h4 panel-title" id="heading_file-name-convention">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel_file-name-convention" aria-expanded="false" aria-controls="panel_file-name-convention">
+                                What is the file name convention for GigaDB?
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="panel_file-name-convention" aria-labelledby="heading_file-name-convention" class="panel-collapse collapse">
+                        <div class="panel-body">
+
+                            <p>The file name includes the full name of the file including the relative file path, e.g. <code>directory_name/file_name.ext</code></p>
+
+                            <ul class="content-text">
+                                <li>Ideally the filename should be meaningful in some way, if appropriate it may contain reference to a particular point within the associated manuscript, but usually that reference would be expected in the file descriptions. (e.g. <code>gene-expression-fig1.csv</code> would be better than <code>Fig1.csv</code>)</li>
+
+                                <li>Full file-path names must be unique within the dataset.</li>
+
+                                <li>Filenames should only include the following characters <code>a-z</code>, <code>A-Z</code>, <code>0-9</code>, <code>_</code>, <code>-</code>, <code>+</code>, <code>.</code></li>
+
+                                <li>Filenames should not include spaces, we recommend using the underscore (<code>_</code>) in place of spaces.</li>
+
+                                <li>All files should be machine-readable (e.g. No PDF, Excel or Word documents)</li>
+
+                                <li>The file extension should be relevant to the format of the file, e.g. csv tabular data should have the file extension <code>.csv</code>.</li>
+                            </ul>
+
+                            <p>See the <a href="/site/help#vocabulary">vocabulary</a> page for a list of file types and regular file extensions.</p>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading07">
                             <button data-toggle="collapse" data-parent="#accordion" data-target="#panel07" aria-expanded="false" aria-controls="panel07">
                                 When should I submit my data?
