@@ -333,6 +333,28 @@ $this->pageTitle = 'GigaDB - FAQ';
                 </div>
                 <div class="panel panel-default">
                     <div class="panel-heading">
+                        <h2 class="h4 panel-title" id="heading_whats-included-in-a-dataset">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel_whats-included-in-a-dataset" aria-expanded="false" aria-controls="panel_whats-included-in-a-dataset">
+                                What is included in a dataset?
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="panel_whats-included-in-a-dataset" aria-labelledby="heading_whats-included-in-a-dataset" class="panel-collapse collapse">
+                        <div class="panel-body">
+
+                            <p>A dataset is a collection of files and/or links to externally hosted items, that together are associated with a particular "unit-of-work", usually a manuscript. Since the exact details of which objects are required to make up a dataset is highly dependent on the "unit-of-work" to which they relate, we can only provide generic guidelines, but our curators are always on hand for specific queries that you may have.</p>
+
+                            <p>We would expect to see all data and scripts used in the unit-of-work. This should be sufficient to enable full reproducibility and transparency of the unit-of-work in conjunction with the published methods (either in the manuscript or in <a href="https://www.protocols.io/">protocols.io</a>) together with openly available software tools.</p>
+
+                            <p>In addition, the file metadata will always include md5sum values to enable confirmation of file integrity after download, as well as a brief (upto 200 chars) description of each file.</p>
+
+                            <p>We have prepared submission guidelines for the more common dataset types <a href="/site/guide">here</a>.</p>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading22">
                             <button data-toggle="collapse" data-parent="#accordion" data-target="#panel22" aria-expanded="false" aria-controls="panel22">
                                 Does my journal work with <em>GigaDB</em> and how?
