@@ -1,12 +1,12 @@
 import { createScene } from "./components/scene.js";
 import { createCamera } from "./components/camera.js";
+import { createLights } from "./components/lights.js";
+import { load } from "./components/models/index.js";
 import { createRenderer } from "./systems/renderer.js";
 import { createControls } from "./systems/controls.js";
-import { createLights } from "./components/lights.js";
 import { createResizer } from "./systems/resizer.js";
-import { load } from "./components/models/index.js";
-import { getContainerDimensions } from "../helpers/getContainerDimensions.js";
 import { setupXR } from "./systems/xr.js";
+import { getContainerDimensions } from "../helpers/getContainerDimensions.js";
 
 /**
  * Creates and manages a 3D model viewer with scene, camera, renderer, and controls
@@ -55,7 +55,6 @@ export function createModelViewer(container) {
       getModels: () => models
     }));
 
-    // Set up animation loop that works for both standard and XR rendering
     renderer.setAnimationLoop(() => {
       if (controls.enabled) {
         controls.update();
@@ -68,8 +67,6 @@ export function createModelViewer(container) {
     renderer.render(scene, camera);
   }
 
-
-
   async function loadModel(data) {
     const { location, extension } = data;
     // unload previously loaded model
@@ -79,6 +76,8 @@ export function createModelViewer(container) {
     // reset controls to undo any orbiting done in previous model
     controls.reset();
     models = await load({ location, extension });
+    // set orbiting center around model center position
+    controls.target.copy(models[0].position);
 
     scene.add(...models);
   }

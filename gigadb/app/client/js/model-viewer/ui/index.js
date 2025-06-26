@@ -1,10 +1,10 @@
+import { VRButton } from 'three/addons/webxr/VRButton.js';
 import { createUiState } from "./uiState.js";
 import { createUiView } from "./uiView.js";
-import { invariant } from "../helpers/invariant.js";
 import { selector } from "./selectors.js";
-import { coerceSelected } from "../helpers/coerceSelected.js";
-import { VRButton } from 'three/addons/webxr/VRButton.js';
 import { STATUS } from "./uiView.js";
+import { coerceSelected } from "../helpers/coerceSelected.js";
+import { invariant } from "../helpers/invariant.js";
 
 /**
  * Creates and initializes the UI component for the model viewer
@@ -146,7 +146,7 @@ export function createUi({ root, onSelect, onPlay, getDataProperty, renderer }) 
     try {
       return navigator.xr && await navigator.xr.isSessionSupported('immersive-vr');
     } catch (error) {
-      console.warn('WebXR VR support check failed:', error);
+      // WebXR VR support check failed - continue without VR support
       return false;
     }
   }
@@ -206,6 +206,7 @@ export function createUi({ root, onSelect, onPlay, getDataProperty, renderer }) 
     // Note: VRButton element handles its own cleanup
     if (vrButtonUpdateTimer) {
       clearTimeout(vrButtonUpdateTimer);
+      vrButtonUpdateTimer = null;
     }
   }
 

@@ -28,8 +28,8 @@ export function setupXR({ renderer, scene, controls, getModels }) {
         rotation: model.rotation.clone(),
       });
 
-      // ad hoc positon model for XR
-      model.position.set(0, 1.6, -4);
+      // ad hoc position and rotation of model for XR
+      model.position.set(0, 1.6, -4); // 1.6 meters high, 4 meters away
       model.rotation.set(0, Math.PI / 2, 0);
     });
   }
