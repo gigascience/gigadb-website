@@ -666,7 +666,7 @@ echo $form->hiddenField($model, "image_id");
                 },
                 dataType: 'json',
                 success: function (response) {
-                    if (200 !== response.check_doi_status) {
+                    if (!([200, 204].includes(response.check_doi_status))) {
                         $('#check_doi_modal').modal('show')
                         myError.style.display = 'block'
                         let el = document.createElement('div')
