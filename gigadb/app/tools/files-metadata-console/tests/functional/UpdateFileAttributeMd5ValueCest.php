@@ -57,4 +57,21 @@ class UpdateFileAttributeMd5ValueCest
             codecept_debug($e->getMessage());
         }
     }
+
+    /**
+     * Check only BUSCO_full_table.tsv file in dataset 102722 has md5 value
+     * updated, but not file with same name in dataset 102442
+     */
+    public function tryUpdateMd5ValueOfSameNameFilesInCorrectDataset(\FunctionalTester $I): void
+    {
+        $out = shell_exec("./yii_test update/md5-values --doi=102722");
+        codecept_debug($out);
+        $I->assertEquals('Number of changes: 2' . PHP_EOL, $out, "Unexpected number of md5 value changes");
+
+        // Assert expected md5 values in file attributes table
+        $I->seeInDatabase('file_attributes', ['file_id' => '551147', 'value' => '61d9dab96def1cf77f7e29bsiumai888']);
+        $I->seeInDatabase('file_attributes', ['file_id' => '551150', 'value' => '2590e2216fc2de16ca972ece01bae2d0']);
+        // The BUSCO_full_table.tsv file in dataset 10422 should be updated with md5 value
+        $I->dontSeeInDatabase('file_attributes', ['file_id' => '537944', 'value' => '61d9dab96def1cf77f7e29bsiumai888']);
+    }
 }

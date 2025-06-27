@@ -47,4 +47,21 @@ class UpdateFileSizeCest
             codecept_debug($e->getMessage());
         }
     }
+
+    /**
+     * Check only BUSCO_full_table.tsv file in dataset 102722 has file size
+     * updated, but not file with same name in dataset 102442
+     */
+    public function tryUpdateFileSizesOfSameNameFilesInCorrectDataset(\FunctionalTester $I): void
+    {
+        $out = shell_exec("./yii_test update/file-sizes --doi=102722");
+        codecept_debug($out);
+        $I->assertEquals('Number of changes: 2' . PHP_EOL, $out, "Unexpected number of file size changes");
+        
+        // Assert expected file sizes in file table
+        // File BUSCO_full_table.tsv from dataset 2966 with doi 102722
+        $I->seeInDatabase('file', ['id' => 551147, 'size' => 999999]);
+        // File BUSCO_full_table.tsv from dataset 2697 with doi 102442
+        $I->dontSeeInDatabase('file', ['id' => 537944, 'size' => 999999]);
+    }
 }

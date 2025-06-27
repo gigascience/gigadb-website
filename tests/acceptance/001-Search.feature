@@ -28,14 +28,15 @@ Feature: main search function
     When I fill in the field of "id" "keyword" with "genome"
     And I press the button ".test-main-search-btn"
     And I wait "1" seconds
-    Then I should see "Showing 1 - 2 of 6 datasets"
-    And I should see a link "Three Bauhinia species transcriptome sequence data" to "/dataset/100245"
-    And I should see a link "Data and software to accompany the paper: Applying compressed sensing to genome-wide association studies." to "/dataset/100094"
+    Then I should see "Showing 1 - 2 of 8 datasets"
+    And I should see a link "A draft genome assembly for the dart-poison frog Phyllobates terribilis" to "/dataset/102722"
+    And I should see a link "The genome assembly and annotation of the Oriental ratsnake Ptyas mucosa" to "/dataset/102442"
     And I should not see "Genome data from foxtail millet (Setaria italica)."
     And I should not see "Genomic data from Adelie penguin (Pygoscelis adeliae)."
     And I should see a link "1" to ""
     And I should see a link "2" to ""
     And I should see a link "3" to ""
+    And I should see a link "4" to ""
 
   @todo @broken
   Scenario: Can navigate to the next page
@@ -44,8 +45,8 @@ Feature: main search function
     And I press the button ".test-main-search-btn"
     And I wait "1" seconds
     When I follow "2"
-    Then I should see a link "Termitomyces sp. J132 fungus genome assembly data." to "/dataset/100056"
-    And I should not see "Data and software to accompany the paper: Applying compressed sensing to genome-wide association studies."
+    Then I should see a link "Three Bauhinia species transcriptome sequence data" to "/dataset/100245"
+    And I should not see "The genome assembly and annotation of the Oriental ratsnake Ptyas mucosa"
 
   @ok
   Scenario: Can search compound term without operator
