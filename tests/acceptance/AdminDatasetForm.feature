@@ -178,7 +178,7 @@ Feature: form to update dataset details
     And I fill in the field of "name" "Dataset[ftp_site]" with "ftp://test"
     And I press the button "Create"
     And I wait "3" seconds
-    Then I am on "/adminDataset/update/id/2741"
+    Then I am on "/adminDataset/update/id/2967"
     And I should see "AuthorReview"
     And I should see "123789"
     And I should see "Create/Reset Private URL"
@@ -198,7 +198,7 @@ Feature: form to update dataset details
     When I check the field "Dataset_Epigenomic"
     And I press the button "Create"
     And I wait 3 seconds
-    And I am on "/adminDataset/update/id/2741"
+    And I am on "/adminDataset/update/id/2967"
     And I follow "Open Private URL"
     And I wait "1" seconds
     Then I should see current url contains "/dataset/123789/token/"
@@ -530,7 +530,7 @@ Feature: form to update dataset details
     And I fill in the field of "name" "Dataset[title]" with "test dataset"
     And I press the button "Create"
     And I should see "test dataset"
-    And I am on "adminDataset/update/id/2741"
+    And I am on "adminDataset/update/id/2967"
     And I select "Published" from the field "Dataset_upload_status"
     And I wait "2" seconds
     Then I should see "The DOI does not exist. Please mint the DOI before saving your dataset: Mint DOI"
