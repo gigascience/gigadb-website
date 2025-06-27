@@ -391,20 +391,21 @@ r2:test-gigadb-dropbox on /rclone type fuse.rclone (rw,nosuid,nodev,relatime,use
 set -e
 
 touch ./new_dropboxes_rclone.txt
-date >> ./new_dropboxes.txt
+date >> ./new_dropboxes_rclone.txt
 for username in "$@"; do
   echo "Generating password for user $username:"
   password=$(tr -dc A-Za-z0-9 </dev/urandom | head -c 13; echo)
   echo $password > /tmp/$username.pass
   echo $password >> /tmp/$username.pass
   echo "$username:$password" >> ./new_dropboxes_rclone.txt
-  echo "Making directory in /share/dropbox"
+  echo "Making directory in /rclone/share/dropbox"
   mkdir -p /rclone/share/dropbox/$username
   echo "Creating FTP account"
   docker compose exec -T ftpd pure-pw useradd $username -f /etc/pure-ftpd/passwd/pureftpd.passwd -m -u dropboxuser -d /home/$username < /tmp/$username.pass
   echo "Cleaning up"
   rm /tmp/$username.pass
 done
+[ec2-user@ip-10-99-0-79 ~]$ chmod a+x make_dropbox_rclone.sh
 [ec2-user@ip-10-99-0-79 ~]$ ls -al make_dropbox_rclone.sh 
 -rwxr-xr-x. 1 ec2-user ec2-user 683 Jun 25 07:49 make_dropbox_rclone.sh
 [ec2-user@ip-10-99-0-79 ~]$ ls -al /rclone/
@@ -413,61 +414,55 @@ drwxr-xr-x.  1 root root   0 Jun 25 06:57 .
 dr-xr-xr-x. 21 root root 274 Jun 25 06:38 ..
 [ec2-user@ip-10-99-0-79 ~]$ ls
 app_data  docker-compose.yml  make_dropbox_rclone.sh
-[ec2-user@ip-10-99-0-79 ~]$ ./make_dropbox_rclone.sh {11..15}
+[ec2-user@ip-10-99-0-81 ~]$ docker images
+REPOSITORY                                                                    TAG       IMAGE ID       CREATED          SIZE
+registry.gitlab.com/gigascience/forks/kencho-gigadb-website/production_ftpd   staging   a1d9b4f5c0f7   26 minutes ago   162MB
+[ec2-user@ip-10-99-0-81 ~]$ vi docker-compose.yml 
+services:
+
+  ftpd:
+    image: registry.gitlab.com/gigascience/forks/kencho-gigadb-website/production_ftpd:staging
+    volumes:
+      - /rclone/share/dropbox:/home
+      - /home/ec2-user/app_data/pure-ftpd:/etc/pure-ftpd
+      - /home/ec2-user/app_data/pure-ftpd/passwd:/etc/pure-ftpd/passwd
+    environment:
+      PUBLICHOST: "files-staging.gigadb.link"
+    command: -l puredb:/etc/pure-ftpd/pureftpd.pdb -E -j -R -P files-staging.gigadb.link
+    ports:
+      - "21:21"
+      - "30000-30009:30000-30009"
+    restart: unless-stopped
+[ec2-user@ip-10-99-0-79 ~]$ ./make_dropbox_rclone.sh user{11..15}
 Generating password for user 11:
 Making directory in /share/dropbox
 Creating FTP account
 service "ftpd" is not running
-[ec2-user@ip-10-99-0-79 ~]$ docker compose up -d
-[+] Running 12/12
- ✔ ftpd Pulled                                                                                                                                                                                                                6.2s 
-   ✔ b338562f40a7 Pull complete                                                                                                                                                                                               2.5s 
-   ✔ dd21d4078781 Pull complete                                                                                                                                                                                               4.5s 
-   ✔ e4df48285fb6 Pull complete                                                                                                                                                                                               4.6s 
-   ✔ 729b546ab378 Pull complete                                                                                                                                                                                               4.6s 
-   ✔ 819fe369c981 Pull complete                                                                                                                                                                                               4.7s 
-   ✔ 6d77dc0ebe37 Pull complete                                                                                                                                                                                               4.7s 
-   ✔ c2328a62c72b Pull complete                                                                                                                                                                                               4.7s 
-   ✔ 5a91db8d2c91 Pull complete                                                                                                                                                                                               4.7s 
-   ✔ af3d06e80e55 Pull complete                                                                                                                                                                                               4.8s 
-   ✔ 37f5a7765595 Pull complete                                                                                                                                                                                               4.8s 
-   ✔ ad32252f6ddc Pull complete                                                                                                                                                                                               4.8s 
+[ec2-user@ip-10-99-0-81 ~]$ docker compose up -d
 [+] Running 2/2
  ✔ Network ec2-user_default   Created                                                                                                                                                                                         0.1s 
- ✔ Container ec2-user-ftpd-1  Started                                                                                                                                                                                         0.8s 
+ ✔ Container ec2-user-ftpd-1  Started                                                                                                                                                                                0.8s 
 [ec2-user@ip-10-99-0-79 ~]$ docker compose logs ftpd
 ftpd-1  | Setting default port range to: 30000:30009
 ftpd-1  | Setting default max clients to: 5
 ftpd-1  | Setting default max connections per ip to: 5
 ftpd-1  | Starting Pure-FTPd:
 ftpd-1  |   pure-ftpd  -l puredb:/etc/pure-ftpd/pureftpd.pdb -E -j -R -P files-staging.gigadb.link   -p 30000:30009 -c 5 -C 5
-[ec2-user@ip-10-99-0-79 ~]$ ./make_dropbox_rclone.sh user{11..15}
-Generating password for user user11:
-Making directory in /share/dropbox
+[ec2-user@ip-10-99-0-81 ~]$ ./make_dropbox_rclone.sh user{16..18}
+Generating password for user user16:
+Making directory in /rclone/share/dropbox
 Creating FTP account
 Password: 
 Enter it again: 
 Cleaning up
-Generating password for user user12:
-Making directory in /share/dropbox
+Generating password for user user17:
+Making directory in /rclone/share/dropbox
 Creating FTP account
 Password: 
 Enter it again: 
 Cleaning up
-Generating password for user user13:
-Making directory in /share/dropbox
-Creating FTP account
-Password: 
-Enter it again: 
-Cleaning up
-Generating password for user user14:
-Making directory in /share/dropbox
-Creating FTP account
-Password: 
-Enter it again: 
-Cleaning up
-Generating password for user user15:
-Making directory in /share/dropbox
+Generating password for user user18:
+Making directory in /rclone/share/dropbox
 Creating FTP account
 Password: 
 Enter it again: 
@@ -476,35 +471,42 @@ Cleaning up
 app_data  docker-compose.yml  make_dropbox_rclone.sh  new_dropboxes_rclone.txt
 [ec2-user@ip-10-99-0-79 ~]$ cat new_dropboxes_rclone.txt 
 Wed Jun 25 08:00:09 AM UTC 2025
-{user11..15}:i94zOAow1koVu
-Wed Jun 25 08:01:02 AM UTC 2025
-user11:CEz0gFWu7fCiA
-user12:4yDRdMmYXM7rz
-user13:djw7ocmzjM96J
-user14:JAqAyg5wNnivg
-user15:q6P2R4KJT7CIg
-[ec2-user@ip-10-99-0-79 ~]$ ls -al /rclone/share/dropbox/
+[ec2-user@ip-10-99-0-81 ~]$ cat new_dropboxes_rclone.txt
+user16:wfOSDce0LeaI5
+user17:rKYhDQ7U0ZbeS
+user18:KnY2hXCP0qmmg
+[ec2-user@ip-10-99-0-81 ~]$ ls -al /rclone/share/dropbox/
 total 0
-drwxr-xr-x. 1 root root 0 Jun 25 08:01 .
-drwxr-xr-x. 1 root root 0 Jun 25 07:55 ..
-drwxr-xr-x. 1 root root 0 Jun 25 08:01 user11
-drwxr-xr-x. 1 root root 0 Jun 25 08:01 user12
-drwxr-xr-x. 1 root root 0 Jun 25 08:01 user13
-drwxr-xr-x. 1 root root 0 Jun 25 08:01 user14
-drwxr-xr-x. 1 root root 0 Jun 25 08:01 user15
+drwxr-xr-x. 1 root root 0 Jun 27 08:10 .
+drwxr-xr-x. 1 root root 0 Jun 27 08:10 ..
+drwxr-xr-x. 1 root root 0 Jun 27 08:10 ftpusers
+drwxr-xr-x. 1 root root 0 Jun 27 08:11 user11
+drwxr-xr-x. 1 root root 0 Jun 27 08:13 user16
+drwxr-xr-x. 1 root root 0 Jun 27 08:18 user17
+drwxr-xr-x. 1 root root 0 Jun 27 08:18 user18
+[ec2-user@ip-10-99-0-81 ~]$ ls -al /rclone/share/dropbox/user16/
+total 0
+drwxr-xr-x. 1 root root 0 Jun 27 07:40 .
+drwxr-xr-x. 1 root root 0 Jun 27 07:40 ..
+[ec2-user@ip-10-99-0-81 ~]$ echo 'hello from file server!' > /rclone/share/dropbox/user11/test-file.txt
+[ec2-user@ip-10-99-0-81 ~]$ ls -al /rclone/share/dropbox/user16/
+total 1
+drwxr-xr-x. 1 root root  0 Jun 27 07:40 .
+drwxr-xr-x. 1 root root  0 Jun 27 07:40 ..
+-rw-r--r--. 1 root root 24 Jun 27 07:48 test-file.txt
+[ec2-user@ip-10-99-0-81 ~]$ 
 ```
+
 
 ### Connect to the user dropbox via ncftp
 ```
-% ncftpput -u user11 -p CEz0gFWu7fCiA files-staging.gigadb.link / ~/Downloads/100006.md5 
-/Users/kencho/Downloads/100006.md5:                    604.00 B     2.23 kB/s 
-% ncftp
+ % ncftp
 NcFTP 3.2.7 (Jan 01, 2024) by Mike Gleason (http://www.NcFTP.com/contact/).
-ncftp> open -u user11 -p CEz0gFWu7fCiA files-staging.gigadb.link 
+ncftp> open -u user16 -p wfOSDce0LeaI5 files-staging.gigadb.link
 Connecting to 51.20.169.207...                                                                                                                                                                                                     
 --------- Welcome to Pure-FTPd [privsep] [TLS] ----------
 You are user number 1 of 5 allowed.
-Local time is now 08:25. Server port: 21.
+Local time is now 08:23. Server port: 21.
 This is a private system - No anonymous login
 IPv6 connections are also welcome on this server.
 You will be disconnected after 15 minutes of inactivity.
@@ -512,13 +514,21 @@ Logging in...
 OK. Current directory is /
 Logged in to files-staging.gigadb.link.                                                                                                                                                                                            
 ncftp / > ls
-100006.md5
-ncftp / >                                                                                                                                                                                            
+test-file.txt
 ncftp / > quit
-[ec2-user@ip-10-99-0-79 ~]$ ls -al /rclone/share/dropbox/user11
-total 0
-drwxr-xr-x. 1 root root 0 Jun 25 08:01 .
-drwxr-xr-x. 1 root root 0 Jun 25 08:01 ..
+% ncftpput -u user16 -p wfOSDce0LeaI5 files-staging.gigadb.link / ~/Downloads/100006.md5
+/Users/kencho/Downloads/100006.md5:                    604.00 B     2.23 kB/s 
+# log in bastion or file server
+[ec2-user@ip-10-99-0-81 ~]$ ls -al /rclone/share/dropbox/user16/
+total 2
+drwxr-xr-x. 1 root root   0 Jun 27 08:13 .
+drwxr-xr-x. 1 root root   0 Jun 27 08:10 ..
+-rw-r--r--. 1 root root 604 Jun 28  2024 100006.md5
+-rw-r--r--. 1 root root  24 Jun 27 08:21 test-file.txt
+% ncftpget -u user16 -p wfOSDce0LeaI5 files-staging.gigadb.link ./ /test-file.txt       
+test-file.txt:                                          24.00 B    34.27 kB/s  
+% cat test-file.txt 
+hello from file server!
 
 ```
 
