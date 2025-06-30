@@ -243,8 +243,6 @@ services:
       - "fuw-admin-api:172.16.238.10"
       - "fuw-public-api:172.16.238.10"
     command: bash -c "pwd"
-    depends_on:
-      - application
 
   playwright:
     build:

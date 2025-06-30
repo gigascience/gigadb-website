@@ -72,6 +72,7 @@ coverage_tests:
   variables:
     DATA_SAVE_PATH: "/tmp/gitlab-ci-$CI_JOB_ID"
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml"
+    INSTALL_XDEBUG: "true"
   cache:
     key:
       files:
