@@ -26,9 +26,11 @@ region = ap-east-1
 location_constraint = ap-east-1
 storage_class = GLACIER
 
-[r2]
+[rclone-mount]
 type = s3
-provider = Cloudflare
-access_key_id = {{ cloudflare_r2_access_key_id }}
-secret_access_key = {{ cloudflare_r2_secret_access_key }}
-endpoint = {{ cloudflare_r2_endpoint }}
+env_auth = true
+endpoint = {{ rclone_mount_endpoint }}
+location_constraint =
+server_side_encryption =
+storage_class =
+provider = Other

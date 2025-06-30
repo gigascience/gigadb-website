@@ -101,14 +101,15 @@ gigadb_datasetfiles_aws_secret_access_key=$(curl -s --header "PRIVATE-TOKEN: $GI
 echo "gigadb_datasetfiles_aws_access_key_id = $gigadb_datasetfiles_aws_access_key_id" >> ansible.properties
 echo "gigadb_datasetfiles_aws_secret_access_key = $gigadb_datasetfiles_aws_secret_access_key" >> ansible.properties
 
-# Required to mount cloudflare r2 bucket
-cloudflare_r2_access_key_id=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$PROJECT_VARIABLES_URL/cloudflare_r2_access_key_id?filter%5benvironment_scope%5d=$target_environment" | jq -r .value)
-cloudflare_r2_secret_access_key=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$PROJECT_VARIABLES_URL/cloudflare_r2_secret_access_key?filter%5benvironment_scope%5d=$target_environment" | jq -r .value)
-cloudflare_r2_endpoint=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$PROJECT_VARIABLES_URL/cloudflare_r2_endpoint?filter%5benvironment_scope%5d=$target_environment" | jq -r .value)
-
-echo "cloudflare_r2_access_key_id = $cloudflare_r2_access_key_id" >> ansible.properties
-echo "cloudflare_r2_secret_access_key = $cloudflare_r2_secret_access_key" >> ansible.properties
-echo "cloudflare_r2_endpoint = $cloudflare_r2_endpoint" >> ansible.properties
+# Required to mount s3 bucket
+rclone_mount_endpoint=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$FORK_VARIABLES_URL/rclone_mount_endpoint" | jq -r .value)
+rclone_mount_access_key_id=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$FORK_VARIABLES_URL/rclone_mount_access_key_id" | jq -r .value)
+rclone_mount_secret_access_key=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$FORK_VARIABLES_URL/rclone_mount_secret_access_key" | jq -r .value)
+rclone_mount_provider=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$FORK_VARIABLES_URL/rclone_mount_provider" | jq -r .value)
+echo "rclone_mount_endpoint = $rclone_mount_endpoint" >> ansible.properties
+echo "rclone_mount_access_key_id = $rclone_mount_access_key_id" >> ansible.properties
+echo "rclone_mount_secret_access_key = $rclone_mount_secret_access_key" >> ansible.properties
+echo "rclone_mount_provider = $rclone_mount_provider" >> ansible.properties
 
 # Retrieve ips of provisioned ec2 instances
 bastion_private_ip=$(terraform output ec2_bastion_private_ip | sed 's/"//g')

@@ -63,13 +63,13 @@
       failed_when: rclone_check_status.rc != 0
 
     - name: Check remote object storage is available
-      ansible.builtin.command: /usr/local/bin/rclone --config /home/ec2-user/.config/rclone/rclone.conf lsd r2:test-gigadb-dropbox
+      ansible.builtin.command: /usr/local/bin/rclone --config /home/ec2-user/.config/rclone/rclone.conf lsd --s3-profile rclone-mount rclone-mount:test-gigadb-mount
       register: remote_object_storage_check
       failed_when: remote_object_storage_check.rc != 0
 
     - name: Mount object storage using rclone
       ansible.builtin.command: >
-        /usr/local/bin/rclone --config /home/ec2-user/.config/rclone/rclone.conf mount r2:test-gigadb-dropbox /rclone \
+        /usr/local/bin/rclone --config /home/ec2-user/.config/rclone/rclone.conf mount --s3-profile rclone-mount rclone-mount:test-gigadb-mount /rclone \
         --daemon \
         --cache-dir /tmp/cache/rclone \
         --vfs-cache-mode full \
@@ -77,7 +77,7 @@
         --vfs-read-chunk-size 32M \
         --vfs-read-chunk-size-limit 2G \
         --allow-other \
-        --log-file /var/log/gigadb/rclone-r2.log \
+        --log-file /var/log/gigadb/rclone-mount.log \
         --log-level INFO
       register: mount_rclone
       when: rclone_check_status.rc == 0 and remote_object_storage_check.rc == 0 and rclone_mount_check.rc == 1
