@@ -617,3 +617,15 @@ Feature: form to update dataset details
     And I am on "/adminDataset/update/id/5"
     Then I can see the option "Published" selected for "Dataset_upload_status"
     And I should see "Status changed to Published"
+
+  @ok @issue-1028
+  Scenario: Title length warning is not displayed when under 100 characters
+    Given I am on "/adminDataset/update/id/5"
+    And I fill in the field of "name" "Dataset[title]" with "Lorem ipsum dolor sit amet"
+    Then I should not see "Warning: Your title is over 100 characters long, you should reduce it if possible."
+
+  @ok @issue-1028
+  Scenario: Title length warning is displayed when over 100 characters
+    Given I am on "/adminDataset/update/id/5"
+    And I fill in the field of "name" "Dataset[title]" with "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vitae arcu varius, interdum velit euee"
+    Then I should see "Warning: Your title is over 100 characters long, you should reduce it if possible."
