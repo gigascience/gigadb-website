@@ -136,7 +136,7 @@ trait LengthWarning {
         }
 
         return $this->lengthWarningOptions['message']
-            ?? "Warning: Input text is over {$this->lengthWarningOptions['threshold']} characters long, you should reduce it if possible.";
+            ?? "Warning: Input is over {$this->lengthWarningOptions['threshold']} characters long, you should reduce it if possible.";
     }
 
     /**
