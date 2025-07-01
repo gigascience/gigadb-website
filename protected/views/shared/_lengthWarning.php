@@ -7,11 +7,12 @@ $inputId = isset($inputId) ? CHtml::encode($inputId) : '';
         <span id="<?= $inputId ?>-length-count"><?= $initialCount ?> / <?= $threshold ?> characters.</span>
 <?php endif; ?>
 
-<div id="<?= $inputId ?>-length-warning" role="status" aria-live="polite">
-    <div class="js-length-warning-message" style="display:none;">
-        <?= CHtml::encode($warningMessage) ?>
-    </div>
-</div>
+        <div id="<?= $inputId ?>-length-warning" role="status" aria-live="polite">
+            <div class="js-length-warning-message length-warning-message" style="display:none;">
+                <span class="fa fa-exclamation-triangle icon-warn"></span>
+                <?= CHtml::encode($warningMessage) ?>
+            </div>
+        </div>
 
 <?php if ($showCount): ?>
     </div>
