@@ -38,11 +38,11 @@ class BaseInput extends CWidget
     $this->errorOptions['class'] = $this->mergeCssClasses($this->errorOptions, 'control-error help-block');
 
     if ($this->description && !$this->tooltip) {
-      $describedBy[] = $this->attributeName . '-desc';
+      $this->appendAriaDescribedById($this->attributeName . '-desc');
     }
 
     if ($this->model->hasErrors($this->attributeName)) {
-      $describedBy[] = $this->attributeName . '-error';
+      $this->appendAriaDescribedById($this->attributeName . '-error');
     }
 
     if (isset($this->inputOptions['required']) && $this->inputOptions['required']) {
@@ -52,10 +52,6 @@ class BaseInput extends CWidget
     if (!empty($this->tooltip)) {
       $this->inputOptions['title'] = $this->tooltip;
       $this->inputOptions['data-toggle'] = 'tooltip';
-    }
-
-    if (!empty($describedBy)) {
-      $this->inputOptions['aria-describedby'] = implode(" ", $describedBy);
     }
   }
 
@@ -78,6 +74,15 @@ class BaseInput extends CWidget
   {
     if ($this->description && !$this->tooltip) {
       echo CHtml::tag('p', array('id' => $this->attributeName . '-desc', 'class' => 'control-description help-block'), $this->description);
+    }
+  }
+
+  protected function appendAriaDescribedById($id)
+  {
+    if (isset($this->inputOptions['aria-describedby']) && trim($this->inputOptions['aria-describedby']) !== '') {
+      $this->inputOptions['aria-describedby'] .= " {$id}";
+    } else {
+      $this->inputOptions['aria-describedby'] = $id;
     }
   }
 

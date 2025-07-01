@@ -462,6 +462,11 @@ echo $form->hiddenField($model, "image_id");
                         'form'                => $form,
                         'model'               => $model,
                         'attributeName'       => 'title',
+                        'lengthWarningOptions' => [
+                            'threshold' => 100,
+                            'message'   => 'Warning: Title is over 100 characters long, you should reduce it if possible.',
+                            'showCount' => true,
+                        ],
                         'labelOptions'        => ['class' => 'col-xs-4'],
                         'inputWrapperOptions' => 'input-wrapper col-xs-6',
                         'inputOptions'        => [
