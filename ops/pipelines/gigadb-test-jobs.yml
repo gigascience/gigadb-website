@@ -69,6 +69,7 @@ legacy_tests:
 
 coverage_tests:
   stage: test
+  timeout: 2h 30m 0s
   variables:
     DATA_SAVE_PATH: "/tmp/gitlab-ci-$CI_JOB_ID"
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml"
