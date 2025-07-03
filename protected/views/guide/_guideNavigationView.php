@@ -1,9 +1,18 @@
+<?php
+
+$isActiveDatasetChecklists = !$isActiveGeneral && !$isActiveSupplementalFileGuide;
+
+?>
+
 <nav aria-label="Submission Guidelines" class="guide-nav" id="guideNav">
     <ul class="nav nav-tabs nav-border-tabs">
         <li class="<?= $isActiveGeneral ? 'active' : '' ?>">
             <a href="/site/guide">General Submission Guidelines</a>
         </li>
-        <li class="dropdown<?= !$isActiveGeneral ? ' active' : '' ?>" id="dataset-dropdown">
+        <li class="<?= $isActiveSupplementalFileGuide ? 'active' : '' ?>">
+            <a href="/site/supplementalFileGuide">Supplemental File Guidelines</a>
+        </li>
+        <li class="dropdown<?= $isActiveDatasetChecklists ? ' active' : '' ?>" id="dataset-dropdown">
             <button class="dropdown-toggle" aria-haspopup="true" aria-expanded="false" type="button">
                 Datasets Checklists&nbsp;
                 <i class="fa fa-angle-down" aria-hidden="true"></i>
