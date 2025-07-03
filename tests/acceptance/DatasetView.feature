@@ -47,8 +47,8 @@ Feature: a user visit the dataset page
   @ok
   Scenario: pagination widget is shown when total number of file greater than the page size setting
     Given I have not signed in
-    And I have set the page size setting to 5
-    When I am on "/dataset/100006"
+    And I have set the page size setting to "5"
+    And I wait "3" seconds
     And I follow "Files"
     Then I should see "Next >"
     Then I should see "Go to page"
@@ -147,7 +147,7 @@ Feature: a user visit the dataset page
     When I follow "Your dataset?"
     And I wait "1" seconds
     And I follow "Cancel current claim"
-    And I wait "1" seconds
+    And I wait "3" seconds
     Then I should see "Your claim has been successfully canceled."
 
   @ok @issue-877

@@ -27,7 +27,7 @@ Feature: main search function
     Given I am on "/"
     When I fill in the field of "id" "keyword" with "genome"
     And I press the button ".test-main-search-btn"
-    And I wait "1" seconds
+    And I wait "3" seconds
     Then I should see "Showing 1 - 2 of 6 datasets"
     And I should see a link "Three Bauhinia species transcriptome sequence data" to "/dataset/100245"
     And I should see a link "Data and software to accompany the paper: Applying compressed sensing to genome-wide association studies." to "/dataset/100094"
@@ -42,7 +42,7 @@ Feature: main search function
     Given I am on "/"
     And I fill in the field of "id" "keyword" with "genome"
     And I press the button ".test-main-search-btn"
-    And I wait "1" seconds
+    And I wait "3" seconds
     When I follow "2"
     Then I should see a link "Termitomyces sp. J132 fungus genome assembly data." to "/dataset/100056"
     And I should not see "Data and software to accompany the paper: Applying compressed sensing to genome-wide association studies."

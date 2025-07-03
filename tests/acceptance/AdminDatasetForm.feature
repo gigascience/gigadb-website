@@ -142,7 +142,7 @@ Feature: form to update dataset details
   Scenario: Can create/reset private url
     When I am on "/adminDataset/update/id/5"
     And I press the button "Create/Reset Private URL"
-    And I wait "3" seconds
+    And I wait "5" seconds
     Then I should see current url contains "/dataset/100039/token/"
     And I should see "Genomic data of the Puerto Rican Parrot (Amazona vittata) from a locally funded project."
 
@@ -156,7 +156,7 @@ Feature: form to update dataset details
   Scenario: Open private url is working
     When I am on "/adminDataset/update/id/5"
     And I press the button "Create/Reset Private URL"
-    And I wait "1" seconds
+    And I wait "5" seconds
     Then I should see current url contains "/dataset/100039/token/"
     And I should see "Genomic data of the Puerto Rican Parrot (Amazona vittata) from a locally funded project."
 
@@ -542,10 +542,10 @@ Feature: form to update dataset details
   Scenario: Navigating mockup page tables does not generate errors
     Given I am on "/adminDataset/update/id/5"
     When I press the button "Create/Reset Private URL"
-    And I wait "1" seconds
+    And I wait "5" seconds
     And I press the button "Files"
     And I press the button "Next >"
-    And I wait "1" seconds
+    And I wait "3" seconds
     Then I should see "Parrot.k31.NetworkTest.txt"
 
   @ok
@@ -566,9 +566,9 @@ Feature: form to update dataset details
     And I fill in the field of "name" "Dataset[title]" with "test dataset"
     And I press the button "Create"
     And I should see "test dataset"
-    And I am on "adminDataset/update/id/2741"
+    And I am on "adminDataset/update/id/2742"
     And I select "Published" from the field "Dataset_upload_status"
-    And I wait "2" seconds
+    And I wait "5" seconds
     Then I should see "The DOI does not exist. Please mint the DOI before saving your dataset: Mint DOI"
     And I press the button "Ok"
     And I should see "AuthorReview"

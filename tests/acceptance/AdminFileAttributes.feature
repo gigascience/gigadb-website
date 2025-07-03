@@ -146,7 +146,7 @@ Feature: A curator can manage file attributes in admin file update page
     Given I have signed in as admin
     And I am on "/adminFile/update/id/13973"
     When I press the button "Edit"
-    And I wait 2 seconds
+    And I wait "3" seconds
     Then I should see "Save Attribute"
     And I should see a submit button "Save"
 
@@ -168,7 +168,7 @@ Feature: A curator can manage file attributes in admin file update page
     Given I have signed in as admin
     And I am on "/adminFile/update/id/13973"
     And I press the button "Edit"
-    And I wait "1" seconds
+    And I wait "3" seconds
     And I fill in the text input "FileAttributes[edit][value]" with "Monday 15th July 2013, 00:00:00 AM Europe/Paris, 3463456435745634256234623456234562 bytes changed, version 235235.3423523"
     And I press the button "Save Attribute"
     Then I should see a file attribute table

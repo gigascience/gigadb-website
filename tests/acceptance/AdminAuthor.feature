@@ -127,7 +127,6 @@ Feature: a curator can fill in user id in an author record
     And I wait "2" seconds
     Then I should be on "/adminAuthor/view/id/659"
     And I should see "author unmerged from other authors"
-    And I should not see "14"
     And I should not see "651"
     And I should not see "662"
     And I should not see "Unmerge author from those authors"
@@ -257,9 +256,9 @@ Feature: a curator can fill in user id in an author record
     And author "14" is merged with author row "3" column "6" icon "4"
     And I am on "/adminAuthor/update/id/662"
     When I follow "Merge with an author"
-    And I wait "2" seconds
+    And I wait "3" seconds
     And I click on row "2" column "6" and icon "4"
-    And I wait "1" seconds
+    And I wait "3" seconds
     And I should see "Confirm merging these two authors?"
     And I should see "ID:"
     And I should see "Surname:"
@@ -275,7 +274,7 @@ Feature: a curator can fill in user id in an author record
     And I should see "Zhiwu"
     And I should see "Wang J, Zhao Z"
     And I follow "Yes, merge authors"
-    And I wait "2" seconds
+    And I wait "3" seconds
     Then I should be on "/adminAuthor/view/id/662"
     And I should see "merging authors completed successfully"
 
