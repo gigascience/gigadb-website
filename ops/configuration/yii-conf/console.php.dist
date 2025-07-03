@@ -21,6 +21,7 @@ return CMap::mergeArray($pre_config, array(
     # autoloading model and component classes
     'import'=>array(
         'application.models.*',
+        'application.interfaces.*',
         'application.components.*',
         'application.behaviors.*',
         'application.vendors.*',

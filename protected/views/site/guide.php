@@ -73,7 +73,7 @@ $this->pageTitle = 'GigaDB - Submission Guidelines';
                         <div class="subsection">
                             <p>For all datasets the following information will be required. Most of the details will be imported directly from the <i>GigaScience</i> manuscript submission, other details will be requested by the curators.</p>
                             <br>
-                            <div id="table_guide_submission" class="scrollbar">
+                            <div id="table_guide_submission" class="scrollbar table-responsive">
                                 <table border="1" class="guide-table">
                                     <thead>
                                         <tr>
@@ -215,7 +215,7 @@ $this->pageTitle = 'GigaDB - Submission Guidelines';
                             <p>For datasets that include biological sample-related data we would expect the sample metadata to be included in the GigaDB dataset. We understand that the level of sample metadata made available is often limited by sample collection restrictions, but authors should make every effort to provide as comprehensive metadata about samples as is possible. </p>
                             <p>Below is the list of attributes commonly associated with any biological sample. In addition to these we strongly encourage the inclusion of ALL appropriate attributes, and for specific types of data there are a number of standards that we encourage our users to adopt. Please see the Dataset Type specific checklists for recommendations.</p>
                             <br>
-                            <div id="table_guide_attribute" class="scrollbar">
+                            <div id="table_guide_attribute" class="scrollbar table-responsive">
                                 <table border="1" class="guide-table">
                                     <thead>
                                         <tr>
@@ -332,7 +332,7 @@ $this->pageTitle = 'GigaDB - Submission Guidelines';
                             <p>For all files we host, we expect the following details:</p>
                             <br>
                             <br>
-                            <div id="table_guide_details" class="scrollbar">
+                            <div id="table_guide_details" class="scrollbar table-responsive">
                                 <table border="1" class="guide-table">
                                     <thead>
                                         <tr>

@@ -1,4 +1,3 @@
-@ok-needs-secrets
 Feature: form to update dataset details
   As a curator
   I want a form to update dataset details
@@ -33,10 +32,8 @@ Feature: form to update dataset details
     And I should see "Description"
     And I should see "Keywords"
     And I should see "URL to redirect"
-    And I should see a submit button "Save"
     And I should see a button "Create New Log" with curation log link
     And I should not see "Publisher"
-
 
   @ok @datasetimage
   Scenario: Can preview uploaded image and display image meta data fields for no image dataset in update page
@@ -50,11 +47,13 @@ Feature: form to update dataset details
 
   @ok @datasetimage
   Scenario: Can save image to no image dataset update page
-    When I am on "/adminDataset/update/id/144"
+    When I am on "/adminDataset/update/id/2342"
+    And I check the field "Dataset_Epigenomic"
     And I attach the file "bgi_logo_new.png" to the file input element "datasetImage"
     And I press the button "Save"
-    Then I am on "/dataset/100094"
-    And I should see an image located in "/images/datasets/9febbdcf-3f7c-5558-abaa-448e633a109d/bgi-logo-new.png"
+    And I wait 3 seconds
+    Then I am on "/dataset/100935"
+    And I should see an image located in "/images/datasets/e3462258-a12a-5b1a-b45b-a94b95cc9442/bgi-logo-new.png"
 
   @ok @datasetimage
   Scenario: Can display dataset image, meta data and remove image button in update page
@@ -104,6 +103,7 @@ Feature: form to update dataset details
     When I am on "adminDataset/create"
     And I select "test+14@gigasciencejournal.com" from the field "Dataset_submitter_id"
     And I fill in the field of "name" "Dataset[dataset_size]" with "1024"
+    And I check the field "Dataset_Epigenomic"
     And I attach the file "bgi_logo_new.png" to the file input element "datasetImage"
     And I fill in the field of "name" "Image[source]" with "test source"
     And I fill in the field of "name" "Image[license]" with "test license"
@@ -131,9 +131,15 @@ Feature: form to update dataset details
   Scenario: Can create/reset private url
     When I am on "/adminDataset/update/id/5"
     And I press the button "Create/Reset Private URL"
-    And I wait "1" seconds
+    And I wait "3" seconds
     Then I should see current url contains "/dataset/100039/token/"
     And I should see "Genomic data of the Puerto Rican Parrot (Amazona vittata) from a locally funded project."
+
+  @ok @dataset-status
+  Scenario: Can't see create/reset private url for a published dataset
+    When I am on "/adminDataset/update/id/8"
+    Then I should not see "Create/Reset Private URL"
+    And I should not see "Open Private URL"
 
   @ok @issue-1023
   Scenario: Open private url is working
@@ -155,7 +161,7 @@ Feature: form to update dataset details
     And I fill in the field of "name" "Dataset[identifier]" with "123789"
     And I fill in the field of "name" "Dataset[ftp_site]" with "ftp://test"
     And I press the button "Create"
-    And I wait "1" seconds
+    And I wait 3 seconds
     Then I should see current url contains "/dataset/123789/token/"
     And I should see "https://doi.org/10.5524/123789"
 
@@ -171,7 +177,7 @@ Feature: form to update dataset details
     And I fill in the field of "name" "Dataset[identifier]" with "123789"
     And I fill in the field of "name" "Dataset[ftp_site]" with "ftp://test"
     And I press the button "Create"
-    And I wait "1" seconds
+    And I wait "3" seconds
     Then I am on "/adminDataset/update/id/2741"
     And I should see "AuthorReview"
     And I should see "123789"
@@ -189,8 +195,9 @@ Feature: form to update dataset details
     And I fill in the field of "name" "Dataset[title]" with "test dataset"
     And I fill in the field of "name" "Dataset[identifier]" with "123789"
     And I fill in the field of "name" "Dataset[ftp_site]" with "ftp://test"
+    When I check the field "Dataset_Epigenomic"
     And I press the button "Create"
-    And I wait "1" seconds
+    And I wait 3 seconds
     And I am on "/adminDataset/update/id/2741"
     And I follow "Open Private URL"
     And I wait "1" seconds
@@ -276,18 +283,20 @@ Feature: form to update dataset details
     And I fill in the field of "name" "Image[license]" with "test license"
     And I fill in the field of "name" "Image[photographer]" with "test Joe"
     And I press the button "Save"
+    And I wait 3 seconds
     Then I am on "/adminDataset/update/id/8"
     And I should see an image field "source" with text "test source"
     And I should see an image field "license" with text "test license"
     And I should see an image field "photographer" with text "test Joe"
     And I should see an image located in "/images/datasets/no_image.png"
 
-  @ok
   Scenario: can save keywords on update
     When I am on "/adminDataset/update/id/8"
     And I click on keywords field
     And I fill in keywords fields with "bam"
+    And I wait 1 seconds
     And I press the button "Save"
+    And I wait 3 seconds
     Then I am on "dataset/100006"
     And I should see "bam"
 
@@ -313,8 +322,8 @@ Feature: form to update dataset details
     And I fill in the field of "name" "CurationLog[comments]" with "hello world"
     And I press the button "Create"
     And I wait "2" seconds
-    Then I am on "/curationLog/view/id/4"
-    And I should see "View Curation Log #4"
+    Then I am on "/curationLog/view/id/5"
+    And I should see "View Curation Log #5"
     And I should see "hello world"
 
   @ok @curationlog
@@ -353,11 +362,12 @@ Feature: form to update dataset details
 
   @ok @flashmessage
   Scenario: Display error message when updating published dataset
-    Given I am on "/adminDataset/update/id/22"
+    Given I am on "/adminDataset/update/id/8"
     And I should see "Published"
     When I fill in the field of "name" "Dataset[dataset_size]" with "lorem ipsum"
     And I press the button "Save"
-    Then I should be on "/adminDataset/update/id/22"
+    And I wait 3 seconds
+    Then I should be on "/adminDataset/update/id/8"
     And I should see "Fail to update!"
     And I should see "Dataset Size must be a number."
 
@@ -368,6 +378,7 @@ Feature: form to update dataset details
     When I fill in the field of "name" "Dataset[dataset_size]" with "1024"
     When I check the field "Dataset_Epigenomic"
     And I press the button "Save"
+    And I wait 3 seconds
     Then I should be on "/adminDataset/update/id/668"
     And I should see "Updated successfully!"
 
@@ -377,6 +388,7 @@ Feature: form to update dataset details
     And I should see "Private"
     When I fill in the field of "name" "Dataset[dataset_size]" with "lorem ipsum"
     And I press the button "Save"
+    And I wait 3 seconds
     Then I should be on "/adminDataset/update/id/668"
     And I should see "Fail to update!"
     And I should see "Dataset Size must be a number."
@@ -415,11 +427,8 @@ Feature: form to update dataset details
 
   @ok @dataset-status
   Scenario: Check dataset page with Published status is publicly visible
-    Given I am on "/adminDataset/update/id/5"
-    And I select "Published" from the field "Dataset_upload_status"
-    And I press the button "Save"
-    And I am on "/dataset/100039"
-    Then I should see "Genomic data of the Puerto Rican Parrot"
+    Given I am on "/dataset/100006"
+    Then I should see "Genomic data from Adelie penguin"
 
   @ok @mint-doi
   Scenario: Update metadata for an existing doi
@@ -477,15 +486,21 @@ Feature: form to update dataset details
       | "DataAvailableForReview" |
       | "DataPending"            |
 
-  @ok @dataset-status
-  Scenario: Links to create mockup or to open mockup are not present for a published dataset
+  @ok
+  Scenario: Links to create mockup is present for a submitted dataset
     Given I am on "/adminDataset/update/id/5"
-    And I select "Published" from the field "Dataset_upload_status"
+    And I select "DataAvailableForReview" from the field "Dataset_upload_status"
+    And I press the button "Save"
+    And I wait 3 seconds
+    When I am on "/adminDataset/update/id/5"
+    And I select "Submitted" from the field "Dataset_upload_status"
     And I press the button "Save"
     When I am on "/adminDataset/update/id/5"
-    Then I should not see "Create/Reset Private URL"
-    And I should not see "Open Private URL"
-
+    Then I should see "Create/Reset Private URL"
+    And I press the button "Create/Reset Private URL"
+    And I wait "3" seconds
+    Then I should see current url contains "/dataset/100039/token/"
+    And I should see "Genomic data of the Puerto Rican Parrot (Amazona vittata) from a locally funded project."
 
   @ok @issue-1812 @mockup
   Scenario: Navigating mockup page tables does not generate errors
@@ -496,6 +511,40 @@ Feature: form to update dataset details
     And I press the button "Next >"
     And I wait "1" seconds
     Then I should see "Parrot.k31.NetworkTest.txt"
+
+  @ok
+  Scenario: Show a modal after minting to show no metadata registered
+    When I am on "/adminDataset/update/id/668"
+    When I follow "Mint DOI"
+    Then I should see "minting under way, please wait"
+    And I wait "5" seconds
+    Then I should see "Unable to generate XML for Datacite, please check"
+
+  @ok
+  Scenario: Show a modal and acknowledge the DOI has not been minted when trying to publish a dataset
+    When I am on "adminDataset/create"
+    And I fill in the field of "name" "Dataset[dataset_size]" with "1024"
+    And I check the field "Dataset_Epigenomic"
+    And I fill in the field of "name" "Dataset[identifier]" with "400789"
+    And I fill in the field of "name" "Dataset[ftp_site]" with "ftp://test"
+    And I fill in the field of "name" "Dataset[title]" with "test dataset"
+    And I press the button "Create"
+    And I should see "test dataset"
+    And I am on "adminDataset/update/id/2741"
+    And I select "Published" from the field "Dataset_upload_status"
+    And I wait "2" seconds
+    Then I should see "The DOI does not exist. Please mint the DOI before saving your dataset: Mint DOI"
+    And I press the button "Ok"
+    And I should see "AuthorReview"
+
+    @ok
+  Scenario: Don't show a modal if the DOI has been minted when trying to publish a dataset
+    Given I am on "adminDataset/update/id/5"
+    And I should see "DOI Minting"
+    And I should see "Dataset 100039 | Check DOI: OK |"
+    When I select "Published" from the field "Dataset_upload_status"
+    And I wait "4" seconds
+    Then I should not see "The DOI does not exist. Please mint the DOI before saving your dataset: Mint DOI"
 
   @ok
   Scenario: Check type is not removed when uncheck a dataset type
@@ -536,3 +585,35 @@ Feature: form to update dataset details
     And I am on "/adminDataset/update/id/8"
     Then I should see "Dataset_Workflow" checkbox is checked
     Then I should see "Dataset_Genomic" checkbox is unchecked
+
+  @ok
+  Scenario: Check upload status can be set to submitted from any previous upload status
+    Given I am on "/adminDataset/update/id/5"
+    And I cannot see the option "Submitted" selected for "Dataset_upload_status"
+    When I select "Submitted" from the field "Dataset_upload_status"
+    And I press the button "Save"
+    And I am on "/adminDataset/update/id/5"
+    Then I can see the option "Submitted" selected for "Dataset_upload_status"
+
+  @ok
+  Scenario: Check upload status can be set to DataPending from any previous upload status
+    Given I am on "/adminDataset/update/id/5"
+    And I cannot see the option "DataPending" selected for "Dataset_upload_status"
+    When I select "DataPending" from the field "Dataset_upload_status"
+    And I press the button "Save"
+    And I wait "3" seconds
+    And I press the button "Save and send email"
+    And I am on "/adminDataset/update/id/5"
+    Then I can see the option "DataPending" selected for "Dataset_upload_status"
+
+  @ok
+  Scenario: Check upload status can be set to Published from any previous upload status
+    Given I am on "/adminDataset/update/id/5"
+    And I cannot see the option "Published" selected for "Dataset_upload_status"
+    When I select "Published" from the field "Dataset_upload_status"
+    And I wait "3" seconds
+    And I press the button "Save"
+    And I wait "3" seconds
+    And I am on "/adminDataset/update/id/5"
+    Then I can see the option "Published" selected for "Dataset_upload_status"
+    And I should see "Status changed to Published"

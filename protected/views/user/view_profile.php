@@ -35,7 +35,7 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
                           ]);
                           ?>
                             <section>
-                              <div class="tabs" role="tablist">
+                              <div class="tabs nav-tabs" role="tablist">
                                   <a id="liedit" class="active" href="#edit" aria-controls="edit" role="tab" aria-selected="true" data-toggle="tab">Personal details</a>
                                   <a id="lisubmitted" href="#submitted" aria-controls="submitted" role="tab" aria-selected="false" tabindex="-1" data-toggle="tab">Your Uploaded Datasets</a>
                                   <a id="liauthored" href="#authored" aria-controls="authored" role="tab" aria-selected="false" tabindex="-1" data-toggle="tab">Your Authored Datasets</a>
@@ -46,7 +46,7 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
                                 <div class="tab-content">
                                     <div role="tabpanel" class="tab-pane" id="edit">
                                         <div class="row">
-                                            <div class="col-xs-8 col-xs-offset-2">
+                                            <div class="col-xs-12 col-sm-8 col-sm-offset-2">
                                                 <div class="form well user-profile-box">
                                                     <div class="js-readonly-data">
                                                       <ul class="list-unstyled readonly-profile">
@@ -59,7 +59,7 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
                                                             $value = $value ? 'Yes' : 'No';
                                                           }
                                                           ?>
-                                                          <li class="row">
+                                                          <li class="row readonly-profile-item">
                                                             <div class="col-xs-5 readonly-profile-key"><?= $label ?></div>
                                                             <div class="col-xs-7 readonly-profile-value"><?= $value ?></div>
                                                           </li>
@@ -88,8 +88,8 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
                                                           'class' => 'js-toggle-editable',
                                                           'required' => true,
                                                         ],
-                                                        'labelOptions' => ['class' => 'col-xs-5'],
-                                                        'inputWrapperOptions' => 'col-xs-7'
+                                                        'labelOptions' => ['class' => 'col-xs-12 col-md-5'],
+                                                        'inputWrapperOptions' => 'col-xs-12 col-md-7'
                                                       ]);
                                                       $this->widget('application.components.controls.TextField', [
                                                         'form' => $form,
@@ -100,8 +100,8 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
                                                           'maxlength' => 60,
                                                           'required' => true,
                                                         ],
-                                                        'labelOptions' => ['class' => 'col-xs-5'],
-                                                        'inputWrapperOptions' => 'col-xs-7'
+                                                        'labelOptions' => ['class' => 'col-xs-12 col-md-5'],
+                                                        'inputWrapperOptions' => 'col-xs-12 col-md-7'
                                                       ]);
                                                       $this->widget('application.components.controls.TextField', [
                                                         'form' => $form,
@@ -112,8 +112,8 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
                                                           'maxlength' => 60,
                                                           'required' => true,
                                                         ],
-                                                        'labelOptions' => ['class' => 'col-xs-5'],
-                                                        'inputWrapperOptions' => 'col-xs-7'
+                                                        'labelOptions' => ['class' => 'col-xs-12 col-md-5'],
+                                                        'inputWrapperOptions' => 'col-xs-12 col-md-7'
                                                       ]);
                                                       $this->widget('application.components.controls.TextField', [
                                                         'form' => $form,
@@ -124,8 +124,8 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
                                                           'maxlength' => 60,
                                                           'required' => true,
                                                         ],
-                                                        'labelOptions' => ['class' => 'col-xs-5'],
-                                                        'inputWrapperOptions' => 'col-xs-7'
+                                                        'labelOptions' => ['class' => 'col-xs-12 col-md-5'],
+                                                        'inputWrapperOptions' => 'col-xs-12 col-md-7'
                                                       ]);
                                                       ?>
                                                       <?php
@@ -137,16 +137,16 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
                                                         'inputOptions' => [
                                                           'class' => 'js-toggle-editable',
                                                         ],
-                                                        'labelOptions' => ['class' => 'col-xs-5'],
-                                                        'inputWrapperOptions' => 'col-xs-7'
+                                                        'labelOptions' => ['class' => 'col-xs-12 col-md-5'],
+                                                        'inputWrapperOptions' => 'col-xs-12 col-md-7'
                                                       ]);
                                                       ?>
                                                       <div class="form-group checkbox-horizontal <?= $model->hasErrors('newsletter') ? 'has-error' : '' ?>">
-                                                        <?= $form->label($model, 'newsletter', array('class' => 'col-xs-5 control-label')) ?>
-                                                        <div class="col-xs-7">
+                                                        <?= $form->label($model, 'newsletter', array('class' => 'col-md-5 control-label')) ?>
+                                                        <div class="col-md-7 input-wrapper">
                                                           <?php echo $form->checkbox($model, 'newsletter', array('aria-describedby' => $model->hasErrors('newsletter') ? 'newsletterError' : '')); ?>
                                                         </div>
-                                                        <div class="col-xs-7" id="newsletterError" role="alert">
+                                                        <div class="col-md-7 checkbox-error" id="newsletterError" role="alert">
                                                           <?php echo $form->error($model, 'newsletter', array('class' => 'control-error help-block')); ?>
                                                         </div>
                                                       </div>
@@ -161,7 +161,7 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
                                                     <? $this->endWidget() ?>
                                                     </div>
 
-                                              <div>
+                                              <div class="user-profile-action-btns">
                                                 <div class="btns-row pull-right">
                                                   <button id="edit-btn" type="button" class="btn background-btn">Edit Profile</button>
                                                   <a href="/user/changePassword" class="btn background-btn">

@@ -1,4 +1,3 @@
-@ok-can-offline
 Feature: CLOCKSS permission
   As a third party system
   I want to be allowed to access GigaDB content

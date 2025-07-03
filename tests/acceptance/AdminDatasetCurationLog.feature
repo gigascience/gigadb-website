@@ -1,4 +1,3 @@
-@ok-needs-secrets
 Feature: curation log entry under the dataset form
   As a curator
   I want to see see a curation log entry after minting DOI
