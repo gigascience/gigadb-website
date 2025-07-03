@@ -77,6 +77,11 @@ class BaseInput extends CWidget
     }
   }
 
+  /**
+   * Appends an ID to the aria-describedby attribute
+   *
+   * @param string $id The ID to append
+   */
   protected function appendAriaDescribedById($id)
   {
     if (isset($this->inputOptions['aria-describedby']) && trim($this->inputOptions['aria-describedby']) !== '') {

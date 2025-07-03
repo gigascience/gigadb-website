@@ -7,9 +7,7 @@ export function initLengthWarning() {
 }
 
 function updateCounter({ $counter, length, limit }) {
-  if ($counter && $counter.length) {
-    $counter.text(`${length} / ${limit} characters.`);
-  }
+  $counter?.length && $counter.text(`${length} / ${limit} characters.`);
 }
 
 function updateWarning({ $warning, $warningMessage, isOverLimit }) {

@@ -8,12 +8,12 @@
  * "text too long" warning and optional live character counter.
  *
  * How to use:
- * 1. Import the trait (usually done once per file):
+ * 1. Import the trait:
  *    `Yii::import('application.components.controls.traits.LengthWarning');`
  *
  * 2. Add `use LengthWarning;` inside your widget/class definition.
  *
- * 3. Expose a public `$lengthWarningOptions` property and pass the following array from the view:
+ * 3. Pass the following array from the view:
  *
  *    'lengthWarningOptions' => [
  *        'threshold' => 100,            // (int) Required. Show warning above this length.
