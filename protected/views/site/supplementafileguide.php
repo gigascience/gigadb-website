@@ -3,11 +3,13 @@ $this->pageTitle = 'GigaDB - Supplemental File Guidelines'; ?>
 
 <div class="content mb-30">
   <div class="container">
-    <?php
-        $this->widget('TitleBreadcrumb', ['pageTitle' => 'GigaDB -
-    Supplemental File Guidelines', 'breadcrumbItems' => [['label' => 'Home',
-        'href'                                                            => '/'], ['isActive' => true, 'label' => 'Supplemental File
-    Guidelines', ]]]); ?>
+    <?php $this->widget('TitleBreadcrumb', [
+            'pageTitle' => 'GigaDB - Supplemental File Guidelines',
+            'breadcrumbItems' => [
+                ['label' => 'Home', 'href' => '/'],
+                ['isActive' => true, 'label' => 'Supplemental File Guidelines']
+            ]
+        ]); ?>
     <section>
       <?php
       $this->widget('GuideNavigation'); ?>
