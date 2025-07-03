@@ -170,7 +170,7 @@ Feature: A user visit gigadb website
     When I press the button "About"
     Then I should see a link "Jobs" to "https://jobs.gigasciencejournal.com/"
 
-  @issue-2330
+  @ok @issue-2330
   Scenario: Link to Supplemental File Guidelines page is found in the guide page
     When I am on "/site/guide"
     Then I should see a link "Supplemental File Guidelines" to "/site/supplementalFileGuide"
