@@ -38,7 +38,7 @@ $this->pageTitle = 'GigaDB - Help';
                         <h2 class="page-subtitle" id="searchResultTitle">Search result</h2>
                         <p>The search results are grouped by <span class="text-italic">GigaDB</span> Datasets (G), Samples (S) and Files (F).</p>
 
-                        <dl class="help-search-result">
+                        <dl class="inline-list help-search-result">
                             <div class="help-search-result-item">
                                 <dt>
                                     <div class="text-icon text-icon-sm text-icon-blue" aria-hidden="true">G</div>
@@ -121,7 +121,7 @@ $this->pageTitle = 'GigaDB - Help';
                 <div role="tabpanel" class="tab-pane" id="vocabulary" aria-labelledby="livocabulary">
                     <section aria-labelledby="datasettypes" class="m-0">
                         <h2 class="page-subtitle" id="datasettypes">Dataset types</h2>
-                        <dl class="help-description-list">
+                        <dl class="inline-list help-description-list">
                             <div class="help-definition-container">
                                 <dt>Genomic</dt>
                                 <dd>Includes all genetic and genomic data eg sequence, assemblies, alignments, genotypes, variation and annotation. Minimal requirements: DNA sequence data eg next-gen raw reads (fastq files) OR assembled DNA sequences (fasta files).</dd>
@@ -212,7 +212,7 @@ $this->pageTitle = 'GigaDB - Help';
                     <section aria-labelledby="filetypes" class="m-0">
                         <h2 class="page-subtitle" id="filetypes">File types</h2>
                         <p>File types and examples of associated file extensions:</p>
-                        <dl class="help-description-list">
+                        <dl class="inline-list help-description-list">
                             <div class="help-definition-container">
                                 <dt>Alignments</dt>
                                 <dd>.bam, .chain, .maf, .net, .sam</dd>
@@ -314,7 +314,7 @@ $this->pageTitle = 'GigaDB - Help';
 
                         <!-- FILE FORMATS DL -->
 
-                        <dl class="help-description-list">
+                        <dl class="inline-list help-description-list">
                             <div class="help-definition-container">
                                 <dt id="agp">AGP <span class="dt-sidenote">(.agp)</span></dt>
                                 <dd>
@@ -664,7 +664,7 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242&lt;</pre>
 
                     <section aria-labelledby="uploadStatusTitle" class="m-0">
                         <h2 class="page-subtitle" id="uploadStatusTitle">Upload status</h2>
-                        <dl class="help-description-list">
+                        <dl class="inline-list help-description-list">
                             <div class="help-definition-container">
                                 <dt>Publish</dt>
                                 <dd>this dataset is fully consented for immediate release upon <span class="text-italic">Giga</span>DB approval</dd>
@@ -685,7 +685,7 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242&lt;</pre>
                         <p>The DOI relationship vocabulary is taken from the <a href="http://schema.datacite.org/meta/kernel-2.2/doc/DataCite-MetadataKernel_v2.2.pdf" target="_blank" aria-label="DataCite Pdf file">DataCite</a> 'relationType' schema property (ID=12.2).</p>
                         <p>Definition: Description of the relationship of the resource being registered (A) and the related resource (B).</p>
 
-                        <dl class="help-description-list">
+                        <dl class="inline-list help-description-list">
                             <div class="help-definition-container">
                                 <dt>IsSupplementTo</dt>
                                 <dd>indicates that A is a supplement to B</dd>
@@ -728,7 +728,7 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242&lt;</pre>
 
                         <p>For attributes (sample, dataset or files) that have some or all values missing please use the following controlled value terms to describe the exact reason for the missing value.</p>
 
-                        <dl class="help-description-list">
+                        <dl class="inline-list help-description-list">
                             <div class="help-definition-container">
                                 <dt>not applicable</dt>
                                 <dd>information is inappropriate to report, often this attribute can be removed entirely.</dd>
@@ -777,7 +777,7 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242&lt;</pre>
                         <p>To search for datasets without the ID's, use the term <span>search?keyword=</span></p>
                         <p>To search by specific attributes use <span>search?&lt;attribute_name&gt;=</span></p>
                         <p>Available <strong>attribute_name</strong> to search include:</p>
-                        <dl class="help-description-list">
+                        <dl class="inline-list help-description-list">
                             <div class="help-definition-container">
                                 <dt><strong>taxno</strong></dt>
                                 <dd>Taxonomic ID (NCBI)</dd>

@@ -30,6 +30,7 @@ const PUBLIC_PATHS = [
   },
   '/site/help',
   '/site/guide',
+  '/site/supplementalfileguidelines',
   '/site/guidegenomic',
   '/site/guideimaging',
   '/site/guidemetabolomic',

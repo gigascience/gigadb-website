@@ -1,4 +1,4 @@
-dl {
+dl.inline-list {
   font-size: 13px;
   .dl-item-wrapper {
     display: flex;
@@ -6,7 +6,7 @@ dl {
     gap: 4px;
   }
   dt {
-    color: @dark-gray-on-white;
+    color: @color-warm-black;
     font-weight: bold;
     &::after {
       content: " - ";
@@ -14,6 +14,27 @@ dl {
     }
   }
   dd {
-    color: @dark-gray-on-white;
+    color: @color-warm-black;
+    margin-bottom: 10px;
+  }
+}
+
+
+dl.definition-list {
+  dt {
+    font-weight: 600;
+    font-size: 1.05em;
+    color: @color-warm-black;
+    margin-top: 1.5em;
+  }
+
+  dd {
+    margin: 0.5em 0 0 0;
+    padding-left: 0.7em;
+    border-left: 3px solid @color-medium-gray;
+
+    &:last-of-type {
+      margin-bottom: 1.5em;
+    }
   }
 }

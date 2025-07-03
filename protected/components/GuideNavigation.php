@@ -23,7 +23,7 @@ class GuideNavigation extends CWidget
     public function run()
     {
         $isActiveGeneral = $this->isActive('site', 'guide');
-
+        $isActiveSupplementalFileGuide = $this->isActive('site', 'supplementalFileGuide');
         $datasetLinks = [
             'Genomic Dataset Checklist' => 'guidegenomic',
             'Imaging Dataset Checklist' => 'guideimaging',
@@ -37,7 +37,8 @@ class GuideNavigation extends CWidget
 
         Yii::app()->controller->renderPartial('//guide/_guideNavigationView', [
             'menuHtml' => $menuHtml,
-            'isActiveGeneral' => $isActiveGeneral
+            'isActiveGeneral' => $isActiveGeneral,
+            'isActiveSupplementalFileGuide' => $isActiveSupplementalFileGuide
         ]);
     }
 }

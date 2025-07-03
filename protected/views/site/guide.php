@@ -24,8 +24,23 @@ $this->pageTitle = 'GigaDB - Submission Guidelines';
                     <div class="tab-pane active">
                         <h2 class="page-subtitle h4">General Submission Guidelines </h2>
                         <div class="subsection">
-                            <p>GigaDB is a <a target="_blank" href="https://www.cngb.org/aboutUs.html?i18nlang=en_US">China National GeneBank</a> supported repository used to host data and tools associated with articles in <i>GigaScience</i>. As part of your manuscript submission and in line with the <a target="_blank" href="https://academic.oup.com/gigascience/pages/editorial_policies_and_reporting_standards">Reporting Standards</a> and <a target="_blank" href="http://doi.org/10.25504/fairsharing.prdtva">FAIRsharing guidelines for data deposition and formatting for papers submitted to <i>GigaScience</i></a> we will provide an associated GigaDB dataset to host the data and files required for transparency and reproducibility. GigaDB is an open-access database. As such, all data submitted to GigaDB must be fully consented for public release (for more information about our data policies, please see our <a href="/site/term">Terms of use</a> page).
+                            <p>GigaDB is a repository used to host data and tools associated with articles in <i>GigaScience</i>. As part of your manuscript submission and in line with the <a target="_blank" href="https://academic.oup.com/gigascience/pages/editorial_policies_and_reporting_standards">Reporting Standards</a> and <a target="_blank" href="http://doi.org/10.25504/fairsharing.prdtva">FAIRsharing guidelines for data deposition and formatting for papers submitted to <i>GigaScience</i></a> we will provide an associated GigaDB dataset to host the data and files required for transparency and reproducibility. GigaDB is an open-access database. As such, all data submitted to GigaDB must be fully consented for public release (for more information about our data policies, please see our <a href="/site/term">Terms of use</a> page).
                             </p>
+                        </div>
+
+                        <h2 class="page-subtitle h4">The GigaScience philosophy on supplemental files</h2>
+                        <div class="subsection">
+
+                            <p><i>GigaScience Press</i> treat supplemental files a little differently to other publishers. In <i>GigaScience journal</i>, supplemental files do still exist in the same way as other more traditional journals, but our GigaDB curation team will check those for data content. If we find the content to be data (rather than narrative) then we will move those data objects into GigaDB (converting them to machine readable formats) to enable them to be discovered, integrated and re-used as required by other researchers. With our other journal <i>GigaByte</i>, we have taken things a step further, by not accepting traditional "supplemental files" at all. Instead authors need to consider whether the information in a supplemental file is:</p>
+
+                            <ol type="A">
+                                <li>Important narrative, in which case it should be incorporated into the manuscript text.</li>
+                                <li>Data, in which case it can be submitted to GigaDB (or other open repositories) and cited from the manuscript.</li>
+                                <li>Superfluous to requirements and removed.</li>
+                            </ol>
+
+                            <p>To help with this we have prepared a list of things commonly found in supplemental files and how we would recommend they be represented: <a href="/site/supplementalFileGuide">Supplemental File Guidelines</a>.</p>
+
                         </div>
 
                         <h2 class="page-subtitle h4">Workflow</h2>
@@ -118,7 +133,7 @@ $this->pageTitle = 'GigaDB - Submission Guidelines';
                                             <span aria-hidden="true">y</span><span class="sr-only">yes</span>
                                         </td>
                                         <td>
-                                            Manuscript title prefixed with “Supporting data for”
+                                            Manuscript title prefixed with "Supporting data for"
                                         </td>
                                     </tr>
                                     <tr>

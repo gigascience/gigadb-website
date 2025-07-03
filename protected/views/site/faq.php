@@ -496,7 +496,7 @@ $this->pageTitle = 'GigaDB - FAQ';
                     <div id="panel33" aria-labelledby="heading33" class="panel-collapse collapse">
                         <div class="panel-body">
                             <p>There are various reason why certain data values may need to not be included in the sample metadata, but you still want it to be compliant with particular Minimum Information standards such the GSC MIxS. To maintain compliance when there are missing values within the mandatory fields please use the following terms only:</p>
-                            <dl>
+                            <dl class="inline-list">
                                 <div class="dl-item-wrapper">
                                     <dt>Term</dt>
                                     <dd>Definition</dd>
