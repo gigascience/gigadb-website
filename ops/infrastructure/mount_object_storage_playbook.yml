@@ -6,19 +6,7 @@
   hosts: "name_bastion_server_{{gigadb_env}}*,name_gigadb_filesserver_{{gigadb_env}}*"
 
   tasks:
-    - name: Create directory for mounting
-      ansible.builtin.file:
-        path: "{{ item }}"
-        state: directory
-        mode: '0755'
-        owner: ec2-user
-        group: ec2-user
-      loop:
-        - "/tmp/cache/rclone"
-        - "/rclone"
-      changed_when: false
-
-    - name: Check whether rclone is already mounted
+    - name: Check whether /rclone is already mounted
       ansible.builtin.command: findmnt -n /rclone
       register: rclone_mount_check
       # This task only checks state and doesn't change anything.
@@ -29,11 +17,33 @@
       failed_when: rclone_mount_check.rc > 1
 
     - debug:
-        msg: "Rclone mount check output: {{ rclone_mount_check.rc }}"
+        msg: "Check if /rclone is mounted: {{ rclone_mount_check.rc }}"
+
+    - name: Create rclone config
+      template:
+        src: ../../../../ops/configuration/rclone-conf/mount.conf.j2
+        dest: /home/ec2-user/.config/rclone/mount.conf
+        owner: ec2-user
+        group: ec2-user
+        mode: 0644
+      when: rclone_mount_check.rc == 1
+
+    - name: Create directory for mounting
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        mode: '0755'
+        owner: ec2-user
+        group: ec2-user
+      loop:
+        - "/tmp/cache/rclone"
+        - "/rclone"
+      when: rclone_mount_check.rc == 1
+      changed_when: false
 
     - name: Create log file for rclone mount
       ansible.builtin.file:
-        path: /var/log/gigadb/rclone-r2.log
+        path: /var/log/gigadb/rclone-mount.log
         state: touch
         mode: '0644'
         owner: ec2-user
@@ -63,13 +73,13 @@
       failed_when: rclone_check_status.rc != 0
 
     - name: Check remote object storage is available
-      ansible.builtin.command: /usr/local/bin/rclone --config /home/ec2-user/.config/rclone/rclone.conf lsd --s3-profile rclone-mount rclone-mount:test-gigadb-mount
+      ansible.builtin.command: /usr/local/bin/rclone --config /home/ec2-user/.config/rclone/mount.conf lsd mount:test-gigadb-mount
       register: remote_object_storage_check
       failed_when: remote_object_storage_check.rc != 0
 
     - name: Mount object storage using rclone
       ansible.builtin.command: >
-        /usr/local/bin/rclone --config /home/ec2-user/.config/rclone/rclone.conf mount --s3-profile rclone-mount rclone-mount:test-gigadb-mount /rclone \
+        /usr/local/bin/rclone --config /home/ec2-user/.config/rclone/mount.conf mount mount:test-gigadb-mount /rclone \
         --daemon \
         --cache-dir /tmp/cache/rclone \
         --vfs-cache-mode full \

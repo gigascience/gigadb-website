@@ -94,22 +94,6 @@
     - rclone-tool
 
   tasks:
-    - name: Create a .aws directory for the ec2-user user
-      ansible.builtin.file:
-        path: /home/ec2-user/.aws
-        state: directory
-        mode: '0755'
-        owner: ec2-user
-        group: ec2-user
-
-    - name: Create aws credentials file
-      ansible.builtin.template:
-        src: ../../../../ops/configuration/aws-conf/credentials.j2
-        dest: /home/ec2-user/.aws/credentials
-        owner: ec2-user
-        group: ec2-user
-        mode: 0644
-
     - name: Create a /home/ec2-user/.config/rclone directory
       ansible.builtin.file:
         path: /home/ec2-user/.config/rclone
@@ -117,14 +101,6 @@
         mode: '0755'
         owner: ec2-user
         group: ec2-user
-
-    - name: Create rclone config
-      template:
-        src: ../../../../ops/configuration/rclone-conf/rclone.conf.j2
-        dest: /home/ec2-user/.config/rclone/rclone.conf
-        owner: ec2-user
-        group: ec2-user
-        mode: 0644
 
     - name: Create directory for storing log output
       ansible.builtin.file:
@@ -140,7 +116,6 @@
         rclone_version: "1.60.0"
         rclone_arch: "amd64"
         install_manpages: "true"
-        rclone_config_location: "/home/ec2-user/.config/rclone/rclone.conf"
 
 - name: Install node exporter
   hosts: name_gigadb_filesserver_{{gigadb_env}}*
