@@ -17,6 +17,9 @@ coverage:
       - protected/controllers/*.php
       - protected/commands/*.php
       - protected/behaviors/*.php
+      - protected/extensions/*.php
+      - protected/helpers/*.php
+      - protected/interfaces/*.php
   exclude:
       - tests/*
       - vendor/*

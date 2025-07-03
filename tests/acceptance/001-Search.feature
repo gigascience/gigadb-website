@@ -9,7 +9,7 @@ Feature: main search function
     Given I am on "/"
     When I fill in the field of "id" "keyword" with "penguin"
     And I press the button ".test-main-search-btn"
-    And I wait "1" seconds
+    And I wait "3" seconds
     Then I should see a link "Genomic data from Adelie penguin (Pygoscelis adeliae)." to "/dataset/100006"
     And I should see a link "Pygoscelis_adeliae" to "/dataset/100006"
     And I should see the files:

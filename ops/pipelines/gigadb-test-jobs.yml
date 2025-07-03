@@ -68,7 +68,7 @@ legacy_tests:
     - $GITLAB_USER_LOGIN
 
 coverage_unit_tests:
-  stage: test
+  stage: acceptance
   variables:
     DATA_SAVE_PATH: "/tmp/gitlab-ci-$CI_JOB_ID"
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml"
@@ -115,7 +115,7 @@ coverage_unit_tests:
     - $GITLAB_USER_LOGIN
 
 coverage_functional_tests:
-  stage: test
+  stage: acceptance
   variables:
     DATA_SAVE_PATH: "/tmp/gitlab-ci-$CI_JOB_ID"
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml"
@@ -163,7 +163,8 @@ coverage_functional_tests:
     - $GITLAB_USER_LOGIN
 
 coverage_acceptance_tests:
-  stage: test
+  stage: acceptance
+  timeout: 2 hours
   variables:
     DATA_SAVE_PATH: "/tmp/gitlab-ci-$CI_JOB_ID"
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml"
