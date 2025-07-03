@@ -6,7 +6,58 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Feat #482: Update FAQ "What data storage procedures do you follow?"
 
-## v4.4.7 - 2025-03-26 - 4c548f037 -
+## v4.4.14 - 2025-06-24 - 4159a6086
+
+- Feat #1641: Check if the DOI has been minted when the upload status is set to 'Published'
+- Feat #2236: Display pre print manuscript on dataset page
+- Security dependabot#183: Server-Side Request Forgery in axios
+- Security dependabot#195: body-parser vulnerable to denial of service when url encoding is enabled
+
+## v4.4.13 - 2025-06-13 - 26083397b - live since 2025-06-16
+
+- Feat #199: Reorder home page sections
+- Feat #199: Add dataset feed to homepage
+- Feat #208: Homepage news items section rework
+- Feat #2189: Make public pages responsive
+- Feat #2326: Configure coderabbitai and provide instructions to focus automated code reviews
+- Fix #2251: Add a size validation rule when updating a file
+- Fix #2011: Specify which fixtures to use for individual test cases
+- Feat gigascience/security#4: Make main composer.json a regular, versioned, manually edited file
+- Feat gigascience/security#14: decommission top level group variables interpolation
+
+## v4.4.12 - 2025-06-09 - 641317b01 - live since 2025-06-12
+
+- Fix #2351: Fix server error page message
+- Feat #1341: Show maintenance error on 500 errors
+- Feat #1892: Update onboarding pages layout
+- Feat #2235: Use temporary directory for database volume in CI legacy_test job
+- Feat #2235: Create Manuscript and DatasetLog Yii2 models and create a wrapper to use Manuscript Yii2 model with yii1 Form
+- Feat #2235: Add a checkbox to determine whether if a manuscript should be considered a pre-print link
+- Feat security#13: Upgrade Tideways PHP extension version to `5.19.0` and Daemon version to `1.9.36`
+- Feat #798: Update Genomic Dataset Checklist text
+- Feat #950: Add Jesse Xiao to team page
+
+## v4.4.11 - 2025-05-21 - 4fdb2fb13 - live since 2025-05-26
+
+- Fix #531: Calculate the total volume of files and display it on the homepage
+- Fix #2282: Resend email from welcome page
+- Fix #2248: List operation in GigaDB API take into account publication_date as a start data and/or end date
+- Feat #549: create commands: check if DOI exists in Datacite + update Datacite api metadata
+
+## v4.4.10 - 2025-05-16 - 07a8f63b2 - live since 2025-05-19
+
+- Fix #2294: Add dedicated username variable for authenticating to email service
+
+## v4.4.9 - 2025-04-30 - fd51be0df - live since 2025-05-14
+
+- Fix #2270: Allow transitions to 'Submitted' and 'DataPending' from any upload status.
+- Fix #1955: Edit user without being forced to enter a password + add a password regex
+
+## v4.4.8 - 2025-04-08 - 01de0477b - not deployed to live
+
+- Fix #2033: Create a mockup for all upload statuses except published
+
+## v4.4.7 - 2025-03-26 - 4c548f037 - live since 2025-04-03
 
 - Fix #2241: Restore Sketchfab visualisations alongside 3D models files visualisations
 - Fix #2180: Add user in curation log when minting the DOI

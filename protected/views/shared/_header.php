@@ -1,107 +1,19 @@
 <a href="#maincontent" class="skip-to-main-link">Skip to main content</a>
 <header>
-    <div class="base-top-bar">
-        <div class="container">
-            <div class="row">
-                <nav aria-label="account" class="col-xs-5">
-                    <ul class="list-inline text-left base-top-account-bar">
-                        <? if(Yii::app()->user->isGuest) { ?>
-                            <li><a href="/site/login"><i class="fa fa-sign-in"></i> Login / Signup</a></li>
-                            <? } else {
-
-                            $name = Yii::app()->user->getFirst_Name();
-
-                            if (substr($name, -1) === 's') {
-
-                            $name = $name . '\'';
-                            } else {
-                            $name = $name . "'s";
-                            }
-                            ?>
-                                <li><a href="/user/view_profile"><i class="fa fa-sign-in"></i><?= Yii::t('app', $name . " GigaDB Page") ?></a></li>
-                                <? if (Yii::app()->user->checkAccess('admin')) { ?>
-                                    <li>
-                                        <a href="/site/admin">
-                                            <?= Yii::t('app', 'Admin') ?>
-                                        </a>
-                                    </li>
-                                    <? } ?>
-                                        <li><a href="/site/logout"><i class="fa fa-sign-in"></i><?= Yii::t('app', 'LogOut') ?></a></li>
-                                        <li><a href="/site/mapbrowse"><i class="fa fa-sign-in"></i><?=Yii::t('app' , "Browse Samples")?></a></li>
-                                        <? } ?>
-                    </ul>
-                </nav>
-                <div class="col-xs-7 clearfix top-bar-left">
-                    <div class="search-bar clearfix">
-                        <form action="/search/new" method="GET" role="search" class="search-form" aria-label="Datasets">
-                            <?php
-                                $this->widget('application.components.DeferrableCJuiAutoComplete', array(
-                                    'name' => 'keyword',
-                                    'source' => array_values(array()),
-                                    'options' => array(
-                                        'minLength' => '2',
-                                    ),
-                                    'htmlOptions' => array(
-                                        'aria-label'=>'Search GigaDB',
-                                        'class' => 'search-input',
-                                        'placeholder'=>'e.g. Chicken, brain, etc...',
-                                    ),
-                                ));
-                                ?>
-                                <button class="btn-search" type="submit"><span class="fa fa-search"><span class="visually-hidden">Search</span></span>
-                                </button>
-                        </form>
-                    </div>
-                    <ul class="share-zone clearfix icon-list">
-                        <li>
-                            <a class="fa fa-facebook" style="text-decoration: none;" href="http://facebook.com/GigaScience" title="GigaScience on Facebook" aria-label="GigaScience on Facebook"></a>
-                        </li>
-                        <li class="icon-list-item">
-                            <a
-                              href="http://x.com/GigaScience"
-                              title="GigaScience on X"
-                              class="icon-list-item__link"
-                              aria-label="GigaScience on X"
-                            >
-                                <img
-                                  class="icon-list-item__image"
-                                  src="/images/icons/x-logo.svg"
-                                  alt=""
-                                >
-                            </a>
-                        </li>
-                        <li>
-                            <a class="fa fa-weibo" style="text-decoration: none;" href="http://weibo.com/gigasciencejournal" title="Gigascience on Weibo" aria-label="GigaScience on Weibo"></a>
-                        </li>
-                        <li class="icon-list-item">
-                            <a
-                              href="https://mastodon.social/@GigaScience"
-                              title="GigaScience on Mastodon"
-                              class="icon-list-item__link"
-                              aria-label="GigaScience on Mastodon"
-                            >
-                                <img
-                                  class="icon-list-item__image"
-                                  src="/images/icons/mastodon-logo.svg"
-                                  alt=""
-                                >
-                            </a>
-                        </li>
-                        <li>
-                            <a class="fa fa-rss" style="text-decoration: none;" href="http://gigasciencejournal.com/blog/" title="Gigascience Blog" aria-label="GigaScience Blog"></a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
+    <?php
+      $this->renderPartial('//shared/_topBar');
+    ?>
     <div class="base-nav-bar">
         <div class="container">
             <div class="row">
-                <div class="col-xs-4">
+                <div class="col-xs-8 col-md-4">
                     <a href="/"><img src="/images/new_interface_image/logo.png" class="base-nav-logo-img" alt="GigaDB Logo and tagline: Revolutionizing data dissemination, organization and use"></a>
                 </div>
-                <nav aria-label="primary" class="col-xs-4 col-xs-offset-4">
+                <nav aria-label="primary" class="col-md-4 col-md-offset-4">
+                    <button class="navbar-toggle" type="button" aria-controls="mobileNavigation" aria-expanded="false">
+                        <i class="fa fa-bars fa-lg"></i>
+                        <span class="sr-only">Toggle mobile navigation</span>
+                    </button>
                     <ul class="nav nav-pills main-nav-bar text-right">
                         <li><a href="/">Home</a></li>
                         <li class="dropdown">
@@ -138,3 +50,24 @@
         </div>
     </div>
 </header>
+<?php
+$this->renderPartial('//shared/_mobile_navigation');
+
+Yii::app()->assetManager->forceCopy = YII_DEBUG;
+$jsDir = Yii::getAlias('/gigadb/app/client/js');
+$jsUrl = Yii::app()->assetManager->publish($jsDir);
+$jsScript = $jsUrl . '/mobile-navigation.js';
+
+Yii::app()->clientScript->registerScriptFile(
+    $jsScript,
+    CClientScript::POS_END,
+    ['type' => 'module', 'defer' => true]
+);
+?>
+<script type="module">
+  import { initMobileNavigation } from '<?php echo $jsScript; ?>';
+
+  $(document).ready(function() {
+      initMobileNavigation();
+  });
+</script>

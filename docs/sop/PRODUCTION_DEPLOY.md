@@ -148,7 +148,6 @@ $ cp ops/configuration/variables/env-sample .env
 GITLAB_PRIVATE_TOKEN=<your_gitlab_private_token>
 
 REPO_NAME="gigadb-website"
-GROUP_VARIABLES_URL="https://gitlab.com/api/v4/groups/gigascience/variables?per_page=100"
 FORK_VARIABLES_URL="https://gitlab.com/api/v4/groups/3506500/variables"
 PROJECT_VARIABLES_URL="https://gitlab.com/api/v4/projects/gigascience%2Fupstream%2F$REPO_NAME/variables"
 

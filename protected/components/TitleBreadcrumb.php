@@ -49,10 +49,10 @@ class TitleBreadcrumb extends CWidget
             $href = $item['href'] ?? '#';
 
             if ($isActive) {
-                return CHtml::tag('li', ['class' => self::ACTIVE_CLASS], $label);
+                return CHtml::tag('li', ['class' => self::ACTIVE_CLASS . ' title-bar-breadcrumb-item'], $label);
             }
 
-            return CHtml::tag('li', [], CHtml::link($label, $href));
+            return CHtml::tag('li', ['class' => 'title-bar-breadcrumb-item'], CHtml::link($label, $href, ['class' => 'title-bar-breadcrumb-link']));
         }, $this->breadcrumbItems));
     }
 

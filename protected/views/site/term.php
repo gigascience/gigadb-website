@@ -15,8 +15,8 @@ $this->pageTitle = 'GigaDB - Terms of use';
         ]);
         ?>
         <section style="margin-bottom: 15px;">
-            <div>
-                <div class="tabs" role="tablist" aria-labelledby="pageTitle">
+            <div class="tab-nav-container">
+                <div class="tabs nav nav-tabs nav-border-tabs" role="tablist" aria-labelledby="pageTitle">
                     <button id="lipolicies" type="button" role="tab" aria-selected="true" aria-controls="policies" data-toggle="tab">GigaDB User Policies</button>
                     <button id="lihosting" type="button" role="tab" aria-selected="false" aria-controls="hosting" data-toggle="tab" tabindex="-1">Hosting Statement</button>
                     <button id="liprivacy" type="button" role="tab" aria-selected="false" aria-controls="privacy" data-toggle="tab" tabindex="-1">Privacy</button>

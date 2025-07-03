@@ -1,6 +1,6 @@
 /* top bar */
 .base-top-bar {
-  height: 40px;
+  min-height: 40px;
   background-color: @color-gigadb-green;
   width: 100%;
 }
@@ -8,6 +8,8 @@
   margin: 0px;
   padding: 0px;
   height: 40px;
+  display: flex;
+  align-items: center;
 }
 .base-top-bar .list-inline a {
   color: @color-true-white;
@@ -19,10 +21,16 @@
   display: flex;
   justify-content: flex-end;
 }
-@media (max-width: 992px) {
+.base-top-bar .search-bar-mobile {
+  display: none;
+}
+@media (max-width: @screen-sm-max) {
   .base-top-bar .top-bar-left .search-bar {
-    position: absolute;
-    top: 38px;
+    display: none;
+  }
+  .base-top-bar .search-bar-mobile {
+    display: block;
+    margin-top: 8px;
   }
 }
 .list-inline.base-top-social-bar > li > a {
@@ -38,13 +46,37 @@
   font-size: 12px;
   line-height: 15px;
   text-decoration: none;
+  text-wrap: nowrap;
 }
 .base-top-account-bar li a i {
   margin-right: 5px;
 }
 .base-top-account-bar li:first-child a {
   border-left: 0px;
+  padding-left: 0;
 }
 .base-top-account-bar li:last-child a {
   padding-right: 0px;
+}
+
+@media (max-width: @screen-xs-max) {
+  .with-hypothesis .base-top-bar .container {
+    padding-right: 50px;
+  }
+}
+
+@media (max-width: @screen-xxs-max) {
+  .account-navigation {
+    display: none;
+  }
+  .base-top-bar .list-inline {
+    height: auto;
+    min-height: 40px;
+    flex-wrap: wrap;
+    gap: 0 15px;
+  }
+  .base-top-account-bar li a {
+    padding: 0;
+    border: 0;
+  }
 }

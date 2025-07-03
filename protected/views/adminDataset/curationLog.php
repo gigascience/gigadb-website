@@ -105,34 +105,4 @@ $this->widget(
         $('#modal').modal('hide');
 
     });
-    function formatXML(xmlString) {
-        const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(xmlString, 'text/xml');
-        let formatted = '';
-
-        function traverse(node, pad) {
-            const PADDING = '  ';
-            if (node.nodeType === Node.ELEMENT_NODE) {
-                formatted += PADDING.repeat(pad) + `<${node.nodeName}`;
-
-                if (node.attributes.length > 0) {
-                    Array.from(node.attributes).forEach(attr => {
-                        formatted += ` ${attr.name}="${attr.value}"`;
-                    });
-                }
-
-                formatted += '>\n';
-                Array.from(node.childNodes).forEach(child => traverse(child, pad + 1));
-                formatted += PADDING.repeat(pad) + `</${node.nodeName}>\n`;
-            } else if (node.nodeType === Node.TEXT_NODE) {
-                const trimmedContent = node.textContent.trim();
-                if (trimmedContent) {
-                    formatted += PADDING.repeat(pad) + trimmedContent + '\n';
-                }
-            }
-        }
-
-        traverse(xmlDoc.documentElement, 0);
-        return formatted.trim();
-    }
 </script>
