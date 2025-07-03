@@ -4,97 +4,112 @@
 
 - name: Create mountpoint using rclone
   hosts: "name_bastion_server_{{gigadb_env}}*,name_gigadb_filesserver_{{gigadb_env}}*"
+  become: yes
+
+  vars:
+    rclone_mount_point: /rclone
+    rclone_config_dir: /home/ec2-user/.config/rclone
+    rclone_config_file: "{{ rclone_config_dir }}/mount.conf"
+    rclone_cache_dir: /tmp/cache/rclone
+    rclone_log_file: /var/log/gigadb/rclone-mount.log
+    rclone_remote_path: mount:test-gigadb-mount
+    run_as_user: ec2-user
+
 
   tasks:
     - name: Check whether /rclone is already mounted
       ansible.builtin.command: findmnt -n /rclone
-      register: rclone_mount_check
+      register: mount_check
       # This task only checks state and doesn't change anything.
       changed_when: false
       # Tell Ansible not to fail if findmnt returns 1 (not mounted).
       # A return code of 0 (mounted) is also success.
       # Any other return code indicates a genuine error.
-      failed_when: rclone_mount_check.rc > 1
+      failed_when: mount_check.rc > 1
 
     - debug:
-        msg: "Check if /rclone is mounted: {{ rclone_mount_check.rc }}"
+        msg: "Check if /rclone is mounted: {{ mount_check.rc }}"
 
-    - name: Create rclone config
-      template:
-        src: ../../../../ops/configuration/rclone-conf/mount.conf.j2
-        dest: /home/ec2-user/.config/rclone/mount.conf
-        owner: ec2-user
-        group: ec2-user
-        mode: 0644
-      when: rclone_mount_check.rc == 1
+    - name: Perform setup and mount only if /rclone is not mounted
+      block:
+        - name: Ensure rclone config directory exists
+          ansible.builtin.file:
+            path: "{{ rclone_config_dir }}"
+            state: directory
+            owner: "{{ run_as_user }}"
+            group: "{{ run_as_user }}"
+            mode: '0755'
 
-    - name: Create directory for mounting
-      ansible.builtin.file:
-        path: "{{ item }}"
-        state: directory
-        mode: '0755'
-        owner: ec2-user
-        group: ec2-user
-      loop:
-        - "/tmp/cache/rclone"
-        - "/rclone"
-      when: rclone_mount_check.rc == 1
-      changed_when: false
+        - name: Create rclone config
+          template:
+            src: ../../../../ops/configuration/rclone-conf/mount.conf.j2
+            dest: /home/ec2-user/.config/rclone/mount.conf
+            owner: ec2-user
+            group: ec2-user
+            mode: 0644
 
-    - name: Create log file for rclone mount
-      ansible.builtin.file:
-        path: /var/log/gigadb/rclone-mount.log
-        state: touch
-        mode: '0644'
-        owner: ec2-user
-        group: ec2-user
-      when: rclone_mount_check.rc == 1
+        - name: Ensure mount and cache directories exist
+          ansible.builtin.file:
+            path: "{{ item }}"
+            state: directory
+            mode: '0755'
+            owner: "{{ run_as_user }}"
+            group: "{{ run_as_user }}"
+          loop:
+            - "{{ rclone_cache_dir }}"
+            - "{{ rclone_mount_point }}"
 
-    - name: Install fuse package
-      ansible.builtin.dnf:
-        name:
-          - fuse
-          - fuse-devel
-        state: present
-      when: rclone_mount_check.rc == 1
 
-    - name: Enable FUSE user_allow_other
-      ansible.builtin.lineinfile:
-        path: /etc/fuse.conf
-        regexp: '^#?user_allow_other'
-        line: 'user_allow_other'
-        state: present
-      become: yes
-      when: rclone_mount_check.rc == 1
+        - name: Ensure rclone log file exists
+          ansible.builtin.file:
+            path: "{{ rclone_log_file }}"
+            state: touch
+            mode: '0644'
+            owner: "{{ run_as_user }}"
+            group: "{{ run_as_user }}"
 
-    - name: Check if rclone is available
-      ansible.builtin.command: /usr/local/bin/rclone --version
-      register: rclone_check_status
-      failed_when: rclone_check_status.rc != 0
+        - name: Install fuse package
+          ansible.builtin.dnf:
+            name:
+              - fuse
+              - fuse-devel
+            state: present
 
-    - name: Check remote object storage is available
-      ansible.builtin.command: /usr/local/bin/rclone --config /home/ec2-user/.config/rclone/mount.conf lsd mount:test-gigadb-mount
-      register: remote_object_storage_check
-      failed_when: remote_object_storage_check.rc != 0
 
-    - name: Mount object storage using rclone
-      ansible.builtin.command: >
-        /usr/local/bin/rclone --config /home/ec2-user/.config/rclone/mount.conf mount mount:test-gigadb-mount /rclone \
-        --daemon \
-        --cache-dir /tmp/cache/rclone \
-        --vfs-cache-mode full \
-        --vfs-cache-max-size 10G \
-        --vfs-read-chunk-size 32M \
-        --vfs-read-chunk-size-limit 2G \
-        --allow-other \
-        --log-file /var/log/gigadb/rclone-mount.log \
-        --log-level INFO
-      register: mount_rclone
-      when: rclone_check_status.rc == 0 and remote_object_storage_check.rc == 0 and rclone_mount_check.rc == 1
-      changed_when: false
+        - name: Enable FUSE user_allow_other
+          ansible.builtin.lineinfile:
+            path: /etc/fuse.conf
+            regexp: '^#?user_allow_other'
+            line: 'user_allow_other'
+            state: present
 
-    - name: Confirm the rclone is mounted
-      ansible.builtin.command:
-        cmd: mountpoint /rclone
+        - name: Check if rclone is available
+          ansible.builtin.command: /usr/local/bin/rclone --version
+          register: rclone_status_check
+          failed_when: rclone_status_check.rc != 0
+
+        - name: Check remote object storage is available
+          ansible.builtin.command: /usr/local/bin/rclone --config /home/ec2-user/.config/rclone/mount.conf lsd mount:test-gigadb-mount
+          register: remote_object_storage_check
+          failed_when: remote_object_storage_check.rc != 0
+
+        - name: Mount object storage using rclone
+          ansible.builtin.command: >
+            /usr/local/bin/rclone mount {{ rclone_remote_path }} {{ rclone_mount_point }}
+            --config {{ rclone_config_file }}
+            --daemon
+            --allow-other
+            --cache-dir {{ rclone_cache_dir }}
+            --vfs-cache-mode full
+            --vfs-cache-max-size 10G
+            --vfs-read-chunk-size 32M
+            --vfs-read-chunk-size-limit 2G
+            --log-file {{ rclone_log_file }}
+            --log-level INFO
+          when: rclone_status_check.rc == 0 and remote_object_storage_check.rc == 0
+      when: mount_check.rc == 1
+
+    - name: Check if the /rclone is mounted
+      ansible.builtin.command: mountpoint /rclone
       register: rclone_mount_check
       failed_when: rclone_mount_check.stdout == "/rclone is not a mountpoint"
