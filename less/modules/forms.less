@@ -388,3 +388,21 @@ fieldset {
     max-width: 200px;
   }
 }
+
+.length-warning-wrapper {
+  color: @color-true-black;
+  margin-top: 5px;
+  .length-warning-display {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 17px;
+  }
+  .length-warning-message {
+    .icon-warn {
+      color: @color-warm-black;
+    }
+  }
+}

@@ -22,13 +22,26 @@
  */
 
 Yii::import('application.components.controls.BaseInput');
+Yii::import('application.components.controls.traits.LengthWarning');
 
 class TextField extends BaseInput
 {
-  public function run()
-  {
-    $this->renderControlGroup(function () {
-      echo $this->form->textField($this->model, $this->attributeName, $this->inputOptions);
-    });
-  }
+    use LengthWarning;
+
+    public function run()
+    {
+        $this->inputOptions = $this->applyLengthWarningAttributes($this->inputOptions);
+        $this->renderControlGroup(function () {
+            echo $this->form->textField($this->model, $this->attributeName, $this->inputOptions);
+            $this->renderLengthWarningPartial();
+        });
+    }
+
+    public function init()
+    {
+        if ($this->hasLengthWarning()) {
+            $this->registerLengthWarningScript();
+        }
+        parent::init();
+    }
 }
