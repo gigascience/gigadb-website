@@ -617,9 +617,17 @@ class AdminDatasetController extends Controller
         $isPresent = in_array($doiStatus, [200, 204]);
         if ($isPresent) {
             $dataset->is_publishable = true;
-            $dataset->upload_status = 'Incomplete' === $dataset->upload_status ? 'ImportFromEM' : $dataset->upload_status;
+            $dataset->upload_status = in_array($dataset->upload_status, ['Incomplete', 'Uploaded']) ? 'ImportFromEM' : $dataset->upload_status;
             if(!$dataset->save()) {
-                throw new CHttpException(500, "An error occurred: Couldn't save the dataset");
+                $errors = $dataset->getErrors();
+
+                $formatted = '';
+                foreach ($errors as $attribute => $messages) {
+                    foreach ($messages as $message) {
+                        $formatted .= "- $attribute: $message\n";
+                    }
+                }
+                throw new CHttpException(500, $formatted);
             }
         }
 
