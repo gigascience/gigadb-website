@@ -11,25 +11,38 @@ $this->widget(
     [
         'id'            => 'dataset-grid',
         'dataProvider'  => $model,
-        'itemsCssClass' => 'table table-bordered',
+        'itemsCssClass' => 'table table-bordered table-compact table--black-text',
+        'rowHtmlOptionsExpression' => "array('data-toggle'=>'tooltip', 'title'=>\$data->getTooltip())",
         'enableSorting'  => false,
         'columns'       => [
-            'creation_date',
-            'created_by',
-            'action',
+            [
+                'name' => 'creation_date',
+                'htmlOptions' => ['width' => '140'],
+            ],
             [
                     'name' => 'comments',
                     'type' =>  'text',
                     'value' => function($data) {
-                        if (preg_match('/^<\?xml/', $data->comments)) {
-                            return LogCurationFormatter::getDisplayXmlAttr($data->id, $data->comments);
+                        $commentOutput = $data->comments;
+
+                        if (preg_match('/^<\?xml/', $commentOutput)) {
+                            $commentOutput = LogCurationFormatter::getDisplayXmlAttr($data->id, $commentOutput);
                         }
 
-                        return $data->comments;
+                        $actionText = $data->action;
+                        $hasComment = strlen(trim(strip_tags($commentOutput))) > 0;
+
+                        if ($hasComment && $actionText) {
+                            return $actionText . ': ' . $commentOutput;
+                        }
+
+                        if (!$hasComment) {
+                            return $actionText;
+                        }
+
+                        return $commentOutput;
                     }
             ],
-            'last_modified_date',
-            'last_modified_by',
             [
                 'class'   => 'CButtonColumn',
                 'header' => "Actions",
@@ -72,6 +85,8 @@ $this->widget(
     ]
 );
 ?>
+<script>
+</script>
 <div id='modal' class='modal fade' role='dialog'>
     <div class='modal-dialog modal-lg'>
         <div class='modal-content'>
