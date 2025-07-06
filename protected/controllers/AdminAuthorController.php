@@ -195,26 +195,26 @@ class AdminAuthorController extends Controller
                     if ($user->id === Yii::app()->session['attach_user']) {
                         unset(Yii::app()->session['attach_user']);
                     }
-                    $this->redirect(array('adminUser/view', 'id' => $user->id));
-                } else {
-                    Yii::log(__FUNCTION__ . "> error while updating gigadb_user_id in author. " . implode(" ", $author->getErrors()['gigadb_user_id']), 'error');
-                    Yii::app()->user->setFlash('error', 'Could not link to this author. ' . CHtml::link('View author', ['adminUser/view', 'id' => $user->id]));
-                    $this->redirect(array('adminAuthor/admin'));
-                }
-            } else {
-                Yii::app()->user->setFlash('error', "user to link doesn't exist");
-                Yii::log(__FUNCTION__ . "> user to link doesn't exist", 'error');
-                $this->render('view', array(
-                    'model' => $author,
-                ));
-            }
 
-        } else {
-            Yii::log(__FUNCTION__ . "> attach_user is not set in session", 'error');
-            Yii::app()->user->setFlash('error', 'An error has occurred');
-            $this->redirect(array('adminAuthor/admin'));
+                    $this->redirect(array('adminUser/view', 'id' => $user->id));
+                }
+                Yii::log(__FUNCTION__ . "> error while updating gigadb_user_id in author. " . implode(" ", $author->getErrors()['gigadb_user_id']), 'error');
+                Yii::app()->user->setFlash('error', 'Could not link to this author. ' . CHtml::link('View author', ['adminUser/view', 'id' => $user->id]));
+
+                $this->redirect(array('adminAuthor/admin'));
+
+            }
+            Yii::app()->user->setFlash('error', "user to link doesn't exist");
+            Yii::log(__FUNCTION__ . "> user to link doesn't exist", 'error');
+
+            $this->render('view', array('model' => $author));
+            Yii::app()->end();
         }
 
+        Yii::log(__FUNCTION__ . "> attach_user is not set in session", 'error');
+        Yii::app()->user->setFlash('error', 'An error has occurred');
+
+        $this->redirect(array('adminAuthor/admin'));
     }
 
     public function actionUnlinkUser(int $id, int $user_id)

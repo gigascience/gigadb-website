@@ -674,7 +674,8 @@ echo $form->hiddenField($model, "image_id");
                 type: 'POST',
                 data: {
                     doi: $('#Dataset_identifier').val(),
-                    check: true
+                    check: true,
+                    '<?php echo Yii::app()->request->csrfTokenName; ?>': '<?php echo Yii::app()->request->csrfToken; ?>'
                 },
                 dataType: 'json',
                 success: function (response) {
