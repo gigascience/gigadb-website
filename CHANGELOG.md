@@ -4,6 +4,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Fix #2381: Fix checkbox focus styling in login form
+
 ## v4.4.14 - 2025-06-24 - 4159a6086
 
 - Feat #1641: Check if the DOI has been minted when the upload status is set to 'Published'
