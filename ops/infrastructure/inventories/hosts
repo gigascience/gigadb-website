@@ -56,6 +56,9 @@ rclone_mount_access_key_id = "{{ lookup('ini', 'rclone_mount_access_key_id type=
 rclone_mount_secret_access_key = "{{ lookup('ini', 'rclone_mount_secret_access_key type=properties file=ansible.properties') }}"
 rclone_mount_provider = "{{ lookup('ini', 'rclone_mount_provider type=properties file=ansible.properties') }}"
 
+hetzner_storage_box_hostname = "{{ lookup('ini', 'hetzner_storage_box_hostname type=properties file=ansible.properties') }}"
+hetzner_storage_box_user = "{{ lookup('ini', 'hetzner_storage_box_user type=properties file=ansible.properties') }}"
+
 wasabi_access_key_id = "{{ lookup('ini', 'wasabi_access_key_id type=properties file=ansible.properties') }}"
 wasabi_secret_access_key = "{{ lookup('ini', 'wasabi_secret_access_key type=properties file=ansible.properties') }}"
 

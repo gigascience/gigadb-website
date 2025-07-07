@@ -111,6 +111,12 @@ echo "rclone_mount_access_key_id = $rclone_mount_access_key_id" >> ansible.prope
 echo "rclone_mount_secret_access_key = $rclone_mount_secret_access_key" >> ansible.properties
 echo "rclone_mount_provider = $rclone_mount_provider" >> ansible.properties
 
+# Required to mount storage box
+hetzner_storage_box_user=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$FORK_VARIABLES_URL/hetzner_storage_box_user" | jq -r .value)
+hetzner_storage_box_hostname=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$FORK_VARIABLES_URL/hetzner_storage_box_hostname" | jq -r .value)
+echo "hetzner_storage_box_user = $hetzner_storage_box_user" >> ansible.properties
+echo "hetzner_storage_box_hostname = $hetzner_storage_box_hostname" >> ansible.properties
+
 # Retrieve ips of provisioned ec2 instances
 bastion_private_ip=$(terraform output ec2_bastion_private_ip | sed 's/"//g')
 bastion_ip=$(terraform output ec2_bastion_public_ip | sed 's/"//g')

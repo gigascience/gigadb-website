@@ -2,16 +2,18 @@
 # use rclone to mount object storage to the bastion server
 
 
-- name: Create mountpoint using rclone
+- name: Create object storage mountpoint using rclone
   hosts: "name_bastion_server_{{gigadb_env}}*,name_gigadb_filesserver_{{gigadb_env}}*"
   become: yes
+  tags:
+    - mount-s3
 
   vars:
     rclone_mount_point: /rclone
     rclone_config_dir: /home/ec2-user/.config/rclone
     rclone_config_file: "{{ rclone_config_dir }}/mount.conf"
-    rclone_cache_dir: /tmp/cache/rclone
-    rclone_log_file: /var/log/gigadb/rclone-mount.log
+    rclone_cache_dir: /tmp/cache/rclone-s3
+    rclone_log_file: /var/log/gigadb/rclone-s3.log
     rclone_remote_path: mount:test-gigadb-mount
     run_as_user: ec2-user
 
@@ -113,3 +115,119 @@
       ansible.builtin.command: mountpoint /rclone
       register: rclone_mount_check
       failed_when: rclone_mount_check.stdout == "/rclone is not a mountpoint"
+
+- name: Create block mountpoint using rclone
+  hosts: "name_bastion_server_{{gigadb_env}}*,name_gigadb_filesserver_{{gigadb_env}}*"
+  become: yes
+  tags:
+    - mount-block
+
+  vars:
+    rclone_mount_point: /block
+    rclone_config_dir: /home/ec2-user/.config/rclone
+    rclone_config_file: "{{ rclone_config_dir }}/mount.conf"
+    rclone_log_file: /var/log/gigadb/rclone-block.log
+    rclone_cache_dir: /tmp/cache/rclone-block
+    rclone_remote_path: box:share
+    run_as_user: ec2-user
+
+  tasks:
+    - name: Check whether /block is already mounted
+      ansible.builtin.command: findmnt -n /block
+      register: block_mount_check
+      # This task only checks state and doesn't change anything.
+      changed_when: false
+      # Tell Ansible not to fail if findmnt returns 1 (not mounted).
+      # A return code of 0 (mounted) is also success.
+      # Any other return code indicates a genuine error.
+      failed_when: block_mount_check.rc > 1
+
+    - debug:
+        msg: "Check if /block is mounted: {{ block_mount_check.rc }}"
+
+    - name: Perform setup and mount only if /block is not mounted
+      block:
+        - name: Ensure rclone config directory exists
+          ansible.builtin.file:
+            path: "{{ rclone_config_dir }}"
+            state: directory
+            owner: "{{ run_as_user }}"
+            group: "{{ run_as_user }}"
+            mode: '0755'
+
+        - name: Create rclone config
+          template:
+            src: ../../../../ops/configuration/rclone-conf/mount.conf.j2
+            dest: /home/ec2-user/.config/rclone/mount.conf
+            owner: ec2-user
+            group: ec2-user
+            mode: 0644
+
+        - name: Ensure mount and cache directories exist
+          ansible.builtin.file:
+            path: "{{ item }}"
+            state: directory
+            mode: '0755'
+            owner: "{{ run_as_user }}"
+            group: "{{ run_as_user }}"
+          loop:
+            - "{{ rclone_cache_dir }}"
+            - "{{ rclone_mount_point }}"
+
+        - name: Ensure rclone log file exists
+          ansible.builtin.file:
+            path: "{{ rclone_log_file }}"
+            state: touch
+            mode: '0644'
+            owner: "{{ run_as_user }}"
+            group: "{{ run_as_user }}"
+
+        - name: get private key
+          ansible.builtin.uri:
+            url: "https://gitlab.com/api/v4/groups/3501869/variables/hetzner_storage_box_privkey"
+            method: GET
+            headers:
+              PRIVATE-TOKEN: "{{ gitlab_private_token }}"
+            body_format: json
+            status_code:
+              - 200
+          register: private_key_from_gl
+
+        - name: copy private key
+          ansible.builtin.copy:
+            content: "{{ private_key_from_gl.json.value  }}"
+            dest: "/home/ec2-user/.ssh/id-rsa-hetzner-helsinki"
+            owner: "{{ run_as_user }}"
+            group: "{{ run_as_user }}"
+            mode: g-rw,o-rw
+
+        - name: Check if rclone is available
+          ansible.builtin.command: /usr/local/bin/rclone --version
+          register: rclone_status_check
+          failed_when: rclone_status_check.rc != 0
+
+        - name: Check remote block storage is available
+          ansible.builtin.command: /usr/local/bin/rclone --config /home/ec2-user/.config/rclone/mount.conf lsd box:mount
+          register: remote_block_storage_check
+          failed_when: remote_block_storage_check.rc != 0
+
+        - name: Mount object storage using rclone
+          ansible.builtin.command: >
+            /usr/local/bin/rclone mount {{ rclone_remote_path }} {{ rclone_mount_point }}
+            --config {{ rclone_config_file }}
+            --daemon
+            --allow-other
+            --cache-dir {{ rclone_cache_dir }}
+            --vfs-cache-mode full
+            --vfs-cache-max-size 10G
+            --vfs-read-chunk-size 32M
+            --vfs-read-chunk-size-limit 2G
+            --log-file {{ rclone_log_file }}
+            --log-level INFO
+          when: rclone_status_check.rc == 0 and remote_block_storage_check.rc == 0
+      when: block_mount_check.rc == 1
+
+    - name: Check if the /block is mounted
+      ansible.builtin.command: mountpoint /block
+      register: rclone_mount_check
+      failed_when: rclone_mount_check.stdout == "/block is not a mountpoint"

@@ -5,3 +5,11 @@ provider = {{ rclone_mount_provider }}
 access_key_id = {{ rclone_mount_access_key_id }}
 secret_access_key = {{ rclone_mount_secret_access_key }}
 endpoint = {{ rclone_mount_endpoint }}
+
+[box]
+type = sftp
+host = {{ hetzner_storage_box_hostname }}
+user = {{ hetzner_storage_box_user }}
+port = 23
+key_file = /home/ec2-user/.ssh/id-rsa-hetzner-helsinki
+shell_type = unix
