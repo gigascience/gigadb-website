@@ -211,7 +211,7 @@ cd573cfaace07e7949bc0c46028904ff  /share/dropbox/user666/1g-file.dat
 [ec2-user@ip-10-99-0-232 ~]$
 ```
 
-##### rclone mount performance
+##### rclone mount s3 performance
 
 | under test                | command                                                                                                         | time (s) | throughput (MB/s) | %CPU |
 |:--------------------------|:----------------------------------------------------------------------------------------------------------------|:---------|:------------------|:-----|
@@ -235,6 +235,23 @@ cd573cfaace07e7949bc0c46028904ff  /rclone/share/dropbox/user999/1g-file.dat
 [ec2-user@ip-10-99-0-232 ~]$ cat /rclone/share/dropbox/user999/10g-file.md5 
 2dd26c4d4799ebd29fa31e48d49e8e53  /rclone/share/dropbox/user999/efs-test-write.dat
 ```
+
+##### rclone mount storage box performance
+| under test                | command                                                                                                       | time (s) | throughput (MB/s) | %CPU |
+|:--------------------------|:--------------------------------------------------------------------------------------------------------------|:---------|:------------------|:-----|
+| 1G File Write             | dd if=/dev/zero of=/block/share/dropbox/user444/rclone-test-write.dat bs=1G count=1 oflag=direct              |   |               |   |
+| 10G File Write            | dd if=/dev/zero of=/block/share/dropbox/user444/rclone-test-write.dat bs=1G count=10 oflag=direct             |  |               |   |
+| 1G File Read              | dd if=/block/share/dropbox/user444/rclone-test-write.dat of=/dev/null bs=1G count=1                           |  |                |   |
+| 10G File Read             | dd if=/block/share/dropbox/user444/rclone-test-write.dat of=/dev/null bs=1G count=10                          |  |              |  |
+| Move in 5000 small files  | time cp -v /tmp/smallfiles/* /block/share/dropbox/user444/smallfiles/                                         |   | N/A               |  |
+| Move out 5000 small files | time cp -v /block/share/dropbox/user444/smallfiles/* /tmp/smallfiles/                                         |    | N/A               | |
+| Move in 1 1G file         | time cp test-mount/1g-file.dat /block/share/dropbox/user444/                                                  |   | N/A               |  |
+| md5sum Checksum 1G file   | time md5sum /block/share/dropbox/user444/1g-file.dat > /block/share/dropbox/user444/1g-file.md5               |    | N/A               |   |
+| Move out 1 1G file        | time cp /block/share/dropbox/user444/1g-file.dat /dev/zero                                                    |    | N/A               |  |
+| Move in 1 10G file        | time cp test-mount/10g-file.dat /block/share/dropbox/user999/                                                 | | N/A               |  |
+| md5sum Checksum 10G file  | time md5sum /block/share/dropbox/user444/efs-test-write.dat > /block/share/dropbox/user444/10g-file.md5       |  | N/A               |  |
+| Move out 1 10G file       | time cp /block/share/dropbox/user444/10g-file.dat /dev/zero                                                   | | N/A               |   |
+| md5sum Checksum           | time md5sum /block/share/dropbox/user444/efs-test-write.dat > /block/share/dropbox/user444/efs-test-write.md5 |  | N/A               |      |
 
 ##### s3fs mount performance
 | under test                | Command                                                                                                      | time (s)  | throughput (MB/s) | %CPU |
