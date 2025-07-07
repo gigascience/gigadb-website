@@ -128,7 +128,7 @@
     rclone_config_file: "{{ rclone_config_dir }}/mount.conf"
     rclone_log_file: /var/log/gigadb/rclone-block.log
     rclone_cache_dir: /tmp/cache/rclone-block
-    rclone_remote_path: box:share
+    rclone_remote_path: box:mount
     run_as_user: ec2-user
 
   tasks:
@@ -207,7 +207,7 @@
           failed_when: rclone_status_check.rc != 0
 
         - name: Check remote block storage is available
-          ansible.builtin.command: /usr/local/bin/rclone --config /home/ec2-user/.config/rclone/mount.conf lsd box:mount
+          ansible.builtin.command: /usr/local/bin/rclone --config /home/ec2-user/.config/rclone/mount.conf lsd {{ rclone_remote_path }}
           register: remote_block_storage_check
           failed_when: remote_block_storage_check.rc != 0
 
