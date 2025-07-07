@@ -197,9 +197,6 @@ class CurationLog extends CActiveRecord
 
     public function getTooltip(): string
     {
-        $fmt = Yii::app()->format;
-
-        $action        = CHtml::encode($this->action);
         $createdBy     = CHtml::encode($this->created_by);
         $modifiedBy    = CHtml::encode($this->last_modified_by ?? '-');
         $modifiedDate  = CHtml::encode($this->last_modified_date ?? '-');

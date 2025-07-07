@@ -29,7 +29,7 @@ $this->widget(
                             $commentOutput = LogCurationFormatter::getDisplayXmlAttr($data->id, $commentOutput);
                         }
 
-                        $actionText = $data->action;
+                        $actionText = $data->action ?? '';
                         $hasComment = strlen(trim(strip_tags($commentOutput))) > 0;
 
                         if ($hasComment && $actionText) {
