@@ -451,4 +451,12 @@ class AcceptanceTester extends \Codeception\Actor
     {
         $this->dontSeeOptionIsSelected("#dataset-form select[id='$id']", $value);
     }
+
+    /**
+     * @Then I should see :text in the source
+     */
+    public function iShouldSeeInTheSource($text)
+    {
+        $this->seeInSource($text);
+    }
 }

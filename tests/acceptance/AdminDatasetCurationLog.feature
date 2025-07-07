@@ -31,7 +31,7 @@ Feature: curation log entry under the dataset form
     And I should see "Failed to send DataCite XML"
     And I should see "<?xml"
 
-  @ok
+  @ok @issue-2331
   Scenario: Minting Doi and adding curation log entry with created_by filled in with by the connected user's name
     When I am on "/adminDataset/update/id/8"
     And I press the button "Mint DOI"
@@ -39,4 +39,4 @@ Feature: curation log entry under the dataset form
     And I should see "This DOI exists in DataCite already, so it has now been updated with the current values from GigaDB."
     Then I am on "/adminDataset/update/id/8"
     And I wait "3" seconds
-    And I should see "Joe Bloggs"
+    And I should see "Created by: Joe Bloggs" in the source
