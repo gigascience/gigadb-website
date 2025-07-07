@@ -10,6 +10,10 @@ table.table td {
 table.table td {
   color: @color-darker-gray;
 }
+// use if table background color is not white
+table.table--black-text td {
+  color: @color-warm-black;
+}
 table.table a {
   text-decoration: none;
   color: @gigadb-green-on-lighter-gray;
@@ -282,5 +286,19 @@ table.dataset-view-table > tbody > tr {
     .summary {
       text-align: center;
     }
+  }
+}
+
+table.table-compact {
+  border-collapse: collapse;
+  > thead > tr > th,
+  > tbody > tr > td,
+  > tfoot > tr > td {
+    padding: 4px 6px;
+    line-height: 1.2;
+  }
+
+  > thead > tr > th {
+    font-weight: normal;
   }
 }

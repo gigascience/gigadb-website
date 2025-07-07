@@ -194,4 +194,13 @@ class CurationLog extends CActiveRecord
             'criteria' => $criteria,
         ));
     }
+
+    public function getTooltip(): string
+    {
+        $createdBy     = CHtml::encode($this->created_by);
+        $modifiedBy    = CHtml::encode($this->last_modified_by ?? '-');
+        $modifiedDate  = CHtml::encode($this->last_modified_date ?? '-');
+
+        return "Created by: {$createdBy}<br/>Modified by: {$modifiedBy}<br/>Modified date: {$modifiedDate}";
+    }
 }
