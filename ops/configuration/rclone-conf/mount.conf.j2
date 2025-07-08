@@ -1,4 +1,12 @@
-[mount]
+[aws]
+type = s3
+provider = AWS
+access_key_id = {{ aws_access_key_id }}
+secret_access_key = {{ aws_secret_access_key }}
+region = ap-east-1
+location_constraint = ap-east-1
+
+[wasabi]
 type = s3
 env_auth = false
 provider = {{ rclone_mount_provider }}
