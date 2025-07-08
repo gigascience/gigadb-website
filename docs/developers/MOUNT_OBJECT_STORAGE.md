@@ -273,6 +273,8 @@ cd573cfaace07e7949bc0c46028904ff  /block/share/dropbox/user444/rclone-test-write
 ```
 
 ```
+% cat ~/.ssh/$public_key | ssh -p23 $user@$user.your-storagebox.de install-ssh-key
+% ssh -i ~/.ssh/$private_key -p23 $user@$user.your-storagebox.de
 Last login: Tue Jul  8 01:58:37 2025 from 223.197.187.121
 +------------------------------------------------------------------+
 | Welcome to your Storage Box.                                     |
