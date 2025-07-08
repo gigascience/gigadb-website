@@ -23,11 +23,11 @@ class AdminLinkPrefixController extends Controller
     {
         return array(
             array('allow', // admin only
-                'actions'=>array('admin','delete','index','view','create','update'),
-                'roles'=>array('admin'),
+                'actions' => array('admin','delete','index','view','create','update'),
+                'roles' => array('admin'),
             ),
             array('deny',  // deny all users
-                'users'=>array('*'),
+                'users' => array('*'),
             ),
         );
     }
@@ -38,7 +38,7 @@ class AdminLinkPrefixController extends Controller
      */
     public function actionView(int $id)
     {
-        $this->render('view',array('model' => $this->loadModel($id)));
+        $this->render('view', array('model' => $this->loadModel($id)));
     }
 
     /**
@@ -58,7 +58,7 @@ class AdminLinkPrefixController extends Controller
             }
         }
 
-        $this->render('create',array('model' => $model));
+        $this->render('create', array('model' => $model));
     }
 
     /**
@@ -77,7 +77,7 @@ class AdminLinkPrefixController extends Controller
             }
         }
 
-        $this->render('update',array('model' => $model));
+        $this->render('update', array('model' => $model));
     }
 
     /**
@@ -88,7 +88,7 @@ class AdminLinkPrefixController extends Controller
     public function actionDelete(int $id)
     {
         if (!Yii::app()->request->isPostRequest) {
-            throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+            throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
         }
         // we only allow deletion via POST request
         $this->loadModel($id)->delete();
@@ -137,10 +137,10 @@ class AdminLinkPrefixController extends Controller
     {
         $model = Prefix::model()->findByPk($id);
         if (!$model) {
-            throw new CHttpException(404,'The requested page does not exist.');
+            throw new CHttpException(404, 'The requested page does not exist.');
         }
 
-        $model;
+        return $model;
     }
 
     /**
@@ -149,7 +149,7 @@ class AdminLinkPrefixController extends Controller
      */
     protected function performAjaxValidation($model)
     {
-        if (Yii::$app->request->post('ajax') ==='type-form') {
+        if (Yii::$app->request->post('ajax') === 'type-form') {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }

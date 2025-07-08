@@ -54,7 +54,7 @@ class AdminDatasetAuthorController extends Controller
      */
     public function actionCreate()
     {
-        $model = new DatasetAuthor;
+        $model = new DatasetAuthor();
 
         if ($datasetAuthor = Yii::$app->request->post('DatasetAuthor')) {
             $model->attributes = $datasetAuthor;
@@ -270,7 +270,7 @@ class AdminDatasetAuthorController extends Controller
         }
 
         $variants = array();
-        $criteria = new CDbCriteria;
+        $criteria = new CDbCriteria();
         $criteria->select = 'first_name, surname';
         $criteria->distinct = 'true';
         $criteria->addSearchCondition("LOWER(first_name) || ' ' || LOWER(surname)", '%' . strtolower($term) . '%', false);
@@ -309,6 +309,7 @@ class AdminDatasetAuthorController extends Controller
 
         if (isset($_SESSION['dataset_id'])) {
             $dataset_id = $_SESSION['dataset_id'];
+            /** @phpstan-ignore-next-line */
             $model->dataset_id = $dataset_id;
             $model = $datasetAuthor;
             //store author into table author
@@ -399,7 +400,7 @@ class AdminDatasetAuthorController extends Controller
             $rank = intval($da->rank) + 1;
         }
 
-        $author = new Author;
+        $author = new Author();
         $author->first_name = $attrs['first_name'];
         $author->surname = $attrs['last_name'];
         if (isset($attrs['middle_name'])) {
@@ -410,7 +411,7 @@ class AdminDatasetAuthorController extends Controller
         }
 
         if ($author->save()) {
-            $da = new DatasetAuthor;
+            $da = new DatasetAuthor();
             $da->dataset_id = $datasetId;
             $da->author_id = $author->id;
             $da->rank = $rank;
@@ -433,7 +434,7 @@ class AdminDatasetAuthorController extends Controller
         if ($da->delete()) {
             $da->author->delete();
 
-            $criteria = new CDbCriteria;
+            $criteria = new CDbCriteria();
             $criteria->addCondition('dataset_id=' . $da->dataset_id);
             $criteria->addCondition('rank > ' . $rank);
             $higherRankDas = DatasetAuthor::model()->findAll($criteria);
@@ -454,7 +455,7 @@ class AdminDatasetAuthorController extends Controller
         $daId = Yii::$app->request->post('da_id');
         $rank = Yii::$app->request->post('rank');
         if (!$daId || !$rank) {
-            throw new ChttpException(400, 'Invalid request. Please do not repeat this request again.');
+            throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
         }
         $transaction = Yii::app()->db->beginTransaction();
         try {
@@ -475,7 +476,7 @@ class AdminDatasetAuthorController extends Controller
             if ($changeRank > $rank) {
                 // update order down by 1
                 // find all dataset authors in between
-                $criteria = new CDbCriteria;
+                $criteria = new CDbCriteria();
                 $criteria->addCondition('t.rank > ' . min($rank, $changeRank));
                 $criteria->addCondition('t.rank <= ' . max($rank, $changeRank));
                 $criteria->addCondition('t.dataset_id = ' . $da->dataset_id);
@@ -486,7 +487,7 @@ class AdminDatasetAuthorController extends Controller
             } else {
                 // update order up by 1
                 // find all dataset authors in between
-                $criteria = new CDbCriteria;
+                $criteria = new CDbCriteria();
                 $criteria->addCondition('t.rank >= ' . min($rank, $changeRank));
                 $criteria->addCondition('t.rank < ' . max($rank, $changeRank));
                 $criteria->addCondition('t.dataset_id = ' . $da->dataset_id);

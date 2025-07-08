@@ -4,68 +4,69 @@ declare(strict_types=1);
 
 class AdminExternalLinkController extends Controller
 {
-	/**
-	 * @return array action filters
-	 */
-	public function filters()
-	{
-		return array(
-			'accessControl', // perform access control for CRUD operations
-		);
-	}
+    /**
+     * @return array action filters
+     */
+    public function filters()
+    {
+        return array(
+            'accessControl', // perform access control for CRUD operations
+        );
+    }
 
-	/**
-	 * Specifies the access control rules.
-	 * This method is used by the 'accessControl' filter.
-	 * @return array access control rules
-	 */
-	public function accessRules()
-	{
-		return array(
-			array('allow', // admin only
-				'actions'=>array('admin','delete','index','view','create','update'),
-				'roles'=>array('admin'),
-			),
+    /**
+     * Specifies the access control rules.
+     * This method is used by the 'accessControl' filter.
+     * @return array access control rules
+     */
+    public function accessRules()
+    {
+        return array(
+            array('allow', // admin only
+                'actions' => array('admin','delete','index','view','create','update'),
+                'roles' => array('admin'),
+            ),
                          array('allow',
                                  'actions' => array('create1', 'delete1','autocomplete','addExLink', 'deleteExLink'),
                                  'users' => array('@'),
             ),
-			array('deny',  // deny all users
-				'users'=>array('*'),
-			),
-		);
-	}
+            array('deny',  // deny all users
+                'users' => array('*'),
+            ),
+        );
+    }
 
-	/**
-	 * Displays a particular model.
-	 * @param integer $id the ID of the model to be displayed
-	 */
-	public function actionView(int $id)
-	{
+    /**
+     * Displays a particular model.
+     * @param integer $id the ID of the model to be displayed
+     */
+    public function actionView(int $id)
+    {
         $this->render('view', array('model' => $this->loadModel($id)));
-	}
+    }
 
-	/**
-	 * Creates a new model.
-	 * If creation is successful, the browser will be redirected to the 'view' page.
-	 */
-	public function actionCreate()
-	{
-		$model = new ExternalLink;
+    /**
+     * Creates a new model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     */
+    public function actionCreate()
+    {
+        $model = new ExternalLink();
 
-		if ($externalLink = Yii::$app->request->post('ExternalLink')) {
-			$model->attributes = $externalLink;
+        if ($externalLink = Yii::$app->request->post('ExternalLink')) {
+            $model->attributes = $externalLink;
 
             if ($model->save()) {
                 $this->redirect(array('view', 'id' => $model->id));
             }
-		}
+        }
 
         $this->render('create', array('model' => $model));
-	}
+    }
 
     //TODO: not used atm
-     public function actionDelete1($id) {
+    public function actionDelete1($id)
+    {
         if (isset($_SESSION['externalLinks'])) {
             $info = $_SESSION['externalLinks'];
             foreach ($info as $key => $value) {
@@ -81,7 +82,8 @@ class AdminExternalLinkController extends Controller
     }
 
     //TODO: not used atm
-    private function storeExternalLink(&$model, &$id) {
+    private function storeExternalLink(&$model, &$id)
+    {
 
 
         if (isset($_SESSION['dataset_id'])) {
@@ -100,8 +102,9 @@ class AdminExternalLinkController extends Controller
     }
 
     //TODO: not used atm
-    public function actionCreate1() {
-        $model = new ExternalLink;
+    public function actionCreate1()
+    {
+        $model = new ExternalLink();
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
@@ -161,34 +164,34 @@ class AdminExternalLinkController extends Controller
         }
     }
 
-	/**
-	 * Updates a particular model.
-	 * If update is successful, the browser will be redirected to the 'view' page.
-	 * @param integer $id the ID of the model to be updated
-	 */
-	public function actionUpdate(int $id)
-	{
-		$model = $this->loadModel($id);
+    /**
+     * Updates a particular model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id the ID of the model to be updated
+     */
+    public function actionUpdate(int $id)
+    {
+        $model = $this->loadModel($id);
 
-		if ($externalLink = Yii::$app->request->post('ExternalLink')) {
-			$model->attributes = $externalLink;
-			if ($model->save()) {
+        if ($externalLink = Yii::$app->request->post('ExternalLink')) {
+            $model->attributes = $externalLink;
+            if ($model->save()) {
                 $this->redirect(array('view', 'id' => $model->id));
             }
-		}
+        }
 
-        $this->render('update', array('model'=>$model));
-	}
+        $this->render('update', array('model' => $model));
+    }
 
-	/**
-	 * Deletes a particular model.
-	 * If deletion is successful, the browser will be redirected to the 'admin' page.
-	 * @param integer $id the ID of the model to be deleted
-	 */
-	public function actionDelete(int $id)
-	{
-		if (!Yii::app()->request->isPostRequest) {
-            throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+    /**
+     * Deletes a particular model.
+     * If deletion is successful, the browser will be redirected to the 'admin' page.
+     * @param integer $id the ID of the model to be deleted
+     */
+    public function actionDelete(int $id)
+    {
+        if (!Yii::app()->request->isPostRequest) {
+            throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
         }
 
         // we only allow deletion via POST request
@@ -199,63 +202,63 @@ class AdminExternalLinkController extends Controller
             $returnUrl = Yii::$app->request->post('returnUrl');
             $this->redirect($returnUrl ?: array('admin'));
         }
-	}
+    }
 
-	/**
-	 * Lists all models.
-	 */
-	public function actionIndex()
-	{
-		$dataProvider = new CActiveDataProvider('ExternalLink');
+    /**
+     * Lists all models.
+     */
+    public function actionIndex()
+    {
+        $dataProvider = new CActiveDataProvider('ExternalLink');
 
         $this->render('index', array('dataProvider' => $dataProvider));
-	}
+    }
 
-	/**
-	 * Manages all models.
-	 */
-	public function actionAdmin()
-	{
-		$model = new ExternalLink('search');
-		$model->unsetAttributes();  // clear any default values
+    /**
+     * Manages all models.
+     */
+    public function actionAdmin()
+    {
+        $model = new ExternalLink('search');
+        $model->unsetAttributes();  // clear any default values
 
         if ($externalLink = Yii::$app->request->get('ExternalLink')) {
             $model->setAttributes($externalLink);
         }
 
-		$this->loadBaBbqPolyfills = true;
+        $this->loadBaBbqPolyfills = true;
 
         $this->render('admin', array('model' => $model));
-	}
+    }
 
-	/**
-	 * Returns the data model based on the primary key given in the GET variable.
-	 * If the data model is not found, an HTTP exception will be raised.
-	 * @param integer the ID of the model to be loaded
-	 */
-	public function loadModel(int $id): ExternalLink
-	{
-		$model = ExternalLink::model()->findByPk($id);
-		if (!$model) {
+    /**
+     * Returns the data model based on the primary key given in the GET variable.
+     * If the data model is not found, an HTTP exception will be raised.
+     * @param integer the ID of the model to be loaded
+     */
+    public function loadModel(int $id): ExternalLink
+    {
+        $model = ExternalLink::model()->findByPk($id);
+        if (!$model) {
             throw new CHttpException(404, Yii::t('yii', 'External Link was not found.'));
         }
 
-		return $model;
-	}
+        return $model;
+    }
 
-	/**
-	 * Performs the AJAX validation.
-	 * @param CModel the model to be validated
-	 */
-	protected function performAjaxValidation($model)
-	{
-		if (Yii::$app->request->post('ajax') ==='external-link-form') {
-			echo CActiveForm::validate($model);
-			Yii::app()->end();
-		}
-	}
+    /**
+     * Performs the AJAX validation.
+     * @param CModel the model to be validated
+     */
+    protected function performAjaxValidation($model)
+    {
+        if (Yii::$app->request->post('ajax') === 'external-link-form') {
+            echo CActiveForm::validate($model);
+            Yii::app()->end();
+        }
+    }
 
-	public function actionAddExLink()
+    public function actionAddExLink()
     {
         $datasetId = Yii::$app->request->post('dataset_id');
         $url = Yii::$app->request->post('url');
@@ -267,7 +270,7 @@ class AdminExternalLinkController extends Controller
 
 
         if (!preg_match("/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i", $url)) {
-            Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "The URL is invalid. Please enter a valid URL including http://")));
+            Util::returnJSON(array("success" => false,"message" => Yii::t("app", "The URL is invalid. Please enter a valid URL including http://")));
         }
 
         $exLink = ExternalLink::model()->findByAttributes(array('dataset_id' => $datasetId, 'url' => $url));
@@ -275,7 +278,7 @@ class AdminExternalLinkController extends Controller
             Util::returnJSON(array("success" => false, "message" => Yii::t("app", "This external link has been added already.")));
         }
 
-        $exLink = new ExternalLink;
+        $exLink = new ExternalLink();
         $exLink->dataset_id = $datasetId;
         $exLink->url = $url;
         $exLink->external_link_type_id = $externalLinkType;
@@ -285,10 +288,10 @@ class AdminExternalLinkController extends Controller
         }
 
         Util::returnJSON(array("success" => false, "message" => Yii::t("app", "Save Error.")));
-
     }
 
-    public function actionDeleteExLink() {
+    public function actionDeleteExLink()
+    {
         if (!$externalLinkId = Yii::$app->request->post('exLink_id')) {
             Util::returnJSON(array('success' => false, 'message' => Yii::t('app', 'Delete Error.')));
         }
@@ -298,6 +301,6 @@ class AdminExternalLinkController extends Controller
             Util::returnJSON(array("success" => true));
         }
 
-        Util::returnJSON(array("success" => false, "message" =>Yii::t("app", "Delete Error.")));
+        Util::returnJSON(array("success" => false, "message" => Yii::t("app", "Delete Error.")));
     }
 }

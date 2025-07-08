@@ -303,7 +303,7 @@ class AdminFileController extends Controller
             $path = '/tmp/' . $name;
             $file->saveAs($path);
             // tab character char(9)
-            $datas = Utils::readCsv($path, chr(9));
+            $datas = \Utils::readCsv($path, chr(9));
             if ($datas) {
                 foreach ($filelist as $idx => $f) {
                     if (isset($datas[$idx])) {

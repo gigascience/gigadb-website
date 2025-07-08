@@ -4,130 +4,128 @@ declare(strict_types=1);
 
 class DatasetFunderController extends Controller
 {
+    /**
+     * @var CActiveRecord the currently loaded data model instance.
+     */
+    private $_model;
 
-
-	/**
-	 * @var CActiveRecord the currently loaded data model instance.
-	 */
-	private $_model;
-
-	/**
-	 * @return array action filters
-	 */
-	public function filters()
-	{
-		return array(
-			'accessControl', // perform access control for CRUD operations
-		);
-	}
-
-	/**
-	 * Specifies the access control rules.
-	 * This method is used by the 'accessControl' filter.
-	 * @return array access control rules
-	 */
-	public function accessRules()
-	{
-		return array(
-
-			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'users'=>array('@'),
-				'roles'=>array('admin'),
-			),
-			array('deny',  // deny all users
-				'users'=>array('*'),
-			),
-		);
-	}
-
-	/**
-	 * Displays a particular model.
-	 */
-	public function actionView()
-	{
-        $this->render('view', array('model' => $this->loadModel()));
-	}
-
-	private function getDatasetIds(): array
+    /**
+     * @return array action filters
+     */
+    public function filters()
     {
-		return Util::getDois(PDO::FETCH_KEY_PAIR);
-	}
+        return array(
+            'accessControl', // perform access control for CRUD operations
+        );
+    }
 
-	private function getFunderIds(): array
+    /**
+     * Specifies the access control rules.
+     * This method is used by the 'accessControl' filter.
+     * @return array access control rules
+     */
+    public function accessRules()
+    {
+        return array(
+
+            array('allow', // allow admin user to perform 'admin' and 'delete' actions
+                'users' => array('@'),
+                'roles' => array('admin'),
+            ),
+            array('deny',  // deny all users
+                'users' => array('*'),
+            ),
+        );
+    }
+
+    /**
+     * Displays a particular model.
+     */
+    public function actionView()
+    {
+        $this->render('view', array('model' => $this->loadModel()));
+    }
+
+    private function getDatasetIds(): array
+    {
+        return Util::getDois(PDO::FETCH_KEY_PAIR);
+    }
+
+    private function getFunderIds(): array
     {
         return Yii::app()->db->createCommand()
                                  ->select('id, primary_name_display')
                                  ->from('funder_name')
                                  ->order('primary_name_display asc')
                                  ->queryAll(PDO::FETCH_KEY_PAIR);
-	}
+    }
 
-	/**
-	 * Creates a new model.
-	 * If creation is successful, the browser will be redirected to the 'view' page.
-	 */
-	public function actionCreate()
-	{
-		$model = new DatasetFunder;
+    /**
+     * Creates a new model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     */
+    public function actionCreate()
+    {
+        $model = new DatasetFunder();
 
-		$datasets = $this->getDatasetIds();
-		$funders = $this->getFunderIds();
+        $datasets = $this->getDatasetIds();
+        $funders = $this->getFunderIds();
 
-		if ($datasetFunder = Yii::$app->request->post('DatasetFunder')) {
-			$attrs = $datasetFunder;
-			$model->attributes = $attrs;
-			$model->grant_award = Util::trimText($attrs['grant_award']);
+        if ($datasetFunder = Yii::$app->request->post('DatasetFunder')) {
+            $attrs = $datasetFunder;
+            $model->attributes = $attrs;
+            $model->grant_award = Util::trimText($attrs['grant_award']);
             $model->awardee = Util::trimText($attrs['awardee']);
-			$model->comments = Util::trimText($attrs['comments']);
+            $model->comments = Util::trimText($attrs['comments']);
 
-			if ($model->save()) {
+            if ($model->save()) {
                 $this->redirect(array('view','id' => $model->id));
             }
-		}
+        }
 
-        $this->render('create',array(
-			'model'=>$model,
-			'funders'=>$funders,
-			'datasets'=>$datasets,
-		));
-	}
+        $this->render('create', array(
+            'model' => $model,
+            'funders' => $funders,
+            'datasets' => $datasets,
+        ));
+    }
 
-	/**
-	 * Updates a particular model.
-	 * If update is successful, the browser will be redirected to the 'view' page.
-	 */
-	public function actionUpdate()
-	{
-		$model = $this->loadModel();
-		$datasets = $this->getDatasetIds();
-		$funders = $this->getFunderIds();
+    /**
+     * Updates a particular model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     */
+    public function actionUpdate()
+    {
+        $model = $this->loadModel();
+        $datasets = $this->getDatasetIds();
+        $funders = $this->getFunderIds();
 
-		if ($attrs = Yii::$app->request->post('DatasetFunder')) {
-			$model->attributes = $attrs;
-			$model->grant_award = Util::trimText($attrs['grant_award']);
+        if ($attrs = Yii::$app->request->post('DatasetFunder')) {
+            $model->attributes = $attrs;
+            $model->grant_award = Util::trimText($attrs['grant_award']);
             $model->awardee = Util::trimText($attrs['awardee']);
-			$model->comments = Util::trimText($attrs['comments']);
+            $model->comments = Util::trimText($attrs['comments']);
 
-			if ($model->save()) {
+            if ($model->save()) {
                 $this->redirect(array('view', 'id' => $model->id));
             }
-		}
+        }
 
-        $this->render('update',array(
-			'model'=>$model,
-			'datasets' => $datasets,
-			'funders' => $funders,
-		));
-	}
+        $this->render('update', array(
+            'model' => $model,
+            'datasets' => $datasets,
+            'funders' => $funders,
+        ));
+    }
 
-	/**
-	 * Deletes a particular model.
-	 * If deletion is successful, the browser will be redirected to the 'index' page.
-	 */
-	public function actionDelete()
-	{
-		if (!Yii::app()->request->isPostRequest) {
-            throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+    /**
+     * Deletes a particular model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     */
+    public function actionDelete()
+    {
+        if (!Yii::app()->request->isPostRequest) {
+            throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
         }
 
         // we only allow deletion via POST request
@@ -139,62 +137,62 @@ class DatasetFunderController extends Controller
 
             $this->redirect($returnUrl ?: array('admin'));
         }
-	}
+    }
 
-	/**
-	 * Lists all models.
-	 */
-	public function actionIndex()
-	{
-		$dataProvider = new CActiveDataProvider('DatasetFunder');
+    /**
+     * Lists all models.
+     */
+    public function actionIndex()
+    {
+        $dataProvider = new CActiveDataProvider('DatasetFunder');
 
         $this->render('index', array('dataProvider' => $dataProvider));
-	}
+    }
 
-	/**
-	 * Manages all models.
-	 */
-	public function actionAdmin()
-	{
-		$model = new DatasetFunder('search');
-		$model->unsetAttributes();  // clear any default values
+    /**
+     * Manages all models.
+     */
+    public function actionAdmin()
+    {
+        $model = new DatasetFunder('search');
+        $model->unsetAttributes();  // clear any default values
 
         if ($datasetFunder = Yii::$app->request->get('DatasetFunder')) {
-            $model->setAttributes($datasetFunder,true);
+            $model->setAttributes($datasetFunder, true);
         }
 
-		$this->loadBaBbqPolyfills = true;
+        $this->loadBaBbqPolyfills = true;
 
         $this->render('admin', array('model' => $model));
-	}
+    }
 
-	/**
-	 * Returns the data model based on the primary key given in the GET variable.
-	 * If the data model is not found, an HTTP exception will be raised.
-	 */
-	public function loadModel(): DatasetFunder
-	{
-		if (!$this->_model) {
-			if ($id = Yii::$app->request->get('id')) {
+    /**
+     * Returns the data model based on the primary key given in the GET variable.
+     * If the data model is not found, an HTTP exception will be raised.
+     */
+    public function loadModel(): DatasetFunder
+    {
+        if (!$this->_model) {
+            if ($id = Yii::$app->request->get('id')) {
                 $this->_model = DatasetFunder::model()->findbyPk($id);
             }
-			if (!$this->_model) {
-                throw new CHttpException(404,'The requested page does not exist.');
+            if (!$this->_model) {
+                throw new CHttpException(404, 'The requested page does not exist.');
             }
-		}
+        }
 
-		return $this->_model;
-	}
+        return $this->_model;
+    }
 
-	/**
-	 * Performs the AJAX validation.
-	 * @param CModel the model to be validated
-	 */
-	protected function performAjaxValidation($model)
-	{
-		if (Yii::$app->request->post('ajax') ==='dataset-funder-form') {
-			echo CActiveForm::validate($model);
-			Yii::app()->end();
-		}
-	}
+    /**
+     * Performs the AJAX validation.
+     * @param CModel the model to be validated
+     */
+    protected function performAjaxValidation($model)
+    {
+        if (Yii::$app->request->post('ajax') === 'dataset-funder-form') {
+            echo CActiveForm::validate($model);
+            Yii::app()->end();
+        }
+    }
 }

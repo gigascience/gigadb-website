@@ -14,8 +14,7 @@ use League\Flysystem\AdapterInterface;
  */
 class AdminDatasetController extends Controller
 {
-
-	/**
+    /**
      * @return array action filters
      */
     public function filters()
@@ -34,11 +33,11 @@ class AdminDatasetController extends Controller
     {
         return array(
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
-                  'actions'=>array('create','admin','update','private', 'removeImage','clearImageFile','mint','checkDOIExist', 'assignFTPBox','sendInstructions','saveInstructions','mockup','moveFiles'),
-                  'roles'=>array('admin'),
+                  'actions' => array('create','admin','update','private', 'removeImage','clearImageFile','mint','checkDOIExist', 'assignFTPBox','sendInstructions','saveInstructions','mockup','moveFiles'),
+                  'roles' => array('admin'),
             ),
             array('deny',  // deny all users
-                'users'=>array('*'),
+                'users' => array('*'),
             ),
         );
     }
@@ -49,15 +48,16 @@ class AdminDatasetController extends Controller
     public function actions()
     {
         return array(
-            'assignFTPBox'=>'application.controllers.adminDataset.AssignFTPBoxAction',
-            'sendInstructions'=>'application.controllers.adminDataset.SendInstructionsAction',
-            'saveInstructions'=>'application.controllers.adminDataset.SaveInstructionsAction',
-            'mockup'=>'application.controllers.adminDataset.MockupAction',
-            'moveFiles'=>'application.controllers.adminDataset.MoveFilesAction',
+            'assignFTPBox' => 'application.controllers.adminDataset.AssignFTPBoxAction',
+            'sendInstructions' => 'application.controllers.adminDataset.SendInstructionsAction',
+            'saveInstructions' => 'application.controllers.adminDataset.SaveInstructionsAction',
+            'mockup' => 'application.controllers.adminDataset.MockupAction',
+            'moveFiles' => 'application.controllers.adminDataset.MoveFilesAction',
         );
     }
 
-    private function processTemplateString(string $inputString, array $vars): string {
+    private function processTemplateString(string $inputString, array $vars): string
+    {
         foreach ($vars as $key => $value) {
             $pattern = "/{{\s*" . preg_quote($key, '/') . "\s*}}/";
             $inputString = preg_replace($pattern, $value, $inputString);
@@ -65,7 +65,8 @@ class AdminDatasetController extends Controller
         return $inputString;
     }
 
-    protected function registerTooltipScript() {
+    protected function registerTooltipScript()
+    {
         // Check if the script has already been registered
         if (!Yii::app()->clientScript->isScriptRegistered('bootstrap-tooltip-init')) {
             $jsFile = Yii::getPathOfAlias('application.js.bootstrap-tooltip-init') . '.js';
@@ -74,62 +75,62 @@ class AdminDatasetController extends Controller
         }
     }
 
-	/**
-	 * Manage creation of new dataset object from a form
-	 *
-	 */
-	public function actionCreate()
+    /**
+     * Manage creation of new dataset object from a form
+     *
+     */
+    public function actionCreate()
     {
-        $dataset = new Dataset; // needed for the CActiveForm field for dataset model
-        $dataset->image = new Image; // needed for the CActiveForm field for image model
+        $dataset = new Dataset(); // needed for the CActiveForm field for dataset model
+        $dataset->image = new Image(); // needed for the CActiveForm field for image model
 
         $datasetPageSettings = new DatasetPageSettings($dataset);
 
         $dataset_post_data = Yii::$app->request->post('Dataset');
         $image = Yii::$app->request->post('Image');
         if (!$dataset_post_data || !$image) {
-            $this->render('create', array('model'=>$dataset,'datasetPageSettings' => $datasetPageSettings));
+            $this->render('create', array('model' => $dataset,'datasetPageSettings' => $datasetPageSettings));
         }
 
         Yii::log("Processing submitted data", 'info');
-        if (isset($dataset_post_data['publication_date']) && $dataset_post_data['publication_date'] === "" ) {
+        if (isset($dataset_post_data['publication_date']) && $dataset_post_data['publication_date'] === "") {
             $dataset_post_data['publication_date'] = null;
         }
-        if (isset($dataset_post_data['modification_date']) && $dataset_post_data['modification_date'] === "" ) {
+        if (isset($dataset_post_data['modification_date']) && $dataset_post_data['modification_date'] === "") {
             $dataset_post_data['modification_date'] = null;
         }
-        if (isset($dataset_post_data['fairnuse']) && $dataset_post_data['fairnuse'] === "" ) {
+        if (isset($dataset_post_data['fairnuse']) && $dataset_post_data['fairnuse'] === "") {
             $dataset_post_data['fairnuse'] = null;
         }
 
         $dataset->setAttributes($dataset_post_data, true);
         if (!$dataset->validate()) {
             Yii::log("Dataset instance is not valid", 'info');
-            $this->render('create', array('model'=>$dataset,'datasetPageSettings' => $datasetPageSettings));
+            $this->render('create', array('model' => $dataset,'datasetPageSettings' => $datasetPageSettings));
         }
 
         $datasetImage = CUploadedFile::getInstanceByName('datasetImage');
 
         if ($datasetImage && $image) { //User has uploaded an image
-            Yii::log("action Create: image form data exists and a file has been uploaded, so creating a new image object","warning");
+            Yii::log("action Create: image form data exists and a file has been uploaded, so creating a new image object", "warning");
             $dataset->image->attributes = $image;
             Yii::log($datasetImage->getTempName(), "warning");
             if (!$dataset->image->write(Yii::$app->cloudStore, $dataset->getUuid(), $datasetImage)) {
-                Yii::log("Error writing file to storage for dataset ".$dataset->identifier, "error");
+                Yii::log("Error writing file to storage for dataset " . $dataset->identifier, "error");
                 Yii::app()->user->setFlash('updateError', 'An error occured while writing file to storage.');
 
-                $this->render('create', array('model'=>$dataset,'datasetPageSettings' => $datasetPageSettings));
+                $this->render('create', array('model' => $dataset,'datasetPageSettings' => $datasetPageSettings));
             }
         } else { //we use the generic image
             $dataset->image = Image::model()->findByPk(Image::GENERIC_IMAGE_ID);
-            Yii::log("action Create: Using generic image","warning");
+            Yii::log("action Create: Using generic image", "warning");
         }
 
         $dataset->image->scenario = 'update';
         if ($dataset->hasErrors() || !$dataset->image->validate()) {
             Yii::log(print_r($dataset->getErrors(), true), 'error');
 
-            $this->render('create', array('model'=>$dataset,'datasetPageSettings' => $datasetPageSettings)) ;
+            $this->render('create', array('model' => $dataset,'datasetPageSettings' => $datasetPageSettings)) ;
         }
 
 
@@ -145,13 +146,13 @@ class AdminDatasetController extends Controller
         if (!$dataset->save()) {
             Yii::log(print_r($dataset->getErrors(), true), 'error');
 
-            $this->render('create', array('model'=>$dataset,'datasetPageSettings' => $datasetPageSettings)) ;
+            $this->render('create', array('model' => $dataset,'datasetPageSettings' => $datasetPageSettings)) ;
         }
         // link datatypes
         //TODO: PR - we need at least one datasetType saved
         if ($datasettypes = Yii::$app->request->post('datasettypes')) {
             foreach (array_keys($datasettypes) as $id) {
-                $newDatasetTypeRelationship = new DatasetType;
+                $newDatasetTypeRelationship = new DatasetType();
                 $newDatasetTypeRelationship->dataset_id = $dataset->id;
                 $newDatasetTypeRelationship->type_id = $id;
                 $newDatasetTypeRelationship->save();
@@ -160,10 +161,10 @@ class AdminDatasetController extends Controller
 
         Yii::app()->user->setFlash('saveSuccess', 'saveSuccess');
         if ($dataset->upload_status === 'AuthorReview') {
-            $this->redirect('/adminDataset/private/identifier/'.$dataset->identifier);
+            $this->redirect('/adminDataset/private/identifier/' . $dataset->identifier);
         }
 
-        $this->redirect(array('/dataset/'.$dataset->identifier));
+        $this->redirect(array('/dataset/' . $dataset->identifier));
     }
 
     /**
@@ -171,9 +172,9 @@ class AdminDatasetController extends Controller
      */
     public function actionAdmin()
     {
-        $criteria = new CDbCriteria(array('order'=>'identifier asc'));
+        $criteria = new CDbCriteria(array('order' => 'identifier asc'));
 
-        $dataProvider = new CActiveDataProvider('Dataset', array('criteria'=>$criteria));
+        $dataProvider = new CActiveDataProvider('Dataset', array('criteria' => $criteria));
 
         $model = new Dataset('search');
         $model->unsetAttributes();  // clear any default values
@@ -183,7 +184,7 @@ class AdminDatasetController extends Controller
 
         $this->loadBaBbqPolyfills = true;
 
-        $this->render('admin', array('model'=>$model, 'dataProvider'=>$model->search()));
+        $this->render('admin', array('model' => $model, 'dataProvider' => $model->search()));
     }
 
     /**
@@ -204,8 +205,8 @@ class AdminDatasetController extends Controller
             $this->render('update', array(
                 'model' => $model,
                 'datasetPageSettings' => $datasetPageSettings,
-                'curationlog'=> $dataProvider,
-                'dataset_id'=> $id,
+                'curationlog' => $dataProvider,
+                'dataset_id' => $id,
             ));
         }
 
@@ -240,7 +241,7 @@ class AdminDatasetController extends Controller
 
         // Image information
         $datasetImage = CUploadedFile::getInstanceByName('datasetImage');
-        if ($model->image){
+        if ($model->image) {
             $isUpdated = $model->updateImageAndMetafields($datasetImage);
             $hasPartialError = !$isUpdated || $hasPartialError;
         } else {
@@ -259,7 +260,7 @@ class AdminDatasetController extends Controller
             }
 
             if ($uploadStatus && $uploadStatus !== $previousUploadStatus) {
-                Yii::log('Status changed to '.$uploadStatus, 'info');
+                Yii::log('Status changed to ' . $uploadStatus, 'info');
                 $this->renderNotificationsAccordingToStatus($datasetUpload, $model);
             }
 
@@ -270,9 +271,9 @@ class AdminDatasetController extends Controller
 
             $urlToRedirect = Yii::$app->request->post('urltoredirect');
             // retrieve existing redirect
-            $criteria = new CDbCriteria(array('order'=>'id ASC'));
-            $urlToRedirectAttr = Attributes::model()->findByAttributes(array('attribute_name'=>'urltoredirect'));
-            $urlToRedirectDatasetAttribute = DatasetAttributes::model()->findByAttributes(array('dataset_id'=>$id,'attribute_id'=>$urlToRedirectAttr->id), $criteria);
+            $criteria = new CDbCriteria(array('order' => 'id ASC'));
+            $urlToRedirectAttr = Attributes::model()->findByAttributes(array('attribute_name' => 'urltoredirect'));
+            $urlToRedirectDatasetAttribute = DatasetAttributes::model()->findByAttributes(array('dataset_id' => $id,'attribute_id' => $urlToRedirectAttr->id), $criteria);
 
             // update with value from form if value has changed.
             if ($urlToRedirectDatasetAttribute && $urlToRedirect !== $urlToRedirectDatasetAttribute->value) {
@@ -302,7 +303,6 @@ class AdminDatasetController extends Controller
                     $this->redirect(array('/adminDataset/update/id/' . $model->id));
                     break;
             }
-
         } else {
             Yii::app()->user->setFlash('updateError', 'Fail to update!');
             Yii::log(print_r($model->getErrors(), true), 'error');
@@ -314,8 +314,8 @@ class AdminDatasetController extends Controller
         $this->render('update', array(
             'model' => $model,
             'datasetPageSettings' => $datasetPageSettings,
-            'curationlog'=> $dataProvider,
-            'dataset_id'=> $id,
+            'curationlog' => $dataProvider,
+            'dataset_id' => $id,
         ));
     }
 
@@ -339,7 +339,7 @@ class AdminDatasetController extends Controller
             $this->redirect('/site/index');
         }
         if ("public" === $pageType) {
-            $this->redirect('/dataset/'.$model->identifier);
+            $this->redirect('/dataset/' . $model->identifier);
         }
         $model->token = Yii::$app->security->generateRandomString(16);
 
@@ -347,7 +347,7 @@ class AdminDatasetController extends Controller
             throw new CHttpException(500, 'Fail to update dataset token');
         }
 
-        $this->redirect('/dataset/'.$model->identifier.'/token/'.$model->token);
+        $this->redirect('/dataset/' . $model->identifier . '/token/' . $model->token);
     }
 
 
@@ -390,10 +390,10 @@ class AdminDatasetController extends Controller
                         Yii::log("Failed deleting image record $oldImageID", 'error');
                     }
                 } catch (CDbException $e) {
-                    Yii::log($e->getMessage(),"error");
+                    Yii::log($e->getMessage(), "error");
                 }
             } else {
-                Yii::log("Failed associating generic image","error");
+                Yii::log("Failed associating generic image", "error");
             }
         }
 
@@ -402,7 +402,7 @@ class AdminDatasetController extends Controller
     }
 
     /**
-     *	post metadata, mint a new DOI
+     *  post metadata, mint a new DOI
      *
      */
     public function actionMint()
@@ -426,8 +426,8 @@ class AdminDatasetController extends Controller
 
         $status_array = array('Submitted', 'UserStartedIncomplete', 'Curation');
 
-        $mds_metadata_url= Yii::app()->params['mds_metadata_url'];
-        $mds_doi_url= Yii::app()->params['mds_doi_url'];
+        $mds_metadata_url = Yii::app()->params['mds_metadata_url'];
+        $mds_doi_url = Yii::app()->params['mds_doi_url'];
         $mds_username = Yii::app()->params['mds_username'];
         $mds_password = Yii::app()->params['mds_password'];
         $mds_prefix = Yii::app()->params['mds_prefix'];
@@ -507,7 +507,7 @@ class AdminDatasetController extends Controller
                     'http_errors' => false
                 ];
 
-                $response = $client->request('PUT', $mds_doi_url. '/' . $mds_prefix . '/' . $doi, $options);
+                $response = $client->request('PUT', $mds_doi_url . '/' . $mds_prefix . '/' . $doi, $options);
 
                 $result['create_doi_response'] = $response->getBody()->getContents();
                 $result['create_doi_status'] = $response->getStatusCode();
@@ -639,4 +639,3 @@ class AdminDatasetController extends Controller
         return $isPresent;
     }
 }
-

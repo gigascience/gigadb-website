@@ -6,49 +6,48 @@ class ApiController extends Controller
 {
     const RESULTS = ['file', 'sample', 'dataset'];
 
-	/**
-	 * @return array action filters
-	 */
+    /**
+     * @return array action filters
+     */
 
     public function filters()
-	{
-		return array(
-			'accessControl', // perform access control for CRUD operations
-		);
-	}
+    {
+        return array(
+            'accessControl', // perform access control for CRUD operations
+        );
+    }
 
-	/**
-	 * Specifies the access control rules.
-	 * This method is used by the 'accessControl' filter.
-	 * @return array access control rules
-	 */
-	public function accessRules()
-	{
-		return array(
+    /**
+     * Specifies the access control rules.
+     * This method is used by the 'accessControl' filter.
+     * @return array access control rules
+     */
+    public function accessRules()
+    {
+        return array(
 
-			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('Dataset','File' , 'Sample','Search','Dump','List'),
-				'users'=>array('*'),
-			),
-			array('deny',  // deny all users
-				'users'=>array('*'),
-			),
-		);
-	}
+            array('allow',  // allow all users to perform 'index' and 'view' actions
+                'actions' => array('Dataset','File' , 'Sample','Search','Dump','List'),
+                'users' => array('*'),
+            ),
+            array('deny',  // deny all users
+                'users' => array('*'),
+            ),
+        );
+    }
 
     public function actionDump()
     {
-        $fileName = Yii::app()->basePath.'/../files/gigadb_dump.xml';
+        $fileName = Yii::app()->basePath . '/../files/gigadb_dump.xml';
         if (file_exists($fileName)) {
             Yii::app()->getRequest()->sendFile('gigadb_dump.xml', @file_get_contents($fileName));
         }
 
         throw new CHttpException(404, 'The requested page does not exist.');
-
     }
 
     public function actionDataset()
-	{
+    {
         $status = 'Published';
         $id = Yii::app()->request->getParam('id');
         $doi = Yii::app()->request->getParam('doi');
@@ -56,7 +55,7 @@ class ApiController extends Controller
         $model = null;
 
         if (!in_array($result, self::RESULTS)) {
-          $result = 'all';
+            $result = 'all';
         }
 
         try {
@@ -64,13 +63,13 @@ class ApiController extends Controller
                 $model = Dataset::model()->findByAttributes(array('id' => $id, 'upload_status' => $status));
 
                 if (!$model) {
-                    $this->_sendResponse(404, sprintf('The dataset with id <b>%s</b> is not found',$id));
+                    $this->_sendResponse(404, sprintf('The dataset with id <b>%s</b> is not found', $id));
                 }
             } elseif ($doi) {
                 $model = Dataset::model()->findByAttributes(array('identifier' => $doi, 'upload_status' => $status));
 
                 if (!$model) {
-                    $this->_sendResponse(404, sprintf('The dataset with DOI <b>%s</b> is not found',$doi));
+                    $this->_sendResponse(404, sprintf('The dataset with DOI <b>%s</b> is not found', $doi));
                 }
             }
         } catch (\Exception $e) {
@@ -86,24 +85,24 @@ class ApiController extends Controller
         $image = $model->image;
         ob_get_clean();
 
-         switch ($result) {
-                case "dataset":
-                    $this->renderPartial('singledatasetonly',array('model' => $model, 'image' => $image));
-                    break;
-                case "sample":
-                    $this->renderPartial('singlesample',array('model' => $model));
-                    break;
-                case "file":
-                    $this->renderPartial('singlefile',array('model' => $model));
-                    break;
-                case "all":
-                    $this->renderPartial('singledataset',array('model' => $model, 'image' => $image));
-                    break;
-                default:
-                    $this->_sendResponse(500, 'A problem occurred');
-                    break;
+        switch ($result) {
+            case "dataset":
+                $this->renderPartial('singledatasetonly', array('model' => $model, 'image' => $image));
+                break;
+            case "sample":
+                $this->renderPartial('singlesample', array('model' => $model));
+                break;
+            case "file":
+                $this->renderPartial('singlefile', array('model' => $model));
+                break;
+            case "all":
+                $this->renderPartial('singledataset', array('model' => $model, 'image' => $image));
+                break;
+            default:
+                $this->_sendResponse(500, 'A problem occurred');
+                break;
         }
-	}
+    }
 
     public function actionList()
     {
@@ -116,12 +115,12 @@ class ApiController extends Controller
     }
 
     public function actionFile()
-	{
+    {
         $status = 'Published';
-		$id = Yii::app()->request->getParam('id');
+        $id = Yii::app()->request->getParam('id');
         $doi = Yii::app()->request->getParam('doi');
 
-        if (!$id || !$doi){
+        if (!$id || !$doi) {
             $this->_sendResponse(400, 'An error occurred: Invalid request');
         }
 
@@ -141,18 +140,18 @@ class ApiController extends Controller
             }
 
             $this->renderPartial('singlefile', array('model' => $model));
-        } catch(CDbException $e) {
+        } catch (CDbException $e) {
             $this->_sendResponse(500, 'A problem occurred');
         }
-	}
+    }
 
     public function actionSample()
-	{
-		$status = 'Published';
+    {
+        $status = 'Published';
         $id = Yii::app()->request->getParam('id');
-        $doi= Yii::app()->request->getParam('doi');
+        $doi = Yii::app()->request->getParam('doi');
 
-        if (!$id || !$doi){
+        if (!$id || !$doi) {
             $this->_sendResponse(400, 'An error occurred: Invalid request');
         }
         try {
@@ -169,17 +168,17 @@ class ApiController extends Controller
             }
 
             $this->renderPartial('singlesample', array('model' => $model));
-        } catch(CDbException $e) {
+        } catch (CDbException $e) {
             $this->_sendResponse(500, 'A problem occurred');
         }
-	}
+    }
 
 
     public function actionSearch()
-	{
-		$status='Published';
+    {
+        $status = 'Published';
         ini_set('log_errors', (string)true);
-        ini_set('error_log', dirname(__FILE__).'/php_errors.log');
+        ini_set('error_log', dirname(__FILE__) . '/php_errors.log');
         $keyword = Yii::app()->request->getParam('keyword');
         $result = Yii::app()->request->getParam('result');
         $taxno = Yii::app()->request->getParam('taxno');
@@ -236,7 +235,6 @@ class ApiController extends Controller
                 switch ($result) {
                     case 'dataset':
                         if (!$datasets) {
-
                             $this->_sendResponse(
                                 404,
                                 sprintf('No items where found for keyword <b>%s</b> in dataset, Please search in sample or file', $keyword)
@@ -247,7 +245,6 @@ class ApiController extends Controller
                         break;
                     case 'sample':
                         if (!$samples) {
-
                             $this->_sendResponse(
                                 404,
                                 sprintf('No items where found for keyword <b>%s</b> in sample, Please search in dataset or file', $keyword)
@@ -255,10 +252,9 @@ class ApiController extends Controller
                         }
 
                         $this->renderPartial('keywordallsample', array('sampleids' => $samples));
-                            break;
+                        break;
                     case 'file':
                         if (!$files) {
-
                             $this->_sendResponse(
                                 404,
                                 sprintf('No items where found for keyword <b>%s</b> in file, Please search in dataset or sample', $keyword)
@@ -310,7 +306,6 @@ class ApiController extends Controller
             }
 
             if ($taxname) {
-
                 if ($datasettype && $datasettype !== '') {
                     $uppertype = strtoupper($datasettype);
                     $sql = 'select DISTINCT dataset.id from dataset,dataset_sample,sample,species,dataset_type,type where dataset.id=dataset_sample.dataset_id and dataset_sample.sample_id=sample.id and sample.species_id=species.id and dataset_type.dataset_id=dataset.id and dataset_type.type_id=type.id and upper(species.scientific_name)=:scientific_name and dataset.upload_status=:status and upper(type.name)=:datasettype;';
@@ -343,7 +338,6 @@ class ApiController extends Controller
                 $sql1 = 'SELECT * from dataset where id in (' . $dataset_ids . ')';
                 $models = Dataset::model()->findAllBySql($sql1);
                 if (!$models) {
-
                     $this->_sendResponse(404, sprintf('No items where found for taxname <b>%s</b>', $taxname));
                 }
 
@@ -384,7 +378,6 @@ class ApiController extends Controller
                     }
 
                     return $this->renderByResult($result ?: 'dataset', $models);
-
                 }
                 $surname = $names[0];
                 $firstname = $names[1];
@@ -396,7 +389,6 @@ class ApiController extends Controller
                 $rows = $command->queryAll();
                 $dataset_ids = '';
                 if (count($rows) < 1) {
-
                     $this->_sendResponse(
                         404,
                         sprintf('No items where found for author <b>%s</b>', $surname . ' ' . $firstname)
@@ -411,7 +403,6 @@ class ApiController extends Controller
                 $sql1 = 'SELECT * from dataset where id in (' . $dataset_ids . ')';
                 $models = Dataset::model()->findAllBySql($sql1);
                 if (!$models) {
-
                     $this->_sendResponse(
                         404,
                         sprintf('No items where found for author <b>%s</b>', $author)
@@ -422,7 +413,6 @@ class ApiController extends Controller
             }
 
             if ($manuscript) {
-
                 $sql = 'select DISTINCT dataset.id from dataset,manuscript where manuscript.dataset_id=dataset.id and manuscript.identifier=:manuscript and dataset.upload_status=:status;';
                 $command = $connection->createCommand($sql);
                 $command->bindParam(':manuscript', $manuscript, PDO::PARAM_STR);
@@ -436,7 +426,6 @@ class ApiController extends Controller
                         echo $body;
 
                         Yii::app()->end();
-
                     }
 
                     $this->_sendResponse(
@@ -455,19 +444,16 @@ class ApiController extends Controller
 
                 if (!$models) {
                     if ($token === 'doibanner') {
-
                         $body = $this->getDOIBannerBody();
                         echo $body;
 
                         Yii::app()->end();
-
                     }
 
                     $this->_sendResponse(
                         404,
                         sprintf('No items where found for manuscript <b>%s</b>', $manuscript)
                     );
-
                 }
 
 
@@ -485,7 +471,6 @@ class ApiController extends Controller
                     echo $body;
 
                     Yii::app()->end();
-
                 }
 
                 return $this->renderByResult($result ?: 'dataset', $models);
@@ -520,7 +505,6 @@ class ApiController extends Controller
                         404,
                         sprintf('No items where found for dataset type <b>%s</b>', $datasettype)
                     );
-
                 }
 
                 return $this->renderByResult($result ?: 'dataset', $models);
@@ -535,7 +519,6 @@ class ApiController extends Controller
                 $rows = $command->queryAll();
                 $dataset_ids = '';
                 if (count($rows) < 1) {
-
                     $this->_sendResponse(
                         404,
                         sprintf('No items where found for project <b>%s</b>', $project)
@@ -557,17 +540,11 @@ class ApiController extends Controller
                 }
 
                 return $this->renderByResult($result ?: 'dataset', $models);
-
             }
-        } catch(CDbException $e) {
+        } catch (CDbException $e) {
             $this->_sendResponse(500, 'A problem occurred');
         }
-	}
-
-    public function actionView()
-	{
-		$this->render('view', array('model' => $this->loadModel()));
-	}
+    }
 
     private function _sendResponse($status = 200, string $body = '', string $content_type = 'text/html')
     {
@@ -629,7 +606,7 @@ class ApiController extends Controller
         // these could be stored in a .ini file and loaded
         // via parse_ini_file()... however, this will suffice
         // for an example
-        $codes = Array(
+        $codes = array(
             200 => 'OK',
             400 => 'Bad Request',
             401 => 'Unauthorized',
@@ -649,10 +626,11 @@ class ApiController extends Controller
     *
     * @param string $result query string to select which section of dataset to display
     */
-    private function renderByResult(string $result, array $models) {
+    private function renderByResult(string $result, array $models)
+    {
         switch ($result) {
             case "dataset":
-                $this->renderPartial('keyworddataset', array('models' =>$models));
+                $this->renderPartial('keyworddataset', array('models' => $models));
                 break;
             case "sample":
                 $this->renderPartial('keywordsample', array('models' => $models,));
@@ -684,4 +662,3 @@ class ApiController extends Controller
         return $body;
     }
 }
-

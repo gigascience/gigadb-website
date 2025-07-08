@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use Ramsey\Uuid\Uuid;
 
-use yii\swiftmailer\mailer;
+use yii\swiftmailer\Mailer;
 use yii\swiftmailer\Message;
 
 class SiteController extends Controller {
@@ -60,7 +60,8 @@ class SiteController extends Controller {
 	*
 	**/
 
-	public function actionAdmin() {
+	public function actionAdmin()
+    {
 		$this->render('admin');
 	}
 
@@ -80,7 +81,7 @@ class SiteController extends Controller {
             ->where("upload_status = 'Published'")
             ->queryScalar();
 
-		$datasettypes_hints = Type::model()->findAll(array('order'=>'name ASC'));
+		$datasettypes_hints = Type::model()->findAll(array('order' => 'name ASC'));
 
         $news = Yii::app()->newsAndFeedsService->getTodaysNews();
         $rss_arr = Yii::app()->newsAndFeedsService->getFeedsData();
@@ -182,29 +183,29 @@ class SiteController extends Controller {
 			'dataset_hint'=>$datasettypes_hints ,
 			'rss_arr' => $rss_arr ,
 			'count' => $publicIdsCount,
-                'count_sample' => $count_sample,
-                'count_file' => $count_file,
-                'number_genome_mapping'=>$number_genome_mapping ?? 0,
-                'number_climate' => $number_climate ?? 0,
-                'number_ecology'=>$number_ecology ?? 0,
-                'number_eeg'=>$number_eeg ?? 0,
-                'number_epi'=>$number_epi ?? 0,
-                'number_genomic'=>$number_genomic ?? 0,
-                'number_imaging'=>$number_imaging ?? 0,
-                'number_lipi'=>$number_lipi ?? 0,
-                'number_metabarcoding'=>$number_metabarcoding ?? 0,
-                'number_metabolomic'=>$number_metabolomic ?? 0,
-                'number_metadata'=>$number_metadata ?? 0,
-                'number_metagenomic'=>$number_metagenomic ?? 0,
-                'number_na'=>$number_na ?? 0,
-                'number_ns'=>$number_ns ?? 0,
-                'number_pt'=>$number_pt ?? 0,
-                'number_proteomic'=>$number_proteomic ?? 0,
-                'number_software'=>$number_software ?? 0,
-                'number_ts'=>$number_ts ?? 0,
-                'number_vm'=>$number_vm ?? 0,
-                'number_wf'=>$number_wf ?? 0,
-                'feed_datasets'=>$feed_datasets
+            'count_sample' => $count_sample,
+            'count_file' => $count_file,
+            'number_genome_mapping'=>$number_genome_mapping ?? 0,
+            'number_climate' => $number_climate ?? 0,
+            'number_ecology'=>$number_ecology ?? 0,
+            'number_eeg'=>$number_eeg ?? 0,
+            'number_epi'=>$number_epi ?? 0,
+            'number_genomic'=>$number_genomic ?? 0,
+            'number_imaging'=>$number_imaging ?? 0,
+            'number_lipi'=>$number_lipi ?? 0,
+            'number_metabarcoding'=>$number_metabarcoding ?? 0,
+            'number_metabolomic'=>$number_metabolomic ?? 0,
+            'number_metadata'=>$number_metadata ?? 0,
+            'number_metagenomic'=>$number_metagenomic ?? 0,
+            'number_na'=>$number_na ?? 0,
+            'number_ns'=>$number_ns ?? 0,
+            'number_pt'=>$number_pt ?? 0,
+            'number_proteomic'=>$number_proteomic ?? 0,
+            'number_software'=>$number_software ?? 0,
+            'number_ts'=>$number_ts ?? 0,
+            'number_vm'=>$number_vm ?? 0,
+            'number_wf'=>$number_wf ?? 0,
+            'feed_datasets'=>$feed_datasets
         )
 		);
 	}
@@ -227,30 +228,38 @@ class SiteController extends Controller {
      * These are the actions to handle Guideline page
      */
 
-    public function actionGuide() {
+    public function actionGuide()
+    {
         $this->render('guide');
     }
-    public function actionGuidegenomic() {
+
+    public function actionGuidegenomic()
+    {
         $this->render('guidegenomic');
     }
 
-    public function actionGuideimaging() {
+    public function actionGuideimaging()
+    {
         $this->render('guideimaging');
     }
 
-    public function actionGuidemetabolomic() {
+    public function actionGuidemetabolomic()
+    {
         $this->render('guidemetabolomic');
     }
 
-    public function actionGuideepigenomic() {
+    public function actionGuideepigenomic()
+    {
         $this->render('guideepigenomic');
     }
 
-    public function actionGuidemetagenomic() {
+    public function actionGuidemetagenomic()
+    {
         $this->render('guidemetagenomic');
     }
 
-    public function actionGuidesoftware() {
+    public function actionGuidesoftware()
+    {
         $this->render('guidesoftware');
     }
 
@@ -260,8 +269,8 @@ class SiteController extends Controller {
     public function actionContact()
     {
         $model = new ContactForm;
-        if (isset($_POST['ContactForm'])) {
-            $model->attributes = $_POST['ContactForm'];
+        if ($contactForm = Yii::$app->request->post('ContactForm')) {
+            $model->attributes = $contactForm;
             if ($model->validate()) {
                 try {
                     Yii::app()->mailService->sendEmail(Yii::app()->params['adminEmail'], Yii::app()->params['adminEmail'], Yii::app()->params['email_prefix'] . $model->subject, "Message from: " . $model->name . " <" . $model->email . ">\n\n" . $model->body);
@@ -272,12 +281,14 @@ class SiteController extends Controller {
                 $this->refresh();
             }
         }
+
         $this->render('contact', array('model' => $model));
     }
 	/**
 	*This method returns all dataset locations
 	*/
-	public function actionMapbrowse() {
+	public function actionMapbrowse()
+    {
 	    $locations = Yii::app()->db->createCommand("SELECT d.identifier,  d.title, satt.value, sp.scientific_name as sciname, s.id as sampleid FROM dataset as d
 					      INNER JOIN dataset_sample as dsam on dsam.dataset_id = d.id
 						  INNER JOIN sample as s on s.id = dsam.sample_id
@@ -290,29 +301,31 @@ class SiteController extends Controller {
             $locationValue = preg_replace('/\s+/', '', $locationValue);
             $formatCheck = preg_match('/-?[0-9]*[.][0-9]*[,]-?[0-9]*[.][0-9]*/',$locationValue);
 
-            if (!$formatCheck==1){
+            if (!$formatCheck === 1){
               continue;
             }
+
             $val = explode(',', $locationValue);
-            if(strpos($val[0],'.') == false || !is_numeric($val[0])){
+            if (strpos($val[0],'.') === false || !is_numeric($val[0])){
                 continue;
             }
-            if(strpos($val[1],'.') == false || !is_numeric($val[1])){
+            if (strpos($val[1],'.') === false || !is_numeric($val[1])){
                 continue;
             }
-            $location["sciname"]=str_replace(",","",$location["sciname"]);
+            $location["sciname"] = str_replace(",","",$location["sciname"]);
 	    }
 
 	    $this->render('mapbrowse', array('locations' => $locations));
 	}
 
-        public function actionTeam() {
+    public function actionTeam()
+    {
 		$this->render('team');
 	}
 
 
-	public function actionAbout() {
-
+	public function actionAbout()
+    {
 	    // Dont' remove this block, it is used for automated testing application logging and debug settings
         if(defined('YII_DEBUG') && YII_DEBUG === true) {
             $uuid = Uuid::uuid5(Uuid::NAMESPACE_URL, Yii::app()->getRequest()->getUrl());
@@ -321,28 +334,33 @@ class SiteController extends Controller {
 		$this->render('about');
 	}
 
-    public function actionAdvisory() {
+    public function actionAdvisory()
+    {
 		$this->render('advisory');
 	}
-	public function actionFaq() {
+
+	public function actionFaq()
+    {
 		$this->render('faq');
 	}
 
-	public function actionTerm() {
+	public function actionTerm()
+    {
 		$this->render('term');
 	}
 
-
-	public function actionHelp() {
+	public function actionHelp()
+    {
 		$this->render('help');
 	}
 
-
-	public function actionPrivacy() {
+	public function actionPrivacy()
+    {
 		$this->render('privacy');
 	}
 
-    public function getDatasetByType($type) {
+    public function getDatasetByType($type)
+    {
 
  	if ($type > 0) {
         $models = Dataset::model()->findAllBySql("SELECT * FROM dataset JOIN dataset_type ON dataset.id=dataset_type.dataset_id WHERE dataset_type.type_id=:type_id AND dataset.upload_status = 'Published' order by publication_date desc limit 9", array(':type_id' => $type));

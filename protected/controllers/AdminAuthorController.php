@@ -51,12 +51,13 @@ class AdminAuthorController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Author;
+        $model = new Author();
 
         if ($author = Yii::$app->request->post('Author')) {
             $model->attributes = $author;
-            if ($model->save())
+            if ($model->save()) {
                 $this->redirect(array('view', 'id' => $model->id));
+            }
         }
 
         $this->render('create', array('model' => $model));
@@ -75,8 +76,9 @@ class AdminAuthorController extends Controller
 
         if ($author = Yii::$app->request->post('Author')) {
             $model->attributes = $author;
-            if ($model->save())
+            if ($model->save()) {
                 $this->redirect(array('view', 'id' => $model->id));
+            }
         }
 
         $this->render('update', array('model' => $model));
@@ -103,7 +105,6 @@ class AdminAuthorController extends Controller
             $this->redirect($returnUrl ?: array('admin'));
         }
 
-
         echo CJSON::encode(['success' => 'ok']);
         Yii::app()->end();
     }
@@ -127,7 +128,7 @@ class AdminAuthorController extends Controller
             if (preg_match("/^\d+$/", (string) $user_id)) {
                 Yii::app()->session['attach_user'] = $user_id;
                 Yii::log(__FUNCTION__ . "> new session var: attach_user = " . $user_id, 'info');
-                if (!empty(Yii::app()->session['merge_author'])) {
+                if (isset(Yii::app()->session['merge_author'])) {
                     unset(Yii::app()->session['merge_author']);
                 }
             }
@@ -155,7 +156,7 @@ class AdminAuthorController extends Controller
             if (preg_match("/^\d+$/", (string) $origin_author_id)) {
                 Yii::app()->session['merge_author'] = $origin_author_id;
                 Yii::log(__FUNCTION__ . "> new session var: merge_author = " . $origin_author_id, 'info');
-                if (!empty(Yii::app()->session['attach_user'])) {
+                if (isset(Yii::app()->session['attach_user'])) {
                     unset(Yii::app()->session['attach_user']);
                 }
             }
@@ -278,7 +279,6 @@ class AdminAuthorController extends Controller
 
             $this->redirect(array('adminAuthor/admin'));
         }
-
     }
 
     public function actionUnmerge(int $id)
@@ -294,7 +294,6 @@ class AdminAuthorController extends Controller
         Yii::app()->user->setFlash('success', "author unmerged from other authors");
 
         $this->redirect(array('adminAuthor/view', 'id' => $id));
-
     }
 
     public function actionIdenticalAuthorsGraph(int $id)
