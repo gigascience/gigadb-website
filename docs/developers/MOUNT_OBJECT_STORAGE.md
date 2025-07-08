@@ -272,6 +272,43 @@ cd573cfaace07e7949bc0c46028904ff  /block/share/dropbox/user444/rclone-test-write
 2dd26c4d4799ebd29fa31e48d49e8e53  /block/share/dropbox/user444/rclone-test-write-10g.dat
 ```
 
+```
+Last login: Tue Jul  8 01:58:37 2025 from 223.197.187.121
++------------------------------------------------------------------+
+| Welcome to your Storage Box.                                     |
+|                                                                  |
+| Please note that this is only a restricted shell environment and |
+| therefore some shell features like pipes and redirects are not   |
+| supported.                                                       |
++------------------------------------------------------------------+
+u472088 /home > ls
+mount
+u472088 /home > ls -al mount
+total 2
+drwxrwxr-x 3 u472088 u472088 3 Jul  7 06:26 .
+drwxr-xr-x 4 u472088 u472088 5 Jul  7 06:26 ..
+drwxrwxr-x 3 u472088 u472088 3 Jul  7 03:55 share
+u472088 /home > ls -al mount/share
+total 2
+drwxrwxr-x 3 u472088 u472088 3 Jul  7 03:55 .
+drwxrwxr-x 3 u472088 u472088 3 Jul  7 06:26 ..
+drwxrwxr-x 3 u472088 u472088 3 Jul  8 02:31 dropbox
+u472088 /home > ls -al mount/share/dropbox/user444
+total 540
+drwxrwxr-x 3 u472088 u472088           7 Jul  8 03:14 .
+drwxrwxr-x 3 u472088 u472088           3 Jul  8 02:31 ..
+-rw-rw-r-- 1 u472088 u472088          89 Jul  8 03:14 10g-file.md5
+-rw-rw-r-- 1 u472088 u472088          88 Jul  8 03:10 1g-file.md5
+-rw-rw-r-- 1 u472088 u472088 10737418240 Jul  8 03:23 rclone-test-write-10g.dat
+-rw-rw-r-- 1 u472088 u472088  1073741824 Jul  8 03:19 rclone-test-write-1g.dat
+drwxrwxr-x 2 u472088 u472088        5002 Jul  8 02:51 smallfiles
+u472088 /home > df -hT
+Filesystem      Size  Used Avail Use% Mounted on
+u472088         1.0T  2.0M  1.0T   1% /home
+u472088 /home >  
+
+```
+
 ##### s3fs mount performance
 | under test                | Command                                                                                                      | time (s)  | throughput (MB/s) | %CPU |
 |:--------------------------|:-------------------------------------------------------------------------------------------------------------|:----------|:------------------|:-----|
