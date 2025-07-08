@@ -184,7 +184,7 @@
 
         - name: get private key
           ansible.builtin.uri:
-            url: "https://gitlab.com/api/v4/groups/3501869/variables/hetzner_storage_box_privkey"
+            url: "{{ gitlab_url }}/variables/hetzner_storage_box_privkey"
             method: GET
             headers:
               PRIVATE-TOKEN: "{{ gitlab_private_token }}"
