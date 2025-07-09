@@ -6,6 +6,23 @@ Yii::import('application.extensions.CAdvancedArBehavior');
 
 use Ramsey\Uuid\Uuid;
 
+/**
+ * This is the model class for table "Dataset".
+ *
+ * The followings are the available columns in table 'Dataset':
+ *
+ * @property integer $id
+ * @property Image $image
+ * @property string $identifier
+ * @property integer|null $image_id
+ * @property string $upload_status
+ * @property integer|null $curator_id
+ * @property integer|null $manuscript_id
+ * @property string|null $token
+ * @property User $submitter
+ * @property string|null $description
+ * The followings are the available model relations:
+ */
 class Dataset extends CActiveRecord
 {
     /**
@@ -56,11 +73,6 @@ class Dataset extends CActiveRecord
 
     public $new_ext_acc_mirror;
     public $new_ext_acc_link;
-
-#    public $projectIDs = array();
-#    public $authorIDs = array();
-#    public $sampleIDs = array();
-#    public $datasetTypeIDs = array();
 
     public static function model($className=__CLASS__)
     {

@@ -14,6 +14,8 @@ declare(strict_types=1);
  * @property string $request_date
  * @property string $action_date
  * @property string $status
+ *
+ * @property User $requester
  */
 class UserCommand extends CActiveRecord
 {

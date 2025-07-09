@@ -8,10 +8,10 @@ use yii\swiftmailer\Message;
 class UserCommandController extends CController
 {
     /**
-     * @return array action filters
+     * @return string[] action filters
      */
 
-    public function filters()
+    public function filters(): array
     {
         return array(
         'accessControl', // perform access control for CRUD operations
@@ -21,9 +21,9 @@ class UserCommandController extends CController
     /**
      * Specifies the access control rules.
      * This method is used by the 'accessControl' filter.
-     * @return array access control rules
+     * @return array<int, array<int|string, list<string>|string>> access control rules
      */
-    public function accessRules()
+    public function accessRules(): array
     {
         return array(
 
@@ -43,8 +43,11 @@ class UserCommandController extends CController
      * @param integer $dataset_id, dataset id
      * @param integer $author_id, dataset id
      */
-    public function actionClaim(int $dataset_id, int $author_id)
+    public function actionClaim(int $dataset_id, int $author_id): void
     {
+        /** @var CWebApplication $app */
+        $app = Yii::app();
+
         Yii::log(__FUNCTION__ . " ($dataset_id, $author_id)", 'info');
 
         $result['status'] = false;
@@ -52,7 +55,7 @@ class UserCommandController extends CController
 
         $dataset_author = DatasetAuthor::model()->findByAttributes(array('dataset_id' => $dataset_id, 'author_id' => $author_id));
 
-        $userId = Yii::app()->user->id;
+        $userId = $app->user->id;
         $user = User::model()->findByPk($userId);
 
         if (!$dataset_author) {
@@ -123,14 +126,14 @@ class UserCommandController extends CController
     /**
      * Record an authorship claim by a user on the dataset.
      * If claim is recorded successfully, the browser will be redirected to the 'view' page.
-     * @param integer $dataset_id, dataset id
-     * @param integer $author_id, dataset id
      */
-    public function actionCancelClaim()
+    public function actionCancelClaim(): void
     {
+        /** @var CWebApplication $app */
+        $app = Yii::app();
 
         $result['status'] = false;
-        $claim = UserCommand::model()->findByAttributes(array('requester_id' => Yii::app()->user->id));
+        $claim = UserCommand::model()->findByAttributes(array('requester_id' => $app->user->id));
 
         if ($claim) {
             Yii::log(__FUNCTION__ . "> deleting record {$claim->id} in user_command ", 'warning');
@@ -148,7 +151,7 @@ class UserCommandController extends CController
     /**
      * Send notification email to admins about new submitted dataset.
      */
-    private function sendNotificationEmail(User $user, Author $author, Dataset $dataset)
+    private function sendNotificationEmail(User $user, Author $author, Dataset $dataset): void
     {
         $recipient = Yii::app()->params['notify_email'];
         $subject = Yii::app()->params['email_prefix'] . "New claim on a dataset author";

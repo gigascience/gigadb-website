@@ -12,6 +12,9 @@ declare(strict_types=1);
  * @property string $first_name
  * @property string $orcid
  * @property integer $position$gigadb_user_id
+ * @property string|null $custom_name
+ * @property integer|null $gigadb_user_id
+ * @property string $surname
  *
  * The followings are the available model relations:
  * @property DatasetAuthor[] $datasetAuthors

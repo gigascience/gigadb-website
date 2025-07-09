@@ -12,6 +12,10 @@ declare(strict_types=1);
  * @property string $created_at
  * @property string $model
  * @property string $model_id
+ * @property string|null $creation_date
+ * @property string|null $last_modified_date
+ * @property string|null $last_modified_by
+ * @property string|null $created_by
  *
  * The followings are the available model relations:
  * @property Dataset $dataset

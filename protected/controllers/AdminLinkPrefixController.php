@@ -5,9 +5,9 @@ declare(strict_types=1);
 class AdminLinkPrefixController extends Controller
 {
     /**
-     * @return array action filters
+     * @return string[] action filters
      */
-    public function filters()
+    public function filters(): array
     {
         return array(
             'accessControl', // perform access control for CRUD operations
@@ -17,9 +17,9 @@ class AdminLinkPrefixController extends Controller
     /**
      * Specifies the access control rules.
      * This method is used by the 'accessControl' filter.
-     * @return array access control rules
+     * @return array<int, array<int|string, list<string>|string>> access control rules
      */
-    public function accessRules()
+    public function accessRules(): array
     {
         return array(
             array('allow', // admin only
@@ -36,7 +36,7 @@ class AdminLinkPrefixController extends Controller
      * Displays a particular model.
      * @param integer $id the ID of the model to be displayed
      */
-    public function actionView(int $id)
+    public function actionView(int $id): void
     {
         $this->render('view', array('model' => $this->loadModel($id)));
     }
@@ -45,7 +45,7 @@ class AdminLinkPrefixController extends Controller
      * Creates a new model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
-    public function actionCreate()
+    public function actionCreate(): void
     {
         $model = new Prefix();
 
@@ -66,7 +66,7 @@ class AdminLinkPrefixController extends Controller
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id the ID of the model to be updated
      */
-    public function actionUpdate(int $id)
+    public function actionUpdate(int $id): void
     {
         $model = $this->loadModel($id);
 
@@ -85,7 +85,7 @@ class AdminLinkPrefixController extends Controller
      * If deletion is successful, the browser will be redirected to the 'admin' page.
      * @param integer $id the ID of the model to be deleted
      */
-    public function actionDelete(int $id)
+    public function actionDelete(int $id): void
     {
         if (!Yii::app()->request->isPostRequest) {
             throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
@@ -104,7 +104,7 @@ class AdminLinkPrefixController extends Controller
     /**
      * Lists all models.
      */
-    public function actionIndex()
+    public function actionIndex(): void
     {
         $dataProvider = new CActiveDataProvider('Prefix');
 
@@ -114,7 +114,7 @@ class AdminLinkPrefixController extends Controller
     /**
      * Manages all models.
      */
-    public function actionAdmin()
+    public function actionAdmin(): void
     {
         $model = new Prefix('search');
         $model->unsetAttributes();  // clear any default values
@@ -131,11 +131,14 @@ class AdminLinkPrefixController extends Controller
     /**
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.
-     * @param integer the ID of the model to be loaded
+     * @param integer $id the ID of the model to be loaded
      */
     public function loadModel(int $id): Prefix
     {
-        $model = Prefix::model()->findByPk($id);
+        /** @var Prefix $prefixModel */
+        $prefixModel = Prefix::model();
+
+        $model = $prefixModel->findByPk($id);
         if (!$model) {
             throw new CHttpException(404, 'The requested page does not exist.');
         }
@@ -145,9 +148,10 @@ class AdminLinkPrefixController extends Controller
 
     /**
      * Performs the AJAX validation.
-     * @param CModel the model to be validated
+     *
+     * @param CModel $model the model to be validated
      */
-    protected function performAjaxValidation($model)
+    protected function performAjaxValidation(CModel $model): void
     {
         if (Yii::$app->request->post('ajax') === 'type-form') {
             echo CActiveForm::validate($model);

@@ -3,9 +3,16 @@
 declare(strict_types=1);
 
 /**
- * User
- * An ActiveRecord model class to handle data related to users of the system.
+ * This is the model class for table "User".
+ *
+ * The followings are the available columns in table 'User':
+ *
+ * @property int $id
+ * @property string $email
+ * @property string $first_name
+ * @property string $last_name
  * @property string|null $activation_token
+ * The followings are the available model relations:
  */
 class User extends CActiveRecord {
     public $password_repeat;

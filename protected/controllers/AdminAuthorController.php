@@ -5,9 +5,10 @@ declare(strict_types=1);
 class AdminAuthorController extends Controller
 {
     /**
-     * @return array action filters
+     *
+     * @return string[] action filters
      */
-    public function filters()
+    public function filters(): array
     {
         return array(
             'accessControl', // perform access control for CRUD operations
@@ -18,9 +19,9 @@ class AdminAuthorController extends Controller
      * Specifies the access control rules.
      * This method is used by the 'accessControl' filter.
      *
-     * @return array access control rules
+     * @return array<int, array<int|string, list<string>|string>> access control rules
      */
-    public function accessRules()
+    public function accessRules(): array
     {
         return array(
             array(
@@ -40,7 +41,7 @@ class AdminAuthorController extends Controller
      *
      * @param integer $id the ID of the model to be displayed
      */
-    public function actionView(int $id)
+    public function actionView(int $id): void
     {
         $this->render('view', array('model' => $this->loadModel($id)));
     }
@@ -49,7 +50,7 @@ class AdminAuthorController extends Controller
      * Creates a new model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
-    public function actionCreate()
+    public function actionCreate(): void
     {
         $model = new Author();
 
@@ -69,7 +70,7 @@ class AdminAuthorController extends Controller
      *
      * @param integer $id the ID of the model to be updated
      */
-    public function actionUpdate(int $id)
+    public function actionUpdate(int $id): void
     {
         $model = $this->loadModel($id);
         $model->custom_name = $model->getDisplayName();
@@ -90,7 +91,7 @@ class AdminAuthorController extends Controller
      *
      * @param integer $id the ID of the model to be deleted
      */
-    public function actionDelete(int $id)
+    public function actionDelete(int $id): void
     {
         if (!Yii::app()->request->isPostRequest) {
             throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
@@ -112,7 +113,7 @@ class AdminAuthorController extends Controller
     /**
      * Lists all models.
      */
-    public function actionIndex()
+    public function actionIndex(): void
     {
         $dataProvider = new CActiveDataProvider('Author');
 
@@ -124,12 +125,15 @@ class AdminAuthorController extends Controller
      */
     public function actionPrepareUserLink(int $user_id, bool $abort = false)
     {
+        /** @var CWebApplication $app */
+        $app = Yii::app();
+
         if ($user_id && !$abort) {
-            if (preg_match("/^\d+$/", (string) $user_id)) {
-                Yii::app()->session['attach_user'] = $user_id;
+            if (preg_match("/^\d+$/", (string)$user_id)) {
+                $app->session['attach_user'] = $user_id;
                 Yii::log(__FUNCTION__ . "> new session var: attach_user = " . $user_id, 'info');
-                if (isset(Yii::app()->session['merge_author'])) {
-                    unset(Yii::app()->session['merge_author']);
+                if (isset($app->session['merge_author'])) {
+                    unset($app->session['merge_author']);
                 }
             }
 
@@ -152,12 +156,15 @@ class AdminAuthorController extends Controller
      */
     public function actionPrepareAuthorMerge(int $origin_author_id, bool $abort = false)
     {
+        /** @var CWebApplication $app */
+        $app = Yii::app();
+
         if ($origin_author_id && !$abort) {
-            if (preg_match("/^\d+$/", (string) $origin_author_id)) {
-                Yii::app()->session['merge_author'] = $origin_author_id;
+            if (preg_match("/^\d+$/", (string)$origin_author_id)) {
+                $app->session['merge_author'] = $origin_author_id;
                 Yii::log(__FUNCTION__ . "> new session var: merge_author = " . $origin_author_id, 'info');
-                if (isset(Yii::app()->session['attach_user'])) {
-                    unset(Yii::app()->session['attach_user']);
+                if (isset($app->session['attach_user'])) {
+                    unset($app->session['attach_user']);
                 }
             }
 
@@ -174,20 +181,23 @@ class AdminAuthorController extends Controller
         $this->redirect(array('adminAuthor/admin'));
     }
 
-    public function actionLinkUser(int $id)
+    public function actionLinkUser(int $id): void
     {
+        /** @var CWebApplication $app */
+        $app = Yii::app();
+
         $author = $this->loadModel($id);
-        if (!isset(Yii::app()->session['attach_user'])) {
+        if (!isset($app->session['attach_user'])) {
             Yii::log(__FUNCTION__ . '> attach_user is not set in session', 'error');
-            Yii::app()->user->setFlash('danger', 'Attached user is not set in session');
+            $app->user->setFlash('danger', "Attached user is not set in session");
 
             $this->render('view', array('model' => $author));
             Yii::app()->end();
         }
 
-        $user = User::model()->findByPk(Yii::app()->session['attach_user']);
+        $user = User::model()->findByPk($app->session['attach_user']);
         if (!$user) {
-            Yii::app()->user->setFlash('danger', "user to link doesn't exist");
+            $app->user->setFlash('danger', "user to link doesn't exist");
             Yii::log(__FUNCTION__ . "> user to link doesn't exist", 'error');
 
             $this->render('view', array('model' => $author));
@@ -200,23 +210,25 @@ class AdminAuthorController extends Controller
                 __FUNCTION__ . "> author (" . $author->id . ")/user (." . $user->id . ".) linking has been performed",
                 'info'
             );
-            if ((int)$user->id === (int)Yii::app()->session['attach_user']) {
-                unset(Yii::app()->session['attach_user']);
+            if ((int)$user->id === (int)$app->session['attach_user']) {
+                unset($app->session['attach_user']);
             }
 
             $this->redirect(array('adminUser/view', 'id' => $user->id));
         }
         Yii::log(__FUNCTION__ . "> error while updating gigadb_user_id in author. " . implode(" ", $author->getErrors()['gigadb_user_id']), 'error');
-        if ((int)$user->id === (int)Yii::app()->session['attach_user']) {
-            unset(Yii::app()->session['attach_user']);
+        if ((int)$user->id === (int)$app->session['attach_user']) {
+            unset($app->session['attach_user']);
         }
-        Yii::app()->user->setFlash('danger', "An error occured while saving the author");
+        $app->user->setFlash('danger', "An error occured while saving the author");
 
         $this->redirect(array('adminUser/view', 'id' => $user->id));
 	}
 
-    public function actionUnlinkUser(int $id, int $user_id)
+    public function actionUnlinkUser(int $id, int $user_id): void
     {
+        /** @var CWebApplication $app */
+        $app = Yii::app();
         $model = $this->loadModel($id);
         $user = User::model()->findByPk($user_id);
 
@@ -228,7 +240,7 @@ class AdminAuthorController extends Controller
 
         if ($user_id !== $model->gigadb_user_id) {
             Yii::log(__FUNCTION__ . "> mismatch between loaded user and user id in author model", 'warning');
-            Yii::app()->user->setFlash('danger', 'mismatch between loaded user and user id in author model');
+            $app->user->setFlash('danger', 'mismatch between loaded user and user id in author model');
 
             $this->redirect(array('adminUser/update', 'id' => $user->id));
          }
@@ -249,54 +261,58 @@ class AdminAuthorController extends Controller
         $this->redirect(array('site/admin'));
     }
 
-    public function actionMergeAuthors(int $origin_author, int $target_author)
+    public function actionMergeAuthors(int $origin_author, int $target_author): void
     {
+        /** @var CWebApplication $app */
+        $app = Yii::app();
         $origin = $this->loadModel($origin_author);
 
-        if (!isset(Yii::app()->session['merge_author'])) {
+        if (!isset($app->session['merge_author'])) {
             Yii::log(__FUNCTION__ . '> merge_author is not set in session', 'error');
-            Yii::app()->user->setFlash('danger', "Merged author is not set in session");
+            $app->user->setFlash('danger', "Merged author is not set in session");
 
             $this->redirect(array('adminAuthor/admin'));
         }
 
-        $merge_author = (int)Yii::app()->session['merge_author'];
+        $merge_author = (int)$app->session['merge_author'];
         if ($merge_author === $origin_author || $merge_author === $target_author) {
             if ($origin->mergeAsIdenticalWithAuthor($target_author)) {
                 Yii::log(__FUNCTION__ . "> merging author {$origin_author} with {$target_author} was successful", 'info');
-                Yii::app()->user->setFlash('success', "Merging authors completed successfully.");
+                $app->user->setFlash('success', "Merging authors completed successfully.");
 
                 $this->redirect(array('adminAuthor/view', 'id' => $origin_author));
             } else {
                 Yii::log(__FUNCTION__ . "> merging author {$origin_author} with {$target_author} failed", 'error');
-                Yii::app()->user->setFlash('danger', "Merging authors failed.");
+                $app->user->setFlash('danger', "Merging authors failed.");
 
                 $this->redirect(array('adminAuthor/admin'));
             }
         } else {
             Yii::log(__FUNCTION__ . "> merge_author {$merge_author} doesn't match GET parameters ({$origin_author},{$target_author}) to mergeAuthors", 'error');
-            Yii::app()->user->setFlash('danger', "Mismatch in origin and target author");
+            $app->user->setFlash('danger', "Mismatch in origin and target author");
 
             $this->redirect(array('adminAuthor/admin'));
         }
     }
 
-    public function actionUnmerge(int $id)
+    public function actionUnmerge(int $id): void
     {
+        /** @var CWebApplication $app */
+        $app = Yii::app();
         $model = $this->loadModel($id);
 
         if (!$model->unMerge()) {
-            Yii::app()->user->setFlash('error', 'unmerging from graph has encountered an error');
+            $app->user->setFlash('error', 'unmerging from graph has encountered an error');
 
             $this->redirect(array('adminAuthor/view', 'id' => $id));
         }
 
-        Yii::app()->user->setFlash('success', "author unmerged from other authors");
+        $app->user->setFlash('success', "author unmerged from other authors");
 
         $this->redirect(array('adminAuthor/view', 'id' => $id));
     }
 
-    public function actionIdenticalAuthorsGraph(int $id)
+    public function actionIdenticalAuthorsGraph(int $id): void
     {
         $author = $this->loadModel($id);
         $authors = $author->getIdenticalAuthorsDisplayName();
@@ -308,13 +324,15 @@ class AdminAuthorController extends Controller
     /**
      * Manages all models.
      */
-    public function actionAdmin()
+    public function actionAdmin(): void
     {
+        /** @var CWebApplication $app */
+        $app = Yii::app();
         if ($attachUser = Yii::$app->request->get('attach_user')) {
             if (preg_match("/^\d+$/", $attachUser)) {
-                Yii::app()->session['attach_user'] = $attachUser;
+                $app->session['attach_user'] = $attachUser;
             } elseif ("abort" === $attachUser) {
-                unset(Yii::app()->session['attach_user']);
+                unset($app->session['attach_user']);
 
                 $this->redirect(array('admin'));
             }
@@ -335,7 +353,7 @@ class AdminAuthorController extends Controller
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.
      *
-     * @param integer the ID of the model to be loaded
+     * @param integer $id the ID of the model to be loaded
      */
     public function loadModel(int $id): Author
     {
@@ -351,9 +369,9 @@ class AdminAuthorController extends Controller
     /**
      * Performs the AJAX validation.
      *
-     * @param CModel the model to be validated
+     * @param CModel $model the model to be validated
      */
-    protected function performAjaxValidation($model)
+    protected function performAjaxValidation(CModel $model): void
     {
         if (Yii::$app->request->post('ajax') === 'author-form') {
             echo CActiveForm::validate($model);

@@ -18,12 +18,18 @@ class Util
         }
     }
 
-    public static function getDois(int $option = PDO::FETCH_ASSOC)
+    public static function getDois(bool $fetchAsso = true)
     {
-        return Yii::app()->db->createCommand()
+        $rows = Yii::app()->db->createCommand()
                 ->select("id, identifier")
                 ->from("dataset")
                 ->order("id DESC")
-                ->queryAll($option);
+                ->queryAll();
+
+        if ($fetchAsso) {
+            return CHtml::listData($rows, 'id', 'identifier');
+        }
+
+        return $rows;
     }
 }

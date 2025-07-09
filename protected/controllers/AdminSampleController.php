@@ -5,9 +5,9 @@ declare(strict_types=1);
 class AdminSampleController extends Controller
 {
     /**
-     * @return array action filters
+     * @return string[] action filters
      */
-    public function filters()
+    public function filters(): array
     {
         return array(
             'accessControl', // perform access control for CRUD operations
@@ -17,9 +17,9 @@ class AdminSampleController extends Controller
     /**
      * Specifies the access control rules.
      * This method is used by the 'accessControl' filter.
-     * @return array access control rules
+     * @return array<int, array<int|string, list<string>|string>> access control rules
      */
-    public function accessRules()
+    public function accessRules(): array
     {
         return array(
             array('allow', // admin only
@@ -37,7 +37,7 @@ class AdminSampleController extends Controller
      * Displays a particular model.
      * @param integer $id the ID of the model to be displayed
      */
-    public function actionView(int $id)
+    public function actionView(int $id): void
     {
         $this->render('view', array('model' => $this->loadModel($id)));
     }
@@ -46,7 +46,7 @@ class AdminSampleController extends Controller
      * Creates a new model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
-    public function actionCreate()
+    public function actionCreate(): void
     {
         $model = new Sample();
 
@@ -56,7 +56,7 @@ class AdminSampleController extends Controller
             $array = explode(":", $sample['species_id']);
             $tax_id = $array[0];
             if (!empty($tax_id)) {
-                $species = $this->findSpeciesRecord($tax_id, $model, $sample);
+                $species = $this->findSpeciesRecord((int) $tax_id, $model, $sample);
                 if ($species) {
                     # save to create a new sample record with sample id which is needed for findingh sampleAttribute model
                     if ($model->save()) {
@@ -181,7 +181,7 @@ class AdminSampleController extends Controller
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id the ID of the model to be updated
      */
-    public function actionUpdate(int $id)
+    public function actionUpdate(int $id): void
     {
         $model = $this->loadModel($id);
 
@@ -202,7 +202,7 @@ class AdminSampleController extends Controller
                 $hasErrors = true;
             }
 
-            if (!$this->findSpeciesRecord($tax_id, $model, $sampleAttribute)) {
+            if (!$this->findSpeciesRecord((int) $tax_id, $model, $sampleAttribute)) {
                 $model->addError('error', 'The species does not exist');
                 $hasErrors = true;
             }
@@ -229,7 +229,7 @@ class AdminSampleController extends Controller
      * If deletion is successful, the browser will be redirected to the 'admin' page.
      * @param integer $id the ID of the model to be deleted
      */
-    public function actionDelete(int $id)
+    public function actionDelete(int $id): void
     {
         if (!Yii::app()->request->isPostRequest) {
             throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
@@ -249,7 +249,7 @@ class AdminSampleController extends Controller
     /**
      * Lists all models.
      */
-    public function actionIndex()
+    public function actionIndex(): void
     {
         $dataProvider = new CActiveDataProvider('Sample');
 
@@ -259,7 +259,7 @@ class AdminSampleController extends Controller
     /**
      * Manages all models.
      */
-    public function actionAdmin()
+    public function actionAdmin(): void
     {
         $model = new Sample('search');
         $model->unsetAttributes();  // clear any default values
@@ -276,11 +276,14 @@ class AdminSampleController extends Controller
     /**
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.
-     * @param integer the ID of the model to be loaded
+     * @param integer $id the ID of the model to be loaded
      */
     public function loadModel(int $id): Sample
     {
-        $model = Sample::model()->findByPk($id);
+        /** @var Sample $sampleModel */
+        $sampleModel = Sample::model();
+
+        $model = $sampleModel->findByPk($id);
         if (!$model) {
             throw new CHttpException(404, 'The requested page does not exist.');
         }
@@ -290,9 +293,10 @@ class AdminSampleController extends Controller
 
     /**
      * Performs the AJAX validation.
-     * @param CModel the model to be validated
+     *
+     * @param CModel $model the model to be validated
      */
-    protected function performAjaxValidation($model)
+    protected function performAjaxValidation(CModel $model): void
     {
         if (Yii::$app->request->post('ajax') === 'sample-form') {
             echo CActiveForm::validate($model);
@@ -305,7 +309,7 @@ class AdminSampleController extends Controller
      *
      * @param Sample $model
      */
-    private function updateSampleAttributes(Sample $model)
+    private function updateSampleAttributes(Sample $model): void
     {
         // delete first all the sample Attribute
         SampleAttribute::model()->deleteAllByAttributes(array('sample_id' => $model->id));
@@ -344,25 +348,20 @@ class AdminSampleController extends Controller
     /**
      * Get species active record using the tax id from the form input
      *
-     * @param $tax_id
+     * @param integer $tax_id
      * @param Sample $model
      * @return CActiveRecord|null
      */
-    private function findSpeciesRecord($tax_id, Sample $model, array $sample): ?CActiveRecord
+    private function findSpeciesRecord(int $tax_id, Sample $model, array $sample): ?CActiveRecord
     {
-        if (is_numeric($tax_id)) {
-            $species = Species::model()->findByAttributes(array('tax_id' => $tax_id));
-            if (!$species) {
-                $model->addError('error', 'Taxon ID ' . $tax_id . ' is not found!');
-            } else {
-                $model->species_id = $species->id;
-                $model->attributesList = $sample['attributesList'];
-            }
-
-            return $species;
+        $species = Species::model()->findByAttributes(array('tax_id' => $tax_id));
+        if (!$species) {
+            $model->addError('error', 'Taxon ID ' . $tax_id . ' is not found!');
+        } else {
+            $model->species_id = $species->id;
+            $model->attributesList = $sample['attributesList'];
         }
-        $model->addError('error', 'Taxon ID ' . $tax_id . ' is not numeric!');
 
-        return null;
+        return $species;
     }
 }

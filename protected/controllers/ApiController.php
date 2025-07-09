@@ -7,10 +7,10 @@ class ApiController extends Controller
     const RESULTS = ['file', 'sample', 'dataset'];
 
     /**
-     * @return array action filters
+     * @return string[] action filters
      */
 
-    public function filters()
+    public function filters(): array
     {
         return array(
             'accessControl', // perform access control for CRUD operations
@@ -20,9 +20,9 @@ class ApiController extends Controller
     /**
      * Specifies the access control rules.
      * This method is used by the 'accessControl' filter.
-     * @return array access control rules
+     * @return array<int, array<int|string, list<string>|string>> access control rules
      */
-    public function accessRules()
+    public function accessRules(): array
     {
         return array(
 
@@ -36,7 +36,7 @@ class ApiController extends Controller
         );
     }
 
-    public function actionDump()
+    public function actionDump(): void
     {
         $fileName = Yii::app()->basePath . '/../files/gigadb_dump.xml';
         if (file_exists($fileName)) {
@@ -46,7 +46,7 @@ class ApiController extends Controller
         throw new CHttpException(404, 'The requested page does not exist.');
     }
 
-    public function actionDataset()
+    public function actionDataset(): void
     {
         $status = 'Published';
         $id = Yii::app()->request->getParam('id');
@@ -104,7 +104,7 @@ class ApiController extends Controller
         }
     }
 
-    public function actionList()
+    public function actionList(): void
     {
         $status = 'Published';
         $startDate = Yii::app()->request->getParam('start_date');
@@ -114,7 +114,7 @@ class ApiController extends Controller
         $this->renderPartial('list', array('models' => $datasets));
     }
 
-    public function actionFile()
+    public function actionFile(): void
     {
         $status = 'Published';
         $id = Yii::app()->request->getParam('id');
@@ -145,7 +145,7 @@ class ApiController extends Controller
         }
     }
 
-    public function actionSample()
+    public function actionSample(): void
     {
         $status = 'Published';
         $id = Yii::app()->request->getParam('id');
@@ -173,8 +173,7 @@ class ApiController extends Controller
         }
     }
 
-
-    public function actionSearch()
+    public function actionSearch(): void
     {
         $status = 'Published';
         ini_set('log_errors', (string)true);
@@ -208,7 +207,9 @@ class ApiController extends Controller
                         $this->_sendResponse(404, sprintf('No items where found for keyword <b>%s</b>', $keyword));
                     }
 
-                    return $this->renderByResult($result ?: 'dataset', $models);
+                    $this->renderByResult($result ?: 'dataset', $models);
+
+                    Yii::app()->end();
                 }
 
                 $ds = new DatabaseSearch();
@@ -271,9 +272,11 @@ class ApiController extends Controller
                         ));
                         break;
                 }
+
+                Yii::app()->end();
             }
             if ($taxno) {
-                if ($datasettype && $datasettype !== '') {
+                if ($datasettype) {
                     $uppertype = strtoupper($datasettype);
                     $sql = 'select DISTINCT dataset.id from dataset,dataset_sample,sample,species,dataset_type,type where dataset.id=dataset_sample.dataset_id and dataset_sample.sample_id=sample.id and sample.species_id=species.id and dataset_type.dataset_id=dataset.id and dataset_type.type_id=type.id and species.tax_id=:taxno and dataset.upload_status=:status and upper(type.name)=:datasettype;';
                     $command = $connection->createCommand($sql);
@@ -302,11 +305,12 @@ class ApiController extends Controller
                 $sql1 = 'SELECT * from dataset where id in (' . $dataset_ids . ')';
                 $models = Dataset::model()->findAllBySql($sql1);
 
-                return $this->renderByResult($result ?: 'dataset', $models);
+                $this->renderByResult($result ?: 'dataset', $models);
+                Yii::app()->end();
             }
 
             if ($taxname) {
-                if ($datasettype && $datasettype !== '') {
+                if ($datasettype) {
                     $uppertype = strtoupper($datasettype);
                     $sql = 'select DISTINCT dataset.id from dataset,dataset_sample,sample,species,dataset_type,type where dataset.id=dataset_sample.dataset_id and dataset_sample.sample_id=sample.id and sample.species_id=species.id and dataset_type.dataset_id=dataset.id and dataset_type.type_id=type.id and upper(species.scientific_name)=:scientific_name and dataset.upload_status=:status and upper(type.name)=:datasettype;';
                     $uppertaxname = strtoupper($taxname);
@@ -341,7 +345,8 @@ class ApiController extends Controller
                     $this->_sendResponse(404, sprintf('No items where found for taxname <b>%s</b>', $taxname));
                 }
 
-                return $this->renderByResult($result ?: 'dataset', $models);
+                $this->renderByResult($result ?: 'dataset', $models);
+                Yii::app()->end();
             }
 
             if ($author) {
@@ -377,7 +382,8 @@ class ApiController extends Controller
                         $this->_sendResponse(404, sprintf('No items where found for author <b>%s</b>', $author));
                     }
 
-                    return $this->renderByResult($result ?: 'dataset', $models);
+                    $this->renderByResult($result ?: 'dataset', $models);
+                    Yii::app()->end();
                 }
                 $surname = $names[0];
                 $firstname = $names[1];
@@ -409,7 +415,8 @@ class ApiController extends Controller
                     );
                 }
 
-                return $this->renderByResult($result ?: 'dataset', $models);
+                $this->renderByResult($result ?: 'dataset', $models);
+                Yii::app()->end();
             }
 
             if ($manuscript) {
@@ -473,7 +480,8 @@ class ApiController extends Controller
                     Yii::app()->end();
                 }
 
-                return $this->renderByResult($result ?: 'dataset', $models);
+                $this->renderByResult($result ?: 'dataset', $models);
+                Yii::app()->end();
             }
 
             if ($datasettype) {
@@ -507,7 +515,8 @@ class ApiController extends Controller
                     );
                 }
 
-                return $this->renderByResult($result ?: 'dataset', $models);
+                $this->renderByResult($result ?: 'dataset', $models);
+                Yii::app()->end();
             }
 
             if ($project) {
@@ -539,14 +548,15 @@ class ApiController extends Controller
                     );
                 }
 
-                return $this->renderByResult($result ?: 'dataset', $models);
+                $this->renderByResult($result ?: 'dataset', $models);
+                Yii::app()->end();
             }
         } catch (CDbException $e) {
             $this->_sendResponse(500, 'A problem occurred');
         }
     }
 
-    private function _sendResponse($status = 200, string $body = '', string $content_type = 'text/html')
+    private function _sendResponse(int $status = 200, string $body = '', string $content_type = 'text/html'): void
     {
         // set the status
         $status_header = 'HTTP/1.1 ' . $status . ' ' . $this->_getStatusCodeMessage($status);
@@ -626,7 +636,7 @@ class ApiController extends Controller
     *
     * @param string $result query string to select which section of dataset to display
     */
-    private function renderByResult(string $result, array $models)
+    private function renderByResult(string $result, array $models): void
     {
         switch ($result) {
             case "dataset":

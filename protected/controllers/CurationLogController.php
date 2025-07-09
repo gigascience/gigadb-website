@@ -5,9 +5,9 @@ declare(strict_types=1);
 class CurationLogController extends Controller
 {
     /**
-     * @return array action filters
+     * @return string[] action filters
      */
-    public function filters()
+    public function filters(): array
     {
         return array(
             'accessControl', // perform access control for CRUD operations
@@ -17,9 +17,9 @@ class CurationLogController extends Controller
     /**
      * Specifies the access control rules.
      * This method is used by the 'accessControl' filter.
-     * @return array access control rules
+     * @return array<int, array<int|string, list<string>|string>> access control rules
      */
-    public function accessRules()
+    public function accessRules(): array
     {
         return array(
             array('allow', // admin only
@@ -32,11 +32,7 @@ class CurationLogController extends Controller
         );
     }
 
-    /**
-     * Displays a particular model.
-     * @param integer $id the ID of the model to be displayed
-     */
-    public function actionAdmin()
+    public function actionAdmin(): void
     {
         $model = new CurationLog('search');
         $model->unsetAttributes();  // clear any default values
@@ -53,16 +49,21 @@ class CurationLogController extends Controller
      * Creates a new model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
-    public function actionCreate($id)
+    public function actionCreate(int $id): void
     {
         $model = new CurationLog();
+        /** @var User $userModel */
+        $userModel = User::model();
+
+        /** @var CWebApplication $app */
+        $app = Yii::app();
 
         if ($curationLog = Yii::$app->request->post('CurationLog')) {
             $model->attributes = $curationLog;
             $model->creation_date = date("Y-m-d");
             $model->last_modified_date = null;
             $model->dataset_id = $id;
-            $username = User::model()->find('id=:user_id', array(':user_id' => Yii::app()->user->id));
+            $username = $userModel->find('id=:user_id', array(':user_id' => $app->user->id));
 
             $username = $username->first_name . ' ' . $username->last_name;
             $model->created_by = $username;
@@ -78,10 +79,15 @@ class CurationLogController extends Controller
     /**
      * Updates a particular model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id the ID of the model to be updated
      */
-    public function actionUpdate()
+    public function actionUpdate(): void
     {
+        /** @var CWebApplication $app */
+        $app = Yii::app();
+
+        /** @var User $userModel */
+        $userModel = User::model();
+
         if (!$id = Yii::$app->request->get('id')) {
             throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
         }
@@ -91,7 +97,7 @@ class CurationLogController extends Controller
         if ($curationLog = Yii::$app->request->post('CurationLog')) {
             $model->attributes = $curationLog;
             $model->last_modified_date = date("Y-m-d");
-            $username = User::model()->find('id=:user_id', array(':user_id' => Yii::app()->user->id));
+            $username = $userModel->find('id=:user_id', array(':user_id' => $app->user->id));
             $username = $username->first_name . ' ' . $username->last_name;
             $model->last_modified_by = $username;
             if ($model->save()) {
@@ -107,7 +113,7 @@ class CurationLogController extends Controller
      * If deletion is successful, the browser will be redirected to the 'admin' page.
      * @param integer $id the ID of the model to be deleted
      */
-    public function actionDelete(int $id)
+    public function actionDelete(int $id): void
     {
         if (!Yii::app()->request->isPostRequest) {
             throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
@@ -127,7 +133,7 @@ class CurationLogController extends Controller
     /**
      * Manages all models.
      */
-    public function actionView(int $id)
+    public function actionView(int $id): void
     {
         $this->render('view', array('model' => $this->loadModel($id)));
     }
@@ -135,11 +141,14 @@ class CurationLogController extends Controller
     /**
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.
-     * @param integer the ID of the model to be loaded
+     * @param integer $id the ID of the model to be loaded
      */
     public function loadModel(int $id): CurationLog
     {
-        $model = CurationLog::model()->findByPk($id);
+        /** @var CurationLog $curationLogModel */
+        $curationLogModel = CurationLog::model();
+
+        $model = $curationLogModel->findByPk($id);
         if (!$model) {
             throw new CHttpException(404, 'The requested page does not exist.');
         }

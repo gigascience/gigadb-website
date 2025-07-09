@@ -5,9 +5,9 @@ declare(strict_types=1);
 class PolicyController extends CController
 {
     /**
-     * @return array action filters
+     * @return string[] action filters
      */
-    public function filters()
+    public function filters(): array
     {
         return array(
             'accessControl', // perform access control for CRUD operations
@@ -17,7 +17,7 @@ class PolicyController extends CController
     /**
      * Specifies the access control rules.
      * This method is used by the 'accessControl' filter.
-     * @return array access control rules
+     * @return array<int, array<int|string, list<string>|string>> access control rules
      */
     public function accessRules()
     {
@@ -32,7 +32,7 @@ class PolicyController extends CController
         );
     }
 
-    public function actionCreate()
+    public function actionCreate(): void
     {
         $model = new DatasetAttributes();
         $att = Attributes::model()->findByAttributes(array('attribute_name' => Attributes::FUP));

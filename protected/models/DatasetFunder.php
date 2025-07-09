@@ -11,6 +11,7 @@ declare(strict_types=1);
  * @property integer $funder_id
  * @property string $grant_award
  * @property string $comments
+ * @property string|null $awardee
  */
 class DatasetFunder extends CActiveRecord
 {

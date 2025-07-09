@@ -15,9 +15,9 @@ use League\Flysystem\AdapterInterface;
 class AdminDatasetController extends Controller
 {
     /**
-     * @return array action filters
+     * @return string[] action filters
      */
-    public function filters()
+    public function filters(): array
     {
         return array(
             'accessControl', // perform access control for CRUD operations
@@ -27,9 +27,9 @@ class AdminDatasetController extends Controller
     /**
      * Specifies the access control rules.
      * This method is used by the 'accessControl' filter.
-     * @return array access control rules
+     * @return array<int, array<int|string, list<string>|string>> access control rules
      */
-    public function accessRules()
+    public function accessRules(): array
     {
         return array(
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -44,8 +44,9 @@ class AdminDatasetController extends Controller
 
     /**
      * Yii's method for routing urls to an action. Override to use custom actions
+     * @return array<string,string>
      */
-    public function actions()
+    public function actions(): array
     {
         return array(
             'assignFTPBox' => 'application.controllers.adminDataset.AssignFTPBoxAction',
@@ -65,13 +66,15 @@ class AdminDatasetController extends Controller
         return $inputString;
     }
 
-    protected function registerTooltipScript()
+    protected function registerTooltipScript(): void
     {
+        /** @var CWebApplication $app */
+        $app = Yii::app();
         // Check if the script has already been registered
-        if (!Yii::app()->clientScript->isScriptRegistered('bootstrap-tooltip-init')) {
+        if (!$app->clientScript->isScriptRegistered('bootstrap-tooltip-init')) {
             $jsFile = Yii::getPathOfAlias('application.js.bootstrap-tooltip-init') . '.js';
-            $jsUrl = Yii::app()->assetManager->publish($jsFile);
-            Yii::app()->clientScript->registerScriptFile($jsUrl, CClientScript::POS_END);
+            $jsUrl = $app->assetManager->publish($jsFile);
+            $app->clientScript->registerScriptFile($jsUrl, CClientScript::POS_END);
         }
     }
 
@@ -79,8 +82,10 @@ class AdminDatasetController extends Controller
      * Manage creation of new dataset object from a form
      *
      */
-    public function actionCreate()
+    public function actionCreate(): void
     {
+        /** @var CWebApplication $app */
+        $app = Yii::app();
         $dataset = new Dataset(); // needed for the CActiveForm field for dataset model
         $dataset->image = new Image(); // needed for the CActiveForm field for image model
 
@@ -117,7 +122,7 @@ class AdminDatasetController extends Controller
             Yii::log($datasetImage->getTempName(), "warning");
             if (!$dataset->image->write(Yii::$app->cloudStore, $dataset->getUuid(), $datasetImage)) {
                 Yii::log("Error writing file to storage for dataset " . $dataset->identifier, "error");
-                Yii::app()->user->setFlash('updateError', 'An error occured while writing file to storage.');
+                $app->user->setFlash('updateError', 'An error occured while writing file to storage.');
 
                 $this->render('create', array('model' => $dataset,'datasetPageSettings' => $datasetPageSettings));
             }
@@ -132,7 +137,6 @@ class AdminDatasetController extends Controller
 
             $this->render('create', array('model' => $dataset,'datasetPageSettings' => $datasetPageSettings)) ;
         }
-
 
         Yii::log("Image data associated to new dataset is valid", "info");
         // save image
@@ -159,7 +163,7 @@ class AdminDatasetController extends Controller
             }
         }
 
-        Yii::app()->user->setFlash('saveSuccess', 'saveSuccess');
+        $app->user->setFlash('saveSuccess', 'saveSuccess');
         if ($dataset->upload_status === 'AuthorReview') {
             $this->redirect('/adminDataset/private/identifier/' . $dataset->identifier);
         }
@@ -170,7 +174,7 @@ class AdminDatasetController extends Controller
     /**
      * List all datasets with call to actions
      */
-    public function actionAdmin()
+    public function actionAdmin(): void
     {
         $criteria = new CDbCriteria(array('order' => 'identifier asc'));
 
@@ -192,12 +196,17 @@ class AdminDatasetController extends Controller
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id the ID of the model to be updated
      */
-    public function actionUpdate(int $id)
+    public function actionUpdate(int $id): void
     {
+        /** @var CurationLog $curationLogModel */
+        $curationLogModel = CurationLog::model();
+        /** @var CWebApplication $app */
+        $app = Yii::app();
+
         $hasPartialError = false;
         $model = $this->loadModel($id);
         $datasetPageSettings = new DatasetPageSettings($model);
-        $dataProvider = CurationLog::model()->searchByDatasetId($id);
+        $dataProvider = $curationLogModel->searchByDatasetId($id);
 
         if (!$postDataset = Yii::$app->request->post('Dataset')) {
             $this->loadBaBbqPolyfills = true;
@@ -243,9 +252,9 @@ class AdminDatasetController extends Controller
         $datasetImage = CUploadedFile::getInstanceByName('datasetImage');
         if ($model->image) {
             $isUpdated = $model->updateImageAndMetafields($datasetImage);
-            $hasPartialError = !$isUpdated || $hasPartialError;
+            $hasPartialError = !$isUpdated;
         } else {
-            Yii::log(print_r($model->image->getErrors(), true), 'error');
+            Yii::log('An error occured: no image attached to the model', 'error');
         }
 
         $model->nullifyDateValueIfEmpty();
@@ -253,7 +262,7 @@ class AdminDatasetController extends Controller
         if ($model->save()) {
             $postDatasetTypes = array_keys(Yii::$app->request->post('datasettypes'));
             if (!$postDatasetTypes) {
-                Yii::app()->user->setFlash('updateError', 'Fail to update your types. You need to select at least one type');
+                $app->user->setFlash('updateError', 'Fail to update your types. You need to select at least one type');
                 $hasPartialError = true;
             } else {
                 $model->updateDatasetTypes($postDatasetTypes);
@@ -266,7 +275,7 @@ class AdminDatasetController extends Controller
 
             // semantic keywords update, using remove all and re-create approach
             $postKeywords = Yii::$app->request->post('keywords', '');
-            $attribute_service = Yii::app()->attributeService;
+            $attribute_service = $app->attributeService;
             $attribute_service->replaceKeywordsForDatasetIdWithString($id, $postKeywords);
 
             $urlToRedirect = Yii::$app->request->post('urltoredirect');
@@ -291,7 +300,7 @@ class AdminDatasetController extends Controller
                 $this->redirect(array('/adminDataset/update/id/' . $model->id));
             }
 
-            Yii::app()->user->setFlash('updateSuccess', 'Updated successfully!');
+            $app->user->setFlash('updateSuccess', 'Updated successfully!');
             switch ($datasetPageSettings->getPageType()) {
                 case "draft":
                     $this->redirect('/adminDataset/admin/');
@@ -304,7 +313,7 @@ class AdminDatasetController extends Controller
                     break;
             }
         } else {
-            Yii::app()->user->setFlash('updateError', 'Fail to update!');
+            $app->user->setFlash('updateError', 'Fail to update!');
             Yii::log(print_r($model->getErrors(), true), 'error');
         }
 
@@ -324,7 +333,7 @@ class AdminDatasetController extends Controller
      * One-off access to a private dataset
      *
      */
-    public function actionPrivate()
+    public function actionPrivate(): void
     {
         $id = Yii::$app->request->get('identifier');
         $model = Dataset::model()->find("identifier=?", array($id));
@@ -355,7 +364,7 @@ class AdminDatasetController extends Controller
      * Remove image file url on the custom image record associated to a dataset
      * @return void
      */
-    public function actionClearImageFile()
+    public function actionClearImageFile(): void
     {
         $result['status'] = false;
         if ($doi = Yii::$app->request->post('doi')) {
@@ -375,7 +384,7 @@ class AdminDatasetController extends Controller
     /**
      * Remove custom image and associate generic image
      */
-    public function actionRemoveImage()
+    public function actionRemoveImage(): void
     {
         $result['status'] = false;
         if ($doi = Yii::$app->request->post('doi')) {
@@ -405,10 +414,15 @@ class AdminDatasetController extends Controller
      *  post metadata, mint a new DOI
      *
      */
-    public function actionMint()
+    public function actionMint(): void
     {
+        /** @var CurationLog $curationLogModel */
+        $curationLogModel = CurationLog::model();
+        /** @var CWebApplication $app */
+        $app = Yii::app();
+
         $onlyDoiChecked = Yii::app()->request->getPost('check');
-        $user = User::model()->findByPk(Yii::app()->user->id);
+        $user = User::model()->findByPk($app->user->id);
 
         if (!$user) {
             $result['error'] = 'An error occurred';
@@ -515,7 +529,7 @@ class AdminDatasetController extends Controller
             }
         }
 
-        $curationLog = CurationLog::model()->searchByDatasetId($dataset->id);
+        $curationLog = $curationLogModel->searchByDatasetId($dataset->id);
         CurationLog::createGeneralCurationLogEntry($dataset->id, $action, $log, $userName);
 
         $result['html'] = $this->renderPartial('curationLog', array('dataset_id' => $dataset->id, 'model' => $curationLog), true);
@@ -527,7 +541,7 @@ class AdminDatasetController extends Controller
      * Check whether the posted DOI exist in database already
      *
      */
-    public function actioncheckDOIExist()
+    public function actioncheckDOIExist(): void
     {
         $result = array();
         $result['status'] = false;
@@ -550,7 +564,7 @@ class AdminDatasetController extends Controller
     /**
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.
-     * @param integer the ID of the model to be loaded
+     * @param integer $id the ID of the model to be loaded
      */
     private function loadModel(int $id): Dataset
     {
@@ -564,9 +578,14 @@ class AdminDatasetController extends Controller
 
     private function getDatasetUpload(string $identifier): DatasetUpload
     {
+        /** @var CWebApplication $app */
+        $app = Yii::app();
+        /** @var FileUploadComponent $fileUploadComponent */
+        $fileUploadComponent = $app->fileUploadService;
+
         // setting DatasetUpload, the busisness object for File uploading
         $webClient = \Yii::$container->get('guzzleHttpClient');
-        $fileUploadSrv = Yii::app()->fileUploadService->getFileUploadService($webClient, $identifier);
+        $fileUploadSrv = $fileUploadComponent->getFileUploadService($webClient, $identifier);
 
         return new DatasetUpload(
             $fileUploadSrv->dataset,
@@ -575,27 +594,19 @@ class AdminDatasetController extends Controller
         );
     }
 
-    private function checkAndSetTransition(DatasetUpload $datasetUpload, Dataset $model, string $newStatus): bool
+    private function renderNotificationsAccordingToStatus(DatasetUpload $datasetUpload, Dataset $model): void
     {
-        switch ($newStatus) {
-            case 'Submitted':
-                return $datasetUpload->setStatusToSubmitted($model->upload_status);
+        /** @var CWebApplication $app */
+        $app = Yii::app();
 
-            case 'DataPending':
-                return $datasetUpload->setStatusToDataPending($model->upload_status);
+        /** @var FeatureFlagService $featureFlagService */
+        $featureFlagService = $app->featureFlag;
 
-            default:
-                return true;
-        }
-    }
-
-    private function renderNotificationsAccordingToStatus(DatasetUpload $datasetUpload, Dataset $model)
-    {
         switch ($model->upload_status) {
             case 'Submitted':
                 $contentToSend = $datasetUpload->renderNotificationEmailBody('Submitted');
                 $statusIsSet = true;
-                if (Yii::app()->featureFlag->isEnabled('fuw')) {
+                if ($featureFlagService->isEnabled('fuw')) {
                     $statusIsSet = $datasetUpload->sendNotificationEmailBody($contentToSend, $model->upload_status);
                 }
 
@@ -604,7 +615,7 @@ class AdminDatasetController extends Controller
                 $contentToSend = ($emailBody = Yii::$app->request->post('Dataset')['emailBody']) ?
                     $this->processTemplateString($emailBody, ['identifier' => $model->identifier]) : $datasetUpload->renderNotificationEmailBody('DataPending');
                 $statusIsSet = true;
-                if (Yii::app()->featureFlag->isEnabled('fuw')) {
+                if ($featureFlagService->isEnabled('fuw')) {
                     $statusIsSet = $datasetUpload->sendNotificationEmailBody($contentToSend, $model->upload_status, $model->submitter->email);
                 }
                 break;

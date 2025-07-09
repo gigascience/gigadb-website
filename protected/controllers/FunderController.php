@@ -4,15 +4,12 @@ declare(strict_types=1);
 
 class FunderController extends Controller
 {
-    /**
-     * @var CActiveRecord the currently loaded data model instance.
-     */
-    private $_model;
+    private ?Funder $_model = null;
 
     /**
-     * @return array action filters
+     * @return string[] action filters
      */
-    public function filters()
+    public function filters(): array
     {
         return array(
             'accessControl', // perform access control for CRUD operations
@@ -22,9 +19,9 @@ class FunderController extends Controller
     /**
      * Specifies the access control rules.
      * This method is used by the 'accessControl' filter.
-     * @return array access control rules
+     * @return array<int, array<int|string, list<string>|string>> access control rules
      */
-    public function accessRules()
+    public function accessRules(): array
     {
         return array(
 
@@ -41,7 +38,7 @@ class FunderController extends Controller
     /**
      * Displays a particular model.
      */
-    public function actionView()
+    public function actionView(): void
     {
         $this->render('view', array('model' => $this->loadModel()));
     }
@@ -50,7 +47,7 @@ class FunderController extends Controller
      * Creates a new model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
-    public function actionCreate()
+    public function actionCreate(): void
     {
         $model = new Funder();
 
@@ -68,7 +65,7 @@ class FunderController extends Controller
      * Updates a particular model.
      * If update is successful, the browser will be redirected to the 'view' page.
      */
-    public function actionUpdate()
+    public function actionUpdate(): void
     {
         $model = $this->loadModel();
 
@@ -86,7 +83,7 @@ class FunderController extends Controller
      * Deletes a particular model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      */
-    public function actionDelete()
+    public function actionDelete(): void
     {
         if (!Yii::app()->request->isPostRequest) {
             throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
@@ -106,7 +103,7 @@ class FunderController extends Controller
     /**
      * Lists all models.
      */
-    public function actionIndex()
+    public function actionIndex(): void
     {
         $dataProvider = new CActiveDataProvider('Funder');
 
@@ -116,7 +113,7 @@ class FunderController extends Controller
     /**
      * Manages all models.
      */
-    public function actionAdmin()
+    public function actionAdmin(): void
     {
         $model = new Funder('search');
         $model->unsetAttributes();  // clear any default values
@@ -136,9 +133,12 @@ class FunderController extends Controller
      */
     public function loadModel(): Funder
     {
+        /** @var Funder $funderModel */
+        $funderModel = Funder::model();
+
         if (!$this->_model) {
             if ($id = Yii::$app->request->get('id')) {
-                $this->_model = Funder::model()->findbyPk($id);
+                $this->_model = $funderModel->findbyPk($id);
             }
             if (!$this->_model) {
                 throw new CHttpException(404, 'The requested page does not exist.');
@@ -149,9 +149,10 @@ class FunderController extends Controller
 
     /**
      * Performs the AJAX validation.
-     * @param CModel the model to be validated
+     *
+     * @param CModel $model the model to be validated
      */
-    protected function performAjaxValidation($model)
+    protected function performAjaxValidation(CModel $model): void
     {
         if (Yii::$app->request->post('ajax') === 'funder-form') {
             echo CActiveForm::validate($model);

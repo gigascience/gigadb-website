@@ -4,15 +4,12 @@ declare(strict_types=1);
 
 class DatasetFunderController extends Controller
 {
-    /**
-     * @var CActiveRecord the currently loaded data model instance.
-     */
-    private $_model;
+    private ?DatasetFunder $_model = null;
 
     /**
-     * @return array action filters
+     * @return string[] action filters
      */
-    public function filters()
+    public function filters(): array
     {
         return array(
             'accessControl', // perform access control for CRUD operations
@@ -22,9 +19,9 @@ class DatasetFunderController extends Controller
     /**
      * Specifies the access control rules.
      * This method is used by the 'accessControl' filter.
-     * @return array access control rules
+     * @return array<int, array<int|string, list<string>|string>> access control rules
      */
-    public function accessRules()
+    public function accessRules(): array
     {
         return array(
 
@@ -41,30 +38,31 @@ class DatasetFunderController extends Controller
     /**
      * Displays a particular model.
      */
-    public function actionView()
+    public function actionView(): void
     {
         $this->render('view', array('model' => $this->loadModel()));
     }
 
     private function getDatasetIds(): array
     {
-        return Util::getDois(PDO::FETCH_KEY_PAIR);
+        return Util::getDois(true);
     }
 
     private function getFunderIds(): array
     {
-        return Yii::app()->db->createCommand()
+        $rows = Yii::app()->db->createCommand()
                                  ->select('id, primary_name_display')
                                  ->from('funder_name')
                                  ->order('primary_name_display asc')
-                                 ->queryAll(PDO::FETCH_KEY_PAIR);
+                                 ->queryAll();
+        return CHtml::listData($rows, 'id', 'primary_name_display');
     }
 
     /**
      * Creates a new model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
-    public function actionCreate()
+    public function actionCreate(): void
     {
         $model = new DatasetFunder();
 
@@ -94,7 +92,7 @@ class DatasetFunderController extends Controller
      * Updates a particular model.
      * If update is successful, the browser will be redirected to the 'view' page.
      */
-    public function actionUpdate()
+    public function actionUpdate(): void
     {
         $model = $this->loadModel();
         $datasets = $this->getDatasetIds();
@@ -122,7 +120,7 @@ class DatasetFunderController extends Controller
      * Deletes a particular model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      */
-    public function actionDelete()
+    public function actionDelete(): void
     {
         if (!Yii::app()->request->isPostRequest) {
             throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
@@ -142,7 +140,7 @@ class DatasetFunderController extends Controller
     /**
      * Lists all models.
      */
-    public function actionIndex()
+    public function actionIndex(): void
     {
         $dataProvider = new CActiveDataProvider('DatasetFunder');
 
@@ -152,7 +150,7 @@ class DatasetFunderController extends Controller
     /**
      * Manages all models.
      */
-    public function actionAdmin()
+    public function actionAdmin(): void
     {
         $model = new DatasetFunder('search');
         $model->unsetAttributes();  // clear any default values
@@ -186,9 +184,10 @@ class DatasetFunderController extends Controller
 
     /**
      * Performs the AJAX validation.
-     * @param CModel the model to be validated
+     *
+     * @param CModel $model the model to be validated
      */
-    protected function performAjaxValidation($model)
+    protected function performAjaxValidation(CModel $model): void
     {
         if (Yii::$app->request->post('ajax') === 'dataset-funder-form') {
             echo CActiveForm::validate($model);

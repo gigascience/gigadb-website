@@ -62,8 +62,8 @@ class Sample extends CActiveRecord
 			array('species_id, name', 'required'),
 			array('species_id, submitted_id', 'numerical', 'integerOnly'=>true),
 			array('name', 'length', 'max'=>100),
-            		array('consent_document, contact_author_name', 'length', 'max'=>45),
-            		array('contact_author_email, sampling_protocol', 'length', 'max'=>100),
+            array('consent_document, contact_author_name', 'length', 'max'=>45),
+            array('contact_author_email, sampling_protocol', 'length', 'max'=>100),
 			array('submission_date', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.

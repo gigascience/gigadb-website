@@ -10,12 +10,12 @@ declare(strict_types=1);
  */
 class DatasetController extends Controller
 {
-    public $canonicalUrl;
+    public string $canonicalUrl;
 
     /**
-     * @return array action filters
+     * @return string[] action filters
      */
-    public function filters()
+    public function filters(): array
     {
         return array(
             'accessControl', // perform access control for CRUD operations
@@ -25,9 +25,9 @@ class DatasetController extends Controller
     /**
      * Specifies the access control rules.
      * This method is used by the 'accessControl' filter.
-     * @return array access control rules
+     * @return array<int, array<int¬string, list<string>|string>> access control rules
      */
-    public function accessRules()
+    public function accessRules(): array
     {
         return array(
             array('allow',  // allow all users to perform 'index' and 'view' actions
@@ -40,10 +40,11 @@ class DatasetController extends Controller
         );
     }
 
-  /**
+    /**
      * Yii's method for routing urls to an action. Override to use custom actions
+     * @return string[]
      */
-    public function actions()
+    public function actions(): array
     {
         $actions = parent::actions();
         $actions['mockup'] = [
@@ -52,8 +53,11 @@ class DatasetController extends Controller
         return $actions;
     }
 
-    public function actionView(int $id)
+    public function actionView(int $id): void
     {
+        /** @var Dataset $datasetModel */
+        $datasetModel = Dataset::model();
+
         // Retrieving the data
         $model = Dataset::model()->find("identifier=?", array($id));
         $srv = Yii::app()->fileUploadService->getFileUploadService(\Yii::$container->get('guzzleHttpClient'), $id);
@@ -71,7 +75,7 @@ class DatasetController extends Controller
         $userHostSubnet = substr($userHostAddress, 0, strrpos($userHostAddress, "."));
 
         // configuring files table
-        if ("172.16.238" == $userHostSubnet && $id !== "101001") { //always displays all columns in tests
+        if ("172.16.238" === $userHostSubnet && (string) $id !== "101001") { //always displays all columns in tests
             $fileSettings = $datasetPageSettings->getFileSettings($cookies, DatasetPageSettings::MOCKUP_COLUMNS);
         } else {
             $fileSettings = $datasetPageSettings->getFileSettings($cookies);

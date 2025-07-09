@@ -5,9 +5,9 @@ declare(strict_types=1);
 class AdminDatasetAuthorController extends Controller
 {
     /**
-     * @return array action filters
+     * @return string[]  action filters
      */
-    public function filters()
+    public function filters(): array
     {
         return array(
             'accessControl', // perform access control for CRUD operations
@@ -17,9 +17,9 @@ class AdminDatasetAuthorController extends Controller
     /**
      * Specifies the access control rules.
      * This method is used by the 'accessControl' filter.
-     * @return array access control rules
+     * @return array<int, array<int|string, list<string>|string>> access control rules
      */
-    public function accessRules()
+    public function accessRules(): array
     {
         return array(
             array(
@@ -43,7 +43,7 @@ class AdminDatasetAuthorController extends Controller
      * Displays a particular model.
      * @param integer $id the ID of the model to be displayed
      */
-    public function actionView(int $id)
+    public function actionView(int $id): void
     {
         $this->render('view', array('model' => $this->loadModel($id)));
     }
@@ -52,7 +52,7 @@ class AdminDatasetAuthorController extends Controller
      * Creates a new model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
-    public function actionCreate()
+    public function actionCreate(): void
     {
         $model = new DatasetAuthor();
 
@@ -185,7 +185,7 @@ class AdminDatasetAuthorController extends Controller
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id the ID of the model to be updated
      */
-    public function actionUpdate(int $id)
+    public function actionUpdate(int $id): void
     {
         $model = $this->loadModel($id);
 
@@ -204,7 +204,7 @@ class AdminDatasetAuthorController extends Controller
      * If deletion is successful, the browser will be redirected to the 'admin' page.
      * @param integer $id the ID of the model to be deleted
      */
-    public function actionDelete(int $id)
+    public function actionDelete(int $id): void
     {
         if (!Yii::app()->request->isPostRequest) {
             throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
@@ -240,7 +240,7 @@ class AdminDatasetAuthorController extends Controller
     /**
      * Lists all models.
      */
-    public function actionIndex()
+    public function actionIndex(): void
     {
         $dataProvider = new CActiveDataProvider('DatasetAuthor');
 
@@ -250,7 +250,7 @@ class AdminDatasetAuthorController extends Controller
     /**
      * Manages all models.
      */
-    public function actionAdmin()
+    public function actionAdmin(): void
     {
         $model = new DatasetAuthor('search');
         $model->unsetAttributes();  // clear any default values
@@ -263,7 +263,7 @@ class AdminDatasetAuthorController extends Controller
         $this->render('admin', array('model' => $model));
     }
 
-    public function actionSearch($term)
+    public function actionSearch(string $term): void
     {
         if (!Yii::app()->request->isAjaxRequest || !$term) {
             throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
@@ -272,7 +272,7 @@ class AdminDatasetAuthorController extends Controller
         $variants = array();
         $criteria = new CDbCriteria();
         $criteria->select = 'first_name, surname';
-        $criteria->distinct = 'true';
+        $criteria->distinct = true;
         $criteria->addSearchCondition("LOWER(first_name) || ' ' || LOWER(surname)", '%' . strtolower($term) . '%', false);
 
         $tags = Author::model()->findAll($criteria);
@@ -283,7 +283,7 @@ class AdminDatasetAuthorController extends Controller
         Yii::app()->end();
     }
 
-    public function actionAutocomplete()
+    public function actionAutocomplete(): void
     {
         $res = array();
         $result = array();
@@ -355,7 +355,7 @@ class AdminDatasetAuthorController extends Controller
     /**
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.
-     * @param integer the ID of the model to be loaded
+     * @param integer $id the ID of the model to be loaded
      */
     public function loadModel(int $id): DatasetAuthor
     {
@@ -369,9 +369,10 @@ class AdminDatasetAuthorController extends Controller
 
     /**
      * Performs the AJAX validation.
-     * @param CModel the model to be validated
+     *
+     * @param CModel $model the model to be validated
      */
-    protected function performAjaxValidation($model)
+    protected function performAjaxValidation(CModel $model): void
     {
         if (Yii::$app->request->post('ajax') === 'dataset-author-form') {
             echo CActiveForm::validate($model);
@@ -379,7 +380,7 @@ class AdminDatasetAuthorController extends Controller
         }
     }
 
-    public function actionAddAuthor()
+    public function actionAddAuthor(): void
     {
         $datasetId = Yii::$app->request->post('dataset_id');
         $author = Yii::$app->request->post('Author');
@@ -423,7 +424,7 @@ class AdminDatasetAuthorController extends Controller
         Util::returnJSON(array("success" => false, "message" => Yii::t("app", "Save Error.")));
     }
 
-    public function actionDeleteAuthor()
+    public function actionDeleteAuthor(): void
     {
         $daId = Yii::$app->request->post('da_id');
         if (!$daId) {
@@ -450,7 +451,7 @@ class AdminDatasetAuthorController extends Controller
         Util::returnJSON(array("success" => false, "message" => Yii::t("app", "Delete Error.")));
     }
 
-    public function actionUpdateRank()
+    public function actionUpdateRank(): void
     {
         $daId = Yii::$app->request->post('da_id');
         $rank = Yii::$app->request->post('rank');
@@ -464,11 +465,11 @@ class AdminDatasetAuthorController extends Controller
             $changeRank = intval($rank);
             $lastDa = DatasetAuthor::model()->findByAttributes(array('dataset_id' => $da->dataset_id), array('order' => 'rank desc'));
 
-            if (!is_int($changeRank) or $changeRank == 0) {
+            if ($changeRank === 0) {
                 Util::returnJSON(array("success" => false, "message" => Yii::t("app", "Please enter a non-zero integer.")));
             }
 
-            if (!$lastDa or ($changeRank > $lastDa->rank)) {
+            if (!$lastDa || ($changeRank > $lastDa->rank)) {
                 Util::returnJSON(array("success" => false, "message" => Yii::t("app", "Please enter a value less or equal than " . $lastDa->rank)));
             }
 
@@ -517,6 +518,11 @@ class AdminDatasetAuthorController extends Controller
         }
     }
 
+    /**
+     * @param DatasetAuthor[] $das
+     *
+     * @return bool
+     */
     private function saveDas(array $das): bool
     {
         foreach ($das as $da) {

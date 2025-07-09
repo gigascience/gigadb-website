@@ -5,9 +5,9 @@ declare(strict_types=1);
 class DatasetLogController extends Controller
 {
     /**
-     * @return array action filters
+     * @return string[] action filters
      */
-    public function filters()
+    public function filters(): array
     {
         return array(
             'accessControl', // perform access control for CRUD operations
@@ -17,9 +17,9 @@ class DatasetLogController extends Controller
     /**
      * Specifies the access control rules.
      * This method is used by the 'accessControl' filter.
-     * @return array access control rules
+     * @return array<int, array<int|string, list<string>|string>> access control rules
      */
-    public function accessRules()
+    public function accessRules(): array
     {
         return array(
             array('allow', // admin only
@@ -32,11 +32,7 @@ class DatasetLogController extends Controller
         );
     }
 
-    /**
-     * Displays a particular model.
-     * @param integer $id the ID of the model to be displayed
-     */
-    public function actionView()
+    public function actionView(): void
     {
         if (!$id = Yii::$app->request->get('id')) {
             throw new CHttpException(400, 'Invalid request. No id provided.');
@@ -49,7 +45,7 @@ class DatasetLogController extends Controller
      * Creates a new model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
-    public function actionCreate()
+    public function actionCreate(): void
     {
         $model = new DatasetLog();
 
@@ -66,9 +62,8 @@ class DatasetLogController extends Controller
     /**
      * Updates a particular model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id the ID of the model to be updated
      */
-    public function actionUpdate()
+    public function actionUpdate(): void
     {
         if (!$id = Yii::$app->request->get('id')) {
             throw new CHttpException(400, 'Invalid request. No id provided.');
@@ -91,7 +86,7 @@ class DatasetLogController extends Controller
      * If deletion is successful, the browser will be redirected to the 'admin' page.
      * @param integer $id the ID of the model to be deleted
      */
-    public function actionDelete(int $id)
+    public function actionDelete(int $id): void
     {
         if (!Yii::app()->request->isPostRequest) {
             throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
@@ -111,7 +106,7 @@ class DatasetLogController extends Controller
     /**
      * Manages all models.
      */
-    public function actionAdmin()
+    public function actionAdmin(): void
     {
         $model = new DatasetLog('search');
         $model->unsetAttributes();  // clear any default values
@@ -128,11 +123,14 @@ class DatasetLogController extends Controller
     /**
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.
-     * @param integer the ID of the model to be loaded
+     * @param integer $id the ID of the model to be loaded
      */
     public function loadModel(int $id): DatasetLog
     {
-        $model = DatasetLog::model()->findByPk($id);
+        /** @var DatasetLog $datasetLogModel */
+        $datasetLogModel = DatasetLog::model();
+
+        $model = $datasetLogModel->findByPk($id);
 
         if (!$model) {
             throw new CHttpException(404, 'The requested page does not exist.');

@@ -5,7 +5,7 @@ declare(strict_types=1);
 class AdminDatasetProjectController extends Controller
 {
     /**
-     * @return array action filters
+     * @return string[] action filters
      */
     public function filters()
     {
@@ -17,7 +17,7 @@ class AdminDatasetProjectController extends Controller
     /**
      * Specifies the access control rules.
      * This method is used by the 'accessControl' filter.
-     * @return array access control rules
+     * @return array<int, array<int|string, list<string>|string>> access control rules
      */
     public function accessRules()
     {
@@ -40,7 +40,7 @@ class AdminDatasetProjectController extends Controller
      * Displays a particular model.
      * @param integer $id the ID of the model to be displayed
      */
-    public function actionView(int $id)
+    public function actionView(int $id): void
     {
         $this->render('view', array('model' => $this->loadModel($id)));
     }
@@ -49,7 +49,7 @@ class AdminDatasetProjectController extends Controller
      * Creates a new model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
-    public function actionCreate()
+    public function actionCreate(): void
     {
         $model = new DatasetProject();
 
@@ -116,7 +116,7 @@ class AdminDatasetProjectController extends Controller
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id the ID of the model to be updated
      */
-    public function actionUpdate(int $id)
+    public function actionUpdate(int $id): void
     {
         $model = $this->loadModel($id);
 
@@ -135,7 +135,7 @@ class AdminDatasetProjectController extends Controller
      * If deletion is successful, the browser will be redirected to the 'admin' page.
      * @param integer $id the ID of the model to be deleted
      */
-    public function actionDelete(int $id)
+    public function actionDelete(int $id): void
     {
         if (!Yii::app()->request->isPostRequest) {
             throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
@@ -172,7 +172,7 @@ class AdminDatasetProjectController extends Controller
     /**
      * Lists all models.
      */
-    public function actionIndex()
+    public function actionIndex(): void
     {
         $dataProvider = new CActiveDataProvider('DatasetProject');
 
@@ -182,7 +182,7 @@ class AdminDatasetProjectController extends Controller
     /**
      * Manages all models.
      */
-    public function actionAdmin()
+    public function actionAdmin(): void
     {
         $model = new DatasetProject('search');
         $model->unsetAttributes();  // clear any default values
@@ -219,7 +219,7 @@ class AdminDatasetProjectController extends Controller
     /**
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.
-     * @param integer the ID of the model to be loaded
+     * @param integer $id the ID of the model to be loaded
      */
     public function loadModel(int $id): DatasetProject
     {
@@ -233,9 +233,10 @@ class AdminDatasetProjectController extends Controller
 
     /**
      * Performs the AJAX validation.
-     * @param CModel the model to be validated
+     *
+     * @param CModel $model the model to be validated
      */
-    protected function performAjaxValidation($model)
+    protected function performAjaxValidation(CModel $model): void
     {
         if (Yii::$app->request->post('ajax') === 'dataset-project-form') {
             echo CActiveForm::validate($model);
@@ -244,7 +245,7 @@ class AdminDatasetProjectController extends Controller
     }
 
 
-    public function actionAddProject()
+    public function actionAddProject(): void
     {
         $datasetId = Yii::$app->request->post('dataset_id');
         $projectId = Yii::$app->request->post('project_id');
@@ -276,7 +277,7 @@ class AdminDatasetProjectController extends Controller
         Util::returnJSON(array("success" => false, "message" => Yii::t("app", "Save Error.")));
     }
 
-    public function actionDeleteProject()
+    public function actionDeleteProject(): void
     {
         if (!$dpId = Yii::$app->request->post('dp_id')) {
             throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');

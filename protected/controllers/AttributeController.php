@@ -4,168 +4,165 @@ declare(strict_types=1);
 
 class AttributeController extends Controller
 {
-	/**
-	 * @var CActiveRecord the currently loaded data model instance.
-	 */
-	private $_model;
+    /**
+     * @var Attributes the currently loaded data model instance.
+     */
+    private ?Attributes $_model = null;
 
-	/**
-	 * @return array action filters
-	 */
-	public function filters()
-	{
-		return array(
-			'accessControl', // perform access control for CRUD operations
-		);
-	}
+    /**
+     * @return string[] action filters
+     */
+    public function filters(): array
+    {
+        return array(
+            'accessControl', // perform access control for CRUD operations
+        );
+    }
 
-	/**
-	 * Specifies the access control rules.
-	 * This method is used by the 'accessControl' filter.
-	 * @return array access control rules
-	 */
-	public function accessRules()
-	{
-		return array(
+    /**
+     * Specifies the access control rules.
+     * This method is used by the 'accessControl' filter.
+     * @return array<int, array<int|string, list<string>|string>> access control rules
+     */
+    public function accessRules(): array
+    {
+        return array(
 
-			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'users'=>array('@'),
-				'roles'=>array('admin'),
-			),
-			array('deny',  // deny all users
-				'users'=>array('*'),
-			),
-		);
-	}
+            array('allow', // allow admin user to perform 'admin' and 'delete' actions
+                'users' => array('@'),
+                'roles' => array('admin'),
+            ),
+            array('deny',  // deny all users
+                'users' => array('*'),
+            ),
+        );
+    }
 
-	/**
-	 * Displays a particular model.
-	 */
-	public function actionView()
-	{
-		$this->render('view',array(
-			'model'=>$this->loadModel(),
-		));
-	}
+    /**
+     * Displays a particular model.
+     */
+    public function actionView(): void
+    {
+        $this->render('view', array('model' => $this->loadModel()));
+    }
 
-	/**
-	 * Creates a new model.
-	 * If creation is successful, the browser will be redirected to the 'view' page.
-	 */
-	public function actionCreate()
-	{
-		$model=new Attributes;
+    /**
+     * Creates a new model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     */
+    public function actionCreate(): void
+    {
+        $model = new Attributes();
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
+        if ($attributes = Yii::$app->post('Attributes')) {
+            $model->attributes = $attributes;
+            if ($model->save()) {
+                $this->redirect(array('view','id' => $model->id));
+            }
+        }
 
-		if(isset($_POST['Attributes']))
-		{
-			$model->attributes=$_POST['Attributes'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
-		}
+        $this->render('create', array('model' => $model));
+    }
 
-		$this->render('create',array(
-			'model'=>$model,
-		));
-	}
+    /**
+     * Updates a particular model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     */
+    public function actionUpdate(): void
+    {
+        $model = $this->loadModel();
 
-	/**
-	 * Updates a particular model.
-	 * If update is successful, the browser will be redirected to the 'view' page.
-	 */
-	public function actionUpdate()
-	{
-		$model=$this->loadModel();
+        if ($attributes = Yii::$app->post('Attributes')) {
+            $model->attributes = $attributes;
+            if ($model->save()) {
+                $this->redirect(array('view','id' => $model->id));
+            }
+        }
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
+        $this->render('update', array('model' => $model));
+    }
 
-		if(isset($_POST['Attributes']))
-		{
-			$model->attributes=$_POST['Attributes'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
-		}
+    /**
+     * Deletes a particular model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     */
+    public function actionDelete(): void
+    {
+        if (!Yii::app()->request->isPostRequest) {
+            throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
+        }
 
-		$this->render('update',array(
-			'model'=>$model,
-		));
-	}
+        // we only allow deletion via POST request
+        $this->loadModel()->delete();
 
-	/**
-	 * Deletes a particular model.
-	 * If deletion is successful, the browser will be redirected to the 'index' page.
-	 */
-	public function actionDelete()
-	{
-		if(Yii::app()->request->isPostRequest)
-		{
-			// we only allow deletion via POST request
-			$this->loadModel()->delete();
+        // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+        if (!Yii::$app->request->get('ajax')) {
+            $this->redirect(array('index'));
+        }
+    }
 
-			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-			if(!isset($_GET['ajax']))
-				$this->redirect(array('index'));
-		}
-		else
-			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
-	}
+    /**
+     * Lists all models.
+     */
+    public function actionIndex(): void
+    {
+        $dataProvider = new CActiveDataProvider('Attributes');
 
-	/**
-	 * Lists all models.
-	 */
-	public function actionIndex()
-	{
-		$dataProvider=new CActiveDataProvider('Attributes');
-		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
-		));
-	}
+        $this->render('index', array('dataProvider' => $dataProvider));
+    }
 
-	/**
-	 * Manages all models.
-	 */
-	public function actionAdmin()
-	{
-		$model=new Attributes('search');
-		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Attributes']))
-			$model->setAttributes($_GET['Attributes']);
+    /**
+     * Manages all models.
+     */
+    public function actionAdmin(): void
+    {
+        $model = new Attributes('search');
+        $model->unsetAttributes();  // clear any default values
+        if ($attributes = Yii::$app->request->get('Attributes')) {
+            $model->setAttributes($attributes);
+        }
 
-		$this->loadBaBbqPolyfills = true;
-		$this->render('admin',array(
-			'model'=>$model,
-		));
-	}
+        $this->loadBaBbqPolyfills = true;
 
-	/**
-	 * Returns the data model based on the primary key given in the GET variable.
-	 * If the data model is not found, an HTTP exception will be raised.
-	 */
-	public function loadModel()
-	{
-		if($this->_model===null)
-		{
-			if(isset($_GET['id']))
-				$this->_model=Attributes::model()->findbyPk($_GET['id']);
-			if($this->_model===null)
-				throw new CHttpException(404,'The requested page does not exist.');
-		}
-		return $this->_model;
-	}
+        $this->render('admin', array('model' => $model));
+    }
 
-	/**
-	 * Performs the AJAX validation.
-	 * @param CModel the model to be validated
-	 */
-	protected function performAjaxValidation($model)
-	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='funder-form')
-		{
-			echo CActiveForm::validate($model);
-			Yii::app()->end();
-		}
-	}
+    /**
+     * Returns the data model based on the primary key given in the GET variable.
+     * If the data model is not found, an HTTP exception will be raised.
+     */
+    public function loadModel(): Attributes
+    {
+        if ($this->_model) {
+            return $this->_model;
+        }
+
+        /** @var Attributes $attributeModel */
+        $attributeModel = Attributes::model();
+
+        if ($id = Yii::$app->request->get('id')) {
+            if (!$modelFound = $attributeModel->findbyPk($id)) {
+                throw new CHttpException(404, 'The requested page does not exist.');
+            }
+
+            $this->_model = $modelFound;
+
+            return $this->_model;
+        }
+
+        throw new CHttpException(400, 'The request is not valid.');
+    }
+
+    /**
+     * Performs the AJAX validation.
+     *
+     * @param CModel $model the model to be validated
+     */
+    protected function performAjaxValidation(CModel $model): void
+    {
+        if (Yii::$app->request->post('ajax') === 'funder-form') {
+            echo CActiveForm::validate($model);
+            Yii::app()->end();
+        }
+    }
 }
