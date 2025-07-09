@@ -213,21 +213,28 @@ cd573cfaace07e7949bc0c46028904ff  /share/dropbox/user666/1g-file.dat
 
 ##### rclone mount AWS s3 performance
 
-| under test                | command                                                                                                                | time (s) | throughput (MB/s) | %CPU |
-|:--------------------------|:-----------------------------------------------------------------------------------------------------------------------|:---------|:------------------|:-----|
-| 1G File Write             | dd if=/dev/zero of=/aws/share/dropbox/user111/rclone-test-write-1g.dat bs=1G count=1 oflag=direct                      | 7.33122  | 146               | ~2   |
-| 10G File Write            | dd if=/dev/zero of=/aws/share/dropbox/user111/rclone-test-write-10g.dat bs=1G count=10 oflag=direct                    | 83.0727  | 129               | ~2   |
-| 1G File Read              | dd if=/aws/share/dropbox/user111/rclone-test-write-1g.dat of=/dev/null bs=1G count=1                                   | 86.6436  | 12.4              | ~1   |
-| 10G File Read             | dd if=/aws/share/dropbox/user111/rclone-test-write-10g.dat of=/dev/null bs=1G count=10                                 | 164.786  | 65.2              | ~7   |
-| Move in 5000 small files  | time cp -v /tmp/smallfiles/* /aws/share/dropbox/user111/smallfiles/                                                    | 11.805   | N/A               | ~7   |
-| Move out 5000 small files | time cp -v /aws/share/dropbox/user111/smallfiles/* /tmp/smallfiles/                                                    |          | N/A               | ~1   |
-| Move in 1 1G file         | time cp test-mount/1g-file.dat /aws/share/dropbox/user111/                                                             |          | N/A               |      |
-| md5sum Checksum 1G file   | time md5sum /aws/share/dropbox/user111/rclone-test-write-1g.dat > /aws/share/dropbox/rclone-test-write-1g.md5          |          | N/A               |      |
-| Move out 1 1G file        | time cp /aws/share/dropbox/user111/rclone-test-write-1g.dat /dev/zero                                                  |          | N/A               |      |
-| Move in 1 10G file        | time cp test-mount/rclone-test-write-10g.dat /aws/share/dropbox/user111/                                               |          | N/A               |      |
-| md5sum Checksum 10G file  | time md5sum /aws/share/dropbox/user111/rclone-test-write-10g.dat > /aws/share/dropbox/user999/rclone-test-write-1g.md5 |          | N/A               |      |
-| Move out 1 10G file       | time cp /aws/share/dropbox/user111/rclone-test-write-10g.dat /dev/zero                                                 |          | N/A               |      |
+| under test                | command                                                                                                                 | time (s)  | throughput (MB/s) | %CPU |
+|:--------------------------|:------------------------------------------------------------------------------------------------------------------------|:----------|:------------------|:-----|
+| 1G File Write             | dd if=/dev/zero of=/aws/share/dropbox/user111/rclone-test-write-1g.dat bs=1G count=1 oflag=direct                       | 7.33122   | 146               | ~2   |
+| 10G File Write            | dd if=/dev/zero of=/aws/share/dropbox/user111/rclone-test-write-10g.dat bs=1G count=10 oflag=direct                     | 83.0727   | 129               | ~2   |
+| 1G File Read              | dd if=/aws/share/dropbox/user111/rclone-test-write-1g.dat of=/dev/null bs=1G count=1                                    | 86.6436   | 12.4              | ~1   |
+| 10G File Read             | dd if=/aws/share/dropbox/user111/rclone-test-write-10g.dat of=/dev/null bs=1G count=10                                  | 164.786   | 65.2              | ~7   |
+| Move in 5000 small files  | time cp -v /tmp/smallfiles/* /aws/share/dropbox/user111/smallfiles/                                                     | 11.805    | N/A               | ~7   |
+| Move out 5000 small files | time cp -v /aws/share/dropbox/user111/smallfiles/* /tmp/smallfiles/                                                     | 38m59.513 | N/A               | ~1   |
+| Move in 1 1G file         | time cp -v rclone-test-write-1g.dat /aws/share/dropbox/user111/                                                         | 14.977    | N/A               | ~7   |
+| md5sum Checksum 1G file   | time md5sum /aws/share/dropbox/user111/rclone-test-write-1g.dat > /aws/share/dropbox/user111/rclone-test-write-1g.md5   | 7.427     | N/A               | ~7   |
+| Move out 1 1G file        | time cp -v /aws/share/dropbox/user111/rclone-test-write-1g.dat /dev/zero                                                | 8.246     | N/A               | ~10  |
+| Move in 1 10G file        | time cp -v rclone-test-write-10g.dat /aws/share/dropbox/user111/                                                        | 2m39.314  | N/A               | ~7   |
+| md5sum Checksum 10G file  | time md5sum /aws/share/dropbox/user111/rclone-test-write-10g.dat > /aws/share/dropbox/user111/rclone-test-write-10g.md5 | 12m10.314 | N/A               | ~4   |
+| Move out 1 10G file       | time cp -v /aws/share/dropbox/user111/rclone-test-write-10g.dat /dev/zero                                               | 11m47.102 | N/A               | ~3   |
 
+```
+[ec2-user@ip-10-99-0-193 ~]$ cat /aws/share/dropbox/user111/rclone-test-write-1g.md5 
+cd573cfaace07e7949bc0c46028904ff  /aws/share/dropbox/user111/rclone-test-write-1g.dat
+[ec2-user@ip-10-99-0-193 ~]$ cat /aws/share/dropbox/user111/rclone-test-write-10g.md5 
+2dd26c4d4799ebd29fa31e48d49e8e53  /aws/share/dropbox/user111/rclone-test-write-10g.dat
+[ec2-user@ip-10-99-0-193 ~]$ 
+```
 
 ##### rclone mount Wasabi s3 performance
 
