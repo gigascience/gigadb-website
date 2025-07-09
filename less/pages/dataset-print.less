@@ -1,0 +1,171 @@
+body.print .dataset-view-container {
+  *,
+  *::before,
+  *::after {
+    background: transparent !important;
+    color: initial !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    border-color: initial !important;
+    text-decoration: initial !important;
+  }
+
+  font-size: 12pt;
+  line-height: 1.4;
+
+  a,
+  a:visited {
+    text-decoration: underline;
+  }
+
+  a[href]:after {
+    content: " (" attr(href) ")";
+    font-size: 90%;
+  }
+
+  a[href^="#"]:after,
+  a[href^="javascript:"]:after {
+    content: "";
+  }
+
+  h1 { font-size: 24pt; }
+  h2 { font-size: 18pt; }
+  h3 { font-size: 14pt; }
+
+  .dataset-color-background-block {
+    padding: 0;
+  }
+  .result-sub-links {
+    text-wrap: wrap;
+  }
+  .media-body {
+    width: auto;
+  }
+
+  #dropdown-div {
+    float: none;
+    margin: 0;
+
+    .drop-citation-btn {
+      display: none !important;
+    }
+
+    .dropdown-box,
+    ul {
+      position: static;
+      border: none;
+      list-style: disc inside;
+      padding: 0;
+      margin: 0 0 0 20px;
+    }
+
+    li {
+      a,
+      a:hover {
+        background: none !important;
+        color: initial !important;
+        padding: 0;
+      }
+    }
+  }
+  .citation-popup:before {
+    content: attr(data-content)": ";
+  }
+  .dataset-des-images {
+    display: none!important;
+  }
+  .content-popup {
+    display: none!important;
+  }
+
+  .sort-message {
+    display: none!important;
+  }
+
+  #samples_table_settings, #files_table_settings {
+    display: none!important;
+  }
+
+  #\33 dmodels {
+    display: none!important;
+  }
+
+  #\33 dsketchfab {
+    display: none!important;
+  }
+
+  [role="tabpanel"]#protocolsio,
+  [role="tabpanel"]#jbrowse,
+  [role="tabpanel"]#codeocean {
+    display: none!important;
+  }
+
+  table.table {
+    border: none;
+    border-top: 3px double @color-true-black;
+    border-bottom: 3px double @color-true-black;
+    padding: 5px 0;
+    thead {
+      display: none;
+    }
+
+    tbody {
+      display: block;
+      border: none;
+
+      tr {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        border: none;
+        padding: 5px 0;
+        &:not(:last-child) {
+          border-bottom: 1px solid @color-true-black;
+        }
+
+        th,
+        td {
+          flex: 1 1 100%;
+          padding: 0;
+          border: none;
+        }
+
+        [class*="js-short-"] {
+          display: none;
+        }
+        [class*="js-long-"] {
+          display: block!important;
+        }
+        [class*="js-long-"] + button {
+          display: none;
+        }
+
+        .button-column {
+          display: none;
+        }
+
+        > *:first-child {
+          flex: 0 0 40%;
+          font-weight: bold;
+          text-align: left;
+        }
+
+        > *:not(:first-child) {
+          flex: 1 0 60%;
+          text-align: left;
+          word-break: break-word;
+        }
+
+        &::after {
+          content: "";
+          display: block;
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
+body.print .sibling-dataset-links {
+  display: none;
+}

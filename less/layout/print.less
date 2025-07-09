@@ -1,0 +1,31 @@
+// print styles not specific to a module or page
+body.print {
+  div {
+    display: block;
+  }
+  header, footer, nav, aside, video, iframe, .mobile-navigation, .skip-to-main-link {
+    display: none!important;
+  }
+
+  [role="dialog"], [role="tooltip"], [role="tablist"] {
+    display: none!important;
+  }
+  [role="tabpanel"] {
+    display: block!important;
+    &:before {
+      content: attr(id);
+    }
+  }
+
+  .left-border-title {
+    all: unset;
+  }
+
+  .left-border-title-lg {
+    all: unset;
+  }
+
+  .badge {
+    all: unset;
+  }
+}

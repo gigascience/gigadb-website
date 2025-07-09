@@ -21,6 +21,9 @@ $sampleDataProvider = $samples->getDataProvider();
 <div class="content">
     <div class="container dataset-view-container">
         <div class="subsection">
+            <div class="print-button-container">
+                <?php $this->renderPartial('application.views.shared._printToggle'); ?>
+            </div>
             <div class="media dataset-media">
                 <div class="media-left dataset-media-left">
                     <?php if ($model->image) {
@@ -329,7 +332,7 @@ $sampleDataProvider = $samples->getDataProvider();
                     ?>
                         <div role="tabpanel" class="tab-pane active" id="sample">
 
-                            <p class="pull-left">
+                            <p class="pull-left sort-message">
                               Click on a table column to sort the results.
                             </p>
                             <a id="samples_table_settings" class="btn btn-default pull-right" data-toggle="modal" data-target="#samples_settings" href="#"><span class="glyphicon glyphicon-adjust"></span>Table Settings</a>
@@ -401,7 +404,7 @@ $sampleDataProvider = $samples->getDataProvider();
                             <?php } else { ?>
                                 <div role="tabpanel" class="tab-pane active" id="files">
                                 <?php   } ?>
-                                <p class="pull-left">
+                                <p class="pull-left sort-message">
                                   Click on a table column to sort the results.
                                 </p>
                                 <a id="files_table_settings" class="btn btn-default pull-right" data-toggle="modal" data-target="#files_settings" href="#"><span class="glyphicon glyphicon-adjust"></span>Table Settings</a>
@@ -584,7 +587,7 @@ $sampleDataProvider = $samples->getDataProvider();
 
     <div class="clear"></div>
 
-    <div class="fixed-btn-container">
+    <div class="fixed-btn-container sibling-dataset-links">
         <a href="/dataset/<?php echo $previous_doi ?>" class="fixed-btn-left" title="Previous dataset" aria-label="Previous dataset"><span class="fa fa-angle-left"></span></a>
         <a href="/dataset/<?php echo $next_doi ?>" title="Next dataset" class="fixed-btn-right" aria-label="Next dataset"><span class="fa fa-angle-right"></span></a>
     </div>
