@@ -18,7 +18,7 @@ class Util
         }
     }
 
-    public static function getDois(bool $fetchAsso = true)
+    public static function getDois(bool $fetchAsso = false)
     {
         $rows = Yii::app()->db->createCommand()
                 ->select("id, identifier")
