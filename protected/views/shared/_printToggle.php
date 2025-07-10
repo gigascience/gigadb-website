@@ -1,3 +1,23 @@
+<?php
+/**
+ * Partial: Print View Toggle
+ *
+ * Renders a button that lets the user switch between the regular “web” view
+ * and a printer-friendly version of the current page. The script embedded in
+ * this partial inspects the current URL for the query parameter
+ * `print=true`, toggles a `print` class on the <body> element, and updates the
+ * button’s label accordingly. Pressing the button flips the state, modifies
+ * the URL via `history.replaceState`, and reapplies the class without
+ * reloading the page.
+ *
+ * Usage (Yii 1.1):
+ *     <?php $this->renderPartial('shared/_printToggle'); ?>
+ *
+ * Requirements:
+ *   - jQuery 3 must be loaded before this partial executes.
+ *   - Pages should provide CSS rules that target `body.print`.
+ */
+?>
 <button class="btn btn-link print-view-link" aria-label="Switch to print view">
     <span class="label-text">Print view</span>
 </button>
