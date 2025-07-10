@@ -1,3 +1,7 @@
+<?php
+use GigaDB\services\URLsService;
+?>
+
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css" />
 
 <?php
@@ -6,6 +10,8 @@ $this->pageTitle = "GigaDB Dataset - DOI 10.5524/" . $model->identifier . " - " 
 
 $fileDataProvider = $files->getDataProvider();
 $sampleDataProvider = $samples->getDataProvider();
+$totalNbFiles = $fileDataProvider->getTotalItemCount();
+$totalNbSamples = $sampleDataProvider->getTotalItemCount();
 
 ?>
 
@@ -324,9 +330,35 @@ $sampleDataProvider = $samples->getDataProvider();
 
                 <div class="tab-content dataset-tab-content">
                 <?php
+                    $isPrint  = Yii::app()->request->getParam('print') === 'true';
+                    $showFull = Yii::app()->request->getParam('full') === 'true';
+
+                    if ($totalNbFiles > 100 || $totalNbSamples > 100) {
+                        if ($isPrint && !$showFull) {
+                            $showAllUrl = URLsService::editUrlQueryParams(['full' => 'true']);
+                            echo CHtml::tag(
+                                'p',
+                                ['class' => 'print-only'],
+                                CHtml::link(
+                                    'Show all ' . ($totalNbFiles + $totalNbSamples) . ' results',
+                                    $showAllUrl,
+                                    ['class' => 'print__collapse-href']
+                                ) .
+                                ' (they might take a while to load, depending on the number of results)'
+                            );
+                        } else {
+                            $showLessUrl = URLsService::editUrlQueryParams([], ['full']);
+                            echo CHtml::tag(
+                                'p',
+                                ['class' => 'print-only'],
+                                CHtml::link('Show less results', $showLessUrl, ['class' => 'print__collapse-href'])
+                            );
+                        }
+                    }
+                ?>
+                <?php
                     if ($sampleDataProvider->getTotalItemCount() > 0) {
                         $samplesPerPage = $sampleDataProvider->getItemCount();
-                        $totalNbSamples = $sampleDataProvider->getTotalItemCount();
 
                         if (count($model->samples) > 0) {
                     ?>
@@ -397,7 +429,6 @@ $sampleDataProvider = $samples->getDataProvider();
                     <?php
                     if ($fileDataProvider->getTotalItemCount() > 0) {
                         $filesPerPage = $fileDataProvider->getItemCount();
-                        $totalNbFiles = $fileDataProvider->getTotalItemCount();
 
                         if (count($model->samples) > 0) {
                     ?>

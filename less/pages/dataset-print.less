@@ -21,7 +21,7 @@ body.print .dataset-view-container {
     text-decoration: underline;
   }
 
-  a[href]:after {
+  a[href]:not(.print__collapse-href):after {
     content: " (" attr(href) ")";
     font-size: 90%;
   }
@@ -194,7 +194,7 @@ body.print .dataset-view-container {
     }
   }
 
-  .table-footer {
+  .table-footer .pagination-wrapper {
     display: none;
   }
 }
