@@ -1,5 +1,9 @@
 // print styles not specific to a module or page
 body.print {
+  .print-hidden {
+    display: none!important;
+  }
+
   div {
     display: block;
   }
@@ -12,9 +16,6 @@ body.print {
   }
   [role="tabpanel"] {
     display: block!important;
-    &:before {
-      content: attr(id);
-    }
   }
 
   .left-border-title {
@@ -27,5 +28,12 @@ body.print {
 
   .badge {
     all: unset;
+  }
+}
+
+
+body:not(.print) {
+  .print-only {
+    display: none!important;
   }
 }

@@ -336,6 +336,7 @@ $sampleDataProvider = $samples->getDataProvider();
                               Click on a table column to sort the results.
                             </p>
                             <a id="samples_table_settings" class="btn btn-default pull-right" data-toggle="modal" data-target="#samples_settings" href="#"><span class="glyphicon glyphicon-adjust"></span>Table Settings</a>
+                            <div class="print-only">Samples</div>
                             <table id="samples_table" class="table table-striped table-bordered" style="width:100%">
                                 <thead>
                                     <tr>
@@ -352,12 +353,12 @@ $sampleDataProvider = $samples->getDataProvider();
 
                                     foreach ($sample_models as $sample) { ?>
                                         <tr>
-                                            <td><?= $sample['linkName'] ?></td>
-                                            <td><?= $sample['common_name'] ?></td>
-                                            <td><?= $sample['scientific_name'] ?></td>
-                                            <td><?= $sample['displayAttr'] ?></td>
-                                            <td><?= $sample['taxonomy_link'] ?></td>
-                                            <td><?= $sample['genbank_name'] ?></td>
+                                            <td data-header="Sample ID"><?= $sample['linkName'] ?></td>
+                                            <td data-header="Common Name"><?= $sample['common_name'] ?></td>
+                                            <td data-header="Scientific Name"><?= $sample['scientific_name'] ?></td>
+                                            <td data-header="Sample Attributes"><?= $sample['displayAttr'] ?></td>
+                                            <td data-header="Taxonomic ID"><?= $sample['taxonomy_link'] ?></td>
+                                            <td data-header="Genbank Name"><?= $sample['genbank_name'] ?></td>
                                         </tr>
                                     <?php } ?>
 
@@ -410,6 +411,7 @@ $sampleDataProvider = $samples->getDataProvider();
                                 <a id="files_table_settings" class="btn btn-default pull-right" data-toggle="modal" data-target="#files_settings" href="#"><span class="glyphicon glyphicon-adjust"></span>Table Settings</a>
                                 <br>
                                 <br>
+                                <div class="print-only">Files</div>
                                 <table id="files_table" class="table table-striped table-bordered dataset-files-table" style="width:100%">
                                     <thead>
                                         <tr>
@@ -429,20 +431,20 @@ $sampleDataProvider = $samples->getDataProvider();
                                         foreach ($file_models as $file) {
                                         ?>
                                             <tr>
-                                                <td class="text-break-word"><?= $file['nameHtml'] ?></td>
-                                                <td><?= $file['description'] ?></td>
-                                                <td><?php
+                                                <td class="text-break-word" data-header="File Name"><?= $file['nameHtml'] ?></td>
+                                                <td data-header="Description"><?= $file['description'] ?></td>
+                                                <td class="print-hidden"><?php
                                                     //TODO: huge performance issue with large numbers of fileDatasetKeywordsTest.php:49, manifesting when disabling cache
                                                     //                                        $file_samples = $files->formatDatasetFilesSamples(3, $file['id']) ;
                                                     //                                        echo $file_samples[0]['visible'];
                                                     //                                        echo $file_samples[0]['hidden'];
                                                     //                                        echo $file_samples[0]['more_link'];
                                                     ?></td>
-                                                <td><?= $file['type'] ?></td>
-                                                <td><?= $file['format'] ?></td>
-                                                <td><?= $file['sizeUnit'] ?></td>
-                                                <td><?= $file['date_stamp'] ?></td>
-                                                <td><?= $file['attrDesc'] ?></td>
+                                                <td data-header="Data Type"><?= $file['type'] ?></td>
+                                                <td data-header="File Format"><?= $file['format'] ?></td>
+                                                <td data-header="Size"><?= $file['sizeUnit'] ?></td>
+                                                <td data-header="Release Date"><?= $file['date_stamp'] ?></td>
+                                                <td data-header="File Attributes"><?= $file['attrDesc'] ?></td>
                                                 <td class="button-column">
                                                     <div class="icon-wrapper">
                                                         <a class="js-download-count fa fa-download fa-lg icon icon-download" href="<?= $file['location'] ?>" aria-label="Download <?= $file["name"] ?>"></a>
@@ -485,7 +487,7 @@ $sampleDataProvider = $samples->getDataProvider();
                             ?>
 
                                 <div role="tabpanel" class="tab-pane" id="funding">
-
+                                    <div class="print-only">Funding</div>
                                     <div class="dataset-datatables-wrapper">
                                         <table class="table table-bordered text-center">
                                             <thead>
@@ -500,10 +502,10 @@ $sampleDataProvider = $samples->getDataProvider();
 
                                                 <?php foreach ($funding as $funder) { ?>
                                                     <tr>
-                                                        <td><?= $funder['funder_name'] ?></td>
-                                                        <td><?= $funder['awardee'] ?></td>
-                                                        <td><?= $funder['grant_award'] ?></td>
-                                                        <td><?= $funder['comments'] ?></td>
+                                                        <td data-header="Funding body"><?= $funder['funder_name'] ?></td>
+                                                        <td data-header="Awardee"><?= $funder['awardee'] ?></td>
+                                                        <td data-header="Award ID"><?= $funder['grant_award'] ?></td>
+                                                        <td data-header="Comments"><?= $funder['comments'] ?></td>
                                                     </tr>
                                                 <?php } ?>
                                             </tbody>
@@ -556,7 +558,7 @@ $sampleDataProvider = $samples->getDataProvider();
                             ?>
 
                             <div role="tabpanel" class="tab-pane" id="history">
-
+                                <div class="print-only">History</div>
                                 <div class="dataset-datatables-wrapper">
                                     <table class="table table-bordered text-center">
                                         <thead>
@@ -568,8 +570,8 @@ $sampleDataProvider = $samples->getDataProvider();
                                         <tbody>
                                             <?php foreach ($mainSection->getHistory() as $log) { ?>
                                                 <tr>
-                                                    <td><?= date('F j, Y', strtotime($log['created_at'])) ?></td>
-                                                    <td><?= $log['message'] ?></td>
+                                                    <td data-header="Date"><?= date('F j, Y', strtotime($log['created_at'])) ?></td>
+                                                    <td data-header="Action"><?= $log['message'] ?></td>
                                                 </tr>
                                             <?php } ?>
                                         </tbody>

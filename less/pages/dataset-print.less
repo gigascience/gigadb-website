@@ -3,11 +3,10 @@ body.print .dataset-view-container {
   *::before,
   *::after {
     background: transparent !important;
-    color: initial !important;
+    color: @color-true-black !important;
     box-shadow: none !important;
     text-shadow: none !important;
     border-color: initial !important;
-    text-decoration: initial !important;
   }
 
   font-size: 12pt;
@@ -15,6 +14,10 @@ body.print .dataset-view-container {
 
   a,
   a:visited {
+    text-decoration: underline;
+  }
+
+  a:hover {
     text-decoration: underline;
   }
 
@@ -37,6 +40,9 @@ body.print .dataset-view-container {
   }
   .result-sub-links {
     text-wrap: wrap;
+  }
+  .media-left {
+    display: none;
   }
   .media-body {
     width: auto;
@@ -114,11 +120,11 @@ body.print .dataset-view-container {
       border: none;
 
       tr {
-        display: flex;
-        flex-direction: column;
-        flex-wrap: wrap;
         border: none;
         padding: 5px 0;
+        margin-bottom: 1em;
+        display: block;
+        border-bottom: 1px solid @color-light-gray;
         &:not(:last-child) {
           border-bottom: 1px solid @color-true-black;
         }
@@ -126,8 +132,16 @@ body.print .dataset-view-container {
         th,
         td {
           flex: 1 1 100%;
-          padding: 0;
           border: none;
+          display: block;
+          padding: 2px 0;
+
+          &::before {
+            content: attr(data-header) ": ";
+            font-weight: 700;
+            display: inline-block;
+            width: 200px;
+          }
         }
 
         [class*="js-short-"] {
