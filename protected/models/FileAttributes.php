@@ -19,7 +19,6 @@ declare(strict_types=1);
  */
 class FileAttributes extends CActiveRecord
 {
-
     /**
      * Returns the static model of the specified AR class.
      * @param string $className active record class name.
@@ -85,18 +84,19 @@ class FileAttributes extends CActiveRecord
         );
     }
 
-    public function afterSave() {
-        $log = new DatasetLog;
+    public function afterSave()
+    {
+        $log = new DatasetLog();
         $log->dataset_id = $this->file->dataset_id;
-        if($this->isNewRecord) {
-            $log->message = $this->file->name. ': additional file attribute added';
+        if ($this->isNewRecord) {
+            $log->message = $this->file->name . ': additional file attribute added';
+        } else {
+            $log->message = $this->file->name . ': file attribute updated';
         }
-        else
-            $log->message = $this->file->name. ': file attribute updated';
         $log->model_id = $this->id;
         $log->model = get_class($this);
-        $log->url = Yii::app()->createUrl('/adminFile/update', array('id'=>$this->file->id));
-        if($this->file->dataset->isPublic) {
+        $log->url = Yii::app()->createUrl('/adminFile/update', array('id' => $this->file->id));
+        if ($this->file->dataset->isPublic) {
             $log->save();
         }
         return true;
@@ -111,7 +111,7 @@ class FileAttributes extends CActiveRecord
         // Warning: Please modify the following code to remove attributes that
         // should not be searched.
 
-        $criteria = new CDbCriteria;
+        $criteria = new CDbCriteria();
 
         $criteria->compare('id', $this->id);
         $criteria->compare('file_id', $this->file_id);
@@ -123,5 +123,4 @@ class FileAttributes extends CActiveRecord
             'criteria' => $criteria,
         ));
     }
-
 }

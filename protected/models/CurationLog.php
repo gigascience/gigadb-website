@@ -29,7 +29,7 @@ class CurationLog extends CActiveRecord
      * @param string $className active record class name.
      * @return DatasetLog the static model class
      */
-    public static function model($className=__CLASS__)
+    public static function model($className = __CLASS__)
     {
         return parent::model($className);
     }
@@ -51,11 +51,11 @@ class CurationLog extends CActiveRecord
         // will receive user inputs.
         return array(
             array('dataset_id', 'required'),
-            array('dataset_id', 'numerical', 'integerOnly'=>true),
+            array('dataset_id', 'numerical', 'integerOnly' => true),
             array('comments, creation_date, created_by, last_modified_date, last_modified_by, action', 'safe'),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            array('id, dataset_id, comments, action, created_by, last_modified_by', 'safe', 'on'=>'search'),
+            array('id, dataset_id, comments, action, created_by, last_modified_by', 'safe', 'on' => 'search'),
         );
     }
 
@@ -167,18 +167,19 @@ class CurationLog extends CActiveRecord
      */
     public static function makeNewInstanceForCurationLogBy(int $id, string $creator): CurationLog
     {
-        return self::makeNewInstanceForDatasetBy($id,$creator);
+        return self::makeNewInstanceForDatasetBy($id, $creator);
     }
 
     public static function createlog($status, $id)
     {
         $fullName = self::getCurrentUserFullName();
-        $curationlog = self::makeNewInstanceForDatasetBy((int) $id, $fullName);
-        $curationlog->action = "Status changed to ".$status;
+        $curationlog = self::makeNewInstanceForDatasetBy((int)$id, $fullName);
+        $curationlog->action = "Status changed to " . $status;
         return $curationlog->save();
     }
 
-    public static function createlog_assign_curator($id, $curatorId) {
+    public static function createlog_assign_curator($id, $curatorId)
+    {
         $User1 = User::model()->find('id=:id', array(':id' => Yii::app()->user->id));
         $username = sprintf('%s %s', $User1->first_name, $User1->last_name);
         $User = $curatorId ? User::model()->find('id=:id', array(':id' => $curatorId)) : null;
@@ -186,7 +187,7 @@ class CurationLog extends CActiveRecord
 
 
         $curationlog =  self::makeNewInstanceForDatasetBy((int)$id, $username);
-        $curationlog->action = "Curator Assigned:"." $displayName";
+        $curationlog->action = "Curator Assigned:" . " $displayName";
 
         return $curationlog->save();
     }
@@ -200,26 +201,26 @@ class CurationLog extends CActiveRecord
         // Warning: Please modify the following code to remove attributes that
         // should not be searched.
 
-        $criteria=new CDbCriteria;
+        $criteria = new CDbCriteria();
         $criteria->with = array('dataset');
 
-        $criteria->compare('id',$this->id);
-        $criteria->compare('dataset_id',$this->dataset_id);
-        $criteria->compare('comments',$this->comments,true);
-        $criteria->compare('action',$this->action,true);
-        $criteria->compare('created_by',$this->created_by,true);
-        $criteria->compare('last_modified_by',$this->last_modified_by,true);
-        $criteria->compare('last_modified_date',$this->last_modified_date,true);
-        $criteria->compare('creation_date',$this->creation_date,true);
+        $criteria->compare('id', $this->id);
+        $criteria->compare('dataset_id', $this->dataset_id);
+        $criteria->compare('comments', $this->comments, true);
+        $criteria->compare('action', $this->action, true);
+        $criteria->compare('created_by', $this->created_by, true);
+        $criteria->compare('last_modified_by', $this->last_modified_by, true);
+        $criteria->compare('last_modified_date', $this->last_modified_date, true);
+        $criteria->compare('creation_date', $this->creation_date, true);
 
         return new CActiveDataProvider($this, array(
-            'criteria'=>$criteria,
+            'criteria' => $criteria,
         ));
     }
 
     public function searchByDatasetId($id)
     {
-        $criteria = new CDbCriteria;
+        $criteria = new CDbCriteria();
         $criteria->condition = 'dataset_id=:id';
         $criteria->params = array(':id' => $id);
         $criteria->order = 'id DESC';

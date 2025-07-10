@@ -22,7 +22,7 @@ class SampleRel extends CActiveRecord
      * @param string $className active record class name.
      * @return SampleRel the static model class
      */
-    public static function model($className=__CLASS__)
+    public static function model($className = __CLASS__)
     {
         return parent::model($className);
     }
@@ -44,10 +44,10 @@ class SampleRel extends CActiveRecord
         // will receive user inputs.
         return array(
             array('sample_id, related_sample_id', 'required'),
-            array('sample_id, related_sample_id, relationship_id', 'numerical', 'integerOnly'=>true),
+            array('sample_id, related_sample_id, relationship_id', 'numerical', 'integerOnly' => true),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            array('id, sample_id, related_sample_id, relationship_id', 'safe', 'on'=>'search'),
+            array('id, sample_id, related_sample_id, relationship_id', 'safe', 'on' => 'search'),
         );
     }
 
@@ -86,19 +86,20 @@ class SampleRel extends CActiveRecord
         // Warning: Please modify the following code to remove attributes that
         // should not be searched.
 
-        $criteria=new CDbCriteria;
+        $criteria = new CDbCriteria();
 
-        $criteria->compare('id',$this->id);
-        $criteria->compare('sample_id',$this->sample_id);
-        $criteria->compare('related_sample_id',$this->related_sample_id);
-        $criteria->compare('relationship_id',$this->relationship_id);
+        $criteria->compare('id', $this->id);
+        $criteria->compare('sample_id', $this->sample_id);
+        $criteria->compare('related_sample_id', $this->related_sample_id);
+        $criteria->compare('relationship_id', $this->relationship_id);
 
         return new CActiveDataProvider($this, array(
-            'criteria'=>$criteria,
+            'criteria' => $criteria,
         ));
     }
 
-    public function behaviors() {
+    public function behaviors()
+    {
         return array(
             'ActiveRecordLogableBehavior' => 'application.behaviors.DatasetRelatedTableBehavior',
         );

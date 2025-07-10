@@ -22,7 +22,7 @@ class FileRelationship extends CActiveRecord
      * @param string $className active record class name.
      * @return FileRelationship the static model class
      */
-    public static function model($className=__CLASS__)
+    public static function model($className = __CLASS__)
     {
         return parent::model($className);
     }
@@ -44,10 +44,10 @@ class FileRelationship extends CActiveRecord
         // will receive user inputs.
         return array(
             array('file_id, related_file_id', 'required'),
-            array('file_id, related_file_id, relationship_id', 'numerical', 'integerOnly'=>true),
+            array('file_id, related_file_id, relationship_id', 'numerical', 'integerOnly' => true),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            array('id, file_id, related_file_id, relationship_id', 'safe', 'on'=>'search'),
+            array('id, file_id, related_file_id, relationship_id', 'safe', 'on' => 'search'),
         );
     }
 
@@ -86,15 +86,15 @@ class FileRelationship extends CActiveRecord
         // Warning: Please modify the following code to remove attributes that
         // should not be searched.
 
-        $criteria=new CDbCriteria;
+        $criteria = new CDbCriteria();
 
-        $criteria->compare('id',$this->id);
-        $criteria->compare('file_id',$this->file_id);
-        $criteria->compare('related_file_id',$this->related_file_id);
-        $criteria->compare('relationship_id',$this->relationship_id);
+        $criteria->compare('id', $this->id);
+        $criteria->compare('file_id', $this->file_id);
+        $criteria->compare('related_file_id', $this->related_file_id);
+        $criteria->compare('relationship_id', $this->relationship_id);
 
         return new CActiveDataProvider($this, array(
-            'criteria'=>$criteria,
+            'criteria' => $criteria,
         ));
     }
 }

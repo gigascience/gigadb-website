@@ -21,7 +21,7 @@ class FileSample extends CActiveRecord
      * @param string $className active record class name.
      * @return FileSample the static model class
      */
-    public static function model($className=__CLASS__)
+    public static function model($className = __CLASS__)
     {
         return parent::model($className);
     }
@@ -43,10 +43,10 @@ class FileSample extends CActiveRecord
         // will receive user inputs.
         return array(
             array('sample_id, file_id', 'required'),
-            array('sample_id, file_id', 'numerical', 'integerOnly'=>true),
+            array('sample_id, file_id', 'numerical', 'integerOnly' => true),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            array('id, sample_id, file_id', 'safe', 'on'=>'search'),
+            array('id, sample_id, file_id', 'safe', 'on' => 'search'),
         );
     }
 
@@ -84,14 +84,14 @@ class FileSample extends CActiveRecord
         // Warning: Please modify the following code to remove attributes that
         // should not be searched.
 
-        $criteria=new CDbCriteria;
+        $criteria = new CDbCriteria();
 
-        $criteria->compare('id',$this->id);
-        $criteria->compare('sample_id',$this->sample_id);
-        $criteria->compare('file_id',$this->file_id);
+        $criteria->compare('id', $this->id);
+        $criteria->compare('sample_id', $this->sample_id);
+        $criteria->compare('file_id', $this->file_id);
 
         return new CActiveDataProvider($this, array(
-            'criteria'=>$criteria,
+            'criteria' => $criteria,
         ));
     }
 }

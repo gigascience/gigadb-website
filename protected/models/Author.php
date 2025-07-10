@@ -19,7 +19,8 @@ declare(strict_types=1);
  * The followings are the available model relations:
  * @property DatasetAuthor[] $datasetAuthors
  */
-class Author extends CActiveRecord {
+class Author extends CActiveRecord
+{
     /**
      * Returns the static model of the specified AR class.
      * @param string $className active record class name.
@@ -27,21 +28,24 @@ class Author extends CActiveRecord {
      */
     public $dois_search;
 
-    public static function model($className = __CLASS__) {
+    public static function model($className = __CLASS__)
+    {
         return parent::model($className);
     }
 
     /**
      * @return string the associated database table name
      */
-    public function tableName() {
+    public function tableName()
+    {
         return 'author';
     }
 
     /**
      * @return array validation rules for model attributes.
      */
-    public function rules() {
+    public function rules()
+    {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
@@ -59,7 +63,8 @@ class Author extends CActiveRecord {
     /**
      * @return array relational rules.
      */
-    public function relations() {
+    public function relations()
+    {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
@@ -71,7 +76,8 @@ class Author extends CActiveRecord {
     /**
      * @return array customized attribute labels (name=>label)
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return array(
             'id' => 'ID',
             'surname' => 'Surname',
@@ -88,11 +94,12 @@ class Author extends CActiveRecord {
      * Retrieves a list of models based on the current search/filter conditions.
      * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
      */
-    public function search() {
+    public function search()
+    {
         // Warning: Please modify the following code to remove attributes that
         // should not be searched.
 
-        $criteria = new CDbCriteria;
+        $criteria = new CDbCriteria();
         $criteria->select = 't.*, (SELECT min(d.identifier) from dataset d LEFT JOIN dataset_author da ON da.dataset_id = d.id WHERE da.author_id = t.id) as minDoi';
         $criteria->compare('id', $this->id);
         $criteria->compare('LOWER(surname)', strtolower($this->surname ?: ''), true);
@@ -110,26 +117,26 @@ SELECT dataset.id FROM dataset WHERE identifier LIKE '%{$this->dois_search}%'
 EO_SQL;
             $connection = Yii::app()->db;
             $command = $connection->createCommand($sql);
-            $criteria->addInCondition('t.id' , $command->queryColumn());
+            $criteria->addInCondition('t.id', $command->queryColumn());
         }
 
         $sort = new CSort();
         $sort->attributes = array(
             'surname' => array(
-                'asc'=>'surname ASC',
-                'desc'=>'surname DESC',
+                'asc' => 'surname ASC',
+                'desc' => 'surname DESC',
             ),
             'middle_name' => array(
-                'asc'=>'middle_name ASC',
-                'desc'=>'middle_name DESC',
+                'asc' => 'middle_name ASC',
+                'desc' => 'middle_name DESC',
             ),
             'first_name' => array(
-                'asc'=>'first_name ASC',
-                'desc'=>'first_name DESC',
+                'asc' => 'first_name ASC',
+                'desc' => 'first_name DESC',
             ),
             'orcid' => array(
-                'asc'=>'orcid ASC',
-                'desc'=>'orcid DESC',
+                'asc' => 'orcid ASC',
+                'desc' => 'orcid DESC',
             ),
             'dois_search' => array(
                 'asc' => 'minDoi ASC',
@@ -143,7 +150,8 @@ EO_SQL;
         ));
     }
 
-    public function getFullAuthor() {
+    public function getFullAuthor()
+    {
         return $this->first_name . ' ' . $this->surname . ' - ORCID:' . $this->orcid;
     }
 
@@ -151,7 +159,8 @@ EO_SQL;
      * Return first name and surname
      * @return string
      */
-    public function getName() {
+    public function getName()
+    {
         return $this->surname . ', ' . $this->first_name;
     }
 
@@ -159,9 +168,10 @@ EO_SQL;
      * Find an author by > surname . ' ' . first_name
      * @return string
      */
-    public function findByCompleteName($name) {
+    public function findByCompleteName($name)
+    {
 
-        $criteria = new CDbCriteria;
+        $criteria = new CDbCriteria();
         $criteria->limit = 1;
         $criteria->addSearchCondition("LOWER(surname) || ' ' || LOWER(first_name)", '%' . strtolower($name) . '%', false);
         $result = $this->findAll($criteria);
@@ -172,7 +182,7 @@ EO_SQL;
     public static function searchAuthor($criteria)
     {
         $keyword = $criteria['keyword'] ? $criteria['keyword'] : '';
-        $criteria = new CDbCriteria;
+        $criteria = new CDbCriteria();
         $criteria->select = 'id';
         $criteria->limit = 1;
         $criteria->addSearchCondition("LOWER(surname) || ' ' || LOWER(first_name)", '%' . strtolower($keyword) . '%', false);
@@ -186,88 +196,93 @@ EO_SQL;
         return $data;
     }
 
-    public function getAuthorDetails() {
-        return preg_replace(array('/\s{2,}/', '/[\t\n]/'), ' ', "{$this->id}. " . $this->getFirstName() ." ". $this->getMiddleName() . " " . $this->getSurname() . " (Orcid: " . ($this->orcid ? $this->orcid: "n/a") .")") ;
+    public function getAuthorDetails()
+    {
+        return preg_replace(array('/\s{2,}/', '/[\t\n]/'), ' ', "{$this->id}. " . $this->getFirstName() . " " . $this->getMiddleName() . " " . $this->getSurname() . " (Orcid: " . ($this->orcid ? $this->orcid : "n/a") . ")") ;
     }
 
-    public function getDisplayName() {
+    public function getDisplayName()
+    {
 
         if (null != $this->custom_name) {
             return $this->custom_name;
-        }
-        else {
+        } else {
             return self::generateDisplayName($this->getSurname(), $this->first_name, $this->middle_name);
         }
-
     }
 
-    public function getSurname() {
+    public function getSurname()
+    {
 
         return self::generateDisplayName($this->surname, null, null);
     }
 
-    public function getFirstName() {
+    public function getFirstName()
+    {
 
-        return $this->first_name ? rtrim($this->first_name,",;  ") : '';
+        return $this->first_name ? rtrim($this->first_name, ",;  ") : '';
     }
 
-    public function getMiddleName() {
+    public function getMiddleName()
+    {
 
-        return $this->middle_name ? rtrim($this->middle_name,",;  ") : '';
+        return $this->middle_name ? rtrim($this->middle_name, ",;  ") : '';
     }
 
-    public function getInitials() {
+    public function getInitials()
+    {
 
         return self::generateDisplayName(null, $this->first_name, $this->middle_name);
     }
 
-    public static function generateDisplayName($surname, $first_name, $middle_name) {
+    public static function generateDisplayName($surname, $first_name, $middle_name)
+    {
 
-        $to_initial_func = function($value) {
-            if( mb_ereg_match("[A-Z]+$", $value) || mb_ereg_match("Jr$", $value) ) { //keep asis If it's all initials or is "Jr"
+        $to_initial_func = function ($value) {
+            if (mb_ereg_match("[A-Z]+$", $value) || mb_ereg_match("Jr$", $value)) { //keep asis If it's all initials or is "Jr"
                 return $value;
             }
-            return mb_substr($value,0,1); //otherwise get the first letter. Use mb_* functions to preserve accentuated chars
+            return mb_substr($value, 0, 1); //otherwise get the first letter. Use mb_* functions to preserve accentuated chars
         };
 
-        $names_array = mb_split("[\s,.]+", $first_name ." ". $middle_name);
+        $names_array = mb_split("[\s,.]+", $first_name . " " . $middle_name);
         $initials =  implode("", array_map($to_initial_func, $names_array));
 
-        if( null === $surname ) {
+        if (null === $surname) {
             return $initials ;
-        }
-        else if ( null === $first_name && null === $middle_name) {
-            return rtrim($surname,",;  ") ; //Watch out: after the ";", there is a space AND an invisible non breakable space
-        }
-        else {
+        } elseif (null === $first_name && null === $middle_name) {
+            return rtrim($surname, ",;  ") ; //Watch out: after the ";", there is a space AND an invisible non breakable space
+        } else {
             return $surname . " " . $initials ;
         }
-
-
     }
 
-    public function getDatasetsByOrder() {
-        $criteria = new CDbCriteria;
+    public function getDatasetsByOrder()
+    {
+        $criteria = new CDbCriteria();
         $criteria->join = 'LEFT JOIN dataset_author da on da.dataset_id = t.id';
-        $criteria->addCondition('da.author_id = '.$this->id);
+        $criteria->addCondition('da.author_id = ' . $this->id);
         $criteria->order = 't.identifier asc';
         return Dataset::model()->findAll($criteria);
     }
 
-    public function getListOfDataset() {
-        return implode(', ', CHtml::listData($this->datasetsByOrder,'id','identifier'));
+    public function getListOfDataset()
+    {
+        return implode(', ', CHtml::listData($this->datasetsByOrder, 'id', 'identifier'));
     }
 
-    public static function findAttachedAuthorByUserId($user_id) {
-        $criteria = new CDbCriteria;
-        $criteria->addCondition('gigadb_user_id = '.$user_id) ;
+    public static function findAttachedAuthorByUserId($user_id)
+    {
+        $criteria = new CDbCriteria();
+        $criteria->addCondition('gigadb_user_id = ' . $user_id) ;
         return Author::model()->find($criteria);
     }
 
-    public function getIdenticalAuthors() {
-        $identicalToObj = Relationship::model()->findByAttributes(array("name"=>"IsIdenticalTo"));
-        if(null == $identicalToObj){
-            Yii::log("Error retrieving the relationship of name 'IsIdenticalTo'",'error');
+    public function getIdenticalAuthors()
+    {
+        $identicalToObj = Relationship::model()->findByAttributes(array("name" => "IsIdenticalTo"));
+        if (null == $identicalToObj) {
+            Yii::log("Error retrieving the relationship of name 'IsIdenticalTo'", 'error');
             return false;
         }
         $rel_id = $identicalToObj->id;
@@ -276,33 +291,33 @@ EO_SQL;
         UNION
         select author_id as identical from author_rel where related_author_id=:author_id and relationship_id=:rel_id
         ORDER BY identical";
-        $query_result = Yii::app()->db->createCommand($sql)->bindParam(":author_id",$author,PDO::PARAM_STR)->bindParam(":rel_id",$rel_id,PDO::PARAM_STR)->queryAll(false);
+        $query_result = Yii::app()->db->createCommand($sql)->bindParam(":author_id", $author, PDO::PARAM_STR)->bindParam(":rel_id", $rel_id, PDO::PARAM_STR)->queryAll(false);
 
         $get_row = function ($row) {
             return (int) $row[0];
         };
-        return array_map($get_row,$query_result);
+        return array_map($get_row, $query_result);
     }
 
-    function mergeAsIdenticalWithAuthor($author) {
-        $identicalToObj = Relationship::model()->findByAttributes(array("name"=>"IsIdenticalTo"));
-        if(null == $identicalToObj){
-            Yii::log("Error retrieving the relationship of name 'IsIdenticalTo'",'error');
+    function mergeAsIdenticalWithAuthor($author)
+    {
+        $identicalToObj = Relationship::model()->findByAttributes(array("name" => "IsIdenticalTo"));
+        if (null == $identicalToObj) {
+            Yii::log("Error retrieving the relationship of name 'IsIdenticalTo'", 'error');
             return false;
         }
 
         $authorObj = Author::model()->findByPk($author);
-        if(null == $authorObj){
-            Yii::log("Error retrieving Author({$author}) to merge with",'error');
+        if (null == $authorObj) {
+            Yii::log("Error retrieving Author({$author}) to merge with", 'error');
             return false;
-        }
-        else {
+        } else {
             $target_graph = $authorObj->getIdenticalAuthors();
             $target_graph[] = $author;
             $target_count = count($target_graph);
         }
 
-        if( in_array($this->id, $target_graph) ) {
+        if (in_array($this->id, $target_graph)) {
             return false;
         }
 
@@ -312,59 +327,57 @@ EO_SQL;
 
         //proc to construct a valid db record for author_rel to pass on to createMultipleInsertCommand
         $id_to_record = function ($origin_id, $target_id, $relationship_id) {
-            return ["author_id"=> $origin_id, "related_author_id"=>$target_id, "relationship_id"=>$relationship_id];
+            return ["author_id" => $origin_id, "related_author_id" => $target_id, "relationship_id" => $relationship_id];
         };
 
         $connection = Yii::app()->db->getSchema()->getCommandBuilder();
 
         foreach ($origin_graph as $origin_node) {
-
-            $command = $connection->createMultipleInsertCommand('author_rel', array_map( $id_to_record,
-                    array_fill(0, $target_count, $origin_node),
-                    $target_graph,
-                    array_fill(0, $target_count, $identicalToObj->id)
-                )
-            );
+            $command = $connection->createMultipleInsertCommand('author_rel', array_map(
+                $id_to_record,
+                array_fill(0, $target_count, $origin_node),
+                $target_graph,
+                array_fill(0, $target_count, $identicalToObj->id)
+            ));
             $inserted_count = $command->execute();
             $success = $success && ( $target_count == $inserted_count ? true : false );
         }
 
         return $success;
-
-
     }
 
 
-    public function unMerge() {
-        $outward_edges_from_this_author = new CDbCriteria;
+    public function unMerge()
+    {
+        $outward_edges_from_this_author = new CDbCriteria();
         $outward_edges_from_this_author->addCondition("author_id={$this->id} or related_author_id={$this->id}");
         $outward_edges = AuthorRel::model()->findAll($outward_edges_from_this_author);
         $success = true ;
-        foreach($outward_edges as $edge) {
+        foreach ($outward_edges as $edge) {
             $edge_id = $edge->id;
-            if( $edge->delete() ) {
-                Yii::log("success deleting edge {$edge_id}",'info');
+            if ($edge->delete()) {
+                Yii::log("success deleting edge {$edge_id}", 'info');
                 $success = $success && true ;
-            }
-            else {
-                Yii::log("error deleting edge {$edge_id}",'error');
+            } else {
+                Yii::log("error deleting edge {$edge_id}", 'error');
                 $success = $success && false ;
             }
         }
 
         return $success;
-
     }
 
-    public function getIdenticalAuthorsDisplayName( ) {
+    public function getIdenticalAuthorsDisplayName()
+    {
         $get_display_name = function ($author_id) {
             $author = Author::model()->findByPk($author_id);
-            return !empty($author)?$author->getDisplayName():null;
+            return !empty($author) ? $author->getDisplayName() : null;
         };
-        return array_map($get_display_name,$this->getIdenticalAuthors());
+        return array_map($get_display_name, $this->getIdenticalAuthors());
     }
 
-    public function IsIdenticalTo($author) {
-        return $this->id == $author || in_array($author,$this->getIdenticalAuthors());
+    public function IsIdenticalTo($author)
+    {
+        return $this->id == $author || in_array($author, $this->getIdenticalAuthors());
     }
 }

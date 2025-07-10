@@ -26,7 +26,7 @@ class DatasetAttributes extends CActiveRecord
      * @param string $className active record class name.
      * @return DatasetAttributes the static model class
      */
-    public static function model($className=__CLASS__)
+    public static function model($className = __CLASS__)
     {
         return parent::model($className);
     }
@@ -47,15 +47,15 @@ class DatasetAttributes extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('dataset_id, attribute_id, image_id', 'numerical', 'integerOnly'=>true),
+            array('dataset_id, attribute_id, image_id', 'numerical', 'integerOnly' => true),
             array('value', 'required'),
-            array('value', 'length', 'max'=>200),
+            array('value', 'length', 'max' => 200),
             array('value', 'rejectCode'),
-            array('units_id', 'length', 'max'=>30),
+            array('units_id', 'length', 'max' => 30),
             array('until_date', 'safe'),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            array('id, dataset_id, attribute_id, value, units_id, image_id, until_date', 'safe', 'on'=>'search'),
+            array('id, dataset_id, attribute_id, value, units_id, image_id, until_date', 'safe', 'on' => 'search'),
         );
     }
 
@@ -99,24 +99,24 @@ class DatasetAttributes extends CActiveRecord
         // Warning: Please modify the following code to remove attributes that
         // should not be searched.
 
-        $criteria=new CDbCriteria;
+        $criteria = new CDbCriteria();
 
-        $criteria->compare('id',$this->id);
+        $criteria->compare('id', $this->id);
 
-        $criteria->compare('dataset_id',$this->dataset_id);
+        $criteria->compare('dataset_id', $this->dataset_id);
 
-        $criteria->compare('attribute_id',$this->attribute_id);
+        $criteria->compare('attribute_id', $this->attribute_id);
 
-        $criteria->compare('value',$this->value,true);
+        $criteria->compare('value', $this->value, true);
 
-        $criteria->compare('units_id',$this->units_id,true);
+        $criteria->compare('units_id', $this->units_id, true);
 
-        $criteria->compare('image_id',$this->image_id);
+        $criteria->compare('image_id', $this->image_id);
 
-        $criteria->compare('until_date',$this->until_date,true);
+        $criteria->compare('until_date', $this->until_date, true);
 
         return new CActiveDataProvider('DatasetAttributes', array(
-            'criteria'=>$criteria,
+            'criteria' => $criteria,
         ));
     }
 
@@ -126,11 +126,12 @@ class DatasetAttributes extends CActiveRecord
      * @param string $attr the name of the attribute to be validated
      * @param array $params options specified in the validation rule
      */
-    public function rejectCode($attr,$params) {
+    public function rejectCode($attr, $params)
+    {
         $rawValue = CHtml::decode($this->value);
         $strippedValue = strip_tags($rawValue);
         if ($rawValue !== $strippedValue) {
-            $this->addError($attr,'Rejected value because of illegal characters detected');
+            $this->addError($attr, 'Rejected value because of illegal characters detected');
         }
     }
 }

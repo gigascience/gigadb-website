@@ -22,7 +22,7 @@ class AlternativeIdentifiers extends CActiveRecord
      * @param string $className active record class name.
      * @return AlternativeIdentifiers the static model class
      */
-    public static function model($className=__CLASS__)
+    public static function model($className = __CLASS__)
     {
         return parent::model($className);
     }
@@ -36,24 +36,24 @@ class AlternativeIdentifiers extends CActiveRecord
     }
 
     /**
-     * @return array validation rules for model attributes.
+     * @return array<int, array<int|string, bool|int|string>>
      */
-    public function rules()
+    public function rules(): array
     {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
             array('sample_id, extdb_id', 'required'),
-            array('sample_id, extdb_id', 'numerical', 'integerOnly'=>true),
-            array('extdb_accession', 'length', 'max'=>100),
+            array('sample_id, extdb_id', 'numerical', 'integerOnly' => true),
+            array('extdb_accession', 'length', 'max' => 100),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            array('id, sample_id, extdb_id, extdb_accession', 'safe', 'on'=>'search'),
+            array('id, sample_id, extdb_id, extdb_accession', 'safe', 'on' => 'search'),
         );
     }
 
     /**
-     * @return array relational rules.
+     * @return array<string, array{0: class-string<CBaseActiveRelation>, 1: class-string, 2?: string}>
      */
     public function relations()
     {
@@ -66,7 +66,7 @@ class AlternativeIdentifiers extends CActiveRecord
     }
 
     /**
-     * @return array customized attribute labels (name=>label)
+     * @return array<string, string> customized attribute labels (name=>label)
      */
     public function attributeLabels()
     {
@@ -87,19 +87,23 @@ class AlternativeIdentifiers extends CActiveRecord
         // Warning: Please modify the following code to remove attributes that
         // should not be searched.
 
-        $criteria=new CDbCriteria;
+        $criteria = new CDbCriteria();
 
-        $criteria->compare('id',$this->id);
-        $criteria->compare('sample_id',$this->sample_id);
-        $criteria->compare('extdb_id',$this->extdb_id);
-        $criteria->compare('extdb_accession',$this->extdb_accession,true);
+        $criteria->compare('id', $this->id);
+        $criteria->compare('sample_id', $this->sample_id);
+        $criteria->compare('extdb_id', $this->extdb_id);
+        $criteria->compare('extdb_accession', $this->extdb_accession, true);
 
         return new CActiveDataProvider($this, array(
-            'criteria'=>$criteria,
+            'criteria' => $criteria,
         ));
     }
 
-    public function behaviors() {
+    /**
+     * @return array<string, string>
+     */
+    public function behaviors()
+    {
         return array(
             'ActiveRecordLogableBehavior' => 'application.behaviors.DatasetRelatedTableBehavior',
         );

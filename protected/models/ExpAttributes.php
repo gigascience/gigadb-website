@@ -24,7 +24,7 @@ class ExpAttributes extends CActiveRecord
      * @param string $className active record class name.
      * @return ExpAttributes the static model class
      */
-    public static function model($className=__CLASS__)
+    public static function model($className = __CLASS__)
     {
         return parent::model($className);
     }
@@ -45,12 +45,12 @@ class ExpAttributes extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('exp_id, attribute_id', 'numerical', 'integerOnly'=>true),
-            array('value', 'length', 'max'=>1000),
-            array('units_id', 'length', 'max'=>50),
+            array('exp_id, attribute_id', 'numerical', 'integerOnly' => true),
+            array('value', 'length', 'max' => 1000),
+            array('units_id', 'length', 'max' => 50),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            array('id, exp_id, attribute_id, value, units_id', 'safe', 'on'=>'search'),
+            array('id, exp_id, attribute_id, value, units_id', 'safe', 'on' => 'search'),
         );
     }
 
@@ -91,20 +91,21 @@ class ExpAttributes extends CActiveRecord
         // Warning: Please modify the following code to remove attributes that
         // should not be searched.
 
-        $criteria=new CDbCriteria;
+        $criteria = new CDbCriteria();
 
-        $criteria->compare('id',$this->id);
-        $criteria->compare('exp_id',$this->exp_id);
-        $criteria->compare('attribute_id',$this->attribute_id);
-        $criteria->compare('value',$this->value,true);
-        $criteria->compare('units_id',$this->units_id,true);
+        $criteria->compare('id', $this->id);
+        $criteria->compare('exp_id', $this->exp_id);
+        $criteria->compare('attribute_id', $this->attribute_id);
+        $criteria->compare('value', $this->value, true);
+        $criteria->compare('units_id', $this->units_id, true);
 
         return new CActiveDataProvider($this, array(
-            'criteria'=>$criteria,
+            'criteria' => $criteria,
         ));
     }
 
-    public function behaviors() {
+    public function behaviors()
+    {
         return array(
             'ActiveRecordLogableBehavior' => 'application.behaviors.DatasetRelatedTableBehavior',
         );

@@ -36,18 +36,18 @@ class UserCommand extends CActiveRecord
         // will receive user inputs.
         return array(
             array('action_label, requester_id, actionable_id, status', 'required'),
-            array('requester_id, actioner_id, actionable_id', 'numerical', 'integerOnly'=>true),
-            array('action_label, status', 'length', 'max'=>32),
+            array('requester_id, actioner_id, actionable_id', 'numerical', 'integerOnly' => true),
+            array('action_label, status', 'length', 'max' => 32),
             array('request_date, action_date', 'safe'),
-            array('requester_id', 'unique', 'criteria'=>array(
-                'condition'=>'actionable_id=:actionable_id',
-                'params'=>array(
-                    ':actionable_id'=>$this->actionable_id
+            array('requester_id', 'unique', 'criteria' => array(
+                'condition' => 'actionable_id=:actionable_id',
+                'params' => array(
+                    ':actionable_id' => $this->actionable_id
                 )
             )),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('id, action_label, requester_id, actioner_id, actionable_id, request_date, action_date, status', 'safe', 'on'=>'search'),
+            array('id, action_label, requester_id, actioner_id, actionable_id, request_date, action_date, status', 'safe', 'on' => 'search'),
         );
     }
 
@@ -97,19 +97,19 @@ class UserCommand extends CActiveRecord
     {
         // @todo Please modify the following code to remove attributes that should not be searched.
 
-        $criteria=new CDbCriteria;
+        $criteria = new CDbCriteria();
 
-        $criteria->compare('id',$this->id);
-        $criteria->compare('action_label',$this->action_label,true);
-        $criteria->compare('requester_id',$this->requester_id);
-        $criteria->compare('actioner_id',$this->actioner_id);
-        $criteria->compare('actionable_id',$this->actionable_id);
-        $criteria->compare('request_date',$this->request_date,true);
-        $criteria->compare('action_date',$this->action_date,true);
-        $criteria->compare('status',$this->status,true);
+        $criteria->compare('id', $this->id);
+        $criteria->compare('action_label', $this->action_label, true);
+        $criteria->compare('requester_id', $this->requester_id);
+        $criteria->compare('actioner_id', $this->actioner_id);
+        $criteria->compare('actionable_id', $this->actionable_id);
+        $criteria->compare('request_date', $this->request_date, true);
+        $criteria->compare('action_date', $this->action_date, true);
+        $criteria->compare('status', $this->status, true);
 
         return new CActiveDataProvider($this, array(
-            'criteria'=>$criteria,
+            'criteria' => $criteria,
         ));
     }
 
@@ -119,7 +119,7 @@ class UserCommand extends CActiveRecord
      * @param string $className active record class name.
      * @return UserCommand the static model class
      */
-    public static function model($className=__CLASS__)
+    public static function model($className = __CLASS__)
     {
         return parent::model($className);
     }

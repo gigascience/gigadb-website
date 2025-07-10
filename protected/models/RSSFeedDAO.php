@@ -12,23 +12,24 @@ declare(strict_types=1);
  */
 class RSSFeedDAO
 {
-	public function getData() {
-		$criteria=new CDbCriteria;
-		$criteria->limit = 10;
-		$criteria->condition = "upload_status = 'Published'";
-		$criteria->order = 'publication_date DESC';
-		$latest_datasets = Dataset::model()->findAll($criteria);
+    public function getData()
+    {
+        $criteria = new CDbCriteria();
+        $criteria->limit = 10;
+        $criteria->condition = "upload_status = 'Published'";
+        $criteria->order = 'publication_date DESC';
+        $latest_datasets = Dataset::model()->findAll($criteria);
 
-		$criteria->condition = null;
-		$criteria->order = 'publication_date DESC';
-		$latest_messages = RssMessage::model()->findAll($criteria);
+        $criteria->condition = null;
+        $criteria->order = 'publication_date DESC';
+        $latest_messages = RssMessage::model()->findAll($criteria);
 
-		$rss_arr = array_merge($latest_datasets , $latest_messages);
+        $rss_arr = array_merge($latest_datasets, $latest_messages);
 
-        usort($rss_arr, function ($a,$b) {
+        usort($rss_arr, function ($a, $b) {
               return $a->publication_date < $b->publication_date;
         });
 
         return $rss_arr;
-	}
+    }
 }

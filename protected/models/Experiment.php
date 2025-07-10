@@ -25,7 +25,7 @@ class Experiment extends CActiveRecord
      * @param string $className active record class name.
      * @return Experiment the static model class
      */
-    public static function model($className=__CLASS__)
+    public static function model($className = __CLASS__)
     {
         return parent::model($className);
     }
@@ -46,12 +46,12 @@ class Experiment extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('dataset_id', 'numerical', 'integerOnly'=>true),
-            array('experiment_type, experiment_name', 'length', 'max'=>100),
-            array('exp_description', 'length', 'max'=>1000),
+            array('dataset_id', 'numerical', 'integerOnly' => true),
+            array('experiment_type, experiment_name', 'length', 'max' => 100),
+            array('exp_description', 'length', 'max' => 1000),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            array('id, experiment_type, experiment_name, exp_description, dataset_id', 'safe', 'on'=>'search'),
+            array('id, experiment_type, experiment_name, exp_description, dataset_id', 'safe', 'on' => 'search'),
         );
     }
 
@@ -93,20 +93,21 @@ class Experiment extends CActiveRecord
         // Warning: Please modify the following code to remove attributes that
         // should not be searched.
 
-        $criteria=new CDbCriteria;
+        $criteria = new CDbCriteria();
 
-        $criteria->compare('id',$this->id);
-        $criteria->compare('experiment_type',$this->experiment_type,true);
-        $criteria->compare('experiment_name',$this->experiment_name,true);
-        $criteria->compare('exp_description',$this->exp_description,true);
-        $criteria->compare('dataset_id',$this->dataset_id);
+        $criteria->compare('id', $this->id);
+        $criteria->compare('experiment_type', $this->experiment_type, true);
+        $criteria->compare('experiment_name', $this->experiment_name, true);
+        $criteria->compare('exp_description', $this->exp_description, true);
+        $criteria->compare('dataset_id', $this->dataset_id);
 
         return new CActiveDataProvider($this, array(
-            'criteria'=>$criteria,
+            'criteria' => $criteria,
         ));
     }
 
-    public function behaviors() {
+    public function behaviors()
+    {
         return array(
             'ActiveRecordLogableBehavior' => 'application.behaviors.DatasetRelatedTableBehavior',
         );

@@ -17,12 +17,12 @@ declare(strict_types=1);
  */
 class AuthorRel extends CActiveRecord
 {
-	/**
+    /**
      * Returns the static model of the specified AR class.
      * @param string $className active record class name.
      * @return AuthorRel the static model class
      */
-    public static function model($className=__CLASS__)
+    public static function model($className = __CLASS__)
     {
         return parent::model($className);
     }
@@ -44,10 +44,10 @@ class AuthorRel extends CActiveRecord
         // will receive user inputs.
         return array(
             array('author_id, related_author_id', 'required'),
-            array('author_id, related_author_id, relationship_id', 'numerical', 'integerOnly'=>true),
+            array('author_id, related_author_id, relationship_id', 'numerical', 'integerOnly' => true),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            array('id, author_id, related_author_id, relationship_id', 'safe', 'on'=>'search'),
+            array('id, author_id, related_author_id, relationship_id', 'safe', 'on' => 'search'),
         );
     }
 
@@ -86,24 +86,22 @@ class AuthorRel extends CActiveRecord
         // Warning: Please modify the following code to remove attributes that
         // should not be searched.
 
-        $criteria=new CDbCriteria;
+        $criteria = new CDbCriteria();
 
-        $criteria->compare('id',$this->id);
-        $criteria->compare('author_id',$this->author_id);
-        $criteria->compare('related_author_id',$this->related_author_id);
-        $criteria->compare('relationship_id',$this->relationship_id);
+        $criteria->compare('id', $this->id);
+        $criteria->compare('author_id', $this->author_id);
+        $criteria->compare('related_author_id', $this->related_author_id);
+        $criteria->compare('relationship_id', $this->relationship_id);
 
         return new CActiveDataProvider($this, array(
-            'criteria'=>$criteria,
+            'criteria' => $criteria,
         ));
     }
 
-    public function behaviors() {
+    public function behaviors()
+    {
         return array(
             'ActiveRecordLogableBehavior' => 'application.behaviors.DatasetRelatedTableBehavior',
         );
     }
-
 }
-
-?>

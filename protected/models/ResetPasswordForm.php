@@ -17,7 +17,7 @@ class ResetPasswordForm extends CFormModel
     {
         return array(
             array('password, confirmPassword, user_id', 'required'),
-            array('password', 'compare', 'compareAttribute'=>'confirmPassword'),
+            array('password', 'compare', 'compareAttribute' => 'confirmPassword'),
         );
     }
 
@@ -27,19 +27,20 @@ class ResetPasswordForm extends CFormModel
     public function attributeLabels()
     {
         return array(
-            'password'=>Yii::t('app' ,'Password'),
-            'confirmPassword'=>Yii::t('app' ,'Confirm Password'),
+            'password' => Yii::t('app', 'Password'),
+            'confirmPassword' => Yii::t('app', 'Confirm Password'),
         );
     }
 
-    public function changePass(){
+    public function changePass()
+    {
         $user = User::model()->findByPk($this->user_id);
-        if(isset($user)){
+        if (isset($user)) {
             $user->password = $this->password;
             $user->password_repeat = $this->confirmPassword;
             $user->encryptPassword();
 
-            if($user->save(false)) {
+            if ($user->save(false)) {
                 return true;
             }
         }
