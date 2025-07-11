@@ -145,7 +145,7 @@ Feature: form to update dataset details
   Scenario: Open private url is working
     When I am on "/adminDataset/update/id/5"
     And I press the button "Create/Reset Private URL"
-    And I wait "1" seconds
+    And I wait "3" seconds
     Then I should see current url contains "/dataset/100039/token/"
     And I should see "Genomic data of the Puerto Rican Parrot (Amazona vittata) from a locally funded project."
 

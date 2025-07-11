@@ -55,7 +55,11 @@ class AdminSampleController extends Controller
             $model->name = $sample['name'];
             $array = explode(":", $sample['species_id']);
             $tax_id = $array[0];
-            if (!empty($tax_id)) {
+            if (empty($tax_id)) {
+                $model->addError('error', 'Taxon ID is empty!');
+            } elseif (!is_numeric($tax_id)) {
+                $model->addError('error', 'Taxon ID ' . $tax_id . ' is not numeric!');
+            } else {
                 $species = $this->findSpeciesRecord((int) $tax_id, $model, $sample);
                 if ($species) {
                     # save to create a new sample record with sample id which is needed for findingh sampleAttribute model
@@ -66,8 +70,6 @@ class AdminSampleController extends Controller
                         }
                     }
                 }
-            } else {
-                $model->addError('error', 'Taxon ID is empty!');
             }
         }
 
