@@ -68,6 +68,7 @@ class AdminRelationController extends Controller
 
                 if (!$model->save()) {
                     $this->render('create', array('model' => $model));
+                    Yii::app()->end();
                 }
 
                 if ($attributes['add_reciprocal']) {

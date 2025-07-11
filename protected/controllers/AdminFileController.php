@@ -404,10 +404,11 @@ class AdminFileController extends Controller
             if(!$model->setSizeValue()) {
                 $model->addError('size', 'You need to indicate a valid size for the file');
 
-                return $this->render('update', array(
+                $this->render('update', array(
                     'model' => $model,
                     'attribute' => $attribute
                 ));
+                Yii::app()->end();
             }
 
             if ($model->save()) {
@@ -433,7 +434,7 @@ class AdminFileController extends Controller
         }
 
         $this->registerTooltipScript();
-        return $this->render('update', array(
+        $this->render('update', array(
             'model' => $model,
             'attribute' => $attribute
         ));

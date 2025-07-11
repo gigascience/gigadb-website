@@ -129,6 +129,7 @@ class DatasetController extends Controller
                 return $this->render('interstitial', array(
                     'model' => $assembly->getDataset()
                 ));
+                Yii::app()->end();
             }
         }
 
@@ -154,12 +155,15 @@ class DatasetController extends Controller
                 'columns' => $sampleSettings["columns"],
                 'flag' => $flag,
             ));
+            Yii::app()->end();
         };
 
         // Different rendering based on page type (invalid, hidden, public)
         if ("invalid" === $datasetPageSettings->getPageType()) {
-            return $this->render('invalid', array('model' => new Dataset('search'), 'keyword' => $id, 'general_search' => 1));
-        } elseif (in_array($datasetPageSettings->getPageType(), ["hidden","draft", "mockup"])) {
+            $this->render('invalid', array('model' => new Dataset('search'), 'keyword' => $id, 'general_search' => 1));
+            Yii::app()->end();
+        }
+        if (in_array($datasetPageSettings->getPageType(), ["hidden","draft", "mockup"])) {
             // Page private ? Disable robot to index
             $this->metaData['private'] = true;
 
@@ -168,11 +172,12 @@ class DatasetController extends Controller
             } else {
                 Yii::log('Request is invalid for URI: ' . $_SERVER['REQUEST_URI'], 'error');
                 $this->render('invalid', array('model' => new Dataset('search'), 'keyword' => $id));
+                Yii::app()->end();
             }
-        } else { //page type is public
-            // specify canonical URL due to samples and files pagination generating multiple URLs with the same main content
-            $this->canonicalUrl = Yii::app()->request->hostInfo . '/dataset/' . $model->identifier;
-            $mainRenderer($assembly, $datasetPageSettings, $previousDataset, $nextDataset, $fileSettings, $sampleSettings, $flag);
         }
+        //page type is public
+        // specify canonical URL due to samples and files pagination generating multiple URLs with the same main content
+        $this->canonicalUrl = Yii::app()->request->hostInfo . '/dataset/' . $model->identifier;
+        $mainRenderer($assembly, $datasetPageSettings, $previousDataset, $nextDataset, $fileSettings, $sampleSettings, $flag);
     }
 }

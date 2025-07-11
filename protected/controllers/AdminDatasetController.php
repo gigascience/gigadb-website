@@ -95,6 +95,7 @@ class AdminDatasetController extends Controller
         $image = Yii::$app->request->post('Image');
         if (!$dataset_post_data || !$image) {
             $this->render('create', array('model' => $dataset,'datasetPageSettings' => $datasetPageSettings));
+            Yii::app()->end();
         }
 
         Yii::log("Processing submitted data", 'info');
@@ -112,6 +113,7 @@ class AdminDatasetController extends Controller
         if (!$dataset->validate()) {
             Yii::log("Dataset instance is not valid", 'info');
             $this->render('create', array('model' => $dataset,'datasetPageSettings' => $datasetPageSettings));
+            Yii::app()->end();
         }
 
         $datasetImage = CUploadedFile::getInstanceByName('datasetImage');
@@ -125,6 +127,7 @@ class AdminDatasetController extends Controller
                 $app->user->setFlash('updateError', 'An error occured while writing file to storage.');
 
                 $this->render('create', array('model' => $dataset,'datasetPageSettings' => $datasetPageSettings));
+                Yii::app()->end();
             }
         } else { //we use the generic image
             $dataset->image = Image::model()->findByPk(Image::GENERIC_IMAGE_ID);
@@ -135,7 +138,8 @@ class AdminDatasetController extends Controller
         if ($dataset->hasErrors() || !$dataset->image->validate()) {
             Yii::log(print_r($dataset->getErrors(), true), 'error');
 
-            $this->render('create', array('model' => $dataset,'datasetPageSettings' => $datasetPageSettings)) ;
+            $this->render('create', array('model' => $dataset,'datasetPageSettings' => $datasetPageSettings));
+            Yii::app()->end();
         }
 
         Yii::log("Image data associated to new dataset is valid", "info");
@@ -150,7 +154,8 @@ class AdminDatasetController extends Controller
         if (!$dataset->save()) {
             Yii::log(print_r($dataset->getErrors(), true), 'error');
 
-            $this->render('create', array('model' => $dataset,'datasetPageSettings' => $datasetPageSettings)) ;
+            $this->render('create', array('model' => $dataset,'datasetPageSettings' => $datasetPageSettings));
+            Yii::app()->end();
         }
         // link datatypes
         //TODO: PR - we need at least one datasetType saved
@@ -217,6 +222,7 @@ class AdminDatasetController extends Controller
                 'curationlog' => $dataProvider,
                 'dataset_id' => $id,
             ));
+            Yii::app()->end();
         }
 
         Yii::log('**** new attributes: ' . print_r($postDataset, true), 'warning');
