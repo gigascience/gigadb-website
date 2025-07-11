@@ -774,41 +774,41 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242&lt;</pre>
                         <h2 class="page-subtitle" id="terminologyTitle">Terminology</h2>
                         <p>To specify exact fields to return data from, use terms; <span>dataset?=</span>, <span>sample?=</span>, <span>file?=</span>, (or <span>experiment?=</span><span aria-hidden="true">*</span>)</p>
                         <p><span aria-hidden="true">* - </span><em>experiment will be implemented in the future</em></p>
-                        <p>To search for datasets without the ID's, use the term <span>search?keyword=</span></p>
+                        <!-- <p>To search for datasets without the ID's, use the term <span>search?keyword=</span></p> -->
                         <p>To search by specific attributes use <span>search?&lt;attribute_name&gt;=</span></p>
                         <p>Available <strong>attribute_name</strong> to search include:</p>
                         <dl class="help-description-list">
-                            <div class="help-definition-container">
+                            <!-- <div class="help-definition-container">
                                 <dt><strong>taxno</strong></dt>
                                 <dd>Taxonomic ID (NCBI)</dd>
-                            </div>
+                            </div> -->
 
-                            <div class="help-definition-container">
+                            <!-- <div class="help-definition-container">
                                 <dt><strong>taxname</strong></dt>
                                 <dd>species name (nb must exact spelling, no synonyms searched)</dd>
-                            </div>
+                            </div> -->
 
-                            <div class="help-definition-container">
+                            <!-- <div class="help-definition-container">
                                 <dt><strong>author</strong></dt>
                                 <dd>restricts search to the author table</dd>
-                            </div>
+                            </div> -->
 
-                            <div class="help-definition-container">
+                            <!-- <div class="help-definition-container">
                                 <dt><strong>datasettype</strong></dt>
                                 <dd>restricts search to the types of datasets, e.g. metagenomic, genomic, transcriptomic etc.</dd>
-                            </div>
+                            </div> -->
 
-                            <div class="help-definition-container">
+                            <!-- <div class="help-definition-container">
                                 <dt><strong>manuscript</strong></dt>
                                 <dd>restricts search to the manuscript ID associated with <span class="text-italic">GigaDB</span> dataset(s) e.g. <span>search?manuscript=10.1186/2047-217X-3-21</span></dd>
-                            </div>
+                            </div> -->
 
                             <div class="help-definition-container">
                                 <dt><strong>project</strong></dt>
                                 <dd>restricts search to the project name, e.g. Genome 10K</dd>
                             </div>
                         </dl>
-                        <p>eg. <span>..../search?taxno=9606</span></p>
+                        <p>eg. <span>..../search?project=Genome%2010K</span></p>
                         <p>To specify results to be returned are ONLY a particular level of data, add the phrase <strong><span>&amp;results=dataset</span></strong>, or file or sample:<br />e.g. <a href="http://gigadb.org/api/search?project=Genome%2010K&amp;result=sample" target="_blank">http://gigadb.org/api/search?project=Genome%2010K&amp;result=sample</a></p>
                         <p>NB - the search still looks everywhere, but the results returned are only those samples that are in datasets that are found by the search.</p>
                         <p><strong>Default results are "dataset" only.</strong></p>
