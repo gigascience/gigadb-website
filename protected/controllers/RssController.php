@@ -2,17 +2,11 @@
 
 class RssController extends Controller {
 
-	public $title="";
-	public $rssLink="http://gigadb.org";
-	public $rssDescription="";
-	public $rssAbout="http://gigadb.org";
-    public $numberOfLatestDataset=10;
-
-	public function actionFeed($id){
-		$search=SearchRecord::model()->findByPk($id);
-		$ids=$this->search(json_decode($search->query,true));
-		$this->displayDataset($ids);
-	}
+	public $title = "TODO";
+	public $rssLink = "http://gigadb.org";
+	public $rssDescription = "";
+	public $rssAbout = "http://gigadb.org";
+    public $numberOfLatestDataset = 10;
 
     public function actionLatest(){
         $criteria=new CDbCriteria;
@@ -49,50 +43,42 @@ class RssController extends Controller {
         }
     }
 
-	public function displayDataset($ids){
-
-		$criteria = new CDbCriteria();
-		$criteria->addInCondition("id", $ids);
-		$datasets = Dataset::model()->findAll($criteria);
-		$this->generateFeed($datasets);
-	}
-
 	private function generateFeed($datasets){
-		Yii::import('ext.feed.*');
-		// specify feed type
-		$feed = new EFeed();
-		$feed->title = $this->title;
-		$feed->link = $this->rssLink;
-		$feed->description = 'GigaDB RSS Feed';
-		$feed->addChannelTag('language', 'en-us');
-		$feed->addChannelTag('pubDate', date(DATE_RSS, time()));
-		$feed->addChannelTag('link', 'http://www.gigadb.org' );
-		$feed->addChannelTag('title', 'GigaDB' );
-		foreach (array_values($datasets) as $dataset) {
+		$feed = new \Laminas\Feed\Writer\Feed();
+		$feed->setTitle($this->title);
+		$feed->setLink($this->rssLink);
+		$feed->setDescription('GigaDB RSS Feed');
+        $feed->setLanguage('en-us');
+        $feed->setDateModified(time());
+		foreach ($datasets as $dataset) {
             $title = $this->isDataset($dataset) ? $dataset->title : $dataset->message;
             $link = $this->isDataset($dataset) ? Yii::app()->request->hostInfo."/dataset/".$dataset->identifier : Yii::app()->request->hostInfo;
             $desc = $this->isDataset($dataset) ? $dataset->description : $dataset->message;
 			// create dataset item
-			$item = $feed->createNewItem();
-			$item->title = $title;
-			$item->link = $link;
-			$item->date = $dataset->publication_date;
-			$item->description = $desc;
-			$feed->addItem($item);
+			$item = $feed->createEntry();
+			$item->setTitle($title);
+			$item->setLink($link);
+			$item->setDateModified(strtotime($dataset->publication_date) ?: time());
+			$item->setDescription($desc);
+			$feed->addEntry($item);
 		}
-		if(count($datasets)==0){
+		if (count($datasets) === 0) {
 			echo "No Item";
+            Yii::app()->end();
 		}
-		else {
-			$feed->generateFeed();
-		}
+        header('Content-Type: application/rss+xml; charset=utf-8');
+        echo $feed->export('rss');
+        exit;
+
 	}
 
-    private function isDataset($class){
-        return (get_class($class) == 'Dataset') ;
+    private function isDataset($class): bool
+    {
+        return (get_class($class) === 'Dataset') ;
     }
 
-	private function convertDate($date){
+	private function convertDate($date)
+    {
         return strtotime($date);
     }
 }
