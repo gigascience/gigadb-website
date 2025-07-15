@@ -1,15 +1,15 @@
 # This is a barely modified version of the stilliard/docker-pure-ftpd's Dockerfile, so it can be built on ARM64 (Apple Silicon)
 #Stage 1 : builder debian image
-FROM debian:buster as builder
+FROM debian:bullseye as builder
 
 # properly setup debian sources
 ENV DEBIAN_FRONTEND noninteractive
-RUN echo "deb http://http.debian.net/debian buster main\n\
-deb-src http://http.debian.net/debian buster main\n\
-deb http://http.debian.net/debian buster-updates main\n\
-deb-src http://http.debian.net/debian buster-updates main\n\
-deb http://security.debian.org buster/updates main\n\
-deb-src http://security.debian.org buster/updates main\n\
+RUN echo "deb http://deb.debian.org/debian/ bullseye main\n\
+deb-src http://deb.debian.org/debian/ bullseye main\n\
+deb http://security.debian.org/debian-security bullseye-security main\n\
+deb-src http://security.debian.org/debian-security bullseye-security main\n\
+deb http://deb.debian.org/debian/ bullseye-updates main\n\
+deb-src http://deb.debian.org/debian/ bullseye-updates main\n\
 " > /etc/apt/sources.list
 
 # install package building helpers
@@ -30,7 +30,7 @@ RUN mkdir /tmp/pure-ftpd/ && \
 
 
 #Stage 2 : actual pure-ftpd image
-FROM debian:buster-slim
+FROM debian:bullseye-slim
 
 # feel free to change this ;)
 LABEL maintainer "Andrew Stilliard <andrew.stilliard@gmail.com>"
@@ -42,6 +42,7 @@ RUN apt-get -y update && \
 	apt-get  --no-install-recommends --yes install \
 	libc6 \
 	libcap2 \
+    libsodium23 \
     libmariadb3 \
 	libpam0g \
 	libssl1.1 \
