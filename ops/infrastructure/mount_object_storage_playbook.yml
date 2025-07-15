@@ -298,7 +298,7 @@
 
         - name: get private key
           ansible.builtin.uri:
-            url: "{{ gitlab_url }}/variables/hetzner_storage_box_privkey"
+            url: "{{ gitlab_url }}/variables/hetzner_storage_box_privkey?filter%5benvironment_scope%5d={{ gigadb_environment }}"
             method: GET
             headers:
               PRIVATE-TOKEN: "{{ gitlab_private_token }}"
