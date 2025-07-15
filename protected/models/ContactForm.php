@@ -9,21 +9,20 @@ declare(strict_types=1);
  */
 class ContactForm extends CFormModel
 {
-    public $name;
-    public $email;
-    public $subject;
-    public $body;
-    public $verifyCode;
+    public string $name;
+    public string $email;
+    public string $subject;
+    public string $body;
+    public string $verifyCode;
 
     /** For the captcha */
-    public $validacion;
+    public string $validacion;
 
     /**
      * Declares the validation rules.
      */
     public function rules()
     {
-
         return array(
             array('name, email, subject, body', 'required'),
             array('email', 'email'),
@@ -33,7 +32,7 @@ class ContactForm extends CFormModel
     /**
     * Validate captcha
     */
-    public function validateCaptcha($attribute, $params)
+    public function validateCaptcha(string $attribute, array $params): void
     {
         Yii::app()->captcha->validate($this, $attribute);
     }

@@ -20,7 +20,15 @@ use Ramsey\Uuid\Uuid;
  * @property integer|null $manuscript_id
  * @property string|null $token
  * @property User $submitter
+ * @property integer $submitter_id
+ * @property integer|null $publisher_id
  * @property string|null $description
+ * @property string $title
+ * @property string $dataset_size
+ * @property string $ftp_site
+ * @property string|null $excelfile
+ * @property string|null $excelfile_md5
+ * @property string|null $publication_date
  * The followings are the available model relations:
  */
 class Dataset extends CActiveRecord
@@ -42,11 +50,10 @@ class Dataset extends CActiveRecord
     // Directory names representing ranges of dataset DOIs
     const RANGES = ['104001_105000', '103001_104000', '102001_103000', '101001_102000', '100001_101000'];
 
-    public $dTypes = "";
-    public $commonNames = "";
-    public $email;
-    public $union;
-    public $types;
+    public string $dTypes = "";
+    public string $commonNames = "";
+    public string $email;
+    public array $types;
 
     public const ORIGINAL_UPLOAD_STATUS_LIST = [
         'ImportFromEM' => 'ImportFromEM',
@@ -70,9 +77,6 @@ class Dataset extends CActiveRecord
     /*
      * List of Many To Many RelationShip
      */
-
-    public $new_ext_acc_mirror;
-    public $new_ext_acc_link;
 
     public static function model($className = __CLASS__)
     {
@@ -141,35 +145,44 @@ class Dataset extends CActiveRecord
         );
     }
 
-    public function getPolicy()
+    public function getPolicy(): ?DatasetAttributes
     {
         $att = Attributes::model()->findByAttributes(array('attribute_name' => Attributes::FUP));
         if (!$att) {
             return null;
         }
+
         return DatasetAttributes::model()->findByAttributes(array('dataset_id' => $this->id, 'attribute_id' => $att->id));
     }
 
-    public function getSamplesInIds($ids)
+    /**
+     * @return Sample[]
+     */
+    public function getSamplesInIds(array $ids): array
     {
         $crit = new CDbCriteria();
         $crit->join = "join dataset_sample ds on ds.sample_id = t.id";
         $crit->condition = "ds.dataset_id = :id";
         $crit->params = array(':id' => $this->id);
         $crit->addInCondition("t.id", $ids);
+
         return Sample::model()->findAll($crit);
     }
 
-    public function getFilesInIds($ids)
+    /**
+     * @return File[]
+     */
+    public function getFilesInIds(array $ids): array
     {
         $crit = new CDbCriteria();
         $crit->condition = "dataset_id = :id";
         $crit->params = array(':id' => $this->id);
         $crit->addInCondition("id", $ids);
+
         return File::model()->findAll($crit);
     }
 
-    public function getPreviousDoi()
+    public function getPreviousDoi(): ?Dataset
     {
         return Dataset::model()->find(array('condition' => "identifier < :id and upload_status = 'Published'",
                 'params' => array(':id' => $this->identifier),
@@ -177,7 +190,7 @@ class Dataset extends CActiveRecord
         ));
     }
 
-    public function getNextDoi()
+    public function getNextDoi(): ?Dataset
     {
         return Dataset::model()->find(array('condition' => "identifier > :id and upload_status = 'Published'",
                 'params' => array(':id' => $this->identifier),
@@ -185,20 +198,19 @@ class Dataset extends CActiveRecord
         ));
     }
 
-    public static function clearDatasetSession()
+    public static function clearDatasetSession(): void
     {
         $vars = array('dataset', 'images', 'authors', 'projects',
             'links', 'externalLinks', 'relations', 'samples', 'dataset_id', 'identifier', 'filecount',
             'link_database', 'isOld');
+
         foreach ($vars as $var) {
             unset($_SESSION[$var]);
-            //    $_SESSION[$var] = CJSON::decode($dataset_session->$var);
         }
     }
 
-    public function getAuthorNames()
+    public function getAuthorNames(): string
     {
-
         $das = Yii::app()->db->createCommand()
             ->select('a.id')
             ->from('dataset_author')
@@ -210,7 +222,7 @@ class Dataset extends CActiveRecord
         $l = array();
         foreach ($das as $da) {
             $author = Author::model()->findByPk($da['id']);
-            $name = $author->displayName;
+            $name = $author->getDisplayName();
             $l[] = CHtml::link($name, "/search/new?keyword=$name&author_id=" . $da['id'], array('class' => 'result-sub-links'));
         }
         return implode('; ', $l);

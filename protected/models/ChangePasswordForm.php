@@ -38,14 +38,15 @@ class ChangePasswordForm extends CFormModel
     public function changePass(): bool
     {
         $user = User::model()->findByPk($this->user_id);
-        if ($user) {
-            $user->password = $this->password;
-            $user->password_repeat = $this->confirmPassword;
-            $user->encryptPassword();
+        if (!$user) {
+            return false;
+        }
+        $user->password = $this->password;
+        $user->password_repeat = $this->confirmPassword;
+        $user->encryptPassword();
 
-            if ($user->save()) {
-                return true;
-            }
+        if ($user->save()) {
+            return true;
         }
 
         return false;

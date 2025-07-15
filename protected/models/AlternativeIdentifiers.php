@@ -30,14 +30,11 @@ class AlternativeIdentifiers extends CActiveRecord
     /**
      * @return string the associated database table name
      */
-    public function tableName()
+    public function tableName(): string
     {
         return 'alternative_identifiers';
     }
 
-    /**
-     * @return array<int, array<int|string, bool|int|string>>
-     */
     public function rules(): array
     {
         // NOTE: you should only define rules for those attributes that
@@ -52,10 +49,7 @@ class AlternativeIdentifiers extends CActiveRecord
         );
     }
 
-    /**
-     * @return array<string, array{0: class-string<CBaseActiveRelation>, 1: class-string, 2?: string}>
-     */
-    public function relations()
+    public function relations(): array
     {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
@@ -65,10 +59,7 @@ class AlternativeIdentifiers extends CActiveRecord
         );
     }
 
-    /**
-     * @return array<string, string> customized attribute labels (name=>label)
-     */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return array(
             'id' => 'ID',

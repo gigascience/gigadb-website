@@ -236,7 +236,7 @@ class AdminDatasetController extends Controller
         //curator
         $curatorId = $postDataset['curator_id'];
         if ((int) $curatorId !== (int) $model->curator_id) {
-            CurationLog::createlog_assign_curator($id, $curatorId);
+            CurationLog::createlog_assign_curator((int) $id, $curatorId);
             $model->curator_id = $curatorId;
         }
 
@@ -246,12 +246,14 @@ class AdminDatasetController extends Controller
 
         if ($model->upload_status === 'Published' && !$model->is_publishable) {
             Yii::app()->user->setFlash('updateError', 'You can\'t update published datasets without minting the DOI.');
-           return  $this->render('update', array(
+            $this->render('update', array(
                 'model' => $model,
                 'datasetPageSettings' => $datasetPageSettings,
                 'curationlog'=> $dataProvider,
                 'dataset_id'=> $id,
             ));
+
+            Yii::app()->end();
         }
 
         // Image information
@@ -630,7 +632,7 @@ class AdminDatasetController extends Controller
         }
 
         if ($statusIsSet) {
-            CurationLog::createlog($model->upload_status, $model->id);
+            CurationLog::createlog($model->upload_status, (int) $model->id);
         }
     }
 

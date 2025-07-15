@@ -16,13 +16,15 @@ declare(strict_types=1);
  * @property string|null $last_modified_date
  * @property string|null $last_modified_by
  * @property string|null $created_by
+ * @property string|null $action
+ * @property string|null $comments
  *
  * The followings are the available model relations:
  * @property Dataset $dataset
  */
 class CurationLog extends CActiveRecord
 {
-    public $doi;
+    public string $doi;
 
     /**
      * Returns the static model of the specified AR class.
@@ -147,7 +149,7 @@ class CurationLog extends CActiveRecord
         return $curationlog->save();
     }
 
-    public static function createGeneralCurationLogEntry(int $id, string $action, string $content, $author = 'system'): bool
+    public static function createGeneralCurationLogEntry(int $id, string $action, string $content, string $author = 'system'): bool
     {
         $curationLog = self::makeNewInstanceForCurationLogBy($id, $author);
         $curationLog->action = $action;
@@ -170,23 +172,30 @@ class CurationLog extends CActiveRecord
         return self::makeNewInstanceForDatasetBy($id, $creator);
     }
 
-    public static function createlog($status, $id)
+    public static function createlog(string $status, int $id): bool
     {
         $fullName = self::getCurrentUserFullName();
         $curationlog = self::makeNewInstanceForDatasetBy((int)$id, $fullName);
         $curationlog->action = "Status changed to " . $status;
+
         return $curationlog->save();
     }
 
-    public static function createlog_assign_curator($id, $curatorId)
+    public static function createlog_assign_curator(int $id, int $curatorId): bool
     {
-        $User1 = User::model()->find('id=:id', array(':id' => Yii::app()->user->id));
+        /** @var CWebApplication $app */
+        $app = Yii::app();
+
+        /** @var User $userModel */
+        $userModel = User::model();
+
+        $User1 = $userModel->find('id=:id', array(':id' => $app->user->id));
         $username = sprintf('%s %s', $User1->first_name, $User1->last_name);
-        $User = $curatorId ? User::model()->find('id=:id', array(':id' => $curatorId)) : null;
+        $User = $curatorId ? $userModel->find('id=:id', array(':id' => $curatorId)) : null;
         $displayName = $curatorId ? sprintf('%s %s', $User->first_name, $User->last_name) : 'none';
 
 
-        $curationlog =  self::makeNewInstanceForDatasetBy((int)$id, $username);
+        $curationlog =  self::makeNewInstanceForDatasetBy($id, $username);
         $curationlog->action = "Curator Assigned:" . " $displayName";
 
         return $curationlog->save();
@@ -218,7 +227,7 @@ class CurationLog extends CActiveRecord
         ));
     }
 
-    public function searchByDatasetId($id)
+    public function searchByDatasetId(int $id): CActiveDataProvider
     {
         $criteria = new CDbCriteria();
         $criteria->condition = 'dataset_id=:id';

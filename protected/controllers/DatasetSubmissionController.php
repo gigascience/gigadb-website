@@ -150,10 +150,10 @@ EO_MAIL;
                 $fileLink .= 'Files:<br/>';
                 $fileLink = $link = Yii::app()->params['home_url'] . "/datasetSubmission/updateFile/?id=" . $dataset_id;
                 $dataset->upload_status = 'Pending';
-                CurationLog::createlog($dataset->upload_status, $dataset->id);
+                CurationLog::createlog($dataset->upload_status, (int) $dataset->id);
             } else {
                 $dataset->upload_status = 'Request';
-                CurationLog::createlog($dataset->upload_status, $dataset->id);
+                CurationLog::createlog($dataset->upload_status, (int) $dataset->id);
             }
 
             if (!$dataset->save()) {
