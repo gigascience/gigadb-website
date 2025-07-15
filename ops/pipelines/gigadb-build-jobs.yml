@@ -163,9 +163,9 @@ b_gigadb:
     - env | grep -v "SAST" | grep -iE "^(staging_|remote_)" | grep -viE "(password|email|tester|secret|key|user|app_id|client_id|token|tlsauth)" | tee -a $APPLICATION/.env
     - env | grep -v "SAST" | grep -iE "^TIDEWAYS_" | tee -a $APPLICATION/.env
     - env | grep -v "SAST" | grep -v "DOCKER_" | grep -v "GITLAB_" | grep -v "CI_" | grep -viE "hetzner_storage_box_" | grep -iE "(password|email|tester|secret|user|app_id|client_id|token)" | grep -viE "tlsauth" | grep -v "client_" | grep -v "token_uri" | tee -a $APPLICATION/.secrets
-    - env | grep -v "SAST" | grep -iE "gitlab_private_token" | tee -a $APPLICATION/.secrets
-    - env | grep -v "SAST" | grep -iE "CI_PROJECT_URL" | tee -a $APPLICATION/.secrets
-    - env | grep -v "SAST" | grep -iE "^(gigadb_|fuw_).+=.+$" | tee -a $APPLICATION/.secrets
+    - env | grep -v "SAST" | grep -viE "hetzner_storage_box_" | grep -iE "gitlab_private_token" | tee -a $APPLICATION/.secrets
+    - env | grep -v "SAST" | grep -viE "hetzner_storage_box_" | grep -iE "CI_PROJECT_URL" | tee -a $APPLICATION/.secrets
+    - env | grep -v "SAST" | grep -viE "hetzner_storage_box_" | grep -iE "^(gigadb_|fuw_).+=.+$" | tee -a $APPLICATION/.secrets
     # pulling the CI build of the application from registry and configure it for staging for the purpose of building production containers
     - time docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
 #    - docker pull registry.gitlab.com/$CI_PROJECT_PATH/fuw-admin:latest || true
