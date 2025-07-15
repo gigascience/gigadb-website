@@ -22,7 +22,7 @@
     - env > full_env.txt
     - env | grep -v "SAST" | grep -iE "^(staging_|remote_)" | grep -viE "(password|email|tester|secret|key|user|app_id|client_id|token|tls)" | tee -a  $APPLICATION/.env
     - env | grep -v "SAST" | grep -iE "^TIDEWAYS_" >> $APPLICATION/.env
-    - env | grep -v "SAST" | grep -v "DOCKER_" | grep -v "GITLAB_" | grep -v "CI_" | grep -iE "(password|email|tester|secret|user|app_id|client_id|token)" | grep -viE "tlsauth" | grep -v "client_" | grep -v "token_uri" | tee -a $APPLICATION/.secrets
+    - env | grep -v "SAST" | grep -v "DOCKER_" | grep -v "GITLAB_" | grep -v "CI_" | grep -viE "hetzner_storage_box_" | grep -iE "(password|email|tester|secret|user|app_id|client_id|token)" | grep -viE "tlsauth" | grep -v "client_" | grep -v "token_uri" | tee -a $APPLICATION/.secrets
     - env | grep -v "SAST" | grep "^CI_API_V4_URL" | tee -a  $APPLICATION/.env
     - env | grep -v "SAST" | grep "^CI_PROJECT_PATH" | tee -a  $APPLICATION/.env
     - env | grep -v "SAST" | grep "^GITLAB_PRIVATE_TOKEN" | tee -a  $APPLICATION/.secrets
