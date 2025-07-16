@@ -6,7 +6,7 @@
         <p>
             <h4>
             <?= $model->authorNames ?>
-            (<?=substr($model->publication_date,0,4)?>): <?= $model->title.' '.$model->publisher->name.'. '; ?>
+            (<?=substr($model->publication_date, 0, 4)?>): <?= $model->title . ' ' . $model->publisher->name . '. '; ?>
             <a href="http://dx.doi.org/10.5524/<?= $model->identifier; ?>">http://dx.doi.org/10.5524/<?= $model->identifier ?></a>
             </h4>
         </p>
