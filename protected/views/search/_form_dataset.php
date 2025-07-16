@@ -8,29 +8,29 @@
         </div>
     <? } ?>
 
-    <?php echo CHtml::beginForm('/search/new','GET',array('class'=>'search-bar clearfix','onsubmit'=>'return validateForm(this);','role'=>'search')); ?>
+    <?php echo CHtml::beginForm('/search/new', 'GET', array('class' => 'search-bar clearfix','onsubmit' => 'return validateForm(this);','role' => 'search')); ?>
     <?php echo CHtml::errorSummary($model); ?>
 
     
     
-    <?php        
-               
+    <?php
+
         $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
-            'name'=>'keyword',
+            'name' => 'keyword',
             //'source'=>array('ac1', 'ac2', 'ac3'),
             // 'source'=> array_values($dataset->getListTitles()),
-            'source'=> array_values(array()),
+            'source' => array_values(array()),
             // additional javascript options for the autocomplete plugin
-            'options'=>array(
-                             'minLength'=>'2',
+            'options' => array(
+                             'minLength' => '2',
                              ),
-            'htmlOptions'=>array(
-                                 'class'=>'search-input'                               
+            'htmlOptions' => array(
+                                 'class' => 'search-input'
                                  ),
             ));
-       
-       
-    ?>
+
+
+        ?>
     <button class="btn-search" type="submit"><span class="fa fa-search"><span class="visually-hidden">Search</span></span></button>
        
    

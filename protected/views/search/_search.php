@@ -1,25 +1,25 @@
-<?php echo CHtml::beginForm('/search/new','GET',array('class'=>'form','onsubmit'=>'return validateForm(this);','role'=>'search')); ?>
+<?php echo CHtml::beginForm('/search/new', 'GET', array('class' => 'form','onsubmit' => 'return validateForm(this);','role' => 'search')); ?>
 <?php echo CHtml::errorSummary($model); ?>
 <div class="form-group home-search-bar-group">
     <div class="input-group search-bar-group">
         <?php
 
         $this->widget('application.components.DeferrableCJuiAutoComplete', array(
-            'name'=>'keyword',
+            'name' => 'keyword',
             //'source'=>array('ac1', 'ac2', 'ac3'),
             // 'source'=> array_values($dataset->getListTitles()),
-            'source'=> array_values(array()),
+            'source' => array_values(array()),
             // additional javascript options for the autocomplete plugin
-            'options'=>array(
-                 'minLength'=>'2',
+            'options' => array(
+                 'minLength' => '2',
              ),
-            'htmlOptions'=>array(
-                'aria-label'=>'Search GigaDB',
-                'class'=>'form-control',
+            'htmlOptions' => array(
+                'aria-label' => 'Search GigaDB',
+                'class' => 'form-control',
              ),
-             'value'=>$model->keyword
+             'value' => $model->keyword
         ));
-          ?>
+        ?>
         <span class="input-group-btn">
             <button class="btn background-btn search-btn" type="submit"><i class="fa fa-search"></i> Search again</button>
 <!--TODO: Will re-implement the save search function in ticket #1168-->

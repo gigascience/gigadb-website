@@ -10,7 +10,7 @@
         $dsamples = array_filter($samples['data'], $filterOnDatasetId);
         $dfiles = array_filter($files['data'], $filterOnDatasetId);
         $is_display = in_array('dataset', $display) || (in_array('file', $display) && $dfiles) || (in_array('sample', $display) && $dsamples);
-        ?>
+    ?>
         <?php if ($is_display) { ?>
             <div class="search-result-card">
                 <!--Dataset section-->
@@ -32,13 +32,13 @@
 
                                     $listItems = '';
                                     $numberOfLinks = count($authorLinks);
-                                    foreach ($authorLinks as $index => $link) {
-                                        $listItems .= '<li>' . $link;
-                                        if ($index !== $numberOfLinks - 1) {
-                                            $listItems .= ';&nbsp;';
-                                        }
-                                        $listItems .= '</li>';
+                                foreach ($authorLinks as $index => $link) {
+                                    $listItems .= '<li>' . $link;
+                                    if ($index !== $numberOfLinks - 1) {
+                                        $listItems .= ';&nbsp;';
                                     }
+                                    $listItems .= '</li>';
+                                }
 
                                     $unorderedList = '<ul class="search-result-list search-result-author-list">' . $listItems . '</ul>';
 
