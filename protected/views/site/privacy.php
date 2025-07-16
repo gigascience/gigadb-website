@@ -1,21 +1,22 @@
 <?php
-$this->pageTitle='GigaDB - Terms of use';
+
+$this->pageTitle = 'GigaDB - Terms of use';
 
 //echo $this->renderInternal('Yii::app()->basePath'.'/../files/html/about.html');
 ?>
 
 <div class="clear"></div>
 <div class="row">
-	<div class="about-tabs-container">
-	    <a class="btn about-tabs" href="/site/term">Terms of use</a>
-	    <a class="btn about-tabs tab-active" href="/site/privacy">Privacy</a>	   
-	</div>
-	<div class="about1">  
-		<a href="/site/privacy#collection">Collection of Web-traffic Information </a>
-		<br>
-		<a href="/site/privacy#personal">Personal Data</a>
-		<br>
-		<br>
+    <div class="about-tabs-container">
+        <a class="btn about-tabs" href="/site/term">Terms of use</a>
+        <a class="btn about-tabs tab-active" href="/site/privacy">Privacy</a>      
+    </div>
+    <div class="about1">  
+        <a href="/site/privacy#collection">Collection of Web-traffic Information </a>
+        <br>
+        <a href="/site/privacy#personal">Personal Data</a>
+        <br>
+        <br>
                 <p>
                 <em>GigaDB</em> has implemented appropriate technical and organisational measures to ensure a level of security which we deem appropriate, taking into account the categories of data we collect and the way we process it.        
                 </p>
@@ -32,7 +33,7 @@ If you post or send offensive, inappropriate or objectionable content anywhere o
                 </p>
                 
                 <a name="collection"></a>  
-		<h2>Collection of Web-traffic Information </h2>
+        <h2>Collection of Web-traffic Information </h2>
                 <p>
                 <em>GigaDB</em> will record the visits to the website by using cookies and page tagging without collecting any personal identifiable information of users. A cookie can be used to identify a computer, it is not used to collect any personal information. In other words, it does not have the function of identifying an individual user of the website. Cookies are used to collect statistics about the number of visits of users to <em>GigaDB</em> and the users’ preference of websites and online services offered. You may choose to inactivate your browser’s cookies. If you inactivate the cookies, you will not be able to use some of the functions of <em>GigaDB</em>.    
                 </p>
@@ -79,8 +80,8 @@ If you post or send offensive, inappropriate or objectionable content anywhere o
                 We will NOT sell, give or share your personal data to third parties for any other reasons.    
                 </p>
                    
-		                             
-		
+                                     
+        
 
      
     </div>

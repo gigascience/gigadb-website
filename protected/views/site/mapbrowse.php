@@ -36,35 +36,35 @@ $this->widget('TitleBreadcrumb', [
 <?php
 $locationsLength = count($locations);
 if ($locationsLength > 0) {
-  $i = 1;
-  foreach ($locations as $location) {
-    $i++;
-    if ($i > 50000) {
-      break 1;
-    }
-    $locationValue = $location["value"];
-    $locationValue = preg_replace('/\s+/', '', $locationValue);
-    $formatCheck = preg_match('/-?[0-9]*[.][0-9]*[,]-?[0-9]*[.][0-9]*/', $locationValue);
-    if (!$formatCheck == 1) {
-      continue;
-    }
-    $val = explode(',', $locationValue);
-    if (strpos($val[0], '.') == false || !is_numeric($val[0])) {
-      continue;
-    }
-    if (strpos($val[1], '.') == false || !is_numeric($val[1])) {
-      continue;
-    }
-    if ($val[1] > 180 || $val[1] < -180) {
-      continue;
-    }
-    if ($val[0] > 85.05112878 || $val[0] < -85.05112878) {
-      continue;
-    }
-    $location["sciname"] = str_replace(",", "", $location["sciname"]);
+    $i = 1;
+    foreach ($locations as $location) {
+        $i++;
+        if ($i > 50000) {
+            break 1;
+        }
+        $locationValue = $location["value"];
+        $locationValue = preg_replace('/\s+/', '', $locationValue);
+        $formatCheck = preg_match('/-?[0-9]*[.][0-9]*[,]-?[0-9]*[.][0-9]*/', $locationValue);
+        if (!$formatCheck == 1) {
+            continue;
+        }
+        $val = explode(',', $locationValue);
+        if (strpos($val[0], '.') == false || !is_numeric($val[0])) {
+            continue;
+        }
+        if (strpos($val[1], '.') == false || !is_numeric($val[1])) {
+            continue;
+        }
+        if ($val[1] > 180 || $val[1] < -180) {
+            continue;
+        }
+        if ($val[0] > 85.05112878 || $val[0] < -85.05112878) {
+            continue;
+        }
+        $location["sciname"] = str_replace(",", "", $location["sciname"]);
 
 
-    ?>
+        ?>
                         {"type":"Feature",
                           "properties":{
                             "Sample ID": <?php echo $location["sampleid"]; ?>,
@@ -76,8 +76,8 @@ if ($locationsLength > 0) {
                               "coordinates":[<?php echo trim($val[1]); ?>,<?php echo trim($val[0]); ?>]
                             }
                           },
-    <?php
-  }
+        <?php
+    }
 }
 ?>
                     ]

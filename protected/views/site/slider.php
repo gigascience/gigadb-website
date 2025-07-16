@@ -2,30 +2,30 @@
   <!-- Carousel items -->
   <div class="carousel-inner module-inner" style='height:305px;'>
     <?php
-    $active="active";
-    $itemPerSlide=3;
-    $i=0;
-    foreach ($datasets as $key=>$dataset){
-        if($i%$itemPerSlide==0)  {?>
+    $active = "active";
+    $itemPerSlide = 3;
+    $i = 0;
+    foreach ($datasets as $key => $dataset){
+        if ($i % $itemPerSlide == 0)  {?>
         <div class="<? echo $active; ?> item">
         <? }?>
             <div class="data-block">
               <?php
 
-              $url = $dataset->getImageUrl();
+                $url = $dataset->getImageUrl();
 
-              echo CHtml::link(CHtml::image($url ,'image'), $dataset->shortUrl,array('class'=>'image-hint',  ));
-              echo 'DOI: '.CHtml::link("10.5524/".$dataset->identifier, $dataset->shortUrl);
-              echo '<br/><br/>';
-              $dtitle = strlen($dataset->title) > 70 ? strip_tags( substr($dataset->title , 0 , 70) ) .'...' : $dataset->title;
-              echo $dtitle;
-              echo '<br/><br/>';
-              echo CHtml::encode($dataset->publication_date);
-              ?>
+                echo CHtml::link(CHtml::image($url, 'image'), $dataset->shortUrl, array('class' => 'image-hint',  ));
+                echo 'DOI: ' . CHtml::link("10.5524/" . $dataset->identifier, $dataset->shortUrl);
+                echo '<br/><br/>';
+                $dtitle = strlen($dataset->title) > 70 ? strip_tags(substr($dataset->title, 0, 70)) . '...' : $dataset->title;
+                echo $dtitle;
+                echo '<br/><br/>';
+                echo CHtml::encode($dataset->publication_date);
+                ?>
             </div>
         <?php
 
-        if($i%$itemPerSlide==($itemPerSlide-1) || $i==count($datasets)-1 ) {?>
+        if ($i % $itemPerSlide == ($itemPerSlide - 1) || $i == count($datasets) - 1) {?>
             </div>
         <? }
         $i++;
