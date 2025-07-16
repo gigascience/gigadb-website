@@ -12,9 +12,9 @@
 	]);
 	?>
 
-	<?= $this->renderPartial('_form', array(
-		'model' => $model,
-		'scenario' => 'update',
-		'update' => true
-	)) ?>
+    <?= $this->renderPartial('_form', array(
+        'model' => $model,
+        'scenario' => 'update',
+        'update' => true
+    )) ?>
 </div>

@@ -22,7 +22,7 @@
                         <?= Yii::t('app', 'Modification Date') ?>
                     </th>
                     <th>
-                        <?= Yii::t('app','File Count') ?>
+                        <?= Yii::t('app', 'File Count') ?>
                     </th>
                 </tr>
             </thead>
@@ -30,10 +30,10 @@
             <?php
             for ($i = 0; $i < count($authoredDatasets); $i++) {
                 $class = $i % 2 == 0 ? 'even' : 'odd';
-                if(isset($selected) && $data[$i]->id==$selected) {
-                    $class = 'submit-selected';
-                }
-                ?>
+            if (isset($selected) && $data[$i]->id == $selected) {
+                $class = 'submit-selected';
+            }
+            ?>
                 <tr class="<?php echo $class; ?>" id="js-dataset-row-<?=$data[$i]->id?>">
                     <?
                     $upload_status = $data[$i]->upload_status;

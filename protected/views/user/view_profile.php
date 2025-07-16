@@ -37,7 +37,7 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
                               ['isActive' => true, 'label' => 'Your profile'],
                             ]
                           ]);
-                          ?>
+                            ?>
                             <section>
                               <div class="tabs nav-tabs" role="tablist">
                                   <a id="liedit" class="active" href="#edit" aria-controls="edit" role="tab" aria-selected="true" data-toggle="tab">Personal details</a>
@@ -55,36 +55,36 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
                                                     <div class="js-readonly-data">
                                                       <ul class="list-unstyled readonly-profile">
                                                       <?php
-                                                      foreach ($model as $key => $value) {
-                                                        if (strpos($key, '_') !== 0 && $key !== 'user_id') {
-                                                          $label = $model->getAttributeLabel($key);
+                                                        foreach ($model as $key => $value) {
+                                                            if (strpos($key, '_') !== 0 && $key !== 'user_id') {
+                                                                $label = $model->getAttributeLabel($key);
 
-                                                          if (is_bool($value)) {
-                                                            $value = $value ? 'Yes' : 'No';
-                                                          }
-                                                          ?>
+                                                                if (is_bool($value)) {
+                                                                    $value = $value ? 'Yes' : 'No';
+                                                                }
+                                                                ?>
                                                           <li class="row readonly-profile-item">
                                                             <div class="col-xs-5 readonly-profile-key"><?= $label ?></div>
                                                             <div class="col-xs-7 readonly-profile-value"><?= $value ?></div>
                                                           </li>
-                                                          <?php
+                                                                <?php
+                                                            }
                                                         }
-                                                      }
-                                                      ?>
+                                                        ?>
                                                       </ul>
                                                     </div>
                                                     <div class="js-editable-data">
                                                       <?php
-                                                      $form = $this->beginWidget(
-                                                        'CActiveForm',
-                                                        array(
-                                                          'id' => 'EditProfile-form',
-                                                          'enableAjaxValidation' => false,
-                                                          'htmlOptions' => array('class' => 'form-horizontal'),
-                                                        )
+                                                        $form = $this->beginWidget(
+                                                            'CActiveForm',
+                                                            array(
+                                                            'id' => 'EditProfile-form',
+                                                            'enableAjaxValidation' => false,
+                                                            'htmlOptions' => array('class' => 'form-horizontal'),
+                                                            )
                                                         );
 
-                                                      $this->widget('application.components.controls.TextField', [
+                                                        $this->widget('application.components.controls.TextField', [
                                                         'form' => $form,
                                                         'model' => $model,
                                                         'attributeName' => 'email',
@@ -94,8 +94,8 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
                                                         ],
                                                         'labelOptions' => ['class' => 'col-xs-12 col-md-5'],
                                                         'inputWrapperOptions' => 'col-xs-12 col-md-7'
-                                                      ]);
-                                                      $this->widget('application.components.controls.TextField', [
+                                                        ]);
+                                                        $this->widget('application.components.controls.TextField', [
                                                         'form' => $form,
                                                         'model' => $model,
                                                         'attributeName' => 'first_name',
@@ -106,8 +106,8 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
                                                         ],
                                                         'labelOptions' => ['class' => 'col-xs-12 col-md-5'],
                                                         'inputWrapperOptions' => 'col-xs-12 col-md-7'
-                                                      ]);
-                                                      $this->widget('application.components.controls.TextField', [
+                                                        ]);
+                                                        $this->widget('application.components.controls.TextField', [
                                                         'form' => $form,
                                                         'model' => $model,
                                                         'attributeName' => 'last_name',
@@ -118,8 +118,8 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
                                                         ],
                                                         'labelOptions' => ['class' => 'col-xs-12 col-md-5'],
                                                         'inputWrapperOptions' => 'col-xs-12 col-md-7'
-                                                      ]);
-                                                      $this->widget('application.components.controls.TextField', [
+                                                        ]);
+                                                        $this->widget('application.components.controls.TextField', [
                                                         'form' => $form,
                                                         'model' => $model,
                                                         'attributeName' => 'affiliation',
@@ -130,10 +130,10 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
                                                         ],
                                                         'labelOptions' => ['class' => 'col-xs-12 col-md-5'],
                                                         'inputWrapperOptions' => 'col-xs-12 col-md-7'
-                                                      ]);
-                                                      ?>
+                                                        ]);
+                                                        ?>
                                                       <?php
-                                                      $this->widget('application.components.controls.DropdownField', [
+                                                        $this->widget('application.components.controls.DropdownField', [
                                                         'form' => $form,
                                                         'model' => $model,
                                                         'attributeName' => 'preferred_link',
@@ -143,8 +143,8 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
                                                         ],
                                                         'labelOptions' => ['class' => 'col-xs-12 col-md-5'],
                                                         'inputWrapperOptions' => 'col-xs-12 col-md-7'
-                                                      ]);
-                                                      ?>
+                                                        ]);
+                                                        ?>
                                                       <div class="form-group checkbox-horizontal <?= $model->hasErrors('newsletter') ? 'has-error' : '' ?>">
                                                         <?= $form->label($model, 'newsletter', array('class' => 'col-md-5 control-label')) ?>
                                                         <div class="col-md-7 input-wrapper">
