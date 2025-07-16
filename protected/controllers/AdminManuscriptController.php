@@ -80,9 +80,18 @@ class AdminManuscriptController extends Controller
         $modelWrapper = new LegacyManuscriptForm($model);
 
         if ($attrs = Yii::$app->request->post('LegacyManuscriptForm')) {
+            //otherwise problem with id not null constraint
+            $model = new \GigaDB\models\Manuscript();
             $model->attributes = $attrs;
+
             if ($model->save()) {
-                $this->redirect(array('view','id' => $model->id));
+                $this->redirect(array('view','id'=>$model->id));
+            } else {
+                foreach ($model->getErrors() as $attribute => $errors) {
+                    foreach ($errors as $error) {
+                        $modelWrapper->addError($attribute, $error);
+                    }
+                }
             }
         }
 
