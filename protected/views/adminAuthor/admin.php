@@ -2,15 +2,15 @@
 <?php Yii::app()->clientScript->registerScript('graphreq', 'var httpRequest;', CClientScript::POS_HEAD); ?>
 
 <div class="container">
-	<?php
-	$this->widget('TitleBreadcrumb', [
-		'pageTitle' => 'Manage Authors',
-		'breadcrumbItems' => [
-			['label' => 'Admin', 'href' => '/site/admin'],
-			['isActive' => true, 'label' => 'Manage'],
-		]
-	]);
-	?>
+    <?php
+    $this->widget('TitleBreadcrumb', [
+        'pageTitle' => 'Manage Authors',
+        'breadcrumbItems' => [
+            ['label' => 'Admin', 'href' => '/site/admin'],
+            ['isActive' => true, 'label' => 'Manage'],
+        ]
+    ]);
+    ?>
 
     <?php
     foreach (Yii::app()->user->getFlashes() as $key => $message) {
@@ -18,11 +18,11 @@
     }
     ?>
 
-	<?php
-	$user = null;
-	if (isset(Yii::app()->session['attach_user'])) {
-		$user = User::model()->findByPk(Yii::app()->session['attach_user']);
-	}
+    <?php
+    $user = null;
+    if (isset(Yii::app()->session['attach_user'])) {
+        $user = User::model()->findByPk(Yii::app()->session['attach_user']);
+    }
 
 	$origin_author = null;
 	if (isset(Yii::app()->session['merge_author'])) {
@@ -70,14 +70,14 @@
     </div>
   <?php } ?>
 
-	<div class="mb-10">
-		<a href="/adminAuthor/create" class="btn background-btn">Create a new author</a>
-	</div>
-	<p>
-		Column headers with links are sortable. Cells with a text input are used for filtering.
-	</p>
+    <div class="mb-10">
+        <a href="/adminAuthor/create" class="btn background-btn">Create a new author</a>
+    </div>
+    <p>
+        Column headers with links are sortable. Cells with a text input are used for filtering.
+    </p>
 
-	<?php
+    <?php
     $actionButtons = array(
         'view' => array(
             'imageUrl' => false,
@@ -111,7 +111,7 @@
     $headerStyle = 'width: 100px';
 
     if (!empty($origin_author)) {
-      $actionButtons['merge_authors'] = array(
+        $actionButtons['merge_authors'] = array(
         'imageUrl' => false,
         'label' => '',
         'options' => array(
@@ -121,13 +121,13 @@
             "role" => "button",
         ),
         "click" => "handleLinkOrMergeClick",
-      );
-      $template = '{view}{update}{delete}{merge_authors}';
-      $headerStyle = 'width: 120px';
+        );
+        $template = '{view}{update}{delete}{merge_authors}';
+        $headerStyle = 'width: 120px';
     }
 
     if (null != $user) {
-      $actionButtons['link_user'] = array(
+        $actionButtons['link_user'] = array(
         'imageUrl' => false,
         'label' => '',
         'options' => array(
@@ -137,34 +137,34 @@
             "role" => "button",
         ),
         "click" => "handleLinkOrMergeClick",
-      );
-      $template = '{view}{update}{delete}{link_user}';
-      $headerStyle = 'width: 120px';
+        );
+        $template = '{view}{update}{delete}{link_user}';
+        $headerStyle = 'width: 120px';
     }
 
     $this->widget('CustomGridView', array(
-		'id' => 'author-grid',
-		'dataProvider' => $model->search(),
-		'itemsCssClass' => 'table table-bordered',
-		'selectionChanged' => "function(id){open_controls($.fn.yiiGridView.getSelection(id));}",
-		'rowHtmlOptionsExpression' => 'array("id"=>$data->id, "data-author-surname"=>$data->surname,  "data-author-firstname"=>$data->first_name,  "data-author-middlename"=>$data->middle_name,  "data-author-orcid"=>$data->orcid)',
-		'filter' => $model,
-		'columns' => array(
-			'surname',
-			'middle_name',
-			'first_name',
-			'orcid',
-			//'rank',
-			array('name' => 'dois_search', 'value' => '$data->listOfDataset', 'headerHtmlOptions' => array('style' => 'width: 120px')),
-			array(
+        'id' => 'author-grid',
+        'dataProvider' => $model->search(),
+        'itemsCssClass' => 'table table-bordered',
+        'selectionChanged' => "function(id){open_controls($.fn.yiiGridView.getSelection(id));}",
+        'rowHtmlOptionsExpression' => 'array("id"=>$data->id, "data-author-surname"=>$data->surname,  "data-author-firstname"=>$data->first_name,  "data-author-middlename"=>$data->middle_name,  "data-author-orcid"=>$data->orcid)',
+        'filter' => $model,
+        'columns' => array(
+            'surname',
+            'middle_name',
+            'first_name',
+            'orcid',
+            //'rank',
+            array('name' => 'dois_search', 'value' => '$data->listOfDataset', 'headerHtmlOptions' => array('style' => 'width: 120px')),
+            array(
         'class' => 'CButtonColumn',
         'header' => "Actions",
         'headerHtmlOptions' => array('style' => $headerStyle),
         'template' => $template,
         'buttons' => $actionButtons,
-      )
-		),
-	)); ?>
+        )
+        ),
+    )); ?>
 
 </div>
 
@@ -235,15 +235,15 @@
 
 <!-- Modal -->
 <div id="author_merge" class="modal fade">
-	<div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="authorMergeDialogTitle" tabindex="-1" id="authorMergeDialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="close dialog">&times;</button>
-				<h4 class="modal-title" id="authorMergeDialogTitle">Confirm merging these two authors?</h4>
-			</div>
-			<div class="modal-body">
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="authorMergeDialogTitle" tabindex="-1" id="authorMergeDialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="close dialog">&times;</button>
+                <h4 class="modal-title" id="authorMergeDialogTitle">Confirm merging these two authors?</h4>
+            </div>
+            <div class="modal-body">
 
-				<?php if (!empty($origin_author)) { ?>
+                <?php if (!empty($origin_author)) { ?>
 
 					<div id="merge_status" class="alert">
 					</div>
@@ -308,24 +308,24 @@
     const authorId = String($(e.target).closest('tr').attr('id'));
     open_controls(authorId);
   }
-	function open_controls(author_id) {
-		var want_dialog = null;
-		<?php
-		if (!empty($user)) {
-			echo "want_dialog = 'user_link';";
-		} else if (!empty($origin_author)) {
-			echo "want_dialog = 'author_merge';";
-		}
-		?>
+    function open_controls(author_id) {
+        var want_dialog = null;
+        <?php
+        if (!empty($user)) {
+            echo "want_dialog = 'user_link';";
+        } elseif (!empty($origin_author)) {
+            echo "want_dialog = 'author_merge';";
+        }
+        ?>
 
-		var author_line = document.getElementById(author_id);
+        var author_line = document.getElementById(author_id);
 
     // Prevent bug where clicking twice the same row errors out
     if (!author_line) {
       return false;
     }
 
-		var author_surname = author_line.getAttribute("data-author-surname");
+        var author_surname = author_line.getAttribute("data-author-surname");
 
 		switch (want_dialog) {
 			case 'user_link':
@@ -350,42 +350,42 @@
 			default:
 		}
 
-		return false;
-	}
+        return false;
+    }
 
-	function link_to_author() {
-		<?
-		echo 'var base_url = "' . Yii::app()->urlManager->createUrl('adminAuthor/linkUser', array('id' => '')) . '";'
-		?>
-		var author_id = $("#user_link").data('author_id');
-		window.location = base_url + "/" + author_id;
-	}
+    function link_to_author() {
+        <?
+        echo 'var base_url = "' . Yii::app()->urlManager->createUrl('adminAuthor/linkUser', array('id' => '')) . '";'
+        ?>
+        var author_id = $("#user_link").data('author_id');
+        window.location = base_url + "/" + author_id;
+    }
 
-	function merge_authors() {
-		var orgin_author_id = null;
-		var orgin_graph = null;
-		<?php
-		if (!empty($origin_author)) {
-			echo 'origin_author_id = ' . $origin_author->id . ';';
-			echo 'origin_graph = ' . CJSON::encode($origin_author->getIdenticalAuthors()) . ';';
-		}
-		?>
-		var target_author_id = parseInt($("#author_merge").data('author_id'), 10);
+    function merge_authors() {
+        var orgin_author_id = null;
+        var orgin_graph = null;
+        <?php
+        if (!empty($origin_author)) {
+            echo 'origin_author_id = ' . $origin_author->id . ';';
+            echo 'origin_graph = ' . CJSON::encode($origin_author->getIdenticalAuthors()) . ';';
+        }
+        ?>
+        var target_author_id = parseInt($("#author_merge").data('author_id'), 10);
 
-		if (target_author_id == origin_author_id) {
-			$('#merge_status').addClass("alert").addClass("alert-error").html("Cannot merge with self. Choose another author to merge with");
-		} else if (-1 != origin_graph.indexOf(target_author_id)) {
-			$('#merge_status').addClass("alert").addClass("alert-error").html("Authors already merged. Choose another author to merge with");
-		} else {
-			window.location = baseUrl + "/adminAuthor/mergeAuthors?origin_author=" + origin_author_id + "&target_author=" + target_author_id;
-		}
+        if (target_author_id == origin_author_id) {
+            $('#merge_status').addClass("alert").addClass("alert-error").html("Cannot merge with self. Choose another author to merge with");
+        } else if (-1 != origin_graph.indexOf(target_author_id)) {
+            $('#merge_status').addClass("alert").addClass("alert-error").html("Authors already merged. Choose another author to merge with");
+        } else {
+            window.location = baseUrl + "/adminAuthor/mergeAuthors?origin_author=" + origin_author_id + "&target_author=" + target_author_id;
+        }
 
-	}
+    }
 
-	function makeRequest() {
-		// console.log('in makeRequest');
-		var target_author_id = $("#author_merge").data('author_id');
-		httpRequest = new XMLHttpRequest();
+    function makeRequest() {
+        // console.log('in makeRequest');
+        var target_author_id = $("#author_merge").data('author_id');
+        httpRequest = new XMLHttpRequest();
 
 		if (!httpRequest) {
 			return false;
@@ -414,19 +414,19 @@ Yii::app()->clientScript->registerScriptFile($jsUrl, CClientScript::POS_END);
 ?>
 
 <script>
-	$('#author_merge').on('shown.bs.modal', function() {
+    $('#author_merge').on('shown.bs.modal', function() {
     lastFocusedElement = document.activeElement;
 
     $('#authorMergeDialog').focus();
     trapFocus($(this));
-		makeRequest();
-	});
+        makeRequest();
+    });
 
-	$('#author_merge').on('hidden.bs.modal', function() {
-		$("#merge_status").removeAttr("class").empty();
+    $('#author_merge').on('hidden.bs.modal', function() {
+        $("#merge_status").removeAttr("class").empty();
     $(this).off('keydown');
     if (lastFocusedElement) {
         lastFocusedElement.focus();
     }
-	});
+    });
 </script>

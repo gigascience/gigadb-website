@@ -26,7 +26,7 @@ class Author extends CActiveRecord
      * @param string $className active record class name.
      * @return Author the static model class
      */
-    public string $dois_search;
+    public ?string $dois_search = null;
 
     public static function model($className = __CLASS__)
     {
