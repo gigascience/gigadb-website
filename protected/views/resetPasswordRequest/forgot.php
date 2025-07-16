@@ -4,17 +4,17 @@ $this->pageTitle = 'Forgotten password';
 <div class="content">
     <div class="container">
       <?php
-      $this->widget('TitleBreadcrumb', [
+        $this->widget('TitleBreadcrumb', [
         'pageTitle' => 'Forgotten password',
         'breadcrumbItems' => [
           ['label' => 'Home', 'href' => '/'],
           ['isActive' => true, 'label' => 'Forgot'],
         ]
-      ]);
-      ?>
+        ]);
+        ?>
     <div class="subsection row">
         <div class="col-xs-12">
-            <?php if (Yii::app()->user->hasFlash('fail-reset-password')): ?>
+            <?php if (Yii::app()->user->hasFlash('fail-reset-password')) : ?>
                 <div class="alert alert-warning">
                     <?php echo Yii::app()->user->getFlash('fail-reset-password'); ?>
                 </div>
