@@ -1,36 +1,58 @@
 # GigaDB Documentation
 
+This page contains all sorts of documentation for the GigaDB, it is also an entry point for the developers to understand the system architecture 
+and the SOPs for both the local and production environments.
 
-## Start and accessing the documentation server
+## Table of contents
 
-Install mkdocs. On mac you can use brew:
+##### A. Overview and local Environment Setup
+- [Setup Guide](sop/LOCAL_SETUP.md)
 
-```
-$ brew install mkdocs
-```
+##### B. Production Environment Setup
+- [AWS Setup](sop/AWS_SETUP.md)
+- [Setup CI/CD Pipeline](sop/SETUP_CI_CD_PIPELINE.md)
+- [Infrastructure Provisioning on AWS](sop/SETUP_PROVISIONING.md)
+- [AWS policies](awsdocs/index.md)
+- [WASABI policies](wasabidocs/index.md)
 
-Otherwise you can use Python pip:
+##### C. Developer SOPs
+- [Local Setup](sop/LOCAL_SETUP.md)
+- [Dataset Upload](sop/DATASET_UPLOAD.md)
+- [Deploy and Configure Public FTP Server](sop/DEPLOY_AND_CONFIGURE_PUBLIC_FTP_SERVER.md)
+- [EFS Data Migration](sop/EFS_DATA_MIGRATION.md)
+- [May2024-temp-dataset-creation-workflow](sop/May2024-temp-dataset-creation-workflow.md)
+- [Migration Troubleshoot](sop/MIGRATION_TROUBLESHOOT.md)
+- [Prometheus + Grafana](sop/SETUP_PROMETHEUS_GRAFANA.md)
+- [Performances Troubleshoot](sop/PERFORMANCES_TROUBLESHOOT.md)
+- [Production Deploy](sop/PRODUCTION_DEPLOY.md)
+- [Production Troubleshooting Guide](sop/PRODUCTION_TROUBLESHOOT.md)
+- [Releases How-To](sop/RELEASE_PROCESS.md)
+- [Restore Database AWS Backup](sop/RESTORE_DATABASE_AWS_BACKUP.md)
+- [Restore Database AWS Snapshot](sop/RESTORE_DATABASE_AWS_SNAPSHOT.md)
+- [Restore Database Backup in S3](sop/RESTORE_DATABASE_BACKUP_IN_S3.md)
+- [Roll Back Prev Deploy](sop/ROLL_BACK_PREV_DEPLOY.md)
+- [Set up CI/CD pipeline](sop/SETUP_CI_CD_PIPELINE.md)
+- [Setup MKDocs](sop/SETUP_MKDOCS.md)
+- [Infrastructure Provisioning on AWS](sop/SETUP_PROVISIONING.md)
+- [Update Version](sop/UPDATE_VERSION.md)
+- [WASABI Data Migration](sop/WASABI_DATA_MIGRATION.md)
 
-```
-pip install mkdocs
-```
+##### D. Production Release
+- [Releases How-To](sop/RELEASE_PROCESS.md)
 
-To start the server, from this project root directory, run the command:
+##### E. Monitoring
+- [Infrastructure Monitoring](developers/MONITORING.md)
+- [Uptime Status Page](miscellaneous/UPTIME_STATUS_PAGE.md)
 
-```
-$ mkdocs serve
-```
+##### F. Troubleshooting
+- [Performances Troubleshoot](sop/PERFORMANCES_TROUBLESHOOT.md)
+- [Production Troubleshooting Guide](sop/PRODUCTION_TROUBLESHOOT.md)
 
-the documentation will be available at: (http://127.0.0.1:8000)
+##### G. Miscellaneous
+- [System Architecture](miscellaneous/SystemArchitectureExport.png)
+- [TLS](miscellaneous/TLS.md)
+- [Security Guidelines](miscellaneous/SECURITY.md)
+- [Variables](miscellaneous/variables.md)
+- [FUW workflow](miscellaneous/file-upload-workflow-wireframes.pdf)
 
-## Building the documentation site
-
-To create a documentation web pages:
-
-```
-$ mkdocs build
-$ ls site
-about  fonts  index.html  license  search.html
-css    img    js          mkdocs   sitemap.xml
-```
 

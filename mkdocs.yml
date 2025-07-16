@@ -1,2 +1,96 @@
 site_name: GigaDB Documentation
-theme: readthedocs
+repo_name: gigascience/gigadb-website
+repo_url: https://github.com/gigascience/gigadb-website/
+nav:
+  - Home: index.md
+  - Developers:
+      - Setup GigaDB Guide: sop/LOCAL_SETUP.md
+      - Git Workflow: developers/BRANCHING.md
+      - Bastion tools: developers/CURATOR_TOOLS_BASTION.md
+      - Setup database: developers/DATABASE.md
+      - Infrastructure and Monitoring: developers/MONITORING.md
+  - SOPs:
+      - AWS Setup: sop/AWS_SETUP.md
+      - Dataset Upload: sop/DATASET_UPLOAD.md
+      - Deploy and Configure Public FTP Server: sop/DEPLOY_AND_CONFIGURE_PUBLIC_FTP_SERVER.md
+      - EFS Data Migration: sop/EFS_DATA_MIGRATION.md
+      - May2024-temp-dataset-creation-workflow: sop/May2024-temp-dataset-creation-workflow.md
+      - Migration Troubleshoot: sop/MIGRATION_TROUBLESHOOT.md
+      - Performances Troubleshoot: sop/PERFORMANCES_TROUBLESHOOT.md
+      - Production Deploy: sop/PRODUCTION_DEPLOY.md
+      - Production Troubleshooting Guide: sop/PRODUCTION_TROUBLESHOOT.md
+      - Releases How-To: sop/RELEASE_PROCESS.md
+      - Restore Database AWS Backup: sop/RESTORE_DATABASE_AWS_BACKUP.md
+      - Restore Database AWS Snapshot: sop/RESTORE_DATABASE_AWS_SNAPSHOT.md
+      - Restore Database Backup in S3: sop/RESTORE_DATABASE_BACKUP_IN_S3.md
+      - Roll Back Prev Deploy: sop/ROLL_BACK_PREV_DEPLOY.md
+      - Set up CI/CD pipeline: sop/SETUP_CI_CD_PIPELINE.md
+      - Set up Prometheus + Grafana: sop/SETUP_PROMETHEUS_GRAFANA.md
+      - Setup MKDocs: sop/SETUP_MKDOCS.md
+      - Infrastructure Provisioning on AWS: sop/SETUP_PROVISIONING.md
+      - Update Version: sop/UPDATE_VERSION.md
+      - WASABI Data Migration: sop/WASABI_DATA_MIGRATION.md
+  - Curators:
+      - Bastion tools: curators/CURATOR_TOOLS_BASTION.md
+  - Apps:
+      - FUW:
+          - Overview: developers/fuw/index.md
+          - Setup Yii2: developers/fuw/yii2_setup.md
+          - Software Architecture: developers/fuw/software_architecture.md
+          - Developer Guide: developers/fuw/developer_guide.md
+  - Policies:
+      - AWS Policies: awsdocs/index.md
+      - WASABI Policies: wasabidocs/index.md
+
+theme:
+  name: material
+  language: en
+  highlights: true
+  color_mode: auto
+  features:
+    - navigation.path
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.top
+    - navigation.tracking
+    - navigation.footer
+    - search.suggest
+    - search.highlight
+    - search.share
+    - content.code.copy
+    - content.code.select
+    - content.code.highlight
+  palette:
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/link
+        name: Switch to light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: "green"
+      accent: "light-green"
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: "green"
+      accent: "light-green"
+      toggle:
+        icon: material/toggle-switch-off
+        name: Switch to system preference
+  favicon: icons/favicon.ico
+  logo: icons/giga.png
+
+plugins:
+  - search
+  - glightbox
+
+markdown_extensions:
+  - tables
+
+extra:
+    social:
+      - icon: fontawesome/brands/github
+        link: https://github.com/gigascience/gigadb-website/
+    generator: false

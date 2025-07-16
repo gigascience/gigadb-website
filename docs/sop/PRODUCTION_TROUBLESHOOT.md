@@ -5,7 +5,7 @@ This page provides solution for the problems when deploying the production GigaD
 ### How to check the servers' status
 
 The status of GigaDB servers can be checked from the UptimeRobot [Dashboard](https://stats.uptimerobot.com/LGVQXSkN1y). 
-The setup of UptimeRobot page can refer to this [doc](../UPTIME_STATUS_PAGE.md).
+The setup of UptimeRobot page can refer to this [doc](../miscellaneous/UPTIME_STATUS_PAGE.md).
 
 ### How to access GigaDB Website Tideways dashboard
 
@@ -38,7 +38,7 @@ The service and the environment can be set in the gitlab variable page as below:
 
 The system resources and performance of GigaDB servers are monitored by [Prometheus](https://prometheus.io/) and [Grafana](https://grafana.com/),
 these two tools work together to detect and alert about possible errors, eg. disk full, low memory utilization.
-The details of GigaDB monitoring system implementation, please refer to this [doc](MONITORING.md).
+The details of GigaDB monitoring system implementation, please refer to this [doc](SETUP_PROMETHEUS_GRAFANA.md).
 
 Here is the grafana [dashboard](http://monitoring.gigadb.host:3000/login), the login credentials can be obtained from [here](https://gitlab.com/groups/gigascience/-/settings/ci_cd).
 
@@ -75,7 +75,7 @@ app_data
 
 ### How to renew an expiring TLS certificate
 
-The details of TLS setup can refer to the [TLS doc](../TLS.md). Currently, the 
+The details of TLS setup can refer to the [TLS doc](../miscellaneous/TLS.md). Currently, the 
 Let's Encrypt's certificate only last for 90 days, and Let's Encrypt's will 
 start sending out reminder emails of renewing 30 days before expiration.
 

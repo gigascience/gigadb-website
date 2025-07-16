@@ -40,13 +40,13 @@ if [ "$(uname)" == "Darwin" ];then
 fi;
 
 # Build console and web containers (needed when switching between branches often)
-docker-compose build web test application database fuw-public fuw-admin console
+docker-compose build web test application database fuw-public fuw-admin console mkdocs
 
 # Launch the services required by GigaDB and FUW, and then start nginx (web server)
 docker-compose up -d application database fuw-public fuw-admin console
 
 # start web server
-docker-compose up -d web
+docker-compose up -d web mkdocs
 
 # Install composer dependencies for GigaDB
 docker-compose exec -T application composer install
