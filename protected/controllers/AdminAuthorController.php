@@ -39,7 +39,7 @@ class AdminAuthorController extends Controller
     /**
      * Displays a particular model.
      *
-     * @param integer $id the ID of the model to be displayed
+     * @param int $id the ID of the model to be displayed
      */
     public function actionView(int $id): void
     {
@@ -68,7 +68,7 @@ class AdminAuthorController extends Controller
      * Updates a particular model.
      * If update is successful, the browser will be redirected to the 'view' page.
      *
-     * @param integer $id the ID of the model to be updated
+     * @param int $id the ID of the model to be updated
      */
     public function actionUpdate(int $id): void
     {
@@ -89,7 +89,7 @@ class AdminAuthorController extends Controller
      * Deletes a particular model.
      * If deletion is successful, the browser will be redirected to the 'admin' page.
      *
-     * @param integer $id the ID of the model to be deleted
+     * @param int $id the ID of the model to be deleted
      */
     public function actionDelete(int $id): void
     {
@@ -353,7 +353,7 @@ class AdminAuthorController extends Controller
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.
      *
-     * @param integer $id the ID of the model to be loaded
+     * @param int $id the ID of the model to be loaded
      */
     public function loadModel(int $id): Author
     {

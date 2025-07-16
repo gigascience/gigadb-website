@@ -40,8 +40,8 @@ class UserCommandController extends CController
     /**
      * Record an authorship claim by a user on the dataset.
      * If claim is recorded successfully, the browser will be redirected to the 'view' page.
-     * @param integer $dataset_id, dataset id
-     * @param integer $author_id, dataset id
+     * @param int $dataset_id , dataset id
+     * @param int $author_id  , dataset id
      */
     public function actionClaim(int $dataset_id, int $author_id): void
     {

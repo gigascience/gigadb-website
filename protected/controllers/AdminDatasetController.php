@@ -109,7 +109,7 @@ class AdminDatasetController extends Controller
             $dataset_post_data['fairnuse'] = null;
         }
 
-        $dataset->setAttributes($dataset_post_data, true);
+        $dataset->setAttributes($dataset_post_data);
         if (!$dataset->validate()) {
             Yii::log("Dataset instance is not valid", 'info');
             $this->render('create', array('model' => $dataset,'datasetPageSettings' => $datasetPageSettings));
@@ -199,7 +199,7 @@ class AdminDatasetController extends Controller
     /**
      * Updates a Dataset object from web form.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id the ID of the model to be updated
+     * @param int $id the ID of the model to be updated
      */
     public function actionUpdate(int $id): void
     {
@@ -572,7 +572,7 @@ class AdminDatasetController extends Controller
     /**
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.
-     * @param integer $id the ID of the model to be loaded
+     * @param int $id the ID of the model to be loaded
      */
     private function loadModel(int $id): Dataset
     {
