@@ -4,7 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
-## v4.4.14 - 2025-07-09- d11b331f1 -
+## v4.4.14 - 2025-07-09- d11b331f1 - live since 2025-07-16
 
 - Fix #2384: Set to 'is publishable' if status check during DOI minting returns a 204 status code
 - Feat #1641: Check if the DOI has been minted when the upload status is set to 'Published'
