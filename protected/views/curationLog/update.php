@@ -9,5 +9,5 @@
         ]
     ]);
   echo $this->renderPartial('_form', ['model' => $model]);
-  ?>
+    ?>
 </div>
