@@ -290,21 +290,24 @@ Feature: form to update dataset details
     And I should see an image field "photographer" with text "test Joe"
     And I should see an image located in "/images/datasets/no_image.png"
 
+  @ok
   Scenario: can save keywords on update
     When I am on "/adminDataset/update/id/8"
-    And I click on keywords field
-    And I fill in keywords fields with "bam"
-    And I wait 1 seconds
+    And I fill in keywords fields of name keywords with "abcd, a four part keyword, my_keyword, my-keyword, my dodgy tag<script>alert('xss!');</script>"
     And I press the button "Save"
-    And I wait 3 seconds
     Then I am on "dataset/100006"
-    And I should see "bam"
+    And I should see "abcd"
+    And I should see "a four part keyword"
+    And I should see "my_keyword"
+    And I should see "my-keyword"
+    And I should not see "my dodgy tag<script>alert('xss!');</script>"
+    And I should not see "my dodgy tag"
 
   @ok @issue-2061
   Scenario: Can delete all keywords on update
     Given I am on "/adminDataset/update/id/8"
     And I click on keywords field
-    And I fill in keywords fields with "bam"
+    And I fill in keywords fields of name keywords with "bam"
     And I press the button "Save"
     When I am on "/adminDataset/update/id/8"
     And I click on delete keyword button
