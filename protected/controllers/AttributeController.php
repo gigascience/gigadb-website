@@ -54,7 +54,7 @@ class AttributeController extends Controller
     {
         $model = new Attributes();
 
-        if ($attributes = Yii::$app->post('Attributes')) {
+        if ($attributes = Yii::$app->request->post('Attributes')) {
             $model->attributes = $attributes;
             if ($model->save()) {
                 $this->redirect(array('view','id' => $model->id));
@@ -72,7 +72,7 @@ class AttributeController extends Controller
     {
         $model = $this->loadModel();
 
-        if ($attributes = Yii::$app->post('Attributes')) {
+        if ($attributes = Yii::$app->request->post('Attributes')) {
             $model->attributes = $attributes;
             if ($model->save()) {
                 $this->redirect(array('view','id' => $model->id));
