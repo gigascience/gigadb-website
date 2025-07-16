@@ -257,7 +257,7 @@ EO_SQL;
         return implode(', ', CHtml::listData($this->getDatasetsByOrder(), 'id', 'identifier'));
     }
 
-    public static function findAttachedAuthorByUserId(int $user_id): Author
+    public static function findAttachedAuthorByUserId(int $user_id): ?Author
     {
         $criteria = new CDbCriteria();
         $criteria->addCondition('gigadb_user_id = ' . $user_id) ;

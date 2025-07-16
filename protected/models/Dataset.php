@@ -102,7 +102,7 @@ class Dataset extends CActiveRecord
             array('submitter_id, identifier, title, dataset_size, ftp_site', 'required'),
             array('submitter_id, image_id, publisher_id', 'numerical', 'integerOnly' => true),
             array('dataset_size', 'numerical'),
-            array('identifier', 'unique', 'message' => 'Already exists'),
+            array('identifier', 'unique', 'message' => 'The DOI already exists'),
             array('identifier, excelfile_md5', 'length', 'max' => 32),
             array('title', 'length', 'max' => 300),
             array('upload_status', 'length', 'max' => 45),
