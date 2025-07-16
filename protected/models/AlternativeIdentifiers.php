@@ -6,13 +6,13 @@ declare(strict_types=1);
  * This is the model class for table "alternative_identifiers".
  *
  * The followings are the available columns in table 'alternative_identifiers':
- * @property integer $id
- * @property integer $sample_id
- * @property integer $extdb_id
- * @property string $extdb_accession
+ * @property int         $id
+ * @property int         $sample_id
+ * @property int         $extdb_id
+ * @property string|null $extdb_accession
  *
  * The followings are the available model relations:
- * @property Extdb $extdb
+ * @property Extdb  $extdb
  * @property Sample $sample
  */
 class AlternativeIdentifiers extends CActiveRecord
@@ -22,7 +22,7 @@ class AlternativeIdentifiers extends CActiveRecord
      * @param string $className active record class name.
      * @return AlternativeIdentifiers the static model class
      */
-    public static function model($className = __CLASS__)
+    public static function model($className = __CLASS__): AlternativeIdentifiers
     {
         return parent::model($className);
     }
@@ -73,7 +73,7 @@ class AlternativeIdentifiers extends CActiveRecord
      * Retrieves a list of models based on the current search/filter conditions.
      * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
      */
-    public function search()
+    public function search(): CActiveDataProvider
     {
         // Warning: Please modify the following code to remove attributes that
         // should not be searched.
@@ -93,7 +93,7 @@ class AlternativeIdentifiers extends CActiveRecord
     /**
      * @return array<string, string>
      */
-    public function behaviors()
+    public function behaviors(): array
     {
         return array(
             'ActiveRecordLogableBehavior' => 'application.behaviors.DatasetRelatedTableBehavior',

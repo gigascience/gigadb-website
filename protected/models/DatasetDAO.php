@@ -15,15 +15,10 @@ declare(strict_types=1);
  */
 class DatasetDAO extends yii\base\BaseObject
 {
-    /** @var DatasetAttributesFactory $_datasetAttrFactory contains a factory instance for making DatasetAttributes. */
-    protected $_datasetAttrFactory;
-
-    /** @var string $_identifier property to hold a DOI to be manipulated/queried by DAO func. */
-    protected $_identifier;
+    protected DatasetAttributesFactory $_datasetAttrFactory;
 
     /**
      * Getter for _datasetAttrFactory
-     * @return DatasetAttribute
      */
     public function getDatasetAttrFactory(): DatasetAttributesFactory
     {
@@ -32,7 +27,7 @@ class DatasetDAO extends yii\base\BaseObject
 
     /**
      * Setter for _datasetAttrFactory
-     * @param DatasetAttribute
+     * @param DatasetAttributesFactory $datasetAttributeFactory
      */
     public function setDatasetAttrFactory(DatasetAttributesFactory $datasetAttributeFactory): void
     {
@@ -50,7 +45,7 @@ class DatasetDAO extends yii\base\BaseObject
 
     /**
      * Setter for _identifier
-     * @param string
+     * @param string $identifier
      */
     public function setIdentifier(string $identifier): void
     {
@@ -61,7 +56,7 @@ class DatasetDAO extends yii\base\BaseObject
      *
      * @param int $dataset_id
      */
-    public function removeKeywordsFromDatabaseForDatasetId($dataset_id)
+    public function removeKeywordsFromDatabaseForDatasetId(int $dataset_id): void
     {
         $keyword_attribute = Attributes::model()->findByAttributes(array('attribute_name' => 'keyword'));
 
@@ -78,10 +73,10 @@ class DatasetDAO extends yii\base\BaseObject
      * Add DatasetAttributes entries in the database for 'keyword' attribute and given dataset_id
      * and keywords string
      *
-     * @param int $dataset_id
+     * @param int    $dataset_id
      * @param string $post_keywords_string
      */
-    public function addKeywordsToDatabaseForDatasetIdAndString($dataset_id, $post_keywords_string)
+    public function addKeywordsToDatabaseForDatasetIdAndString(int $dataset_id, string $post_keywords_string): void
     {
         $keyword_attribute = Attributes::model()->findByAttributes(array('attribute_name' => 'keyword'));
         $keywords_array = array_filter(explode(',', $post_keywords_string));
@@ -140,11 +135,12 @@ class DatasetDAO extends yii\base\BaseObject
     /**
      * return user who submitted the dataset
      *
-     * @return User||null return User
+     * @return User
      */
-    public function getSubmitter(): ?User
+    public function getSubmitter(): User
     {
         $dataset = Dataset::model()->findByAttributes(["identifier" => $this->_identifier]);
+
         return $dataset->submitter;
     }
 
@@ -170,9 +166,7 @@ class DatasetDAO extends yii\base\BaseObject
      */
     public function getNextDataset(): ?Dataset
     {
-        $result = Dataset::model()->findBySql("select id, identifier,title from dataset where identifier > '" . $this->_identifier . "' and upload_status='Published' order by identifier asc limit 1;");
-
-        return $result;
+        return Dataset::model()->findBySql("select id, identifier,title from dataset where identifier > '" . $this->_identifier . "' and upload_status='Published' order by identifier asc limit 1;");
     }
 
     /**
@@ -186,9 +180,7 @@ class DatasetDAO extends yii\base\BaseObject
      */
     public function getPreviousDataset(): ?Dataset
     {
-        $result = Dataset::model()->findBySql("select id, identifier,title from dataset where identifier < '" . $this->_identifier . "' and upload_status='Published' order by identifier desc limit 1;");
-
-        return $result;
+        return Dataset::model()->findBySql("select id, identifier,title from dataset where identifier < '" . $this->_identifier . "' and upload_status='Published' order by identifier desc limit 1;");
     }
 
     /**
@@ -202,8 +194,6 @@ class DatasetDAO extends yii\base\BaseObject
      */
     public function getFirstDataset(): Dataset
     {
-        $result = Dataset::model()->findBySql("select id, identifier,title from dataset where upload_status='Published' order by identifier asc limit 1;");
-
-        return $result;
+        return Dataset::model()->findBySql("select id, identifier,title from dataset where upload_status='Published' order by identifier asc limit 1;");
     }
 }

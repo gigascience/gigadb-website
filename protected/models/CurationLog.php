@@ -6,12 +6,8 @@ declare(strict_types=1);
  * This is the model class for table "dataset_log".
  *
  * The followings are the available columns in table 'dataset_log':
- * @property integer $id
- * @property integer $dataset_id
- * @property string $message
- * @property string $created_at
- * @property string $model
- * @property string $model_id
+ * @property int         $id
+ * @property int         $dataset_id
  * @property string|null $creation_date
  * @property string|null $last_modified_date
  * @property string|null $last_modified_by
@@ -24,8 +20,6 @@ declare(strict_types=1);
  */
 class CurationLog extends CActiveRecord
 {
-    public string $doi;
-
     /**
      * Returns the static model of the specified AR class.
      * @param string $className active record class name.

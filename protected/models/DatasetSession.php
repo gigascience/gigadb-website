@@ -6,13 +6,21 @@ declare(strict_types=1);
  * This is the model class for table "author".
  *
  * The followings are the available columns in table 'author':
- * @property integer $id
- * @property string $name
- * @property string $orcid
- * @property integer $position
+ *
+ * @property int $id
+ * @property string $identifier
+ * @property string|null $dataset
+ * @property string|null $dataset_id
+ * @property string|null $datasettypes
+ * @property string|null $images
+ * @property string|null $authors
+ * @property string|null $projects
+ * @property string|null $links
+ * @property string|null $externalLinks
+ * @property string|null $relations
+ * @property string|null $samples
  *
  * The followings are the available model relations:
- * @property DatasetAuthor[] $datasetAuthors
  */
 class DatasetSession extends CActiveRecord
 {

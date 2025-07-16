@@ -6,12 +6,15 @@ declare(strict_types=1);
  * This is the model class for table "dataset_author".
  *
  * The followings are the available columns in table 'dataset_author':
- * @property integer $id
- * @property integer $dataset_id
- * @property integer $author_id
+ *
+ * @property int         $id
+ * @property int         $dataset_id
+ * @property int         $author_id
+ * @property int|null    $rank
+ * @property string|null $role
  *
  * The followings are the available model relations:
- * @property Author $author
+ * @property Author  $author
  * @property Dataset $dataset
  */
 class DatasetAuthor extends CActiveRecord
@@ -21,13 +24,12 @@ class DatasetAuthor extends CActiveRecord
      * @param string $className active record class name.
      * @return DatasetAuthor the static model class
      */
-    public $doi_search;
-    public $author_name_search;
+    public ?string  $doi_search = null;
+    public ?string $author_name_search = null;
 
-    public $orcid_search;
-    public $rank_search;
-    public $author_name;
-    public $rank;
+    public ?string $orcid_search = null;
+    public ?int $rank_search = null;
+    public ?string $author_name = null;
 
     public static function model($className = __CLASS__)
     {

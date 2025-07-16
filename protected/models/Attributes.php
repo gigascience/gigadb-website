@@ -6,16 +6,16 @@ declare(strict_types=1);
  * This is the model class for table "attribute".
  *
  * The followings are the available columns in table 'attribute':
- * @property integer $id
- * @property string $attribute_name
- * @property string $definition
- * @property string $model
- * @property string $structured_comment_name
- * @property string $value_syntax
- * @property string $allowed_units
- * @property string $occurance
- * @property string $ontology_link
- * @property string $note
+ * @property int $id
+ * @property string|null $attribute_name
+ * @property string|null $definition
+ * @property string|null $model
+ * @property string|null $structured_comment_name
+ * @property string|null $value_syntax
+ * @property string|null $allowed_units
+ * @property string|null $occurance
+ * @property string|null $ontology_link
+ * @property string|null $note
  */
 class Attributes extends CActiveRecord
 {

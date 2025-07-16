@@ -6,13 +6,13 @@ declare(strict_types=1);
  * This is the model class for table "dataset_project".
  *
  * The followings are the available columns in table 'dataset_project':
- * @property integer $id
- * @property integer $dataset_id
- * @property integer $project_id
+ * @property int      $id
+ * @property int|null $dataset_id
+ * @property int|null $project_id
  *
  * The followings are the available model relations:
- * @property Dataset $dataset
- * @property Project $project
+ * @property Dataset|null $dataset
+ * @property Project|null $project
  */
 class DatasetProject extends CActiveRecord
 {
@@ -22,8 +22,8 @@ class DatasetProject extends CActiveRecord
      * @return DatasetProject the static model class
      */
 
-    public $doi_search;
-    public $project_name_search;
+    public ?string $doi_search = null;
+    public ?string $project_name_search = null;
 
     public static function model($className = __CLASS__)
     {

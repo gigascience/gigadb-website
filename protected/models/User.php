@@ -7,11 +7,12 @@ declare(strict_types=1);
  *
  * The followings are the available columns in table 'User':
  *
- * @property int $id
+ * @property int    $id
  * @property string $email
  * @property string $first_name
  * @property string $last_name
  * @property string|null $activation_token
+ * @property string $affiliation
  * The followings are the available model relations:
  */
 class User extends CActiveRecord

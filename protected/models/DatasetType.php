@@ -6,13 +6,13 @@ declare(strict_types=1);
  * This is the model class for table "dataset_type".
  *
  * The followings are the available columns in table 'dataset_type':
- * @property integer $id
- * @property integer $dataset_id
- * @property integer $type_id
+ * @property int      $id
+ * @property int      $dataset_id
+ * @property int|null $type_id
  *
  * The followings are the available model relations:
- * @property Dataset $dataset
- * @property Type $type
+ * @property Dataset   $dataset
+ * @property Type|null $type
  */
 class DatasetType extends CActiveRecord
 {
@@ -95,7 +95,7 @@ class DatasetType extends CActiveRecord
         ));
     }
 
-    public static function createDatasetType($dataset_id, $type_id)
+    public static function createDatasetType(int $dataset_id, int $type_id): bool
     {
         $newDatasetTypeRelationship = new DatasetType();
         $newDatasetTypeRelationship->dataset_id = $dataset_id;

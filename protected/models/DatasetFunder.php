@@ -6,17 +6,17 @@ declare(strict_types=1);
  * This is the model class for table "dataset_funder".
  *
  * The followings are the available columns in table 'dataset_funder':
- * @property integer $id
- * @property integer $dataset_id
- * @property integer $funder_id
- * @property string $grant_award
- * @property string $comments
+ * @property int         $id
+ * @property int         $dataset_id
+ * @property int         $funder_id
+ * @property string|null $grant_award
+ * @property string|null $comments
  * @property string|null $awardee
  */
 class DatasetFunder extends CActiveRecord
 {
-    public $doi_search;
-    public $funder_search;
+    public ?string $doi_search = null;
+    public ?string $funder_search = null;
     /**
      * Returns the static model of the specified AR class.
      * @return DatasetFunder the static model class
@@ -138,7 +138,7 @@ class DatasetFunder extends CActiveRecord
         );
     }
 
-    public function checkIsFunderDuplicate()
+    public function checkIsFunderDuplicate(): bool
     {
         $model = self::model()->findByAttributes(array('dataset_id' => $this->dataset_id,'funder_id' => $this->funder_id));
         if ($model) {

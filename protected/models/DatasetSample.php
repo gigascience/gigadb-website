@@ -6,9 +6,9 @@ declare(strict_types=1);
  * This is the model class for table "dataset_sample".
  *
  * The followings are the available columns in table 'dataset_sample':
- * @property integer $id
- * @property integer $dataset_id
- * @property integer $sample_id
+ * @property int $id
+ * @property int $dataset_id
+ * @property int $sample_id
  *
  * The followings are the available model relations:
  * @property Dataset $dataset
@@ -22,13 +22,8 @@ class DatasetSample extends CActiveRecord
      * @return DatasetSample the static model class
      */
 
-    public $doi_search;
-    public $sample_name;
-    public $species; //common_name in species
-    public $attribute;
-    public $code;
-    public $tax_id;
-    public $dataset_title;
+    public ?string $doi_search = null;
+    public ?string $sample_name = null;
 
     public static function model($className = __CLASS__)
     {
@@ -53,10 +48,9 @@ class DatasetSample extends CActiveRecord
         return array(
             array('dataset_id, sample_id', 'required'),
             array('dataset_id, sample_id', 'numerical', 'integerOnly' => true),
-            array('species,code,attribute','safe'),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            array('id, dataset_id, sample_id, doi_search, sample_name, attribute', 'safe', 'on' => 'search'),
+            array('id, dataset_id, sample_id, doi_search, sample_name', 'safe', 'on' => 'search'),
         );
     }
 
@@ -83,10 +77,6 @@ class DatasetSample extends CActiveRecord
             'dataset_id' => 'Dataset',
             'sample_id' => 'Sample',
             'doi_search' => 'DOI',
-            'species' => 'Species',
-            'attribute' => 'Sample Attributes',
-            'code' => 'Sample ID',
-            'dataset_title' => 'Dataset Title',
             'sample_name' => 'Sample Name',
         );
     }

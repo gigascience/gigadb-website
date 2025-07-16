@@ -6,18 +6,19 @@ declare(strict_types=1);
  * This is the model class for table "dataset_attributes".
  *
  * The followings are the available columns in table 'dataset_attributes':
- * @property integer $id
- * @property integer $dataset_id
- * @property integer $attribute_id
- * @property string $value
- * @property string $units_id
+ *
+ * @property int         $id
+ * @property int|null    $dataset_id
+ * @property int|null    $attribute_id
+ * @property string|null $value
+ * @property string|null $units_id
+ * @property int|null    $image_id
+ * @property string|null $until_date
  *
  * The followings are the available model relations:
- * @property Attributes $attribute
- * @property Dataset $dataset
- * @property Unit $units
- * @property integer $image_id
- * @property string $until_date
+ * @property Attributes|null $attribute
+ * @property Dataset|null    $dataset
+ * @property Unit|null       $units
  */
 class DatasetAttributes extends CActiveRecord
 {
@@ -123,10 +124,10 @@ class DatasetAttributes extends CActiveRecord
     /**
      * Reject values that have HTML/PHP/javascript tags in them
      *
-     * @param string $attr the name of the attribute to be validated
-     * @param array $params options specified in the validation rule
+     * @param string $attr   the name of the attribute to be validated
+     * @param array  $params options specified in the validation rule
      */
-    public function rejectCode($attr, $params)
+    public function rejectCode(string $attr, array $params): void
     {
         $rawValue = CHtml::decode($this->value);
         $strippedValue = strip_tags($rawValue);

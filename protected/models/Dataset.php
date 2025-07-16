@@ -11,25 +11,35 @@ use Ramsey\Uuid\Uuid;
  *
  * The followings are the available columns in table 'Dataset':
  *
- * @property integer $id
- * @property Image $image
- * @property string $identifier
- * @property integer|null $image_id
- * @property string $upload_status
- * @property integer|null $curator_id
- * @property integer|null $manuscript_id
- * @property string|null $token
- * @property User $submitter
- * @property integer $submitter_id
- * @property integer|null $publisher_id
- * @property string|null $description
- * @property string $title
- * @property string $dataset_size
- * @property string $ftp_site
+ * @property int         $id
+ * @property int         $submitter_id
+ * @property int|null    $image_id
+ * @property string      $identifier
+ * @property string      $title
+ * @property string      $description
+ * @property int         $dataset_size
+ * @property string      $ftp_site
+ * @property string      $upload_status
  * @property string|null $excelfile
  * @property string|null $excelfile_md5
  * @property string|null $publication_date
+ * @property string|null $modification_date
+ * @property int|null    $publisher_id
+ * @property string|null $token
+ * @property string|null $fairnuse
+ * @property int|null    $curator_id
+ * @property string|null $manuscript_id
+ * @property string|null $handling_editor
+ * @property bool        $is_publishable
  * The followings are the available model relations:
+ * @property Image|null      $image
+ * @property User            $submitter
+ * @property Publisher|null  $publisher
+ * @property Type[]          $datasetTypes
+ * @property Manuscript[]    $manuscripts
+ * @property Link[]          $links
+ * @property Relation[]      $relations
+ * @property DatasetFunder[] $datasetFunders
  */
 class Dataset extends CActiveRecord
 {
@@ -49,11 +59,6 @@ class Dataset extends CActiveRecord
 
     // Directory names representing ranges of dataset DOIs
     const RANGES = ['104001_105000', '103001_104000', '102001_103000', '101001_102000', '100001_101000'];
-
-    public string $dTypes = "";
-    public string $commonNames = "";
-    public string $email;
-    public array $types;
 
     public const ORIGINAL_UPLOAD_STATUS_LIST = [
         'ImportFromEM' => 'ImportFromEM',
@@ -295,27 +300,36 @@ class Dataset extends CActiveRecord
      */
     public function getCuratorName()
     {
-
         $curator = User::model()->findByPk($this->curator_id);
 
-        if (isset($curator)) {
-            $curator_name = $curator->getFullName();
-        } else {
-            $curator_name = "";
+        $curatorName = "";
+        if ($curator) {
+            $curatorName = $curator->getFullName();
         }
 
-        return $curator_name;
+        return $curatorName;
     }
 
-    public static function getTypeList($ids)
+    /**
+     * @param $ids
+     *
+     * @return Type[]
+     */
+    public static function getTypeList(array $ids): array
     {
         $crit = new CDbCriteria();
         $crit->join = "join dataset_type dt on dt.type_id = t.id";
         $crit->addInCondition("dt.dataset_id", $ids);
+
         return Type::model()->findAll($crit);
     }
 
-    public static function getProjectList($ids)
+    /**
+     * @param array $ids
+     *
+     * @return Project[]
+     */
+    public static function getProjectList(array $ids): array
     {
         $crit = new CDbCriteria();
         $crit->join = "join dataset_project dp on dp.project_id = t.id";
@@ -323,28 +337,39 @@ class Dataset extends CActiveRecord
         return Project::model()->findAll($crit);
     }
 
-    public static function getExtLinkList($ids)
+    /**
+     * @param array $ids
+     *
+     * @return ExternalLinkType[]
+     */
+    public static function getExtLinkList(array $ids): array
     {
         $crit = new CDbCriteria();
         $crit->join = "join external_link el on el.external_link_type_id = t.id";
         $crit->addInCondition("el.dataset_id", $ids);
+
         return ExternalLinkType::model()->findAll($crit);
     }
 
-    public function getListTitles()
+    /**
+     * @return array
+     */
+    public function getListTitles(): array
     {
         $models = Dataset::model()->findAll(array(
                 'select' => 't.title',
                 'distinct' => true,
             ));
-        $list = array();
-        foreach (array_values($models) as $model) {
-            $list[] = $model->title;
-        }
-        return $list;
+
+        return array_map(function ($el) {
+            return $el->title;
+        }, $models);
     }
 
-    public function getDatasetTypes()
+    /**
+     * @return array
+     */
+    public function getDatasetTypes(): array
     {
         $types = $this->datasetTypes;
 
@@ -353,27 +378,27 @@ class Dataset extends CActiveRecord
         }, $types);
     }
 
-    public function getImageUrl($default = '')
+    public function getImageUrl(string $default = ''): string
     {
         if ($this->image) {
-            $url = $this->image->url;
-            return $url;
+            return $this->image->url;
         }
+
         return $default;
     }
 
-    public static function getFileIdsByDatasetIds($datasetIds)
+    public static function getFileIdsByDatasetIds(array $datasetIds): array
     {
         $datasetIds = implode(' , ', $datasetIds);
         if (!$datasetIds) {
             return array();
         }
-        $result = Yii::app()->db->createCommand()
+
+        return  Yii::app()->db->createCommand()
             ->selectDistinct('id')
             ->from('file')
             ->where("dataset_id in ($datasetIds)")
             ->queryColumn();
-        return $result;
     }
 
     /**
@@ -395,55 +420,45 @@ class Dataset extends CActiveRecord
      * Get all samples in dataset
      * @return array
      */
-    public function getSamples()
+    public function getSamples(): array
     {
-        $samples = Yii::app()->db->createCommand()
+        return Yii::app()->db->createCommand()
                             ->select('s.name, sp.tax_id, sp.common_name, sp.genbank_name')
                             ->from('sample s')
                             ->join('dataset_sample ds', 's.id = ds.sample_id')
                             ->join('species sp', 's.species_id = sp.id')
                             ->where('ds.dataset_id = :id', array(':id' => $this->id))
                             ->queryAll();
-
-        return $samples ?: array();
     }
 
-    public function getProjects()
+    public function getProjects(): array
     {
-        $projects = Yii::app()->db->createCommand()
+        return Yii::app()->db->createCommand()
             ->select('p.name, p.url, p.image_location')
             ->from('project p')
             ->join('dataset_project dp', 'p.id = dp.project_id')
             ->where('dp.dataset_id = :id', array(':id' => $this->id))
             ->queryAll();
-
-        return $projects ?: array();
     }
 
-    public function getExternalLinks()
+    public function getExternalLinks(): array
     {
-        $projects = Yii::app()->db->createCommand()
+        return Yii::app()->db->createCommand()
             ->select('el.url, elt.name')
             ->from('external_link el')
             ->join('external_link_type elt', 'el.external_link_type_id = elt.id')
             ->where('el.dataset_id = :id', array(':id' => $this->id))
             ->queryAll();
-
-        return $projects ?: array();
     }
 
-    public function getIsProteomic()
+    public function getIsProteomic(): bool
     {
-        $dt = DatasetType::model()->findByAttributes(array('dataset_id' => $this->id,'type_id' => 10));
-        if ($dt) {
-            return true;
-        }
-        return false;
+        return (bool) DatasetType::model()->findByAttributes(array('dataset_id' => $this->id,'type_id' => 10));
     }
 
-    public function getIsIncomplete()
+    public function getIsIncomplete(): bool
     {
-        return $this->upload_status == "UserStartedIncomplete";
+        return $this->upload_status === "UserStartedIncomplete";
     }
 
     public function behaviors()
@@ -453,52 +468,51 @@ class Dataset extends CActiveRecord
         );
     }
 
-    public function getIsPublic()
+    public function getIsPublic(): bool
     {
-        return $this->upload_status == "Published";
+        return $this->upload_status === "Published";
     }
 
-    public function getAllSamples()
+    /**
+     * @return Sample[]
+     */
+    public function getAllSamples(): array
     {
-        $criteria = new CdbCriteria();
+        $criteria = new CDbCriteria();
         $criteria->join = "join dataset_sample ds on ds.sample_id = t.id";
         $criteria->addCondition("ds.dataset_id = " . $this->id);
+
         return Sample::model()->findAll($criteria);
     }
 
-    public function getShortUrl()
+    public function getShortUrl(): string
     {
         $url = 'dataset/' . $this->identifier;
         return Yii::app()->createAbsoluteUrl($url);
     }
 
-    public function getTypeIds()
+    public function getTypeIds(): array
     {
         $types = $this->datasetTypes;
-        $ids = array();
-        foreach ($types as $type) {
-            $ids[] = $type->id;
-        }
-        return $ids;
+
+        return array_map(function ($el) {
+            return $el->id;
+        }, $types);
     }
 
-    public function getSemanticKeywords()
+    public function getSemanticKeywords(): array
     {
         $sKeywordAttr = Attributes::model()->findByAttributes(array('attribute_name' => 'keyword'));
 
         $sk = DatasetAttributes::model()->findAllByAttributes(array('dataset_id' => $this->id,'attribute_id' => $sKeywordAttr->id));
 
-        $list = array();
-
-        foreach (array_values($sk) as $keyword) {
-            $list[] = $keyword->value;
-        }
-        return $list;
+        return array_map(function ($el) {
+            return $el->value;
+        }, $sk);
     }
 
-    public function getUrlToRedirectAttribute()
+    public function getUrlToRedirectAttribute(): string
     {
-
         $criteria = new CDbCriteria(array('order' => 'id ASC'));
 
         $urlToRedirectAttr = Attributes::model()->findByAttributes(array('attribute_name' => 'urltoredirect'));
@@ -550,7 +564,9 @@ class Dataset extends CActiveRecord
                 $name_identifier->addAttribute('nameIdentifierScheme', 'ORCID');
             }
             if ($author['gigadb_user_id'] != null) {
-                $user = User::model()->find('id=?', array($author['gigadb_user_id']));
+                /** @var User $userModel */
+                $userModel = User::model();
+                $user = $userModel->find('id=?', array($author['gigadb_user_id']));
                 $creator->addChild('affiliation', $user->affiliation);
             }
         }
@@ -570,6 +586,7 @@ class Dataset extends CActiveRecord
         $publisher->addAttribute('schemeURI', 'https://www.re3data.org/');
 
         //<publicationYear>2014</publicationYear>
+        $publication_date = null;
         if ($this->publication_date) {
             $publication_date = new DateTime($this->publication_date);
             $xml->addChild('publicationYear', $publication_date->format('Y'));
@@ -630,7 +647,9 @@ class Dataset extends CActiveRecord
 
             $linkname = explode(':', $link->link);
             $name = $linkname[0];
-            $modelurl = Prefix::model()->find('lower(prefix) = :p', array(':p' => strtolower($name)));
+            /** @var Prefix $prefixModel */
+            $prefixModel = Prefix::model();
+            $modelurl = $prefixModel->find('lower(prefix) = :p', array(':p' => strtolower($name)));
             $relatedIdentifier = $modelurl ? sprintf('%s%s', $modelurl->url, $linkname[1]) : $linkname[1];
             $related_identifier = $related_identifiers->addchild('relatedIdentifier', htmlspecialchars($relatedIdentifier, ENT_QUOTES, 'UTF-8'));
             $related_identifier->addAttribute('resourceTypeGeneral', 'Dataset');
@@ -757,14 +776,14 @@ class Dataset extends CActiveRecord
         return self::ORIGINAL_UPLOAD_STATUS_LIST;
     }
 
-    public function nullifyDateValueIfEmpty()
+    public function nullifyDateValueIfEmpty(): void
     {
         $this->publication_date = $this->publication_date ?: null;
         $this->modification_date = $this->modification_date ?: null;
         $this->fairnuse = $this->fairnuse ?: null;
     }
 
-    public function updateDatasetTypes($postDatasetTypes)
+    public function updateDatasetTypes(array $postDatasetTypes): void
     {
         $actualTypeIdsByDataset = [];
         //fetch types
@@ -798,12 +817,14 @@ class Dataset extends CActiveRecord
      */
     public function updateImageAndMetafields(CUploadedFile $datasetImage = null): bool
     {
+        /** @var CWebApplication $app */
+        $app = Yii::app();
         if ($datasetImage) {
             $this->image = new Image();
             $this->image->attributes = Yii::app()->request->getPost('Image');
             if (!$this->image->write(Yii::$app->cloudStore, $this->getUuid(), $datasetImage)) {
                 Yii::log('Error writing file to storage for dataset ' . $this->identifier, 'error');
-                Yii::app()->user->setFlash('updateError', 'Fail to update your image');
+                $app->user->setFlash('updateError', 'Fail to update your image');
 
                 return false;
             }
@@ -820,7 +841,7 @@ class Dataset extends CActiveRecord
         }
 
         if ($this->image->id !== Image::GENERIC_IMAGE_ID && !$this->image->save()) {
-            Yii::app()->user->setFlash('updateError', 'Fail to update image!');
+            $app->user->setFlash('updateError', 'Fail to update image!');
             Yii::log(print_r($this->getErrors(), true), 'error');
 
             return false;
@@ -831,7 +852,14 @@ class Dataset extends CActiveRecord
         return true;
     }
 
-    public function findByStatusAndDate(string $status, string $startDate = null, string $endDate = null)
+    /**
+     * @param string      $status
+     * @param string|null $startDate
+     * @param string|null $endDate
+     *
+     * @return Dataset[]
+     */
+    public function findByStatusAndDate(string $status, string $startDate = null, string $endDate = null): array
     {
         $criteria = new CDbCriteria();
         $criteria->condition = 'upload_status = :upload_status';

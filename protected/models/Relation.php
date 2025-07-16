@@ -6,13 +6,15 @@ declare(strict_types=1);
  * This is the model class for table "relation".
  *
  * The followings are the available columns in table 'relation':
- * @property integer $id
- * @property integer $dataset_id
- * @property string $related_doi
- * @property integer $relationship_id
+ *
+ * @property int      $id
+ * @property int      $dataset_id
+ * @property string   $related_doi
+ * @property int|null $relationship_id
  *
  * The followings are the available model relations:
- * @property Dataset $dataset
+ * @property Dataset           $dataset
+ * @property Relationship|null $relationship
  */
 class Relation extends CActiveRecord
 {

@@ -9,11 +9,11 @@ declare(strict_types=1);
  */
 class ContactForm extends CFormModel
 {
-    public string $name;
-    public string $email;
-    public string $subject;
-    public string $body;
-    public string $verifyCode;
+    public ?string $name = null;
+    public ?string $email = null;
+    public ?string $subject = null;
+    public ?string $body = null;
+    public ?string $verifyCode = null;
 
     /** For the captcha */
     public string $validacion;

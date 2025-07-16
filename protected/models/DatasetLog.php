@@ -6,21 +6,21 @@ declare(strict_types=1);
  * This is the model class for table "dataset_log".
  *
  * The followings are the available columns in table 'dataset_log':
- * @property integer $id
- * @property integer $dataset_id
- * @property string $message
- * @property string $created_at
- * @property string $model
- * @property string $model_id
+ *
+ * @property int         $id
+ * @property int         $dataset_id
+ * @property string|null $message
+ * @property string|null $created_at
+ * @property string|null $model
+ * @property int|null    $model_id
+ * @property string|null $url
  *
  * The followings are the available model relations:
- * @property Dataset $dataset
- * @property FileAttributes $attributes
- * @property File $file
+ * @property Dataset        $dataset
  */
 class DatasetLog extends CActiveRecord
 {
-    public $doi;
+    public ?string $doi = null;
 
     /**
      * Returns the static model of the specified AR class.

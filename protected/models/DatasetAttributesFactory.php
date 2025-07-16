@@ -4,29 +4,29 @@ declare(strict_types=1);
 
 class DatasetAttributesFactory
 {
-    protected $da;
+    protected ?DatasetAttributes $da = null;
 
-    public function create()
+    public function create(): DatasetAttributes
     {
         return $this->da = new DatasetAttributes();
     }
 
-    public function setAttributeId($attribute_id)
+    public function setAttributeId(?int $attribute_id = null): void
     {
         $this->da->attribute_id = $attribute_id;
     }
 
-    public function setDatasetId($dataset_id)
+    public function setDatasetId(?int $dataset_id = null): void
     {
         $this->da->dataset_id = $dataset_id;
     }
 
-    public function setValue($value)
+    public function setValue(?string $value = null): void
     {
         $this->da->value = $value;
     }
 
-    public function save()
+    public function save(): void
     {
         $this->da->save();
     }

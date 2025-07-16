@@ -6,14 +6,14 @@ declare(strict_types=1);
  * This is the model class for table "author_rel".
  *
  * The followings are the available columns in table 'author_rel':
- * @property integer $id
- * @property integer $author_id
- * @property integer $related_author_id
- * @property integer $relationship_id
+ * @property int      $id
+ * @property int      $author_id
+ * @property int      $related_author_id
+ * @property int|null $relationship_id
  *
  * The followings are the available model relations:
- * @property Relationship $relationship
- * @property Author $author
+ * @property Relationship|null $relationship
+ * @property Author            $author
  */
 class AuthorRel extends CActiveRecord
 {
