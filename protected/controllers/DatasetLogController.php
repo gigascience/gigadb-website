@@ -38,7 +38,7 @@ class DatasetLogController extends Controller
             throw new CHttpException(400, 'Invalid request. No id provided.');
         }
 
-        $this->render('view', array('model' => $this->loadModel($id)));
+        $this->render('view', array('model' => $this->loadModel((int) $id)));
     }
 
     /**
@@ -69,7 +69,7 @@ class DatasetLogController extends Controller
             throw new CHttpException(400, 'Invalid request. No id provided.');
         }
 
-        $model = $this->loadModel($id);
+        $model = $this->loadModel((int) $id);
 
         if ($datasetLog = Yii::$app->request->post('DatasetLog')) {
             $model->attributes = $datasetLog;
