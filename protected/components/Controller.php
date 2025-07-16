@@ -64,4 +64,22 @@ class Controller extends CController
             }
             return $this->isAdmin();
         }
+
+    /**
+     * Everything in init will be run before any action from controllers inheriting from this class.
+     * It is needed so we can reconnect to the database server automatically when connection was terminated
+     * So that users don't get shown a server error (usually anytime after nightly backup to S3)
+     *
+     * @return void
+     * @throws CException
+     */
+        public function init() {
+            parent::init();
+            try {
+                Yii::app()->db->createCommand('select null;')->execute();
+            } catch (CDbException $e) {
+                Yii::app()->db->setActive(false);
+                Yii::app()->db->setActive(true);
+            }
+        }
 }
