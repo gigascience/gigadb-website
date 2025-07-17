@@ -73,7 +73,7 @@ class Controller extends CController
      * @return void
      * @throws CException
      */
-        public function init() {
+        public function init(): void {
             parent::init();
             try {
                 Yii::app()->db->createCommand('select null;')->execute();
