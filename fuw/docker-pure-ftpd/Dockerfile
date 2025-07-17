@@ -2,14 +2,17 @@
 #Stage 1 : builder debian image
 FROM debian:bullseye as builder
 
+# Install ca-certificates first to enable HTTPS
+RUN apt-get update && apt-get install -y ca-certificates
+
 # properly setup debian sources
 ENV DEBIAN_FRONTEND noninteractive
-RUN echo "deb http://deb.debian.org/debian/ bullseye main\n\
-deb-src http://deb.debian.org/debian/ bullseye main\n\
-deb http://security.debian.org/debian-security bullseye-security main\n\
-deb-src http://security.debian.org/debian-security bullseye-security main\n\
-deb http://deb.debian.org/debian/ bullseye-updates main\n\
-deb-src http://deb.debian.org/debian/ bullseye-updates main\n\
+RUN echo "deb https://deb.debian.org/debian/ bullseye main\n\
+deb-src https://deb.debian.org/debian/ bullseye main\n\
+deb https://security.debian.org/debian-security bullseye-security main\n\
+deb-src https://security.debian.org/debian-security bullseye-security main\n\
+deb https://deb.debian.org/debian/ bullseye-updates main\n\
+deb-src https://deb.debian.org/debian/ bullseye-updates main\n\
 " > /etc/apt/sources.list
 
 # install package building helpers
