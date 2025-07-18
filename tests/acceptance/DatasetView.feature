@@ -267,3 +267,55 @@ Feature: a user visit the dataset page
     Given I have not signed in
     When I am on "/dataset/100142"
     Then I should see "Read the pre-print publication(s):"
+
+  @issue-152 @ok
+  Scenario: Show print view toggle button and switch to print view
+    Given I have not signed in
+    When I am on "/dataset/100006"
+    And I press the button "Print view"
+    Then I should be on "/dataset/100006?print=true"
+    And I should see "Web view"
+    And I should not see "Print view"
+    And I should not see header and footer
+
+  @issue-152 @ok
+  Scenario: Show print view without header or footer
+    Given I have not signed in
+    When I am on "/dataset/100006?print=true"
+    Then I should see "Web view"
+    And I should not see "Print view"
+    And I should not see header and footer
+
+  @issue-152 @ok
+  Scenario: Show full list of samples and files in print view
+    Given I have not signed in
+    When I am on "/dataset/100035?print=true"
+    And I follow "Show all 301 results"
+    And I wait "2" seconds
+    Then I should be on "/dataset/100035?print=true&full=true"
+    And I should see "Show less results"
+
+  @issue-152 @ok
+  Scenario: Hide full list of samples and files in print view
+    Given I have not signed in
+    When I am on "/dataset/100035?print=true&full=true"
+    And I follow "Show less results"
+    And I wait "2" seconds
+    Then I should be on "/dataset/100035?print=true"
+    And I should see "Show all 301 results"
+
+  @issue-152 @ok
+  Scenario: Show full list of samples and files from direct navigation
+    Given I have not signed in
+    When I am on "/dataset/100035?print=true&full=true"
+    Then I should see "Show less results"
+
+  @issue-152 @ok
+  Scenario: From print view return to web view
+    Given I have not signed in
+    When I am on "/dataset/100006?print=true"
+    And I press the button "Web view"
+    Then I should be on "/dataset/100006"
+    And I should see "Print view"
+    And I should not see "Web view"
+    And I should see header and footer
