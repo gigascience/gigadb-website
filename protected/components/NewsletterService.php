@@ -20,7 +20,7 @@ class NewsletterService extends CApplicationComponent
     public $list_id;
 
     /**
-     * @var \DrewM\MailChimp\MailChimp $newsletter_api Mailchimp client object.
+     * @var MailChimpClient $newsletter_api Mailchimp client object.
      * Get value set in __construct or in $this->init
      */
     public $newsletter_api;
