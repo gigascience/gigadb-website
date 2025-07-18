@@ -321,6 +321,16 @@ class DatasetPageAssembly extends yii\base\Component
         }
 
         $pager = new FilesPagination();
+
+        // handle print view
+        $isPrint  = Yii::app()->request->getParam('print') === 'true';
+        $showFull = Yii::app()->request->getParam('full') === 'true';
+        if ($isPrint && !$showFull) {
+            $pageSize = 100;
+        } elseif ($isPrint && $showFull) {
+            $pageSize = 10_000; // assumes 10k is well beyond the number of files any dataset has
+        }
+
         $pager->setPageSize($pageSize);
         $this->_files = new FormattedDatasetFiles(
             $pager,
@@ -365,6 +375,16 @@ class DatasetPageAssembly extends yii\base\Component
         }
 
         $pager = new FilesPagination();
+
+        // handle print view
+        $isPrint  = Yii::app()->request->getParam('print') === 'true';
+        $showFull = Yii::app()->request->getParam('full') === 'true';
+        if ($isPrint && !$showFull) {
+            $pageSize = 100;
+        } elseif ($isPrint && $showFull) {
+            $pageSize = 10_000; // assumes 10k is well beyond the number of samples any dataset has
+        }
+
         $pager->setPageSize($pageSize);
         $this->_samples = new FormattedDatasetSamples(
             $pager,

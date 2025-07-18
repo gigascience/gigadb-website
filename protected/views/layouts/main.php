@@ -38,7 +38,7 @@
   <?php $this->renderPartial('//shared/_matomo') ?>
 </head>
 
-<body>
+<body class="<?= isset($_GET['print']) && $_GET['print'] === 'true' ? 'print' : '' ?>">
   <?php
   $this->renderPartial('//shared/_header');
   ?>

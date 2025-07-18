@@ -1,0 +1,44 @@
+// print styles not specific to a module or page
+body.print {
+  .print-hidden {
+    display: none!important;
+  }
+
+  div {
+    display: block;
+  }
+  header, footer, nav, aside, video, iframe, .mobile-navigation, .skip-to-main-link {
+    display: none!important;
+  }
+
+  [role="dialog"], [role="tooltip"], [role="tablist"] {
+    display: none!important;
+  }
+  [role="tabpanel"] {
+    display: block!important;
+  }
+
+  .left-border-title {
+    all: unset;
+  }
+
+  .left-border-title-lg {
+    all: unset;
+  }
+
+  .badge {
+    all: unset;
+  }
+
+  // hide hypothes.is widget
+  hypothesis-sidebar {
+    display: none!important;
+  }
+}
+
+
+body:not(.print) {
+  .print-only {
+    display: none!important;
+  }
+}

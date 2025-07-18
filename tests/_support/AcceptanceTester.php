@@ -451,4 +451,22 @@ class AcceptanceTester extends \Codeception\Actor
     {
         $this->dontSeeOptionIsSelected("#dataset-form select[id='$id']", $value);
     }
+
+    /**
+     * @Then I should see header and footer
+     */
+    public function iShouldSeeHeaderAndFooter()
+    {
+        $this->seeElement('header');
+        $this->seeElement('footer');
+    }
+
+    /**
+     * @Then I should not see header and footer
+     */
+    public function iShouldNotSeeHeaderAndFooter()
+    {
+        $this->dontSeeElement('header');
+        $this->dontSeeElement('footer');
+    }
 }
