@@ -105,7 +105,6 @@ services:
       - ${APPLICATION}/ops/configuration/php-conf/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini
       - ${APPLICATION}/gigadb:/var/www/gigadb
       - ${APPLICATION}/codeception.yml:/var/www/codeception.yml
-      - ${APPLICATION}/c3.php:/var/www/c3.php # must exist before
       # access to File Upload Wizard model classes
       - ../../fuw/app:/app      
       - ../../gigadb:/gigadb
@@ -194,8 +193,6 @@ services:
       - web-tier
       - db-tier
 
-
-
   test:
     build:
       context: .
@@ -242,7 +239,7 @@ services:
       - "gigadb.test:172.16.238.10"
       - "fuw-admin-api:172.16.238.10"
       - "fuw-public-api:172.16.238.10"
-    command: bash -c "pwd"
+    command: bash -c " if [ -f /c3.php ]; then cp /c3.php /var/www/c3.php; fi && pwd"
 
   playwright:
     build:
