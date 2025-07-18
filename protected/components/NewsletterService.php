@@ -66,10 +66,9 @@ class NewsletterService extends CApplicationComponent
      */
     public function addToMailing($email, $first_name = null, $last_name = null)
     {
-
         // pre-check email
-        $username = explode("@", $email)[0];
-        $domain = explode("@", $email)[1];
+        $username = explode('@', $email)[0] ?? null;
+        $domain = explode('@', $email)[1] ?? null;
         if (! ($username && $domain)) {
             return false;
         }

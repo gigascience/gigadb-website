@@ -6,16 +6,17 @@ declare(strict_types=1);
  * Class to interact with persisted Dataset elements on behalf of the service layer
  *
  *
- * @uses DatasetAttributesFactory.php
- * @uses DatasetAttributes.php
- * @uses Attributes.php
+ * @uses    DatasetAttributesFactory.php
+ * @uses    DatasetAttributes.php
+ * @uses    Attributes.php
  *
- * @author Rija Menage <rija+git@cinecinetique.com>
+ * @author  Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */
 class DatasetDAO extends yii\base\BaseObject
 {
     protected DatasetAttributesFactory $_datasetAttrFactory;
+    protected string                   $_identifier;
 
     /**
      * Getter for _datasetAttrFactory

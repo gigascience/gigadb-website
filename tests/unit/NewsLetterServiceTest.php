@@ -2,18 +2,14 @@
 
 declare(strict_types=1);
 
-namespace unit;
-
 use Codeception\Test\Unit;
-use MailChimpClient;
-use NewsletterService;
 
 class NewsletterServiceTest extends Unit
 {
     /**
      * Test that only valid email can be added to subscriber list
      *
-     * @dataProvider provideEmails
+     * @dataProvider provideValidEmails
      */
     public function testItShouldSubscribeUser($params, $how_many_times, $expected_api_call)
     {
@@ -34,6 +30,36 @@ class NewsletterServiceTest extends Unit
         $mailchimp->expects($this->exactly($how_many_times))
                   ->method('success')
                   ->willReturn(true);
+
+        $firstName = isset($params[1]) ? $params[1] : null;
+        $lastName = isset($params[2]) ? $params[2] : null;
+        $service->addToMailing($params[0], $firstName, $lastName);
+    }
+
+    /**
+     * Test that only valid email can be added to subscriber list
+     *
+     * @dataProvider provideInvalidEmails
+     */
+    public function testItShouldntdSubscribeUser($params, $how_many_times, $expected_api_call)
+    {
+
+        $api_key = 'abc123abc123abc123abc123abc123-us1';
+        $list_id = '123456';
+
+        $mailchimp = $this->getMockBuilder(MailChimpClient::class)
+                          ->setConstructorArgs([$api_key])
+                          ->setMethods(['post', 'success'])
+                          ->getMock();
+        $service = new NewsletterService($api_key, $list_id, $mailchimp);
+
+        $mailchimp->expects($this->exactly($how_many_times))
+                  ->method('post')
+                  ->with("lists/$list_id/members", $expected_api_call);
+
+        $mailchimp->expects($this->exactly($how_many_times))
+                  ->method('success')
+                  ->willReturn(false);
 
         $firstName = isset($params[1]) ? $params[1] : null;
         $lastName = isset($params[2]) ? $params[2] : null;
@@ -101,7 +127,7 @@ class NewsletterServiceTest extends Unit
         $service->getMailingListInfo();
     }
 
-    public function provideEmails()
+    public function provideValidEmails()
     {
         return [
             'valid email and no details'      => [
@@ -133,6 +159,17 @@ class NewsletterServiceTest extends Unit
                 ['ουτοπία@δπθ.gr'],
                 1,
                 ['email_address' => 'xn--kxae4bafwg@xn--pxaix.gr', 'status' => 'subscribed'],
+            ]
+        ];
+    }
+
+    public function provideInvalidEmails()
+    {
+        return [
+            'obvious invalid email'           => [
+                ['foobar'],
+                0,
+                ['email_address' => 'foobar', 'status' => 'subscribed'],
             ],
         ];
     }
