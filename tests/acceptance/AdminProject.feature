@@ -1,4 +1,3 @@
-@ok-can-offline
 Feature: form to manage project
   As a curator
   I want to be able to update a projects details without bugs

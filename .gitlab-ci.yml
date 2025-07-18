@@ -145,4 +145,3 @@ ld_gigadb:
     name: "live"
     deployment_tier: production
     url: $REMOTE_HOME_URL
-

@@ -17,7 +17,6 @@ GITLAB_PRIVATE_TOKEN=<The token for upstream user>
 
 REPO_NAME="gigadb-website"
 CI_PROJECT_URL="https://gitlab.com/gigascience/upstream/gigadb-website"
-GROUP_VARIABLES_URL="https://gitlab.com/api/v4/groups/gigascience/variables?per_page=100"
 FORK_VARIABLES_URL="https://gitlab.com/api/v4/groups/3506500/variables"
 PROJECT_VARIABLES_URL="https://gitlab.com/api/v4/projects/gigascience%2FUpstream%2F$REPO_NAME/variables"
 MISC_VARIABLES_URL="https://gitlab.com/api/v4/projects/gigascience%2Fcnhk-infra/variables"
