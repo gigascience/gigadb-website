@@ -132,13 +132,13 @@ class AuthorisedDatasetFilesAnnotateAction extends FunctionalTesting
         $csrfToken = $matches[1] ?? null;
 
         $jar->setCookie(new \GuzzleHttp\Cookie\SetCookie([
-                                                             'Name'   => 'YII_CSRF_TOKEN', // Nom du cookie CSRF
-                                                             'Value'  => $csrfToken,       // Token extrait du meta tag
-                                                             'Domain' => parse_url($this->url, PHP_URL_HOST), // Assure que le domaine correspond
-                                                             'Path'   => '/site/login',              // Assurer que le chemin est correct
-                                                             'Secure' => false,             // Dépend de ta configuration
-                                                             'HttpOnly' => true,            // Dépend de ta configuration
-                                                             'SameSite' => 'Strict'         // Dépend de ta configuration
+                                                             'Name'   => 'YII_CSRF_TOKEN', //cookie name
+                                                             'Value'  => $csrfToken,
+                                                             'Domain' => parse_url($this->url, PHP_URL_HOST),
+                                                             'Path'   => '/site/login',
+                                                             'Secure' => false,
+                                                             'HttpOnly' => true,
+                                                             'SameSite' => 'Strict'
                                                          ]));
 
         //log in as a user
@@ -152,7 +152,7 @@ class AuthorisedDatasetFilesAnnotateAction extends FunctionalTesting
                     'yt0'                   => 'Login',
                 ]
             ]);
-        $lastRequest = $container[1]['request']; // 0 = GET, 1 = POST
+        $lastRequest = $container[1]['request'];
         $this->assertEquals(200, $container[0]['response']->getStatusCode());
 
 
@@ -166,13 +166,13 @@ class AuthorisedDatasetFilesAnnotateAction extends FunctionalTesting
         ];
 
         $jar->setCookie(new \GuzzleHttp\Cookie\SetCookie([
-                                                             'Name'   => 'YII_CSRF_TOKEN', // Nom du cookie CSRF
-                                                             'Value'  => $csrfToken,       // Token extrait du meta tag
-                                                             'Domain' => parse_url($this->url, PHP_URL_HOST), // Assure que le domaine correspond
-                                                             'Path'   => '/authorisedDataset/annotateFiles/id/' . $this->doi,              // Assurer que le chemin est correct
-                                                             'Secure' => false,             // Dépend de ta configuration
-                                                             'HttpOnly' => true,            // Dépend de ta configuration
-                                                             'SameSite' => 'Strict'         // Dépend de ta configuration
+                                                             'Name'   => 'YII_CSRF_TOKEN',
+                                                             'Value'  => $csrfToken,
+                                                             'Domain' => parse_url($this->url, PHP_URL_HOST),
+                                                             'Path'   => '/authorisedDataset/annotateFiles/id/' . $this->doi,
+                                                             'Secure' => false,
+                                                             'HttpOnly' => true,
+                                                             'SameSite' => 'Strict'
                                                          ]));
 
 

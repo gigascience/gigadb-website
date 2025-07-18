@@ -158,7 +158,7 @@ $this->pageTitle = 'GigaDB - My GigaDB Page';
                                                         </div>
                                                       </div>
 
-                                                      <div class="controls btns-row btns-row-end">
+                                                      <div class="btns-row btns-row-end">
                                                           <button id="cancel-btn" type="button" class="btn background-btn-o">
                                                               <?= Yii::t('app', 'Cancel') ?>
                                                           </button>
