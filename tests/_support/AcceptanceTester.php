@@ -142,7 +142,7 @@ class AcceptanceTester extends \Codeception\Actor
      */
     public function iShouldSeeADisabledSubmitButton($value)
     {
-        $this->seeElement('input', ['type' => 'submit', 'value' => $value, 'aria-disabled' => 'true']);
+        $this->seeElement('input', ['disabled' => 'true', "id" => $value, 'type' => 'submit']);
     }
 
     /**

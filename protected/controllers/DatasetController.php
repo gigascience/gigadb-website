@@ -55,10 +55,10 @@ class DatasetController extends Controller
     {
         // Retrieving the data
         $model = Dataset::model()->find("identifier=?", array($id));
-        $dao = new DatasetDAO(["identifier" => $id]) ;
+        $srv = Yii::app()->fileUploadService->getFileUploadService(\Yii::$container->get('guzzleHttpClient'), $id);
+        $dao = $srv->dataset;
         $nextDataset =  $dao->getNextDataset() ?? $dao->getFirstDataset();
         $previousDataset =  $dao->getPreviousDataset() ?? $dao->getFirstDataset();
-        $srv = new FileUploadService(["webClient" => \Yii::$container->get('guzzleHttpClient')]);
 
         $datasetPageSettings = new DatasetPageSettings($model);
 
@@ -76,24 +76,29 @@ class DatasetController extends Controller
             $fileSettings = $datasetPageSettings->getFileSettings($cookies);
         }
 
-        if (isset($_POST['setting']) && $_POST['pageSize']) {
-            $fileSettings = $datasetPageSettings->setFileSettings($_POST['setting'], $_POST['pageSize'], $cookies);
+        $setting = Yii::$app->request->post('setting');
+        $pageSize = Yii::$app->request->post('pageSize');
+
+        if ($setting && $pageSize) {
+            $fileSettings = $datasetPageSettings->setFileSettings($setting, $pageSize, $cookies);
             $flag = "file";
         }
-
 
         //configuring samples table
         $sampleSettings = $datasetPageSettings->getSampleSettings($cookies);
 
-        if (isset($_POST['columns'])) {
-            $sampleSettings = $datasetPageSettings->setSampleSettings($_POST['columns'], $_POST['samplePageSize'], $cookies);
+        $columns = Yii::$app->request->post('columns');
+        $samplePageSize = Yii::$app->request->post('samplePageSize');
+        if (Yii::$app->request->post('columns')) {
+            $sampleSettings = $datasetPageSettings->setSampleSettings($columns, $samplePageSize, $cookies);
             $flag = "sample";
         }
 
         // Assembling page components and page settings
         $assemblyConfig = [];
         if ("invalid" !== $datasetPageSettings->getPageType()) {
-            if (preg_match("/dataset\/$id\/token/",$_SERVER['REQUEST_URI'])) {
+            $requestUri = filter_var($_SERVER['REQUEST_URI'], FILTER_SANITIZE_URL);
+            if (preg_match("/dataset\/$id\/token/", $requestUri)) {
                 $assemblyConfig = ['skip_cache' => true] ;
             }
             $assembly = DatasetPageAssembly::assemble($model, Yii::app(), $srv, $assemblyConfig);
@@ -112,9 +117,9 @@ class DatasetController extends Controller
             $urlToRedirect = trim($assembly->getDataset()->getUrlToRedirectAttribute());
             $currentAbsoluteFullUrl = Yii::app()->request->getBaseUrl(true) . Yii::app()->request->url ;
 
-            if ($urlToRedirect && $currentAbsoluteFullUrl == $urlToRedirect) {
+            if ($urlToRedirect && $currentAbsoluteFullUrl === $urlToRedirect) {
                 $this->metaData['redirect'] = 'http://dx.doi.org/10.5524/' . $assembly->getDataset()->identifier ;
-                $this->render('interstitial', array(
+                return $this->render('interstitial', array(
                     'model' => $assembly->getDataset()
                 ));
             }
@@ -146,7 +151,7 @@ class DatasetController extends Controller
 
         // Different rendering based on page type (invalid, hidden, public)
         if ("invalid" === $datasetPageSettings->getPageType()) {
-            $this->render('invalid', array('model' => new Dataset('search'), 'keyword' => $id, 'general_search' => 1));
+            return $this->render('invalid', array('model' => new Dataset('search'), 'keyword' => $id, 'general_search' => 1));
         } elseif (in_array($datasetPageSettings->getPageType(), ["hidden","draft", "mockup"])) {
             // Page private ? Disable robot to index
             $this->metaData['private'] = true;
@@ -155,7 +160,7 @@ class DatasetController extends Controller
                 $mainRenderer($assembly, $datasetPageSettings, $previousDataset, $nextDataset, $fileSettings, $sampleSettings, $flag);
             } else {
                 Yii::log('Request is invalid for URI: '.$_SERVER['REQUEST_URI'],'error');
-                $this->render('invalid', array('model' => new Dataset('search'), 'keyword' => $id));
+                return $this->render('invalid', array('model' => new Dataset('search'), 'keyword' => $id));
             }
         } else { //page type is public
             // specify canonical URL due to samples and files pagination generating multiple URLs with the same main content

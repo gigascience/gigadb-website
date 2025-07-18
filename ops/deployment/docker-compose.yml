@@ -278,7 +278,7 @@ services:
       - "fuw-public-api:172.16.238.10"
 
   csv-to-migrations:
-    image: node:$NODE_VERSION-buster-slim
+    image: node:$NODE_VERSION-bullseye-slim
     working_dir: /var/www/ops/scripts
     volumes:
       - ${APPLICATION}/:/var/www
@@ -363,7 +363,7 @@ services:
       context: ../../fuw/app
       dockerfile: common/Dockerfile
       args:
-        - PHP_BASE_IMAGE_VERSION=$PHP_VERSION-fpm-buster
+        - PHP_BASE_IMAGE_VERSION=$PHP_VERSION-fpm-bullseye
         - APP_PORT=9002
         - INSTALL_OPCACHE=true
         - INSTALL_INTL=true
@@ -408,7 +408,7 @@ services:
       context: ../../fuw/app
       dockerfile: common/Dockerfile
       args:
-        - PHP_BASE_IMAGE_VERSION=$PHP_VERSION-fpm-buster
+        - PHP_BASE_IMAGE_VERSION=$PHP_VERSION-fpm-bullseye
         - APP_PORT=9001
         - INSTALL_OPCACHE=true
         - INSTALL_INTL=true
@@ -453,7 +453,7 @@ services:
       context: ../../fuw/app/console
       dockerfile: Worker-Dockerfile
       args:
-        - PHP_BASE_IMAGE_VERSION=$PHP_VERSION-cli-buster
+        - PHP_BASE_IMAGE_VERSION=$PHP_VERSION-cli-bullseye
         - INSTALL_OPCACHE=true
         - INSTALL_INTL=true
         - INSTALL_COMPOSER=true
@@ -497,7 +497,7 @@ services:
       context: ..
       dockerfile: packaging/Worker-Dockerfile
       args:
-        - PHP_BASE_IMAGE_VERSION=$PHP_VERSION-cli-buster
+        - PHP_BASE_IMAGE_VERSION=$PHP_VERSION-cli-bullseye
         - INSTALL_OPCACHE=true
         - INSTALL_INTL=true
         - INSTALL_COMPOSER=true
