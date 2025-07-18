@@ -17,18 +17,22 @@
  *   - Pages should provide CSS rules that target `body.print`.
  */
 ?>
-<button class="btn btn-link print-view-link" aria-label="Switch to print view">
-    <span class="label-text">Print view</span>
+<button class="btn btn-link js-print-view-link" aria-label="Switch to print view">
+    <span class="js-label-text">Print view</span>
+    <span class="sr-only js-sr-message" aria-live="polite"></span>
 </button>
 <script>
     $(document).ready(function () {
         const url = new URL(window.location);
-        const $btn = $('.print-view-link');
-        const $label = $btn.find('.label-text');
+        const $btn = $('.js-print-view-link');
+        const $label = $btn.find('.js-label-text');
+        const $srMessage = $btn.find('.js-sr-message');
 
         const update = (toPrint) => {
             $('body').toggleClass('print', toPrint);
-            $label.text(toPrint ? 'Web view' : 'Print view');
+            $label.text(`${toPrint ? 'web' : 'print'} view`);
+            $btn.attr('aria-label', `Switch to ${toPrint ? 'web' : 'print'} view`);
+            $srMessage.text(`Currently in ${toPrint ? 'print' : 'web'} view`);
         };
 
         let isPrint = url.searchParams.get('print') === 'true';
