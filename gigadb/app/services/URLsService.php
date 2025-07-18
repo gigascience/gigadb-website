@@ -101,6 +101,21 @@ final class URLsService extends Component
      */
     public static function editUrlQueryParams(array $addOrModifyParams = [], array $removeParams = []): string
     {
+        foreach ($addOrModifyParams as $key => $value) {
+            if (!is_string($key) || preg_match('/[^\w.-]/', $key)) {
+                throw new \InvalidArgumentException('Invalid character in parameter key. Only word characters, dots, and hyphens are allowed.');
+            }
+            if (!is_scalar($value) && !is_null($value)) {
+                throw new \InvalidArgumentException('Invalid value type. Only scalar values or null are allowed.');
+            }
+        }
+
+        foreach ($removeParams as $param) {
+            if (!is_string($param) || preg_match('/[^\w.-]/', $param)) {
+                throw new \InvalidArgumentException('Invalid character in parameter to remove. Only word characters, dots, and hyphens are allowed.');
+            }
+        }
+
         $uri   = Yii::app()->request->getRequestUri();
         $parts = parse_url($uri);
 

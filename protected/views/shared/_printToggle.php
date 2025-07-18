@@ -30,7 +30,7 @@
 
         const update = (toPrint) => {
             $('body').toggleClass('print', toPrint);
-            $label.text(`${toPrint ? 'web' : 'print'} view`);
+            $label.text(`${toPrint ? 'Web' : 'Print'} view`);
             $btn.attr('aria-label', `Switch to ${toPrint ? 'web' : 'print'} view`);
             $srMessage.text(`Currently in ${toPrint ? 'print' : 'web'} view`);
         };

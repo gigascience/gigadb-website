@@ -275,7 +275,7 @@ Feature: a user visit the dataset page
     And I press the button "Print view"
     Then I should be on "/dataset/100006?print=true"
     And I should see "Web view"
-    And I should not see "Print view"
+    And I should see "Currently in print view"
     And I should not see header and footer
 
   @issue-152 @ok
@@ -283,7 +283,7 @@ Feature: a user visit the dataset page
     Given I have not signed in
     When I am on "/dataset/100006?print=true"
     Then I should see "Web view"
-    And I should not see "Print view"
+    And I should see "Currently in print view"
     And I should not see header and footer
 
   @issue-152 @ok
@@ -317,5 +317,5 @@ Feature: a user visit the dataset page
     And I press the button "Web view"
     Then I should be on "/dataset/100006"
     And I should see "Print view"
-    And I should not see "Web view"
+    And I should see "Currently in web view"
     And I should see header and footer
