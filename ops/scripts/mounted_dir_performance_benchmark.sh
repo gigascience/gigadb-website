@@ -65,10 +65,7 @@ check_prerequisites() {
             exit 1
         fi
     done
-    
-    # Create directories
-    mkdir -p "$BENCHMARK_DIR" "$RESULTS_DIR"
-    
+
     # Initialize CSV results file
     echo "test_name,mount_point,time_seconds,throughput_mbs,cpu_usage_percent" > "${RESULTS_DIR}/results.csv"
     
@@ -129,13 +126,14 @@ run_timed_command() {
     
     # Start CPU monitoring in background
     local start_time=$(date +%s.%N)
+    local time_output_file="${RESULTS_DIR}/temp_time_output_${test_name// /_}_${mount_point//\//_}.log"
     
     # Execute command and capture timing
     local time_output
     if time_output=$(timeout 3600 /usr/bin/time -f "%e" bash -c "$command" 2>&1); then
         local end_time=$(date +%s.%N)
         local duration=$(echo "$end_time - $start_time" | bc -l)
-        local time_taken=$(echo "$time_output" | tail -n1)
+        local time_taken=$(tail -n1 "$time_output_file")
         
         # Calculate throughput if applicable
         local throughput="N/A"
@@ -153,10 +151,13 @@ run_timed_command() {
         local cpu_usage="N/A"
         
         log_result "$test_name" "$mount_point" "$time_taken" "$throughput" "$cpu_usage"
+        rm -f "$time_output_file"
         return 0
     else
         print_status "$RED" "Command failed or timed out: $test_name on $mount_point"
+        print_status "$RED" "Detailed error log: $(cat "$time_output_file")" # Dump the error
         log_result "$test_name" "$mount_point" "FAILED" "N/A" "N/A"
+        rm -f "$time_output_file"
         return 1
     fi
 }
@@ -430,7 +431,11 @@ main() {
         RESULTS_DIR="$output_dir"
         LOG_FILE="${RESULTS_DIR}/benchmark_${TIMESTAMP}.log"
     fi
-    
+
+
+    # Create results directory
+    mkdir -p "$BENCHMARK_DIR" "$RESULTS_DIR"
+
     print_status "$BLUE" "Starting mount point performance benchmark"
     print_status "$BLUE" "Testing mount points: ${mount_points[*]}"
     print_status "$BLUE" "Results will be saved to: $RESULTS_DIR"
