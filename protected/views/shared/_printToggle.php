@@ -14,7 +14,6 @@
  *     <?php $this->renderPartial('shared/_printToggle'); ?>
  *
  * Requirements:
- *   - jQuery 3 must be loaded before this partial executes.
  *   - Pages should provide CSS rules that target `body.print`.
  */
 ?>
