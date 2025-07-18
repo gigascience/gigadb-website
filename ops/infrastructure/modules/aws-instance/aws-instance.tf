@@ -28,7 +28,7 @@ resource "aws_security_group" "docker_host_sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["10.99.0.0/18"]
+    cidr_blocks = ["10.98.0.0/18"]
   }
 
   ingress {

@@ -141,7 +141,7 @@ module "vpc" {
   # CIDR block is a range of IPv4 addresses in the VPC. This cidr block below 
   # means that the main route table has the following routes: Destination = 
   # 10.99.0.0/18 , Target = local
-  cidr = "10.99.0.0/18"
+  cidr = "10.98.0.0/18"
 
   # VPC spans all the availability zones in region
   azs = data.aws_availability_zones.available.names
@@ -155,7 +155,7 @@ module "vpc" {
   # internet gateway exposes resources with public IPs to inbound traffic 
   # from the internet. All public subnets route to an Internet Gateway for 
   # non-local addresses which is what makes the subnet public.
-  public_subnets   = ["10.99.0.0/24", "10.99.1.0/24", "10.99.2.0/24"]
+  public_subnets   = ["10.98.0.0/24", "10.98.1.0/24", "10.98.2.0/24"]
   public_subnet_tags = {
     Name = "subnet-public"
   }
@@ -163,12 +163,12 @@ module "vpc" {
   # Private subnets contain resources that do not have public IPs. They have 
   # private IPs and can only interact with resources inside the same network
   # Resources in a private subnet needing internet access require a NAT device
-  private_subnets  = ["10.99.3.0/24", "10.99.4.0/24", "10.99.5.0/24"]
+  private_subnets  = ["10.98.3.0/24", "10.98.4.0/24", "10.98.5.0/24"]
   private_subnet_tags = {
      Name = "subnet-private"
   }
 
-  database_subnets = ["10.99.6.0/24", "10.99.7.0/24", "10.99.8.0/24"]
+  database_subnets = ["10.98.6.0/24", "10.98.7.0/24", "10.98.8.0/24"]
   database_subnet_tags = {
     Name = "subnet-database"
   }

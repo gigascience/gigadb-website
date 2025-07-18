@@ -16,7 +16,7 @@ module "security_group" {
       from_port   = 5432
       to_port     = 5432
       protocol    = "tcp"
-      cidr_blocks = "10.99.0.0/18"
+      cidr_blocks = "10.98.0.0/18"
     }
   ]
 }
