@@ -1,7 +1,15 @@
+.modal-footer {
+  .btn + .btn {
+    margin-bottom: 0;
+    margin-left: 8px; // override bootstrap default to better display out buttons with ringed focus state
+  }
+}
+
 .modal-footer-flex {
   display: flex;
   align-items: center;
   justify-content: flex-end;
+
 }
 .modal-close-btn {
   opacity: 1;
@@ -9,5 +17,18 @@
   background: transparent;
   &:hover {
     color: @color-warm-black;
+  }
+}
+
+@media (max-width: @screen-xs-max) {
+  .modal-dialog {
+    position: fixed;
+    inset: 10px;
+    transform: initial;
+    transition: initial;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }

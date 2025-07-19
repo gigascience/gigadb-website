@@ -138,6 +138,14 @@ table.submitted-table > tbody > tr > td:nth-child(9) > a:first-child {
     }
   }
 }
+.guide-table {
+  @media (max-width: @screen-md-max) {
+    width: 100%;
+    td {
+      line-height: 1.5;
+    }
+  }
+}
 table.dataset-view-table > tbody > tr {
   &.odd {
     background-color: @color-lighter-gray;
@@ -244,7 +252,7 @@ table.dataset-view-table > tbody > tr {
   justify-content: space-between;
 }
 
-@media (min-width: 1200px) {
+@media (min-width: @screen-lg-min) {
   .table-footer {
     margin-top: 5px;
   }
@@ -257,5 +265,33 @@ table.dataset-view-table > tbody > tr {
   }
   .btn-subtle {
     color: @gigadb-green-on-lighter-gray;
+  }
+}
+
+@media (max-width: @screen-xs-max) {
+  .table-footer {
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+
+    .pagination-wrapper {
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+
+      .yiiPager {
+        margin-bottom: 10px;
+      }
+
+      .page-selector {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    .summary {
+      text-align: center;
+    }
   }
 }

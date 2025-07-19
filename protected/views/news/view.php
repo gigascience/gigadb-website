@@ -11,7 +11,7 @@
 	]);
 	?>
 	<div class="news">
-		<h1 class="h3"><?php echo $model->title; ?></h1>
-		<p><?php echo $model->body; ?></p>
+		<h1 class="h3"><?php echo Yii::app()->controller->widget("CHtmlPurifier")->purify($model->title); ?></h1>
+		<p><?php echo Yii::app()->controller->widget("CHtmlPurifier")->purify($model->body); ?></p>
 	</div>
 </div>

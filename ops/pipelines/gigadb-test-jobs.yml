@@ -1,6 +1,7 @@
 legacy_tests:
   stage: test
   variables:
+    DATA_SAVE_PATH: "/tmp/gitlab-ci-$CI_JOB_ID"
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.runtests.yml"
   cache:
     key:
@@ -34,7 +35,6 @@ legacy_tests:
       - .env
       - .secrets
       - composer.lock
-      - containers-data
       - tests
     when: always
     expire_in: 1 week

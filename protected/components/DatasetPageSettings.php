@@ -73,11 +73,15 @@ class DatasetPageSettings extends yii\base\BaseObject
             "page" => 10,
         ];
 
-        if (isset($cookies['file_setting'])) {
+        if ($cookies['file_setting']) {
             $fileSettings = json_decode($cookies['file_setting']->value, true);
+
+            if (!$fileSettings['setting'] || !$fileSettings['page']) {
+                throw new CException('An error occurred');
+            }
         }
 
-        return [ "columns" => $fileSettings['setting'], "pageSize" => $fileSettings['page'] ];
+        return ["columns" => (array) $fileSettings['setting'], "pageSize" => (int) $fileSettings['page'] ];
     }
 
     /**
@@ -90,14 +94,16 @@ class DatasetPageSettings extends yii\base\BaseObject
      */
     public function setFileSettings(array $columns, int $pageSize, CMap $cookies): array
     {
-        if (isset($cookies['file_setting'])) {
+        if ($cookies['file_setting']) {
             $cookies['file_setting']->value = json_encode([ "setting" => $columns, "page" => $pageSize]);
         } else {
-                $cookie = new CHttpCookie('file_setting', json_encode(array('setting' => $columns, 'page' => $pageSize)));
-                $cookie->expire = time() + (60 * 60 * 24 * 30);
-                $cookies['file_setting'] = $cookie;
+            $cookie = new CHttpCookie('file_setting', json_encode(array('setting' => $columns, 'page' => $pageSize)));
+            $cookie->expire = time() + (60 * 60 * 24 * 30);
+            $cookie->httpOnly = true;
+            $cookie->secure = true;
+            $cookies['file_setting'] = $cookie;
         }
-        return [ "columns" => $columns, "pageSize" => $pageSize ];
+        return ["columns" => $columns, "pageSize" => $pageSize];
     }
 
     /**
@@ -114,11 +120,11 @@ class DatasetPageSettings extends yii\base\BaseObject
             "page" => 10,
         ];
 
-        if (isset($cookies['sample_setting'])) {
+        if ($cookies['sample_setting']) {
             $sampleSettings = json_decode($cookies['sample_setting']->value, true);
         }
 
-        return [ "columns" => $sampleSettings['columns'], "pageSize" => $sampleSettings['page'] ];
+        return ["columns" => $sampleSettings['columns'], "pageSize" => $sampleSettings['page']];
     }
 
     /**
@@ -131,13 +137,15 @@ class DatasetPageSettings extends yii\base\BaseObject
      */
     public function setSampleSettings(array $columns, int $pageSize, CMap $cookies): array
     {
-        if (isset($cookies['sample_setting'])) {
+        if ($cookies['sample_setting']) {
             $cookies['sample_setting']->value = json_encode([ "columns" => $columns, "page" => $pageSize]);
         } else {
-                $cookie = new CHttpCookie('sample_setting', json_encode(array('columns' => $columns, 'page' => $pageSize)));
-                $cookie->expire = time() + (60 * 60 * 24 * 30);
-                $cookies['sample_setting'] = $cookie;
+            $cookie = new CHttpCookie('sample_setting', json_encode(array('columns' => $columns, 'page' => $pageSize)));
+            $cookie->expire = time() + (60 * 60 * 24 * 30);
+            $cookie->httpOnly = true;
+            $cookie->secure = true;
+            $cookies['sample_setting'] = $cookie;
         }
-        return [ "columns" => $columns, "pageSize" => $pageSize ];
+        return ["columns" => $columns, "pageSize" => $pageSize];
     }
 }

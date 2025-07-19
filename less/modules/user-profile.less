@@ -1,0 +1,39 @@
+.user-profile-box {
+  .btns-row .btn {
+    min-width: 100px;
+  }
+}
+.user-profile-action-btns {
+  .btns-row .btn {
+    min-width: 150px;
+  }
+}
+
+@media (max-width: @screen-sm-max) {
+  .user-profile-box {
+    .btns-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .user-profile-action-btns {
+    .btns-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+  }
+}
+
+@media (max-width: @screen-xxs-max) {
+  .user-profile-action-btns {
+    .btns-row {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      gap: 15px;
+      .btn {
+        width: 100%;
+      }
+    }
+  }
+}

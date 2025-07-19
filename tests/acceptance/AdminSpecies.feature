@@ -1,4 +1,3 @@
-@ok-can-offline
 Feature: admin page for species
   As a curator
   I want to be able to update the species information

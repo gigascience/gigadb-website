@@ -4,7 +4,7 @@
     COMPOSE_FILE: "ops/deployment/docker-compose.yml:ops/deployment/docker-compose.ci.yml:ops/deployment/docker-compose.build.yml"
     REMOTE_WEBAPP_DOCKER: "$remote_public_ip:2376"
     REMOTE_BASTION_DOCKER: "$remote_bastion_public_ip:2376"
-    DATA_SAVE_PATH: "/home/centos/app_data"
+    DATA_SAVE_PATH: "/home/ec2-user/app_data"
     PHP_VERSION: "7.4.33"
   stage: deployment
   allow_failure: false
@@ -21,7 +21,7 @@
     # appending production variables at the end of the .env and .secrets
     - env > full_env.txt
     - env | grep -v "SAST" | grep -iE "^(staging_|remote_)" | grep -viE "(password|email|tester|secret|key|user|app_id|client_id|token|tls)" | tee -a  $APPLICATION/.env
-    - env | grep -v "SAST" | grep -iE "^TIDEWAYS_APIKEY" >> $APPLICATION/.env
+    - env | grep -v "SAST" | grep -iE "^TIDEWAYS_" >> $APPLICATION/.env
     - env | grep -v "SAST" | grep -v "DOCKER_" | grep -v "GITLAB_" | grep -v "CI_" | grep -iE "(password|email|tester|secret|user|app_id|client_id|token)" | grep -viE "tlsauth" | grep -v "client_" | grep -v "token_uri" | tee -a $APPLICATION/.secrets
     - env | grep -v "SAST" | grep "^CI_API_V4_URL" | tee -a  $APPLICATION/.env
     - env | grep -v "SAST" | grep "^CI_PROJECT_PATH" | tee -a  $APPLICATION/.env

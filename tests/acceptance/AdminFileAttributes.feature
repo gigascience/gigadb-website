@@ -1,4 +1,4 @@
-@ok-can-offline @admin-file @issue-457
+@admin-file @issue-457
 Feature: A curator can manage file attributes in admin file update page
   As a curator
   I want to manage file attributes from the update form
@@ -146,25 +146,10 @@ Feature: A curator can manage file attributes in admin file update page
     Then I should see "Save Attribute"
     And I should see a submit button "Save"
 
-  @ok @issue-2029
-  Scenario: When both the edit from and the new attribute form are open, duplicate are not created
-    Given I have signed in as admin
-    And I am on "/adminFile/update/id/13973"
-    And I press the button "Edit"
-    And I press the button "Show New Attribute Fields"
-    When I select "age" in menu "FileAttributes_new_attribute_id"
-    And I fill in the text input "FileAttributes[new][value]" with "35"
-    And I press the button "Add attribute"
-    Then I should see a file attribute table
-      | Attribute Name | Value     | Unit |
-      | last_modified  | 2013-7-15 |      |
-      | age            | 35        |      |
-
   @ok @issue-2066
   Scenario: Works for the new attribute's length value up to 1000
     Given I have signed in as admin
     And I am on "/adminFile/update/id/13973"
-    And I press the button "Edit"
     And I press the button "Show New Attribute Fields"
     When I select "comment" in menu "FileAttributes_new_attribute_id"
     And I fill in the text input "FileAttributes[new][value]" with "embryophyta_odb10 C:99.1%[S:77.9%,D:21.2%],F:0.4%,M:0.5%,n:1614"

@@ -87,7 +87,7 @@ class BaseInput extends CWidget
 
     echo CHtml::openTag('div', $this->groupOptions);
     $this->renderLabel();
-    echo CHtml::openTag('div', array('class' => $this->inputWrapperOptions));
+    echo CHtml::openTag('div', array('class' => $this->inputWrapperOptions . ' input-wrapper'));
     $inputClosure();
     $this->renderDescription();
     $this->renderError();

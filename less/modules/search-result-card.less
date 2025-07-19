@@ -1,9 +1,14 @@
+.search-results-list {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  margin-bottom: 30px;
+}
 .search-result-card {
   background-color: @color-lighter-gray;
   border: 1px solid @color-light-gray;
   border-radius: 8px;
   padding: 10px 0;
-  margin-bottom: 38px;
   max-width: 100%;
   .search-result-list {
     list-style: none;
@@ -69,6 +74,44 @@
           text-decoration: underline;
           &:hover {
             color: @gigadb-green-on-lighter-gray;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: @screen-xs-max) {
+  .search-results {
+    margin-bottom: 40px;
+  }
+  .search-results-list {
+    margin-block: 20px;
+    gap: 20px;
+  }
+  .search-result-card {
+    .search-result-row {
+      .search-result-icon-container {
+        padding: 10px 10px 10px 20px;
+      }
+      .search-result-content {
+        width: auto;
+        margin-inline: 0;
+        &.file-content {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 5px;
+          padding-block: 5px;
+          .file-name,
+          .file-type,
+          .file-size {
+            width: 100%;
+            text-align: left;
+            padding-left: 0;
+            max-width: none;
+          }
+          .file-name {
+            padding-block: 0;
           }
         }
       }

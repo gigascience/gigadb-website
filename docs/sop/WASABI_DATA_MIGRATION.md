@@ -17,7 +17,6 @@ GITLAB_PRIVATE_TOKEN=<The token for upstream user>
 
 REPO_NAME="gigadb-website"
 CI_PROJECT_URL="https://gitlab.com/gigascience/upstream/gigadb-website"
-GROUP_VARIABLES_URL="https://gitlab.com/api/v4/groups/gigascience/variables?per_page=100"
 FORK_VARIABLES_URL="https://gitlab.com/api/v4/groups/3506500/variables"
 PROJECT_VARIABLES_URL="https://gitlab.com/api/v4/projects/gigascience%2FUpstream%2F$REPO_NAME/variables"
 MISC_VARIABLES_URL="https://gitlab.com/api/v4/projects/gigascience%2Fcnhk-infra/variables"
@@ -240,7 +239,7 @@ in the `logs` directory.
 If the `--use-live-data` flag is used and the script determines that it is not
 running on the CNGB server then the script will exit with an error message:
 ```
-[centos@ip-xxx-xx-x-x]$ sudo docker-compose run --rm rclone /app/rclone_copy.sh --use-live-data --starting-doi 100002 --ending-doi 100020
+[ec2-user@ip-xxx-xx-x-x]$ sudo docker-compose run --rm rclone /app/rclone_copy.sh --use-live-data --starting-doi 100002 --ending-doi 100020
 Cannot copy live data because we are not on backup server - exiting...
 ```
 
