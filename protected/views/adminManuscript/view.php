@@ -17,6 +17,11 @@
 			'identifier',
 			'pmid',
 			'dataset_id',
+            [
+                'name' => 'is_pre_print',
+                'label' => 'This link is a pre-print',
+                'value' => $model->is_pre_print ? 'Yes' : 'No',
+            ],
 		),
 		'htmlOptions' => array('class' => 'table table-striped table-bordered dataset-view-table'),
 		'itemCssClass' => array('odd', 'even'),

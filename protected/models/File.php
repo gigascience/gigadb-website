@@ -68,7 +68,7 @@ class File extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('dataset_id, name, location, extension, size', 'required'),
-			array('dataset_id, format_id, type_id', 'numerical', 'integerOnly'=>true),
+			array('dataset_id, format_id, type_id, size', 'numerical', 'integerOnly'=>true),
 			array('name', 'length', 'max'=>100),
 			array('location, code', 'length', 'max'=>200),
 			array('index4blast', 'length', 'max'=>45),
@@ -298,20 +298,20 @@ class File extends CActiveRecord
 
     }
 
-    public function setSizeValue()
+    public function setSizeValue(): bool
     {
         // Save the size from file if not set by user
         if ($this->attributes['location'] && $this->attributes['name']) {
             $size = trim($this->attributes['size']);
-            if (empty($size)) {
-                if (!file_exists(ReadFile::TEMP_FOLDER . $this->attributes['name'])) {
-                    ReadFile::downloadRemoteFile($this->attributes['location'], $this->attributes['name']);
-                }
-                if (empty($this->size)) {
-                    $this->size = filesize(ReadFile::TEMP_FOLDER . $this->name);
-                }
+
+            if (!preg_match('/^[1-9][0-9]*$/', $size)) {
+                return false;
             }
+
+            return true;
         }
+
+        return true;
     }
 
     /**

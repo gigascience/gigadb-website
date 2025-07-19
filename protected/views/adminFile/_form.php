@@ -245,7 +245,7 @@
                     </div>
                     <div class="modal-footer modal-footer-flex">
                         <button type="button" class="btn background-btn-o" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn background-btn js-save js-save-attr-edit-btn" name="edit_attr">Save Attribute</button>
+                        <button type="submit" class="btn background-btn js-save js-save-attr-edit-btn" name="edit_attr" value="edit">Save Attribute</button>
                     </div>
                 </div>
             </div>

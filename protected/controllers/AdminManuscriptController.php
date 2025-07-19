@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 class AdminManuscriptController extends Controller
 {
 
@@ -49,20 +51,27 @@ class AdminManuscriptController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new Manuscript;
+		$model = new \GigaDB\models\Manuscript();
+        $modelWrapper = new LegacyManuscriptForm($model);
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
+		if ($attrs = Yii::$app->request->post('LegacyManuscriptForm')) {
+            //otherwise problem with id not null constraint
+            $model = new \GigaDB\models\Manuscript();
+			$model->attributes = $attrs;
 
-		if(isset($_POST['Manuscript']))
-		{
-			$model->attributes=$_POST['Manuscript'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+			if ($model->save()) {
+                return $this->redirect(array('view','id'=>$model->id));
+            } else {
+                foreach ($model->getErrors() as $attribute => $errors) {
+                    foreach ($errors as $error) {
+                        $modelWrapper->addError($attribute, $error);
+                    }
+                }
+            }
 		}
 
 		$this->render('create',array(
-			'model'=>$model,
+			'model'=>$modelWrapper,
 		));
 	}
 
@@ -73,20 +82,18 @@ class AdminManuscriptController extends Controller
 	 */
 	public function actionUpdate($id)
 	{
-		$model=$this->loadModel($id);
+		$model=$this->loadYii2Model($id);
+        $modelWrapper = new LegacyManuscriptForm($model);
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
-		if(isset($_POST['Manuscript']))
+        if ($attrs = Yii::$app->request->post('LegacyManuscriptForm'))
 		{
-			$model->attributes=$_POST['Manuscript'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+			$model->attributes = $attrs;
+			if ($model->save())
+				return $this->redirect(array('view','id'=>$model->id));
 		}
 
 		$this->render('update',array(
-			'model'=>$model,
+			'model'=>$modelWrapper,
 		));
 	}
 
@@ -149,6 +156,17 @@ class AdminManuscriptController extends Controller
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
 	}
+
+    public function loadYii2Model($id): \GigaDB\models\Manuscript
+    {
+        $model = \GigaDB\models\Manuscript::findOne($id);
+
+        if (!$model) {
+            throw new \yii\web\NotFoundHttpException('The requested page does not exist.');
+        }
+
+        return $model;
+    }
 
 	/**
 	 * Performs the AJAX validation.
