@@ -14,9 +14,9 @@ $this->pageTitle = 'GigaDB - Help';
         ]);
         ?>
         <div class="subsection">
-            <p>The <a href="http://gigadb.org/" target="_blank"><span class="text-italic">GigaDB</span></a> website allows any user to browse, search, view datasets and access data files. If you want to submit a dataset, save searches or be alerted of new content of interest we request that you <a href="/user/create" target="_blank">create an account</a>.</p>
+            <p>The GigaDB website allows any user to browse, search, view datasets and access data files. If you want to submit a dataset, save searches or be alerted of new content of interest we request that you <a href="/user/create">create an account</a>.</p>
             <p>A 'Latest news' section will be visible to announce any updates or new features to the database and the RSS feed automatically announces each new dataset release.</p>
-            <p>The <a href="http://gigadb.org/" target="_blank"><span class="text-italic">GigaDB</span></a> homepage allows you to browse datasets by type eg Genomic, Metagenomic, Transcriptomic. Clicking on the DOI (digital object identifier) or image will take you directly to the webpage for the dataset of interest.</p>
+            <p>The GigaDB homepage allows you to browse datasets by type eg Genomic, Metagenomic, Transcriptomic. Clicking on the DOI (digital object identifier) or image will take you directly to the webpage for the dataset of interest.</p>
             <p>Alternatively you can use the search functions to find datasets, samples or files of interest.</p>
         </div>
         <div class="section tab-nav-container">
@@ -90,9 +90,9 @@ $this->pageTitle = 'GigaDB - Help';
                 </div>
                 <div role="tabpanel" class="tab-pane" id="guidelines" aria-labelledby="liguideline">
                     <p><a href="http://gigadb.org/"><span class="text-italic">GigaDB</span></a> is an open-access database. As such, all data submitted to <span class="text-italic">GigaDB</span> must be fully consented for public release (for more information about our data policies, please see our <a href="http://gigadb.org/site/term/" target="_blank">Terms of use page</a>).</p>
-                    <p>All sequence, assembly, variation, and microarray data must be deposited in a public database at <a href="http://www.ncbi.nlm.nih.gov/" target="_blank">NCBI</a>, <a href="http://www.ebi.ac.uk/" target="_blank">EBI</a>, or <a href="http://www.ddbj.nig.ac.jp/" target="_blank">DDBJ</a> before you submit them to <a href="http://gigadb.org/" target="_blank"><span class="text-italic">GigaDB</span></a>. In the cases where you would like <span class="text-italic">Giga</span>DB to host files associated with genomic data not fully consented for public release, you must first submit the non-public data to <a href="http://www.ncbi.nlm.nih.gov/gap/" target="_blank">dbGaP</a> or <a href="http://ega-archive.org" target="_blank">EGA</a>.</p>
+                    <p>All sequence, assembly, variation, and microarray data must be deposited in a public database at <a href="http://www.ncbi.nlm.nih.gov/" target="_blank">NCBI</a>, <a href="http://www.ebi.ac.uk/" target="_blank">EBI</a>, or <a href="http://www.ddbj.nig.ac.jp/" target="_blank">DDBJ</a> before you submit them to GigaDB. In the cases where you would like <span class="text-italic">Giga</span>DB to host files associated with genomic data not fully consented for public release, you must first submit the non-public data to <a href="http://www.ncbi.nlm.nih.gov/gap/" target="_blank">dbGaP</a> or <a href="http://ega-archive.org" target="_blank">EGA</a>.</p>
                     <p><strong>Step 1</strong> - <a href="http://gigadb.org/user/create" target="_blank">Create an account</a> or <a href="http://gigadb.org/site/login" target="_blank">log in</a> to <a href="http://gigadb.org/" target="_blank"><span class="text-italic">Giga</span>DB</a></p>
-                    <p><strong>Step 2</strong> - Download and complete the <a href="/files/templates/GigaDBUploadForm-forWebsite-v22Dec2021.xlsx" target="_blank">Excel template file</a>. Completed example files for the <a href="http://gigadb.org/files/GigaDBUploadForm-example1.xls" aria-label="Example Excel file for E. coli">E. coli</a> (<a href="http://gigadb.org/dataset/100001" target="_blank">10.5524/100001</a>) and <a href="http://gigadb.org/files/GigaDBUploadForm-example2.xls" aria-label="Example Excel file for Sorghum">Sorghum</a> (<a href="http://gigadb.org/dataset/100012" target="_blank">10.5524/100012</a>) datasets are available.</p>
+                    <p><strong>Step 2</strong> - Download and complete the <a href="/files/templates/GigaDBUploadForm-forWebsite-v22Dec2021.xlsx" target="_blank" aria-label="Excel template file, downloads a xlsx file">Excel template file</a>. Completed example files for the <a href="http://gigadb.org/files/GigaDBUploadForm-example1.xls" aria-label="Example Excel file for E. coli, downloads a xls file">E. coli</a> (<a href="http://gigadb.org/dataset/100001" target="_blank">10.5524/100001</a>) and <a href="http://gigadb.org/files/GigaDBUploadForm-example2.xls" aria-label="Example Excel file for Sorghum, downloads a xls file">Sorghum</a> (<a href="http://gigadb.org/dataset/100012" target="_blank">10.5524/100012</a>) datasets are available.</p>
                     <p>The template file contains:</p>
                     <ol>
                         <li>3 tabs which must all be completed [Study, Samples, Files]</li>
@@ -682,7 +682,7 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242&lt;</pre>
                     <section aria-labelledby="doiRelTitle" class="m-0">
                         <h2 class="page-subtitle" id="doiRelTitle">DOI relationship</h2>
 
-                        <p>The DOI relationship vocabulary is taken from the <a href="http://schema.datacite.org/meta/kernel-2.2/doc/DataCite-MetadataKernel_v2.2.pdf" target="_blank" aria-label="DataCite Pdf file">DataCite</a> 'relationType' schema property (ID=12.2).</p>
+                        <p>The DOI relationship vocabulary is taken from the <a href="http://schema.datacite.org/meta/kernel-2.2/doc/DataCite-MetadataKernel_v2.2.pdf" target="_blank" aria-label="DataCite PDF file, opens a PDF file in a new tab">DataCite</a> 'relationType' schema property (ID=12.2).</p>
                         <p>Definition: Description of the relationship of the resource being registered (A) and the related resource (B).</p>
 
                         <dl class="help-description-list">
@@ -904,9 +904,9 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242&lt;</pre>
                     <section aria-labelledby="cliTitle" class="m-0">
                         <h2 class="page-subtitle" id="cliTitle">Command line usage</h2>
                         <p>You can also use the curl commands on the command line to retrieve metadata, e.g.:</p>
-                        <pre><code>curl <a href="http://gigadb.org/api/dataset?doi=100051" target="_blank" rel="noopener noreferrer">http://gigadb.org/api/dataset?doi=100051</a></code></pre>
+                        <pre><code>curl http://gigadb.org/api/dataset?doi=100051</code></pre>
                         <p>If you want to check whether a search will work you can use the <code>-I</code> flag:</p>
-                        <pre><code>curl -I <a href="http://gigadb.org/api/dataset?doi=100051" target="_blank" rel="noopener noreferrer">http://gigadb.org/api/dataset?doi=100051</a>
+                        <pre><code>curl -I http://gigadb.org/api/dataset?doi=100051
 # HTTP/1.1 200 OK
 # or
 # HTTP/1.1 404 Not Found / HTTP/1.1 500 Internal server error</code></pre>
