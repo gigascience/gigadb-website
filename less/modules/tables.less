@@ -20,6 +20,7 @@ table.table a {
   font-weight: normal;
   border-bottom: 0px;
   background-color: @color-lighter-gray;
+  color: @warm-black-on-lighter-gray;
 }
 
 .new-upload-table {
@@ -254,6 +255,16 @@ table.dataset-view-table > tbody > tr {
 @media (min-width: @screen-lg-min) {
   .table-footer {
     margin-top: 5px;
+  }
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) {
+  background-color: @color-lighter-gray;
+  td {
+    color: @warm-black-on-lighter-gray;
+  }
+  .btn-subtle {
+    color: @gigadb-green-on-lighter-gray;
   }
 }
 
