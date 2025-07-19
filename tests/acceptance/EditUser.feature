@@ -1,4 +1,3 @@
-@ok-needs-secrets
 Feature: EditUser
   As a curator
   I want a form to edit user details

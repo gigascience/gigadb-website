@@ -1,4 +1,3 @@
-@ok-can-offline
 Feature: a user visit the dataset page
   As a website user
   I want to see all the information pertaining to a dataset
@@ -21,7 +20,6 @@ Feature: a user visit the dataset page
   Scenario: pagination widget is shown when total number of file greater than the page size setting
     Given I have not signed in
     And I have set the page size setting to 5
-    When I am on "/dataset/100006"
     And I follow "Files"
     Then I should see "Next >"
     Then I should see "Go to page"
@@ -155,7 +153,7 @@ Feature: a user visit the dataset page
     And I press the button "Cite Dataset"
     When I follow "Text"
     And I go to the new tab
-    Then I should see "Li, J., Zhang, G., Lambert, D., & Wang, J. (2011). Genomic data from Adelie penguin (Pygoscelis adeliae) [Data set]. GigaScience. https://doi.org/10.5524/100006"
+    Then I should see "Zhang, G., Lambert, D. M., & Wang, J. (2011). Genomic data from Adelie penguin (Pygoscelis adeliae). [Data set]. GigaScience. https://doi.org/10.5524/100006"
 
   @ok @cite-dataset-button
   Scenario: Display no Cite Dataset button when bad request
@@ -264,3 +262,8 @@ Feature: a user visit the dataset page
     When I am on "/dataset/100020"
     Then I should see "Liu X; Quan Z; Cheng S; Xu X; Pan S; Zeng P; Xie M; Yue Z; Zhan D; Li Y; Wang J; Zhao Z; Zhang G (2011)"
     And I should not see "Wang, J; Quan, Z; Zhao, Z; Cheng, S; Liu, X; Li, Y; Pan, S; Xie, M; Xu, X; Yue, Z; Zeng, P; Zhan, D; Zhang, G (2011)"
+
+  Scenario: Show pre print publications
+    Given I have not signed in
+    When I am on "/dataset/100142"
+    Then I should see "Read the pre-print publication(s):"

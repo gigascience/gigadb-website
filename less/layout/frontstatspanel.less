@@ -47,3 +47,25 @@
   color: @warm-black-on-lighter-gray;
   line-height: 1;
 }
+
+@media (max-width: @screen-sm-max) {
+  .home-color-background-block {
+    margin: 20px 0;
+    padding: 20px 0;
+    border: 0;
+  }
+  .home-color-background-grid {
+    .home-color-background-block-wrapper {
+      &:first-child {
+        border-right: 1px dashed @color-light-gray;
+        border-bottom: 1px dashed @color-light-gray;
+      }
+      &:nth-child(2) {
+        border-bottom: 1px dashed @color-light-gray;
+      }
+      &:nth-child(3) {
+        border-right: 1px dashed @color-light-gray;
+      }
+    }
+  }
+}

@@ -21,7 +21,7 @@
         ));
           ?>
         <span class="input-group-btn">
-            <button class="btn background-btn" type="submit"><i class="fa fa-search"></i> Search again</button>
+            <button class="btn background-btn search-btn" type="submit"><i class="fa fa-search"></i> Search again</button>
 <!--TODO: Will re-implement the save search function in ticket #1168-->
 //    <?
 //        if(!Yii::app()->user->isGuest) {

@@ -19,7 +19,7 @@ $this->pageTitle = 'GigaDB - Help';
             <p>The GigaDB homepage allows you to browse datasets by type eg Genomic, Metagenomic, Transcriptomic. Clicking on the DOI (digital object identifier) or image will take you directly to the webpage for the dataset of interest.</p>
             <p>Alternatively you can use the search functions to find datasets, samples or files of interest.</p>
         </div>
-        <div class="section">
+        <div class="section tab-nav-container">
             <ul class="nav nav-tabs nav-border-tabs" role="tablist" id="alltabs" aria-label="GigaDB help">
                 <li id="lisearch" role="presentation" class="active"><a href="#search" aria-controls="search" role="tab" data-toggle="tab" aria-selected="true"><span class="text-italic">GigaDB</span> search</a></li>
                 <li id="liguideline" role="presentation"><a href="#guidelines" aria-controls="guidelines" role="tab" data-toggle="tab" aria-selected="false">Submission guidelines</a></li>
