@@ -1,0 +1,90 @@
+//== Media queries breakpoints
+//
+//## Define the breakpoints at which your layout will change, adapting to different screen sizes.
+
+// Extra small screen / phone
+@screen-xs: 576px;
+@screen-xs-min: @screen-xs;
+
+// Small screen / tablet
+@screen-sm: 768px;
+@screen-sm-min: @screen-sm;
+
+// Medium screen / desktop
+@screen-md: 992px;
+@screen-md-min: @screen-md;
+
+// Large screen / wide desktop
+@screen-lg: 1200px;
+@screen-lg-min: @screen-lg;
+
+// Extra large screen / wide desktop
+@screen-xl: 1400px;
+@screen-xl-min: @screen-xl;
+
+// Extra extra large screen / wide desktop
+@screen-xxl: 1600px;
+@screen-xxl-min: @screen-xxl;
+
+// So media queries don't overlap when required, provide a maximum
+@screen-xxs-max: (@screen-xs-min - 1);
+@screen-xs-max: (@screen-sm-min - 1);
+@screen-sm-max: (@screen-md-min - 1);
+@screen-md-max: (@screen-lg-min - 1);
+@screen-lg-max: (@screen-xl-min - 1);
+@screen-xl-max: (@screen-xxl-min - 1);
+
+// Usage:
+/*
+// 1. Mobile-first approach (min-width)
+@media (min-width: @screen-sm-min) {
+  // Styles for tablets and up (≥768px)
+}
+
+@media (min-width: @screen-md-min) {
+  // Styles for desktop and up (≥992px)
+}
+
+@media (min-width: @screen-lg-min) {
+  // Styles for large desktops (≥1200px)
+}
+
+// 2. Desktop-first approach (max-width)
+@media (max-width: @screen-md-max) {
+  // Styles for tablets and below (<1200px)
+}
+
+@media (max-width: @screen-sm-max) {
+  // Styles for small tablets and below (<992px)
+}
+
+@media (max-width: @screen-xs-max) {
+  // Styles for mobile only (<768px)
+}
+
+// 3. Specific range examples
+@media (min-width: @screen-sm-min) and (max-width: @screen-sm-max) {
+  // Only tablet styles (768px-991px)
+}
+
+@media (min-width: @screen-md-min) and (max-width: @screen-md-max) {
+  // Only desktop styles (992px-1199px)
+}
+
+// 4. Example with a module
+.card {
+  width: 100%;
+
+  @media (min-width: @screen-sm-min) {
+    width: 50%;
+  }
+
+  @media (min-width: @screen-md-min) {
+    width: 33.33%;
+  }
+
+  @media (min-width: @screen-lg-min) {
+    width: 25%;
+  }
+}
+*/

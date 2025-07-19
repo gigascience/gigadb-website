@@ -13,7 +13,6 @@ class AdminDatasetTypeCest
         );
         $I->canSee('Admin');
 
-        //Remove custom image for dataset of id 8
         $I->amOnPage('adminDataset/update/id/8');
         $I->uncheckOption("#Dataset_Genomic");
         $I->click('Save');

@@ -20,16 +20,15 @@ class UnitHelper
      * @uses ByteUnits\Metric
      * @return string formatted size
      */
-    public static function specifySizeUnits(int $bytes, string $unit = null, int $precision = null): string
+    public static function specifySizeUnits(int $bytes, string $unit = null, int $precision = 2): string
     {
-        if ($bytes<0) {
-            return (string) $bytes;
+        if ($bytes < 0) {
+            throw new InvalidArgumentException('$bytes must be greater than 0');
         }
-        if ( null == $precision ) {
-            $precision = 2;
-        }
-        $metric = new ByteUnits\Metric($bytes);
+
+        $metric = new \ByteUnits\Metric($bytes);
         $formatted_size = $metric->format("$unit/$precision"," ");
+
         return $formatted_size ;
     }
 

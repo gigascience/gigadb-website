@@ -1,4 +1,3 @@
-@ok-can-offline
 Feature: filter tables on admin page
   As a curator
   I want to filter the tables on the admin pages
@@ -11,7 +10,7 @@ Feature: filter tables on admin page
   Scenario: Dataset table
     Given I am on "/adminDataset/admin"
     When I fill in the field of "name" "Dataset[identifier]" with "100006"
-    And I press return on the element "(//input)[2]"
+    And I press return on the element "//input[@name='Dataset[identifier]']"
     And I wait "1" seconds
     Then I should see "Genomic data from Adelie penguin"
     And I should not see "100020"
@@ -22,7 +21,7 @@ Feature: filter tables on admin page
   Scenario: Dataset authors table
     Given I am on "/adminDatasetAuthor/admin"
     When I fill in the field of "name" "DatasetAuthor[doi_search]" with "100006"
-    And I press return on the element "(//input)[2]"
+    And I press return on the element "//input[@name='DatasetAuthor[doi_search]']"
     And I wait "1" seconds
     Then I should see "Zhang, Guojie"
     And I should not see "100020"
@@ -31,7 +30,7 @@ Feature: filter tables on admin page
   Scenario: Dataset Files
     Given I am on "/adminFile/admin"
     When I fill in the field of "name" "File[doi_search]" with "100006"
-    And I press return on the element "(//input)[2]"
+    And I press return on the element "//input[@name='File[doi_search]']"
     And I wait "1" seconds
     Then I should see "Pygoscelis_adeliae.RepeatMasker.out.gz"
     And I should not see "100020"
@@ -42,7 +41,7 @@ Feature: filter tables on admin page
   Scenario: Dataset Project
     Given I am on "/adminDatasetProject/admin"
     When I fill in the field of "name" "DatasetProject[project_name_search]" with "Avian"
-    And I press return on the element "(//input)[2]"
+    And I press return on the element "//input[@name='DatasetProject[project_name_search]']"
     And I wait "1" seconds
     Then I should see "The Avian Phylogenomic Project"
     And I should not see "Genome 10K"
@@ -51,7 +50,7 @@ Feature: filter tables on admin page
   Scenario: Dataset Links
     Given I am on "/adminLink/admin"
     When I fill in the field of "name" "Link[link]" with "BioProject"
-    And I press return on the element "(//input)[3]"
+    And I press return on the element "//input[@name='Link[link]']"
     And I wait "1" seconds
     Then I should see "BioProject:PRJNA77795"
     Then I should see "BioProject:PRJNA73995"
@@ -61,7 +60,7 @@ Feature: filter tables on admin page
   Scenario: Dataset relations
     Given I am on "/adminRelation/admin"
     When I fill in the field of "name" "Relation[doi_search]" with "100006"
-    And I press return on the element "(//input)[2]"
+    And I press return on the element "//input[@name='Relation[doi_search]']"
     And I wait "1" seconds
     Then I should see "100649"
     Then I should see "IsCitedBy"
@@ -73,7 +72,7 @@ Feature: filter tables on admin page
   Scenario: Dataset funders
     Given I am on "/datasetFunder/admin"
     When I fill in the field of "name" "DatasetFunder[doi_search]" with "100006"
-    And I press return on the element "(//input)[2]"
+    And I press return on the element "//input[@name='DatasetFunder[doi_search]']"
     And I wait "1" seconds
     Then I should see "Catapult"
     And I should not see "Science IO"
@@ -82,7 +81,7 @@ Feature: filter tables on admin page
   Scenario: Dataset manuscript
     Given I am on "/adminManuscript/admin"
     When I fill in the field of "name" "Manuscript[identifier]" with "2047-217X-3-10"
-    And I press return on the element "(//input)[2]"
+    And I press return on the element "//input[@name='Manuscript[identifier]']"
     And I wait "1" seconds
     Then I should see "100094"
     And I should not see "100020"
@@ -93,7 +92,7 @@ Feature: filter tables on admin page
   Scenario: Authors
     Given I am on "/adminAuthor/admin"
     When I fill in the field of "name" "Author[dois_search]" with "100020"
-    And I press return on the element "(//input)[5]"
+    And I press return on the element "//input[@name='Author[dois_search]']"
     And I wait "1" seconds
     Then I should see "Zhiwu"
     And I should not see "100094"
@@ -102,7 +101,7 @@ Feature: filter tables on admin page
   Scenario: Species
     Given I am on "/adminSpecies/admin"
     When I fill in the field of "name" "Species[common_name]" with "penguin"
-    And I press return on the element "(//input)[3]"
+    And I press return on the element "//input[@name='Species[common_name]']"
     And I wait "1" seconds
     Then I should see "Adelie penguin"
     And I should not see "foxtail"
@@ -111,7 +110,7 @@ Feature: filter tables on admin page
   Scenario: Projects
     Given I am on "/adminProject/admin"
     When I fill in the field of "name" "Project[name]" with "Avian"
-    And I press return on the element "(//input)[2]"
+    And I press return on the element "//input[@name='Project[name]']"
     And I wait "1" seconds
     Then I should see "The Avian Phylogenomic Project"
     And I should not see "Genome 10K"
@@ -120,7 +119,7 @@ Feature: filter tables on admin page
   Scenario: External links
     Given I am on "/adminExternalLink/admin"
     When I fill in the field of "name" "ExternalLink[doi_search]" with "100094"
-    And I press return on the element "(//input)[2]"
+    And I press return on the element "//input[@name='ExternalLink[doi_search]']"
     And I wait "1" seconds
     Then I should see "https://github.com/ShashaankV/CS"
     Then I should see "https://github.com/ShashaankV/GD"
@@ -130,7 +129,7 @@ Feature: filter tables on admin page
   Scenario: Link prefixes
     Given I am on "/adminLinkPrefix/admin"
     When I fill in the field of "name" "Prefix[prefix]" with "DDBJ"
-    And I press return on the element "(//input)[2]"
+    And I press return on the element "//input[@name='Prefix[prefix]']"
     And I wait "1" seconds
     Then I should see "http://www.ddbj.nig.ac.jp/"
     And I should not see "EBI"
@@ -142,7 +141,7 @@ Feature: filter tables on admin page
   Scenario: Funder
     Given I am on "/funder/admin"
     When I fill in the field of "name" "Funder[primary_name_display]" with "Catapult"
-    And I press return on the element "(//input)[3]"
+    And I press return on the element "//input[@name='Funder[primary_name_display]']"
     And I wait "1" seconds
     Then I should see "http://catapult.org"
     And I should not see "http://science.io"
@@ -151,7 +150,7 @@ Feature: filter tables on admin page
   Scenario: Attribute
     Given I am on "/attribute/admin"
     When I fill in the field of "name" "Attributes[attribute_name]" with "location"
-    And I press return on the element "(//input)[2]"
+    And I press return on the element "//input[@name='Attributes[attribute_name]']"
     And I wait "1" seconds
     Then I should see "Geographic"
     And I should not see "sex"
@@ -164,7 +163,7 @@ Feature: filter tables on admin page
   Scenario: Dataset types
     Given I am on "/adminDatasetType/admin"
     When I fill in the field of "name" "Type[name]" with "nomic"
-    And I press return on the element "(//input)[2]"
+    And I press return on the element "//input[@name='Type[name]']"
     And I wait "1" seconds
     Then I should see "Genomic"
     Then I should see "Epigenomic"
@@ -225,7 +224,7 @@ Feature: filter tables on admin page
   Scenario: News items
     Given I am on "/news/admin"
     When I fill in the field of "name" "News[start_date]" with "2017-03-22"
-    And I press return on the element "(//input)[4]"
+    And I press return on the element "//input[@name='News[start_date]']"
     And I wait "1" seconds
     Then I should see "Join the team!"
     And I should not see "Testing News item"
@@ -235,7 +234,7 @@ Feature: filter tables on admin page
   Scenario: Publishers
     Given I am on "/adminPublisher/admin"
     When I fill in the field of "name" "Publisher[name]" with "database"
-    And I press return on the element "(//input)[2]"
+    And I press return on the element "//input[@name='Publisher[name]']"
     And I wait "1" seconds
     Then I should see "GigaScience Database"
     And I should not see "Open Life Science publishing"
@@ -244,7 +243,7 @@ Feature: filter tables on admin page
   Scenario: Update logs
     Given I am on "/datasetLog/admin"
     When I fill in the field of "name" "DatasetLog[doi]" with "100020"
-    And I press return on the element "(//input)[3]"
+    And I press return on the element "//input[@name='DatasetLog[doi]']"
     And I wait "1" seconds
     Then I should see "File Millet.fa.glean.pep.v3.gz updated"
     And I should not see "100142"

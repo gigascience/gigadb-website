@@ -1,9 +1,8 @@
-@ok-needs-secrets
 Feature: User profile page
   As an author
   I want a form to edit my user details
   So that I can update my contact details on the GigaDB web site
-  
+
 @ok
 Scenario: View user profile
   Given I sign in as a user

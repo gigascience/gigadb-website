@@ -1,0 +1,49 @@
+.dataset-feed-section {
+  .carousel-block {
+    height: auto;
+  }
+  .dataset-item {
+    .dataset-image-wrapper {
+      width: 100%;
+      padding-bottom: 100%;
+      position: relative;
+      background-color: transparent;
+      margin-bottom: 15px;
+
+      .dataset-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+    }
+
+    .dataset-doi {
+      font-size: 14px;
+      color: @color-darker-gray;
+      margin-bottom: 10px;
+    }
+
+    .dataset-title {
+      margin: 0 0 10px 0;
+      line-height: 1.4;
+      color: @color-warm-black;
+      // https://developer.mozilla.org/en-US/docs/Web/CSS/-webkit-line-clamp
+      // fixing the height of the title to minimize layout issues
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+      overflow: hidden;
+      line-clamp: 3;
+      height: 4.2em; // line-height * 3
+    }
+
+    .dataset-date {
+      font-size: 14px;
+      color: @color-darker-gray;
+      height: 1em;
+    }
+  }
+}

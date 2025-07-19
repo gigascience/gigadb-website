@@ -178,6 +178,7 @@ class StoredDatasetConnectionsTest extends CDbTestCase
                             'dataset_id' => 1,
                             'citation' => "full citation fetched remotely. doi:10.1186/gb-2012-13-10-r100",
                             'pmurl' => "http://www.ncbi.nlm.nih.gov/pubmed/23075480",
+                            'is_pre_print' => false
                         ),
                         array(
                             'id' => 2,
@@ -186,6 +187,7 @@ class StoredDatasetConnectionsTest extends CDbTestCase
                             'dataset_id' => 1,
                             'citation' => "Another full citation fetched remotely. doi:10.1038/nature10158",
                             'pmurl' => null,
+                            'is_pre_print' => false
                         ),
                         array(
                             'id' => 3,
@@ -194,6 +196,7 @@ class StoredDatasetConnectionsTest extends CDbTestCase
                             'pmid' => null,
                             'citation' => "The third citation fetched remotely. doi.org/10.6789/s13742-015",
                             'pmurl' => null,
+                            'is_pre_print' => false
                         ),
                     );
         $daoUnderTest = new StoredDatasetConnections(
@@ -227,6 +230,7 @@ class StoredDatasetConnectionsTest extends CDbTestCase
                             'dataset_id' => 1,
                             'citation' => null,
                             'pmurl' => "http://www.ncbi.nlm.nih.gov/pubmed/23075480",
+                            'is_pre_print' => false
                         ),
                         array(
                             'id' => 2,
@@ -235,6 +239,7 @@ class StoredDatasetConnectionsTest extends CDbTestCase
                             'dataset_id' => 1,
                             'citation' => null,
                             'pmurl' => null,
+                            'is_pre_print' => false
                         ),
                         array(
                             'id' => 3,
@@ -242,7 +247,8 @@ class StoredDatasetConnectionsTest extends CDbTestCase
                             'pmid' => null,
                             'dataset_id' => 1,
                             'citation' => "Citation text 2 here.",
-                            'pmurl' => null
+                            'pmurl' => null,
+                            'is_pre_print' => false
                         ),
                     );
         $daoUnderTest = new StoredDatasetConnections(
@@ -273,6 +279,7 @@ class StoredDatasetConnectionsTest extends CDbTestCase
                 'dataset_id' => 1,
                 'citation' => "Citation text 1 here.",
                 'pmurl' => null,
+                'is_pre_print' => false
             ),
             array(
                 'id' => 3,
@@ -280,7 +287,8 @@ class StoredDatasetConnectionsTest extends CDbTestCase
                 'pmid' => null,
                 'dataset_id' => 1,
                 'citation' => "Citation text 2 here.",
-                'pmurl' => null
+                'pmurl' => null,
+                'is_pre_print' => false
             ),
         );
 
@@ -311,6 +319,7 @@ class StoredDatasetConnectionsTest extends CDbTestCase
                 'dataset_id' => 1,
                 'citation' => "Citation text 1 here.",
                 'pmurl' => "http://www.ncbi.nlm.nih.gov/pubmed/23075480",
+                'is_pre_print' => false
             ),
             array(
                 'id' => 3,
@@ -318,7 +327,8 @@ class StoredDatasetConnectionsTest extends CDbTestCase
                 'pmid' => null,
                 'dataset_id' => 1,
                 'citation' => "Citation text 2 here.",
-                'pmurl' => null
+                'pmurl' => null,
+                'is_pre_print' => false
             ),
         );
 
@@ -349,6 +359,7 @@ class StoredDatasetConnectionsTest extends CDbTestCase
                 'dataset_id' => 1,
                 'citation' => "Citation text 1 here.",
                 'pmurl' => "http://www.ncbi.nlm.nih.gov/pubmed/23075480",
+                'is_pre_print' => false
             ),
             array(
                 'id' => 2,
@@ -356,7 +367,8 @@ class StoredDatasetConnectionsTest extends CDbTestCase
                 'pmid' => null,
                 'dataset_id' => 1,
                 'citation' => "Citation text 2 here.",
-                'pmurl' => null
+                'pmurl' => null,
+                'is_pre_print' => false
             ),
         );
         $daoUnderTest = new StoredDatasetConnections(

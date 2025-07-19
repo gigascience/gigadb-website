@@ -1,4 +1,3 @@
-@ok-needs-secrets
 Feature: NewUser
   As a curator
   I want a form to enter user details
@@ -29,7 +28,7 @@ Feature: NewUser
     And I should see a submit button "Register"
 
   @ok
-  Scenario: Filling in the form to create new user
+  Scenario: Filling in the form to create new user and it fails
     Given I am on "/user/create"
     And there is no user with email "martianmanhunter@mailinator.com"
     When I fill in the field of "id" "User_email" with "martianmanhunter@mailinator.com"
@@ -37,6 +36,22 @@ Feature: NewUser
     And I fill in the field of "id" "User_last_name" with "J'onzz"
     And I fill in the field of "id" "User_password" with "123456787"
     And I fill in the field of "id" "User_password_repeat" with "123456787"
+    And I fill in the field of "id" "User_affiliation" with "GigaScience"
+    And I select "NCBI" from the field "User_preferred_link"
+    And I check the field "User_terms"
+    And I fill in the field of "id" "User_verifyCode" with "shazam"
+    And I press the button "Register"
+    Then I should not see "Welcome!"
+
+  @ok
+  Scenario: Filling in the form to create new user
+    Given I am on "/user/create"
+    And there is no user with email "martianmanhunter@mailinator.com"
+    When I fill in the field of "id" "User_email" with "martianmanhunter@mailinator.com"
+    And I fill in the field of "id" "User_first_name" with "J'onn"
+    And I fill in the field of "id" "User_last_name" with "J'onzz"
+    And I fill in the field of "id" "User_password" with "Azertyu1@"
+    And I fill in the field of "id" "User_password_repeat" with "Azertyu1@"
     And I fill in the field of "id" "User_affiliation" with "GigaScience"
     And I select "NCBI" from the field "User_preferred_link"
     And I check the field "User_terms"
@@ -60,3 +75,22 @@ Feature: NewUser
     And I press the button "Register"
     Then I should see "Captcha is incorrect!"
     And I should see a text field "User_email"
+
+    @ok
+  Scenario: Resend email for activation
+    Given I am on "/user/create"
+    And there is no user with email "martianmanhunter@mailinator.com"
+    When I fill in the field of "id" "User_email" with "martianmanhunter@mailinator.com"
+    And I fill in the field of "id" "User_first_name" with "J'onn"
+    And I fill in the field of "id" "User_last_name" with "J'onzz"
+    And I fill in the field of "id" "User_password" with "Azertyu1@"
+    And I fill in the field of "id" "User_password_repeat" with "Azertyu1@"
+    And I fill in the field of "id" "User_affiliation" with "GigaScience"
+    And I select "NCBI" from the field "User_preferred_link"
+    And I check the field "User_terms"
+    And I fill in the field of "id" "User_verifyCode" with "shazam"
+    And I press the button "Register"
+    Then I should see "Welcome!"
+    And I press the button "resend the email"
+    Then I should see "A confirmation email has been resent!"
+
