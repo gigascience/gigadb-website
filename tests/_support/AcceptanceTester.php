@@ -451,4 +451,12 @@ class AcceptanceTester extends \Codeception\Actor
     {
         $this->dontSeeOptionIsSelected("#dataset-form select[id='$id']", $value);
     }
+
+    /**
+     * @Then I click on :cssSelector
+     */
+    public function iClickOn($cssSelector)
+    {
+        $this->click($cssSelector);
+    }
 }

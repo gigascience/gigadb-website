@@ -23,43 +23,13 @@ Yii::app()->clientScript->registerScript('customize-close-button', '
 ');
 ?>
 
-<?php $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
-  'id' => 'controls',
-  // additional javascript options for the dialog plugin
-  'options' => array(
-    'title' => 'Managing User',
-    'autoOpen' => false,
-    'modal' => true,
-  ),
-));
-
-?>
-
-<h2 class="h5">Basic Operations</h2>
-<div class="btns-row">
-  <button class="btn background-btn-o" title="view" onclick="goto_userview();">View</button>
-  <button class="btn background-btn-o" title="update" onclick="goto_userupdate();">Update</button>
-  <button class="btn danger-btn-o delete" title="delete" onclick="goto_userdelete();">Delete</button>
-</div>
-
-<h2 class="h5">Advanced Operations</h2>
-<button class="btn background-btn-o" title="link" onclick="goto_userlinkauthor();">Link this user to an author</button>
-
-
-<div id="status" class="mt-10"></div>
-
-<?
-$this->endWidget('zii.widgets.jui.CJuiDialog');
-?>
-
 <?php $this->widget('CustomGridView', array(
-  'id' => 'news-grid',
+  'id' => 'user-grid',
   'dataProvider' => $model->search(),
   'filter' => $model, // turn on/off filtering
   'rowHtmlOptionsExpression' => 'array("data-userid" => $data->id)',
   'itemsCssClass' => 'table table-bordered dataset-table-wide',
   'template' => '<div class="dataset-table-wide-container">{items}</div>{pager}',
-  'selectionChanged' => "function(id){open_controls($.fn.yiiGridView.getSelection(id));}",
   'columns' => array(
     'id',
     'email',
@@ -87,7 +57,7 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
       'class' => 'CButtonColumn',
       'header' => "Actions",
       'headerHtmlOptions' => array('style' => 'min-width: 120px'),
-      'template' => '{view}{update}{manage}{delete}',
+      'template' => '{view}{update}{linkAuthor}{delete}',
       'buttons' => array(
         'view' => array(
             'imageUrl' => false,
@@ -116,16 +86,15 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
                 "aria-label" => "Delete"
             ),
         ),
-        'manage' => array(
-          'imageUrl' => false,
-        'label' => '',
-        'options' => array(
-            "title" => "Merge authors",
-            "class" => "fa fa-wrench fa-lg icon icon-manage",
-            "aria-label" => "Merge authors",
-            "role" => "button",
-        ),
-        "click" => "handleManageClick"
+        'linkAuthor' => array(
+            'imageUrl' => false,
+            'label' => '',
+            'url' => 'Yii::app()->urlManager->createUrl("adminAuthor/prepareUserLink", array("user_id" => $data->id))',
+            'options' => array(
+                "title" => "Link to Author",
+                "class" => "fa fa-link fa-lg icon icon-link",
+                "aria-label" => "Link to Author",
+            ),
         )
     ),
     )
@@ -133,80 +102,3 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
 )); ?>
 
 </div>
-
-
-<script>
-  function handleManageClick(e) {
-    const userId = String($(e.target).closest('tr').attr('data-userid'));
-    open_controls(userId)
-  }
-
-  function open_controls(user_id) {
-    console.log(user_id)
-    $("#controls").data('user_id', user_id);
-    $("#controls").dialog("option", "title", "Manage User Id: " + user_id);
-    $("#controls").dialog("open");
-    return false;
-  }
-
-  function goto_userview() {
-    <?
-    echo 'var userview_url = "' . Yii::app()->urlManager->createUrl('user/view', array('id' => '')) . '";'
-    ?>
-    var user_id = $("#controls").data('user_id');
-    window.location = userview_url + "/" + user_id;
-  }
-
-  function goto_userview() {
-    <?
-    echo 'var base_url = "' . Yii::app()->urlManager->createUrl('user/view', array('id' => '')) . '";'
-    ?>
-    var user_id = $("#controls").data('user_id');
-    window.location = userview_url + "/" + user_id;
-  }
-
-  function goto_userview() {
-    <?
-    echo 'var base_url = "' . Yii::app()->urlManager->createUrl('user/view', array('id' => '')) . '";'
-    ?>
-    var user_id = $("#controls").data('user_id');
-    window.location = base_url + "/" + user_id;
-  }
-
-  function goto_userupdate() {
-    <?
-    echo 'var base_url = "' . Yii::app()->urlManager->createUrl('user/update', array('id' => '')) . '";'
-    ?>
-    var user_id = $("#controls").data('user_id');
-    window.location = base_url + "/" + user_id;
-  }
-
-  function goto_userdelete() {
-    <?
-    echo 'var base_url = "' . Yii::app()->urlManager->createUrl('user/delete', array('id' => '')) . '";'
-    ?>
-    var user_id = $("#controls").data('user_id');
-    //window.location= base_url + "/" + user_id;
-    $.ajax({
-      url: base_url + "/" + user_id,
-      type: 'POST',
-      success: function(data) {
-        $("#status").addClass("alert alert-success")
-          .append("user successfully deactivated.")
-          .append("Refresh the page to see the changes.");
-      },
-      error: function(data) {
-        $("#status").addClass("alert alert-danger")
-          .append("user deactivation failed.")
-      }
-    });
-  }
-
-  function goto_userlinkauthor() {
-    <?
-    echo 'var base_url = "' . Yii::app()->urlManager->createUrl('adminAuthor/prepareUserLink', array('user_id' => '')) . '";'
-    ?>
-    var user_id = $("#controls").data('user_id');
-    window.location = base_url + "/" + user_id;
-  }
-</script>
