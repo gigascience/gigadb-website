@@ -6,10 +6,10 @@ declare(strict_types=1);
  * This is the model class for table "external_link".
  *
  * The followings are the available columns in table 'external_link':
- * @property integer $id
- * @property integer $dataset_id
+ * @property int    $id
+ * @property int    $dataset_id
  * @property string $url
- * @property integer $external_link_type_id
+ * @property int    $external_link_type_id
  *
  * The followings are the available model relations:
  * @property Dataset $dataset
@@ -22,8 +22,9 @@ class ExternalLink extends CActiveRecord
      * @param string $className active record class name.
      * @return ExternalLink the static model class
      */
-    public $doi_search;
-    public $external_link_type_search;
+    public ?string $doi_search = null;
+    public ?int $external_link_type_search = null;
+
     public static function model($className = __CLASS__)
     {
         return parent::model($className);

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 class EditProfileForm extends CFormModel
 {
-    public $first_name;
-    public $last_name;
-    public $email;
-    public $affiliation;
-    public $newsletter;
-    public $user_id;
-    public $preferred_link;
+    public ?string $first_name = null;
+    public ?string $last_name = null;
+    public ?string $email = null;
+    public ?string $affiliation = null;
+    public bool $newsletter;
+    public int $user_id;
+    public ?string $preferred_link = null;
 
     /**
      * Declares the validation rules.
@@ -41,7 +41,7 @@ class EditProfileForm extends CFormModel
         );
     }
 
-    public function updateInfo()
+    public function updateInfo(): bool
     {
         $user = User::model()->findByPk($this->user_id);
         if ($user) {
@@ -54,10 +54,9 @@ class EditProfileForm extends CFormModel
             $user->newsletter = $this->newsletter;
             $user->preferred_link = $this->preferred_link;
 
-            if ($user->save(false)) {
-                return true;
-            }
+            return $user->save();
         }
+
         return false;
     }
 }

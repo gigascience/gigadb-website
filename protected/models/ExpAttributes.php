@@ -6,16 +6,16 @@ declare(strict_types=1);
  * This is the model class for table "exp_attributes".
  *
  * The followings are the available columns in table 'exp_attributes':
- * @property integer $id
- * @property integer $exp_id
- * @property integer $attribute_id
- * @property string $value
- * @property string $units_id
+ * @property int         $id
+ * @property int|null    $exp_id
+ * @property int|null    $attribute_id
+ * @property string|null $value
+ * @property string|null $units_id
  *
  * The followings are the available model relations:
- * @property Attributes $attribute
- * @property Experiment $exp
- * @property Unit $units
+ * @property Attributes|null $attribute
+ * @property Experiment|null $exp
+ * @property Unit|null       $units
  */
 class ExpAttributes extends CActiveRecord
 {

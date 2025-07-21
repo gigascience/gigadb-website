@@ -6,11 +6,11 @@ declare(strict_types=1);
  * This is the model class for table "extdb".
  *
  * The followings are the available columns in table 'extdb':
- * @property integer $id
- * @property string $database_name
- * @property string $definition
- * @property string $database_homepage
- * @property string $database_search_url
+ * @property int         $id
+ * @property string|null $database_name
+ * @property string|null $definition
+ * @property string|null $database_homepage
+ * @property string|null $database_search_url
  *
  * The followings are the available model relations:
  * @property AlternativeIdentifiers[] $alternativeIdentifiers

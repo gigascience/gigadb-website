@@ -6,7 +6,7 @@ declare(strict_types=1);
  * This is the model class for table "external_link_type".
  *
  * The followings are the available columns in table 'external_link_type':
- * @property integer $id
+ * @property int    $id
  * @property string $name
  *
  * The followings are the available model relations:
@@ -90,13 +90,11 @@ class ExternalLinkType extends CActiveRecord
         ));
     }
 
-    public static function getListTypes()
+    /**
+     * @return array<int|string, string>
+     */
+    public static function getListTypes(): array
     {
-        $models = ExternalLinkType::model()->findAll();
-        $list = array();
-        foreach (array_values($models) as $model) {
-            $list[$model->id] = $model->name;
-        }
-        return $list;
+        return CHtml::listData(ExternalLinkType::model()->findAll(), 'id', 'name');
     }
 }

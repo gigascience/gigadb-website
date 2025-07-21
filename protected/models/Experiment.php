@@ -6,17 +6,19 @@ declare(strict_types=1);
  * This is the model class for table "experiment".
  *
  * The followings are the available columns in table 'experiment':
- * @property integer $id
- * @property string $experiment_type
- * @property string $experiment_name
- * @property string $exp_description
- * @property integer $dataset_id
+ *
+ * @property int         $id
+ * @property string|null $experiment_type
+ * @property string|null $experiment_name
+ * @property string|null $exp_description
+ * @property int|null    $dataset_id
+ * @property string|null $protocols.io
  *
  * The followings are the available model relations:
  * @property SampleExperiment[] $sampleExperiments
- * @property Dataset $dataset
- * @property FileExperiment[] $fileExperiments
- * @property ExpAttributes[] $expAttributes
+ * @property Dataset|null       $dataset
+ * @property FileExperiment[]   $fileExperiments
+ * @property ExpAttributes[]    $expAttributes
  */
 class Experiment extends CActiveRecord
 {

@@ -6,39 +6,37 @@ declare(strict_types=1);
  * This is the model class for table "file".
  *
  * The followings are the available columns in table 'file':
- * @property integer $id
- * @property integer $dataset_id
- * @property string $name
- * @property string $location
- * @property string $extension
- * @property string $size
- * @property string $description
- * @property string $date_stamp
- * @property integer $format_id
- * @property integer $type_id
- * @property string $code
- * @property string $index4blast
+ *
+ * @property int         $id
+ * @property int         $dataset_id
+ * @property string      $name
+ * @property string      $location
+ * @property string      $extension
+ * @property int         $size
+ * @property string      $description
+ * @property string|null $date_stamp
+ * @property int|null    $format_id
+ * @property int|null    $type_id
+ * @property string      $code
+ * @property string|null $index4blast
+ * @property int         $download_count
+ * @property string|null $alternative_location
  *
  * The followings are the available model relations:
- * @property Dataset $dataset
- * @property FileFormat $format
- * @property FileType $type
- * @property FileSample[] $fileSamples
+ * @property Dataset            $dataset
+ * @property FileFormat|null    $format
+ * @property FileType|null      $type
+ * @property FileSample[]       $fileSamples
  * @property FileRelationship[] $fileRelationships
- * @property FileExperiment[] $fileExperiments
- * @property FileAttributes[] $fileAttributes
+ * @property FileExperiment[]   $fileExperiments
+ * @property FileAttributes[]   $fileAttributes
  */
 class File extends CActiveRecord
 {
-    public $doi_search;
-    public $format_search;
-    public $type_search;
-    public $sample_name;
-
-    // for adding new attribute
-    public $attr_id;
-    public $value;
-    public $unit_id;
+    public ?string $doi_search = null;
+    public ?string $format_search = null;
+    public ?string $type_search = null;
+    public ?string $sample_name = null;
 
     /** @const string  DATABASE_ATTRIBUTE_ID_FOR_MD5_CHECKSUM the attribute id for MD5 checksum in attribute database table */
     const DATABASE_ATTRIBUTE_ID_FOR_MD5_CHECKSUM = "605";
@@ -127,8 +125,12 @@ class File extends CActiveRecord
         );
     }
 
-    public function afterSave()
+    public function afterSave(): bool
     {
+        if (!$this->dataset->getIsPublic()) {
+            return true;
+        }
+
         $log = new DatasetLog();
         $log->dataset_id = $this->dataset_id;
         if ($this->isNewRecord) {
@@ -139,40 +141,53 @@ class File extends CActiveRecord
         $log->model_id = $this->id;
         $log->model = get_class($this);
         $log->url = Yii::app()->createUrl('/adminFile/update', array('id' => $this->id));
-        if ($this->dataset->isPublic) {
-                $log->save();
-        }
-        return true;
+
+        return $log->save();
     }
 
-    public function beforeDelete()
+    public function beforeDelete(): bool
     {
+        if (!$this->dataset->getIsPublic()) {
+            return true;
+        }
         $log = new DatasetLog();
         $log->dataset_id = $this->dataset_id;
         $log->message = 'File ' . $this->name . ' removed';
         $log->model_id = $this->id;
         $log->model = get_class($this);
         $log->url = '';
-        if ($this->dataset->isPublic) {
-                $log->save();
-        }
-        return true;
+
+        return $log->save();
     }
 
-    public static function getTypeList($ids)
+    /**
+     * @param array $ids
+     *
+     * @return FileType[]
+     */
+    public static function getTypeList(array $ids): array
     {
+        /** @var FileType $fileTypeModel */
+        $fileTypeModel = FileType::model();
         $crit = new CDbCriteria();
         $crit->join = "join file on file.type_id = t.id";
         $crit->addInCondition("file.id", $ids);
-        return FileType::model()->findAll($crit);
+
+        return $fileTypeModel->findAll($crit);
     }
 
-    public static function getFormatList($ids)
+    /**
+     * @return FileFormat[]
+     */
+    public static function getFormatList(array $ids): array
     {
+        /** @var FileFormat $fileFormatModel */
+        $fileFormatModel = FileFormat::model();
         $crit = new CDbCriteria();
         $crit->join = "join file on file.format_id = t.id";
         $crit->addInCondition("file.id", $ids);
-        return FileFormat::model()->findAll($crit);
+
+        return $fileFormatModel->findAll($crit);
     }
 
     /**
@@ -248,41 +263,45 @@ class File extends CActiveRecord
      * @return string formatted size
      *
      **/
-    public function getSizeWithFormat($unit = null, $precision = 2)
+    public function getSizeWithFormat(?string $unit = null, int $precision = 2): string
     {
-        return UnitHelper::specifySizeUnits((int)$this->size, $unit, $precision);
+        return \UnitHelper::specifySizeUnits((int)$this->size, $unit, $precision);
     }
 
 
-    public static function getDatasetIdsByFileIds($fileIds)
+    public static function getDatasetIdsByFileIds(array $fileIds): array
     {
         $fileIds = implode(' , ', $fileIds);
         if (!$fileIds) {
             return array();
         }
-        $result = Yii::app()->db->createCommand()
-            ->selectDistinct('dataset_id')
-            ->from('file')
-            ->where("id in ($fileIds)")
-            ->queryColumn();
-        return $result;
+
+        return Yii::app()->db->createCommand()
+                             ->selectDistinct('dataset_id')
+                             ->from('file')
+                             ->where("id in ($fileIds)")
+                             ->queryColumn();
     }
 
 
 
-    public function getSample()
+    public function getSample(): ?Sample
     {
+        /** @var Sample $sampleModel */
+        $sampleModel = Sample::model();
         $criteria = new CDbCriteria();
         $criteria->join = "LEFT JOIN file_sample fs ON fs.sample_id = t.id";
         $criteria->compare('fs.file_id', $this->id);
-        return Sample::model()->find($criteria);
+
+        return $sampleModel->find($criteria);
     }
 
-    public function getSampleName()
+    //TODO: not used atm?
+    /*public function getSampleName(): string
     {
         $sample = $this->sample;
         return ($sample) ? $sample->linkName : "";
-    }
+    }*/
 
     public function behaviors()
     {
@@ -304,9 +323,8 @@ class File extends CActiveRecord
         if (parent::beforeSave()) {
             $this->date_stamp = ('' === $this->attributes['date_stamp']) ? null :  $this->attributes['date_stamp'] ;
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     public function setSizeValue(): bool
@@ -318,8 +336,6 @@ class File extends CActiveRecord
             if (!preg_match('/^[1-9][0-9]*$/', $size)) {
                 return false;
             }
-
-            return true;
         }
 
         return true;
@@ -331,17 +347,17 @@ class File extends CActiveRecord
      * @param $md5_value
      * @return void
      */
-    public function updateMd5Checksum($md5_value)
+    public function updateMd5Checksum(?string $md5_value = null)
     {
         $fa = FileAttributes::model()->findByAttributes(array(
             'file_id' => $this->id,
-            'attribute_id' => self::DATABASE_ATTRIBUTE_ID_FOR_MD5_CHECKSUM,
+            'attribute_id' => (int) self::DATABASE_ATTRIBUTE_ID_FOR_MD5_CHECKSUM,
         ));
         // In case no MD5 FileAttribute can be found for $file_id
-        if ($fa === null) {
+        if (!$fa) {
             $fa = new FileAttributes();
             $fa->file_id = $this->id;
-            $fa->attribute_id = self::DATABASE_ATTRIBUTE_ID_FOR_MD5_CHECKSUM;
+            $fa->attribute_id = (int) self::DATABASE_ATTRIBUTE_ID_FOR_MD5_CHECKSUM;
         }
         $fa->value = $md5_value;
         if (!$fa->save()) {
