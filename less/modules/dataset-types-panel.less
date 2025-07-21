@@ -1,0 +1,30 @@
+.dataset-types-panel {
+  .dataset-types-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    .dataset-types-link {
+      display: inline-flex;
+      align-items: center;
+      .text-icon {
+        flex: 94px;
+      }
+      .dataset-types-label {
+        text-wrap: nowrap;
+      }
+    }
+  }
+}
+
+@media (max-width: @screen-xxs-max) {
+  .dataset-types-panel {
+    .dataset-types-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      .dataset-types-link {
+        .dataset-types-label {
+          text-wrap: wrap;
+        }
+      }
+    }
+  }
+}

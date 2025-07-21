@@ -287,25 +287,75 @@
 
 .fixed-btn-left,
 .fixed-btn-right {
-  width: 60px;
-  height: min(60px, fit-content);
-  font-size: 60px;
-  color: @color-gigadb-green;
-  text-align: center;
-  position: fixed;
-  top: 50%;
-  cursor: pointer;
   &:hover {
-  color: @color-gigadb-green-800;
+    color: @color-gigadb-green-800;
   }
 }
-.fixed-btn-left {
-  left: 50%;
-  margin-left: -630px;
+
+@media (min-width: @screen-sm-min) {
+  .fixed-btn-left,
+  .fixed-btn-right {
+    position: fixed;
+    top: 50%;
+    width: 60px;
+    height: 60px;
+    font-size: 60px;
+    text-align: center;
+    color: @color-gigadb-green;
+    cursor: pointer;
+  }
+  .fixed-btn-left {
+    left: 10px;
+  }
+  .fixed-btn-right {
+    right: 10px;
+  }
 }
-.fixed-btn-right {
-  right: 50%;
-  margin-right: -630px;
+
+@media (max-width: @screen-xs-max) {
+  .fixed-btn-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 3;
+    display: flex;
+    justify-content: space-between;
+    .fixed-btn-left,
+    .fixed-btn-right {
+      display: flex;
+      width: 40px;
+      height: 40px;
+      padding: 3px 10px;
+      margin: 5px;
+      border: 1px solid @color-gigadb-green;
+      border-radius: 5px;
+      text-decoration: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      background: fade(@color-true-white, 80%);
+      backdrop-filter: blur(0.9px);
+      &:hover {
+        color: @color-true-white;
+        background: fade(@color-gigadb-green, 80%);
+      }
+      span {
+        position: relative;
+        top: -1px;
+      }
+    }
+    .fixed-btn-left {
+      span {
+        left: -1px;
+      }
+    }
+    .fixed-btn-right {
+      span {
+        right: -1px;
+      }
+    }
+  }
 }
 
 .btn_click {
