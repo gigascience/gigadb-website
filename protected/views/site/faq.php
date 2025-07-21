@@ -104,6 +104,58 @@ $this->pageTitle = 'GigaDB - FAQ';
                 </div>
                 <div class="panel panel-default">
                     <div class="panel-heading">
+                        <h2 class="h4 panel-title" id="heading_file-name-convention">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel_file-name-convention" aria-expanded="false" aria-controls="panel_file-name-convention">
+                                What is the file name convention for GigaDB?
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="panel_file-name-convention" aria-labelledby="heading_file-name-convention" class="panel-collapse collapse">
+                        <div class="panel-body">
+
+                            <p>The file name includes the full name of the file including the relative file path, e.g. <code>directory_name/file_name.ext</code></p>
+
+                            <ul class="content-text">
+                                <li>Ideally the filename should be meaningful in some way, if appropriate it may contain reference to a particular point within the associated manuscript, but usually that reference would be expected in the file descriptions. (e.g. <code>gene-expression-fig1.csv</code> would be better than <code>Fig1.csv</code>)</li>
+
+                                <li>Full file-path names must be unique within the dataset.</li>
+
+                                <li>Filenames should only include the following characters <code>a-z</code>, <code>A-Z</code>, <code>0-9</code>, <code>_</code>, <code>-</code>, <code>+</code>, <code>.</code></li>
+
+                                <li>Filenames should not include spaces, we recommend using the underscore (<code>_</code>) in place of spaces.</li>
+
+                                <li>All files should be machine-readable (e.g. No PDF, Excel or Word documents)</li>
+
+                                <li>The file extension should be relevant to the format of the file, e.g. csv tabular data should have the file extension <code>.csv</code>.</li>
+                            </ul>
+
+                            <p>See the <a href="/site/help#vocabulary">vocabulary</a> page for a list of file types and regular file extensions.</p>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h2 class="h4 panel-title" id="heading_expectation-file-compression">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel_expectation-file-compression" aria-expanded="false" aria-controls="panel_expectation-file-compression">
+                                What are the expectations on file compression?
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="panel_expectation-file-compression" aria-labelledby="heading_expectation-file-compression" class="panel-collapse collapse">
+                        <div class="panel-body">
+
+                            <p>It is normal to compress large files to reduce transfer times, and we encourage the use of gzip or bzip2 for this. Zip can be acceptable, but for preference if possible use gzip or bzip2 for individual files. Where a file has been compressed there should be two file extensions consecutively e.g. <code>filename.fasta.gz</code>.</p>
+
+                            <p>In some instances it is appropriate to archive multiple files into a single archive file, for this we strongly recommend the use of tar with or without the addition of gzip. Similarly the file extension will reflect this, e.g. <code>directoryName.tar</code> or <code>directoryName.tar.gz</code></p>
+
+                            <p>For tar files we allow for longer descriptions as there could be more required due to the potential for more varied content. You MUST avoid the use of carriage returns within the description.</p>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading07">
                             <button data-toggle="collapse" data-parent="#accordion" data-target="#panel07" aria-expanded="false" aria-controls="panel07">
                                 When should I submit my data?
@@ -328,6 +380,28 @@ $this->pageTitle = 'GigaDB - FAQ';
                     <div id="panel21" aria-labelledby="heading21" class="panel-collapse collapse">
                         <div class="panel-body">
                             <p>The term dataset in <em>GigaDB</em> refers to a collection of related works, including but not limited to; files, software, workflows, experiments, data, metadata and results. Each dataset has its own webpage which has a DOI (digital object identifier). These datasets are permanent and citable records of research output designed to allow for a modernization of the classical publishing framework while maintaining the familiarity of citations and metrics thereof.While uncommon, it is possible for a dataset to be made-up of several other datasets in a nested fashion, for example the Avian phylogenomics project data dataset (<a href="http://dx.doi.org/10.5524/101000">http://dx.doi.org/10.5524/101000</a>) is a compilation of 48 other datasets, some of those were published before and some at the same time. This allows the original authors to cite just one dataset to cover them all, but also allows future users to cite individual datasets if they require. We will discuss the merits of such procedures on a case-by-case basis with the submitter.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h2 class="h4 panel-title" id="heading_whats-included-in-a-dataset">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel_whats-included-in-a-dataset" aria-expanded="false" aria-controls="panel_whats-included-in-a-dataset">
+                                What is included in a dataset?
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="panel_whats-included-in-a-dataset" aria-labelledby="heading_whats-included-in-a-dataset" class="panel-collapse collapse">
+                        <div class="panel-body">
+
+                            <p>A dataset is a collection of files and/or links to externally hosted items, that together are associated with a particular "unit-of-work", usually a manuscript. Since the exact details of which objects are required to make up a dataset is highly dependent on the "unit-of-work" to which they relate, we can only provide generic guidelines, but our curators are always on hand for specific queries that you may have.</p>
+
+                            <p>We would expect to see all data and scripts used in the unit-of-work. This should be sufficient to enable full reproducibility and transparency of the unit-of-work in conjunction with the published methods (either in the manuscript or in <a href="https://www.protocols.io/">protocols.io</a>) together with openly available software tools.</p>
+
+                            <p>In addition, the file metadata will always include md5sum values to enable confirmation of file integrity after download, as well as a brief (upto 200 chars) description of each file.</p>
+
+                            <p>We have prepared submission guidelines for the more common dataset types <a href="/site/guide">here</a>.</p>
+
                         </div>
                     </div>
                 </div>
