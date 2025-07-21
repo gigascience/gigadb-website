@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #482: Update FAQ "What data storage procedures do you follow?"
 - Feat #490, #486, #483, #477, #475, #833: Update FAQ page text content
 - Feat #2314: Comment out API endpoints from help page that are temporarily not working
 - Feat #2329, #2336, #2344: Add new FAQ entries
