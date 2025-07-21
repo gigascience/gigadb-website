@@ -34,6 +34,21 @@ $this->pageTitle = 'GigaDB - FAQ';
                 </div>
                 <div class="panel panel-default">
                     <div class="panel-heading">
+                        <h2 class="h4 panel-title" id="heading01-1">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel01-1" aria-expanded="false" aria-controls="panel01-1">
+                            What are the benefits of using <em>GigaDB</em>?
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="panel01-1" role="region" aria-labelledby="heading01-1" class="panel-collapse collapse" data-parent="#accordion">
+                        <div class="panel-body">
+                            <p>Expert curation by experienced BioCurators ensures that your data can be easily found and reused. All the data associated with a unit of work can be found in a single place, either hosted by <em>GigaDB</em> or with stable links out to other reputable repositories. We ensure the Open sharing policy of GigaScience Press (and other publishers) are met. You receive increased exposure of your research to the community and ensure that other researchers can find and cite your work, so that you get the credit you deserve.</p>
+                            <p>The inclusion of extensive metadata about your data increases discovervisibility, in-turn increasing the visibility of your associated journal article.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading02">
                             <button data-toggle="collapse" data-parent="#accordion" data-target="#panel02" aria-expanded="false" aria-controls="panel02">
                                 What journals are integrated with <em>GigaDB</em>?
@@ -295,13 +310,13 @@ $this->pageTitle = 'GigaDB - FAQ';
                     <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading16">
                             <button data-toggle="collapse" data-parent="#accordion" data-target="#panel16" aria-expanded="false" aria-controls="panel16">
-                                How much does it cost?
+                                Is there a cost for the service?
                             </button>
                         </h2>
                     </div>
                     <div id="panel16" aria-labelledby="heading16" class="panel-collapse collapse">
                         <div class="panel-body">
-                            <p>There are currently no separate Data Publishing Charges (<abbr>DPCs</abbr>) for <em>GigaDB</em> as we currently do not accept data that is not accompanied by a <em>GigaScience</em> manuscript. All <abbr title="Data Publishing Charges">DPCs</abbr> for <em>GigaScience</em> manuscripts are covered by the Article Publishing Charges (<abbr>APCs</abbr>) of that manuscript (up to a terabyte automatically included, but contact us if you need more). For <abbr title="Article Publishing Charges">APCs</abbr> of <em>GigaScience</em> manuscripts please see in <a href="https://academic.oup.com/gigascience/pages/charges_licensing_and_self_archiving">Gigascience journal pricing</a>.</p>
+                            <p>There are currently no separate Data Publishing Charges (<abbr>DPCs</abbr>) for submission of data to <em>GigaDB</em>, as we currently do not accept data that is not accompanied by a <em>GigaScience Press</em> manuscript (either <em>GigaScience</em> or <em>GigaByte</em>). All <abbr title="Data Publishing Charges">DPCs</abbr> for <em>GigaScience Press</em> manuscripts are covered by the Article Publishing Charges (<abbr>APCs</abbr>) of that manuscript (up to a terabyte automatically included, but contact us if you need more). For <abbr title="Article Publishing Charges">APCs</abbr> of <em>GigaScience</em> manuscripts please see in <a href="https://academic.oup.com/gigascience/pages/charges_licensing_and_self_archiving" target="_blank"><em>GigaScience</em> journal pricing (opens in a new window)</a>. For <abbr title="Article Publishing Charges">APCs</abbr> of <em>GigaByte</em> manuscripts please see in <a href="https://gigabytejournal.com/faq" target="_blank"><em>GigaByte</em> journal FAQs (opens in a new window)</a>.</p>
                         </div>
                     </div>
                 </div>
@@ -449,7 +464,7 @@ $this->pageTitle = 'GigaDB - FAQ';
                     </div>
                     <div id="panel26" aria-labelledby="heading26" class="panel-collapse collapse">
                         <div class="panel-body">
-                            <p>There are currently no separateData Publishing Charges (<abbr>DPCs</abbr>) for <em>GigaDB</em> as we currently do not accept data that is not accompanied by a <i>GigaScience </i>manuscript. All <abbr title="Data Publishing Charges">DPCs</abbr> for <i>GigaScience </i>manuscripts are covered by the Article Publishing Charges (<abbr>APCs</abbr>) of that manuscript (up to a terabyte automatically included, but contact us if you need more). For <abbr title="Article Publishing Charges">APCs</abbr> of <i>GigaScience </i>manuscripts please see in <a href="https://academic.oup.com/gigascience/pages/charges_licensing_and_self_archiving">Gigascience journal pricing</a>.</p>
+                            <p>There are currently no separate Data Publishing Charges (<abbr>DPCs</abbr>) for <em>GigaDB</em> as we currently do not accept data that is not accompanied by a <i>GigaScience </i>manuscript. All <abbr title="Data Publishing Charges">DPCs</abbr> for <i>GigaScience </i>manuscripts are covered by the Article Publishing Charges (<abbr>APCs</abbr>) of that manuscript (up to a terabyte automatically included, but contact us if you need more). For <abbr title="Article Publishing Charges">APCs</abbr> of <i>GigaScience </i>manuscripts please see in <a href="https://academic.oup.com/gigascience/pages/charges_licensing_and_self_archiving">Gigascience journal pricing</a>.</p>
                         </div>
                     </div>
                 </div>
@@ -626,7 +641,7 @@ $this->pageTitle = 'GigaDB - FAQ';
                     </div>
                     <div id="panel37" aria-labelledby="heading37" class="panel-collapse collapse">
                         <div class="panel-body">
-                            <p>All datasets are curated to a high standard including but not limited to; the checking and conversion of file formats if required to ensure open (non-proprietary) and stable formats are used whenever possible; Sample metadata to meet appropriate standards and to include ontology terms where possible; creation of specialist display formats like 3D images from STL image stacks and JBrowse genome browser files from genome assemblies and annotation files. All datasets are manually curated with email correspondence to the submitting author to ensure completeness. Where possible our curators follow guidelines provided by international bodies such as the Genomics Standards Consortium (gensc.org) for the minimal information about any genomic sequences. Dataset level metadata is also checked and curated to go above and beyond DataCite standards.</p>
+                            <p>All datasets are curated to a high standard including but not limited to; the checking and conversion of file formats if required to ensure open (non-proprietary) and stable formats are used whenever possible; Sample metadata to meet appropriate standards and to include ontology terms where possible; creation of specialist display formats like 3D images from STL image stacks and JBrowse genome browser files from genome assemblies and annotation files. All datasets are manually curated with email correspondence to the submitting author to ensure completeness. Where possible our curators follow guidelines provided by international bodies such as the Genomics Standards Consortium (<a href="https://gensc.org/" target="_blank">gensc.org, opens in a new window</a>) for the minimal information about any genomic sequences. Dataset level metadata is also checked and curated to go above and beyond DataCite standards.</p>
                         </div>
                     </div>
                 </div>

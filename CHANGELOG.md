@@ -4,6 +4,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #481: Add hyperlink to Gensc.org in FAQ page
+- Feat #491: Update FAQ entry about service costs
+- Feat #489: Add new FAQ entry "What are the benefits of using GigaDB?"
 - Feat #482: Update FAQ "What data storage procedures do you follow?"
 - Feat #490, #486, #483, #477, #475, #833: Update FAQ page text content
 - Feat #2314: Comment out API endpoints from help page that are temporarily not working
