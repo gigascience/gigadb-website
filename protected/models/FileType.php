@@ -6,9 +6,11 @@ declare(strict_types=1);
  * This is the model class for table "file_type".
  *
  * The followings are the available columns in table 'file_type':
- * @property integer $id
- * @property string $name
- * @property string $description
+ *
+ * @property int         $id
+ * @property string      $name
+ * @property string|null $description
+ * @property string|null $edam_ontology_id
  *
  * The followings are the available model relations:
  * @property File[] $files
@@ -18,7 +20,6 @@ class FileType extends CActiveRecord
     /**
      * Returns the static model of the specified AR class.
      * @param string $className active record class name.
-     * @return FileTypes the static model class
      */
     public static function model($className = __CLASS__)
     {
@@ -94,13 +95,11 @@ class FileType extends CActiveRecord
         ));
     }
 
-    public static function getListTypes()
+    /**
+     * @return array<int|string, string>
+     */
+    public static function getListTypes(): array
     {
-        $models = FileType::model()->findAll();
-        $list = array();
-        foreach (array_values($models) as $model) {
-            $list[$model->id] = $model->name;
-        }
-        return $list;
+        return CHtml::listData(FileType::model()->findAll(), 'id', 'name');
     }
 }

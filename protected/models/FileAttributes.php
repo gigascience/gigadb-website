@@ -6,16 +6,16 @@ declare(strict_types=1);
  * This is the model class for table "file_attributes".
  *
  * The followings are the available columns in table 'file_attributes':
- * @property integer $id
- * @property integer $file_id
- * @property integer $attribute_id
- * @property string $value
- * @property string $unit_id
+ * @property int         $id
+ * @property int         $file_id
+ * @property int         $attribute_id
+ * @property string|null $value
+ * @property string|null $unit_id
  *
  * The followings are the available model relations:
  * @property Attributes $attribute
- * @property File $file
- * @property Unit $unit
+ * @property File       $file
+ * @property Unit|null  $unit
  */
 class FileAttributes extends CActiveRecord
 {
@@ -84,8 +84,11 @@ class FileAttributes extends CActiveRecord
         );
     }
 
-    public function afterSave()
+    public function afterSave(): bool
     {
+        if (!$this->file->dataset->getIsPublic()) {
+            return true;
+        }
         $log = new DatasetLog();
         $log->dataset_id = $this->file->dataset_id;
         if ($this->isNewRecord) {
@@ -96,10 +99,8 @@ class FileAttributes extends CActiveRecord
         $log->model_id = $this->id;
         $log->model = get_class($this);
         $log->url = Yii::app()->createUrl('/adminFile/update', array('id' => $this->file->id));
-        if ($this->file->dataset->isPublic) {
-            $log->save();
-        }
-        return true;
+
+        return $log->save();
     }
 
     /**

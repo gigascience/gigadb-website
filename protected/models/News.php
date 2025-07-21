@@ -6,11 +6,11 @@ declare(strict_types=1);
  * This is the model class for table "news".
  *
  * The followings are the available columns in table 'news':
- * @property integer $id
- * @property string $title
- * @property string $body
- * @property string $start_date
- * @property string $end_date
+ * @property int         $id
+ * @property string      $title
+ * @property string|null $body
+ * @property string      $start_date
+ * @property string      $end_date
  */
 class News extends CActiveRecord
 {

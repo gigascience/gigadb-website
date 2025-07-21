@@ -6,14 +6,14 @@ declare(strict_types=1);
  * This is the model class for table "file_relationship".
  *
  * The followings are the available columns in table 'file_relationship':
- * @property integer $id
- * @property integer $file_id
- * @property integer $related_file_id
- * @property integer $relationship_id
+ * @property int      $id
+ * @property int      $file_id
+ * @property int      $related_file_id
+ * @property int|null $relationship_id
  *
  * The followings are the available model relations:
- * @property File $file
- * @property Relationship $relationship
+ * @property File              $file
+ * @property Relationship|null $relationship
  */
 class FileRelationship extends CActiveRecord
 {

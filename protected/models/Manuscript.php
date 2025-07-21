@@ -6,10 +6,11 @@ declare(strict_types=1);
  * This is the model class for table "manuscript".
  *
  * The followings are the available columns in table 'manuscript':
- * @property integer $id
- * @property string $identifier
- * @property integer $pmid
- * @property integer $dataset_id
+ *
+ * @property int      $id
+ * @property string   $identifier
+ * @property int|null $pmid
+ * @property int      $dataset_id
  *
  * The followings are the available model relations:
  * @property Dataset $dataset
@@ -21,18 +22,12 @@ class Manuscript extends CActiveRecord
      * @param string $className active record class name.
      * @return Manuscript the static model class
      */
-    public $doi_search;
+    public ?string $doi_search = null;
     public ?int $is_pre_print = 0;
 
     public static function model($className = __CLASS__)
     {
         return parent::model($className);
-    }
-
-    public function init()
-    {
-        parent::init();
-        $this->is_pre_print = 0;
     }
 
     /**
@@ -112,7 +107,7 @@ class Manuscript extends CActiveRecord
         ));
     }
 
-    public function getDOILink()
+    public function getDOILink(): string
     {
         return "http://dx.doi.org/" . $this->identifier;
     }

@@ -8,7 +8,7 @@ declare(strict_types=1);
  */
 class ForgotPasswordForm extends CFormModel
 {
-    public $email;
+    public ?string $email = null;
 
     /**
      * Declares the validation rules.

@@ -6,19 +6,19 @@ declare(strict_types=1);
  * This is the model class for table "link".
  *
  * The followings are the available columns in table 'link':
- * @property integer $id
- * @property integer $dataset_id
- * @property boolean $is_primary
- * @property string $link
+ *
+ * @property int         $id
+ * @property int         $dataset_id
+ * @property bool        $is_primary
+ * @property string      $link
+ * @property string|null $description
  *
  * The followings are the available model relations:
  * @property Dataset $dataset
  */
 class Link extends CActiveRecord implements LinkInterface
 {
-    public $doi_search;
-    public $acc_num;
-    public $database;
+    public ?string $doi_search = null;
 
     /**
      * Returns the static model of the specified AR class.
@@ -112,7 +112,9 @@ class Link extends CActiveRecord implements LinkInterface
         $prefix = $temp[0];
         $value = $temp[1];
 
-        $model = Prefix::model()->find(
+        /** @var Prefix $prefixModel */
+        $prefixModel = Prefix::model();
+        $model = $prefixModel->find(
             "lower(prefix) = :p and source = :s",
             array(':p' => strtolower($prefix), ':s' => $source)
         );
@@ -123,7 +125,7 @@ class Link extends CActiveRecord implements LinkInterface
         }
 
         // if not get available url
-        $model = Prefix::model()->find("lower(prefix) = :p", array(':p' => strtolower($prefix)));
+        $model = $prefixModel->find("lower(prefix) = :p", array(':p' => strtolower($prefix)));
         if ($model) {
             return $model->url . $value;
         }

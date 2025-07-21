@@ -8,11 +8,11 @@ declare(strict_types=1);
  * The followings are the available columns in table 'dataset_type':
  * @property int      $id
  * @property int      $dataset_id
- * @property int|null $type_id
+ * @property int $type_id
  *
  * The followings are the available model relations:
- * @property Dataset   $dataset
- * @property Type|null $type
+ * @property Dataset $dataset
+ * @property Type    $type
  */
 class DatasetType extends CActiveRecord
 {

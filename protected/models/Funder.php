@@ -6,10 +6,10 @@ declare(strict_types=1);
  * This is the model class for table "funder_name".
  *
  * The followings are the available columns in table 'funder_name':
- * @property integer $id
- * @property string $uri
- * @property string $primary_name_display
- * @property string $country
+ * @property int         $id
+ * @property string      $uri
+ * @property string|null $primary_name_display
+ * @property string|null $country
  */
 class Funder extends CActiveRecord
 {

@@ -11,12 +11,14 @@ use Ramsey\Uuid\Uuid;
  * Note: I have to change this Model to Images instead of Image because of this name is conflict with Image.php in the Extension
  *
  * The followings are the available columns in table 'image':
- * @property integer $id
- * @property string $tag
- * @property string $url
- * @property string $license
- * @property string $photographer
- * @property string $source
+ *
+ * @property int         $id
+ * @property string      $location
+ * @property string|null $tag
+ * @property string|null $url
+ * @property string      $license
+ * @property string      $photographer
+ * @property string      $source
  *
  * The followings are the available model relations:
  * @property Dataset[] $datasets
@@ -57,7 +59,7 @@ class Image extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('license, photographer, source', 'required'),
+            array('license, photographer, source, location', 'required'),
             array('tag', 'length', 'max' => 120),
             array('url, source', 'length', 'max' => 256),
             array('photographer', 'length', 'max' => 128),
@@ -111,7 +113,7 @@ class Image extends CActiveRecord
         $info = pathinfo($uploadedFile->getName());
         $fileName = $slugger->slug($info['filename'])->toString();
 
-        $imagePath = sprintf("%s/images/datasets/%s/%s.%s", Yii::$app->params['environment'], $enclosingDirectory, $fileName, $info['extension']);
+        $imagePath = sprintf("%s/images/datasets/%s/%s.%s", Yii::$app->params['environment'], $enclosingDirectory->toString(), $fileName, $info['extension']);
 
         if (
             $targetStorage->put(
@@ -138,10 +140,7 @@ class Image extends CActiveRecord
      */
     public function isUrlValid(): bool
     {
-        if (CompatibilityHelper::str_starts_with($this->url, "https://")) {
-            return true;
-        }
-        return false;
+        return \CompatibilityHelper::str_starts_with($this->url, "https://");
     }
 
     /**
@@ -164,7 +163,7 @@ class Image extends CActiveRecord
                 if ($inserted) {
                     $this->url = null;
                     if (! $this->save()) {
-                        throw new Exception($this->getErrors());
+                        throw new Exception(json_encode($this->getErrors()));
                     }
                 }
                 return true;

@@ -6,7 +6,7 @@ declare(strict_types=1);
  * This is the model class for table "publisher".
  *
  * The followings are the available columns in table 'publisher':
- * @property integer $id
+ * @property int    $id
  * @property string $name
  * @property string $description
  *
@@ -18,7 +18,7 @@ class Publisher extends CActiveRecord
     /**
      * Returns the static model of the specified AR class.
      * @param string $className active record class name.
-     * @return publisher the static model class
+     * @return Publisher the static model class
      */
     public static function model($className = __CLASS__)
     {
@@ -41,7 +41,7 @@ class Publisher extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('name', 'required'),
+            array('name, description', 'required'),
             array('name', 'length', 'max' => 45),
             array('description', 'safe'),
             // The following rule is used by search().
@@ -94,13 +94,8 @@ class Publisher extends CActiveRecord
         ));
     }
 
-    public static function getListPublishers()
+    public static function getListPublishers(): array
     {
-        $models = Publisher::model()->findAll();
-        $list = array();
-        foreach (array_values($models) as $model) {
-            $list[$model->id] = $model->name;
-        }
-        return $list;
+        return CHtml::listData(Publisher::model()->findAll(), 'id', 'name');
     }
 }

@@ -13,13 +13,13 @@ declare(strict_types=1);
  * @property string      $location
  * @property string      $extension
  * @property int         $size
- * @property string      $description
+ * @property string|null $description
  * @property string|null $date_stamp
  * @property int|null    $format_id
  * @property int|null    $type_id
- * @property string      $code
+ * @property string|null $code
  * @property string|null $index4blast
- * @property int         $download_count
+ * @property int|null    $download_count
  * @property string|null $alternative_location
  *
  * The followings are the available model relations:

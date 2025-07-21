@@ -6,9 +6,9 @@ declare(strict_types=1);
  * This is the model class for table "file_sample".
  *
  * The followings are the available columns in table 'file_sample':
- * @property integer $id
- * @property integer $sample_id
- * @property integer $file_id
+ * @property int $id
+ * @property int $sample_id
+ * @property int $file_id
  *
  * The followings are the available model relations:
  * @property File $file

@@ -6,19 +6,18 @@ declare(strict_types=1);
  * This is the model class for table "Prefix".
  *
  * The followings are the available columns in table 'Prefix':
- * @property integer $id
- * @property string $prefix
- * @property string $url
  *
- * The followings are the available model relations:
- * @property DatasetType[] $datasetTypes
+ * @property int         $id
+ * @property string      $prefix
+ * @property string      $url
+ * @property string|null $source
+ * @property string|null $icon
  */
 class Prefix extends CActiveRecord
 {
     /**
      * Returns the static model of the specified AR class.
      * @param string $className active record class name.
-     * @return DatasetTypes the static model class
      */
     public static function model($className = __CLASS__)
     {
@@ -82,13 +81,8 @@ class Prefix extends CActiveRecord
         ));
     }
 
-    public static function getListPrefixes()
+    public static function getListPrefixes(): array
     {
-        $models = Type::model()->findAll();
-        $list = array();
-        foreach (array_values($models) as $model) {
-            $list[$model->id] = $model->prefix;
-        }
-        return $list;
+        return CHtml::listData(Type::model()->findAll(), 'id', 'prefix');
     }
 }

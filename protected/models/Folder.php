@@ -2,43 +2,12 @@
 
 declare(strict_types=1);
 
-/**
- * This is the model class for table "file".
- *
- * The followings are the available columns in table 'file':
- * @property integer $id
- * @property integer $dataset_id
- * @property string $name
- * @property string $location
- * @property string $extension
- * @property string $size
- * @property string $description
- * @property string $date_stamp
- * @property integer $format_id
- * @property integer $type_id
- *
- * The followings are the available model relations:
- * @property Dataset $dataset
- * @property FileFormat $format
- * @property FileType $type
- */
 class Folder extends CFormModel
 {
-    public $dataset_id;
-    public $folder_name;
-    public $username;
-    public $password;
-
-    /**
-     * Returns the static model of the specified AR class.
-     * @param string $className active record class name.
-     * @return File the static model class
-     */
-    public static function model($className = __CLASS__)
-    {
-        return parent::model($className);
-    }
-
+    public ?int $dataset_id     = null;
+    public ?string $folder_name = null;
+    public ?string $username    = null;
+    public ?string $password    = null;
 
     /**
      * @return array validation rules for model attributes.
@@ -74,15 +43,18 @@ class Folder extends CFormModel
 
 
 
-    public static function getDatasetIdsByFileIds($fileIds)
+    /**
+     * @return array<int|string, string>
+     */
+    public static function getDatasetIdsByFileIds(array $fileIds): array
     {
         $criteria = new CDbCriteria();
         $criteria->select = 'id, dataset_id';
         $criteria->addInCondition('id', $fileIds);
         $criteria->distinct = true;
         $criteria->group = 'id, dataset_id';
-        $files = File::model()->query($criteria, true);
-        $result = CHtml::listData($files, 'id', 'dataset_id');
-        return $result;
+        $files = File::model()->findAll($criteria);
+
+        return CHtml::listData($files, 'id', 'dataset_id');
     }
 }

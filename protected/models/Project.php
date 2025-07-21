@@ -6,14 +6,13 @@ declare(strict_types=1);
  * This is the model class for table "project".
  *
  * The followings are the available columns in table 'project':
- * @property integer $id
- * @property integer $dataset_id
- * @property string $url
- * @property string $name
- * @property string $image_location
+ * @property int         $id
+ * @property string      $url
+ * @property string|null $name
+ * @property string|null $image_location
  *
  * The followings are the available model relations:
- * @property Dataset $dataset
+ * @property Dataset[] $datasets
  */
 class Project extends CActiveRecord
 {
@@ -104,13 +103,8 @@ class Project extends CActiveRecord
         ));
     }
 
-    public static function getListProjects()
+    public static function getListProjects(): array
     {
-        $models = Species::model()->findAll();
-        $list = array();
-        foreach (array_values($models) as $model) {
-            $list[$model->id] = $model->common_name;
-        }
-        return $list;
+        return CHtml::listData(Species::model()->findAll(), 'id', 'common_name');
     }
 }
