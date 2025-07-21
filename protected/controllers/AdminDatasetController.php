@@ -451,20 +451,13 @@ class AdminDatasetController extends Controller
         $result['doi_response'] = $doiResponse->getBody()->getContents();
         $result['check_doi_status'] = $doiResponse->getStatusCode();
 
-        if (200 === $result['check_doi_status']) {
-            $dataset->is_publishable = true;
-            $dataset->upload_status = 'Incomplete' === $dataset->upload_status ? 'ImportFromEM' : $dataset->upload_status;
-            if(!$dataset->save()) {
-                throw new CHttpException(500, "An error occurred: Couldn't save the dataset");
-            }
-        }
+        $isPresent = $this->handleDoiCheckAndSetToPublishable($dataset, (int) $result['check_doi_status']);
 
         if ($onlyDoiChecked) {
             echo json_encode($result);
             Yii::app()->end();
         }
 
-        $isPresent = in_array($result['check_doi_status'], [200, 204]);
         $log .= sprintf(' | Check DOI: %s', $isPresent ? "OK" : "DOI doesn't exist");
 
         if ($isPresent || $result['check_doi_status'] === 404) {
@@ -617,6 +610,28 @@ class AdminDatasetController extends Controller
         if ($statusIsSet) {
             CurationLog::createlog($model->upload_status, $model->id);
         }
+    }
+
+    public function handleDoiCheckAndSetToPublishable(Dataset $dataset, int $doiStatus): bool
+    {
+        $isPresent = in_array($doiStatus, [200, 204]);
+        if ($isPresent) {
+            $dataset->is_publishable = true;
+            $dataset->upload_status = in_array($dataset->upload_status, ['Incomplete', 'Uploaded']) ? 'ImportFromEM' : $dataset->upload_status;
+            if(!$dataset->save()) {
+                $errors = $dataset->getErrors();
+
+                $formatted = '';
+                foreach ($errors as $attribute => $messages) {
+                    foreach ($messages as $message) {
+                        $formatted .= "- $attribute: $message\n";
+                    }
+                }
+                throw new CHttpException(500, $formatted);
+            }
+        }
+
+        return $isPresent;
     }
 }
 
