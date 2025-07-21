@@ -19,7 +19,7 @@ $this->pageTitle = 'GigaDB - Help';
             <p>The <a href="http://gigadb.org/" target="_blank"><span class="text-italic">GigaDB</span></a> homepage allows you to browse datasets by type eg Genomic, Metagenomic, Transcriptomic. Clicking on the DOI (digital object identifier) or image will take you directly to the webpage for the dataset of interest.</p>
             <p>Alternatively you can use the search functions to find datasets, samples or files of interest.</p>
         </div>
-        <div class="section">
+        <div class="section tab-nav-container">
             <ul class="nav nav-tabs nav-border-tabs" role="tablist" id="alltabs" aria-label="GigaDB help">
                 <li id="lisearch" role="presentation" class="active"><a href="#search" aria-controls="search" role="tab" data-toggle="tab" aria-selected="true"><span class="text-italic">GigaDB</span> search</a></li>
                 <li id="liguideline" role="presentation"><a href="#guidelines" aria-controls="guidelines" role="tab" data-toggle="tab" aria-selected="false">Submission guidelines</a></li>
@@ -774,41 +774,41 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242&lt;</pre>
                         <h2 class="page-subtitle" id="terminologyTitle">Terminology</h2>
                         <p>To specify exact fields to return data from, use terms; <span>dataset?=</span>, <span>sample?=</span>, <span>file?=</span>, (or <span>experiment?=</span><span aria-hidden="true">*</span>)</p>
                         <p><span aria-hidden="true">* - </span><em>experiment will be implemented in the future</em></p>
-                        <p>To search for datasets without the ID's, use the term <span>search?keyword=</span></p>
+                        <!-- <p>To search for datasets without the ID's, use the term <span>search?keyword=</span></p> -->
                         <p>To search by specific attributes use <span>search?&lt;attribute_name&gt;=</span></p>
                         <p>Available <strong>attribute_name</strong> to search include:</p>
                         <dl class="help-description-list">
-                            <div class="help-definition-container">
+                            <!-- <div class="help-definition-container">
                                 <dt><strong>taxno</strong></dt>
                                 <dd>Taxonomic ID (NCBI)</dd>
-                            </div>
+                            </div> -->
 
-                            <div class="help-definition-container">
+                            <!-- <div class="help-definition-container">
                                 <dt><strong>taxname</strong></dt>
                                 <dd>species name (nb must exact spelling, no synonyms searched)</dd>
-                            </div>
+                            </div> -->
 
-                            <div class="help-definition-container">
+                            <!-- <div class="help-definition-container">
                                 <dt><strong>author</strong></dt>
                                 <dd>restricts search to the author table</dd>
-                            </div>
+                            </div> -->
 
-                            <div class="help-definition-container">
+                            <!-- <div class="help-definition-container">
                                 <dt><strong>datasettype</strong></dt>
                                 <dd>restricts search to the types of datasets, e.g. metagenomic, genomic, transcriptomic etc.</dd>
-                            </div>
+                            </div> -->
 
-                            <div class="help-definition-container">
+                            <!-- <div class="help-definition-container">
                                 <dt><strong>manuscript</strong></dt>
                                 <dd>restricts search to the manuscript ID associated with <span class="text-italic">GigaDB</span> dataset(s) e.g. <span>search?manuscript=10.1186/2047-217X-3-21</span></dd>
-                            </div>
+                            </div> -->
 
                             <div class="help-definition-container">
                                 <dt><strong>project</strong></dt>
                                 <dd>restricts search to the project name, e.g. Genome 10K</dd>
                             </div>
                         </dl>
-                        <p>eg. <span>..../search?taxno=9606</span></p>
+                        <p>eg. <span>..../search?project=Genome%2010K</span></p>
                         <p>To specify results to be returned are ONLY a particular level of data, add the phrase <strong><span>&amp;results=dataset</span></strong>, or file or sample:<br />e.g. <a href="http://gigadb.org/api/search?project=Genome%2010K&amp;result=sample" target="_blank">http://gigadb.org/api/search?project=Genome%2010K&amp;result=sample</a></p>
                         <p>NB - the search still looks everywhere, but the results returned are only those samples that are in datasets that are found by the search.</p>
                         <p><strong>Default results are "dataset" only.</strong></p>
@@ -837,7 +837,8 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242&lt;</pre>
                                 Retrieve file information from a known DOI<br />
                                 <a href="http://gigadb.org/api/file?doi=100051" target="_blank">http://gigadb.org/api/file?doi=100051</a>
                             </li>
-                            <li>
+                            <!-- commented out, see issue #2314 -->
+                            <!-- <li>
                                 Search all <span class="text-italic">GigaDB</span> by keyword, return only the top level dataset
                                 metadata<br />
                                 <a href="http://gigadb.org/api/search?keyword=chimp&amp;result=dataset" target="_blank">http://gigadb.org/api/search?keyword=chimp&amp;result=dataset</a>
@@ -879,7 +880,7 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242&lt;</pre>
                             <li>
                                 Refine search to dataset types<br />
                                 <a href="http://gigadb.org/api/search?datasettype=Genomic" target="_blank">http://gigadb.org/api/search?datasettype=Genomic</a>
-                            </li>
+                            </li> -->
                             <li>
                                 Refine search to project names<br />
                                 <a href="http://gigadb.org/api/search?project=Genome%2010K&amp;result=sample" target="_blank">http://gigadb.org/api/search?project=Genome%2010K&amp;result=sample</a>
@@ -888,10 +889,11 @@ Bmb006173_1_IPR000909 GO:0007165 GO:0004629 GO:0007242&lt;</pre>
                                 List all published dataset DOIs (listed in publication date order)<br />
                                 <a href="http://gigadb.org/api/list" target="_blank">http://gigadb.org/api/list</a>
                             </li>
-                            <li>
+                            <!-- commented out, see issue #2314 -->
+                            <!-- <li>
                                 Dump the database<br />
                                 <a href="http://gigadb.org/api/dump" target="_blank">http://gigadb.org/api/dump</a>
-                            </li>
+                            </li> -->
                             <li>
                                 List all dataset DOI's published in a date range (results ordered by
                                 publication date)<br />

@@ -2,3 +2,4 @@ id,dataset_id,creation_date,created_by,last_modified_date,last_modified_by,actio
 1,22,2011-09-12,Joe Bloggs,,,Status changed to Request,""
 2,22,2011-10-12,Joe Bloggs,,,Status changed to Uploaded,""
 3,22,2011-11-12,Joe Bloggs,,,Status changed to Published,""
+4,5,2011-11-12,Joe Bloggs,,,DOI Minting,"Dataset 100039 | Check DOI: OK | update metadata response: DOI 10.80027/100039: Missing child element(s). Expected is ( {http://datacite.org/schema/kernel-4}creator ). at line 4, column 0"

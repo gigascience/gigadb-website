@@ -1,4 +1,4 @@
-<div class="tab-content">
+<div class="tab-content search-results-list">
     <?php if (0 === count($datasets['data'])) {
         echo "No results found for '" . $model->keyword . "'";
     } ?>

@@ -57,7 +57,7 @@ services:
       YII_PATH: ${YII_PATH}
       YII2_PATH: ${YII2_PATH}
       TIDEWAYS_APIKEY: ${TIDEWAYS_APIKEY}
-      TIDEWAYS_SERVICE: $CI_PROJECT_PATH
+      TIDEWAYS_SERVICE: ${TIDEWAYS_SERVICE}
       TIDEWAYS_SAMPLERATE: 25
       TIDEWAYS_CONNECTION: tcp://tideways-daemon:9135
     volumes:
@@ -81,7 +81,7 @@ services:
     <<: *logging
     image: registry.gitlab.com/$CI_PROJECT_PATH/production_tideways-daemon:$GIGADB_ENV
     environment:
-      TIDEWAYS_ENVIRONMENT: $GIGADB_ENV
+      TIDEWAYS_ENVIRONMENT: ${TIDEWAYS_ENVIRONMENT}
     expose:
       - '9135'
     networks:
@@ -89,6 +89,7 @@ services:
     cap_drop:
       - NET_ADMIN
       - SYS_ADMIN
+    command: "--env ${TIDEWAYS_ENVIRONMENT}"
 
   fuw-admin:
     <<: *logging

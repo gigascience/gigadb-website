@@ -25,10 +25,9 @@
     name: $DEPLOYMENT_ENV
     url: $REMOTE_HOME_URL
   artifacts:
+    untracked: true
     when: on_failure
     expire_in: 1 week
-  rules:
-    - if: '$CI_PROJECT_PATH == "gigascience/upstream/gigadb-website"'
 
 TidewaysBuildStaging:
   stage: staging build
@@ -41,6 +40,7 @@ TidewaysBuildStaging:
   environment:
     name: "staging"
     url: $REMOTE_HOME_URL
+  when: manual
 
 TidewaysBuildLive:
   stage: live build
@@ -75,7 +75,7 @@ TidewaysBuildLive:
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
     # appending production variables at the end of the .env and .secrets
     - env | grep -v "SAST" | grep -iE "^(staging_|remote_)" | grep -viE "(password|email|tester|secret|key|user|app_id|client_id|token|tls)" >> $APPLICATION/.env
-    - env | grep -v "SAST" | grep -iE "^TIDEWAYS_APIKEY" >> $APPLICATION/.env
+    - env | grep -v "SAST" | grep -iE "^TIDEWAYS_" >> $APPLICATION/.env
     - env | grep -v "SAST" | grep -iE "^(staging_|remote_)" | grep -iE "(password|email|tester|secret|key|user|app_id|client_id|token)" | grep -viE "tlsauth">> $APPLICATION/.secrets
     - env | grep -v "SAST" | grep "^CI_API_V4_URL" >> $APPLICATION/.env
     - env | grep -v "SAST" | grep "^CI_PROJECT_PATH" >> $APPLICATION/.env
@@ -98,10 +98,9 @@ TidewaysBuildLive:
     name: $DEPLOYMENT_ENV
     url: $REMOTE_HOME_URL
   artifacts:
+    untracked: true
     when: on_failure
     expire_in: 1 week
-  rules:
-    - if: '$CI_PROJECT_PATH == "gigascience/upstream/gigadb-website"'
 
 TidewaysDeployStaging:
   stage: staging deploy
@@ -114,6 +113,7 @@ TidewaysDeployStaging:
   environment:
     name: "staging"
     url: $REMOTE_HOME_URL
+  when: manual
 
 TidewaysDeployLive:
   stage: live deploy

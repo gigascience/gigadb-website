@@ -100,6 +100,7 @@ services:
       - ${APPLICATION}/ops/configuration/php-conf/php-${GIGADB_ENV}.ini:/usr/local/etc/php/php.ini
       - ${APPLICATION}/ops/configuration/php-conf/gigadb.pool.conf:/usr/local/etc/php-fpm.d/gigadb.pool.conf
       - ${APPLICATION}/ops/configuration/php-conf/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini
+      - ${APPLICATION}/gigadb:/var/www/gigadb
       # access to File Upload Wizard model classes
       - ../../fuw/app:/app      
       - ../../gigadb:/gigadb
@@ -276,7 +277,7 @@ services:
       - "fuw-public-api:172.16.238.10"
 
   csv-to-migrations:
-    image: node:$NODE_VERSION-buster-slim
+    image: node:$NODE_VERSION-bullseye-slim
     working_dir: /var/www/ops/scripts
     volumes:
       - ${APPLICATION}/:/var/www
@@ -361,7 +362,7 @@ services:
       context: ../../fuw/app
       dockerfile: common/Dockerfile
       args:
-        - PHP_BASE_IMAGE_VERSION=$PHP_VERSION-fpm-buster
+        - PHP_BASE_IMAGE_VERSION=$PHP_VERSION-fpm-bullseye
         - APP_PORT=9002
         - INSTALL_OPCACHE=true
         - INSTALL_INTL=true
@@ -406,7 +407,7 @@ services:
       context: ../../fuw/app
       dockerfile: common/Dockerfile
       args:
-        - PHP_BASE_IMAGE_VERSION=$PHP_VERSION-fpm-buster
+        - PHP_BASE_IMAGE_VERSION=$PHP_VERSION-fpm-bullseye
         - APP_PORT=9001
         - INSTALL_OPCACHE=true
         - INSTALL_INTL=true
@@ -451,7 +452,7 @@ services:
       context: ../../fuw/app/console
       dockerfile: Worker-Dockerfile
       args:
-        - PHP_BASE_IMAGE_VERSION=$PHP_VERSION-cli-buster
+        - PHP_BASE_IMAGE_VERSION=$PHP_VERSION-cli-bullseye
         - INSTALL_OPCACHE=true
         - INSTALL_INTL=true
         - INSTALL_COMPOSER=true
@@ -495,7 +496,7 @@ services:
       context: ..
       dockerfile: packaging/Worker-Dockerfile
       args:
-        - PHP_BASE_IMAGE_VERSION=$PHP_VERSION-cli-buster
+        - PHP_BASE_IMAGE_VERSION=$PHP_VERSION-cli-bullseye
         - INSTALL_OPCACHE=true
         - INSTALL_INTL=true
         - INSTALL_COMPOSER=true

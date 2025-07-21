@@ -93,7 +93,7 @@
 						'htmlOptions' => array('class' => 'form-horizontal create-user-form')
 					)) ?>
 
- 				<p class="mb-10" aria-hidden="true">Fields with <span class="symbol">*</span> are required.</p>
+ 				<p class="mb-10 col-xs-12" aria-hidden="true">Fields with <span class="symbol">*</span> are required.</p>
 
          <?php if ($model->hasErrors()) : ?>
             <div class="alert alert-danger">
@@ -110,9 +110,9 @@
 						'form' => $form,
 						'model' => $model,
 						'labelOptions' => [
-							'class' => 'col-xs-3',
+							'class' => 'col-xs-12 col-md-3',
 						],
-						'inputWrapperOptions' => 'col-xs-9',
+						'inputWrapperOptions' => 'col-xs-12 col-md-9',
 						'attributeName' => 'email',
 						'inputOptions' => [
 							'required' => 'required',
@@ -122,9 +122,9 @@
 						'form' => $form,
 						'model' => $model,
 						'labelOptions' => [
-							'class' => 'col-xs-3',
+							'class' => 'col-xs-12 col-md-3',
 						],
-						'inputWrapperOptions' => 'col-xs-9',
+						'inputWrapperOptions' => 'col-xs-12 col-md-9',
 						'attributeName' => 'first_name',
 						'inputOptions' => [
 							'required' => 'required',
@@ -134,9 +134,9 @@
 						'form' => $form,
 						'model' => $model,
 						'labelOptions' => [
-							'class' => 'col-xs-3',
+							'class' => 'col-xs-12 col-md-3',
 						],
-						'inputWrapperOptions' => 'col-xs-9',
+						'inputWrapperOptions' => 'col-xs-12 col-md-9',
 						'attributeName' => 'last_name',
 						'inputOptions' => [
 							'required' => 'required',
@@ -146,9 +146,9 @@
 						'form' => $form,
 						'model' => $model,
 						'labelOptions' => [
-							'class' => 'col-xs-3',
+							'class' => 'col-xs-12 col-md-3',
 						],
-						'inputWrapperOptions' => 'col-xs-9',
+						'inputWrapperOptions' => 'col-xs-12 col-md-9',
 						'attributeName' => 'password',
 						'inputOptions' => [
 							'required' => 'update' !== $scenario ? 'required' : false,
@@ -158,9 +158,9 @@
 						'form' => $form,
 						'model' => $model,
 						'labelOptions' => [
-							'class' => 'col-xs-3',
+							'class' => 'col-xs-12 col-md-3',
 						],
-						'inputWrapperOptions' => 'col-xs-9',
+						'inputWrapperOptions' => 'col-xs-12 col-md-9',
 						'attributeName' => 'password_repeat',
 						'inputOptions' => [
 							'required' => 'update' !== $scenario ? 'required' : false,
@@ -171,8 +171,8 @@
 
  				<? if (Yii::app()->user->checkAccess('admin')) { ?>
  					<div class="form-group">
- 						<?= $form->labelEx($model, 'role', array('class' => 'col-xs-3 control-label')) ?>
- 						<div class="col-xs-9">
+ 						<?= $form->labelEx($model, 'role', array('class' => 'col-md-3 control-label')) ?>
+ 						<div class="col-md-9">
  							<?= $form->dropDownList($model, 'role', array('user' => 'user', 'admin' => 'admin'), array('class' => 'form-control', 'aria-describedby' => $model->hasErrors('role') ? 'role-error' : '')) ?>
  							<div id="role-error"><?= $form->error($model, 'role', array('class' => 'control-error help-block')) ?></div>
  						</div>
@@ -183,9 +183,9 @@
 						'form' => $form,
 						'model' => $model,
 						'labelOptions' => [
-							'class' => 'col-xs-3',
+							'class' => 'col-xs-12 col-md-3',
 						],
-						'inputWrapperOptions' => 'col-xs-9',
+						'inputWrapperOptions' => 'col-xs-12 col-md-9',
 						'attributeName' => 'affiliation',
 						'inputOptions' => [
 							'required' => 'required',
@@ -193,41 +193,39 @@
 					]);
 					?>
  				<div class="form-group">
- 					<?= $form->labelEx($model, 'preferred_link', array('class' => 'col-xs-3 control-label')) ?>
- 					<div class="col-xs-9">
+ 					<?= $form->labelEx($model, 'preferred_link', array('class' => 'col-md-3 control-label')) ?>
+ 					<div class="col-md-9 input-wrapper">
  						<?= CHtml::activeDropDownList($model, 'preferred_link', User::$linkouts, array('class' => 'form-control', 'aria-describedby' => $model->hasErrors('preferred_link') ? 'preferred_link-error' : '')) ?>
  						<div id="preferred_link-error"><?= $form->error($model, 'preferred_link', array('class' => 'control-error help-block')) ?></div>
  					</div>
  				</div>
- 				<div class="form-group checkbox-horizontal">
- 					<label class="col-xs-3 control-label" for="User_newsletter"><?= Yii::t('app', 'Mailing list') ?></label>
- 					<div class="col-xs-9">
+ 				<div class="form-group checkbox-horizontal <?= $model->hasErrors('newsletter') ? 'has-error' : '' ?>">
+ 					<label class="col-md-3 control-label" for="User_newsletter"><?= Yii::t('app', 'Mailing list') ?></label>
+ 					<div class="col-md-9 input-wrapper">
  						<?php echo $form->checkbox($model, 'newsletter', array('aria-describedby' => 'newsletter-desc')); ?>
  					</div>
- 					<div class="col-xs-9" id="newsletter-desc">
+ 					<div class="col-md-9 help-block checkbox-desc" id="newsletter-desc">
  						<p>Please tick here to join the GigaDB mailing list to receive news, updates and quarterly newsletters about GigaDB</p>
  					</div>
  				</div>
  				<div class="form-group checkbox-horizontal <?= $model->hasErrors('terms') ? 'has-error' : '' ?>">
- 					<?= $form->labelEx($model, 'terms', array('class' => 'col-xs-3 control-label')) ?>
- 					<div class="col-xs-9">
+ 					<?= $form->labelEx($model, 'terms', array('class' => 'col-md-3 control-label')) ?>
+ 					<div class="col-md-9 input-wrapper">
  						<?php echo $form->checkbox($model, 'terms', array('aria-describedby' => $model->hasErrors('terms') ? 'terms-error terms-desc' : 'terms-desc', 'required' => true, 'aria-required' => 'true')); ?>
- 						<div id="terms-error"><?= $form->error($model, 'terms', array('class' => 'control-error help-block')) ?></div>
- 						<p id="terms-desc" class="help-block">Please tick here to confirm you have read and understood our <a href="/site/term#policies">Terms of use</a> and <a href="/site/term#privacy">Privacy Policy</a></p>
- 					</div>
+                    </div>
+                    <div class="col-md-9 checkbox-error" id="terms-error"><?= $form->error($model, 'terms', array('class' => 'control-error help-block')) ?></div>
+                    <p id="terms-desc" class="col-md-9 help-block checkbox-desc">Please tick here to confirm you have read and understood our <a href="/site/term#policies">Terms of use</a> and <a href="/site/term#privacy">Privacy Policy</a></p>
  				</div>
 
 
 
  				<? if ($model->isNewRecord) { ?>
- 					<div class="form-group">
- 						<?php echo $form->labelEx($model, 'verifyCode', array('class' => 'col-xs-3 control-label')); ?>
- 						<div class="col-xs-9">
- 							<div style="width:100%">
- 								<img style="width:200px;" src="<?php echo Yii::app()->captcha->output(); ?>" alt="Type the word in the image">
+ 					<div class="form-group <?= $model->hasErrors('verifyCode') ? 'has-error' : '' ?>">
+ 						<?php echo $form->labelEx($model, 'verifyCode', array('class' => 'col-md-3 control-label')); ?>
+ 						<div class="col-md-9 input-wrapper">
+ 							<div class="captcha mb-10">
+ 								<img class="captcha-image test-captcha-image" src="<?php echo Yii::app()->captcha->output(); ?>" alt="Type the word in the image">
  							</div>
- 							<br>
- 							<br>
  							<?php echo $form->textField($model, 'verifyCode', array('class' => 'form-control', 'aria-describedby' => $model->hasErrors('verifyCode') ? 'verifyCode-error verifyCode-desc' : 'verifyCode-desc')); ?>
  							<div id="verifyCode-desc" class="hint control-description help-block">Please enter the letters as they are shown in the image above.
  								<br />Letters are case-sensitive.
@@ -239,7 +237,7 @@
  					</div>
  				<? } ?>
  				<hr>
- 				<div class="pull-right">
+ 				<div class="pull-right btns-row btns-row-end">
  					<?= CHtml::submitButton($model->isNewRecord ? Yii::t('app', 'Register') : 'Save', array('class' => 'btn background-btn submit-btn')) ?>
  				</div>
  				<div class="clearfix"></div>
