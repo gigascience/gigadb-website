@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Fix: Add GIGADB_PORT to secrets example file
 - Feat #481: Add hyperlink to Gensc.org in FAQ page
 - Feat #491: Update FAQ entry about service costs
 - Feat #489: Add new FAQ entry "What are the benefits of using GigaDB?"
