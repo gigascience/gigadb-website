@@ -11,6 +11,7 @@ TIMESTAMP="$(date +%Y%m%d_%H%M%S)"
 BENCHMARK_DIR="/home/ec2-user/benchmark"
 RESULTS_DIR="${BENCHMARK_DIR}/results"
 LOG_FILE="${BENCHMARK_DIR}/benchmark.log"
+CPU_FILE="${BENCHMARK_DIR}/cpu_usage.txt"
 
 # Mount point configurations
 declare -A MOUNT_PATHS=(
@@ -58,11 +59,11 @@ create_test_data() {
         fi
     fi
     
-    # Create 5000 small files (4KB each)
+    # Create 5000 small files (1KB each)
     if [[ ! -d "${test_data_dir}/smallfiles" ]] || [[ $(ls ${test_data_dir}/smallfiles 2>/dev/null | wc -l) -lt 5000 ]]; then
         log "$BLUE" "Creating 5000 small files..."
-        for i in {1..5000}; do
-            dd if=/dev/urandom of="/tmp/smallfiles/file${i}.dat" bs=4k count=1 &>/dev/null 2>&1
+        for i in $(seq 1 5000); do
+            fallocate -l 1024 "${test_data_dir}/smallfiles/file${i}.dat" &>/dev/null 2>&1
         done
     fi
     
@@ -75,13 +76,13 @@ test_1g_file_write() {
     log "$BLUE" "1G File Write: dd if=/dev/zero of=${mount_path}/1g-file.dat bs=1G count=1 oflag=direct"
     local start_time=$(date +%s.%N)
     
-    if /usr/bin/time dd if=/dev/zero of="${mount_path}/1g-file.dat" bs=1G count=1 oflag=direct 2> cpu_usage.txt; then
+    if (/usr/bin/time dd if=/dev/zero of="${mount_path}/1g-file.dat" bs=1G count=1 oflag=direct 2> ${CPU_FILE}); then
         local end_time=$(date +%s.%N)
         local duration=$(echo "$end_time - $start_time" | bc -l)
         local throughput=$(echo "scale=0; 1024 / $duration" | bc -l)
-        local cpu_usage=$(cat cpu-usage.txt | grep "CPU" | cut -d ' ' -f4 | sed "s/CPU//")
-        echo "1G File Write,$(printf "%.5f" "$duration,$throughput,$cpu_usage")"
-        rm -f cpu-usage.txt
+        local cpu_usage=$(cat ${CPU_FILE} | grep "CPU" | cut -d ' ' -f4 | sed "s/%CPU//")
+        echo "1G File Write,$(printf "%s,%s,%s" "$duration" "$throughput" "$cpu_usage")"
+        rm -f ${CPU_FILE}
         return 0
     else
         echo "1G File Write,FAILED,N/A"
@@ -94,13 +95,13 @@ test_10g_file_write() {
     log "$BLUE" "10G File Write: dd if=/dev/zero of=${mount_path}/10g-file.dat bs=1G count=10 oflag=direct"
     local start_time=$(date +%s.%N)
     
-    if /usr/bin/time dd if=/dev/zero of="${mount_path}/10g-file.dat" bs=1G count=10 oflag=direct 2> cpu-usage.txt; then
+    if (/usr/bin/time dd if=/dev/zero of="${mount_path}/10g-file.dat" bs=1G count=10 oflag=direct 2> ${CPU_FILE}); then
         local end_time=$(date +%s.%N)
         local duration=$(echo "$end_time - $start_time" | bc -l)
         local throughput=$(echo "scale=0; 10240 / $duration" | bc -l)
-        local cpu_usage=$(cat cpu-usage.txt | grep "CPU" | cut -d ' ' -f4 | sed "s/CPU//")
-        echo "10G File Write,$(printf "%.5f" "$duration,$throughput,$cpu_usage")"
-        rm -f cpu-usage.txt
+        local cpu_usage=$(cat ${CPU_FILE} | grep "CPU" | cut -d ' ' -f4 | sed "s/%CPU//")
+        echo "10G File Write,$(printf "%s,%s,%s" "$duration" "$throughput" "$cpu_usage")"
+        rm -f ${CPU_FILE}
         return 0
     else
         echo "10G File Write,FAILED,N/A"
@@ -114,13 +115,13 @@ test_1g_file_read() {
     log "$BLUE" "1G File Read: if=${mount_path}/1g-file.dat of=/dev/null bs=1G count=1 "
     local start_time=$(date +%s.%N)
     
-    if /usr/bin/time dd if="${mount_path}/1g-file.dat" of=/dev/null bs=1G count=1 2> cpu-usage.txt; then
+    if (/usr/bin/time dd if="${mount_path}/1g-file.dat" of=/dev/null bs=1G count=1 2> ${CPU_FILE}); then
         local end_time=$(date +%s.%N)
         local duration=$(echo "$end_time - $start_time" | bc -l)
         local throughput=$(echo "scale=0; 1024 / $duration" | bc -l)
-        local cpu_usage=$(cat cpu-usage.txt | grep "CPU" | cut -d ' ' -f4 | sed "s/CPU//")
-        echo "1G File Read,$(printf "%.5f" "$duration,$throughput,$cpu_usage")"
-        rm -f cpu-usage.txt
+        local cpu_usage=$(cat ${CPU_FILE} | grep "CPU" | cut -d ' ' -f4 | sed "s/%CPU//")
+        echo "1G File Read,$(printf "%s,%s,%s" "$duration" "$throughput" "$cpu_usage")"
+        rm -f ${CPU_FILE}
         return 0
     else
         echo "1G File Read,FAILED,N/A"
@@ -134,13 +135,13 @@ test_10g_file_read() {
     log "$BLUE" "10G File Read: dd if=${mount_path}/10g-file.dat of=/dev/null bs=1G count=10"
     local start_time=$(date +%s.%N)
     
-    if /usr/bin/time dd if="${mount_path}/10g-file.dat" of=/dev/null bs=1G count=10 2> cpu-usage.txt; then
+    if (/usr/bin/time dd if="${mount_path}/10g-file.dat" of=/dev/null bs=1G count=10 2> ${CPU_FILE}); then
         local end_time=$(date +%s.%N)
         local duration=$(echo "$end_time - $start_time" | bc -l)
         local throughput=$(echo "scale=0; 10240 / $duration" | bc -l)
-        local cpu_usage=$(cat cpu-usage.txt | grep "CPU" | cut -d ' ' -f4 | sed "s/CPU//")
-        echo "10G File Read,$(printf "%.5f" "$duration,$throughput,$cpu_usage")"
-        rm -f cpu-usage.txt
+        local cpu_usage=$(cat ${CPU_FILE} | grep "CPU" | cut -d ' ' -f4 | sed "s/%CPU//")
+        echo "10G File Read,$(printf "%s,%s,%s" "$duration" "$throughput" "$cpu_usage")"
+        rm -f ${CPU_FILE}
         return 0
     else
         echo "10G File Read,FAILED,N/A"
@@ -155,12 +156,12 @@ test_move_in_5000_small_files() {
     log "$BLUE" "Move in 5000 small files: cp -v ${BENCHMARK_DIR}/test-data/smallfiles/* smallfiles/"
     local start_time=$(date +%s.%N)
     
-    if /usr/bin/time cp "${BENCHMARK_DIR}/test-data/smallfiles"/* "$mount_path/smallfiles/" 2> cpu-usage.txt; then
+    if (/usr/bin/time cp "${BENCHMARK_DIR}/test-data/smallfiles"/* "$mount_path/smallfiles/" 2> ${CPU_FILE}); then
         local end_time=$(date +%s.%N)
         local duration=$(echo "$end_time - $start_time" | bc -l)
-        local cpu_usage=$(cat cpu-usage.txt | grep "CPU" | cut -d ' ' -f4 | sed "s/CPU//")
-        echo "Move in 5000 small files,$(printf "%.5f" "$duration,$cpu_usage")"
-        rm -f cpu-usage.txt
+        local cpu_usage=$(cat ${CPU_FILE}| grep "CPU" | cut -d ' ' -f4 | sed "s/%CPU//")
+        echo "Move in 5000 small files,$(printf "%s,%s" "$duration" "$cpu_usage")"
+        rm -f ${CPU_FILE}
         return 0
     else
         echo "Move in 5000 small files,FAILED,N/A"
@@ -178,11 +179,11 @@ test_move_out_5000_small_files() {
     log "$BLUE" "Move out 5000 small files: cp -v smallfiles/* ${BENCHMARK_DIR}/smallfiles_out/"
     local start_time=$(date +%s.%N)
     
-    if /usr/bin/time cp "${mount_path}/smallfiles"/* "${BENCHMARK_DIR}/smallfiles_out/" 2> cpu-usage.txt; then
+    if (/usr/bin/time cp "${mount_path}/smallfiles"/* "${BENCHMARK_DIR}/smallfiles_out/" 2> ${CPU_FILE}); then
         local end_time=$(date +%s.%N)
         local duration=$(echo "$end_time - $start_time" | bc -l)
-        local cpu_usage=$(cat cpu-usage.txt | grep "CPU" | cut -d ' ' -f4 | sed "s/CPU//")
-        echo "Move out 5000 small files,$(printf "%.5f" "$duration,$cpu_usage")"
+        local cpu_usage=$(cat ${CPU_FILE} | grep "CPU" | cut -d ' ' -f4 | sed "s/%CPU//")
+        echo "Move out 5000 small files,$(printf "%s,%s" "$duration" "$cpu_usage")"
         return 0
     else
         echo "Move out 5000 small files,FAILED,N/A"
@@ -196,11 +197,11 @@ test_move_in_1g_file() {
     log "$BLUE" "Move in 1 1G file: cp ${BENCHMARK_DIR}/test-data/1g-file.dat ."
     local start_time=$(date +%s.%N)
     
-    if /usr/bin/time cp "${BENCHMARK_DIR}/test-data/1g-file.dat" "$mount_path/copied-1g-file.dat" 2> cpu-usage.txt; then
+    if (/usr/bin/time cp "${BENCHMARK_DIR}/test-data/1g-file.dat" "${mount_path}/copied-1g-file.dat" 2> ${CPU_FILE}); then
         local end_time=$(date +%s.%N)
         local duration=$(echo "$end_time - $start_time" | bc -l)
-        local cpu_usage=$(cat cpu-usage.txt | grep "CPU" | cut -d ' ' -f4 | sed "s/CPU//")
-        echo "Move in 1 1G file,$(printf "%.5f" "$duration,$cpu_usage")"
+        local cpu_usage=$(cat ${CPU_FILE}| grep "CPU" | cut -d ' ' -f4 | sed "s/%CPU//")
+        echo "Move in 1 1G file,$(printf "%s,%s" "$duration" "$cpu_usage")"
         return 0
     else
         echo "Move in 1 1G file,FAILED,N/A"
@@ -210,20 +211,20 @@ test_move_in_1g_file() {
 
 test_md5sum_1g_file() {
     local mount_path="$1"
-    if [[ ! -f "$mount_path/copied-1g-file.dat" ]]; then
+    if [[ ! -f "${mount_path}/copied-1g-file.dat" ]]; then
         echo "md5sum Checksum 1G file,SKIPPED,N/A"
         return 1
     fi
     
-    log "$BLUE" "md5sum Checksum 1G file: md5sum copied-1g-file.dat > copied-1g-file.md5"
+    log "$BLUE" "md5sum Checksum 1G file: md5sum copied-1g-file.dat > ${mount_path}copied-1g-file.md5"
     local start_time=$(date +%s.%N)
     
-    if (cd "$mount_path" && /usr/bin/time md5sum copied-1g-file.dat > copied-1g-file.md5 2> cpu-usage.txt); then
+    if (cd ${mount_path} && /usr/bin/time md5sum copied-1g-file.dat > ${mount_path}/copied-1g-file.md5 2> ${CPU_FILE}); then
         local end_time=$(date +%s.%N)
         local duration=$(echo "$end_time - $start_time" | bc -l)
-        local cpu_usage=$(cat cpu-usage.txt | grep "CPU" | cut -d ' ' -f4 | sed "s/CPU//")
-        echo "md5sum Checksum 1G file,$(printf "%.5f" "$duration,$cpu_usage")"
-        rm -f cpu-usage.txt
+        local cpu_usage=$(cat ${CPU_FILE}| grep "CPU" | cut -d ' ' -f4 | sed "s/%CPU//")
+        echo "md5sum Checksum 1G file,$(printf "%s,%s" "$duration" "$cpu_usage")"
+        rm -f ${CPU_FILE}
         return 0
     else
         echo "md5sum Checksum 1G file,FAILED,N/A"
@@ -241,12 +242,12 @@ test_move_out_1g_file() {
     log "$BLUE" "Move out 1 1G file: cp copied-1g-file.dat /dev/null"
     local start_time=$(date +%s.%N)
     
-    if (cd "${mount_path}" && /usr/bin/time cp copied-1g-file.dat /dev/null 2> cpu-usage.txt); then
+    if (cd "${mount_path}" && /usr/bin/time cp copied-1g-file.dat /dev/null 2> ${CPU_FILE}); then
         local end_time=$(date +%s.%N)
         local duration=$(echo "$end_time - $start_time" | bc -l)
-        local cpu_usage=$(cat cpu-usage.txt | grep "CPU" | cut -d ' ' -f4 | sed "s/CPU//")
-        echo "Move out 1 1G file,$(printf "%.5f" "$duration,$cpu_usage")"
-        rm -f cpu-usage.txt
+        local cpu_usage=$(cat ${CPU_FILE} | grep "CPU" | cut -d ' ' -f4 | sed "s/%CPU//")
+        echo "Move out 1 1G file,$(printf "%s,%s" "$duration" "$cpu_usage")"
+        rm -f ${CPU_FILE}
         return 0
     else
         echo "Move out 1 1G file,FAILED,N/A"
@@ -264,11 +265,12 @@ test_move_in_10g_file() {
     log "$BLUE" "Move in 1 10G file: cp ${BENCHMARK_DIR}/test-data/10g-file.dat ."
     local start_time=$(date +%s.%N)
     
-    if /usr/bin/time cp "${BENCHMARK_DIR}/test-data/10g-file.dat" "$mount_path/copied-10g-file.dat" 2> cpu-usage.txt; then
+    if (/usr/bin/time cp "${BENCHMARK_DIR}/test-data/10g-file.dat" "${mount_path}/copied-10g-file.dat" 2> ${CPU_FILE}); then
         local end_time=$(date +%s.%N)
         local duration=$(echo "$end_time - $start_time" | bc -l)
-        local cpu_usage=$(cat cpu-usage.txt | grep "CPU" | cut -d ' ' -f4 | sed "s/CPU//")
-        echo "Move in 1 10G file,$(printf "%.5f" "$duration,$cpu_usage")"
+        local cpu_usage=$(cat ${CPU_FILE} | grep "CPU" | cut -d ' ' -f4 | sed "s/%CPU//")
+        echo "Move in 1 10G file,$(printf "%s,%s" "$duration" "$cpu_usage")"
+        rm -f ${CPU_FILE}
         return 0
     else
         echo "Move in 1 10G file,FAILED,N/A"
@@ -278,7 +280,7 @@ test_move_in_10g_file() {
 
 test_md5sum_10g_file() {
     local mount_path="$1"
-    if [[ ! -f "$mount_path/copied-10g-file.dat" ]]; then
+    if [[ ! -f "${mount_path}/copied-10g-file.dat" ]]; then
         echo "md5sum Checksum 10G file,SKIPPED,N/A"
         return 1
     fi
@@ -286,12 +288,12 @@ test_md5sum_10g_file() {
     log "$BLUE" "md5sum Checksum 10G file: md5sum copied-10g-file.dat > copied-10g-file.md5"
     local start_time=$(date +%s.%N)
     
-    if (cd "$mount_path" && /usr/bin/time md5sum copied-10g-file.dat > copied-10g-file.md5 2> cpu-usage.txt); then
+    if (cd "${mount_path}" && /usr/bin/time md5sum copied-10g-file.dat > ${mount_path}/copied-10g-file.md5 2> ${CPU_FILE}); then
         local end_time=$(date +%s.%N)
         local duration=$(echo "$end_time - $start_time" | bc -l)
-        local cpu_usage=$(cat cpu-usage.txt | grep "CPU" | cut -d ' ' -f4 | sed "s/CPU//")
-        echo "md5sum Checksum 10G file,$(printf "%.5f" "$duration,$cpu_usage")"
-        rm -f cpu-usage.txt
+        local cpu_usage=$(cat ${CPU_FILE} | grep "CPU" | cut -d ' ' -f4 | sed "s/%CPU//")
+        echo "md5sum Checksum 10G file,$(printf "%s,%s" "$duration" "$cpu_usage")"
+        rm -f ${CPU_FILE}
         return 0
     else
         echo "md5sum Checksum 10G file,FAILED,N/A"
@@ -301,7 +303,7 @@ test_md5sum_10g_file() {
 
 test_move_out_10g_file() {
     local mount_path="$1"
-    if [[ ! -f "$mount_path/copied-10g-file.dat" ]]; then
+    if [[ ! -f "${mount_path}/copied-10g-file.dat" ]]; then
         echo "Move out 1 10G file,SKIPPED,N/A"
         return 1
     fi
@@ -309,12 +311,12 @@ test_move_out_10g_file() {
     log "$BLUE" "Move out 1 10G file: cp 10g-file.dat /dev/null"
     local start_time=$(date +%s.%N)
     
-    if (cd "$mount_path" && /usr/bin/time cp 10g-file.dat /dev/null 2> cpu-usage.txt); then
+    if (cd "${mount_path}" && /usr/bin/time cp copied-10g-file.dat /dev/null 2> ${CPU_FILE}); then
         local end_time=$(date +%s.%N)
         local duration=$(echo "$end_time - $start_time" | bc -l)
-        local cpu_usage=$(cat cpu-usage.txt | grep "CPU" | cut -d ' ' -f4 | sed "s/CPU//")
-        echo "Move out 1 10G file,$(printf "%.5f" "$duration,$cpu_usage")"
-        rm -f cpu-usage.txt
+        local cpu_usage=$(cat ${CPU_FILE} | grep "CPU" | cut -d ' ' -f4 | sed "s/%CPU//")
+        echo "Move out 1 10G file,$(printf "%s,%s" "$duration" "$cpu_usage")"
+        rm -f ${CPU_FILE}
         return 0
     else
         echo "Move out 1 10G file,FAILED,N/A"
@@ -368,9 +370,9 @@ run_benchmark() {
     } >> "$results_file"
     
     # Cleanup test files from mount path
-    log "$BLUE" "Cleaning up test files from: $mount_path"
-    rm -f "$mount_path"/efs-test-write.dat "$mount_path"/*g-file.dat "$mount_path"/*g-file.md5 2>/dev/null || true
-    rm -rf "$mount_path/smallfiles" 2>/dev/null || true
+#    log "$BLUE" "Cleaning up test files from: $mount_path"
+#    rm -f "$mount_path"/efs-test-write.dat "$mount_path"/*g-file.dat "$mount_path"/*g-file.md5 2>/dev/null || true
+#    rm -rf "$mount_path/smallfiles" 2>/dev/null || true
     
     log "$GREEN" "Benchmark completed for $mount_point"
     log "$BLUE" "Results saved to: $results_file"
@@ -449,7 +451,7 @@ main() {
     log "$BLUE" "Results directory: $RESULTS_DIR"
     
     # Check prerequisites
-    local required_commands=("dd" "bc" "mountpoint" "md5sum" "cp" "/usr/bin/time")
+    local required_commands=("dd" "bc" "mountpoint" "md5sum" "cp" "/usr/bin/time" "seq" "fallocate")
     for cmd in "${required_commands[@]}"; do
         if ! command -v "$cmd" &> /dev/null; then
             log "$RED" "Error: Required command '$cmd' not found"
