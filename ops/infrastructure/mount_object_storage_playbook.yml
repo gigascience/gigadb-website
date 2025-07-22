@@ -142,9 +142,9 @@
       failed_when: mount_check.rc > 1
 
     - debug:
-        msg: "Check if /aws-hk-efs is mounted: {{ mount_check.rc }}"
+        msg: "Check if /userdropboxes is mounted: {{ mount_check.rc }}"
 
-    - name: Perform setup and mount only if /aws-hk-efs is not mounted
+    - name: Perform setup and mount only if /userdropboxes is not mounted
       block:
         - name: Ensure rclone config directory exists
           ansible.builtin.file:
