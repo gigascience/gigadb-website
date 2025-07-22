@@ -5,8 +5,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## Unreleased
 
 - Feat #2231: Add BlueSky social icon to header and footer
+- Feat #481: Add hyperlink to Gensc.org in FAQ page
+- Feat #491: Update FAQ entry about service costs
+- Feat #489: Add new FAQ entry "What are the benefits of using GigaDB?"
+- Feat #482: Update FAQ "What data storage procedures do you follow?"
+- Feat #490, #486, #483, #477, #475, #833: Update FAQ page text content
+- Feat #2314: Comment out API endpoints from help page that are temporarily not working
+- Feat #2329, #2336, #2344: Add new FAQ entries
+- Feat #513, #2190: Create meta tags based on environments
+- Fix #2406: Upgrade EOL debian buster to debian bullseye
 
-## v4.4.13 - 2025-06-13 - 26083397b -
+## v4.4.14 - 2025-07-09- d11b331f1 - live since 2025-07-16
+
+- Fix #2384: Set to 'is publishable' if status check during DOI minting returns a 204 status code
+- Feat #1641: Check if the DOI has been minted when the upload status is set to 'Published'
+- Feat #2236: Display pre print manuscript on dataset page
+- Security dependabot#183: Server-Side Request Forgery in axios
+- Security dependabot#195: body-parser vulnerable to denial of service when url encoding is enabled
+
+## v4.4.13 - 2025-06-13 - 26083397b - live since 2025-06-16
 
 - Feat #199: Reorder home page sections
 - Feat #199: Add dataset feed to homepage

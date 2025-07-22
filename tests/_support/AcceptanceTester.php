@@ -142,7 +142,7 @@ class AcceptanceTester extends \Codeception\Actor
      */
     public function iShouldSeeADisabledSubmitButton($value)
     {
-        $this->seeElement('input', ['type' => 'submit', 'value' => $value, 'aria-disabled' => 'true']);
+        $this->seeElement('input', ['disabled' => 'true', "id" => $value, 'type' => 'submit']);
     }
 
     /**
@@ -450,6 +450,29 @@ class AcceptanceTester extends \Codeception\Actor
     public function iCannotSeeTheOptionSelectedFor($value, $id)
     {
         $this->dontSeeOptionIsSelected("#dataset-form select[id='$id']", $value);
+    }
+
+    /**
+     * @Then I should see a meta tag which :attribute is :value and content is :content
+     */
+    public function iShouldSeeAMetaTagWhichNameAndContent($attribute, $value, $content)
+    {
+        $this->seeInPageSource('<meta ' . $attribute . '="' . $value . '" content="' . $content . '">');
+    }
+
+    /**
+     * @Then I should see :type meta-tags
+     */
+    public function iShouldSeeMetaTags($type, \Behat\Gherkin\Node\TableNode $table)
+    {
+        $rows = $table->getRows();
+        foreach ($rows as $row) {
+           if ( strtolower($type) == "html") {
+               $this->seeInPageSource('<meta ' . 'name' . '="' . $row[0] . '"' . ' ' . 'content="' . $row[1] . '">');
+           } else {
+               $this->seeInPageSource('<meta ' . 'property' . '="' . $row[0] . '"' . ' ' . 'content="' . $row[1] . '">');
+           }
+       }
     }
 
     /**
