@@ -3,9 +3,9 @@
     <div class="row">
       <nav aria-label="account" class="col-xs-12 col-md-5 account-navigation">
         <ul class="list-inline text-left base-top-account-bar">
-          <? if (Yii::app()->user->isGuest) { ?>
+          <?php if (Yii::app()->user->isGuest) { ?>
             <li><a href="/site/login"><i class="fa fa-sign-in"></i> Login / Signup</a></li>
-          <? } else {
+          <?php } else {
 
             $name = Yii::app()->user->getFirst_Name();
 
@@ -18,16 +18,16 @@
             ?>
             <li><a href="/user/view_profile"><i class="fa fa-sign-in"></i><?= Yii::t('app', $name . " GigaDB Page") ?></a>
             </li>
-            <? if (Yii::app()->user->checkAccess('admin')) { ?>
+            <?php if (Yii::app()->user->checkAccess('admin')) { ?>
               <li>
                 <a href="/site/admin">
                   <?= Yii::t('app', 'Admin') ?>
                 </a>
               </li>
-            <? } ?>
+            <?php } ?>
             <li><a href="/site/logout"><i class="fa fa-sign-in"></i><?= Yii::t('app', 'LogOut') ?></a></li>
             <li><a href="/site/mapbrowse"><i class="fa fa-sign-in"></i><?= Yii::t('app', "Browse Samples") ?></a></li>
-          <? } ?>
+          <?php } ?>
         </ul>
       </nav>
       <div class="col-xs-7 clearfix top-bar-left">
@@ -62,6 +62,11 @@
             <a href="http://x.com/GigaScience" title="GigaScience on X" class="icon-list-item__link"
               aria-label="GigaScience on X">
               <img class="icon-list-item__image" src="/images/icons/x-logo.svg" alt="">
+            </a>
+          </li>
+          <li class="icon-list-item">
+            <a href="https://bsky.app/profile/gigascience.bsky.social" title="GigaScience on BlueSky" class="icon-list-item__link" target="_blank" rel="noopener noreferrer" aria-label="GigaScience on BlueSky">
+              <img class="icon-list-item__image" src="/images/icons/bsky-logo.svg" alt="">
             </a>
           </li>
           <li>

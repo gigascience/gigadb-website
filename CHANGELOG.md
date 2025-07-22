@@ -5,6 +5,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## Unreleased
 
 - Fix #2390: Web site fails to reconnect to DB server if connections are terminated
+- Fix #2415: Remove redundant meta tag robots acceptance tests
+- Feat #2231: Add BlueSky social icon to header and footer
+- Fix: Add GIGADB_PORT to secrets example file
+- Feat #481: Add hyperlink to Gensc.org in FAQ page
+- Feat #491: Update FAQ entry about service costs
+- Feat #489: Add new FAQ entry "What are the benefits of using GigaDB?"
+- Feat #482: Update FAQ "What data storage procedures do you follow?"
+- Feat #490, #486, #483, #477, #475, #833: Update FAQ page text content
+- Feat #2314: Comment out API endpoints from help page that are temporarily not working
+- Feat #2329, #2336, #2344: Add new FAQ entries
+- Feat #513, #2190: Create meta tags based on environments
 - Fix #2406: Upgrade EOL debian buster to debian bullseye
 
 ## v4.4.14 - 2025-07-09- d11b331f1 - live since 2025-07-16
