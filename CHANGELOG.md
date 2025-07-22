@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Fix #2415: Remove redundant meta tag robots acceptance tests
 - Feat #2231: Add BlueSky social icon to header and footer
 - Fix: Add GIGADB_PORT to secrets example file
 - Feat #481: Add hyperlink to Gensc.org in FAQ page
