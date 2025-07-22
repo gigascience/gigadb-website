@@ -34,7 +34,7 @@ Feature: EditUser
     And I should not see "Verify Code"
 
   @ok
-  Scenario: Ensure I can edit myp profile without changing the password
+  Scenario: Ensure I can edit my profile without changing the password
     Given I am on "/user/view_profile"
     And I press the button "Edit Profile"
     And I fill in the field of "id" "EditProfileForm_first_name" with "modified"
