@@ -475,4 +475,13 @@ class AcceptanceTester extends \Codeception\Actor
        }
     }
 
+    /**
+     * @Then I should see an icon with label :ariaLabel link to :expectedUrl
+     */
+    public function iShouldSeeAnIconWithLabelLinkTo($ariaLabel, $expectedUrl)
+    {
+        $this->seeElement("//a[@aria-label='$ariaLabel']");
+        $actualUrl = $this->grabAttributeFrom("//a[@aria-label='$ariaLabel']", "href");
+        $this->assertEquals($expectedUrl, $actualUrl);
+    }
 }
