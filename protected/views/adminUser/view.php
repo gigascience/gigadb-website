@@ -22,6 +22,10 @@
       'affiliation',
       'role',
       array(
+          'label' => 'Terms and Conditions',
+          'value' => $model->terms ? 'Yes' : 'No'
+      ),
+      array(
         'label' => 'Is Activated',
         'value' => $model->is_activated ? 'Yes' : 'No'
       ),
