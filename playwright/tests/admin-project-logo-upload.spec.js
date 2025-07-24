@@ -26,7 +26,6 @@ test.describe("Project logo upload", () => {
     await expect(page.locator('img[alt="bgi_logo_new.png"]')).toBeVisible();
 
     // Submit upload and verify logo appears
-    await page.click('button[aria-label="Upload 1 file"]');
     await page.waitForSelector("img.test-uploaded-project-logo");
     await expect(page.locator("img.test-uploaded-project-logo")).toBeVisible();
     let imagePath = await page
@@ -43,7 +42,8 @@ test.describe("Project logo upload", () => {
     await page.waitForURL(/adminProject\/view/);
     await expect(page.getByText("Test Project")).toBeVisible();
     await expect(page.getByText("https://test-project.org")).toBeVisible();
-    await expect(page.getByText("bgi-logo-new.png")).toBeVisible();
+    // Verify the logo image is rendered on the project view page
+    await expect(page.locator(`img[src*="bgi-logo-new.png"]`)).toBeVisible();
     const projectId = await page.url().split("/").pop();
 
     // EDIT
@@ -63,8 +63,6 @@ test.describe("Project logo upload", () => {
     await expect(page.locator('img[alt="G10Klogo.jpg"]')).toBeVisible();
 
     // Submit new logo and verify it appears
-    await page.click('button[aria-label="Upload 1 file"]');
-    await sleep(500);
     await page.waitForSelector("img.test-uploaded-project-logo");
     await expect(page.locator("img.test-uploaded-project-logo")).toBeVisible();
     imagePath = await page
@@ -81,7 +79,7 @@ test.describe("Project logo upload", () => {
     await page.waitForURL(/adminProject\/view/);
     await expect(page.getByText("Updated Test Project")).toBeVisible();
     await expect(page.getByText("https://updated-test-project.org")).toBeVisible();
-    await expect(page.getByText("G10Klogo.jpg")).toBeVisible();
+    await expect(page.locator(`img[src*="G10Klogo.jpg"]`)).toBeVisible();
 
     // DELETE
     // Clean up by deleting the project
