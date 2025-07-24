@@ -47,6 +47,7 @@ create_test_data() {
         log "$BLUE" "Creating 1G test file..."
         dd if=/dev/zero of="$test_data_dir/1g-file.dat" bs=1G count=1 &>/dev/null
     fi
+    log "$BLUE" "1g file already created in ${test_data_dir}"
     
     # Create 10G test file if there's enough space
     if [[ ! -f "$test_data_dir/10g-file.dat" ]]; then
@@ -58,14 +59,16 @@ create_test_data() {
             log "$YELLOW" "Insufficient space for 10G test file, skipping"
         fi
     fi
-    
+    log "$BLUE" "10g file already created in ${test_data_dir}"
+
     # Create 5000 small files (1KB each)
-    if [[ ! -d "${test_data_dir}/smallfiles" ]] || [[ $(ls ${test_data_dir}/smallfiles 2>/dev/null | wc -l) -lt 5000 ]]; then
+    if  [[ ! -d "${test_data_dir}/smallfiles" ]] || [[ $(find "${test_data_dir}/smallfiles" -maxdepth 1 -type f -printf '.' 2>/dev/null | wc -c) -lt 5000 ]]; then
         log "$BLUE" "Creating 5000 small files..."
         for i in $(seq 1 5000); do
             fallocate -l 1024 "${test_data_dir}/smallfiles/file${i}.dat" &>/dev/null 2>&1
         done
     fi
+    log "$BLUE" "5000 small files already created in ${test_data_dir}/smallfiles"
     
     echo "$test_data_dir"
 }
@@ -487,9 +490,9 @@ main() {
         log "$RED" "No benchmarks completed successfully"
     fi
     
-    # Cleanup test data
+    log "$BLUE" "Cleanup cache files..."
     # rm -rf "${BENCHMARK_DIR}/test-data" "${BENCHMARK_DIR}/smallfiles_out" 2>/dev/null || true
-    rm -rf /tmp/cache/rclone-* 2>/dev/null || true
+    rm -rf /tmp/cache/rclone* 2>/dev/null || true
     
     log "$GREEN" "Benchmark completed!"
     log "$BLUE" "Results available in: $RESULTS_DIR"
