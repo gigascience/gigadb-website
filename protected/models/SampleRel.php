@@ -6,14 +6,14 @@ declare(strict_types=1);
  * This is the model class for table "sample_rel".
  *
  * The followings are the available columns in table 'sample_rel':
- * @property integer $id
- * @property integer $sample_id
- * @property integer $related_sample_id
- * @property integer $relationship_id
+ * @property int      $id
+ * @property int      $sample_id
+ * @property int      $related_sample_id
+ * @property int|null $relationship_id
  *
  * The followings are the available model relations:
- * @property Relationship $relationship
- * @property Sample $sample
+ * @property Relationship|null $relationship
+ * @property Sample            $sample
  */
 class SampleRel extends CActiveRecord
 {

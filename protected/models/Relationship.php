@@ -6,7 +6,7 @@ declare(strict_types=1);
  * This is the model class for table "relationship".
  *
  * The followings are the available columns in table 'relationship':
- * @property integer $id
+ * @property int    $id
  * @property string $name
  */
 class Relationship extends CActiveRecord
@@ -36,6 +36,7 @@ class Relationship extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
+            array('name', 'required', 'message' => 'Please enter a value'),
             array('name', 'length', 'max' => 100),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
@@ -94,7 +95,7 @@ class Relationship extends CActiveRecord
      *
      * @return void
      */
-    public function setName($name)
+    public function setName(string $name): void
     {
         $this->name = $name;
     }

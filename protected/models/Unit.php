@@ -6,14 +6,14 @@ declare(strict_types=1);
  * This is the model class for table "unit".
  *
  * The followings are the available columns in table 'unit':
- * @property string $id
- * @property string $name
- * @property string $definition
+ * @property string      $id
+ * @property string|null $name
+ * @property string|null $definition
  *
  * The followings are the available model relations:
- * @property SampleAttribute[] $sampleAttributes
- * @property FileAttributes[] $fileAttributes
- * @property ExpAttributes[] $expAttributes
+ * @property SampleAttribute[]   $sampleAttributes
+ * @property FileAttributes[]    $fileAttributes
+ * @property ExpAttributes[]     $expAttributes
  * @property DatasetAttributes[] $datasetAttributes
  */
 class Unit extends CActiveRecord

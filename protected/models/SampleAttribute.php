@@ -6,11 +6,11 @@ declare(strict_types=1);
  * This is the model class for table "sample_attribute".
  *
  * The followings are the available columns in table 'sample_attribute':
- * @property integer $id
- * @property integer $sample_id
- * @property integer $attribute_id
- * @property string $value
- * @property string $unit_id
+ * @property int         $id
+ * @property int         $sample_id
+ * @property int         $attribute_id
+ * @property string|null $value
+ * @property string|null $unit_id
  */
 class SampleAttribute extends CActiveRecord
 {
@@ -59,7 +59,7 @@ class SampleAttribute extends CActiveRecord
      * @param $param
      * @return void
      */
-    public function validateAttributeId($attribute, $param)
+    public function validateAttributeId($attribute, $param): void
     {
         $attributeModel = Attributes::model()->findByPk($this->attribute_id);
         if ($attributeModel === null) {

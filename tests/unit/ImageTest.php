@@ -133,6 +133,10 @@ class ImageTest extends \Codeception\Test\Unit
         ]);
         $sut = new Image(); // System Under Test
         $sut->url = $url;
+        $sut->location = "location";
+        $sut->license = "license";
+        $sut->photographer = "photographer";
+        $sut->source = "source";
         $sut->save();
         $this->assertEquals(
             $expectedReturn,

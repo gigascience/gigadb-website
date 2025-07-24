@@ -6,7 +6,7 @@ declare(strict_types=1);
  * This is the model class for table "rss_message".
  *
  * The followings are the available columns in table 'rss_message':
- * @property integer $id
+ * @property int    $id
  * @property string $message
  * @property string $publication_date
  */

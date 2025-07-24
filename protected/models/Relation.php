@@ -23,9 +23,9 @@ class Relation extends CActiveRecord
      * @param string $className active record class name.
      * @return Relation the static model class
      */
-    public $doi_search;
-    public $relationship_name;
-    public $add_reciprocal = true;
+    public ?string $doi_search = null;
+    public ?string $relationship_name = null;
+    public bool $add_reciprocal = true;
 
     public static function model($className = __CLASS__)
     {
@@ -157,7 +157,7 @@ class Relation extends CActiveRecord
      *
      * @param string $doi
      **/
-    public function setRelatedDOI($doi)
+    public function setRelatedDOI(string $doi): void
     {
         $this->related_doi = $doi;
     }
@@ -166,7 +166,7 @@ class Relation extends CActiveRecord
      *
      * @param int $dataset_id
      **/
-    public function setDatasetID($dataset_id)
+    public function setDatasetID(int $dataset_id): void
     {
         $this->dataset_id = $dataset_id;
     }
@@ -175,7 +175,7 @@ class Relation extends CActiveRecord
      *
      * @param string $relationship
      **/
-    public function setRelationship($relationship)
+    public function setRelationship(string $relationship): void
     {
         $this->relationship_id = Relationship::model()->findByAttributes(array("name" => $relationship))->id;
     }

@@ -6,11 +6,11 @@ declare(strict_types=1);
  * This is the model class for table "species".
  *
  * The followings are the available columns in table 'species':
- * @property integer $id
- * @property integer $tax_id
- * @property string $common_name
- * @property string $genbank_name
- * @property string $scientific_name
+ * @property int         $id
+ * @property int         $tax_id
+ * @property string|null $common_name
+ * @property string|null $genbank_name
+ * @property string      $scientific_name
  *
  * The followings are the available model relations:
  * @property Sample[] $samples
@@ -101,17 +101,12 @@ class Species extends CActiveRecord
         ));
     }
 
-    public static function getListCommonNames()
+    public static function getListCommonNames(): array
     {
-        $models = Species::model()->findAll(array('limit' => 10));
-        $list = array();
-        foreach (array_values($models) as $model) {
-            $list[$model->id] = $model->common_name;
-        }
-        return $list;
+        return CHtml::listData(Species::model()->findAll(array('limit' => 10)), 'id', 'common_name');
     }
 
-    public static function getTaxLink($tax_id)
+    public static function getTaxLink(int $tax_id): string
     {
         return "http://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?mode=Info&id=" . $tax_id;
     }

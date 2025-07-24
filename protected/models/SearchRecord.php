@@ -6,20 +6,21 @@ declare(strict_types=1);
  * This is the model class for table "search".
  *
  * The followings are the available columns in table 'search':
- * @property integer $id
- * @property integer $user_id
+ *
+ * @property int $id
+ * @property int $user_id
  * @property string $name
  * @property string $query
+ * @property string $result
  *
  * The followings are the available model relations:
- * @property GigadbUser $user
+ * @property User $user
  */
 class SearchRecord extends CActiveRecord
 {
     /**
      * Returns the static model of the specified AR class.
      * @param string $className active record class name.
-     * @return Search the static model class
      */
     public static function model($className = __CLASS__)
     {
@@ -97,7 +98,7 @@ class SearchRecord extends CActiveRecord
         ));
     }
 
-    public function getResultDetail()
+    public function getResultDetail(): string
     {
         if (!$this->result) {
             return '';
@@ -110,7 +111,7 @@ class SearchRecord extends CActiveRecord
         return $dataset_count . " datasets, " . $sample_count . " samples, " . $file_count . " files";
     }
 
-    public function getSearchPage()
+    public function getSearchPage(): string
     {
         if (!$this->name) {
             return '#';
@@ -120,7 +121,7 @@ class SearchRecord extends CActiveRecord
     }
 
 
-    public function convertCriteria($getkeyword = false)
+    public function convertCriteria(bool $getkeyword = false): string
     {
         $result = "";
 
@@ -139,7 +140,7 @@ class SearchRecord extends CActiveRecord
         return $result;
     }
 
-    private function convertKey($key)
+    private function convertKey(string $key): string
     {
         $array = array(
             'pubdate_from' => 'Publication Date From',
@@ -166,7 +167,7 @@ class SearchRecord extends CActiveRecord
         }
     }
 
-    private function convertUnit($key, $query, $array)
+    private function convertUnit($key, $query, $array): string
     {
         if ($key == "dataset_type") {
             $types = Type::getListTypes();
@@ -208,7 +209,7 @@ class SearchRecord extends CActiveRecord
         }
     }
 
-    private function convertSizeUnit($id)
+    private function convertSizeUnit(string $id): string
     {
         $array = array("1" => "KB","2" => "MB","3" => "GB","4" => "TB");
         if (isset($array[$id])) {
@@ -218,10 +219,10 @@ class SearchRecord extends CActiveRecord
         }
     }
 
-    private function convertResult($listId, $listValues)
+    private function convertResult(array $listId, array $listValues): string
     {
-            $result = "";
-        foreach (array_values($listId) as $value) {
+        $result = "";
+        foreach ($listId as $value) {
             if (empty($result)) {
                 $result .= $listValues[$value];
             } else {

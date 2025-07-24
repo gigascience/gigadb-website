@@ -55,7 +55,7 @@ class RelationDAO
      * @param Relation $relating_rel the relation for which to create a reciprocal relation
      * @param Relation $reciprocal_rel the new reciprocating relation to be
      **/
-     public function createReciprocalTo(Relation $relating_rel, Relation $reciprocal_rel)
+     public function createReciprocalTo(Relation $relating_rel, Relation $reciprocal_rel): void
      {
          $dataset_id = Dataset::model()->findByAttributes(array('identifier' => $relating_rel->getRelatedDOI()))->id ;
          $related_doi = Dataset::model()->findByAttributes(array('id' => $relating_rel->getDatasetID()))->identifier ;

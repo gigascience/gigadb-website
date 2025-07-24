@@ -9,27 +9,40 @@ declare(strict_types=1);
  *
  * @property int    $id
  * @property string $email
+ * @property string $password
  * @property string $first_name
  * @property string $last_name
- * @property string|null $activation_token
  * @property string $affiliation
+ * @property string $role
+ * @property bool $is_activated
+ * @property bool $newsletter
+ * @property bool $previous_newsletter_state
+ * @property string|null $facebook_id
+ * @property string|null $linkedin_id
+ * @property string|null $google_id
+ * @property string|null $twitter_id
+ * @property string|null $username
+ * @property string|null $orcid_id
+ * @property string|null $preferred_link
+ * @property string|null $activation_token
+ *
  * The followings are the available model relations:
  */
 class User extends CActiveRecord
 {
-    public $password_repeat;
-    public $password_new;
-    public $terms;
+    public ?string $password_repeat = null;
+    public ?string $password_new = null;
+    public bool $terms = false;
     # Unhashed password for account verification email
-    public $passwordUnHashed;
+    public ?string $passwordUnHashed = null;
 
-    public $passwordInvalid = false;
-    public $sendNewPassword = false;
-    public $verifyCode;
+    public bool $passwordInvalid = false;
+    public bool $sendNewPassword = false;
+    public ?string $verifyCode = null;
     /** For the captcha */
     public $validacion;
 
-    public static $linkouts = array(
+    public static array $linkouts = array(
             'EBI' => 'EBI',
             'NCBI' => 'NCBI',
             'DDBJ' => 'DDBJ'
@@ -39,7 +52,6 @@ class User extends CActiveRecord
 
     /**
      * Returns the static model of the specified AR class.
-     * @return MyActiveRecord the static model class
      */
     public static function model($className = __CLASS__)
     {
@@ -82,7 +94,16 @@ class User extends CActiveRecord
         );
     }
 
-    public function checkPassword($attribute, $params)
+    /**
+     * @param $attribute
+     * @param $params
+     *
+     * @param array<string, mixed> $params
+     * @param string               $attribute
+     *
+     * @return void
+     */
+    public function checkPassword(string $attribute, array $params): void
     {
         if ($this->scenario === "insert") {
             return;
@@ -109,9 +130,12 @@ class User extends CActiveRecord
     }
 
     /**
-    * Validate captcha
+     * Validate captcha
+     *
+     * @param string               $attribute
+     * @param array<string, mixed> $params
     */
-    public function validateCaptcha($attribute, $params)
+    public function validateCaptcha(string $attribute, array $params): void
     {
         Yii::app()->captcha->validate($this, $attribute);
     }
@@ -149,7 +173,7 @@ class User extends CActiveRecord
      * @uses sodium_crypto_pwhash_str()
      * @see https://paragonie.com/book/pecl-libsodium/read/07-password-hashing.md
      */
-    public function encryptPassword()
+    public function encryptPassword(): void
     {
         # TODO: use salt?
         $this->password = sodium_crypto_pwhash_str(
@@ -207,29 +231,30 @@ class User extends CActiveRecord
         ));
     }
 
-    public function renderNewsletter()
+    public function renderNewsletter(): string
     {
         return $this->newsletter ? 'Yes' : 'No';
     }
 
 
+    /**
+     * @return string|null
+     */
     public function getRole()
     {
-        $role = Yii::app()->db->createCommand()
-                ->select('itemname')
-                ->from('AuthAssignment')
-                ->where('userid=:id', array(':id' => $this->id))
-                ->queryScalar();
-
-        return $role;
+        return Yii::app()->db->createCommand()
+                             ->select('itemname')
+                             ->from('AuthAssignment')
+                             ->where('userid=:id', array(':id' => $this->id))
+                             ->queryScalar();
     }
 
-    public function getLinkedAuthor()
+    public function getLinkedAuthor(): ?Author
     {
         $criteria = new CDbCriteria();
         $criteria->addColumnCondition(array('t.gigadb_user_id' => $this->id));
-        $author = Author::model()->find($criteria);
-        return $author;
+
+        return Author::model()->find($criteria);
     }
 
     /**
@@ -238,7 +263,7 @@ class User extends CActiveRecord
     *
     * @return string
     */
-    public function getFullName()
+    public function getFullName(): string
     {
         return $this->first_name . " " . $this->last_name;
     }
@@ -351,11 +376,10 @@ class User extends CActiveRecord
         return $user;
     }
 
-    public static function findAffiliateEmail($email)
+    public static function findAffiliateEmail($email): ?User
     {
-        $user = User::model()->find("email = :email", array(
+        return User::model()->find("email = :email", array(
                 ':email' => $email
             ));
-        return $user;
     }
 }

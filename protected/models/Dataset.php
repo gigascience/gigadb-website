@@ -315,8 +315,12 @@ class Dataset extends CActiveRecord
      *
      * @return Type[]
      */
-    public static function getTypeList(array $ids): array
+    public static function getTypeList(?array $ids = null): array
     {
+        if (!$ids) {
+            return [];
+        }
+
         $crit = new CDbCriteria();
         $crit->join = "join dataset_type dt on dt.type_id = t.id";
         $crit->addInCondition("dt.dataset_id", $ids);

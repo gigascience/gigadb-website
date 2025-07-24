@@ -6,24 +6,28 @@ declare(strict_types=1);
  * This is the model class for table "sample".
  *
  * The followings are the available columns in table 'sample':
- * @property integer $id
- * @property integer $species_id
- * @property string $name
- * @property string $consent_document
- * @property integer $submitted_id
- * @property string $submission_date
- * @property string $contact_author_name
- * @property string $contact_author_email
- * @property string $sampling_protocol
+ *
+ * @property int         $id
+ * @property int         $species_id
+ * @property string      $name
+ * @property string|null $consent_document
+ * @property int|null    $submitted_id
+ * @property string|null $submission_date
+ * @property string|null $contact_author_name
+ * @property string|null $contact_author_email
+ * @property string|null $sampling_protocol
  *
  * The followings are the available model relations:
- * @property GigadbUser $submitted
- * @property SampleRel[] $sampleRels
- * @property SampleExperiment[] $sampleExperiments
- * @property FileSample[] $fileSamples
- * @property Species $species
- * @property DatasetSample[] $datasetSamples
- * @property Species $speciesSampleAttribute[] $sampleAttributes
+ * @property User|null                $submitted
+ * @property SampleRel[]              $sampleRels
+ * @property SampleExperiment[]       $sampleExperiments
+ * @property FileSample[]             $fileSamples
+ * @property DatasetSample[]          $datasetSamples
+ * @property Species                  $species
+ * @property Dataset[]                $datasets
+ * @property SampleAttribute[]        $sampleAttributes
+ * @property Attributes[]             $attributes
+ * @property AlternativeIdentifiers[] $alternativeIdentifiers
  */
 class Sample extends CActiveRecord
 {
@@ -32,11 +36,11 @@ class Sample extends CActiveRecord
      * @param string $className active record class name.
      * @return Sample the static model class
      */
-    public $species_search;
-    public $dois_search;
-    public $attr_search;
-    public $attr_search_lowercase;
-    public $attributesList;
+    public ?string $species_search = null;
+    public ?string $dois_search = null;
+    public ?string $attr_search = null;
+    public ?string $attr_search_lowercase = null;
+    public ?string $attributesList = null;
 
     public static function model($className = __CLASS__)
     {
@@ -119,20 +123,27 @@ class Sample extends CActiveRecord
         );
     }
 
-    public function getDataset()
+    public function getDataset(): ?Dataset
     {
         $crit = new CDbCriteria();
         $crit->join = "JOIN dataset_sample ds ON ds.dataset_id = t.id";
         $crit->condition = "ds.sample_id = :sid";
         $crit->params = array(':sid' => $this->id);
+
         return Dataset::model()->find($crit);
     }
 
-    public static function getCommonList($ids)
+    /**
+     * @param array $ids
+     *
+     * @return Species[]
+     */
+    public static function getCommonList(array $ids): array
     {
         $crit = new CDbCriteria();
         $crit->join = "join sample on sample.species_id = t.id";
         $crit->addInCondition("sample.id", $ids);
+
         return Species::model()->findAll($crit);
     }
 
@@ -203,7 +214,7 @@ EO_SQL;
     /*
     * Convert sample attributes to an array
     */
-    public function sampleAttributesToArray($sa)
+    public function sampleAttributesToArray(string $sa): array
     {
         $i = 0;
         $start_key = 0;
@@ -232,7 +243,7 @@ EO_SQL;
         return $result;
     }
 
-    public function embedDiseaseLinkInAttributes($sampleAttributes)
+    public function embedDiseaseLinkInAttributes(string $sampleAttributes): string
     {
         $attributesArray = $this->sampleAttributesToArray($sampleAttributes);
         if (isset($attributesArray['disease'])) {
@@ -245,15 +256,15 @@ EO_SQL;
             $Z = substr($value, $secondColonIndex + 1, strlen($value) - $secondColonIndex - 1);
             // generate a link like http://purl.obolibrary.org/obo_DOID_2043
 
-            if ('DOID' == $Y) {
+            if ('DOID' === $Y) {
                 $websiteURL = 'http://purl.obolibrary.org/obo/';
-            } elseif ('MDR' == $Y) {
+            } elseif ('MDR' === $Y) {
                 $websiteURL = 'http://purl.bioontology.org/ontology/';
             } else {
                 return $sampleAttributes;
             }
 
-            if ($Z == '') {
+            if ($Z === '') {
                 return $sampleAttributes;
             }
 
@@ -288,14 +299,18 @@ EO_SQL;
         return $string;
     }
 
-    public function getLinkName()
+    public function getLinkName(): string
     {
+        /** @var CWebApplication $app */
+        $app = Yii::app();
         $prefix = "SAMPLE:";
         $len = strlen($prefix);
         $name = $this->name;
         $prefer = 'EBI';
-        if (!Yii::app()->user->isGuest) {
-            $user = User::model()->findByPk(Yii::app()->user->_id);
+        if (!$app->user->isGuest) {
+            /** @var User $userModel */
+            $userModel = User::model();
+            $user = $userModel->findByPk($app->user->_id);
             if ($user) {
                 $prefer = $user->preferred_link;
             }
@@ -327,18 +342,20 @@ EO_SQL;
         return $name;
     }
 
-    public function getDatasetsByOrder()
+    /** @return Dataset[] */
+    public function getDatasetsByOrder(): array
     {
         $criteria = new CDbCriteria();
         $criteria->join = 'LEFT JOIN dataset_sample ds on ds.dataset_id = t.id';
         $criteria->addCondition('ds.sample_id = ' . $this->id);
         $criteria->order = 't.identifier asc';
+
         return Dataset::model()->findAll($criteria);
     }
 
-    public function getListOfDataset()
+    public function getListOfDataset(): string
     {
-        return implode(', ', CHtml::listData($this->datasetsByOrder, 'id', 'identifier'));
+        return implode(', ', CHtml::listData($this->getDatasetsByOrder(), 'id', 'identifier'));
     }
 
     /**
@@ -350,7 +367,7 @@ EO_SQL;
     public function getSampleAttributeArrayMap(): array
     {
         $toNameValueHash = function ($sample_attribute) {
-            return array( $sample_attribute->attribute->attribute_name => $sample_attribute->value);
+            return array($sample_attribute->attribute->attribute_name => $sample_attribute->value);
         };
 
         return array_map($toNameValueHash, $this->sampleAttributes);

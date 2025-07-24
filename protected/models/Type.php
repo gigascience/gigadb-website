@@ -6,7 +6,7 @@ declare(strict_types=1);
  * This is the model class for table "Type".
  *
  * The followings are the available columns in table 'Type':
- * @property integer $id
+ * @property int    $id
  * @property string $name
  * @property string $description
  *
@@ -15,13 +15,6 @@ declare(strict_types=1);
  */
 class Type extends CActiveRecord
 {
-    /**
-     * Returns the static model of the specified AR class.
-     * @param string $className active record class name.
-     * @return DatasetTypes the static model class
-     */
-
-        public $number;
     public static function model($className = __CLASS__)
     {
         return parent::model($className);
@@ -43,7 +36,7 @@ class Type extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('name', 'required'),
+            array('name,description', 'required'),
             array('name', 'length', 'max' => 32),
             array('description', 'safe'),
             // The following rule is used by search().
@@ -102,13 +95,8 @@ class Type extends CActiveRecord
         ));
     }
 
-    public static function getListTypes()
+    public static function getListTypes(): array
     {
-        $models = Type::model()->findAll();
-        $list = array();
-        foreach (array_values($models) as $model) {
-            $list[$model->id] = $model->name;
-        }
-        return $list;
+        return CHtml::listData(Type::model()->findAll(array('limit' => 10)), 'id', 'name');
     }
 }
