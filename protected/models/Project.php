@@ -30,8 +30,11 @@ class Project extends CActiveRecord
 
     public static function getStorageBasePath()
     {
-        // return Yii::getAlias('@web') . '/files'; // testing locally
-        return 'https://' . self::BUCKET;
+        if ("dev" == Yii::$app->params['environment']) {
+            return Yii::getAlias('@web') . '/files';
+        } else {
+            return 'https://' . self::BUCKET;
+        }
     }
 
     /**

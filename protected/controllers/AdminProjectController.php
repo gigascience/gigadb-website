@@ -58,6 +58,11 @@ class AdminProjectController extends Controller
       {
           $model->attributes = $_POST['Project'];
           $storage = Yii::$app->cloudStore;
+
+          if ("dev" == Yii::$app->params['environment']) {
+            $storage = Yii::$app->fs;
+          }
+
           $tempImageLocation = $model->image_location;
           $model->image_location = null;
 

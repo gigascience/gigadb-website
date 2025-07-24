@@ -57,3 +57,8 @@ npm run test:single admin-project-logo-upload.spec.js
 ```
 
 might need to run `npx playwright install` the first time
+
+
+## Troubleshoot
+
+If after running the ./up.sh script the widget does not load, delete the content of the /js folder and run ./up.sh again
