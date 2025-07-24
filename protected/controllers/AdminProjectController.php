@@ -3,7 +3,6 @@
 class AdminProjectController extends Controller
 {
 
-
 	/**
 	 * @return array action filters
 	 */
@@ -57,11 +56,7 @@ class AdminProjectController extends Controller
       if(isset($_POST['Project']))
       {
           $model->attributes = $_POST['Project'];
-          $storage = Yii::$app->cloudStore;
-
-          if ("dev" == Yii::$app->params['environment']) {
-            $storage = Yii::$app->fs;
-          }
+          $storage = Project::getStorage();
 
           $tempImageLocation = $model->image_location;
           $model->image_location = null;
@@ -149,7 +144,7 @@ class AdminProjectController extends Controller
           $prevAttributes = $model->attributes;
           $newAttributes = $_POST['Project'];
           $model->attributes = $newAttributes;
-          $storage = Yii::$app->cloudStore;
+          $storage = Project::getStorage();
 
           $hasNewLogo = $model->image_location && $model->image_location !== $prevAttributes['image_location'];
 

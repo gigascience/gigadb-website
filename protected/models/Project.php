@@ -28,6 +28,14 @@ class Project extends CActiveRecord
     public $image;
     public $image_logo;
 
+    public static function getStorage() {
+        if ("dev" == Yii::$app->params['environment']) {
+            return Yii::$app->fs;
+        }
+
+        return Yii::$app->cloudStore;
+    }
+
     public static function getStorageBasePath()
     {
         if ("dev" == Yii::$app->params['environment']) {
@@ -275,6 +283,6 @@ class Project extends CActiveRecord
             return false;
         }
 
-        return $this->deleteLogo(Yii::$app->cloudStore); // if this returns false, project deletion will be aborted
+        return $this->deleteLogo(self::getStorage()); // if this returns false, project deletion will be aborted
     }
 }
