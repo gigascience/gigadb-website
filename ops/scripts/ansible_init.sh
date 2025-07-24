@@ -111,6 +111,9 @@ echo "rclone_mount_access_key_id = $rclone_mount_access_key_id" >> ansible.prope
 echo "rclone_mount_secret_access_key = $rclone_mount_secret_access_key" >> ansible.properties
 echo "rclone_mount_provider = $rclone_mount_provider" >> ansible.properties
 
+hk_live_remote_bastion_public_ip=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$FORK_VARIABLES_URL/hk_live_remote_bastion_public_ip" | jq -r .value)
+echo "hk_live_remote_bastion_public_ip = $hk_live_remote_bastion_public_ip" >> ansible.properties
+
 # Required to mount storage box
 hetzner_storage_box_user=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$PROJECT_VARIABLES_URL/hetzner_storage_box_user?filter%5benvironment_scope%5d=$target_environment" | jq -r .value)
 hetzner_storage_box_hostname=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$PROJECT_VARIABLES_URL/hetzner_storage_box_hostname?filter%5benvironment_scope%5d=$target_environment" | jq -r .value)

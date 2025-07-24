@@ -8,7 +8,7 @@ location_constraint = ap-east-1
 
 [hk_efs]
 type = sftp
-host = {{ upstream_remote_bastion_public_ip }}
+host = {{ hk_live_remote_bastion_public_ip }}
 user = centos
 key_file = /home/ec2-user/.ssh/id-rsa-aws-hk-gigadb
 shell_type = unix
