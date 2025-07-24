@@ -336,6 +336,24 @@ $this->pageTitle = 'GigaDB - FAQ';
                 </div>
                 <div class="panel panel-default">
                     <div class="panel-heading">
+                        <h2 class="h4 panel-title" id="heading18">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel18" aria-expanded="false" aria-controls="panel18">
+                              How do I download a large dataset with my slow internet connection?
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="panel18" aria-labelledby="heading18" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <p>There are 2 ways to download data from <em>GigaDB</em>:</p>
+                            <ol>
+                                <li>FTP. This is the "normal" method, click the download button on any dataset page and this is how your data will be sent.</li>
+                                <li>Hard drive shipment. On occasion when datasets are very large and internet connections are slow, some user may request data to be sent by hard disk, <em>GigaDB</em> cannot bare the cost of this but we will assist in the copy of the data onto the disks and help arrange shipment, but the user will be required to cover the cost of the disks and shipment.</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading19">
                             <button data-toggle="collapse" data-parent="#accordion" data-target="#panel19" aria-expanded="false" aria-controls="panel19">
                                 How do I cite data from <em>GigaDB</em>?
