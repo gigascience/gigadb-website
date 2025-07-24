@@ -34,6 +34,21 @@ $this->pageTitle = 'GigaDB - FAQ';
                 </div>
                 <div class="panel panel-default">
                     <div class="panel-heading">
+                        <h2 class="h4 panel-title" id="heading01-1">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel01-1" aria-expanded="false" aria-controls="panel01-1">
+                            What are the benefits of using <em>GigaDB</em>?
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="panel01-1" role="region" aria-labelledby="heading01-1" class="panel-collapse collapse" data-parent="#accordion">
+                        <div class="panel-body">
+                            <p>Expert curation by experienced BioCurators ensures that your data can be easily found and reused. All the data associated with a unit of work can be found in a single place, either hosted by <em>GigaDB</em> or with stable links out to other reputable repositories. We ensure the Open sharing policy of GigaScience Press (and other publishers) are met. You receive increased exposure of your research to the community and ensure that other researchers can find and cite your work, so that you get the credit you deserve.</p>
+                            <p>The inclusion of extensive metadata about your data increases discovervisibility, in-turn increasing the visibility of your associated journal article.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading02">
                             <button data-toggle="collapse" data-parent="#accordion" data-target="#panel02" aria-expanded="false" aria-controls="panel02">
                                 What journals are integrated with <em>GigaDB</em>?
@@ -104,6 +119,58 @@ $this->pageTitle = 'GigaDB - FAQ';
                 </div>
                 <div class="panel panel-default">
                     <div class="panel-heading">
+                        <h2 class="h4 panel-title" id="heading_file-name-convention">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel_file-name-convention" aria-expanded="false" aria-controls="panel_file-name-convention">
+                                What is the file name convention for GigaDB?
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="panel_file-name-convention" aria-labelledby="heading_file-name-convention" class="panel-collapse collapse">
+                        <div class="panel-body">
+
+                            <p>The file name includes the full name of the file including the relative file path, e.g. <code>directory_name/file_name.ext</code></p>
+
+                            <ul class="content-text">
+                                <li>Ideally the filename should be meaningful in some way, if appropriate it may contain reference to a particular point within the associated manuscript, but usually that reference would be expected in the file descriptions. (e.g. <code>gene-expression-fig1.csv</code> would be better than <code>Fig1.csv</code>)</li>
+
+                                <li>Full file-path names must be unique within the dataset.</li>
+
+                                <li>Filenames should only include the following characters <code>a-z</code>, <code>A-Z</code>, <code>0-9</code>, <code>_</code>, <code>-</code>, <code>+</code>, <code>.</code></li>
+
+                                <li>Filenames should not include spaces, we recommend using the underscore (<code>_</code>) in place of spaces.</li>
+
+                                <li>All files should be machine-readable (e.g. No PDF, Excel or Word documents)</li>
+
+                                <li>The file extension should be relevant to the format of the file, e.g. csv tabular data should have the file extension <code>.csv</code>.</li>
+                            </ul>
+
+                            <p>See the <a href="/site/help#vocabulary">vocabulary</a> page for a list of file types and regular file extensions.</p>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h2 class="h4 panel-title" id="heading_expectation-file-compression">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel_expectation-file-compression" aria-expanded="false" aria-controls="panel_expectation-file-compression">
+                                What are the expectations on file compression?
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="panel_expectation-file-compression" aria-labelledby="heading_expectation-file-compression" class="panel-collapse collapse">
+                        <div class="panel-body">
+
+                            <p>It is normal to compress large files to reduce transfer times, and we encourage the use of gzip or bzip2 for this. Zip can be acceptable, but for preference if possible use gzip or bzip2 for individual files. Where a file has been compressed there should be two file extensions consecutively e.g. <code>filename.fasta.gz</code>.</p>
+
+                            <p>In some instances it is appropriate to archive multiple files into a single archive file, for this we strongly recommend the use of tar with or without the addition of gzip. Similarly the file extension will reflect this, e.g. <code>directoryName.tar</code> or <code>directoryName.tar.gz</code></p>
+
+                            <p>For tar files we allow for longer descriptions as there could be more required due to the potential for more varied content. You MUST avoid the use of carriage returns within the description.</p>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading07">
                             <button data-toggle="collapse" data-parent="#accordion" data-target="#panel07" aria-expanded="false" aria-controls="panel07">
                                 When should I submit my data?
@@ -168,12 +235,8 @@ $this->pageTitle = 'GigaDB - FAQ';
                     </div>
                     <div id="panel11" aria-labelledby="heading11" class="panel-collapse collapse">
                         <div class="panel-body">
-                            <p>All data submissions should be approved before being started, please contact <a href="mailto:editorial@gigasciencejournal.com">editorial@gigasciencejournal.com</a> to discuss your article and associated data with our editors.Once approved, there are two possible routes to provide the metadata about your data:
-                            <ol>
-                                <li> use the online <a href="http://gigadb.org/dataset/upload">submission wizard</a> - this is a good option for datasets with few authors, and few files. The wizard currently does not have functionality to upload tabular information so everything must be typed in individually.</li>
-                                <li> use the template spreadsheet (excel, but compatible with open office too) downloadable from here: <a href="http://www.google.com/url?q=http%3A%2F%2Fgigadb.org%2Ffiles%2FGigaDBUploadForm.xls&amp;sa=D&amp;sntz=1&amp;usg=AFrqEzf6cPyp-vGxxVTE9OEq2TPsJqU7fg">Link to template excel file</a> - This option is better where there are multiple authors and/or multiple files and/or samples. NB. the spreadsheet contains macros, but these are only to allow the forward and back buttons to work so can be disabled, you can just click the relevant tabs at the bottom of the spreadsheet.</li>
-                            </ol>
-                            <p>For more details on submitting using the Spreadsheet please see here.</p>
+                            <p>All data submissions should be approved before being started, please contact <a href="mailto:editorial@gigasciencejournal.com">editorial@gigasciencejournal.com</a> to discuss your article and associated data with our editors.</p>
+                            <p>Once approved, the curation team will liaise with you and the editorial team to import relevant information from <em>GigaScience</em> or <em>GigaByte</em> submission systems into GigaDB, and you will be asked to complete the submission of the dataset using the online wizard.</p>
                         </div>
                     </div>
                 </div>
@@ -247,13 +310,13 @@ $this->pageTitle = 'GigaDB - FAQ';
                     <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading16">
                             <button data-toggle="collapse" data-parent="#accordion" data-target="#panel16" aria-expanded="false" aria-controls="panel16">
-                                How much does it cost?
+                                Is there a cost for the service?
                             </button>
                         </h2>
                     </div>
                     <div id="panel16" aria-labelledby="heading16" class="panel-collapse collapse">
                         <div class="panel-body">
-                            <p>There are currently no separate Data Publishing Charges (<abbr>DPCs</abbr>) for <em>GigaDB</em> as we currently do not accept data that is not accompanied by a <em>GigaScience</em> manuscript. All <abbr title="Data Publishing Charges">DPCs</abbr> for <em>GigaScience</em> manuscripts are covered by the Article Publishing Charges (<abbr>APCs</abbr>) of that manuscript (up to a terabyte automatically included, but contact us if you need more). For <abbr title="Article Publishing Charges">APCs</abbr> of <em>GigaScience</em> manuscripts please see in <a href="https://academic.oup.com/gigascience/pages/charges_licensing_and_self_archiving">Gigascience journal pricing</a>.</p>
+                            <p>There are currently no separate Data Publishing Charges (<abbr>DPCs</abbr>) for submission of data to <em>GigaDB</em>, as we currently do not accept data that is not accompanied by a <em>GigaScience Press</em> manuscript (either <em>GigaScience</em> or <em>GigaByte</em>). All <abbr title="Data Publishing Charges">DPCs</abbr> for <em>GigaScience Press</em> manuscripts are covered by the Article Publishing Charges (<abbr>APCs</abbr>) of that manuscript (up to a terabyte automatically included, but contact us if you need more). For <abbr title="Article Publishing Charges">APCs</abbr> of <em>GigaScience</em> manuscripts please see in <a href="https://academic.oup.com/gigascience/pages/charges_licensing_and_self_archiving" target="_blank"><em>GigaScience</em> journal pricing (opens in a new window)</a>. For <abbr title="Article Publishing Charges">APCs</abbr> of <em>GigaByte</em> manuscripts please see in <a href="https://gigabytejournal.com/faq" target="_blank"><em>GigaByte</em> journal FAQs (opens in a new window)</a>.</p>
                         </div>
                     </div>
                 </div>
@@ -268,24 +331,6 @@ $this->pageTitle = 'GigaDB - FAQ';
                     <div id="panel17" aria-labelledby="heading17" class="panel-collapse collapse">
                         <div class="panel-body">
                             <p>No. All data provided by <em>GigaDB</em> is free to download and use. On occasion when datasets are very large and internet connections are slow, some user may request data to be sent by hard disk, <em>GigaDB</em> cannot bare the cost of this but we will assist in the copy of the data onto the disks and help arrange shipment, but the user will be required to cover the cost of the disks and shipment. </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h2 class="h4 panel-title" id="heading18">
-                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel18" aria-expanded="false" aria-controls="panel18">
-                                How do I download a large dataset with my slow internet connection?
-                            </button>
-                        </h2>
-                    </div>
-                    <div id="panel18" aria-labelledby="heading18" class="panel-collapse collapse">
-                        <div class="panel-body">
-                            <p>There are 2 ways to download data from <em>GigaDB</em>:</p>
-                            <ol>
-                                <li>FTP. This is the "normal" method, click the download button on any dataset page and this is how your data will be sent.</li>
-                                <li>Hard drive shipment. On occasion when datasets are very large and internet connections are slow, some user may request data to be sent by hard disk, <em>GigaDB</em> cannot bare the cost of this but we will assist in the copy of the data onto the disks and help arrange shipment, but the user will be required to cover the cost of the disks and shipment.</li>
-                            </ol>
                         </div>
                     </div>
                 </div>
@@ -328,6 +373,28 @@ $this->pageTitle = 'GigaDB - FAQ';
                     <div id="panel21" aria-labelledby="heading21" class="panel-collapse collapse">
                         <div class="panel-body">
                             <p>The term dataset in <em>GigaDB</em> refers to a collection of related works, including but not limited to; files, software, workflows, experiments, data, metadata and results. Each dataset has its own webpage which has a DOI (digital object identifier). These datasets are permanent and citable records of research output designed to allow for a modernization of the classical publishing framework while maintaining the familiarity of citations and metrics thereof.While uncommon, it is possible for a dataset to be made-up of several other datasets in a nested fashion, for example the Avian phylogenomics project data dataset (<a href="http://dx.doi.org/10.5524/101000">http://dx.doi.org/10.5524/101000</a>) is a compilation of 48 other datasets, some of those were published before and some at the same time. This allows the original authors to cite just one dataset to cover them all, but also allows future users to cite individual datasets if they require. We will discuss the merits of such procedures on a case-by-case basis with the submitter.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h2 class="h4 panel-title" id="heading_whats-included-in-a-dataset">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel_whats-included-in-a-dataset" aria-expanded="false" aria-controls="panel_whats-included-in-a-dataset">
+                                What is included in a dataset?
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="panel_whats-included-in-a-dataset" aria-labelledby="heading_whats-included-in-a-dataset" class="panel-collapse collapse">
+                        <div class="panel-body">
+
+                            <p>A dataset is a collection of files and/or links to externally hosted items, that together are associated with a particular "unit-of-work", usually a manuscript. Since the exact details of which objects are required to make up a dataset is highly dependent on the "unit-of-work" to which they relate, we can only provide generic guidelines, but our curators are always on hand for specific queries that you may have.</p>
+
+                            <p>We would expect to see all data and scripts used in the unit-of-work. This should be sufficient to enable full reproducibility and transparency of the unit-of-work in conjunction with the published methods (either in the manuscript or in <a href="https://www.protocols.io/">protocols.io</a>) together with openly available software tools.</p>
+
+                            <p>In addition, the file metadata will always include md5sum values to enable confirmation of file integrity after download, as well as a brief (upto 200 chars) description of each file.</p>
+
+                            <p>We have prepared submission guidelines for the more common dataset types <a href="/site/guide">here</a>.</p>
+
                         </div>
                     </div>
                 </div>
@@ -397,7 +464,7 @@ $this->pageTitle = 'GigaDB - FAQ';
                     </div>
                     <div id="panel26" aria-labelledby="heading26" class="panel-collapse collapse">
                         <div class="panel-body">
-                            <p>There are currently no separateData Publishing Charges (<abbr>DPCs</abbr>) for <em>GigaDB</em> as we currently do not accept data that is not accompanied by a <i>GigaScience </i>manuscript. All <abbr title="Data Publishing Charges">DPCs</abbr> for <i>GigaScience </i>manuscripts are covered by the Article Publishing Charges (<abbr>APCs</abbr>) of that manuscript (up to a terabyte automatically included, but contact us if you need more). For <abbr title="Article Publishing Charges">APCs</abbr> of <i>GigaScience </i>manuscripts please see in <a href="https://academic.oup.com/gigascience/pages/charges_licensing_and_self_archiving">Gigascience journal pricing</a>.</p>
+                            <p>There are currently no separate Data Publishing Charges (<abbr>DPCs</abbr>) for <em>GigaDB</em> as we currently do not accept data that is not accompanied by a <i>GigaScience </i>manuscript. All <abbr title="Data Publishing Charges">DPCs</abbr> for <i>GigaScience </i>manuscripts are covered by the Article Publishing Charges (<abbr>APCs</abbr>) of that manuscript (up to a terabyte automatically included, but contact us if you need more). For <abbr title="Article Publishing Charges">APCs</abbr> of <i>GigaScience </i>manuscripts please see in <a href="https://academic.oup.com/gigascience/pages/charges_licensing_and_self_archiving">Gigascience journal pricing</a>.</p>
                         </div>
                     </div>
                 </div>
@@ -574,7 +641,7 @@ $this->pageTitle = 'GigaDB - FAQ';
                     </div>
                     <div id="panel37" aria-labelledby="heading37" class="panel-collapse collapse">
                         <div class="panel-body">
-                            <p>All datasets are curated to a high standard including but not limited to; the checking and conversion of file formats if required to ensure open (non-proprietary) and stable formats are used whenever possible; Sample metadata to meet appropriate standards and to include ontology terms where possible; creation of specialist display formats like 3D images from STL image stacks and JBrowse genome browser files from genome assemblies and annotation files. All datasets are manually curated with email correspondence to the submitting author to ensure completeness. Where possible our curators follow guidelines provided by international bodies such as the Genomics Standards Consortium (gensc.org) for the minimal information about any genomic sequences. Dataset level metadata is also checked and curated to go above and beyond DataCite standards.</p>
+                            <p>All datasets are curated to a high standard including but not limited to; the checking and conversion of file formats if required to ensure open (non-proprietary) and stable formats are used whenever possible; Sample metadata to meet appropriate standards and to include ontology terms where possible; creation of specialist display formats like 3D images from STL image stacks and JBrowse genome browser files from genome assemblies and annotation files. All datasets are manually curated with email correspondence to the submitting author to ensure completeness. Where possible our curators follow guidelines provided by international bodies such as the Genomics Standards Consortium (<a href="https://gensc.org/" target="_blank">gensc.org, opens in a new window</a>) for the minimal information about any genomic sequences. Dataset level metadata is also checked and curated to go above and beyond DataCite standards.</p>
                         </div>
                     </div>
                 </div>
@@ -603,7 +670,8 @@ $this->pageTitle = 'GigaDB - FAQ';
                     </div>
                     <div id="panel39" aria-labelledby="heading39" class="panel-collapse collapse">
                         <div class="panel-body">
-                            <p>GigaDB data is currently hosted in <a href="https://www.cngb.org/aboutUs.html?i18nlang=en_US">China National GeneBank (CNGB)</a> servers in Shenzhen, who promise persistent and stable storage. CNGB is a central government and Shenzhen government funded research organisation tasked with supporting public welfare, innovation and scientific research. These servers are built on the Alibaba Cloud Elastic Compute Service (ECS), with Anti-DDoS protection to safeguard the data. This infrastructure is covered by the Alibaba service level agreements. Regular data backup uses the Alibaba Cloud Object Storage Service (OSS) to backup and archive all data in the data repository, and automatically storing two copies of data in different locations (please see Alibaba Cloud help pages for more details <a href="https://www.alibabacloud.com/help/">https://www.alibabacloud.com/help/</a>). As well as providing rapid data recovery. We ensure data files provided are not corrupt in transfer by use of md5 checksums whenever files are received or moved (see the data integrity FAQ for more). As full members of DataCite, CC0 metadata is sent to them upon public release and is discoverable and searchable via <a href="search.datacite.org">search.datacite.org</a> and other linked data search indexes.</p>
+                            <p>GigaDB data currently hosts the data files in a <a href="https://wasabi.com/cloud-object-storage" target="_blank">Wasabi cloud hot storage</a> bucket. Wasabi promises persistent and stable storage with high-speed connections and Anti-DDoS protection to safeguard the data. In addition, regular data backups are made to AWS Glacier to ensure all data in our repository has two copies in different locations and service providers.</p>
+                            <p>We ensure data files provided are not corrupt in transfer by using MD5 checksums whenever files are received or moved (see the <a href="#heading38">"What procedures are in place to ensure data integrity"</a> FAQ for more details). As full members of <a href="https://datacite.org/" target="_blank">DataCite</a>, CC0 metadata is sent to them upon public release and is discoverable and searchable via search.datacite.org and other linked data search indexes.</p>
                         </div>
                     </div>
                 </div>
@@ -611,20 +679,13 @@ $this->pageTitle = 'GigaDB - FAQ';
                     <div class="panel-heading">
                         <h2 class="h4 panel-title" id="heading40">
                             <button data-toggle="collapse" data-parent="#accordion" data-target="#panel40" aria-expanded="false" aria-controls="panel40">
-                                What's the relationship between <i>GigaScience</i> and <em>GigaDB</em>?
+                                What's the relationship between <i>GigaScience Press</i> and <em>GigaDB</em>?
                             </button>
                         </h2>
                     </div>
                     <div id="panel40" aria-labelledby="heading40" class="panel-collapse collapse">
                         <div class="panel-body">
-                            <p>GigaDB - is the data repository. <i>GigaScience</i> - is the journal that created the GigaDB platform and has been used for the initial test case application of GigaDB.
-                                Additionally other organisations involved with <i>GigaScience</i> and GigaDB include:
-                                BGI Group - formerly the Beijing Genomics Institute, but now based in Shenzhen and known as just BGI. BGI is the institution that has provided all the funding for the journal and GigaDB development to date.</p>
-                            <p>Oxford University Press (OUP) - the publisher with which BGI currently has a partnership to run <i>GigaScience</i> journal.</p>
-                            <p>BGI Hong Kong Tech Ltd. - A member of the BGI group of companies that is a legal entity in Hong Kong, this is where the metadata is hosted, and most of the GigaDB staff are employed.</p>
-                            <p><a href="https://www.cngb.org/aboutUs.html?i18nlang=en_US">CNGB (China National GeneBank)</a> - A government funded institute constructed by BGI and administered by the Development and Reform Commission of Shenzhen Municipality, that provides most of the informatics infrastructure (storage) for GigaDB.
-                                Aliyun - A Chinese cloud services provider that CNGB have contracted out their IT infrastructure to, and is currently hosting the GigaDB’s data in their servers
-                            </p>
+                            <p>GigaScience Press currently publishes two journals; <em><a href="https://www.gigasciencejournal.com" target="_blank">GigaScience</a></em> and <em><a href="https://www.gigabytejournal.com" target="_blank">GigaByte</a></em>, as well as one data archive; GigaDB. The GigaDB platform has been created with the intention of hosting all the data associated with articles published in GigaScience Press journals to ensure full transparency and reproducibility of those scientific articles and promote data sharing and data reuse in line with the FAIR sharing principles. It should be noted that GigaScience Press is a part of the BGI Group, who provided the start up funding for the journal and GigaDB development.</p>
                         </div>
                     </div>
                 </div>
@@ -638,7 +699,7 @@ $this->pageTitle = 'GigaDB - FAQ';
                     </div>
                     <div id="panel41" aria-labelledby="heading41" class="panel-collapse collapse">
                         <div class="panel-body">
-                            <p>The agreements with CNGB and BGI ensures GigaDB will be actively maintained for the foreseeable future. The linking of GigaDB to datasets accompanying open access journal articles with included article and data processing charges to help cover storage and curation costs also provides a model to enable the sustained growth of GigaDB. </p>
+                            <p>The fact that BGI covers the majority of the costs of running GigaDB means that it will be actively maintained for the foreseeable future. In the longer term, it is envisaged that the article (and/or) data processing charges levied on submitters will cover storage and curation costs to enable the maintenance and sustained growth of GigaDB.</p>
                         </div>
                     </div>
                 </div>
@@ -795,6 +856,75 @@ $this->pageTitle = 'GigaDB - FAQ';
                         </div>
                     </div>
                 </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h2 class="h4 panel-title" id="heading49">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel49" aria-expanded="false" aria-controls="panel49">
+                            What is involved in data curation?
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="panel49" aria-labelledby="heading49" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <p>GigaDB biocurators will enhance metadata for your submitted data files by including a dataset title, author list, description and keywords. The following actions, checks and enhancements are undertaken during the curation process:</p>
+                            <ul class="content-text">
+                                <li>Check the consistency and completeness of the data provided, with respect to the associated manuscript</li>
+                                <li>Carry out file integrity checks</li>
+                                <li>Ensure accessibility of data to end users</li>
+                                <li>Ensure transparency of data files including file descriptions and where appropriate additional metadata.</li>
+                                <li>Extract sample metadata to be hosted in GigaDB</li>
+                                <li>Check for the presence of sensitive or identifying information</li>
+                                <li>Check that the methodology is complete and discoverable</li>
+                                <li>Recommend appropriate external repositories and the appropriate details to include with those data</li>
+                                <li>Provide assistance with data upload to the GigaDB repository (with up to 1TB free storage)</li>
+                                <li>Organise files into a logical structure and collections</li>
+                                <li>Content is assigned to appropriate SRAO categories</li>
+                                <li>A Digital Object Identifier (DOI) is generated for each dataset</li>
+                                <li>Pre-publication embargoes with private, anonymous access can be enabled</li>
+                                <li>Link and synchronize the dataset release with associated publications</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h2 class="h4 panel-title" id="heading50">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel50" aria-expanded="false" aria-controls="panel50">
+                                Who can use GigaDB's data support services?
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="panel50" aria-labelledby="heading50" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <p>The scope of GigaDB is all of the life sciences, so as long as your research is Open, involves life sciences in some way, and is in a state that forms a complete <i>unit-of-work*</i>, then contact us to discuss how we can help.</p><p>*By <i>unit-of-work</i> we just mean something that could be written up as a scientific paper, that could be a data-note, technical-note or a research article.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h2 class="h4 panel-title" id="heading51">
+                            <button data-toggle="collapse" data-parent="#accordion" data-target="#panel51" aria-expanded="false" aria-controls="panel51">
+                            How do I calculate the MD5 checksum of the files I am uploading for a GigaDB submission?
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="panel51" aria-labelledby="heading51" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <p>We ensure data files provided are not corrupt in transfer by use of the MD5 checksums whenever files are received or moved. We also publish the MD5 checksum value of every file we host so that anyone who downloads a file from us can also check its integrity. Each operating system has a variety of tools/apps to calculate the MD5 value, here are some that we are aware of:</p>
+                            <ul class="content-text">
+                                <li>Windows: <a href="https://apps.microsoft.com/detail/9nblggh4rrr2" target="_blank" rel="noopener noreferrer">Hash Tool</a></li>
+                                <li>macOS: <a href="https://osxdaily.com/2009/10/13/check-md5-hash-on-your-mac/" target="_blank" rel="noopener noreferrer">md5</a></li>
+                                <li>Linux: <a href="https://en.wikipedia.org/wiki/Md5sum" target="_blank" rel="noopener noreferrer">md5sum</a></li>
+                            </ul>
+                            <p>Whichever tool you use, please ensure the output of the tool is saved to a single file with a relevant filename and the extension ".md5", e.g., "submitted-files.md5"</p>
+                        </div>
+                    </div>
+                </div>
+
+
             </div>
     </div>
     </section>

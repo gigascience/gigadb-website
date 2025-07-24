@@ -59,4 +59,16 @@ class Functional extends \Codeception\Module
         }
         return [];
     }
+
+
+    /**
+     * Simulate a database connection terminated on the target web server
+     *
+     * @return void
+     * @throws \Codeception\Exception\ModuleException
+     */
+    public function disconnectWebServerFromDatabase(): void
+    {
+        $this->getModule('Db')->_getDriver()-> executeQuery("SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname='gigadb' and client_addr='172.19.0.6';",[]);
+    }
 }

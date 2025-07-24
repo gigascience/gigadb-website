@@ -9,7 +9,7 @@
     <nav class="mobile-navigation__nav" aria-label="Mobile Navigation">
       <!-- Account Navigation -->
       <div class="mobile-navigation__group">
-        <? if (Yii::app()->user->isGuest) { ?>
+        <?php if (Yii::app()->user->isGuest) { ?>
           <a href="/site/login" class="mobile-navigation__link"><i class="fa fa-sign-in"></i> Login / Signup</a>
         <? } else {
           $name = Yii::app()->user->getFirst_Name();
@@ -61,6 +61,9 @@
           </a>
           <a href="http://x.com/GigaScience" class="social-icon" title="GigaScience on X" aria-label="GigaScience on X">
             <img src="/images/icons/x-logo.svg" alt="" class="x-icon">
+          </a>
+          <a href="https://bsky.app/profile/gigascience.bsky.social" class="social-icon" title="GigaScience on BlueSky" aria-label="GigaScience on BlueSky">
+            <img src="/images/icons/bsky-logo.svg" alt="" class="bsky-icon">
           </a>
           <a href="http://weibo.com/gigasciencejournal" class="social-icon" title="Gigascience on Weibo" aria-label="GigaScience on Weibo">
             <i class="fa fa-weibo"></i>

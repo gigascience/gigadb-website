@@ -451,4 +451,37 @@ class AcceptanceTester extends \Codeception\Actor
     {
         $this->dontSeeOptionIsSelected("#dataset-form select[id='$id']", $value);
     }
+
+    /**
+     * @Then I should see a meta tag which :attribute is :value and content is :content
+     */
+    public function iShouldSeeAMetaTagWhichNameAndContent($attribute, $value, $content)
+    {
+        $this->seeInPageSource('<meta ' . $attribute . '="' . $value . '" content="' . $content . '">');
+    }
+
+    /**
+     * @Then I should see :type meta-tags
+     */
+    public function iShouldSeeMetaTags($type, \Behat\Gherkin\Node\TableNode $table)
+    {
+        $rows = $table->getRows();
+        foreach ($rows as $row) {
+           if ( strtolower($type) == "html") {
+               $this->seeInPageSource('<meta ' . 'name' . '="' . $row[0] . '"' . ' ' . 'content="' . $row[1] . '">');
+           } else {
+               $this->seeInPageSource('<meta ' . 'property' . '="' . $row[0] . '"' . ' ' . 'content="' . $row[1] . '">');
+           }
+       }
+    }
+
+    /**
+     * @Then I should see an icon with label :ariaLabel link to :expectedUrl
+     */
+    public function iShouldSeeAnIconWithLabelLinkTo($ariaLabel, $expectedUrl)
+    {
+        $this->seeElement("//a[@aria-label='$ariaLabel']");
+        $actualUrl = $this->grabAttributeFrom("//a[@aria-label='$ariaLabel']", "href");
+        $this->assertEquals($expectedUrl, $actualUrl);
+    }
 }
