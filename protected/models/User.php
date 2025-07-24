@@ -3,6 +3,7 @@
 /**
  * User
  * An ActiveRecord model class to handle data related to users of the system.
+ * @property string|null $activation_token
  */
 class User extends CActiveRecord {
     public $password_repeat;
