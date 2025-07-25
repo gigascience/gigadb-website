@@ -46,8 +46,9 @@ create_test_data() {
     if [[ ! -f "$test_data_dir/1g-file.dat" ]]; then
         log "$BLUE" "Creating 1G test file..."
         dd if=/dev/zero of="$test_data_dir/1g-file.dat" bs=1G count=1 &>/dev/null
+    else
+      log "$BLUE" "1g file already created in ${test_data_dir}"
     fi
-    log "$BLUE" "1g file already created in ${test_data_dir}"
     
     # Create 10G test file if there's enough space
     if [[ ! -f "$test_data_dir/10g-file.dat" ]]; then
@@ -58,8 +59,9 @@ create_test_data() {
         else
             log "$YELLOW" "Insufficient space for 10G test file, skipping"
         fi
+    else
+      log "$BLUE" "10g file already created in ${test_data_dir}"
     fi
-    log "$BLUE" "10g file already created in ${test_data_dir}"
 
     # Create 5000 small files (1KB each)
     if  [[ ! -d "${test_data_dir}/smallfiles" ]] || [[ $(find "${test_data_dir}/smallfiles" -maxdepth 1 -type f -printf '.' 2>/dev/null | wc -c) -lt 5000 ]]; then
@@ -67,8 +69,9 @@ create_test_data() {
         for i in $(seq 1 5000); do
             fallocate -l 1024 "${test_data_dir}/smallfiles/file${i}.dat" &>/dev/null 2>&1
         done
+    else
+      log "$BLUE" "5000 small files already created in ${test_data_dir}/smallfiles"
     fi
-    log "$BLUE" "5000 small files already created in ${test_data_dir}/smallfiles"
     
     echo "$test_data_dir"
 }
@@ -355,7 +358,8 @@ run_benchmark() {
     # Initialize results for this mount point
     local results_file="${RESULTS_DIR}/${mount_point##*/}_results.csv"
     echo "Test,Duration_Seconds,Throughput_MB_per_s,CPU_Usage_%" > "$results_file"
-    
+
+    log "$BLUE" "Start benchmaking..."
     # Run tests in the order specified in the documentation table
     {
         test_1g_file_write "$mount_path"
@@ -383,7 +387,8 @@ run_benchmark() {
 
 # Generate summary report
 generate_report() {
-    local report_file="${RESULTS_DIR}/summary_report.md"
+    local mount_point="$1"
+    local report_file="${RESULTS_DIR}/${mount_point##*/}_summary_report.md"
     
     log "$BLUE" "Generating summary report..."
     
