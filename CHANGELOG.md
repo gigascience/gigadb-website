@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Feat #376: Uppy logo uploader for admin projects
 
-## v4.4.15 - 2025-07-23 - a60aa8aa5 -
+## v4.4.15 - 2025-07-23 - a60aa8aa5 - live since 2025-07-24
 
 - Fix #2390: Web site fails to reconnect to DB server if connections are terminated
 - Fix #2415: Remove redundant meta tag robots acceptance tests
