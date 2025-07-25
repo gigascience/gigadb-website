@@ -6,16 +6,18 @@ declare(strict_types=1);
  * This is the model class for table "user_command".
  *
  * The followings are the available columns in table 'user_command':
- * @property integer $id
- * @property string $action_label
- * @property integer $requester_id
- * @property integer $actioner_id
- * @property integer $actionable_id
- * @property string $request_date
- * @property string $action_date
- * @property string $status
+ *
+ * @property int           $id
+ * @property string        $action_label
+ * @property int           $requester_id
+ * @property int|null      $actioner_id
+ * @property int           $actionable_id
+ * @property string|string $request_date
+ * @property string|null   $action_date
+ * @property string        $status
  *
  * @property User $requester
+ * @property User $approved_by
  */
 class UserCommand extends CActiveRecord
 {
