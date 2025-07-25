@@ -15,8 +15,8 @@ declare(strict_types=1);
  */
 class DatasetDAO extends yii\base\BaseObject
 {
-    protected DatasetAttributesFactory $_datasetAttrFactory;
-    protected string                   $_identifier;
+    protected ?DatasetAttributesFactory $_datasetAttrFactory = null;
+    protected ?string                   $_identifier = null;
 
     /**
      * Getter for _datasetAttrFactory
