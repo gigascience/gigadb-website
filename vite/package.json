@@ -1,0 +1,42 @@
+{
+  "name": "vite-project-uppy-logo-uploader",
+  "private": true,
+  "description": "Vite project for uppy logo uploader",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc -b && vite build",
+    "deploy": "cp -r dist /var/www/js/vite-logo-upload-$npm_package_version",
+    "preview": "vite preview",
+    "test:unit": "vitest run",
+    "test:unit:watch": "vitest --watch",
+    "test:unit:coverage": "vitest run --coverage"
+  },
+  "dependencies": {
+    "@uppy/dashboard": "^4.1.1",
+    "@uppy/drag-drop": "^4.0.3",
+    "@uppy/file-input": "^4.0.2",
+    "@uppy/image-editor": "^3.1.0",
+    "@uppy/progress-bar": "^4.0.0",
+    "@uppy/vue": "^2.0.1",
+    "@uppy/xhr-upload": "^4.2.1",
+    "vue": "^3.5.10"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.9",
+    "@vitejs/plugin-vue": "^5.1.4",
+    "@vue/compiler-dom": "^3.5.12",
+    "@vue/server-renderer": "^3.5.12",
+    "@vue/test-utils": "^2.4.6",
+    "happy-dom": "^15.8.2",
+    "less": "^4.2.0",
+    "typescript": "^5.5.3",
+    "vite": "^5.4.8",
+    "vitest": "^2.1.4",
+    "vue-tsc": "^2.1.6"
+  },
+  "author": {
+    "name": "Luis Martinez"
+  }
+}

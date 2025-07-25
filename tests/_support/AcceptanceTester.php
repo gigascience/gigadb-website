@@ -484,4 +484,17 @@ class AcceptanceTester extends \Codeception\Actor
         $actualUrl = $this->grabAttributeFrom("//a[@aria-label='$ariaLabel']", "href");
         $this->assertEquals($expectedUrl, $actualUrl);
     }
+
+    /**
+     * Directly sets the hidden form field used by the Vue logo uploader so that
+     * we can bypass the interactive uploader in acceptance tests.
+     * E2e tests for the project including the Vue widget are in playwright/tests/admin-project-logo-upload.spec.js
+     *
+     * @When I set the project logo :logoUrl
+     */
+    public function iSetTheProjectLogo($logoUrl)
+    {
+        // Set the value using JavaScript because the hidden input is hidden and not interactable via standard fillField.
+        $this->executeJS("(function() { const el = document.querySelector('input[name=\"Project[image_location]\"]'); if (el) { el.value = " . json_encode($logoUrl) . "; } })();");
+    }
 }

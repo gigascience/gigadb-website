@@ -93,7 +93,7 @@ services:
       - ${APPLICATION}/less:/var/www/less
       - ${APPLICATION}/css:/var/www/css
       - ${APPLICATION}/sql:/var/www/sql
-      - ${APPLICATION}/style-guide:/var/www/style-guide      
+      - ${APPLICATION}/style-guide:/var/www/style-guide
       - ${APPLICATION}/index.php:/var/www/index.php
       - ${APPLICATION}/composer.json:/var/www/composer.json
       - ${APPLICATION}/composer.lock:/var/www/composer.lock
@@ -102,8 +102,9 @@ services:
       - ${APPLICATION}/ops/configuration/php-conf/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini
       - ${APPLICATION}/gigadb:/var/www/gigadb
       # access to File Upload Wizard model classes
-      - ../../fuw/app:/app      
+      - ../../fuw/app:/app
       - ../../gigadb:/gigadb
+      - /tmp:/var/www/datasetfiles
     expose:
       - "9000"
     extra_hosts:
@@ -349,7 +350,7 @@ services:
         ipv4_address: 172.16.238.11
     extra_hosts:
       - "gigadb.test:172.16.238.10"
-      - "fuw-admin-api:172.16.238.10"      
+      - "fuw-admin-api:172.16.238.10"
     environment: # to run headless, set false and comment out port 5900 above and make sure to pass --headless arg in acceptance.suite.yml
       START_XVFB: "false"
 
@@ -357,7 +358,7 @@ services:
     <<: *logging
     environment:
       GIGADB_ENV: $GIGADB_ENV
-      DOCKER_HOST: "tcp://host.docker.internal:2375"    
+      DOCKER_HOST: "tcp://host.docker.internal:2375"
     build:
       context: ../../fuw/app
       dockerfile: common/Dockerfile
@@ -466,7 +467,7 @@ services:
       - ~/.composer/cache:/root/.composer/cache:delegated
       # Mount source-code for development
       - ../../fuw/app:/app
-      - ../../gigadb/app:/gigadb-apps        
+      - ../../gigadb/app:/gigadb-apps
       # php config
       - ../../fuw/app/php-conf/fuw.ini:/usr/local/etc/php/conf.d/fuw.ini
       - ../../fuw/app/php-conf/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
@@ -481,7 +482,7 @@ services:
       # volume mount the location of public ftp directory
       - /tmp:/var/ftp/public
       # access to files and reference data
-      - ../../files:/var/www/files      
+      - ../../files:/var/www/files
     depends_on:
       - database
       - beanstalkd
@@ -510,7 +511,7 @@ services:
       - ~/.composer/cache:/root/.composer/cache:delegated
       # Mount source-code for development
       - ../../fuw/app:/app
-      - ../../gigadb/app:/gigadb-apps        
+      - ../../gigadb/app:/gigadb-apps
       # php config
       - ../../fuw/app/php-conf/fuw.ini:/usr/local/etc/php/conf.d/fuw.ini
       - ../../fuw/app/php-conf/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
@@ -525,7 +526,7 @@ services:
       # volume mount the location of public ftp directory
       - /tmp:/var/ftp/public
       # access to files and reference data
-      - ../../files:/var/www/files      
+      - ../../files:/var/www/files
     depends_on:
       - database
       - beanstalkd
@@ -566,7 +567,7 @@ services:
       - ~/.composer/cache:/root/.composer/cache:delegated
       # Mount source-code for development
       - ../../fuw/app:/app
-      - ../../gigadb/app:/gigadb-apps      
+      - ../../gigadb/app:/gigadb-apps
       - ../../vendor:/gigadb-website/vendor
       - ../../sql:/gigadb-website/sql
       - ../../protected:/gigadb-website
@@ -588,7 +589,7 @@ services:
       # to run tests that interact with containers
       # - /var/run/docker.sock:/var/run/docker.sock:ro
       # volume mount the location of public ftp directory
-      - /tmp:/var/ftp/public      
+      - /tmp:/var/ftp/public
     networks:
       - web-tier
       - db-tier
@@ -635,7 +636,7 @@ services:
       - ${DATA_SAVE_PATH}/fuw/repo:/var/repo/
       - ${DATA_SAVE_PATH}/fuw/flags:/var/tmp/processing_flag
       # access to the ftp tokens so the upload's location attribute can be populated
-      - ${DATA_SAVE_PATH}/fuw/credentials:/var/private:ro    
+      - ${DATA_SAVE_PATH}/fuw/credentials:/var/private:ro
       # access to the fuw/console so tusd hooks can trigger upload update
       - ../../fuw/app:/fuw/app
       # access to data feeds
@@ -658,7 +659,7 @@ services:
       - ${DATA_SAVE_PATH}/fuw/incoming/tusd:/var/inbox/
       - ${DATA_SAVE_PATH}/fuw/repo:/var/repo/
       # access to the ftp tokens so the upload's location attribute can be populated
-      - ${DATA_SAVE_PATH}/fuw/credentials:/var/private    
+      - ${DATA_SAVE_PATH}/fuw/credentials:/var/private
       # access to the fuw/console so tusd hooks can trigger upload update
       - ../../fuw/app:/app
       # access to data feeds
@@ -705,6 +706,17 @@ services:
     volumes:
       - le_config:/ca
     command: --domains '*.gigasciencejournal.com'
+
+  # Using similar workflow as js service
+  vite-project-image-location-prod:
+    image: node:$NODE_VERSION-bullseye-slim
+    working_dir: /var/www/vite
+    volumes:
+      - ${APPLICATION}/:/var/www
+    shm_size: '1gb'
+    command: bash -c "npm run test:unit ; npm run build ; npm run deploy"
+    networks:
+      - web-tier
 
 networks:
   web-tier:

@@ -28,6 +28,7 @@ files/certs
 files/data/filetypes.json
 images/tempcaptcha/
 images/vue
+files/dev
 
 # nginx config created by generate_config.sh
 ops/configuration/nginx-conf/sites/staging/gigadb.staging.http.conf
@@ -90,6 +91,7 @@ vault
 staging_vault
 live_vault
 js/fuw-*
+js/vite-logo-upload-*
 
 # docs
 docs/apidocs/phpdoc-cache-*

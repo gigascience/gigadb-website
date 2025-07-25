@@ -7,8 +7,8 @@ Feature: form to manage project
     Given I have signed in as admin
 
   @ok
-  Scenario: Can update image location
+  Scenario: Can update project logo
     Given I am on "/adminProject/update/id/2"
-    When I fill in the field of "name" "Project[image_location]" with "https://test/images/projects/genome_10k/G10Klogo.jpg"
+    When I set the project logo "https://test/images/projects/genome_10k/G10Klogo.jpg"
     And I press the button "Save"
     Then I should see "View Project #2"

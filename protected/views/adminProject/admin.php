@@ -15,17 +15,25 @@
 		Column headers with links are sortable. Cells with a text input are used for filtering.
 	</p>
 
-	<?php $this->widget('CustomGridView', array(
+	<?php $this->widget('CustomGridView', [
 		'id' => 'project-grid',
 		'dataProvider' => $model->search(),
 		'itemsCssClass' => 'table table-bordered',
 		'filter' => $model,
-		'columns' => array(
+		'columns' => [
 			'url',
 			'name',
-			'image_location',
+			[
+				'name' => 'image_location',
+				'header' => 'Image',
+				'type' => 'raw',
+				'sortable' => false,
+				'value' => '!empty($data->image_location) ?
+					CHtml::image($data->image_location, CHtml::encode($data->name), ["style" => "max-width: auto; max-height: 60px;"]) :
+					"<span>(not set)</span>"'
+			],
 			CustomGridView::getDefaultActionButtonsConfig()
-		),
-	)); ?>
+		],
+	]); ?>
 
 </div>

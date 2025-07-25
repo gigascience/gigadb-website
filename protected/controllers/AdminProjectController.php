@@ -3,7 +3,6 @@
 class AdminProjectController extends Controller
 {
 
-
 	/**
 	 * @return array action filters
 	 */
@@ -23,7 +22,7 @@ class AdminProjectController extends Controller
 	{
 		return array(
 			array('allow', // admin only
-				'actions'=>array('admin','delete','index','view','create','update'),
+				'actions'=>array('admin','delete','index','view','create','update','uploadTempLogo'),
 				'roles'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -49,22 +48,84 @@ class AdminProjectController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new Project;
+      $model = new Project;
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
+      // Uncomment the following line if AJAX validation is needed
+      // $this->performAjaxValidation($model);
 
-		if(isset($_POST['Project']))
-		{
-			$model->attributes=$_POST['Project'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
-		}
+      if(isset($_POST['Project']))
+      {
+          $model->attributes = $_POST['Project'];
+          $storage = Project::getStorage();
 
-		$this->render('create',array(
-			'model'=>$model,
-		));
+          $tempImageLocation = $model->image_location;
+          $model->image_location = null;
+
+          // saving the model first to get an id, then writing the logo in a id-dependent path
+          if ($model->save()) {
+              if ($tempImageLocation) {
+                  $logoUrl = $model->writeLogoFromUrl($storage, $tempImageLocation);
+
+                  if ($logoUrl) {
+                      $model->image_location = $logoUrl;
+                      // Update only the image_location and skip validation of other fields
+                      Project::model()->updateByPk($model->id, array('image_location' => $logoUrl));
+                  }
+              }
+
+              $this->redirect(array('view','id'=>$model->id));
+          }
+      }
+
+      $this->render('create',array(
+        'model'=>$model,
+      ));
 	}
+
+  /**
+   * Upload a logo file in a temp folder and return the URL of the uploaded file.
+   * @return void
+   */
+  public function actionUploadTempLogo() {
+      if (!isset($_FILES['logo_image'])) {
+          $this->makeJSONResponse(400, 'Invalid request. No file was uploaded.');
+      }
+
+      $uploadedLogoFile = CUploadedFile::getInstanceByName('logo_image');
+
+      if ($uploadedLogoFile->getSize() > 1_000_000) {
+          $this->makeJSONResponse(400, 'Invalid request. Logo image size should be less than 1MB');
+      }
+
+      if ($uploadedLogoFile) {
+          $image_location = Project::writeTmpLogoFromFile($uploadedLogoFile);
+
+          if (!$image_location) {
+              $this->makeJSONResponse(500, 'Failed to save logo image');
+          }
+      }
+
+      $this->makeJSONResponse(200, 'Logo uploaded successfully', [
+          'image_location' => $image_location
+      ]);
+  }
+
+  /**
+   * Make a JSON response with the given code, message, and payload.
+   * @param int $code The HTTP status code.
+   * @param string $message The message to include in the response.
+   * @param array $payload Additional data to include in the response.
+   */
+  private function makeJSONResponse($code, $message, $payload = []) {
+      $success = $code < 400;
+      header('Content-Type: application/json');
+      http_response_code($code);
+      echo CJSON::encode(array_merge([
+          'success' => $success,
+          'message' => $message,
+      ], $payload));
+      Yii::app()->end();
+  }
 
 	/**
 	 * Updates a particular model.
@@ -73,21 +134,41 @@ class AdminProjectController extends Controller
 	 */
 	public function actionUpdate($id)
 	{
-		$model=$this->loadModel($id);
+      $model = $this->loadModel($id);
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
+      // Uncomment the following line if AJAX validation is needed
+      // $this->performAjaxValidation($model);
 
-		if(isset($_POST['Project']))
-		{
-			$model->attributes=$_POST['Project'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
-		}
+      if(isset($_POST['Project']))
+      {
+          $prevAttributes = $model->attributes;
+          $newAttributes = $_POST['Project'];
+          $model->attributes = $newAttributes;
+          $storage = Project::getStorage();
 
-		$this->render('update',array(
-			'model'=>$model,
-		));
+          $hasNewLogo = $model->image_location && $model->image_location !== $prevAttributes['image_location'];
+
+          if ($hasNewLogo) {
+              if ($prevAttributes['image_location']) {
+                  $model->deleteLogo($storage);
+              }
+
+              $newLogoUrl = $model->writeLogoFromUrl($storage, $model->image_location);
+
+              if ($newLogoUrl) {
+                  $model->image_location = $newLogoUrl;
+              }
+          }
+
+          // NOTE Saving the model will trigger validation and thus fail if the URL or name are left unchanged, we might not want that in the case where we need to update only the logo
+          if($model->save()) {
+            $this->redirect(array('view','id'=>$model->id));
+          }
+      }
+
+      $this->render('update',array(
+          'model'=>$model,
+      ));
 	}
 
 	/**
@@ -97,17 +178,20 @@ class AdminProjectController extends Controller
 	 */
 	public function actionDelete($id)
 	{
-		if(Yii::app()->request->isPostRequest)
-		{
-			// we only allow deletion via POST request
-			$this->loadModel($id)->delete();
+      if(Yii::app()->request->isPostRequest)
+      {
+          // we only allow deletion via POST request
+          $model = $this->loadModel($id);
+          $model->delete();
 
-			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-			if(!isset($_GET['ajax']))
-				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
-		}
-		else
-			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+          // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+          if(!isset($_GET['ajax'])) {
+            $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+          }
+      }
+      else {
+          throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+      }
 	}
 
 	/**

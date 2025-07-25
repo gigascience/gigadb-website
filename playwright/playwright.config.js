@@ -12,14 +12,17 @@ const browsers = [
   TAG.CHROMIUM && {
     name: 'chromium',
     use: { ...devices['Desktop Chrome'] },
+    dependencies: ['setup']
   },
   TAG.FIREFOX && {
     name: 'firefox',
     use: { ...devices['Desktop Firefox'] },
+    dependencies: ['setup']
   },
   TAG.WEBKIT && {
     name: 'webkit',
     use: { ...devices['Desktop Safari'] },
+    dependencies: ['setup']
   },
 ].filter(Boolean)
 
