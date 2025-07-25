@@ -6,7 +6,7 @@
   hosts: "name_bastion_server_{{gigadb_env}}*,name_gigadb_filesserver_{{gigadb_env}}*"
   become: yes
   tags:
-    - mount-aws
+    - mount-aws-s3
 
   vars:
     rclone_mount_point: /aws
@@ -19,7 +19,7 @@
 
   tasks:
     - name: Check whether /aws is already mounted
-      ansible.builtin.command: findmnt -n /s3
+      ansible.builtin.command: findmnt -n {{ rclone_mount_point }}
       register: mount_check
       # This task only checks state and doesn't change anything.
       changed_when: false
@@ -76,7 +76,6 @@
               - fuse-devel
             state: present
 
-
         - name: Enable FUSE user_allow_other
           ansible.builtin.lineinfile:
             path: /etc/fuse.conf
@@ -101,8 +100,7 @@
             --daemon
             --allow-other
             --cache-dir {{ rclone_cache_dir }}
-            --vfs-cache-mode full
-            --vfs-cache-max-size 10G
+            --vfs-cache-mode off
             --vfs-read-chunk-size 32M
             --vfs-read-chunk-size-limit 2G
             --log-file {{ rclone_log_file }}
@@ -110,10 +108,10 @@
           when: rclone_status_check.rc == 0 and remote_object_storage_check.rc == 0
       when: mount_check.rc == 1
 
-    - name: Check if the /wasabi is mounted
-      ansible.builtin.command: mountpoint /wasabi
+    - name: Check if the /aws is mounted
+      ansible.builtin.command: mountpoint {{ rclone_mount_point }}
       register: rclone_mount_check
-      failed_when: rclone_mount_check.stdout == "/wasabi is not a mountpoint"
+      failed_when: rclone_mount_check.stdout == "/aws is not a mountpoint"
 
 - name: Create aws hk efs mountpoint using rclone
   hosts: "name_bastion_server_{{gigadb_env}}*,name_gigadb_filesserver_{{gigadb_env}}*"
@@ -125,13 +123,13 @@
     rclone_mount_point: /userdropboxes
     rclone_config_dir: /home/ec2-user/.config/rclone
     rclone_config_file: "{{ rclone_config_dir }}/mount.conf"
-    rclone_cache_dir: /tmp/cache/rclone-aws-hk-efs
-    rclone_log_file: /var/log/gigadb/rclone-aws-hk-efs.log
+    rclone_cache_dir: /tmp/cache/rclone-userdropboxes
+    rclone_log_file: /var/log/gigadb/rclone-userdropboxes.log
     rclone_remote_path: hk_efs:/share/dropbox
     run_as_user: ec2-user
 
   tasks:
-    - name: Check whether /aws-hk-efs is already mounted
+    - name: Check whether /userdropboxes is already mounted
       ansible.builtin.command: findmnt -n {{ rclone_mount_point }}
       register: mount_check
       # This task only checks state and doesn't change anything.
@@ -196,6 +194,25 @@
             line: 'user_allow_other'
             state: present
 
+        - name: get private key
+          ansible.builtin.uri:
+            url: "https://gitlab.com/api/v4/projects/gigascience%2Fcnhk-infra/variables/id_rsa_aws_hk_gigadb_pem"
+            method: GET
+            headers:
+              PRIVATE-TOKEN: "{{ gitlab_private_token }}"
+            body_format: json
+            status_code:
+              - 200
+          register: private_key_from_gl
+
+        - name: copy private key
+          ansible.builtin.copy:
+            content: "{{ private_key_from_gl.json.value  }}"
+            dest: "/home/ec2-user/.ssh/id_rsa_aws_hk_gigadb_pem"
+            owner: "{{ run_as_user }}"
+            group: "{{ run_as_user }}"
+            mode: g-rw,o-rw
+
         - name: Check if rclone is available
           ansible.builtin.command: /usr/local/bin/rclone --version
           register: rclone_status_check
@@ -213,8 +230,7 @@
             --daemon
             --allow-other
             --cache-dir {{ rclone_cache_dir }}
-            --vfs-cache-mode full
-            --vfs-cache-max-size 10G
+            --vfs-cache-mode off
             --vfs-read-chunk-size 32M
             --vfs-read-chunk-size-limit 2G
             --log-file {{ rclone_log_file }}
@@ -246,7 +262,7 @@
 
   tasks:
     - name: Check whether /wasabi is already mounted
-      ansible.builtin.command: findmnt -n /rclone
+      ansible.builtin.command: findmnt -n  {{ rclone_mount_point }}
       register: mount_check
       # This task only checks state and doesn't change anything.
       changed_when: false
@@ -328,8 +344,7 @@
             --daemon
             --allow-other
             --cache-dir {{ rclone_cache_dir }}
-            --vfs-cache-mode full
-            --vfs-cache-max-size 10G
+            --vfs-cache-mode off
             --vfs-read-chunk-size 32M
             --vfs-read-chunk-size-limit 2G
             --log-file {{ rclone_log_file }}
@@ -338,9 +353,9 @@
       when: mount_check.rc == 1
 
     - name: Check if the /wasabi is mounted
-      ansible.builtin.command: mountpoint /wasabi
+      ansible.builtin.command: mountpoint {{ rclone_mount_point }}
       register: rclone_mount_check
-      failed_when: rclone_mount_check.stdout == "/rclone is not a mountpoint"
+      failed_when: rclone_mount_check.stdout == "/wasabi is not a mountpoint"
 
 - name: Create hetzner block mountpoint using rclone
   hosts: "name_bastion_server_{{gigadb_env}}*,name_gigadb_filesserver_{{gigadb_env}}*"
@@ -359,7 +374,7 @@
 
   tasks:
     - name: Check whether /block is already mounted
-      ansible.builtin.command: findmnt -n /block
+      ansible.builtin.command: findmnt -n {{ rclone_mount_point }}
       register: block_mount_check
       # This task only checks state and doesn't change anything.
       changed_when: false
@@ -410,7 +425,7 @@
 
         - name: get private key
           ansible.builtin.uri:
-            url: "{{ gitlab_url }}/variables/hetzner_storage_box_privkey?filter%5benvironment_scope%5d={{ gigadb_environment }}"
+            url: "https://gitlab.com/api/v4/projects/gigascience%2Fcnhk-infra/variables/hetzner_storage_box_privkey"
             method: GET
             headers:
               PRIVATE-TOKEN: "{{ gitlab_private_token }}"
@@ -443,9 +458,7 @@
             --config {{ rclone_config_file }}
             --daemon
             --allow-other
-            --cache-dir {{ rclone_cache_dir }}
-            --vfs-cache-mode full
-            --vfs-cache-max-size 10G
+            --vfs-cache-mode off
             --vfs-read-chunk-size 32M
             --vfs-read-chunk-size-limit 2G
             --log-file {{ rclone_log_file }}
@@ -454,6 +467,6 @@
       when: block_mount_check.rc == 1
 
     - name: Check if the /block is mounted
-      ansible.builtin.command: mountpoint /block
+      ansible.builtin.command: mountpoint {{ rclone_mount_point }}
       register: rclone_mount_check
       failed_when: rclone_mount_check.stdout == "/block is not a mountpoint"
