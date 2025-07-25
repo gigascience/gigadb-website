@@ -208,7 +208,7 @@
         - name: copy private key
           ansible.builtin.copy:
             content: "{{ private_key_from_gl.json.value  }}"
-            dest: "/home/ec2-user/.ssh/id_rsa_aws_hk_gigadb_pem"
+            dest: "/home/ec2-user/.ssh/id-rsa-aws-hk-gigadb"
             owner: "{{ run_as_user }}"
             group: "{{ run_as_user }}"
             mode: g-rw,o-rw
