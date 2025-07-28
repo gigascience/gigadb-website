@@ -213,23 +213,7 @@
         owner: ec2-user
         group: ec2-user
       loop:
-        - "/share/dropbox"
         - "/share/config"
-
-    - name: Mount the dropbox access points
-      ansible.posix.mount:
-        path: "/share/dropbox"
-        src: "{{ efs_filesystem_dns_name }}"
-        fstype: efs
-        opts: tls,accesspoint={{ dropbox_area_id }}
-        state: mounted
-
-    - name: Confirm the dropbox access point is mounted
-      ansible.builtin.command:
-        cmd: mountpoint /share/dropbox
-      register: dropbox_mount_check
-      changed_when: false
-      failed_when: dropbox_mount_check.stdout == "/share/dropbox is not a mountpoint"
 
     - name: Mount the config access points
       ansible.posix.mount:
