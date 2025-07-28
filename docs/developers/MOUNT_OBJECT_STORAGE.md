@@ -2,6 +2,11 @@
 
 This document provides background information of rclone mount and s3fs mount, and a detailed guide to mount object storage on remote servers.
 
+### Objectives
+
+1. To find out which mount methos (s3fs vs rclone mount) is more performant
+2. To find out which backend (AWS s3, Wasabi s3, hetzner block storage) is more performant
+
 ### Background
 
 1. s3fs vs. rclone mount: Key Differences & Recommendations
