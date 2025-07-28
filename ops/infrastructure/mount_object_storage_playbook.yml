@@ -100,9 +100,10 @@
             --daemon
             --allow-other
             --cache-dir {{ rclone_cache_dir }}
-            --vfs-cache-mode off
-            --vfs-read-chunk-size 32M
-            --vfs-read-chunk-size-limit 2G
+            --dir-cache-time 100h
+            --vfs-cache-mode full
+            --vfs-fast-fingerprint
+            --vfs-cache-max-size 10G
             --log-file {{ rclone_log_file }}
             --log-level INFO
           when: rclone_status_check.rc == 0 and remote_object_storage_check.rc == 0
@@ -230,9 +231,10 @@
             --daemon
             --allow-other
             --cache-dir {{ rclone_cache_dir }}
-            --vfs-cache-mode off
-            --vfs-read-chunk-size 32M
-            --vfs-read-chunk-size-limit 2G
+            --dir-cache-time 100h
+            --vfs-cache-mode full
+            --vfs-fast-fingerprint
+            --vfs-cache-max-size 10G
             --log-file {{ rclone_log_file }}
             --log-level INFO
           when: rclone_status_check.rc == 0 and remote_object_storage_check.rc == 0
@@ -344,7 +346,10 @@
             --daemon
             --allow-other
             --cache-dir {{ rclone_cache_dir }}
-            --vfs-cache-mode off
+            --dir-cache-time 100h
+            --vfs-cache-mode full
+            --vfs-fast-fingerprint
+            --vfs-cache-max-size 10G
             --vfs-read-chunk-size 32M
             --vfs-read-chunk-size-limit 2G
             --log-file {{ rclone_log_file }}
@@ -458,9 +463,10 @@
             --config {{ rclone_config_file }}
             --daemon
             --allow-other
-            --vfs-cache-mode off
-            --vfs-read-chunk-size 32M
-            --vfs-read-chunk-size-limit 2G
+            --dir-cache-time 100h
+            --vfs-cache-mode full
+            --vfs-fast-fingerprint
+            --vfs-cache-max-size 10G
             --log-file {{ rclone_log_file }}
             --log-level INFO
           when: rclone_status_check.rc == 0 and remote_block_storage_check.rc == 0
