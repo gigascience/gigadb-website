@@ -225,7 +225,7 @@ test_md5sum_1g_file() {
     log "$BLUE" "md5sum Checksum 1G file: md5sum copied-1g-file.dat > ${mount_path}copied-1g-file.md5"
     local start_time=$(date +%s.%N)
     
-    if cd ${mount_path} && /usr/bin/time md5sum copied-1g-file.dat > ${mount_path}/copied-1g-file.md5 2> ${CPU_FILE}; then
+    if cd ${mount_path} && /usr/bin/time md5sum copied-1g-file.dat > copied-1g-file.md5 2> ${CPU_FILE}; then
         local end_time=$(date +%s.%N)
         local duration=$(echo "$end_time - $start_time" | bc -l)
         local cpu_usage=$(cat ${CPU_FILE}| grep "CPU" | cut -d ' ' -f4 | sed "s/%CPU//")
@@ -294,7 +294,7 @@ test_md5sum_10g_file() {
     log "$BLUE" "md5sum Checksum 10G file: md5sum copied-10g-file.dat > copied-10g-file.md5"
     local start_time=$(date +%s.%N)
     
-    if cd "${mount_path}" && /usr/bin/time md5sum copied-10g-file.dat > ${mount_path}/copied-10g-file.md5 2> ${CPU_FILE}; then
+    if cd "${mount_path}" && /usr/bin/time md5sum copied-10g-file.dat > copied-10g-file.md5 2> ${CPU_FILE}; then
         local end_time=$(date +%s.%N)
         local duration=$(echo "$end_time - $start_time" | bc -l)
         local cpu_usage=$(cat ${CPU_FILE} | grep "CPU" | cut -d ' ' -f4 | sed "s/%CPU//")
@@ -389,7 +389,11 @@ run_benchmark() {
         log "$BLUE" "Sleeping for 10 seconds"
         sleep 10
         log "$BLUE" "Cleanup cache files..."
-        rm -rf /tmp/cache/* 2>/dev/null || true
+        if [[ -d "/tmp/cache" ]]; then
+            log "$BLUE" "Found cache directory, cleaning up..."
+            sudo rm -rf /tmp/cache/rclone-*/* 2>/dev/null || true
+            log "$BLUE" "Cache cleanup completed"
+        fi
     done
     
     log "$GREEN" "Benchmark completed for $mount_point"
