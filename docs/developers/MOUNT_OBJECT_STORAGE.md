@@ -7,6 +7,31 @@ This document provides background information of rclone mount and s3fs mount, an
 1. To find out which mount methos (s3fs vs rclone mount) is more performant
 2. To find out which backend (AWS s3, Wasabi s3, hetzner block storage) is more performant
 
+### Prerequisites
+
+1. `bc` and `/usr/bin/time` installed on the bastion server, if not:
+```
+[ec2-user@ip-10-98-0-36 ~]$ sudo dnf install bc time
+Last metadata expiration check: 2:51:31 ago on Mon 28 Jul 2025 02:37:18 AM UTC.
+Dependencies resolved.
+===================================================================================================================================================================================================================================
+ Package                                            Architecture                                         Version                                                        Repository                                            Size
+===================================================================================================================================================================================================================================
+Installing:
+ bc                                                 x86_64                                               1.07.1-14.el9                                                  baseos                                               120 k
+ time                                               x86_64                                               1.9-18.el9                                                     baseos                                                48 k
+
+Transaction Summary
+===================================================================================================================================================================================================================================
+Install  2 Packages
+
+Total download size: 169 k
+Installed size: 313 k
+Is this ok [y/N]: 
+```
+
+2. 
+
 ### Background
 
 1. s3fs vs. rclone mount: Key Differences & Recommendations
