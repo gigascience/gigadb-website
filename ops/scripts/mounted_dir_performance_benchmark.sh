@@ -87,7 +87,7 @@ test_1g_file_write() {
         local duration=$(echo "$end_time - $start_time" | bc -l)
         local throughput=$(echo "scale=0; 1024 / $duration" | bc -l)
         local cpu_usage=$(cat ${CPU_FILE} | grep "CPU" | cut -d ' ' -f4 | sed "s/%CPU//")
-        echo "1G File Write,$(printf "%s,%s,%s" "$duration" "$throughput" "$cpu_usage")"
+        echo "1G File Write,$duration,$throughput,$cpu_usage"
         rm -f ${CPU_FILE}
         return 0
     else
@@ -106,7 +106,7 @@ test_10g_file_write() {
         local duration=$(echo "$end_time - $start_time" | bc -l)
         local throughput=$(echo "scale=0; 10240 / $duration" | bc -l)
         local cpu_usage=$(cat ${CPU_FILE} | grep "CPU" | cut -d ' ' -f4 | sed "s/%CPU//")
-        echo "10G File Write,$(printf "%s,%s,%s" "$duration" "$throughput" "$cpu_usage")"
+        echo "10G File Write,$duration,$throughput,$cpu_usage"
         rm -f ${CPU_FILE}
         return 0
     else
@@ -126,7 +126,7 @@ test_1g_file_read() {
         local duration=$(echo "$end_time - $start_time" | bc -l)
         local throughput=$(echo "scale=0; 1024 / $duration" | bc -l)
         local cpu_usage=$(cat ${CPU_FILE} | grep "CPU" | cut -d ' ' -f4 | sed "s/%CPU//")
-        echo "1G File Read,$(printf "%s,%s,%s" "$duration" "$throughput" "$cpu_usage")"
+        echo "1G File Read,$duration,$throughput,$cpu_usage"
         rm -f ${CPU_FILE}
         return 0
     else
@@ -146,7 +146,7 @@ test_10g_file_read() {
         local duration=$(echo "$end_time - $start_time" | bc -l)
         local throughput=$(echo "scale=0; 10240 / $duration" | bc -l)
         local cpu_usage=$(cat ${CPU_FILE} | grep "CPU" | cut -d ' ' -f4 | sed "s/%CPU//")
-        echo "10G File Read,$(printf "%s,%s,%s" "$duration" "$throughput" "$cpu_usage")"
+        echo "10G File Read,$duration,$throughput,$cpu_usage"
         rm -f ${CPU_FILE}
         return 0
     else
@@ -166,7 +166,7 @@ test_move_in_5000_small_files() {
         local end_time=$(date +%s.%N)
         local duration=$(echo "$end_time - $start_time" | bc -l)
         local cpu_usage=$(cat ${CPU_FILE}| grep "CPU" | cut -d ' ' -f4 | sed "s/%CPU//")
-        echo "Move in 5000 small files,$(printf "%s,%s" "$duration" "$cpu_usage")"
+        echo "Move in 5000 small files,$duration,N/A,$cpu_usage"
         rm -f ${CPU_FILE}
         return 0
     else
@@ -189,7 +189,7 @@ test_move_out_5000_small_files() {
         local end_time=$(date +%s.%N)
         local duration=$(echo "$end_time - $start_time" | bc -l)
         local cpu_usage=$(cat ${CPU_FILE} | grep "CPU" | cut -d ' ' -f4 | sed "s/%CPU//")
-        echo "Move out 5000 small files,$(printf "%s,%s" "$duration" "$cpu_usage")"
+        echo "Move out 5000 small files,$duration,N/A,$cpu_usage"
         return 0
     else
         echo "Move out 5000 small files,FAILED,N/A"
@@ -207,7 +207,7 @@ test_move_in_1g_file() {
         local end_time=$(date +%s.%N)
         local duration=$(echo "$end_time - $start_time" | bc -l)
         local cpu_usage=$(cat ${CPU_FILE}| grep "CPU" | cut -d ' ' -f4 | sed "s/%CPU//")
-        echo "Move in 1 1G file,$(printf "%s,%s" "$duration" "$cpu_usage")"
+        echo "Move in 1 1G file,$duration,N/A,$cpu_usage"
         return 0
     else
         echo "Move in 1 1G file,FAILED,N/A"
@@ -229,7 +229,7 @@ test_md5sum_1g_file() {
         local end_time=$(date +%s.%N)
         local duration=$(echo "$end_time - $start_time" | bc -l)
         local cpu_usage=$(cat ${CPU_FILE}| grep "CPU" | cut -d ' ' -f4 | sed "s/%CPU//")
-        echo "md5sum Checksum 1G file,$(printf "%s,%s" "$duration" "$cpu_usage")"
+        echo "md5sum Checksum 1G file,$duration,N/A,$cpu_usage"
         rm -f ${CPU_FILE}
         return 0
     else
@@ -252,7 +252,7 @@ test_move_out_1g_file() {
         local end_time=$(date +%s.%N)
         local duration=$(echo "$end_time - $start_time" | bc -l)
         local cpu_usage=$(cat ${CPU_FILE} | grep "CPU" | cut -d ' ' -f4 | sed "s/%CPU//")
-        echo "Move out 1 1G file,$(printf "%s,%s" "$duration" "$cpu_usage")"
+        echo "Move out 1 1G file,$duration,N/A,$cpu_usage"
         rm -f ${CPU_FILE}
         return 0
     else
@@ -275,7 +275,7 @@ test_move_in_10g_file() {
         local end_time=$(date +%s.%N)
         local duration=$(echo "$end_time - $start_time" | bc -l)
         local cpu_usage=$(cat ${CPU_FILE} | grep "CPU" | cut -d ' ' -f4 | sed "s/%CPU//")
-        echo "Move in 1 10G file,$(printf "%s,%s" "$duration" "$cpu_usage")"
+        echo "Move in 1 10G file,$duration,N/A,$cpu_usage"
         rm -f ${CPU_FILE}
         return 0
     else
@@ -298,7 +298,7 @@ test_md5sum_10g_file() {
         local end_time=$(date +%s.%N)
         local duration=$(echo "$end_time - $start_time" | bc -l)
         local cpu_usage=$(cat ${CPU_FILE} | grep "CPU" | cut -d ' ' -f4 | sed "s/%CPU//")
-        echo "md5sum Checksum 10G file,$(printf "%s,%s" "$duration" "$cpu_usage")"
+        echo "md5sum Checksum 10G file,$duration,N/A,$cpu_usage"
         rm -f ${CPU_FILE}
         return 0
     else
@@ -321,7 +321,7 @@ test_move_out_10g_file() {
         local end_time=$(date +%s.%N)
         local duration=$(echo "$end_time - $start_time" | bc -l)
         local cpu_usage=$(cat ${CPU_FILE} | grep "CPU" | cut -d ' ' -f4 | sed "s/%CPU//")
-        echo "Move out 1 10G file,$(printf "%s,%s" "$duration" "$cpu_usage")"
+        echo "Move out 1 10G file,$duration,N/A,$cpu_usage"
         rm -f ${CPU_FILE}
         return 0
     else
@@ -333,6 +333,7 @@ test_move_out_10g_file() {
 # Run all tests for a mount point
 run_benchmark() {
     local mount_point="$1"
+    local iterations="$2"
     local mount_path="${MOUNT_PATHS[$mount_point]}"
     
     log "$YELLOW" "=== Benchmarking $mount_point at $mount_path ==="
@@ -359,103 +360,64 @@ run_benchmark() {
     local results_file="${RESULTS_DIR}/${mount_point##*/}_results.csv"
     echo "Test,Duration_Seconds,Throughput_MB_per_s,CPU_Usage_%" > "$results_file"
 
-    log "$BLUE" "Start benchmaking..."
-    # Run tests in the order specified in the documentation table
-    {
-        test_1g_file_write "$mount_path"
-        test_10g_file_write "$mount_path"
-        test_1g_file_read "$mount_path"
-        test_10g_file_read "$mount_path"
-        test_move_in_5000_small_files "$mount_path"
-        test_move_out_5000_small_files "$mount_path"
-        test_move_in_1g_file "$mount_path"
-        test_md5sum_1g_file "$mount_path"
-        test_move_out_1g_file "$mount_path"
-        test_move_in_10g_file "$mount_path"
-        test_md5sum_10g_file "$mount_path"
-        test_move_out_10g_file "$mount_path"
-    } >> "$results_file"
+    log "$BLUE" "Start benchmarking with $iterations iterations..."
     
-    # Cleanup test files from mount path
-#    log "$BLUE" "Cleaning up test files from: $mount_path"
-#    rm -f "$mount_path"/efs-test-write.dat "$mount_path"/*g-file.dat "$mount_path"/*g-file.md5 2>/dev/null || true
-#    rm -rf "$mount_path/smallfiles" 2>/dev/null || true
+    # All tests in order
+    local all_tests=(
+        "test_1g_file_write"
+        "test_10g_file_write"
+        "test_1g_file_read"
+        "test_10g_file_read"
+        "test_move_in_5000_small_files"
+        "test_move_out_5000_small_files"
+        "test_move_in_1g_file"
+        "test_md5sum_1g_file"
+        "test_move_out_1g_file"
+        "test_move_in_10g_file"
+        "test_md5sum_10g_file"
+        "test_move_out_10g_file"
+    )
+    
+    # Run all tests for the specified number of iterations
+    for ((i=1; i<=iterations; i++)); do
+        log "$YELLOW" "=== Iteration $i of $iterations ==="
+        for test_function in "${all_tests[@]}"; do
+            log "$BLUE" "Running: $test_function (iteration $i)"
+            "$test_function" "$mount_path" >> "$results_file"
+            sleep 5
+        done
+        log "$BLUE" "Sleeping for 10 seconds"
+        sleep 10
+        log "$BLUE" "Cleanup cache files..."
+        rm -rf /tmp/cache/* 2>/dev/null || true
+    done
     
     log "$GREEN" "Benchmark completed for $mount_point"
     log "$BLUE" "Results saved to: $results_file"
 }
 
-# Generate summary report
-generate_report() {
-    local mount_point="$1"
-    local report_file="${RESULTS_DIR}/${mount_point##*/}_summary_report.md"
-    
-    log "$BLUE" "Generating summary report..."
-    
-    cat > "$report_file" << EOF
-# Mount Point Performance Benchmark Report
-
-**Generated:** $(date)  
-**Script:** $SCRIPT_NAME  
-
-## System Information
-
-\`\`\`
-$(uname -a)
-$(free -h)
-$(df -h | grep -E '/(aws|wasabi|block|userdropboxes)')
-\`\`\`
-
-## Test Results
-
-EOF
-
-    # Add results from each mount point
-    for results_file in "${RESULTS_DIR}"/*_results.csv; do
-        if [[ -f "$results_file" ]]; then
-            local mount_name=$(basename "$results_file" _results.csv)
-            echo "### $mount_name" >> "$report_file"
-            echo "" >> "$report_file"
-            echo "| Test | Duration (s) | Throughput (MB/s) | CPU Usage (%) |" >> "$report_file"
-            echo "|------|--------------|-------------------|----------------|" >> "$report_file"
-            
-            tail -n +2 "$results_file" | while IFS=',' read -r test duration throughput; do
-                echo "| $test | $duration | $throughput |" >> "$report_file"
-            done
-            echo "" >> "$report_file"
-        fi
-    done
-    
-    cat >> "$report_file" << EOF
-
-## Notes
-
-- Tests performed in the exact order specified in the documentation
-- All commands match the reference table exactly
-- Duration is measured in seconds
-- Throughput is calculated as data_size / duration where applicable
-
-Generated by $SCRIPT_NAME on $(date)
-EOF
-
-    log "$GREEN" "Report generated: $report_file"
-}
-
 # Main function
 main() {
-    local mount_points=()
+    local mount_point="$1"
+    local iterations="$2"
     
-    # Parse arguments
-    if [[ $# -eq 0 ]]; then
-        mount_points=("/aws" "/wasabi" "/block" "/userdropboxes")
-    else
-        mount_points=("$@")
+    # Validate arguments
+    if [[ $# -ne 2 ]]; then
+        log "$RED" "Error: Expected exactly 2 arguments"
+        usage
+        exit 1
+    fi
+    
+    if [[ ! "$iterations" =~ ^[0-9]+$ ]] || [[ "$iterations" -eq 0 ]]; then
+        log "$RED" "Error: Number of iterations must be a positive integer"
+        exit 1
     fi
     
     # Create results directory
     mkdir -p "$RESULTS_DIR"
     
-    log "$BLUE" "Starting benchmark for mount points: ${mount_points[*]}"
+    log "$BLUE" "Starting benchmark for mount point: $mount_point"
+    log "$BLUE" "Number of iterations: $iterations"
     log "$BLUE" "Results directory: $RESULTS_DIR"
     
     # Check prerequisites
@@ -472,32 +434,22 @@ main() {
     test_data_dir=$(create_test_data)
     log "$GREEN" "Test data prepared in: $test_data_dir"
     
-    # Run benchmarks
-    local successful_tests=0
-    for mount_point in "${mount_points[@]}"; do
-        # Remove trailing slash and validate
-        mount_point="${mount_point%/}"
-        
-        if [[ -n "${MOUNT_PATHS[$mount_point]:-}" ]]; then
-            if run_benchmark "$mount_point"; then
-                successful_tests=$((successful_tests + 1))
-            fi
-        else
-            log "$RED" "Unknown mount point: $mount_point"
-            log "$BLUE" "Available mount points: ${!MOUNT_PATHS[*]}"
-        fi
-    done
+    # Remove trailing slash and validate mount point
+    mount_point="${mount_point%/}"
     
-    # Generate report if we had successful tests
-    if [[ $successful_tests -gt 0 ]]; then
-        generate_report
-    else
-        log "$RED" "No benchmarks completed successfully"
+    if [[ -z "${MOUNT_PATHS[$mount_point]:-}" ]]; then
+        log "$RED" "Unknown mount point: $mount_point"
+        log "$BLUE" "Available mount points: ${!MOUNT_PATHS[*]}"
+        exit 1
     fi
     
-    log "$BLUE" "Cleanup cache files..."
-    # rm -rf "${BENCHMARK_DIR}/test-data" "${BENCHMARK_DIR}/smallfiles_out" 2>/dev/null || true
-    rm -rf /tmp/cache/rclone* 2>/dev/null || true
+    # Run benchmark
+    if run_benchmark "$mount_point" "$iterations"; then
+        log "$GREEN" "Benchmark completed successfully!"
+    else
+        log "$RED" "Benchmark failed"
+        exit 1
+    fi
     
     log "$GREEN" "Benchmark completed!"
     log "$BLUE" "Results available in: $RESULTS_DIR"
@@ -507,9 +459,13 @@ main() {
 # Show usage information
 usage() {
     cat << EOF
-Usage: $SCRIPT_NAME [mount_points...]
+Usage: $SCRIPT_NAME <mount_point> <iterations>
 
 Performance benchmark for mounted directories using exact commands from documentation.
+
+ARGUMENTS:
+    mount_point     - Mount point to test (required)
+    iterations      - Number of iterations to run (required, positive integer)
 
 MOUNT_POINTS:
     /aws            - S3 mount point
@@ -518,9 +474,9 @@ MOUNT_POINTS:
     /userdropboxes  - EFS mount point
 
 EXAMPLES:
-    $SCRIPT_NAME                    # Test all mount points
-    $SCRIPT_NAME /aws /wasabi       # Test specific mount points
-    $SCRIPT_NAME /userdropboxes     # Test single mount point
+    $SCRIPT_NAME /aws 3             # Test /aws mount point 3 times
+    $SCRIPT_NAME /wasabi 1          # Test /wasabi mount point 1 time
+    $SCRIPT_NAME /userdropboxes 5   # Test /userdropboxes mount point 5 times
 
 TESTS PERFORMED (in order):
     1. 1G File Write              (dd with oflag=direct)
