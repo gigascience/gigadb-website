@@ -66,7 +66,7 @@
                                             <? echo $data[$i]->title; ?>
                                         </td>
                                         <td>
-                                            <? echo $data[$i]->commonNames; ?>
+                                            <? echo $data[$i]->commonNames ?? ''; ?>
                                         </td>
                                         <td>
                                             <? foreach ($data[$i]->datasetTypes as $type) { ?>

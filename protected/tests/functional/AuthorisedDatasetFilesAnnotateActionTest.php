@@ -104,9 +104,7 @@ class AuthorisedDatasetFilesAnnotateAction extends FunctionalTesting
         parent::tearDown();
     }
 
-    public function testPostUploadsData()
-    {
-
+    public function testPostUploadsData() {
         // set upload status to the correct UserUploadingData
         $this->setUpDatasetUploadStatus($this->dbh, $this->doi, 'UserUploadingData');
 

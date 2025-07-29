@@ -126,7 +126,7 @@ class DatasetController extends Controller
 
             if ($urlToRedirect && $currentAbsoluteFullUrl === $urlToRedirect) {
                 $this->metaData['redirect'] = 'https://dx.doi.org/10.5524/' . $assembly->getDataset()->identifier ;
-                return $this->render('interstitial', array(
+                $this->render('interstitial', array(
                     'model' => $assembly->getDataset()
                 ));
                 Yii::app()->end();

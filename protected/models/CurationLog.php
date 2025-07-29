@@ -111,8 +111,8 @@ class CurationLog extends CActiveRecord
      */
     public static function buildFullName(?string $firstName = null, ?string $lastName = null): string
     {
-        $firstName = trim($firstName);
-        $lastName = trim($lastName);
+        $firstName = trim($firstName ?? '');
+        $lastName = trim($lastName ?? '');
         return implode(' ', array_filter([$firstName, $lastName]));
     }
 
