@@ -162,7 +162,7 @@ test_move_in_5000_small_files() {
     log "$BLUE" "Move in 5000 small files: cp -v ${BENCHMARK_DIR}/test-data/smallfiles/* smallfiles/"
     local start_time=$(date +%s.%N)
     
-    if /usr/bin/time cp "${BENCHMARK_DIR}/test-data/smallfiles"/* "$mount_path/smallfiles/" 2> ${CPU_FILE}; then
+    if /usr/bin/time cp "${BENCHMARK_DIR}/test-data/smallfiles/*" "${mount_path}/smallfiles/" 2> ${CPU_FILE}; then
         local end_time=$(date +%s.%N)
         local duration=$(echo "$end_time - $start_time" | bc -l)
         local cpu_usage=$(cat ${CPU_FILE}| grep "CPU" | cut -d ' ' -f4 | sed "s/%CPU//")
@@ -182,10 +182,10 @@ test_move_out_5000_small_files() {
         return 1
     fi
     
-    log "$BLUE" "Move out 5000 small files: cp -v smallfiles/* ${BENCHMARK_DIR}/smallfiles_out/"
+    log "$BLUE" "Move out 5000 small files: cp -v ${mount_path}/smallfiles/* ${BENCHMARK_DIR}/test-data/smallfiles/"
     local start_time=$(date +%s.%N)
     
-    if /usr/bin/time cp "${mount_path}/smallfiles"/* "${BENCHMARK_DIR}/smallfiles_out/" 2> ${CPU_FILE}; then
+    if /usr/bin/time cp "${mount_path}/smallfiles/*" "${BENCHMARK_DIR}/test-data/smallfiles/" 2> ${CPU_FILE}; then
         local end_time=$(date +%s.%N)
         local duration=$(echo "$end_time - $start_time" | bc -l)
         local cpu_usage=$(cat ${CPU_FILE} | grep "CPU" | cut -d ' ' -f4 | sed "s/%CPU//")
@@ -200,7 +200,7 @@ test_move_out_5000_small_files() {
 test_move_in_1g_file() {
     local mount_path="$1"
     
-    log "$BLUE" "Move in 1 1G file: cp ${BENCHMARK_DIR}/test-data/1g-file.dat ."
+    log "$BLUE" "Move in 1 1G file: cp ${BENCHMARK_DIR}/test-data/1g-file.dat ${mount_path}/copied-1g-file.dat"
     local start_time=$(date +%s.%N)
     
     if /usr/bin/time cp "${BENCHMARK_DIR}/test-data/1g-file.dat" "${mount_path}/copied-1g-file.dat" 2> ${CPU_FILE}; then
@@ -268,7 +268,7 @@ test_move_in_10g_file() {
         return 1
     fi
     
-    log "$BLUE" "Move in 1 10G file: cp ${BENCHMARK_DIR}/test-data/10g-file.dat ."
+    log "$BLUE" "Move in 1 10G file: cp ${BENCHMARK_DIR}/test-data/10g-file.dat ${mount_path}/copied-10g-file.dat"
     local start_time=$(date +%s.%N)
     
     if /usr/bin/time cp "${BENCHMARK_DIR}/test-data/10g-file.dat" "${mount_path}/copied-10g-file.dat" 2> ${CPU_FILE}; then
