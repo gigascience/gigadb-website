@@ -214,7 +214,7 @@ class AdminDatasetController extends Controller
 
         //curator
         $curatorId = $postDataset['curator_id'];
-        if ($curatorId !== $model->curator_id) {
+        if ((int) $curatorId !== (int) $model->curator_id) {
             CurationLog::createlog_assign_curator($id, $curatorId);
             $model->curator_id = $curatorId;
         }

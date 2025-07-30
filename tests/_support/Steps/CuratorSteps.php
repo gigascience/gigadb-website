@@ -260,4 +260,13 @@ class CuratorSteps extends \Codeception\Actor
       $this->I->click('.tag-editor-delete');
     }
 
+    /**
+     * @When I fill in keywords fields of name keywords with :keyword
+     */
+    public function iFillInKeywordsFieldsOfNameKeywordsWith($keyword) {
+        $this->I->executeJS(
+            "$('#keywords').tagEditor('addTag', " . json_encode($keyword) . ');'
+        );
+        $this->I->wait(3);
+    }
 }
