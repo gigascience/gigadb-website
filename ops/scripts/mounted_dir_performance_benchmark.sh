@@ -63,14 +63,14 @@ create_test_data() {
       log "$BLUE" "10g file already created in ${test_data_dir}"
     fi
 
-    # Create 5000 small files (1KB each)
-    if  [[ ! -d "${test_data_dir}/smallfiles" ]] || [[ $(find "${test_data_dir}/smallfiles" -maxdepth 1 -type f -printf '.' 2>/dev/null | wc -c) -lt 5000 ]]; then
-        log "$BLUE" "Creating 5000 small files..."
-        for i in $(seq 1 5000); do
+    # Create 1000 small files (1KB each)
+    if  [[ ! -d "${test_data_dir}/smallfiles" ]] || [[ $(find "${test_data_dir}/smallfiles" -maxdepth 1 -type f -printf '.' 2>/dev/null | wc -c) -lt 1000 ]]; then
+        log "$BLUE" "Creating 1000 small files..."
+        for i in $(seq 1 1000); do
             fallocate -l 1024 "${test_data_dir}/smallfiles/file${i}.dat" &>/dev/null 2>&1
         done
     else
-      log "$BLUE" "5000 small files already created in ${test_data_dir}/smallfiles"
+      log "$BLUE" "1000 small files already created in ${test_data_dir}/smallfiles"
     fi
     
     echo "$test_data_dir"
@@ -155,44 +155,44 @@ test_10g_file_read() {
     fi
 }
 
-test_move_in_5000_small_files() {
+test_move_in_1000_small_files() {
     local mount_path="$1"
     mkdir -p "$mount_path/smallfiles"
     
-    log "$BLUE" "Move in 5000 small files: cp -v ${BENCHMARK_DIR}/test-data/smallfiles/* smallfiles/"
+    log "$BLUE" "Move in 1000 small files: cp ${BENCHMARK_DIR}/test-data/smallfiles/* smallfiles/"
     local start_time=$(date +%s.%N)
     
     if /usr/bin/time cp "${BENCHMARK_DIR}/test-data/smallfiles/*" "${mount_path}/smallfiles/" 2> ${CPU_FILE}; then
         local end_time=$(date +%s.%N)
         local duration=$(echo "$end_time - $start_time" | bc -l)
         local cpu_usage=$(cat ${CPU_FILE}| grep "CPU" | cut -d ' ' -f4 | sed "s/%CPU//")
-        echo "Move in 5000 small files,$duration,N/A,$cpu_usage"
+        echo "Move in 1000 small files,$duration,N/A,$cpu_usage"
         rm -f ${CPU_FILE}
         return 0
     else
-        echo "Move in 5000 small files,FAILED,N/A"
+        echo "Move in 1000 small files,FAILED,N/A"
         return 1
     fi
 }
 
-test_move_out_5000_small_files() {
+test_move_out_1000_small_files() {
     local mount_path="$1"
     if [[ ! -d "$mount_path/smallfiles" ]]; then
-        echo "Move out 5000 small files,SKIPPED,N/A"
+        echo "Move out 1000 small files,SKIPPED,N/A"
         return 1
     fi
     
-    log "$BLUE" "Move out 5000 small files: cp -v ${mount_path}/smallfiles/* ${BENCHMARK_DIR}/test-data/smallfiles/"
+    log "$BLUE" "Move out 1000 small files: cp ${mount_path}/smallfiles/* ${BENCHMARK_DIR}/test-data/smallfiles/"
     local start_time=$(date +%s.%N)
     
     if /usr/bin/time cp "${mount_path}/smallfiles/*" "${BENCHMARK_DIR}/test-data/smallfiles/" 2> ${CPU_FILE}; then
         local end_time=$(date +%s.%N)
         local duration=$(echo "$end_time - $start_time" | bc -l)
         local cpu_usage=$(cat ${CPU_FILE} | grep "CPU" | cut -d ' ' -f4 | sed "s/%CPU//")
-        echo "Move out 5000 small files,$duration,N/A,$cpu_usage"
+        echo "Move out 1000 small files,$duration,N/A,$cpu_usage"
         return 0
     else
-        echo "Move out 5000 small files,FAILED,N/A"
+        echo "Move out 1000 small files,FAILED,N/A"
         return 1
     fi
 }
@@ -264,7 +264,21 @@ test_move_out_1g_file() {
 test_move_in_10g_file() {
     local mount_path="$1"
     if [[ ! -f "${BENCHMARK_DIR}/test-data/10g-file.dat" ]]; then
+        log "$YELLOW" "Move in 1 10G file: Source 10G file not found, SKIPPED."
         echo "Move in 1 10G file,SKIPPED,N/A"
+        return 1
+    fi
+
+    # Check for sufficient space in /tmp (common VFS cache location for rclone)
+    # 10GB for the file + a buffer (e.g., 2GB for VFS overhead/metadata). 12GB = 12,582,912 KB.
+    local required_space_kb=12582912 
+    local available_space_tmp
+    available_space_tmp=$(df /tmp | awk 'NR==2 {print $4}') # Available space in KB on /tmp
+    
+    if [[ "$available_space_tmp" -lt "$required_space_kb" ]]; then
+        log "$RED" "Move in 1 10G file: Insufficient space in /tmp (VFS cache location) for 10G file transfer."
+        log "$RED" "Available on /tmp: $(echo "scale=2; $available_space_tmp / 1024 / 1024" | bc) GB. Required: $(echo "scale=2; $required_space_kb / 1024 / 1024" | bc) GB."
+        echo "Move in 1 10G file,FAILED,N/A"
         return 1
     fi
     
@@ -310,10 +324,23 @@ test_md5sum_10g_file() {
 test_move_out_10g_file() {
     local mount_path="$1"
     if [[ ! -f "${mount_path}/copied-10g-file.dat" ]]; then
+        log "$YELLOW" "Move out 1 10G file: Source 10G file not found, SKIPPED."
         echo "Move out 1 10G file,SKIPPED,N/A"
         return 1
     fi
     
+
+    local required_space_kb=12582912 
+    local available_space_tmp
+    available_space_tmp=$(df /tmp | awk 'NR==2 {print $4}') # Available space in KB on /tmp
+    
+    if [[ "$available_space_tmp" -lt "$required_space_kb" ]]; then
+        log "$RED" "Move in 1 10G file: Insufficient space in /tmp (VFS cache location) for 10G file transfer."
+        log "$RED" "Available on /tmp: $(echo "scale=2; $available_space_tmp / 1024 / 1024" | bc) GB. Required: $(echo "scale=2; $required_space_kb / 1024 / 1024" | bc) GB."
+        echo "Move in 1 10G file,FAILED,N/A"
+        return 1
+    fi
+
     log "$BLUE" "Move out 1 10G file: cp 10g-file.dat /dev/null"
     local start_time=$(date +%s.%N)
     
@@ -368,8 +395,8 @@ run_benchmark() {
         "test_10g_file_write"
         "test_1g_file_read"
         "test_10g_file_read"
-        "test_move_in_5000_small_files"
-        "test_move_out_5000_small_files"
+        "test_move_in_1000_small_files"
+        "test_move_out_1000_small_files"
         "test_move_in_1g_file"
         "test_md5sum_1g_file"
         "test_move_out_1g_file"
@@ -384,14 +411,14 @@ run_benchmark() {
         for test_function in "${all_tests[@]}"; do
             log "$BLUE" "Running: $test_function (iteration $i)"
             "$test_function" "$mount_path" >> "$results_file"
-            sleep 5
+            sleep 10
         done
         log "$BLUE" "Sleeping for 10 seconds"
         sleep 10
         log "$BLUE" "Cleanup cache files..."
         if [[ -d "/tmp/cache" ]]; then
             log "$BLUE" "Found cache directory, cleaning up..."
-            sudo rm -rf /tmp/cache/rclone-*/* 2>/dev/null || true
+            find /tmp/cache/rclone-* -mindepth 1 -delete 2>/dev/null
             log "$BLUE" "Cache cleanup completed"
         fi
     done
@@ -425,7 +452,7 @@ main() {
     log "$BLUE" "Results directory: $RESULTS_DIR"
     
     # Check prerequisites
-    local required_commands=("dd" "bc" "mountpoint" "md5sum" "cp" "/usr/bin/time" "seq" "fallocate")
+    local required_commands=("dd" "bc" "mountpoint" "md5sum" "cp" "/usr/bin/time" "seq" "fallocate" "awk" "find")
     for cmd in "${required_commands[@]}"; do
         if ! command -v "$cmd" &> /dev/null; then
             log "$RED" "Error: Required command '$cmd' not found"
@@ -487,8 +514,8 @@ TESTS PERFORMED (in order):
     2. 10G File Write             (dd with oflag=direct)
     3. 1G File Read               (dd to /dev/null)
     4. 10G File Read              (dd to /dev/null)
-    5. Move in 5000 small files   (cp from ${BENCHMARK_DIR}/test-data/smallfiles)
-    6. Move out 5000 small files  (cp to ${BENCHMARK_DIR}/test-data/smallfiles)
+    5. Move in 1000 small files   (cp from ${BENCHMARK_DIR}/test-data/smallfiles)
+    6. Move out 1000 small files  (cp to ${BENCHMARK_DIR}/test-data/smallfiles)
     7. Move in 1 1G file          (cp from ${BENCHMARK_DIR}/test-data/1g-file.dat)
     8. md5sum Checksum 1G file    (md5sum)
     9. Move out 1 1G file         (cp to /dev/null)
