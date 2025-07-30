@@ -5,10 +5,12 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="language" content="en" />
-  <?php if (true || $this->metaData['private']) {//TODO: remove true|| when going to prod. or get env ?>
-    <meta name="robots" content="noindex, nofollow">
-    <meta name="googlebot" content="noindex, nofollow">
-  <?php } ?>
+  <?php
+  if (Yii::app()->controller->id === 'dataset' && Yii::app()->controller->action->id === 'view') {
+    $this->renderPartial('//dataset/_meta_tags');
+  }
+  ?>
+
   <?php if ($this->metaData['redirect']) {
     Yii::app()->clientScript->registerMetaTag("5;url={$this->metaData['redirect']}", null, 'refresh');
   }
