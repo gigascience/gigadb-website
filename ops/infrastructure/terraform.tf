@@ -73,19 +73,43 @@ variable "utc_restore_time" {
 variable "web_ec2_type" {
   type = string
   description = "EC2 type for webapp server"
-  default = null
+  default = "t3.small"
+}
+
+variable "web_ec2_storage" {
+  type = number
+  description = "EC2 storage size for webapp server"
+  default = 30
 }
 
 variable "bastion_ec2_type" {
   type = string
   description = "EC2 type for bastion server"
-  default = null
+  default = "t3.small"
+}
+
+variable "bastion_ec2_storage" {
+  type = number
+  description = "EC2 storage size for bastion server"
+  default = 30
+}
+
+variable "files_ec2_type" {
+  type = string
+  description = "EC2 type for files server"
+  default = "t3.small"
+}
+
+variable "files_ec2_storage" {
+  type = number
+  description = "EC2 storage size for files server"
+  default = 30
 }
 
 variable "rds_ec2_type" {
   type = string
   description = "EC2 type for RDS server"
-  default = null
+  default = "t3.micro"
 }
 
 
@@ -217,6 +241,7 @@ module "ec2_dockerhost" {
   # container app
   public_subnet_id = module.vpc.public_subnets[0]
   ec2_type = var.web_ec2_type
+  ec2_storage = var.web_ec2_storage
   ec2_usage = "webserver"
   app_port = 80
 }
@@ -233,6 +258,10 @@ output "web_ec2_type" {
   value = module.ec2_dockerhost.instance_type
 }
 
+output "web_volume_size" {
+  value = module.ec2_dockerhost.volume_size
+}
+
 # EC2 instance for hosting the files server
 module "files_host" {
   source = "../../modules/aws-instance"
@@ -244,7 +273,8 @@ module "files_host" {
   vpc_id = module.vpc.vpc_id
   vpc_cidr_block = module.vpc.vpc_cidr_block
   public_subnet_id = module.vpc.public_subnets[0]
-  ec2_type = var.web_ec2_type
+  ec2_type = var.files_ec2_type
+  ec2_storage = var.files_ec2_storage
   ec2_usage = "filesserver"
   app_port = 21
 }
@@ -261,6 +291,10 @@ output "files_ec2_type" {
   value = module.files_host.instance_type
 }
 
+output "files_volume_size" {
+  value = module.files_host.volume_size
+}
+
 # EC2 instance for bastion server to access RDS for PostgreSQL admin
 module "ec2_bastion" {
   source = "../../modules/bastion-aws-instance"
@@ -273,7 +307,8 @@ module "ec2_bastion" {
   # Bastion instance goes into a public subnet for developer access
   vpc_id = module.vpc.vpc_id
   public_subnet_id = module.vpc.public_subnets[0]
-  bastion_ec2_type = var.bastion_ec2_type
+  ec2_type = var.bastion_ec2_type
+  ec2_storage = var.bastion_ec2_storage
 }
 
 output "ec2_bastion_private_ip" {
@@ -287,6 +322,10 @@ output "ec2_bastion_public_ip" {
 
 output "bastion_ec2_type" {
   value = module.ec2_bastion.instance_type
+}
+
+output "bastion_volume_size" {
+  value = module.ec2_bastion.volume_size
 }
 
 # RDS instance for hosting GigaDB's PostgreSQL database

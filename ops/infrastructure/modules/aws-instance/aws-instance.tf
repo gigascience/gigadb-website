@@ -89,7 +89,7 @@ data "aws_ami" "centos" {
 
 resource "aws_instance" "docker_host" {
   ami = data.aws_ami.centos.id
-  instance_type = "${var.ec2_type}"
+  instance_type = var.ec2_type
   vpc_security_group_ids = [aws_security_group.docker_host_sg.id]
   key_name = var.key_name
   subnet_id = var.public_subnet_id
@@ -101,7 +101,7 @@ resource "aws_instance" "docker_host" {
 
   root_block_device {
     delete_on_termination = "true"
-    volume_size = 30
+    volume_size = var.ec2_storage
   }
 
   volume_tags = {
@@ -133,4 +133,7 @@ output "instance_public_ip_addr" {
 
 output "instance_type" {
   value = aws_instance.docker_host.instance_type
+}
+output "volume_size" {
+  value = aws_instance.docker_host.root_block_device.0.volume_size
 }

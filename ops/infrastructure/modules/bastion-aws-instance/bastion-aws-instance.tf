@@ -58,19 +58,19 @@ data "aws_ami" "centos" {
 resource "aws_instance" "bastion" {
   ami = data.aws_ami.centos.id
   associate_public_ip_address = true
-  instance_type = "${var.bastion_ec2_type}"
+  instance_type = var.ec2_type
   vpc_security_group_ids = [aws_security_group.bastion_sg.id]
   key_name = var.key_name
   subnet_id = var.public_subnet_id
 
   tags = {
     Name = "bastion_server_${var.deployment_target}_${var.owner}",
-    System = "${var.bastion_ec2_type}_centos_stream8",
+    System = "${var.ec2_type}_centos_stream8",
   }
 
   root_block_device {
     delete_on_termination = "true"
-    volume_size = 30
+    volume_size = var.ec2_storage
   }
 
   volume_tags = {
@@ -104,4 +104,8 @@ output "bastion_public_ip" {
 
 output "instance_type" {
   value = aws_instance.bastion.instance_type
+}
+
+output "volume_size" {
+  value = aws_instance.bastion.root_block_device.0.volume_size
 }

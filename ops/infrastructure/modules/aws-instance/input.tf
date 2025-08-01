@@ -1,6 +1,7 @@
 variable "owner" {}
 variable "deployment_target" {}
 variable "ec2_type" {}
+variable "ec2_storage" {}
 variable "ec2_usage" {}
 variable "app_port" {}
 variable "key_name" {}
