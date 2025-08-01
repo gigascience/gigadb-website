@@ -107,7 +107,7 @@ class CurationLog extends CActiveRecord
      * @param string|null $lastName The last name.
      * @return string The full name, or an empty string if both names are empty.
      */
-    public static function buildFullName(?string $firstName, ?string $lastName): string
+    public static function buildFullName(?string $firstName = null, ?string $lastName = null): string
     {
         $firstName = trim($firstName);
         $lastName = trim($lastName);
