@@ -62,40 +62,40 @@ while [[ $# -gt 0 ]]; do
         ;;
     *)
         echo "Invalid option: $1 in"
-        echo $call_str
+        echo "$call_str"
         exit 1
         ;;
     esac
 done
 
 # Ensure variables are not empty
-if [ -z $gitlab_project ];then
-  read -p "You need to specify a fully qualified Gitlab project (e.g: gigascience/upstream/gigadb-website): " gitlab_project
+if [ -z "$gitlab_project" ];then
+  read -r -p "You need to specify a fully qualified Gitlab project (e.g: gigascience/upstream/gigadb-website): " gitlab_project
 fi
 
-if [ -z $aws_ssh_key ];then
-  read -p "You need to specify the path to the ssh private key to use to connect to the EC2 instance: " aws_ssh_key
+if [ -z "$aws_ssh_key" ];then
+  read -r -p "You need to specify the path to the ssh private key to use to connect to the EC2 instance: " aws_ssh_key
 fi
 
-if [ -z $target_environment ];then
-  read -p "You need to specify a target environment (staging or live): " target_environment
+if [ -z "$target_environment" ];then
+  read -r -p "You need to specify a target environment (staging or live): " target_environment
 fi
 
-if [ -z $GITLAB_USERNAME ];then
-  read -p "You need to specify your GitLab username: " GITLAB_USERNAME
+if [ -z "$GITLAB_USERNAME" ];then
+  read -r -p "You need to specify your GitLab username: " GITLAB_USERNAME
 fi
 
-if [ -z $GITLAB_PRIVATE_TOKEN ];then
-  read -p "You need to specify your GitLab private token: " GITLAB_PRIVATE_TOKEN
+if [ -z "$GITLAB_PRIVATE_TOKEN" ];then
+  read -r -p "You need to specify your GitLab private token: " GITLAB_PRIVATE_TOKEN
 fi
 
 
-if [ -z $AWS_REGION ];then
-  read -p "You need to specify an AWS region: " AWS_REGION
+if [ -z "$AWS_REGION" ];then
+  read -r -p "You need to specify an AWS region: " AWS_REGION
 fi
 
-if [ -z $AWS_PROFILE ];then
-  read -p "You need to specify an AWS profile: " AWS_PROFILE
+if [ -z "$AWS_PROFILE" ];then
+  read -r -p "You need to specify an AWS profile: " AWS_PROFILE
 fi
 
 # Output values and ask for confirmation
@@ -112,7 +112,7 @@ echo "Bastion EC2 Type: $bastion_ec2_type"
 echo "RDS EC2 Type: $rds_ec2_type"
 echo ""
 
-read -p "Do you want to continue (y/n)?" choice
+read -r -p "Do you want to continue (y/n)?" choice
 case "$choice" in 
   y|Y ) 
     echo "yes"
@@ -137,11 +137,11 @@ if [ "$has_restore_backup" = true ];then
 fi
 
 # url encode gitlab project
-encoded_gitlab_project=$(echo $gitlab_project | sed -e 's/\//%2F/g')
+encoded_gitlab_project=$(echo "$gitlab_project" | sed -e 's/\//%2F/g')
 
 
 # Ensure we are in the environment-specific directory
-if [ "$target_environment" != `pwd | rev | cut -d"/" -f 1 | rev` ];then
+if [ "$target_environment" != "$(pwd | rev | cut -d"/" -f 1 | rev)" ];then
   echo "You are not in the correct directory given the specified parameters. you should be in '$target_environment'"
   exit 1
 fi
@@ -152,7 +152,7 @@ cp ../../terraform.tf .
 cp ../../getIAMUserNameToJSON.sh .
 
 # Infer the name the EC2 key pair from the file name without extension from teh $aws_ssh_key variable
-key_name=$(echo $aws_ssh_key | rev | cut -d"/" -f 1 | rev | cut -d"." -f 1)
+key_name=$(echo "$aws_ssh_key" | rev | cut -d"/" -f 1 | rev | cut -d"." -f 1)
 
 # create the terraform variables file (must be named terraform.tfvars for terraform to recognise it automatically)
 echo "deployment_target = \"$target_environment\"" > terraform.tfvars
