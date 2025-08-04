@@ -5,7 +5,13 @@ set -e
 # default for EC2 types
 web_ec2_type="t3.small"
 bastion_ec2_type="t3.small"
+files_ec2_type="t3.small"
 rds_ec2_type="t3.micro"
+
+# default for EC2 storage
+web_volume_size=30
+bastion_volume_size=30
+files_volume_size=30
 
 source ../../../../.env
 
@@ -49,15 +55,31 @@ while [[ $# -gt 0 ]]; do
         bastion_ec2_type=$2
         shift 2
         ;;
+    --files-ec2-type)
+        files_ec2_type=$2
+        shift 2
+        ;;
     --rds-ec2-type)
         rds_ec2_type=$2
+        shift 2
+        ;;
+    --web-volume-size)
+        web_volume_size=$2
+        shift 2
+        ;;
+    --bastion-volume-size)
+        bastion_volume_size=$2
+        shift 2
+        ;;
+    --files-volume-size)
+        files_volume_size=$2
         shift 2
         ;;
     --restore-backup)
         has_restore_backup=true
         ;;
     --help)
-        echo "Usage: tf_init.sh [--project <project name>] [--ssh-key <path to private SSH key>] [--env <staging|live>] [--region <AWS region>] [--backup-file <path to custom backup file to use to boostrap RDS>] [--web-ec2-type <EC2 instance type for web server>] [--bastion-ec2-type <EC2 instance type for bastion server>] [--rds-ec2-type <DB instance class>] [--restore-backup] | --help"
+        echo "Usage: tf_init.sh [--project <project name>] [--ssh-key <path to private SSH key>] [--env <staging|live>] [--region <AWS region>] [--backup-file <path to custom backup file to use to boostrap RDS>] [--web-ec2-type <EC2 instance type for web server>] [--bastion-ec2-type <EC2 instance type for bastion server>] [--files-ec2-type <EC2 instance type for bastion server>] [--rds-ec2-type <DB instance class>] [--web-volume-size <size of root_block_device for web EC2>] [--bastion-volume-size <size of root_block_device for bastion EC2>] [--files-volume-size <size of root_block_device for files EC2>] [--restore-backup] | --help"
         exit 0
         ;;
     *)
@@ -109,7 +131,12 @@ echo "Region: $AWS_REGION"
 echo "GitLab User: $GITLAB_USERNAME"
 echo "Web EC2 Type: $web_ec2_type"
 echo "Bastion EC2 Type: $bastion_ec2_type"
+echo "Files EC2 Type: $files_ec2_type"
 echo "RDS EC2 Type: $rds_ec2_type"
+echo "Web volume size: $web_volume_size"
+echo "Bastion volume size: $bastion_volume_size"
+echo "Files volume size: $files_volume_size"
+
 echo ""
 
 read -r -p "Do you want to continue (y/n)?" choice
@@ -160,7 +187,11 @@ echo "key_name = \"$key_name\"" >> terraform.tfvars
 echo "aws_region = \"$AWS_REGION\"" >> terraform.tfvars
 echo "web_ec2_type = \"$web_ec2_type\"" >> terraform.tfvars
 echo "bastion_ec2_type = \"$bastion_ec2_type\"" >> terraform.tfvars
+echo "files_ec2_type = \"$files_ec2_type\"" >> terraform.tfvars
 echo "rds_ec2_type = \"$rds_ec2_type\"" >> terraform.tfvars
+echo "web_ec2_storage = \"$web_volume_size\"" >> terraform.tfvars
+echo "bastion_ec2_storage = \"$bastion_volume_size\"" >> terraform.tfvars
+echo "files_ec2_storage = \"$files_volume_size\"" >> terraform.tfvars
 # create an environment variable file for this script and for ansible_init.sh
 echo "gitlab_project=$gitlab_project" > .init_env_vars
 echo "GITLAB_USERNAME=$GITLAB_USERNAME" >> .init_env_vars
@@ -172,7 +203,11 @@ echo "backup_file=$backup_file" >> .init_env_vars
 echo "AWS_REGION=$AWS_REGION" >> .init_env_vars
 echo "web_ec2_type=$web_ec2_type" >> .init_env_vars
 echo "bastion_ec2_type=$bastion_ec2_type" >> .init_env_vars
+echo "files_ec2_type=$files_ec2_type" >> .init_env_vars
 echo "rds_ec2_type=$rds_ec2_type" >> .init_env_vars
+echo "web_ec2_storage=$web_volume_size" >> .init_env_vars
+echo "bastion_ec2_storage=$bastion_volume_size" >> .init_env_vars
+echo "files_ec2_storage=$files_volume_size" >> .init_env_vars
 
 PROJECT_VARIABLES_URL="https://gitlab.com/api/v4/projects/$encoded_gitlab_project/variables"
 echo "PROJECT_VARIABLES_URL: $PROJECT_VARIABLES_URL"
