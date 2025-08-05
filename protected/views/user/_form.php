@@ -134,13 +134,13 @@
             </div>
             <? if ('create' === $scenario) { ?>
                 <div class="form-group checkbox-horizontal <?= $model->hasErrors('terms') ? 'has-error' : '' ?>">
-                    <?= $form->labelEx($model, 'terms', array('class' => 'col-xs-3 control-label')) ?>
+                    <?= $form->labelEx($model, 'terms', array('class' => 'col-md-3 control-label')) ?>
                     <div class="col-md-9 input-wrapper">
                         <?php echo $form->checkbox($model, 'terms', array('aria-describedby' => $model->hasErrors('terms') ? 'terms-error terms-desc' : 'terms-desc', 'required' => true, 'aria-required' => 'true')); ?>
-                        <div class='col-md-9 checkbox-error' id="terms-error"><?= $form->error($model, 'terms', array('class' => 'control-error help-block')) ?></div>
-                        <p id="terms-desc" class="col-md-9 help-block checkbox-desc">Please tick here to confirm you have read and understood
-                            our <a href="/site/term#policies">Terms of use</a> and <a href="/site/term#privacy">Privacy
-                                Policy</a></p>
+                    </div>
+                    <div class='col-md-9 checkbox-error' id="terms-error"><?= $form->error($model, 'terms', array('class' => 'control-error help-block')) ?></div>
+                    <div id="terms-desc" class="col-md-9 help-block checkbox-desc"><p>Please tick here to confirm you have read and understood
+                        our <a href="/site/term#policies">Terms of use</a> and <a href="/site/term#privacy">Privacy Policy</a></p>
                     </div>
                 </div>
             <? } ?>
