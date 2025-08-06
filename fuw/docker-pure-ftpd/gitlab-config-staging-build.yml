@@ -7,7 +7,6 @@ PureFtpdBuildStaging:
   tags:
     - $GITLAB_USER_LOGIN
   needs: []
-  when: manual
   environment:
     name: "staging"
     url: $REMOTE_HOME_URL
