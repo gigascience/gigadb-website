@@ -24,7 +24,6 @@ function makeDotEnv () {
         echo "GIGADB_ENV=$currentEnv"
         echo "CI_PROJECT_URL=$ciProjectUrl"
         echo "PROJECT_VARIABLES_URL=$projectVariablesUrl"
-        echo 'GROUP_VARIABLES_URL="https://gitlab.com/api/v4/groups/gigascience/variables?per_page=100"'
         echo 'MISC_VARIABLES_URL="https://gitlab.com/api/v4/projects/gigascience%2Fcnhk-infra/variables"'
         echo 'FORK_VARIABLES_URL="https://gitlab.com/api/v4/groups/3501869/variables"'
       } >> "$mdeBaseDir/.env"
@@ -62,9 +61,6 @@ function makeDotSecrets () {
         PROJECT_VARIABLES_URL="https://gitlab.com/api/v4/projects/gigascience%2Fupstream%2Fgigadb-website/variables"
       fi
 
-      echo "Retrieving variables from ${GROUP_VARIABLES_URL}"
-      curl -s --header "PRIVATE-TOKEN: $accessToken" "${GROUP_VARIABLES_URL}" | jq -r '.[] | select(.key != "ANALYTICS_PRIVATE_KEY") | .key + "=" + .value' > "$mdsBaseDir/.group_var"
-
       if [[ $CI_PROJECT_URL != "https://gitlab.com/gigascience/upstream/gigadb-website" ]];then
         echo "Retrieving variables from ${FORK_VARIABLES_URL}"
         curl -s --header "PRIVATE-TOKEN: $accessToken" "${FORK_VARIABLES_URL}?per_page=100" | jq -r '.[] | select(.key != "ANALYTICS_PRIVATE_KEY") | .key + "=" + .value' > "$mdsBaseDir/.fork_var"
@@ -79,7 +75,7 @@ function makeDotSecrets () {
       echo "Retrieving variables from ${MISC_VARIABLES_URL}"
       curl -s --header "PRIVATE-TOKEN: $accessToken" "${MISC_VARIABLES_URL}?per_page=100" | jq --arg ENVIRONMENT $GIGADB_ENV -r '.[] | select(.environment_scope == "*" or .environment_scope == $ENVIRONMENT ) | select(.key | test("sftp_|MATRIX_|gigadb_datasetfiles_") ) | .key + "=" + .value' > "$mdsBaseDir/.misc_var"
 
-      cat "$mdsBaseDir/.group_var" "$mdsBaseDir/.fork_var" "$mdsBaseDir/.project_var" "$mdsBaseDir/.misc_var" > "$mdsBaseDir/.secrets" && rm "$mdsBaseDir/.group_var" && rm "$mdsBaseDir/.fork_var" && rm "$mdsBaseDir/.project_var" && rm "$mdsBaseDir/.misc_var" && rm "$mdsBaseDir/.project_var_raw1" && rm "$mdsBaseDir/.project_var_raw2" && rm "$mdsBaseDir/.project_vars.json"
+      cat "$mdsBaseDir/.fork_var" "$mdsBaseDir/.project_var" "$mdsBaseDir/.misc_var" > "$mdsBaseDir/.secrets" && rm "$mdsBaseDir/.fork_var" && rm "$mdsBaseDir/.project_var" && rm "$mdsBaseDir/.misc_var" && rm "$mdsBaseDir/.project_var_raw1" && rm "$mdsBaseDir/.project_var_raw2" && rm "$mdsBaseDir/.project_vars.json"
       echo "# Some help about this file in ops/configuration/variables/secrets-sample" >> "$mdsBaseDir/.secrets"
   fi
   echo "Sourcing secrets"

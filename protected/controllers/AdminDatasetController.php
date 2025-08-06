@@ -205,32 +205,16 @@ class AdminDatasetController extends Controller
         }
 
         Yii::log('**** new attributes: ' . print_r($postDataset, true), 'warning');
+        Yii::app()->user->setFlash('updateError', '');
         $uploadStatus = $postDataset['upload_status'];
         $previousUploadStatus = $model->upload_status;
-        $isStatusAvailable = true;
 
         // setting DatasetUpload, the busisness object for File uploading
         $datasetUpload = $this->getDatasetUpload($model->identifier);
 
-        if ($uploadStatus && $uploadStatus !== $previousUploadStatus) {
-            $isStatusAvailable = $this->checkAndSetTransition($datasetUpload, $model, $uploadStatus);
-        }
-
-        if (!$isStatusAvailable) {
-            Yii::app()->user->setFlash('updateError', 'Fail to update status!');
-            Yii::log(sprintf('Failed to change status to %s', $uploadStatus), 'error');
-
-            return $this->render('update', array(
-                'model' => $model,
-                'datasetPageSettings' => $datasetPageSettings,
-                'curationlog'=> $dataProvider,
-                'dataset_id'=> $id,
-            ));
-        }
-
         //curator
         $curatorId = $postDataset['curator_id'];
-        if ($curatorId !== $model->curator_id) {
+        if ((int) $curatorId !== (int) $model->curator_id) {
             CurationLog::createlog_assign_curator($id, $curatorId);
             $model->curator_id = $curatorId;
         }
@@ -238,6 +222,16 @@ class AdminDatasetController extends Controller
         $model->manuscript_id = $postDataset['manuscript_id'] ?? null;
 
         $model->setAttributes($postDataset);
+
+        if ($model->upload_status === 'Published' && !$model->is_publishable) {
+            Yii::app()->user->setFlash('updateError', 'You can\'t update published datasets without minting the DOI.');
+           return  $this->render('update', array(
+                'model' => $model,
+                'datasetPageSettings' => $datasetPageSettings,
+                'curationlog'=> $dataProvider,
+                'dataset_id'=> $id,
+            ));
+        }
 
         // Image information
         $datasetImage = CUploadedFile::getInstanceByName('datasetImage');
@@ -253,7 +247,7 @@ class AdminDatasetController extends Controller
         if ($model->save()) {
             $postDatasetTypes = array_keys(Yii::$app->request->post('datasettypes'));
             if (!$postDatasetTypes) {
-                Yii::app()->user->setFlash('updateError', 'Fail to update your types');
+                Yii::app()->user->setFlash('updateError', 'Fail to update your types. You need to select at least one type');
                 $hasPartialError = true;
             } else {
                 $model->updateDatasetTypes($postDatasetTypes);
@@ -326,16 +320,26 @@ class AdminDatasetController extends Controller
      */
     public function actionPrivate()
     {
-        $id = $_GET['identifier'];
+        $id = Yii::$app->request->get('identifier');
         $model= Dataset::model()->find("identifier=?", array($id));
         $datasetPageSettings = new DatasetPageSettings($model);
-        if ( "invalid" === $datasetPageSettings->getPageType() ) {
+        $pageType = $datasetPageSettings->getPageType();
+
+        if (!in_array($pageType, ['invalid', 'public', 'hidden', 'draft', 'mockup'])) {
+            throw new CHttpException(404, 'Page type not found');
+        }
+
+        if ("invalid" === $pageType) {
             $this->redirect('/site/index');
-        } elseif ( "public" === $datasetPageSettings->getPageType() ) {
+        } elseif ("public" === $pageType) {
             $this->redirect('/dataset/'.$model->identifier);
-        } elseif ( "hidden" === $datasetPageSettings->getPageType() || "draft" === $datasetPageSettings->getPageType() ) {
+        } else {
             $model->token = Yii::$app->security->generateRandomString(16);
-            $model->save();
+
+            if (!$model->save()) {
+                throw new CHttpException(500, 'Fail to update dataset token');
+            }
+
             $this->redirect('/dataset/'.$model->identifier.'/token/'.$model->token);
         }
     }
@@ -397,6 +401,17 @@ class AdminDatasetController extends Controller
      */
     public function actionMint()
     {
+        $onlyDoiChecked = Yii::app()->request->getPost('check');
+        $user = User::model()->findByPk(Yii::app()->user->id);
+
+        if (!$user) {
+            $result['error'] = 'An error occurred';
+            echo json_encode($result);
+            Yii::app()->end();
+        }
+
+        $userName = sprintf('%s %s', $user->first_name, $user->last_name);
+
         if (!$doi = Yii::$app->request->post('doi')) {
             $result['error'] = 'You need to provide a DOI';
             echo json_encode($result);
@@ -421,7 +436,8 @@ class AdminDatasetController extends Controller
         $client = Yii::$container->get('guzzleHttpClient');
 
         if (!$dataset || in_array($dataset->upload_status, $status_array)) {
-            $result['error'] = 'Please, check the dataset and the status';
+            $reason = !$dataset ? 'Please, save your dataset before trying to mint a DOI' : 'Please, check the upload status of your dataset';
+            $result['error'] = $reason;
             echo json_encode($result);
             Yii::app()->end();
         }
@@ -434,8 +450,15 @@ class AdminDatasetController extends Controller
         ]);
         $result['doi_response'] = $doiResponse->getBody()->getContents();
         $result['check_doi_status'] = $doiResponse->getStatusCode();
-        $isPresent = in_array($result['check_doi_status'], [200, 204]);
-        $log .= sprintf(' - Check DOI: %s', $isPresent ? "OK" : "DOI doesn't exist");
+
+        $isPresent = $this->handleDoiCheckAndSetToPublishable($dataset, (int) $result['check_doi_status']);
+
+        if ($onlyDoiChecked) {
+            echo json_encode($result);
+            Yii::app()->end();
+        }
+
+        $log .= sprintf(' | Check DOI: %s', $isPresent ? "OK" : "DOI doesn't exist");
 
         if ($isPresent || $result['check_doi_status'] === 404) {
             if (!$xml_data = $dataset->toXML()) {
@@ -459,10 +482,12 @@ class AdminDatasetController extends Controller
             $keyStatus = sprintf('%s_md_status', $result['check_doi_status'] === 200 ? 'update' : 'create');
             $result[$keyResponse] = $updateMdResponse->getBody()->getContents();
             $result[$keyStatus] = $updateMdResponse->getStatusCode();
-            $log .= sprintf(' - %s md response: %s', $result['check_doi_status'] === 200 ? 'update' : 'create', 201 === $result[$keyStatus] ? "OK" : $result[$keyResponse]);
+            $log .= sprintf(' | %s metadata response: %s', $result['check_doi_status'] === 200 ? 'update' : 'create', 201 === $result[$keyStatus] ? "OK" : $result[$keyResponse]);
 
+            $logMessageXml = 201 === $result[$keyStatus] ? 'Sent DataCite XML' : 'Failed to send DataCite XML';
+            CurationLog::createGeneralCurationLogEntry($dataset->id, $logMessageXml, $xml_data, $userName);
             if (201 === $result[$keyStatus]) {
-                CurationLog::createGeneralCurationLogEntry($dataset->id, 'Sent DataCite XML', $xml_data);
+                $result['xml'] = $xml_data;
             }
 
             if (201 === $result[$keyStatus] && 404 === $result['check_doi_status']) {
@@ -480,11 +505,14 @@ class AdminDatasetController extends Controller
 
                 $result['create_doi_response'] = $response->getBody()->getContents();
                 $result['create_doi_status'] = $response->getStatusCode();
-                $log .= sprintf(' - Create DOI: %s', $result['create_doi_status'] === 201 ? 'OK' : $result['create_doi_response']);
+                $log .= sprintf(' | Create DOI: %s', $result['create_doi_status'] === 201 ? 'OK' : $result['create_doi_response']);
             }
         }
 
-        CurationLog::createGeneralCurationLogEntry($dataset->id, $action, $log);
+        $curationLog = CurationLog::model()->searchByDatasetId($dataset->id);
+        CurationLog::createGeneralCurationLogEntry($dataset->id, $action, $log, $userName);
+
+        $result['html'] = $this->renderPartial('curationLog', array('dataset_id' => $dataset->id, 'model' => $curationLog), true);
         echo json_encode($result);
         Yii::app()->end();
     }
@@ -561,15 +589,19 @@ class AdminDatasetController extends Controller
         switch ($model->upload_status) {
             case 'Submitted':
                 $contentToSend = $datasetUpload->renderNotificationEmailBody('Submitted');
-                $statusIsSet = $datasetUpload->sendNotificationEmailBody($contentToSend, $model->upload_status);
+                $statusIsSet = true;
+                if (Yii::app()->featureFlag->isEnabled('fuw')) {
+                    $statusIsSet = $datasetUpload->sendNotificationEmailBody($contentToSend, $model->upload_status);
+                }
 
                 break;
             case 'DataPending':
                 $contentToSend = ($emailBody = Yii::$app->request->post('Dataset')['emailBody']) ?
                     $this->processTemplateString($emailBody, ['identifier' => $model->identifier]) : $datasetUpload->renderNotificationEmailBody('DataPending');
-
-                $statusIsSet = $datasetUpload->sendNotificationEmailBody($contentToSend, $model->upload_status, $model->submitter->email);
-
+                $statusIsSet = true;
+                if (Yii::app()->featureFlag->isEnabled('fuw')) {
+                    $statusIsSet = $datasetUpload->sendNotificationEmailBody($contentToSend, $model->upload_status, $model->submitter->email);
+                }
                 break;
             default:
                 $statusIsSet = true;
@@ -578,6 +610,28 @@ class AdminDatasetController extends Controller
         if ($statusIsSet) {
             CurationLog::createlog($model->upload_status, $model->id);
         }
+    }
+
+    public function handleDoiCheckAndSetToPublishable(Dataset $dataset, int $doiStatus): bool
+    {
+        $isPresent = in_array($doiStatus, [200, 204]);
+        if ($isPresent) {
+            $dataset->is_publishable = true;
+            $dataset->upload_status = in_array($dataset->upload_status, ['Incomplete', 'Uploaded']) ? 'ImportFromEM' : $dataset->upload_status;
+            if(!$dataset->save()) {
+                $errors = $dataset->getErrors();
+
+                $formatted = '';
+                foreach ($errors as $attribute => $messages) {
+                    foreach ($messages as $message) {
+                        $formatted .= "- $attribute: $message\n";
+                    }
+                }
+                throw new CHttpException(500, $formatted);
+            }
+        }
+
+        return $isPresent;
     }
 }
 

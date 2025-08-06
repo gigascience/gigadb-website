@@ -1,4 +1,3 @@
-@ok-can-offline
 Feature: A user visit gigadb website
   As a website user
   I want to see useful and consistent navigational controls in the website's static pages area
@@ -170,3 +169,13 @@ Feature: A user visit gigadb website
     When I am on "/dataset/100006"
     When I press the button "About"
     Then I should see a link "Jobs" to "https://jobs.gigasciencejournal.com/"
+
+  @ok @issue-2231
+  Scenario: See social media links
+    When I am on "/"
+    Then I should see an icon with label "GigaScience on Facebook" link to "http://facebook.com/GigaScience"
+    And I should see an icon with label "GigaScience on X" link to "http://x.com/GigaScience"
+    And I should see an icon with label "GigaScience on BlueSky" link to "https://bsky.app/profile/gigascience.bsky.social"
+    And I should see an icon with label "GigaScience on Weibo" link to "http://weibo.com/gigasciencejournal"
+    And I should see an icon with label "GigaScience on Mastodon" link to "https://mastodon.social/@GigaScience"
+    And I should see an icon with label "GigaScience Blog" link to "http://gigasciencejournal.com/blog/"

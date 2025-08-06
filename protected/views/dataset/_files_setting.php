@@ -13,6 +13,9 @@
                 <div class="divForForm">
                     <form id="fileSettingsForm" name="myFilesSettingform" method="POST" class="table-settings-form">
                         <input type='hidden' name='setting[]' value="name" />
+                        <input type='hidden'
+                               name='<?php echo CHtml::encode(Yii::app()->request->csrfTokenName); ?>'
+                               value='<?php echo CHtml::encode(Yii::app()->request->csrfToken); ?>'/>
 
                         <div class="attribute-setting-item form-group">
                             <label for="selectPageSizeFilesSetting" class="table-settings-form-label">Items per page:</label>

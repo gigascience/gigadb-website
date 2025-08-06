@@ -1,7 +1,7 @@
-.search-bar{
+.search-bar {
   box-sizing: border-box;
   float: right;
-  width: 292px;
+  width: 314px;
   height: 40px;
   padding: 8px 0;
 }
@@ -11,7 +11,7 @@
   height: 100%;
   border-radius: 5px;
 }
-.search-bar .search-form #keyword {
+.search-bar .search-form [name="keyword"] {
   box-sizing: border-box;
   float:left;
   width: 260px;
@@ -26,16 +26,16 @@
     outline: solid 2px @color-true-white;
   }
 }
-.search-bar .search-form #keyword::-webkit-input-placeholder {
+.search-bar .search-form [name="keyword"]::-webkit-input-placeholder {
   color: @color-true-white;
 }
-.search-bar .search-form #keyword:-ms-input-placeholder {
+.search-bar .search-form [name="keyword"]:-ms-input-placeholder {
   color: @color-true-white;
 }
-.search-bar .search-form #keyword:-moz-placeholder {
+.search-bar .search-form [name="keyword"]:-moz-placeholder {
   color: @color-true-white;
 }
-.search-bar .search-form #keyword::-moz-placeholder {
+.search-bar .search-form [name="keyword"]::-moz-placeholder {
   color: @color-true-white;
 }
 .search-bar .btn-search {
@@ -56,4 +56,62 @@
 }
 .search-bar .btn-search span{
   font-size: 12px;
+}
+
+.search-bar-mobile {
+  box-sizing: border-box;
+  padding: 0 0 8px 0;
+  .search-form {
+    background: @color-gigadb-green-800;
+    width: 100%;
+    height: 32px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    .search-input {
+      flex: 1;
+      box-sizing: border-box;
+      height: 100%;
+      background: @color-gigadb-green-800;
+      border:0;
+      outline: 0;
+      border-radius: 5px 0 0 5px;
+      padding: 5px 10px;
+      color: @color-true-white;
+      &:focus {
+        outline: solid 2px @color-true-white;
+      }
+      &::-webkit-input-placeholder {
+        color: @color-true-white;
+      }
+      &:-ms-input-placeholder {
+        color: @color-true-white;
+      }
+      &:-moz-placeholder {
+        color: @color-true-white;
+      }
+      &::-moz-placeholder {
+        color: @color-true-white;
+      }
+    }
+    .btn-search {
+      margin-left: 2px;
+      float: left;
+      width: 30px;
+      height: 100%;
+      background: @color-gigadb-green-800;
+      text-align: center;
+      border:0;
+      outline: 0;
+      border-radius: 0 5px 5px 0;
+      font-size: 0;
+      color: @color-true-white;
+      &:focus {
+        outline: solid 2px @color-true-white;
+      }
+      span {
+        font-size: 16px;
+      }
+    }
+  }
 }

@@ -126,7 +126,6 @@ class AdminFileController extends Controller
             $model->attributes = $_POST['File'];
 
             // save file attributes from location
-            $model->setSizeValue();
             if ($model->save()) {
                 if(isset($_POST['File']['sample_name'])) {
                     $fs = new FileSample;
@@ -381,59 +380,53 @@ class AdminFileController extends Controller
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
-        if (isset($_POST['edit_attr'])) {
-            $args = $_POST['FileAttributes']['edit'];
-            $fa = FileAttributes::model()->findByPk($args['id']);
-            if($fa) {
-                $fa->attribute_id = $args['attribute_id'];
-                $fa->value = $args['value'];
-                if($args['unit_id'])
-                    $fa->unit_id = $args['unit_id'];
+        if (Yii::$app->request->post('edit_attr') || Yii::$app->request->post('submit_attr')) {
+            $action = Yii::$app->request->post('edit_attr') ? 'edit' : 'new';
+            $args = Yii::$app->request->post('FileAttributes')[$action];
+            $fa = 'edit' === $action ? FileAttributes::model()->findByPk($args['id']) : $attribute;
 
-                if($fa->validate()) {
-                    if($fa->save())
-                        $this->redirect(array('update','id'=>$model->id));
-                    else
-                        Yii::log('save attr failed', 'debug');
-                } else
-                    Yii::log(print_r($fa->getErrors(), true), 'debug');
+            if (!$fa) {
+                throw new CHttpException(404, 'FileAttribute not found');
             }
-        }
-        elseif(isset($_POST['submit_attr'])) {
-            $attrs = $_POST['FileAttributes']['new'];
-            $attribute->attribute_id = $attrs['attribute_id'];
-            $attribute->value = $attrs['value'];
-            if($attrs['unit_id'])
-                $attribute->unit_id = $attrs['unit_id'];
 
-            if($attribute->validate()) {
-                $attribute->save();
-                $this->redirect(array('update', 'id' => $model->id));
+            $fa->attribute_id = $args['attribute_id'];
+            $fa->value = $args['value'];
+            if ($args['unit_id']) {
+                $fa->unit_id = $args['unit_id'];
             }
-        } elseif (isset($_POST['File'])) {
-            $model->attributes = $_POST['File'];
 
-            $model->setSizeValue();
-            if ($model->validate()) {
-                $model->save();
+            if ($fa->save()) {
+                return $this->redirect(array('update', 'id' => $model->id));
+            } else {
+                Yii::log(print_r($fa->getErrors(), true), 'debug');
+            }
 
-                if(isset($_POST['File']['sample_name']) && !empty($_POST['File']['sample_name'])) {
+        } elseif ($attrs = Yii::$app->request->post('File')) {
+            $model->attributes = $attrs;
+
+            if(!$model->setSizeValue()) {
+                $model->addError('size', 'You need to indicate a valid size for the file');
+
+                return $this->render('update', array(
+                    'model' => $model,
+                    'attribute' => $attribute
+                ));
+            }
+
+            if ($model->save()) {
+                if( $sampleName = $attrs['sample_name']) {
                     $fs = $model->fileSamples;
-                    if(!isset($fs[0])) {
-                        $fs = new FileSample;
-                    } else {
-                        $fs = $fs[0];
-                    }
-                    $sample = Sample::model()->findByPk(array('name'=>$_POST['File']['sample_name']));
+                    $fs = $fs[0] ?: new FileSample;
+
+                    $sample = Sample::model()->findByPk(array('name'=>$sampleName));
                     $fs->sample_id = $sample->id;
                     $fs->file_id = $model->id;
-                    if( $fs->sample_id !='None'&& $fs->sample_id !="" )
-                    {
-                    $fs->save(false);
+                    if (!in_array($fs->sample_id, ['None', ""])) {
+                        $fs->save();
                     }
-                    $temp=$fs->find('file_id=:file_id', array(':file_id'=>$model->id));
-                    if($fs->sample_id =="" && $temp != null)
-                    {
+                    $temp = $fs->find('file_id=:file_id', array(':file_id'=>$model->id));
+
+                    if($temp && $fs->sample_id === "") {
                       $temp->delete();
                     }
                 }
@@ -443,12 +436,12 @@ class AdminFileController extends Controller
                     $this->setAutoFileAttributes($model, true);
                 }*/
 
-                $this->redirect(array('view', 'id' => $model->id));
+                return $this->redirect(array('view', 'id' => $model->id));
             }
         }
 
         $this->registerTooltipScript();
-        $this->render('update', array(
+        return $this->render('update', array(
             'model' => $model,
             'attribute' => $attribute
         ));

@@ -13,12 +13,11 @@ class AdminDatasetTypeCest
         );
         $I->canSee('Admin');
 
-        //Remove custom image for dataset of id 8
         $I->amOnPage('adminDataset/update/id/8');
         $I->uncheckOption("#Dataset_Genomic");
         $I->click('Save');
 
-        $I->canSee('Fail to update your types');
+        $I->canSee('Fail to update your types. You need to select at least one type');
     }
 
     public function tryToAddADatasetType(FunctionalTester $I)

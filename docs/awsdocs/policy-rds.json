@@ -14,8 +14,7 @@
             "Sid": "AllowEC2Describe",
             "Effect": "Allow",
             "Action": [
-                "ec2:Describe*",
-                "ec2:DescribeSubnets"
+                "ec2:Describe*"
             ],
             "Resource": "*"
         },
@@ -95,18 +94,18 @@
                 "StringEquals": {
                     "rds:DatabaseEngine": "postgres",
                     "aws:RequestedRegion": [
-			"ap-east-1",
-			"ap-northeast-1",
-			"ap-northeast-2",
-			"ap-northeast-3",
-			"ap-southeast-1",
-			"ap-southeast-2",
-			"ap-south-1",
-			"eu-west-1",
-			"eu-west-2",
-			"eu-west-3",
-			"eu-central-1",
-			"eu-north-1"
+                        "ap-east-1",
+                        "ap-northeast-1",
+                        "ap-northeast-2",
+                        "ap-northeast-3",
+                        "ap-southeast-1",
+                        "ap-southeast-2",
+                        "ap-south-1",
+                        "eu-west-1",
+                        "eu-west-2",
+                        "eu-west-3",
+                        "eu-central-1",
+                        "eu-north-1"
                     ]
                 }
             }
@@ -155,7 +154,6 @@
                 "ec2:RevokeSecurityGroupIngress",
                 "ec2:DeleteVpc",
                 "ec2:DeleteRoute",
-                "ec2:DisassociateRouteTable",
                 "ec2:DeleteNatGateway"
             ],
             "Resource": "*",
@@ -186,7 +184,6 @@
                 "rds:DeleteDBInstance",
                 "rds:RebootDBInstance",
                 "rds:ModifyDBInstance",
-                "rds:CreateDBSnapshot",
                 "rds:DownloadDBLogFilePortion",
                 "rds:DownloadCompleteDBLogFile",
                 "rds:StartDBInstance"
@@ -228,17 +225,17 @@
                     "rds:pg-tag/Owner": "${aws:username}",
                     "aws:RequestedRegion": [
                         "ap-east-1",
-			"ap-northeast-1",
-			"ap-northeast-2",
-			"ap-northeast-3",
-			"ap-southeast-1",
-			"ap-southeast-2",
-			"ap-south-1",
-			"eu-west-1",
-			"eu-west-2",
-			"eu-west-3",
-			"eu-central-1",
-			"eu-north-1"
+                        "ap-northeast-1",
+                        "ap-northeast-2",
+                        "ap-northeast-3",
+                        "ap-southeast-1",
+                        "ap-southeast-2",
+                        "ap-south-1",
+                        "eu-west-1",
+                        "eu-west-2",
+                        "eu-west-3",
+                        "eu-central-1",
+                        "eu-north-1"
                     ]
                 }
             }
@@ -259,6 +256,14 @@
             }
         },
         {
+            "Sid": "AllowCreateDBSnapshot",
+            "Action": [
+                "rds:CreateDBSnapshot"
+            ],
+            "Effect": "Allow",
+            "Resource": "*"
+        },
+        {
             "Sid": "ManageDBSnapshotWithOwnerTagRestriction",
             "Action": [
                 "rds:DeleteDBSnapshot",
@@ -266,7 +271,12 @@
                 "rds:DescribeDBSnapshots"
             ],
             "Effect": "Allow",
-            "Resource": "*"
+            "Resource": "*",
+            "Condition": {
+                "StringEqualsIgnoreCase": {
+                    "rds:snapshot-tag/Owner": "${aws:username}"
+                }
+            }
         },
         {
             "Sid": "ManageEventSubscriptionsWithOwnerTagRestriction",

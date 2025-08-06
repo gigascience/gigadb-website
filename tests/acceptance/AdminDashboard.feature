@@ -1,4 +1,3 @@
-@ok-can-offline
 Feature: admin Dashboard
   as a curator
   I want to access and admin dashboard

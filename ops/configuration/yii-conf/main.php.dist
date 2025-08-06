@@ -69,6 +69,10 @@ return CMap::mergeArray(array(
     ),
 
     'components'=>array(
+        'request' => [
+            'enableCsrfValidation' => true,
+            'enableCookieValidation' => true,
+        ],
         'format'=>array(
             'class'=>'application.extensions.CTypeFormatter'
         ),
@@ -89,7 +93,11 @@ return CMap::mergeArray(array(
 			'passive' => true
 		),
         'request' => array(
-            //'enableCookieValidation' => true,
+            'enableCookieValidation' => true,
+            'enableCsrfValidation' => true
+        ),
+        'securityManager' => array(
+            'validationKey' => '${COOKIE_VALIDATION_KEY}',
         ),
 
         'clientScript'=>array(
@@ -178,7 +186,7 @@ return CMap::mergeArray(array(
         ),
         'fileUploadService' => array(
                 'class' => 'application.components.FileUploadComponent',
-        )
+        ),
     ),
 
     'params' => array(
@@ -216,5 +224,6 @@ return CMap::mergeArray(array(
 
         // For creating URLs to dataset files
         'ftp_connection_url' => '${FTP_CONNECTION_URL}',
+        'secretEmailKey' => '${SECRET_KEY_EMAIL}',
     ),
 ), $pre_config);

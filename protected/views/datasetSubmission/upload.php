@@ -16,7 +16,7 @@ $this->widget('TitleBreadcrumb', [
         if ($_GET['status'] == 'successful') {
             ?>
                     <div class="row">
-                        <div class="col-xs-8 col-xs-offset-2">
+                        <div class="col-xs-12 col-md-8 col-md-offset-2">
                             <div class="form well light-green">
                                 Your GigaDB submission has been received and is currently under review. If you do not hear from us within 5 working days please contact <a href="mailto:#"> database@gigasciencejournal.com </a>
                                 <br/><br/>
@@ -26,7 +26,7 @@ $this->widget('TitleBreadcrumb', [
                     </div>
             <?php } elseif ($_GET['status'] == 'failed') { ?>
                     <div class="row">
-                        <div class="col-xs-8 col-xs-offset-2">
+                        <div class="col-xs-12 col-md-8 col-md-offset-2">
                             <div class="form well">
                                 <p class="error">
                                     Upload failed. Please contact <a href="mailto:#"> database@gigasciencejournal.com </a>
@@ -74,7 +74,7 @@ $this->widget('TitleBreadcrumb', [
                 </div>
             </div>
 
-            <div class="col-xs-6 col-xs-offset-3">
+            <div class="col-xs-12 col-md-6 col-md-offset-3">
                 <div class="form well">
                     <p>
                     You will need to fill out a template file and then give it a new file name.

@@ -16,35 +16,35 @@
 
 - name: Backup the CA
   fetch:
-    src: /home/centos/.docker/ca.pem
+    src: /home/ec2-user/.docker/ca.pem
     dest: output/certs-{{ ec2_public_ip }}/
     flat: yes
 
 - name: Backup the cert
   fetch:
-    src: /home/centos/.docker/cert.pem
+    src: /home/ec2-user/.docker/cert.pem
     dest: output/certs-{{ ec2_public_ip }}/
     flat: yes
 
 - name: Backup the key
   fetch:
-    src: /home/centos/.docker/key.pem
+    src: /home/ec2-user/.docker/key.pem
     dest: output/certs-{{ ec2_public_ip }}/
     flat: yes
 
 - name: copy the content of the CA pem
   slurp:
-    src: /home/centos/.docker/ca.pem
+    src: /home/ec2-user/.docker/ca.pem
   register: ca_pem
 
 - name: copy the content of the cert pem
   slurp:
-    src: /home/centos/.docker/cert.pem
+    src: /home/ec2-user/.docker/cert.pem
   register: cert_pem
 
 - name: copy the content of the key pem
   slurp:
-    src: /home/centos/.docker/key.pem
+    src: /home/ec2-user/.docker/key.pem
   register: key_pem
 
 - name: Copy the CA pem to GITLAB CI environment variable (first time)

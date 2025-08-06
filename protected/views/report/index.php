@@ -18,6 +18,10 @@
 
         <div class="col-md-offset-3 col-md-6">
             <form class="form" method="POST">
+                <input type='hidden'
+                       name='<?php echo CHtml::encode(Yii::app()->request->csrfTokenName); ?>'
+                       value='<?php echo CHtml::encode(Yii::app()->request->csrfToken); ?>'/>
+
                 <div class="form-group">
                     <label class="control-label" for="Report_start_date">Start Date</label>
                     <?= CHtml::dateField('Report[start_date]', isset($args['start_date']) ? $args['start_date'] : '', array('class' => 'form-control')) ?>

@@ -1,95 +1,74 @@
 <div class="base-top-bar">
   <div class="container">
     <div class="row">
-      <nav aria-label="account" class="col-xs-5">
+      <nav aria-label="account" class="col-xs-12 col-md-5 account-navigation">
         <ul class="list-inline text-left base-top-account-bar">
-          <li>
-            <a href="/site/login"
-              ><i class="fa fa-sign-in"></i> Login / Signup</a
-            >
-          </li>
-        </ul>
+                      <li><a href="/user/view_profile"><i class="fa fa-sign-in"></i>Joe's GigaDB Page</a>
+            </li>
+                          <li>
+                <a href="/site/admin">
+                  Admin                </a>
+              </li>
+                        <li><a href="/site/logout"><i class="fa fa-sign-in"></i>LogOut</a></li>
+            <li><a href="/site/mapbrowse"><i class="fa fa-sign-in"></i>Browse Samples</a></li>
+                  </ul>
       </nav>
       <div class="col-xs-7 clearfix top-bar-left">
         <div class="search-bar clearfix">
-          <form
-            action="/search/new"
-            method="GET"
-            role="search"
-            class="search-form"
-            aria-label="Datasets"
-          >
-            <input
-              aria-label="Search GigaDB"
-              class="search-input ui-autocomplete-input"
-              placeholder="e.g. Chicken, brain, etc..."
-              id="keyword2"
-              type="text"
-              name="keyword2"
-              autocomplete="off"
-            />
-            <script type="text/javascript">
-              /*<![CDATA[*/
-              document.addEventListener("DOMContentLoaded", function (event) {
-                jQuery("#keyword2").autocomplete({ minLength: "2", source: [] });
-              });
+          <form action="/search/new" method="GET" role="search" class="search-form" aria-label="Datasets">
+            <input aria-label="Search GigaDB" class="search-input ui-autocomplete-input" placeholder="e.g. Chicken, brain, etc..." id="desktopSearchbar" type="text" name="keyword" autocomplete="off"><script type="text/javascript">
+/*<![CDATA[*/
+document.addEventListener('DOMContentLoaded', function(event) {
+				jQuery('#desktopSearchbar').autocomplete({'minLength':'2','source':[]});
+			});
 
-              /*]]>*/
-            </script>
-            <button class="btn-search" type="submit">
-              <span class="fa fa-search"
-                ><span class="visually-hidden">Search</span></span
-              >
+/*]]>*/
+</script>            <button class="btn-search" type="submit"><span class="fa fa-search"><span class="visually-hidden">Search</span></span>
             </button>
           </form>
         </div>
-        <ul class="share-zone clearfix">
+        <ul class="share-zone clearfix icon-list">
           <li>
-            <a
-              class="fa fa-facebook"
-              style="text-decoration: none"
-              href="http://facebook.com/GigaScience"
-              title="GigaScience on Facebook"
-              aria-label="GigaScience on Facebook"
-            ></a>
+            <a class="fa fa-facebook" style="text-decoration: none;" href="http://facebook.com/GigaScience" title="GigaScience on Facebook" aria-label="GigaScience on Facebook" target="_blank" rel="noopener noreferrer"><span class="sr-only">, opens in a new window</span></a>
+          </li>
+          <li class="icon-list-item">
+            <a href="http://x.com/GigaScience" title="GigaScience on X" class="icon-list-item__link" aria-label="GigaScience on X" target="_blank" rel="noopener noreferrer">
+              <img class="icon-list-item__image" src="/images/icons/x-logo.svg" alt="">
+            <span class="sr-only">, opens in a new window</span></a>
+          </li>
+          <li class="icon-list-item">
+            <a href="https://bsky.app/profile/gigascience.bsky.social" title="GigaScience on BlueSky" class="icon-list-item__link" target="_blank" rel="noopener noreferrer" aria-label="GigaScience on BlueSky">
+              <img class="icon-list-item__image" src="/images/icons/bsky-logo.svg" alt="">
+            </a>
           </li>
           <li>
-            <a
-              class="fa fa-twitter"
-              style="text-decoration: none"
-              href="http://twitter.com/GigaScience"
-              title="GigaScience on Twitter"
-              aria-label="GigaScience on Twitter"
-            ></a>
+            <a class="fa fa-weibo" style="text-decoration: none;" href="http://weibo.com/gigasciencejournal" title="Gigascience on Weibo" aria-label="GigaScience on Weibo" target="_blank" rel="noopener noreferrer"><span class="sr-only">, opens in a new window</span></a>
+          </li>
+          <li class="icon-list-item">
+            <a href="https://mastodon.social/@GigaScience" title="GigaScience on Mastodon" class="icon-list-item__link" aria-label="GigaScience on Mastodon" target="_blank" rel="noopener noreferrer">
+              <img class="icon-list-item__image" src="/images/icons/mastodon-logo.svg" alt="">
+            <span class="sr-only">, opens in a new window</span></a>
           </li>
           <li>
-            <a
-              class="fa fa-weibo"
-              style="text-decoration: none"
-              href="http://weibo.com/gigasciencejournal"
-              title="Gigascience on Weibo"
-              aria-label="GigaScience on Weibo"
-            ></a>
-          </li>
-          <li>
-            <a
-              class="fa fa-google-plus"
-              style="text-decoration: none"
-              href="https://plus.google.com/u/0/104409890199786402308"
-              title="GigaScience on Google+"
-              aria-label="GigaScience on Google+"
-            ></a>
-          </li>
-          <li>
-            <a
-              class="fa fa-rss"
-              style="text-decoration: none"
-              href="http://gigasciencejournal.com/blog/"
-              title="Gigascience Blog"
-              aria-label="GigaScience Blog"
-            ></a>
+            <a class="fa fa-rss" style="text-decoration: none;" href="http://gigasciencejournal.com/blog/" title="Gigascience Blog" aria-label="GigaScience Blog" target="_blank" rel="noopener noreferrer"><span class="sr-only">, opens in a new window</span></a>
           </li>
         </ul>
+      </div>
+    </div>
+    <div class="row search-bar-mobile">
+      <div class="col-xs-12">
+        <form action="/search/new" method="GET" role="search" class="search-form" aria-label="Datasets">
+          <input aria-label="Search GigaDB" class="search-input ui-autocomplete-input" placeholder="e.g. Chicken, brain, etc..." id="mobileSearchbar" type="text" name="keyword" autocomplete="off"><script type="text/javascript">
+/*<![CDATA[*/
+document.addEventListener('DOMContentLoaded', function(event) {
+				jQuery('#mobileSearchbar').autocomplete({'minLength':'2','source':[]});
+			});
+
+/*]]>*/
+</script>          <button class="btn-search" type="submit">
+            <span class="fa fa-search"><span class="sr-only">Search</span></span>
+          </button>
+        </form>
       </div>
     </div>
   </div>

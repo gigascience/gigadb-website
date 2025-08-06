@@ -1,14 +1,14 @@
-.share-zone{
+.share-zone {
   box-sizing: border-box;
   float: right;
-  width: 200px;
+  width: 240px;
   height: 40px;
   list-style:none;
   margin: 0;
   padding: 0;
   margin-left: 20px;
 }
-.share-zone li{
+.share-zone li {
   box-sizing: border-box;
   float:left;
   width: 40px;
@@ -16,7 +16,7 @@
   text-align: center;
   padding: 9px 0;
 }
-.share-zone li a{
+.share-zone li a {
   box-sizing: border-box;
   display: inline-block;
   width: 22px;
@@ -28,6 +28,12 @@
   font-size: 14px;
   font-weight: 400;
 }
-.share-zone li:hover a{
+.share-zone li:hover a {
   border-color: @color-true-white;
+}
+
+@media (max-width: @screen-md-max) {
+  .share-zone {
+    display: none;
+  }
 }

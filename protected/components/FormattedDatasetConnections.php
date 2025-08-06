@@ -87,14 +87,21 @@ class FormattedDatasetConnections extends DatasetComponents implements DatasetCo
     */
     public function getPublications(): array
     {
-        $formattedPublications = [];
         $publications = $this->_cachedDatasetConnections->getPublications();
+        $formattedPublicationsPeerReview = [];
+        $formattedPublicationsPrePrint = [];
         foreach ($publications as $publication) {
             $publication['citation'] = preg_replace("/(doi:)([0-9.]+\/.*)/", '<a href="https://doi.org/$2">$1$2</a>', $publication['citation']);
             $publication['pmurl'] = preg_replace("/^(http.*)$/", "(PubMed:<a href=\"$1\">" . $publication['pmid'] . "</a>)", $publication['pmurl']);
-            $formattedPublications[] = $publication;
+
+            if ($publication['is_pre_print']) {
+                $formattedPublicationsPrePrint[] = $publication;
+            } else {
+                $formattedPublicationsPeerReview[] = $publication;
+            }
         }
-        return $formattedPublications;
+
+        return [$formattedPublicationsPeerReview, $formattedPublicationsPrePrint];
     }
 
     /**
