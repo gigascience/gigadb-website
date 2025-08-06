@@ -115,7 +115,7 @@ server {
     add_header                Access-Control-Allow-Headers '*';
 
 
-    server_name portainer.$SERVER_HOSTNAME;
+    server_name portainer-$SERVER_HOSTNAME;
     root /var/www;
     index index.php index.html index.htm;
 
