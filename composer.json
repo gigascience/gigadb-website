@@ -36,7 +36,8 @@
          "cache/filesystem-adapter": "^1.2.0",
          "kriswallsmith/buzz": "^1.2.1",
          "symfony/string": "^5.4",
-        "symfony/translation-contracts": "^2.5"
+        "symfony/translation-contracts": "^2.5",
+        "laminas/laminas-feed": "^2.10"
     },
     "require-dev": {
         "behat/behat": "^3.5",
