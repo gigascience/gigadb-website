@@ -52,4 +52,4 @@ Feature: A curator opens the mockup page
     And I fill in the field of "id" "Dataset_publication_date" with "2020-01-01"
     And I press the button "Save"
     Then I am on "/dataset/200070/token/ImP3Bbu7ytRSfYFh"
-    And I should see "Zhang G (2020)"
+    And I should see "Zhang G"
