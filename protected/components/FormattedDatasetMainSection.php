@@ -115,17 +115,17 @@ class FormattedDatasetMainSection extends yii\base\BaseObject implements Dataset
     {
         $links = [];
         foreach ($authors as $author) {
-            $formattedName = $author['custom_name'] ?? Author::generateDisplayName(
-                Author::generateDisplayName($author['surname'], null, null),
-                $author['first_name'],
-                $author['middle_name']
-            );
+
+            $formattedName = $author['custom_name'] ??
+                $author['middle_name'] ? $author['first_name'] . ' ' . $author['middle_name'] . ' ' . $author['surname']
+                : $author['first_name'] . ' ' . $author['surname'];
+
             array_push(
                 $links,
                 CHtml::link($formattedName, "/search/new?keyword=$formattedName&author_id=" . $author['id'], array('class' => 'result-sub-links'))
             );
         }
-        return implode('; ', $links);
+        return implode(', ', $links);
     }
 
     /**

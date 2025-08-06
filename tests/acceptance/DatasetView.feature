@@ -4,6 +4,17 @@ Feature: a user visit the dataset page
   So that I can use it to further my research or education
 
   @ok
+  Scenario: show authors ordered by rank from the text form file
+    Given I have not signed in
+    And I am on "dataset/100006"
+    And I should see "Guojie Zhang, David M Lambert, Jun Wang"
+    And I press the button "Cite Dataset"
+    And I should see "Text"
+    When I follow "Text"
+    And I go to the new tab
+    Then I should see "Zhang, G., Lambert, D. M., & Wang, J. (2011). Genomic data from Adelie penguin (Pygoscelis adeliae). [Data set]. GigaScience. https://doi.org/10.5524/100006"
+
+  @ok
   Scenario: number of files in current page and total number of files are displayed
     Given I have not signed in
     When I am on "dataset/100142"
@@ -260,7 +271,7 @@ Feature: a user visit the dataset page
   Scenario: List ordered author list
     Given I have not signed in
     When I am on "/dataset/100020"
-    Then I should see "Liu X; Quan Z; Cheng S; Xu X; Pan S; Zeng P; Xie M; Yue Z; Zhan D; Li Y; Wang J; Zhao Z; Zhang G (2011)"
+    Then I should see "Xin Liu, Zhiwu Quan, Shifeng Cheng, Xun Xu, Shengkai Pan, Peng Zeng, Min Xie, Zhen Yue, Dongliang Zhan, Yingrui Li, J Wang, Zhihai Zhao, Gengyun Zhang"
     And I should not see "Wang, J; Quan, Z; Zhao, Z; Cheng, S; Liu, X; Li, Y; Pan, S; Xie, M; Xu, X; Yue, Z; Zeng, P; Zhan, D; Zhang, G (2011)"
 
   Scenario: Show pre print publications

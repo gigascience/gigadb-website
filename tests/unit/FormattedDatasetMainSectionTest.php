@@ -139,7 +139,7 @@ class FormattedDatasetMainSectionTest extends CTestCase
         $daoUnderTest = new FormattedDatasetMainSection($cachedDatasetMainSection);
 
         $expected = array(
-                        "authors" => '<a class="result-sub-links" href="/search/new?keyword=Montana C&amp;author_id=2">Montana C</a>; <a class="result-sub-links" href="/search/new?keyword=Muñoz ÁGG&amp;author_id=1">Muñoz ÁGG</a>; <a class="result-sub-links" href="/search/new?keyword=Schiøtt M&amp;author_id=7">Schiøtt M</a>',
+                        "authors" => '<a class="result-sub-links" href="/search/new?keyword=Carlos Ábel G Montana,&amp;author_id=2">Carlos Ábel G Montana,</a>, <a class="result-sub-links" href="/search/new?keyword=Ángel GG Muñoz&amp;author_id=1">Ángel GG Muñoz</a>, <a class="result-sub-links" href="/search/new?keyword=Morten Schiøtt,&amp;author_id=7">Morten Schiøtt,</a>',
                         "release_year" => "2018",
                         "dataset_title" => 'Supporting data for "Analyzing climate variations on multiple timescales can guide Zika virus response measures"',
                         "publisher" => "Gigascience",

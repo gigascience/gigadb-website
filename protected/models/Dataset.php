@@ -489,10 +489,10 @@ class Dataset extends CActiveRecord
         foreach ($authors as $author) {
             $creator = $creators->addChild('creator');
             $nameType = strpos($author['surname'], 'Consortium') ? 'Organizational' : 'Personal';
-            $fullName = $author['middle_name'] ? $author['first_name'] . ', ' . $author['middle_name'] . ', ' . $author['surname'] : $author['first_name'] . ', ' . $author['surname'];
+            $fullName = $author['middle_name'] ? $author['first_name'] . ' ' . $author['middle_name'] . ' ' . $author['surname'] : $author['first_name'] . ' ' . $author['surname'];
             $creatorName = $creator->addChild('creatorName', $fullName);
             $creatorName->addAttribute('nameType', $nameType);
-            $givenName = $author['middle_name'] ? $author['first_name'] . ', ' . $author['middle_name'] : $author['first_name'];
+            $givenName = $author['middle_name'] ? $author['first_name'] . ' ' . $author['middle_name'] : $author['first_name'];
             $creator->addChild('givenName', $givenName);
             $creator->addChild('familyName', $author['surname']);
 

@@ -27,9 +27,26 @@ class DatasetTest extends CDbTestCase
         $this->assertFalse($myDataset->validate());
     }
 
-    function testGetAuthors()
+    function testGetCountAuthors()
     {
         $this->assertGreaterThan(0, count($this->datasets(0)->authors), "dataset returns its two authors");
+    }
+
+    function testGetAuthorsOrderedAsc()
+    {
+        $dataset = $this->datasets(0);
+        $authorsOrdred = $dataset->getAuthors();
+
+        $this->assertEquals('Schiøtt,', $authorsOrdred[0]['surname']);
+        $this->assertEquals('Morten', $authorsOrdred[0]['first_name']);
+        $this->assertEquals('Montana,', $authorsOrdred[1]['surname']);
+        $this->assertEquals('Carlos', $authorsOrdred[1]['first_name']);
+        $this->assertEquals('Muñoz', $authorsOrdred[2]['surname']);
+        $this->assertEquals('Ángel', $authorsOrdred[2]['first_name']);
+        $this->assertEquals(1, $authorsOrdred[0]['rank']);
+        $this->assertEquals(2, $authorsOrdred[1]['rank']);
+        $this->assertEquals(3, $authorsOrdred[2]['rank']);
+
     }
 
     function testGetAuthorNames()
