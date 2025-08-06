@@ -17,6 +17,11 @@ return [
         ]
     ],
     'components' => [
+        'request' => array(
+                'enableCookieValidation' => true,
+                'enableCsrfValidation' => true,
+                'cookieValidationKey' => '${COOKIE_VALIDATION_KEY}'
+         ),
         'db' => [
             'class' => 'yii\db\Connection',
             'dsn' => "pgsql:dbname={$dbConfig['database']};host={$dbConfig['host']}",

@@ -49,8 +49,8 @@ class CaptchaService extends CApplicationComponent
      */
     public function validate(CModel $model, string $attribute): void
     {
-        if (!empty($model->$attribute)) {
-            if ($model->$attribute != $_SESSION["captcha"]) {
+        if ($model->$attribute) {
+            if ($model->$attribute !== $_SESSION["captcha"]) {
                 $model->addError($attribute, 'Captcha is incorrect!');
             }
         } else {

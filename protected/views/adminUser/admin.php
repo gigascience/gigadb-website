@@ -42,9 +42,10 @@ Yii::app()->clientScript->registerScript('customize-close-button', '
   <button class="btn danger-btn-o delete" title="delete" onclick="goto_userdelete();">Delete</button>
 </div>
 
-<h2 class="h5">Advanced Operations</h2>
-<button class="btn background-btn-o" title="link" onclick="goto_userlinkauthor();">Link this user to an author</button>
 
+<h2 class='h5'>Advanced Operations</h2>
+<button class='btn background-btn-o' title='link' onclick='goto_userlinkauthor();'>Link this user to an author
+</button>
 
 <div id="status" class="mt-10"></div>
 
@@ -142,32 +143,16 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
   }
 
   function open_controls(user_id) {
-    console.log(user_id)
     $("#controls").data('user_id', user_id);
     $("#controls").dialog("option", "title", "Manage User Id: " + user_id);
     $("#controls").dialog("open");
+
     return false;
   }
 
   function goto_userview() {
     <?
-    echo 'var userview_url = "' . Yii::app()->urlManager->createUrl('user/view', array('id' => '')) . '";'
-    ?>
-    var user_id = $("#controls").data('user_id');
-    window.location = userview_url + "/" + user_id;
-  }
-
-  function goto_userview() {
-    <?
-    echo 'var base_url = "' . Yii::app()->urlManager->createUrl('user/view', array('id' => '')) . '";'
-    ?>
-    var user_id = $("#controls").data('user_id');
-    window.location = userview_url + "/" + user_id;
-  }
-
-  function goto_userview() {
-    <?
-    echo 'var base_url = "' . Yii::app()->urlManager->createUrl('user/view', array('id' => '')) . '";'
+    echo 'var base_url = "' . Yii::app()->urlManager->createUrl('adminUser/view', array('id' => '')) . '";'
     ?>
     var user_id = $("#controls").data('user_id');
     window.location = base_url + "/" + user_id;
@@ -175,7 +160,7 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
 
   function goto_userupdate() {
     <?
-    echo 'var base_url = "' . Yii::app()->urlManager->createUrl('user/update', array('id' => '')) . '";'
+    echo 'var base_url = "' . Yii::app()->urlManager->createUrl('adminUser/update', array('id' => '')) . '";'
     ?>
     var user_id = $("#controls").data('user_id');
     window.location = base_url + "/" + user_id;
@@ -183,19 +168,19 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
 
   function goto_userdelete() {
     <?
-    echo 'var base_url = "' . Yii::app()->urlManager->createUrl('user/delete', array('id' => '')) . '";'
+    echo 'var base_url = "' . Yii::app()->urlManager->createUrl('adminUser/delete', array('id' => '')) . '";'
     ?>
     var user_id = $("#controls").data('user_id');
     //window.location= base_url + "/" + user_id;
     $.ajax({
-      url: base_url + "/" + user_id,
-      type: 'POST',
-      success: function(data) {
+      "url": base_url + "/" + user_id,
+      "type": 'POST',
+      "success": function(data) {
         $("#status").addClass("alert alert-success")
           .append("user successfully deactivated.")
           .append("Refresh the page to see the changes.");
       },
-      error: function(data) {
+      "error": function(data) {
         $("#status").addClass("alert alert-danger")
           .append("user deactivation failed.")
       }

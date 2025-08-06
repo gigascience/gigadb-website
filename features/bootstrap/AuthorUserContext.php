@@ -71,7 +71,7 @@ class AuthorUserContext implements Context
         //     new Step\Then("I should see \"Click on a row to proceed with linking that author with user\""),
         // );
 
-        $this->minkContext->visit("/user/update/id/${arg1}");
+        $this->minkContext->visit("/adminUser/update/id/${arg1}");
         $this->minkContext->clickLink("Link this user to an author");
         $this->claimDatasetContext->iWaitSeconds(2);
         $this->minkContext->assertPageAddress("/adminAuthor/admin");

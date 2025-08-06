@@ -1,4 +1,9 @@
 <div class="container">
+    <?php
+    foreach (Yii::app()->user->getFlashes() as $key => $message) {
+        echo '<div class="alert alert-' . $key . '">' . $message . "</div>\n";
+    }
+    ?>
   <? if ($user->is_activated) {
     $this->widget('TitleBreadcrumb', [
       'pageTitle' => 'Account activated',
@@ -19,8 +24,6 @@
         ['isActive' => true, 'label' => 'Account Pending'],
       ]
     ]);
-
-
     ?>
     <p>You are now registered. We will contact you shortly. Feel free to <?= CHtml::link("contact us", "mailto:" . Yii::app()->params['support_email']) ?>&nbsp;if you prefer.</p>
   <? } ?>

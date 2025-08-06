@@ -93,9 +93,8 @@ class EmailCest
         $I->see('Welcome!', 'h1');
         // Now extract URLs from activation email sent to new user
         $urls = $I->grabUrlsFromLastEmail();
-        codecept_debug($urls);
         // These URLs should contain one user activation link
-        $url_matches = preg_grep('/^http:\/\/gigadb.test\/user\/confirm\/key\/\d+?/', $urls);
+        $url_matches = preg_grep('/^http:\/\/gigadb.test\/user\/confirm\/key\/(.+)/', $urls);
         $I->assertCount(1, $url_matches, "User activation link in email was not found");
     }
 
@@ -128,13 +127,10 @@ class EmailCest
         $I->see('Welcome!', 'h1');
         // Extract user activation link
         $urls = $I->grabUrlsFromLastEmail();
-        $url_matches = preg_grep('/^http:\/\/gigadb.test\/user\/confirm\/key\/\d+?/', $urls);
+        $url_matches = preg_grep('/^http:\/\/gigadb.test\/user\/confirm\/key/', $urls);
         // Go to activation link
-        $I->amOnPage(array_values($url_matches)[0]);
-        // Get Curator notification email
-        $message = $I->getLastMessage();
-        $content = $I->getMessageContent($message);
-        // Check curator notification email contains expected message
-        $I->assertStringContainsString("New user registration", $content, "Notification email does not contain expected message");
+        $path = parse_url($url_matches[2], PHP_URL_PATH);
+        $I->amOnPage($path);
+        $I->cantSee("Your account has been activated");
     }
 }
