@@ -10,8 +10,6 @@ Feature: Change password
     Then I should see "Change Password"
     And I should see a password field "ChangePasswordForm_password"
     And I should see a password field "ChangePasswordForm_confirmPassword"
-    And I should see a check-box field "ChangePasswordForm_newsletter"
-    And I should see a check-box field "ChangePasswordForm_terms"
     And I should see a link "Cancel" to "/user/view_profile"
     And I should see a submit button "Save"
 
@@ -21,7 +19,6 @@ Feature: Change password
     When I am on "/user/changePassword"
     And I fill in the field of "id" "ChangePasswordForm_password" with "123456787"
     And I fill in the field of "id" "ChangePasswordForm_confirmPassword" with "123456787"
-    And I check the field "ChangePasswordForm_terms"
     And I press the button "Save"
     Then I should see "Make sure your password contains at least 8 characters with 1 uppercase character, 1 number and 1 special character."
 
@@ -31,6 +28,5 @@ Feature: Change password
     When I am on "/user/changePassword"
     And I fill in the field of "id" "ChangePasswordForm_password" with "Admintest123?"
     And I fill in the field of "id" "ChangePasswordForm_confirmPassword" with "Admintest123?"
-    And I check the field "ChangePasswordForm_terms"
     And I press the button "Save"
     Then I should see "Your profile page"

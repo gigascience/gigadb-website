@@ -5,9 +5,33 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## Unreleased
 
 - Fix: Disable automatic coderabbit review status message
+- Fix #561: Save terms and conditions in the database
+- Fix #561: An admin can activate the user account
+- Fix #561: Enable csrf protection
+- Fix #561: Generate a token for account activation by email
+- Fix #561: Separate admin user page from non admin user page
+- Security: bump the composer group across 2 directories with 6 updates
+- Fix #2016: Avoid adding logs if the curator is not updated
 
-## v4.4.14 - 2025-06-24 - 4159a6086
+## v4.4.15 - 2025-07-23 - a60aa8aa5 - live since 2025-07-24
 
+- Fix #2390: Web site fails to reconnect to DB server if connections are terminated
+- Fix #2415: Remove redundant meta tag robots acceptance tests
+- Feat #2231: Add BlueSky social icon to header and footer
+- Fix: Add GIGADB_PORT to secrets example file
+- Feat #481: Add hyperlink to Gensc.org in FAQ page
+- Feat #491: Update FAQ entry about service costs
+- Feat #489: Add new FAQ entry "What are the benefits of using GigaDB?"
+- Feat #482: Update FAQ "What data storage procedures do you follow?"
+- Feat #490, #486, #483, #477, #475, #833: Update FAQ page text content
+- Feat #2314: Comment out API endpoints from help page that are temporarily not working
+- Feat #2329, #2336, #2344: Add new FAQ entries
+- Feat #513, #2190: Create meta tags based on environments
+- Fix #2406: Upgrade EOL debian buster to debian bullseye
+
+## v4.4.14 - 2025-07-09- d11b331f1 - live since 2025-07-16
+
+- Fix #2384: Set to 'is publishable' if status check during DOI minting returns a 204 status code
 - Feat #1641: Check if the DOI has been minted when the upload status is set to 'Published'
 - Feat #2236: Display pre print manuscript on dataset page
 - Security dependabot#183: Server-Side Request Forgery in axios

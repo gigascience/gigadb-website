@@ -44,6 +44,21 @@ Feature: NewUser
     Then I should not see "Welcome!"
 
   @ok
+  Scenario: Filling in the form to create new user and it fails if the terms are not accepted
+    Given I am on "/user/create"
+    And there is no user with email "martianmanhunter@mailinator.com"
+    When I fill in the field of "id" "User_email" with "martianmanhunter@mailinator.com"
+    And I fill in the field of "id" "User_first_name" with "J'onn"
+    And I fill in the field of "id" "User_last_name" with "J'onzz"
+    And I fill in the field of "id" "User_password" with "Azertyu1"
+    And I fill in the field of "id" "User_password_repeat" with "Azertyu1"
+    And I fill in the field of "id" "User_affiliation" with "GigaScience"
+    And I select "NCBI" from the field "User_preferred_link"
+    And I fill in the field of "id" "User_verifyCode" with "shazam"
+    And I press the button "Register"
+    Then I should not see "Welcome!"
+
+  @ok
   Scenario: Filling in the form to create new user
     Given I am on "/user/create"
     And there is no user with email "martianmanhunter@mailinator.com"

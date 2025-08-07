@@ -6,7 +6,7 @@
 		'pageTitle' => 'Update User ' . $model->id,
 		'breadcrumbItems' => [
 			['label' => 'Admin', 'href' => '/site/admin'],
-			['label' => 'Manage', 'href' => '/user/admin'],
+			['label' => 'Manage', 'href' => '/adminUser/admin'],
 			['isActive' => true, 'label' => 'Update'],
 		]
 	]);

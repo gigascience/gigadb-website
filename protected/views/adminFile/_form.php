@@ -311,7 +311,8 @@
         const row = $('.row-edit-' + id);
         if (id) {
             $.post('/adminFile/editAttr', {
-                'id': id
+                'id': id,
+                '<?php echo Yii::app()->request->csrfTokenName; ?>': '<?php echo Yii::app()->request->csrfToken; ?>'
             }, function(result) {
                 if (result.success) {
                   $('#file_attr_modal').modal('show');
@@ -328,7 +329,8 @@
         const row = $('.row-edit-' + id);
         if (id) {
             $.post('/adminFile/deleteFileAttribute', {
-                'id': id
+                'id': id,
+                '<?php echo Yii::app()->request->csrfTokenName; ?>': '<?php echo Yii::app()->request->csrfToken; ?>'
             }, function(result) {
                 if (result) {
                     // console.log(result);

@@ -163,6 +163,15 @@ class AcceptanceTester extends \Codeception\Actor
     }
 
     /**
+     * @Then I should see a button :button with author link
+     */
+    public function iShouldSeeAButtonWithAuthorLink($expectButton)
+    {
+        $actualButton = $this->grabTextFrom("//a[contains(@href, '/adminAuthor/prepareUserLink/user_id/')]");
+        $this->assertEquals($actualButton, $expectButton);
+    }
+
+    /**
      * @When I fill in the field of :attribute :fieldName with :value
      */
     public function iFillInTheFieldOfWith($attribute, $fieldName, $value)
@@ -404,6 +413,9 @@ class AcceptanceTester extends \Codeception\Actor
     {
         $rows = $table->getRows();
         foreach ($rows as $index => $expectedRow) {
+            $expectedRow = array_map(function ($item) {
+                return $item === '' ? ' ' : $item;
+            }, $expectedRow);
             $expectedRow = implode(' ', $expectedRow);
             $tableRows = $this->grabMultiple('table tr');
             //remove headers and search bar
@@ -450,5 +462,49 @@ class AcceptanceTester extends \Codeception\Actor
     public function iCannotSeeTheOptionSelectedFor($value, $id)
     {
         $this->dontSeeOptionIsSelected("#dataset-form select[id='$id']", $value);
+    }
+
+    /**
+     * @Then I should see a meta tag which :attribute is :value and content is :content
+     */
+    public function iShouldSeeAMetaTagWhichNameAndContent($attribute, $value, $content)
+    {
+        $this->seeInPageSource('<meta ' . $attribute . '="' . $value . '" content="' . $content . '">');
+    }
+
+    /**
+     * @Then I should see :type meta-tags
+     */
+    public function iShouldSeeMetaTags($type, \Behat\Gherkin\Node\TableNode $table)
+    {
+        $rows = $table->getRows();
+        foreach ($rows as $row) {
+           if ( strtolower($type) == "html") {
+               $this->seeInPageSource('<meta ' . 'name' . '="' . $row[0] . '"' . ' ' . 'content="' . $row[1] . '">');
+           } else {
+               $this->seeInPageSource('<meta ' . 'property' . '="' . $row[0] . '"' . ' ' . 'content="' . $row[1] . '">');
+           }
+       }
+    }
+
+    /**
+     * @Then I should see an icon with label :ariaLabel link to :expectedUrl
+     */
+    public function iShouldSeeAnIconWithLabelLinkTo($ariaLabel, $expectedUrl)
+    {
+        $this->seeElement("//a[@aria-label='$ariaLabel']");
+        $actualUrl = $this->grabAttributeFrom("//a[@aria-label='$ariaLabel']", "href");
+        $this->assertEquals($expectedUrl, $actualUrl);
+    }
+
+    /**
+     * @param $row
+     * @Then I click on row :row column :column and icon :icon
+     *
+     * @return void
+     */
+    public function iClickOnRow($row, $column, $icon)
+    {
+        $this->click(['xpath' => '//table/tbody/tr['.$row.']/td['.$column.']//a['.$icon.']']);
     }
 }

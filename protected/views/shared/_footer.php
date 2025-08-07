@@ -29,6 +29,11 @@
             </a>
           </li>
           <li class="footer-social__item">
+            <a href="https://bsky.app/profile/gigascience.bsky.social" title="GigaScience on BlueSky" class="footer-social__link" target="_blank" rel="noopener noreferrer" aria-label="GigaScience on BlueSky">
+              <img class="footer-social__icon" src="/images/icons/bsky-logo.svg" alt="">
+            </a>
+          </li>
+          <li class="footer-social__item">
             <a class="fa fa-weibo footer-social__link" href="http://weibo.com/gigasciencejournal"
               title="Gigascience on Weibo" aria-label="GigaScience on Weibo"></a>
           </li>

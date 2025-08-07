@@ -205,7 +205,7 @@ Feature: filter tables on admin page
 
   @ok
   Scenario: Users
-    Given I am on "/user/admin"
+    Given I am on "/adminUser/admin"
     When I fill in the field of "name" "User[email]" with "admin@"
     And I press return on the element "(//input)[@name='User[email]']"
     And I wait "1" seconds

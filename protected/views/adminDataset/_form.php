@@ -165,8 +165,11 @@ echo $form->hiddenField($model, "image_id");
                                         'X',
                                         Yii::app()->createUrl('/adminDataset/clearImageFile/'),
                                         array(
-                                            'type'     => 'POST',
-                                            'data'     => array('doi' => 'js:$("#Dataset_identifier").val()'),
+                                            'type' => 'POST',
+                                            'data' => array(
+                                                    'doi' => 'js:$("#Dataset_identifier").val()',
+                                                    Yii::app()->request->csrfTokenName => Yii::app()->request->csrfToken
+                                            ),
                                             'dataType' => 'json',
                                             'success'  => 'js:function(output){
                                                     if(output.status){
@@ -203,8 +206,11 @@ echo $form->hiddenField($model, "image_id");
                                                 'Remove image record (file+metadata)',
                                                 Yii::app()->createUrl('/adminDataset/removeImage/'),
                                                 array(
-                                                    'type'     => 'POST',
-                                                    'data'     => array('doi' => 'js:$("#Dataset_identifier").val()'),
+                                                    'type' => 'POST',
+                                                    'data' => array(
+                                                            'doi' => 'js:$("#Dataset_identifier").val()',
+                                                            Yii::app()->request->csrfTokenName => Yii::app()->request->csrfToken
+                                                    ),
                                                     'dataType' => 'json',
                                                     'success'  => 'js:function(output){
 
@@ -332,8 +338,11 @@ echo $form->hiddenField($model, "image_id");
                                                 'type'     => 'POST',
                                                 'url'      => array('adminDataset/checkDOIExist'),
                                                 'dataType' => 'JSON',
-                                                'data'     => array('doi' => 'js:$(this).val()'),
-                                                'success'  => 'function(data){
+                                                'data' => array(
+                                                        'doi' => 'js:$(this).val()',
+                                                        Yii::app()->request->csrfTokenName => Yii::app()->request->csrfToken
+                                                    ),
+                                                'success' => 'function(data){
                                                     if(data.status){
                                                         $("#Dataset_identifier").addClass("error");
                                                     }else {
@@ -354,8 +363,11 @@ echo $form->hiddenField($model, "image_id");
                                         'Mint DOI',
                                         Yii::app()->createUrl('/adminDataset/mint/'),
                                         [
-                                            'type'     => 'POST',
-                                            'data'     => ['doi' => 'js:$("#Dataset_identifier").val()'],
+                                            'type' => 'POST',
+                                            'data' => [
+                                                    'doi' => 'js:$("#Dataset_identifier").val()',
+                                                    Yii::app()->request->csrfTokenName => Yii::app()->request->csrfToken
+                                            ],
                                             'dataType' => 'json',
                                             'success'  => new CJavaScriptExpression('handleMintingSuccess'),
                                         ],
@@ -662,11 +674,12 @@ echo $form->hiddenField($model, "image_id");
                 type: 'POST',
                 data: {
                     doi: $('#Dataset_identifier').val(),
-                    check: true
+                    check: true,
+                    '<?php echo Yii::app()->request->csrfTokenName; ?>': '<?php echo Yii::app()->request->csrfToken; ?>'
                 },
                 dataType: 'json',
                 success: function (response) {
-                    if (200 !== response.check_doi_status) {
+                    if (!([200, 204].includes(response.check_doi_status))) {
                         $('#check_doi_modal').modal('show')
                         myError.style.display = 'block'
                         let el = document.createElement('div')

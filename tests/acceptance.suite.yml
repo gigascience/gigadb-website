@@ -33,7 +33,7 @@ modules:
               wait: 5
               capabilities:
                   "goog:chromeOptions":
-                      args: ['--headless', '--window-size=1000,800']
+                      args: ['--headless', '--window-size=1200,800']
                       w3c: false
                   "goog:loggingPrefs":
                     browser: ALL

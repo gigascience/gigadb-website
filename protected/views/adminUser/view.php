@@ -4,7 +4,7 @@
     'pageTitle' => 'View User #' . $model->id,
     'breadcrumbItems' => [
       ['label' => 'Admin', 'href' => '/site/admin'],
-      ['label' => 'Manage', 'href' => '/user/admin'],
+      ['label' => 'Manage', 'href' => '/adminUser/admin'],
       ['isActive' => true, 'label' => 'View'],
     ]
   ]);
@@ -22,6 +22,10 @@
       'affiliation',
       'role',
       array(
+          'label' => 'Terms and Conditions',
+          'value' => $model->terms ? 'Yes' : 'No'
+      ),
+      array(
         'label' => 'Is Activated',
         'value' => $model->is_activated ? 'Yes' : 'No'
       ),
@@ -36,23 +40,23 @@
   ));
 
 
-  if (null != $user_command) {
+  if ($user_command) {
   ?>
     <div class="alert alert-gigadb-info">
       <?php
       $claimed_author = Author::model()->findByPk($user_command->actionable_id);
-      if (null != $claimed_author) {
+      if ($claimed_author) {
         echo "This user has a pending claim on {$claimed_author->getDisplayName()} ({$claimed_author->id})";
       }
       echo CHtml::link(
         'Edit user to validate/reject the claim',
-        array('user/update', 'id' => $model->id),
+        array('adminUser/update', 'id' => $model->id),
         array('class' => 'btn background-btn ml-10 mr-10')
       );
       ?>
     </div>
   <?php
-  } else if (null !=  $linked_author) {
+  } else if ($linked_author) {
   ?>
     <div class="alert alert-gigadb-info">
       This user is linked to author: <? echo $linked_author->getDisplayName() ?> (<? echo $linked_author->id ?>)

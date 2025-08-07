@@ -141,6 +141,18 @@ class CuratorSteps extends \Codeception\Actor
     }
 
     /**
+     * @Given I have signed in as user
+     */
+    public function iHaveSignedInAsUser() {
+        $this->I->amOnUrl('http://gigadb.test');
+        $this->I->amOnPage('/site/login');
+        $this->I->fillField(['name' => 'LoginForm[username]'], 'user@gigadb.org');
+        $this->I->fillField(['name' => 'LoginForm[password]'], 'gigadb');
+        $this->I->click('Login');
+        $this->I->waitForText('Home', 10);
+    }
+
+    /**
      * @When I click on keywords field
      */
     public function iClickOnKeywordsField()
@@ -260,4 +272,13 @@ class CuratorSteps extends \Codeception\Actor
       $this->I->click('.tag-editor-delete');
     }
 
+    /**
+     * @When I fill in keywords fields of name keywords with :keyword
+     */
+    public function iFillInKeywordsFieldsOfNameKeywordsWith($keyword) {
+        $this->I->executeJS(
+            "$('#keywords').tagEditor('addTag', " . json_encode($keyword) . ');'
+        );
+        $this->I->wait(3);
+    }
 }

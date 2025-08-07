@@ -12,7 +12,7 @@
                         </tr>
                         <tr>
                             <td width="600" align="center" bgcolor="#ffffff;" style="background-color:#ffffff;border-top:1px solid #D7E1EE;padding-top:15px;padding-bottom:20px;">
-                                <a href="<?php if (isset($url)) echo $url; else echo 'http://gigadb.org'; ?>"  target="_blank" style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif; font-size:15px; color:#ffffff; text-decoration:none; background-image:url(/images/email/confirm-btn.gif); background-color:#6ea23a; display:block; width:250px; height:26px; padding-top:4px;">Confirm your account</a>
+                                <a href="<?php if ($url) echo CHtml::encode($url); else echo 'http://gigadb.org'; ?>"  target="_blank" style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif; font-size:15px; color:#ffffff; text-decoration:none; background-image:url(/images/email/confirm-btn.gif); background-color:#6ea23a; display:block; width:250px; height:26px; padding-top:4px;">Confirm your account</a>
                             </td>
                         </tr>
                     </table>

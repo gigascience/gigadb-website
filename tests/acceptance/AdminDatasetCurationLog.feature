@@ -40,3 +40,23 @@ Feature: curation log entry under the dataset form
     Then I am on "/adminDataset/update/id/8"
     And I wait "3" seconds
     And I should see "Joe Bloggs"
+
+  @ok
+  Scenario: Check CurationLog is not updated if curator is not updated
+    When I am on "/adminDataset/update/id/5"
+    And I should not see "Curator Assigned"
+    And I check the field "Dataset_Workflow"
+    And I press the button "Save"
+    Then I should see "Status changed to ImportFromEM"
+    And  I should see "Updated successfully!"
+    And I should not see "Curator Assigned"
+
+  @ok
+  Scenario: Check CurationLog is updated if curator is updated
+    When I am on "/adminDataset/update/id/5"
+    And I should not see "Curator Assigned"
+    And I select "admin1@gigasciencejournal.com" from the field "Dataset_curator_id"
+    And I press the button "Save"
+    Then I should see "Status changed to ImportFromEM"
+    And I should see "Updated successfully!"
+    And I should see "Curator Assigned"
