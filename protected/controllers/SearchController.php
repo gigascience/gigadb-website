@@ -97,7 +97,7 @@ class SearchController extends Controller
 
         if(!$keyword = $request->get('keyword')) {
             Yii::app()->user->setFlash('danger','Keyword can not be blank');
-            return $this->redirect(array("/site/index"));
+            $this->redirect(array("/site/index"));
         }
 
         $ds = new DatabaseSearch();
@@ -106,50 +106,49 @@ class SearchController extends Controller
         $page = 1;
         $data = $ds->searchByKey($keyword,"search");
 
-        if(!Yii::app()->request->isPostRequest) {
+        if (!Yii::app()->request->isPostRequest) {
             $datasets = $data['datasets'];
             $datasets['data'] = array_slice($datasets['data'], $offset, $limit);
             $data['datasets'] = $datasets;
 
-            return $this->render('new', $data);
-        } else {
-            $page = intVal($request->post('page')) ?: 1;
-
-            $offset = ($page-1)*$limit;
-            $datasets = $data['datasets'];
-            $datasets['data'] = array_slice($datasets['data'], $offset, $limit);
-            $data['datasets'] = $datasets;
-            $data['page'] = $page;
-
-
-
-            $result = $this->renderPartial('_new_result', array(
-                'model' => $data['model'],
-                'datasets' => $data['datasets'],
-                'samples' => $data['samples'],
-                'files' => $data['files'],
-                'display' => $data['display']
-            ), true, false);
-
-            $filter = $this->renderPartial('_new_filter', array(
-                'model' => $data['model'],
-                'list_dataset_types' => $data['list_dataset_types'],
-                'list_projects' => $data['list_projects'],
-                'list_ext_types' => $data['list_ext_types'],
-                'list_filetypes' => $data['list_filetypes'],
-                'list_formats' => $data['list_formats'],
-                'list_common_names' => $data['list_common_names']
-            ), true, false);
-
-            $range = $this->renderPartial('_range', array(
-                            'total_dataset'=>$data['datasets']['total'],
-                            'page'=>$data['page'],
-                            'limit'=>$data['limit']
-                        ), true, false);
-
-            echo CJSON::encode(array('success'=>true, 'filter'=>$filter, 'result'=>$result, 'range'=>$range));
+            $this->render('new', $data);
             Yii::app()->end();
         }
+
+        $page = intVal($request->post('page')) ?: 1;
+
+        $offset = ($page-1)*$limit;
+        $datasets = $data['datasets'];
+        $datasets['data'] = array_slice($datasets['data'], $offset, $limit);
+        $data['datasets'] = $datasets;
+        $data['page'] = $page;
+
+        $result = $this->renderPartial('_new_result', array(
+            'model' => $data['model'],
+            'datasets' => $data['datasets'],
+            'samples' => $data['samples'],
+            'files' => $data['files'],
+            'display' => $data['display']
+        ), true);
+
+        $filter = $this->renderPartial('_new_filter', array(
+            'model' => $data['model'],
+            'list_dataset_types' => $data['list_dataset_types'],
+            'list_projects' => $data['list_projects'],
+            'list_ext_types' => $data['list_ext_types'],
+            'list_filetypes' => $data['list_filetypes'],
+            'list_formats' => $data['list_formats'],
+            'list_common_names' => $data['list_common_names']
+        ), true);
+
+        $range = $this->renderPartial('_range', array(
+                        'total_dataset'=>$data['datasets']['total'],
+                        'page'=>$data['page'],
+                        'limit'=>$data['limit']
+                    ), true);
+
+        echo CJSON::encode(array('success'=>true, 'filter'=>$filter, 'result'=>$result, 'range'=>$range));
+        Yii::app()->end();
     }
 
 }

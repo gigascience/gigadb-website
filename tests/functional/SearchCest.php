@@ -30,8 +30,10 @@ class SearchCest
     }
 
     public function tryNewPostAjax(\FunctionalTester $I) {
+        $I->amOnPage('/');
+        $csrf = $I->grabAttributeFrom('meta[name="csrf-token"]', 'content');
         $I->haveHttpHeader('X-Requested-With', 'XMLHttpRequest');
-        $I->sendPOST('search/new?keyword=test', ['page' => 1]);
+        $I->sendPOST('search/new?keyword=test', ['page' => 1, 'YII_CSRF_TOKEN' => $csrf]);
         $I->seeResponseCodeIs(200);
         $I->seeResponseContainsJson(['success' => true]);
 
