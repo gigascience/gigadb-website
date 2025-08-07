@@ -79,7 +79,31 @@ while [[ $# -gt 0 ]]; do
         has_restore_backup=true
         ;;
     --help)
-        echo "Usage: tf_init.sh [--project <project name>] [--ssh-key <path to private SSH key>] [--env <staging|live>] [--region <AWS region>] [--backup-file <path to custom backup file to use to boostrap RDS>] [--web-ec2-type <EC2 instance type for web server>] [--bastion-ec2-type <EC2 instance type for bastion server>] [--files-ec2-type <EC2 instance type for bastion server>] [--rds-ec2-type <DB instance class>] [--web-volume-size <size of root_block_device for web EC2>] [--bastion-volume-size <size of root_block_device for bastion EC2>] [--files-volume-size <size of root_block_device for files EC2>] [--restore-backup] | --help"
+        # Display usage information for tf_init.sh script
+        # This help message shows all available command line options and their descriptions
+        echo "Usage: tf_init.sh [OPTIONS]"
+        echo ""
+        echo "Initialize Terraform infrastructure for GigaDB deployment"
+        echo ""
+        echo "OPTIONS:"
+        echo "  --project <project name>              GitLab project name (e.g: gigascience/upstream/gigadb-website)"
+        echo "  --ssh-key <path>                      Path to private SSH key for EC2 access"
+        echo "  --env <staging|live>                  Target environment for deployment"
+        echo "  --region <AWS region>                 AWS region for resource deployment"
+        echo "  --backup-file <path>                  Path to custom backup file for RDS bootstrap"
+        echo "  --web-ec2-type <instance type>        EC2 instance type for web server (default: t3.small)"
+        echo "  --bastion-ec2-type <instance type>    EC2 instance type for bastion server (default: t3.small)"
+        echo "  --files-ec2-type <instance type>      EC2 instance type for files server (default: t3.small)"
+        echo "  --rds-ec2-type <instance class>       RDS instance class for database (default: t3.micro)"
+        echo "  --web-volume-size <size>              Root block device size for web EC2 in GB (default: 30)"
+        echo "  --bastion-volume-size <size>          Root block device size for bastion EC2 in GB (default: 30)"
+        echo "  --files-volume-size <size>            Root block device size for files EC2 in GB (default: 30)"
+        echo "  --restore-backup                      Enable backup restoration for RDS"
+        echo "  -h, --help                            Display this help message"
+        echo ""
+        echo "Example:"
+        echo "  cd ops/infrastructure/envs/staging"
+        echo "  ./tf_init.sh --project gigascience/upstream/gigadb-website --env staging"
         exit 0
         ;;
     *)
