@@ -15,12 +15,12 @@ base_images:
     - docker save -o alpine-3_14.tar alpine:3.14.2
     - docker pull nginx:$NGINX_VERSION-alpine
     - docker save -o nginx-$NGINX_VERSION-alpine.tar nginx:$NGINX_VERSION-alpine
-    - docker pull node:$NODE_VERSION-buster-slim
-    - docker save -o node-$NODE_VERSION-buster-slim.tar node:$NODE_VERSION-buster-slim
+    - docker pull node:$NODE_VERSION-bullseye-slim
+    - docker save -o node-$NODE_VERSION-bullseye-slim.tar node:$NODE_VERSION-bullseye-slim
     - docker pull debian:buster
     - docker save -o debian-buster.tar debian:buster
-    - docker pull debian:buster-slim
-    - docker save -o debian-buster-slim.tar debian:buster-slim
+    - docker pull debian:bullseye-slim
+    - docker save -o debian-bullseye-slim.tar debian:bullseye-slim
     - docker pull debian:bullseye
     - docker save -o debian-bullseye.tar debian:bullseye
   artifacts:
@@ -30,10 +30,10 @@ base_images:
       - php-8.2.3-cli-bullseye.tar
       - alpine-3_14.tar
       - nginx-$NGINX_VERSION-alpine.tar
-      - node-$NODE_VERSION-buster-slim.tar
+      - node-$NODE_VERSION-bullseye-slim.tar
       - debian-buster.tar
       - debian-bullseye.tar
-      - debian-buster-slim.tar
+      - debian-bullseye-slim.tar
   cache:
     key:
       files:
@@ -63,10 +63,10 @@ b_gigadb:
     - docker load -i php-$PHP_VERSION-cli-buster.tar
     - docker load -i alpine-3_14.tar
     - docker load -i nginx-$NGINX_VERSION-alpine.tar
-    - docker load -i node-$NODE_VERSION-buster-slim.tar
+    - docker load -i node-$NODE_VERSION-bullseye-slim.tar
     - docker load -i debian-buster.tar
     - docker load -i debian-bullseye.tar
-    - docker load -i debian-buster-slim.tar
+    - docker load -i debian-bullseye-slim.tar
     # login to gitlab container registry
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
     # build for test
@@ -155,7 +155,7 @@ b_gigadb:
     - time docker load -i php-$PHP_VERSION-cli-buster.tar
     - docker load -i alpine-3_14.tar
     - docker load -i nginx-$NGINX_VERSION-alpine.tar
-    - time docker load -i node-$NODE_VERSION-buster-slim.tar
+    - time docker load -i node-$NODE_VERSION-bullseye-slim.tar
     # login to gitlab container registry
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
     # appending remote variables at the end of the .env and .secrets
@@ -248,7 +248,7 @@ b_gigadb:
       - php-$PHP_VERSION-cli-buster.tar
       - alpine-3_14.tar
       - nginx-$NGINX_VERSION-alpine.tar
-      - node-$NODE_VERSION-buster-slim.tar
+      - node-$NODE_VERSION-bullseye-slim.tar
     when: on_failure
     expire_in: 1 week
 
