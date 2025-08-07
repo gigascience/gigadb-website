@@ -302,6 +302,8 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - portainer_data:/data
+    environment:
+      - TRUSTED_ORIGINS=https://portainer-$REMOTE_HOSTNAME
     ports:
       - 9009:9000
       - 8000:8000
