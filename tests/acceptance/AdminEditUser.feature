@@ -88,3 +88,29 @@ Feature: AdminEditUser
     And I click on row "1" column "14" and icon "3"
     And I press the button "Link this user to an author"
     Then I should see "The user Guojie Zhang is already associated to author Wang J (14)"
+
+  @ok
+  Scenario: a user can be associated to an author and validated
+    Given I am on "/dataset/100006"
+    When I follow "Your dataset?"
+    And I wait "2" seconds
+    And I follow "Guojie Zhang"
+    And I wait "3" seconds
+    And I should see "Your claim has been submitted to the administrators."
+    And I should see "You can close this box now."
+    And I am on "/adminUser/update/id/400"
+    And I follow "Validate"
+    Then I should see "This user is linked to author: Zhang G"
+
+  @ok
+  Scenario: a user can be associated to an author and rejected
+    Given I am on "/dataset/100006"
+    When I follow "Your dataset?"
+    And I wait "2" seconds
+    And I follow "Guojie Zhang"
+    And I wait "3" seconds
+    And I should see "Your claim has been submitted to the administrators."
+    And I should see "You can close this box now."
+    And I am on "/adminUser/update/id/400"
+    And I follow "Reject"
+    Then I should see "Claimed rejected. No linking performed"

@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Fix #2428: AdminUserController should target AdminUserController when validating or rejecting a claim
 - Fix: Disable automatic coderabbit review status message
 - Fix #2424: Ensure Gitlab pipeline is marked as "Passed" when no jobs has failed
 - Fix #561: Save terms and conditions in the database
