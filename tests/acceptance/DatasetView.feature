@@ -132,7 +132,7 @@ Feature: a user visit the dataset page
   @ok @javascript @claim-error-path
   Scenario:a user already associated to an author cannot claim another author
     Given I have signed in as admin
-    And I am on "/user/update/id/401"
+    And I am on "/adminUser/update/id/401"
     And I follow "Validate"
     And I should see "This user is linked to author: Lambert DM (3371)"
     And I have not signed in
