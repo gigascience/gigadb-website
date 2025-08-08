@@ -24,7 +24,7 @@ legacy_tests:
   dependencies: []
   script:
     # login to gitlab container registry
-    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+    - echo "$CI_JOB_TOKEN" | docker login --username gitlab-ci-token --password-stdin registry.gitlab.com
     # appending dev variables at the end of the .env and .secrets
     - env | grep "^HOME_URL" >> $APPLICATION/.env
     - env | grep "^GIGADB_" >> $APPLICATION/.secrets
@@ -76,7 +76,7 @@ unit_func_tests:
     expire_in: 1 week
   script:
     # login to gitlab container registry
-    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+    - echo "$CI_JOB_TOKEN" | docker login --username gitlab-ci-token --password-stdin registry.gitlab.com
     # appending dev variables at the end of the .env and .secrets
     - env | grep "^HOME_URL" >> $APPLICATION/.env
     - env | grep "^GIGADB_" >> $APPLICATION/.secrets
@@ -126,7 +126,7 @@ api_tests:
     expire_in: 1 week
   script:
     # login to gitlab container registry
-    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+    - echo "$CI_JOB_TOKEN" | docker login --username gitlab-ci-token --password-stdin registry.gitlab.com
     # appending dev variables at the end of the .env and .secrets
     - env | grep "^HOME_URL" >> $APPLICATION/.env
     - env | grep "^GIGADB_" >> $APPLICATION/.secrets
@@ -166,7 +166,7 @@ integration_tests:
   dependencies: []
   script:
     # login to gitlab container registry
-    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+    - echo "$CI_JOB_TOKEN" | docker login --username gitlab-ci-token --password-stdin registry.gitlab.com
     # appending dev variables at the end of the .env and .secrets
     - env | grep "^HOME_URL" >> $APPLICATION/.env
     - env | grep "^GIGADB_" >> $APPLICATION/.secrets
@@ -233,7 +233,7 @@ a_gigadb:
     expire_in: 1 week
   script:
     # login to gitlab container registry
-    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+    - echo "$CI_JOB_TOKEN" | docker login --username gitlab-ci-token --password-stdin registry.gitlab.com
     # appending dev variables at the end of the .env and .secrets
     - env | grep "^HOME_URL" >> $APPLICATION/.env
     - env | grep "^GIGADB_" >> $APPLICATION/.secrets

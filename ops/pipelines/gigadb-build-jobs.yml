@@ -68,7 +68,7 @@ b_gigadb:
     - docker load -i debian-bullseye.tar
     - docker load -i debian-bullseye-slim.tar
     # login to gitlab container registry
-    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+    - echo "$CI_JOB_TOKEN" | docker login --username gitlab-ci-token --password-stdin registry.gitlab.com
     # build for test
     - echo "Building app"
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
@@ -157,7 +157,7 @@ b_gigadb:
     - docker load -i nginx-$NGINX_VERSION-alpine.tar
     - time docker load -i node-$NODE_VERSION-bullseye-slim.tar
     # login to gitlab container registry
-    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+    - echo "$CI_JOB_TOKEN" | docker login --username gitlab-ci-token --password-stdin registry.gitlab.com
     # appending remote variables at the end of the .env and .secrets
     - env > full_env.txt
     - env | grep -v "SAST" | grep -iE "^(staging_|remote_)" | grep -viE "(password|email|tester|secret|key|user|app_id|client_id|token|tlsauth)" | tee -a $APPLICATION/.env
