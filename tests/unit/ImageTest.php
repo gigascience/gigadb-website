@@ -19,6 +19,44 @@ class ImageTest extends \Codeception\Test\Unit
     {
     }
 
+    public function testTagValidationFails()
+    {
+        $image = new Image();
+        $image->license = 'required';
+        $image->photographer = 'required';
+        $image->source = 'required';
+        $image->tag = 'JqLwMsZbNxVcTaRfGhYpOjUkIeDqAzWsXcErTfVbNyUiOpLmKhJgFdSeDcRfTgHyJuKiLoPmNzQwErTyUiOpAsDfGhJkLzXcVbNmQwErTyUiOpLpKjHgFdSaZxCvBnMqWeRtYuIoPaSdFgHjKlZxCvBnMqWeRtYuIpOlKjHgFdSaZxCvBnMqWeRtYuIpOlKjHgFdSaZxCvBnMqWeRtYuIpOlKjHgFdSaZxCvBnMqWeRtYuIpOlKjHgFdSaZxCvBnMqWeRtYuIpOlKjHgFdSaZxCvBnMqWeRtYuIpOlKjHgFdSaZxCvBnMqWeRtYuIpOlKjHgFd';
+
+        $this->assertFalse($image->validate());
+
+        $messages = [];
+        foreach ($image->getErrors() as $attr => $values) {
+            foreach ($values as $value) {
+                $messages[] = $value;
+            }
+        }
+        $this->assertEquals('Tag is too long (maximum is 250 characters).', implode(',', $messages));
+    }
+
+    public function testTagValidationSucceed()
+    {
+        $image = new Image();
+        $image->license = 'required';
+        $image->photographer = 'required';
+        $image->source = 'required';
+        $image->tag = 'JqLwMsZbNxVcTaRfGhYpOjUkIeDq';
+
+        $this->assertTrue($image->validate());
+
+        $messages = [];
+        foreach ($image->getErrors() as $attr => $values) {
+            foreach ($values as $value) {
+                $messages[] = $value;
+            }
+        }
+        $this->assertNotEquals('Tag is too long (maximum is 250 characters).', implode(',', $messages));
+    }
+
     /**
      * Test writing image content to storage managed by Flysystem (happy path)
      * @return void
