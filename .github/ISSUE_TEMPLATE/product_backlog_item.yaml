@@ -1,7 +1,7 @@
 name: Product Backlog Item
 description: Create a user story and acceptance criteria for feature requests and updates to go in the product backlog
 labels: ['backlog:Story']
-project: ["gigascience/71"] 
+projects: ["gigascience/71"] 
 body: 
   - type: textarea
     id: user_story
