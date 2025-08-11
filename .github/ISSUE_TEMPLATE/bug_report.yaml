@@ -9,37 +9,37 @@ assignees:
 body:
   - type: textarea
     id: description
-	attributes:
-	  label: Describe the bug
-	  description: Please provide a clear and concise description of what the bug is.
-	  placeholder: e.g. When I do X, Y happens.
+    attributes:
+      label: Describe the bug
+      description: Please provide a clear and concise description of what the bug is.
+      placeholder: e.g. When I do X, Y happens.
   - type: textarea
-	id: To Reproduce
-	attributes:
-	  label: To Reproduce
-	  description: Please provide a list of steps to reproduce the issue.
+    id: To Reproduce
+    attributes:
+      label: To Reproduce
+      description: Please provide a list of steps to reproduce the issue.
       placeholder: |
-	  Steps to reproduce the behavior: 
-	  1. Go to '...'
-	  2. Click on '....'
-	  3. Scroll down to '....'
-	  4. See error
+      Steps to reproduce the behavior: 
+      1. Go to '...'
+      2. Click on '....'
+      3. Scroll down to '....'
+      4. See error
   - type: textarea
     id: Expected behavior
     attributes:
-	  label: Expected behavior
-	  description: Please provide a clear and concise description of what you expected to happen.
-	  placeholder: What should happen?
+      label: Expected behavior
+      description: Please provide a clear and concise description of what you expected to happen.
+      placeholder: What should happen?
   - type: textarea
     id: Screenshots
-	attributes:
-	  label: Screenshots
-	  description: If applicable, add screenshots to help explain your problem.
+    attributes:
+      label: Screenshots
+      description: If applicable, add screenshots to help explain your problem.
   - type: textarea
     id: device information
     attributes:
-	  label: device information
-	  placeholder: |
+      label: device information
+      placeholder: |
 Desktop (please complete the following information)
  - OS: [e.g. iOS]
  - Browser [e.g. chrome, safari]
@@ -52,5 +52,5 @@ Smartphone (please complete the following information)
   - type: textarea
     id: Additional context
     attributes:
-	  label: Additional context
-	  placeholder: Add any other context about the problem here.
+      label: Additional context
+      placeholder: Add any other context about the problem here.
