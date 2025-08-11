@@ -111,8 +111,6 @@ coverage_unit_tests:
     - ./tests/coverage_unit_tests
   environment:
     name: dev
-  tags:
-    - $GITLAB_USER_LOGIN
 
 coverage_functional_tests:
   stage: acceptance
@@ -159,8 +157,6 @@ coverage_functional_tests:
     - ./tests/coverage_functional_tests
   environment:
     name: dev
-  tags:
-    - $GITLAB_USER_LOGIN
 
 coverage_acceptance_tests:
   stage: acceptance
@@ -208,8 +204,6 @@ coverage_acceptance_tests:
     - ./tests/coverage_acceptance_tests
   environment:
     name: dev
-  tags:
-    - $GITLAB_USER_LOGIN
 
 unit_func_tests:
   stage: test

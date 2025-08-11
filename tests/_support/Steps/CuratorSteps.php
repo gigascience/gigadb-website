@@ -324,7 +324,7 @@ class CuratorSteps extends \Codeception\Actor
      */
     public function userIsLinkedToAuthor($id, $name, $lastname, $row, $column, $icon) {
         $this->iHaveSignedInAsAdmin();
-        $this->I->amOnPage("/user/update/id/{$id}");
+        $this->I->amOnPage("/adminUser/update/id/{$id}");
         $this->I->click('Link this user to an author');
         $this->I->wait(2);
         $this->I->iClickOnRow($row, $column, $icon);

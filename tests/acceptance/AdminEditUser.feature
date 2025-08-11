@@ -179,7 +179,7 @@ Feature: AdminEditUser
 
   @ok
   Scenario: On user edit form, if user has pending claim, link to pending claims
-    Given I am on "/user/update/id/401"
+    Given I am on "/adminUser/update/id/401"
     Then I should not see "Link this user to an author"
     And I should see "This user has a pending claim"
     And I should see "Validate"
@@ -188,26 +188,26 @@ Feature: AdminEditUser
 
   @ok
   Scenario: On user edit form, if user has pending claim, admin can reject a claim
-    Given I am on "/user/update/id/401"
+    Given I am on "/adminUser/update/id/401"
     And I follow "Reject"
     Then I should see "Claimed rejected. No linking performed"
 
   @ok
   Scenario: On user edit form, if user has pending claim, admin can validate a claim
-    Given I am on "/user/update/id/401"
+    Given I am on "/adminUser/update/id/401"
     And I follow "Validate"
     Then I should see "This user is linked to author: Lambert DM (3371)"
 
   @ok
   Scenario:  On user view, when pending claim, admin sees a note about pending claim on author and a link to user edit form
-    Given I am on "/user/view/id/401"
+    Given I am on "/adminUser/view/id/401"
     Then I should see "This user has a pending claim on Lambert DM (3371)"
     And I follow "Edit user to validate/reject the claim"
     Then I should see "Update User 401"
 
     @ok
   Scenario: On user view, when no pending claim, no linked author, no message is displayed
-    Given I am on "/user/view/id/8"
+    Given I am on "/adminUser/view/id/8"
     Then I should not see "This user has a pending claim"
     And I should not see "Edit user to validate/reject the claim"
     And I should not see "This user is linked to author"

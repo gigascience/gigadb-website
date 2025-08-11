@@ -88,14 +88,14 @@ Feature: a curator can fill in user id in an author record
   Scenario: cannot go through the workflow for linking author to user and for merging two authors at the same time (2)
     Given I am on "/adminAuthor/update/id/14"
     And I follow "Merge with an author"
-    When I am on "/user/update/id/8"
+    When I am on "/adminUser/update/id/8"
     And I follow "Link this user to an author"
     Then I should not see "with merging that author with"
     And I should see "with linking that author with user"
 
   @ok
   Scenario: cannot go through the workflow for linking author to user and for merging two authors at the same time (1)
-    Given I am on "/user/update/id/8"
+    Given I am on "/adminUser/update/id/8"
     And I follow "Link this user to an author"
     And I wait "3" seconds
     And I should be on "/adminAuthor/admin"

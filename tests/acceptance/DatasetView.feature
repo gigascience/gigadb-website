@@ -100,7 +100,7 @@ Feature: a user visit the dataset page
   @ok @javascript @claim-error-path
   Scenario: a user with a rejected claim visit dataset page and attempt to re claim the author
     Given I have signed in as admin
-    And I am on "/user/update/id/401"
+    And I am on "/adminUser/update/id/401"
     And I follow "Reject"
     And I should see "Claimed rejected. No linking performed"
     And I have not signed in
@@ -116,7 +116,7 @@ Feature: a user visit the dataset page
   @ok @javascript @claim-error-path
   Scenario: a user with a rejected claim visit dataset page and attempt to claim an author
     Given I have signed in as admin
-    And I am on "/user/update/id/401"
+    And I am on "/adminUser/update/id/401"
     And I follow "Reject"
     And I should see "Claimed rejected. No linking performed"
     And I have not signed in
