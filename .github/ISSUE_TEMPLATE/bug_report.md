@@ -1,38 +1,57 @@
----
 name: Bug report
-about: Create a report of a defect on the live service, so we can investigate.
-title: ''
-labels: bug
-assignees: pli888, rija, kencho51
-
----
-
-**Describe the bug**
-A clear and concise description of what the bug is.
-
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
-
-**Expected behavior**
-A clear and concise description of what you expected to happen.
-
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
-
-**Desktop (please complete the following information):**
+description: Create a report of a defect on the live service, so we can investigate.
+title: '[Bug]'
+labels: ["bug"]
+projects: ["gigascience/71"] 
+assignees:
+  - pli888
+  - kencho51
+body:
+  - type: textarea
+    id: description
+	attributes:
+	  label: Describe the bug
+	  description: Please provide a clear and concise description of what the bug is.
+	  placeholder: e.g. When I do X, Y happens.
+  - type: textarea
+	id: To Reproduce
+	attributes:
+	  label: To Reproduce
+	  description: Please provide a list of steps to reproduce the issue.
+      placeholder: "Steps to reproduce the behavior: 
+	  1. Go to '...'
+	  2. Click on '....'
+	  3. Scroll down to '....'
+	  4. See error"
+  - type: textarea
+    id: Expected behavior
+    attributes:
+	  label: Expected behavior
+	  description: Please provide a clear and concise description of what you expected to happen.
+	  placeholder: What should happen?
+  - type: textarea
+    id: Screenshots
+	attributes:
+	  label: Screenshots
+	  description: If applicable, add screenshots to help explain your problem.
+  - type: textarea
+    id: device information
+    attributes:
+	  label: device information
+	  placeholder:"
+Desktop (please complete the following information)
  - OS: [e.g. iOS]
  - Browser [e.g. chrome, safari]
  - Version [e.g. 22]
 
-**Smartphone (please complete the following information):**
+Smartphone (please complete the following information)
  - Device: [e.g. iPhone6]
  - OS: [e.g. iOS8.1]
  - Browser [e.g. stock browser, safari]
  - Version [e.g. 22]
-
-**Additional context**
-Add any other context about the problem here.
+"
+  - type: textarea
+    id: Additional context
+    attributes:
+	  label: Additional context
+	  placeholder: Add any other context about the problem here.
