@@ -27,8 +27,8 @@ body:
       label: Additional Info
       description: Please provide any additional information about the feature here, include links to related issues.
   - type: checkboxes
+    id: Product_Backlog_Item_Ready_Checklist
     attributes:
-      id: Product_Backlog_Item_Ready_Checklist
       label: Product Backlog Item Ready Checklist
       options:
         - label: Business value is clearly articulated
@@ -40,8 +40,8 @@ body:
         - label: Performance criteria, if any, are defined and testable
         - label: The Scrum team understands how to demonstrate this item at the sprint review
   - type: checkboxes
+    id: Product_Backlog_Item_Done_Checklist
     attributes:
-      id: Product_Backlog_Item_Done_Checklist
       label: Product Backlog Item Done Checklist
       options:
         - label: Item(s) in increment pass all Acceptance Criteria
