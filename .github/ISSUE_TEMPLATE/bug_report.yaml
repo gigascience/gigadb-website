@@ -14,7 +14,7 @@ body:
       description: Please provide a clear and concise description of what the bug is.
       placeholder: e.g. When I do X, Y happens.
   - type: textarea
-    id: To Reproduce
+    id: To_Reproduce
     attributes:
       label: To Reproduce
       description: Please provide a list of steps to reproduce the issue.
@@ -25,7 +25,7 @@ body:
         3. Scroll down to '....'
         4. See error
   - type: textarea
-    id: Expected behavior
+    id: Expected_behavior
     attributes:
       label: Expected behavior
       description: Please provide a clear and concise description of what you expected to happen.
@@ -36,7 +36,7 @@ body:
       label: Screenshots
       description: If applicable, add screenshots to help explain your problem.
   - type: textarea
-    id: device information
+    id: device_information
     attributes:
       label: device information
       placeholder: |
@@ -50,7 +50,7 @@ body:
          - Browser [e.g. stock browser, safari]
          - Version [e.g. 22]
   - type: textarea
-    id: Additional context
+    id: Additional_context
     attributes:
       label: Additional context
       placeholder: Add any other context about the problem here.
