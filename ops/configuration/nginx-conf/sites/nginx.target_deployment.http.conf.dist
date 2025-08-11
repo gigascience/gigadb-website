@@ -60,7 +60,14 @@ server {
     listen 80;
     listen [::]:80;
 
-    server_name portainer-$SERVER_HOSTNAME;
+    # Listen on both hostnames that need certificates.
+    server_name $SERVER_HOSTNAME portainer-$SERVER_HOSTNAME;
+
+    # Handle the challenge requests.
+    location /.well-known/acme-challenge/ {
+        root /var/www/.le/;
+        log_not_found off;
+    }
 
     location / {
         return 301 https://$host$request_uri;
