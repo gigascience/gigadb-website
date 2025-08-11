@@ -5,11 +5,11 @@ base_images:
   script:
     # login and pull from docker hub the base image for php-fpm so it's done only once
     - docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
-    - docker pull php:$PHP_VERSION-fpm-buster
+    - docker pull php:$PHP_VERSION-fpm-bullseye
     - docker pull php:8.2.3-cli-bullseye
-    - docker save -o php-$PHP_VERSION-fpm-buster.tar php:$PHP_VERSION-fpm-buster
-    - docker pull php:$PHP_VERSION-cli-buster
-    - docker save -o php-$PHP_VERSION-cli-buster.tar php:$PHP_VERSION-cli-buster
+    - docker save -o php-$PHP_VERSION-fpm-bullseye.tar php:$PHP_VERSION-fpm-bullseye
+    - docker pull php:$PHP_VERSION-cli-bullseye
+    - docker save -o php-$PHP_VERSION-cli-bullseye.tar php:$PHP_VERSION-cli-bullseye
     - docker save -o php-8.2.3-cli-bullseye.tar php:8.2.3-cli-bullseye
     - docker pull alpine:3.14.2
     - docker save -o alpine-3_14.tar alpine:3.14.2
@@ -25,8 +25,8 @@ base_images:
     - docker save -o debian-bullseye.tar debian:bullseye
   artifacts:
     paths:
-      - php-$PHP_VERSION-fpm-buster.tar
-      - php-$PHP_VERSION-cli-buster.tar
+      - php-$PHP_VERSION-fpm-bullseye.tar
+      - php-$PHP_VERSION-cli-bullseye.tar
       - php-8.2.3-cli-bullseye.tar
       - alpine-3_14.tar
       - nginx-$NGINX_VERSION-alpine.tar
@@ -59,8 +59,8 @@ b_gigadb:
   script:
     # Load Base image
     - docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
-    - docker load -i php-$PHP_VERSION-fpm-buster.tar
-    - docker load -i php-$PHP_VERSION-cli-buster.tar
+    - docker load -i php-$PHP_VERSION-fpm-bullseye.tar
+    - docker load -i php-$PHP_VERSION-cli-bullseye.tar
     - docker load -i alpine-3_14.tar
     - docker load -i nginx-$NGINX_VERSION-alpine.tar
     - docker load -i node-$NODE_VERSION-bullseye-slim.tar
@@ -151,8 +151,8 @@ b_gigadb:
   script:
     # Load Base image
     - docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
-    - time docker load -i php-$PHP_VERSION-fpm-buster.tar
-    - time docker load -i php-$PHP_VERSION-cli-buster.tar
+    - time docker load -i php-$PHP_VERSION-fpm-bullseye.tar
+    - time docker load -i php-$PHP_VERSION-cli-bullseye.tar
     - docker load -i alpine-3_14.tar
     - docker load -i nginx-$NGINX_VERSION-alpine.tar
     - time docker load -i node-$NODE_VERSION-bullseye-slim.tar
@@ -244,8 +244,8 @@ b_gigadb:
   artifacts:
     untracked: true
     paths:
-      - php-$PHP_VERSION-fpm-buster.tar
-      - php-$PHP_VERSION-cli-buster.tar
+      - php-$PHP_VERSION-fpm-bullseye.tar
+      - php-$PHP_VERSION-cli-bullseye.tar
       - alpine-3_14.tar
       - nginx-$NGINX_VERSION-alpine.tar
       - node-$NODE_VERSION-bullseye-slim.tar
