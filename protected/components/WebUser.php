@@ -27,15 +27,21 @@ class WebUser extends CWebUser
         return ($operation === $role);
     }
 
-    function getFirst_Name()
+    public function getFirstName()
     {
-        $user = $this->loadUser(Yii::app()->user->id);
+        $user = $this->loadUser($this->id);
         return $user->first_name;
     }
 
-    function getEmail()
+    public function getLastName()
     {
-        $user = $this->loadUser(Yii::app()->user->id);
+        $user = $this->loadUser($this->id);
+        return $user->last_name;
+    }
+
+    public function getEmail()
+    {
+        $user = $this->loadUser($this->id);
         return $user->email;
     }
 

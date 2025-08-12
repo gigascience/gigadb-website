@@ -12,7 +12,7 @@
         <?php if (Yii::app()->user->isGuest) { ?>
           <a href="/site/login" class="mobile-navigation__link"><i class="fa fa-sign-in"></i> Login / Signup</a>
         <? } else {
-          $name = Yii::app()->user->getFirst_Name();
+          $name = Yii::app()->user->getFirstName();
           if (substr($name, -1) === 's') {
             $name = $name . '\'';
           } else {
