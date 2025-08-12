@@ -3,7 +3,7 @@ ARG TIDEWAYS_PHP_EXTENSION_VERSION=latest
 
 FROM ghcr.io/tideways/php:${TIDEWAYS_PHP_EXTENSION_VERSION} AS tideways_php
 
-FROM php:${TARGET_PHP_VERSION}-fpm-buster
+FROM php:${TARGET_PHP_VERSION}-fpm-bullseye
 
 # basic dependencies
 RUN apt-get update -yq && \
