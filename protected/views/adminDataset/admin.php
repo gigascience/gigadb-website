@@ -80,7 +80,7 @@ $('.search-form form').submit(function(){
 		'id'=>'dataset-grid',
     'afterAjaxUpdate' => 'afterAjaxUpdate',
 		'dataProvider'=>$dataProvider,
-		'itemsCssClass'=>"table table-bordered table-fixed dataset-table",
+		'itemsCssClass'=>"table table-bordered table-fixed dataset-table test-dataset-table",
 		'rowCssClassExpression' => '"dataset-".$data["identifier"]',
 		'filter'=>$model,
 		'columns'=>array(
@@ -103,6 +103,7 @@ $('.search-form form').submit(function(){
 			'modification_date',
 			array(
 				'class'=>'CDataColumn',
+        'name' => 'upload_status',
 				'header' => "Upload Status",
 				'headerHtmlOptions'=>array('style'=>'width: 150px'),
 				'value'  => '$data->upload_status'
