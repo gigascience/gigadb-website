@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## Unreleased
 
 - Fix: Disable automatic coderabbit review status message
+- Fix #2424: Ensure Gitlab pipeline is marked as "Passed" when no jobs has failed
 - Fix #561: Save terms and conditions in the database
 - Fix #561: An admin can activate the user account
 - Fix #561: Enable csrf protection

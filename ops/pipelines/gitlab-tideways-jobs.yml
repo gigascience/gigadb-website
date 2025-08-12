@@ -40,7 +40,6 @@ TidewaysBuildStaging:
   environment:
     name: "staging"
     url: $REMOTE_HOME_URL
-  when: manual
 
 TidewaysBuildLive:
   stage: live build
@@ -113,7 +112,6 @@ TidewaysDeployStaging:
   environment:
     name: "staging"
     url: $REMOTE_HOME_URL
-  when: manual
 
 TidewaysDeployLive:
   stage: live deploy

@@ -7,11 +7,11 @@ FilesMetaDataConsoleTestRun:
     # Load Base image
     - docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
     - docker load -i php-8.2.3-cli-bullseye.tar
-    - docker load -i php-$PHP_VERSION-fpm-buster.tar
-    - docker load -i php-$PHP_VERSION-cli-buster.tar
+    - docker load -i php-$PHP_VERSION-fpm-bullseye.tar
+    - docker load -i php-$PHP_VERSION-cli-bullseye.tar
     - docker load -i alpine-3_14.tar
     - docker load -i nginx-$NGINX_VERSION-alpine.tar
-    - docker load -i node-$NODE_VERSION-buster-slim.tar
+    - docker load -i node-$NODE_VERSION-bullseye-slim.tar
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/test:latest || true
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/console:latest || true
