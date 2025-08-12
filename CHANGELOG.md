@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## Unreleased
 
 - Feat #2127: Sort datasets by upload status
+- Fix #2299: Delete google analytics category from admin dashboard
+- Fix #1713: Make curation log recognize user's full name
+- Fix: Disable automatic coderabbit review status message
+- Fix #2424: Ensure Gitlab pipeline is marked as "Passed" when no jobs has failed
 - Fix #561: Save terms and conditions in the database
 - Fix #561: An admin can activate the user account
 - Fix #561: Enable csrf protection
