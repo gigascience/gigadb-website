@@ -18,14 +18,7 @@ return array(
             'class'     => 'application.components.NewsletterService',
             'api_key'    => '${MAILCHIMP_API_KEY}',
             'list_id'    => '${MAILCHIMP_LIST_ID}',
-        ),
-        'analytics' => array(
-            "class" => "application.components.AnalyticsService",
-            "client_email" => "${ANALYTICS_CLIENT_EMAIL}",
-            "client_id" => "${ANALYTICS_CLIENT_ID}",
-            "key_file" => realpath(dirname(__FILE__)."/keyfile.json"),
-            "app_name" => "GigaDB",
-        ),
+        )
     ),
     'params'=>array(
         'home_url' => '${HOME_URL}', // Where top level link goes to
