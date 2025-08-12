@@ -5,6 +5,7 @@ enable_free_tier: true
 reviews:
   profile: chill
   poem: false
+  review_status: false
   labeling_instructions:
     - label: "pr:simple"
       instructions: "Apply when the PR can be easily reviewed in less than 2 minutes, having a tiny number of changes, trivial to understand and approve without much context"
