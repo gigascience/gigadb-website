@@ -328,6 +328,8 @@ differ between developers:
 | PHP_FPM_MAX_SPARE_SERVERS       |                                           | Production-Dockerfile                                                        | The desired maximum number of idle server processes                                                 |
 | PHP_CONN_LIMIT                  | enabled or disabled                       |                                                                              | Whether rate limit is enabled for PHP requests                                                      | 
 | remote_fileserver_hostname      |                                           |                                                                              | domain name for the files server                                                                    | 
+| SECRET_KEY_EMAIL                | | main.php.dist and web....php.dist                                            | Needed to generate a secret email key for a token generation |
+| COOKIE_VALIDATION_KEY           | | main.php.dist and web....php.dist                                            | Secret key used to securely sign cookies |
 
 ### Automatically-created variables in PROJECT: *-gigadb-website
 

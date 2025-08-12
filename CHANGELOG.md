@@ -5,6 +5,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## Unreleased
 
 - Fix #1713: Make curation log recognize user's full name
+- Fix: Disable automatic coderabbit review status message
+- Fix #2424: Ensure Gitlab pipeline is marked as "Passed" when no jobs has failed
+- Fix #561: Save terms and conditions in the database
+- Fix #561: An admin can activate the user account
+- Fix #561: Enable csrf protection
+- Fix #561: Generate a token for account activation by email
+- Fix #561: Separate admin user page from non admin user page
+- Security: bump the composer group across 2 directories with 6 updates
 - Fix #2016: Avoid adding logs if the curator is not updated
 
 ## v4.4.15 - 2025-07-23 - a60aa8aa5 - live since 2025-07-24

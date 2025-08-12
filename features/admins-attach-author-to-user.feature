@@ -50,7 +50,7 @@ Scenario: populate author form with a user id already used triggers error
 Scenario: On user list, there is a button to start the process for linking to an author
 	Given default admin user exists
 	And I sign in as an admin
-	And I am on "/user/admin"
+	And I am on "/adminUser/admin"
 	When I click on the row for user id "345"
 	And I wait "2" seconds
 	Then I should see "Link this user to an author"
@@ -59,14 +59,14 @@ Scenario: On user list, there is a button to start the process for linking to an
 Scenario: On user view, there is no  button to start the process for linking to an author
 	Given default admin user exists
 	And I sign in as an admin
-	When I go to "/user/view/id/345"
+	When I go to "/adminUser/view/id/345"
 	Then I should not see "Link this user to an author"
 
 @ok @admin-link-author-from-user
 Scenario: On user edit form, there is a button to start the process for linking to an author
 	Given default admin user exists
 	And I sign in as an admin
-	When I go to "/user/update/id/345"
+	When I go to "/adminUser/update/id/345"
 	Then I should see "Link this user to an author"
 
 
@@ -76,7 +76,7 @@ Scenario: On user view, if user is already attached to an author, show author na
  	And default user exists
  	Given author "3794" is associated with user "345"
  	And I sign in as an admin
-	When I go to "/user/view/id/345"
+	When I go to "/adminUser/view/id/345"
 	Then the response should not contain "Link this user to an author"
 	And the response should not contain "This user has a pending claim. Click for details"
 	And the response should contain "Pan S"
@@ -85,7 +85,7 @@ Scenario: On user view, if user is already attached to an author, show author na
 Scenario: From user edit-form, load the author list with the user specific controls to select author to link
 	Given default admin user exists
 	And I sign in as an admin
-	And I am on "/user/update/id/345"
+	And I am on "/adminUser/update/id/345"
 	When I follow "Link this user to an author"
 	And I wait "2" seconds
 	Then I should be on "/adminAuthor/admin"
@@ -95,7 +95,7 @@ Scenario: From user edit-form, load the author list with the user specific contr
 Scenario: From user edit form, load the author list with the user specific controls to select author to link
 	Given default admin user exists
 	And I sign in as an admin
-	And I am on "/user/update/id/345"
+	And I am on "/adminUser/update/id/345"
 	When I follow "Link this user to an author"
 	And I wait "2" seconds
 	Then I should be on "/adminAuthor/admin"
@@ -107,7 +107,7 @@ Scenario: On user edit form, if user is already attached to an author, show auth
  	And default user exists
  	Given author "3794" is associated with user "345"
  	And I sign in as an admin
-	When I go to "/user/update/id/345"
+	When I go to "/adminUser/update/id/345"
 	Then the response should not contain "Link this user to an author"
 	And the response should not contain "This user has a pending claim. Click for details"
 	And the response should contain "Pan S"
@@ -118,7 +118,7 @@ Scenario: On user edit form, if user has pending claim, link to pending claims
  	And default user exists
  	And a user has a pending claim for author "3791"
 	And I sign in as an admin
-	When I go to "/user/update/id/345"
+	When I go to "/adminUser/update/id/345"
 	Then the response should not contain "Link this user to an author"
 	And the response should contain "This user has a pending claim"
 
@@ -126,7 +126,7 @@ Scenario: On user edit form, if user has pending claim, link to pending claims
 Scenario: From user list, load the author list with the user specific controls to select author to link
 	Given default admin user exists
 	And I sign in as an admin
-	And I am on "/user/admin/"
+	And I am on "/adminUser/admin/"
 	When I click on the row for user id "345"
 	And I follow "Link this user to an author"
 	And I wait "2" seconds
@@ -164,7 +164,7 @@ Scenario: From author list with the user specific controls, find and link an aut
 	And I should see "Guojie"
 	And I follow "Link user John Smith to that author"
 	And I wait "2" seconds
-	Then I should be on "/user/view/id/345"
+	Then I should be on "/adminUser/view/id/345"
 	And I should see "Zhang G"
 
 @ok @admin-link-author-from-user @javascript
@@ -194,7 +194,7 @@ Scenario: From user list, if a user is already linked to an author, show a messa
 	Given default admin user exists
 	And author "3794" is associated with user "345"
 	And I sign in as an admin
-	And I am on "/user/admin/"
+	And I am on "/adminUser/admin/"
 	When I click on the row for author id "3791"
 	And I wait "2" seconds
 	And I follow "Link this user to an author"
@@ -209,7 +209,7 @@ Scenario: on the user edit form, there is an unlink button to dettach a user fro
  	And default user exists
  	Given author "3794" is associated with user "345"
  	And I sign in as an admin
-	When I go to "/user/update/id/345"
+	When I go to "/adminUser/update/id/345"
 	Then the response should contain "Unlink author"
 
 @ok
@@ -218,9 +218,9 @@ Scenario: when admin click unlink button on user edit form, the user is unlinked
  	And default user exists
  	Given author "3794" is associated with user "345"
  	And I sign in as an admin
- 	When I go to "/user/update/id/345"
+ 	When I go to "/adminUser/update/id/345"
  	And I follow "Unlink author"
- 	Then I should be on "/user/update/id/345"
+ 	Then I should be on "/adminUser/update/id/345"
  	And I should not see "This user is linked to author:"
 
 

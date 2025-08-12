@@ -23,6 +23,11 @@
 		$origin_author = Author::model()->findByPk(Yii::app()->session['merge_author']);
 	}
 	?>
+    <?php if ($flashError = Yii::app()->user->getFlash('error')) { ?>
+        <div id="flashError" class="alert alert-danger" role="alert">
+            <?= $flashError ?>
+        </div>
+    <?php } ?>
 	<?php if (null != $user) { ?>
 		<?php
 		$existing_link = Author::findAttachedAuthorByUserId($user->id);
@@ -34,7 +39,7 @@
 				</span>
 				<?php echo CHtml::link('&times;', array(
 					'adminAuthor/prepareUserLink',
-					'user_id' => $user->id, 'abort' => 'yes'
+					'user_id' => $user->id, 'abort' => true
 				), array('class' => 'close close-btn', 'data-dismiss' => 'alert', 'aria-label' => 'close')); ?>
 			</div>
 		<? } else { ?>
@@ -44,7 +49,7 @@
 				</span>
 				<?php echo CHtml::link('&times;', array(
 					'adminAuthor/prepareUserLink',
-					'user_id' => $user->id, 'abort' => 'yes'
+					'user_id' => $user->id, 'abort' => true
 				), array('class' => 'close close-btn', 'data-dismiss' => 'alert', 'aria-label' => 'close')); ?>
 			</div>
 		<? } ?>
@@ -54,7 +59,7 @@
     <div class="alert alert-gigadb-info alert-flex">
     <span>Click on a row or on the <span class="fa fa-compress fa-lg" ></span> button to proceed with merging that author with author <?php echo $origin_author->getDisplayName(); ?></span>
 
-    <?php echo CHtml::link('&times;', array('adminAuthor/prepareAuthorMerge', 'origin_author_id' => $origin_author->id, 'abort' => 'yes'), array('class' => 'close close-btn', 'data-dismiss' => 'alert', 'aria-label' => 'close')); ?>
+    <?php echo CHtml::link('&times;', array('adminAuthor/prepareAuthorMerge', 'origin_author_id' => $origin_author->id, 'abort' => true), array('class' => 'close close-btn', 'data-dismiss' => 'alert', 'aria-label' => 'close')); ?>
 
     </div>
   <?php } ?>
@@ -213,7 +218,7 @@
 					<a href="#" class="btn btn-active" title="link" onclick="link_to_author();">Link user <? echo $user->first_name . " " . $user->last_name ?> to that author</a>
 					<?php echo CHtml::link('Abort and clear selected user', array(
 						'adminAuthor/prepareUserLink',
-						'user_id' => $user->id, 'abort' => 'yes'
+						'user_id' => $user->id, 'abort' => true
 					), array('class' => 'btn btn-active')); ?>
 					<button class="btn modal-close-btn" data-dismiss="modal" aria-label="close">Close</button>
 				</div>
@@ -282,7 +287,7 @@
 				<button type="button" class="btn background-btn" title="link" onclick="merge_authors();">Yes, merge authors</button>
 				<?php echo CHtml::link('No, abort and clear session', array(
 						'adminAuthor/prepareAuthorMerge',
-						'origin_author_id' => $origin_author->id, 'abort' => 'yes'
+						'origin_author_id' => $origin_author->id, 'abort' => true
 					), array('class' => 'btn background-btn-o')); ?>
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 			</div>
@@ -337,7 +342,6 @@
 				$("#author_merge").modal('show');
 				break;
 			default:
-				console.log('no modal dialog specified');
 		}
 
 		return false;
@@ -378,7 +382,6 @@
 		httpRequest = new XMLHttpRequest();
 
 		if (!httpRequest) {
-			console.log('Giving up ! Cannot create an XMLHTTP instance');
 			return false;
 		}
 		httpRequest.onreadystatechange = populateTargetGraph;
@@ -393,7 +396,6 @@
 			if (httpRequest.status === 200) {
 				$('#target_graph').html(httpRequest.responseText);
 			} else {
-				console.log('There was a problem with the request.');
 			}
 		}
 	}

@@ -16,6 +16,9 @@
   }
   ?>
 
+    <meta name='csrf-param' content='<?= Yii::app()->request->csrfTokenName ?>'>
+    <meta name='csrf-token' content='<?= Yii::app()->request->csrfToken ?>'>
+
   <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css">
   <link rel="stylesheet" type="text/css"
     href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css">

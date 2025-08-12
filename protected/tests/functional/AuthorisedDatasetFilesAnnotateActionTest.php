@@ -1,10 +1,10 @@
 <?php
- /**
+/**
  * Test posting data to FilesAnnotateAction
  *
- * @author Rija Menage <rija+git@cinecinetique.com>
+ * @author  Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
-*/
+ */
 
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
@@ -18,13 +18,13 @@ class AuthorisedDatasetFilesAnnotateAction extends FunctionalTesting
     use DatabaseSteps;
 
     /** @var string $url url of file upload endpoint to test access control on */
-    public $url = "http://gigadb.test/" ;
+    public $url = 'http://gigadb.test/';
 
     /** @var string $userEmail email of logged in user */
-    private $userEmail = "user@gigadb.org";
+    private $userEmail = 'user@gigadb.org';
 
     /** @var string $doi DOI to use for testing */
-    private $doi = "100142";
+    private $doi = '100142';
 
     /** @var PDO $dbh database handle for GigaDB database */
     public $dbh;
@@ -44,45 +44,43 @@ class AuthorisedDatasetFilesAnnotateAction extends FunctionalTesting
 
         try {
 
-            $this->dbh = new PDO("pgsql:host=".getenv("GIGADB_HOST").";dbname=".getenv("GIGADB_DB"), getenv("GIGADB_USER"), getenv("GIGADB_PASSWORD"));
+            $this->dbh = new PDO('pgsql:host=' . getenv('GIGADB_HOST') . ';dbname=' . getenv('GIGADB_DB'), getenv('GIGADB_USER'), getenv('GIGADB_PASSWORD'));
             $this->dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING); //PHP warnings for SQL errors
 
-            $db_name = getenv("FUW_DB_NAME");
-            $db_user = getenv("FUW_DB_USER");
-            $db_password = getenv("FUW_DB_PASSWORD");
-            $this->dbhf=new CDbConnection("pgsql:host=database;dbname=$db_name",$db_user,$db_password);
-            $this->dbhf->active=true;
+            $db_name = getenv('FUW_DB_NAME');
+            $db_user = getenv('FUW_DB_USER');
+            $db_password = getenv('FUW_DB_PASSWORD');
+            $this->dbhf = new CDbConnection("pgsql:host=database;dbname=$db_name", $db_user, $db_password);
+            $this->dbhf->active = true;
 
             // setup file drop account and FUW identity for testing
             $this->filedrop_id = $this->setUpFiledropAccount(
-                $this->dbhf->getPdoInstance(), 
+                $this->dbhf->getPdoInstance(),
                 $this->doi
             );
             $this->setUpUserIdentity(
-                $this->dbhf->getPdoInstance(), 
+                $this->dbhf->getPdoInstance(),
                 $this->userEmail
             );
 
-            $files =  [
-                ["doi" => "{$this->doi}", "name" =>"method.txt", "size" => 325352, "status"=> 0, "location" => "ftp://foobar", "description" => "", "extension" => "TEXT", "datatype"=>"Text"],
-                ["doi" => "{$this->doi}", "name" =>"someFile.png", "size" => 5463434, "status"=> 0, "location" => "ftp://barfoo", "description" => "", "extension" => "PNG", "datatype"=>"Image"],
+            $files = [
+                ['doi' => "{$this->doi}", 'name' => 'method.txt', 'size' => 325352, 'status' => 0, 'location' => 'ftp://foobar', 'description' => '', 'extension' => 'TEXT', 'datatype' => 'Text'],
+                ['doi' => "{$this->doi}", 'name' => 'someFile.png', 'size' => 5463434, 'status' => 0, 'location' => 'ftp://barfoo', 'description' => '', 'extension' => 'PNG', 'datatype' => 'Image'],
             ];
             $this->uploads = $this->setUpFileUploads(
                 $this->dbhf->getPdoInstance(), $files, $this->filedrop_id
             );
 
+        } catch (PDOException $e) {
+            exit('Failed connecting to database:' . $e->getMessage());
         }
-        catch (PDOException $e) {
-            exit("Failed connecting to database:". $e->getMessage());
-        }
-
 
 
     }
 
     public function tearDown()
     {
-        $this->setUpDatasetUploadStatus($this->dbh, $this->doi,"Published"); //restore default
+        $this->setUpDatasetUploadStatus($this->dbh, $this->doi, 'Published'); //restore default
         $this->tearDownFiledropAccount(
             $this->dbhf->getPdoInstance(),
             $this->filedrop_id
@@ -95,7 +93,7 @@ class AuthorisedDatasetFilesAnnotateAction extends FunctionalTesting
             $this->dbhf->getPdoInstance(),
             $this->userEmail
         );
-        $this->dbhf->active=false;
+        $this->dbhf->active = false;
         $this->dbhf = null;
         $this->doi = null;
         $this->userEmail = null;
@@ -106,11 +104,11 @@ class AuthorisedDatasetFilesAnnotateAction extends FunctionalTesting
         parent::tearDown();
     }
 
-    public function testPostUploadsData() {
+    public function testPostUploadsData()
+    {
 
         // set upload status to the correct UserUploadingData
-        $this->setUpDatasetUploadStatus($this->dbh, $this->doi ,"UserUploadingData");
-
+        $this->setUpDatasetUploadStatus($this->dbh, $this->doi, 'UserUploadingData');
 
         // Prepare the http client to be traceable for testing
 
@@ -118,42 +116,74 @@ class AuthorisedDatasetFilesAnnotateAction extends FunctionalTesting
         $history = Middleware::history($container);
 
         $stack = HandlerStack::create();
-        // Add the history middleware to the handler stack.
+        $stack->push(Middleware::cookies());
         $stack->push($history);
+        $jar = new \GuzzleHttp\Cookie\CookieJar;
         $webClient = new Client(['handler' => $stack]);
 
-
-        //log in as a user
-        $jar = new \GuzzleHttp\Cookie\CookieJar;
-        $response = $webClient->request('POST', $this->url . 'site/login', [
+        $response = $webClient->request('GET', $this->url . 'site/login', [
             'cookies' => $jar,
-            'form_params' => [
-                "LoginForm[username]" => "test+336@gigasciencejournal.com",
-                "LoginForm[password]" => "gigadb",
-                "LoginForm[rememberMe]" => "2592000",
-                "yt0" => "Login",
-            ]
         ]);
 
-        $this->assertEquals(302, $container[0]['response']->getStatusCode());
+        $html = (string)$response->getBody();
+        preg_match('/<meta\s+name=["\']csrf-token["\']\s+content=["\']([^"\']+)["\']/', $html, $matches);
+        $csrfToken = $matches[1] ?? null;
+
+        $jar->setCookie(new \GuzzleHttp\Cookie\SetCookie([
+             'Name'     => 'YII_CSRF_TOKEN', //cookie name
+             'Value'    => $csrfToken,
+             'Domain'   => parse_url($this->url, PHP_URL_HOST),
+             'Path'     => '/site/login',
+             'Secure'   => false,
+             'HttpOnly' => true,
+             'SameSite' => 'Strict'
+        ]));
+
+        //log in as a user
+        $response = $webClient->request('POST', $this->url . 'site/login', [
+            'cookies'     => $jar,
+            'form_params' => [
+                'YII_CSRF_TOKEN'        => $csrfToken,
+                'LoginForm[username]'   => 'test+336@gigasciencejournal.com',
+                'LoginForm[password]'   => 'gigadb',
+                'LoginForm[rememberMe]' => '2592000',
+                'yt0'                   => 'Login',
+            ]
+        ]);
+        $lastRequest = $container[1]['request'];
+        $this->assertEquals(200, $container[0]['response']->getStatusCode());
 
 
         //post  metadata for uploaded files.
         $metadata = [
-            "Upload[{$this->uploads[0]}][datatype]" => "Script",
-            "Upload[{$this->uploads[0]}][description]" => "The moon",
-            "Upload[{$this->uploads[1]}][datatype]" => "Repeat sequence",
-            "Upload[{$this->uploads[1]}][description]" => "The sun",
+            'YII_CSRF_TOKEN'                           => $csrfToken,
+            "Upload[{$this->uploads[0]}][datatype]"    => 'Script',
+            "Upload[{$this->uploads[0]}][description]" => 'The moon',
+            "Upload[{$this->uploads[1]}][datatype]"    => 'Repeat sequence',
+            "Upload[{$this->uploads[1]}][description]" => 'The sun',
         ];
-        $response = $webClient->request('POST', $this->url . "authorisedDataset/annotateFiles/id/" . $this->doi, [
-            'cookies' => $jar,
+
+        $jar->setCookie(new \GuzzleHttp\Cookie\SetCookie([
+             'Name'     => 'YII_CSRF_TOKEN',
+             'Value'    => $csrfToken,
+             'Domain'   => parse_url($this->url, PHP_URL_HOST),
+             'Path'     => '/authorisedDataset/annotateFiles/id/' . $this->doi,
+             'Secure'   => false,
+             'HttpOnly' => true,
+             'SameSite' => 'Strict'
+         ]));
+
+
+        $response = $webClient->request('POST', $this->url . 'authorisedDataset/annotateFiles/id/' . $this->doi, [
+            'cookies'     => $jar,
             'form_params' => $metadata
         ]);
-        $this->assertEquals(302, $container[0]['response']->getStatusCode());
+
+        $this->assertEquals(200, $container[0]['response']->getStatusCode());
 
         // check that the change went through
-        $this->assertUploadFields($this->dbhf->getPdoInstance(), $this->uploads[0], "Script", "The moon");
-        $this->assertUploadFields($this->dbhf->getPdoInstance(), $this->uploads[1], "Repeat sequence", "The sun");
+        $this->assertUploadFields($this->dbhf->getPdoInstance(), $this->uploads[0], 'Script', 'The moon');
+        $this->assertUploadFields($this->dbhf->getPdoInstance(), $this->uploads[1], 'Repeat sequence', 'The sun');
 
     }
 
@@ -169,28 +199,46 @@ class AuthorisedDatasetFilesAnnotateAction extends FunctionalTesting
         $history = Middleware::history($container);
 
         $stack = HandlerStack::create();
-        // Add the history middleware to the handler stack.
+        $stack->push(Middleware::cookies());
         $stack->push($history);
+        $jar = new \GuzzleHttp\Cookie\CookieJar;
         $webClient = new Client(['handler' => $stack]);
 
-
-        //log in as a user
-        $jar = new \GuzzleHttp\Cookie\CookieJar;
-        $response = $webClient->request('POST', $this->url . 'site/login', [
+        $response = $webClient->request('GET', $this->url . 'site/login', [
             'cookies' => $jar,
-            'form_params' => [
-                "LoginForm[username]" => "test+336@gigasciencejournal.com",
-                "LoginForm[password]" => "gigadb",
-                "LoginForm[rememberMe]" => "2592000",
-                "yt0" => "Login",
-            ]
         ]);
 
-        $this->assertEquals(302, $container[0]['response']->getStatusCode());
+        $html = (string)$response->getBody();
+        preg_match('/<meta\s+name=["\']csrf-token["\']\s+content=["\']([^"\']+)["\']/', $html, $matches);
+        $csrfToken = $matches[1] ?? null;
+
+        $jar->setCookie(new \GuzzleHttp\Cookie\SetCookie([
+             'Name'     => 'YII_CSRF_TOKEN', //cookie name
+             'Value'    => $csrfToken,
+             'Domain'   => parse_url($this->url, PHP_URL_HOST),
+             'Path'     => '/site/login',
+             'Secure'   => false,
+             'HttpOnly' => true,
+             'SameSite' => 'Strict'
+        ]));
+
+        $response = $webClient->request('POST', $this->url . 'site/login', [
+            'cookies'     => $jar,
+            'form_params' => [
+                'YII_CSRF_TOKEN'        => $csrfToken,
+                'LoginForm[username]'   => 'test+336@gigasciencejournal.com',
+                'LoginForm[password]'   => 'gigadb',
+                'LoginForm[rememberMe]' => '2592000',
+                'yt0'                   => 'Login',
+            ]
+        ]);
+        $lastRequest = $container[1]['request'];
+        $this->assertEquals(200, $container[0]['response']->getStatusCode());
 
 
         //post  metadata for uploaded files and attributes.
         $metadata = [
+            'YII_CSRF_TOKEN' => $csrfToken,
             "Upload[{$this->uploads[0]}][name]" => "someFile.csv",
             "Upload[{$this->uploads[0]}][datatype]" => "Script",
             "Upload[{$this->uploads[0]}][description]" => "The moon",
@@ -202,19 +250,29 @@ class AuthorisedDatasetFilesAnnotateAction extends FunctionalTesting
             "Attributes[{$this->uploads[0]}][Attributes][0][unit]" => "Celsius",
             "Attributes[{$this->uploads[0]}][Attributes][1][name]" => "Humidity",
             "Attributes[{$this->uploads[0]}][Attributes][1][value]" => "75",
-            "Attributes[{$this->uploads[0]}][Attributes][1][unit]" => "%",   
+            "Attributes[{$this->uploads[0]}][Attributes][1][unit]" => "%",
             "Attributes[{$this->uploads[0]}][Attributes][2][name]" => "Age",
             "Attributes[{$this->uploads[0]}][Attributes][2][value]" => "33",
             "Attributes[{$this->uploads[0]}][Attributes][2][unit]" => "Years",
             "Attributes[{$this->uploads[1]}][Attributes][0][name]" => "Contrast",
             "Attributes[{$this->uploads[1]}][Attributes][0][value]" => "3000",
-            "Attributes[{$this->uploads[1]}][Attributes][0][unit]" => "Nits",            
+            "Attributes[{$this->uploads[1]}][Attributes][0][unit]" => "Nits",
         ];
+
+        $jar->setCookie(new \GuzzleHttp\Cookie\SetCookie([
+             'Name'     => 'YII_CSRF_TOKEN',
+             'Value'    => $csrfToken,
+             'Domain'   => parse_url($this->url, PHP_URL_HOST),
+             'Path'     => '/authorisedDataset/annotateFiles/id/' . $this->doi,
+             'Secure'   => false,
+             'HttpOnly' => true,
+             'SameSite' => 'Strict'
+        ]));
         $response = $webClient->request('POST', $this->url . "authorisedDataset/annotateFiles/id/" . $this->doi, [
             'cookies' => $jar,
             'form_params' => $metadata
         ]);
-        $this->assertEquals(302, $container[0]['response']->getStatusCode());
+        $this->assertEquals(200, $container[0]['response']->getStatusCode());
         $this->assertTrue(preg_match("/3 attribute\(s\) added for upload someFile\.csv/", $response->getBody()) == 1);
 
         // check that the change for uploads went through
@@ -230,12 +288,12 @@ class AuthorisedDatasetFilesAnnotateAction extends FunctionalTesting
             ],
             $this->uploads[1] => [
                 "Contrast" => [ "value" => "3000", "unit" => "Nits"],
-            ], 
+            ],
         ];
          $this->assertAttributesForUpload($this->dbhf->getPdoInstance(), $this->uploads[0], $example[$this->uploads[0]]);
     }
 
-public function testPostUploadsMetadataSpreadsheet() {
+    public function testPostUploadsMetadataSpreadsheet() {
         $doi = "100142";
         // set upload status to the correct UserUploadingData
         $this->setUpDatasetUploadStatus($this->dbh, $doi ,"UserUploadingData");
@@ -247,16 +305,33 @@ public function testPostUploadsMetadataSpreadsheet() {
         $history = Middleware::history($container);
 
         $stack = HandlerStack::create();
-        // Add the history middleware to the handler stack.
+        $stack->push(Middleware::cookies());
         $stack->push($history);
+        $jar = new \GuzzleHttp\Cookie\CookieJar;
         $webClient = new Client(['handler' => $stack]);
 
+        $response = $webClient->request('GET', $this->url . 'site/login', [
+            'cookies' => $jar,
+        ]);
 
-        //log in as a user
-        $jar = new \GuzzleHttp\Cookie\CookieJar;
+        $html = (string)$response->getBody();
+        preg_match('/<meta\s+name=["\']csrf-token["\']\s+content=["\']([^"\']+)["\']/', $html, $matches);
+        $csrfToken = $matches[1] ?? null;
+
+        $jar->setCookie(new \GuzzleHttp\Cookie\SetCookie([
+             'Name'     => 'YII_CSRF_TOKEN', //cookie name
+             'Value'    => $csrfToken,
+             'Domain'   => parse_url($this->url, PHP_URL_HOST),
+             'Path'     => '/site/login',
+             'Secure'   => false,
+             'HttpOnly' => true,
+             'SameSite' => 'Strict'
+        ]));
+
         $response = $webClient->request('POST', $this->url . 'site/login', [
             'cookies' => $jar,
             'form_params' => [
+                'YII_CSRF_TOKEN' => $csrfToken,
                 "LoginForm[username]" => "test+336@gigasciencejournal.com",
                 "LoginForm[password]" => "gigadb",
                 "LoginForm[rememberMe]" => "2592000",
@@ -264,12 +339,16 @@ public function testPostUploadsMetadataSpreadsheet() {
             ]
         ]);
 
-        $this->assertEquals(302, $container[0]['response']->getStatusCode());
+        $this->assertEquals(200, $container[0]['response']->getStatusCode());
 
 
         //post  data for uploaded files
         $multipart = [
-                [
+            [
+                'name'     => 'YII_CSRF_TOKEN',
+                'contents' => $csrfToken
+            ],
+            [
                 'name'     => 'bulkmetadata',
                 'contents' => fopen('/var/www/files/examples/bulk-data-upload-example.csv', 'r'),
                 'filename' => 'bulk-data-upload-example.csv'
@@ -277,18 +356,25 @@ public function testPostUploadsMetadataSpreadsheet() {
         ];
 
 
+        $jar->setCookie(new \GuzzleHttp\Cookie\SetCookie([
+             'Name'     => 'YII_CSRF_TOKEN',
+             'Value'    => $csrfToken,
+             'Domain'   => parse_url($this->url, PHP_URL_HOST),
+             'Path'     => '/authorisedDataset/annotateFiles/id/' . $this->doi,
+             'Secure'   => false,
+             'HttpOnly' => true,
+             'SameSite' => 'Strict'
+        ]));
         $response = $webClient->request('POST', $this->url . "authorisedDataset/annotateFiles/id/" . $this->doi, [
             'cookies' => $jar,
             'multipart' => $multipart
         ]);
-        $this->assertEquals(302, $container[0]['response']->getStatusCode());
+        $this->assertEquals(200, $container[0]['response']->getStatusCode());
 
         // check that the change for uploads went through
         $this->assertUploadFields($this->dbhf->getPdoInstance(), $this->uploads[0], "Readme", "The methodology");
         $this->assertUploadFields($this->dbhf->getPdoInstance(), $this->uploads[1], "Annotation", "That diagram");
-
     }
-
 }
 
 ?>

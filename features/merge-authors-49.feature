@@ -272,7 +272,7 @@ Scenario: cannot go through the workflow for linking author to user and for merg
 	Given I sign in as an admin
 	And I am on "/adminAuthor/update/id/3794"
 	And I follow "Merge with an author"
-	When I go to "/user/update/id/345"
+	When I go to "/adminUser/update/id/345"
 	And I follow "Link this user to an author"
 	Then I should not see "Click on a row to proceed with merging that author with"
 	And I should see "Click on a row to proceed with linking that author with user"
