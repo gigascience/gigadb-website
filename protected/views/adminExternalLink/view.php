@@ -16,6 +16,7 @@
 			'dataset_id',
 			'url',
 			'external_link_type_id',
+            'description'
 		),
 		'htmlOptions' => array('class' => 'table table-striped table-bordered dataset-view-table'),
 		'itemCssClass' => array('odd', 'even'),

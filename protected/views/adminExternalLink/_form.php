@@ -49,6 +49,11 @@
 				'required' => true,
 			],
 		]);
+        $this->widget('application.components.controls.TextField', [
+            'form' => $form,
+            'model' => $model,
+            'attributeName' => 'description',
+        ]);
 		?>
 
 		<div class="pull-right btns-row">
