@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Security: bump yiisoft/yii2 from 2.0.52 to 2.0.53 in the composer group across 1 directory
 - Feat #2127: Sort datasets by upload status
 - Fix #2299: Delete google analytics category from admin dashboard
 - Fix #1713: Make curation log recognize user's full name
