@@ -77,7 +77,7 @@ class AdminUserCommandController extends Controller
 			}
 		}
 
-		$this->redirect(array('user/view/','id' => $requester->id));
+		$this->redirect(array('adminUser/view/','id' => $requester->id));
 
 	}
 
@@ -114,7 +114,7 @@ class AdminUserCommandController extends Controller
 			}
 		}
 
-		$this->redirect(array('user/update','id' => $claim->requester_id));
+		$this->redirect(array('adminUser/update','id' => $claim->requester_id));
 
 	}
 
