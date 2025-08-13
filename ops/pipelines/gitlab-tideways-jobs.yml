@@ -87,7 +87,7 @@ TidewaysBuildLive:
     - bash -c "echo '$docker_tlsauth_key' > ~/.docker/key.pem || true"
     # Pull production container from the registry
     - docker --tlsverify -H=$REMOTE_WEBAPP_DOCKER info
-    - docker --tlsverify -H=$REMOTE_WEBAPP_echo "$CI_JOB_TOKEN" | docker login --username gitlab-ci-token --password-stdin registry.gitlab.com
+    - echo "$CI_JOB_TOKEN" | docker --tlsverify -H=$REMOTE_WEBAPP_DOCKER login --username gitlab-ci-token --password-stdin registry.gitlab.com
     - docker --tlsverify -H=$REMOTE_WEBAPP_DOCKER pull registry.gitlab.com/$CI_PROJECT_PATH/production_tideways-daemon:$GIGADB_ENV
     # Redeploy all containers but the web container
     - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER up -d tideways-daemon

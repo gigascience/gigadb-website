@@ -12,7 +12,7 @@ FilesMetaDataConsoleDeployLive:
     - bash -c "echo '$docker_bastion_tlsauth_cert' > ~/.docker/cert.pem"
     - bash -c "echo '$docker_bastion_tlsauth_key' > ~/.docker/key.pem"
     - docker --tlsverify -H=$REMOTE_BASTION_DOCKER info
-    - docker --tlsverify -H=$REMOTE_BASTION_echo "$CI_JOB_TOKEN" | docker login --username gitlab-ci-token --password-stdin registry.gitlab.com
+    - echo "$CI_JOB_TOKEN" | docker --tlsverify -H=$REMOTE_BASTION_DOCKER login --username gitlab-ci-token --password-stdin registry.gitlab.com
     - docker --tlsverify -H=$REMOTE_BASTION_DOCKER pull registry.gitlab.com/$CI_PROJECT_PATH/production-files-metadata-console:$GIGADB_ENV
   environment:
     name: $GIGADB_ENV
