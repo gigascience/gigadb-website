@@ -4,7 +4,9 @@
 The steps are identical for production staging and live environments.
 From the Sydney staging environment, we want access to Hong Kong’s staging environment.
 From the Sydney live environment, we want access to Hong Kong’s live environment.
-The following instructions worksfor both developer fork deployments and Upstream deployments.
+The following instructions works for both developer fork deployments and Upstream deployments.
+
+>Note: the following instructions will need to be repeated after each re-provisioning of the environment
 
 ## Step 1:  Log in to the Sydney bastion server as “ec2-user” on the environment of choice (staging or live) and create the `/share/dropbox` directory
 
@@ -78,6 +80,13 @@ shell_type = unix
 
 ```
 
+also you need to enable allow_user for FUSE
+
+```shell
+$ sudo vi /etc/fuse.conf
+# mount_max = 1000
+user_allow_other
+```
 
 ## Step 5: Log in again to the Sydney bastion server and mount the directory from the Hong Kong bastion server where the user dropboxes are located
 
@@ -85,12 +94,12 @@ shell_type = unix
 Staging:
 
 ```
-rclone mount hk_efs_staging:/share/dropbox /share/dropbox &
+rclone mount hk_efs_staging:/share/dropbox /share/dropbox --allow-other &
 ```
 
 Live:
 
 ```
-rclone mount hk_efs_live:/share/dropbox /share/dropbox &
+rclone mount hk_efs_live:/share/dropbox /share/dropbox --allow-other &
 ```
 
