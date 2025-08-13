@@ -7,7 +7,7 @@
             <li><a href="/site/login"><i class="fa fa-sign-in"></i> Login / Signup</a></li>
           <?php } else {
 
-            $name = Yii::app()->user->getFirst_Name();
+            $name = Yii::app()->user->getFirstName();
 
             if (substr($name, -1) === 's') {
 

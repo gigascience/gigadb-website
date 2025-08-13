@@ -273,6 +273,14 @@ class CuratorSteps extends \Codeception\Actor
     }
 
     /**
+     * @When I click on :arg1 column header
+     */
+    public function iClickOnColumnHeader($arg1)
+    {
+      $this->I->click("//th/a[contains(text(), '$arg1')]");
+    }
+
+    /**
      * @When I fill in keywords fields of name keywords with :keyword
      */
     public function iFillInKeywordsFieldsOfNameKeywordsWith($keyword) {
@@ -281,4 +289,5 @@ class CuratorSteps extends \Codeception\Actor
         );
         $this->I->wait(3);
     }
+
 }
