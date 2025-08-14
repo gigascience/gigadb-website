@@ -62,4 +62,20 @@ class WebsiteUserSteps extends \Codeception\Actor
     {
         $this->I->seeInPageSource('<link rel="' . $relation . '" href="' . $destination . '">');
     }
+
+    /**
+     * @When I click on placeholder :placeholder for :tableId
+     */
+    public function iClickOnPlaceholder($placeholder, $tableId)
+    {
+        $this->I->click("#".$tableId." thead th input[placeholder='". $placeholder ."']");
+    }
+
+    /**
+     * @When I click :arg1
+     */
+    public function iClick($arg1)
+    {
+        $this->I->click('#'.$arg1);
+    }
 }

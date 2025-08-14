@@ -180,6 +180,14 @@ class AcceptanceTester extends \Codeception\Actor
     }
 
     /**
+     * @When I fill in the field of placeholder :placeholder with :value
+     */
+    public function iFillInTheFieldOfPlaceholderWith($placeholder, $value)
+    {
+        $this->fillField("input[placeholder='". $placeholder ."']", $value);
+    }
+
+    /**
      * @When I select :option from the field :fieldName
      */
     public function iSelectFromTheField($option, $fieldName)

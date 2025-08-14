@@ -215,17 +215,8 @@ Feature: a user visit the dataset page
     Given I have not signed in
     And I am on "/dataset/100035"
     And I follow "Files"
-    When I follow "[aria-label^='Size']"
+    When I follow "(//table[@id='files_table']//th[@class='sorting'])[5]"
     Then I should see "1.19 kB" in the table "#files_table" cell 1 6
-
-  @ok @issue-2067
-  Scenario: Files tab can be sort by size in descending order
-    Given I have not signed in
-    And I am on "/dataset/100035"
-    And I follow "Files"
-    When I follow "[aria-label^='Size']"
-    And I follow "[aria-label^='Size']"
-    Then I should see "3.88 GB" in the table "#files_table" cell 1 6
 
   @ok @issue-2054
   Scenario: 3D Models tab
@@ -269,3 +260,111 @@ Feature: a user visit the dataset page
     When I am on "/dataset/100142"
     Then I should see "Read the pre-print publication(s):"
 
+    @ok
+  Scenario: Show the filtered file name for files
+    Given I have not signed in
+    When I am on "/dataset/100006"
+    And I follow "Files"
+    And I should see "Pygoscelis_adeliae.fa.gz"
+    And I should see "Pygoscelis_adeliae.cds.gz"
+    And I click on placeholder "Search File Name" for "files_table"
+    And I wait "3" seconds
+    And I fill in the field of placeholder "Search File Name" with "Pygoscelis_adeliae.cds.gz"
+    Then I should not see "Pygoscelis_adeliae.fa.gz"
+    And I should see "Pygoscelis_adeliae.cds.gz"
+
+  @ok
+  Scenario: Show the filtered description for files
+    Given I have not signed in
+    When I am on "/dataset/100006"
+    And I follow "Files"
+    And I should see "assembled scaffolds from sequence data"
+    And I should see "coding sequence predictions on genome assembly"
+    And I click on placeholder "Search Description" for "files_table"
+    And I wait "3" seconds
+    And I fill in the field of placeholder "Search Description" with "coding sequence predictions on genome assembly"
+    Then I should not see "assembled scaffolds from sequence data"
+    And I should see "coding sequence predictions on genome assembly"
+
+  @ok
+  Scenario: Show the filtered Data Type for files
+    Given I have not signed in
+    When I am on "/dataset/100006"
+    And I follow "Files"
+    And I should see "Coding sequence"
+    And I should see "Sequence assembly"
+    And I click on placeholder "Search Data Type" for "files_table"
+    And I wait "3" seconds
+    And I fill in the field of placeholder "Search Data Type" with "coding sequence"
+    Then I should not see "Sequence assembly"
+    And I should see "coding sequence"
+
+  @ok
+  Scenario: Show the filtered Size for files
+    Given I have not signed in
+    When I am on "/dataset/100006"
+    And I follow "Files"
+    And I should see "6.75 MB"
+    And I should see "367.50 MB"
+    And I click on placeholder "Search Size" for "files_table"
+    And I wait "3" seconds
+    And I fill in the field of placeholder "Search Size" with "6."
+    Then I should not see "237.50 MB"
+    And I should see "6.75 MB"
+
+  @ok
+  Scenario: Show the filtered Size for files
+    Given I have not signed in
+    When I am on "/dataset/100006"
+    And I follow "Files"
+    And I should see "6.75 MB"
+    And I should see "367.50 MB"
+    And I click on placeholder "Search Size" for "files_table"
+    And I wait "3" seconds
+    And I fill in the field of placeholder "Search Size" with "6."
+    Then I should not see "237.50 MB"
+    And I should see "6.75 MB"
+
+  @ok
+  Scenario: Show the filtered File Format for files
+    Given I have not signed in
+    When I am on "/dataset/100006"
+    And I follow "Files"
+    And I click the table settings for "files_table_settings"
+    And I check "format_id" checkbox
+    And I click "save-files-settings"
+    And I should see "GFF"
+    And I should see "FASTA"
+    And I click on placeholder "Search File Format" for "files_table"
+    And I wait "3" seconds
+    And I fill in the field of placeholder "Search File Format" with "GFF"
+    Then I should not see "FASTA"
+    And I should see "GFF"
+
+  @ok
+  Scenario: Show the filtered Release Date for files
+    Given I have not signed in
+    When I am on "/dataset/100006"
+    And I follow "Files"
+    And I click the table settings for "files_table_settings"
+    And I check "date_stamp" checkbox
+    And I click "save-files-settings"
+    And I should see "2014-05-12"
+    And I should see "2011-07-06"
+    And I click on placeholder "Search Release Date" for "files_table"
+    And I wait "3" seconds
+    And I fill in the field of placeholder "Search Release Date" with "12"
+    Then I should not see "2011-07-06"
+    And I should see "2014-05-12"
+
+  @ok
+  Scenario: Show the filtered Sample ID for samples
+    Given I have not signed in
+    When I am on "/dataset/100035"
+    And I should see "SRS173539"
+    And I should see "SRS173540"
+    And I click on placeholder "Search Sample ID" for "samples_table"
+    And I wait "3" seconds
+    And I fill in the field of placeholder "Search Sample ID" with "SRS173539"
+    Then I should not see "SRS173540"
+    And I should see "SRS173539"
