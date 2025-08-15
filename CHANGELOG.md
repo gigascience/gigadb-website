@@ -4,6 +4,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+## v4.4.16 - 2025-08-06 - 6e04c0b9e -
+
 - Fix #2428: AdminUserController should target AdminUserController when validating or rejecting a claim
 - Feat #2127: Sort datasets by upload status
 - Fix #2299: Delete google analytics category from admin dashboard
