@@ -3,7 +3,27 @@ server {
     listen 80;
     listen [::]:80;
 
-    server_name $SERVER_HOSTNAME web gigadb.dev gigadb.test;
+    # Listen on both hostnames that need certificates.
+    server_name $SERVER_HOSTNAME portainer-$SERVER_HOSTNAME;
+
+    # Handle the challenge requests.
+    location /.well-known/acme-challenge/ {
+        root /var/www/.le/;
+        log_not_found off;
+    }
+
+    location / {
+        return 301 https://$host$request_uri;
+    }
+
+}
+
+server {
+
+    listen 80;
+    listen [::]:80;
+
+    server_name web gigadb.dev gigadb.test;
     root /var/www;
     index index.php index.html index.htm;
 
@@ -46,43 +66,6 @@ location /search {
 
     location ~ /\.ht {
         deny all;
-    }
-
-    location /.well-known/acme-challenge/ {
-        root /var/www/.le/;
-        log_not_found off;
-    }
-
-}
-
-server {
-
-    listen 80;
-    listen [::]:80;
-
-    server_name portainer.$SERVER_HOSTNAME;
-    root /var/www;
-    index index.php index.html index.htm;
-
-    location ~* (common\.css|datatables\.css|pager\.css)$ {
-        expires -1;
-    }
-
-    location ~* \.(js|css|png|jpg|jpeg|gif|ico)$ {
-        expires 365d;
-    }
-
-    location / {
-         try_files $uri $uri/ /index.php$is_args$args;
-    }
-
-    location ~ /\.ht {
-        deny all;
-    }
-
-    location /.well-known/acme-challenge/ {
-        root /var/www/.le/;
-        log_not_found off;
     }
 
 }
