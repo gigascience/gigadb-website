@@ -48,7 +48,7 @@ class RelationDAOCest
         $I->canSee('Create Relation');
         $I->selectOption('select#Relation_dataset_id', '5');
         $I->selectOption('select#Relation_related_doi', '100006');
-        $I->selectOption('select#Relation_relationship_id', '13');
+        $I->selectOption('select#Relation_relationship_id', '12');
         $I->click('Create');
 
         $I->dontSeeInDatabase('relation',
