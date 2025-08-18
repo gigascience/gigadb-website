@@ -768,8 +768,14 @@ class Dataset extends CActiveRecord
         }
 
         if ($this->image->id !== Image::GENERIC_IMAGE_ID && !$this->image->save()) {
-            Yii::app()->user->setFlash('updateError', 'Fail to update image!');
-            Yii::log(print_r($this->getErrors(), true), 'error');
+            $messages = [];
+            foreach ($this->image->getErrors() as $attr => $values) {
+                foreach ($values as $value) {
+                    $messages[] = $value;
+                }
+            }
+            Yii::app()->user->setFlash('updateError', implode('<br />', $messages));
+            Yii::log(implode('<br />', $messages), 'error');
 
             return false;
         }

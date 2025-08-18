@@ -4,6 +4,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Fix #2417: Set image tag length to 250 characters
+- Fix #2417: Rewrite the image error message
+
 ## v4.4.16 - 2025-08-15 - 6e04c0b9e -
 
 - Fix #2428: AdminUserController should target AdminUserController when validating or rejecting a claim
