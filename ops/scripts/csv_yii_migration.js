@@ -77,9 +77,9 @@ const getMigrationFileName = tableName => {
         case "exp_attributes":
             return "m200529_050260_insert_data_exp_attributes_tab";
         case "external_link_type":
-            return "m200529_050270_insert_data_external_link_type_tab";
+            return "m200529_050340_insert_data_external_link_type_tab";
         case "external_link":
-            return "m200529_050280_insert_data_external_link_tab";
+            return "m200529_050341_insert_data_external_link_tab";
         case "file_format":
             return "m200529_050290_insert_data_file_format_tab";
         case "file_type":
@@ -91,7 +91,7 @@ const getMigrationFileName = tableName => {
         case "file_experiment":
             return "m200529_050330_insert_data_file_experiment_tab";
         case "relationship":
-            return "m200529_050340_insert_data_relationship_tab";
+            return "m200529_050270_insert_data_relationship_tab";
         case "file_relationship":
             return "m200529_050350_insert_data_file_relationship_tab";
         case "file_sample":

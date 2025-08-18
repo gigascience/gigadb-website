@@ -6,6 +6,7 @@ $this->pageTitle = "GigaDB Dataset - DOI 10.5524/" . $model->identifier . " - " 
 
 $fileDataProvider = $files->getDataProvider();
 $sampleDataProvider = $samples->getDataProvider();
+$linksAsTab = [];
 
 ?>
 
@@ -230,6 +231,10 @@ $sampleDataProvider = $samples->getDataProvider();
                     foreach (array_keys($mainbodyExternalLinks) as $linkType) {
                         echo "<h3 class=\"h5\"><strong>${linkType}:</strong></h3>";
                         foreach ($links->getDatasetExternalLinks([$linkType]) as $link) {
+                            if ($link['multiple']) {
+                                $linksAsTab[$link['external_link_type_name']] = $link;
+                                continue;
+                            }
                             echo '<p>' . CHtml::link($link['url'], $link['url'], array("title" => $linkType . " for dataset " . $model->identifier)) . '</p>';
                         }
                     }
@@ -308,7 +313,7 @@ $sampleDataProvider = $samples->getDataProvider();
                     ?>
                     <?php
                     foreach ($links->getDatasetExternalLinksTypesNames(["Protocols.io", "JBrowse", "3D Models", "Code Ocean","3D Sketchfab"]) as $linkType => $linkCode) {
-                    ?>
+                        ?>
                         <li role="presentation" id="p-<?= $linkCode ?>"><a href="#<?= $linkCode ?>" aria-controls="<?= $linkCode ?>" role="tab" data-toggle="tab"><?= $linkType ?></a></li>
                     <?php
                     }
@@ -520,13 +525,11 @@ $sampleDataProvider = $samples->getDataProvider();
                                 </div>
                             <?php
                             }
-
-                            foreach ($links->getDatasetExternalLinksTypesNames(["Protocols.io", "JBrowse", "Code Ocean","3D Sketchfab"]) as $linkType => $linkCode) {
                             ?>
                                 <div role="tabpanel" class="tab-pane visible" id="<?= $linkCode ?>">
                                     <p><?= $linkType ?>:</p>
                                     <?php
-                                    foreach ($links->getDatasetExternalLinks([$linkType]) as $link) {
+                                    foreach ($linksAsTab as $linkType => $link) {
                                         $p = $link['url'];
                                         switch ($linkType) {
                                             case "Protocols.io":
@@ -538,19 +541,16 @@ $sampleDataProvider = $samples->getDataProvider();
                                                 echo "<iframe src=\"$p\" style=\"width: 1000px; height: 520px; border: 1px solid transparent;\"></iframe>";
                                                 echo "<br>";
                                                 break;
-                                            case "Code Ocean":
-                                                echo "<p>$p</p>";
-                                                break;
                                             case "3D Sketchfab":
                                                 echo "<iframe src=\"$p\" style=\"width: 950px; height: 520px; border: 1px solid transparent;\"></iframe>";
+                                                break;
+                                            default:
+                                                echo "<p>$p</p>";
                                                 break;
                                         }
                                     }
                                     ?>
                                 </div>
-                            <?php
-                            }
-                            ?>
 
                             <div role="tabpanel" class="tab-pane" id="history">
 
