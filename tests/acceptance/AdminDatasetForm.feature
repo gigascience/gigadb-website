@@ -115,6 +115,17 @@ Feature: form to update dataset details
     Then I should see current url contains "/dataset/400789/token/"
     And I should see an image located in "/images/datasets/e166c2a0-3684-5209-bccd-c4b18ff87be9/bgi-logo-new.png"
 
+  @ok @datasetimage
+  Scenario: Can't create dataset without indicating a type
+    When I am on "adminDataset/create"
+    And I select "test+14@gigasciencejournal.com" from the field "Dataset_submitter_id"
+    And I fill in the field of "name" "Dataset[dataset_size]" with "1024"
+    And I fill in the field of "name" "Dataset[identifier]" with "400789"
+    And I fill in the field of "name" "Dataset[ftp_site]" with "ftp://test"
+    And I fill in the field of "name" "Dataset[title]" with "test dataset"
+    And I press the button "Create"
+    Then I should see "Fail to update your types. You need to select at least one type"
+
   @ok @issue-1023
   Scenario: To confirm the upload status of published dataset has changed to incomplete
     When I am on "/adminDataset/update/id/5"
@@ -145,7 +156,7 @@ Feature: form to update dataset details
   Scenario: Open private url is working
     When I am on "/adminDataset/update/id/5"
     And I press the button "Create/Reset Private URL"
-    And I wait "1" seconds
+    And I wait "3" seconds
     Then I should see current url contains "/dataset/100039/token/"
     And I should see "Genomic data of the Puerto Rican Parrot (Amazona vittata) from a locally funded project."
 
@@ -156,6 +167,7 @@ Feature: form to update dataset details
     And I wait "1" seconds
     And I should see "AuthorReview"
     And I select "test+14@gigasciencejournal.com" from the field "Dataset_submitter_id"
+    And I check the field "Dataset_Epigenomic"
     And I fill in the field of "name" "Dataset[dataset_size]" with "1024"
     And I fill in the field of "name" "Dataset[title]" with "test dataset"
     And I fill in the field of "name" "Dataset[identifier]" with "123789"
@@ -172,6 +184,7 @@ Feature: form to update dataset details
     And I wait "1" seconds
     And I should see "AuthorReview"
     And I select "test+14@gigasciencejournal.com" from the field "Dataset_submitter_id"
+    And I check the field "Dataset_Epigenomic"
     And I fill in the field of "name" "Dataset[dataset_size]" with "1024"
     And I fill in the field of "name" "Dataset[title]" with "test dataset"
     And I fill in the field of "name" "Dataset[identifier]" with "123789"
@@ -230,7 +243,6 @@ Feature: form to update dataset details
     And I should see "Tag"
     And I should see "License"
     And I should see "Photographer"
-
 
   @ok @datasetimage
   Scenario: No image, but metadata only is shown if image record's url is not valid url
