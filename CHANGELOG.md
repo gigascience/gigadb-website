@@ -4,6 +4,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Fix #831: Check if longitude and lagitude match the WGS84 format for sample attributes
+
 ## v4.4.16 - 2025-08-15 - 6e04c0b9e -
 
 - Fix #2428: AdminUserController should target AdminUserController when validating or rejecting a claim
