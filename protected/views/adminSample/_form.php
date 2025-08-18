@@ -117,7 +117,8 @@
                 url: "<?php echo  Yii::app()->createUrl('adminSample/checkAttribute') ?> ",
                 type: 'POST',
                 data:  {
-                    attr: $('.form').find("textarea[name='Sample[attributesList]']").val()
+                    attr: $('.form').find("textarea[name='Sample[attributesList]']").val(),
+                    '<?php echo Yii::app()->request->csrfTokenName; ?>': '<?php echo Yii::app()->request->csrfToken; ?>'
                 },
                 dataType: 'json',
                 success: function(response) {
