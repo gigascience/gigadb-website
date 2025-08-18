@@ -17,10 +17,13 @@ return [
             ]
     ],
     'components' => [
+        'datasetToXml' => [
+            'class' => 'GigaDB\services\DatasetToXmlService'
+        ],
         'request' => array(
-                'enableCookieValidation' => true,
-                'enableCsrfValidation' => true,
-                'cookieValidationKey' => '${COOKIE_VALIDATION_KEY}'
+            'enableCookieValidation' => true,
+            'enableCsrfValidation' => true,
+            'cookieValidationKey' => '${COOKIE_VALIDATION_KEY}'
         ),
         'db' => [
             'class' => 'yii\db\Connection',

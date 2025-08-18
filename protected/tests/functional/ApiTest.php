@@ -15,7 +15,7 @@ class ApiTest extends FunctionalTesting
     use BrowserPageSteps;
 
     public function testItShouldOutputDatasetOnly() {
-        $url = "http://gigadb.dev/api/dataset/doi/100006?result=dataset" ;
+        $url = "http://gigadb.dev/api/dataset?doi=100006&result=dataset" ;
 
         // Go to a page and getting xml content
         $feed = $this->getXMLWithSessionAndUrl($url);
@@ -27,20 +27,20 @@ class ApiTest extends FunctionalTesting
     }
 
     public function testItShouldOutputSamplesOnly() {
-        $url = "http://gigadb.dev/api/dataset/doi/100006?result=sample" ;
+        $url = "http://gigadb.dev/api/dataset?doi=100006&result=sample" ;
 
         // Go to a page and getting xml content
         $feed = $this->getXMLWithSessionAndUrl($url);
 
         // Validate text presence on a page.
-        $this->assertEquals("Pygoscelis_adeliae", $feed->samples->sample[0]->name);
+        $this->assertEquals("Pygoscelis_adeliae", (string) $feed->samples->sample[0]->name);
         $this->assertEquals("9238", $feed->samples->sample[0]->species->tax_id);
         $this->assertNull($feed->files->file);
         $this->assertNull($feed->dataset->title);
     }
 
     public function testItShouldOutputFilesOnly() {
-        $url = "http://gigadb.dev/api/dataset/doi/100006?result=file" ;
+        $url = "http://gigadb.dev/api/dataset?doi=100006&result=file" ;
 
         // Go to a page and getting xml content
         $feed = $this->getXMLWithSessionAndUrl($url);
@@ -52,19 +52,18 @@ class ApiTest extends FunctionalTesting
     }
 
     public function testItShouldOutputFullDataset() {
-        $url = "http://gigadb.dev/api/dataset/doi/100006?result=all" ;
+        $url = "http://gigadb.dev/api/dataset?doi=100006&result=all" ;
 
         // Go to a page and getting xml content
         $feed = $this->getXMLWithSessionAndUrl($url);
-
         // Validate text presence on a page.
-        $this->assertEquals("Genomic data from Adelie penguin (Pygoscelis adeliae). ", $feed->dataset->title);
+        $this->assertEquals("Genomic data from Adelie penguin (Pygoscelis adeliae). ", (string) $feed->dataset->title);
         $this->assertEquals("9238", $feed->samples->sample[0]->species->tax_id);
         $this->assertEquals("Pygoscelis_adeliae.scaf.fa.gz", $feed->files->file[5]->name);
     }
 
     public function testItShouldOutputFullDatasetByDefault() {
-        $url = "http://gigadb.dev/api/dataset/doi/100006" ;
+        $url = "http://gigadb.dev/api/dataset?doi=100006" ;
 
         // Go to a page and getting xml content
         $feed = $this->getXMLWithSessionAndUrl($url);
