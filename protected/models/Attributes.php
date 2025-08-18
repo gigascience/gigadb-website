@@ -67,7 +67,8 @@ class Attributes extends CActiveRecord
 		return array(
 			'exp_attributes' => array(self::HAS_MANY, 'ExpAttributes', 'attribute_id'),
 			'sample_attributes' => array(self::HAS_MANY, 'SampleAttribute', 'attribute_id'),
-			'dataset_attributes' => array(self::HAS_MANY, 'DatasetAttributes', 'attribute_id'),
+            'datasets' => array(self::MANY_MANY, 'Dataset', 'dataset_attributes(attribute_id, dataset_id)'),
+            'dataset_attributes' => array(self::HAS_MANY, 'DatasetAttributes', 'attribute_id'),
 			'file_attributes' => array(self::HAS_MANY, 'FileAttributes', 'attribute_id'),
 		);
 	}
