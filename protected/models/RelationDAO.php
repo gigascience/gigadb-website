@@ -9,44 +9,6 @@
 */
 class RelationDAO
 {
-     const RECIPROCAL_RELATION = [
-		 "IsCitedBy"           => "Cites",
-		 "Cites"               => "IsCitedBy",
-         "IsSupplementTo"      => "IsSupplementedBy",
-         "IsSupplementedBy"    => "IsSupplementTo",
-		 "IsContinuedBy"       => "Continues",
-		 "Continues"           => "IsContinuedBy",
-		 "Describes"           => "IsDescribedBy",
-		 "IsDescribedBy"       => "Describes",
-		 "HasMetadata"         => "isMetadataFor",
-		 "IsMetadataFor"       => "HasMetadata",
-		 "HasVersion"          => "IsVersionOf",
-		 "IsVersionOf"         => "HasVersion",
-         "IsNewVersionOf"      => "IsPreviousVersionOf",
-         "IsPreviousVersionOf" => "IsNewVersionOf",
-         "IsPartOf"            => "HasPart",
-         "HasPart"             => "IsPartOf",
-         "IsReferencedBy"      => "References",
-         "References"          => "IsReferencedBy",
-		 "IsDocumentedBy"      => "Documents",
-		 "Documents"           => "IsDocumentedBy",
-		 "IsCompiledBy"        => "Compiles",
-		 "Compiles"            => "IsCompiledBy",
-		 "IsReviewedBy"        => "Reviews",
-		 "Reviews"             => "IsReviewedBy",
-		 "IsRequiredBy"        => "Requires",
-		 "Requires"            => "IsRequiredBy",
-		 "IsObsoletedBy"       => "Obsoletes",
-		 "Obsoletes"           => "IsObsoletedBy",
-		 "IsCollectedBy"       => "Collects",
-		 "Collects"            => "IsCollectedBy",
-		 "IsVariantFormOf"     => "IsOriginalFormOf",
-		 "IsOriginalFormOf"    => "IsVariantFormOf",
-		 "IsIdenticalTo"       => "IsIdenticalTo",
-		 "IsDerivedFrom"       => "IsSourceOf",
-		 "IsSourceOf"          => "IsDerivedFrom"
-     ];
-
 	/**
 	 * It sets up and save a supplied relation object to reciprocate a given persisted relation
 	 *
@@ -59,7 +21,7 @@ class RelationDAO
 		$related_doi = Dataset::model()->findByAttributes(array('id' => $relating_rel->getDatasetID()))->identifier ;
 		$reciprocal_rel->setDatasetID($dataset_id);
 		$reciprocal_rel->setRelatedDOI($related_doi);
-        $reciprocal_rel->setRelationship(self::RECIPROCAL_RELATION[$relating_rel->getRelationship()->getName()]);
+		$reciprocal_rel->setRelationship($relating_rel->getRelationship()->getReciprocalName());
 
 		if (!$reciprocal_rel->save()) {
 			throw new CException('Failed as it was unable to save the reciprocal relation');

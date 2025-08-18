@@ -1,4 +1,4 @@
-id,name
-1,IsCitedBy
-2,Cites
-13,IsReferencedBy
+id,name,reciprocal_name
+1,IsCitedBy,Cites
+2,Cites,IsCitedBy
+13,IsReferencedBy,References

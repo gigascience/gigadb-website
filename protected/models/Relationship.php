@@ -35,9 +35,10 @@ class Relationship extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('name', 'length', 'max'=>100),
+            array('reciprocal_name', 'length', 'max'=>100),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, name', 'safe', 'on'=>'search'),
+			array('id, name, reciprocal_name', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -99,8 +100,16 @@ class Relationship extends CActiveRecord
     /**
      * @return string
      */
-    public function getName() {
+    public function getName(): string
+    {
         return $this->name;
     }
 
+    /**
+     * @return string
+     */
+    public function getReciprocalName(): string
+    {
+        return $this->reciprocal_name;
+    }
 }

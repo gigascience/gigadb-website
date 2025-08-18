@@ -17,10 +17,23 @@ class RelationDAOTest extends \CDbTestCase
      */
     public function testItShouldAddReciprocalRelation($relationship, $expected_reciprocal)
     {
+        $fixtureFirstDataset = $this->datasets[0];
+        $fixtureSecondDataset = $this->datasets[1];
+        $firstDatasetMock = $this->getMockBuilder(Dataset::class)
+            ->setMethods(['findByAttributes'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $secondDatasetMock = $this->getMockBuilder(Dataset::class)
+            ->setMethods(['findByAttributes'])
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $relation_stub = $this->createMock(Relation::class);
         $relationshipMock = $this->createMock(Relationship::class);
         $relationshipMock->method('getName')
             ->willReturn($relationship);
+        $relationshipMock->method('getReciprocalName')
+            ->willReturn($expected_reciprocal);
 
         // Configure the stub for the relation for which to create a reciprocal relation
         $relation_stub->method('getRelatedDOI')
@@ -29,6 +42,14 @@ class RelationDAOTest extends \CDbTestCase
             ->willReturn('1'); // of identifier 100243
         $relation_stub->method('getRelationship')
             ->willReturn($relationshipMock);
+
+        $firstDatasetMock->method('findByAttributes')
+            ->with('identifier', $fixtureFirstDataset['identifier'])
+            ->willReturn($firstDatasetMock);
+
+        $secondDatasetMock->method('findByAttributes')
+            ->with('identifier', $fixtureSecondDataset['identifier'])
+            ->willReturn($secondDatasetMock);
 
         // Create a mock for the Relation class,
         // only mock the setDatasetID, setRelatedDOI, setRelationship methods.
