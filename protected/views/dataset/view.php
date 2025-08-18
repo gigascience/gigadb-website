@@ -343,6 +343,14 @@ $sampleDataProvider = $samples->getDataProvider();
                                         <th title="Species taxonomy ID of the sampled species, we currently use the NCBI taxonomy as the source of this identifier.">Taxonomic ID</th>
                                         <th title="The preferred display name used by NCBI taxonomy for the tax ID provided">Genbank Name</th>
                                     </tr>
+                                    <tr>
+                                        <th><input data-column='0' type='text' placeholder='Search Sample ID'/></th>
+                                        <th><input data-column='1' type='text' placeholder='Search Common Name'/></th>
+                                        <th><input data-column='2' type='text' placeholder='Search Scientific Name'/></th>
+                                        <th><input data-column='3' type='text' placeholder='Search Sample Attributes'/></th>
+                                        <th><input data-column='4' type='text' placeholder='Search Taxonomic ID'/></th>
+                                        <th><input data-column='5' type='text' placeholder='Genbank Name'/></th>
+                                    </tr>
                                 </thead>
                                 <tbody>
                                     <?php $sample_models = $sampleDataProvider->getData();
@@ -419,6 +427,17 @@ $sampleDataProvider = $samples->getDataProvider();
                                             <th title="Date of release of the file, see the history log for details of any changes made after initial release date. Click header to sort by A-Z/Z-A.">Release Date</th>
                                             <th title="Additional information about the file presented as Key:Value pairs.">File Attributes</th>
                                             <th title="The direct link to the files server location.">Download</th>
+                                        </tr>
+                                        <tr>
+                                            <th><input data-column='0' type='text' placeholder='Search File Name'/></th>
+                                            <th><input  data-column='1' type='text' placeholder='Search Description'/></th>
+                                            <th><input data-column='2' type='text' placeholder='Search Sample ID'/></th>
+                                            <th><input data-column='3' type='text' placeholder='Search Data Type'/></th>
+                                            <th><input data-column='4' type='text' placeholder='Search File Format'/></th>
+                                            <th><input data-column='5' type='text' placeholder='Search Size'/></th>
+                                            <th><input data-column='6' type='text' placeholder='Search Release Date'/></th>
+                                            <th><input data-column='7' type='text' placeholder='Search File Attributes'/></th>
+                                            <th><input data-column='8' type='text' placeholder='Search Download'/></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -593,224 +612,237 @@ $sampleDataProvider = $samples->getDataProvider();
     <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js" defer></script>
     <!-- Place this tag in your head or just before your close body tag. -->
     <script>
-        document.addEventListener("DOMContentLoaded", function(event) { //This event is fired after deferred scripts are loaded
+        document.addEventListener('DOMContentLoaded', function (event) { //This event is fired after deferred scripts are loaded
             /* Document ready for Thumbnail Slider */
             /* ----------------------------------- */
-            $(document).ready(function() {
-                // If the related are more than 3 so we add the caroussel
-                if ($('#myCarousel').attr('data-total') > 3) {
-                    $('#myCarousel').carousel({
-                        interval: 4000,
-                        wrap: 'circular'
-                    });
-                }
-                $('.tab-container').on("click", function() {
-                    $(this).toggleClass('tab-show');
-                    $(this).toggleClass('tab-hide');
-
-                    var arrow = $(this).find('.tab-container__arrow')[0];
-                    $(arrow).toggleClass('flip-vertical');
+            if ($('#myCarousel').attr('data-total') > 3) {
+                $('#myCarousel').carousel({
+                    interval: 4000,
+                    wrap: 'circular'
                 });
+            }
+            $('.tab-container').on('click', function () {
+                $(this).toggleClass('tab-show');
+                $(this).toggleClass('tab-hide');
 
-                var url = location.pathname;
-                var sample_index = url.lastIndexOf('Sample_');
-                var file_index = url.lastIndexOf('File_');
-
-                if (/Sample/.test(window.location.href)) {
-                    $("#p-sample").addClass("active");
-                    var e = document.getElementById('p-sample');
-                    if (!!e && e.scrollIntoView) {
-                        e.scrollIntoView();
-                    }
-
-                } else {
-                    $("#p-sample").addClass("active");
-                }
-                if (/File/.test(window.location.href)) {
-
-                    $("#p-sample").removeClass("active");
-                    $("#sample").removeClass("tab-pane active");
-                    $("#sample").addClass("tab-pane");
-                    $("#p-file").addClass("active");
-                    $("#files").addClass("active");
-
-                    var e = document.getElementById('p-file');
-                    if (!!e && e.scrollIntoView) {
-                        e.scrollIntoView();
-                    }
-
-
-                }
-
-                if (sample_index > 0 && file_index > 0) {
-                    if (sample_index > file_index) {
-                        $("#p-file").removeClass("active");
-                        $("#files").removeClass("tab-pane active");
-                        $("#files").addClass("tab-pane");
-                        $("#p-sample").addClass("active");
-                        $("#sample").addClass("active");
-                        var e = document.getElementById('p-sample');
-                        if (!!e && e.scrollIntoView) {
-                            e.scrollIntoView();
-                        }
-                    } else {
-                        $("#p-sample").removeClass("active");
-                        $("#sample").removeClass("tab-pane active");
-                        $("#sample").addClass("tab-pane");
-                        $("#p-file").addClass("active");
-                        $("#files").addClass("active");
-                        var e = document.getElementById('p-file');
-                        if (!!e && e.scrollIntoView) {
-                            e.scrollIntoView();
-                        }
-                    }
-                }
-                var MyJSStringVar = "<?php print($flag); ?>"
-                if (MyJSStringVar == 'file') {
-                    $("#p-sample").removeClass("active");
-                    $("#sample").removeClass("tab-pane active");
-                    $("#sample").addClass("tab-pane");
-                    $("#p-file").addClass("active");
-                    $("#files").addClass("active");
-
-                    var e = document.getElementById('p-file');
-                    if (!!e && e.scrollIntoView) {
-                        e.scrollIntoView();
-                    }
-                }
-                if (MyJSStringVar == 'sample') {
-                    var e = document.getElementById('p-sample');
-                    if (!!e && e.scrollIntoView) {
-                        e.scrollIntoView();
-                    }
-                }
-
-                $('#samples_table').DataTable({
-                    "initComplete": function () {
-                        $("#samples_table").wrap("<div class='dataset-datatables-wrapper'></div>");
-                    },
-                    "paging": false,
-                    "ordering": true,
-                    "info": false,
-                    "searching": false,
-                    "lengthChange": false,
-                    "pageLength": <?= $sampleDataProvider->getPagination()->getPageSize() ?>,
-                    "pagingType": "simple_numbers",
-                    "columns": [{
-                            "visible": <?= in_array('name', $columns) ? 'true' : 'false' ?>
-                        },
-                        {
-                            "visible": <?= in_array('common_name', $columns) ? 'true' : 'false' ?>
-                        },
-                        {
-                            "visible": <?= in_array('scientific_name', $columns) ? 'true' : 'false' ?>
-                        },
-                        {
-                            "visible": <?= in_array('attribute', $columns) ? 'true' : 'false' ?>
-                        },
-                        {
-                            "visible": <?= in_array('taxonomic_id', $columns) ? 'true' : 'false' ?>
-                        },
-                        {
-                            "visible": <?= in_array('genbank_name', $columns) ? 'true' : 'false' ?>
-                        },
-                    ]
-                });
-
-        $.fn.dataTable.ext.type.order['file-size-pre'] = function(data) {
-            const units = {
-                'B': 1,
-                'kB': 1024,
-                'MB': 1048576,
-                'GB': 1073741824
-            };
-            const match = data.match(/^(\d+(?:\.\d+)?)\s*(B|kB|MB|GB)$/);
-            return match ? parseFloat(match[1]) * (units[match[2]] || 1) : 0;
-        };
-
-        $('#files_table').DataTable({
-            "initComplete": function () {
-                $("#files_table").wrap("<div class='dataset-datatables-wrapper'></div>");
-            },
-            "paging":   false,
-            "ordering": true,
-            "info":     false,
-            "searching": false,
-            "lengthChange": false,
-            "pageLength": <?=$fileDataProvider->getPagination()->getPageSize() ?>,
-            "pagingType": "simple_numbers",
-            "columns": [
-                { "visible": <?= in_array('name', $setting) ? 'true' : 'false' ?> },
-                { "visible": <?= in_array('description', $setting) ? 'true' : 'false' ?> },
-                { "visible": <?= in_array('sample_id', $setting) ? 'true' : 'false' ?> },
-                { "visible": <?= in_array('type_id', $setting) ? 'true' : 'false' ?> },
-                { "visible": <?= in_array('format_id', $setting) ? 'true' : 'false' ?> },
-                { "type": "file-size", "visible": <?= in_array('size', $setting) ? 'true' : 'false' ?> },
-                { "visible": <?= in_array('date_stamp', $setting) ? 'true' : 'false' ?> },
-                { "visible": <?= in_array('attribute', $setting) ? 'true' : 'false' ?> },
-                { "visible": <?= in_array('location', $setting) ? 'true' : 'false' ?> },
-              ]
-        } );
-
+                var arrow = $(this).find('.tab-container__arrow')[0];
+                $(arrow).toggleClass('flip-vertical');
             });
-            /* ----------------------------------- */
 
-            $(".hint").tooltip({
+            var url = location.pathname;
+            var sample_index = url.lastIndexOf('Sample_');
+            var file_index = url.lastIndexOf('File_');
+
+            if (/Sample/.test(window.location.href)) {
+                $('#p-sample').addClass('active');
+                var e = document.getElementById('p-sample');
+                if (!!e && e.scrollIntoView) {
+                    e.scrollIntoView();
+                }
+
+            } else {
+                $('#p-sample').addClass('active');
+            }
+            if (/File/.test(window.location.href)) {
+
+                $('#p-sample').removeClass('active');
+                $('#sample').removeClass('tab-pane active');
+                $('#sample').addClass('tab-pane');
+                $('#p-file').addClass('active');
+                $('#files').addClass('active');
+
+                var e = document.getElementById('p-file');
+                if (!!e && e.scrollIntoView) {
+                    e.scrollIntoView();
+                }
+            }
+
+            if (sample_index > 0 && file_index > 0) {
+                if (sample_index > file_index) {
+                    $('#p-file').removeClass('active');
+                    $('#files').removeClass('tab-pane active');
+                    $('#files').addClass('tab-pane');
+                    $('#p-sample').addClass('active');
+                    $('#sample').addClass('active');
+                    var e = document.getElementById('p-sample');
+                    if (!!e && e.scrollIntoView) {
+                        e.scrollIntoView();
+                    }
+                } else {
+                    $('#p-sample').removeClass('active');
+                    $('#sample').removeClass('tab-pane active');
+                    $('#sample').addClass('tab-pane');
+                    $('#p-file').addClass('active');
+                    $('#files').addClass('active');
+                    var e = document.getElementById('p-file');
+                    if (!!e && e.scrollIntoView) {
+                        e.scrollIntoView();
+                    }
+                }
+            }
+
+            var MyJSStringVar = "<?php print($flag); ?>"
+            if (MyJSStringVar == 'file') {
+                $('#p-sample').removeClass('active');
+                $('#sample').removeClass('tab-pane active');
+                $('#sample').addClass('tab-pane');
+                $('#p-file').addClass('active');
+                $('#files').addClass('active');
+
+                var e = document.getElementById('p-file');
+                if (!!e && e.scrollIntoView) {
+                    e.scrollIntoView();
+                }
+            }
+            if (MyJSStringVar == 'sample') {
+                var e = document.getElementById('p-sample');
+                if (!!e && e.scrollIntoView) {
+                    e.scrollIntoView();
+                }
+            }
+
+            var sampleTable = $('#samples_table').DataTable({
+                'initComplete': function () {
+                    $('#samples_table').wrap("<div class='dataset-datatables-wrapper'></div>");
+                },
+                'paging': false,
+                'ordering': true,
+                'info': false,
+                'searching': true,
+                'lengthChange': false,
+                'pageLength': <?= $sampleDataProvider->getPagination()->getPageSize() ?>,
+                "pagingType": "simple_numbers",
+                "columns": [{
+                    "visible": <?= in_array('name', $columns) ? 'true' : 'false' ?>
+                },
+                    {
+                        "visible": <?= in_array('common_name', $columns) ? 'true' : 'false' ?>
+                    },
+                    {
+                        "visible": <?= in_array('scientific_name', $columns) ? 'true' : 'false' ?>
+                    },
+                    {
+                        "visible": <?= in_array('attribute', $columns) ? 'true' : 'false' ?>
+                    },
+                    {
+                        "visible": <?= in_array('taxonomic_id', $columns) ? 'true' : 'false' ?>
+                    },
+                    {
+                        "visible": <?= in_array('genbank_name', $columns) ? 'true' : 'false' ?>
+                    },
+                ]
+            });
+
+            $('#samples_table thead th input').each(function() {
+                var colIndex = $(this).data('column')
+                $(this).on('keyup', function() {
+                    sampleTable
+                        .column(colIndex)
+                        .search(this.value)
+                        .draw();
+                });
+            });
+
+            $.fn.dataTable.ext.type.order['file-size-pre'] = function(data) {
+                const units = {
+                    'B': 1,
+                    'kB': 1024,
+                    'MB': 1048576,
+                    'GB': 1073741824
+                };
+                const match = data.match(/^(\d+(?:\.\d+)?)\s*(B|kB|MB|GB)$/);
+                return match ? parseFloat(match[1]) * (units[match[2]] || 1) : 0;
+            };
+
+            var fileTable = $('#files_table').DataTable({
+                'initComplete': function () {
+                    $('#files_table').wrap("<div class='dataset-datatables-wrapper'></div>");
+                },
+                'paging': false,
+                'ordering': true,
+                'info': false,
+                'searching': true,
+                'lengthChange': false,
+                'pageLength': <?=$fileDataProvider->getPagination()->getPageSize() ?>,
+                "pagingType": "simple_numbers",
+                "columns": [
+                    {"visible": <?= in_array('name', $setting) ? 'true' : 'false' ?>},
+                    {"visible": <?= in_array('description', $setting) ? 'true' : 'false' ?>},
+                    {"visible": <?= in_array('sample_id', $setting) ? 'true' : 'false' ?>},
+                    {"visible": <?= in_array('type_id', $setting) ? 'true' : 'false' ?>},
+                    {"visible": <?= in_array('format_id', $setting) ? 'true' : 'false' ?>},
+                    {"type": "file-size", "visible": <?= in_array('size', $setting) ? 'true' : 'false' ?>},
+                    {"visible": <?= in_array('date_stamp', $setting) ? 'true' : 'false' ?>},
+                    {"visible": <?= in_array('attribute', $setting) ? 'true' : 'false' ?>},
+                    {"visible": <?= in_array('location', $setting) ? 'true' : 'false' ?>},
+                ]
+            });
+
+            $('#files_table thead th input').each(function() {
+                var colIndex = $(this).data('column')
+                $(this).on('keyup', function() {
+                        fileTable
+                            .column(colIndex)
+                            .search(this.value)
+                            .draw();
+                });
+            });
+
+            $('.hint').tooltip({
                 'placement': 'right'
             });
-            $(".image-hint").tooltip({
+            $('.image-hint').tooltip({
                 'placement': 'top'
             });
 
-            $("#js-expand-btn").click(function() {
+            $('#js-expand-btn').click(function () {
                 $(this).hide();
-                $("#js-close-btn").show();
-                $("#js-logs-2").show();
+                $('#js-close-btn').show();
+                $('#js-logs-2').show();
             });
 
-            $("#js-close-btn").click(function() {
+            $('#js-close-btn').click(function () {
                 $(this).hide();
-                $("#js-expand-btn").show();
-                $("#js-logs-2").hide();
+                $('#js-expand-btn').show();
+                $('#js-logs-2').hide();
             });
 
-
-            $("#js-expand-btn1").click(function() {
+            $('#js-expand-btn1').click(function () {
                 $(this).hide();
-                $("#js-close-btn1").show();
-                $("#js-logs-1").show();
+                $('#js-close-btn1').show();
+                $('#js-logs-1').show();
             });
 
-            $("#js-close-btn1").click(function() {
+            $('#js-close-btn1').click(function () {
                 $(this).hide();
-                $("#js-expand-btn1").show();
-                $("#js-logs-1").hide();
+                $('#js-expand-btn1').show();
+                $('#js-logs-1').hide();
             });
 
-            $("#js-expand-btn2").click(function() {
+            $('#js-expand-btn2').click(function () {
                 $(this).hide();
-                $("#js-close-btn2").show();
-                $("#js-logs-2").show();
+                $('#js-close-btn2').show();
+                $('#js-logs-2').show();
             });
 
-            $("#js-close-btn2").click(function() {
+            $('#js-close-btn2').click(function () {
                 $(this).hide();
-                $("#js-expand-btn2").show();
-                $("#js-logs-2").hide();
+                $('#js-expand-btn2').show();
+                $('#js-logs-2').hide();
             });
-            $("#js-expand-btn3").click(function() {
+            $('#js-expand-btn3').click(function () {
                 $(this).hide();
-                $("#js-close-btn3").show();
-                $("#js-logs-3").show();
-            });
-
-            $("#js-close-btn3").click(function() {
-                $(this).hide();
-                $("#js-expand-btn3").show();
-                $("#js-logs-3").hide();
+                $('#js-close-btn3').show();
+                $('#js-logs-3').show();
             });
 
-            $(".js-download-count").click(function() {
+            $('#js-close-btn3').click(function () {
+                $(this).hide();
+                $('#js-expand-btn3').show();
+                $('#js-logs-3').hide();
+            });
+
+            $('.js-download-count').click(function () {
                 var location = $(this).attr('href');
                 $.ajax({
                     type: 'POST',
@@ -818,23 +850,26 @@ $sampleDataProvider = $samples->getDataProvider();
                     data: {
                         'file_href': location
                     },
-                    success: function(response) {
-                        if (response.success) {} else {
+                    success: function (response) {
+                        if (response.success) {
+                        } else {
                             alert(response.message);
                         }
                     },
-                    error: function() {}
+                    error: function () {
+                    }
                 });
             });
 
-            $(".content-popup").popover({
+            $('.content-popup').popover({
                 'placement': 'right'
             });
-            $(".citation-popup").popover({
+            $('.citation-popup').popover({
                 placement: 'top',
                 trigger: 'hover'
             });
-        });
+        })
+
     </script>
     <script src="https://hypothes.is/embed.js" async onload="document.body.classList.add('with-hypothesis');"></script>
     <script>
@@ -910,8 +945,6 @@ $sampleDataProvider = $samples->getDataProvider();
 
 
         });
-    </script>
-    <script>
       function handleInitFilesPage() {
           let currentPageNumber = 1;
 
