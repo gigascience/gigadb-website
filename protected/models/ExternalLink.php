@@ -4,10 +4,12 @@
  * This is the model class for table "external_link".
  *
  * The followings are the available columns in table 'external_link':
- * @property integer $id
- * @property integer $dataset_id
- * @property string $url
- * @property integer $external_link_type_id
+ *
+ * @property int         $id
+ * @property int         $dataset_id
+ * @property string      $url
+ * @property int         $external_link_type_id
+ * @property string|null $description
  *
  * The followings are the available model relations:
  * @property Dataset $dataset
@@ -46,9 +48,10 @@ class ExternalLink extends CActiveRecord
 			array('dataset_id, url, external_link_type_id', 'required'),
 			array('dataset_id, external_link_type_id', 'numerical', 'integerOnly'=>true),
 			array('url', 'length', 'max'=>128),
+            array('description', 'length', 'max'=>200),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, dataset_id, url, external_link_type_id, doi_search, external_link_type_search', 'safe', 'on'=>'search'),
+			array('id, dataset_id, url, description, external_link_type_id, doi_search, external_link_type_search', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -78,6 +81,7 @@ class ExternalLink extends CActiveRecord
 			'external_link_type_id' => 'External Link Type',
             'doi_search' => 'DOI',
             'external_link_type_search' => 'Type',
+            'description' => 'Description',
 		);
 	}
 
@@ -90,14 +94,16 @@ class ExternalLink extends CActiveRecord
 		// Warning: Please modify the following code to remove attributes that
 		// should not be searched.
 
-		$criteria=new CDbCriteria;
+        $criteria = new CDbCriteria(array(
+            'order'=>'t.id asc',
+        ));
 
         $criteria->with = array('dataset','external_link_type');
 		$criteria->compare('t.id',$this->id);
 		$criteria->compare('dataset_id',$this->dataset_id);
 		$criteria->compare('LOWER(url)',strtolower($this->url),true);
 		$criteria->compare('external_link_type_id',$this->external_link_type_id);
-
+        $criteria->compare('LOWER(t.description)', strtolower((string) $this->description), true);
 		$criteria->compare('dataset.identifier',$this->doi_search,true);
 		$criteria->compare('LOWER(external_link_type.name)',strtolower($this->external_link_type_search),true);
 

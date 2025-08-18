@@ -25,6 +25,7 @@
 			array('name' => 'doi_search', 'value' => '$data->dataset->identifier', 'headerHtmlOptions' => array('style' => 'width: 120px')),
 			array('name' => 'external_link_type_search', 'value' => '$data->external_link_type->name'),
 			'url',
+            'description',
 			CustomGridView::getDefaultActionButtonsConfig()
 		),
 	)); ?>
