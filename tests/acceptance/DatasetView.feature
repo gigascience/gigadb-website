@@ -227,6 +227,13 @@ Feature: a user visit the dataset page
     And I follow "[aria-label^='Size']"
     Then I should see "3.88 GB" in the table "#files_table" cell 1 6
 
+  @ok
+  Scenario: Unit is displayed for files
+    Given I have not signed in
+    And I am on "/dataset/100006"
+    And I follow "Files"
+    Then I should see "estimated genome size: 618.1 megabasepair" in the table "#files_table" cell 6 8
+
   @ok @issue-2054
   Scenario: 3D Models tab
     Given I have not signed in

@@ -52,7 +52,7 @@ class StoredDatasetFiles extends DatasetComponents implements DatasetFilesInterf
         $objectToHash =  function ($file) {
 
             $toNameValueHash = function ($file_attribute) {
-                return array( $file_attribute->attribute->attribute_name => $file_attribute->value);
+                return array($file_attribute->attribute->attribute_name => ["value" => $file_attribute->value, "unit" => $file_attribute->unit ? $file_attribute->unit->name : null]);
             };
 
             return array(
@@ -76,9 +76,8 @@ class StoredDatasetFiles extends DatasetComponents implements DatasetFilesInterf
 		where dataset_id=:id order by id limit $limit offset $offset" ;
         ;
         $files = File::model()->findAllBySql($sql, array('id' => $this->_id));
-        $result = array_map($objectToHash, $files);
-        // var_dump($result);
-        return $result;
+
+        return array_map($objectToHash, $files);
     }
 
     /**
