@@ -15,7 +15,7 @@ class DatasetUploadTest extends CDbTestCase
         'datasets'=>'Dataset',
     );
 
-	public function testSetStatusToDataAvailableForReview()
+	public function testSetStatusToUserProvidedData()
 	{
 		$config = [
 			"sender" => "admin@gigadb.org",
@@ -30,7 +30,7 @@ class DatasetUploadTest extends CDbTestCase
 
         $mockDatasetDAO->expects($this->once())
                  ->method('transitionStatus')
-                 ->with("UserUploadingData", "DataAvailableForReview")
+                 ->with("UserUploadingData", "UserProvidedData")
                  ->willReturn(true);
 
         $mockDatasetDAO->expects($this->once())
@@ -50,11 +50,11 @@ class DatasetUploadTest extends CDbTestCase
 
 		$datasetFileUpload = new DatasetUpload($mockDatasetDAO, $mockFileUploadSrv, $config);
 		$nbItemsInCurationLog = CurationLog::Model()->count();
-		$result = $datasetFileUpload->setStatusToDataAvailableForReview($content);
+		$result = $datasetFileUpload->setStatusToUserProvidedData($content);
 		$this->assertEquals($nbItemsInCurationLog+1, CurationLog::Model()->count());
 	}
 
-	public function testSetStatusToSubmitted()
+	public function testSetStatusToDataAvailableForReview()
 	{
 		$config = [
 			"sender" => "admin@gigadb.org",
@@ -69,13 +69,13 @@ class DatasetUploadTest extends CDbTestCase
 
         $mockDatasetDAO->expects($this->once())
                  ->method('transitionStatus')
-                 ->with("DataAvailableForReview", "Submitted")
-                 ->willReturn(true);
+                 ->with("UserProvidedData", "DataAvailableForReview")
+                 ->willReturn(true);    
 
 
 		$datasetFileUpload = new DatasetUpload($mockDatasetDAO, $mockFileUploadSrv, $config);
 		$nbItemsInCurationLog = CurationLog::Model()->count();
-		$result = $datasetFileUpload->setStatusToSubmitted($content);
+		$result = $datasetFileUpload->setStatusToDataAvailableForReview($content);
 		$this->assertTrue($result);
 	}
 
@@ -95,7 +95,7 @@ class DatasetUploadTest extends CDbTestCase
                  ->willReturn("003000");
 
 		$datasetFileUpload = new DatasetUpload($mockDatasetDAO, $mockFileUploadSrv, $config);
-		$renderedContent = $datasetFileUpload->renderNotificationEmailBody("DataAvailableForReview");
+		$renderedContent = $datasetFileUpload->renderNotificationEmailBody("UserProvidedData");
 		$this->assertTrue(1 == preg_match('/dataset with DOI 003000/', $renderedContent));
 	}
 

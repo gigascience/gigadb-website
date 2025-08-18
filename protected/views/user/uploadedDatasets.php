@@ -91,7 +91,7 @@
                                                     <a class="update btn btn-transparent tooltip-trigger" data-toggle="tooltip" title="Update the metadata of the dataset" href=<? echo "/datasetSubmission/datasetManagement/id/" . $data[$i]->id ?>>Update<br />dataset</a>
                                                     <button class="js-delete-dataset btn btn-transparent" data-toggle="tooltip" title="Delete the dataset and all its files" did="<?=$data[$i]->id?>">
                                             Delete<br />dataset</button>
-                                                    <?php if ($data[$i]->upload_status === "UserUploadingData" || $data[$i]->upload_status === "DataPending") {
+                                                    <?php if ($data[$i]->upload_status === "UserUploadingData" || $data[$i]->upload_status === "DataPreparation") {
                                                     ?>
                                                     <a class="upload btn btn-transparent" href="/authorisedDataset/uploadFiles/id/<?php echo $data[$i]->identifier; ?>" data-toggle="tooltip" title="Upload files to the dataset, delete the existing files or edit their metadata">Upload<br />Files</a>
                                                     <?php

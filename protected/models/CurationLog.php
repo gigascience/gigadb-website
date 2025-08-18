@@ -141,11 +141,13 @@ class CurationLog extends CActiveRecord
         return $curationlog->save();
     }
 
-    public static function createGeneralCurationLogEntry(int $id, string $action, string $content, $author = 'system'): bool
+    public static function createGeneralCurationLogEntry(int $id, string $action, string $content = null, $author = 'system'): bool
     {
         $curationLog = self::makeNewInstanceForCurationLogBy($id, $author);
         $curationLog->action = $action;
-        $curationLog->comments = $content;
+        if ($content) {
+            $curationLog->comments = $content;
+        }
 
         return $curationLog->save();
     }

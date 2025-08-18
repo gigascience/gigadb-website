@@ -73,14 +73,14 @@ class DatasetUpload extends yii\base\BaseObject
     }
 
     /**
-     * method to set Dataset Upload status to DataAvailableForReview and notify reviewers
+     * method to set Dataset Upload status to UserProvidedData and notify reviewers
      *
      * @param string $content email content of notification
      * @return bool wether or not operation is successful
      */
-    public function setStatusToDataAvailableForReview(string $content): bool
+    public function setStatusToUserProvidedData(string $content): bool
     {
-        $statusChanged = $this->_datasetDAO->transitionStatus("UserUploadingData", "DataAvailableForReview") || $this->_datasetDAO->transitionStatus("DataPending", "DataAvailableForReview");
+        $statusChanged = $this->_datasetDAO->transitionStatus("UserUploadingData", "UserProvidedData") || $this->_datasetDAO->transitionStatus("DataPreparation", "UserProvidedData");
         if ($statusChanged) {
             $emailSent = $this->_fileUploadSrv->emailSend(
                 $this->_config["sender"],
@@ -88,7 +88,7 @@ class DatasetUpload extends yii\base\BaseObject
                 "Data available for review",
                 $content
             );
-            CurationLog::createlog("DataAvailableForReview", $this->_datasetDAO->getId());
+            CurationLog::createlog("UserProvidedData", $this->_datasetDAO->getId());
             return $statusChanged && $emailSent;
         }
         return false;
@@ -101,9 +101,9 @@ class DatasetUpload extends yii\base\BaseObject
      *
      * @return bool whether operation is successful
      */
-    public function setStatusToSubmitted(string $previousStatus = null): bool
+    public function setStatusToDataAvailableForReview(string $previousStatus = null): bool
     {
-        return $this->_datasetDAO->transitionStatus("DataAvailableForReview", "Submitted", null, $previousStatus);
+        return $this->_datasetDAO->transitionStatus("UserProvidedData", "DataAvailableForReview", null, $previousStatus);
     }
 
     /**
@@ -113,9 +113,9 @@ class DatasetUpload extends yii\base\BaseObject
      *
      * @return bool whether operation is successful
      */
-    public function setStatusToDataPending(string $previousStatus = null): bool
+    public function setStatusToDataPreparation(string $previousStatus = null): bool
     {
-        return $this->_datasetDAO->transitionStatus("Submitted", "DataPending", null, $previousStatus);
+        return $this->_datasetDAO->transitionStatus("DataAvailableForReview", "DataPreparation", null, $previousStatus);
     }
 
     public function sendNotificationEmailBody(string $content, string $uploadStatus, string $authorEmail = null): bool

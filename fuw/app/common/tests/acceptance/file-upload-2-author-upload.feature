@@ -19,8 +19,8 @@ Scenario: Upload files button when dataset has appropriate status (UserUploading
 	And I should see a "Upload Files" link
 
 @ok
-Scenario: Upload files button when dataset has appropriate status (DataPending)
-	Given a dataset with DOI "000007" owned by user "Artie" "Dodger" has status "DataPending"
+Scenario: Upload files button when dataset has appropriate status (DataPreparation)
+	Given a dataset with DOI "000007" owned by user "Artie" "Dodger" has status "DataPreparation"
 	And I sign in as the user "Artie" "Dodger"
 	And I wait "2" seconds
 	When I go to "/user/view_profile#submitted"
@@ -31,7 +31,7 @@ Scenario: Upload files button when dataset has appropriate status (DataPending)
 @ok
 Scenario: No Upload files button when dataset hasn't got to the appropriate status yet
 	Given there is "user" "Chloe" "Decker"
-	And a dataset with DOI "100008" owned by user "Chloe" "Decker" has status "AssigningFTPbox"
+	And a dataset with DOI "100008" owned by user "Chloe" "Decker" has status "CuratorInitialReview"
 	And I sign in as the user "Chloe" "Decker"
 	And I wait "2" seconds
 	When I go to "/user/view_profile#submitted"

@@ -8,7 +8,7 @@ Background:
 	Given there is "user" "Joy" "Fox"
 	And there is "admin" "Ben" "Hur"
 	And The user "Ben" "Hur" is registered as authorised user in the API
-	And a dataset with DOI "000005" owned by user "Joy" "Fox" has status "AssigningFTPbox"
+	And a dataset with DOI "000005" owned by user "Joy" "Fox" has status "CuratorInitialReview"
 	And filedrop account for DOI "000005" doesn't exist
 
 @ok
@@ -17,7 +17,7 @@ Scenario: Accessing admin page's list of datasets to setup drop box for a datase
 	And I go to "/site/admin"
 	When I press "Datasets"
 	Then the response sould contain "000005"
-	And the response sould contain "AssigningFTPbox"
+	And the response sould contain "CuratorInitialReview"
 	And I should see a "New Dropbox for this dataset" button
 
 @ok
@@ -86,7 +86,7 @@ Scenario: Popup composer for customizing and sending email instructions
 # Scenario: Creating the drop box and emailing the author custom instructions
 # 	Given I sign in as an admin
 # 	And a dataset has been entered with temporary DOI "000005"
-# 	And the uploaded dataset has status "AssigningFTPbox"
+# 	And the uploaded dataset has status "CuratorInitialReview"
 # 	And I am on "/site/admin"
 # 	And I have pressed "Assign Drop box to dataset 000005"
 # 	When I fill in "Message to the author" with "custom instructions"
@@ -97,7 +97,7 @@ Scenario: Popup composer for customizing and sending email instructions
 # Scenario: Creating the drop box and emailing a different author
 # 	Given I sign in as an admin
 # 	And a dataset has been entered with temporary DOI "000005"
-# 	And the uploaded dataset has status "AssigningFTPbox"
+# 	And the uploaded dataset has status "CuratorInitialReview"
 # 	And I am on "/site/admin"
 # 	And I have pressed "Assign Drop box to dataset 000005"
 # 	When I fill in "Author name" with "Terry Bone"
@@ -108,7 +108,7 @@ Scenario: Popup composer for customizing and sending email instructions
 # Scenario: Emailing instructions without creating a drop box
 # 	Given I sign in as an admin
 # 	And a dataset has been entered with temporary DOI "000005"
-# 	And the uploaded dataset has status "AssigningFTPbox"
+# 	And the uploaded dataset has status "CuratorInitialReview"
 # 	And I am on "/site/admin"
 # 	And I have pressed "Assign Drop box to dataset 000005"
 # 	When I fill in "Author name" with "Terry Bone"
@@ -120,7 +120,7 @@ Scenario: Popup composer for customizing and sending email instructions
 # Scenario: Status is changed after the drop box is created and email sent
 # 	Given I sign in as an admin
 # 	And a dataset has been entered with temporary DOI "000005"
-# 	And the uploaded dataset has status "AssigningFTPbox"
+# 	And the uploaded dataset has status "CuratorInitialReview"
 # 	And the creation of a drop box to dataset "000005" has been initiated
 # 	When I wait "5" minutes
 # 	And I go to "/site/admin"
@@ -132,7 +132,7 @@ Scenario: Popup composer for customizing and sending email instructions
 # Scenario: The drop box access details and the author name and email saved in curation log comment
 # 	Given I sign in as an admin
 # 	And a dataset has been entered with temporary DOI "000005"
-# 	And the uploaded dataset has status "AssigningFTPbox"
+# 	And the uploaded dataset has status "CuratorInitialReview"
 # 	And the creation of a drop box to dataset "000005" has been initiated
 # 	And the status of the dataset has changed to "UserUploadingData"
 # 	When I go to "/adminDataset/admin"

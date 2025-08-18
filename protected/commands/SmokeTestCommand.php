@@ -30,7 +30,7 @@ values(999999,'gigadb-smoke-test-user@rijam.sent.as','5a4f75053077a32e681f81daa8
 		Yii::app()->db->createCommand($sql)->execute();
 
     	// Create a test dataset
-    	$sql = "insert into dataset(id, submitter_id, image_id, identifier, title, dataset_size, ftp_site, upload_status) values(999999,999999,999999, '000007','smoke test',342564,'ftp://','AssigningFTPbox')";
+    	$sql = "insert into dataset(id, submitter_id, image_id, identifier, title, dataset_size, ftp_site, upload_status) values(999999,999999,999999, '000007','smoke test',342564,'ftp://','CuratorInitialReview')";
     	Yii::app()->db->createCommand($sql)->execute();
 
     	return 0;
@@ -39,7 +39,7 @@ values(999999,'gigadb-smoke-test-user@rijam.sent.as','5a4f75053077a32e681f81daa8
 
 	public function actionResetData($args) {
 	    echo "Reset the test data".PHP_EOL;
-	    $sql = "update dataset set upload_status='AssigningFTPbox' where id=999999";
+	    $sql = "update dataset set upload_status='CuratorInitialReview' where id=999999";
         Yii::app()->db->createCommand($sql)->execute();
         $sql = "delete from file_attributes where file_id in (select id from file where dataset_id=999999)";
         Yii::app()->db->createCommand($sql)->execute();

@@ -116,7 +116,7 @@ class FiledropServiceTest extends FunctionalTesting
             ]);
 
         // set the right status on the dataset
-        Dataset::model()->updateAll(["upload_status" => "AssigningFTPbox"], "identifier = :doi", [":doi" => $this->doi]);
+        Dataset::model()->updateAll(["upload_status" => "CuratorInitialReview"], "identifier = :doi", [":doi" => $this->doi]);
 
         // invoke the Filedrop Service
         $response = $filedropSrv->createAccount();
@@ -180,7 +180,7 @@ class FiledropServiceTest extends FunctionalTesting
             ]);
 
         // set the right status on the dataset
-        Dataset::model()->updateAll(["upload_status" => "AssigningFTPbox"], "identifier = :doi", [":doi" => $this->doi]);
+        Dataset::model()->updateAll(["upload_status" => "CuratorInitialReview"], "identifier = :doi", [":doi" => $this->doi]);
 
         // invoke the Filedrop Service
         $response = $filedropSrv->createAccount();

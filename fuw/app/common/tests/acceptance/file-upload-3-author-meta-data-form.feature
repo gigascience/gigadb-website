@@ -66,7 +66,7 @@ Scenario: Saving metadata
 	When I press "Complete and return to Your Uploaded Datasets page"
 	Then I should be on "/user/view_profile#submitted"
 	And I should see "File uploading complete"
-	And I should see "DataAvailableForReview"
+	And I should see "UserProvidedData"
 
 @ok
 Scenario: Removing uploads
@@ -90,7 +90,7 @@ Scenario: Removing uploads
 	Then I should be on "/user/view_profile#submitted"
 	And I should see "File uploading complete"
 	And I should see "1 File(s) successfully deleted"
-	And I should see "DataAvailableForReview"
+	And I should see "UserProvidedData"
 
 
 @ok
@@ -147,7 +147,7 @@ Scenario: Initial MD5 checksum for upload files shows up as tooltip
 # 	Then I should see a "Save Files Metadata" inactive button
 # 	And I should see a "Complete and return to Your Uploaded Datasets page" inactive button
 
-# Scenario: Completion: status set to DataAvailableForReview, email sent to editors, author taken to Your Uploaded Dataset page
+# Scenario: Completion: status set to UserProvidedData, email sent to editors, author taken to Your Uploaded Dataset page
 # 	Given I sign in as a user
 # 	And I have uploaded a set of files to the drop box for dataset "000005"
 # 	And I am on "/uploader/meta"
@@ -155,7 +155,7 @@ Scenario: Initial MD5 checksum for upload files shows up as tooltip
 # 	And I press "Complete and return to Your Uploaded Datasets page"
 # 	Then the response should contain "Your Uploaded Datasets"
 # 	And the response sould contain "10.5524/000005"
-# 	And the response sould contain "DataAvailableForReview"
+# 	And the response sould contain "UserProvidedData"
 # 	And an email notification is sent to "editorial@gigasciencejournal.com"
 # 	And I should be on "/user/view_profile#submitted"
 

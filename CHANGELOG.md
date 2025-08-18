@@ -4,6 +4,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Fix #1616: Add a curation log entry when updating upload_status
+- Fix #1616: New nomenclature for upload_status - AssigningFTPbox should be replaced by CuratorInitialReview
+- Fix #1616: New nomenclature for upload_status - Provided Data should be used when Data AvailableForReview is used
+- Fix #1616: New nomenclature for upload_status - Submitted should be replaced by DataAvailableForReview
+- Fix #1616: New nomenclature for upload_status - Submitted should be replaced by DataAvailableForReview
+- Fix #1616: New nomenclature for upload_status - dataPending should be replaced by dataPreparation
+
 ## v4.4.16 - 2025-08-15 - 6e04c0b9e -
 
 - Fix #2428: AdminUserController should target AdminUserController when validating or rejecting a claim

@@ -54,7 +54,7 @@ class DatasetPageSettingsTest extends CDbTestCase
 	public function testGetPageTypeDraft()
 	{
 		$model = Dataset::model()->findByPk(1);
-		$model->upload_status = "DataPending";
+		$model->upload_status = "DataPreparation";
 		$sut = new DatasetPageSettings($model);
 
 		$pageType = $sut->getPageType();
