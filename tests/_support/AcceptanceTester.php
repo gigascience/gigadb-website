@@ -138,6 +138,14 @@ class AcceptanceTester extends \Codeception\Actor
     }
 
     /**
+     * @Then I should not see a submit button :value
+     */
+    public function iShouldNotSeeASubmitButton($value)
+    {
+        $this->cantSeeElement('input', ['value' => $value, 'type' => 'submit']);
+    }
+
+    /**
      * @Then I should see a disabled submit button :value
      */
     public function iShouldSeeADisabledSubmitButton($value)

@@ -4,6 +4,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #1533: Make dataset-admin form submission buttons appearance and behaviour to adapt to a dataset being public or private
+
 ## v4.4.16 - 2025-08-15 - 6e04c0b9e -
 
 - Fix #2428: AdminUserController should target AdminUserController when validating or rejecting a claim

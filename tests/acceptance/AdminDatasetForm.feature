@@ -32,6 +32,7 @@ Feature: form to update dataset details
     And I should see "Description"
     And I should see "Keywords"
     And I should see "URL to redirect"
+    And I should see a "Save Changes" button
     And I should see a button "Create New Log" with curation log link
     And I should not see "Publisher"
 
@@ -50,8 +51,9 @@ Feature: form to update dataset details
     When I am on "/adminDataset/update/id/2342"
     And I check the field "Dataset_Epigenomic"
     And I attach the file "bgi_logo_new.png" to the file input element "datasetImage"
-    And I press the button "Save"
-    And I wait 3 seconds
+    And I press the button "Save Changes And Open DOI"
+    And I wait "3" seconds
+    And I press the button "No"
     Then I am on "/dataset/100935"
     And I should see an image located in "/images/datasets/e3462258-a12a-5b1a-b45b-a94b95cc9442/bgi-logo-new.png"
 
@@ -116,38 +118,51 @@ Feature: form to update dataset details
     And I should see an image located in "/images/datasets/e166c2a0-3684-5209-bccd-c4b18ff87be9/bgi-logo-new.png"
 
   @ok @issue-1023
-  Scenario: To confirm the upload status of published dataset has changed to incomplete
-    When I am on "/adminDataset/update/id/5"
-    Then I should see "Incomplete"
-    And I should see "Create/Reset Private URL"
-    And I should not see "Open Private URL"
-
-  @ok @issue-1023
   Scenario: An incomplete dataset page cannot be visited publicly
     When I am on "/dataset/100039/"
     Then I should see "The DOI 100039 cannot be displayed"
 
   @ok @issue-1023
-  Scenario: Can create/reset private url
+  Scenario: Can create a private url for a non published dataset
     When I am on "/adminDataset/update/id/5"
-    And I press the button "Create/Reset Private URL"
-    And I wait "3" seconds
+    And I press the button "createReset"
+    And I wait "1" seconds
     Then I should see current url contains "/dataset/100039/token/"
     And I should see "Genomic data of the Puerto Rican Parrot (Amazona vittata) from a locally funded project."
 
   @ok @dataset-status
   Scenario: Can't see create/reset private url for a published dataset
     When I am on "/adminDataset/update/id/8"
-    Then I should not see "Create/Reset Private URL"
-    And I should not see "Open Private URL"
+    Then I should not see a submit button "Save Changes And Create Private URL"
+    And I should not see a submit button "Save Changes And Reset Private URL"
+    And I should not see a submit button "Save Changes And Open Private URL"
+    And I should see "Save Changes And Open DOI"
+    And I should see "Cancel Changes"
+
+    @ok
+  Scenario: It doesn't have an open private url button for a published dataset
+    When I am on "/adminDataset/update/id/63"
+    Then I should not see a submit button "Save Changes And Open Private URL"
+    And I should not see a submit button "Save Changes And Create Private URL"
+    And I should not see a submit button "Save Changes And Reset Private URL"
+    And I should see "Save Changes And Open DOI"
+    And I should see "Cancel Changes"
 
   @ok @issue-1023
-  Scenario: Open private url is working
-    When I am on "/adminDataset/update/id/5"
-    And I press the button "Create/Reset Private URL"
+  Scenario: Has an open private url button for a non published dataset with a token
+    When I am on "/adminDataset/update/id/668"
+    And I check the field "Dataset_Epigenomic"
+    And I press the button "openUrl"
     And I wait "1" seconds
-    Then I should see current url contains "/dataset/100039/token/"
-    And I should see "Genomic data of the Puerto Rican Parrot (Amazona vittata) from a locally funded project."
+    Then I should see current url contains "/dataset/200070/token/"
+    And I should see "supporting data for nothing in particular"
+
+    @ok
+  Scenario: It doesn't have an open private url button for a published dataset
+    When I am on "/adminDataset/update/id/63"
+    And I should not see a submit button "Save Changes And Open Private URL"
+    And I should see "Save Changes And Open DOI"
+    And I should see "Cancel Changes"
 
   @ok @issue-1023
   Scenario: Create AuthorReview dataset with token URL
@@ -181,8 +196,8 @@ Feature: form to update dataset details
     Then I am on "/adminDataset/update/id/2741"
     And I should see "AuthorReview"
     And I should see "123789"
-    And I should see "Create/Reset Private URL"
-    And I should see "Open Private URL"
+    And I should see a submit button "Save Changes And Reset Private URL"
+    And I should see a submit button "Save Changes And Open Private URL"
 
   @ok @issue-1023
   Scenario: Open Private URL from AuthorReview dataset
@@ -195,11 +210,11 @@ Feature: form to update dataset details
     And I fill in the field of "name" "Dataset[title]" with "test dataset"
     And I fill in the field of "name" "Dataset[identifier]" with "123789"
     And I fill in the field of "name" "Dataset[ftp_site]" with "ftp://test"
-    When I check the field "Dataset_Epigenomic"
+    And I check the field "Dataset_Epigenomic"
     And I press the button "Create"
     And I wait 3 seconds
     And I am on "/adminDataset/update/id/2741"
-    And I follow "Open Private URL"
+    And I press the button "openUrl"
     And I wait "1" seconds
     Then I should see current url contains "/dataset/123789/token/"
     And I should see "https://doi.org/10.5524/123789"
@@ -282,8 +297,9 @@ Feature: form to update dataset details
     And I fill in the field of "name" "Image[source]" with "test source"
     And I fill in the field of "name" "Image[license]" with "test license"
     And I fill in the field of "name" "Image[photographer]" with "test Joe"
-    And I press the button "Save"
+    And I press the button "Save Changes And Open DOI"
     And I wait 3 seconds
+    And I press the button "No"
     Then I am on "/adminDataset/update/id/8"
     And I should see an image field "source" with text "test source"
     And I should see an image field "license" with text "test license"
@@ -294,7 +310,10 @@ Feature: form to update dataset details
   Scenario: can save keywords on update
     When I am on "/adminDataset/update/id/8"
     And I fill in keywords fields of name keywords with "abcd, a four part keyword, my_keyword, my-keyword, my dodgy tag<script>alert('xss!');</script>"
-    And I press the button "Save"
+    And I press the button "Save Changes And Open DOI"
+    And I wait 3 seconds
+    And I press the button "No"
+    And I wait 3 seconds
     Then I am on "dataset/100006"
     And I should see "abcd"
     And I should see "a four part keyword"
@@ -329,10 +348,16 @@ Feature: form to update dataset details
     Given I am on "/adminDataset/update/id/8"
     And I click on keywords field
     And I fill in keywords fields of name keywords with "bam"
-    And I press the button "Save"
+    And I press the button "Save Changes And Open DOI"
+    And I wait 3 seconds
+    And I press the button "No"
+    And I wait 2 seconds
     When I am on "/adminDataset/update/id/8"
     And I click on delete keyword button
-    And I press the button "Save"
+    And I press the button "Save Changes And Open DOI"
+    And I wait 3 seconds
+    And I press the button "No"
+    And I wait 2 seconds
     Then I am on "dataset/100006"
     And I should not see "bam"
 
@@ -390,11 +415,36 @@ Feature: form to update dataset details
     Given I am on "/adminDataset/update/id/8"
     And I should see "Published"
     When I fill in the field of "name" "Dataset[dataset_size]" with "lorem ipsum"
-    And I press the button "Save"
+    And I press the button "Save Changes And Open DOI"
     And I wait 3 seconds
+    And I press the button "No"
+    And I wait 2 seconds
     Then I should be on "/adminDataset/update/id/8"
     And I should see "Fail to update!"
     And I should see "Dataset Size must be a number."
+
+  @ok
+  Scenario: Redirect to the mockup with the existing token when successfully updating private dataset
+    Given I am on "/adminDataset/update/id/668"
+    And I should see "Private"
+    When I fill in the field of "name" "Dataset[dataset_size]" with "1024"
+    When I check the field "Dataset_Epigenomic"
+    And I should see a submit button "Save Changes And Open Private URL"
+    And I press the button "openUrl"
+    Then I should see current url contains "/dataset/200070/token/"
+
+  @ok
+  Scenario: Redirect to the mockup with a new token when successfully updating private dataset
+    Given I am on "/adminDataset/update/id/668"
+    And I should see "Private"
+    And I check the field "Dataset_Epigenomic"
+    And I fill in the field of "name" "Dataset[dataset_size]" with "1024"
+    And I should see a submit button "Save Changes And Reset Private URL"
+    And I should see a submit button "Save Changes"
+    And I should see "Cancel Changes"
+    And I should not see a submit button "Save Changes And Create Private URL"
+    When I press the button "createReset"
+    Then I should see current url contains "/dataset/200070/token/"
 
   @ok @flashmessage
   Scenario: Display success message when updating private dataset
@@ -412,7 +462,7 @@ Feature: form to update dataset details
     Given I am on "/adminDataset/update/id/668"
     And I should see "Private"
     When I fill in the field of "name" "Dataset[dataset_size]" with "lorem ipsum"
-    And I press the button "Save"
+    And I press the button "Save Changes"
     And I wait 3 seconds
     Then I should be on "/adminDataset/update/id/668"
     And I should see "Fail to update!"
@@ -445,8 +495,14 @@ Feature: form to update dataset details
   Scenario: Check dataset page with Curation status can be viewed using private URL
     Given I am on "/adminDataset/update/id/5"
     And I select "Curation" from the field "Dataset_upload_status"
-    And I press the button "Save"
-    And I am on "/adminDataset/private/identifier/100039"
+    And I should not see a submit button "Save Changes And Reset Private URL"
+    And I should see a submit button "Save Changes And Create Private URL"
+    And I press the button "createReset"
+    And I wait "3" seconds
+    And I am on "/adminDataset/update/id/5"
+    And I should see a submit button "Save Changes And Reset Private URL"
+    And I should see a submit button "Save Changes"
+    And I press the button "openUrl"
     Then I should see current url contains "/dataset/100039/token/"
     And I should see "Genomic data of the Puerto Rican Parrot"
 
@@ -489,13 +545,13 @@ Feature: form to update dataset details
     And I should see a link "here" to "https://support.datacite.org/reference/mds#api-response-codes"
 
   @ok @dataset-status
-  Scenario Outline: Links to create mockup or to open mockup are always present for a non-published dataset
+  Scenario Outline: Links to create mockup or to open mockup are always present for a non-published dataset with a token
     Given I am on "/adminDataset/update/id/668"
     And I select <status> from the field "Dataset_upload_status"
-    And I press the button "Save"
+    And I press the button "Save Changes"
     And I am on "/adminDataset/update/id/668"
-    Then I should see a link "Create/Reset Private URL" to "/adminDataset/private/identifier/200070"
-    And I should see a link "Open Private URL" to "/dataset/200070/token/ImP3Bbu7ytRSfYFh"
+    Then I should see a submit button "Save Changes And Reset Private URL"
+    And I should see a submit button "Save Changes And Open Private URL"
     Examples:
       | status                   |
       | "ImportFromEM"           |
@@ -511,26 +567,10 @@ Feature: form to update dataset details
       | "DataAvailableForReview" |
       | "DataPending"            |
 
-  @ok
-  Scenario: Links to create mockup is present for a submitted dataset
-    Given I am on "/adminDataset/update/id/5"
-    And I select "DataAvailableForReview" from the field "Dataset_upload_status"
-    And I press the button "Save"
-    And I wait 3 seconds
-    When I am on "/adminDataset/update/id/5"
-    And I select "Submitted" from the field "Dataset_upload_status"
-    And I press the button "Save"
-    When I am on "/adminDataset/update/id/5"
-    Then I should see "Create/Reset Private URL"
-    And I press the button "Create/Reset Private URL"
-    And I wait "3" seconds
-    Then I should see current url contains "/dataset/100039/token/"
-    And I should see "Genomic data of the Puerto Rican Parrot (Amazona vittata) from a locally funded project."
-
   @ok @issue-1812 @mockup
   Scenario: Navigating mockup page tables does not generate errors
     Given I am on "/adminDataset/update/id/5"
-    When I press the button "Create/Reset Private URL"
+    When I press the button "createReset"
     And I wait "1" seconds
     And I press the button "Files"
     And I press the button "Next >"
@@ -576,11 +616,16 @@ Feature: form to update dataset details
     Given I am on "/adminDataset/update/id/8"
     Then I should see "Workflow"
     Then I check "Dataset_Workflow" checkbox
-    And I press the button "Save"
+    And I press the button "Save Changes And Open DOI"
+    And I wait "1" seconds
+    And I press the button "No"
     When I am on "/adminDataset/update/id/8"
     Then I should see "Dataset_Workflow" checkbox is checked
     Then I uncheck "Dataset_Workflow" checkbox
-    And I press the button "Save"
+    And I press the button "Save Changes And Open DOI"
+    And I wait "1" seconds
+    And I press the button "No"
+    And I wait "5" seconds
     When I am on "/adminDataset/update/id/8"
     Then I should see "Workflow"
 
@@ -591,7 +636,9 @@ Feature: form to update dataset details
     Then I should see "Dataset_Genomic" checkbox is checked
     Then I check "Dataset_Workflow" checkbox
     Then I uncheck "Dataset_Genomic" checkbox
-    And I press the button "Save"
+    And I press the button "Save Changes And Open DOI"
+    And I wait "1" seconds
+    And I press the button "No"
     And I wait "5" seconds
     When I am on "/adminDataset/update/id/5"
     Then I should see "Dataset_Genomic" checkbox is checked
@@ -605,8 +652,9 @@ Feature: form to update dataset details
     And I should see "Dataset_Workflow" checkbox is unchecked
     When I check "Dataset_Workflow" checkbox
     Then I should see "Dataset_Workflow" checkbox is checked
-    When I press the button "Save"
-    And I wait "5" seconds
+    When I press the button "Save Changes And Open DOI"
+    And I wait "1" seconds
+    And I press the button "No"
     And I am on "/adminDataset/update/id/8"
     Then I should see "Dataset_Workflow" checkbox is checked
     Then I should see "Dataset_Genomic" checkbox is unchecked
@@ -642,3 +690,116 @@ Feature: form to update dataset details
     And I am on "/adminDataset/update/id/5"
     Then I can see the option "Published" selected for "Dataset_upload_status"
     And I should see "Status changed to Published"
+
+    @ok
+  Scenario: Check buttons for a non public dataset with no token
+    Given I am on "/adminDataset/update/id/5"
+    Then I should see a submit button "Save Changes And Create Private URL"
+    And I should not see a submit button "Save Changes And Reset Private URL"
+    And I should see "Cancel Changes"
+
+    @ok
+  Scenario: Save Changes And Create Private URL button create a url and save changes for a non public dataset with no token
+    Given I am on "/adminDataset/update/id/5"
+    And I fill in the field of "name" "Dataset[title]" with "test dataset"
+    And I should see a submit button "Save Changes And Create Private URL"
+    When I press the button "createReset"
+    And I wait "1" seconds
+    Then I should see current url contains "/dataset/100039/token/"
+    And I should see "test dataset"
+
+    @ok
+  Scenario: Check buttons for a non public dataset with a token
+    Given I am on "/adminDataset/update/id/668"
+    Then I should see a submit button "Save Changes And Reset Private URL"
+    And I should see a submit button "Save Changes"
+    And I should see a submit button "Save Changes And Open Private URL"
+    And I should see "Cancel Changes"
+
+    @ok
+  Scenario: Save Changes And Open Private URL button for a non public dataset with a token
+    Given I am on "/adminDataset/update/id/668"
+    And I check "Dataset_Workflow" checkbox
+    When I press the button "openUrl"
+    Then I should see current url contains "/dataset/200070/token/"
+    And I should see "Dataset type: Workflow"
+
+    @ok
+  Scenario: Save Changes button for a non public dataset with a token stay on update page
+    Given I am on "/adminDataset/update/id/668"
+    And I check "Dataset_Workflow" checkbox
+    When I press the button "Save Changes"
+    Then I should see "Updated successfully!"
+
+    @ok
+  Scenario: Cancel Changes button for a non public dataset with a token returns to admin page
+    Given I am on "/adminDataset/update/id/668"
+    When I press the button "Cancel Changes"
+    Then I should see current url contains "/adminDataset/admin"
+
+    @ok
+  Scenario: Check buttons for a public dataset
+    Given I am on "/adminDataset/update/id/8"
+    Then I should not see a submit button "Save Changes And Create Private URL"
+    And I should not see a submit button "Save Changes And Reset Private URL"
+    And I should not see a submit button "Save Changes And Open Private URL"
+    And I should see "Save Changes And Open DOI"
+    And I should see "Cancel Changes"
+
+    @ok
+  Scenario: Check that a model opens for a published dataset when click on "Save Changes And Open DOI" button
+    Given I am on "/adminDataset/update/id/8"
+    And I press the button "Save Changes And Open DOI"
+    And I wait "3" seconds
+    Then I should see "Does DataCite DOI metadata have been updated?"
+    And I should see "Yes"
+    And I should see "No"
+    And I should see "No, please update it now"
+    And I should see "No, let me do that"
+
+  Scenario: Check that updates are saved and I'm redirect to the relevant dataset doi page when I click "Yes" for a published dataset
+    Given I am on "/adminDataset/update/id/8"
+    And I should see "Dataset_Workflow" checkbox is unchecked
+    And I check "Dataset_Workflow" checkbox
+    And I press the button "Save Changes And Open DOI"
+    And I wait "3" seconds
+    And I press the button "Yes"
+    Then I should see current url contains "/dataset/100006"
+    And I should see "Dataset type: Genomic, Workflow"
+
+    @ok
+  Scenario: Check that updates are saved and I'm redirect to the relevant dataset doi page when I click "No" for a published dataset
+    Given I am on "/adminDataset/update/id/8"
+    And I should see "Dataset_Workflow" checkbox is unchecked
+    And I check "Dataset_Workflow" checkbox
+    And I press the button "Save Changes And Open DOI"
+    And I wait "3" seconds
+    And I press the button "No"
+    Then I should see current url contains "/dataset/100006"
+    And I should see "Dataset type: Genomic, Workflow"
+
+    @ok
+  Scenario: Check that the DOI has been minted  when I click "No, please update it now" for a published dataset
+    Given I am on "/adminDataset/update/id/8"
+    And I should not see "DOI Minting"
+    And I should not see "Sent DataCite XML"
+    And I press the button "Save Changes And Open DOI"
+    And I wait "3" seconds
+    And I press the button "No, please update it now"
+    And I wait "3" seconds
+    Then I should see current url contains "/adminDataset/update/id/8"
+    And I should see "DOI Minting"
+    And I should see "Sent DataCite XML"
+
+    @ok
+  Scenario: Check that I stay on update page when I click "No, let me do that" for a published dataset
+    Given I am on "/adminDataset/update/id/8"
+    And I should not see "DOI Minting"
+    And I should not see "Sent DataCite XML"
+    And I press the button "Save Changes And Open DOI"
+    And I wait "3" seconds
+    And I press the button "No, let me do that"
+    And I wait "3" seconds
+    Then I should see current url contains "/adminDataset/update/id/8"
+    And I should not see "DOI Minting"
+    And I should not see "Sent DataCite XML"

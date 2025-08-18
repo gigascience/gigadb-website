@@ -536,37 +536,53 @@ echo $form->hiddenField($model, "image_id");
 
 <div class="col-xs-12 form-control-btns">
     <?php
-      $showCreateResetUrlBtn = in_array($datasetPageSettings->getPageType(), ["hidden", "draft", "mockup"]);
-
-    $showOpenPrivateUrlBtn = $showCreateResetUrlBtn && $model->token;
-
-      $showMockupBtn = Yii::app()->featureFlag->isEnabled("fuw") && "mockup" === $datasetPageSettings->getPageType();
-
-    if ($showCreateResetUrlBtn) {
-        ?>
-        <a id="mockup" class="btn background-btn-o" href="<?php echo Yii::app()->createUrl('/adminDataset/private/identifier/' . $model->identifier) ?>" title="This will save any changes made on this page AND create a new mockup page URL/token link" data-toggle="tooltip">Create/Reset Private URL</a>
-        <?php
+        $isNotPublic = in_array($datasetPageSettings->getPageType(), ["hidden", "draft", "mockup", "invalid"]);
+        $showMockupBtn = Yii::app()->featureFlag->isEnabled("fuw") && "mockup" === $datasetPageSettings->getPageType();
+        $text = $model->isNewRecord ? 'Create' : 'Save Changes';
+    if ($isNotPublic && $model->token) {
+        $text .= ' And Reset Private URL';
+    } elseif ($isNotPublic && !$model->token) {
+        $text .= ' And Create Private URL';
     }
-    if ($showMockupBtn) {
+
+    if ($isNotPublic) {
+        echo CHtml::submitButton(
+            $text,
+            array('name' => 'createReset', 'class' => 'btn background-btn submit-btn', 'title' => 'This will Save any changes made on this page and open the mockup view of the dataset page', 'data-toggle' => 'tooltip')
+        );
+    }
+      if ($showMockupBtn) {
         echo CHtml::link('Generate mockup for reviewers', '#', array(
-            'class'       => 'btn background-btn',
+          'class' => 'btn background-btn',
           'data-toggle' => "modal", 'data-target' => "#mockupCreation"
         ));
     }
     ?>
-    <a class="btn background-btn-o" href="<?= Yii::app()->createUrl('/adminDataset/admin') ?>"
-       title="Cancel any changes not saved on this page and return to the list of datasets" data-toggle="tooltip">Cancel
-        and go back</a>
-    <?php echo CHtml::submitButton(
-        $model->isNewRecord ? 'Create' : 'Save',
-        array('class' => 'btn background-btn submit-btn', 'id' => 'datasetFormSaveButton', 'title' => 'Save any changes made on this page and stay on this page', 'data-toggle' => 'tooltip')
-    );
-    if ($showOpenPrivateUrlBtn) {
+    <a class="btn background-btn-o" href="<?= Yii::app()->createUrl('/adminDataset/admin') ?>" title="Cancel any changes not saved on this page and return to the list of datasets" data-toggle="tooltip">Cancel Changes</a>
+    <?php
+
+    if (!$isNotPublic) {
         ?>
-        <a class="btn background-btn-o" href="<?php echo Yii::app()->createUrl('/dataset/' . $model->identifier . '/token/' . $model->token) ?>" title="This will Save any changes made on this page and open the mockup view of the dataset page" data-toggle="tooltip">Open Private URL</a>
-        <?php
+        <button id='datasetFormSaveButtonForPublished' class='btn background-btn' type = 'button' >
+            Save Changes And Open DOI
+        </button >
+    <?php
     }
-    ?>
+
+    if ($model->isNewRecord || ($isNotPublic && $model->token)) {
+        echo CHtml::submitButton(
+            $model->isNewRecord ? 'Create' : 'Save Changes',
+            array('class' => 'btn background-btn submit-btn', 'id' => 'datasetFormSaveButton', 'title' => 'Save any changes made on this page and stay on this page', 'data-toggle' => 'tooltip')
+        );
+    }
+
+    if ($isNotPublic && $model->token) {
+        echo CHtml::submitButton(
+            'Save Changes And Open Private URL',
+            array('name' => 'openUrl', 'class' => 'btn background-btn submit-btn', 'title' => 'This will Save any changes made on this page and open the mockup view of the dataset page', 'data-toggle' => 'tooltip')
+        );
+    }
+   ?>
 </div>
 
 <div class='modal fade admindataset-form' id='check_doi_modal' role='dialog' tabindex='-1' aria-modal='true'>
@@ -578,13 +594,11 @@ echo $form->hiddenField($model, "image_id");
             </div>
             <div class='modal-body'>
                 <div id='check-doi-error' class='alert alert-error clearfix' style='display: none;'></div>
-                <div class="pull-right mb-20">
-                    <a id='hideModalCheckDoi' class='btn background-btn-o'>Ok</a>
-                </div>
                 <div id='check-confirmation' class="clearfix"></div>
             </div>
+            <div class='modal-footer' id='dynamicModalFooter'>
+            </div>
         </div>
-
     </div>
 </div>
 
@@ -680,6 +694,7 @@ echo $form->hiddenField($model, "image_id");
                 dataType: 'json',
                 success: function (response) {
                     if (!([200, 204].includes(response.check_doi_status))) {
+                        $('#dynamicModalFooter').empty();
                         $('#check_doi_modal').modal('show')
                         myError.style.display = 'block'
                         let el = document.createElement('div')
@@ -697,6 +712,7 @@ echo $form->hiddenField($model, "image_id");
                     }
                 },
                 error: function (xhr, status, error) {
+                    $('#dynamicModalFooter').empty();
                     $('#check_doi_modal').modal('show');
 
                     myError.style.display = 'block'
@@ -708,33 +724,65 @@ echo $form->hiddenField($model, "image_id");
             });
         })
 
+        let isSubmitting = false;
+        //for published dataset
+        $('#datasetFormSaveButtonForPublished').click(function(e) {
+            if (isSubmitting) return;
+            e.preventDefault();
+
+            $('#check_doi_modal').modal('show')
+            $('#dynamicModalFooter').empty();
+            let myConfirmation = $('#check-confirmation')[0];
+            myConfirmation.innerHTML = 'Does DataCite DOI metadata have been updated?'
+            let el = document.createElement('div')
+            el.innerHTML = "Does DataCite DOI metadata have been updated?"
+
+            let buttonOk = $('<button/>', {
+                type: 'submit',
+                text: 'Yes',
+                id: 'datasetFormSaveButton',
+                class: 'btn background-btn submit-btn',
+                title: 'Save any changes made on this page and stay on this page',
+                'data-toggle': 'tooltip',
+            });
+
+            let btnNo = $('<button/>', {
+                type: 'submit',
+                text: 'No',
+                id: 'datasetFormSaveButton',
+                class: 'btn background-btn submit-btn',
+                title: 'Save any changes made on this page and stay on this page',
+                'data-toggle': 'tooltip',
+            });
+
+            let btnUpdateAuto = $('<button>')
+                .addClass('btn background-btn')
+                .text('No, please update it now')
+                .on('click', function(e) {
+                    e.preventDefault()
+                    $('#mint_doi_button').click()
+                    $('#check_doi_modal').modal('hide')
+                    $('#minting').html('minting under way, please wait');
+                });
+
+            let btnUpdateManually = $('<button>')
+                .addClass('btn btn-danger')
+                .text('No, let me do that')
+                .on('click', function(e) {
+                    e.preventDefault()
+                    $('#check_doi_modal').modal('hide')
+                });
+
+            $('#dynamicModalFooter').append(buttonOk);
+            $('#dynamicModalFooter').append(btnNo);
+            $('#dynamicModalFooter').append(btnUpdateAuto);
+            $('#dynamicModalFooter').append(btnUpdateManually);
+
+        })
+
         $('#hideModalCheckDoi').click(function (e) {
             $('#check_doi_modal').modal('hide')
         })
-
-        $('#mockup').on('click', function (event) {
-            event.preventDefault();
-
-            mockupUrl = $(this).attr('href');
-            form = $('#dataset-form');
-
-            $.ajax({
-                url: form.attr('action'),
-                method: 'POST',
-                data: form.serialize(),
-                success: function (response, textStatus, xhr) {
-                    if (200 === xhr.status) {
-                        window.location.href = mockupUrl;
-                    } else {
-                        $('#flashError').html('An error occurred while trying to save the dataset')
-                    }
-
-                },
-                error: function (error) {
-                    $('#flashError').html('An error occurred while trying to save the dataset')
-                }
-            })
-        });
     });
 
     function formatXML(xmlString) {
@@ -980,7 +1028,7 @@ Yii::app()->clientScript->registerScriptFile($jsUrl, CClientScript::POS_END);
     });
 
     $('#customizeEmailModal').on('hidden.bs.modal', function () {
-        $('#datasetFormSaveButton').focus(); // hardcoded button that triggers the modal to return focus
+        $('#datasetFormSaveButton').focus();
     });
 </script>
 
@@ -999,7 +1047,9 @@ Yii::app()->clientScript->registerScriptFile($jsUrl, CClientScript::POS_END);
         }
         let shouldBlock = false
         let datasetFormSaveButton = $('#datasetFormSaveButton')[0]
-        datasetFormSaveButton.disabled = false;
+        if (datasetFormSaveButton) {
+            datasetFormSaveButton.disabled = true;
+        }
 
         const {
             check_doi_status,
@@ -1041,9 +1091,13 @@ Yii::app()->clientScript->registerScriptFile($jsUrl, CClientScript::POS_END);
         if (!shouldBlock) {
             let myConfirmation = $('#check-confirmation')[0];
             myConfirmation.innerHTML = ''
-            datasetFormSaveButton.disabled = false
+
+            if (datasetFormSaveButton) {
+                datasetFormSaveButton.disabled = false;
+            }
 
             if (!xml) {
+                $('#dynamicModalFooter').empty();
                 $('#check_doi_modal').modal('show')
                 let el = document.createElement('div')
                 el.textContent = "Unable to generate XML for Datacite, please check"
@@ -1051,10 +1105,6 @@ Yii::app()->clientScript->registerScriptFile($jsUrl, CClientScript::POS_END);
 
                 myConfirmation.appendChild(el)
             }
-
-            datasetFormSaveButton.disabled = false
-        } else if ('Published' === $('#Dataset_upload_status').val()) {
-            datasetFormSaveButton.disabled = true
         }
 
         if (html) {
