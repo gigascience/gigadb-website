@@ -1,2 +1,6 @@
 id,name
+2,Cites
 22,IsIdenticalTo
+13,IsReferencedBy
+14,References
+12,HasPart

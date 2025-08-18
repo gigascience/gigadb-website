@@ -45,6 +45,7 @@ class ExternalLink extends CActiveRecord
 		return array(
 			array('dataset_id, url, external_link_type_id', 'required'),
 			array('dataset_id, external_link_type_id', 'numerical', 'integerOnly'=>true),
+            array('external_link_type_id', 'checkIfMultipleIsAllowed', 'on' => 'create'),
 			array('url', 'length', 'max'=>128),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
@@ -62,7 +63,6 @@ class ExternalLink extends CActiveRecord
 		return array(
 			'dataset' => array(self::BELONGS_TO, 'Dataset', 'dataset_id'),
 			'external_link_type' => array(self::BELONGS_TO, 'ExternalLinkType', 'external_link_type_id'),
-			'externalLinkType' => array(self::BELONGS_TO, 'ExternalLinkType', 'external_link_type_id'),
 		);
 	}
 
@@ -110,5 +110,22 @@ class ExternalLink extends CActiveRecord
         return array(
             'ActiveRecordLogableBehavior' => 'application.behaviors.DatasetRelatedTableBehavior',
         );
+    }
+
+    public function checkIfMultipleIsAllowed($attribute, $params) {
+        $value = $this->$attribute;
+        $model = ExternalLinkType::model()->findByPk($value);
+        if ($model->multiple) {
+            return;
+        }
+
+        $externalLink = ExternalLink::model()
+            ->findByAttributes(['external_link_type_id' => $value, 'dataset_id' => $this->dataset_id]);
+
+        if (!$externalLink) {
+            return;
+        }
+
+        $this->addError($attribute, "Can't be multiple instances of that external_link per dataset");
     }
 }

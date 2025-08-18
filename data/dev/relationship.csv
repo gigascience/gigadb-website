@@ -2,3 +2,5 @@ id,name
 1,IsCitedBy
 2,Cites
 13,IsReferencedBy
+14,References
+12,HasPart

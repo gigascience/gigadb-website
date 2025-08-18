@@ -53,6 +53,7 @@ class StoredDatasetExternalLinksTest extends CDbTestCase
                 'url' => "http://foo.com",
                 'external_link_type_id' => 1,
                 'external_link_type_name' => "Additional information",
+                'multiple' => true
             ),
             array(
                 'id' => 2,
@@ -60,6 +61,7 @@ class StoredDatasetExternalLinksTest extends CDbTestCase
                 'url' => "http://foo2.com",
                 'external_link_type_id' => 1,
                 'external_link_type_name' => "Additional information",
+                'multiple' => true
             ),
             array(
                 'id' => 3,
@@ -67,6 +69,7 @@ class StoredDatasetExternalLinksTest extends CDbTestCase
                 'url' => "http://foo3.com",
                 'external_link_type_id' => 2,
                 'external_link_type_name' => "Genome browser",
+                'multiple' => false
             ),
             array(
                 'id' => 4,
@@ -74,6 +77,7 @@ class StoredDatasetExternalLinksTest extends CDbTestCase
                 'url' => "http://foo4.com",
                 'external_link_type_id' => 3,
                 'external_link_type_name' => "Protocols.io",
+                'multiple' => false
             ),
             array(
                 'id' => 5,
@@ -81,6 +85,7 @@ class StoredDatasetExternalLinksTest extends CDbTestCase
                 'url' => "http://foo5.com",
                 'external_link_type_id' => 4,
                 'external_link_type_name' => "JBrowse",
+                'multiple' => false
             ),
         );
 

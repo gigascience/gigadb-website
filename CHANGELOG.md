@@ -4,6 +4,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #665: Create 'RRID' external link type
+- Feat #1239: Create 'Software Heritage Archive (SWHA)' external link type
+- Feat #1142: Rename 'Github Links' to 'Authors code repositories' and create 'Cited code repository' external link type
+- Feat #299: Add 'description' - 'prefix' - 'displayed as' - 'multiple' - 'relationship_id' columns to the external_link_type table
+- Feat #299: Admin pages to manage externalLink types
+
 ## v4.4.16 - 2025-08-15 - 6e04c0b9e -
 
 - Fix #2428: AdminUserController should target AdminUserController when validating or rejecting a claim
