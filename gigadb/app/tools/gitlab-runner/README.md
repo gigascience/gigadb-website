@@ -64,14 +64,96 @@ ubuntu@ip-172-31-47-236:~$ sudo tail -f /var/log/unattended-upgrades/unattended-
 ```
 
 ## Install Docker, Docker Compose
-* https://docs.docker.com/desktop/setup/install/linux/ubuntu/
+* https://docs.docker.com/engine/install/ubuntu/
+* https://www.digitalocean.com/community/questions/how-to-fix-docker-got-permission-denied-while-trying-to-connect-to-the-docker-daemon-socket
 * https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-22-04
 
 ```
-ubuntu@ip-172-31-47-236:~$ docker --version
-Docker version 28.3.3, build 980b856
+$ docker version
+Client: Docker Engine - Community
+ Version:           28.3.3
+ API version:       1.51
+ Go version:        go1.24.5
+ Git commit:        980b856
+ Built:             Fri Jul 25 11:34:04 2025
+ OS/Arch:           linux/amd64
+ Context:           default
+
+Server: Docker Engine - Community
+ Engine:
+  Version:          28.3.3
+  API version:      1.51 (minimum version 1.24)
+  Go version:       go1.24.5
+  Git commit:       bea959c
+  Built:            Fri Jul 25 11:34:04 2025
+  OS/Arch:          linux/amd64
+  Experimental:     false
+ containerd:
+  Version:          1.7.27
+  GitCommit:        05044ec0a9a75232cad458027ca83437aae3f4da
+ runc:
+  Version:          1.2.5
+  GitCommit:        v1.2.5-0-g59923ef
+ docker-init:
+  Version:          0.19.0
+  GitCommit:        de40ad0
 ubuntu@ip-172-31-47-236:~$ docker compose version
 Docker Compose version v2.38.2-desktop.1
+$ docker run hello-world
+Unable to find image 'hello-world:latest' locally
+latest: Pulling from library/hello-world
+17eec7bbc9d7: Pull complete 
+Digest: sha256:a0dfb02aac212703bfcb339d77d47ec32c8706ff250850ecc0e19c8737b18567
+Status: Downloaded newer image for hello-world:latest
+
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+
+To generate this message, Docker took the following steps:
+ 1. The Docker client contacted the Docker daemon.
+ 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+    (amd64)
+ 3. The Docker daemon created a new container from that image which runs the
+    executable that produces the output you are currently reading.
+ 4. The Docker daemon streamed that output to the Docker client, which sent it
+    to your terminal.
+
+To try something more ambitious, you can run an Ubuntu container with:
+ $ docker run -it ubuntu bash
+
+Share images, automate workflows, and more with a free Docker ID:
+ https://hub.docker.com/
+
+For more examples and ideas, visit:
+ https://docs.docker.com/get-started/
+
+
+```
+
+## Create dir
+
+```
+ubuntu@ip-172-31-47-236:~$ pwd
+/home/ubuntu
+ubuntu@ip-172-31-47-236:~$ mkdir -p gigadb-website/gigadb/app/tools/gitlab-runner/
+ubuntu@ip-172-31-47-236:~$ cd gigadb-website/gigadb/app/tools/gitlab-runner/
+ubuntu@ip-172-31-47-236:~/gigadb-website/gigadb/app/tools/gitlab-runner$ mkdir scripts
+ubuntu@ip-172-31-47-236:~/gigadb-website/gigadb/app/tools/gitlab-runner$ ls -al
+total 28
+drwxrwxr-x 4 ubuntu ubuntu 4096 Aug 19 07:40 .
+drwxrwxr-x 3 ubuntu ubuntu 4096 Aug 19 07:32 ..
+-rw-r--r-- 1 ubuntu ubuntu  117 Aug 19 07:37 .env
+drwxrwxr-x 2 ubuntu ubuntu 4096 Aug 19 07:40 config
+-rw-r--r-- 1 ubuntu ubuntu 1127 Aug 19 07:35 docker-compose.yml
+-rw-r--r-- 1 ubuntu ubuntu  117 Aug 19 07:35 env-sample
+drwxrwxr-x 2 ubuntu ubuntu 4096 Aug 19 07:36 scripts
+ubuntu@ip-172-31-47-236:~/gigadb-website/gigadb/app/tools/gitlab-runner$ ls -al scripts config
+total 12
+drwxrwxr-x 2 ubuntu ubuntu 4096 Aug 19 07:36 .
+drwxrwxr-x 3 ubuntu ubuntu 4096 Aug 19 07:36 ..
+-rw-r--r-- 1 ubuntu ubuntu 1245 Aug 19 07:36 delete_runner_cache.sh
+ubuntu@ip-172-31-47-236:~/gigadb-website/gigadb/app/tools/gitlab-runner$
+
 ```
 
 ## Set value for REGISTRATION_TOKEN
@@ -87,6 +169,13 @@ and fill in the value as instructed.
 You must use the Gitlab user login (GITLAB_USER_LOGIN).
 
 ```
+$ docker compose run --rm runner --version
+Version:      18.2.1
+Git revision: cc489270
+Git branch:   18-2-stable
+GO version:   go1.24.4 X:cacheprog
+Built:        2025-07-28T12:43:39Z
+OS/Arch:      linux/amd64
 $ docker-compose run --rm -e RUNNER_TAG_LIST="<Gitlab user login here>" register
 ```
 
