@@ -205,7 +205,7 @@
                                 <?= $item->publication_date ?>:
                                 <?= $item->message ?>
                             </p>
-                        <?php } ?>
+                    <?php } ?>
                         <? echo CHtml::closeTag('li'); ?>
                     <?php $flag++;
                     } ?>

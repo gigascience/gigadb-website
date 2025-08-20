@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Adapter class to present external links for a dataset
  *
@@ -73,8 +75,7 @@ class FormattedDatasetExternalLinks extends DatasetComponents implements Dataset
         };
 
         $dataset_types = $this->_cachedDatasetExternalLinks->getDatasetExternalLinksTypesAndCount($types) ;
-        // var_dump($dataset_types);
-        // Yii::app->end();
+
         return  array_combine(
             array_keys($dataset_types),
             array_map($machinize, array_keys($dataset_types))

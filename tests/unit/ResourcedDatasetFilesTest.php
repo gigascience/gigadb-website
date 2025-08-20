@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Unit tests for ResourcedDatasetFiles to retrieve from a REST API, the files for associated dataset
  *
@@ -151,20 +153,6 @@ class ResourcedDatasetFilesTest extends CDbTestCase
         $this->assertEquals("DOCX", $datasetFiles[0]["format"]);
         $this->assertEquals("Text", $datasetFiles[0]["type"]);
         $this->assertNotNull($datasetFiles[0]["date_stamp"]);
-        //test that the returned array is compatible with an array of File
-        /* 'id' => 1,
-        'dataset_id' => 1,
-        'name' => "readme.txt",
-        'location'=>'ftp://foo.bar',
-        'extension'=>'txt',
-        'size'=>'1322123045',
-        'description'=>'just readme',
-        'date_stamp' => '2015-10-12',
-        'format_id' => 1,
-        'type_id' => 1,
-        'download_count'=>0,*/
-        // -> the DOI needs to converted into dataset id
-        // -> the datatype and extension need to be converted into database IDs
     }
 
     public function testResourcedReturnsDatasetFilesWithAttributes()
@@ -280,7 +268,6 @@ class ResourcedDatasetFilesTest extends CDbTestCase
         $this->assertEquals("DOCX", $datasetFiles[0]["format"]);
         $this->assertEquals("Text", $datasetFiles[0]["type"]);
         $this->assertNotNull($datasetFiles[0]["date_stamp"]);
-        // var_dump($datasetFiles[0]["file_attributes"]);
         $this->assertEquals(["Attribute A" => "42 Metre"], $datasetFiles[0]["file_attributes"][0]);
         $this->assertEquals(["Attribute B" => "34 Litre"], $datasetFiles[0]["file_attributes"][1]);
         $this->assertEquals([], $datasetFiles[1]["file_attributes"]);
@@ -335,10 +322,7 @@ class ResourcedDatasetFilesTest extends CDbTestCase
                 'updated_at' => (new DateTime())->format('U'),
             ],
         ];
-        // 'sample_id' => 1,
-        // 'sample_name' => "Sample 1",
-        // 'file_id' => 1,
-        // samples: [ [ "id" => 1, "name" => "sample A", "file_id" => 4], [ "id" => 1, "name" => "sample A", "file_id" => 4] ]
+
         $fuwClient = $this->createMock(FileUploadService::class);
         $daoUnderTest = new ResourcedDatasetFiles(
             $dataset_id,
@@ -408,10 +392,7 @@ class ResourcedDatasetFilesTest extends CDbTestCase
                 'updated_at' => (new DateTime())->format('U'),
             ],
         ];
-        // 'sample_id' => 1,
-        // 'sample_name' => "Sample 1",
-        // 'file_id' => 1,
-        // samples: [ [ "id" => 1, "name" => "sample A", "file_id" => 4], [ "id" => 1, "name" => "sample A", "file_id" => 4] ]
+
         $fuwClient = $this->createMock(FileUploadService::class);
         $daoUnderTest = new ResourcedDatasetFiles(
             $dataset_id,

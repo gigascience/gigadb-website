@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This is the model class for table "image".
  * Note: I have to change this Model to Images instead of Image because of this name is conflict with Image.php in the Extension
@@ -17,7 +19,6 @@
  */
 class Images extends ImageHaver
 {
-
     public $image_upload;
     public $is_no_image;
     public static $fup_img = '/images/fair.png';
@@ -26,7 +27,7 @@ class Images extends ImageHaver
      * @param string $className active record class name.
      * @return Image the static model class
      */
-    public static function model($className=__CLASS__)
+    public static function model($className = __CLASS__)
     {
         return parent::model($className);
     }
@@ -47,14 +48,14 @@ class Images extends ImageHaver
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('image_upload', 'file', 'types'=>'jpg, gif, png', 'allowEmpty'=>true, 'on'=>'update'),
+            array('image_upload', 'file', 'types' => 'jpg, gif, png', 'allowEmpty' => true, 'on' => 'update'),
             array('license, photographer, source', 'required'),
-            array('tag', 'length', 'max'=>120),
-            array('url, source', 'length', 'max'=>256),
-            array('photographer', 'length', 'max'=>128),
+            array('tag', 'length', 'max' => 120),
+            array('url, source', 'length', 'max' => 256),
+            array('photographer', 'length', 'max' => 128),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            array('id, tag, url, license, photographer, source', 'safe', 'on'=>'search'),
+            array('id, tag, url, license, photographer, source', 'safe', 'on' => 'search'),
         );
     }
 
@@ -95,39 +96,32 @@ class Images extends ImageHaver
         // Warning: Please modify the following code to remove attributes that
         // should not be searched.
 
-        $criteria=new CDbCriteria;
+        $criteria = new CDbCriteria();
 
-        $criteria->compare('id',$this->id);
-        $criteria->compare('tag',$this->tag,true);
-        $criteria->compare('url',$this->url,true);
-        $criteria->compare('license',$this->license,true);
-        $criteria->compare('photographer',$this->photographer,true);
-        $criteria->compare('source',$this->source,true);
+        $criteria->compare('id', $this->id);
+        $criteria->compare('tag', $this->tag, true);
+        $criteria->compare('url', $this->url, true);
+        $criteria->compare('license', $this->license, true);
+        $criteria->compare('photographer', $this->photographer, true);
+        $criteria->compare('source', $this->source, true);
 
         return new CActiveDataProvider($this, array(
-            'criteria'=>$criteria,
+            'criteria' => $criteria,
         ));
     }
 
 
-    public function save($runValidation = true, $attributes = NULL){
-        if (!parent::save()) return false;
+    public function save($runValidation = true, $attributes = null)
+    {
+        if (!parent::save()) {
+            return false;
+        }
         $this->updateImage('image_upload');
         return true;
-   }
-
-    public function getImageTypeName() {
-        return "image_upload";
     }
 
-#    // Or this, for that matter
-#    public function updateImage($type) {
-#        if (!isset($_POST["use_$type"]) or $_POST["use_$type"]!= 'current') {
-#    	    $image = CUploadedFile::getInstanceByName("{$type}_image");
-#	        if ($image !== null) {
-#                  $this->setImage($type, $image);
-#                  $this->location = $this->image($type);
-#            }
-#        }
-#    }
+    public function getImageTypeName()
+    {
+        return "image_upload";
+    }
 }

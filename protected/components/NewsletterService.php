@@ -20,7 +20,7 @@ class NewsletterService extends CApplicationComponent
     public $list_id;
 
     /**
-     * @var \DrewM\MailChimp\MailChimp $newsletter_api Mailchimp client object.
+     * @var MailChimpClient $newsletter_api Mailchimp client object.
      * Get value set in __construct or in $this->init
      */
     public $newsletter_api;
@@ -66,10 +66,9 @@ class NewsletterService extends CApplicationComponent
      */
     public function addToMailing($email, $first_name = null, $last_name = null)
     {
-
         // pre-check email
-        $username = explode("@", $email)[0];
-        $domain = explode("@", $email)[1];
+        $username = explode('@', $email)[0] ?? null;
+        $domain = explode('@', $email)[1] ?? null;
         if (! ($username && $domain)) {
             return false;
         }

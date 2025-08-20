@@ -1,5 +1,5 @@
 <?php
-$this->pageTitle='Reset password';
+$this->pageTitle = 'Reset password';
 ?>
 <div class="content">
     <div class="container">
@@ -27,7 +27,7 @@ $this->pageTitle='Reset password';
                         'enableAjaxValidation' => false,
                         'htmlOptions' => array('class' => 'form-horizontal'),
                     ));
-                ?>
+                    ?>
                 <?= isset($error) && $error ? '<div class="row">' . $error . '</div>' : '' ?>
                 <div class="form-group">
                     <?php echo $form->labelEx($model, 'password', array('class' => 'col-xs-5 control-label')); ?>

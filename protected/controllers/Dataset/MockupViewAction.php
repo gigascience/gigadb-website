@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * This action for DatasetController that will display dataset mockup page
  *
@@ -10,17 +13,9 @@ class MockupViewAction extends CAction
 {
     public function run($uuid)
     {
-
-        // Yii::log("MockupAction in DatasetController with uuid: $uuid","info");
         // Retrieve mockup token data (email, validity and dataset DOI) based on url fragment
         $srv = new FileUploadService([
-            "tokenSrv" => new TokenService([
-                                  'jwtTTL' => 3600,
-                                  'jwtBuilder' => Yii::$app->jwt->getBuilder(),
-                                  'jwtSigner' => new \Lcobucci\JWT\Signer\Hmac\Sha256(),
-                                  'users' => new UserDAO(),
-                                  'dt' => new DateTime(),
-                                ]),
+            "tokenSrv" => Yii::app()->fileUploadService->createTokenService(),
             "webClient" => \Yii::$container->get('guzzleHttpClient'),
             ]);
 
@@ -61,8 +56,8 @@ class MockupViewAction extends CAction
                         ->setDatasetMainSection()
                         ->setDatasetConnections()
                         ->setDatasetExternalLinks()
-                        ->setDatasetFiles($fileSettings["pageSize"], "resourced")
-                        ->setDatasetSamples($sampleSettings["pageSize"])
+                        ->setDatasetFiles((int) $fileSettings["pageSize"], "resourced")
+                        ->setDatasetSamples((int) $sampleSettings["pageSize"])
                         ->setSearchForm();
         }
 

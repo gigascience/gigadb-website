@@ -90,7 +90,7 @@
       <div class="col-xs-12">
         <form action="/search/new" method="GET" role="search" class="search-form" aria-label="Datasets">
           <?php
-          $this->widget('application.components.DeferrableCJuiAutoComplete', array(
+            $this->widget('application.components.DeferrableCJuiAutoComplete', array(
             'name' => 'keyword',
             'source' => array_values(array()),
             'options' => array(
@@ -102,8 +102,8 @@
               'placeholder' => 'e.g. Chicken, brain, etc...',
               'id' => 'mobileSearchbar',
             ),
-          ));
-          ?>
+            ));
+            ?>
           <button class="btn-search" type="submit">
             <span class="fa fa-search"><span class="sr-only">Search</span></span>
           </button>

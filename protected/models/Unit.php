@@ -1,17 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This is the model class for table "unit".
  *
  * The followings are the available columns in table 'unit':
- * @property string $id
- * @property string $name
- * @property string $definition
+ * @property string      $id
+ * @property string|null $name
+ * @property string|null $definition
  *
  * The followings are the available model relations:
- * @property SampleAttribute[] $sampleAttributes
- * @property FileAttributes[] $fileAttributes
- * @property ExpAttributes[] $expAttributes
+ * @property SampleAttribute[]   $sampleAttributes
+ * @property FileAttributes[]    $fileAttributes
+ * @property ExpAttributes[]     $expAttributes
  * @property DatasetAttributes[] $datasetAttributes
  */
 class Unit extends CActiveRecord
@@ -21,7 +23,7 @@ class Unit extends CActiveRecord
      * @param string $className active record class name.
      * @return Unit the static model class
      */
-    public static function model($className=__CLASS__)
+    public static function model($className = __CLASS__)
     {
         return parent::model($className);
     }
@@ -43,12 +45,12 @@ class Unit extends CActiveRecord
         // will receive user inputs.
         return array(
             array('id', 'required'),
-            array('id', 'length', 'max'=>30),
-            array('name', 'length', 'max'=>200),
-            array('definition', 'length', 'max'=>500),
+            array('id', 'length', 'max' => 30),
+            array('name', 'length', 'max' => 200),
+            array('definition', 'length', 'max' => 500),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            array('id, name, definition', 'safe', 'on'=>'search'),
+            array('id, name, definition', 'safe', 'on' => 'search'),
         );
     }
 
@@ -88,14 +90,14 @@ class Unit extends CActiveRecord
         // Warning: Please modify the following code to remove attributes that
         // should not be searched.
 
-        $criteria=new CDbCriteria;
+        $criteria = new CDbCriteria();
 
-        $criteria->compare('id',$this->id,true);
-        $criteria->compare('name',$this->name,true);
-        $criteria->compare('definition',$this->definition,true);
+        $criteria->compare('id', $this->id, true);
+        $criteria->compare('name', $this->name, true);
+        $criteria->compare('definition', $this->definition, true);
 
         return new CActiveDataProvider($this, array(
-            'criteria'=>$criteria,
+            'criteria' => $criteria,
         ));
     }
 }

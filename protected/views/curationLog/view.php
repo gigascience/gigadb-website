@@ -9,10 +9,10 @@
       ]
     ]);
 
-  $dataset = Dataset::model()->find('id=:dataset_id', [':dataset_id' => $model->dataset_id]);
-  $this->widget(
-      'zii.widgets.CDetailView',
-      [
+    $dataset = Dataset::model()->find('id=:dataset_id', [':dataset_id' => $model->dataset_id]);
+    $this->widget(
+        'zii.widgets.CDetailView',
+        [
           'data'       => $model,
           'attributes' => [
               'id',
@@ -30,17 +30,17 @@
           'htmlOptions' => array('class' => 'table table-striped table-bordered dataset-view-table'),
           'itemCssClass' => array('odd', 'even'),
           'itemTemplate' => '<tr class="{class}"><th scope="row">{label}</th><td>{value}</td></tr>'
-      ]
-  );
-  ?>
+        ]
+    );
+    ?>
   <?php
-  echo CHtml::link(
-      'Back to this Dataset Curation Log',
-      $this->createAbsoluteUrl(
-          'adminDataset/update',
-          ['id' => $model->dataset_id],
-      )
-  );
-  ?>
+    echo CHtml::link(
+        'Back to this Dataset Curation Log',
+        $this->createAbsoluteUrl(
+            'adminDataset/update',
+            ['id' => $model->dataset_id],
+        )
+    );
+    ?>
 
 </div>

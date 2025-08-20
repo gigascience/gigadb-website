@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Model class for table "reset_password_request"
  *
@@ -14,7 +16,7 @@
  * The followings are the available model relations:
  * @property User[] $users
  */
-class ResetPasswordRequest extends CActiveRecord 
+class ResetPasswordRequest extends CActiveRecord
 {
     public $verifier;
     public $selector;
@@ -47,18 +49,6 @@ class ResetPasswordRequest extends CActiveRecord
     }
 
     /**
-     * @return array relational rules.
-     */
-    public function relations()
-    {
-        // NOTE: you may need to adjust the relation name and the related
-        // class name for the relations automatically generated below.
-//        return array(
-//            'users' => array(self::BELONGS_TO, 'User', 'id')
-//        );
-    }
-
-    /**
      * @return array customized attribute labels (name=>label)
      */
     public function attributeLabels()
@@ -74,27 +64,29 @@ class ResetPasswordRequest extends CActiveRecord
     /**
      * The requested_at and expires_at timestamps are created if they have been
      * provided before saving a record into the reset_password_request table.
-     * 
+     *
      * @return bool
      */
     public function beforeSave()
     {
         if (parent::beforeSave()) {
             $now = new Datetime();
-            if (!$this->requested_at)
+            if (!$this->requested_at) {
                 $this->requested_at = $now->format(DateTime::ISO8601);
+            }
 
-            if (!$this->expires_at)
+            if (!$this->expires_at) {
                 $this->expires_at = $now->modify('+ 1 hour')->format(DateTime::ISO8601);
+            }
         }
         return true;
     }
 
     /**
-     * Creates a reset token consisting of selector concatenated with a 
+     * Creates a reset token consisting of selector concatenated with a
      * verifier
-     * 
-     * All of the attributes (selector, verifier, gigadb_user_id) of a 
+     *
+     * All of the attributes (selector, verifier, gigadb_user_id) of a
      * ResetPasswordRequest model are created as a side effect of this function.
      * Some of the cryptographic strategies were taken from
      * https://paragonie.com/blog/2017/02/split-tokens-token-based-authentication-protocols-without-side-channels
@@ -110,7 +102,7 @@ class ResetPasswordRequest extends CActiveRecord
         $hashedTokenOfVerifier = Yii::app()->cryptoService->getHashedToken($signingKey, $this->verifier);
         $this->hashed_token = $hashedTokenOfVerifier;
         $this->gigadb_user_id = $user->id;
-        return $this->selector.$this->verifier;
+        return $this->selector . $this->verifier;
     }
 
     /**
@@ -120,8 +112,8 @@ class ResetPasswordRequest extends CActiveRecord
     public function isExpired()
     {
         $now = new Datetime();
-        Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": datetime now: ".$now->format('Y-m-d H:i'), 'info');
-        Yii::log("[INFO] [".__CLASS__.".php] ".__FUNCTION__.": datetime expires_at: ".$this->expires_at, 'info');
+        Yii::log("[INFO] [" . __CLASS__ . ".php] " . __FUNCTION__ . ": datetime now: " . $now->format('Y-m-d H:i'), 'info');
+        Yii::log("[INFO] [" . __CLASS__ . ".php] " . __FUNCTION__ . ": datetime expires_at: " . $this->expires_at, 'info');
         return $this->expires_at <= $now->format('Y-m-d H:i');
     }
 
@@ -131,6 +123,6 @@ class ResetPasswordRequest extends CActiveRecord
      */
     public function getToken()
     {
-        return $this->selector.$this->verifier;
+        return $this->selector . $this->verifier;
     }
 }

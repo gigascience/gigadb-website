@@ -1,6 +1,6 @@
 <?php
 
-use CompatibilityHelper;
+declare(strict_types=1);
 
 class DatabaseSearch extends CApplicationComponent
 {
@@ -204,10 +204,8 @@ class DatabaseSearch extends CApplicationComponent
 
     public function searchByKey($keyword, $searchType = "api")
     {
-
         $limit = Yii::app()->params['search_result_limit'];
         $model = new SearchForm();
-
         $criteria = array();
 
         if (true === CompatibilityHelper::str_contains($keyword, "&")) {

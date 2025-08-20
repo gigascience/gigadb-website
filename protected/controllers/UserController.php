@@ -200,7 +200,7 @@ class UserController extends Controller
         $authoredDatasets = array();
 
         $linked_author = $user->getLinkedAuthor();
-        // Yii::log(print_r($linked_author, true), 'debug');
+
         if (!empty($linked_author)) {
             $linkedAuthors = $linked_author->getIdenticalAuthors();
             $linkedAuthors[] = $linked_author->id;

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Business object to interact with the FileType ActiveRecord model.
  *
@@ -7,15 +10,12 @@
  */
 class FileTypeDAO extends yii\base\BaseObject
 {
-	/**
-	 * function to export the list of file types as JSON
-	 * @return string a JSON string representing the list of file types
-	 */
-	public function toJSON(): string
-	{
-		return json_encode(array_flip(FileType::getListTypes()));
-	}
+    /**
+     * function to export the list of file types as JSON
+     * @return string a JSON string representing the list of file types
+     */
+    public function toJSON(): string
+    {
+        return json_encode(array_flip(FileType::getListTypes()));
+    }
 }
-
-
-?>

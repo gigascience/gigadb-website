@@ -4,8 +4,8 @@
   $this->widget('TitleBreadcrumb', [
     'pageTitle' => $isServerError ? 'Server Error' : 'Error ' . $code,
   ]);
-  ?>
-  <?php if ($isServerError): ?>
+    ?>
+  <?php if ($isServerError) : ?>
     <div class="error">
       <p>A server error has occurred. Please come back later or contact <a href="mailto:database@gigasciencejournal.com">database@gigasciencejournal.com</a> for support</p>
       <div class="mt-10">
@@ -14,7 +14,7 @@
         </a>
       </div>
     </div>
-  <?php else: ?>
+  <?php else : ?>
     <div class="error">
       <?php echo CHtml::encode($message); ?>
       <div class="mt-10">

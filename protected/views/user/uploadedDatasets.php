@@ -33,7 +33,7 @@
                             <?= Yii::t('app', 'Modification Date') ?>
                         </th>
                         <th style="width: 1%;">
-                            <?= Yii::t('app','File Count') ?>
+                            <?= Yii::t('app', 'File Count') ?>
                         </th>
                         <th style="width: 1%;">
                             <?= Yii::t('app', 'Operation') ?>
@@ -43,9 +43,9 @@
                 <tbody>
                     <?php $data = $uploadedDatasets; ?>
                     <?php
-                for ($i = 0; $i < count($uploadedDatasets); $i++) {
+                    for ($i = 0; $i < count($uploadedDatasets); $i++) {
                     $class = $i % 2 == 0 ? 'even' : 'odd';
-                    if(isset($selected) && $data[$i]->id==$selected) {
+                    if (isset($selected) && $data[$i]->id == $selected) {
                         $class = 'submit-selected';
                     }
                     ?>
@@ -66,7 +66,7 @@
                                             <? echo $data[$i]->title; ?>
                                         </td>
                                         <td>
-                                            <? echo $data[$i]->commonNames; ?>
+                                            <? echo $data[$i]->commonNames ?? ''; ?>
                                         </td>
                                         <td>
                                             <? foreach ($data[$i]->datasetTypes as $type) { ?>
@@ -92,9 +92,9 @@
                                                     <button class="js-delete-dataset btn btn-transparent" data-toggle="tooltip" title="Delete the dataset and all its files" did="<?=$data[$i]->id?>">
                                             Delete<br />dataset</button>
                                                     <?php if ($data[$i]->upload_status === "UserUploadingData" || $data[$i]->upload_status === "DataPending") {
-                                                    ?>
+                                                        ?>
                                                     <a class="upload btn btn-transparent" href="/authorisedDataset/uploadFiles/id/<?php echo $data[$i]->identifier; ?>" data-toggle="tooltip" title="Upload files to the dataset, delete the existing files or edit their metadata">Upload<br />Files</a>
-                                                    <?php
+                                                        <?php
                                                     } ?>
                                                 </div>
                                             <? } ?>

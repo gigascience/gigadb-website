@@ -154,7 +154,7 @@
                             <?php } ?>
                         </tbody>
                     </table>
-                <?php } ?>
+            <?php } ?>
                 <br />
                 <button type="button" class="btn background-btn-o js-btn-attr" aria-expanded="false" aria-controls="newAttrForm" data-test="new-attr-btn" data-toggle="tooltip" title="Show and/or Add file attributes"><span class="js-btn-attr-label">Show New Attribute Fields</span> <i class="fa fa-caret-down js-caret-type" aria-hidden="true"></i></button>
                 <br />
@@ -358,17 +358,17 @@ Yii::app()->clientScript->registerScriptFile($jsUrl, CClientScript::POS_END);
 ?>
 
 <script>
-	$('#file_attr_modal').on('shown.bs.modal', function() {
+    $('#file_attr_modal').on('shown.bs.modal', function() {
     lastFocusedElement = document.activeElement;
 
     $('#FileAttributes_edit_attribute_id').focus();
     trapFocus($(this));
-	});
+    });
 
-	$('#file_attr_modal').on('hidden.bs.modal', function() {
+    $('#file_attr_modal').on('hidden.bs.modal', function() {
     $(this).off('keydown');
     if (lastFocusedElement) {
         lastFocusedElement.focus();
     }
-	});
+    });
 </script>

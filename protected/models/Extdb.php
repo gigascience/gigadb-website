@@ -1,14 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This is the model class for table "extdb".
  *
  * The followings are the available columns in table 'extdb':
- * @property integer $id
- * @property string $database_name
- * @property string $definition
- * @property string $database_homepage
- * @property string $database_search_url
+ * @property int         $id
+ * @property string|null $database_name
+ * @property string|null $definition
+ * @property string|null $database_homepage
+ * @property string|null $database_search_url
  *
  * The followings are the available model relations:
  * @property AlternativeIdentifiers[] $alternativeIdentifiers
@@ -20,7 +22,7 @@ class Extdb extends CActiveRecord
      * @param string $className active record class name.
      * @return Extdb the static model class
      */
-    public static function model($className=__CLASS__)
+    public static function model($className = __CLASS__)
     {
         return parent::model($className);
     }
@@ -41,11 +43,11 @@ class Extdb extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('database_name, database_homepage, database_search_url', 'length', 'max'=>100),
-            array('definition', 'length', 'max'=>1000),
+            array('database_name, database_homepage, database_search_url', 'length', 'max' => 100),
+            array('definition', 'length', 'max' => 1000),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            array('id, database_name, definition, database_homepage, database_search_url', 'safe', 'on'=>'search'),
+            array('id, database_name, definition, database_homepage, database_search_url', 'safe', 'on' => 'search'),
         );
     }
 
@@ -84,16 +86,16 @@ class Extdb extends CActiveRecord
         // Warning: Please modify the following code to remove attributes that
         // should not be searched.
 
-        $criteria=new CDbCriteria;
+        $criteria = new CDbCriteria();
 
-        $criteria->compare('id',$this->id);
-        $criteria->compare('database_name',$this->database_name,true);
-        $criteria->compare('definition',$this->definition,true);
-        $criteria->compare('database_homepage',$this->database_homepage,true);
-        $criteria->compare('database_search_url',$this->database_search_url,true);
+        $criteria->compare('id', $this->id);
+        $criteria->compare('database_name', $this->database_name, true);
+        $criteria->compare('definition', $this->definition, true);
+        $criteria->compare('database_homepage', $this->database_homepage, true);
+        $criteria->compare('database_search_url', $this->database_search_url, true);
 
         return new CActiveDataProvider($this, array(
-            'criteria'=>$criteria,
+            'criteria' => $criteria,
         ));
     }
 }

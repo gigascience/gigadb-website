@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Routing, aggregating and composing logic for Dataset submission
  *
@@ -94,7 +97,6 @@ EO_MAIL;
     {
         if (isset($_POST['File'])) {
             $count = count($_POST['File']);
-            //var_dump('count'.$count);
             for ($i = 0; $i < $count; $i++) {
                 $id=$_POST['File'][$i]['id'];
                 $model = File::model()->findByPk($id);
@@ -105,9 +107,8 @@ EO_MAIL;
                 if ($model->date_stamp == "") {
                     $model->date_stamp = null;
                 }
-                // var_dump($model->description);
+
                 if (!$model->save()) {
-                    var_dump($_POST['File'][$i]);
                 }
             }
         }
@@ -149,10 +150,10 @@ EO_MAIL;
                 $fileLink .= 'Files:<br/>';
                 $fileLink = $link = Yii::app()->params['home_url'] . "/datasetSubmission/updateFile/?id=" . $dataset_id;
                 $dataset->upload_status = 'Pending';
-                CurationLog::createlog($dataset->upload_status, $dataset->id);
+                CurationLog::createlog($dataset->upload_status, (int) $dataset->id);
             } else {
                 $dataset->upload_status = 'Request';
-                CurationLog::createlog($dataset->upload_status, $dataset->id);
+                CurationLog::createlog($dataset->upload_status, (int) $dataset->id);
             }
 
             if (!$dataset->save()) {
@@ -209,7 +210,7 @@ EO_MAIL;
             /* prepare attachments */
 
             // boundary
-            $semi_rand = md5(time());
+            $semi_rand = md5((string)time());
             $mime_boundary = "==Multipart_Boundary_x{$semi_rand}x";
 
             // headers for attachment
@@ -252,7 +253,7 @@ EO_MAIL;
             /* prepare attachments */
 
             // boundary
-            $semi_rand = md5(time());
+            $semi_rand = md5((string)time());
             $mime_boundary = "==Multipart_Boundary_x{$semi_rand}x";
 
             // headers for attachment
@@ -300,7 +301,7 @@ EO_MAIL;
             /* prepare attachments */
 
             // boundary
-            $semi_rand = md5(time());
+            $semi_rand = md5((string)time());
             $mime_boundary = "==Multipart_Boundary_x{$semi_rand}x";
 
             // headers for attachment
@@ -344,7 +345,7 @@ EO_MAIL;
             /* prepare attachments */
 
             // boundary
-            $semi_rand = md5(time());
+            $semi_rand = md5((string)time());
             $mime_boundary = "==Multipart_Boundary_x{$semi_rand}x";
 
             // headers for attachment
@@ -987,7 +988,7 @@ EO_MAIL;
     /**
      * Deletes a particular Dataset.
      * If deletion is successful, the browser will be redirected to the 'admin' page.
-     * @param integer $id the ID of the model to be deleted
+     * @param int $id the ID of the model to be deleted
      */
     public function actionDelete($id)
     {
@@ -1045,7 +1046,7 @@ EO_MAIL;
     /**
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.
-     * @param integer the ID of the model to be loaded
+     * @param int the ID of the model to be loaded
      */
     private function loadModel($id)
     {

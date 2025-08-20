@@ -1,19 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This is the model class for table "exp_attributes".
  *
  * The followings are the available columns in table 'exp_attributes':
- * @property integer $id
- * @property integer $exp_id
- * @property integer $attribute_id
- * @property string $value
- * @property string $units_id
+ * @property int         $id
+ * @property int|null    $exp_id
+ * @property int|null    $attribute_id
+ * @property string|null $value
+ * @property string|null $units_id
  *
  * The followings are the available model relations:
- * @property Attributes $attribute
- * @property Experiment $exp
- * @property Unit $units
+ * @property Attributes|null $attribute
+ * @property Experiment|null $exp
+ * @property Unit|null       $units
  */
 class ExpAttributes extends CActiveRecord
 {
@@ -22,7 +24,7 @@ class ExpAttributes extends CActiveRecord
      * @param string $className active record class name.
      * @return ExpAttributes the static model class
      */
-    public static function model($className=__CLASS__)
+    public static function model($className = __CLASS__)
     {
         return parent::model($className);
     }
@@ -43,12 +45,12 @@ class ExpAttributes extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('exp_id, attribute_id', 'numerical', 'integerOnly'=>true),
-            array('value', 'length', 'max'=>1000),
-            array('units_id', 'length', 'max'=>50),
+            array('exp_id, attribute_id', 'numerical', 'integerOnly' => true),
+            array('value', 'length', 'max' => 1000),
+            array('units_id', 'length', 'max' => 50),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            array('id, exp_id, attribute_id, value, units_id', 'safe', 'on'=>'search'),
+            array('id, exp_id, attribute_id, value, units_id', 'safe', 'on' => 'search'),
         );
     }
 
@@ -89,20 +91,21 @@ class ExpAttributes extends CActiveRecord
         // Warning: Please modify the following code to remove attributes that
         // should not be searched.
 
-        $criteria=new CDbCriteria;
+        $criteria = new CDbCriteria();
 
-        $criteria->compare('id',$this->id);
-        $criteria->compare('exp_id',$this->exp_id);
-        $criteria->compare('attribute_id',$this->attribute_id);
-        $criteria->compare('value',$this->value,true);
-        $criteria->compare('units_id',$this->units_id,true);
+        $criteria->compare('id', $this->id);
+        $criteria->compare('exp_id', $this->exp_id);
+        $criteria->compare('attribute_id', $this->attribute_id);
+        $criteria->compare('value', $this->value, true);
+        $criteria->compare('units_id', $this->units_id, true);
 
         return new CActiveDataProvider($this, array(
-            'criteria'=>$criteria,
+            'criteria' => $criteria,
         ));
     }
 
-    public function behaviors() {
+    public function behaviors()
+    {
         return array(
             'ActiveRecordLogableBehavior' => 'application.behaviors.DatasetRelatedTableBehavior',
         );

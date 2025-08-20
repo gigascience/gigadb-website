@@ -1,114 +1,117 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This is the model class for table "dataset_author".
  *
  * The followings are the available columns in table 'dataset_author':
- * @property integer $id
- * @property integer $dataset_id
- * @property integer $author_id
+ *
+ * @property int         $id
+ * @property int         $dataset_id
+ * @property int         $author_id
+ * @property int|null    $rank
+ * @property string|null $role
  *
  * The followings are the available model relations:
- * @property Author $author
+ * @property Author  $author
  * @property Dataset $dataset
  */
 class DatasetAuthor extends CActiveRecord
 {
-	/**
-	 * Returns the static model of the specified AR class.
-	 * @param string $className active record class name.
-	 * @return DatasetAuthor the static model class
-	 */
-	public $doi_search;
-	public $author_name_search;
+    /**
+     * Returns the static model of the specified AR class.
+     * @param string $className active record class name.
+     * @return DatasetAuthor the static model class
+     */
+    public ?string  $doi_search = null;
+    public ?string $author_name_search = null;
 
-    public $orcid_search;
-    public $rank_search;
-    public $author_name;
-    public $rank;
+    public ?string $orcid_search = null;
+    public ?int $rank_search = null;
+    public ?string $author_name = null;
 
-	public static function model($className=__CLASS__)
-	{
-		return parent::model($className);
-	}
+    public static function model($className = __CLASS__)
+    {
+        return parent::model($className);
+    }
 
-	/**
-	 * @return string the associated database table name
-	 */
-	public function tableName()
-	{
-		return 'dataset_author';
-	}
+    /**
+     * @return string the associated database table name
+     */
+    public function tableName()
+    {
+        return 'dataset_author';
+    }
 
-	/**
-	 * @return array validation rules for model attributes.
-	 */
-	public function rules()
-	{
-		// NOTE: you should only define rules for those attributes that
-		// will receive user inputs.
-		return array(
-			array('dataset_id ,rank', 'required'),
-			array('dataset_id, author_id, rank', 'numerical', 'integerOnly'=>true),
-                       	// The following rule is used by search().
-			// Please remove those attributes that should not be searched.
-			array('id, dataset_id, author_id, doi_search, author_name_search , orcid_search , rank_search', 'safe', 'on'=>'search'),
-		);
-	}
+    /**
+     * @return array validation rules for model attributes.
+     */
+    public function rules()
+    {
+        // NOTE: you should only define rules for those attributes that
+        // will receive user inputs.
+        return array(
+            array('dataset_id ,rank', 'required'),
+            array('dataset_id, author_id, rank', 'numerical', 'integerOnly' => true),
+                        // The following rule is used by search().
+            // Please remove those attributes that should not be searched.
+            array('id, dataset_id, author_id, doi_search, author_name_search , orcid_search , rank_search', 'safe', 'on' => 'search'),
+        );
+    }
 
-	/**
-	 * @return array relational rules.
-	 */
-	public function relations()
-	{
-		// NOTE: you may need to adjust the relation name and the related
-		// class name for the relations automatically generated below.
-		return array(
-			'author' => array(self::BELONGS_TO, 'Author', 'author_id'),
-			'dataset' => array(self::BELONGS_TO, 'Dataset', 'dataset_id'),
-		);
-	}
+    /**
+     * @return array relational rules.
+     */
+    public function relations()
+    {
+        // NOTE: you may need to adjust the relation name and the related
+        // class name for the relations automatically generated below.
+        return array(
+            'author' => array(self::BELONGS_TO, 'Author', 'author_id'),
+            'dataset' => array(self::BELONGS_TO, 'Dataset', 'dataset_id'),
+        );
+    }
 
-	/**
-	 * @return array customized attribute labels (name=>label)
-	 */
-	public function attributeLabels()
-	{
-		return array(
-			'id' => 'ID',
-			'dataset_id' => 'Dataset',
-			'author_id' => 'Author ID',
-			'doi_search' => 'DOI',
-			'author_name_search' => 'Author Name',
-			'rank'=>'Order',
+    /**
+     * @return array customized attribute labels (name=>label)
+     */
+    public function attributeLabels()
+    {
+        return array(
+            'id' => 'ID',
+            'dataset_id' => 'Dataset',
+            'author_id' => 'Author ID',
+            'doi_search' => 'DOI',
+            'author_name_search' => 'Author Name',
+            'rank' => 'Order',
                         'orcid_search' => 'ORCID' ,
                         'rank_search' => 'Rank',
-                        'aurhor_name' =>'Name',
-		);
-	}
+                        'aurhor_name' => 'Name',
+        );
+    }
 
-	/**
-	 * Retrieves a list of models based on the current search/filter conditions.
-	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
-	 */
-	public function search()
-	{
-		// Warning: Please modify the following code to remove attributes that
-		// should not be searched.
+    /**
+     * Retrieves a list of models based on the current search/filter conditions.
+     * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
+     */
+    public function search()
+    {
+        // Warning: Please modify the following code to remove attributes that
+        // should not be searched.
 
-		$criteria=new CDbCriteria;
+        $criteria = new CDbCriteria();
 
         $criteria->with = array('dataset', 'author');
 
-		$criteria->compare('id',$this->id);
-		$criteria->compare('dataset_id',$this->dataset_id);
-		$criteria->compare('author_id',$this->author_id);
-		$criteria->compare('dataset.identifier',$this->doi_search,true);
-		//$criteria->compare('LOWER(author.name)',strtolower($this->author_name_search),true);
-		$criteria->compare("LOWER(author.surname) || ' ' || LOWER(author.first_name)",strtolower($this->author_name_search),true);
+        $criteria->compare('id', $this->id);
+        $criteria->compare('dataset_id', $this->dataset_id);
+        $criteria->compare('author_id', $this->author_id);
+        $criteria->compare('dataset.identifier', $this->doi_search, true);
+        $criteria->compare("LOWER(author.surname) || ' ' || LOWER(author.first_name)", strtolower($this->author_name_search ?: ''), true);
 
-		$criteria->compare('LOWER(author.orcid)',strtolower($this->orcid_search),true);
-		$criteria->compare('rank',$this->rank_search);
+        $criteria->compare('LOWER(author.orcid)', strtolower($this->orcid_search ?: ''), true);
+        $criteria->compare('rank', $this->rank_search);
 
         $sort = new CSort();
         $sort->attributes = array(
@@ -130,16 +133,16 @@ class DatasetAuthor extends CActiveRecord
             ),
         );
 
-		return new CActiveDataProvider($this, array(
-			'criteria'=>$criteria,
+        return new CActiveDataProvider($this, array(
+            'criteria' => $criteria,
             'sort' => $sort ,
-		));
-	}
+        ));
+    }
 
-	public function behaviors() {
+    public function behaviors()
+    {
         return array(
             'ActiveRecordLogableBehavior' => 'application.behaviors.DatasetRelatedTableBehavior',
         );
     }
-
 }

@@ -22,7 +22,7 @@
                             <select name="pageSize" class="selectPageSize" id="selectPageSizeFilesSetting">
                                 <?php $options = [5, 10, 20, 50, 100, 200];
                                 foreach ($options as $option) {
-                                ?>
+                                    ?>
                                     <option value="<?= $option ?>" <?= $option == $pageSize ? "selected" : "" ?>><?= $option ?></option>
                                 <?php   } ?>
                             </select>

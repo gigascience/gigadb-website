@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @param array $data An array of external links to 3D models, where each item has:
  *   - id: number (the external link ID)
@@ -9,12 +10,12 @@
  */
 
 $files = array_map(function ($item) {
-  return [
+    return [
     'id' => $item['id'],
     'location' => $item['url'],
     'name' => pathinfo($item['url'], PATHINFO_BASENAME),
     'extension' => pathinfo($item['url'], PATHINFO_EXTENSION),
-  ];
+    ];
 }, $data);
 
 
@@ -25,7 +26,7 @@ $files = array_map(function ($item) {
     <div class="form-group">
       <label class="control-label" for="model-selector">Select a model:</label>
       <select id="model-selector" class="form-control js-model-selector model-selector test-model-selector">
-        <?php foreach ($files as $index => $file): ?>
+        <?php foreach ($files as $index => $file) : ?>
           <!-- id is numeric -->
           <option value="<?php echo $file['id']; ?>" <?php echo $index === 0 ? 'selected' : ''; ?>><?php echo $file['name']; ?></option>
         <?php endforeach; ?>
@@ -108,7 +109,8 @@ $files = array_map(function ($item) {
 <?php
 // register a script that adds the importmap to the head, so that it is only added once and only to the pages that use this partial
 Yii::app()->clientScript->registerScript(
-  'import-map', <<<EOD
+    'import-map',
+    <<<EOD
   (function() {
       const script = document.createElement('script');
       script.type = 'importmap';
@@ -121,7 +123,7 @@ Yii::app()->clientScript->registerScript(
       document.head.appendChild(script);
   })();
   EOD,
-  CClientScript::POS_HEAD
+    CClientScript::POS_HEAD
 );
 
 Yii::app()->assetManager->forceCopy = YII_DEBUG;

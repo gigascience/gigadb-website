@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 use League\Flysystem\AdapterInterface;
 use Ramsey\Uuid\Uuid;
-use Yii;
 /**
  * This action for DatasetController is for internal use, display status info about flysystem configuration
  *

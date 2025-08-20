@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Carousel slider partial for displaying an array of slides responsively.
  *
@@ -21,6 +22,7 @@
  * - indicator: "dot" buttons to select the current slide on display
  * - control: left / right arrow buttons to cycle slides sequentially
  */
+
 $root_id = 'carousel-' . uniqid();
 ?>
 
@@ -28,7 +30,7 @@ $root_id = 'carousel-' . uniqid();
   <div id="<?php echo $root_id; ?>" class="carousel slide" data-ride="carousel" data-interval="false">
 
     <div class="carousel-inner">
-      <?php foreach ($slides as $index => $temp_slide): ?>
+      <?php foreach ($slides as $index => $temp_slide) : ?>
         <div class="carousel-item">
           <div class="carousel-block">
             <?php echo $temp_slide; ?>

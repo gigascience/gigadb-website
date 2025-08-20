@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace common\tests;
 
 use \yii\mail\Mailer;
@@ -23,12 +25,10 @@ class MessagingServiceTest extends \Codeception\Test\Unit
 
         $mockMailer = $this->getMockBuilder(Mailer::class)
                     ->setMethods(['compose'])
-                    // ->disableOriginalConstructor()
                     ->getMock();
 
         $mockMessage = $this->getMockBuilder(Message::class)
                     ->setMethods(['setFrom','setTo','setSubject','setTextBody','send'])
-                    // ->disableOriginalConstructor()
                     ->getMock();
 
 
@@ -38,23 +38,23 @@ class MessagingServiceTest extends \Codeception\Test\Unit
 
         $mockMessage->expects($this->once())
                     ->method('setFrom')
-                    ->with($from)
+                    ->with((array)$from)
                     ->willReturn($mockMessage);
 
         $mockMessage->expects($this->once())
                     ->method('setTo')
-                    ->with($to)
+                    ->with((array)$to)
                     ->willReturn($mockMessage);
 
         $mockMessage->expects($this->once())
                     ->method('setSubject')
-                    ->with($subject)
+                    ->with((array)$subject)
                     ->willReturn($mockMessage);
 
 
         $mockMessage->expects($this->once())
                     ->method('setTextBody')
-                    ->with($content)
+                    ->with((array)$content)
                     ->willReturn($mockMessage);
 
         $mockMessage->expects($this->once())

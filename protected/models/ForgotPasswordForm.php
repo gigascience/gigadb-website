@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * ForgotPasswordForm is the data structure for keeping forgot password form 
+ * ForgotPasswordForm is the data structure for keeping forgot password form
  * data. Used by 'Forgot' action of 'ResetPasswordRequestController'.
  */
 class ForgotPasswordForm extends CFormModel
 {
-    public $email;
+    public ?string $email = null;
 
     /**
      * Declares the validation rules.

@@ -1,17 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This is the model class for table "file_relationship".
  *
  * The followings are the available columns in table 'file_relationship':
- * @property integer $id
- * @property integer $file_id
- * @property integer $related_file_id
- * @property integer $relationship_id
+ * @property int      $id
+ * @property int      $file_id
+ * @property int      $related_file_id
+ * @property int|null $relationship_id
  *
  * The followings are the available model relations:
- * @property File $file
- * @property Relationship $relationship
+ * @property File              $file
+ * @property Relationship|null $relationship
  */
 class FileRelationship extends CActiveRecord
 {
@@ -20,7 +22,7 @@ class FileRelationship extends CActiveRecord
      * @param string $className active record class name.
      * @return FileRelationship the static model class
      */
-    public static function model($className=__CLASS__)
+    public static function model($className = __CLASS__)
     {
         return parent::model($className);
     }
@@ -42,10 +44,10 @@ class FileRelationship extends CActiveRecord
         // will receive user inputs.
         return array(
             array('file_id, related_file_id', 'required'),
-            array('file_id, related_file_id, relationship_id', 'numerical', 'integerOnly'=>true),
+            array('file_id, related_file_id, relationship_id', 'numerical', 'integerOnly' => true),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            array('id, file_id, related_file_id, relationship_id', 'safe', 'on'=>'search'),
+            array('id, file_id, related_file_id, relationship_id', 'safe', 'on' => 'search'),
         );
     }
 
@@ -84,15 +86,15 @@ class FileRelationship extends CActiveRecord
         // Warning: Please modify the following code to remove attributes that
         // should not be searched.
 
-        $criteria=new CDbCriteria;
+        $criteria = new CDbCriteria();
 
-        $criteria->compare('id',$this->id);
-        $criteria->compare('file_id',$this->file_id);
-        $criteria->compare('related_file_id',$this->related_file_id);
-        $criteria->compare('relationship_id',$this->relationship_id);
+        $criteria->compare('id', $this->id);
+        $criteria->compare('file_id', $this->file_id);
+        $criteria->compare('related_file_id', $this->related_file_id);
+        $criteria->compare('relationship_id', $this->relationship_id);
 
         return new CActiveDataProvider($this, array(
-            'criteria'=>$criteria,
+            'criteria' => $criteria,
         ));
     }
 }

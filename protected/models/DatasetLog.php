@@ -1,31 +1,33 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This is the model class for table "dataset_log".
  *
  * The followings are the available columns in table 'dataset_log':
- * @property integer $id
- * @property integer $dataset_id
- * @property string $message
- * @property string $created_at
- * @property string $model
- * @property string $model_id
+ *
+ * @property int         $id
+ * @property int         $dataset_id
+ * @property string|null $message
+ * @property string|null $created_at
+ * @property string|null $model
+ * @property int|null    $model_id
+ * @property string|null $url
  *
  * The followings are the available model relations:
- * @property Dataset $dataset
- * @property FileAttributes $attributes
- * @property File $file
+ * @property Dataset        $dataset
  */
 class DatasetLog extends CActiveRecord
 {
-    public $doi;
+    public ?string $doi = null;
 
     /**
      * Returns the static model of the specified AR class.
      * @param string $className active record class name.
      * @return DatasetLog the static model class
      */
-    public static function model($className=__CLASS__)
+    public static function model($className = __CLASS__)
     {
         return parent::model($className);
     }
@@ -47,11 +49,11 @@ class DatasetLog extends CActiveRecord
         // will receive user inputs.
         return array(
             array('dataset_id', 'required'),
-            array('dataset_id', 'numerical', 'integerOnly'=>true),
+            array('dataset_id', 'numerical', 'integerOnly' => true),
             array('message, created_at, model, model_id', 'safe'),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            array('id, dataset_id, message, created_at, model, model_id, doi', 'safe', 'on'=>'search'),
+            array('id, dataset_id, message, created_at, model, model_id, doi', 'safe', 'on' => 'search'),
         );
     }
 
@@ -92,7 +94,7 @@ class DatasetLog extends CActiveRecord
      * @param int $fileId
      * @return DatasetLog
      */
-    public static function makeNewInstanceForDatasetLogBy (int $id, string $fileName, string $fileModel, int $modelId, int $fileId): DatasetLog
+    public static function makeNewInstanceForDatasetLogBy(int $id, string $fileName, string $fileModel, int $modelId, int $fileId): DatasetLog
     {
         $datasetlog = new DatasetLog();
         $datasetlog->created_at = date("Y-m-d H:i:s");
@@ -100,7 +102,7 @@ class DatasetLog extends CActiveRecord
         $datasetlog->message = $fileName;
         $datasetlog->model = $fileModel;
         $datasetlog->model_id = $modelId;
-        $datasetlog->url = Yii::app()->createUrl('/adminFile/update', array('id'=>$fileId));
+        $datasetlog->url = Yii::app()->createUrl('/adminFile/update', array('id' => $fileId));
         return $datasetlog;
     }
 
@@ -116,7 +118,7 @@ class DatasetLog extends CActiveRecord
     public static function createDatasetLogEntry(int $id, string $fileName, string $fileModel, int $modelId, int $fileId): bool
     {
         $datasetlog = self::makeNewInstanceForDatasetLogBy($id, $fileName, $fileModel, $modelId, $fileId);
-        $datasetlog->message = $fileName. ": file attribute deleted";
+        $datasetlog->message = $fileName . ": file attribute deleted";
         return $datasetlog->save();
     }
 
@@ -130,19 +132,19 @@ class DatasetLog extends CActiveRecord
         // Warning: Please modify the following code to remove attributes that
         // should not be searched.
 
-        $criteria=new CDbCriteria;
+        $criteria = new CDbCriteria();
         $criteria->with = array('dataset');
 
-        $criteria->compare('id',$this->id);
-        $criteria->compare('dataset_id',$this->dataset_id);
-        $criteria->compare('message',$this->message,true);
-        $criteria->compare('created_at',$this->created_at,true);
-        $criteria->compare('model',$this->model,true);
-        $criteria->compare('model_id',$this->model_id,true);
+        $criteria->compare('id', $this->id);
+        $criteria->compare('dataset_id', $this->dataset_id);
+        $criteria->compare('message', $this->message, true);
+        $criteria->compare('created_at', $this->created_at, true);
+        $criteria->compare('model', $this->model, true);
+        $criteria->compare('model_id', $this->model_id, true);
         $criteria->compare('dataset.identifier', $this->doi, true);
 
         return new CActiveDataProvider($this, array(
-            'criteria'=>$criteria,
+            'criteria' => $criteria,
         ));
     }
-} 
+}

@@ -1,64 +1,64 @@
 <?php
 
+declare(strict_types=1);
+
 class AdminRelationController extends Controller
 {
+    /**
+     * @return string[] action filters
+     */
+    public function filters(): array
+    {
+        return array(
+            'accessControl', // perform access control for CRUD operations
+        );
+    }
 
+    /**
+     * Specifies the access control rules.
+     * This method is used by the 'accessControl' filter.
+     * @return array<int, array<int|string, list<string>|string>> access control rules
+     */
+    public function accessRules(): array
+    {
+        return array(
+            array('allow', // admin only
+                'actions' => array('admin','delete','index','view','create','update'),
+                'roles' => array('admin'),
+            ),
+            array('allow',
+                'actions' => array('create1', 'delete1','addRelation','deleteRelation'),
+                'users' => array('@'),
+            ),
+            array('deny',  // deny all users
+                'users' => array('*'),
+            ),
+        );
+    }
 
-	/**
-	 * @return array action filters
-	 */
-	public function filters()
-	{
-		return array(
-			'accessControl', // perform access control for CRUD operations
-		);
-	}
+    /**
+     * Displays a particular model.
+     * @param int $id the ID of the model to be displayed
+     */
+    public function actionView(int $id): void
+    {
+        $this->render('view', array('model' => $this->loadModel($id)));
+    }
 
-	/**
-	 * Specifies the access control rules.
-	 * This method is used by the 'accessControl' filter.
-	 * @return array access control rules
-	 */
-	public function accessRules()
-	{
-		return array(
-			array('allow', // admin only
-				'actions'=>array('admin','delete','index','view','create','update'),
-				'roles'=>array('admin'),
-			),
-                          array('allow',
-                                  'actions' => array('create1', 'delete1','addRelation','deleteRelation'),
-                                  'users' => array('@'),
-                        ),
-			array('deny',  // deny all users
-				'users'=>array('*'),
-			),
-		);
-	}
+    /**
+     * Creates a new model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     */
+    public function actionCreate(): void
+    {
+        /** @var CWebApplication $app */
+        $app = Yii::app();
 
-	/**
-	 * Displays a particular model.
-	 * @param integer $id the ID of the model to be displayed
-	 */
-	public function actionView($id)
-	{
-		$this->render('view',array(
-			'model'=>$this->loadModel($id),
-		));
-	}
-
-	/**
-	 * Creates a new model.
-	 * If creation is successful, the browser will be redirected to the 'view' page.
-	 */
-	public function actionCreate()
-	{
-		$model = new Relation();
+        $model = new Relation();
         $relationDAO = new RelationDAO();
 
-		if ($attributes = Yii::$app->request->post('Relation'))
-		{
-            $transaction = Yii::app()->db->beginTransaction();
+        if ($attributes = Yii::$app->request->post('Relation')) {
+            $transaction = $app->db->beginTransaction();
             try {
                 $model->attributes = $attributes;
 
@@ -67,7 +67,8 @@ class AdminRelationController extends Controller
                 }
 
                 if (!$model->save()) {
-                    throw new CException('Failed to save relation');
+                    $this->render('create', array('model' => $model));
+                    Yii::app()->end();
                 }
 
                 if ($attributes['add_reciprocal']) {
@@ -76,20 +77,19 @@ class AdminRelationController extends Controller
 
                 $transaction->commit();
                 $this->redirect(array('view', 'id' => $model->id));
-
             } catch (Exception $e) {
                 $transaction->rollback();
 
-                Yii::app()->user->setFlash('error', $e->getMessage());
+                $app->user->setFlash('error', $e->getMessage());
             }
-		}
+        }
 
-		$this->render('create',array(
-			'model'=>$model,
-		));
-	}
+        $this->render('create', array('model' => $model));
+    }
 
-    public function storeRelation(&$model, &$id) {
+    //TODO: not used atm
+    public function storeRelation(&$model, &$id)
+    {
 
 
         if (isset($_SESSION['dataset_id'])) {
@@ -107,8 +107,10 @@ class AdminRelationController extends Controller
         return false;
     }
 
-    public function actionCreate1() {
-        $model = new Relation;
+    //TODO: not used atm
+    public function actionCreate1()
+    {
+        $model = new Relation();
         $relationDAO = new RelationDAO();
 
         // Uncomment the following line if AJAX validation is needed
@@ -116,8 +118,6 @@ class AdminRelationController extends Controller
 
 
         $model->dataset_id = 1;
-        //$model->re
-        //update
         if (!isset($_SESSION['relations']))
             $_SESSION['relations'] = array();
 
@@ -129,13 +129,6 @@ class AdminRelationController extends Controller
         );
 
         if (isset($_POST['Relation'])) {
-            //store the information in session
-//            if (!isset($_SESSION['relation_id']))
-//                $_SESSION['relation_id'] = 0;
-//            $id = $_SESSION['relation_id'];
-//            $_SESSION['relation_id'] += 1;
-
-
 
             $related_doi = $_POST['Relation']['related_doi'];
             $relationship = $relation_type[$_POST['Relation']['relationship']];
@@ -153,8 +146,6 @@ class AdminRelationController extends Controller
 
                 $_SESSION['relations'] = $relations;
 
-                // $vars = array('relations');
-                //Dataset::storeSession($vars);
                 $model = new Relation;
             }
         }
@@ -171,61 +162,58 @@ class AdminRelationController extends Controller
     }
 
 
-	/**
-	 * Updates a particular model.
-	 * If update is successful, the browser will be redirected to the 'view' page.
-	 * @param integer $id the ID of the model to be updated
-	 */
-	public function actionUpdate($id)
-	{
-		$model=$this->loadModel($id);
+    /**
+     * Updates a particular model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param int $id the ID of the model to be updated
+     */
+    public function actionUpdate(int $id): void
+    {
+        $model = $this->loadModel($id);
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
+        if ($relation = Yii::$app->request->post('Relation')) {
+            $model->attributes = $relation;
 
-		if(isset($_POST['Relation']))
-		{
-			$model->attributes=$_POST['Relation'];
+            if ($model->save()) {
+                $this->redirect(array('view', 'id' => $model->id));
+            }
+        }
 
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
-		}
+        $this->render('update', array('model' => $model));
+    }
 
-		$this->render('update',array(
-			'model'=>$model,
-		));
-	}
+    /**
+     * Deletes a particular model.
+     * If deletion is successful, the browser will be redirected to the 'admin' page.
+     * @param int $id the ID of the model to be deleted
+     */
+    public function actionDelete(int $id): void
+    {
+        if (!Yii::app()->request->isPostRequest) {
+            throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
+        }
 
-	/**
-	 * Deletes a particular model.
-	 * If deletion is successful, the browser will be redirected to the 'admin' page.
-	 * @param integer $id the ID of the model to be deleted
-	 */
-	public function actionDelete($id)
-	{
-		if(Yii::app()->request->isPostRequest)
-		{
-			// we only allow deletion via POST request
-			$this->loadModel($id)->delete();
+        // we only allow deletion via POST request
+        $this->loadModel($id)->delete();
 
-			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-			if(!isset($_GET['ajax']))
-				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
-		}
-		else
-			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
-	}
+        // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+        if (!Yii::$app->request->get('ajax')) {
+            $returnUrl = Yii::$app->request->post('returnUrl');
+
+            $this->redirect($returnUrl ?: array('admin'));
+        }
+    }
 
 
-    public function actionDelete1($id) {
+    //TODO: not used atm
+    public function actionDelete1($id)
+    {
         if (isset($_SESSION['relations'])) {
             $info = $_SESSION['relations'];
             foreach ($info as $key => $value) {
                 if ($value['id'] == $id) {
                     unset($info[$key]);
                     $_SESSION['relations'] = $info;
-                    // $vars = array('relations');
-                    //Dataset::storeSession($vars);
                     $condition = 'id=' . $id;
                     Relation::model()->deleteAll($condition);
                     $this->redirect("/adminRelation/create1");
@@ -235,133 +223,145 @@ class AdminRelationController extends Controller
     }
 
 
-	/**
-	 * Lists all models.
-	 */
-	public function actionIndex()
-	{
-		$dataProvider=new CActiveDataProvider('Relation');
-		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
-		));
-	}
+    /**
+     * Lists all models.
+     */
+    public function actionIndex(): void
+    {
+        $dataProvider = new CActiveDataProvider('Relation');
 
-	/**
-	 * Manages all models.
-	 */
-	public function actionAdmin()
-	{
-		$model=new Relation('search');
-		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Relation']))
-			$model->setAttributes($_GET['Relation']);
+        $this->render('index', array('dataProvider' => $dataProvider));
+    }
 
+    /**
+     * Manages all models.
+     */
+    public function actionAdmin(): void
+    {
+        $model = new Relation('search');
+        $model->unsetAttributes();  // clear any default values
+        if ($relation = Yii::$app->request->get('Relation')) {
+            $model->setAttributes($relation);
+        }
 
         $this->loadBaBbqPolyfills = true;
-		$this->render('admin',array(
-			'model'=>$model,
-		));
-	}
 
-	/**
-	 * Returns the data model based on the primary key given in the GET variable.
-	 * If the data model is not found, an HTTP exception will be raised.
-	 * @param integer the ID of the model to be loaded
-	 */
-	public function loadModel($id)
-	{
-		$model=Relation::model()->findByPk($id);
-		if($model===null)
-			throw new CHttpException(404,'The requested page does not exist.');
-		return $model;
-	}
+        $this->render('admin', array('model' => $model));
+    }
 
-	/**
-	 * Performs the AJAX validation.
-	 * @param CModel the model to be validated
-	 */
-	protected function performAjaxValidation($model)
-	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='relation-form')
-		{
-			echo CActiveForm::validate($model);
-			Yii::app()->end();
-		}
-	}
+    /**
+     * Returns the data model based on the primary key given in the GET variable.
+     * If the data model is not found, an HTTP exception will be raised.
+     * @param int $id the ID of the model to be loaded
+     */
+    public function loadModel(int $id): Relation
+    {
+        $model = Relation::model()->findByPk($id);
+        if (!$model) {
+            throw new CHttpException(404, 'The requested page does not exist.');
+        }
 
-    public function actionAddRelation() {
-        if(isset($_POST['dataset_id']) && isset($_POST['doi']) && isset($_POST['relationship'])) {
+        return $model;
+    }
 
-            $relation = Relation::model()->findByAttributes(array(
-              'dataset_id'=>$_POST['dataset_id'],
-              'related_doi'=>$_POST['doi'],
-              'relationship_id'=>$_POST['relationship'],
+    /**
+     * Performs the AJAX validation.
+     *
+     * @param CModel $model the model to be validated
+     */
+    protected function performAjaxValidation(CModel $model): void
+    {
+        if (Yii::$app->request->post('ajax') === 'relation-form') {
+            echo CActiveForm::validate($model);
+            Yii::app()->end();
+        }
+    }
+
+    public function actionAddRelation(): void
+    {
+        $datasetId = Yii::$app->request->post('dataset_id');
+        $doi = Yii::$app->request->post('doi');
+        $relationship = Yii::$app->request->post('relationship');
+
+        if (!$datasetId || !$doi || !$relationship) {
+            Util::returnJSON(array('success' => false, 'message' => Yii::t('app', 'Please fill all the required fields.')));
+        }
+
+        $relation = Relation::model()->findByAttributes(array(
+          'dataset_id' => $datasetId,
+          'related_doi' => $doi,
+          'relationship_id' => $relationship,
+          ));
+
+        if ($relation) {
+            Util::returnJSON(array("success" => false, "message" => Yii::t("app", "This relation has been added already.")));
+        }
+
+        $transaction = Yii::app()->db->beginTransaction();
+        try {
+            $relation = new Relation();
+            $relation->dataset_id = $datasetId;
+            $relation->related_doi = $doi;
+            $relation->relationship_id = $relationship;
+
+            $relation2 = new Relation();
+            $relation2->dataset_id = Dataset::model()->findByAttributes(array('identifier' => $doi))->id;
+            $relation2->related_doi = Dataset::model()->findByPk($datasetId)->identifier;
+            $relation2->relationship_id = $relationship;
+
+            if ($relation->save() && $relation2->save()) {
+                $transaction->commit();
+
+                Util::returnJSON(array("success" => true));
+            }
+
+            $transaction->rollback();
+            Yii::log(print_r($relation->getErrors(), true), 'debug');
+        } catch (Exception $e) {
+            $message = $e->getMessage();
+            Yii::log(print_r($message, true), 'error');
+            $transaction->rollback();
+
+            Util::returnJSON(array("success" => false, "message" => Yii::t("app", "Save Error.")));
+        }
+    }
+
+    public function actionDeleteRelation(): void
+    {
+        if (!$relationId = Yii::$app->request->post('relation_id')) {
+            Util::returnJSON(array('success' => false, 'message' => Yii::t('app', 'Invalid request')));
+        }
+
+
+        $transaction = Yii::app()->db->beginTransaction();
+        try {
+            $relation = Relation::model()->findByPk($relationId);
+
+            $rdid = $relation->dataset_id;
+            $rrdoi = $relation->related_doi;
+            $rrid = $relation->relationship_id;
+
+            $relation2 = Relation::model()->findByAttributes(array(
+              'dataset_id' => Dataset::model()->findByAttributes(array('identifier' => $rrdoi))->id,
+              'related_doi' => Dataset::model()->findByPk($rdid)->identifier,
+              'relationship_id' => $rrid,
               ));
-            if($relation) {
-              Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "This relation has been added already.")));
-            }
 
-            $transaction = Yii::app()->db->beginTransaction();
-            try {
-                $relation = new Relation;
-                $relation->dataset_id = $_POST['dataset_id'];
-                $relation->related_doi = $_POST['doi'];
-                $relation->relationship_id = $_POST['relationship'];
-
-                $relation2 = new Relation;
-                $relation2->dataset_id = Dataset::model()->findByAttributes(array('identifier' => $_POST['doi']))->id;
-                $relation2->related_doi = Dataset::model()->findByPk($_POST['dataset_id'])->identifier;
-                $relation2->relationship_id = $_POST['relationship'];
-
-                if($relation->save()&&$relation2->save()) {
+            if ($relation->delete() && $relation2->delete()) {
                   $transaction->commit();
-                  Util::returnJSON(array("success"=>true));
-                }
-                else {
-                    $transaction->rollback();
-                    Yii::log(print_r($relation->getErrors(), true), 'debug');
-                }
 
-            }catch(Exception $e) {
-                $message = $e->getMessage();
-                Yii::log(print_r($message, true), 'error');
-                $transaction->rollback();
-                Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Save Error.")));
+                  Util::returnJSON(array("success" => true));
             }
+
+            $transaction->rollback();
+
+            Util::returnJSON(array("success" => false));
+        } catch (Exception $e) {
+            $message = $e->getMessage();
+            Yii::log(print_r($message, true), 'error');
+            $transaction->rollback();
+
+            Util::returnJSON(array("success" => false, "message" => Yii::t("app", "Delete Error.")));
         }
     }
-
-    public function actionDeleteRelation() {
-        if(isset($_POST['relation_id'])) {
-            $transaction = Yii::app()->db->beginTransaction();
-            try {
-                $relation = Relation::model()->findByPk($_POST['relation_id']);
-
-                $rdid = $relation->dataset_id;
-                $rrdoi = $relation->related_doi;
-                $rrid = $relation->relationship_id;
-
-                $relation2 = Relation::model()->findByAttributes(array(
-                  'dataset_id'=> Dataset::model()->findByAttributes(array('identifier' => $rrdoi))->id,
-                  'related_doi' => Dataset::model()->findByPk($rdid)->identifier,
-                  'relationship_id' => $rrid,
-                  ));
-
-                if($relation->delete()&&$relation2->delete()) {
-                      $transaction->commit();
-                      Util::returnJSON(array("success"=>true));
-                 }
-                else {
-                    $transaction->rollback();
-                    Util::returnJSON(array("success"=>false));
-                }
-              }catch(Exception $e) {
-                $message = $e->getMessage();
-                Yii::log(print_r($message, true), 'error');
-                $transaction->rollback();
-                Util::returnJSON(array("success"=>false,"message"=>Yii::t("app", "Delete Error.")));
-              }
-        }
-    }
-
 }

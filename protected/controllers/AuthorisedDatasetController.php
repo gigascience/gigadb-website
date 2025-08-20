@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Entry point for operations on dataset requiring user authorisation
  *
@@ -9,7 +12,6 @@
  */
 class AuthorisedDatasetController extends Controller
 {
-
     /**
      * Filter testing whether user is submitter of dataset in parameter
      *

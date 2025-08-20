@@ -1,6 +1,6 @@
 <?php
-$this->breadcrumbs=array(
-	'Report Controller',
+$this->breadcrumbs = array(
+    'Report Controller',
 );?>
 <h1><?php echo $this->id . '/' . $this->action->id; ?></h1>
 

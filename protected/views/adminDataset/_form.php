@@ -73,7 +73,7 @@ echo $form->hiddenField($model, "image_id");
                             <?php echo $form->labelEx($model, 'curator_id', array('class' => 'control-label col-xs-4')); ?>
                             <div class="col-xs-8">
                                 <?php
-                                $criteria = new CDbCriteria;
+                                $criteria = new CDbCriteria();
                                 $criteria->condition = 'role=\'admin\' and email like \'%gigasciencejournal.com\'';
                                 ?>
                                 <?php echo $form->dropDownList($model, 'curator_id', CHtml::listData(User::model()->findAll($criteria), 'id', 'email'), array('prompt' => '', 'class' => 'form-control', 'title' => 'Select the relevant curator who is assigned to work on this dataset', 'data-toggle' => 'tooltip')); ?>
@@ -160,7 +160,6 @@ echo $form->hiddenField($model, "image_id");
                                 echo CHtml::image("", "", array('id' => 'imagePreview', 'alt' => ''));
 
                                 if ($model->image && 0 !== $model->image_id && $model->image->isUrlValid()) {
-
                                     echo CHtml::ajaxButton(
                                         'X',
                                         Yii::app()->createUrl('/adminDataset/clearImageFile/'),
@@ -258,55 +257,55 @@ echo $form->hiddenField($model, "image_id");
                                 <span class="legend-description">The following fields relate only to the Thumbnail image added above</span>
                             </legend>
                             <?php
-
-                            $this->widget('application.components.controls.TextField', [
-                                'form'                => $form,
-                                'model'               => $model->image,
-                                'attributeName'       => 'source',
-                                'labelOptions'        => ['class' => 'col-xs-4'],
-                                'inputWrapperOptions' => 'col-xs-8',
-                                'inputOptions'        => [
-                                    'required' => true,
-                                    'class'    => 'meta-fields'
-                                ],
-                                'tooltip'             => 'Cite the source of the thumbnail image'
-                            ]);
-                            $this->widget('application.components.controls.TextField', [
-                                'form'                => $form,
-                                'model'               => $model->image,
-                                'attributeName'       => 'tag',
-                                'labelOptions'        => ['class' => 'col-xs-4'],
-                                'inputWrapperOptions' => 'col-xs-8',
-                                'inputOptions'        => [
-                                    'class' => 'meta-fields'
-                                ],
-                                'tooltip'             => 'Add a short title or description of the thumbnail image'
-                            ]);
-                            $this->widget('application.components.controls.TextField', [
-                                'form'                => $form,
-                                'model'               => $model->image,
-                                'attributeName'       => 'license',
-                                'labelOptions'        => ['class' => 'col-xs-4'],
-                                'inputWrapperOptions' => 'col-xs-8',
-                                'inputOptions'        => [
-                                    'required' => true,
-                                    'class'    => 'meta-fields'
-                                ],
-                                'tooltip'             => 'Provide the license underwhich the image is shared, this must be CC0 or CC-BY. Note CC-BY-NC is not acceptable for us.'
-                            ]);
-                            $this->widget('application.components.controls.TextField', [
-                                'form'                => $form,
-                                'model'               => $model->image,
-                                'attributeName'       => 'photographer',
-                                'labelOptions'        => ['class' => 'col-xs-4'],
-                                'inputWrapperOptions' => 'col-xs-8',
-                                'inputOptions'        => [
-                                    'required' => true,
-                                    'class'    => 'meta-fields'
-                                ],
-                                'tooltip'             => 'Add the credit of the person(s) responsible for creating the image'
-                            ]);
-
+                            if ($model->image) {
+                                $this->widget('application.components.controls.TextField', [
+                                    'form'                => $form,
+                                    'model'               => $model->image,
+                                    'attributeName'       => 'source',
+                                    'labelOptions'        => ['class' => 'col-xs-4'],
+                                    'inputWrapperOptions' => 'col-xs-8',
+                                    'inputOptions'        => [
+                                        'required' => true,
+                                        'class'    => 'meta-fields'
+                                    ],
+                                    'tooltip'             => 'Cite the source of the thumbnail image'
+                                ]);
+                                $this->widget('application.components.controls.TextField', [
+                                    'form'                => $form,
+                                    'model'               => $model->image,
+                                    'attributeName'       => 'tag',
+                                    'labelOptions'        => ['class' => 'col-xs-4'],
+                                    'inputWrapperOptions' => 'col-xs-8',
+                                    'inputOptions'        => [
+                                        'class' => 'meta-fields'
+                                    ],
+                                    'tooltip'             => 'Add a short title or description of the thumbnail image'
+                                ]);
+                                $this->widget('application.components.controls.TextField', [
+                                    'form'                => $form,
+                                    'model'               => $model->image,
+                                    'attributeName'       => 'license',
+                                    'labelOptions'        => ['class' => 'col-xs-4'],
+                                    'inputWrapperOptions' => 'col-xs-8',
+                                    'inputOptions'        => [
+                                        'required' => true,
+                                        'class'    => 'meta-fields'
+                                    ],
+                                    'tooltip'             => 'Provide the license underwhich the image is shared, this must be CC0 or CC-BY. Note CC-BY-NC is not acceptable for us.'
+                                ]);
+                                $this->widget('application.components.controls.TextField', [
+                                    'form'                => $form,
+                                    'model'               => $model->image,
+                                    'attributeName'       => 'photographer',
+                                    'labelOptions'        => ['class' => 'col-xs-4'],
+                                    'inputWrapperOptions' => 'col-xs-8',
+                                    'inputOptions'        => [
+                                        'required' => true,
+                                        'class'    => 'meta-fields'
+                                    ],
+                                    'tooltip'             => 'Add the credit of the person(s) responsible for creating the image'
+                                ]);
+                            }
                             ?>
                         </fieldset>
                         <div id="metaFieldsLiveRegion" aria-live="polite" class="sr-only"></div>
@@ -561,12 +560,12 @@ echo $form->hiddenField($model, "image_id");
         $model->isNewRecord ? 'Create' : 'Save',
         array('class' => 'btn background-btn submit-btn', 'id' => 'datasetFormSaveButton', 'title' => 'Save any changes made on this page and stay on this page', 'data-toggle' => 'tooltip')
     );
-    if ($showOpenPrivateUrlBtn) {
-        ?>
+                                          if ($showOpenPrivateUrlBtn) {
+                                                ?>
         <a class="btn background-btn-o" href="<?php echo Yii::app()->createUrl('/dataset/' . $model->identifier . '/token/' . $model->token) ?>" title="This will Save any changes made on this page and open the mockup view of the dataset page" data-toggle="tooltip">Open Private URL</a>
-        <?php
-    }
-    ?>
+                                              <?php
+                                          }
+                                            ?>
 </div>
 
 <div class='modal fade admindataset-form' id='check_doi_modal' role='dialog' tabindex='-1' aria-modal='true'>

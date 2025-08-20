@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 class AdminDatasetAuthorController extends Controller
 {
     /**
-     * @return array action filters
+     * @return string[]  action filters
      */
-    public function filters()
+    public function filters(): array
     {
         return array(
             'accessControl', // perform access control for CRUD operations
@@ -15,9 +17,9 @@ class AdminDatasetAuthorController extends Controller
     /**
      * Specifies the access control rules.
      * This method is used by the 'accessControl' filter.
-     * @return array access control rules
+     * @return array<int, array<int|string, list<string>|string>> access control rules
      */
-    public function accessRules()
+    public function accessRules(): array
     {
         return array(
             array(
@@ -39,37 +41,32 @@ class AdminDatasetAuthorController extends Controller
 
     /**
      * Displays a particular model.
-     * @param integer $id the ID of the model to be displayed
+     * @param int $id the ID of the model to be displayed
      */
-    public function actionView($id)
+    public function actionView(int $id): void
     {
-        $this->render('view', array(
-            'model' => $this->loadModel($id),
-        ));
+        $this->render('view', array('model' => $this->loadModel($id)));
     }
 
     /**
      * Creates a new model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
-    public function actionCreate()
+    public function actionCreate(): void
     {
-        $model = new DatasetAuthor;
+        $model = new DatasetAuthor();
 
-        // Uncomment the following line if AJAX validation is needed
-        // $this->performAjaxValidation($model);
-
-        if (isset($_POST['DatasetAuthor'])) {
-            $model->attributes = $_POST['DatasetAuthor'];
-            if ($model->save())
+        if ($datasetAuthor = Yii::$app->request->post('DatasetAuthor')) {
+            $model->attributes = $datasetAuthor;
+            if ($model->save()) {
                 $this->redirect(array('view', 'id' => $model->id));
+            }
         }
 
-        $this->render('create', array(
-            'model' => $model,
-        ));
+        $this->render('create', array('model' => $model));
     }
 
+    // TODO: not used
     public function actionCreate1()
     {
         $model = new DatasetAuthor;
@@ -94,16 +91,12 @@ class AdminDatasetAuthorController extends Controller
             $namearray = array();
             if ($names != "")
                 $namearray = explode(";", $names);
-            //            var_dump($namearray);
+
             if ($ranks == "")
                 $rankarray = array();
             else
                 $rankarray = explode(";", $ranks);
-            //            var_dump($rankarray);
-            //            if (count($namearray) != count($rankarray)) {
-            //                $model->addError("error", "the number of name and rank are different!");
-            //                $valid = false;
-            //            }
+
             //test names
             if ($valid) {
                 foreach ($namearray as $name) {
@@ -117,11 +110,6 @@ class AdminDatasetAuthorController extends Controller
             //test ranks
             if ($valid) {
                 foreach ($rankarray as $rank) {
-                    //                    if ($rank == "") {
-                    //                        $model->addError("error", "rank can't be blank!");
-                    //                        $valid = false;
-                    //                        break;
-                    //                    }
                     if (!is_numeric($rank)) {
                         $model->addError("rank", "rank should be an integer!");
                         $valid = false;
@@ -129,9 +117,8 @@ class AdminDatasetAuthorController extends Controller
                     }
                 }
             }
-            //            var_dump(count($rankarray)." test");
-            if ($valid) {
 
+            if ($valid) {
                 foreach ($namearray as $index => $name) {
                     if ($index < count($rankarray)) {
                         $rank = $rankarray[$index];
@@ -177,8 +164,6 @@ class AdminDatasetAuthorController extends Controller
 
                             array_push($authors, $newItem);
                             $_SESSION['authors'] = $authors;
-                            //$vars = array('authors');
-                            ////Dataset::storeSession($vars);
                         } else {
                             $model->addError("error", "database operation failure, please log out first and log in again.");
                         }
@@ -186,9 +171,9 @@ class AdminDatasetAuthorController extends Controller
                 }
             }
         }
-        //   $model = new DatasetAuthor;
+
         $author_model = new CArrayDataProvider($authors);
-        //  $model = new DatasetAuthor;
+
         $this->render('create1', array(
             'model' => $model,
             'author_model' => $author_model,
@@ -198,44 +183,43 @@ class AdminDatasetAuthorController extends Controller
     /**
      * Updates a particular model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id the ID of the model to be updated
+     * @param int $id the ID of the model to be updated
      */
-    public function actionUpdate($id)
+    public function actionUpdate(int $id): void
     {
         $model = $this->loadModel($id);
 
-        // Uncomment the following line if AJAX validation is needed
-        // $this->performAjaxValidation($model);
-
-        if (isset($_POST['DatasetAuthor'])) {
-            $model->attributes = $_POST['DatasetAuthor'];
-            if ($model->save())
+        if ($datasetAuthor = Yii::$app->request->post('DatasetAuthor')) {
+            $model->attributes = $datasetAuthor;
+            if ($model->save()) {
                 $this->redirect(array('view', 'id' => $model->id));
+            }
         }
 
-        $this->render('update', array(
-            'model' => $model,
-        ));
+        $this->render('update', array('model' => $model));
     }
 
     /**
      * Deletes a particular model.
      * If deletion is successful, the browser will be redirected to the 'admin' page.
-     * @param integer $id the ID of the model to be deleted
+     * @param int $id the ID of the model to be deleted
      */
-    public function actionDelete($id)
+    public function actionDelete(int $id): void
     {
-        if (Yii::app()->request->isPostRequest) {
-            // we only allow deletion via POST request
-            $this->loadModel($id)->delete();
-
-            // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-            if (!isset($_GET['ajax']))
-                $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
-        } else
+        if (!Yii::app()->request->isPostRequest) {
             throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
+        }
+        // we only allow deletion via POST request
+        $this->loadModel($id)->delete();
+
+        // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+        if (!Yii::$app->request->get('ajax')) {
+            $view = Yii::$app->request->post('returnUrl') ?: ['admin'];
+            $this->redirect($view);
+        }
     }
 
+    // todo: not used
     public function actionDelete1($id)
     {
         if (isset($_SESSION['authors'])) {
@@ -244,9 +228,6 @@ class AdminDatasetAuthorController extends Controller
                 if ($author['id'] == $id) {
                     unset($authors[$key]);
                     $_SESSION['authors'] = $authors;
-                    // $vars = array('authors');
-                    //Dataset::storeSession($vars);
-                    //delete the record in table dataset_author
                     $condition = "id=" . $id;
                     DatasetAuthor::model()->deleteAll($condition);
 
@@ -259,77 +240,76 @@ class AdminDatasetAuthorController extends Controller
     /**
      * Lists all models.
      */
-    public function actionIndex()
+    public function actionIndex(): void
     {
         $dataProvider = new CActiveDataProvider('DatasetAuthor');
-        $this->render('index', array(
-            'dataProvider' => $dataProvider,
-        ));
+
+        $this->render('index', array('dataProvider' => $dataProvider));
     }
 
     /**
      * Manages all models.
      */
-    public function actionAdmin()
+    public function actionAdmin(): void
     {
         $model = new DatasetAuthor('search');
         $model->unsetAttributes();  // clear any default values
-        if (isset($_GET['DatasetAuthor']))
-            $model->setAttributes($_GET['DatasetAuthor']);
+        if ($datasetAuthor = Yii::$app->request->get('DatasetAuthor')) {
+            $model->setAttributes($datasetAuthor);
+        }
 
         $this->loadBaBbqPolyfills = true;
-        $this->render('admin', array(
-            'model' => $model,
-        ));
+
+        $this->render('admin', array('model' => $model));
     }
 
-    public function actionSearch($term)
+    public function actionSearch(string $term): void
     {
-
-        if (Yii::app()->request->isAjaxRequest && !empty($term)) {
-            $variants = array();
-            $criteria = new CDbCriteria;
-            $criteria->select = 'first_name, surname';
-            $criteria->distinct = 'true';
-            $criteria->addSearchCondition("LOWER(first_name) || ' ' || LOWER(surname)", '%' . strtolower($term) . '%', false);
-
-            $tags = Author::model()->findAll($criteria);
-            if (!empty($tags)) {
-                foreach ($tags as $tag) {
-                    $variants[] = $tag->attributes['surname'] . ' ' . $tag->attributes['first_name'];
-                }
-            }
-            echo CJSON::encode($variants);
-            Yii::app()->end();
-        } else
+        if (!Yii::app()->request->isAjaxRequest || !$term) {
             throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
+        }
+
+        $variants = array();
+        $criteria = new CDbCriteria();
+        $criteria->select = 'first_name, surname';
+        $criteria->distinct = true;
+        $criteria->addSearchCondition("LOWER(first_name) || ' ' || LOWER(surname)", '%' . strtolower($term) . '%', false);
+
+        $tags = Author::model()->findAll($criteria);
+        foreach ($tags as $tag) {
+            $variants[] = $tag->attributes['surname'] . ' ' . $tag->attributes['first_name'];
+        }
+        echo CJSON::encode($variants);
+        Yii::app()->end();
     }
 
-    public function actionAutocomplete()
+    public function actionAutocomplete(): void
     {
         $res = array();
         $result = array();
-        if (isset($_GET['term'])) {
+        if ($term = Yii::$app->request->get('term')) {
             $sql = "Select distinct name from author where name like :name";
             $command = Yii::app()->db->createCommand($sql);
-            $parts = explode(";", $_GET['term']);
+            $parts = explode(";", $term);
             $part = $parts[count($parts) - 1];
             $command->bindValue(":name", '%' . $part . '%', PDO::PARAM_STR);
             $res = $command->queryAll();
-            if (!empty($res))
-                foreach ($res as $mres) {
-                    $result[] = $mres['name'];
-                }
+
+            foreach ($res as $mres) {
+                $result[] = $mres['name'];
+            }
             echo CJSON::encode($result);
             Yii::app()->end();
         }
     }
 
+    //todo: not used
     public function storeAuthor(&$datasetAuthor, &$id)
     {
 
         if (isset($_SESSION['dataset_id'])) {
             $dataset_id = $_SESSION['dataset_id'];
+            /** @phpstan-ignore-next-line */
             $model->dataset_id = $dataset_id;
             $model = $datasetAuthor;
             //store author into table author
@@ -337,10 +317,10 @@ class AdminDatasetAuthorController extends Controller
             $rank = $datasetAuthor->rank;
 
             //determine if the model is valid
-            if (!$datasetAuthor->validate())
+            if (!$datasetAuthor->validate()) {
                 return false;
+            }
 
-            //$author = Author::model()->findByAttributes(array('name' => $name, 'rank' => $rank));
 
             $author = Author::model()->findByCompleteName($name);
             if ($author != NULL) {
@@ -375,154 +355,175 @@ class AdminDatasetAuthorController extends Controller
     /**
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.
-     * @param integer the ID of the model to be loaded
+     * @param int $id the ID of the model to be loaded
      */
-    public function loadModel($id)
+    public function loadModel(int $id): DatasetAuthor
     {
         $model = DatasetAuthor::model()->findByPk($id);
-        if ($model === null)
+        if ($model === null) {
             throw new CHttpException(404, 'The requested page does not exist.');
+        }
+
         return $model;
     }
 
     /**
      * Performs the AJAX validation.
-     * @param CModel the model to be validated
+     *
+     * @param CModel $model the model to be validated
      */
-    protected function performAjaxValidation($model)
+    protected function performAjaxValidation(CModel $model): void
     {
-        if (isset($_POST['ajax']) && $_POST['ajax'] === 'dataset-author-form') {
+        if (Yii::$app->request->post('ajax') === 'dataset-author-form') {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }
     }
 
-    public function actionAddAuthor()
+    public function actionAddAuthor(): void
     {
-        if (isset($_POST['dataset_id']) && isset($_POST['Author'])) {
-            $attrs = $_POST['Author'];
+        $datasetId = Yii::$app->request->post('dataset_id');
+        $author = Yii::$app->request->post('Author');
 
-            if (!(($attrs['first_name']) and ($attrs['last_name']))) {
-                Util::returnJSON(array("success" => false, "message" => Yii::t("app", "You must input first namd and last name.")));
-            }
-
-            $da = DatasetAuthor::model()->findByAttributes(array('dataset_id' => $_POST['dataset_id']), array('order' => 'rank desc'));
-            if (!$da) {
-                $rank = 1;
-            } else {
-                $rank = intval($da->rank) + 1;
-            }
-
-            $author = new Author;
-            $author->first_name = $attrs['first_name'];
-            $author->surname = $attrs['last_name'];
-            if (isset($attrs['middle_name'])) {
-                $author->middle_name = $attrs['middle_name'];
-            }
-            if (isset($attrs['orcid'])) {
-                $author->orcid = $attrs['orcid'];
-            }
-
-            if ($author->save()) {
-                $da = new DatasetAuthor;
-                $da->dataset_id = $_POST['dataset_id'];
-                $da->author_id = $author->id;
-                $da->rank = $rank;
-                if ($da->save()) {
-                    Util::returnJSON(array("success" => true));
-                }
-            }
-            Util::returnJSON(array("success" => false, "message" => Yii::t("app", "Save Error.")));
+        if (!$datasetId || !$author) {
+            throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
         }
-    }
+        $attrs = $author;
 
-    public function actionDeleteAuthor()
-    {
-        if (isset($_POST['da_id'])) {
-            $da = DatasetAuthor::model()->findByPk($_POST['da_id']);
-            $rank = $da->rank;
-            if ($da->delete()) {
-                $da->author->delete();
+        if (!$attrs['first_name'] && !$attrs['last_name']) {
+            Util::returnJSON(array("success" => false, "message" => Yii::t("app", "You must input first name and last name.")));
+        }
 
-                $criteria = new CDbCriteria;
-                $criteria->addCondition('dataset_id=' . $da->dataset_id);
-                $criteria->addCondition('rank > ' . $rank);
-                $higherRankDas = DatasetAuthor::model()->findAll($criteria);
+        $da = DatasetAuthor::model()->findByAttributes(array('dataset_id' => $datasetId), array('order' => 'rank desc'));
+        if (!$da) {
+            $rank = 1;
+        } else {
+            $rank = intval($da->rank) + 1;
+        }
 
-                foreach ($higherRankDas as $hrda) {
-                    $hrda->rank = $hrda->rank - 1;
-                    $hrda->save(false);
-                }
+        $author = new Author();
+        $author->first_name = $attrs['first_name'];
+        $author->surname = $attrs['last_name'];
+        if (isset($attrs['middle_name'])) {
+            $author->middle_name = $attrs['middle_name'];
+        }
+        if (isset($attrs['orcid'])) {
+            $author->orcid = $attrs['orcid'];
+        }
 
+        if ($author->save()) {
+            $da = new DatasetAuthor();
+            $da->dataset_id = $datasetId;
+            $da->author_id = $author->id;
+            $da->rank = $rank;
+
+            if ($da->save()) {
                 Util::returnJSON(array("success" => true));
             }
-            Util::returnJSON(array("success" => false, "message" => Yii::t("app", "Delete Error.")));
         }
+        Util::returnJSON(array("success" => false, "message" => Yii::t("app", "Save Error.")));
     }
 
-    public function actionUpdateRank()
+    public function actionDeleteAuthor(): void
     {
-        if (isset($_POST['da_id']) && isset($_POST['rank'])) {
-            $transaction = Yii::app()->db->beginTransaction();
-            try {
-                $da = DatasetAuthor::model()->findByPk($_POST['da_id']);
-                $rank = $da->rank;
-                $changeRank = intval($_POST['rank']);
-                $lastDa = DatasetAuthor::model()->findByAttributes(array('dataset_id' => $da->dataset_id), array('order' => 'rank desc'));
+        $daId = Yii::$app->request->post('da_id');
+        if (!$daId) {
+            throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
+        }
+        $da = DatasetAuthor::model()->findByPk($daId);
+        $rank = $da->rank;
+        if ($da->delete()) {
+            $da->author->delete();
 
-                if (!is_int($changeRank) or $changeRank == 0) {
-                    Util::returnJSON(array("success" => false, "message" => Yii::t("app", "Please enter a non-zero integer.")));
-                }
+            $criteria = new CDbCriteria();
+            $criteria->addCondition('dataset_id=' . $da->dataset_id);
+            $criteria->addCondition('rank > ' . $rank);
+            $higherRankDas = DatasetAuthor::model()->findAll($criteria);
 
-                if (!$lastDa or ($changeRank > $lastDa->rank)) {
-                    Util::returnJSON(array("success" => false, "message" => Yii::t("app", "Please enter a value less or equal than " . $lastDa->rank)));
-                }
-
-                $das = array();
-                if ($changeRank > $rank) {
-                    // update order down by 1
-                    // find all dataset authors in between
-                    $criteria = new CDbCriteria;
-                    $criteria->addCondition('t.rank > ' . min($rank, $changeRank));
-                    $criteria->addCondition('t.rank <= ' . max($rank, $changeRank));
-                    $criteria->addCondition('t.dataset_id = ' . $da->dataset_id);
-                    $das = DatasetAuthor::model()->findAll($criteria);
-                    foreach ($das as $updateDa) {
-                        $updateDa->rank = $updateDa->rank - 1;
-                    }
-                } else {
-                    // update order up by 1
-                    // find all dataset authors in between
-                    $criteria = new CDbCriteria;
-                    $criteria->addCondition('t.rank >= ' . min($rank, $changeRank));
-                    $criteria->addCondition('t.rank < ' . max($rank, $changeRank));
-                    $criteria->addCondition('t.dataset_id = ' . $da->dataset_id);
-                    $das = DatasetAuthor::model()->findAll($criteria);
-                    foreach ($das as $updateDa) {
-                        $updateDa->rank = $updateDa->rank + 1;
-                    }
-                }
-
-                $da->rank = $changeRank;
-                if ($da->save()) {
-                    if (!$this->saveDas($das)) {
-                        Util::returnJSON(array("success" => false, "message" => Yii::t("app", "Cannot save das.")));
-                    }
-
-                    $transaction->commit();
-                    Util::returnJSON(array("success" => true));
-                }
-                Util::returnJSON(array("success" => false, "message" => Yii::t("app", "Cannot update rank.")));
-            } catch (Exception $e) {
-                $message = $e->getMessage();
-                Yii::log(print_r($message, true), 'error');
-                $transaction->rollback();
-                Util::returnJSON(array("success" => false, "message" => Yii::t("app", "Cannot update rank.")));
+            foreach ($higherRankDas as $hrda) {
+                $hrda->rank = $hrda->rank - 1;
+                $hrda->save(false);
             }
+
+            Util::returnJSON(array("success" => true));
+        }
+
+        Util::returnJSON(array("success" => false, "message" => Yii::t("app", "Delete Error.")));
+    }
+
+    public function actionUpdateRank(): void
+    {
+        $daId = Yii::$app->request->post('da_id');
+        $rank = Yii::$app->request->post('rank');
+        if (!$daId || !$rank) {
+            throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
+        }
+        $transaction = Yii::app()->db->beginTransaction();
+        try {
+            $da = DatasetAuthor::model()->findByPk($daId);
+            $rank = $da->rank;
+            $changeRank = intval($rank);
+            $lastDa = DatasetAuthor::model()->findByAttributes(array('dataset_id' => $da->dataset_id), array('order' => 'rank desc'));
+
+            if ($changeRank === 0) {
+                Util::returnJSON(array("success" => false, "message" => Yii::t("app", "Please enter a non-zero integer.")));
+            }
+
+            if (!$lastDa || ($changeRank > $lastDa->rank)) {
+                Util::returnJSON(array("success" => false, "message" => Yii::t("app", "Please enter a value less or equal than " . $lastDa->rank)));
+            }
+
+            $das = array();
+            if ($changeRank > $rank) {
+                // update order down by 1
+                // find all dataset authors in between
+                $criteria = new CDbCriteria();
+                $criteria->addCondition('t.rank > ' . min($rank, $changeRank));
+                $criteria->addCondition('t.rank <= ' . max($rank, $changeRank));
+                $criteria->addCondition('t.dataset_id = ' . $da->dataset_id);
+                $das = DatasetAuthor::model()->findAll($criteria);
+                foreach ($das as $updateDa) {
+                    $updateDa->rank = $updateDa->rank - 1;
+                }
+            } else {
+                // update order up by 1
+                // find all dataset authors in between
+                $criteria = new CDbCriteria();
+                $criteria->addCondition('t.rank >= ' . min($rank, $changeRank));
+                $criteria->addCondition('t.rank < ' . max($rank, $changeRank));
+                $criteria->addCondition('t.dataset_id = ' . $da->dataset_id);
+                $das = DatasetAuthor::model()->findAll($criteria);
+                foreach ($das as $updateDa) {
+                    $updateDa->rank = $updateDa->rank + 1;
+                }
+            }
+
+            $da->rank = $changeRank;
+            if ($da->save()) {
+                if (!$this->saveDas($das)) {
+                    Util::returnJSON(array("success" => false, "message" => Yii::t("app", "Cannot save das.")));
+                }
+
+                $transaction->commit();
+                Util::returnJSON(array("success" => true));
+            }
+
+            Util::returnJSON(array("success" => false, "message" => Yii::t("app", "Cannot update rank.")));
+        } catch (Exception $e) {
+            $message = $e->getMessage();
+            Yii::log(print_r($message, true), 'error');
+            $transaction->rollback();
+
+            Util::returnJSON(array("success" => false, "message" => Yii::t("app", "Cannot update rank.")));
         }
     }
 
-    private function saveDas($das)
+    /**
+     * @param DatasetAuthor[] $das
+     *
+     * @return bool
+     */
+    private function saveDas(array $das): bool
     {
         foreach ($das as $da) {
             if (!$da->save()) {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace GigaDB\models;
 
 use Exception;
@@ -168,9 +170,7 @@ class File extends \yii\db\ActiveRecord
         }
         $fa->value = $md5_value;
         if( ! $fa->save() ) {
-            var_dump($fa->getErrors());
             throw new Exception("File attribute $fa->id was not saved with md5 value");
         }
-        // echo "Saved md5 file attribute with id: ".$fa->id.PHP_EOL;
     }
 }

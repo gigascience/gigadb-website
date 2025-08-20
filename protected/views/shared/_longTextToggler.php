@@ -1,15 +1,17 @@
 <?php
+
 /**
  * Widget for toggling between short and long text descriptions
  * @param string $id Unique identifier for this toggle instance
  * @param string $description Full description text
  * @param int $maxLength Maximum length before truncating
  */
+
 ?>
 
-<?php if (strlen($description) <= $maxLength): ?>
+<?php if (strlen($description) <= $maxLength) : ?>
     <?php echo $description; ?>
-<?php else: ?>
+<?php else : ?>
     <span class=" js-short-<?php echo $id; ?>"><?php echo substr($description, 0, $maxLength) . '...'; ?></span>
     <span class=" js-long-<?php echo $id; ?>" style="display: none;"><?php echo $description; ?></span>
     <button class="js-desc-<?php echo $id; ?> btn btn-subtle"

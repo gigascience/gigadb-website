@@ -1,16 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This is the model class for table "alternative_identifiers".
  *
  * The followings are the available columns in table 'alternative_identifiers':
- * @property integer $id
- * @property integer $sample_id
- * @property integer $extdb_id
- * @property string $extdb_accession
+ * @property int         $id
+ * @property int         $sample_id
+ * @property int         $extdb_id
+ * @property string|null $extdb_accession
  *
  * The followings are the available model relations:
- * @property Extdb $extdb
+ * @property Extdb  $extdb
  * @property Sample $sample
  */
 class AlternativeIdentifiers extends CActiveRecord
@@ -20,7 +22,7 @@ class AlternativeIdentifiers extends CActiveRecord
      * @param string $className active record class name.
      * @return AlternativeIdentifiers the static model class
      */
-    public static function model($className=__CLASS__)
+    public static function model($className = __CLASS__): AlternativeIdentifiers
     {
         return parent::model($className);
     }
@@ -28,32 +30,26 @@ class AlternativeIdentifiers extends CActiveRecord
     /**
      * @return string the associated database table name
      */
-    public function tableName()
+    public function tableName(): string
     {
         return 'alternative_identifiers';
     }
 
-    /**
-     * @return array validation rules for model attributes.
-     */
-    public function rules()
+    public function rules(): array
     {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
             array('sample_id, extdb_id', 'required'),
-            array('sample_id, extdb_id', 'numerical', 'integerOnly'=>true),
-            array('extdb_accession', 'length', 'max'=>100),
+            array('sample_id, extdb_id', 'numerical', 'integerOnly' => true),
+            array('extdb_accession', 'length', 'max' => 100),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            array('id, sample_id, extdb_id, extdb_accession', 'safe', 'on'=>'search'),
+            array('id, sample_id, extdb_id, extdb_accession', 'safe', 'on' => 'search'),
         );
     }
 
-    /**
-     * @return array relational rules.
-     */
-    public function relations()
+    public function relations(): array
     {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
@@ -63,10 +59,7 @@ class AlternativeIdentifiers extends CActiveRecord
         );
     }
 
-    /**
-     * @return array customized attribute labels (name=>label)
-     */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return array(
             'id' => 'ID',
@@ -80,24 +73,28 @@ class AlternativeIdentifiers extends CActiveRecord
      * Retrieves a list of models based on the current search/filter conditions.
      * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
      */
-    public function search()
+    public function search(): CActiveDataProvider
     {
         // Warning: Please modify the following code to remove attributes that
         // should not be searched.
 
-        $criteria=new CDbCriteria;
+        $criteria = new CDbCriteria();
 
-        $criteria->compare('id',$this->id);
-        $criteria->compare('sample_id',$this->sample_id);
-        $criteria->compare('extdb_id',$this->extdb_id);
-        $criteria->compare('extdb_accession',$this->extdb_accession,true);
+        $criteria->compare('id', $this->id);
+        $criteria->compare('sample_id', $this->sample_id);
+        $criteria->compare('extdb_id', $this->extdb_id);
+        $criteria->compare('extdb_accession', $this->extdb_accession, true);
 
         return new CActiveDataProvider($this, array(
-            'criteria'=>$criteria,
+            'criteria' => $criteria,
         ));
     }
 
-    public function behaviors() {
+    /**
+     * @return array<string, string>
+     */
+    public function behaviors(): array
+    {
         return array(
             'ActiveRecordLogableBehavior' => 'application.behaviors.DatasetRelatedTableBehavior',
         );

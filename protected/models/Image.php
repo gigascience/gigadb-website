@@ -1,7 +1,8 @@
-
 <?php
 
-use \creocoder\flysystem\Filesystem;
+declare(strict_types=1);
+
+use creocoder\flysystem\Filesystem;
 use League\Flysystem\AdapterInterface;
 use Ramsey\Uuid\Uuid;
 
@@ -10,12 +11,14 @@ use Ramsey\Uuid\Uuid;
  * Note: I have to change this Model to Images instead of Image because of this name is conflict with Image.php in the Extension
  *
  * The followings are the available columns in table 'image':
- * @property integer $id
- * @property string $tag
- * @property string $url
- * @property string $license
- * @property string $photographer
- * @property string $source
+ *
+ * @property int         $id
+ * @property string      $location
+ * @property string|null $tag
+ * @property string|null $url
+ * @property string      $license
+ * @property string      $photographer
+ * @property string      $source
  *
  * The followings are the available model relations:
  * @property Dataset[] $datasets
@@ -35,7 +38,7 @@ class Image extends CActiveRecord
      * @param string $className active record class name.
      * @return Image the static model class
      */
-    public static function model($className=__CLASS__)
+    public static function model($className = __CLASS__)
     {
         return parent::model($className);
     }
@@ -56,13 +59,13 @@ class Image extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('license, photographer, source', 'required'),
-            array('tag', 'length', 'max'=>120),
-            array('url, source', 'length', 'max'=>256),
-            array('photographer', 'length', 'max'=>128),
+            array('license, photographer, source, location', 'required'),
+            array('tag', 'length', 'max' => 120),
+            array('url, source', 'length', 'max' => 256),
+            array('photographer', 'length', 'max' => 128),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            array('id, tag, url, license, photographer, source', 'safe', 'on'=>'search'),
+            array('id, tag, url, license, photographer, source', 'safe', 'on' => 'search'),
         );
     }
 
@@ -98,30 +101,34 @@ class Image extends CActiveRecord
     /**
      * write an image to the desired (Flysystem managed) storage mechanism and update url property with the location
      *
-     * @param Filesystem $targetStorage
-     * @param string $enclosingDirectory
-     * @param CUploadedFile $uploadedFile
+     * @param Filesystem                 $targetStorage
+     * @param \Ramsey\Uuid\UuidInterface $enclosingDirectory
+     * @param CUploadedFile              $uploadedFile
+     *
      * @return bool
      */
-    public function write(Filesystem $targetStorage, string $enclosingDirectory, CUploadedFile $uploadedFile): bool
+    public function write(Filesystem $targetStorage, \Ramsey\Uuid\UuidInterface $enclosingDirectory, CUploadedFile $uploadedFile): bool
     {
         $slugger = new \Symfony\Component\String\Slugger\AsciiSlugger();
         $info = pathinfo($uploadedFile->getName());
         $fileName = $slugger->slug($info['filename'])->toString();
 
-        $imagePath = sprintf("%s/images/datasets/%s/%s.%s", Yii::$app->params['environment'], $enclosingDirectory, $fileName, $info['extension'] );
+        $imagePath = sprintf("%s/images/datasets/%s/%s.%s", Yii::$app->params['environment'], $enclosingDirectory->toString(), $fileName, $info['extension']);
 
-        if ($targetStorage->put(
-            $imagePath, file_get_contents($uploadedFile->getTempName()),
-            ['visibility' => AdapterInterface::VISIBILITY_PUBLIC]
-        )) {
+        if (
+            $targetStorage->put(
+                $imagePath,
+                file_get_contents($uploadedFile->getTempName()),
+                ['visibility' => AdapterInterface::VISIBILITY_PUBLIC]
+            )
+        ) {
             $this->location = sprintf("%s.%s", $fileName, $info['extension']);
             $this->url = sprintf("https://%s/%s", self::BUCKET, $imagePath);
 
             return true;
         }
 
-        Yii::log("Error attempting to write image to the storage","error");
+        Yii::log("Error attempting to write image to the storage", "error");
 
         return false;
     }
@@ -133,9 +140,7 @@ class Image extends CActiveRecord
      */
     public function isUrlValid(): bool
     {
-        if ( CompatibilityHelper::str_starts_with($this->url,"https://" ) )
-            return true;
-        return false;
+        return \CompatibilityHelper::str_starts_with($this->url, "https://");
     }
 
     /**
@@ -151,23 +156,23 @@ class Image extends CActiveRecord
         $dbConnection = !empty($db) ? $db : $this->getDbConnection();
         $oldUrl = $this->url;
         try {
-            if( $this->isUrlValid() ) {
+            if ($this->isUrlValid()) {
                 $inserted = $dbConnection->createCommand()->insert("images_todelete", [
                     "url" => $oldUrl
                 ]);
                 if ($inserted) {
                     $this->url = null;
-                    if ( ! $this->save() )
-                        throw new Exception($this->getError());
+                    if (! $this->save()) {
+                        throw new Exception(json_encode($this->getErrors()));
+                    }
                 }
                 return true;
             }
-            Yii::log("Failed deleting file for url $oldUrl". "error");
+            Yii::log("Failed deleting file for url $oldUrl" . "error");
 
             return false;
-        }
-        catch (Exception | CDbException $e) {
-            Yii::log($e->getMessage(),"error");
+        } catch (Exception | CDbException $e) {
+            Yii::log($e->getMessage(), "error");
             return false;
         }
     }
@@ -175,11 +180,11 @@ class Image extends CActiveRecord
     public function beforeDelete()
     {
         if (parent::beforeDelete()) {
-            if( !empty($this->url))
+            if (!empty($this->url)) {
                 return $this->deleteFile();
+            }
             return true;
         }
         return false;
-
     }
 }

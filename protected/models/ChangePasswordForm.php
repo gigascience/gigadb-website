@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 class ChangePasswordForm extends CFormModel
 {
 	public $password;
@@ -18,32 +20,33 @@ class ChangePasswordForm extends CFormModel
 			array('password, confirmPassword, user_id', 'required'),
             array('password', 'match', 'pattern' => User::PASSWORD_REGEX, 'message' => 'Make sure your password contains at least 8 characters with 1 uppercase character, 1 number and 1 special character.'),
             array('password', 'compare', 'compareAttribute'=>'confirmPassword'),
-                    
+
 		);
 	}
 
-	/**
-	 * Declares attribute labels.
-	 */
-	public function attributeLabels()
-	{
-		return array(
-			'password'=>Yii::t('app' ,'Password'),
-			'confirmPassword'=>Yii::t('app' ,'Confirm Password'),
-		);
-	}
+    /**
+     * Declares attribute labels.
+     */
+    public function attributeLabels()
+    {
+        return array(
+            'password' => Yii::t('app', 'Password'),
+            'confirmPassword' => Yii::t('app', 'Confirm Password'),
+        );
+    }
 
     public function changePass(): bool
     {
         $user = User::model()->findByPk($this->user_id);
-        if ($user){
-            $user->password = $this->password;
-            $user->password_repeat = $this->confirmPassword;
-            $user->encryptPassword();
+        if (!$user) {
+            return false;
+        }
+        $user->password = $this->password;
+        $user->password_repeat = $this->confirmPassword;
+        $user->encryptPassword();
 
-            if ($user->save()) {
-                return true;
-            }
+        if ($user->save()) {
+            return true;
         }
 
         return false;

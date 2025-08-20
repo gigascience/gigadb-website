@@ -1,31 +1,31 @@
 <div class="container">
-	<?php
-	$this->widget('TitleBreadcrumb', [
-		'pageTitle' => 'View Manuscript #' . $model->id,
-		'breadcrumbItems' => [
-			['label' => 'Admin', 'href' => '/site/admin'],
-			['label' => 'Manage', 'href' => '/adminManuscript/admin'],
-			['isActive' => true, 'label' => 'View'],
-		]
-	]);
-	?>
+    <?php
+    $this->widget('TitleBreadcrumb', [
+        'pageTitle' => 'View Manuscript #' . $model->id,
+        'breadcrumbItems' => [
+            ['label' => 'Admin', 'href' => '/site/admin'],
+            ['label' => 'Manage', 'href' => '/adminManuscript/admin'],
+            ['isActive' => true, 'label' => 'View'],
+        ]
+    ]);
+    ?>
 
-	<?php $this->widget('zii.widgets.CDetailView', array(
-		'data' => $model,
-		'attributes' => array(
-			'id',
-			'identifier',
-			'pmid',
-			'dataset_id',
+    <?php $this->widget('zii.widgets.CDetailView', array(
+        'data' => $model,
+        'attributes' => array(
+            'id',
+            'identifier',
+            'pmid',
+            'dataset_id',
             [
                 'name' => 'is_pre_print',
                 'label' => 'This link is a pre-print',
                 'value' => $model->is_pre_print ? 'Yes' : 'No',
             ],
-		),
-		'htmlOptions' => array('class' => 'table table-striped table-bordered dataset-view-table'),
-		'itemCssClass' => array('odd', 'even'),
-		'itemTemplate' => '<tr class="{class}"><th scope="row">{label}</th><td>{value}</td></tr>'
-	)); ?>
+        ),
+        'htmlOptions' => array('class' => 'table table-striped table-bordered dataset-view-table'),
+        'itemCssClass' => array('odd', 'even'),
+        'itemTemplate' => '<tr class="{class}"><th scope="row">{label}</th><td>{value}</td></tr>'
+    )); ?>
 
 </div>

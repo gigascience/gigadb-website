@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace app\models;
 
 use \Yii;
@@ -300,7 +302,6 @@ class DatasetFiles extends \Yii\base\BaseObject {
         $dbName = $dbConfig['database'];
         if($useTest) {
             $dbName = $dbConfig['test_database'];
-            var_dump($dbName);
         }
 
         system("head -2 /downloads/gigadbv3_$dateStr.backup | tail -1 | cat -e | grep 9.3",$retval); # test whether we have test data or real production backup

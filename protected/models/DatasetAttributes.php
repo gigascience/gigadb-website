@@ -1,21 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This is the model class for table "dataset_attributes".
  *
  * The followings are the available columns in table 'dataset_attributes':
- * @property integer $id
- * @property integer $dataset_id
- * @property integer $attribute_id
- * @property string $value
- * @property string $units_id
+ *
+ * @property int         $id
+ * @property int|null    $dataset_id
+ * @property int|null    $attribute_id
+ * @property string|null $value
+ * @property string|null $units_id
+ * @property int|null    $image_id
+ * @property string|null $until_date
  *
  * The followings are the available model relations:
- * @property Attributes $attribute
- * @property Dataset $dataset
- * @property Unit $units
- * @property integer $image_id
- * @property string $until_date
+ * @property Attributes|null $attribute
+ * @property Dataset|null    $dataset
+ * @property Unit|null       $units
  */
 class DatasetAttributes extends CActiveRecord
 {
@@ -24,7 +27,7 @@ class DatasetAttributes extends CActiveRecord
      * @param string $className active record class name.
      * @return DatasetAttributes the static model class
      */
-    public static function model($className=__CLASS__)
+    public static function model($className = __CLASS__)
     {
         return parent::model($className);
     }
@@ -45,15 +48,15 @@ class DatasetAttributes extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('dataset_id, attribute_id, image_id', 'numerical', 'integerOnly'=>true),
+            array('dataset_id, attribute_id, image_id', 'numerical', 'integerOnly' => true),
             array('value', 'required'),
-            array('value', 'length', 'max'=>200),
+            array('value', 'length', 'max' => 200),
             array('value', 'rejectCode'),
-            array('units_id', 'length', 'max'=>30),
+            array('units_id', 'length', 'max' => 30),
             array('until_date', 'safe'),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            array('id, dataset_id, attribute_id, value, units_id, image_id, until_date', 'safe', 'on'=>'search'),
+            array('id, dataset_id, attribute_id, value, units_id, image_id, until_date', 'safe', 'on' => 'search'),
         );
     }
 
@@ -97,38 +100,39 @@ class DatasetAttributes extends CActiveRecord
         // Warning: Please modify the following code to remove attributes that
         // should not be searched.
 
-        $criteria=new CDbCriteria;
+        $criteria = new CDbCriteria();
 
-        $criteria->compare('id',$this->id);
+        $criteria->compare('id', $this->id);
 
-        $criteria->compare('dataset_id',$this->dataset_id);
+        $criteria->compare('dataset_id', $this->dataset_id);
 
-        $criteria->compare('attribute_id',$this->attribute_id);
+        $criteria->compare('attribute_id', $this->attribute_id);
 
-        $criteria->compare('value',$this->value,true);
+        $criteria->compare('value', $this->value, true);
 
-        $criteria->compare('units_id',$this->units_id,true);
+        $criteria->compare('units_id', $this->units_id, true);
 
-        $criteria->compare('image_id',$this->image_id);
+        $criteria->compare('image_id', $this->image_id);
 
-        $criteria->compare('until_date',$this->until_date,true);
+        $criteria->compare('until_date', $this->until_date, true);
 
         return new CActiveDataProvider('DatasetAttributes', array(
-            'criteria'=>$criteria,
+            'criteria' => $criteria,
         ));
     }
 
     /**
      * Reject values that have HTML/PHP/javascript tags in them
      *
-     * @param string $attr the name of the attribute to be validated
-     * @param array $params options specified in the validation rule
+     * @param string $attr   the name of the attribute to be validated
+     * @param array  $params options specified in the validation rule
      */
-    public function rejectCode($attr,$params) {
+    public function rejectCode(string $attr, array $params): void
+    {
         $rawValue = CHtml::decode($this->value);
         $strippedValue = strip_tags($rawValue);
         if ($rawValue !== $strippedValue) {
-            $this->addError($attr,'Rejected value because of illegal characters detected');
+            $this->addError($attr, 'Rejected value because of illegal characters detected');
         }
     }
 }

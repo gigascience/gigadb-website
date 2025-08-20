@@ -26,7 +26,7 @@ $sampleDataProvider = $samples->getDataProvider();
                     <?php if ($model->image) {
                         $url = $model->image->isUrlValid() ? $model->image->url : "https://assets.gigadb-cdn.net/live/images/datasets/no_image.png";
 
-                    ?>
+                        ?>
                         <a href="<?= $url ?>">
                             <?= CHtml::image(
                                 $url,
@@ -177,7 +177,7 @@ $sampleDataProvider = $samples->getDataProvider();
                             so that you can work in collaboration rather than in competition.
                         </p>
                         <p><strong>This dataset fair use agreement is in place until <?= strftime('%d %B %Y', strtotime($model->fairnuse)) ?></strong></p>
-                <?php }
+                    <?php }
                 } ?>
             </div>
             <div class="subsection">
@@ -220,7 +220,7 @@ $sampleDataProvider = $samples->getDataProvider();
                 <?php
                 $relations = $connections->getRelations();
                 if (count($relations) > 0) {
-                ?>
+                    ?>
                     <?php $this->renderPartial('_connections', array('relations' => $relations)); ?>
 
                 <?php } ?>
@@ -287,30 +287,30 @@ $sampleDataProvider = $samples->getDataProvider();
                 ?>
                 <ul class="nav nav-tabs nav-border-tabs" role="tablist">
                     <?php if (count($model->samples) > 0) {
-                    ?>
+                        ?>
                         <li role="presentation" id="p-sample"><a href="#sample" aria-controls="sample" role="tab" data-toggle="tab">Sample</a></li>
                     <?php }
                     ?>
                     <?php if ($fileDataProvider->getTotalItemCount() > 0) {
                         if (count($model->samples) < 1) {
-                    ?>
+                            ?>
                             <li role="presentation" id="p-file" class="active"><a href="#files" aria-controls="files" role="tab" data-toggle="tab">Files</a></li>
                         <?php } else {
-                        ?>
+                            ?>
                             <li role="presentation" id="p-file"><a href="#files" aria-controls="files" role="tab" data-toggle="tab">Files</a></li>
-                    <?php }
+                        <?php }
                     }
                     ?>
                     <?php if (count($model->datasetFunders) > 0) {
-                    ?>
+                        ?>
                         <li role="presentation" id="p-funding"><a href="#funding" aria-controls="funding" role="tab" data-toggle="tab">Funding</a></li>
                     <?php }
                     ?>
                     <?php
                     foreach ($links->getDatasetExternalLinksTypesNames(["Protocols.io", "JBrowse", "3D Models", "Code Ocean","3D Sketchfab"]) as $linkType => $linkCode) {
-                    ?>
+                        ?>
                         <li role="presentation" id="p-<?= $linkCode ?>"><a href="#<?= $linkCode ?>" aria-controls="<?= $linkCode ?>" role="tab" data-toggle="tab"><?= $linkType ?></a></li>
-                    <?php
+                        <?php
                     }
                     ?>
 
@@ -321,12 +321,12 @@ $sampleDataProvider = $samples->getDataProvider();
 
                 <div class="tab-content dataset-tab-content">
                 <?php
-                    if ($sampleDataProvider->getTotalItemCount() > 0) {
-                        $samplesPerPage = $sampleDataProvider->getItemCount();
-                        $totalNbSamples = $sampleDataProvider->getTotalItemCount();
+                if ($sampleDataProvider->getTotalItemCount() > 0) {
+                    $samplesPerPage = $sampleDataProvider->getItemCount();
+                    $totalNbSamples = $sampleDataProvider->getTotalItemCount();
 
-                        if (count($model->samples) > 0) {
-                    ?>
+                    if (count($model->samples) > 0) {
+                        ?>
                         <div role="tabpanel" class="tab-pane active" id="sample">
 
                             <p class="pull-left">
@@ -345,9 +345,9 @@ $sampleDataProvider = $samples->getDataProvider();
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php $sample_models = $sampleDataProvider->getData();
+                                <?php $sample_models = $sampleDataProvider->getData();
 
-                                    foreach ($sample_models as $sample) { ?>
+                                foreach ($sample_models as $sample) { ?>
                                         <tr>
                                             <td><?= $sample['linkName'] ?></td>
                                             <td><?= $sample['common_name'] ?></td>
@@ -356,14 +356,14 @@ $sampleDataProvider = $samples->getDataProvider();
                                             <td><?= $sample['taxonomy_link'] ?></td>
                                             <td><?= $sample['genbank_name'] ?></td>
                                         </tr>
-                                    <?php } ?>
+                                <?php } ?>
 
                                 </tbody>
                             </table>
                             <div class="table-footer">
                                 <?php
                                 if ($samplesPerPage <> $totalNbSamples) {
-                                  ?>
+                                    ?>
                                   <div class="pagination-wrapper">
                                   <?
                                     $this->widget('SiteLinkPager', array(
@@ -377,30 +377,30 @@ $sampleDataProvider = $samples->getDataProvider();
                                   <span class="page-selector-label"> of <?php echo $sampleDataProvider->getPagination()->getPageCount() ?></span>
                                 </div>
                                 </div>
-                                <?php
-                              }
-                              ?>
+                                    <?php
+                                }
+                                ?>
                                 <div class="pull-right">
                                     <div class="summary">Displaying <?php echo $samplesPerPage ?> samples of <?php echo $totalNbSamples ?></div>
                                 </div>
                                 </div>
 
                         </div>
-                    <?php
-                      }
+                        <?php
                     }
-                    ?>
+                }
+                ?>
                     <?php
                     if ($fileDataProvider->getTotalItemCount() > 0) {
                         $filesPerPage = $fileDataProvider->getItemCount();
                         $totalNbFiles = $fileDataProvider->getTotalItemCount();
 
                         if (count($model->samples) > 0) {
-                    ?>
+                            ?>
                             <div role="tabpanel" class="tab-pane" id="files">
-                            <?php } else { ?>
+                        <?php } else { ?>
                                 <div role="tabpanel" class="tab-pane active" id="files">
-                                <?php   } ?>
+                        <?php   } ?>
                                 <p class="pull-left">
                                   Click on a table column to sort the results.
                                 </p>
@@ -424,7 +424,7 @@ $sampleDataProvider = $samples->getDataProvider();
                                     <tbody>
                                         <?php $file_models = $fileDataProvider->getData();
                                         foreach ($file_models as $file) {
-                                        ?>
+                                            ?>
                                             <tr>
                                                 <td class="text-break-word"><?= $file['nameHtml'] ?></td>
                                                 <td><?= $file['description'] ?></td>
@@ -434,7 +434,7 @@ $sampleDataProvider = $samples->getDataProvider();
                                                     //                                        echo $file_samples[0]['visible'];
                                                     //                                        echo $file_samples[0]['hidden'];
                                                     //                                        echo $file_samples[0]['more_link'];
-                                                    ?></td>
+                                                ?></td>
                                                 <td><?= $file['type'] ?></td>
                                                 <td><?= $file['format'] ?></td>
                                                 <td><?= $file['sizeUnit'] ?></td>
@@ -453,7 +453,7 @@ $sampleDataProvider = $samples->getDataProvider();
                                 <div class="table-footer">
                                 <?php
                                 if ($filesPerPage <> $totalNbFiles) {
-                                  ?>
+                                    ?>
                                   <div class="pagination-wrapper">
                                   <?
                                     $this->widget('SiteLinkPager', array(
@@ -474,12 +474,12 @@ $sampleDataProvider = $samples->getDataProvider();
                                 </div>
 
                                 </div>
-                            <?php } ?>
+                    <?php } ?>
 
                             <?php
                             $funding = $mainSection->getFunding();
                             if (count($funding) > 0) {
-                            ?>
+                                ?>
 
                                 <div role="tabpanel" class="tab-pane" id="funding">
 
@@ -513,16 +513,16 @@ $sampleDataProvider = $samples->getDataProvider();
                             <?php
                             $modelLinks = $links->getDatasetExternalLinks(['3D Models']);
                             if (count($modelLinks) > 0) {
-                            ?>
+                                ?>
                                 <div role="tabpanel" class="tab-pane visible" id="3dmodels">
                                     <p>3D Models:</p>
                                     <?php $this->renderPartial('//shared/_model_viewer', ['data' => $modelLinks]); ?>
                                 </div>
-                            <?php
+                                <?php
                             }
 
                             foreach ($links->getDatasetExternalLinksTypesNames(["Protocols.io", "JBrowse", "Code Ocean","3D Sketchfab"]) as $linkType => $linkCode) {
-                            ?>
+                                ?>
                                 <div role="tabpanel" class="tab-pane visible" id="<?= $linkCode ?>">
                                     <p><?= $linkType ?>:</p>
                                     <?php
@@ -548,7 +548,7 @@ $sampleDataProvider = $samples->getDataProvider();
                                     }
                                     ?>
                                 </div>
-                            <?php
+                                <?php
                             }
                             ?>
 
@@ -957,13 +957,10 @@ $sampleDataProvider = $samples->getDataProvider();
         }
 
         if (_userInput >= _min && _userInput <= _max) {
-          console.log("Valid page number!");
           return _userInput;
         } else if (_userInput > _max) {
-          console.log("Error, return to " + _max);
           return _max;
         } else if (_userInput < _min) {
-          console.log("Error, return to " + _min);
           return _min;
         }
       }

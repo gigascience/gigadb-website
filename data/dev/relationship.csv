@@ -1,4 +1,6 @@
 id,name
 1,IsCitedBy
 2,Cites
+3,IsIdenticalTo
 13,IsReferencedBy
+14,References

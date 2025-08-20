@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Routing, aggregating and composing logic for making the public dataset view
  *
@@ -8,13 +10,12 @@
  */
 class DatasetController extends Controller
 {
-
-    public $canonicalUrl;
+    public string $canonicalUrl;
 
     /**
-     * @return array action filters
+     * @return string[] action filters
      */
-    public function filters()
+    public function filters(): array
     {
         return array(
             'accessControl', // perform access control for CRUD operations
@@ -24,9 +25,9 @@ class DatasetController extends Controller
     /**
      * Specifies the access control rules.
      * This method is used by the 'accessControl' filter.
-     * @return array access control rules
+     * @return array<int, array<int¬string, list<string>|string>> access control rules
      */
-    public function accessRules()
+    public function accessRules(): array
     {
         return array(
             array('allow',  // allow all users to perform 'index' and 'view' actions
@@ -39,10 +40,11 @@ class DatasetController extends Controller
         );
     }
 
-  /**
+    /**
      * Yii's method for routing urls to an action. Override to use custom actions
+     * @return string[]
      */
-    public function actions()
+    public function actions(): array
     {
         $actions = parent::actions();
         $actions['mockup'] = [
@@ -51,8 +53,11 @@ class DatasetController extends Controller
         return $actions;
     }
 
-    public function actionView($id)
+    public function actionView(int $id): void
     {
+        /** @var Dataset $datasetModel */
+        $datasetModel = Dataset::model();
+
         // Retrieving the data
         $model = Dataset::model()->find("identifier=?", array($id));
         $srv = Yii::app()->fileUploadService->getFileUploadService(\Yii::$container->get('guzzleHttpClient'), $id);
@@ -70,7 +75,7 @@ class DatasetController extends Controller
         $userHostSubnet = substr($userHostAddress, 0, strrpos($userHostAddress, "."));
 
         // configuring files table
-        if ("172.16.238" == $userHostSubnet && $id !== "101001") { //always displays all columns in tests
+        if ("172.16.238" === $userHostSubnet && (string) $id !== "101001") { //always displays all columns in tests
             $fileSettings = $datasetPageSettings->getFileSettings($cookies, DatasetPageSettings::MOCKUP_COLUMNS);
         } else {
             $fileSettings = $datasetPageSettings->getFileSettings($cookies);
@@ -80,18 +85,17 @@ class DatasetController extends Controller
         $pageSize = Yii::$app->request->post('pageSize');
 
         if ($setting && $pageSize) {
-            $fileSettings = $datasetPageSettings->setFileSettings($setting, $pageSize, $cookies);
+            $fileSettings = $datasetPageSettings->setFileSettings($setting, (int) $pageSize, $cookies);
             $flag = "file";
         }
 
         //configuring samples table
         $sampleSettings = $datasetPageSettings->getSampleSettings($cookies);
 
-        $columns = Yii::$app->request->post('columns');
         $samplePageSize = Yii::$app->request->post('samplePageSize');
-        if (Yii::$app->request->post('columns')) {
-            $sampleSettings = $datasetPageSettings->setSampleSettings($columns, $samplePageSize, $cookies);
-            $flag = "sample";
+        if ($columns = Yii::$app->request->post('columns')) {
+            $sampleSettings = $datasetPageSettings->setSampleSettings($columns, (int)$samplePageSize, $cookies);
+            $flag = 'sample';
         }
 
         // Assembling page components and page settings
@@ -122,9 +126,10 @@ class DatasetController extends Controller
 
             if ($urlToRedirect && $currentAbsoluteFullUrl === $urlToRedirect) {
                 $this->metaData['redirect'] = 'https://dx.doi.org/10.5524/' . $assembly->getDataset()->identifier ;
-                return $this->render('interstitial', array(
+                $this->render('interstitial', array(
                     'model' => $assembly->getDataset()
                 ));
+                Yii::app()->end();
             }
         }
 
@@ -150,25 +155,29 @@ class DatasetController extends Controller
                 'columns' => $sampleSettings["columns"],
                 'flag' => $flag,
             ));
+            Yii::app()->end();
         };
 
         // Different rendering based on page type (invalid, hidden, public)
         if ("invalid" === $datasetPageSettings->getPageType()) {
-            return $this->render('invalid', array('model' => new Dataset('search'), 'keyword' => $id, 'general_search' => 1));
-        } elseif (in_array($datasetPageSettings->getPageType(), ["hidden","draft", "mockup"])) {
+            $this->render('invalid', array('model' => new Dataset('search'), 'keyword' => $id, 'general_search' => 1));
+            Yii::app()->end();
+        }
+        if (in_array($datasetPageSettings->getPageType(), ["hidden","draft", "mockup"])) {
             // Page private ? Disable robot to index
             $this->metaData['private'] = true;
 
-            if (preg_match("/dataset\/$id\/token/",$_SERVER['REQUEST_URI']) || preg_match("/dataset\/view\/id\/$id\/token\/.+/",$_SERVER['REQUEST_URI']) ) { //access using mockup page url
+            if (preg_match("/dataset\/$id\/token/", $_SERVER['REQUEST_URI']) || preg_match("/dataset\/view\/id\/$id\/token\/.+/", $_SERVER['REQUEST_URI'])) { //access using mockup page url
                 $mainRenderer($assembly, $datasetPageSettings, $previousDataset, $nextDataset, $fileSettings, $sampleSettings, $flag);
             } else {
-                Yii::log('Request is invalid for URI: '.$_SERVER['REQUEST_URI'],'error');
-                return $this->render('invalid', array('model' => new Dataset('search'), 'keyword' => $id));
+                Yii::log('Request is invalid for URI: ' . $_SERVER['REQUEST_URI'], 'error');
+                $this->render('invalid', array('model' => new Dataset('search'), 'keyword' => $id));
+                Yii::app()->end();
             }
-        } else { //page type is public
-            // specify canonical URL due to samples and files pagination generating multiple URLs with the same main content
-            $this->canonicalUrl = Yii::app()->request->hostInfo . '/dataset/' . $model->identifier;
-            $mainRenderer($assembly, $datasetPageSettings, $previousDataset, $nextDataset, $fileSettings, $sampleSettings, $flag);
         }
+        //page type is public
+        // specify canonical URL due to samples and files pagination generating multiple URLs with the same main content
+        $this->canonicalUrl = Yii::app()->request->hostInfo . '/dataset/' . $model->identifier;
+        $mainRenderer($assembly, $datasetPageSettings, $previousDataset, $nextDataset, $fileSettings, $sampleSettings, $flag);
     }
 }

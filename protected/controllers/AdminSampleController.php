@@ -1,67 +1,66 @@
 <?php
 
+declare(strict_types=1);
+
 class AdminSampleController extends Controller
 {
+    /**
+     * @return string[] action filters
+     */
+    public function filters(): array
+    {
+        return array(
+            'accessControl', // perform access control for CRUD operations
+        );
+    }
 
+    /**
+     * Specifies the access control rules.
+     * This method is used by the 'accessControl' filter.
+     * @return array<int, array<int|string, list<string>|string>> access control rules
+     */
+    public function accessRules(): array
+    {
+        return array(
+            array('allow', // admin only
+                'actions' => array('admin','delete','index','view','create','update'),
+                'roles' => array('admin'),
+            ),
+            array('allow', 'actions' => array('create1', 'choose'), 'users' => array('@')),
+            array('deny',  // deny all users
+                'users' => array('*'),
+            ),
+        );
+    }
 
-	/**
-	 * @return array action filters
-	 */
-	public function filters()
-	{
-		return array(
-			'accessControl', // perform access control for CRUD operations
-		);
-	}
-
-	/**
-	 * Specifies the access control rules.
-	 * This method is used by the 'accessControl' filter.
-	 * @return array access control rules
-	 */
-	public function accessRules()
-	{
-		return array(
-			array('allow', // admin only
-				'actions'=>array('admin','delete','index','view','create','update'),
-				'roles'=>array('admin'),
-			),
-                        array('allow', 'actions' => array('create1', 'choose'), 'users' => array('@')),
-			array('deny',  // deny all users
-				'users'=>array('*'),
-			),
-		);
-	}
-
-	/**
-	 * Displays a particular model.
-	 * @param integer $id the ID of the model to be displayed
-	 */
-	public function actionView($id)
-	{
-		$this->render('view',array(
-			'model'=>$this->loadModel($id),
-		));
-	}
+    /**
+     * Displays a particular model.
+     * @param int $id the ID of the model to be displayed
+     */
+    public function actionView(int $id): void
+    {
+        $this->render('view', array('model' => $this->loadModel($id)));
+    }
 
     /**
      * Creates a new model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
-    public function actionCreate()
+    public function actionCreate(): void
     {
         $model = new Sample();
 
-        // Uncomment the following line if AJAX validation is needed
-        // $this->performAjaxValidation($model);
-
-        if (isset($_POST['Sample'])) {
-            $model->attributes = $_POST['Sample'];
-            $model->name = $_POST['Sample']['name'];
-            $array = explode(":", $_POST['Sample']['species_id']);
+        if ($sample = Yii::$app->request->post('Sample')) {
+            $model->attributes = $sample;
+            $model->name = $sample['name'];
+            $array = explode(":", $sample['species_id']);
             $tax_id = $array[0];
-            if (!empty($tax_id)) {
-                $species = $this->findSpeciesRecord($tax_id, $model);
+            if (empty($tax_id)) {
+                $model->addError('error', 'Taxon ID is empty!');
+            } elseif (!is_numeric($tax_id)) {
+                $model->addError('error', 'Taxon ID ' . $tax_id . ' is not numeric!');
+            } else {
+                $species = $this->findSpeciesRecord((int) $tax_id, $model, $sample);
                 if ($species) {
                     # save to create a new sample record with sample id which is needed for findingh sampleAttribute model
                     if ($model->save()) {
@@ -71,19 +70,17 @@ class AdminSampleController extends Controller
                         }
                     }
                 }
-            } else {
-                $model->addError('error', 'Taxon ID is empty!');
             }
         }
 
-        $this->render('create', array(
-            'model' => $model,
-        ));
+        $this->render('create', array('model' => $model));
     }
 
 
-        public function actionCreate1() {
-            $model = new Sample;
+    //TODO: not used atm
+    public function actionCreate1()
+    {
+        $model = new Sample();
 
 // Uncomment the following line if AJAX validation is needed
 // $this->performAjaxValidation($model);
@@ -98,7 +95,10 @@ class AdminSampleController extends Controller
             'model' => $model,
         ));
     }
-     public function storeDataset() {
+
+    //TODO: not used atm
+    public function storeDataset()
+    {
         if (isset($_SESSION['dataset']) && isset($_SESSION['images'])) {
             $dataset = new Dataset;
             $dataset->image = new Images;
@@ -144,7 +144,9 @@ class AdminSampleController extends Controller
         }
     }
 
-    public function actionChoose() {
+    //TODO: not used atm
+    public function actionChoose()
+    {
         $model = new Sample('search');
         $model->unsetAttributes();  // clear any default values
         if (isset($_GET['samples'])) {
@@ -168,18 +170,9 @@ class AdminSampleController extends Controller
             $this->redirect(array('/dataset/' . $result[1]));
         }
 
-
-//        if (isset($_POST['DatasetSample'])) {
-//            $model->attributes = $_POST['DatasetSample'];
-//            if ($model->save())
-//                $this->redirect(array('view', 'id' => $model->id));
-//        }
-
         if (isset($_GET['Sample']))
             $model->attributes = $_GET['Sample'];
 
-
-//$model->getPagination()->pageSize = $model->count();
         $this->render('choose', array(
             'model' => $model,
         ));
@@ -188,9 +181,9 @@ class AdminSampleController extends Controller
     /**
      * Updates a particular model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id the ID of the model to be updated
+     * @param int $id the ID of the model to be updated
      */
-    public function actionUpdate($id)
+    public function actionUpdate(int $id): void
     {
         $model = $this->loadModel($id);
 
@@ -211,7 +204,7 @@ class AdminSampleController extends Controller
                 $hasErrors = true;
             }
 
-            if (!$this->findSpeciesRecord($tax_id, $model)) {
+            if (!$this->findSpeciesRecord((int) $tax_id, $model, $sampleAttribute)) {
                 $model->addError('error', 'The species does not exist');
                 $hasErrors = true;
             }
@@ -230,94 +223,95 @@ class AdminSampleController extends Controller
         $model->species_id = sprintf('%s: %s', $species->tax_id, $species->common_name ?: '');
         $model->species_id .= sprintf('%s%s', $species->common_name ? ', ' : '', $species->scientific_name ?: '');
 
-        $this->render('update', array(
-            'model'   => $model,
-            'species' => $species,
-        ));
+        $this->render('update', array('model' => $model, 'species' => $species));
     }
 
-	/**
-	 * Deletes a particular model.
-	 * If deletion is successful, the browser will be redirected to the 'admin' page.
-	 * @param integer $id the ID of the model to be deleted
-	 */
-	public function actionDelete($id)
-	{
-		if(Yii::app()->request->isPostRequest)
-		{
-			// we only allow deletion via POST request
-			$this->loadModel($id)->delete();
+    /**
+     * Deletes a particular model.
+     * If deletion is successful, the browser will be redirected to the 'admin' page.
+     * @param int $id the ID of the model to be deleted
+     */
+    public function actionDelete(int $id): void
+    {
+        if (!Yii::app()->request->isPostRequest) {
+            throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
+        }
 
-			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-			if(!isset($_GET['ajax']))
-				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
-		}
-		else
-			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
-	}
+        // we only allow deletion via POST request
+        $this->loadModel($id)->delete();
 
-	/**
-	 * Lists all models.
-	 */
-	public function actionIndex()
-	{
-		$dataProvider=new CActiveDataProvider('Sample');
-		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
-		));
-	}
+        // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+        if (!Yii::$app->request->get('ajax')) {
+            $returnUrl = Yii::$app->request->post('returnUrl');
 
-	/**
-	 * Manages all models.
-	 */
-	public function actionAdmin()
-	{
-		$model=new Sample('search');
-		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Sample'])) {
-			$attrs = $_GET['Sample'];
-			$model->setAttributes($attrs, true);
-		}
+            $this->redirect($returnUrl ?: array('admin'));
+        }
+    }
 
+    /**
+     * Lists all models.
+     */
+    public function actionIndex(): void
+    {
+        $dataProvider = new CActiveDataProvider('Sample');
 
-		$this->loadBaBbqPolyfills = true;
-		$this->render('admin',array(
-			'model'=>$model,
-		));
-	}
+        $this->render('index', array('dataProvider' => $dataProvider));
+    }
 
-	/**
-	 * Returns the data model based on the primary key given in the GET variable.
-	 * If the data model is not found, an HTTP exception will be raised.
-	 * @param integer the ID of the model to be loaded
-	 */
-	public function loadModel($id)
-	{
-		$model=Sample::model()->findByPk($id);
-		if($model===null)
-			throw new CHttpException(404,'The requested page does not exist.');
-		return $model;
-	}
+    /**
+     * Manages all models.
+     */
+    public function actionAdmin(): void
+    {
+        $model = new Sample('search');
+        $model->unsetAttributes();  // clear any default values
 
-	/**
-	 * Performs the AJAX validation.
-	 * @param CModel the model to be validated
-	 */
-	protected function performAjaxValidation($model)
-	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='sample-form')
-		{
-			echo CActiveForm::validate($model);
-			Yii::app()->end();
-		}
-	}
+        if ($attrs = Yii::$app->request->get('Sample')) {
+            $model->setAttributes($attrs, true);
+        }
+
+        $this->loadBaBbqPolyfills = true;
+
+        $this->render('admin', array('model' => $model));
+    }
+
+    /**
+     * Returns the data model based on the primary key given in the GET variable.
+     * If the data model is not found, an HTTP exception will be raised.
+     * @param int $id the ID of the model to be loaded
+     */
+    public function loadModel(int $id): Sample
+    {
+        /** @var Sample $sampleModel */
+        $sampleModel = Sample::model();
+
+        $model = $sampleModel->findByPk($id);
+        if (!$model) {
+            throw new CHttpException(404, 'The requested page does not exist.');
+        }
+
+        return $model;
+    }
+
+    /**
+     * Performs the AJAX validation.
+     *
+     * @param CModel $model the model to be validated
+     */
+    protected function performAjaxValidation(CModel $model): void
+    {
+        if (Yii::$app->request->post('ajax') === 'sample-form') {
+            echo CActiveForm::validate($model);
+            Yii::app()->end();
+        }
+    }
 
     /**
      * Upate sample attribute
      *
      * @param Sample $model
      */
-    private function updateSampleAttributes($model)
+    private function updateSampleAttributes(Sample $model): void
     {
         // delete first all the sample Attribute
         SampleAttribute::model()->deleteAllByAttributes(array('sample_id' => $model->id));
@@ -356,23 +350,20 @@ class AdminSampleController extends Controller
     /**
      * Get species active record using the tax id from the form input
      *
-     * @param $tax_id
+     * @param int    $tax_id
      * @param Sample $model
      * @return CActiveRecord|null
      */
-    private function findSpeciesRecord($tax_id, $model): ?CActiveRecord
+    private function findSpeciesRecord(int $tax_id, Sample $model, array $sample): ?CActiveRecord
     {
-        if (is_numeric($tax_id)) {
-            $species = Species::model()->findByAttributes(array('tax_id' => $tax_id));
-            if (!$species) {
-                $model->addError('error', 'Taxon ID ' . $tax_id . ' is not found!');
-            } else {
-                $model->species_id = $species->id;
-                $model->attributesList = $_POST['Sample']['attributesList'];
-            }
+        $species = Species::model()->findByAttributes(array('tax_id' => $tax_id));
+        if (!$species) {
+            $model->addError('error', 'Taxon ID ' . $tax_id . ' is not found!');
         } else {
-            $model->addError('error', 'Taxon ID ' . $tax_id . ' is not numeric!');
+            $model->species_id = $species->id;
+            $model->attributesList = $sample['attributesList'];
         }
+
         return $species;
     }
 }

@@ -2,21 +2,21 @@
 $html_slides = array();
 
 foreach ($datasets as $dataset) {
-  $image_url = $dataset->getImageUrl();
-  $image_tag = isset($dataset->image) ? $dataset->image->tag : '';
-  $date_html = '<div class="dataset-date"></div>';
-  $safe_title = Yii::app()->controller->widget('CHtmlPurifier')->purify($dataset['title']);
+    $image_url = $dataset->getImageUrl();
+    $image_tag = isset($dataset->image) ? $dataset->image->tag : '';
+    $date_html = '<div class="dataset-date"></div>';
+    $safe_title = Yii::app()->controller->widget('CHtmlPurifier')->purify($dataset['title']);
 
-  if (empty($image_url)) {
-    $image_url = Yii::app()->baseUrl . '/images/no_image.png';
-    $image_tag = '';
-  }
+    if (empty($image_url)) {
+        $image_url = Yii::app()->baseUrl . '/images/no_image.png';
+        $image_tag = '';
+    }
 
-  if (!empty($dataset['publication_date'])) {
-    $date_html = sprintf('<div class="dataset-date">%s</div>', date('F j, Y', strtotime($dataset['publication_date'])));
-  }
+    if (!empty($dataset['publication_date'])) {
+        $date_html = sprintf('<div class="dataset-date">%s</div>', date('F j, Y', strtotime($dataset['publication_date'])));
+    }
 
-  $html_slides[] = '<div class="dataset-item">' .
+    $html_slides[] = '<div class="dataset-item">' .
             '<div class="dataset-image-wrapper">' .
               '<img class="dataset-image" src="' . CHtml::encode($image_url) . '" alt="' . CHtml::encode($image_tag) . '" loading="lazy" />' .
             '</div>' .
