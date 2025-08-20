@@ -131,10 +131,10 @@ Feature: a user visit the dataset page
     And I should see an image "https://assets.gigadb-cdn.net/live/images/projects/the_avian_phylogenomic_project/phylogenomiclogo.png" is linked to "http://avian.genomics.cn/en/index.html"
 
   @ok
-  Scenario: Github links are displayed on dataset page
+  Scenario: Created GitHub repo are displayed on dataset page
     Given I have not signed in
     When I am on "/dataset/100935"
-    Then I should see "Github links"
+    Then I should see "Authors code repositories"
     And I should see "https://github.com/cihga39871/Atria"
 
   @ok @cite-dataset-button
@@ -180,6 +180,7 @@ Feature: a user visit the dataset page
     And I should see "SRS173539"
     When I follow "2"
     And I follow "Files"
+    And I wait "2" seconds
     And I follow "3"
     Then I should be on "/dataset/view/id/100035/Files_page/3"
     # If bug was present, URL would look like:
@@ -238,6 +239,7 @@ Feature: a user visit the dataset page
     Given I have not signed in
     When I am on "/dataset/100006"
     And I follow "3D Models"
+    And I wait "2" seconds
     Then I should see "3D Models:"
     And I should see "Select a model"
     And I should see "GeoB8502_865cm_Shell-4.obj"
@@ -255,7 +257,6 @@ Feature: a user visit the dataset page
     And I follow "3D Sketchfab"
     Then I should see "3D Sketchfab:"
 
-
   @ok
   Scenario: List ordered author list
     Given I have not signed in
@@ -263,9 +264,15 @@ Feature: a user visit the dataset page
     Then I should see "Liu X; Quan Z; Cheng S; Xu X; Pan S; Zeng P; Xie M; Yue Z; Zhan D; Li Y; Wang J; Zhao Z; Zhang G (2011)"
     And I should not see "Wang, J; Quan, Z; Zhao, Z; Cheng, S; Liu, X; Li, Y; Pan, S; Xie, M; Xu, X; Yue, Z; Zeng, P; Zhan, D; Zhang, G (2011)"
 
-    @ok
+  @ok
   Scenario: Show pre print publications
     Given I have not signed in
     When I am on "/dataset/100142"
     Then I should see "Read the pre-print publication(s):"
 
+  @ok
+  Scenario: Show archived link
+    Given I have not signed in
+    When I am on "/dataset/100935"
+    Then I should see "Archived"
+    And I should see "https://archive.softwareheritage.org/browse/directory/d9323c56a707dc8e9fbea583c86fbec8d40b50c5/?origin_url=https://github.com/cihga39871/Atria"

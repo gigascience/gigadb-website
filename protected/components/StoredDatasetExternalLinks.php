@@ -51,7 +51,7 @@ class StoredDatasetExternalLinks extends DatasetComponents implements DatasetExt
     public function getDatasetExternalLinks(array $types = null): array
     {
         $results = $this->_db->createCommand()
-                                ->select('l.id, dataset_id, url, external_link_type_id, t.name as external_link_type_name')
+                                ->select('l.id, dataset_id, url, external_link_type_id, t.name as external_link_type_name, t.multiple, l.is_referred')
                                 ->from('external_link l')
                                 ->join('external_link_type t', 'l.external_link_type_id = t.id')
                                 ->where('dataset_id = :id', array(':id' => $this->_id))
@@ -75,19 +75,23 @@ class StoredDatasetExternalLinks extends DatasetComponents implements DatasetExt
     {
         $results = [];
         $reader = $this->_db->createCommand()
-                                ->select('t.name, count(*) as number')
-                                ->from('external_link l')
-                                ->join('external_link_type t', 'l.external_link_type_id = t.id')
-                                ->where('dataset_id = :id', array(':id' => $this->_id))
-                                ->andWhere(array('in','t.name', $types))
-                                ->group('t.name')
-                                ->query();
+            ->select('t.name, t.displayed_as, t.can_self_referred, count(*) as number')
+            ->from('external_link l')
+            ->join('external_link_type t', 'l.external_link_type_id = t.id')
+            ->where('dataset_id = :id', array(':id' => $this->_id))
+            ->andWhere(array('in','t.name', $types))
+            ->group('t.name, t.displayed_as, t.can_self_referred')
+            ->query();
 
         $reader->bindColumn(1, $type);
-        $reader->bindColumn(2, $count);
+        $reader->bindColumn(2, $displayed_as);
+        $reader->bindColumn(3, $canSelfReferred);
+        $reader->bindColumn(4, $count);
+
         while ($reader->read() !== false) {
-            $results[$type] = $count;
+            $results[$type] = [$count, $displayed_as, $canSelfReferred];
         }
+
         return $results;
     }
 }

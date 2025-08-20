@@ -44,11 +44,13 @@ class ExternalLink extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('dataset_id, url, external_link_type_id', 'required'),
-			array('dataset_id, external_link_type_id', 'numerical', 'integerOnly'=>true),
-			array('url', 'length', 'max'=>128),
+			array('dataset_id, external_link_type_id,related_id', 'numerical', 'integerOnly'=>true),
+            array('external_link_type_id', 'checkIfMultipleIsAllowed', 'on' => 'create'),
+			array('url', 'length', 'max'=>300),
+            array('is_referred', 'boolean'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, dataset_id, url, external_link_type_id, doi_search, external_link_type_search', 'safe', 'on'=>'search'),
+			array('id, dataset_id, url, external_link_type_id, doi_search, external_link_type_search, related_id, is_referred', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -62,7 +64,8 @@ class ExternalLink extends CActiveRecord
 		return array(
 			'dataset' => array(self::BELONGS_TO, 'Dataset', 'dataset_id'),
 			'external_link_type' => array(self::BELONGS_TO, 'ExternalLinkType', 'external_link_type_id'),
-			'externalLinkType' => array(self::BELONGS_TO, 'ExternalLinkType', 'external_link_type_id'),
+            'relatedId' => array(self::BELONGS_TO, 'ExternalLink', 'related_id'),
+            'referencedBy' => array(self::HAS_MANY, 'ExternalLink', 'related_id'),
 		);
 	}
 
@@ -110,5 +113,22 @@ class ExternalLink extends CActiveRecord
         return array(
             'ActiveRecordLogableBehavior' => 'application.behaviors.DatasetRelatedTableBehavior',
         );
+    }
+
+    public function checkIfMultipleIsAllowed($attribute, $params) {
+        $value = $this->$attribute;
+        $model = ExternalLinkType::model()->findByPk($value);
+        if ($model->multiple) {
+            return;
+        }
+
+        $externalLink = ExternalLink::model()
+            ->findByAttributes(['external_link_type_id' => $value, 'dataset_id' => $this->dataset_id]);
+
+        if (!$externalLink) {
+            return;
+        }
+
+        $this->addError($attribute, "Can't be multiple instances of that external_link per dataset");
     }
 }

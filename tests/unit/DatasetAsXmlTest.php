@@ -62,13 +62,13 @@ class DatasetAsXmlTest  extends CDbTestCase
 
         $relatedIdentifierProject = $dom->getElementsByTagName('relatedIdentifier')->item(8);
         $this->assertEquals('URL', $relatedIdentifierProject->getAttribute('relatedIdentifierType'));
-        $this->assertEquals('References', $relatedIdentifierProject->getAttribute('relationType'));
+        $this->assertEquals('Cites', $relatedIdentifierProject->getAttribute('relationType'));
         $this->assertEquals('Other', $relatedIdentifierProject->getAttribute('resourceTypeGeneral'));
         $this->assertEquals('http://foo2.com', $relatedIdentifierProject->nodeValue);
 
         $relatedIdentifierExternalLink = $dom->getElementsByTagName('relatedIdentifier')->item(10);
         $this->assertEquals('DOI', $relatedIdentifierExternalLink->getAttribute('relatedIdentifierType'));
-        $this->assertEquals('References', $relatedIdentifierExternalLink->getAttribute('relationType'));
+        $this->assertEquals('Cites', $relatedIdentifierExternalLink->getAttribute('relationType'));
         $this->assertEquals('Workflow', $relatedIdentifierExternalLink->getAttribute('resourceTypeGeneral'));
         $this->assertEquals('http://foo4.com', $relatedIdentifierExternalLink->nodeValue);
     }

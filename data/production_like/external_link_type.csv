@@ -1,10 +1,14 @@
-id,name
-1,Additional information
-2,Genome browser
-3,Protocols.io
-4,JBrowse
-5,3D Models
-6,Code Ocean
-7,Github links
-8,USCS Tumour Map Viewer
-9,3D Sketchfab
+id,name,description,prefix,displayed_as,multiple,relationship_id,can_self_referred
+1,Additional information,,,link,true,14,
+2,Genome browser,,,link,false,14,
+3,Protocols.io,,,link,false,14,
+4,JBrowse,,,tab,false,12,
+5,3D Models,,,tab,false,12,
+6,Code Ocean,,,tab,false,14,
+7,Authors code repositories,,,link,false,14,
+8,USCS Tumour Map Viewer,,,link,false,14,
+9,3D Sketchfab,,,tab,false,14,
+11,Software Heritage Archive (SWHA),,,link,false,14,true
+12,Cited code repository,,,link,false,14,
+13,Workflow,The workflow(s) associated with the dataset,,tab,true,14,
+14,Resource ID,The Research Resource Identifiers (RRID) of the resource(s) that are to be considered part of the dataset,https://scicrunch.org/resolver/,link,true,14,

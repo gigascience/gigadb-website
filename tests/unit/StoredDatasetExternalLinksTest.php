@@ -53,6 +53,8 @@ class StoredDatasetExternalLinksTest extends CDbTestCase
                 'url' => "http://foo.com",
                 'external_link_type_id' => 1,
                 'external_link_type_name' => "Additional information",
+                'multiple' => true,
+                'is_referred' => false
             ),
             array(
                 'id' => 2,
@@ -60,6 +62,8 @@ class StoredDatasetExternalLinksTest extends CDbTestCase
                 'url' => "http://foo2.com",
                 'external_link_type_id' => 1,
                 'external_link_type_name' => "Additional information",
+                'multiple' => true,
+                'is_referred' => false
             ),
             array(
                 'id' => 3,
@@ -67,6 +71,8 @@ class StoredDatasetExternalLinksTest extends CDbTestCase
                 'url' => "http://foo3.com",
                 'external_link_type_id' => 2,
                 'external_link_type_name' => "Genome browser",
+                'multiple' => false,
+                'is_referred' => false
             ),
             array(
                 'id' => 4,
@@ -74,6 +80,8 @@ class StoredDatasetExternalLinksTest extends CDbTestCase
                 'url' => "http://foo4.com",
                 'external_link_type_id' => 3,
                 'external_link_type_name' => "Protocols.io",
+                'multiple' => false,
+                'is_referred' => false
             ),
             array(
                 'id' => 5,
@@ -81,6 +89,8 @@ class StoredDatasetExternalLinksTest extends CDbTestCase
                 'url' => "http://foo5.com",
                 'external_link_type_id' => 4,
                 'external_link_type_name' => "JBrowse",
+                'multiple' => false,
+                'is_referred' => false
             ),
         );
 
@@ -99,10 +109,10 @@ class StoredDatasetExternalLinksTest extends CDbTestCase
         $dataset_id = 1;
 
         $expected = array(
-            "Additional information" => 2,
-            "Genome browser" => 1,
-            "Protocols.io" => 1,
-            "JBrowse" => 1,
+            "Additional information" => ['2','link', ''],
+            "Genome browser" => ['1', 'tab', ''],
+            "Protocols.io" => ['1', 'link', ''],
+            "JBrowse" => ['1', 'link', ''],
         );
 
         $daoUnderTest = new StoredDatasetExternalLinks(
@@ -112,7 +122,7 @@ class StoredDatasetExternalLinksTest extends CDbTestCase
         $this->assertEquals($expected, $daoUnderTest->getDatasetExternalLinksTypesAndCount()) ;
 
         $expected2 = array(
-            "Additional information" => 2,
+            "Additional information" =>['2', 'link', ''],
         );
         $this->assertEquals($expected2, $daoUnderTest->getDatasetExternalLinksTypesAndCount(["Additional information"])) ;
 

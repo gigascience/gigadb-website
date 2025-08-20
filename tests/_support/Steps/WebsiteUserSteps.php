@@ -33,6 +33,7 @@ class WebsiteUserSteps extends \Codeception\Actor
     {
         $this->I->amOnPage("/dataset/100006");
         $this->I->click("Files");
+        $this->I->wait(2);
         $this->I->click("#files_table_settings");
         $this->I->wait(1);
         $this->I->selectOption("form[name=myFilesSettingform] select[name=pageSize]", $pageSize);

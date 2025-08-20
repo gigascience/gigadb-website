@@ -39,6 +39,8 @@
 
                 <li><a class="btn background-btn" title="Add/update links to genome browsers and related links" href="/adminExternalLink/admin">External Links</a></li>
 
+              <li><a class='btn background-btn' title='Add/update external link types' href='/adminExternalLinkType/admin'>External Link Types</a></li>
+
                 <li><a class="btn background-btn" title="Add/update prefixes of links supported by GigaDB" href="/adminLinkPrefix/admin">Link Prefixes</a></li>
 
                 <li><a class="btn background-btn" title="Add/update funder" href="/funder/admin">Funder</a></li>
