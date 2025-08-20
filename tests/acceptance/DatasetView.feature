@@ -180,6 +180,7 @@ Feature: a user visit the dataset page
     And I should see "SRS173539"
     When I follow "2"
     And I follow "Files"
+    And I wait "2" seconds
     And I follow "3"
     Then I should be on "/dataset/view/id/100035/Files_page/3"
     # If bug was present, URL would look like:

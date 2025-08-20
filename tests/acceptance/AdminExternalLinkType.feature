@@ -28,7 +28,7 @@ Feature: form to update externalLink types details
     And I should see "Relationship Id"
     And I should see "Can be multiple instances of that external_link per dataset"
     And I should see "ExternalLinkType_multiple" checkbox is unchecked
-    And I should see "Can be linked to an other external link url"
+    And I should see "Can be linked to another external link url"
     And I should see "ExternalLinkType_can_self_referred" checkbox is unchecked
 
   @ok
