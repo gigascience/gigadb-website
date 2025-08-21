@@ -9,7 +9,7 @@
         "aws/aws-sdk-php": "3.288.1",
         "yidas/yii2-composer-bower-skip": "~2.0.13",
         "yiisoft/yii": "~1.1.28",
-        "yiisoft/yii2": "~2.0.52",
+        "yiisoft/yii2": "~2.0.53",
         "yiisoft/yii2-swiftmailer": "~2.1.0",
         "phpmailer/phpmailer": "^6.0",
         "gabrielelana/byte-units": "^0.5",
