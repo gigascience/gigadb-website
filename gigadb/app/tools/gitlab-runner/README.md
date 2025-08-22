@@ -166,7 +166,7 @@ and fill in the value as instructed.
 
 ## Register a runner for a team member
 
-You must use the Gitlab user login (GITLAB_USER_LOGIN).
+You must use the Gitlab user login (GITLAB_USER_LOGIN). Follow the instructions at https://docs.gitlab.com/tutorials/create_register_first_runner/
 
 ```
 $ docker compose run --rm runner --version
@@ -176,7 +176,7 @@ Git branch:   18-2-stable
 GO version:   go1.24.4 X:cacheprog
 Built:        2025-07-28T12:43:39Z
 OS/Arch:      linux/amd64
-$ docker-compose run --rm -e RUNNER_TAG_LIST="<Gitlab user login here>" register
+$ docker compose run --rm register register --url https://gitlab.com --token $glrtoken
 ```
 
 ## Start runners
@@ -187,7 +187,8 @@ variables matches the number of ``[[runners]]`` subsections multiplied by the va
 then: 
 
 ```
-$ docker-compose up -d runner
+$ docker compose up -d runner
+$ docker compose logs
 ```
 
 ## Shutdown a runner in standalone Docker engine
