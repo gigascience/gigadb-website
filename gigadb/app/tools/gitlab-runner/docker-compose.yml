@@ -14,8 +14,6 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./config:/etc/gitlab-runner
-      - /var/runner/cache:/cache:rw
-      - /var/runner/builds:/builds:rw
     restart: always
     deploy:
       restart_policy:
@@ -31,8 +29,6 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./config:/etc/gitlab-runner
-      - /var/runner/cache:/cache:rw
-      - /var/runner/builds:/builds:rw
     deploy:
       mode: replicated
       replicas: 0
