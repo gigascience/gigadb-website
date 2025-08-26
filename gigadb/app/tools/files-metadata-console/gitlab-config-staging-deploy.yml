@@ -1,5 +1,7 @@
 FilesMetaDataConsoleDeployStaging:
   stage: staging deploy
+  tags:
+    - $GITLAB_USER_LOGIN
   variables:
     GIGADB_ENV: staging
     REMOTE_WEBAPP_DOCKER: "$remote_public_ip:2376"
