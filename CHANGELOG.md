@@ -4,6 +4,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+- Feat #2404: Create gitlab runner on AWS EC2 instance
+
 ## v4.4.16 - 2025-08-15 - 6e04c0b9e - live since 2025-08-21
 
 - Fix #2428: AdminUserController should target AdminUserController when validating or rejecting a claim
