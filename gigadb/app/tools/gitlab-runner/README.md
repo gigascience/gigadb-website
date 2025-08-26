@@ -1,5 +1,9 @@
 # Gitlab runner
 
+This document describes how to set up a self-managed Gitlab runner on an AWS EC2 instance using Docker and Docker Compose. 
+It is based on the official Gitlab runner Docker image and the Gitlab runner [documentation](https://docs.gitlab.com/runner/).
+
+
 ## Setup AWS EC2 instance
 * https://www.digitalocean.com/community/tutorials/how-to-keep-ubuntu-22-04-servers-updated
 
@@ -130,22 +134,30 @@ For more examples and ideas, visit:
 
 ```
 
-## Create dir
+## Create dir structure in the EC2 ubuntu server
 
 ```
+% ssh -i ~/.ssh/id-rsa-aws-jakarta.pem ubuntu@108.136.186.95
 ubuntu@ip-172-31-47-236:~$ pwd
 /home/ubuntu
 ubuntu@ip-172-31-47-236:~$ mkdir -p gigadb-website/gigadb/app/tools/gitlab-runner/
 ubuntu@ip-172-31-47-236:~$ cd gigadb-website/gigadb/app/tools/gitlab-runner/
-ubuntu@ip-172-31-47-236:~/gigadb-website/gigadb/app/tools/gitlab-runner$ mkdir scripts
+ubuntu@ip-172-31-47-236:~/gigadb-website/gigadb/app/tools/gitlab-runner$ mkdir --p scripts config
+ubuntu@ip-172-31-47-236:~/gigadb-website/gigadb/app/tools/gitlab-runner$
+
+```
+
+## Copy files to the EC2 instance
+
+```
+% cd gigadb-website/gigadb/app/tools/gitlab-runner/
+% scp -i ~/.ssh/id-rsa-aws-jakarta.pem . ubuntu@108.136.186.95:~/gigadb-website/gigadb/app/tools/gitlab-runner/
 ubuntu@ip-172-31-47-236:~/gigadb-website/gigadb/app/tools/gitlab-runner$ ls -al
 total 28
 drwxrwxr-x 4 ubuntu ubuntu 4096 Aug 19 07:40 .
 drwxrwxr-x 3 ubuntu ubuntu 4096 Aug 19 07:32 ..
--rw-r--r-- 1 ubuntu ubuntu  117 Aug 19 07:37 .env
 drwxrwxr-x 2 ubuntu ubuntu 4096 Aug 19 07:40 config
 -rw-r--r-- 1 ubuntu ubuntu 1127 Aug 19 07:35 docker-compose.yml
--rw-r--r-- 1 ubuntu ubuntu  117 Aug 19 07:35 env-sample
 drwxrwxr-x 2 ubuntu ubuntu 4096 Aug 19 07:36 scripts
 ubuntu@ip-172-31-47-236:~/gigadb-website/gigadb/app/tools/gitlab-runner$ ls -al scripts config
 total 12
@@ -153,55 +165,181 @@ drwxrwxr-x 2 ubuntu ubuntu 4096 Aug 19 07:36 .
 drwxrwxr-x 3 ubuntu ubuntu 4096 Aug 19 07:36 ..
 -rw-r--r-- 1 ubuntu ubuntu 1245 Aug 19 07:36 delete_runner_cache.sh
 ubuntu@ip-172-31-47-236:~/gigadb-website/gigadb/app/tools/gitlab-runner$
-
 ```
 
-## Set value for REGISTRATION_TOKEN
+## Create a Gitlab Project runner
+
+Details can be referred to https://docs.gitlab.com/ci/runners/runners_scope/#project-runners.
+
+Prerequisites:
+
+You must have the Maintainer role for the project.
+
+To create a project runner:
+1. On the left sidebar, select Search or go to and find your project.
+2. Go to Settings > CI/CD > Runners > Expand.
+3. Select New project runner.
+4. Select the operating system where GitLab Runner is installed.
+5. In the Tags section, you have to check the `Run untagged jobs`, and also in the Tags field, enter the job tags to specify jobs the runner can run, eg, `peter888, kencho18`. But then you have to make sure to add the following snippet in every job in your pipeline:
+```
+  tags:
+    - $GITLAB_USER_LOGIN
+```
+6. Select Create runner.
+7. Then you will see the registration token, e.g., glrt-xxx-xxxxxxxxxxxxxxxxxxxx
+8. Run the following command to register the runner (replace with the actual token) in the EC2 instance:
 
 ```
-$ cp env-sample .env
+ubuntu@ip-172-31-47-236:~/gigadb-website/gigadb/app/tools/gitlab-runner$ docker compose run register register --url https://gitlab.com --token glrt-xxx-xxxxxxxxxxxxxxxxxxxx
+Enter the GitLab instance URL (for example, https://gitlab.com/):
+[https://gitlab.com]: 
+Verifying runner... is valid                        correlation_id=2a6c5e5cd66b03587ed5df2fffc418bc runner=Js9yGlCf1
+Enter a name for the runner. This is stored only in the local config.toml file:
+[1b8a906f342a]: cicd-bot-kencho18
+Enter an executor: shell, virtualbox, docker-windows, kubernetes, docker-autoscaler, instance, custom, ssh, parallels, docker, docker+machine:
+docker
+Enter the default Docker image (for example, ruby:3.3):
+alpine:latest
+Runner registered successfully. Feel free to start it, but if it's running already the config should be automatically reloaded!
+ 
+Configuration (with the authentication token) was saved in "/etc/gitlab-runner/config.toml"
+ubuntu@ip-172-31-47-236:~/gigadb-website/gigadb/app/tools/gitlab-runner$ sudo cat config/config.toml 
+concurrent = 1
+check_interval = 0
+shutdown_timeout = 0
+
+[session_server]
+  session_timeout = 1800
+
+[[runners]]
+  name = "cicd-bot-kencho18"
+  url = "https://gitlab.com"
+  id = 49583611
+  token = "glrt-xxx-xxxxxxxxxxxxxxxxxxxx"
+  token_obtained_at = 2025-08-22T08:22:14Z
+  token_expires_at = 0001-01-01T00:00:00Z
+  executor = "docker"
+  [runners.cache]
+    MaxUploadedArchiveSize = 0
+    [runners.cache.s3]
+    [runners.cache.gcs]
+    [runners.cache.azure]
+  [runners.docker]
+    tls_verify = false
+    image = "alpine:latest"
+    privileged = false
+    disable_entrypoint_overwrite = false
+    oom_kill_disable = false
+    disable_cache = false
+    volumes = ["/cache"]
+    shm_size = 0
+    network_mtu = 0
 ```
 
-and fill in the value as instructed.
-
-## Register a runner for a team member
-
-You must use the Gitlab user login (GITLAB_USER_LOGIN). Follow the instructions at https://docs.gitlab.com/tutorials/create_register_first_runner/
+9. Update the `config/config.toml` file to run Docker-in-Docker (DinD) and multiple jobs.
 
 ```
-$ docker compose run --rm runner --version
-Version:      18.2.1
-Git revision: cc489270
-Git branch:   18-2-stable
-GO version:   go1.24.4 X:cacheprog
-Built:        2025-07-28T12:43:39Z
-OS/Arch:      linux/amd64
-$ docker compose run --rm register register --url https://gitlab.com --token $glrtoken
+concurrent = 10
+check_interval = 0
+connection_max_age = "15m0s"
+shutdown_timeout = 0
+
+[[runners]]
+  name = "cicd-bot-kencho18"
+  url = "https://gitlab.com"
+  id = 49583611
+  token = "glrt-xxx-xxxxxxxxxxxxxxxxxxxx"
+  token_obtained_at = 2025-08-23T07:43:34Z
+  token_expires_at = 0001-01-01T00:00:00Z
+  executor = "docker"
+  [runners.cache]
+    MaxUploadedArchiveSize = 0
+    [runners.cache.s3]
+    [runners.cache.gcs]
+    [runners.cache.azure]
+  [runners.docker]
+    tls_verify = false
+    image = "alpine:latest"
+    privileged = true
+    disable_entrypoint_overwrite = false
+    oom_kill_disable = false
+    disable_cache = true
+    volumes = ["/var/runner/cache:/cache:rw", "/var/runner/builds:/builds:rw"]
+    pull_policy = ["if-not-present"]
+    shm_size = 0
+    network_mtu = 0
 ```
 
-## Start runners
-
-Update ``config/config.toml`` to ensure the value of the ``concurrent``
-variables matches the number of ``[[runners]]`` subsections multiplied by the value of the  ``limit`` variable.
-
-then: 
+10. Spin up the runner:
 
 ```
-$ docker compose up -d runner
-$ docker compose logs
+ubuntu@ip-172-31-47-236:~/gigadb-website/gigadb/app/tools/gitlab-runner$ docker compose up -d runner
+ubuntu@ip-172-31-47-236:~/gigadb-website/gigadb/app/tools/gitlab-runner$ $ docker compose ps -a
+NAME                                      IMAGE                         COMMAND                  SERVICE    CREATED      STATUS                  PORTS
+gitlab-runner-runner-1                    gitlab/gitlab-runner:latest   "/usr/bin/dumb-init …"   runner     2 days ago   Up 2 days
 ```
 
-## Shutdown a runner in standalone Docker engine
+11. The runner should now be active in the Gitlab project under Settings > CI/CD > Project Runners.
+12. Then go to the project that you want to use this runner, then go to Settings > CI/CD > Project Runners > Enable for this project.
+13. Runner's details can be seen in the Runner dashboard by clicking the runner, e.g., https://gitlab.com/gigascience/forks/kencho-gigadb-website/-/runners/49583611
+14. Trigger a pipeline in the project to test the runner, you will see the pipeline job is executed by the runner with the id stated in the `config/config.toml`, description you added in when creating a runner, eg. `aws_ec2_runner`, and runner name `cicd-bot-kencho18` you provided when registering the runner. 
 
-Fist, de-register it in Gitlab dashboard, then
+
+## Monitor the runner status and logs:
+```
+ubuntu@ip-172-31-47-236:~/gigadb-website/gigadb/app/tools/gitlab-runner$ docker compose logs
+runner-1  | Runtime platform                                    arch=amd64 os=linux pid=6 revision=9ba718cd version=18.3.0
+runner-1  | Starting multi-runner from /etc/gitlab-runner/config.toml...  builds=0 max_builds=0
+runner-1  | Running in system-mode.                            
+runner-1  |                                                    
+runner-1  | Usage logger disabled                               builds=0 max_builds=10
+runner-1  | Configuration loaded                                builds=0 max_builds=10
+runner-1  | listen_address not defined, metrics & debug endpoints disabled  builds=0 max_builds=10
+runner-1  | [session_server].listen_address not defined, session endpoints disabled  builds=0 max_builds=10
+runner-1  | Initializing executor providers                     builds=0 max_builds=10
+runner-1  | Checking for jobs... received                       correlation_id=0994bf088971459b96d42ef9927c181f job=11115201673 repo_url=https://gitlab.com/gigascience/forks/kencho-gigadb-website.git runner=wn6-rPMzo
+runner-1  | Added job to processing list                        builds=1 job=11115201673 max_builds=10 project=29922929 queue_depth=1 queue_size=1 repo_url=https://gitlab.com/gigascience/forks/kencho-gigadb-website.git time_in_queue_seconds=1
+runner-1  | Appending trace to coordinator...ok                 code=202 correlation_id=d3ddfb0b09c94ebb9e1c43bd210c6ec6 job=11115201673 job-log=0-777 job-status=running runner=wn6-rPMzo sent-log=0-776 status=202 Accepted update-interval=1m0s
+runner-1  | Appending trace to coordinator...ok                 code=202 correlation_id=8d85c05f175e44d888fe32c8f29bc7f1 job=11115201673 job-log=0-10916 job-status=running runner=wn6-rPMzo sent-log=777-10915 status=202 Accepted update-interval=3s
+.....
+ubuntu@ip-172-31-47-236:~/gigadb-website/gigadb/app/tools/gitlab-runner$ 
+```
+
+
+## Shutdown and remove a runner, if needed
+
+If the runner is no longer needed, you can remove it from the Gitlab project in the gitlab runner dashboard.
+You can also stop containers and remove containers, networks, volumes by running the following command in the EC2 instance:
 
 ```
-$ docker compose down -v
+ubuntu@ip-172-31-47-236:~/gigadb-website/gigadb/app/tools/gitlab-runner$ docker compose down -v
 ```
+
+## Examine and manage the runner cache
+The runner cache is stored in the `/var/runner/cache` directory on the host machine. You can examine the cache files by running the following command in the EC2 instance:
+
+```
+ubuntu@ip-172-31-47-236:~/gigadb-website/gigadb/app/tools/gitlab-runner$ ls -al /var/runner/cache/
+total 12
+drwxr-xr-x 3 root root 4096 Aug 23 07:54 .
+drwxr-xr-x 4 root root 4096 Aug 22 08:08 ..
+drwx------ 4 root root 4096 Aug 25 01:57 gigascience
+ubuntu@ip-172-31-47-236:~/gigadb-website/gigadb/app/tools/gitlab-runner$ ls -al /var/runner/cache/gigascience/
+ls: cannot open directory '/var/runner/cache/gigascience/': Permission denied
+ubuntu@ip-172-31-47-236:~/gigadb-website/gigadb/app/tools/gitlab-runner$ sudo ls -al /var/runner/cache/gigascience/
+total 16
+drwx------ 4 root root 4096 Aug 25 01:57 .
+drwxr-xr-x 3 root root 4096 Aug 23 07:54 ..
+drwx------ 4 root root 4096 Aug 25 01:36 forks
+drwx------ 3 root root 4096 Aug 25 01:57 upstream
+ubuntu@ip-172-31-47-236:~/gigadb-website/gigadb/app/tools/gitlab-runner$
+```
+
 
 
 ## Resources 
 
+* https://docs.gitlab.com/tutorials/create_register_first_runner/
 * https://docs.gitlab.com/runner/configuration/advanced-configuration.html
 * https://docs.gitlab.com/ee/ci/runners/configure_runners.html
 * https://docs.gitlab.com/runner/register/
