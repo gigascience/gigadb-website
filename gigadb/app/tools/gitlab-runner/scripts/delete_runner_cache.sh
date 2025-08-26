@@ -1,6 +1,6 @@
 #!/bin/bash
 
-LOG_FILE="/var/log/delete_runner_cache.log"
+LOG_FILE="/var/log/gitlab-runner/delete_runner_cache.log"
 CACHE_DIR="/var/runner/cache/gigascience"
 
 # Function to log with timestamp
