@@ -17,6 +17,8 @@
     - bash -c "echo '$docker_tlsauth_ca' >  ~/.docker/ca.pem || true"
     - bash -c "echo '$docker_tlsauth_cert' > ~/.docker/cert.pem || true"
     - bash -c "echo '$docker_tlsauth_key' > ~/.docker/key.pem || true"
+  tags:
+    - $GITLAB_USER_LOGIN
 
 sd_top:
   variables:
@@ -69,7 +71,6 @@ ld_reset_migration:
     name: live
     action: prepare
   when: manual
-
 
 .teardown:
   extends: .remote_compose
