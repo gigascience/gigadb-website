@@ -316,26 +316,96 @@ ubuntu@ip-172-31-47-236:~/gigadb-website/gigadb/app/tools/gitlab-runner$ docker 
 ```
 
 ## Examine and manage the runner cache
+
 The runner cache is stored in the `/var/runner/cache` directory on the host machine. You can examine the cache files by running the following command in the EC2 instance:
 
 ```
-ubuntu@ip-172-31-47-236:~/gigadb-website/gigadb/app/tools/gitlab-runner$ ls -al /var/runner/cache/
+ubuntu@ip-172-31-47-236:~/gigadb-website/gigadb/app/tools/gitlab-runner$ $ ls -al /var/runner/cache/
 total 12
-drwxr-xr-x 3 root root 4096 Aug 23 07:54 .
-drwxr-xr-x 4 root root 4096 Aug 22 08:08 ..
-drwx------ 4 root root 4096 Aug 25 01:57 gigascience
-ubuntu@ip-172-31-47-236:~/gigadb-website/gigadb/app/tools/gitlab-runner$ ls -al /var/runner/cache/gigascience/
-ls: cannot open directory '/var/runner/cache/gigascience/': Permission denied
-ubuntu@ip-172-31-47-236:~/gigadb-website/gigadb/app/tools/gitlab-runner$ sudo ls -al /var/runner/cache/gigascience/
+drwxr-xr-x 3 root   root   4096 Aug 23 07:54 .
+drwxr-xr-x 4 root   root   4096 Aug 22 08:08 ..
+drwxr-xr-x 3 ubuntu ubuntu 4096 Aug 26 07:31 gigascience
+ubuntu@ip-172-31-47-236:~/gigadb-website/gigadb/app/tools/gitlab-runner$ ls -la /var/runner/cache/gigascience/
 total 16
-drwx------ 4 root root 4096 Aug 25 01:57 .
-drwxr-xr-x 3 root root 4096 Aug 23 07:54 ..
-drwx------ 4 root root 4096 Aug 25 01:36 forks
-drwx------ 3 root root 4096 Aug 25 01:57 upstream
-ubuntu@ip-172-31-47-236:~/gigadb-website/gigadb/app/tools/gitlab-runner$
+drwxr-xr-x 3 ubuntu ubuntu 4096 Aug 26 07:31 .
+drwxr-xr-x 3 root   root   4096 Aug 23 07:54 ..
+drwx------ 3 root   root   4096 Aug 26 07:31 forks
+drwx------ 3 root root 4096 Aug 26 07:31 upstream
+drwx------ 3 root root 4096 Aug 26 07:31 upstream
 ```
 
+The cache will grow over time as more jobs are run which will eat up the server's disk space. You can delete the cache files by running the following command in the EC2 instance:
 
+```
+ubuntu@ip-172-31-47-236:~/gigadb-website/gigadb/app/tools/gitlab-runner$ sudo rm -rf /var/runner/cache/*
+```   
+
+A dedicated script `scripts/delete_runner_cache.sh` is also provided to delete the cache files, which will executed in `/usr/local/bin/delete_runner_cache.sh`. You can run the script by executing the following command in the EC2 instance:
+
+```
+ubuntu@ip-172-31-47-236:~/gigadb-website/gigadb/app/tools/gitlab-runner$ ls -al /usr/local/bin/delete_runner_cache.sh 
+-rwxr-xr-x 1 root root 1259 Aug 26 06:15 /usr/local/bin/delete_runner_cache.sh
+ubuntu@ip-172-31-47-236:~/gigadb-website/gigadb/app/tools/gitlab-runner$  ls -la /var/log/gitlab-runner/delete_runner_cache.log
+-rw-r--r-- 1 ubuntu ubuntu 5736 Aug 26 06:53 /var/log/gitlab-runner/delete_runner_cache.log
+ubuntu@ip-172-31-47-236:~/gigadb-website/gigadb/app/tools/gitlab-runner$ ls -la /var/runner/cache/gigascience/forks
+total 16
+drwxr-xr-x 4 ubuntu ubuntu 4096 Aug 26 06:22 .
+drwxr-xr-x 3 ubuntu ubuntu 4096 Aug 26 06:19 ..
+drwxr-xr-x 4 ubuntu ubuntu 4096 Aug 26 07:22 kencho-gigadb-website
+drwxr-xr-x 3 ubuntu ubuntu 4096 Aug 26 06:22 pl-gigadb-website
+ubuntu@ip-172-31-47-236:~/gigadb-website/gigadb/app/tools/gitlab-runner$ /usr/local/bin/delete_runner_cache.sh 
+[2025-08-26 07:31:18] === Starting GitLab Runner Cache Cleanup ===
+[2025-08-26 07:31:18] Disk usage before cleanup:
+105M    /var/runner/cache/gigascience/forks/pl-gigadb-website/develop-12-non_protected
+105M    /var/runner/cache/gigascience/forks/pl-gigadb-website
+164K    /var/runner/cache/gigascience/forks/kencho-gigadb-website/0_composer_ops/scripts/package-lock-1fb660e43ad49f364b7447f9c4caae95a2ed1cf7-191-non_protected
+168K    /var/runner/cache/gigascience/forks/kencho-gigadb-website/0_composer_ops/scripts
+172K    /var/runner/cache/gigascience/forks/kencho-gigadb-website/0_composer_ops
+105M    /var/runner/cache/gigascience/forks/kencho-gigadb-website/create-gitlab-runner-in-aws-ec2-191-non_protected
+105M    /var/runner/cache/gigascience/forks/kencho-gigadb-website
+210M    /var/runner/cache/gigascience/forks
+210M    /var/runner/cache/gigascience
+[2025-08-26 07:31:18] Items to be deleted: 11
+[2025-08-26 07:31:18] Starting deletion process...
+[2025-08-26 07:31:18] Cache cleanup completed successfully
+[2025-08-26 07:31:18] Disk usage after cleanup:
+4.0K    /var/runner/cache/gigascience
+[2025-08-26 07:31:18] Current disk space:
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/root        97G   38G   60G  39% /
+[2025-08-26 07:31:18] === Cache Cleanup Process Finished ===
+
+```
+
+A cron job is also set up to run the script every Sunday Midnight. You can check the cron job by running the following command in the EC2 instance:
+
+```
+ubuntu@ip-172-31-47-236:~/gigadb-website/gigadb/app/tools/gitlab-runner$ crontab -l
+# Edit this file to introduce tasks to be run by cron.
+# 
+# Each task to run has to be defined through a single line
+# indicating with different fields when the task will be run
+# and what command to run for the task
+# 
+# To define the time you can provide concrete values for
+# minute (m), hour (h), day of month (dom), month (mon),
+# and day of week (dow) or use '*' in these fields (for 'any').
+# 
+# Notice that tasks will be started based on the cron's system
+# daemon's notion of time and timezones.
+# 
+# Output of the crontab jobs (including errors) is sent through
+# email to the user the crontab file belongs to (unless redirected).
+# 
+# For example, you can run a backup of all your user accounts
+# at 5 a.m every week with:
+# 0 5 * * 1 tar -zcf /var/backups/home.tgz /home/
+# 
+# For more information see the manual pages of crontab(5) and cron(8)
+# 
+# m h  dom mon dow   command
+0 0 * * 6 /usr/local/bin/delete_runner_cache.sh
+```
 
 ## Resources 
 
