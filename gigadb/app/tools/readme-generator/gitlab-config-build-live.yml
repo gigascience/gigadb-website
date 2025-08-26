@@ -22,6 +22,8 @@ ReadmeGeneratorBuildLive:
   dependencies: []
   environment:
     name: live
+  tags:
+    - $GITLAB_USER_LOGIN
   when: manual
   artifacts:
     paths:

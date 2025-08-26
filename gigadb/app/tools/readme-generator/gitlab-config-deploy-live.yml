@@ -17,5 +17,7 @@ ReadmeGeneratorDeployLive:
     - docker --tlsverify -H=$REMOTE_BASTION_DOCKER pull registry.gitlab.com/$CI_PROJECT_PATH/production_tool:$GIGADB_ENV
   environment:
     name: $GIGADB_ENV
+  tags:
+    - $GITLAB_USER_LOGIN
   dependencies: []
   needs: [ "ReadmeGeneratorBuildLive" ]

@@ -21,6 +21,8 @@ ReadmeGeneratorBuildStaging:
   dependencies: []
   environment:
     name: staging
+  tags:
+    - $GITLAB_USER_LOGIN
   artifacts:
     paths:
       - gigadb/app/tools/readme-generator/.env
