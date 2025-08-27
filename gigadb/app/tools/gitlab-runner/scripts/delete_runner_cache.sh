@@ -27,11 +27,13 @@ log_message "Items to be deleted: $ITEM_COUNT"
 
 # Perform cleanup
 log_message "Starting deletion process..."
-if rm -rf "$CACHE_DIR"/* 2>&1 | tee -a "$LOG_FILE"; then
+# Delete top-level entries safely, including dotfiles, and fail fast on error.
+if find "${CACHE_DIR:?}" -mindepth 1 -maxdepth 1 -exec rm -rf -- {} + 2>>"$LOG_FILE"; then
     log_message "Cache cleanup completed successfully"
 else
-    log_message "ERROR: Cache cleanup failed with exit code $?"
-    exit 1
+  rc=$?
+  log_message "ERROR: Cache cleanup failed with exit code $rc"
+  exit "$rc"
 fi
 
 # Log disk usage after cleanup

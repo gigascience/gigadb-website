@@ -17,7 +17,7 @@ It is based on the official Gitlab runner Docker image and the Gitlab runner [do
    - IAM role with permissions to manage EC2 instances and S3 buckets
 2. SSH into the instance:
 ```
-$ ssh -i id-rsa-aws-jakarta.pem ubuntu@108.136.186.95
+$ ssh -i id-rsa-aws-jakarta.pem ubuntu@$gitlab_runner_aws_ec2_public_ip
 Welcome to Ubuntu 22.04.5 LTS (GNU/Linux 6.8.0-1029-aws x86_64)
 
  * Documentation:  https://help.ubuntu.com
@@ -137,12 +137,12 @@ For more examples and ideas, visit:
 ## Create dir structure in the EC2 ubuntu server
 
 ```
-% ssh -i ~/.ssh/id-rsa-aws-jakarta.pem ubuntu@108.136.186.95
+% ssh -i ~/.ssh/id-rsa-aws-jakarta.pem ubuntu@$gitlab_runner_aws_ec2_public_ip
 ubuntu@ip-172-31-47-236:~$ pwd
 /home/ubuntu
 ubuntu@ip-172-31-47-236:~$ mkdir -p gigadb-website/gigadb/app/tools/gitlab-runner/
 ubuntu@ip-172-31-47-236:~$ cd gigadb-website/gigadb/app/tools/gitlab-runner/
-ubuntu@ip-172-31-47-236:~/gigadb-website/gigadb/app/tools/gitlab-runner$ mkdir --p scripts config
+ubuntu@ip-172-31-47-236:~/gigadb-website/gigadb/app/tools/gitlab-runner$ mkdir -p scripts config
 ubuntu@ip-172-31-47-236:~/gigadb-website/gigadb/app/tools/gitlab-runner$
 
 ```
@@ -151,7 +151,7 @@ ubuntu@ip-172-31-47-236:~/gigadb-website/gigadb/app/tools/gitlab-runner$
 
 ```
 % cd gigadb-website/gigadb/app/tools/gitlab-runner/
-% scp -i ~/.ssh/id-rsa-aws-jakarta.pem . ubuntu@108.136.186.95:~/gigadb-website/gigadb/app/tools/gitlab-runner/
+% scp -i ~/.ssh/id-rsa-aws-jakarta.pem . ubuntu@$gitlab_runner_aws_ec2_public_ip:~/gigadb-website/gigadb/app/tools/gitlab-runner/
 ubuntu@ip-172-31-47-236:~/gigadb-website/gigadb/app/tools/gitlab-runner$ ls -al
 total 28
 drwxrwxr-x 4 ubuntu ubuntu 4096 Aug 19 07:40 .
@@ -167,7 +167,7 @@ drwxrwxr-x 3 ubuntu ubuntu 4096 Aug 19 07:36 ..
 ubuntu@ip-172-31-47-236:~/gigadb-website/gigadb/app/tools/gitlab-runner$
 ```
 
-## Create a Gitlab Project runner
+## Create a Gitlab Project runner per project
 
 Details can be referred to https://docs.gitlab.com/ci/runners/runners_scope/#project-runners.
 
@@ -180,7 +180,7 @@ To create a project runner:
 2. Go to Settings > CI/CD > Runners > Expand.
 3. Select New project runner.
 4. Select the operating system where GitLab Runner is installed.
-5. In the Tags section, you have to check the `Run untagged jobs`, and also in the Tags field, enter the job tags to specify jobs the runner can run, eg, `peter888, kencho18`. But then you have to make sure to add the following snippet in every job in your pipeline:
+5. In the Tags section, uncheck `Run untagged jobs`. In the Tags field, enter the job tags the runner is allowed to run (e.g., `$GITLAB_USER_LOGIN`). Ensure every job that should target this runner includes tags, for example:
 ```
   tags:
     - $GITLAB_USER_LOGIN
@@ -246,6 +246,7 @@ shutdown_timeout = 0
 
 [[runners]]
   name = "cicd-bot-kencho18"
+  limit = 5
   url = "https://gitlab.com"
   id = 49583611
   token = "glrt-xxx-xxxxxxxxxxxxxxxxxxxx"
@@ -269,8 +270,9 @@ shutdown_timeout = 0
     shm_size = 0
     network_mtu = 0
 ```
+10. If there is more than one project needs a runner, repeat steps 1-9 to create a project runner for each project with a different registration token.
 
-10. Spin up the runner:
+11. Spin up the runner:
 
 ```
 ubuntu@ip-172-31-47-236:~/gigadb-website/gigadb/app/tools/gitlab-runner$ docker compose up -d runner
@@ -279,10 +281,10 @@ NAME                                      IMAGE                         COMMAND 
 gitlab-runner-runner-1                    gitlab/gitlab-runner:latest   "/usr/bin/dumb-init …"   runner     2 days ago   Up 2 days
 ```
 
-11. The runner should now be active in the Gitlab project under Settings > CI/CD > Project Runners.
-12. Then go to the project that you want to use this runner, then go to Settings > CI/CD > Project Runners > Enable for this project.
-13. Runner's details can be seen in the Runner dashboard by clicking the runner, e.g., https://gitlab.com/gigascience/forks/kencho-gigadb-website/-/runners/49583611
-14. Trigger a pipeline in the project to test the runner, you will see the pipeline job is executed by the runner with the id stated in the `config/config.toml`, description you added in when creating a runner, eg. `aws_ec2_runner`, and runner name `cicd-bot-kencho18` you provided when registering the runner. 
+12. The runner should now be active in the Gitlab project under Settings > CI/CD > Project Runners.
+13. In case for the upstream projects, then go to the project that you want to use this runner, then go to Settings > CI/CD > Project Runners > Enable for this project.
+14. Runner's details can be seen in the Runner dashboard by clicking the runner, e.g., https://gitlab.com/gigascience/forks/kencho-gigadb-website/-/runners/49583611
+15. Trigger a pipeline in the project to test the runner, you will see the pipeline job is executed by the runner with the id stated in the `config/config.toml`, description you added in when creating a runner, eg. `aws_ec2_runner`, and runner name `cicd-bot-kencho18` you provided when registering the runner. 
 
 
 ## Monitor the runner status and logs:
@@ -404,7 +406,7 @@ ubuntu@ip-172-31-47-236:~/gigadb-website/gigadb/app/tools/gitlab-runner$ crontab
 # For more information see the manual pages of crontab(5) and cron(8)
 # 
 # m h  dom mon dow   command
-0 0 * * 6 /usr/local/bin/delete_runner_cache.sh
+0 0 * * 7 /usr/local/bin/delete_runner_cache.sh
 ```
 
 ## Resources 
