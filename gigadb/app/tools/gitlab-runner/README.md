@@ -254,10 +254,16 @@ shutdown_timeout = 0
   token_expires_at = 0001-01-01T00:00:00Z
   executor = "docker"
   [runners.cache]
-    MaxUploadedArchiveSize = 0
+    Type = "s3"
+    Path = "/runner/cache"
+    Shared = false
     [runners.cache.s3]
-    [runners.cache.gcs]
-    [runners.cache.azure]
+        BucketName = "gitlab-runner"
+        BucketLocation = "ap-northeast-1"
+        Insecure = false
+        ServerAddress = "s3.ap-northeast-1.wasabisys.com"
+        AccessKey = "$WASABI_GITLAB_ACCESS_KEY_ID"
+        SecretLKey = "$WASABI_GITLAB_SECRETS_KEY"
   [runners.docker]
     tls_verify = false
     image = "alpine:latest"
