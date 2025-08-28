@@ -14,8 +14,8 @@ It is based on the official Gitlab runner Docker image and the Gitlab runner [do
    - Region: Asia Pacific (Jakarta) ap-southeast-3
    - Key pair for SSH access (e.g., `id-rsa-aws-jakarta.pem`)
    - Instance type: t3.medium
-   - IAM role with permissions to manage EC2 instances and S3 buckets
-2. SSH into the instance:
+2. The instance's public IP `gitlab_runner_aws_ec2_public_ip` and the ssh cert `id-rsa-aws-jakarta.pem` are stored in Gitlab cnhk-infra variables [page](https://gitlab.com/gigascience/cnhk-infra/-/settings/ci_cd#js-cicd-variables-settings).
+3. SSH into the instance:
 ```
 $ ssh -i id-rsa-aws-jakarta.pem ubuntu@$gitlab_runner_aws_ec2_public_ip
 Welcome to Ubuntu 22.04.5 LTS (GNU/Linux 6.8.0-1029-aws x86_64)
@@ -240,7 +240,9 @@ shutdown_timeout = 0
 
 ```
 concurrent = 10
-check_interval = 0
+check_interval = 10
+log_level = "info"
+log_format = "runner"
 connection_max_age = "15m0s"
 shutdown_timeout = 0
 
@@ -254,16 +256,10 @@ shutdown_timeout = 0
   token_expires_at = 0001-01-01T00:00:00Z
   executor = "docker"
   [runners.cache]
-    Type = "s3"
-    Path = "/runner/cache"
-    Shared = false
+    MaxUploadedArchiveSize = 0
     [runners.cache.s3]
-        BucketName = "gitlab-runner"
-        BucketLocation = "ap-northeast-1"
-        Insecure = false
-        ServerAddress = "s3.ap-northeast-1.wasabisys.com"
-        AccessKey = "$WASABI_GITLAB_ACCESS_KEY_ID"
-        SecretLKey = "$WASABI_GITLAB_SECRETS_KEY"
+    [runners.cache.gcs]
+    [runners.cache.azure]
   [runners.docker]
     tls_verify = false
     image = "alpine:latest"
@@ -415,8 +411,67 @@ ubuntu@ip-172-31-47-236:~/gigadb-website/gigadb/app/tools/gitlab-runner$ crontab
 0 0 * * 7 /usr/local/bin/delete_runner_cache.sh
 ```
 
+## Distributed runners caching in Wasabi S3
+
+To enable distributed runners caching in Wasabi S3, you need to set up a Wasabi S3 bucket and configure the Gitlab runner to use it for caching.
+
+1. Create a Wasabi S3 bucket, e.g., `gitlab-runner`.
+2. Create an IAM user `gitlab` with programmatic access and attach a policy `AllowReadWriteGitLabRunner` to allow access to the bucket.
+3. Obtain the Access Key and Secret Key for the IAM user, e.g., `WASABI_GITLAB_ACCESS_KEY` and `WASABI_GITLAB_SECRETS_KEY`, which are stored in Gitlab cnhk-infra variables [page](https://gitlab.com/gigascience/cnhk-infra/-/settings/ci_cd#js-cicd-variables-settings).
+4. Update the `config/config.toml` file to use the Wasabi S3 bucket for caching as shown in step 9 above.
+```
+[runners.cache]
+    Type = "s3"
+    Path = "/cache"
+    Shared = false
+    [runners.cache.s3]
+        BucketName = "gitlab-runner"
+        BucketLocation = "ap-northeast-1"
+        Insecure = false
+        ServerAddress = "s3.ap-northeast-1.wasabisys.com"
+        AccessKey = "$WASABI_GITLAB_ACCESS_KEY"
+        SecretKey = "$WASABI_GITLAB_SECRETS_KEY"
+  [runners.docker]
+    tls_verify = false
+    image = "alpine:latest"
+    privileged = true
+    disable_entrypoint_overwrite = false
+    oom_kill_disable = false
+    disable_cache = false
+    volumes = [/var/runner/builds:/builds:rw"]
+```
+6. Restart the Gitlab runner to apply the changes:
+
+```
+ubuntu@ip-172-31-47-236:~/gigadb-website/gigadb/app/tools/gitlab-runner$ docker compose restart runner
+```
+7. Verify that the runner is using the Wasabi S3 bucket for caching by checking the pipeline log, you should see messages like the following when a job is running at the first time:
+```   
+Restoring cache
+00:01
+Checking cache for 0_composer_ops/scripts/package-lock-1fb660e43ad49f364b7447f9c4caae95a2ed1cf7-201-non_protected...
+WARNING: file does not exist                       
+Failed to extract cache
+...
+Uploading cache.zip to https://s3.ap-northeast-1.wasabisys.com/gitlab-runner/cache/runner/wn6-rPMzo/project/29922929/0_composer_ops/scripts/package-lock-1fb660e43ad49f364b7447f9c4caae95a2ed1cf7-201-non_protected 
+Created cache
+```
+8. When the job is run again, you should see messages like the following indicating that the cache is being restored from the Wasabi S3 bucket:
+```
+Restoring cache
+Checking cache for 0_composer_ops/scripts/package-lock-1fb660e43ad49f364b7447f9c4caae95a2ed1cf7-201-non_protected...
+Downloading cache from https://s3.ap-northeast-1.wasabisys.com/gitlab-runner/cache/runner/wn6-rPMzo/project/29922929/0_composer_ops/scripts/package-lock-1fb660e43ad49f364b7447f9c4caae95a2ed1cf7-201-non_protected  ETag="409952bfc6fd033a6a6c339f79d58a0e"
+Successfully extracted cache
+...
+Archive is up to date!                             
+Created cache...
+```
+9. You can also check the Wasabi S3 bucket to see if the cache files are being uploaded.
+
+
 ## Resources 
 
+* https://docs.gitlab.com/runner/configuration/autoscale/#distributed-runners-caching
 * https://docs.gitlab.com/tutorials/create_register_first_runner/
 * https://docs.gitlab.com/runner/configuration/advanced-configuration.html
 * https://docs.gitlab.com/ee/ci/runners/configure_runners.html
