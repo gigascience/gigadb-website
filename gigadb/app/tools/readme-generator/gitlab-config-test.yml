@@ -53,5 +53,3 @@ ReadmeGeneratorTest:
   needs: ["container_scanning","semgrep-sast"]
   environment:
     name: dev
-  tags:
-    - $GITLAB_USER_LOGIN

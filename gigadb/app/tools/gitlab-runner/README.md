@@ -71,38 +71,54 @@ ubuntu@ip-172-31-47-236:~$ sudo tail -f /var/log/unattended-upgrades/unattended-
 * https://docs.docker.com/engine/install/ubuntu/
 * https://www.digitalocean.com/community/questions/how-to-fix-docker-got-permission-denied-while-trying-to-connect-to-the-docker-daemon-socket
 * https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-22-04
-
+* https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository
+* 
 ```
-$ docker version
-Client: Docker Engine - Community
- Version:           28.3.3
- API version:       1.51
- Go version:        go1.24.5
- Git commit:        980b856
- Built:             Fri Jul 25 11:34:04 2025
- OS/Arch:           linux/amd64
- Context:           default
+$ sudo apt update
+$ sudo apt-get install ca-certificates curl
+$ sudo install -m 0755 -d /etc/apt/keyrings
+$ sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+$ sudo chmod a+r /etc/apt/keyrings/docker.asc
+$ echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+$ sudo apt-get update
+$ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+$ sudo systemctl status docker
+● docker.service - Docker Application Container Engine
+     Loaded: loaded (/lib/systemd/system/docker.service; enabled; vendor preset: enabled)
+     Active: active (running) since Tue 2025-09-02 02:41:12 UTC; 20s ago
+TriggeredBy: ● docker.socket
+       Docs: https://docs.docker.com
+   Main PID: 2584 (dockerd)
+      Tasks: 9
+     Memory: 22.1M
+        CPU: 342ms
+     CGroup: /system.slice/docker.service
+             └─2584 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
 
-Server: Docker Engine - Community
- Engine:
-  Version:          28.3.3
-  API version:      1.51 (minimum version 1.24)
-  Go version:       go1.24.5
-  Git commit:       bea959c
-  Built:            Fri Jul 25 11:34:04 2025
-  OS/Arch:          linux/amd64
-  Experimental:     false
- containerd:
-  Version:          1.7.27
-  GitCommit:        05044ec0a9a75232cad458027ca83437aae3f4da
- runc:
-  Version:          1.2.5
-  GitCommit:        v1.2.5-0-g59923ef
- docker-init:
-  Version:          0.19.0
-  GitCommit:        de40ad0
-ubuntu@ip-172-31-47-236:~$ docker compose version
-Docker Compose version v2.38.2-desktop.1
+Sep 02 02:41:11 ip-172-31-46-156 dockerd[2584]: time="2025-09-02T02:41:11.424214470Z" level=info msg="detected 127.0.0.53 nameserver, assuming systemd-resolved, so using resolv.conf: /run/systemd/resolve/resolv.conf"
+Sep 02 02:41:11 ip-172-31-46-156 dockerd[2584]: time="2025-09-02T02:41:11.472205562Z" level=info msg="Creating a containerd client" address=/run/containerd/containerd.sock timeout=1m0s
+Sep 02 02:41:11 ip-172-31-46-156 dockerd[2584]: time="2025-09-02T02:41:11.567536973Z" level=info msg="Loading containers: start."
+Sep 02 02:41:12 ip-172-31-46-156 dockerd[2584]: time="2025-09-02T02:41:12.237600254Z" level=info msg="Loading containers: done."
+Sep 02 02:41:12 ip-172-31-46-156 dockerd[2584]: time="2025-09-02T02:41:12.263950936Z" level=info msg="Docker daemon" commit=bea959c containerd-snapshotter=false storage-driver=overlay2 version=28.3.3
+Sep 02 02:41:12 ip-172-31-46-156 dockerd[2584]: time="2025-09-02T02:41:12.264054411Z" level=info msg="Initializing buildkit"
+Sep 02 02:41:12 ip-172-31-46-156 dockerd[2584]: time="2025-09-02T02:41:12.308553396Z" level=info msg="Completed buildkit initialization"
+Sep 02 02:41:12 ip-172-31-46-156 dockerd[2584]: time="2025-09-02T02:41:12.316697342Z" level=info msg="Daemon has completed initialization"
+Sep 02 02:41:12 ip-172-31-46-156 dockerd[2584]: time="2025-09-02T02:41:12.316761871Z" level=info msg="API listen on /run/docker.sock"
+Sep 02 02:41:12 ip-172-31-46-156 systemd[1]: Started Docker Application Container Engine.
+
+$ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+$ docker --version
+Docker version 28.3.3, build 980b856
+u$ docker compose version
+Docker Compose version v2.39.1
+$ docker run hello-world
+docker: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Head "http://%2Fvar%2Frun%2Fdocker.sock/_ping": dial unix /var/run/docker.sock: connect: permission denied
+
+Run 'docker run --help' for more information
+$ sudo usermod -aG docker ${USER}
 $ docker run hello-world
 Unable to find image 'hello-world:latest' locally
 latest: Pulling from library/hello-world

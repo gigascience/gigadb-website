@@ -28,8 +28,6 @@ XLSUploaderBuildLive:
   dependencies: []
   environment:
     name: $TARGET_ENV
-  tags:
-    - $GITLAB_USER_LOGIN
   when: manual
   artifacts:
     paths:

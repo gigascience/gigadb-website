@@ -48,8 +48,6 @@ FilesUrlsUpdaterTest:
   needs: ["container_scanning","semgrep-sast"]
   environment:
     name: dev
-  tags:
-    - $GITLAB_USER_LOGIN
 
 FilesUrlsUpdaterBuildStaging:
   stage: staging build
@@ -77,8 +75,6 @@ FilesUrlsUpdaterBuildStaging:
   dependencies: []
   environment:
     name: staging
-  tags:
-    - $GITLAB_USER_LOGIN
   artifacts:
     paths:
       - gigadb/app/tools/files-url-updater/.env
@@ -110,8 +106,6 @@ FilesUrlsUpdaterDeployStaging:
     - docker --tlsverify -H=$REMOTE_BASTION_DOCKER pull registry.gitlab.com/$CI_PROJECT_PATH/production_pg9_3:$GIGADB_ENV
   environment:
     name: $GIGADB_ENV
-  tags:
-    - $GITLAB_USER_LOGIN
   dependencies: []
   needs: [ "FilesUrlsUpdaterBuildStaging" ]
 
@@ -143,8 +137,6 @@ FilesUrlsUpdaterBuildLive:
   dependencies: []
   environment:
     name: live
-  tags:
-    - $GITLAB_USER_LOGIN
   when: manual
   artifacts:
     paths:
@@ -178,7 +170,5 @@ FilesUrlsUpdaterDeployLive:
     - docker --tlsverify -H=$REMOTE_BASTION_DOCKER pull registry.gitlab.com/$CI_PROJECT_PATH/production_pg9_3:$GIGADB_ENV
   environment:
     name: $GIGADB_ENV
-  tags:
-    - $GITLAB_USER_LOGIN
   dependencies: []
   needs: [ "FilesUrlsUpdaterBuildLive" ]

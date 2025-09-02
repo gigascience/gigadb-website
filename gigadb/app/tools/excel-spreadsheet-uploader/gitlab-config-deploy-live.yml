@@ -18,8 +18,6 @@ XLSUploaderDeployLive:
     - docker --tlsverify -H=$REMOTE_BASTION_DOCKER pull registry.gitlab.com/$CI_PROJECT_PATH/production_pgclient:$TARGET_ENV
   environment:
     name: $TARGET_ENV
-  tags:
-    - $GITLAB_USER_LOGIN
   artifacts:
     paths:
       - gigadb/app/tools/excel-spreadsheet-uploader/.env
