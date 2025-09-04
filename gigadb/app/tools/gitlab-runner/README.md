@@ -428,6 +428,7 @@ ubuntu@ip-172-31-47-236:~/gigadb-website/gigadb/app/tools/gitlab-runner$ crontab
 ```
 
 ## Distributed runners caching in Wasabi S3
+https://docs.gitlab.com/runner/configuration/autoscale/#distributed-runners-caching
 
 To enable distributed runners caching in Wasabi S3, you need to set up a Wasabi S3 bucket and configure the Gitlab runner to use it for caching.
 
@@ -447,14 +448,16 @@ To enable distributed runners caching in Wasabi S3, you need to set up a Wasabi 
         ServerAddress = "s3.ap-northeast-1.wasabisys.com"
         AccessKey = "$WASABI_GITLAB_ACCESS_KEY"
         SecretKey = "$WASABI_GITLAB_SECRETS_KEY"
-  [runners.docker]
+[runners.docker]
     tls_verify = false
     image = "alpine:latest"
     privileged = true
     disable_entrypoint_overwrite = false
     oom_kill_disable = false
-    disable_cache = false
-    volumes = [/var/runner/builds:/builds:rw"]
+    volumes = ["/var/runner/cache:/cache:rw", "/var/runner/builds:/builds:rw"]
+    pull_policy = ["if-not-present"]
+    shm_size = 0
+    network_mtu = 0
 ```
 6. Restart the Gitlab runner to apply the changes:
 
