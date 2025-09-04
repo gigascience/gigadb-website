@@ -6,7 +6,7 @@ shutdown_timeout = 0
   session_timeout = 1800
 
 [[runners]]
-  name = "cicd-bot-kencho18-1"
+  name = "cicd-bot-kencho18-1" # will be replaced on the fly when you register the runner
   limit = 5
   url = "https://gitlab.com"
   id = 49675270 # will be replaced on the fly when you register the runner
