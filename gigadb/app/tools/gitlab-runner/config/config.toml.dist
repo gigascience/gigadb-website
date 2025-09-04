@@ -1,0 +1,33 @@
+concurrent = 10
+check_interval = 0
+shutdown_timeout = 0
+
+[session_server]
+  session_timeout = 1800
+
+[[runners]]
+  name = "cicd-bot-kencho18-1"
+  limit = 5
+  url = "https://gitlab.com"
+  id = 49675270 # will be replaced on the fly when you register the runner
+  token = "glrt-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" # will be replaced on the fly when you register the runner
+  token_obtained_at = 2025-09-02T03:03:42Z
+  token_expires_at = 0001-01-01T00:00:00Z
+  executor = "docker"
+  [runners.cache]
+    MaxUploadedArchiveSize = 0
+    [runners.cache.s3]
+    [runners.cache.gcs]
+    [runners.cache.azure]
+  [runners.docker]
+    tls_verify = false
+    image = "alpine:latest"
+    privileged = true # you may need this if you use docker:dind
+    disable_entrypoint_overwrite = false
+    oom_kill_disable = false
+    disable_cache = true
+    volumes = ["/var/runner/cache:/cache:rw", "/var/runner/builds:/builds:rw"] #
+    pull_policy = ["if-not-present"]
+    shm_size = 0
+    network_mtu = 0
+
