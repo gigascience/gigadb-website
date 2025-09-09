@@ -4,6 +4,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 
+## v4.4.17 - 2025-09-09 - 9f3e2c6b1 - 
+
 - Feat #2404: Create gitlab runner on AWS EC2 instance
 
 ## v4.4.16 - 2025-08-15 - 6e04c0b9e - live since 2025-08-21
