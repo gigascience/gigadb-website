@@ -1,0 +1,48 @@
+#!/bin/bash
+
+LOG_FILE="/var/log/gitlab-runner/delete_runner_cache.log"
+CACHE_DIR="/var/runner/cache/gigascience"
+
+# Function to log with timestamp
+log_message() {
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1" | tee -a "$LOG_FILE"
+}
+
+# Start cleanup
+log_message "=== Starting GitLab Runner Cache Cleanup ==="
+
+# Check if cache directory exists
+if [[ ! -d "$CACHE_DIR" ]]; then
+    log_message "ERROR: Cache directory $CACHE_DIR does not exist"
+    exit 1
+fi
+
+# Log disk usage before cleanup
+log_message "Disk usage before cleanup:"
+du -h "$CACHE_DIR" 2>&1 | tee -a "$LOG_FILE"
+
+# Count files/directories to be deleted
+ITEM_COUNT=$(find "$CACHE_DIR" -mindepth 1 | wc -l)
+log_message "Items to be deleted: $ITEM_COUNT"
+
+# Perform cleanup
+log_message "Starting deletion process..."
+# Delete top-level entries safely, including dotfiles, and fail fast on error.
+if find "${CACHE_DIR:?}" -mindepth 1 -maxdepth 1 -exec rm -rf -- {} + 2>>"$LOG_FILE"; then
+    log_message "Cache cleanup completed successfully"
+else
+  rc=$?
+  log_message "ERROR: Cache cleanup failed with exit code $rc"
+  exit "$rc"
+fi
+
+# Log disk usage after cleanup
+log_message "Disk usage after cleanup:"
+du -h "$CACHE_DIR" 2>&1 | tee -a "$LOG_FILE"
+
+# Log system disk space
+log_message "Current disk space:"
+df -h / 2>&1 | tee -a "$LOG_FILE"
+
+log_message "=== Cache Cleanup Process Finished ==="
+echo "" >> "$LOG_FILE"
