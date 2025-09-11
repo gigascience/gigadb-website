@@ -20,7 +20,7 @@ XLSUploaderBuildLive:
     - rm -rf uploadDir
     - docker-compose -f docker-compose.production.build.yml build production_xls_uploader production_pgclient
     - docker images
-    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com # log in to Gitlab so we can push the container image there
+    - echo "$CI_JOB_TOKEN" | docker login --username gitlab-ci-token --password-stdin registry.gitlab.com # log in to Gitlab so we can push the container image there
     - docker tag ${CI_PROJECT_NAME}_production_xls_uploader:latest registry.gitlab.com/$CI_PROJECT_PATH/production_xls_uploader:$TARGET_ENV
     - docker tag ${CI_PROJECT_NAME}_production_pgclient:latest registry.gitlab.com/$CI_PROJECT_PATH/production_pgclient:$TARGET_ENV
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_xls_uploader:$TARGET_ENV

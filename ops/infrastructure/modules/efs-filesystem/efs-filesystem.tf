@@ -8,16 +8,15 @@ data "aws_availability_zones" "available" {
   state = "available"
 }
 
-data "aws_caller_identity" "current" {}
-
 data "aws_region" "current" {}
 
 module "efs" {
   source = "terraform-aws-modules/efs/aws"
+  version = "1.7.0"
 
   # File system
-  name           = "gigadb-efs ${var.owner} ${var.deployment_target}"
-  creation_token = "gigadb-efs-${var.owner}-${var.deployment_target}"
+  name           = "gigadb-efs ${var.identity.userName} ${var.deployment_target}"
+  creation_token = "gigadb-efs-${var.identity.userName}-${var.deployment_target}"
   encrypted      = false
 
 
@@ -38,7 +37,7 @@ module "efs" {
   # Mount targets / security group
   mount_targets              = { for k, v in zipmap(local.azs, var.vpc.private_subnets) : k => { subnet_id = v } }
 
-  security_group_description = "gigadb-efs EFS SG for ${data.aws_caller_identity.current.arn} on ${var.deployment_target}"
+  security_group_description = "gigadb-efs EFS SG for ${var.identity.arn} on ${var.deployment_target}"
   security_group_vpc_id      = var.vpc.vpc_id
   security_group_rules = {
     vpc = {
@@ -53,29 +52,10 @@ module "efs" {
 
   # Access point(s)
   access_points = {
-    dropbox_area = {
-
-      name = "dropbox-area-${data.aws_caller_identity.current.arn}-${var.deployment_target}"
-
-      posix_user = {
-        gid            = 1000
-        uid            = 1000
-      }
-
-      root_directory = {
-        path = "/share/dropbox"
-        creation_info = {
-          owner_gid   = 1000
-          owner_uid   = 1000
-          permissions = "755"
-        }
-      }
-
-    }
 
     configuration_area = {
 
-      name = "config-area-${data.aws_caller_identity.current.arn}-${var.deployment_target}"
+      name = "config-area-${var.identity.arn}-${var.deployment_target}"
 
       posix_user = {
         gid            = 1000
@@ -105,7 +85,7 @@ module "efs" {
   # }
 
   tags = {
-    Owner   = var.owner
+    Owner   = var.identity.userName
     Environment = var.deployment_target
   }
 }

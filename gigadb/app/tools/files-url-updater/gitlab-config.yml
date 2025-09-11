@@ -65,7 +65,7 @@ FilesUrlsUpdaterBuildStaging:
     - $LOCAL_COMPOSE build production_updater # build production container from the production docker file
     - $LOCAL_COMPOSE build production_s3backup # build the container for production s3 backup
     - $LOCAL_COMPOSE build production_pg9_3 # build the container for production version of legacy database server
-    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com # log in to Gitlab so we can push the container image there
+    - echo "$CI_JOB_TOKEN" | docker login --username gitlab-ci-token --password-stdin registry.gitlab.com # log in to Gitlab so we can push the container image there
     - docker tag ${CI_PROJECT_NAME}_production_updater:latest registry.gitlab.com/$CI_PROJECT_PATH/production_updater:$GIGADB_ENV
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_updater:$GIGADB_ENV
     - docker tag ${CI_PROJECT_NAME}_production_s3backup:latest registry.gitlab.com/$CI_PROJECT_PATH/production_s3backup:$GIGADB_ENV
@@ -100,7 +100,7 @@ FilesUrlsUpdaterDeployStaging:
     - bash -c "echo '$docker_bastion_tlsauth_cert' > ~/.docker/cert.pem"
     - bash -c "echo '$docker_bastion_tlsauth_key' > ~/.docker/key.pem"
     - docker --tlsverify -H=$REMOTE_BASTION_DOCKER info
-    - docker --tlsverify -H=$REMOTE_BASTION_DOCKER login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+    - echo "$CI_JOB_TOKEN" | docker --tlsverify -H=$REMOTE_BASTION_DOCKER login --username gitlab-ci-token --password-stdin registry.gitlab.com
     - docker --tlsverify -H=$REMOTE_BASTION_DOCKER pull registry.gitlab.com/$CI_PROJECT_PATH/production_updater:$GIGADB_ENV
     - docker --tlsverify -H=$REMOTE_BASTION_DOCKER pull registry.gitlab.com/$CI_PROJECT_PATH/production_s3backup:$GIGADB_ENV
     - docker --tlsverify -H=$REMOTE_BASTION_DOCKER pull registry.gitlab.com/$CI_PROJECT_PATH/production_pg9_3:$GIGADB_ENV
@@ -127,7 +127,7 @@ FilesUrlsUpdaterBuildLive:
     - $LOCAL_COMPOSE build production_updater # build production container from the production docker file
     - $LOCAL_COMPOSE build production_s3backup # build the container for production s3 backup
     - $LOCAL_COMPOSE build production_pg9_3 # build the container for production version of legacy database server
-    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com # log in to Gitlab so we can push the container image there
+    - echo "$CI_JOB_TOKEN" | docker login --username gitlab-ci-token --password-stdin registry.gitlab.com # log in to Gitlab so we can push the container image there
     - docker tag ${CI_PROJECT_NAME}_production_updater:latest registry.gitlab.com/$CI_PROJECT_PATH/production_updater:$GIGADB_ENV
     - docker push registry.gitlab.com/$CI_PROJECT_PATH/production_updater:$GIGADB_ENV
     - docker tag ${CI_PROJECT_NAME}_production_s3backup:latest registry.gitlab.com/$CI_PROJECT_PATH/production_s3backup:$GIGADB_ENV
@@ -164,7 +164,7 @@ FilesUrlsUpdaterDeployLive:
     - bash -c "echo '$docker_bastion_tlsauth_cert' > ~/.docker/cert.pem"
     - bash -c "echo '$docker_bastion_tlsauth_key' > ~/.docker/key.pem"
     - docker --tlsverify -H=$REMOTE_BASTION_DOCKER info
-    - docker --tlsverify -H=$REMOTE_BASTION_DOCKER login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+    - echo "$CI_JOB_TOKEN" | docker --tlsverify -H=$REMOTE_BASTION_DOCKER login --username gitlab-ci-token --password-stdin registry.gitlab.com
     - docker --tlsverify -H=$REMOTE_BASTION_DOCKER pull registry.gitlab.com/$CI_PROJECT_PATH/production_updater:$GIGADB_ENV
     - docker --tlsverify -H=$REMOTE_BASTION_DOCKER pull registry.gitlab.com/$CI_PROJECT_PATH/production_s3backup:$GIGADB_ENV
     - docker --tlsverify -H=$REMOTE_BASTION_DOCKER pull registry.gitlab.com/$CI_PROJECT_PATH/production_pg9_3:$GIGADB_ENV

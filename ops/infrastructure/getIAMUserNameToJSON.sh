@@ -6,5 +6,7 @@
 # the output has to be valid JSON
 
 set -e
-userName=$(aws sts get-caller-identity --output text --query Arn | cut -d"/" -f2 | tr '[:upper:]' '[:lower:]')
-jq -n --arg userName "$userName" '{"userName":$userName}'
+aws_profile=$1
+arn=$(aws --profile=$aws_profile sts get-caller-identity --output text --query Arn)
+userName=$(echo $arn | cut -d"/" -f2 | tr '[:upper:]' '[:lower:]')
+jq -n --arg userName "$userName" --arg arn "$arn" '{"userName":$userName, "arn":$arn}'

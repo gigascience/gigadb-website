@@ -12,6 +12,11 @@ variable "aws_region" {
   default = "ap-east-1"
 }
 
+variable "aws_profile" {
+  type = string
+  description = "AWS profile"
+}
+
 variable "deployment_target" {
   type = string
   description = "Environment to build"
@@ -68,25 +73,49 @@ variable "utc_restore_time" {
 variable "web_ec2_type" {
   type = string
   description = "EC2 type for webapp server"
-  default = null
+  default = "t3.small"
+}
+
+variable "web_ec2_storage" {
+  type = number
+  description = "EC2 storage size for webapp server"
+  default = 30
 }
 
 variable "bastion_ec2_type" {
   type = string
   description = "EC2 type for bastion server"
-  default = null
+  default = "t3.small"
+}
+
+variable "bastion_ec2_storage" {
+  type = number
+  description = "EC2 storage size for bastion server"
+  default = 30
+}
+
+variable "files_ec2_type" {
+  type = string
+  description = "EC2 type for files server"
+  default = "t3.small"
+}
+
+variable "files_ec2_storage" {
+  type = number
+  description = "EC2 storage size for files server"
+  default = 30
 }
 
 variable "rds_ec2_type" {
   type = string
   description = "EC2 type for RDS server"
-  default = null
+  default = "t3.micro"
 }
 
 
 
 data "external" "callerUserName" {
-  program = ["${path.module}/getIAMUserNameToJSON.sh"]
+  program = ["${path.module}/getIAMUserNameToJSON.sh", var.aws_profile]
 }
 
 data "aws_availability_zones" "available" {
@@ -107,22 +136,22 @@ terraform {
   backend "http" {
   }
 
-  # required_providers {
-  #   random = {
-  #     source  = "hashicorp/random"
-  #     version = "3.5.1"
-  #   }
+  required_providers {
+    random = {
+      source  = "hashicorp/random"
+      version = "3.7.1"
+    }
 
-  #   external = {
-  #     source  = "hashicorp/external"
-  #     version = "2.3.1"
-  #   }
-    
-  #   aws = {
-  #     source  = "hashicorp/aws"
-  #     version = "5.5.0"
-  #   }
-  # }
+    external = {
+      source  = "hashicorp/external"
+      version = "2.3.4"
+    }
+
+    aws = {
+      source  = "hashicorp/aws"
+      version = "5.93.0"
+    }
+  }
 
   # required_version = ">= 1.1"
 }
@@ -136,7 +165,7 @@ module "vpc" {
   # CIDR block is a range of IPv4 addresses in the VPC. This cidr block below 
   # means that the main route table has the following routes: Destination = 
   # 10.99.0.0/18 , Target = local
-  cidr = "10.99.0.0/18"
+  cidr = "10.98.0.0/18"
 
   # VPC spans all the availability zones in region
   azs = data.aws_availability_zones.available.names
@@ -150,7 +179,7 @@ module "vpc" {
   # internet gateway exposes resources with public IPs to inbound traffic 
   # from the internet. All public subnets route to an Internet Gateway for 
   # non-local addresses which is what makes the subnet public.
-  public_subnets   = ["10.99.0.0/24", "10.99.1.0/24", "10.99.2.0/24"]
+  public_subnets   = ["10.98.0.0/24", "10.98.1.0/24", "10.98.2.0/24"]
   public_subnet_tags = {
     Name = "subnet-public"
   }
@@ -158,12 +187,12 @@ module "vpc" {
   # Private subnets contain resources that do not have public IPs. They have 
   # private IPs and can only interact with resources inside the same network
   # Resources in a private subnet needing internet access require a NAT device
-  private_subnets  = ["10.99.3.0/24", "10.99.4.0/24", "10.99.5.0/24"]
+  private_subnets  = ["10.98.3.0/24", "10.98.4.0/24", "10.98.5.0/24"]
   private_subnet_tags = {
      Name = "subnet-private"
   }
 
-  database_subnets = ["10.99.6.0/24", "10.99.7.0/24", "10.99.8.0/24"]
+  database_subnets = ["10.98.6.0/24", "10.98.7.0/24", "10.98.8.0/24"]
   database_subnet_tags = {
     Name = "subnet-database"
   }
@@ -212,6 +241,7 @@ module "ec2_dockerhost" {
   # container app
   public_subnet_id = module.vpc.public_subnets[0]
   ec2_type = var.web_ec2_type
+  ec2_storage = var.web_ec2_storage
   ec2_usage = "webserver"
   app_port = 80
 }
@@ -228,6 +258,10 @@ output "web_ec2_type" {
   value = module.ec2_dockerhost.instance_type
 }
 
+output "web_volume_size" {
+  value = module.ec2_dockerhost.volume_size
+}
+
 # EC2 instance for hosting the files server
 module "files_host" {
   source = "../../modules/aws-instance"
@@ -239,7 +273,8 @@ module "files_host" {
   vpc_id = module.vpc.vpc_id
   vpc_cidr_block = module.vpc.vpc_cidr_block
   public_subnet_id = module.vpc.public_subnets[0]
-  ec2_type = var.web_ec2_type
+  ec2_type = var.files_ec2_type
+  ec2_storage = var.files_ec2_storage
   ec2_usage = "filesserver"
   app_port = 21
 }
@@ -256,6 +291,10 @@ output "files_ec2_type" {
   value = module.files_host.instance_type
 }
 
+output "files_volume_size" {
+  value = module.files_host.volume_size
+}
+
 # EC2 instance for bastion server to access RDS for PostgreSQL admin
 module "ec2_bastion" {
   source = "../../modules/bastion-aws-instance"
@@ -268,7 +307,8 @@ module "ec2_bastion" {
   # Bastion instance goes into a public subnet for developer access
   vpc_id = module.vpc.vpc_id
   public_subnet_id = module.vpc.public_subnets[0]
-  bastion_ec2_type = var.bastion_ec2_type
+  ec2_type = var.bastion_ec2_type
+  ec2_storage = var.bastion_ec2_storage
 }
 
 output "ec2_bastion_private_ip" {
@@ -282,6 +322,10 @@ output "ec2_bastion_public_ip" {
 
 output "bastion_ec2_type" {
   value = module.ec2_bastion.instance_type
+}
+
+output "bastion_volume_size" {
+  value = module.ec2_bastion.volume_size
 }
 
 # RDS instance for hosting GigaDB's PostgreSQL database
@@ -324,7 +368,7 @@ module "gigadb_efs" {
 
   vpc = module.vpc
   deployment_target = var.deployment_target
-  owner = data.external.callerUserName.result.userName
+  identity = data.external.callerUserName.result
   
 }
 
@@ -346,7 +390,6 @@ output "efs_filesystem_size_in_bytes" {
 
 output "efs_filesystem_access_points" {
   value = {
-    dropbox_area       = module.gigadb_efs.access_points["dropbox_area"].id
     configuration_area = module.gigadb_efs.access_points["configuration_area"].id
   }
 }

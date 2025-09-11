@@ -14,7 +14,7 @@
     # Load Base image
     - docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
     # login to gitlab container registry
-    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+    - echo "$CI_JOB_TOKEN" | docker login --username gitlab-ci-token --password-stdin registry.gitlab.com
     # pulling production build of images from registry to use as cache
     - time docker pull registry.gitlab.com/$CI_PROJECT_PATH/production_tideways-daemon:$GIGADB_ENV || true
     # build tideways container and push it registry
@@ -71,7 +71,7 @@ TidewaysBuildLive:
     # Load Base image
     - docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
     # login to gitlab container registry
-    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+    - echo "$CI_JOB_TOKEN" | docker login --username gitlab-ci-token --password-stdin registry.gitlab.com
     # appending production variables at the end of the .env and .secrets
     - env | grep -v "SAST" | grep -iE "^(staging_|remote_)" | grep -viE "(password|email|tester|secret|key|user|app_id|client_id|token|tls)" >> $APPLICATION/.env
     - env | grep -v "SAST" | grep -iE "^TIDEWAYS_" >> $APPLICATION/.env
@@ -87,7 +87,7 @@ TidewaysBuildLive:
     - bash -c "echo '$docker_tlsauth_key' > ~/.docker/key.pem || true"
     # Pull production container from the registry
     - docker --tlsverify -H=$REMOTE_WEBAPP_DOCKER info
-    - docker --tlsverify -H=$REMOTE_WEBAPP_DOCKER login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+    - echo "$CI_JOB_TOKEN" | docker --tlsverify -H=$REMOTE_WEBAPP_DOCKER login --username gitlab-ci-token --password-stdin registry.gitlab.com
     - docker --tlsverify -H=$REMOTE_WEBAPP_DOCKER pull registry.gitlab.com/$CI_PROJECT_PATH/production_tideways-daemon:$GIGADB_ENV
     # Redeploy all containers but the web container
     - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER up -d tideways-daemon

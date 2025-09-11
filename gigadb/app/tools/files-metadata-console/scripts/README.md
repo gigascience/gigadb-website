@@ -224,22 +224,22 @@ Run Gitlab CI/CD pipeline
 
 SSH into your bastion server:
 ```
-$ ssh -i "~/.ssh/your-id-rsa-aws.pem" centos@ec2_bastion_public_ip
+$ ssh -i "~/.ssh/your-id-rsa-aws.pem" ec2-user@ec2_bastion_public_ip
 ```
 
 Check dataset table ftp_site and file location column contents:
 ```
-[centos@ip-10-99-0-163 ~]$ source .env
+[ec2-user@ip-10-99-0-163 ~]$ source .env
 # Contents of ftp_site in dataset table should be CNGB links
-[centos@ip-10-99-0-163 ~]$ PGPASSWORD=$PGPASSWORD psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -c 'select identifier, ftp_site from dataset ORDER BY identifier ASC;'
+[ec2-user@ip-10-99-0-163 ~]$ PGPASSWORD=$PGPASSWORD psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -c 'select identifier, ftp_site from dataset ORDER BY identifier ASC;'
 # Contents of location in file table should be CNGB links
-[centos@ip-10-99-0-163 ~]$ PGPASSWORD=$PGPASSWORD psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -c 'select id, dataset_id, location from file;'
+[ec2-user@ip-10-99-0-163 ~]$ PGPASSWORD=$PGPASSWORD psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -c 'select id, dataset_id, location from file;'
 ```
 
 Execute updateUrls.sh script - it should take 2-3 minutes to run when applied on
 production data:
 ```
-[centos@ip-10-99-0-163 ~]$ ./updateUrls.sh
+[ec2-user@ip-10-99-0-163 ~]$ ./updateUrls.sh
 Processing dataset table...
 SELECT 2444
 Created dataset_changes temporary table
@@ -271,9 +271,9 @@ All SQL commands were successfully committed in database transaction!
 Check dataset and file table contents again to see if they now contain Wasabi
 links:
 ```
-[centos@ip-10-99-0-163 ~]$ source .env
-[centos@ip-10-99-0-163 ~]$ PGPASSWORD=$PGPASSWORD psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -c 'select identifier, ftp_site from dataset ORDER BY identifier ASC;'
-[centos@ip-10-99-0-163 ~]$ PGPASSWORD=$PGPASSWORD psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -c 'select id, dataset_id, location from file ORDER BY id ASC;'
+[ec2-user@ip-10-99-0-163 ~]$ source .env
+[ec2-user@ip-10-99-0-163 ~]$ PGPASSWORD=$PGPASSWORD psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -c 'select identifier, ftp_site from dataset ORDER BY identifier ASC;'
+[ec2-user@ip-10-99-0-163 ~]$ PGPASSWORD=$PGPASSWORD psql -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE -c 'select id, dataset_id, location from file ORDER BY id ASC;'
 ```
 
 Go to `/dataset/102478` on your staging server in a browser and check the URL for

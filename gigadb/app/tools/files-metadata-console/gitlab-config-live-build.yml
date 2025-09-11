@@ -21,7 +21,7 @@ FilesMetadataConsoleBuildLive:
     - docker load -i nginx-$NGINX_VERSION-alpine.tar
     - docker load -i node-$NODE_VERSION-bullseye-slim.tar
     # login to gitlab container registry
-    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+    - echo "$CI_JOB_TOKEN" | docker login --username gitlab-ci-token --password-stdin registry.gitlab.com
     # build for production
     - echo "Building app"
     - cp .secrets gigadb/app/tools/files-metadata-console/

@@ -5,7 +5,13 @@ set -e
 # default for EC2 types
 web_ec2_type="t3.small"
 bastion_ec2_type="t3.small"
+files_ec2_type="t3.small"
 rds_ec2_type="t3.micro"
+
+# default for EC2 storage
+web_volume_size=30
+bastion_volume_size=30
+files_volume_size=30
 
 source ../../../../.env
 
@@ -49,49 +55,93 @@ while [[ $# -gt 0 ]]; do
         bastion_ec2_type=$2
         shift 2
         ;;
+    --files-ec2-type)
+        files_ec2_type=$2
+        shift 2
+        ;;
     --rds-ec2-type)
         rds_ec2_type=$2
+        shift 2
+        ;;
+    --web-volume-size)
+        web_volume_size=$2
+        shift 2
+        ;;
+    --bastion-volume-size)
+        bastion_volume_size=$2
+        shift 2
+        ;;
+    --files-volume-size)
+        files_volume_size=$2
         shift 2
         ;;
     --restore-backup)
         has_restore_backup=true
         ;;
     --help)
-        echo "Usage: tf_init.sh [--project <project name>] [--ssh-key <path to private SSH key>] [--env <staging|live>] [--region <AWS region>] [--backup-file <path to custom backup file to use to boostrap RDS>] [--web-ec2-type <EC2 instance type for web server>] [--bastion-ec2-type <EC2 instance type for bastion server>] [--rds-ec2-type <DB instance class>] [--restore-backup] | --help"
+        # Display usage information for tf_init.sh script
+        # This help message shows all available command line options and their descriptions
+        echo "Usage: tf_init.sh [OPTIONS]"
+        echo ""
+        echo "Initialize Terraform infrastructure for GigaDB deployment"
+        echo ""
+        echo "OPTIONS:"
+        echo "  --project <project name>              GitLab project name (e.g: gigascience/upstream/gigadb-website)"
+        echo "  --ssh-key <path>                      Path to private SSH key for EC2 access"
+        echo "  --env <staging|live>                  Target environment for deployment"
+        echo "  --region <AWS region>                 AWS region for resource deployment"
+        echo "  --backup-file <path>                  Path to custom backup file for RDS bootstrap"
+        echo "  --web-ec2-type <instance type>        EC2 instance type for web server (default: t3.small)"
+        echo "  --bastion-ec2-type <instance type>    EC2 instance type for bastion server (default: t3.small)"
+        echo "  --files-ec2-type <instance type>      EC2 instance type for files server (default: t3.small)"
+        echo "  --rds-ec2-type <instance class>       RDS instance class for database (default: t3.micro)"
+        echo "  --web-volume-size <size>              Root block device size for web EC2 in GB (default: 30)"
+        echo "  --bastion-volume-size <size>          Root block device size for bastion EC2 in GB (default: 30)"
+        echo "  --files-volume-size <size>            Root block device size for files EC2 in GB (default: 30)"
+        echo "  --restore-backup                      Enable backup restoration for RDS"
+        echo "  -h, --help                            Display this help message"
+        echo ""
+        echo "Example:"
+        echo "  cd ops/infrastructure/envs/staging"
+        echo "  ./tf_init.sh --project gigascience/upstream/gigadb-website --env staging"
         exit 0
         ;;
     *)
         echo "Invalid option: $1 in"
-        echo $call_str
+        echo "$call_str"
         exit 1
         ;;
     esac
 done
 
 # Ensure variables are not empty
-if [ -z $gitlab_project ];then
-  read -p "You need to specify a fully qualified Gitlab project (e.g: gigascience/upstream/gigadb-website): " gitlab_project
+if [ -z "$gitlab_project" ];then
+  read -r -p "You need to specify a fully qualified Gitlab project (e.g: gigascience/upstream/gigadb-website): " gitlab_project
 fi
 
-if [ -z $aws_ssh_key ];then
-  read -p "You need to specify the path to the ssh private key to use to connect to the EC2 instance: " aws_ssh_key
+if [ -z "$aws_ssh_key" ];then
+  read -r -p "You need to specify the path to the ssh private key to use to connect to the EC2 instance: " aws_ssh_key
 fi
 
-if [ -z $target_environment ];then
-  read -p "You need to specify a target environment (staging or live): " target_environment
+if [ -z "$target_environment" ];then
+  read -r -p "You need to specify a target environment (staging or live): " target_environment
 fi
 
-if [ -z $GITLAB_USERNAME ];then
-  read -p "You need to specify your GitLab username: " GITLAB_USERNAME
+if [ -z "$GITLAB_USERNAME" ];then
+  read -r -p "You need to specify your GitLab username: " GITLAB_USERNAME
 fi
 
-if [ -z $GITLAB_PRIVATE_TOKEN ];then
-  read -p "You need to specify your GitLab private token: " GITLAB_PRIVATE_TOKEN
+if [ -z "$GITLAB_PRIVATE_TOKEN" ];then
+  read -r -p "You need to specify your GitLab private token: " GITLAB_PRIVATE_TOKEN
 fi
 
 
-if [ -z $AWS_REGION ];then
-  read -p "You need to specify an AWS region: " AWS_REGION
+if [ -z "$AWS_REGION" ];then
+  read -r -p "You need to specify an AWS region: " AWS_REGION
+fi
+
+if [ -z "$AWS_PROFILE" ];then
+  read -r -p "You need to specify an AWS profile: " AWS_PROFILE
 fi
 
 # Output values and ask for confirmation
@@ -105,10 +155,15 @@ echo "Region: $AWS_REGION"
 echo "GitLab User: $GITLAB_USERNAME"
 echo "Web EC2 Type: $web_ec2_type"
 echo "Bastion EC2 Type: $bastion_ec2_type"
+echo "Files EC2 Type: $files_ec2_type"
 echo "RDS EC2 Type: $rds_ec2_type"
+echo "Web volume size: $web_volume_size"
+echo "Bastion volume size: $bastion_volume_size"
+echo "Files volume size: $files_volume_size"
+
 echo ""
 
-read -p "Do you want to continue (y/n)?" choice
+read -r -p "Do you want to continue (y/n)?" choice
 case "$choice" in 
   y|Y ) 
     echo "yes"
@@ -123,6 +178,9 @@ case "$choice" in
     ;;
 esac
 
+# export AWS profile for the terraform command
+export AWS_PROFILE
+
 # RDS backup restoration requires null restore_to_point_in_time variable in
 # terraform.tf to be overridden with real config code block in override.tf
 if [ "$has_restore_backup" = true ];then
@@ -130,12 +188,12 @@ if [ "$has_restore_backup" = true ];then
 fi
 
 # url encode gitlab project
-encoded_gitlab_project=$(echo $gitlab_project | sed -e 's/\//%2F/g')
+encoded_gitlab_project=$(echo "$gitlab_project" | sed -e 's/\//%2F/g')
 
 
 # Ensure we are in the environment-specific directory
-if [ "envs/$target_environment" != `pwd | rev | cut -d"/" -f 1,2 | rev` ];then
-  echo "You are not in the correct directory given the specified parameters. you should be in 'envs/$target_environment'"
+if [ "$target_environment" != "$(pwd | rev | cut -d"/" -f 1 | rev)" ];then
+  echo "You are not in the correct directory given the specified parameters. you should be in '$target_environment'"
   exit 1
 fi
 
@@ -145,7 +203,7 @@ cp ../../terraform.tf .
 cp ../../getIAMUserNameToJSON.sh .
 
 # Infer the name the EC2 key pair from the file name without extension from teh $aws_ssh_key variable
-key_name=$(echo $aws_ssh_key | rev | cut -d"/" -f 1 | rev | cut -d"." -f 1)
+key_name=$(echo "$aws_ssh_key" | rev | cut -d"/" -f 1 | rev | cut -d"." -f 1)
 
 # create the terraform variables file (must be named terraform.tfvars for terraform to recognise it automatically)
 echo "deployment_target = \"$target_environment\"" > terraform.tfvars
@@ -153,19 +211,30 @@ echo "key_name = \"$key_name\"" >> terraform.tfvars
 echo "aws_region = \"$AWS_REGION\"" >> terraform.tfvars
 echo "web_ec2_type = \"$web_ec2_type\"" >> terraform.tfvars
 echo "bastion_ec2_type = \"$bastion_ec2_type\"" >> terraform.tfvars
+echo "files_ec2_type = \"$files_ec2_type\"" >> terraform.tfvars
 echo "rds_ec2_type = \"$rds_ec2_type\"" >> terraform.tfvars
+echo "web_ec2_storage = \"$web_volume_size\"" >> terraform.tfvars
+echo "bastion_ec2_storage = \"$bastion_volume_size\"" >> terraform.tfvars
+echo "files_ec2_storage = \"$files_volume_size\"" >> terraform.tfvars
 # create an environment variable file for this script and for ansible_init.sh
 echo "gitlab_project=$gitlab_project" > .init_env_vars
 echo "GITLAB_USERNAME=$GITLAB_USERNAME" >> .init_env_vars
 echo "GITLAB_PRIVATE_TOKEN=$GITLAB_PRIVATE_TOKEN" >> .init_env_vars
+echo "AWS_PROFILE=$AWS_PROFILE" >> .init_env_vars
 echo "aws_ssh_key=$aws_ssh_key" >> .init_env_vars
 echo "deployment_target=$target_environment" >> .init_env_vars
 echo "backup_file=$backup_file" >> .init_env_vars
 echo "AWS_REGION=$AWS_REGION" >> .init_env_vars
 echo "web_ec2_type=$web_ec2_type" >> .init_env_vars
 echo "bastion_ec2_type=$bastion_ec2_type" >> .init_env_vars
+echo "files_ec2_type=$files_ec2_type" >> .init_env_vars
 echo "rds_ec2_type=$rds_ec2_type" >> .init_env_vars
+echo "web_ec2_storage=$web_volume_size" >> .init_env_vars
+echo "bastion_ec2_storage=$bastion_volume_size" >> .init_env_vars
+echo "files_ec2_storage=$files_volume_size" >> .init_env_vars
 
+PROJECT_VARIABLES_URL="https://gitlab.com/api/v4/projects/$encoded_gitlab_project/variables"
+echo "PROJECT_VARIABLES_URL: $PROJECT_VARIABLES_URL"
 # Update terraform.tfvars file with values from GitLab so Terraform can configure RDS instance
 gigadb_db_database=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$PROJECT_VARIABLES_URL/gigadb_db_database?filter%5benvironment_scope%5d=$target_environment" | jq -r .value)
 echo "gigadb_db_database=\"$gigadb_db_database\"" >> terraform.tfvars
@@ -173,7 +242,7 @@ gigadb_db_user=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$PROJE
 echo "gigadb_db_user=\"$gigadb_db_user\"" >> terraform.tfvars
 gigadb_db_password=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$PROJECT_VARIABLES_URL/gigadb_db_password?filter%5benvironment_scope%5d=$target_environment" | jq -r .value)
 echo "gigadb_db_password=\"$gigadb_db_password\"" >> terraform.tfvars
-
+echo "aws_profile=\"$AWS_PROFILE\"" >> terraform.tfvars
 
 # Check that if the gitlab project is in the Forks group, it must match .env's $REPO_NAME to avoid overwriting some else remote TF state
 if [[ $gitlab_project =~ /forks/ && ! $gitlab_project =~ $REPO_NAME ]];then

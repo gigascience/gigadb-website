@@ -23,6 +23,8 @@ base_images:
     - docker save -o debian-bullseye-slim.tar debian:bullseye-slim
     - docker pull debian:bullseye
     - docker save -o debian-bullseye.tar debian:bullseye
+    - docker pull coppit/inotify-command:latest
+    - docker save -o coppit-inotify-command-latest.tar coppit/inotify-command:latest
   artifacts:
     paths:
       - php-$PHP_VERSION-fpm-bullseye.tar
@@ -34,6 +36,7 @@ base_images:
       - debian-buster.tar
       - debian-bullseye.tar
       - debian-bullseye-slim.tar
+      - coppit-inotify-command-latest.tar
   cache:
     key:
       files:
@@ -67,8 +70,9 @@ b_gigadb:
     - docker load -i debian-buster.tar
     - docker load -i debian-bullseye.tar
     - docker load -i debian-bullseye-slim.tar
+    - docker load -i coppit-inotify-command-latest.tar
     # login to gitlab container registry
-    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+    - echo "$CI_JOB_TOKEN" | docker login --username gitlab-ci-token --password-stdin registry.gitlab.com
     # build for test
     - echo "Building app"
     - docker pull registry.gitlab.com/$CI_PROJECT_PATH/application:latest || true
@@ -157,7 +161,7 @@ b_gigadb:
     - docker load -i nginx-$NGINX_VERSION-alpine.tar
     - time docker load -i node-$NODE_VERSION-bullseye-slim.tar
     # login to gitlab container registry
-    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+    - echo "$CI_JOB_TOKEN" | docker login --username gitlab-ci-token --password-stdin registry.gitlab.com
     # appending remote variables at the end of the .env and .secrets
     - env > full_env.txt
     - env | grep -v "SAST" | grep -iE "^(staging_|remote_)" | grep -viE "(password|email|tester|secret|key|user|app_id|client_id|token|tlsauth)" | tee -a $APPLICATION/.env

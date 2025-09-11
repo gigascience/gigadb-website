@@ -17,7 +17,7 @@
     - docker load -i nginx-$NGINX_VERSION-alpine.tar
     - docker load -i node-$NODE_VERSION-bullseye-slim.tar
     # login to gitlab container registry
-    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+    - echo "$CI_JOB_TOKEN" | docker login --username gitlab-ci-token --password-stdin registry.gitlab.com
     # appending production variables at the end of the .env and .secrets
     - env > full_env.txt
     - env | grep -v "SAST" | grep -iE "^(staging_|remote_)" | grep -viE "(password|email|tester|secret|key|user|app_id|client_id|token|tls)" | tee -a  $APPLICATION/.env
@@ -34,7 +34,7 @@
     - bash -c "echo '$docker_tlsauth_key' > ~/.docker/key.pem || true"
     # Pull production container from our private registry
     - docker --tlsverify -H=$REMOTE_WEBAPP_DOCKER info
-    - docker --tlsverify -H=$REMOTE_WEBAPP_DOCKER login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+    - echo "$CI_JOB_TOKEN" | docker --tlsverify -H=$REMOTE_WEBAPP_DOCKER login --username gitlab-ci-token --password-stdin registry.gitlab.com
     - docker --tlsverify -H=$REMOTE_WEBAPP_DOCKER pull registry.gitlab.com/$CI_PROJECT_PATH/production_web:$GIGADB_ENV
     - docker --tlsverify -H=$REMOTE_WEBAPP_DOCKER pull registry.gitlab.com/$CI_PROJECT_PATH/production_app:$GIGADB_ENV
     - docker --tlsverify -H=$REMOTE_WEBAPP_DOCKER pull registry.gitlab.com/$CI_PROJECT_PATH/production_config:$GIGADB_ENV
@@ -58,8 +58,8 @@
     # deploy the web container once the application servers are up
     - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml up -d web
     # Run migration script to generate reference data feed for file formats and file types
-    - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml run --rm application ./protected/yiic generatefiletypes
-    - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml run --rm application ./protected/yiic generatefileformats
+    # - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml run --rm application ./protected/yiic generatefiletypes
+    # - docker-compose --tlsverify -H=$REMOTE_WEBAPP_DOCKER -f ops/deployment/docker-compose.production-envs.yml run --rm application ./protected/yiic generatefileformats
     # Spin up portainer container
     - ./ops/scripts/start_portainer.sh
     # Generate the web certificate for TLS termination on web container.
@@ -86,7 +86,7 @@
     - bash -c "echo '$docker_bastion_tlsauth_cert' > ~/.docker/cert.pem"
     - bash -c "echo '$docker_bastion_tlsauth_key' > ~/.docker/key.pem"
     - docker --tlsverify -H=$REMOTE_BASTION_DOCKER info
-    - docker --tlsverify -H=$REMOTE_BASTION_DOCKER login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+    - echo "$CI_JOB_TOKEN" | docker --tlsverify -H=$REMOTE_BASTION_DOCKER login --username gitlab-ci-token --password-stdin registry.gitlab.com
     - docker --tlsverify -H=$REMOTE_BASTION_DOCKER pull registry.gitlab.com/$CI_PROJECT_PATH/production_app:$GIGADB_ENV
   environment:
     name: $DEPLOYMENT_ENV
