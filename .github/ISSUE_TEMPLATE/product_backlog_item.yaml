@@ -1,0 +1,54 @@
+name: Product Backlog Item
+description: Create a user story and acceptance criteria for feature requests and updates to go in the product backlog
+labels: ['backlog:Story']
+projects: ["gigascience/71"] 
+body: 
+  - type: textarea
+    id: user_story
+    attributes:
+      label: User Story
+      description: Please provide a user story(s) for the feature
+      placeholder: |
+        >As a user  
+        >I want something implemented  
+        >So that I can benefit
+  - type: textarea
+    id: Acceptance_criteria
+    attributes:
+      label: Acceptance criteria
+      description: Please provide acceptance criteria for the story, enter as many as required.
+      placeholder: |
+        >Given conditions  
+        >When event  
+        >Then outcome
+  - type: textarea
+    id: Additional_Info
+    attributes:
+      label: Additional Info
+      description: Please provide any additional information about the feature here, include links to related issues.
+  - type: checkboxes
+    id: Product_Backlog_Item_Ready_Checklist
+    attributes:
+      label: Product Backlog Item Ready Checklist
+      options:
+        - label: Business value is clearly articulated
+        - label: Item is understood enough by the IT team so it can make an informed decision as to whether it can complete this item
+        - label: Dependencies are identified and no external dependencies would block this item from being completed
+        - label: At the time of the scheduled sprint, the IT team has the appropriate composition to complete this item
+        - label: This item is estimated and small enough to comfortably be completed in one sprint
+        - label: Acceptance criteria are clear and testable
+        - label: Performance criteria, if any, are defined and testable
+        - label: The Scrum team understands how to demonstrate this item at the sprint review
+  - type: checkboxes
+    id: Product_Backlog_Item_Done_Checklist
+    attributes:
+      label: Product Backlog Item Done Checklist
+      options:
+        - label: Item(s) in increment pass all Acceptance Criteria
+        - label: Code is refactored to best practices and coding standards
+        - label: Documentation is updated as needed
+        - label: Data security has not been compromised (with particular reference to the personal information we hold in GigaDB)
+        - label: No deviation from the team technology stack and software architecture has been introduced
+        - label: The product is in a releasable state (i.e. the increment has not broken anything)
+
+
