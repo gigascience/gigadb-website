@@ -9,7 +9,7 @@
   },
   "main": "dist/main.js",
   "dependencies": {
-    "@babel/runtime": "^7.8.3",
+    "@babel/runtime": "^7.27.6",
     "@uppy/core": "^2.3.4",
     "@uppy/dashboard": "^2.4.3",
     "@uppy/drag-drop": "^2.1.2",
