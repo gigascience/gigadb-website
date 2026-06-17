@@ -1,5 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
+require_once __DIR__ . '/LoadingFixtureTrait.php';
+require_once __DIR__ . '/CdbUnit.php';
+
+use Codeception\Test\Unit;
+
 /**
  * Unit tests for StoredDatasetExternalLinks to retrieve from storage, external links for associated dataset
  *
@@ -7,17 +14,24 @@
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */
-class StoredDatasetExternalLinksTest extends CDbTestCase
+class StoredDatasetExternalLinksTest extends CdbUnit
 {
-    protected $fixtures = array( //careful, the order matters here because of foreign key constraints
-        'external_link_types' => 'ExternalLinkType',
-        'datasets' => 'Dataset',
-        'external_links' => 'ExternalLink',
-    );
+    use LoadingFixtureTrait;
 
-    public function setUp()
+    public function _before()
     {
-        parent::setUp();
+        $db = $this->getModule('Db')->_getDbh();
+        $db->exec('TRUNCATE TABLE external_link_type CASCADE');
+        $db->exec('TRUNCATE TABLE dataset CASCADE');
+        $db->exec('TRUNCATE TABLE gigadb_user CASCADE');
+        $db->exec('TRUNCATE TABLE external_link CASCADE');
+
+        $this->loadFixture('external_link_type', \ExternalLinkType::class);
+        $this->loadFixture('gigadb_user', \User::class);
+        $this->loadFixture('dataset', \Dataset::class);
+        $this->loadFixture('external_link', \ExternalLink::class);
+
+        parent::_before();
     }
 
     public function testStoredReturnsDatasetId()
@@ -26,7 +40,7 @@ class StoredDatasetExternalLinksTest extends CDbTestCase
 
         $daoUnderTest = new StoredDatasetExternalLinks(
             $dataset_id,
-            $this->getFixtureManager()->getDbConnection()
+            $this->cdbConnection
         );
         $this->assertEquals($dataset_id, $daoUnderTest->getDatasetId()) ;
     }
@@ -37,7 +51,7 @@ class StoredDatasetExternalLinksTest extends CDbTestCase
         $doi = 100243;
         $daoUnderTest = new StoredDatasetExternalLinks(
             $dataset_id,
-            $this->getFixtureManager()->getDbConnection()
+            $this->cdbConnection
         );
         $this->assertEquals($doi, $daoUnderTest->getDatasetDOI()) ;
     }
@@ -86,7 +100,7 @@ class StoredDatasetExternalLinksTest extends CDbTestCase
 
         $daoUnderTest = new StoredDatasetExternalLinks(
             $dataset_id,
-            $this->getFixtureManager()->getDbConnection()
+            $this->cdbConnection
         );
         $this->assertEquals($expected, $daoUnderTest->getDatasetExternalLinks()) ;
         $this->assertEquals([$expected[2]], $daoUnderTest->getDatasetExternalLinks(["Genome browser"])) ;
@@ -107,7 +121,7 @@ class StoredDatasetExternalLinksTest extends CDbTestCase
 
         $daoUnderTest = new StoredDatasetExternalLinks(
             $dataset_id,
-            $this->getFixtureManager()->getDbConnection()
+            $this->cdbConnection
         );
         $this->assertEquals($expected, $daoUnderTest->getDatasetExternalLinksTypesAndCount()) ;
 
@@ -120,7 +134,7 @@ class StoredDatasetExternalLinksTest extends CDbTestCase
 
         $daoUnderTestEmpty = new StoredDatasetExternalLinks(
             $dataset_id,
-            $this->getFixtureManager()->getDbConnection()
+            $this->cdbConnection
         );
         $this->assertEquals([], $daoUnderTestEmpty->getDatasetExternalLinksTypesAndCount()) ;
         $this->assertEquals([], $daoUnderTestEmpty->getDatasetExternalLinksTypesAndCount(["Additional information"])) ;

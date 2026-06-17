@@ -3,7 +3,6 @@
 set -e
 set -u
 
-docker-compose run --rm test ./vendor/phpunit/phpunit/phpunit --testsuite unit --bootstrap protected/tests/unit_bootstrap.php --coverage-php protected/runtime/unit.cov  --configuration protected/tests/phpunit.xml
 docker-compose run --rm test ./vendor/phpunit/phpunit/phpunit --testsuite functional --bootstrap protected/tests/functional_custom_bootstrap.php  --coverage-php protected/runtime/functional.cov  --configuration protected/tests/phpunit.xml
 docker-compose run --rm test ./vendor/phpunit/phpcov/phpcov merge protected/runtime --html protected/runtime/coverage --clover protected/runtime/clover.xml --text  protected/runtime/phpunit-coverage.txt | head -16 > protected/runtime/phpunit-coverage.txt
 

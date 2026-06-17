@@ -40,7 +40,7 @@ if [ "$(uname)" == "Darwin" ];then
 fi;
 
 # Build console and web containers (needed when switching between branches often)
-docker-compose build web test application database fuw-public fuw-admin console
+docker-compose build web application database fuw-public fuw-admin console
 
 # Launch the services required by GigaDB and FUW, and then start nginx (web server)
 docker-compose up -d application database fuw-public fuw-admin console
@@ -50,6 +50,14 @@ docker-compose up -d web
 
 # Install composer dependencies for GigaDB
 docker-compose exec -T application composer install
+CONTAINER_NAME=$(docker ps --filter "name=application" --format "{{.Names}}" | head -n 1)
+if docker exec "$CONTAINER_NAME" test -f /var/www/c3.php; then
+  docker cp "$CONTAINER_NAME":/var/www/c3.php ./c3.php
+else
+  echo "Le fichier c3.php n'existe pas dans le container, copie ignorée."
+fi
+
+docker-compose build test
 
 # Compile the CSS files
 docker-compose run --rm less

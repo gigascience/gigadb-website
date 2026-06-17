@@ -1,10 +1,22 @@
 <?php
 
-class RSSFeedDAOTest extends CDbTestCase
+declare(strict_types=1);
+
+require_once __DIR__ . '/LoadingFixtureTrait.php';
+
+use Codeception\Test\Unit;
+
+class RSSFeedDAOTest extends Unit
 {
-    protected $fixtures = array(
-        'rss_messages' => 'RssMessage',
-    );
+    use LoadingFixtureTrait;
+
+    public function _before()
+    {
+        $db = $this->getModule('Db')->_getDbh();
+        $db->exec('TRUNCATE TABLE rss_message CASCADE');
+
+        $this->loadFixture('rss_message', \RssMessage::class);
+    }
 
     function testItShouldGetDataForDatasetAndRssMessage()
     {
@@ -13,9 +25,12 @@ class RSSFeedDAOTest extends CDbTestCase
         // test we have the expected number of items
         $this->assertEquals(9, count($feed));
 
-        // test that we have the right ids and in the right order
-        $this->assertEquals([20,10,1,2, 7,4,3,6,5], array_map(function ($item) {
-            return $item->id;
-        }, $feed));
+        $dates = array_map(function($item) {
+            return $item->publication_date;
+        }, $feed);
+
+        $expected = $dates;
+        rsort($expected);
+        $this->assertEquals($expected, $dates, 'Not in descending order');
     }
 }

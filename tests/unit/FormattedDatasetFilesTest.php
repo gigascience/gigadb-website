@@ -1,21 +1,23 @@
 <?php
 
+declare(strict_types=1);
+
+use Codeception\Test\Unit;
+
 /**
  * Unit tests for FormattedDatasetFiles to present the files associated to a dataset
  *
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */
-class FormattedDatasetFilesTest extends CTestCase
+class FormattedDatasetFilesTest extends Unit
 {
     private CPagination $pager;
 
-    public function setUp()
+    public function _before()
     {
-        parent::setUp();
         $this->pager = new FilesPagination();
         $this->pager->setPageSize(2);
-
     }
 
     public function testFormattedReturnsDatasetId()

@@ -27,14 +27,14 @@ Feature: admin page for samples
   Scenario: Sorting on DOI column in ascending order
     Given I am on "/adminDatasetSample/admin"
     When I follow "DOI"
-    And I wait "1" seconds
+    And I wait "3" seconds
     Then I should see the table is sorted by column "DOI" in the "asc" order
 
   @ok
   Scenario: Sorting on DOI column in descending order
     Given I am on "/adminDatasetSample/admin"
     When I follow "DOI"
-    And I wait "1" seconds
+    And I wait "3" seconds
     And I follow "DOI"
-    And I wait "1" seconds
+    And I wait "3" seconds
     Then I should see the table is sorted by column "DOI" in the "desc" order

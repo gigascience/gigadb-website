@@ -1,12 +1,30 @@
 paths:
-    tests: tests
-    output: tests/_output
-    data: tests/_data
-    support: tests/_support
-    envs: tests/_envs
+  tests: tests
+  output: tests/_output
+  data: tests/_data
+  support: tests/_support
+  envs: tests/_envs
 actor_suffix: Tester
+coverage:
+  enabled: true
+  c3_url: 'http://gigadb.test/index.php'
+  html: tests/_output/coverage
+  include:
+      - protected/models/*.php
+      - protected/components/*.php
+      - gigadb/app/models/*.php
+      - gigadb/app/services/*.php
+      - protected/controllers/*.php
+      - protected/commands/*.php
+      - protected/behaviors/*.php
+      - protected/extensions/*.php
+      - protected/helpers/*.php
+      - protected/interfaces/*.php
+  exclude:
+      - tests/*
+      - vendor/*
 extensions:
-    enabled:
-        - Codeception\Extension\RunFailed
+  enabled:
+      - Codeception\Extension\RunFailed
 params:
     - .env.test

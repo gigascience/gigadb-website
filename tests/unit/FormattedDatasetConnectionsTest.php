@@ -1,18 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
+use Codeception\Test\Unit;
+
 /**
  * Unit tests for FormattedDatasetConnections to present to the dataset view resources connected to that dataset
  *
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */
-class FormattedDatasetConnectionsTest extends CTestCase
+class FormattedDatasetConnectionsTest extends Unit
 {
-    public function setUp()
-    {
-        parent::setUp();
-    }
-
     /**
      * test that the getRelations($type) returns the HTML snippet for the appropriate type of relations
      * here, for the "IsPreviousVersionOf"

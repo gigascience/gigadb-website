@@ -2,12 +2,14 @@
 
 declare(strict_types=1);
 
-class CTypeFormatterTest extends \Codeception\Test\Unit
+use Codeception\Test\Unit;
+
+class CTypeFormatterTest extends Unit
 {
     private LogCurationFormatter $formatter;
     private string $xmlWithPreTag;
 
-    protected function setUp(): void
+    protected function _before(): void
     {
         $this->formatter = new LogCurationFormatter();
         $myXml = <<<XML

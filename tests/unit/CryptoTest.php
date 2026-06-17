@@ -1,9 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+use Codeception\Test\Unit;
+
 /**
  * Tests CryptoService component
  */
-class CryptoTest extends \Codeception\Test\Unit
+class CryptoTest extends Unit
 {
     /**
      * Test that random alphanumeric string contains 20 characters

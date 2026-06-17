@@ -1,14 +1,16 @@
-<?php 
+<?php
 
 declare(strict_types=1);
 
-class LogCurationFormatterTest extends \Codeception\Test\Unit
+use Codeception\Test\Unit;
+
+class LogCurationFormatterTest extends Unit
 {
     private LogCurationFormatter $formatter;
     private string $myXml;
     private string $xmlWithPreTag;
 
-    protected function setUp(): void
+    protected function _before(): void
     {
         $this->formatter = new LogCurationFormatter();
         $this->myXml = <<<XML

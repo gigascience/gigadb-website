@@ -62,4 +62,36 @@ class WebsiteUserSteps extends \Codeception\Actor
     {
         $this->I->seeInPageSource('<link rel="' . $relation . '" href="' . $destination . '">');
     }
+
+    /**
+     * @Given I have signed in as user
+     */
+    public function iHaveSignedInAsUser() {
+        $this->I->amOnUrl('http://gigadb.test');
+        $this->I->amOnPage('/site/login');
+        $this->I->fillField(['name' => 'LoginForm[username]'], 'user@gigadb.org');
+        $this->I->fillField(['name' => 'LoginForm[password]'], 'gigadb');
+        $this->I->click('Login');
+        $this->I->waitForText('Home', 10);
+    }
+
+    /**
+     * @Given I have signed in as admin
+     */
+    public function iHaveSignedInAsAdmin() {
+        $this->I->amOnUrl('http://gigadb.test');
+        $this->I->amOnPage('/site/login');
+        $this->I->fillField(['name' => 'LoginForm[username]'], 'admin@gigadb.org');
+        $this->I->fillField(['name' => 'LoginForm[password]'], 'gigadb');
+        $this->I->click('Login');
+        $this->I->waitForText('Home', 10);
+    }
+
+    /**
+     * @Then the response should contain :text
+     */
+    public function assertResponseContains($text)
+    {
+        $this->I->seeInSource($text);
+    }
 }

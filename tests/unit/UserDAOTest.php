@@ -1,11 +1,12 @@
 <?php
 
-namespace GigaDB\Tests\UnitTests;
+declare(strict_types=1);
 
+use Codeception\Test\Unit;
 /**
  * unit tests for user class
  */
-class UserDAOTest extends \CDbTestCase
+class UserDAOTest extends Unit
 {
     public function testFindByEmail()
     {

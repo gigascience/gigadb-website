@@ -1,40 +1,48 @@
 <?php
 
+declare(strict_types=1);
+
+require_once __DIR__ . '/LoadingFixtureTrait.php';
+require_once __DIR__ . '/CdbUnit.php';
+
+use Codeception\Test\Unit;
+
 /**
  * Unit tests for ResourcedDatasetFiles to retrieve from a REST API, the files for associated dataset
  *
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */
-class ResourcedDatasetFilesTest extends CDbTestCase
+class ResourcedDatasetFilesTest extends CdbUnit
 {
-    protected $fixtures = array( //careful, the order matters here because of foreign key constraints
-        'species' => 'Species',
-        'datasets' => 'Dataset',
-        'attributes' => 'Attributes',
-        'file_formats' => 'FileFormat',
-        'file_types' => 'FileType',
-        'files' => 'File',
-        'file_attributes' => 'FileAttributes',
-        'samples' => 'Sample',
-        'file_samples' => 'FileSample',
-    );
+    use LoadingFixtureTrait;
 
-    public function setUp()
+    public function _before()
     {
-        // echo "doing parent setup".PHP_EOL;
-        parent::setUp();
-        // echo "done with parent setup".PHP_EOL;
-    }
+        $db = $this->getModule('Db')->_getDbh();
+        $db->exec('TRUNCATE TABLE species CASCADE');
+        $db->exec('TRUNCATE TABLE dataset CASCADE');
+        $db->exec('TRUNCATE TABLE attribute CASCADE');
+        $db->exec('TRUNCATE TABLE file_format CASCADE');
+        $db->exec('TRUNCATE TABLE file_type CASCADE');
+        $db->exec('TRUNCATE TABLE file CASCADE');
+        $db->exec('TRUNCATE TABLE file_attributes CASCADE');
+        $db->exec('TRUNCATE TABLE sample CASCADE');
+        $db->exec('TRUNCATE TABLE file_sample CASCADE');
+        $db->exec('TRUNCATE TABLE gigadb_user CASCADE');
 
-    public function tearDown()
-    {
-        // echo "doing parent tearDown".PHP_EOL;
-        parent::tearDown();
-        // echo "done with parent tearDown".PHP_EOL;
-        // var_dump($this->file_samples);
-        $this->getFixtureManager()->truncateTable("file_sample");
-        $this->getFixtureManager()->truncateTable("file_attributes");
+        $this->loadFixture('gigadb_user', \User::class);
+        $this->loadFixture('species', \Species::class);
+        $this->loadFixture('dataset', \Dataset::class);
+        $this->loadFixture('attribute', \Attributes::class);
+        $this->loadFixture('file_format', \FileFormat::class);
+        $this->loadFixture('file_type', \FileType::class);
+        $this->loadFixture('file', \File::class);
+        $this->loadFixture('file_attributes', \FileAttributes::class);
+        $this->loadFixture('sample', \Sample::class);
+        $this->loadFixture('file_sample', \FileSample::class);
+
+        parent::_before();
     }
 
     public function testResourcedReturnsDatasetId()
@@ -43,7 +51,7 @@ class ResourcedDatasetFilesTest extends CDbTestCase
         $fuwClient = new FileUploadService();
         $daoUnderTest = new ResourcedDatasetFiles(
             $dataset_id,
-            $this->getFixtureManager()->getDbConnection(),
+            $this->cdbConnection,
             $fuwClient
         );
         $this->assertEquals($dataset_id, $daoUnderTest->getDatasetId()) ;
@@ -56,7 +64,7 @@ class ResourcedDatasetFilesTest extends CDbTestCase
         $fuwClient = new FileUploadService();
         $daoUnderTest = new ResourcedDatasetFiles(
             $dataset_id,
-            $this->getFixtureManager()->getDbConnection(),
+            $this->cdbConnection,
             $fuwClient
         );
         $this->assertEquals($doi, $daoUnderTest->getDatasetDOI()) ;
@@ -70,7 +78,7 @@ class ResourcedDatasetFilesTest extends CDbTestCase
         $fuwClient = $this->createMock(FileUploadService::class);
         $daoUnderTest = new ResourcedDatasetFiles(
             $dataset_id,
-            $this->getFixtureManager()->getDbConnection(),
+            $this->cdbConnection,
             $fuwClient
         );
         $fuwClient->expects($this->once())
@@ -132,7 +140,7 @@ class ResourcedDatasetFilesTest extends CDbTestCase
         $fuwClient = $this->createMock(FileUploadService::class);
         $daoUnderTest = new ResourcedDatasetFiles(
             $dataset_id,
-            $this->getFixtureManager()->getDbConnection(),
+            $this->cdbConnection,
             $fuwClient
         );
         $fuwClient->expects($this->once())
@@ -245,7 +253,7 @@ class ResourcedDatasetFilesTest extends CDbTestCase
         $fuwClient = $this->createMock(FileUploadService::class);
         $daoUnderTest = new ResourcedDatasetFiles(
             $dataset_id,
-            $this->getFixtureManager()->getDbConnection(),
+            $this->cdbConnection,
             $fuwClient
         );
 
@@ -342,7 +350,7 @@ class ResourcedDatasetFilesTest extends CDbTestCase
         $fuwClient = $this->createMock(FileUploadService::class);
         $daoUnderTest = new ResourcedDatasetFiles(
             $dataset_id,
-            $this->getFixtureManager()->getDbConnection(),
+            $this->cdbConnection,
             $fuwClient
         );
 
@@ -415,7 +423,7 @@ class ResourcedDatasetFilesTest extends CDbTestCase
         $fuwClient = $this->createMock(FileUploadService::class);
         $daoUnderTest = new ResourcedDatasetFiles(
             $dataset_id,
-            $this->getFixtureManager()->getDbConnection(),
+            $this->cdbConnection,
             $fuwClient
         );
 

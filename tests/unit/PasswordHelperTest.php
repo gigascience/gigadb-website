@@ -1,6 +1,8 @@
 <?php
 
-namespace GigaDB\Tests\UnitTests;
+declare(strict_types=1);
+
+use Codeception\Test\Unit;
 
 /**
  * Unit tests for PasswordHelper class
@@ -8,7 +10,7 @@ namespace GigaDB\Tests\UnitTests;
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */
-class PasswordHelperTest extends \CDbTestCase
+class PasswordHelperTest extends Unit
 {
     public function testVerifyWithStrongHashedValidPassword()
     {

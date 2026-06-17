@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Class to fetch from DB latest data for Dataset and RSS messages
  *

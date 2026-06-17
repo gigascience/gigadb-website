@@ -48,8 +48,6 @@ shell_exec("psql -h $db_host -U $db_user -d $db_name < /var/www/sql/file_finder.
 shell_exec("psql -h $db_host -U $db_user -d $db_name < /var/www/sql/sample_finder.sql");
 shell_exec("psql -h $db_host -U $db_user -d $db_name < /var/www/sql/dataset_finder.sql");
 
-GigadbWebsiteContext::containerRestart();
-
 // After hooks for our functional tests
 register_shutdown_function(function(array $db){
    	// GigadbWebsiteContext::call_pg_terminate_backend($db['database']);

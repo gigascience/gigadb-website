@@ -1,23 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
+use Codeception\Test\Unit;
+
 /**
  * Class DatasetComponentsTest
  */
-class DatasetComponentsTest extends \Codeception\Test\Unit
+class DatasetComponentsTest extends Unit
 {
-    /**
-     * @var \UnitTester
-     */
-    protected $tester;
-
-    protected function _before()
-    {
-    }
-
-    protected function _after()
-    {
-    }
-
     // tests
     /**
      * Test that current time is not used as invalidation query if cache is not disabled

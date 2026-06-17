@@ -1,0 +1,6 @@
+#!/bin/bash
+
+set +e
+set -u
+
+docker-compose run test ./vendor/codeception/codeception/codecept run acceptance --coverage

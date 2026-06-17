@@ -1,6 +1,8 @@
 <?php
 
-namespace GigaDB\Tests\UnitTests;
+declare(strict_types=1);
+
+use Codeception\Test\Unit;
 
 /**
  * Unit tests for PasswordHelper class
@@ -9,7 +11,7 @@ namespace GigaDB\Tests\UnitTests;
  * @license GPL-3.0
  *
  */
-class HTTPSHelperTest extends \CTestCase
+class HTTPSHelperTest extends Unit
 {
     /**
      * test conversion from http to https

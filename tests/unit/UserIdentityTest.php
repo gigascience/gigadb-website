@@ -1,23 +1,28 @@
 <?php
 
-namespace GigaDB\Tests\UnitTests;
+declare(strict_types=1);
 
+require_once __DIR__ . '/LoadingFixtureTrait.php';
+
+use Codeception\Test\Unit;
 /**
  * Unit tests for UserIdentity class
  *
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */
-class UserIdentityTest extends \CDbTestCase
+class UserIdentityTest extends Unit
 {
-    protected $fixtures = array(
-        'gigadb_user' => 'User',
-        'dataset' => 'Dataset',
-    );
+    use LoadingFixtureTrait;
 
-    public function setUp()
+    public function _before()
     {
-        parent::setUp();
+        $db = $this->getModule('Db')->_getDbh();
+        $db->exec('TRUNCATE TABLE gigadb_user CASCADE');
+        $db->exec('TRUNCATE TABLE dataset CASCADE');
+
+        $this->loadFixture('gigadb_user', \User::class);
+        $this->loadFixture('dataset', \Dataset::class);
     }
 
     public function testAuthenticateStrongHashedValidPasswordAndActiveUser()

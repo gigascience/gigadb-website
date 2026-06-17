@@ -4,6 +4,6 @@
 ?>
 <p>
     <?php if($from <= $total_dataset) { ?>
-    Showing <strong><?= $from?> - <?= $to > $total_dataset ? $total_dataset: $to ?> of <?= $total_dataset ?></strong> datasets
+    <p id="result-search-count">Showing <strong><?= $from?> - <?= $to > $total_dataset ? $total_dataset: $to ?> of <?= $total_dataset ?></strong> datasets</p>
     <?php } ?>
 </p>

@@ -1,6 +1,10 @@
 <?php
 
-class FileTest extends \Codeception\Test\Unit
+declare(strict_types=1);
+
+use Codeception\Test\Unit;
+
+class FileTest extends Unit
 {
     /**
      * @var File model

@@ -60,7 +60,8 @@
         "php-mime-mail-parser/php-mime-mail-parser": "~5.0.5",
         "vlucas/phpdotenv": "~v3.4.0",
         "codeception/codeception": "~v3.1.3",
-        "php-webdriver/webdriver": "~1.7.1"
+         "php-webdriver/webdriver": "~1.7.1",
+        "codeception/c3": "^2.9"
     },
     "minimum-stability": "stable",
     "config": {
@@ -69,7 +70,8 @@
             "php": "7.4.33"
         },
         "allow-plugins": {
-                    "yiisoft/yii2-composer": true
+          "yiisoft/yii2-composer": true,
+          "codeception/c3": true
         }
     },
     "autoload": {

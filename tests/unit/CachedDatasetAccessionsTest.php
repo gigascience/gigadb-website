@@ -1,5 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
+require_once __DIR__ . '/LoadingFixtureTrait.php';
+
+use Codeception\Test\Unit;
 /**
  * Unit tests for CachedDatasetAccessions to retrieve dataset accessions from a cache
  *
@@ -7,18 +12,21 @@
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */
-class CachedDatasetAccessionsTest extends CDbTestCase
+class CachedDatasetAccessionsTest extends Unit
 {
-    protected $fixtures = array(
-        'datasets' => 'Dataset',
-        'links' => 'Link',
-    );
+    use LoadingFixtureTrait;
 
-    public function setUp()
+    public function _before()
     {
-        parent::setUp();
-    }
+        $db = $this->getModule('Db')->_getDbh();
+        $db->exec('TRUNCATE TABLE dataset CASCADE');
+        $db->exec('TRUNCATE TABLE link CASCADE');
+        $db->exec('TRUNCATE TABLE gigadb_user CASCADE');
 
+        $this->loadFixture('gigadb_user', \User::class);
+        $this->loadFixture('dataset', \Dataset::class);
+        $this->loadFixture('link', \Link::class);
+    }
     /**
      * test that this DAO class return a Dataset's Primary links from cache
      *
@@ -35,7 +43,7 @@ class CachedDatasetAccessionsTest extends CDbTestCase
         $cache->expects($this->once())
                  ->method('get')
                  ->with($this->equalTo("dataset_${dataset_id}_ALL_0_CachedDatasetAccessions_getPrimaryLinks"))
-                 ->willReturn([$this->links(0), $this->links(1)]);
+                 ->willReturn([Link::model()->findByPk(1), Link::model()->findByPk(2)]);
 
         // create a mock for the StoredDatasetAccessions
         $storedDatasetAccessions = $this->getMockBuilder(StoredDatasetAccessions::class)
@@ -60,8 +68,9 @@ class CachedDatasetAccessionsTest extends CDbTestCase
         $this->assertEquals(2, $nb_primary_links);
         $counter = 0;
         while ($counter < $nb_primary_links) {
-            $this->assertEquals($this->links($counter)->is_primary, $primaryLinks[$counter]->is_primary);
-            $this->assertEquals($this->links($counter)->link, $primaryLinks[$counter]->link);
+            $link = Link::model()->findByPk($counter + 1);
+            $this->assertEquals($link->is_primary, $primaryLinks[$counter]->is_primary);
+            $this->assertEquals($link->link, $primaryLinks[$counter]->link);
             $counter++;
         }
     }
@@ -72,7 +81,6 @@ class CachedDatasetAccessionsTest extends CDbTestCase
      */
     public function testCachedReturnsPrimaryLinksCacheMiss()
     {
-
         $dataset_id = 1;
 
         $expected = array(
@@ -113,7 +121,7 @@ class CachedDatasetAccessionsTest extends CDbTestCase
 
         $storedDatasetAccessions->expects($this->exactly(1))
          ->method('getPrimaryLinks')
-         ->willReturn([$this->links(0), $this->links(1)]);
+         ->willReturn([Link::model()->findByPk(1), Link::model()->findByPk(2)]);
 
         // create a stub of the cache dependency (because we don't need to verify expectations on the cache dependency)
         $cacheDependency = $this->createMock(CCacheDependency::class);
@@ -123,7 +131,7 @@ class CachedDatasetAccessionsTest extends CDbTestCase
                  ->method('set')
                  ->with(
                      $this->equalTo("dataset_${dataset_id}_ALL_0_CachedDatasetAccessions_getPrimaryLinks"),
-                     [$this->links(0), $this->links(1)],
+                     [Link::model()->findByPk(1), Link::model()->findByPk(2)],
                      Cacheable::defaultTTL * 30,
                      $cacheDependency
                  )
@@ -139,8 +147,9 @@ class CachedDatasetAccessionsTest extends CDbTestCase
         $this->assertEquals(2, $nb_primary_links);
         $counter = 0;
         while ($counter < $nb_primary_links) {
-            $this->assertEquals($this->links($counter)->is_primary, $primaryLinks[$counter]->is_primary);
-            $this->assertEquals($this->links($counter)->link, $primaryLinks[$counter]->link);
+            $link = Link::model()->findByPk($counter + 1);
+            $this->assertEquals($link->is_primary, $primaryLinks[$counter]->is_primary);
+            $this->assertEquals($link->link, $primaryLinks[$counter]->link);
             $counter++;
         }
     }
@@ -161,7 +170,7 @@ class CachedDatasetAccessionsTest extends CDbTestCase
         $cache->expects($this->once())
                  ->method('get')
                  ->with($this->equalTo("dataset_${dataset_id}_ALL_0_CachedDatasetAccessions_getSecondaryLinks"))
-                 ->willReturn([$this->links(2), $this->links(3), $this->links(4)]);
+                 ->willReturn([Link::model()->findByPk(3), Link::model()->findByPk(4), Link::model()->findByPk(5)]);
 
          // create a mock for the StoredDatasetAccessions
         $storedDatasetAccessions = $this->getMockBuilder(StoredDatasetAccessions::class)
@@ -186,8 +195,9 @@ class CachedDatasetAccessionsTest extends CDbTestCase
         $this->assertEquals(3, $nb_secondaryLinks);
         $counter = 0;
         while ($counter < $nb_secondaryLinks) {
-            $this->assertEquals($this->links($counter + 2)->is_primary, $secondaryLinks[$counter]->is_primary);
-            $this->assertEquals($this->links($counter + 2)->link, $secondaryLinks[$counter]->link);
+            $link = Link::model()->findByPk($counter + 3);
+            $this->assertEquals($link->is_primary, $secondaryLinks[$counter]->is_primary);
+            $this->assertEquals($link->link, $secondaryLinks[$counter]->link);
             $counter++;
         }
     }
@@ -223,7 +233,7 @@ class CachedDatasetAccessionsTest extends CDbTestCase
 
         $storedDatasetAccessions->expects($this->exactly(1))
          ->method('getSecondaryLinks')
-         ->willReturn([$this->links(2), $this->links(3),  $this->links(4)]);
+         ->willReturn([Link::model()->findByPk(3), Link::model()->findByPk(4), Link::model()->findByPk(5)]);
 
         // create a stub of the cache dependency (because we don't need to verify expectations on the cache dependency)
         $cacheDependency = $this->createMock(CCacheDependency::class);
@@ -233,7 +243,7 @@ class CachedDatasetAccessionsTest extends CDbTestCase
                  ->method('set')
                  ->with(
                      $this->equalTo("dataset_${dataset_id}_ALL_0_CachedDatasetAccessions_getSecondaryLinks"),
-                     [$this->links(2), $this->links(3), $this->links(4)],
+                     [Link::model()->findByPk(3), Link::model()->findByPk(4), Link::model()->findByPk(5)],
                      Cacheable::defaultTTL * 30,
                      $cacheDependency
                  )
@@ -250,8 +260,9 @@ class CachedDatasetAccessionsTest extends CDbTestCase
         $this->assertEquals(3, $nb_secondaryLinks);
         $counter = 0;
         while ($counter < $nb_secondaryLinks) {
-            $this->assertEquals($this->links($counter + 2)->is_primary, $secondaryLinks[$counter]->is_primary);
-            $this->assertEquals($this->links($counter + 2)->link, $secondaryLinks[$counter]->link);
+            $link = Link::model()->findByPk($counter + 3);
+            $this->assertEquals($link->is_primary, $secondaryLinks[$counter]->is_primary);
+            $this->assertEquals($link->link, $secondaryLinks[$counter]->link);
             $counter++;
         }
     }

@@ -1,10 +1,22 @@
 <?php
 
-class AutoCompleteServiceTest extends CDbTestCase
+declare(strict_types=1);
+
+require_once __DIR__ . '/LoadingFixtureTrait.php';
+
+use Codeception\Test\Unit;
+
+class AutoCompleteServiceTest extends Unit
 {
-    protected $fixtures = array(
-        'species' => 'Species',
-    );
+    use LoadingFixtureTrait;
+
+    public function _before()
+    {
+        $db = $this->getModule('Db')->_getDbh();
+        $db->exec('TRUNCATE TABLE species CASCADE');
+
+        $this->loadFixture('species', \Species::class);
+    }
 
     /**
     * test that it autoComplete can find terms from partial input
@@ -15,7 +27,6 @@ class AutoCompleteServiceTest extends CDbTestCase
     {
         $autoComplete = new AutoCompleteService();
 
-
         $terms = $autoComplete->findSpeciesLike($term);
         $this->assertEquals($expected_result, $terms);
     }
@@ -25,7 +36,7 @@ class AutoCompleteServiceTest extends CDbTestCase
      * set term and expection for all possible scenarios
      * of autoComplete for species
      *
-     * @return string, array[string, array]
+     * @return array[], array[string, array]
      */
     public function speciesTermsToComplete()
     {

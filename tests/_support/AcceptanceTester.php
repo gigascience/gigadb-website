@@ -412,6 +412,27 @@ class AcceptanceTester extends \Codeception\Actor
     public function iShouldSeeTheTableWithTheFollowingRows(\Behat\Gherkin\Node\TableNode $table)
     {
         $rows = $table->getRows();
+        $tableRows = array_filter($this->grabMultiple('table tbody tr'));
+        foreach ($rows as $index => $expectedRow) {
+            $expectedRow = array_map(function ($item) {
+                return $item === '' ? ' ' : $item;
+            }, $expectedRow);
+            $expectedRow = implode(' ', $expectedRow);
+            $toDelete = array("\n", ', opens in a new window');
+            $cleanTableRows = array_map(function ($val) use($toDelete) {
+                return str_replace($toDelete, ' ', $val);
+            }, $tableRows);
+
+            $this->assertEquals($expectedRow, $cleanTableRows[$index]);
+        }
+    }
+
+    /**
+     * @Then I should not see the table with the following rows:
+     */
+    public function iShouldNotSeeTheTableWithTheFollowingRows(\Behat\Gherkin\Node\TableNode $table)
+    {
+        $rows = $table->getRows();
         foreach ($rows as $index => $expectedRow) {
             $expectedRow = array_map(function ($item) {
                 return $item === '' ? ' ' : $item;
@@ -420,8 +441,11 @@ class AcceptanceTester extends \Codeception\Actor
             $tableRows = $this->grabMultiple('table tr');
             //remove headers and search bar
             $tableRows = array_slice($tableRows, 2);
-
-            $this->assertEquals($expectedRow, $tableRows[$index]);
+            $toDelete = array("\n", ', opens in a new window');
+            $cleanTableRows = array_map(function ($val) use($toDelete) {
+                return str_replace($toDelete, ' ', $val);
+            }, $tableRows);
+            $this->assertNotEquals($expectedRow, $cleanTableRows[$index]);
         }
     }
 
@@ -506,5 +530,25 @@ class AcceptanceTester extends \Codeception\Actor
     public function iClickOnRow($row, $column, $icon)
     {
         $this->click(['xpath' => '//table/tbody/tr['.$row.']/td['.$column.']//a['.$icon.']']);
+    }
+
+    /**
+     * @When I click the dropdown toggle :id
+     */
+    public function iClickTheDropdownToggleId($id)
+    {
+        $this->click('.dropdown > #' . $id);
+    }
+
+
+    /**
+     * @Then the meta tag should contain :name with :value
+     */
+    public function theMetaTagShouldContain($name, $value)
+    {
+        $content = $this->grabAttributeFrom("meta[name='$name']", 'content');
+        if (false === strpos($content, $value)) {
+            throw new \Exception("The meta tag '$name' does not contain '$value'");
+        }
     }
 }

@@ -2,6 +2,9 @@
 
 set -e -u
 
-./tests/unit_runner
+./tests/unit_functional_runner
 ./tests/functional_runner
 ./tests/acceptance_runner
+./tests/api_runner
+./tests/integration_runner
+./tests/uploader_runner

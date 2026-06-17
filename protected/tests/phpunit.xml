@@ -5,21 +5,12 @@
 		stopOnFailure="false">
 
 	<testsuites>
-	  <testsuite name="unit">
-	    <directory>unit</directory>
-	  </testsuite>
 	  <testsuite name="functional">
 		  <directory>functional</directory>
 		  <exclude>/var/www/protected/tests/functional/FiledropServiceTest.php</exclude>
-		  <exclude>/var/www/protected/tests/functional/SiteTest.php</exclude>
-		  <exclude>/var/www/protected/tests/functional/DatasetViewTest.php</exclude>
 		  <exclude>/var/www/protected/tests/functional/AdminDatasetAssignFTPBoxActionTest.php</exclude>
-		  <exclude>/var/www/protected/tests/functional/RSSFeedTest.php</exclude>
-		  <exclude>/var/www/protected/tests/functional/NewsletterTest.php</exclude>
-		  <exclude>/var/www/protected/tests/functional/AnalyticsTest.php</exclude>
 	  </testsuite>
 	  <testsuite name="all">
-	    <directory>unit</directory>
 	    <directory>functional</directory>
 	  </testsuite>
 	</testsuites>

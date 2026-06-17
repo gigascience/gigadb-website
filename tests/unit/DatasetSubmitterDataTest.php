@@ -1,20 +1,35 @@
 <?php
 
-class DatasetSubmitterDataTest extends CDbTestCase
-{
-    protected $fixtures = array(
-        'datasets' => 'Dataset',
-    );
+declare(strict_types=1);
 
-    public function setUp()
+require_once __DIR__ . '/LoadingFixtureTrait.php';
+require_once __DIR__ . '/CdbUnit.php';
+
+class DatasetSubmitterDataTest extends CdbUnit
+{
+    use LoadingFixtureTrait;
+
+    public function _before()
     {
-        parent::setUp();
+        $db = $this->getModule('Db')->_getDbh();
+        $db->exec('TRUNCATE TABLE dataset CASCADE');
+        $db->exec('TRUNCATE TABLE gigadb_user CASCADE');
+
+        $this->loadFixture('gigadb_user', \User::class);
+        $this->loadFixture('dataset', \Dataset::class);
+
+        parent::_before();
+    }
+
+    public function _after()
+    {
+        parent::_after();
     }
 
     public function testStoredReturnsDatasetId()
     {
         $dataset_id = 1;
-        $daoUnderTest = new StoredDatasetSubmitter($dataset_id, $this->getFixtureManager()->getDbConnection());
+        $daoUnderTest = new StoredDatasetSubmitter($dataset_id, $this->cdbConnection);
         $this->assertEquals($dataset_id, $daoUnderTest->getDatasetId()) ;
     }
 
@@ -22,7 +37,7 @@ class DatasetSubmitterDataTest extends CDbTestCase
     {
         $dataset_id = 1;
         $doi = 100243;
-        $daoUnderTest = new StoredDatasetSubmitter($dataset_id, $this->getFixtureManager()->getDbConnection());
+        $daoUnderTest = new StoredDatasetSubmitter($dataset_id, $this->cdbConnection);
         $this->assertEquals($doi, $daoUnderTest->getDatasetDOI()) ;
     }
 
@@ -31,7 +46,7 @@ class DatasetSubmitterDataTest extends CDbTestCase
 
         $dataset_id = 1;
 
-        $dao_under_test = new StoredDatasetSubmitter($dataset_id, $this->getFixtureManager()->getDbConnection());
+        $dao_under_test = new StoredDatasetSubmitter($dataset_id, $this->cdbConnection);
         $this->assertEquals("user@gigadb.org", $dao_under_test->getEmailAddress());
     }
 
@@ -55,7 +70,7 @@ class DatasetSubmitterDataTest extends CDbTestCase
         $dao_under_test = new CachedDatasetSubmitter(
             $cache,
             $cacheDependency,
-            new StoredDatasetSubmitter($dataset_id, $this->getFixtureManager()->getDbConnection())
+            new StoredDatasetSubmitter($dataset_id, $this->cdbConnection)
         );
 
         $this->assertEquals("user@gigadb.org", $dao_under_test->getEmailAddress());
@@ -94,7 +109,7 @@ class DatasetSubmitterDataTest extends CDbTestCase
             $cacheDependency,
             new StoredDatasetSubmitter(
                 $dataset_id,
-                $this->getFixtureManager()->getDbConnection()
+                $this->cdbConnection
             )
         );
 

@@ -1,5 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
+require_once __DIR__ . '/LoadingFixtureTrait.php';
+require_once __DIR__ . '/CdbUnit.php';
+
+use Codeception\Test\Unit;
 /**
  * Unit tests for StoredDatasetConnections to retrieve from storage connected resources
  *
@@ -7,22 +13,32 @@
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */
-class StoredDatasetConnectionsTest extends CDbTestCase
+class StoredDatasetConnectionsTest extends CdbUnit
 {
-    protected $fixtures = array( //careful, the order matters here because of foreign key constraints
-        'publishers' => 'Publisher',
-        'relationships' => 'Relationship',
-        'datasets' => 'Dataset',
-        'relations' => 'Relation',
-        'manuscripts' => 'Manuscript',
-        'projects' => 'Project',
-        'dataset_projects' => 'DatasetProject',
+    use LoadingFixtureTrait;
 
-    );
-
-    public function setUp()
+    public function _before()
     {
-        parent::setUp();
+        $db = $this->getModule('Db')->_getDbh();
+        $db->exec('TRUNCATE TABLE publisher CASCADE');
+        $db->exec('TRUNCATE TABLE relationship CASCADE');
+        $db->exec('TRUNCATE TABLE dataset CASCADE');
+        $db->exec('TRUNCATE TABLE gigadb_user CASCADE');
+        $db->exec('TRUNCATE TABLE relation CASCADE');
+        $db->exec('TRUNCATE TABLE manuscript CASCADE');
+        $db->exec('TRUNCATE TABLE project CASCADE');
+        $db->exec('TRUNCATE TABLE dataset_project CASCADE');
+
+        $this->loadFixture('gigadb_user', User::class);
+        $this->loadFixture('publisher', \Publisher::class);
+        $this->loadFixture('relationship', Relationship::class);
+        $this->loadFixture('dataset', Dataset::class);
+        $this->loadFixture('relation', Relation::class);
+        $this->loadFixture('manuscript', Manuscript::class);
+        $this->loadFixture('project', Project::class);
+        $this->loadFixture('dataset_project', DatasetProject::class);
+
+        parent::_before();
     }
 
     public function testStoredReturnsDatasetId()
@@ -33,7 +49,7 @@ class StoredDatasetConnectionsTest extends CDbTestCase
         $webClient = $this->createMock(GuzzleHttp\Client::class);
         $daoUnderTest = new StoredDatasetConnections(
             $dataset_id,
-            $this->getFixtureManager()->getDbConnection(),
+            $this->cdbConnection,
             $webClient
         );
         $this->assertEquals($dataset_id, $daoUnderTest->getDatasetId()) ;
@@ -47,12 +63,12 @@ class StoredDatasetConnectionsTest extends CDbTestCase
         $webClient = $this->createMock(GuzzleHttp\Client::class);
         $daoUnderTest = new StoredDatasetConnections(
             $dataset_id,
-            $this->getFixtureManager()->getDbConnection(),
+            $this->cdbConnection,
             $webClient
         );
         $daoUnderTest = new StoredDatasetConnections(
             $dataset_id,
-            $this->getFixtureManager()->getDbConnection(),
+            $this->cdbConnection,
             $webClient
         );
         $this->assertEquals($doi, $daoUnderTest->getDatasetDOI()) ;
@@ -103,7 +119,7 @@ class StoredDatasetConnectionsTest extends CDbTestCase
 
         $daoUnderTest = new StoredDatasetConnections(
             $dataset_id,
-            $this->getFixtureManager()->getDbConnection(),
+            $this->cdbConnection,
             $webClient
         );
         $this->assertEquals($expected, $daoUnderTest->getRelations());
@@ -201,7 +217,7 @@ class StoredDatasetConnectionsTest extends CDbTestCase
                     );
         $daoUnderTest = new StoredDatasetConnections(
             $dataset_id,
-            $this->getFixtureManager()->getDbConnection(),
+            $this->cdbConnection,
             $webClient
         );
         $this->assertEquals($expected, $daoUnderTest->getPublications());
@@ -253,7 +269,7 @@ class StoredDatasetConnectionsTest extends CDbTestCase
                     );
         $daoUnderTest = new StoredDatasetConnections(
             $dataset_id,
-            $this->getFixtureManager()->getDbConnection(),
+            $this->cdbConnection,
             $webClient
         );
         $this->assertEquals($expected, $daoUnderTest->getPublications(), "Array from getPublications() did not match contents expected by testStoredReturnsPublicationsWithGatewayTimeoutError()");
@@ -294,7 +310,7 @@ class StoredDatasetConnectionsTest extends CDbTestCase
 
         $daoUnderTest = new StoredDatasetConnections(
             $dataset_id,
-            $this->getFixtureManager()->getDbConnection(),
+            $this->cdbConnection,
             $webClient
         );
         $this->assertEquals($expected, $daoUnderTest->getPublications(), "More than 2 arrays are returned!");
@@ -334,7 +350,7 @@ class StoredDatasetConnectionsTest extends CDbTestCase
 
         $daoUnderTest = new StoredDatasetConnections(
             $dataset_id,
-            $this->getFixtureManager()->getDbConnection(),
+            $this->cdbConnection,
             $webClient
         );
         $this->assertEquals($expected, $daoUnderTest->getPublications(), "More than 2 arrays are returned!");
@@ -373,7 +389,7 @@ class StoredDatasetConnectionsTest extends CDbTestCase
         );
         $daoUnderTest = new StoredDatasetConnections(
             $dataset_id,
-            $this->getFixtureManager()->getDbConnection(),
+            $this->cdbConnection,
             $webClient
         );
         $this->assertEquals($expected, $daoUnderTest->getPublications(), "More than 2 arrays are returned!");
@@ -402,7 +418,7 @@ class StoredDatasetConnectionsTest extends CDbTestCase
 
         $daoUnderTest = new StoredDatasetConnections(
             $dataset_id,
-            $this->getFixtureManager()->getDbConnection(),
+            $this->cdbConnection,
             $webClient
         );
         $this->assertEquals($expected, $daoUnderTest->getProjects());
@@ -410,7 +426,7 @@ class StoredDatasetConnectionsTest extends CDbTestCase
         // testing it returns empty array if no result
         $daoUnderTestEmpty = new StoredDatasetConnections(
             2,
-            $this->getFixtureManager()->getDbConnection(),
+            $this->cdbConnection,
             $webClient
         );
         $this->assertEquals([], $daoUnderTestEmpty->getProjects());

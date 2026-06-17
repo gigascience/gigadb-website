@@ -28,7 +28,7 @@ class DatasetPageSettings extends yii\base\BaseObject
     /** @var string $_fileSettings */
     private $_fileSettings;
 
-    public function __construct(?Dataset $model, DatasetDAO $dao = null, $config = [])
+    public function __construct(?Dataset $model = null, DatasetDAO $dao = null, $config = [])
     {
         parent::__construct();
         $this->_dao = $dao;
@@ -73,7 +73,7 @@ class DatasetPageSettings extends yii\base\BaseObject
             "page" => 10,
         ];
 
-        if ($cookies['file_setting']) {
+        if (isset($cookies['file_setting'])) {
             $fileSettings = json_decode($cookies['file_setting']->value, true);
 
             if (!$fileSettings['setting'] || !$fileSettings['page']) {
@@ -120,7 +120,7 @@ class DatasetPageSettings extends yii\base\BaseObject
             "page" => 10,
         ];
 
-        if ($cookies['sample_setting']) {
+        if (isset($cookies['sample_setting'])) {
             $sampleSettings = json_decode($cookies['sample_setting']->value, true);
         }
 

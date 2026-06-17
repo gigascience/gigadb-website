@@ -1,0 +1,7 @@
+#!/bin/bash
+
+set +e
+set -u
+
+
+docker-compose run test php -dpcov.enabled=1 -dpcov.directory=protected ./vendor/codeception/codeception/codecept run unit --coverage

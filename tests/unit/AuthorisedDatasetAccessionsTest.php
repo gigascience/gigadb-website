@@ -1,5 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
+require_once __DIR__ . '/LoadingFixtureTrait.php';
+
+use Codeception\Test\Unit;
 /**
  * Unit tests for AuthorisedDatasetAccessions to retrieve logged in user preferred link and add it to each dataset accessions
  *
@@ -7,19 +12,23 @@
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */
-class AuthorisedDatasetAccessionsTest extends CDbTestCase
+class AuthorisedDatasetAccessionsTest extends Unit
 {
-    protected $fixtures = array(
-        'datasets' => 'Dataset',
-        'links' => 'Link',
-        'prefixes' => 'Prefix',
-    );
+    use LoadingFixtureTrait;
 
-    public function setUp()
+    public function _before()
     {
-        parent::setUp();
-    }
+        $db = $this->getModule('Db')->_getDbh();
+        $db->exec('TRUNCATE TABLE gigadb_user CASCADE');
+        $db->exec('TRUNCATE TABLE dataset CASCADE');
+        $db->exec('TRUNCATE TABLE link CASCADE');
+        $db->exec('TRUNCATE TABLE prefix CASCADE');
 
+        $this->loadFixture('gigadb_user', User::class);
+        $this->loadFixture('dataset', Dataset::class);
+        $this->loadFixture('link', Link::class);
+        $this->loadFixture('prefix', Prefix::class);
+    }
 
     /**
      * test that this DAO class return primary links  when user is a guest
@@ -34,7 +43,7 @@ class AuthorisedDatasetAccessionsTest extends CDbTestCase
 
         //then we set our stub for a Cache Hit
         $cachedDatasetAccessions->method('getPrimaryLinks')
-                 ->willReturn([$this->links(0), $this->links(1)]);
+                 ->willReturn([Link::model()->findByPk(1), Link::model()->findByPk(2)]);
 
 
         //we need to create a mock for the CWebUser object that's used when we call: Yii::app()->user->isGuest
@@ -49,8 +58,8 @@ class AuthorisedDatasetAccessionsTest extends CDbTestCase
 
         //setup our expected results:
         $expected_links_with_preferred_source = [];
-        array_push($expected_links_with_preferred_source, new LinkWithPreference($this->links(0), ''));
-        array_push($expected_links_with_preferred_source, new LinkWithPreference($this->links(1), ''));
+        array_push($expected_links_with_preferred_source, new LinkWithPreference(Link::model()->findByPk(1), ''));
+        array_push($expected_links_with_preferred_source, new LinkWithPreference(Link::model()->findByPk(2), ''));
 
         $dao_under_test = new AuthorisedDatasetAccessions(
             $current_user,
@@ -84,7 +93,7 @@ class AuthorisedDatasetAccessionsTest extends CDbTestCase
 
         //then we set our stub for a Cache Hit
         $cachedDatasetAccessions->method('getPrimaryLinks')
-                 ->willReturn([$this->links(0), $this->links(1)]);
+                 ->willReturn([Link::model()->findByPk(1), Link::model()->findByPk(2)]);
 
 
         //we need to create a mock for the CWebUser object that's used when we call: Yii::app()->user->isGuest
@@ -104,8 +113,8 @@ class AuthorisedDatasetAccessionsTest extends CDbTestCase
 
         //setup our expected results:
         $expected_links_with_preferred_source = [];
-        array_push($expected_links_with_preferred_source, new LinkWithPreference($this->links(0), 'ENA'));
-        array_push($expected_links_with_preferred_source, new LinkWithPreference($this->links(1), 'ENA'));
+        array_push($expected_links_with_preferred_source, new LinkWithPreference(Link::model()->findByPk(1), 'ENA'));
+        array_push($expected_links_with_preferred_source, new LinkWithPreference(Link::model()->findByPk(2), 'ENA'));
 
         $dao_under_test = new AuthorisedDatasetAccessions(
             $current_user,
@@ -139,7 +148,7 @@ class AuthorisedDatasetAccessionsTest extends CDbTestCase
 
         //then we set our stub for a Cache Hit
         $cachedDatasetAccessions->method('getPrimaryLinks')
-                 ->willReturn([$this->links(0), $this->links(1)]);
+                 ->willReturn([Link::model()->findByPk(1), Link::model()->findByPk(2)]);
 
 
         //we need to create a mock for the CWebUser object that's used when we call: Yii::app()->user->isGuest
@@ -159,8 +168,8 @@ class AuthorisedDatasetAccessionsTest extends CDbTestCase
 
         //setup our expected results:
         $expected_links_with_preferred_source = [];
-        array_push($expected_links_with_preferred_source, new LinkWithPreference($this->links(0), ''));
-        array_push($expected_links_with_preferred_source, new LinkWithPreference($this->links(1), ''));
+        array_push($expected_links_with_preferred_source, new LinkWithPreference(Link::model()->findByPk(1), ''));
+        array_push($expected_links_with_preferred_source, new LinkWithPreference(Link::model()->findByPk(2), ''));
 
         $dao_under_test = new AuthorisedDatasetAccessions(
             $current_user,
@@ -194,7 +203,7 @@ class AuthorisedDatasetAccessionsTest extends CDbTestCase
 
         //then we set our stub for a Cache Hit
         $cachedDatasetAccessions->method('getSecondaryLinks')
-                 ->willReturn([$this->links(2), $this->links(3),$this->links(4)]);
+                 ->willReturn([Link::model()->findByPk(3), Link::model()->findByPk(4), Link::model()->findByPk(5)]);
 
 
         //we need to create a mock for the CWebUser object that's used when we call: Yii::app()->user->isGuest
@@ -209,9 +218,9 @@ class AuthorisedDatasetAccessionsTest extends CDbTestCase
 
         //setup our expected results:
         $expected_links_with_preferred_source = [];
-        array_push($expected_links_with_preferred_source, new LinkWithPreference($this->links(2), ''));
-        array_push($expected_links_with_preferred_source, new LinkWithPreference($this->links(3), ''));
-        array_push($expected_links_with_preferred_source, new LinkWithPreference($this->links(4), ''));
+        array_push($expected_links_with_preferred_source, new LinkWithPreference(Link::model()->findByPk(3), ''));
+        array_push($expected_links_with_preferred_source, new LinkWithPreference(Link::model()->findByPk(4), ''));
+        array_push($expected_links_with_preferred_source, new LinkWithPreference(Link::model()->findByPk(5), ''));
 
         $dao_under_test = new AuthorisedDatasetAccessions(
             $current_user,
@@ -245,7 +254,7 @@ class AuthorisedDatasetAccessionsTest extends CDbTestCase
 
         //then we set our stub for a Cache Hit
         $cachedDatasetAccessions->method('getSecondaryLinks')
-                 ->willReturn([$this->links(2), $this->links(3),$this->links(4)]);
+                 ->willReturn([Link::model()->findByPk(3), Link::model()->findByPk(4), Link::model()->findByPk(5)]);
 
 
         //we need to create a mock for the CWebUser object that's used when we call: Yii::app()->user->isGuest
@@ -265,9 +274,9 @@ class AuthorisedDatasetAccessionsTest extends CDbTestCase
 
         //setup our expected results:
         $expected_links_with_preferred_source = [];
-        array_push($expected_links_with_preferred_source, new LinkWithPreference($this->links(2), 'ENA'));
-        array_push($expected_links_with_preferred_source, new LinkWithPreference($this->links(3), 'ENA'));
-        array_push($expected_links_with_preferred_source, new LinkWithPreference($this->links(4), 'ENA'));
+        array_push($expected_links_with_preferred_source, new LinkWithPreference(Link::model()->findByPk(3), 'ENA'));
+        array_push($expected_links_with_preferred_source, new LinkWithPreference(Link::model()->findByPk(4), 'ENA'));
+        array_push($expected_links_with_preferred_source, new LinkWithPreference(Link::model()->findByPk(5), 'ENA'));
 
         $dao_under_test = new AuthorisedDatasetAccessions(
             $current_user,
@@ -302,7 +311,7 @@ class AuthorisedDatasetAccessionsTest extends CDbTestCase
 
         //then we set our stub for a Cache Hit
         $cachedDatasetAccessions->method('getSecondaryLinks')
-                 ->willReturn([$this->links(2), $this->links(3),$this->links(4)]);
+                 ->willReturn([Link::model()->findByPk(3), Link::model()->findByPk(4), Link::model()->findByPk(5)]);
 
 
         //we need to create a mock for the CWebUser object that's used when we call: Yii::app()->user->isGuest
@@ -322,9 +331,9 @@ class AuthorisedDatasetAccessionsTest extends CDbTestCase
 
         //setup our expected results:
         $expected_links_with_preferred_source = [];
-        array_push($expected_links_with_preferred_source, new LinkWithPreference($this->links(2), ''));
-        array_push($expected_links_with_preferred_source, new LinkWithPreference($this->links(3), ''));
-        array_push($expected_links_with_preferred_source, new LinkWithPreference($this->links(4), ''));
+        array_push($expected_links_with_preferred_source, new LinkWithPreference(Link::model()->findByPk(3), ''));
+        array_push($expected_links_with_preferred_source, new LinkWithPreference(Link::model()->findByPk(4), ''));
+        array_push($expected_links_with_preferred_source, new LinkWithPreference(Link::model()->findByPk(5), ''));
 
         $dao_under_test = new AuthorisedDatasetAccessions(
             $current_user,

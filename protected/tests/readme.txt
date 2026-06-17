@@ -6,8 +6,6 @@ This directory contains unit and functional tests for the blog demo.
 
  - functional: contains functional test cases.
 
- - unit: contains unit test cases.
-
  - report: contains any coverage reports.
 
 
@@ -24,10 +22,6 @@ you intend to run the functional tests on.
 
 To run these tests, please refer to PHPUnit documentation. The followings
 are some examples:
-
- - Executes all tests under the "unit" directory with verbose information:
-
-	phpunit --verbose unit
 
  - Executes all tests under "functional" (Selenium RC is running):
 

@@ -9,15 +9,6 @@ return CMap::mergeArray(
     require(dirname(__FILE__).'/main.php'),
     require(dirname(__FILE__).'/local.php'),
     array(
-        'components'=>array(
-            'fixture'=>array(
-                'class'=>'system.test.CDbFixtureManager',
-            ),
-            // uncomment the following to provide test database connection
-//            'db'=>array(
-//                'connectionString'=>"pgsql:dbname={$testdb['database']};host={$testdb['host']}",
-//            ),
-        ),
         'params'=>array(
             // For fetching dataset files from @pli888's web server
             'ftp_connection_url' => 'https://gigatools.net',

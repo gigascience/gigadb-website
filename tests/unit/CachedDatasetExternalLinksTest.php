@@ -1,5 +1,8 @@
 <?php
 
+declare(strict_types=1);
+
+use Codeception\Test\Unit;
 /**
  * Unit tests for CachedDatasetExternalLinks to retrieve from cache, external links associated to a dataset
  *
@@ -7,13 +10,8 @@
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */
-class CachedDatasetExternalLinksTest extends CTestCase
+class CachedDatasetExternalLinksTest extends Unit
 {
-    public function setUp()
-    {
-        parent::setUp();
-    }
-
     public function testCachedReturnsDatasetId()
     {
         $dataset_id = 6;

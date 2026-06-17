@@ -1,6 +1,8 @@
 <?php
 
-namespace GigaDB\Tests\UnitTests;
+declare(strict_types=1);
+
+use Codeception\Test\Unit;
 
 /**
  * Unit tests for FiledropService
@@ -12,17 +14,14 @@ namespace GigaDB\Tests\UnitTests;
  * @license GPL-3.0
  *
  */
-class FiledropServiceTest extends \CTestCase
+class FiledropServiceTest extends Unit
 {
-
-	/**
+    /**
 	 * test emailInstructions() passing
 	 *
 	 */
 	public function testEmailInstructions()
 	{
-
-
 		// set mocks
 		$mockTokenSrv = $this->createMock(\TokenService::class);
 		$mockToken = $this->createMock(\Lcobucci\JWT\Token::class);

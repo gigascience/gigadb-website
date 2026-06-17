@@ -1,18 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
+use Codeception\Test\Unit;
+
 /**
  * Unit tests for FormattedDatasetExternalLinks to present external links associated to a dataset
  *
  * @author Rija Menage <rija+git@cinecinetique.com>
  * @license GPL-3.0
  */
-class FormattedDatasetExternalLinksTest extends CTestCase
+class FormattedDatasetExternalLinksTest extends Unit
 {
-    public function setUp()
-    {
-        parent::setUp();
-    }
-
     public function testFormattedReturnsDatasetId()
     {
         $dataset_id = 6;

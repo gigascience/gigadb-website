@@ -115,6 +115,17 @@ Feature: form to update dataset details
     Then I should see current url contains "/dataset/400789/token/"
     And I should see an image located in "/images/datasets/e166c2a0-3684-5209-bccd-c4b18ff87be9/bgi-logo-new.png"
 
+    @ok
+  Scenario: Can update dataset with redirect url
+    When I am on "adminDataset/update/id/8"
+    And I fill in the field of "name" "urltoredirect" with "http://gigadb.test/dataset/view/id/100006"
+    And I press the button "Save"
+    And I am on "/dataset/view/id/100006"
+    Then I should see current url contains "dataset/view/id/100006"
+    Then I should see "Redirect notice"
+    And I wait "10" seconds
+    And I should not see "Redirect notice"
+
   @ok @issue-1023
   Scenario: To confirm the upload status of published dataset has changed to incomplete
     When I am on "/adminDataset/update/id/5"
@@ -131,7 +142,7 @@ Feature: form to update dataset details
   Scenario: Can create/reset private url
     When I am on "/adminDataset/update/id/5"
     And I press the button "Create/Reset Private URL"
-    And I wait "3" seconds
+    And I wait "5" seconds
     Then I should see current url contains "/dataset/100039/token/"
     And I should see "Genomic data of the Puerto Rican Parrot (Amazona vittata) from a locally funded project."
 
@@ -145,7 +156,7 @@ Feature: form to update dataset details
   Scenario: Open private url is working
     When I am on "/adminDataset/update/id/5"
     And I press the button "Create/Reset Private URL"
-    And I wait "1" seconds
+    And I wait "5" seconds
     Then I should see current url contains "/dataset/100039/token/"
     And I should see "Genomic data of the Puerto Rican Parrot (Amazona vittata) from a locally funded project."
 
@@ -178,7 +189,7 @@ Feature: form to update dataset details
     And I fill in the field of "name" "Dataset[ftp_site]" with "ftp://test"
     And I press the button "Create"
     And I wait "3" seconds
-    Then I am on "/adminDataset/update/id/2741"
+    Then I am on "/adminDataset/update/id/2742"
     And I should see "AuthorReview"
     And I should see "123789"
     And I should see "Create/Reset Private URL"
@@ -198,7 +209,7 @@ Feature: form to update dataset details
     When I check the field "Dataset_Epigenomic"
     And I press the button "Create"
     And I wait 3 seconds
-    And I am on "/adminDataset/update/id/2741"
+    And I am on "/adminDataset/update/id/2742"
     And I follow "Open Private URL"
     And I wait "1" seconds
     Then I should see current url contains "/dataset/123789/token/"
@@ -531,10 +542,10 @@ Feature: form to update dataset details
   Scenario: Navigating mockup page tables does not generate errors
     Given I am on "/adminDataset/update/id/5"
     When I press the button "Create/Reset Private URL"
-    And I wait "1" seconds
+    And I wait "5" seconds
     And I press the button "Files"
     And I press the button "Next >"
-    And I wait "1" seconds
+    And I wait "3" seconds
     Then I should see "Parrot.k31.NetworkTest.txt"
 
   @ok
@@ -555,9 +566,9 @@ Feature: form to update dataset details
     And I fill in the field of "name" "Dataset[title]" with "test dataset"
     And I press the button "Create"
     And I should see "test dataset"
-    And I am on "adminDataset/update/id/2741"
+    And I am on "adminDataset/update/id/2742"
     And I select "Published" from the field "Dataset_upload_status"
-    And I wait "2" seconds
+    And I wait "5" seconds
     Then I should see "The DOI does not exist. Please mint the DOI before saving your dataset: Mint DOI"
     And I press the button "Ok"
     And I should see "AuthorReview"
@@ -642,3 +653,13 @@ Feature: form to update dataset details
     And I am on "/adminDataset/update/id/5"
     Then I can see the option "Published" selected for "Dataset_upload_status"
     And I should see "Status changed to Published"
+
+
+  @ok
+  Scenario: Check upload status can be set to Rejected from any previous upload status
+    Given I am on "/adminDataset/update/id/5"
+    And I cannot see the option "Rejected" selected for "Dataset_upload_status"
+    When I select "Rejected" from the field "Dataset_upload_status"
+    And I press the button "Save"
+    And I am on "/adminDataset/update/id/5"
+    Then I can see the option "Rejected" selected for "Dataset_upload_status"

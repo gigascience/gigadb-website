@@ -4,6 +4,34 @@ Feature: a user visit the dataset page
   So that I can use it to further my research or education
 
   @ok
+  Scenario: Core information
+    When I am on "/dataset/100006"
+    Then I should see "Genomic data from Adelie penguin (Pygoscelis adeliae)."
+    And I should see "Zhang G; Lambert DM; Wang J (2011): Genomic data from Adelie penguin (Pygoscelis adeliae). GigaScience."
+    And I should see "https://doi.org/10.5524/100006"
+    And I should see "Additional details"
+    And I should see "Read the peer-reviewed publication(s):"
+    And I should see "Zhang, G., Li, B., Li, C., Gilbert, M. T. P., Jarvis, E. D., & Wang, J. (2014). Comparative genomic data of the Avian Phylogenomics Project. GigaScience, 3(1). https://doi.org/10.1186/2047-217x-3-26"
+    And I should see "Related datasets:"
+    And I should see "Projects:"
+    And I should see "Samples"
+    And I should see "Files"
+    And I should see "Funding"
+    And I should see "3D Models"
+    And I should see "3D Sketchfab"
+    And I should see "History"
+
+  @ok
+  Scenario: Keywords are displayed are displayed
+    Given I have not signed in
+    When I am on "dataset/100142"
+    Then I should see "Keywords:"
+    And I should see "Sequence Read Archive"
+    And I should see "metadata"
+    And I should see "SQL"
+    And I should see "experimental protocol"
+
+  @ok
   Scenario: number of files in current page and total number of files are displayed
     Given I have not signed in
     When I am on "dataset/100142"
@@ -19,10 +47,108 @@ Feature: a user visit the dataset page
   @ok
   Scenario: pagination widget is shown when total number of file greater than the page size setting
     Given I have not signed in
-    And I have set the page size setting to 5
+    And I have set the page size setting to "5"
+    And I wait "3" seconds
     And I follow "Files"
     Then I should see "Next >"
     Then I should see "Go to page"
+
+    @ok
+  Scenario: Don't give guest a button to claim a dataset
+    Given I have not signed in
+    When I am on "/dataset/100006"
+    Then I should not see "Your dataset?"
+
+  @ok
+  Scenario: Give users a button to claim a dataset they have authored
+    Given I have signed in as user
+    When I am on "/dataset/100006"
+    Then I should see "Your dataset?"
+
+  @ok @javascript
+  Scenario: a user is shown a modal to claim his/her dataset by reconcilling his/her author identity to his/her account
+    Given I have signed in as user
+    And I am on "/dataset/100006"
+    When I follow "Your dataset?"
+    And I wait "2" seconds
+    Then I should see "David M Lambert"
+    And I should see "Guojie Zhang"
+    And I should see "Jun Wang"
+    And I should see "Select an author to link to your Gigadb User ID"
+
+  @ok @javascript @insulate
+  Scenario: a user select an author to claim and submit the claim form
+    Given I have signed in as user
+    And I am on "/dataset/100006"
+    When I follow "Your dataset?"
+    And I wait "2" seconds
+    And I follow "Guojie Zhang"
+    And I wait "3" seconds
+    Then I should see "Your claim has been submitted to the administrators."
+    And I should see "You can close this box now."
+
+  @ok @javascript @insulate
+  Scenario: a user with a pending claim visit dataset page and attempt to re claim the author
+    Given I have signed in as user
+    And I am on "/dataset/100006"
+    When I follow "Your dataset?"
+    And I wait "2" seconds
+    And I follow "David M Lambert"
+    And I wait "3" seconds
+    Then I should see "We cannot submit the claim: You already have a pending claim."
+
+  @ok @javascript @claim-error-path
+  Scenario: a user with a rejected claim visit dataset page and attempt to re claim the author
+    Given I have signed in as admin
+    And I am on "/adminUser/update/id/401"
+    And I follow "Reject"
+    And I should see "Claimed rejected. No linking performed"
+    And I have not signed in
+    And I have signed in as user
+    And I am on "/dataset/100006"
+    When I follow "Your dataset?"
+    And I wait "1" seconds
+    And I follow "David M Lambert"
+    And I wait "3" seconds
+    Then I should see "We cannot submit the claim: Your claim on this author has already been rejected."
+    And I should see "You can close this box now."
+
+  @ok @javascript @claim-error-path
+  Scenario: a user with a rejected claim visit dataset page and attempt to claim an author
+    Given I have signed in as admin
+    And I am on "/adminUser/update/id/401"
+    And I follow "Reject"
+    And I should see "Claimed rejected. No linking performed"
+    And I have not signed in
+    And I have signed in as user
+    And I am on "/dataset/100006"
+    When I follow "Your dataset?"
+    And I wait "1" seconds
+    And I follow "Guojie Zhang"
+    And I wait "3" seconds
+    Then I should see "Your claim has been submitted to the administrators."
+    And I should see "You can close this box now."
+
+  @ok @javascript @claim-error-path
+  Scenario:a user already associated to an author cannot claim another author
+    Given I have signed in as admin
+    And I am on "/adminUser/update/id/401"
+    And I follow "Validate"
+    And I should see "This user is linked to author: Lambert DM (3371)"
+    And I have not signed in
+    And I have signed in as user
+    And I am on "/dataset/100006"
+    Then I should not see "Your dataset?"
+
+  @ok @javascript
+  Scenario: a user with a pending claim can cancel the claim
+    Given I have signed in as user
+    And I am on "/dataset/100006"
+    When I follow "Your dataset?"
+    And I wait "1" seconds
+    And I follow "Cancel current claim"
+    And I wait "3" seconds
+    Then I should see "Your claim has been successfully canceled."
 
   @ok @issue-877
   Scenario: The google scholar link is working
@@ -227,6 +353,56 @@ Feature: a user visit the dataset page
     And I follow "[aria-label^='Size']"
     Then I should see "3.88 GB" in the table "#files_table" cell 1 6
 
+  @ok @files @javascript
+  Scenario: Files - table
+    Given I have not signed in
+    And I am on "/dataset/100035"
+    And I follow "Files"
+    Then I should see "GSM678684_sample1_undifTDGpm.bam.gz"
+    And I should see "GSM678685_sample2_undifTDGpm.bam.gz"
+    And I should see "GSM678686_sample3_undifTDGpm.bam.gz"
+    And I should see "GSM678687_sample4_undifTDGmm.bam.gz"
+
+  @ok @files @pr464
+  Scenario: Files - Columns
+    Given I have not signed in
+    And I am on "/dataset/100035"
+    When I follow "Files"
+    Then I should see "File Name"
+    And I should see "Description"
+    And I should see "Data Type"
+    And I should see "Size"
+    And I should see "File Attributes"
+    And I should see "Download"
+
+  @ok @files @pr464
+  Scenario: Files - Table settings controls
+    Given I have not signed in
+    When I am on "/dataset/100035"
+    And I follow "Files"
+    And I click the table settings for "files_table_settings"
+    And I wait "1" seconds
+    Then I should see "Items per page:"
+    And I should see "Columns to display:"
+    And I should see "File Description"
+    And I should see "description" checkbox is checked
+    And I should see "Sample ID"
+    And I should see "sample_id" checkbox is checked
+    And I should see "Data Type"
+    And I should see "type_id" checkbox is checked
+    And I should see "File Format"
+    And I should see "format_id" checkbox is checked
+    And I should see "Size"
+    And I should see "size" checkbox is checked
+    And I should see "Release Date"
+    And I should see "date_stamp" checkbox is checked
+    And I should see "Download Link"
+    And I should see "location" checkbox is checked
+    And I should see "File Attributes"
+    And I should see "attribute" checkbox is checked
+    And I should see "Save changes"
+    And I should see "Close"
+
   @ok @issue-2054
   Scenario: 3D Models tab
     Given I have not signed in
@@ -269,3 +445,162 @@ Feature: a user visit the dataset page
     When I am on "/dataset/100142"
     Then I should see "Read the pre-print publication(s):"
 
+  @ok @javascript
+  Scenario: Popup Old version with link to new version doesn't have a close button
+    Given I have not signed in
+    When I am on "dataset/100044"
+    And I wait "3" seconds
+    And I should see "There is a new version of this dataset available at DOI 10.80027/100006"
+    And I should not see "Close"
+
+  @ok @javascript
+  Scenario: Popup Old version with link to new version go to new version when choosing new version
+    Given I have not signed in
+    And I am on "dataset/100044"
+    And I wait "3" seconds
+    And I should see "There is a new version of this dataset available at DOI 10.80027/100006"
+    And I should see "View new version"
+    When I press the button "View new version"
+    And I wait "3" seconds
+    Then I should be on "/dataset/100006"
+
+  @ok @javascript
+  Scenario: Popup Old version with link to new version closes when choosing old version
+    Given I have not signed in
+    And I am on "dataset/100044"
+    And I wait "3" seconds
+    And I should see "There is a new version of this dataset available at DOI 10.80027/100006"
+    And I should see "Continue to view old version"
+    When I press the button "Continue to view old version"
+    And I wait "3" seconds
+    Then I should not see "There is a new version of this dataset available at DOI 10.80027/100006"
+
+  @ok @samples @javascript
+  Scenario: Samples - Pagination
+    Given I have not signed in
+    And I am on "/dataset/100035"
+    And I should see "Sample"
+    When I follow "2"
+    Then I should see the table with the following rows:
+      | SRS173549 	| Mouse | Mus musculus | 10090 |  | house mouse |
+      | SRS173550 	| Mouse | Mus musculus | 10090 |  | house mouse |
+      | SRS173551 	| Mouse | Mus musculus | 10090 |  | house mouse |
+      | SRS173552 	| Mouse | Mus musculus | 10090 |  | house mouse |
+      | SRS173553 	| Mouse | Mus musculus | 10090 |  | house mouse |
+      | SRS173554 	| Mouse | Mus musculus | 10090 |  | house mouse |
+      | SRS173555 	| Mouse | Mus musculus | 10090 |  | house mouse |
+
+  @ok @samples @javascript @pr464
+  Scenario: Samples - Columns
+    Given I have not signed in
+    And I am on "/dataset/100035"
+    When I follow "Sample"
+    And I click the table settings for "samples_table_settings"
+    And I wait "1" seconds
+    And I uncheck "common_name" checkbox
+    And I press the button "Save changes"
+    Then I should see the table with the following rows:
+      | SRS173539 	| Mus musculus | 10090 |  | house mouse |
+      | SRS173540 	| Mus musculus | 10090 |  | house mouse |
+      | SRS173541 	| Mus musculus | 10090 |  | house mouse |
+      | SRS173542 	| Mus musculus | 10090 |  | house mouse |
+      | SRS173543 	| Mus musculus | 10090 |  | house mouse |
+      | SRS173544 	| Mus musculus | 10090 |  | house mouse |
+      | SRS173545 	| Mus musculus | 10090 |  | house mouse |
+
+  @ok @samples @javascript @pr464
+  Scenario: Samples - Items per page
+    Given I have not signed in
+    And I am on "/dataset/100035"
+    When I follow "Sample"
+    And I click the table settings for "samples_table_settings"
+    And I wait "1" seconds
+    And I select "5" from the field "selectPageSizeSampleSetting"
+    And I press the button "Save changes"
+    Then I should see the table with the following rows:
+      | SRS173539 	| Mouse | Mus musculus | 10090 |  | house mouse |
+      | SRS173540 	| Mouse | Mus musculus | 10090 |  | house mouse |
+      | SRS173541 	| Mouse | Mus musculus | 10090 |  | house mouse |
+      | SRS173542 	| Mouse | Mus musculus | 10090 |  | house mouse |
+      | SRS173543 	| Mouse | Mus musculus | 10090 |  | house mouse |
+    And I should not see the table with the following rows:
+      | SRS173544 	| Mouse | Mus musculus | 10090 |  | house mouse |
+      | SRS173545 	| Mouse | Mus musculus | 10090 |  | house mouse |
+      | SRS173546 	| Mouse | Mus musculus | 10090 |  | house mouse |
+
+  @ok @samples
+  Scenario: Samples - Table settings controls
+    Given I have not signed in
+    When I am on "/dataset/100035"
+    And I follow "Sample"
+    And I click the table settings for "samples_table_settings"
+    And I wait "1" seconds
+    Then I should see "Items per page:"
+    And I should see "Common Name"
+    And I should see "common_name" checkbox is checked
+    And I should see "Scientific Name"
+    And I should see "scientific_name" checkbox is checked
+    And I should see "Sample Attributes"
+    And I should see "sample_attribute" checkbox is checked
+    And I should see "Taxonomic ID"
+    And I should see "taxonomic_id" checkbox is checked
+    And I should see "Genbank Name"
+    And I should see "genbank_name" checkbox is checked
+    And I should see "Save changes"
+    And I should see "Close"
+
+  @ok
+  Scenario: JBrowse
+    Given I have not signed in
+    When I am on "/dataset/100020"
+    And I should see "JBrowse"
+
+  @ok
+  Scenario: Code Ocean
+    Given I have not signed in
+    When I am on "/dataset/100020"
+    Then I should see "Code Ocean"
+
+  @ok
+  Scenario: Protocols.io
+    Given I have not signed in
+    When I am on "/dataset/100020"
+    Then I should see "Protocols.io"
+
+  @ok
+  Scenario: Funding
+    Given I have not signed in
+    When I am on "/dataset/100020"
+    And I follow "Funding"
+    Then I should see "Funding body"
+    And I should see "Awardee"
+    And I should see "Award ID"
+    And I should see "Comments"
+
+  @ok
+  Scenario: History
+    Given I have not signed in
+    When I am on "/dataset/100020"
+    And I follow "History"
+    Then I should see "Date"
+    And I should see "Action"
+
+  @ok
+  Scenario: Call To Actions - not logged in
+    Given I have not signed in
+    When I am on "/dataset/100020"
+    Then I should see "Contact Submitter"
+    And I should not see "Your dataset?"
+
+  @ok
+  Scenario: Non-Tabbed External Links (e.g: Genome Browser)
+    Given I have not signed in
+    When I am on "/dataset/100020"
+    Then I should see "http://foxtailmillet.genomics.org.cn/"
+
+  @ok
+  Scenario: Semantic Links
+    Given I have not signed in
+    When I am on "/dataset/100006"
+    Then I should see "Related datasets:"
+    And I should see "doi:10.80027/100006 IsSupplementTo doi:10.80027/100020"

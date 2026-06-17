@@ -1,24 +1,13 @@
 <?php
 
+declare(strict_types=1);
 
+use Codeception\Test\Unit;
 use League\Flysystem\AdapterInterface;
 use Ramsey\Uuid\Uuid;
 
-class ImageTest extends \Codeception\Test\Unit
+class ImageTest extends Unit
 {
-    /**
-     * @var \UnitTester
-     */
-    protected $tester;
-
-    protected function _before()
-    {
-    }
-
-    protected function _after()
-    {
-    }
-
     /**
      * Test writing image content to storage managed by Flysystem (happy path)
      * @return void
@@ -54,7 +43,7 @@ class ImageTest extends \Codeception\Test\Unit
             ->with($this->matchesRegularExpression($expectedTargetLocationPattern), file_get_contents($tempName), $expectedOptions)
             ->willReturn(true);
 
-        $this->assertTrue($sut->write($mockStorageTarget, $datasetUuid, $mockDatasetImage));
+        $this->assertTrue($sut->write($mockStorageTarget, (string) $datasetUuid, $mockDatasetImage));
 
         $this->assertEquals($expectedImageName, $sut->location);
         $urlArray = parse_url($sut->url); // we compare by URL component because root directory varies with the environments
@@ -98,7 +87,7 @@ class ImageTest extends \Codeception\Test\Unit
             ->with($this->matchesRegularExpression($expectedTargetLocationPattern), file_get_contents($tempName), $expectedOptions)
             ->willReturn(false);
 
-        $this->assertFalse($sut->write($mockStorageTarget, $datasetUuid, $mockDatasetImage));
+        $this->assertFalse($sut->write($mockStorageTarget, (string) $datasetUuid, $mockDatasetImage));
     }
 
     /**

@@ -2,17 +2,20 @@
 
 declare(strict_types=1);
 
+require_once __DIR__ . '/LoadingFixtureTrait.php';
+
+use Codeception\Test\Unit;
+
 /**
  * Tests DownloadService component
  */
-class DownloadTest extends \Codeception\Test\Unit
+class DownloadTest extends Unit
 {
     protected function _before()
     {
         $guzzleService = new \GuzzleHttp\Client();
         Yii::$container->set('guzzleHttpClient', $guzzleService);
     }
-
 
     /**
      * Test that a remote file can be downloaded

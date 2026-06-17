@@ -234,9 +234,9 @@ class DatasetUpload extends yii\base\BaseObject
                 }
 
                 // checking and converting sample ids
-                if ($sheetData[$dataPos]['sample_ids']) {
+                if (isset($sheetData[$dataPos]['sample_ids'])) {
                     $newSamples = explode(";", $sheetData[$dataPos]['sample_ids']);
-                    $oldSamples = $upload['sample_ids'] ? explode(",", $upload['sample_ids']) : [];
+                    $oldSamples = isset($upload['sample_ids']) ? explode(",", $upload['sample_ids']) : [];
                     $allSamples = array_merge($oldSamples, $newSamples);
                     $sheetData[$dataPos]['sample_ids'] = implode(", ", array_map('trim', $allSamples));
                 }

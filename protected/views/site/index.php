@@ -27,6 +27,10 @@
     <? } ?>
     <section class="mb-20">
         <div class="container">
+            <? foreach (Yii::app()->user->getFlashes() as $key => $message) {
+                echo '<div class="alert alert-' . $key . '">' . $message . "</div>\n";
+            }
+            ?>
             <div class="row">
                 <div class="col-xs-12 col-md-8 dataset-types-panel">
                     <div class="underline-title">
