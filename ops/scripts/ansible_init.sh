@@ -40,6 +40,7 @@ cp ../../data_cliapp_playbook.yml .
 cp ../../users_playbook.yml .
 cp ../../monitoring_playbook.yml .
 cp ../../bootstrap_playbook.yml .
+cp ../../mount_object_storage_playbook.yml .
 
 # Update Gitlab gigadb_db_host variable with RDS instance address from terraform-inventory
 rds_inst_addr=$(../../inventories/terraform-inventory.sh --list ./ | jq -r '.all.vars.rds_instance_address')
@@ -100,6 +101,25 @@ gigadb_datasetfiles_aws_secret_access_key=$(curl -s --header "PRIVATE-TOKEN: $GI
 
 echo "gigadb_datasetfiles_aws_access_key_id = $gigadb_datasetfiles_aws_access_key_id" >> ansible.properties
 echo "gigadb_datasetfiles_aws_secret_access_key = $gigadb_datasetfiles_aws_secret_access_key" >> ansible.properties
+
+# Required to mount s3 bucket
+rclone_mount_endpoint=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$MISC_VARIABLES_URL/rclone_mount_endpoint" | jq -r .value)
+rclone_mount_access_key_id=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$MISC_VARIABLES_URL/rclone_mount_access_key_id" | jq -r .value)
+rclone_mount_secret_access_key=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$MISC_VARIABLES_URL/rclone_mount_secret_access_key" | jq -r .value)
+rclone_mount_provider=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$MISC_VARIABLES_URL/rclone_mount_provider" | jq -r .value)
+echo "rclone_mount_endpoint = $rclone_mount_endpoint" >> ansible.properties
+echo "rclone_mount_access_key_id = $rclone_mount_access_key_id" >> ansible.properties
+echo "rclone_mount_secret_access_key = $rclone_mount_secret_access_key" >> ansible.properties
+echo "rclone_mount_provider = $rclone_mount_provider" >> ansible.properties
+
+hk_live_remote_bastion_public_ip=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$MISC_VARIABLES_URL/hk_live_remote_bastion_public_ip" | jq -r .value)
+echo "hk_live_remote_bastion_public_ip = $hk_live_remote_bastion_public_ip" >> ansible.properties
+
+# Required to mount storage box
+hetzner_storage_box_user=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$MISC_VARIABLES_URL/hetzner_storage_box_user" | jq -r .value)
+hetzner_storage_box_hostname=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_PRIVATE_TOKEN" "$MISC_VARIABLES_URL/hetzner_storage_box_hostname" | jq -r .value)
+echo "hetzner_storage_box_user = $hetzner_storage_box_user" >> ansible.properties
+echo "hetzner_storage_box_hostname = $hetzner_storage_box_hostname" >> ansible.properties
 
 # Retrieve ips of provisioned ec2 instances
 bastion_private_ip=$(terraform output ec2_bastion_private_ip | sed 's/"//g')

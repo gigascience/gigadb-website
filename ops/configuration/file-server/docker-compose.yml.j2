@@ -3,7 +3,7 @@ services:
   ftpd:
     image: registry.gitlab.com/{{ gitlab_project }}/production_ftpd:{{ gigadb_environment }}
     volumes:
-      - /share/dropbox:/home
+      - /rclone/share/dropbox:/home
       - /home/ec2-user/app_data/pure-ftpd:/etc/pure-ftpd
       - /home/ec2-user/app_data/pure-ftpd/passwd:/etc/pure-ftpd/passwd
     environment:

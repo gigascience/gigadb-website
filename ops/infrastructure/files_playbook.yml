@@ -88,6 +88,34 @@
       group: ec2-user
       mode: 0644
 
+- name: Set up and configuration of rclone on file server
+  hosts: name_gigadb_filesserver_{{gigadb_env}}*
+  tags:
+    - rclone-tool
+
+  tasks:
+    - name: Create a /home/ec2-user/.config/rclone directory
+      ansible.builtin.file:
+        path: /home/ec2-user/.config/rclone
+        state: directory
+        mode: '0755'
+        owner: ec2-user
+        group: ec2-user
+
+    - name: Create directory for storing log output
+      ansible.builtin.file:
+        path: /var/log/gigadb
+        state: directory
+        mode: '0777'
+        owner: ec2-user
+
+    - name: Install rclone
+      ansible.builtin.include_role:
+        name: ansible-rclone
+      vars:
+        rclone_version: "1.60.0"
+        rclone_arch: "amd64"
+        install_manpages: "true"
 
 - name: Install node exporter
   hosts: name_gigadb_filesserver_{{gigadb_env}}*
