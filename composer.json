@@ -30,7 +30,7 @@
          "ramsey/uuid": "~3.9.0",
          "neam/yii-streamlog": "^1.0.0",
          "gregwar/captcha": "^1.1.9",
-         "symfony/http-client": "v5.4.47",
+         "symfony/http-client": "v5.4.53",
          "nyholm/psr7": "1.8.1",
          "unleash/client": "v1.1.173",
          "cache/filesystem-adapter": "^1.2.0",
